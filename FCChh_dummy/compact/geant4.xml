@@ -1,26 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <geant4>
   <sensitive_detectors>
-
-    <sd name="TrackerN04" 
-        type="DD4hepExN04TrackerSD"
-        ecut="1.0*keV" 
-        verbose="true" 
-        hit_aggregation="position">
-    </sd>
-    <sd name="CalorimeterN04" 
+    <sd name="HcalBarrel" 
         type="DD4hepExN04CalorimeterSD"
         ecut="0.5*keV" 
         verbose="true" 
         hit_aggregation="position">
     </sd>
-    <sd name="MuonN04"  
-        type="DD4hepExN04MuonSD"
-        ecut="0.5*keV"
-        verbose="true"
-        hit_aggregation="position">
-    </sd>
-
   </sensitive_detectors>
 
   <properties>
