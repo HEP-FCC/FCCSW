@@ -29,7 +29,7 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
   
   //Tube: DDCore/DD4hep/Shapes.h
-  Tube calo_shape(x_det_dim.rmin(),x_det_dim.rmax(),x_det_dim.z(),2*M_PI/x_det_dim.phiBins());
+  Tube calo_shape(x_det_dim.rmin(),x_det_dim.rmax(),x_det_dim.z());
   
   //Create the detector mother volume
   Volume calo_vol(x_det.nameStr()+"_envelope",calo_shape,lcdd.air());
@@ -130,6 +130,7 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
 
       //Place the same volumes inside the envelope
       float tile_pos_z = -x_det_dim.z()/2.;
+      int slice_num = 0;
       while(tile_pos_z<x_det_dim.z()/2.){
 	tile_number=0;
 	for(xml_coll_t k(x_det_layer,_U(slice)); k; ++k)  {
@@ -139,11 +140,13 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
 	  
 	  //Place the tile inside the layer
 	  PlacedVolume tile_plv = layer_vol.placeVolume(tiles.at(tile_number),Position(0,tile_pos_z,0));
-	  
+	  tile_plv.addPhysVolID("layer",layer_num);
+	  tile_plv.addPhysVolID("slice",slice_num);
+
 	  //Increment the z pos of the tile
 	  tile_pos_z += tile_thickness;
 	  tile_number++;
-	  
+	  slice_num++;
 	}
       }
       
@@ -159,11 +162,13 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
 	PlacedVolume pv = calo_vol.placeVolume(layer_vol,tr);
 	pv.addPhysVolID("system",x_det.id());
 	pv.addPhysVolID("barrel",0);
-	pv.addPhysVolID("layer",i+1);
+	pv.addPhysVolID("layer",layer_num);
+	pv.addPhysVolID("module",i+1);
 	//DetElement sd = i==0 ? stave_det : stave_det.clone(_toString(i,"stave%d"));
       }
       
       r += dr;
+      layer_num += 1;
     }
   }
   
@@ -172,4 +177,4 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   return d_det;
 }
 
-DECLARE_DETELEMENT(HcalBarrel,create_detector);
+DECLARE_DETELEMENT(HcalBarrel,create_detector)
