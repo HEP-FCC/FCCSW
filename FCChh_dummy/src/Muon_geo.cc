@@ -46,7 +46,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
 		    radius * cos( phi ) ,
 		    0. ) ;
 
-    PlacedVolume muon_phys = experimentalHall_log.placeVolume( muon_log , Transform3D( RotationZ(phi) , trans ) );
+    PlacedVolume muon_phys = experimentalHall_log.placeVolume( muon_log , Transform3D( RotationZ(-phi) , trans ) );
 
     muon_phys.addPhysVolID( "system", x_det.id() )  ;
 
