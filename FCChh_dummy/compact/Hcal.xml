@@ -13,9 +13,17 @@
         <constant name="world_x" value="world_size"/>
         <constant name="world_y" value="world_size"/>
         <constant name="world_z" value="world_size"/>
+   
         <constant name="HcalBarrel_rmin" value="300*cm"/>
         <constant name="HcalBarrel_rmax" value="800*cm"/>
         <constant name="HcalBarrel_zmax" value="600*cm"/>
+
+        <constant name="nomucounter" value="16"/>
+        <constant name="muBox_radius" value="900.*cm"/>
+        <constant name="muBox_width " value="100.*cm"/>
+        <constant name="muBox_thick " value="1.*cm"/>
+        <constant name="muBox_length" value="600*cm"/>
+
     </define>
 
     <display>
@@ -26,6 +34,9 @@
         <vis name="HcalStrip" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="false"/>
         <vis name="HcalAbsorber" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
         <vis name="HcalActive" r="0.86" g="0.86" b="0.86" showDaughters="false" visible="true"/>
+        <vis name="MuonVis"         r="0.0" g="1.0"  b="1.0" alpha="1" showDaughters="true"  visible="true" drawingStyle="wireframe" />
+
+
     </display>
 
     <limits>
@@ -51,6 +62,14 @@
                 <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
             </layer>
         </detector>
+
+
+        <detector name="MuonN04" type="Muon" vis="MuonVis" id="3" readout="MuonCollection" radius="muBox_radius" 
+	          insideTrackingVolume="false">
+          <box width="muBox_width" thickness="muBox_thick" length="muBox_length" 
+	       repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
+        </detector>
+
      </detectors>
      
      <readouts>
@@ -58,6 +77,20 @@
             <segmentation type="CartesianGridXYZ" grid_size_x="1000*cm" grid_size_y="1000*cm" grid_size_z="1000*cm" />
             <id>slice:12,layer:8,module:8,barrel:1,system:8</id>
        </readout>
+
+
+    <readout name="TrackerCollection">
+      <id>system:5,side:-2,layer:9,module:8,sensor:8</id>
+    </readout>
+
+
+    <readout name="MuonCollection">
+      <segmentation type="CartesianGridXZ" grid_size_x="30.0*mm" grid_size_z="30.0*mm" />
+      <!--FIXME: should actually be (seg faults):  segmentation type="ProjectiveCylinder" gridSizeY="30.0*mm" gridSizeZ="30.0*mm" /-->
+      <id>system:6,stave:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>
+    </readout>
+
+
      </readouts>
 
     <fields>
@@ -68,5 +101,16 @@
           outer_radius="3*m">
         </field>
     </fields>
+
+
+
+  <materials>
+    <material name="Scintillator">
+      <D value="1.032" unit="g/cm3"/>
+      <composite n="9" ref="C"/>
+      <composite n="10" ref="H"/>
+    </material>    
+  </materials>
+
 
 </lccdd>
