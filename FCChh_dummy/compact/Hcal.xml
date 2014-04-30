@@ -14,15 +14,78 @@
         <constant name="world_y" value="world_size"/>
         <constant name="world_z" value="world_size"/>
    
+
         <constant name="HcalBarrel_rmin" value="300*cm"/>
         <constant name="HcalBarrel_rmax" value="800*cm"/>
         <constant name="HcalBarrel_zmax" value="600*cm"/>
+
 
         <constant name="nomucounter" value="16"/>
         <constant name="muBox_radius" value="900.*cm"/>
         <constant name="muBox_width " value="100.*cm"/>
         <constant name="muBox_thick " value="1.*cm"/>
         <constant name="muBox_length" value="600*cm"/>
+
+
+        <constant name="trkTubs_rmax" value="50.*cm"/>
+        <constant name="trkTubs_rmin" value="20.*cm"/>
+        <constant name="trkTubs_dz  " value="80.*cm"/>
+        <constant name="trkTubs_sphi" value="0.*deg"/>
+        <constant name="trkTubs_dphi" value="360.*deg"/>
+
+        <constant name="notrkLayers" value="5"/>
+        <constant name="tracker_radius0" value="25.*cm"/>
+        <constant name="tracker_radius1" value="30.*cm"/>
+        <constant name="tracker_radius2" value="35.*cm"/>
+        <constant name="tracker_radius3" value="40.*cm"/>
+        <constant name="tracker_radius4" value="45.*cm"/>
+        <constant name="tracker_thick" value="0.5*cm"/>
+
+        <constant name="tracker_length0" value="60*cm"/>
+        <constant name="tracker_length1" value="60*cm"/>
+        <constant name="tracker_length2" value="60*cm"/>
+        <constant name="tracker_length3" value="60*cm"/>
+        <constant name="tracker_length4" value="60*cm"/>
+
+
+
+        <constant name="stripTubs_rmax" value="180.*cm"/>
+        <constant name="stripTubs_rmin" value="55.*cm"/>
+        <constant name="stripTubs_dz  " value="180.*cm"/>
+
+        <constant name="nostripLayers" value="8"/>
+        <constant name="strip_radius0" value="60.*cm"/>
+        <constant name="strip_radius1" value="75.*cm"/>
+        <constant name="strip_radius2" value="90.*cm"/>
+        <constant name="strip_radius3" value="105.*cm"/>
+        <constant name="strip_radius4" value="120.*cm"/>
+        <constant name="strip_radius5" value="145.*cm"/>
+        <constant name="strip_radius6" value="160.*cm"/>
+        <constant name="strip_radius7" value="175.*cm"/>
+        <constant name="strip_thick" value="0.5*cm"/>
+
+
+        <constant name="strip_length0" value="80*cm"/>
+        <constant name="strip_length1" value="100*cm"/>
+        <constant name="strip_length2" value="150*cm"/>
+        <constant name="strip_length3" value="150*cm"/>
+        <constant name="strip_length4" value="150*cm"/>
+        <constant name="strip_length5" value="150*cm"/>
+        <constant name="strip_length6" value="150*cm"/>
+        <constant name="strip_length7" value="150*cm"/>
+
+
+        <constant name="SolenoidCoilOuterZ" value="650*cm"/> <!-- Aligned with HCAL endcap -->
+        <constant name="SolenoidBarrelOuterZ" value="SolenoidCoilOuterZ"/>
+        <constant name="SolenoidBarrelInnerCryostatThickness" value="3.0*cm"/>
+        <constant name="SolenoidBarrelInnerAirgapThickness" value="11.0*cm"/>
+ 	<constant name="SolenoidBarrelAlConductorThickness" value="38.4*cm"/>
+ 	<constant name="SolenoidBarrelQuenchbackThickness" value="5.0*cm"/>
+ 	<constant name="SolenoidBarrelOuterAirgapThickness" value="18.7*cm"/>
+  	<constant name="SolenoidBarrelOuterCryostatThickness" value="4.0*cm"/>
+        <constant name="SolenoidBarrelInnerRadius" value="800*cm"/>
+        <constant name="SolenoidBarrelConductorInnerRadius" value="SolenoidBarrelInnerRadius + SolenoidBarrelInnerCryostatThickness + SolenoidBarrelInnerAirgapThickness"/> 
+        <constant name="SolenoidBarrelOuterCryostatInnerRadius" value="SolenoidBarrelConductorInnerRadius + SolenoidBarrelAlConductorThickness + SolenoidBarrelQuenchbackThickness"/>
 
     </define>
 
@@ -35,7 +98,9 @@
         <vis name="HcalAbsorber" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
         <vis name="HcalActive" r="0.86" g="0.86" b="0.86" showDaughters="false" visible="true"/>
         <vis name="MuonVis"         r="0.0" g="1.0"  b="1.0" alpha="1" showDaughters="true"  visible="true" drawingStyle="wireframe" />
-
+        <vis name="TrackerVis"      r="1.0" g="0.0"  b="1.0" alpha="1" showDaughters="true"  visible="true"/>
+        <vis name="TrackerLayerVis" r="0.5" g="0.0"  b="1.0" alpha="1" showDaughters="false" visible="true" drawingStyle="wireframe"/>
+        <vis name="SolenoidBarrelLayerVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
 
     </display>
 
@@ -70,7 +135,60 @@
 	       repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
         </detector>
 
-     </detectors>
+        <detector name="TrackerN04" type="Tracker" vis="TrackerVis" id="1" readout="TrackerCollection" insideTrackingVolume="true">
+          <comment>Trackers</comment>
+          <tubs rmin="trkTubs_rmin" rmax="trkTubs_rmax" dz="trkTubs_dz" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi"/>
+          <layer id="0" vis="TrackerLayerVis" rmin="tracker_radius0" rmax="tracker_radius0+tracker_thick" 
+	         dz="tracker_length0" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="1" vis="TrackerLayerVis" rmin="tracker_radius1" rmax="tracker_radius1+tracker_thick" 
+	         dz="tracker_length1" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="2" vis="TrackerLayerVis" rmin="tracker_radius2" rmax="tracker_radius2+tracker_thick" 
+	         dz="tracker_length2" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="3" vis="TrackerLayerVis" rmin="tracker_radius3" rmax="tracker_radius3+tracker_thick" 
+	         dz="tracker_length3" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="4" vis="TrackerLayerVis" rmin="tracker_radius4" rmax="tracker_radius4+tracker_thick" 
+	         dz="tracker_length4" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+
+
+          <tubs rmin="stripTubs_rmin" rmax="stripTubs_rmax" dz="stripTubs_dz" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi"/>
+          <layer id="5" vis="TrackerLayerVis" rmin="strip_radius0" rmax="strip_radius0+strip_thick" 
+	         dz="strip_length0" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="6" vis="TrackerLayerVis" rmin="strip_radius1" rmax="strip_radius1+strip_thick" 
+	         dz="strip_length1" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="7" vis="TrackerLayerVis" rmin="strip_radius2" rmax="strip_radius2+strip_thick" 
+	         dz="strip_length2" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="8" vis="TrackerLayerVis" rmin="strip_radius3" rmax="strip_radius3+strip_thick" 
+	         dz="strip_length3" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="9" vis="TrackerLayerVis" rmin="strip_radius4" rmax="strip_radius4+strip_thick" 
+	         dz="strip_length4" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="10" vis="TrackerLayerVis" rmin="strip_radius5" rmax="strip_radius5+strip_thick" 
+	         dz="strip_length5" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="11" vis="TrackerLayerVis" rmin="strip_radius6" rmax="strip_radius6+strip_thick" 
+	         dz="strip_length6" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+          <layer id="12" vis="TrackerLayerVis" rmin="strip_radius7" rmax="strip_radius7+strip_thick" 
+	         dz="strip_length7" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+
+
+        </detector>
+        
+	<detector name="SolenoidCoilBarrel" type="MultiLayerTracker" insideTrackingVolume="false" reflect="true">
+ 	  <comment>Solenoid</comment>
+ 	  <layer id="1" inner_r="SolenoidBarrelInnerRadius" outer_z="SolenoidBarrelOuterZ" vis="SolenoidBarrelLayerVis">
+ 	    <slice material="Steel235" thickness="SolenoidBarrelInnerCryostatThickness" />
+ 	    <slice material="Vacuum" thickness="SolenoidBarrelInnerAirgapThickness" />
+ 	  </layer>
+ 	  <layer id="2" inner_r="SolenoidBarrelConductorInnerRadius" outer_z="SolenoidCoilOuterZ" vis="SolenoidBarrelLayerVis">
+ 	    <slice material="Aluminum" thickness="SolenoidBarrelAlConductorThickness" />
+ 	    <slice material="Aluminum" thickness="SolenoidBarrelQuenchbackThickness" />
+ 	  </layer>
+ 	  <layer id="3" inner_r="SolenoidBarrelOuterCryostatInnerRadius" outer_z="SolenoidBarrelOuterZ" vis="SolenoidBarrelLayerVis">
+ 	    <slice material="Vacuum" thickness="SolenoidBarrelOuterAirgapThickness" />
+ 	    <slice material="Steel235" thickness="SolenoidBarrelOuterCryostatThickness" />
+ 	  </layer>
+ 	</detector>
+
+
+    </detectors>
      
      <readouts>
        <readout name="HcalBarrelHits">
@@ -109,7 +227,17 @@
       <D value="1.032" unit="g/cm3"/>
       <composite n="9" ref="C"/>
       <composite n="10" ref="H"/>
-    </material>    
+    </material>  
+
+    <material name="ArgonGas">
+      <D type="density" unit="mg/cm3" value="1.782" />
+      <fraction n="1" ref="Ar" />
+    </material>
+
+    <material name="Silicon">
+      <D type="density" unit="g/cm3" value="2.33" />
+      <fraction n="1" ref="Si" />
+    </material>
   </materials>
 
 
