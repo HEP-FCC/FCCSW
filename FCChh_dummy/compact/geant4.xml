@@ -15,12 +15,12 @@
  	hit_aggregation="position">
     </sd>
 
-<!--   <sd name="TrackerN04"
+  <sd name="TrackerN04"
  	type="DD4hepExN04TrackerSD"
  	ecut="1.0*keV"
  	verbose="true"
  	hit_aggregation="position">
-    </sd>-->
+    </sd>
   </sensitive_detectors>
 
   <properties>
