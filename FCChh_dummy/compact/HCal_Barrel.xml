@@ -1,0 +1,16 @@
+<detector id="1" name="HcalBarrel" type="HcalBarrel" readout="HcalBarrelHits" vis="VisibleGreen">
+  <comment>A barrel hadronic calorimeter inspired on the ATLAS Tile hadronic calorimeter</comment>
+  <dimensions rmin="HcalBarrel_rmin" rmax="HcalBarrel_rmax" z="HcalBarrel_zmax" phiBins="64" />
+  <layer dr="10.00*cm" dz="3.00*cm" vis="HcalStrip">
+    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+    <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
+    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+    <slice material="Steel235" dz="0.50*cm" vis="HcalAbsorber"/>
+  </layer>
+  <layer dr="10.00*cm" dz="3.00*cm" vis="HcalStrip">
+    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+    <slice material="Steel235" dz="0.50*cm" vis="HcalAbsorber"/>
+    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+    <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
+  </layer>
+</detector>

@@ -1,0 +1,5 @@
+<detector name="MuonN04" type="Muon" vis="MuonVis" id="3" readout="MuonCollection" radius="muBox_radius" 
+	  insideTrackingVolume="false">
+  <box width="muBox_width" thickness="muBox_thick" length="muBox_length" 
+       repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
+</detector>

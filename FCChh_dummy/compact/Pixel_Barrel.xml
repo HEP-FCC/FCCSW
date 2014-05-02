@@ -1,0 +1,15 @@
+<detector name="TrackerN04" type="Tracker" vis="TrackerVis" id="1" readout="TrackerCollection" insideTrackingVolume="true">
+  <comment>Trackers</comment>
+  <tubs rmin="trkTubs_rmin" rmax="trkTubs_rmax" dz="trkTubs_dz" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi"/>
+  <layer id="0" vis="TrackerLayerVis" rmin="tracker_radius0" rmax="tracker_radius0+tracker_thick" 
+	 dz="tracker_length0" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+  <layer id="1" vis="TrackerLayerVis" rmin="tracker_radius1" rmax="tracker_radius1+tracker_thick" 
+	 dz="tracker_length1" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+  <layer id="2" vis="TrackerLayerVis" rmin="tracker_radius2" rmax="tracker_radius2+tracker_thick" 
+	 dz="tracker_length2" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+  <layer id="3" vis="TrackerLayerVis" rmin="tracker_radius3" rmax="tracker_radius3+tracker_thick" 
+	 dz="tracker_length3" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+  <layer id="4" vis="TrackerLayerVis" rmin="tracker_radius4" rmax="tracker_radius4+tracker_thick" 
+	 dz="tracker_length4" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
+</detector>
+

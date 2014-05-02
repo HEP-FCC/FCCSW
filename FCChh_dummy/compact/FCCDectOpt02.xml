@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+    <includes>
+        <gdmlFile  ref="elements.xml"/>
+        <gdmlFile  ref="materials.xml"/>
+    </includes>
+
+    <define>
+        <constant name="world_size" value="30*m"/>
+        <constant name="world_x" value="world_size"/>
+        <constant name="world_y" value="world_size"/>
+        <constant name="world_z" value="world_size"/>
+
+        <constant name="nomucounter" value="16"/>
+        <constant name="muBox_radius" value="900.*cm"/>
+        <constant name="muBox_width " value="100.*cm"/>
+        <constant name="muBox_thick " value="1.*cm"/>
+        <constant name="muBox_length" value="600*cm"/>
+
+        <constant name="HcalBarrel_rmin" value="300*cm"/>
+        <constant name="HcalBarrel_rmax" value="800*cm"/>
+        <constant name="HcalBarrel_zmax" value="600*cm"/>
+
+        <constant name="trkTubs_rmax" value="50.*cm"/>
+        <constant name="trkTubs_rmin" value="20.*cm"/>
+        <constant name="trkTubs_dz  " value="80.*cm"/>
+        <constant name="trkTubs_sphi" value="0.*deg"/>
+        <constant name="trkTubs_dphi" value="360.*deg"/>
+        
+        <constant name="notrkLayers" value="5"/>
+        <constant name="tracker_radius0" value="25.*cm"/>
+        <constant name="tracker_radius1" value="30.*cm"/>
+        <constant name="tracker_radius2" value="35.*cm"/>
+        <constant name="tracker_radius3" value="40.*cm"/>
+        <constant name="tracker_radius4" value="45.*cm"/>
+        <constant name="tracker_thick" value="0.5*cm"/>
+        
+        <constant name="tracker_length0" value="60*cm"/>
+        <constant name="tracker_length1" value="60*cm"/>
+        <constant name="tracker_length2" value="60*cm"/>
+        <constant name="tracker_length3" value="60*cm"/>
+        <constant name="tracker_length4" value="60*cm"/>
+
+        <constant name="SolenoidCoilOuterZ" value="650*cm"/> <!-- Aligned with HCAL endcap -->
+        <constant name="SolenoidBarrelOuterZ" value="SolenoidCoilOuterZ"/>
+        <constant name="SolenoidBarrelInnerCryostatThickness" value="3.0*cm"/>
+        <constant name="SolenoidBarrelInnerAirgapThickness" value="11.0*cm"/>
+ 	<constant name="SolenoidBarrelAlConductorThickness" value="38.4*cm"/>
+ 	<constant name="SolenoidBarrelQuenchbackThickness" value="5.0*cm"/>
+ 	<constant name="SolenoidBarrelOuterAirgapThickness" value="18.7*cm"/>
+  	<constant name="SolenoidBarrelOuterCryostatThickness" value="4.0*cm"/>
+        <constant name="SolenoidBarrelInnerRadius" value="800*cm"/>
+        <constant name="SolenoidBarrelConductorInnerRadius" value="SolenoidBarrelInnerRadius + SolenoidBarrelInnerCryostatThickness + SolenoidBarrelInnerAirgapThickness"/> 
+        <constant name="SolenoidBarrelOuterCryostatInnerRadius" value="SolenoidBarrelConductorInnerRadius + SolenoidBarrelAlConductorThickness + SolenoidBarrelQuenchbackThickness"/>
+
+
+    </define>
+
+    <display>
+        <vis name="Invisible" showDaughters="false" visible="false"/>
+        <vis name="InvisibleWithChildren" showDaughters="true" visible="false"/>
+        <vis name="TrackerVis"      r="1.0" g="0.0"  b="1.0" alpha="1" showDaughters="true"  visible="true"/>
+        <vis name="TrackerLayerVis" r="0.5" g="0.0"  b="1.0" alpha="1" showDaughters="false" visible="true" drawingStyle="wireframe"/> 
+
+        <vis name="VisibleGreen" r="0.0" g="1.0" b="0.0" showDaughters="true" visible="true"/>
+        <vis name="VisibleBlue" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
+        <vis name="HcalStrip" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="false"/>
+        <vis name="HcalAbsorber" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
+        <vis name="HcalActive" r="0.86" g="0.86" b="0.86" showDaughters="false" visible="true"/>
+
+        <vis name="SolenoidBarrelLayerVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
+
+    </display>
+
+
+    <limits>
+      <limitset name="cal_limits">
+        <limit name="step_length_max" particles="*" value="5.0" unit="mm" />
+      </limitset>
+    </limits>
+
+   <detectors>
+      <comment>Trackers</comment>
+      <include ref="Pixel_Barrel.xml"/>
+      <include ref="HCal_Barrel.xml"/>
+      <include ref="Muon_Barrel.xml"/>
+      <include ref="Solenoid_Inner.xml"/>
+    </detectors>
+
+    <fields>
+        <field name="GlobalSolenoid" type="solenoid" 
+          inner_field="5.0*tesla"
+          outer_field="-1.5*tesla" 
+          zmax="2*m"
+          outer_radius="3*m">
+        </field>
+    </fields>
+
+    <readouts>
+      <readout name="TrackerCollection">
+        <id>system:5,side:-2,layer:9,module:8,sensor:8</id>
+      </readout>
+
+      <readout name="HcalBarrelHits">
+        <segmentation type="CartesianGridXYZ" grid_size_x="1000*cm" grid_size_y="1000*cm" grid_size_z="1000*cm" />
+        <id>slice:12,layer:8,module:8,barrel:1,system:8</id>
+      </readout>
+
+    <readout name="MuonCollection">
+      <segmentation type="CartesianGridXZ" grid_size_x="30.0*mm" grid_size_z="30.0*mm" />
+      <!--FIXME: should actually be (seg faults):  segmentation type="ProjectiveCylinder" gridSizeY="30.0*mm" gridSizeZ="30.0*mm" /-->
+      <id>system:6,stave:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>
+    </readout>
+
+    </readouts>
+    
+    
+    
+    <materials>
+      <material name="Silicon">
+        <D type="density" unit="g/cm3" value="2.33" />
+        <fraction n="1" ref="Si" />
+      </material>
+
+      <material name="ArgonGas">
+        <D type="density" unit="mg/cm3" value="1.782" />
+        <fraction n="1" ref="Ar" />
+      </material>
+      
+      <material name="Scintillator">
+        <D value="1.032" unit="g/cm3"/>
+        <composite n="9" ref="C"/>
+        <composite n="10" ref="H"/>
+      </material>  
+    </materials>
+
+
+
+</lccdd>
