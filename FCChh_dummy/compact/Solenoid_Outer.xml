@@ -1,0 +1,15 @@
+<detector name="OuterSolenoidCoilBarrel" type="MultiLayerTracker" insideTrackingVolume="false" reflect="true">
+  <comment>OuterSolenoid</comment>
+  <layer id="1" inner_r="OuterSolenoidBarrelInnerRadius" outer_z="OuterSolenoidBarrelOuterZ" vis="OuterSolenoidBarrelLayerVis">
+    <slice material="Steel235" thickness="OuterSolenoidBarrelInnerCryostatThickness" />
+    <slice material="Vacuum" thickness="OuterSolenoidBarrelInnerAirgapThickness" />
+  </layer>
+  <layer id="2" inner_r="OuterSolenoidBarrelConductorInnerRadius" outer_z="OuterSolenoidCoilOuterZ" vis="OuterSolenoidBarrelLayerVis">
+    <slice material="Aluminum" thickness="OuterSolenoidBarrelAlConductorThickness" />
+    <slice material="Aluminum" thickness="OuterSolenoidBarrelQuenchbackThickness" />
+  </layer>
+  <layer id="3" inner_r="OuterSolenoidBarrelOuterCryostatInnerRadius" outer_z="OuterSolenoidBarrelOuterZ" vis="OuterSolenoidBarrelLayerVis">
+    <slice material="Vacuum" thickness="OuterSolenoidBarrelOuterAirgapThickness" />
+    <slice material="Steel235" thickness="OuterSolenoidBarrelOuterCryostatThickness" />
+  </layer>
+</detector>
