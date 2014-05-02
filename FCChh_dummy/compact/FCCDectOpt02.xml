@@ -13,6 +13,22 @@
         <constant name="world_x" value="world_size"/>
         <constant name="world_y" value="world_size"/>
         <constant name="world_z" value="world_size"/>
+        <constant name="tracking_region_zmax" value="1000.0*mm"/>
+
+        <constant name="CentralBeamPipe_zmax" value="3000.0*cm"/>
+        <constant name="CentralBeamPipe_rmax" value="19.5*cm"/>
+        <constant name="CentralBeamPipe_thickness" value="CentralBeamPipe_rmax * 0.02"/> <!-- 1% of the diameter -->
+        <constant name="CentralBeamPipe_rmin" value="CentralBeamPipe_rmax - CentralBeamPipe_thickness"/>
+        <constant name="BeamPipe_thickness" value="0.4*cm"/>
+        <constant name="BeamPipe_endThickness" value="0.1*cm"/>
+        <constant name="BeamPipe_zmax" value="3000*cm"/>
+        <constant name="BeamPipe_rmax" value="19.0*cm"/>
+        <constant name="BeamPipe_rmin" value="BeamPipe_rmax - BeamPipe_thickness"/>
+        <constant name="bp_cone_slope" value="(BeamPipe_rmax-CentralBeamPipe_rmax)/(tracking_region_zmax-CentralBeamPipe_zmax)"/>
+        <constant name="BeamPipe_zmin" value="CentralBeamPipe_zmax + (BeamPipe_thickness - CentralBeamPipe_thickness)/bp_cone_slope"/>
+        <constant name="BeamPipeLiner_thickness" value="0.0*cm"/>
+        
+
 
         <constant name="nomucounter" value="16"/>
         <constant name="muBox_radius" value="900.*cm"/>
@@ -26,7 +42,7 @@
 
         <constant name="trkTubs_rmax" value="50.*cm"/>
         <constant name="trkTubs_rmin" value="20.*cm"/>
-        <constant name="trkTubs_dz  " value="80.*cm"/>
+        <constant name="trkTubs_dz  " value="120.*cm"/>
         <constant name="trkTubs_sphi" value="0.*deg"/>
         <constant name="trkTubs_dphi" value="360.*deg"/>
         
@@ -44,17 +60,43 @@
         <constant name="tracker_length3" value="60*cm"/>
         <constant name="tracker_length4" value="60*cm"/>
 
-        <constant name="SolenoidCoilOuterZ" value="650*cm"/> <!-- Aligned with HCAL endcap -->
-        <constant name="SolenoidBarrelOuterZ" value="SolenoidCoilOuterZ"/>
-        <constant name="SolenoidBarrelInnerCryostatThickness" value="3.0*cm"/>
-        <constant name="SolenoidBarrelInnerAirgapThickness" value="11.0*cm"/>
- 	<constant name="SolenoidBarrelAlConductorThickness" value="38.4*cm"/>
- 	<constant name="SolenoidBarrelQuenchbackThickness" value="5.0*cm"/>
- 	<constant name="SolenoidBarrelOuterAirgapThickness" value="18.7*cm"/>
-  	<constant name="SolenoidBarrelOuterCryostatThickness" value="4.0*cm"/>
-        <constant name="SolenoidBarrelInnerRadius" value="800*cm"/>
-        <constant name="SolenoidBarrelConductorInnerRadius" value="SolenoidBarrelInnerRadius + SolenoidBarrelInnerCryostatThickness + SolenoidBarrelInnerAirgapThickness"/> 
-        <constant name="SolenoidBarrelOuterCryostatInnerRadius" value="SolenoidBarrelConductorInnerRadius + SolenoidBarrelAlConductorThickness + SolenoidBarrelQuenchbackThickness"/>
+
+        <constant name="VertexEndcap_rmax" value="tracker_radius4"/>
+        <constant name="VertexEndcap_z1" value="tracker_length0 + 5.0*cm"/>
+        <constant name="VertexEndcap_z2" value="tracker_length0 + 10.0*cm"/>
+        <constant name="VertexEndcap_z3" value="tracker_length0 + 15.0*cm"/>
+        <constant name="VertexEndcap_z4" value="tracker_length0 + 20.0*cm"/>
+        <constant name="VertexEndcap_offset" value="0.2*cm"/>
+        <constant name="VertexEndcapModules" value="16"/>
+        <constant name="VertexEndcap_rmin1" value="trkTubs_rmin+5*cm"/>
+        <constant name="VertexEndcap_rmin2" value="trkTubs_rmin+5*cm"/>
+        <constant name="VertexEndcap_rmin3" value="trkTubs_rmin+5*cm"/>
+        <constant name="VertexEndcap_rmin4" value="trkTubs_rmin+5*cm"/>
+
+        <constant name="InnerSolenoidCoilOuterZ" value="800*cm"/> 
+        <constant name="InnerSolenoidBarrelOuterZ" value="InnerSolenoidCoilOuterZ"/>
+        <constant name="InnerSolenoidBarrelInnerCryostatThickness" value="3.0*cm"/>
+        <constant name="InnerSolenoidBarrelInnerAirgapThickness" value="11.0*cm"/>
+ 	<constant name="InnerSolenoidBarrelAlConductorThickness" value="38.4*cm"/>
+ 	<constant name="InnerSolenoidBarrelQuenchbackThickness" value="5.0*cm"/>
+ 	<constant name="InnerSolenoidBarrelOuterAirgapThickness" value="18.7*cm"/>
+  	<constant name="InnerSolenoidBarrelOuterCryostatThickness" value="4.0*cm"/>
+        <constant name="InnerSolenoidBarrelInnerRadius" value="801*cm"/>
+        <constant name="InnerSolenoidBarrelConductorInnerRadius" value="InnerSolenoidBarrelInnerRadius + InnerSolenoidBarrelInnerCryostatThickness + InnerSolenoidBarrelInnerAirgapThickness"/> 
+        <constant name="InnerSolenoidBarrelOuterCryostatInnerRadius" value="InnerSolenoidBarrelConductorInnerRadius + InnerSolenoidBarrelAlConductorThickness + InnerSolenoidBarrelQuenchbackThickness"/>
+
+        <constant name="OuterSolenoidCoilOuterZ" value="1800*cm"/> 
+        <constant name="OuterSolenoidBarrelOuterZ" value="OuterSolenoidCoilOuterZ"/>
+        <constant name="OuterSolenoidBarrelInnerCryostatThickness" value="3.0*cm"/>
+        <constant name="OuterSolenoidBarrelInnerAirgapThickness" value="11.0*cm"/>
+ 	<constant name="OuterSolenoidBarrelAlConductorThickness" value="38.4*cm"/>
+ 	<constant name="OuterSolenoidBarrelQuenchbackThickness" value="5.0*cm"/>
+ 	<constant name="OuterSolenoidBarrelOuterAirgapThickness" value="18.7*cm"/>
+  	<constant name="OuterSolenoidBarrelOuterCryostatThickness" value="4.0*cm"/>
+        <constant name="OuterSolenoidBarrelInnerRadius" value="1200*cm"/>
+        <constant name="OuterSolenoidBarrelConductorInnerRadius" value="OuterSolenoidBarrelInnerRadius + OuterSolenoidBarrelInnerCryostatThickness + OuterSolenoidBarrelInnerAirgapThickness"/> 
+        <constant name="OuterSolenoidBarrelOuterCryostatInnerRadius" value="OuterSolenoidBarrelConductorInnerRadius + OuterSolenoidBarrelAlConductorThickness + OuterSolenoidBarrelQuenchbackThickness"/>
+
 
 
     </define>
@@ -65,13 +107,27 @@
         <vis name="TrackerVis"      r="1.0" g="0.0"  b="1.0" alpha="1" showDaughters="true"  visible="true"/>
         <vis name="TrackerLayerVis" r="0.5" g="0.0"  b="1.0" alpha="1" showDaughters="false" visible="true" drawingStyle="wireframe"/> 
 
+        <vis name="SiVertexBarrelModuleVis" alpha="1.0" r="1" g="1" b="0.6" drawingStyle="wireframe" showDaughters="true" visible="true"/>
+        <vis name="SiVertexSensitiveVis" alpha="1.0" r="1" g="0.2" b="0.2" drawingStyle="solid" showDaughters="true" visible="true"/>
+        <vis name="SiVertexPassiveVis"   alpha="1.0" r="0" g="0.2" b="1" drawingStyle="solid" showDaughters="true" visible="true"/>
+        <vis name="SiVertexBarrelLayerVis" alpha="1.0" r="1" g="1" b="0.6" showDaughters="true" visible="false"/>
+        <vis name="SiVertexEndcapLayerVis" alpha="1.0" r="1" g="0.75" b="0" showDaughters="false" visible="true"/>
+        <vis name="SiTrackerBarrelModuleVis" alpha="1.0" r="0" g="1" b="0.6" drawingStyle="wireframe" showDaughters="false" visible="true"/>
+        <vis name="SiTrackerBarrelLayerVis" alpha="1.0" r="1" g="1" b="0.6" showDaughters="true" visible="true"/>
+        
+        <vis name="SiTrackerEndcapModuleVis" alpha="0.1" r="0.8" g="1.0" b="0.1" drawingStyle="wireframe" showDaughters="false" visible="true"/>        
+            
+        <vis name="SiTrackerForwardVis" alpha="1.0" r="0.8" g="0.1" b="0.1" showDaughters="false" visible="true"/>
+
+
         <vis name="VisibleGreen" r="0.0" g="1.0" b="0.0" showDaughters="true" visible="true"/>
         <vis name="VisibleBlue" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
         <vis name="HcalStrip" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="false"/>
         <vis name="HcalAbsorber" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
         <vis name="HcalActive" r="0.86" g="0.86" b="0.86" showDaughters="false" visible="true"/>
 
-        <vis name="SolenoidBarrelLayerVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
+        <vis name="InnerSolenoidBarrelLayerVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
+        <vis name="OuterSolenoidBarrelLayerVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
 
     </display>
 
@@ -83,11 +139,19 @@
     </limits>
 
    <detectors>
-      <comment>Trackers</comment>
+     <comment>Dead material and supports</comment>
+      <include ref="BeamPipe.xml"/>
+
+      <comment>Pixel Detector Barrel</comment>
       <include ref="Pixel_Barrel.xml"/>
+
+      <comment>Pixel Detector Endcaps</comment>
+      <include ref="Pixel_Endcaps.xml"/>
+
       <include ref="HCal_Barrel.xml"/>
       <include ref="Muon_Barrel.xml"/>
       <include ref="Solenoid_Inner.xml"/>
+      <include ref="Solenoid_Outer.xml"/>
     </detectors>
 
     <fields>
@@ -103,6 +167,10 @@
       <readout name="TrackerCollection">
         <id>system:5,side:-2,layer:9,module:8,sensor:8</id>
       </readout>
+
+        <readout name="SiVertexEndcapHits">
+            <id>system:8,barrel:3,layer:4,wedge:6,module:6,sensor:1,side:32:-2,strip:26</id>
+        </readout>
 
       <readout name="HcalBarrelHits">
         <segmentation type="CartesianGridXYZ" grid_size_x="1000*cm" grid_size_y="1000*cm" grid_size_z="1000*cm" />
