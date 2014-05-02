@@ -1,0 +1,6 @@
+<detector name="Beampipe" type="PolyconeSupport" insideTrackingVolume="true" vis="BeamPipeVis">
+  <comment>Central Be Beampipe</comment>
+  <material name="Beryllium"/>
+  <zplane rmin="CentralBeamPipe_rmin" rmax="CentralBeamPipe_rmax" z="-CentralBeamPipe_zmax"/>
+  <zplane rmin="CentralBeamPipe_rmin" rmax="CentralBeamPipe_rmax" z="CentralBeamPipe_zmax" />
+</detector>
