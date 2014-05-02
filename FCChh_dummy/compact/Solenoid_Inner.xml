@@ -1,15 +1,15 @@
-<detector name="SolenoidCoilBarrel" type="MultiLayerTracker" insideTrackingVolume="false" reflect="true">
-  <comment>Solenoid</comment>
-  <layer id="1" inner_r="SolenoidBarrelInnerRadius" outer_z="SolenoidBarrelOuterZ" vis="SolenoidBarrelLayerVis">
-    <slice material="Steel235" thickness="SolenoidBarrelInnerCryostatThickness" />
-    <slice material="Vacuum" thickness="SolenoidBarrelInnerAirgapThickness" />
+<detector name="InnerSolenoidCoilBarrel" type="MultiLayerTracker" insideTrackingVolume="false" reflect="true">
+  <comment>InnerSolenoid</comment>
+  <layer id="1" inner_r="InnerSolenoidBarrelInnerRadius" outer_z="InnerSolenoidBarrelOuterZ" vis="InnerSolenoidBarrelLayerVis">
+    <slice material="Steel235" thickness="InnerSolenoidBarrelInnerCryostatThickness" />
+    <slice material="Vacuum" thickness="InnerSolenoidBarrelInnerAirgapThickness" />
   </layer>
-  <layer id="2" inner_r="SolenoidBarrelConductorInnerRadius" outer_z="SolenoidCoilOuterZ" vis="SolenoidBarrelLayerVis">
-    <slice material="Aluminum" thickness="SolenoidBarrelAlConductorThickness" />
-    <slice material="Aluminum" thickness="SolenoidBarrelQuenchbackThickness" />
+  <layer id="2" inner_r="InnerSolenoidBarrelConductorInnerRadius" outer_z="InnerSolenoidCoilOuterZ" vis="InnerSolenoidBarrelLayerVis">
+    <slice material="Aluminum" thickness="InnerSolenoidBarrelAlConductorThickness" />
+    <slice material="Aluminum" thickness="InnerSolenoidBarrelQuenchbackThickness" />
   </layer>
-  <layer id="3" inner_r="SolenoidBarrelOuterCryostatInnerRadius" outer_z="SolenoidBarrelOuterZ" vis="SolenoidBarrelLayerVis">
-    <slice material="Vacuum" thickness="SolenoidBarrelOuterAirgapThickness" />
-    <slice material="Steel235" thickness="SolenoidBarrelOuterCryostatThickness" />
+  <layer id="3" inner_r="InnerSolenoidBarrelOuterCryostatInnerRadius" outer_z="InnerSolenoidBarrelOuterZ" vis="InnerSolenoidBarrelLayerVis">
+    <slice material="Vacuum" thickness="InnerSolenoidBarrelOuterAirgapThickness" />
+    <slice material="Steel235" thickness="InnerSolenoidBarrelOuterCryostatThickness" />
   </layer>
 </detector>
