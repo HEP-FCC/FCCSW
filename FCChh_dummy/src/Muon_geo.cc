@@ -27,33 +27,40 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   
   xml_comp_t  muonBox ( x_det.child( _U(box) ) );
   
-  Box muon_box( muonBox.width(), muonBox.thickness(), muonBox.length() ) ;
-  
-  
-  Volume muon_log( "muonT_L", muon_box, lcdd.material("Scintillator" ) );
-  
-  muon_log.setSensitiveDetector( sens ) ;
+  int layerID = 0 ;
+  for(xml_coll_t c(e,_U(layer)); c; ++c, ++layerID)  {
 
-  double deltaphi = muonBox.deltaphi()  ;
+    xml_comp_t  x_layer(c);
+    double radius = x_layer.radius() ;
+    double radius_eff = radius*sqrt(2./(1+cos(2.*M_PI/muonBox.repeat())));
+    double mBoxWidth = radius_eff*sqrt(2.*(1. - cos( 2.*M_PI/muonBox.repeat() )));
 
-  for(int i=0,N = muonBox.repeat() ; i < N ; ++i ){
+    Box muon_box( mBoxWidth/2., muonBox.thickness(), muonBox.length() ) ;
+  
+    Volume muon_log( "muonT_L", muon_box, lcdd.material(x_layer.materialStr() ) );
     
-    double radius = x_det.radius() ;
+    muon_log.setSensitiveDetector( sens ) ;
     
-    double phi = deltaphi/rad * i ;
+    double deltaphi = muonBox.deltaphi()  ;
 
-    Position trans( radius * sin( phi ) ,
-		    radius * cos( phi ) ,
-		    0. ) ;
+    for(int i=0,N = muonBox.repeat() ; i < N ; ++i ){
+    
+      double phi = deltaphi/rad * i ;
+      
+      Position trans( radius * sin( phi ) ,
+                      radius * cos( phi ) ,
+                      0. ) ;
+      
 
-    PlacedVolume muon_phys = experimentalHall_log.placeVolume( muon_log , Transform3D( RotationZ(-phi) , trans ) );
 
-    muon_phys.addPhysVolID( "system", x_det.id() )  ;
-
-    muon.setPlacement( muon_phys );
-
+      PlacedVolume muon_phys = experimentalHall_log.placeVolume( muon_log , Transform3D( RotationZ(-phi) , trans ) );
+      
+      muon_phys.addPhysVolID( "layer",layerID )  ;
+      
+      muon.setPlacement( muon_phys );
+    }
+    muon.setVisAttributes( lcdd, x_layer.visStr(), muon_log );
   }
-  muon.setVisAttributes( lcdd, x_det.visStr(), muon_log );
 
   
   return muon;
