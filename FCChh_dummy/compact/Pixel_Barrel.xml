@@ -1,15 +1,185 @@
-<detector name="TrackerN04" type="Tracker" vis="TrackerVis" id="1" readout="TrackerCollection" insideTrackingVolume="true">
-  <comment>Trackers</comment>
-  <tubs rmin="trkTubs_rmin" rmax="trkTubs_rmax" dz="trkTubs_dz" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi"/>
-  <layer id="0" vis="TrackerLayerVis" rmin="tracker_radius0" rmax="tracker_radius0+tracker_thick" 
-	 dz="tracker_length0" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
-  <layer id="1" vis="TrackerLayerVis" rmin="tracker_radius1" rmax="tracker_radius1+tracker_thick" 
-	 dz="tracker_length1" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
-  <layer id="2" vis="TrackerLayerVis" rmin="tracker_radius2" rmax="tracker_radius2+tracker_thick" 
-	 dz="tracker_length2" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
-  <layer id="3" vis="TrackerLayerVis" rmin="tracker_radius3" rmax="tracker_radius3+tracker_thick" 
-	 dz="tracker_length3" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
-  <layer id="4" vis="TrackerLayerVis" rmin="tracker_radius4" rmax="tracker_radius4+tracker_thick" 
-	 dz="tracker_length4" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="silicon" />
-</detector>
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Pixel Barrel"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A simple pixel detector</comment>
+  </info>
 
+  <define>
+    <constant name="trkTubs_rmax" value="149.*cm"/>
+    <constant name="trkTubs_rmin" value="20.*cm"/>
+    <constant name="trkTubs_dz  " value="600.*cm"/>
+    <constant name="trkTubs_sphi" value="0.*deg"/>
+    <constant name="trkTubs_dphi" value="360.*deg"/>
+    
+
+    <constant name="notrkLayers" value="5"/>
+    <constant name="tracker_radius0" value="25.*cm"/>
+    <constant name="tracker_radius1" value="30.*cm"/>
+    <constant name="tracker_radius2" value="35.*cm"/>
+    <constant name="tracker_radius3" value="40.*cm"/>
+    <constant name="tracker_radius4" value="45.*cm"/>
+
+    <constant name="tracker_radius5" value="55.*cm"/>
+    <constant name="tracker_radius6" value="65.*cm"/>
+    <constant name="tracker_radius7" value="75.*cm"/>
+
+    <constant name="tracker_radius8" value="85.*cm"/>
+    <constant name="tracker_radius9" value="95.*cm"/>
+    <constant name="tracker_radius10" value="105.*cm"/>
+    <constant name="tracker_radius11" value="115.*cm"/>
+    <constant name="tracker_radius12" value="125.*cm"/>
+    <constant name="tracker_radius13" value="135.*cm"/>
+    <constant name="tracker_radius14" value="145.*cm"/>
+
+    <constant name="tracker_thick" value="0.5*cm"/>
+    
+    <constant name="tracker_length0" value="60*cm"/>
+    <constant name="tracker_length1" value="60*cm"/>
+    <constant name="tracker_length2" value="60*cm"/>
+    <constant name="tracker_length3" value="60*cm"/>
+    <constant name="tracker_length4" value="60*cm"/>
+
+    <constant name="tracker_length5" value="120*cm"/>
+    <constant name="tracker_length6" value="140*cm"/>
+    <constant name="tracker_length7" value="160*cm"/>
+
+    <constant name="tracker_length8" value="160*cm"/>
+    <constant name="tracker_length9" value="160*cm"/>
+    <constant name="tracker_length10" value="160*cm"/>
+    <constant name="tracker_length11" value="160*cm"/>
+    <constant name="tracker_length12" value="160*cm"/>
+    <constant name="tracker_length13" value="160*cm"/>
+    <constant name="tracker_length14" value="160*cm"/>
+
+
+  </define>
+
+  <display>
+    <vis name="TrackerVis"      r="1.0" g="0.0"  b="1.0" alpha="1" showDaughters="true"  visible="true"/>
+    <vis name="TrackerLayer1Vis" r="0.5" g="0.0"  b="1.0" alpha="1" showDaughters="false" visible="true" drawingStyle="wireframe"/> 
+    <vis name="TrackerLayer2Vis" r="0.6" g="0.0"  b="0.8" alpha="1" showDaughters="false" visible="true" drawingStyle="wireframe"/> 
+    <vis name="TrackerLayer3Vis" r="0.7" g="0.0"  b="0.6" alpha="1" showDaughters="false" visible="true" drawingStyle="wireframe"/> 
+  </display>
+
+  <detectors>
+    <detector  id="1" name="InnerDetector" type="Tracker" vis="TrackerVis" readout="TrackerCollection" insideTrackingVolume="true">
+      <comment>Trackers</comment>
+      
+      <tubs rmin="trkTubs_rmin" rmax="trkTubs_rmax" dz="trkTubs_dz" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="ArgonGas"/>  
+      <layer id="0" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius0+tracker_thick" 
+	     dz="tracker_length0" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="1" vis="TrackerLayer1Vis" rmin="tracker_radius1" rmax="tracker_radius1+tracker_thick" 
+	     dz="tracker_length1" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="2" vis="TrackerLayer1Vis" rmin="tracker_radius2" rmax="tracker_radius2+tracker_thick" 
+	     dz="tracker_length2" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="3" vis="TrackerLayer1Vis" rmin="tracker_radius3" rmax="tracker_radius3+tracker_thick" 
+	     dz="tracker_length3" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="4" vis="TrackerLayer1Vis" rmin="tracker_radius4" rmax="tracker_radius4+tracker_thick" 
+	     dz="tracker_length4" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      
+      <layer id="5" vis="TrackerLayer2Vis" rmin="tracker_radius5" rmax="tracker_radius5+tracker_thick" 
+	     dz="tracker_length5" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="6" vis="TrackerLayer2Vis" rmin="tracker_radius6" rmax="tracker_radius6+tracker_thick" 
+	     dz="tracker_length6" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="7" vis="TrackerLayer2Vis" rmin="tracker_radius7" rmax="tracker_radius7+tracker_thick" 
+	     dz="tracker_length7" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+
+      <layer id="8" vis="TrackerLayer3Vis" rmin="tracker_radius8" rmax="tracker_radius8+tracker_thick" 
+	     dz="tracker_length8" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="9" vis="TrackerLayer3Vis" rmin="tracker_radius9" rmax="tracker_radius9+tracker_thick" 
+	     dz="tracker_length9" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="10" vis="TrackerLayer3Vis" rmin="tracker_radius10" rmax="tracker_radius10+tracker_thick" 
+	     dz="tracker_length10" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="11" vis="TrackerLayer3Vis" rmin="tracker_radius11" rmax="tracker_radius11+tracker_thick" 
+	     dz="tracker_length11" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="12" vis="TrackerLayer3Vis" rmin="tracker_radius12" rmax="tracker_radius12+tracker_thick" 
+	     dz="tracker_length12" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="13" vis="TrackerLayer3Vis" rmin="tracker_radius13" rmax="tracker_radius13+tracker_thick" 
+	     dz="tracker_length13" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm" material="Silicon"/>
+      <layer id="14" vis="TrackerLayer3Vis" rmin="tracker_radius14" rmax="tracker_radius14+tracker_thick" 
+	     dz="tracker_length14" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" z_offset="0.*cm"  material="Silicon"/>
+
+
+
+      <layer  id="15" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="70*cm"/>
+      <layer  id="16" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-70*cm"/>
+      <layer  id="17" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="80*cm"/>
+      <layer  id="18" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-80*cm"/>
+      <layer  id="19" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="90*cm"/>
+      <layer  id="20" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-90*cm"/>
+      <layer  id="21" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="100*cm"/>
+      <layer  id="22" vis="TrackerLayer1Vis" rmin="tracker_radius0" rmax="tracker_radius4" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-100*cm"/>
+
+      <layer  id="23" vis="TrackerLayer2Vis" rmin="tracker_radius0" rmax="tracker_radius5-1.*cm" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="115*cm"/>
+      <layer  id="24" vis="TrackerLayer2Vis" rmin="tracker_radius0" rmax="tracker_radius5-1.*cm" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-115*cm"/>
+      <layer  id="25" vis="TrackerLayer2Vis" rmin="tracker_radius0" rmax="tracker_radius6-1.*cm" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="135*cm"/>
+      <layer  id="26" vis="TrackerLayer2Vis" rmin="tracker_radius0" rmax="tracker_radius6-1.*cm" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-135*cm"/>
+      <layer  id="27" vis="TrackerLayer2Vis" rmin="tracker_radius0" rmax="tracker_radius7-1.*cm" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="155*cm"/>
+      <layer  id="28" vis="TrackerLayer2Vis" rmin="tracker_radius0" rmax="tracker_radius7-1.*cm" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-155*cm"/>
+
+      <layer  id="29" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="165*cm"/>
+      <layer  id="30" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-165*cm"/>
+      <layer  id="31" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="190*cm"/>
+      <layer  id="32" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-190*cm"/>
+      <layer  id="33" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="220*cm"/>
+      <layer  id="34" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-220*cm"/>
+      <layer  id="35" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="250*cm"/>
+      <layer  id="36" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-250*cm"/>
+      <layer  id="37" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="280*cm"/>
+      <layer  id="38" vis="TrackerLayer3Vis" rmin="tracker_radius0" rmax="tracker_radius14" 
+	      dz="tracker_thick" phi0="trkTubs_sphi" deltaphi="trkTubs_dphi" material="Silicon" z_offset="-280*cm"/>
+
+
+
+    </detector>
+    
+  </detectors>
+
+
+   <readouts>
+      <readout name="TrackerCollection">
+        <id>system:5,side:-2,layer:9,module:8,sensor:8</id>
+      </readout>
+    </readouts>
+
+   <materials>
+     <material name="ArgonGas">
+       <D type="density" unit="mg/cm3" value="1.782" />
+       <fraction n="1" ref="Ar" />
+     </material
+>
+   </materials>
+
+
+</lccdd>

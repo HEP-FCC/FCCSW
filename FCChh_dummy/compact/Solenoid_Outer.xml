@@ -1,15 +1,35 @@
-<detector name="OuterSolenoidCoilBarrel" type="MultiLayerTracker" insideTrackingVolume="false" reflect="true">
-  <comment>OuterSolenoid</comment>
-  <layer id="1" inner_r="OuterSolenoidBarrelInnerRadius" outer_z="OuterSolenoidBarrelOuterZ" vis="OuterSolenoidBarrelLayerVis">
-    <slice material="Steel235" thickness="OuterSolenoidBarrelInnerCryostatThickness" />
-    <slice material="Vacuum" thickness="OuterSolenoidBarrelInnerAirgapThickness" />
-  </layer>
-  <layer id="2" inner_r="OuterSolenoidBarrelConductorInnerRadius" outer_z="OuterSolenoidCoilOuterZ" vis="OuterSolenoidBarrelLayerVis">
-    <slice material="Aluminum" thickness="OuterSolenoidBarrelAlConductorThickness" />
-    <slice material="Aluminum" thickness="OuterSolenoidBarrelQuenchbackThickness" />
-  </layer>
-  <layer id="3" inner_r="OuterSolenoidBarrelOuterCryostatInnerRadius" outer_z="OuterSolenoidBarrelOuterZ" vis="OuterSolenoidBarrelLayerVis">
-    <slice material="Vacuum" thickness="OuterSolenoidBarrelOuterAirgapThickness" />
-    <slice material="Steel235" thickness="OuterSolenoidBarrelOuterCryostatThickness" />
-  </layer>
-</detector>
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Outer solenoid"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A solenoid</comment>
+  </info>
+
+  <define>
+    <constant name="OuterSolenoidZ" value="800*cm"/> 
+    <constant name="OuterSolenoidRmin" value="1500*cm"/> 
+    <constant name="OuterSolenoidRmax" value="1550*cm"/> 
+  </define>
+  
+   <display>
+        <vis name="OuterSolenoidVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
+    </display>
+
+
+  <detectors>
+    <detector  id ="5" name="OuterSolenoid" type="SimpleCylinder" insideTrackingVolume="false" vis="OuterSolenoidVis">
+      <comment>Outer solenoid</comment>
+      <tubs rmin="OuterSolenoidRmin" rmax="OuterSolenoidRmax" dz="OuterSolenoidZ" phi0="0" deltaphi="360*deg" material="Aluminum"/>  
+    </detector>
+  </detectors>
+
+
+
+</lccdd>

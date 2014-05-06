@@ -1,6 +1,39 @@
-<detector name="Beampipe" type="PolyconeSupport" insideTrackingVolume="true" vis="BeamPipeVis">
-  <comment>Central Be Beampipe</comment>
-  <material name="Beryllium"/>
-  <zplane rmin="CentralBeamPipe_rmin" rmax="CentralBeamPipe_rmax" z="-CentralBeamPipe_zmax"/>
-  <zplane rmin="CentralBeamPipe_rmin" rmax="CentralBeamPipe_rmax" z="CentralBeamPipe_zmax" />
-</detector>
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Beam pipe"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A beam pipe</comment>
+  </info>
+
+  <define>
+        <constant name="CentralBeamPipe_zmax" value="600.0*cm"/>
+        <constant name="CentralBeamPipe_rmax" value="19.5*cm"/>
+        <constant name="CentralBeamPipe_thickness" value="CentralBeamPipe_rmax * 0.02"/> <!-- 1% of the diameter -->
+        <constant name="CentralBeamPipe_rmin" value="CentralBeamPipe_rmax - CentralBeamPipe_thickness"/>
+    </define>
+
+
+  <display>
+    <vis name="BeamPipeVis" r="0.2" g="0.7" b="0.3" showDaughters="false" visible="true"/>
+  </display>
+  
+ 
+  <detectors>
+    <detector  id ="0" name="Beampipe" type="SimpleCylinder" insideTrackingVolume="true" vis="BeamPipeVis">
+      <comment>Central Be Beampipe</comment>
+      <tubs rmin="CentralBeamPipe_rmax" rmax="CentralBeamPipe_rmin" dz="CentralBeamPipe_zmax" phi0="0" deltaphi="360*deg" material="Beryllium"/>  
+    </detector>
+  </detectors>
+
+
+  </detectors>
+
+</lccdd>
+

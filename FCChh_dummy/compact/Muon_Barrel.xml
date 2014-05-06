@@ -1,5 +1,56 @@
-<detector name="MuonN04" type="Muon" vis="MuonVis" id="3" readout="MuonCollection" radius="muBox_radius" 
-	  insideTrackingVolume="false">
-  <box width="muBox_width" thickness="muBox_thick" length="muBox_length" 
-       repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
-</detector>
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Muon Barrel"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A simple muon spectrometer detector</comment>
+  </info>
+
+  <define>
+    <constant name="nomucounter" value="16"/>
+    <constant name="muBox_radius" value="900.*cm"/>
+    <constant name="muBox_width " value="100.*cm"/>
+    <constant name="muBox_thick " value="1.*cm"/>
+    <constant name="muBox_length" value="600*cm"/>
+  </define>
+
+  <display>
+    <vis name="MuonVis" r="0.0" g="1.0" b="1.0" alpha="1" showDaughters="true" visible="true" drawingStyle="wireframe" />
+  </display>
+  
+  
+  <detectors>
+    <detector id="5"  name="MuonBarrel" type="Muon" vis="MuonVis" readout="MuonCollection" radius="muBox_radius" insideTrackingVolume="false">
+      <box width="muBox_width" thickness="muBox_thick" length="muBox_length" repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
+      <layer id="0" vis="MuonVis" radius="muBox_radius+100.*cm+muBox_thick/2." material="Scintillator"/>
+      <layer id="1" vis="MuonVis" radius="muBox_radius+200.*cm+muBox_thick/2." material="Scintillator"/>
+      <layer id="2" vis="MuonVis" radius="muBox_radius+300.*cm+muBox_thick/2." material="Scintillator"/>
+      <layer id="3" vis="MuonVis" radius="muBox_radius+400.*cm+muBox_thick/2." material="Scintillator"/>
+
+    </detector>
+  </detectors>
+
+  <readouts>
+    <readout name="MuonCollection">
+      <segmentation type="CartesianGridXZ" grid_size_x="30.0*mm" grid_size_z="30.0*mm" />
+      <!--FIXME: should actually be (seg faults):  segmentation type="ProjectiveCylinder" gridSizeY="30.0*mm" gridSizeZ="30.0*mm" /-->
+      <id>system:6,stave:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>
+    </readout>
+  </readouts>
+
+
+   <materials>
+      <material name="Scintillator">
+        <D value="1.032" unit="g/cm3"/>
+        <composite n="9" ref="C"/>
+        <composite n="10" ref="H"/>
+      </material>  
+    </materials>
+
+</lccdd>

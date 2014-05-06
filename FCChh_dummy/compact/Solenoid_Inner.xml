@@ -1,15 +1,35 @@
-<detector name="InnerSolenoidCoilBarrel" type="MultiLayerTracker" insideTrackingVolume="false" reflect="true">
-  <comment>InnerSolenoid</comment>
-  <layer id="1" inner_r="InnerSolenoidBarrelInnerRadius" outer_z="InnerSolenoidBarrelOuterZ" vis="InnerSolenoidBarrelLayerVis">
-    <slice material="Steel235" thickness="InnerSolenoidBarrelInnerCryostatThickness" />
-    <slice material="Vacuum" thickness="InnerSolenoidBarrelInnerAirgapThickness" />
-  </layer>
-  <layer id="2" inner_r="InnerSolenoidBarrelConductorInnerRadius" outer_z="InnerSolenoidCoilOuterZ" vis="InnerSolenoidBarrelLayerVis">
-    <slice material="Aluminum" thickness="InnerSolenoidBarrelAlConductorThickness" />
-    <slice material="Aluminum" thickness="InnerSolenoidBarrelQuenchbackThickness" />
-  </layer>
-  <layer id="3" inner_r="InnerSolenoidBarrelOuterCryostatInnerRadius" outer_z="InnerSolenoidBarrelOuterZ" vis="InnerSolenoidBarrelLayerVis">
-    <slice material="Vacuum" thickness="InnerSolenoidBarrelOuterAirgapThickness" />
-    <slice material="Steel235" thickness="InnerSolenoidBarrelOuterCryostatThickness" />
-  </layer>
-</detector>
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Inner solenoid"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A solenoid</comment>
+  </info>
+
+  <define>
+    <constant name="InnerSolenoidZ" value="800*cm"/> 
+    <constant name="InnerSolenoidRmin" value="801*cm"/> 
+    <constant name="InnerSolenoidRmax" value="850*cm"/> 
+  </define>
+  
+   <display>
+        <vis name="InnerSolenoidVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
+    </display>
+
+
+  <detectors>
+    <detector  id ="4" name="InnerSolenoid" type="SimpleCylinder" insideTrackingVolume="false" vis="InnerSolenoidVis">
+      <comment>Inner solenoid</comment>
+      <tubs rmin="InnerSolenoidRmin" rmax="InnerSolenoidRmax" dz="InnerSolenoidZ" phi0="0" deltaphi="360*deg" material="Aluminum"/>  
+    </detector>
+  </detectors>
+
+
+
+</lccdd>

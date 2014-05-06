@@ -1,16 +1,63 @@
-<detector id="1" name="HcalBarrel" type="HcalBarrel" readout="HcalBarrelHits" vis="VisibleGreen">
-  <comment>A barrel hadronic calorimeter inspired on the ATLAS Tile hadronic calorimeter</comment>
-  <dimensions rmin="HcalBarrel_rmin" rmax="HcalBarrel_rmax" z="HcalBarrel_zmax" phiBins="64" />
-  <layer dr="10.00*cm" dz="3.00*cm" vis="HcalStrip">
-    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
-    <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
-    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
-    <slice material="Steel235" dz="0.50*cm" vis="HcalAbsorber"/>
-  </layer>
-  <layer dr="10.00*cm" dz="3.00*cm" vis="HcalStrip">
-    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
-    <slice material="Steel235" dz="0.50*cm" vis="HcalAbsorber"/>
-    <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
-    <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
-  </layer>
-</detector>
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="FCC tile calo"
+        author="Clement Carlos"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A barrel hadronic calorimeter inspired on the ATLAS Tile hadronic calorimeter</comment>
+  </info>
+
+
+
+  <display>
+    <vis name="VisibleGreen" r="0.0" g="1.0" b="0.0" showDaughters="true" visible="true"/>
+    <vis name="HcalStrip" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="false"/>
+    <vis name="HcalAbsorber" r="0.0" g="0.0" b="1.0" showDaughters="false" visible="true"/>
+    <vis name="HcalActive" r="0.86" g="0.86" b="0.86" showDaughters="false" visible="true"/>
+  </display>
+  
+  <limits>
+    <limitset name="cal_limits">
+      <limit name="step_length_max" particles="*" value="5.0" unit="mm" />
+    </limitset>
+  </limits>
+
+  <define>
+    <constant name="HcalBarrel_rmin" value="300*cm"/>
+    <constant name="HcalBarrel_rmax" value="800*cm"/>
+    <constant name="HcalBarrel_zmax" value="600*cm"/>
+  </define>
+
+
+  <detectors> 
+    <detector id="2" name="HcalBarrel" type="HcalBarrel" readout="HcalBarrelHits" vis="VisibleGreen">
+      <comment>A barrel hadronic calorimeter inspired on the ATLAS Tile hadronic calorimeter</comment>
+      <dimensions rmin="HcalBarrel_rmin" rmax="HcalBarrel_rmax" z="HcalBarrel_zmax" phiBins="64" />
+      <layer dr="10.00*cm" dz="3.00*cm" vis="HcalStrip">
+        <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+        <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
+        <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+        <slice material="Steel235" dz="0.50*cm" vis="HcalAbsorber"/>
+      </layer>
+      <layer dr="10.00*cm" dz="3.00*cm" vis="HcalStrip">
+        <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+        <slice material="Steel235" dz="0.50*cm" vis="HcalAbsorber"/>
+        <slice material="Steel235" dz="1.00*cm" vis="HcalAbsorber"/>
+        <slice material="Polystyrene" dz="0.50*cm" sensitive="yes" limits="cal_limits" vis="HcalActive"/>
+      </layer>
+    </detector>
+  </detectors>
+
+  <readouts>
+    <readout name="HcalBarrelHits">
+      <segmentation type="CartesianGridXYZ" grid_size_x="1000*cm" grid_size_y="1000*cm" grid_size_z="1000*cm" />
+      <id>slice:12,layer:8,module:8,barrel:1,system:8</id>
+    </readout>
+  </readouts>
+  
+</lccdd>
