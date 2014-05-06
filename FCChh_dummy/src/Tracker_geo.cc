@@ -24,34 +24,15 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   
   xml_comp_t  trkTubs ( x_det.child( _U(tubs) ) );
   
-  // G4VSolid * tracker_tubs
-  //   = new G4Tubs("trkTubs_tubs",trkTubs_rmin,trkTubs_rmax,trkTubs_dz,
-  //                trkTubs_sphi,trkTubs_dphi);
-  
   Tube tracker_tubs( trkTubs.rmin(),trkTubs.rmax(),trkTubs.dz(), trkTubs.phi0(), trkTubs.deltaphi() ); 
-  // fixme: Tgeo documentation has phi1, phi2 !!!???
   
-  // G4LogicalVolume * tracker_log
-  //   = new G4LogicalVolume(tracker_tubs,Ar,"trackerT_L",0,0,0);
+  Volume tracker_log( "trackerT_L", tracker_tubs, lcdd.material(trkTubs.materialStr()) );
   
-  Volume tracker_log( "trackerT_L", tracker_tubs, lcdd.material("ArgonGas") );
-  
-  
-
-  // G4VPhysicalVolume * tracker_phys =
-  //     new G4PVPlacement(0,G4ThreeVector(),tracker_log,"tracker_phys",
-  // 			experimentalHall_log,false,0);
-
   PlacedVolume tracker_phys = experimentalHall_log.placeVolume( tracker_log );
   
   tracker_phys.addPhysVolID( "system", x_det.id() ).addPhysVolID("side",0 )  ;
 
-
   tracker.setPlacement( tracker_phys );
-
-  // G4VisAttributes* tracker_logVisAtt
-  //   = new G4VisAttributes(G4Colour(1.0,0.0,1.0));
-  // tracker_log->SetVisAttributes(tracker_logVisAtt);
 
   tracker.setVisAttributes( lcdd, x_det.visStr(), tracker_log );
 
@@ -64,22 +45,29 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
     
     xml_comp_t  x_layer(c);
     
+
     Tube layer_tubs( x_layer.rmin(),x_layer.rmax(),x_layer.dz(), x_layer.phi0(), x_layer.deltaphi() );   // fixme: Tgeo TubeSegment has phi1, phi2 !!!
-    
-    Volume layer_log( "layer_L", layer_tubs, lcdd.material("Silicon") );
-    
+
+    Volume layer_log( "layer_L", layer_tubs, lcdd.material(x_layer.materialStr()) );
+    //layer_log.placeVolume(0,0,x_layer.z_offset());
     layer_log.setSensitiveDetector( sens ) ;
 
+    PlacedVolume layer_phys;
+    double zoff = x_layer.z_offset();
+    if (fabs(zoff)>0.000000000001) {
+      Position trans(0.,0.,zoff ) ;
+      layer_phys = tracker_log.placeVolume( layer_log , Transform3D( RotationZ(0.) , trans ));
+    }
 
-    PlacedVolume layer_phys = tracker_log.placeVolume( layer_log );
+    else layer_phys = tracker_log.placeVolume( layer_log );
 
     layer_phys.addPhysVolID( "layer",  layerID ) ;
 
     tracker.setVisAttributes( lcdd, x_layer.visStr(), layer_log );
+
   }
   
   return tracker;
 }
 
-//first argument is the type from the xml file
 DECLARE_DETELEMENT( Tracker ,create_element )
