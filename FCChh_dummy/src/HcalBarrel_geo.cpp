@@ -53,7 +53,7 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   double tile_phi = 2*M_PI/x_det_dim.phiBins();
   float r = x_det_dim.rmin();
   
-  bool debug = true;
+  bool debug = false;
 
   //Repeat layers until we reach the rmax
   while(r<x_det_dim.rmax()){
