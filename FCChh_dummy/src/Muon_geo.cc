@@ -28,6 +28,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   xml_comp_t  muonBox ( x_det.child( _U(box) ) );
   
   int layerID = 0 ;
+  int nmod=0;
   for(xml_coll_t c(e,_U(layer)); c; ++c, ++layerID)  {
 
     xml_comp_t  x_layer(c);
@@ -55,9 +56,13 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
 
       PlacedVolume muon_phys = experimentalHall_log.placeVolume( muon_log , Transform3D( RotationZ(-phi) , trans ) );
       
-      muon_phys.addPhysVolID( "layer",layerID )  ;
-      
+      muon_phys.addPhysVolID("system",x_det.id());
+      muon_phys.addPhysVolID("barrel",0);
+      muon_phys.addPhysVolID("layer",layerID )  ;
+      muon_phys.addPhysVolID("module",N )  ;
+
       muon.setPlacement( muon_phys );
+      nmod++;
     }
     muon.setVisAttributes( lcdd, x_layer.visStr(), muon_log );
   }
