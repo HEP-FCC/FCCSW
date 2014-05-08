@@ -24,16 +24,13 @@
     <vis name="BeamPipeVis" r="0.2" g="0.7" b="0.3" showDaughters="false" visible="true"/>
   </display>
   
- 
+  
   <detectors>
     <detector  id ="0" name="Beampipe" type="SimpleCylinder" insideTrackingVolume="true" vis="BeamPipeVis">
       <comment>Central Be Beampipe</comment>
       <tubs rmin="CentralBeamPipe_rmax" rmax="CentralBeamPipe_rmin" dz="CentralBeamPipe_zmax" phi0="0" deltaphi="360*deg" material="Beryllium"/>  
     </detector>
   </detectors>
-
-
-  </detectors>
-
+  
 </lccdd>
 
