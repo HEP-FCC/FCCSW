@@ -7,15 +7,15 @@
         verbose="true" 
         hit_aggregation="position">
     </sd>
-
-    <sd name="MuonN04"
- 	type="DD4hepExN04MuonSD"
- 	ecut="0.5*keV"
- 	verbose="true"
- 	hit_aggregation="position">
+    
+    <sd name="MuonBarrel"
+        type="DD4hepExN04MuonSD"
+        ecut="0.5*keV"
+        verbose="true"
+        hit_aggregation="position">
     </sd>
-
-  <sd name="TrackerN04"
+    
+  <sd name="InnerDetector"
  	type="DD4hepExN04TrackerSD"
  	ecut="1.0*keV"
  	verbose="true"
