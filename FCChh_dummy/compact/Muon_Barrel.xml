@@ -26,21 +26,22 @@
   
   
   <detectors>
-    <detector id="5"  name="MuonBarrel" type="Muon" vis="MuonVis" readout="MuonCollection" radius="muBox_radius" insideTrackingVolume="false">
+
+    <detector id="6"  name="MuonBarrel" type="Muon" vis="MuonVis" readout="MuonCollection" radius="muBox_radius" insideTrackingVolume="false">
       <box width="muBox_width" thickness="muBox_thick" length="muBox_length" repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
       <layer id="0" vis="MuonVis" radius="muBox_radius+100.*cm+muBox_thick/2." material="Scintillator"/>
       <layer id="1" vis="MuonVis" radius="muBox_radius+200.*cm+muBox_thick/2." material="Scintillator"/>
       <layer id="2" vis="MuonVis" radius="muBox_radius+300.*cm+muBox_thick/2." material="Scintillator"/>
       <layer id="3" vis="MuonVis" radius="muBox_radius+400.*cm+muBox_thick/2." material="Scintillator"/>
-
     </detector>
+
   </detectors>
 
   <readouts>
     <readout name="MuonCollection">
       <segmentation type="CartesianGridXZ" grid_size_x="30.0*mm" grid_size_z="30.0*mm" />
       <!--FIXME: should actually be (seg faults):  segmentation type="ProjectiveCylinder" gridSizeY="30.0*mm" gridSizeZ="30.0*mm" /-->
-      <id>system:6,stave:3,module:4,layer:8,slice:5,x:32:-16,y:-16</id>
+      <id>system:6,barrel:1,layer:4,module:16</id>
     </readout>
   </readouts>
 
