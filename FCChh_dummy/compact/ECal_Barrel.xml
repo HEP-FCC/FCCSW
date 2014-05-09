@@ -25,7 +25,7 @@
   <detectors>
     <detector  id ="7" name="ECalBarrel" type="SimpleCylinder" insideTrackingVolume="true" vis="ECalBarrelVis">
       <comment>ECal Barrel</comment>
-      <tubs rmin="ECalBarrelRmin" rmax="ECalBarrelRmax" dz="ECalBarrelZ" phi0="0" deltaphi="360*deg" material="Aluminum"/>  
+      <tubs rmin="ECalBarrelRmin" rmax="ECalBarrelRmax" dz="ECalBarrelZ" phi0="0" deltaphi="360*deg" z_offset="0.*cm" material="Aluminum"/>  
     </detector>
   </detectors>
 
