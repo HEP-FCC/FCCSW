@@ -17,11 +17,11 @@
     <constant name="muBox_radius" value="900.*cm"/>
     <constant name="muBox_width " value="100.*cm"/>
     <constant name="muBox_thick " value="1.*cm"/>
-    <constant name="muBox_length" value="600*cm"/>
+    <constant name="muBox_length" value="1200*cm"/>
   </define>
 
   <display>
-    <vis name="MuonVis" r="0.0" g="1.0" b="1.0" alpha="1" showDaughters="true" visible="true" drawingStyle="wireframe" />
+    <vis name="MuonVis" r="0.4" g="0.8" b="1.0" alpha="1" showDaughters="true" visible="true" drawingStyle="wireframe" />
   </display>
   
   
@@ -29,13 +29,21 @@
 
     <detector id="6"  name="MuonBarrel" type="Muon" vis="MuonVis" readout="MuonCollection" radius="muBox_radius" insideTrackingVolume="false">
       <box width="muBox_width" thickness="muBox_thick" length="muBox_length" repeat="nomucounter" deltaphi="360.*deg/nomucounter"/>
-      <layer id="0" vis="MuonVis" radius="muBox_radius+100.*cm+muBox_thick/2." material="Scintillator"/>
+      <layer id="0" vis="MuonVis" radius="muBox_radius+50.*cm+muBox_thick/2." material="Scintillator"/>
       <layer id="1" vis="MuonVis" radius="muBox_radius+200.*cm+muBox_thick/2." material="Scintillator"/>
-      <layer id="2" vis="MuonVis" radius="muBox_radius+300.*cm+muBox_thick/2." material="Scintillator"/>
-      <layer id="3" vis="MuonVis" radius="muBox_radius+400.*cm+muBox_thick/2." material="Scintillator"/>
+      <layer id="2" vis="MuonVis" radius="muBox_radius+350.*cm+muBox_thick/2." material="Scintillator"/>
+      <layer id="3" vis="MuonVis" radius="muBox_radius+500.*cm+muBox_thick/2." material="Scintillator"/>
     </detector>
-
   </detectors>
+
+  <sensitive_detectors>    
+    <sd name="MuonBarrel"
+        type="DD4hepExN04MuonSD"
+        ecut="0.5*keV"
+        verbose="true"
+        hit_aggregation="position">
+    </sd>
+  </sensitive_detectors>
 
   <readouts>
     <readout name="MuonCollection">
