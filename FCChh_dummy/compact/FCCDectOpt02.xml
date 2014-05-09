@@ -9,7 +9,7 @@
     </includes>
 
     <define>
-        <constant name="world_size" value="30*m"/>
+        <constant name="world_size" value="80*m"/>
         <constant name="world_x" value="world_size"/>
         <constant name="world_y" value="world_size"/>
         <constant name="world_z" value="world_size"/>  
@@ -24,5 +24,22 @@
           outer_radius="3*m">
         </field>
     </fields>
+
+  <properties>
+     <attributes name="geant4_field"
+          id="0"
+          type="Geant4FieldSetup"
+          object="GlobalSolenoid"
+          global="true"
+          min_chord_step="0.01*mm"
+          delta_chord="0.25*mm"
+          delta_intersection="1e-05*mm"
+          delta_one_step="0.001*mm"
+          eps_min="5e-05*mm"
+          eps_max="0.001*mm"
+          stepper="HelixSimpleRunge"
+          equation="Mag_UsualEqRhs">
+     </attributes>
+  </properties>
 
 </lccdd>
