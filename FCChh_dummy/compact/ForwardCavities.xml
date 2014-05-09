@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Muons Endcaps"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A solenoid</comment>
+  </info>
+
+  <define>
+    <constant name="ForwardCavitiesZ" value="200*cm"/> 
+    <constant name="ForwardCavitiesRmin" value="20*cm"/> 
+    <constant name="ForwardCavitiesRmax" value="200*cm"/> 
+  </define>
+  
+   <display>
+        <vis name="ForwardCavitiesVis" r="1.0" g="0.0" b="1.0" alpha="1" showDaughters="true" visible="true" drawingStyle="wireframe" />
+   </display>
+
+  <detectors>
+    <detector  id ="18" name="ForwardCavities1" type="SimpleCylinder" insideTrackingVolume="true" vis="ForwardCavitiesVis">
+      <comment>Muon Endcap 1</comment>
+      <tubs rmin="ForwardCavitiesRmin" rmax="ForwardCavitiesRmax" dz="ForwardCavitiesZ" phi0="0" deltaphi="360*deg"  z_offset="2000.*cm"  material="Aluminum"/>  
+    </detector>
+
+     <detector  id ="19" name="ForwardCavities2" type="SimpleCylinder" insideTrackingVolume="true" vis="ForwardCavitiesVis">
+      <comment>Muon Endcap 1</comment>
+      <tubs rmin="ForwardCavitiesRmin" rmax="ForwardCavitiesRmax" dz="ForwardCavitiesZ" phi0="0" deltaphi="360*deg"  z_offset="-2000.*cm"  material="Aluminum"/>  
+    </detector>
+ 
+
+  </detectors>
+
+
+</lccdd>
