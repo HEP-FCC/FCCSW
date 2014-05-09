@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Dipoles Endcaps"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A solenoid</comment>
+  </info>
+
+  <define>
+    <constant name="ForwardDipolesZ" value="250*cm"/> 
+    <constant name="ForwardDipolesRmin1" value="210*cm"/> 
+    <constant name="ForwardDipolesRmax1" value="300*cm"/> 
+    <constant name="ForwardDipolesRmin2" value="240*cm"/> 
+    <constant name="ForwardDipolesRmax2" value="330*cm"/> 
+  </define>
+  
+   <display>
+        <vis name="ForwardDipolesVis" r="0.0" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="wireframe" />
+   </display>
+
+  <detectors>
+    <detector  id ="20" name="ForwardDipoles1" type="SimpleCone" insideTrackingVolume="true" vis="ForwardDipolesVis">
+      <comment>Muon Endcap 1</comment>
+      <!--tubs rmin1="ForwardDipolesRmin1" rmax1="ForwardDipolesRmax1" rmin2="ForwardDipolesRmin2" rmax2="ForwardDipolesRmax2" dz="ForwardDipolesZ" phi0="0" deltaphi="360*deg"  z_offset="2000.*cm"  material="Aluminum"/-->   
+      <tubs rmin="ForwardDipolesRmin1" rmax="ForwardDipolesRmax1" outer_r="ForwardDipolesRmin2" outer_radius="ForwardDipolesRmax2" dz="ForwardDipolesZ" phi0="0" deltaphi="360*deg"  z_offset="2000.*cm"  material="Aluminum"/>  
+    </detector>
+
+       <detector  id ="21" name="ForwardDipoles2" type="SimpleCone" insideTrackingVolume="true" vis="ForwardDipolesVis">
+      <comment>Muon Endcap 1</comment>
+      <!--tubs rmin1="ForwardDipolesRmin1" rmax1="ForwardDipolesRmax1" rmin2="ForwardDipolesRmin2" rmax2="ForwardDipolesRmax2" dz="ForwardDipolesZ" phi0="0" deltaphi="360*deg"  z_offset="-2000.*cm"  material="Aluminum"/--> 
+      <tubs rmin="ForwardDipolesRmin2" rmax="ForwardDipolesRmax2" outer_r="ForwardDipolesRmin1" outer_radius="ForwardDipolesRmax1" dz="ForwardDipolesZ" phi0="0" deltaphi="360*deg"  z_offset="-2000.*cm"  material="Aluminum"/>  
+    </detector>
+
+ 
+
+  </detectors>
+
+
+</lccdd>
