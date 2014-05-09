@@ -13,7 +13,7 @@
   </info>
 
   <define>
-    <constant name="OuterSolenoidZ" value="800*cm"/> 
+    <constant name="OuterSolenoidZ" value="1200*cm"/> 
     <constant name="OuterSolenoidRmin" value="1500*cm"/> 
     <constant name="OuterSolenoidRmax" value="1550*cm"/> 
   </define>
@@ -26,7 +26,7 @@
   <detectors>
     <detector  id ="5" name="OuterSolenoid" type="SimpleCylinder" insideTrackingVolume="false" vis="OuterSolenoidVis">
       <comment>Outer solenoid</comment>
-      <tubs rmin="OuterSolenoidRmin" rmax="OuterSolenoidRmax" dz="OuterSolenoidZ" phi0="0" deltaphi="360*deg" material="Aluminum"/>  
+      <tubs rmin="OuterSolenoidRmin" rmax="OuterSolenoidRmax" dz="OuterSolenoidZ" phi0="0" deltaphi="360*deg" z_offset="0*cm"  material="Aluminum"/>  
     </detector>
   </detectors>
 
