@@ -28,8 +28,16 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   
   Volume cylinder_log( x_det.nameStr()+ "_SimpleCylinder", cylinder_tubs, lcdd.material(cylTubs.materialStr()) );
   
-  PlacedVolume cylinder_phys = experimentalHall_log.placeVolume( cylinder_log );
+  PlacedVolume cylinder_phys;
+ 
+  double zoff = cylTubs.z_offset();
+  if (fabs(zoff)>0.000000000001) {
+    Position trans(0.,0.,zoff ) ;
+    cylinder_phys = experimentalHall_log.placeVolume( cylinder_log, Transform3D( RotationZ(0.) , trans ));
+  }  
+  else cylinder_phys = experimentalHall_log.placeVolume( cylinder_log );
   
+
   cylinder_phys.addPhysVolID( "system", x_det.id() ).addPhysVolID("side",0 )  ;
 
   cylinder.setPlacement( cylinder_phys );
