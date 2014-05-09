@@ -53,6 +53,16 @@
     </detector>
   </detectors>
 
+  <sensitive_detectors>
+    <sd name="HcalBarrel" 
+        type="DD4hepExN04CalorimeterSD"
+        ecut="0.5*keV" 
+        verbose="true" 
+        hit_aggregation="position">
+    </sd>
+  </sensitive_detectors>
+
+
   <readouts>
     <readout name="HcalBarrelHits">
       <segmentation type="CartesianGridXYZ" grid_size_x="1000*cm" grid_size_y="1000*cm" grid_size_z="1000*cm" />
