@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Muons Endcaps"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A solenoid</comment>
+  </info>
+
+  <define>
+    <constant name="MuonEndCapsZ" value="10*cm"/> 
+    <constant name="MuonEndCapsRmin" value="300*cm"/> 
+    <constant name="MuonEndCapsRmax" value="1550*cm"/> 
+  </define>
+  
+   <display>
+        <vis name="MuonEndCapsVis" r="0.4" g="0.8" b="1.0" alpha="1" showDaughters="true" visible="true" drawingStyle="wireframe" />
+   </display>
+
+  <detectors>
+    <detector  id ="13" name="MuonEndCap_1" type="SimpleCylinder" insideTrackingVolume="true" vis="MuonEndCapsVis">
+      <comment>Muon Endcap 1</comment>
+      <tubs rmin="MuonEndCapsRmin" rmax="MuonEndCapsRmax" dz="MuonEndCapsZ" phi0="0" deltaphi="360*deg"  z_offset="1300.*cm"  material="Aluminum"/>  
+    </detector>
+
+    <detector  id ="14" name="MuonEndCap_2" type="SimpleCylinder" insideTrackingVolume="true" vis="MuonEndCapsVis">
+      <comment>Muon Endcap 2</comment>
+      <tubs rmin="MuonEndCapsRmin" rmax="MuonEndCapsRmax" dz="MuonEndCapsZ" phi0="0" deltaphi="360*deg"  z_offset="-1300.*cm"  material="Aluminum"/>  
+    </detector>
+
+    <detector  id ="14" name="MuonEndCap_3" type="SimpleCylinder" insideTrackingVolume="true" vis="MuonEndCapsVis">
+      <comment>Muon Endcap 3</comment>
+      <tubs rmin="MuonEndCapsRmin" rmax="MuonEndCapsRmax" dz="MuonEndCapsZ" phi0="0" deltaphi="360*deg"  z_offset="1500.*cm"  material="Aluminum"/>  
+    </detector>
+
+    <detector  id ="15" name="MuonEndCap_4" type="SimpleCylinder" insideTrackingVolume="true" vis="MuonEndCapsVis">
+      <comment>Muon Endcap 4</comment>
+      <tubs rmin="MuonEndCapsRmin" rmax="MuonEndCapsRmax" dz="MuonEndCapsZ" phi0="0" deltaphi="360*deg"  z_offset="-1500.*cm"  material="Aluminum"/>  
+    </detector>
+
+    <detector  id ="16" name="MuonEndCap_5" type="SimpleCylinder" insideTrackingVolume="true" vis="MuonEndCapsVis">
+      <comment>Muon Endcap 5</comment>
+      <tubs rmin="MuonEndCapsRmin" rmax="MuonEndCapsRmax" dz="MuonEndCapsZ" phi0="0" deltaphi="360*deg"  z_offset="1700.*cm"  material="Aluminum"/>  
+    </detector>
+
+    <detector  id ="17" name="MuonEndCap_6" type="SimpleCylinder" insideTrackingVolume="true" vis="MuonEndCapsVis">
+      <comment>Muon Endcap 6</comment>
+      <tubs rmin="MuonEndCapsRmin" rmax="MuonEndCapsRmax" dz="MuonEndCapsZ" phi0="0" deltaphi="360*deg"  z_offset="-1700.*cm"  material="Aluminum"/>  
+    </detector>
+
+
+  </detectors>
+
+
+</lccdd>
