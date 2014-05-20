@@ -37,9 +37,9 @@ export  G4SAIDXSDATA=/afs/cern.ch/sw/geant4/releases/share/data/G4SAIDDATA1.1
 
 at this point one can run FCChh_sim in batch mode:
 
-FCChh_sim file:../compact/Hcal.xml file:../compact/geant4.xml ../scripts/FCChh.in
+FCChh_sim file:../compact/FCCDectOpt02.xml file:../Hcal_Barrel.xml file:../compact/geant4.xml ../scripts/FCChh.in
 
 or in (Geant4-like) interactive mode:
 
-FCChh_sim -i  file:../compact/Hcal.xml file:../compact/geant4.xml
+FCChh_sim -i file:../compact/FCCDectOpt02.xml file:../Hcal_Barrel.xml file:../compact/geant4.xml ../scripts/FCChh.in
 
