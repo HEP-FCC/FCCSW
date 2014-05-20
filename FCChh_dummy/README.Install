@@ -25,9 +25,9 @@ make install
 export LD_LIBRARY_PATH=${MYINSTALLDIR}/lib:${LD_LIBRARY_PATH}
 export PATH=${MYINSTALLDIR}/bin:${PATH}
 
-at this point one can run geoDisplay to visualize the geometry being used
+at this point one can run geoDisplay to visualize the geometry being used. Always have the top file FCCDectOpt02.xml first, then just happend any detector (here only HCal_Barrel)
 
-geoDisplay -compact file:../compact/Hcal.xml
+geoDisplay -compact file:../compact/FCCDectOpt02.xml -compact file:../compact/HCal_Barrel.xml
 
 to run geant4 one has still to set a few environment variables to point to G4 data files
 
