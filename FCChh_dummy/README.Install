@@ -1,8 +1,17 @@
 How to install (and run)  the DD4hep FCChh example
-The procedure only works under bash and not under zsh.
-
-/bin/bash
+Depending on the shell you use
+----------------------------------
+----------------
+If you use bash:
+----------------
 . /afs/cern.ch/user/h/hegner/work/FCC/setup.sh
+
+
+----------------
+If you use zsh:
+----------------
+source setupBenedikt.sh
+-----------------------------------
 
 mkdir build
 mkdir install
