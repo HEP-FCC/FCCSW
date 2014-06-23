@@ -4,6 +4,17 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "Generation/HepMCEntry.h"
 
+
+//---------------------------------------------------------------------------
+
+/**@class HepMCReader HepMCReader.h Generation/HepMCReader.h
+ *
+ *  This algorithm reads-in events from a HepMC file and puts them into the
+ *  transient event store.
+ *
+ *  @author  Benedikt Hegner
+ *  @version 1.0
+ */
 class HepMCReader: public GaudiAlgorithm {
   friend class AlgFactory<HepMCReader> ;
 
