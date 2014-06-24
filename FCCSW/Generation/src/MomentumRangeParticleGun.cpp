@@ -68,6 +68,10 @@ StatusCode MomentumRangeParticleGun::initialize() {
        ( m_minPhi   > m_maxPhi ) )
     return Error( "Incorrect values for momentum, theta or phi!" ) ;
   
+  m_deltaMom = m_maxMom - m_minMom;
+  m_deltaPhi = m_maxPhi - m_minPhi;
+  m_deltaTheta = m_maxTheta - m_minTheta;
+
   // setup particle information
   m_masses.clear();
 
@@ -105,9 +109,9 @@ void MomentumRangeParticleGun::generateParticle( Gaudi::LorentzVector & momentum
   double px(0.), py(0.), pz(0.) ;
       
   // Generate values for energy, theta and phi
-  double p = m_minMom + m_flatGenerator() * (m_maxMom-m_minMom) ;
-  double theta = m_minTheta + m_flatGenerator() * (m_maxTheta-m_minTheta) ;
-  double phi = m_minPhi + m_flatGenerator() * (m_maxPhi-m_minPhi);
+  double p = m_minMom + m_flatGenerator() * (m_deltaMom) ;
+  double theta = m_minTheta + m_flatGenerator() * (m_deltaTheta) ;
+  double phi = m_minPhi + m_flatGenerator() * (m_deltaPhi);
   
   // Transform to x,y,z coordinates
   double pt = p*sin(theta);

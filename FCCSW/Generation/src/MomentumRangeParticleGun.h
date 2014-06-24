@@ -47,6 +47,10 @@ class MomentumRangeParticleGun : public GaudiTool , virtual public IParticleGunT
   double m_maxTheta; ///< Maximum theta angle (Set by options)
   double m_maxPhi;   ///< Maximum phi angle (Set by options)
 
+  double m_deltaMom; ///< Momentum range
+  double m_deltaTheta; ///< Theta range
+  double m_deltaPhi; ///< Phi range
+
   /// Pdg Codes of particles to generate (Set by options)
   std::vector<int>         m_pdgCodes;
 
