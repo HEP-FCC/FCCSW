@@ -78,7 +78,7 @@ StatusCode MomentumRangeParticleGun::initialize() {
   info() << "Particle type chosen randomly from :";
   PIDs::iterator icode ;
   for ( icode = m_pdgCodes.begin(); icode != m_pdgCodes.end(); ++icode ) {
-    const ParticleProperty * particle = ppSvc->find( *icode );
+    const ParticleProperty * particle = ppSvc->findByPythiaID( *icode );
     m_masses.push_back( ( particle->mass() ) ) ;
     m_names.push_back( particle->particle() ) ;
     info() << " " << particle->particle() ;
