@@ -6,6 +6,7 @@
 
 // Forward declarations
 class IParticleGunTool;
+class IVertexSmearingTool;
 
 /** @class ParticleGunAlg ParticleGunAlg.h "Generation/ParticleGunAlg.h"
  *  
@@ -52,6 +53,11 @@ class ParticleGunAlg : public GaudiAlgorithm {
   IParticleGunTool          * m_particleGunTool        ; ///< Particle gun tool
   /// Name of the IParticleGunTool (set by options)
   std::string m_particleGunToolName ;
+
+  IVertexSmearingTool          * m_vertexSmearTool        ; ///< Vertex smear tool
+  /// Name of the IVertexSmearingTool (set by options)
+  std::string m_vertexSmearingToolName ;
+
   /// Name to put in the event
   std::string m_particleGunName ;
   /// The output handle for what is being produced

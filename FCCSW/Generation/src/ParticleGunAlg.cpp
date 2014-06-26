@@ -12,6 +12,7 @@
 
 // from Generation
 #include "Generation/IParticleGunTool.h"
+#include "Generation/IVertexSmearingTool.h"
 #include "Generation/HepMCEntry.h"
 
 //-----------------------------------------------------------------------------
@@ -31,10 +32,14 @@ DECLARE_ALGORITHM_FACTORY( ParticleGunAlg )
 ParticleGunAlg::ParticleGunAlg( const std::string& name,
                           ISvcLocator* pSvcLocator)
   : GaudiAlgorithm ( name , pSvcLocator ) ,
-    m_particleGunTool       ( 0 ) {
+    m_particleGunTool       ( nullptr ),
+    m_vertexSmearTool		( nullptr )
+{
   // Generation Method
   declareProperty ( "ParticleGunTool" ,
                     m_particleGunToolName = "GenericGun" ) ;
+  declareProperty ( "VertexSmearingTool" ,
+                     m_vertexSmearingToolName = "" ) ;
   declareOutput("hepmc", m_hepmchandle);
 }
 
@@ -54,8 +59,14 @@ StatusCode ParticleGunAlg::initialize() {
   // Retrieve generation method tool
   if ( "" == m_particleGunToolName )
     return Error( "No ParticleGun Generation Tool is defined. This is mandatory" ) ;
-  m_particleGunTool =
-    tool< IParticleGunTool >( m_particleGunToolName , this ) ;
+
+  m_particleGunTool = tool< IParticleGunTool >( m_particleGunToolName , this ) ;
+
+  // Retrieve smearing tool, if required
+  if ( "" != m_vertexSmearingToolName )
+	  m_vertexSmearTool = tool< IVertexSmearingTool >( m_vertexSmearingToolName , this ) ;
+
+  // Retrieve
 
   return StatusCode::SUCCESS;
 }
@@ -95,6 +106,9 @@ StatusCode ParticleGunAlg::execute() {
   theEvent -> set_signal_process_id( 0 ) ;
   theEvent -> set_signal_process_vertex( v ) ;
 
+  if(m_vertexSmearTool != nullptr)
+	  m_vertexSmearTool->smearVertex(theEvent);
+
   HepMCEntry * entry = new HepMCEntry();
   entry->setEvent(theEvent);
   m_hepmchandle.put(entry);
@@ -106,5 +120,7 @@ StatusCode ParticleGunAlg::execute() {
 //=============================================================================
 StatusCode ParticleGunAlg::finalize() {
   if ( 0 != m_particleGunTool ) release( m_particleGunTool ) ;
+  if ( 0 != m_vertexSmearTool ) release( m_vertexSmearTool ) ;
+
   return GaudiAlgorithm::finalize( ) ;
 }
