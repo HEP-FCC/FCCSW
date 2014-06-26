@@ -29,6 +29,10 @@ private:
 
   TH1F* m_pt; ///< histogram for pT of particles
   TH1F* m_eta; ///< histogram for pseudorapidity of particles
+
+  TH1F* m_d0; ///< histogram for transversal IP
+  TH1F* m_z0; ///< histogram for longidudinal IP
+
 };
 
 #endif
