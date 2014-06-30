@@ -1,5 +1,5 @@
-#ifndef GENERATION_HEPMCENTRY_H
-#define GENERATION_HEPMCENTRY_H
+#ifndef DATAOBJECTS_HEPMCENTRY_H
+#define DATAOBJECTS_HEPMCENTRY_H
 
 //Include files
 #include "GaudiKernel/DataObject.h"
@@ -8,7 +8,7 @@
 class GAUDI_API HepMCEntry : public DataObject {
  public:
   HepMCEntry() : m_event(0){};
-  virtual ~HepMCEntry() {if (m_event!=0) delete m_event;}
+  virtual ~HepMCEntry(); 
 
   HepMC::GenEvent* getEvent() {return m_event;} 
   void setEvent(HepMC::GenEvent* event) {m_event = event;}

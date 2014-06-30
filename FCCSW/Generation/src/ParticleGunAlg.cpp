@@ -13,7 +13,7 @@
 // from Generation
 #include "Generation/IParticleGunTool.h"
 #include "Generation/IVertexSmearingTool.h"
-#include "Generation/HepMCEntry.h"
+#include "DataObjects/HepMCEntry.h"
 
 //-----------------------------------------------------------------------------
 // Implementation file for class : ParticleGun

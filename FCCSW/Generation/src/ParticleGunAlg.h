@@ -2,7 +2,7 @@
 #define GENERATION_PARTICLEGUNALG_H 1
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "Generation/HepMCEntry.h"
+#include "DataObjects/HepMCEntry.h"
 
 // Forward declarations
 class IParticleGunTool;

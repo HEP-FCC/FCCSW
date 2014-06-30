@@ -1,15 +1,14 @@
 ################################################################################
-# Package: Generation
+# Package: DataObjects
 ################################################################################
-gaudi_subdir(Generation v1r0)
+gaudi_subdir(DataObjects v1r0)
 
 # this declaration will not be needed in the future
 gaudi_depends_on_subdirs(GaudiAlg)
-gaudi_depends_on_subdirs(DataObjects)
 
 find_package(HepMC)
 
-gaudi_add_module(Generation
+gaudi_add_module(DataObjects
                  src/*.cpp
-                 INCLUDE_DIRS HepMC DataObjects
+                 INCLUDE_DIRS HepMC 
                  LINK_LIBRARIES HepMC GaudiAlgLib)

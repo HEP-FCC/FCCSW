@@ -2,7 +2,7 @@
 #define _HEPMCHISTOGRAMS_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "Generation/HepMCEntry.h"
+#include "DataObjects/HepMCEntry.h"
 #include "GaudiKernel/DataObjectHandle.h"
 #include "GaudiKernel/ITHistSvc.h"
 

@@ -2,7 +2,7 @@
 #define _HEPMCDUMPER_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "Generation/HepMCEntry.h"
+#include "DataObjects/HepMCEntry.h"
 #include "GaudiKernel/DataObjectHandle.h"
 
 class HepMCDumper: public GaudiAlgorithm {
