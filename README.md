@@ -1,5 +1,5 @@
-fcc-experiments-sw
-==================
+FCCSW
+=====
 
 Common software for all FCC experiments.
 This software is based on Gaudi.
@@ -18,10 +18,10 @@ Clone the Gaudi repository:
     git clone -b dev/hive  http://cern.ch/gaudi/GaudiMC.git GAUDI/GAUDI_v25r2
     export GAUDI=$FCCBASE/GAUDI/GAUDI_v25r2
     
-Clone the FCC repository:
+Clone the FCCSW repository:
 
-    git clone git@github.com:HEP-FCC/fcc-experiments-sw.git 
-    export FCCSW=$FCCBASE/fcc-experiments-sw/FCCSW
+    git clone git@github.com:HEP-FCC/FCCSW.git FCCSW 
+    export FCCSW=$FCCBASE/FCCSW
 
 Set up your environment:
 
