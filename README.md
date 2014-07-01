@@ -45,7 +45,7 @@ Clone the Gaudi repository:
     git clone -b dev/hive  http://cern.ch/gaudi/GaudiMC.git GAUDI/GAUDI_v25r2
     export GAUDI=$FCCBASE/GAUDI/GAUDI_v25r2
     
-Clone the FCCSW repository:
+Clone the FCCSW repository: **replace \<username\> by your github username**
 
     git clone git@github.com:<username>/FCCSW.git FCCSW 
     export FCCSW=$FCCBASE/FCCSW
@@ -55,7 +55,7 @@ Set up your environment:
     cd $FCCSW
     source init.sh
 
-Compile Gaudi (it will take a bit of time, but you won't do that often):
+Compile Gaudi (it will take a bit of time, but you won't do this often):
 
     cd $GAUDI
     make -j 12 
