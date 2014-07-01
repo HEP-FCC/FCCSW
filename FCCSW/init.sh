@@ -16,7 +16,7 @@ fi
 # set up CMake:
 export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:$PATH
 export CMAKEFLAGS='-DCMAKE_USE_CCACHE=ON'
-export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCC:/afs/cern.ch/sw/lcg/releases
+export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:/afs/cern.ch/sw/lcg/releases
 export CMTCONFIG=x86_64-slc6-gcc48-opt
 
 # set up the compilers
