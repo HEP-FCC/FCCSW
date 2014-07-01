@@ -28,7 +28,7 @@ Then, you will find instructions for setting up your github account, and taking 
 
 1. create a github account if you don't have one. 
 2. go to https://github.com/HEP-FCC/FCCSW and click "Fork" at the top right of the page. You are directed to your newly forked copy of the FCCSW repository
-3. in the instructions below, replace <username> by your github username
+3. in the instructions below, replace \<username\> by your github username
 
 
 Installation
