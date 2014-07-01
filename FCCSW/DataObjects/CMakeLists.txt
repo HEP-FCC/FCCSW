@@ -8,7 +8,8 @@ gaudi_depends_on_subdirs(GaudiAlg)
 
 find_package(HepMC)
 
-gaudi_add_module(DataObjects
-                 src/*.cpp
-                 INCLUDE_DIRS HepMC 
-                 LINK_LIBRARIES HepMC GaudiAlgLib)
+gaudi_add_library(DataObjects
+		  src/*.cpp
+                  INCLUDE_DIRS HepMC 
+                  LINK_LIBRARIES HepMC GaudiAlgLib
+		  PUBLIC_HEADERS DataObjects)
