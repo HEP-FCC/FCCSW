@@ -4,6 +4,24 @@ FCCSW
 Common software for all FCC experiments.
 This software is based on Gaudi.
 
+
+Working with GitHub
+-------------------
+
+Our software is organized in the following way on github. 
+
+* The FCC github organization is responsible for software integration. It owns the "main" copies of the FCC software repositories:
+** FCCSW : core software shared by hh, ee, and he
+** FCCSW-hh : software specific to the hh configuration
+** FCCSW-ee : to be created
+** FCCSW-eh : to be created
+
+* Individual github users do not directly push their code to the FCC repositories. Instead, they fork their own copy of the FCC repositories. Then, they: 
+** develop and commit on their local machine
+** push their code to their own copy of the FCC repositories on github
+** do pull requests to the FCC organization. The FCC organization administrators are then free to pull the code from the user repositories -- or not :-).
+
+
 Installation
 ------------
 
@@ -28,11 +46,11 @@ Set up your environment:
     cd $FCCSW
     source init.sh
 
-Compile Gaudi:
+Compile Gaudi (it will take a bit of time, but you won't do that often):
 
     cd $GAUDI
     make -j 12 
-    make install
+    make install  # _do not forget to install_
 
 Compile the FCC software:
 
@@ -48,10 +66,3 @@ Test
 
 You should see an HepMC printout. 
 
-TODO 
-----
-
-* improve examples: add more, commit pythia input file, document them.
-* move up what is in FCCSW
-* move away what is in FCCSW_hh_dummy
-* create a DataObjects package
