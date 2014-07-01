@@ -3,7 +3,7 @@
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "Reconstruction/PseudoJetEntry.h"
-#include "Generation/HepMCEntry.h"
+#include "DataObjects/HepMCEntry.h"
 #include "GaudiKernel/DataObjectHandle.h"
 
 #include "fastjet/JetDefinition.hh"

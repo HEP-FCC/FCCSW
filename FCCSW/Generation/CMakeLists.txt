@@ -12,5 +12,5 @@ gaudi_install_headers(Generation)
 
 gaudi_add_module(Generation
                  src/*.cpp
-                 INCLUDE_DIRS HepMC Foo
-                 LINK_LIBRARIES GaudiAlgLib DataObjects)
+                 INCLUDE_DIRS HepMC
+                 LINK_LIBRARIES HepMC GaudiAlgLib DataObjects)
