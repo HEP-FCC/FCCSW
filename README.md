@@ -8,18 +8,27 @@ This software is based on Gaudi.
 Working with GitHub
 -------------------
 
-Our software is organized in the following way on github. 
+In this section, you will first find a description of our github organization and workflow. 
+Then, you will find instructions for setting up your github account, and taking part in this workflow. 
 
-* The FCC github organization is responsible for software integration. It owns the "main" copies of the FCC software repositories:
-** FCCSW : core software shared by hh, ee, and he
-** FCCSW-hh : software specific to the hh configuration
-** FCCSW-ee : to be created
-** FCCSW-eh : to be created
+### Organization and workflow
 
-* Individual github users do not directly push their code to the FCC repositories. Instead, they fork their own copy of the FCC repositories. Then, they: 
-** develop and commit on their local machine
-** push their code to their own copy of the FCC repositories on github
-** do pull requests to the FCC organization. The FCC organization administrators are then free to pull the code from the user repositories -- or not :-).
+* The FCC github organization is responsible for software integration. It owns the "main" copies of the FCC software repositories on github:
+    * FCCSW : core software shared by hh, ee, and he
+    * FCCSW-hh : software specific to the hh configuration
+    * FCCSW-ee : to be created
+    * FCCSW-eh : to be created
+
+* Individual github users do not directly push their code to the FCC repositories. Instead, they make ("fork") their own copy of the FCC repositories on github. Then, they: 
+    * develop and commit on their local machine
+    * push their code to their copy of the FCC repositories on github
+    * send pull requests to the FCC organization. The FCC organization administrators are then free to pull the code from the user repositories or not, thus taking the responsibility of the software integrity for the organization. 
+
+### Instructions for new users 
+
+1. create a github account
+2. go to https://github.com/HEP-FCC/FCCSW and click "Fork" at the top right of the page. You are directed to your newly forked copy of the FCCSW repository
+3. in the instructions below, replace <username> by your github username
 
 
 Installation
@@ -38,7 +47,7 @@ Clone the Gaudi repository:
     
 Clone the FCCSW repository:
 
-    git clone git@github.com:HEP-FCC/FCCSW.git FCCSW 
+    git clone git@github.com:<username>/FCCSW.git FCCSW 
     export FCCSW=$FCCBASE/FCCSW
 
 Set up your environment:
