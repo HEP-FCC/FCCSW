@@ -28,51 +28,56 @@ HepMCJetClustering::HepMCJetClustering(const std::string& name, ISvcLocator* svc
 }
 
 StatusCode HepMCJetClustering::initialize() {
-  if(GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+	if (GaudiAlgorithm::initialize().isFailure())
+		return StatusCode::FAILURE;
 
-  //initialize jet algorithm
-  if(m_jetAlgorithm == "kt")
-      m_fj_jetAlgorithm = JetAlgorithm::kt_algorithm;
-  else if(m_jetAlgorithm == "antikt") 
-      m_fj_jetAlgorithm = JetAlgorithm::antikt_algorithm;
-  else if(m_jetAlgorithm == "cambridge")
-      m_fj_jetAlgorithm = JetAlgorithm::cambridge_algorithm;
-  if(m_fj_jetAlgorithm == JetAlgorithm::undefined_jet_algorithm){
-    error() << "Undefined jet algorithm specified" << endmsg;
-    return StatusCode::FAILURE;
-  }
+	//initialize jet algorithm
+	if (m_jetAlgorithm == "kt")
+		m_fj_jetAlgorithm = JetAlgorithm::kt_algorithm;
+	else if (m_jetAlgorithm == "antikt")
+		m_fj_jetAlgorithm = JetAlgorithm::antikt_algorithm;
+	else if (m_jetAlgorithm == "cambridge")
+		m_fj_jetAlgorithm = JetAlgorithm::cambridge_algorithm;
+	else {
+		error() << "Undefined jet algorithm specified" << endmsg;
+		return StatusCode::FAILURE;
+	}
 
-  //initialize recombination scheme
-  if(m_recombinationScheme == "E"){
-   m_fj_recombinationScheme = RecombinationScheme::E_scheme;
-  } else if (m_recombinationScheme == "pt"){
-     m_fj_recombinationScheme = RecombinationScheme::pt_scheme;
-  } else if (m_recombinationScheme == "et"){
-     m_fj_recombinationScheme = RecombinationScheme::Et_scheme;
-  } else {
-     error() << "Undefined recombination scheme specified" << endmsg;
-     return StatusCode::FAILURE;
-  }
+	//initialize recombination scheme
+	if (m_recombinationScheme == "E") {
+		m_fj_recombinationScheme = RecombinationScheme::E_scheme;
+	} else if (m_recombinationScheme == "pt") {
+		m_fj_recombinationScheme = RecombinationScheme::pt_scheme;
+	} else if (m_recombinationScheme == "et") {
+		m_fj_recombinationScheme = RecombinationScheme::Et_scheme;
+	} else {
+		error() << "Undefined recombination scheme specified" << endmsg;
+		return StatusCode::FAILURE;
+	}
 
-  //check sanity of configuration
-  if(m_inclusiveJets){
-    if(m_ptMin < 0.0){
-      error() << "Sub-zero min pT for jets" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    if(m_dcut != -1 || m_njets != -1)
-      warning() << "Set options for exclusive jets, but inclusive jets used" << endmsg;
-    } else { //exclusive jets
-      if(m_dcut == -1 && m_njets == -1){
-	error() << "Neither Dcut nor NJets configured for exclusive jets" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    if(m_ptMin != 0.0)
-      warning() << "Set options for inclusive jets, but exclusive jets used" << endmsg;
-  }
+	//check sanity of configuration
+	if (m_inclusiveJets) {
+		if (m_ptMin < 0.0) {
+			error() << "Sub-zero min pT for jets" << endmsg;
+			return StatusCode::FAILURE;
+		}
+		if (m_dcut != -1 || m_njets != -1)
+			warning()
+					<< "Set options for exclusive jets, but inclusive jets used"
+					<< endmsg;
+	} else { //exclusive jets
+		if (m_dcut == -1 && m_njets == -1) {
+			error() << "Neither Dcut nor NJets configured for exclusive jets"
+					<< endmsg;
+			return StatusCode::FAILURE;
+		}
+		if (m_ptMin != 0.0)
+			warning()
+					<< "Set options for inclusive jets, but exclusive jets used"
+					<< endmsg;
+	}
 
-  return StatusCode::SUCCESS;
+	return StatusCode::SUCCESS;
 }
 
 StatusCode HepMCJetClustering::execute() {
