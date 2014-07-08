@@ -2,7 +2,7 @@
 #define _HEPMCJETCLUSTERING_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "Reconstruction/PseudoJetEntry.h"
+#include "DataObjects/PseudoJetEntry.h"
 #include "DataObjects/HepMCEntry.h"
 #include "GaudiKernel/DataObjectHandle.h"
 
