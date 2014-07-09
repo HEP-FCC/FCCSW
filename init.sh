@@ -1,12 +1,12 @@
 #!/bin/sh -u
 
-if [ "x$GAUDI" == "x" ]; then 
+if [[ "x$GAUDI" == "x" ]]; then 
     echo "Need to set the GAUDI environment variable to the path of the Gaudi software directory (contains GaudiKernel/)."
     return 1
 else 
     echo "Gaudi   :    $GAUDI"
 fi
-if [ "x$FCCBASE" == "x" ]; then 
+if [[ "x$FCCBASE" == "x" ]]; then 
     echo "Need to set the FCCBASE environment variable to root path of the software (contains both Gaudi and the FCC software)."
     return 1
 else 
