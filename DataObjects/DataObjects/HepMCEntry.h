@@ -10,7 +10,7 @@ class GAUDI_API HepMCEntry : public DataObject {
   HepMCEntry() : m_event(0){};
   virtual ~HepMCEntry(); 
 
-  HepMC::GenEvent* getEvent() {return m_event;} 
+  const HepMC::GenEvent* getEvent() {return m_event;} 
   void setEvent(HepMC::GenEvent* event) {m_event = event;}
 
  private:
