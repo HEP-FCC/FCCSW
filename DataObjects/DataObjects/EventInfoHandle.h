@@ -16,7 +16,7 @@ namespace albers {
 
 class EventInfoHandle {
 
-  friend EventInfoCollection;
+  friend class EventInfoCollection;
 
 public:
 

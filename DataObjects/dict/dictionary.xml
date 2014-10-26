@@ -1,0 +1,36 @@
+<lcgdict>
+  <selection>
+    <class name="albers::Registry">
+      <field name="m_reader"  transient="true"/>
+    </class>
+    <class name="LorentzVector"/>
+    <class pattern="std::vector<*>"/>
+
+    <class name="JetParticle"/>
+    <class name="JetParticleHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class> 
+
+    <class name="Particle"/>
+    <class name="ParticleHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class>
+
+   <class name="EventInfo"/>
+    <class name="EventInfoHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class>
+
+   <class name="Jet"/>
+    <class name="JetHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class>
+
+  </selection>
+  <exclusion>
+  </exclusion>
+</lcgdict>

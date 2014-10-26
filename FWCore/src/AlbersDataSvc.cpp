@@ -3,10 +3,6 @@
 
 #include "FWCore/AlbersDataSvc.h"
 
-// Instantiation of a static factory class used by clients to create
-// instances of this service
-DECLARE_COMPONENT(AlbersDataSvc)
-
 /// Service initialisation
 StatusCode AlbersDataSvc::initialize()    {
   // Nothing to do: just call base class initialisation
@@ -27,6 +23,12 @@ StatusCode AlbersDataSvc::reinitialize()    {
 StatusCode AlbersDataSvc::finalize()    {
   m_cnvSvc = 0; // release
   DataSvc::finalize().ignore();
+  return StatusCode::SUCCESS ;
+}
+
+StatusCode AlbersDataSvc::clearStore()    {
+  DataSvc::clearStore().ignore();
+  m_collections.clear();
   return StatusCode::SUCCESS ;
 }
 

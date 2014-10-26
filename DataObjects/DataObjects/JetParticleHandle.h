@@ -18,7 +18,7 @@ namespace albers {
 
 class JetParticleHandle {
 
-  friend JetParticleCollection;
+  friend class JetParticleCollection;
 
 public:
 

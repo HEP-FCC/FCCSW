@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, AlbersDataSvc, AlbersWrite
+from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc, AlbersWrite, AlbersOutput
 
-albersevent   = AlbersDataSvc("EventDataSvc")
+albersevent   = FCCDataSvc("EventDataSvc")
 
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.Outputs.hepmc.Path = "hepmc"
@@ -11,9 +11,10 @@ dumper.Inputs.hepmc.Path="hepmc"
 
 alberswrite = AlbersWrite("AlbersWrite")
 alberswrite.Outputs.albersJets.Path = "albersJets"
+out = AlbersOutput("out")
 
 
-ApplicationMgr( TopAlg = [reader,dumper,alberswrite],
+ApplicationMgr( TopAlg = [reader,dumper,alberswrite,out],
                 EvtSel = 'NONE',
                 EvtMax   = 2,
                 ExtSvc = [albersevent],

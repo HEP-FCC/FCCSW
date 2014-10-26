@@ -9,6 +9,7 @@
 
 // forward declarations
 class TFile;
+class AlbersDataSvc;
 
 class AlbersOutput : public GaudiAlgorithm {
   friend class AlgFactory<AlbersOutput> ;
@@ -24,8 +25,10 @@ public:
   virtual StatusCode finalize();
 
 private:
+  bool m_first;
   std::string m_filename;
   albers::Registry* m_registry;
+  AlbersDataSvc* m_albersDataSvc;
   TFile* m_file;
   TTree* m_datatree;
   TTree* m_metadatatree;

@@ -19,7 +19,7 @@ namespace albers {
 
 class JetHandle {
 
-  friend JetCollection;
+  friend class JetCollection;
 
 public:
 

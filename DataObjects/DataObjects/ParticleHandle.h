@@ -17,7 +17,7 @@ namespace albers {
 
 class ParticleHandle {
 
-  friend ParticleCollection;
+  friend class ParticleCollection;
 
 public:
 

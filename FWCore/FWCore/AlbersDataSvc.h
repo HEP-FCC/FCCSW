@@ -1,5 +1,5 @@
-#ifndef CORE_ALBERSDATASVC_H
-#define CORE_ALBERSDATASVC_H
+#ifndef FWCORE_ALBERSDATASVC_H
+#define FWCORE_ALBERSDATASVC_H
 
 #include "GaudiKernel/DataSvc.h"
 #include "GaudiKernel/IConversionSvc.h"
@@ -17,9 +17,13 @@
  */
 class AlbersDataSvc  : public DataSvc   {
 public:
+
+  typedef std::vector<std::pair<std::string, albers::CollectionBase*>> CollRegistry;
+
   virtual StatusCode initialize();
   virtual StatusCode reinitialize();
   virtual StatusCode finalize();
+  virtual StatusCode clearStore();
 
   /// Standard Constructor
   AlbersDataSvc(const std::string& name, ISvcLocator* svc);
@@ -32,9 +36,8 @@ public:
   /// Register object with the data store.
   virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject );
 
-
-  //  m_collections.emplace_back(std::make_pair(name,coll));
-  //  m_registry->registerPOD(coll, name);
+  virtual const CollRegistry& getCollections() const {return m_collections;};
+  virtual albers::Registry* getRegistry() {return &m_registry;};
 
 private:
   SmartIF<IConversionSvc> m_cnvSvc;

@@ -2,7 +2,6 @@
 #define REGISTRY_H
 
 #include <algorithm>
-#include <functional>
 #include <string>
 #include <vector>
 
@@ -58,15 +57,19 @@ namespace albers {
     void setPODAddress(const std::string& name, T* address);
 
     std::string getNameFromID(unsigned ID) const {
-      auto result = std::find(begin(m_collectionIDs), end(m_collectionIDs), ID);
-      auto index = result - m_collectionIDs.begin();
+      std::vector<unsigned>::const_iterator result = std::find(m_collectionIDs.begin(), m_collectionIDs.end(), ID);
+      unsigned int index = result - m_collectionIDs.begin();
       return m_names[index];
     };
 
     template<typename T>
     unsigned registerPOD(T* address, const std::string& name); // returns the ID
 
-    void resetAddresses(){std::fill(m_addresses.begin(), m_addresses.end(), nullptr);};
+    void resetAddresses(){
+      for (int i=0, size=m_addresses.size();i<size;++i){
+	m_addresses[i] = 0;
+      }
+    }
 
     void setReader(Reader* reader) {m_reader = reader;};
     Reader* reader(){return m_reader;};
@@ -85,6 +88,7 @@ namespace albers {
     Reader*                  m_reader; //! transient
   };
 
+#ifndef __GCCXML__
 template<typename T>
   void Registry::lazyGetPODAddressFromID(unsigned ID, T*& address) const {
   auto result = std::find(begin(m_collectionIDs), end(m_collectionIDs), ID);
@@ -169,5 +173,6 @@ unsigned Registry::registerPOD(T* collection, const std::string& name){
   return ID;
 }
 
+#endif
 } //namespace
 #endif
