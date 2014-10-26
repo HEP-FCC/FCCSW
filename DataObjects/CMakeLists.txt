@@ -4,12 +4,12 @@
 gaudi_subdir(DataObjects v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg)
+gaudi_depends_on_subdirs(GaudiAlg albers)
 
 find_package(HepMC)
 
 gaudi_add_library(DataObjects
-		  src/*.cpp
+		  src/*.cpp src/*.cc
                   INCLUDE_DIRS HepMC 
-                  LINK_LIBRARIES HepMC GaudiAlgLib
+                  LINK_LIBRARIES HepMC GaudiAlgLib albers
 		  PUBLIC_HEADERS DataObjects)

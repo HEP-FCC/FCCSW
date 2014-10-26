@@ -15,12 +15,12 @@ fi
 
 # set up CMake:
 export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:$PATH
-export CMAKEFLAGS='-DCMAKE_USE_CCACHE=ON'
+#export CMAKEFLAGS='-DCMAKE_USE_CCACHE=ON'
 export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:/afs/cern.ch/sw/lcg/releases
 export CMTCONFIG=x86_64-slc6-gcc48-opt
 
 # set up the compilers
 export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts:$PATH
-export LCG_hostos=x86_64-slc6
-export LCG_external_area=/afs/cern.ch/sw/lcg/external
-export PATH=/afs/cern.ch/sw/lcg/contrib/ninja/1.4.0/x86_64-slc6:$PATH
+#export LCG_hostos=x86_64-slc6
+#export LCG_external_area=/afs/cern.ch/sw/lcg/external
+#export PATH=/afs/cern.ch/sw/lcg/contrib/ninja/1.4.0/x86_64-slc6:$PATH
