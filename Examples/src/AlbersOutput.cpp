@@ -1,7 +1,6 @@
 #include "AlbersOutput.h"
 #include "TFile.h"
 #include "FWCore/AlbersDataSvc.h"
-#include "FWCore/ClassName.h"
 
 DECLARE_COMPONENT(AlbersOutput)
 
