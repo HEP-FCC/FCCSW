@@ -3,13 +3,12 @@
 #include "albers/Reader.h"
 
 // datamodel specific includes
-#include "DataObjects/ParticleRef.h"
-#include "DataObjects/ParticleRefCollection.h"
+#include "ParticleRef.h"
+#include "ParticleRefCollection.h"
 
   const ParticleHandle& ParticleRefHandle::Particle() const { return m_container->at(m_index).Particle;}
 
   void ParticleRefHandle::setParticle(ParticleHandle value){ m_container->at(m_index).Particle = value;}
-
 
 
 bool  ParticleRefHandle::isAvailable() const {

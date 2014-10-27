@@ -4,7 +4,7 @@
 // n
 // author: C. Bernet, B. Hegner
 
-#include "DataObjects/ParticleHandle.h"
+#include "ParticleHandle.h"
 
 
 class ParticleRef {

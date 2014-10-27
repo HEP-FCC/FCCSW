@@ -109,6 +109,7 @@ StatusCode JetClustering::execute() {
   std::vector<PseudoJet> pjets = cs.inclusive_jets(m_ptMin);
 
   JetCollection* jets = new JetCollection();
+  std::cout<<"njets = "<<pjets.size()<<std::endl;
   for(auto pjet : pjets) {
     JetHandle& jet = jets->create();
     LorentzVector p4;
@@ -117,7 +118,7 @@ StatusCode JetClustering::execute() {
     p4.Phi = pjet.phi();
     p4.Mass = pjet.m();
     jet.setP4( p4 ); 
-    // std::cout<<pjet.pt()<<std::endl;
+    std::cout<<pjet.e()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
   }
   m_jets.put(jets);
   // m_jets.put(output);

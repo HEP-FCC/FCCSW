@@ -1,4 +1,4 @@
-#include "DataObjects/ParticleRefCollection.h"
+#include "ParticleRefCollection.h"
 
 ParticleRefCollection::ParticleRefCollection() : m_collectionID(0), m_data(new ParticleRefVector() ){
 }
@@ -8,12 +8,10 @@ const ParticleRefHandle& ParticleRefCollection::get(int index) const{
 }
 
 ParticleRefHandle& ParticleRefCollection::create(){
-  m_data->emplace_back(ParticleRef());
-  int index = m_data->size()-1;
-  m_handles.emplace_back(ParticleRefHandle(index,m_collectionID, m_data));
-  auto& tmp_handle = m_handles.back();
-
-  return tmp_handle;
+    m_data->emplace_back(ParticleRef());
+    int index = m_data->size()-1;
+    m_handles.emplace_back(ParticleRefHandle(index,m_collectionID, m_data));
+    return m_handles.back();
 }
 
 void ParticleRefCollection::clear(){
@@ -48,8 +46,3 @@ void ParticleRefCollection::setPODsAddress(const void* address){
 const ParticleRefHandle ParticleRefCollectionIterator::operator* () const {
   return m_collection->get(m_index);
 }
-
-//std::vector<std::pair<std::string,albers::CollectionBase*>>& referenceCollections() {
-//}
-
-

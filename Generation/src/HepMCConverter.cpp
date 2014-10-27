@@ -23,17 +23,17 @@ StatusCode HepMCConverter::execute() {
   for(Ipart ipart=event->particles_begin(); 
       ipart!=event->particles_end(); ++ipart) {
     const HepMC::GenParticle& ptc = **ipart; 
-    if(ptc.status()==1) { 
-      // ptc.print();
-      ParticleHandle& outptc = particles->create();
-      outptc.setID(ptc.pdg_id());
-      LorentzVector p4; 
-      p4.Pt = ptc.momentum().perp();
-      p4.Eta = ptc.momentum().eta();
-      p4.Phi = ptc.momentum().phi();
-      p4.Mass = ptc.momentum().m();
-      outptc.setP4(p4);
-    }
+    // if(ptc.status()==1) { 
+    // ptc.print();
+    ParticleHandle& outptc = particles->create();
+    outptc.setID(ptc.pdg_id());
+    outptc.setStatus(ptc.status());
+    LorentzVector p4; 
+    p4.Pt = ptc.momentum().perp();
+    p4.Eta = ptc.momentum().eta();
+    p4.Phi = ptc.momentum().phi();
+    p4.Mass = ptc.momentum().m();
+    outptc.setP4(p4);
   }
   m_genphandle.put(particles);
   return StatusCode::SUCCESS;

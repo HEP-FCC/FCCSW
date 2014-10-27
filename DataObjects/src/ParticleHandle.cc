@@ -3,15 +3,16 @@
 #include "albers/Reader.h"
 
 // datamodel specific includes
-#include "DataObjects/Particle.h"
-#include "DataObjects/ParticleCollection.h"
+#include "Particle.h"
+#include "ParticleCollection.h"
 
   const LorentzVector& ParticleHandle::P4() const { return m_container->at(m_index).P4;}
   const int& ParticleHandle::ID() const { return m_container->at(m_index).ID;}
+  const int& ParticleHandle::Status() const { return m_container->at(m_index).Status;}
 
   void ParticleHandle::setP4(LorentzVector value){ m_container->at(m_index).P4 = value;}
   void ParticleHandle::setID(int value){ m_container->at(m_index).ID = value;}
-
+  void ParticleHandle::setStatus(int value){ m_container->at(m_index).Status = value;}
 
 
 bool  ParticleHandle::isAvailable() const {
@@ -40,3 +41,13 @@ ParticleHandle::ParticleHandle(int index, int containerID, std::vector<Particle>
   m_containerID(containerID),
   m_container(container)
 {}
+
+
+bool operator< (const ParticleHandle& p1, const ParticleHandle& p2 ) {
+  if( p1.m_containerID == p2.m_containerID ) {
+    return p1.m_index < p2.m_index;
+  }
+  else {
+    return p1.m_containerID < p2.m_containerID;
+  }
+}
