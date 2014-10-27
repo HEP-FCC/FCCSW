@@ -1,6 +1,7 @@
 #include "AlbersOutput.h"
 #include "TFile.h"
 #include "FWCore/AlbersDataSvc.h"
+
 DECLARE_COMPONENT(AlbersOutput)
 
 AlbersOutput::AlbersOutput(const std::string& name, ISvcLocator* svcLoc) :
@@ -29,7 +30,7 @@ StatusCode AlbersOutput::execute() {
   for (auto& i : m_albersDataSvc->getCollections()){
     // TODO: we need the class name 
     if (m_first){  
-      m_datatree->Branch(i.first.c_str(), "Jet", i.second->_getRawBuffer());
+      m_datatree->Branch(i.first.c_str(), "vector<Jet>", i.second->_getRawBuffer());
     }
     else {
       m_datatree->SetBranchAddress(i.first.c_str(),i.second->_getRawBuffer());

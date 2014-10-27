@@ -4,8 +4,6 @@
       <field name="m_reader"  transient="true"/>
     </class>
     <class name="LorentzVector"/>
-    <class pattern="std::vector<*>"/>
-
     <class name="JetParticle"/>
     <class name="JetParticleHandle">
       <field name="m_registry"  transient="true"/>
@@ -30,6 +28,7 @@
       <field name="m_container"  transient="true"/>
     </class>
 
+  <class pattern="std::vector<*>"/>
   </selection>
   <exclusion>
   </exclusion>
