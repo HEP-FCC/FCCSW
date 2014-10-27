@@ -44,8 +44,10 @@ AlbersDataSvc::~AlbersDataSvc() {
 StatusCode AlbersDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
   albers::CollectionBase* coll = dynamic_cast<albers::CollectionBase*>(pObject);
   if (coll!=0){
-    m_registry.registerPOD(coll, fullPath);
-    m_collections.emplace_back(std::make_pair(fullPath,coll)); 
+    size_t pos = fullPath.find_last_of("/");
+    std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
+    m_registry.registerPOD(coll, shortPath);
+			  m_collections.emplace_back(std::make_pair(shortPath,coll)); 
   }
   return DataSvc::registerObject(fullPath,pObject);
 }
