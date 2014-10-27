@@ -1,6 +1,7 @@
 #include "AlbersOutput.h"
 #include "TFile.h"
 #include "FWCore/AlbersDataSvc.h"
+#include "FWCore/ClassName.h"
 
 DECLARE_COMPONENT(AlbersOutput)
 
@@ -28,9 +29,16 @@ StatusCode AlbersOutput::execute() {
   // for now assume identical content for every event
   // register for writing
   for (auto& i : m_albersDataSvc->getCollections()){
-    // TODO: we need the class name 
+    // TODO: we need the class name in a better way
     if (m_first){  
-      m_datatree->Branch(i.first.c_str(), "vector<Jet>", i.second->_getRawBuffer());
+      std::string name( typeid(*(i.second)).name() ); 
+      size_t  pos = name.find_first_not_of("0123456789");
+      name.erase(0,pos);
+      pos = name.find("Collection");
+      name.erase(pos,pos+10); 
+      std::string classname = "vector<"+name+">";
+      debug() << "Registering collection " << i.first.c_str() << " containing type " << name << endmsg;
+      m_datatree->Branch(i.first.c_str(), classname.c_str(), i.second->_getRawBuffer());
     }
     else {
       m_datatree->SetBranchAddress(i.first.c_str(),i.second->_getRawBuffer());
