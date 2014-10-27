@@ -26,11 +26,8 @@ jet_clustering.Inputs.genparticles.Path='genparticles'
 # giving a meaningful name for the output product
 jet_clustering.Outputs.jets.Path='genjets'
 
-# alberswrite = AlbersWrite("AlbersWrite")
-# alberswrite.Outputs.albersJets.Path = "albersJets"
-
-out = AlbersOutput("out")
-
+out = AlbersOutput("out",
+                   OutputLevel=DEBUG)
 
 ApplicationMgr( TopAlg = [reader,hepmc_converter,jet_clustering],
                 EvtSel = 'NONE',
