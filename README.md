@@ -34,6 +34,8 @@ Then, you will find instructions for setting up your github account, and taking 
 Installation
 ------------
 
+Log in to lxplus SLC6. Please note that these instructions might not work on another SLC6 machine. Instructions to compile on a mac are in preparation. 
+
 Prepare a global software zone for FCC:
 
     mkdir FCC
