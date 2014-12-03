@@ -1,17 +1,15 @@
 #ifndef Jet_H 
 #define Jet_H
 
-// 
+// Basic jet information.
 // author: C. Bernet, B. Hegner
 
-#include "DataObjects/LorentzVector.h"
+#include "DataObjects/BareJet.h"
 
 
 class Jet {
 public:
-  LorentzVector P4; // 
-  unsigned int particles_begin; 
-  unsigned particles_end; 
+  BareJet Core; //Basic jet information. 
 
 };
 

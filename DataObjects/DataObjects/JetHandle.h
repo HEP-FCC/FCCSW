@@ -1,13 +1,11 @@
 #ifndef JetHANDLE_H
 #define JetHANDLE_H
 #include "DataObjects/Jet.h"
-#include "DataObjects/LorentzVector.h"
-#include <vector>
-#include "ParticleHandle.h"
+#include "DataObjects/BareJet.h"
 
 #include <vector>
 
-// 
+// Basic jet information.
 // author: C. Bernet, B. Hegner
 
 //forward declaration of Jet container
@@ -27,18 +25,24 @@ JetHandle(){};
 
 //TODO: Proper syntax to use, but ROOT doesn't handle it:  JetHandle() = default;
 
-  const LorentzVector& P4() const;
+  const BareJet& Core() const;
 
-  void setP4(LorentzVector value);
+  void setCore(BareJet value);
 
-  void addparticles(ParticleHandle&);
-  std::vector<ParticleHandle>::const_iterator particles_begin() const;
-  std::vector<ParticleHandle>::const_iterator particles_end() const;
 
 
   bool isAvailable() const; // precheck whether the pointee actually exists
   void prepareForWrite(const albers::Registry*);  // use m_container to set m_containerID properly
   void prepareAfterRead(albers::Registry*);   // use m_containerID to set m_container properly
+
+  /// equality operator (true if both the index and the container ID are equal)
+  bool operator==(const JetHandle& other) const {
+       return (m_index==other.m_index) && (other.m_containerID==other.m_containerID);
+  }
+
+  /// less comparison operator, so that Handles can be e.g. stored in sets.
+  friend bool operator< (const JetHandle& p1,
+			 const JetHandle& p2 );
 
 private:
   JetHandle(int index, int containerID,  std::vector<Jet>* container);
@@ -48,8 +52,7 @@ private:
   albers::Registry* m_registry; //! transient
 //  bool _retrieveData();
   // members to support 1-to-N relations
-  std::vector<ParticleHandle>* m_particles; //! transient 
-
+  
 
 };
 

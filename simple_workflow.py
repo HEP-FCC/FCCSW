@@ -25,10 +25,12 @@ genfilter.Inputs.hepmc.Path = "all_genparticles"
 genfilter.Outputs.genparticles.Path = "genparticles"
 
 # reads EDM Particles and creates EDM jets
-jet_clustering = JetClustering("JetClustering")
+jet_clustering = JetClustering("JetClustering",
+                               verbose=True)
 jet_clustering.Inputs.genparticles.Path='genparticles'
 # giving a meaningful name for the output product
 jet_clustering.Outputs.jets.Path='genjets'
+
 
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)

@@ -21,11 +21,9 @@ StatusCode GenParticleFilter::execute() {
   for(auto ipart=inparticles->begin(); 
       ipart!=inparticles->end(); ++ipart) {
     const ParticleHandle& ptc = *ipart;
-    if(ptc.Status()==1) { 
+    if(ptc.Core().Status==1) { 
       ParticleHandle& outptc = particles->create();
-      outptc.setID(ptc.ID());
-      outptc.setStatus(ptc.Status());
-      outptc.setP4(ptc.P4());
+      outptc.setCore(ptc.Core()); //COLIN Should not clone only the core!
     }
   }
   m_genphandle.put(particles);

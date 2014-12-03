@@ -16,7 +16,7 @@
 #include "DataObjects/JetHandle.h"
 
 typedef std::vector<Jet> JetVector;
-typedef std::deque<JetHandle> JetHandleContainer;
+typedef std::vector<JetHandle> JetHandleContainer;
 
 class JetCollectionIterator {
 
@@ -76,16 +76,25 @@ public:
 
 //  std::vector<std::pair<std::string,albers::CollectionBase*>>& referenceCollections();
 
-  void* _getRawBuffer(){ return (void*)&m_data;};
-  std::vector<Jet>* _getBuffer(){ return m_data;};
+  /// returns the address of the pointer to the data buffer
+  void* _getRawBuffer() { return (void*)&m_data;};
+
+  /// returns the pointer to the data buffer
+  std::vector<Jet>* _getBuffer() { return m_data;};
+
+  /// returns the collection of Handles
+  const JetHandleContainer& getHandles() { return m_handles; }
+
+  /// print some information
+  void print() const;
+
+
 private:
   unsigned m_collectionID;
   JetVector* m_data;
   JetHandleContainer m_handles;
   // members to handle 1-to-N-relations
-  std::vector<ParticleHandle>* m_rel_particles; //relation buffer for r/w
-  std::vector<std::vector<ParticleHandle>*> m_rel_particles_tmp;
- 
+  
 };
 
 #endif

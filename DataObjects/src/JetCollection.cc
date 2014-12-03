@@ -12,9 +12,6 @@ JetHandle& JetCollection::create(){
   int index = m_data->size()-1;
   m_handles.emplace_back(JetHandle(index,m_collectionID, m_data));
   auto& tmp_handle = m_handles.back();
-  auto particles_tmp = new std::vector<ParticleHandle>();
-  m_rel_particles_tmp.push_back(particles_tmp);
-  tmp_handle.m_particles = particles_tmp;
 
   return tmp_handle;
 }
@@ -22,9 +19,6 @@ JetHandle& JetCollection::create(){
 void JetCollection::clear(){
   m_data->clear();
   m_handles.clear();
-  for (auto& pointer : m_rel_particles_tmp) {delete pointer;}
-  m_rel_particles_tmp.clear();
-  m_rel_particles->clear();
 
 }
 
@@ -35,6 +29,8 @@ void JetCollection::prepareForWrite(const albers::Registry* registry){
 void JetCollection::prepareAfterRead(albers::Registry* registry){
   m_handles.clear();
   int index = 0;
+  // fix. otherwise, m_collectionID == 0..
+  m_collectionID = registry->getIDFromPODAddress( _getBuffer() );
   for (auto& data : *m_data){
     
     m_handles.emplace_back(JetHandle(index,m_collectionID, m_data));
@@ -55,4 +51,10 @@ const JetHandle JetCollectionIterator::operator* () const {
 //std::vector<std::pair<std::string,albers::CollectionBase*>>& referenceCollections() {
 //}
 
+
+void JetCollection::print() const {
+  std::cout<<"collection "<<m_collectionID
+           <<", buf "<<m_data
+           <<", nhandles "<<m_handles.size()<<std::endl;
+}
 
