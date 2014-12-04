@@ -20,10 +20,10 @@ StatusCode GenParticleFilter::execute() {
   ParticleCollection* particles = new ParticleCollection();
   for(auto ipart=inparticles->begin(); 
       ipart!=inparticles->end(); ++ipart) {
-    const ParticleHandle& ptc = *ipart;
-    if(ptc.Core().Status==1) { 
+    const Particle& ptc = (*ipart).read();
+    if(ptc.Core.Status==1) { 
       ParticleHandle& outptc = particles->create();
-      outptc.setCore(ptc.Core()); //COLIN Should not clone only the core!
+      outptc.mod().Core = ptc.Core; //COLIN Should not clone only the core!
     }
   }
   m_genphandle.put(particles);

@@ -6,22 +6,12 @@
 #include "DataObjects/ParticleClusterAssociation.h"
 #include "DataObjects/ParticleClusterAssociationCollection.h"
 
-  const ParticleHandle& ParticleClusterAssociationHandle::Particle() const { return m_container->at(m_index).Particle;}
-  const CaloClusterHandle& ParticleClusterAssociationHandle::Cluster() const { return m_container->at(m_index).Cluster;}
-
-  void ParticleClusterAssociationHandle::setParticle(ParticleHandle value){ m_container->at(m_index).Particle = value;}
-  void ParticleClusterAssociationHandle::setCluster(CaloClusterHandle value){ m_container->at(m_index).Cluster = value;}
-
 
 
 bool  ParticleClusterAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

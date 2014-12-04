@@ -91,10 +91,11 @@ StatusCode JetClustering::execute() {
   const ParticleCollection* particles = m_genphandle.get();
   std::vector<PseudoJet> input;
   for (auto it = particles->begin(); it != particles->end(); ++it) {
-    auto ptc = *it;
+    auto ptchandle = *it;
+    const BareParticle& ptc = ptchandle.read().Core;
     TLorentzVector p4; 
-    p4.SetPtEtaPhiM(ptc.Core().P4.Pt, ptc.Core().P4.Eta, 
-		    ptc.Core().P4.Phi, ptc.Core().P4.Mass);
+    p4.SetPtEtaPhiM(ptc.P4.Pt, ptc.P4.Eta, 
+		    ptc.P4.Phi, ptc.P4.Mass);
     //TODO apply some filtering if required
     fastjet::PseudoJet pj(p4.Px(), p4.Py(), p4.Pz(), p4.E());
         input.emplace_back(pj);
@@ -115,12 +116,11 @@ StatusCode JetClustering::execute() {
     std::cout<<"njets = "<<pjets.size()<<std::endl;
   for(auto pjet : pjets) {
     JetHandle& jet = jets->create();
-    BareJet core; 
+    BareJet& core = jet.mod().Core; 
     core.P4.Pt = pjet.pt();
     core.P4.Eta = pjet.eta();
     core.P4.Phi = pjet.phi();
     core.P4.Mass = pjet.m();
-    jet.setCore( core ); 
     //COLIN need to set the jet area
     if(m_verbose)
       std::cout<<pjet.e()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;

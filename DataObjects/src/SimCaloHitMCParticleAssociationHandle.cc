@@ -6,24 +6,12 @@
 #include "DataObjects/SimCaloHitMCParticleAssociation.h"
 #include "DataObjects/SimCaloHitMCParticleAssociationCollection.h"
 
-  const SimCaloHitHandle& SimCaloHitMCParticleAssociationHandle::Hit() const { return m_container->at(m_index).Hit;}
-  const MCParticleHandle& SimCaloHitMCParticleAssociationHandle::Particle() const { return m_container->at(m_index).Particle;}
-  const float& SimCaloHitMCParticleAssociationHandle::Fraction() const { return m_container->at(m_index).Fraction;}
-
-  void SimCaloHitMCParticleAssociationHandle::setHit(SimCaloHitHandle value){ m_container->at(m_index).Hit = value;}
-  void SimCaloHitMCParticleAssociationHandle::setParticle(MCParticleHandle value){ m_container->at(m_index).Particle = value;}
-  void SimCaloHitMCParticleAssociationHandle::setFraction(float value){ m_container->at(m_index).Fraction = value;}
-
 
 
 bool  SimCaloHitMCParticleAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

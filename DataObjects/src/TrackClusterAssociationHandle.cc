@@ -6,22 +6,12 @@
 #include "DataObjects/TrackClusterAssociation.h"
 #include "DataObjects/TrackClusterAssociationCollection.h"
 
-  const TrackHandle& TrackClusterAssociationHandle::Track() const { return m_container->at(m_index).Track;}
-  const TrackClusterHandle& TrackClusterAssociationHandle::Cluster() const { return m_container->at(m_index).Cluster;}
-
-  void TrackClusterAssociationHandle::setTrack(TrackHandle value){ m_container->at(m_index).Track = value;}
-  void TrackClusterAssociationHandle::setCluster(TrackClusterHandle value){ m_container->at(m_index).Cluster = value;}
-
 
 
 bool  TrackClusterAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

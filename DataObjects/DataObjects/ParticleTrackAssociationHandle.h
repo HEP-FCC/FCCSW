@@ -22,20 +22,23 @@ class ParticleTrackAssociationHandle {
 
 public:
 
-ParticleTrackAssociationHandle(){};
+  ParticleTrackAssociationHandle(){};
 
 //TODO: Proper syntax to use, but ROOT doesn't handle it:  ParticleTrackAssociationHandle() = default;
 
-  const ParticleHandle& Particle() const;
-  const TrackHandle& Track() const;
-
-  void setParticle(ParticleHandle value);
-  void setTrack(TrackHandle value);
 
 
+  // precheck whether the pointee actually exists
+  bool isAvailable() const;
 
-  bool isAvailable() const; // precheck whether the pointee actually exists
+  // returns a const (read-only) reference to the object pointed by the Handle.
+  const ParticleTrackAssociation& read() const {return m_container->at(m_index);}
+
+  // returns a non-const (writeable) reference to the object pointed by the Handle 
+  ParticleTrackAssociation& mod() {return m_container->at(m_index);}
+  
   void prepareForWrite(const albers::Registry*);  // use m_container to set m_containerID properly
+  
   void prepareAfterRead(albers::Registry*);   // use m_containerID to set m_container properly
 
   /// equality operator (true if both the index and the container ID are equal)
@@ -53,7 +56,7 @@ private:
   int m_containerID;
   mutable std::vector<ParticleTrackAssociation>* m_container; //! transient
   albers::Registry* m_registry; //! transient
-//  bool _retrieveData();
+  //  bool _retrieveData();
   // members to support 1-to-N relations
   
 

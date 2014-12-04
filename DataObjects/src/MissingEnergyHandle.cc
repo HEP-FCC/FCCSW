@@ -6,22 +6,12 @@
 #include "DataObjects/MissingEnergy.h"
 #include "DataObjects/MissingEnergyCollection.h"
 
-  const float& MissingEnergyHandle::Energy() const { return m_container->at(m_index).Energy;}
-  const float& MissingEnergyHandle::Phi() const { return m_container->at(m_index).Phi;}
-
-  void MissingEnergyHandle::setEnergy(float value){ m_container->at(m_index).Energy = value;}
-  void MissingEnergyHandle::setPhi(float value){ m_container->at(m_index).Phi = value;}
-
 
 
 bool  MissingEnergyHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

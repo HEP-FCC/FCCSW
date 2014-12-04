@@ -6,20 +6,12 @@
 #include "DataObjects/SimCaloCluster.h"
 #include "DataObjects/SimCaloClusterCollection.h"
 
-  const BareCluster& SimCaloClusterHandle::Core() const { return m_container->at(m_index).Core;}
-
-  void SimCaloClusterHandle::setCore(BareCluster value){ m_container->at(m_index).Core = value;}
-
 
 
 bool  SimCaloClusterHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

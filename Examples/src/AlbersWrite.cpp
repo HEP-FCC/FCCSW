@@ -26,9 +26,8 @@ StatusCode AlbersWrite::execute() {
   lv1.Mass = 125;
   lv1.Pt   = 50.;  
   JetHandle& j1 = jets->create(); 
-  BareJet core;
+  BareJet& core = j1.mod().Core;
   core.P4 = lv1;
-  j1.setCore(core);
   m_jethandle.put(jets);
 
   return StatusCode::SUCCESS;

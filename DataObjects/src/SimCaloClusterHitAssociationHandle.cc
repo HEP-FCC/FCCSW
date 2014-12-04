@@ -6,22 +6,12 @@
 #include "DataObjects/SimCaloClusterHitAssociation.h"
 #include "DataObjects/SimCaloClusterHitAssociationCollection.h"
 
-  const SimCaloClusterHandle& SimCaloClusterHitAssociationHandle::Cluster() const { return m_container->at(m_index).Cluster;}
-  const SimCaloHitHandle& SimCaloClusterHitAssociationHandle::Hit() const { return m_container->at(m_index).Hit;}
-
-  void SimCaloClusterHitAssociationHandle::setCluster(SimCaloClusterHandle value){ m_container->at(m_index).Cluster = value;}
-  void SimCaloClusterHitAssociationHandle::setHit(SimCaloHitHandle value){ m_container->at(m_index).Hit = value;}
-
 
 
 bool  SimCaloClusterHitAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

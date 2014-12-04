@@ -6,20 +6,12 @@
 #include "DataObjects/GenJet.h"
 #include "DataObjects/GenJetCollection.h"
 
-  const BareJet& GenJetHandle::Core() const { return m_container->at(m_index).Core;}
-
-  void GenJetHandle::setCore(BareJet value){ m_container->at(m_index).Core = value;}
-
 
 
 bool  GenJetHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

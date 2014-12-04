@@ -26,14 +26,13 @@ StatusCode HepMCConverter::execute() {
     // if(ptc.status()==1) { 
     // ptc.print();
     ParticleHandle& outptc = particles->create();
-    BareParticle core;
+    BareParticle& core = outptc.mod().Core;
     core.Type = ptc.pdg_id();
     core.Status = ptc.status(); 
     core.P4.Pt = ptc.momentum().perp();
     core.P4.Eta = ptc.momentum().eta();
     core.P4.Phi = ptc.momentum().phi();
     core.P4.Mass = ptc.momentum().m();
-    outptc.setCore(core);
   }
   m_genphandle.put(particles);
   return StatusCode::SUCCESS;

@@ -6,20 +6,12 @@
 #include "DataObjects/CaloCluster.h"
 #include "DataObjects/CaloClusterCollection.h"
 
-  const BareCluster& CaloClusterHandle::Core() const { return m_container->at(m_index).Core;}
-
-  void CaloClusterHandle::setCore(BareCluster value){ m_container->at(m_index).Core = value;}
-
 
 
 bool  CaloClusterHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

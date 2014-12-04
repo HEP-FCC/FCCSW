@@ -6,22 +6,12 @@
 #include "DataObjects/CaloHitAssociation.h"
 #include "DataObjects/CaloHitAssociationCollection.h"
 
-  const CaloHitHandle& CaloHitAssociationHandle::Rec() const { return m_container->at(m_index).Rec;}
-  const SimCaloHitHandle& CaloHitAssociationHandle::Sim() const { return m_container->at(m_index).Sim;}
-
-  void CaloHitAssociationHandle::setRec(CaloHitHandle value){ m_container->at(m_index).Rec = value;}
-  void CaloHitAssociationHandle::setSim(SimCaloHitHandle value){ m_container->at(m_index).Sim = value;}
-
 
 
 bool  CaloHitAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

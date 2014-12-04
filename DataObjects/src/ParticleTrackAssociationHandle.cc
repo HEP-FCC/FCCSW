@@ -6,22 +6,12 @@
 #include "DataObjects/ParticleTrackAssociation.h"
 #include "DataObjects/ParticleTrackAssociationCollection.h"
 
-  const ParticleHandle& ParticleTrackAssociationHandle::Particle() const { return m_container->at(m_index).Particle;}
-  const TrackHandle& ParticleTrackAssociationHandle::Track() const { return m_container->at(m_index).Track;}
-
-  void ParticleTrackAssociationHandle::setParticle(ParticleHandle value){ m_container->at(m_index).Particle = value;}
-  void ParticleTrackAssociationHandle::setTrack(TrackHandle value){ m_container->at(m_index).Track = value;}
-
 
 
 bool  ParticleTrackAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 
