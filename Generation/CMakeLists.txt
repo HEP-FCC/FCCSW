@@ -7,10 +7,11 @@ gaudi_subdir(Generation v1r0)
 gaudi_depends_on_subdirs(GaudiAlg DataObjects)
 
 find_package(HepMC)
+find_package(Pythia8)
 
 gaudi_install_headers(Generation)
 
 gaudi_add_module(Generation
                  src/*.cpp
-                 INCLUDE_DIRS HepMC
-                 LINK_LIBRARIES HepMC GaudiAlgLib DataObjects)
+                 INCLUDE_DIRS HepMC Pythia8
+                 LINK_LIBRARIES HepMC GaudiAlgLib DataObjects Pythia8)
