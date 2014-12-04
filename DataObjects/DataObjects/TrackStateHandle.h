@@ -20,24 +20,23 @@ class TrackStateHandle {
 
 public:
 
-TrackStateHandle(){};
+  TrackStateHandle(){};
 
 //TODO: Proper syntax to use, but ROOT doesn't handle it:  TrackStateHandle() = default;
 
-  const float& Location() const;
-  const float& Omega() const;
-  const float& D0() const;
-  const float& Z0() const;
-
-  void setLocation(float value);
-  void setOmega(float value);
-  void setD0(float value);
-  void setZ0(float value);
 
 
+  // precheck whether the pointee actually exists
+  bool isAvailable() const;
 
-  bool isAvailable() const; // precheck whether the pointee actually exists
+  // returns a const (read-only) reference to the object pointed by the Handle.
+  const TrackState& read() const {return m_container->at(m_index);}
+
+  // returns a non-const (writeable) reference to the object pointed by the Handle 
+  TrackState& mod() {return m_container->at(m_index);}
+  
   void prepareForWrite(const albers::Registry*);  // use m_container to set m_containerID properly
+  
   void prepareAfterRead(albers::Registry*);   // use m_containerID to set m_container properly
 
   /// equality operator (true if both the index and the container ID are equal)
@@ -55,7 +54,7 @@ private:
   int m_containerID;
   mutable std::vector<TrackState>* m_container; //! transient
   albers::Registry* m_registry; //! transient
-//  bool _retrieveData();
+  //  bool _retrieveData();
   // members to support 1-to-N relations
   
 

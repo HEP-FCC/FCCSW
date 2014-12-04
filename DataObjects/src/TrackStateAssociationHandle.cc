@@ -6,22 +6,12 @@
 #include "DataObjects/TrackStateAssociation.h"
 #include "DataObjects/TrackStateAssociationCollection.h"
 
-  const TrackHandle& TrackStateAssociationHandle::Track() const { return m_container->at(m_index).Track;}
-  const TrackStateHandle& TrackStateAssociationHandle::State() const { return m_container->at(m_index).State;}
-
-  void TrackStateAssociationHandle::setTrack(TrackHandle value){ m_container->at(m_index).Track = value;}
-  void TrackStateAssociationHandle::setState(TrackStateHandle value){ m_container->at(m_index).State = value;}
-
 
 
 bool  TrackStateAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

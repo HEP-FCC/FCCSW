@@ -6,26 +6,12 @@
 #include "DataObjects/TrackState.h"
 #include "DataObjects/TrackStateCollection.h"
 
-  const float& TrackStateHandle::Location() const { return m_container->at(m_index).Location;}
-  const float& TrackStateHandle::Omega() const { return m_container->at(m_index).Omega;}
-  const float& TrackStateHandle::D0() const { return m_container->at(m_index).D0;}
-  const float& TrackStateHandle::Z0() const { return m_container->at(m_index).Z0;}
-
-  void TrackStateHandle::setLocation(float value){ m_container->at(m_index).Location = value;}
-  void TrackStateHandle::setOmega(float value){ m_container->at(m_index).Omega = value;}
-  void TrackStateHandle::setD0(float value){ m_container->at(m_index).D0 = value;}
-  void TrackStateHandle::setZ0(float value){ m_container->at(m_index).Z0 = value;}
-
 
 
 bool  TrackStateHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

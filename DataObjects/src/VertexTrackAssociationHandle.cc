@@ -6,24 +6,12 @@
 #include "DataObjects/VertexTrackAssociation.h"
 #include "DataObjects/VertexTrackAssociationCollection.h"
 
-  const TrackHandle& VertexTrackAssociationHandle::Track() const { return m_container->at(m_index).Track;}
-  const VertexHandle& VertexTrackAssociationHandle::Vertex() const { return m_container->at(m_index).Vertex;}
-  const float& VertexTrackAssociationHandle::Weight() const { return m_container->at(m_index).Weight;}
-
-  void VertexTrackAssociationHandle::setTrack(TrackHandle value){ m_container->at(m_index).Track = value;}
-  void VertexTrackAssociationHandle::setVertex(VertexHandle value){ m_container->at(m_index).Vertex = value;}
-  void VertexTrackAssociationHandle::setWeight(float value){ m_container->at(m_index).Weight = value;}
-
 
 
 bool  VertexTrackAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

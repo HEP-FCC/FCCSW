@@ -35,7 +35,7 @@ jet_clustering.Outputs.jets.Path='genjets'
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 
-ApplicationMgr( TopAlg = [reader,hepmc_converter,genfilter, jet_clustering],
+ApplicationMgr( TopAlg = [reader,hepmc_converter,genfilter, jet_clustering, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1000,
                 ExtSvc = [albersevent],

@@ -6,24 +6,12 @@
 #include "DataObjects/Track.h"
 #include "DataObjects/TrackCollection.h"
 
-  const float& TrackHandle::Chi2() const { return m_container->at(m_index).Chi2;}
-  const unsigned& TrackHandle::Ndf() const { return m_container->at(m_index).Ndf;}
-  const unsigned& TrackHandle::Bits() const { return m_container->at(m_index).Bits;}
-
-  void TrackHandle::setChi2(float value){ m_container->at(m_index).Chi2 = value;}
-  void TrackHandle::setNdf(unsigned value){ m_container->at(m_index).Ndf = value;}
-  void TrackHandle::setBits(unsigned value){ m_container->at(m_index).Bits = value;}
-
 
 
 bool  TrackHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

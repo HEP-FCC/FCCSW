@@ -6,22 +6,12 @@
 #include "DataObjects/ParticleMCAssociation.h"
 #include "DataObjects/ParticleMCAssociationCollection.h"
 
-  const ParticleHandle& ParticleMCAssociationHandle::Rec() const { return m_container->at(m_index).Rec;}
-  const MCParticleHandle& ParticleMCAssociationHandle::Sim() const { return m_container->at(m_index).Sim;}
-
-  void ParticleMCAssociationHandle::setRec(ParticleHandle value){ m_container->at(m_index).Rec = value;}
-  void ParticleMCAssociationHandle::setSim(MCParticleHandle value){ m_container->at(m_index).Sim = value;}
-
 
 
 bool  ParticleMCAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

@@ -6,20 +6,12 @@
 #include "DataObjects/TrackCluster.h"
 #include "DataObjects/TrackClusterCollection.h"
 
-  const BareCluster& TrackClusterHandle::Core() const { return m_container->at(m_index).Core;}
-
-  void TrackClusterHandle::setCore(BareCluster value){ m_container->at(m_index).Core = value;}
-
 
 
 bool  TrackClusterHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

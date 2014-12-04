@@ -6,20 +6,12 @@
 #include "DataObjects/Particle.h"
 #include "DataObjects/ParticleCollection.h"
 
-  const BareParticle& ParticleHandle::Core() const { return m_container->at(m_index).Core;}
-
-  void ParticleHandle::setCore(BareParticle value){ m_container->at(m_index).Core = value;}
-
 
 
 bool  ParticleHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

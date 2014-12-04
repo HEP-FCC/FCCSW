@@ -6,22 +6,12 @@
 #include "DataObjects/MCParticleAssociation.h"
 #include "DataObjects/MCParticleAssociationCollection.h"
 
-  const MCParticleHandle& MCParticleAssociationHandle::Mother() const { return m_container->at(m_index).Mother;}
-  const MCParticleHandle& MCParticleAssociationHandle::Daughter() const { return m_container->at(m_index).Daughter;}
-
-  void MCParticleAssociationHandle::setMother(MCParticleHandle value){ m_container->at(m_index).Mother = value;}
-  void MCParticleAssociationHandle::setDaughter(MCParticleHandle value){ m_container->at(m_index).Daughter = value;}
-
 
 
 bool  MCParticleAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

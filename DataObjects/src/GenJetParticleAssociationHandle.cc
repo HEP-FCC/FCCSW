@@ -6,22 +6,12 @@
 #include "DataObjects/GenJetParticleAssociation.h"
 #include "DataObjects/GenJetParticleAssociationCollection.h"
 
-  const GenJetHandle& GenJetParticleAssociationHandle::Jet() const { return m_container->at(m_index).Jet;}
-  const MCParticleHandle& GenJetParticleAssociationHandle::Particle() const { return m_container->at(m_index).Particle;}
-
-  void GenJetParticleAssociationHandle::setJet(GenJetHandle value){ m_container->at(m_index).Jet = value;}
-  void GenJetParticleAssociationHandle::setParticle(MCParticleHandle value){ m_container->at(m_index).Particle = value;}
-
 
 
 bool  GenJetParticleAssociationHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

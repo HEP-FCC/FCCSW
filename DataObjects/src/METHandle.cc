@@ -6,22 +6,12 @@
 #include "DataObjects/MET.h"
 #include "DataObjects/METCollection.h"
 
-  const float& METHandle::Pt() const { return m_container->at(m_index).Pt;}
-  const float& METHandle::Phi() const { return m_container->at(m_index).Phi;}
-
-  void METHandle::setPt(float value){ m_container->at(m_index).Pt = value;}
-  void METHandle::setPhi(float value){ m_container->at(m_index).Phi = value;}
-
 
 
 bool  METHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 

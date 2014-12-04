@@ -6,20 +6,12 @@
 #include "DataObjects/SimCaloHit.h"
 #include "DataObjects/SimCaloHitCollection.h"
 
-  const BareHit& SimCaloHitHandle::Core() const { return m_container->at(m_index).Core;}
-
-  void SimCaloHitHandle::setCore(BareHit value){ m_container->at(m_index).Core = value;}
-
 
 
 bool  SimCaloHitHandle::isAvailable() const {
   if (m_container != nullptr) {
     return true;
   }
-//  else if (m_registry != nullptr){
-//    m_registry->getPODAddressFromID(m_containerID,m_container);
-//    return true;
-//  }
   return false;
 }
 
