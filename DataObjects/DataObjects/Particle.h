@@ -1,17 +1,15 @@
 #ifndef Particle_H 
 #define Particle_H
 
-// Status code
+// Contains basic particle information.
 // author: C. Bernet, B. Hegner
 
-#include "LorentzVector.h"
+#include "DataObjects/BareParticle.h"
 
 
 class Particle {
 public:
-  LorentzVector P4; //Four momentum. 
-  int ID; //Particle type identification code 
-  int Status; //Status code 
+  BareParticle Core; //Contains basic particle information. 
 
 };
 

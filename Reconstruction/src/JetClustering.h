@@ -12,14 +12,12 @@ class JetClustering: public GaudiAlgorithm {
   friend class AlgFactory<JetClustering> ;
 
 public:
-  /// Constructor.
+
   JetClustering(const std::string& name, ISvcLocator* svcLoc);
-  /// Initialize.
   virtual StatusCode initialize();
-  /// Execute.
   virtual StatusCode execute();
-  /// Finalize.
   virtual StatusCode finalize();
+
 private:
   /// Handle for the HepMC to be read
   DataObjectHandle<ParticleCollection> m_genphandle;
@@ -27,18 +25,35 @@ private:
   /// Handle for PseudoJets to be produced
   DataObjectHandle<JetCollection> m_jets;
 
-  std::string m_jetAlgorithm; ///< the jet algorithm to use
+  /// Name for the jet algorithm to be used 
+  std::string m_jetAlgorithm; 
   fastjet::JetAlgorithm m_fj_jetAlgorithm;
 
-  float m_R; ///< the cone radius
+  /// Cone radius. COLIN: not sure how it's interpreted 
+  /// depending on the algorithm... should be described here
+  float m_R; 
 
-  std::string m_recombinationScheme; ///< the recombination scheme
+  /// Recombination scheme name
+  std::string m_recombinationScheme;
+
+  /// Recombination scheme object
   fastjet::RecombinationScheme m_fj_recombinationScheme;
 
+  /// If true, reconstruct an arbitrary number of jets.
+  /// if not, for the reconstruction of m_njets jets.
   bool m_inclusiveJets; ///< use inclusive or exclusive jets
-  float m_ptMin; ///< minimum pT for inclusiveJets
-  float m_dcut; ///< dCut for exclusiveJets
-  int m_njets; ///< number of jets for exclusiveJets
+
+  /// pT threshold for inclusive jets 
+  float m_ptMin; 
+
+  /// distance threshold for exclusive jets 
+  float m_dcut;
+
+  /// number of jets for exclusive jets 
+  int m_njets; 
+
+  /// verbosity flag
+  bool m_verbose; 
 };
 
 #endif

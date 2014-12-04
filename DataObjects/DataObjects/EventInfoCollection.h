@@ -16,7 +16,7 @@
 #include "DataObjects/EventInfoHandle.h"
 
 typedef std::vector<EventInfo> EventInfoVector;
-typedef std::deque<EventInfoHandle> EventInfoHandleContainer;
+typedef std::vector<EventInfoHandle> EventInfoHandleContainer;
 
 class EventInfoCollectionIterator {
 
@@ -76,8 +76,19 @@ public:
 
 //  std::vector<std::pair<std::string,albers::CollectionBase*>>& referenceCollections();
 
-  void* _getRawBuffer(){ return (void*)&m_data;};
-  std::vector<EventInfo>* _getBuffer(){ return m_data;};
+  /// returns the address of the pointer to the data buffer
+  void* _getRawBuffer() { return (void*)&m_data;};
+
+  /// returns the pointer to the data buffer
+  std::vector<EventInfo>* _getBuffer() { return m_data;};
+
+  /// returns the collection of Handles
+  const EventInfoHandleContainer& getHandles() { return m_handles; }
+
+  /// print some information
+  void print() const;
+
+
 private:
   unsigned m_collectionID;
   EventInfoVector* m_data;
