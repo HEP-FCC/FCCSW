@@ -1,6 +1,8 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, HepMCReader, HepMCConverter, GenParticleFilter, JetClustering, FCCDataSvc, AlbersWrite, AlbersOutput
+from Configurables import ApplicationMgr, HepMCReader, HepMCConverter, GenParticleFilter, JetClustering_ParticleCollection_JetCollection_, FCCDataSvc, AlbersWrite, AlbersOutput
+
+# import pdb; pdb.set_trace()
 
 albersevent   = FCCDataSvc("EventDataSvc")
 
@@ -25,9 +27,9 @@ genfilter.Inputs.hepmc.Path = "all_genparticles"
 genfilter.Outputs.genparticles.Path = "genparticles"
 
 # reads EDM Particles and creates EDM jets
-jet_clustering = JetClustering("JetClustering",
+jet_clustering = JetClustering_ParticleCollection_JetCollection_("JetClustering",
                                verbose=True)
-jet_clustering.Inputs.genparticles.Path='genparticles'
+jet_clustering.Inputs.particles.Path='genparticles'
 # giving a meaningful name for the output product
 jet_clustering.Outputs.jets.Path='genjets'
 
