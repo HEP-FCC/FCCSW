@@ -3,6 +3,12 @@
     <class name="albers::Registry">
       <field name="m_reader"  transient="true"/>
     </class>
+    <class name="Point"/>
+    <class name="BareHit"/>
+    <class name="BareCluster"/>
+    <class name="BareParticle"/>
+    <class name="BareJet"/>
+
     <class name="LorentzVector"/>
     <class name="JetParticle"/>
     <class name="JetParticleHandle">
@@ -10,7 +16,6 @@
       <field name="m_container"  transient="true"/>
     </class> 
 
-    <class name="BareParticle"/>
     <class name="Particle"/>
     <class name="ParticleHandle">
       <field name="m_registry"  transient="true"/>
@@ -29,7 +34,6 @@
       <field name="m_container"  transient="true"/>
     </class>
 
-   <class name="BareJet"/>
    <class name="Jet"/>
     <class name="JetHandle">
       <field name="m_registry"  transient="true"/>

@@ -6,6 +6,9 @@
 #include "DataObjects/Jet.h"
 #include "DataObjects/JetHandle.h"
 
+#include "DataObjects/BareHit.h"
+#include "DataObjects/BareCluster.h"
+
 #include "DataObjects/Particle.h"
 #include "DataObjects/ParticleHandle.h"
 
@@ -28,6 +31,10 @@ namespace DataModelDict {
   std::vector<Particle> particle;
   std::vector<MCParticle> mcparticle;
   std::vector<JetParticle> jetparticle;
+  LorentzVector lorentzvector;
+  Point point;
+  BareHit barehit;
+  BareCluster barecluster;
   BareParticle bareparticle;
   BareJet      barejet;
 }
