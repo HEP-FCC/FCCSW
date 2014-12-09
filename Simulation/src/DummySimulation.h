@@ -15,7 +15,9 @@ public:
   DummySimulation(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Execute.
+  /// Execute. This function actually does no simulation,
+  /// and simply converts the stable MCParticles in the input collection
+  /// into Particles that are written to the output collection. 
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
