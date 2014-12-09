@@ -1,12 +1,11 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, HepMCReader, HepMCConverter, GenParticleFilter, JetClustering_ParticleCollection_JetCollection_, FCCDataSvc, AlbersWrite, AlbersOutput
-
-# import pdb; pdb.set_trace()
+from Configurables import ApplicationMgr, FCCDataSvc, AlbersWrite, AlbersOutput
 
 albersevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
+from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 # have a look at the source code of HepMCReader, in Generation/src/HepMCReader
 # In the following line, 
@@ -17,27 +16,51 @@ reader.Outputs.hepmc.Path = "hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes 
 # a collection of EDM Particles 
+from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
 # the input product name matches the output product name of the previous module
 hepmc_converter.Inputs.hepmc.Path="hepmc"
 hepmc_converter.Outputs.genparticles.Path="all_genparticles"
 
+from Configurables import GenParticleFilter
 genfilter = GenParticleFilter("StableParticles")
 genfilter.Inputs.genparticles.Path = "all_genparticles"
 genfilter.Outputs.genparticles.Path = "genparticles"
 
-# reads EDM Particles and creates EDM jets
-jet_clustering = JetClustering_ParticleCollection_JetCollection_("JetClustering",
-                               verbose=True)
-jet_clustering.Inputs.particles.Path='genparticles'
+from Configurables import JetClustering_MCParticleCollection_GenJetCollection_
+genjet_clustering = JetClustering_MCParticleCollection_GenJetCollection_(
+    "GenJetClustering",
+    verbose=False
+    )
+genjet_clustering.Inputs.particles.Path='genparticles'
 # giving a meaningful name for the output product
-jet_clustering.Outputs.jets.Path='genjets'
+genjet_clustering.Outputs.jets.Path='genjets'
+
+from Configurables import DummySimulation
+dummysimulation = DummySimulation("Simulation")
+dummysimulation.Inputs.genparticles.Path = "genparticles"
+dummysimulation.Outputs.particles.Path = "particles"
+
+# reads EDM Particles and creates EDM jets
+from Configurables import JetClustering_ParticleCollection_JetCollection_
+jet_clustering = JetClustering_ParticleCollection_JetCollection_(
+    "JetClustering",
+    verbose=False
+    )
+jet_clustering.Inputs.particles.Path='particles'
+# giving a meaningful name for the output product
+jet_clustering.Outputs.jets.Path='jets'
 
 
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 
-ApplicationMgr( TopAlg = [reader,hepmc_converter,genfilter, jet_clustering, out],
+ApplicationMgr( TopAlg = [reader,hepmc_converter,genfilter,
+                          genjet_clustering,
+                          dummysimulation,
+                          # jet_clustering, 
+                          out
+                          ],
                 EvtSel = 'NONE',
                 EvtMax   = 1000,
                 ExtSvc = [albersevent],

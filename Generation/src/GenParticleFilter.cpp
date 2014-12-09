@@ -7,8 +7,8 @@ DECLARE_COMPONENT(GenParticleFilter)
 GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLoc):
   GaudiAlgorithm(name, svcLoc)
 {
-  declareInput("hepmc", m_hepmchandle);
-  declareOutput("genparticles", m_genphandle);
+  declareInput("genparticles", m_igenphandle);
+  declareOutput("genparticles", m_ogenphandle);
 }
 
 StatusCode GenParticleFilter::initialize() {
@@ -16,17 +16,17 @@ StatusCode GenParticleFilter::initialize() {
 }
 
 StatusCode GenParticleFilter::execute() {
-  const ParticleCollection* inparticles = m_hepmchandle.get();
-  ParticleCollection* particles = new ParticleCollection();
+  const MCParticleCollection* inparticles = m_igenphandle.get();
+  MCParticleCollection* particles = new MCParticleCollection();
   for(auto ipart=inparticles->begin(); 
       ipart!=inparticles->end(); ++ipart) {
-    const Particle& ptc = (*ipart).read();
+    const MCParticle& ptc = (*ipart).read();
     if(ptc.Core.Status==1) { 
-      ParticleHandle& outptc = particles->create();
+      MCParticleHandle& outptc = particles->create();
       outptc.mod().Core = ptc.Core; //COLIN Should not clone only the core!
     }
   }
-  m_genphandle.put(particles);
+  m_ogenphandle.put(particles);
   return StatusCode::SUCCESS;
 }
 

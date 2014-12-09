@@ -2,7 +2,7 @@
 #define _GENPARTICLEFILTER_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/ParticleCollection.h"
+#include "DataObjects/MCParticleCollection.h"
 #include "GaudiKernel/DataObjectHandle.h"
 
 class GenParticleFilter: public GaudiAlgorithm {
@@ -19,9 +19,9 @@ public:
   virtual StatusCode finalize();
 private:
   /// Handle for the ParticleCollection to be read
-  DataObjectHandle<ParticleCollection> m_hepmchandle;
+  DataObjectHandle<MCParticleCollection> m_igenphandle;
   /// Handle for the genparticles to be written
-  DataObjectHandle<ParticleCollection> m_genphandle;
+  DataObjectHandle<MCParticleCollection> m_ogenphandle;
 };
 
 #endif
