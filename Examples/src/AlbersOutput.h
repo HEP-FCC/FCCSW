@@ -4,8 +4,11 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "albers/CollectionBase.h"
 #include "albers/Registry.h"
-// ROOT specific includes
+#include "KeepDropSwitch.h"
+
 #include "TTree.h"
+
+#include <vector>
 
 // forward declarations
 class TFile;
@@ -27,13 +30,15 @@ public:
 private:
   bool m_first;
   std::string m_filename;
+  std::vector<std::string> m_outputCommands;
+  KeepDropSwitch m_switch;
   albers::Registry* m_registry;
   AlbersDataSvc* m_albersDataSvc;
   TFile* m_file;
   TTree* m_datatree;
   TTree* m_metadatatree;
   std::vector<albers::CollectionBase*> m_storedCollections;
-
+  
 };
 
 #endif

@@ -18,14 +18,14 @@ StatusCode HepMCConverter::initialize() {
 StatusCode HepMCConverter::execute() {
   HepMCEntry* theEvent = m_hepmchandle.get();
   const HepMC::GenEvent* event = theEvent->getEvent();
-  ParticleCollection* particles = new ParticleCollection();
+  MCParticleCollection* particles = new MCParticleCollection();
   typedef HepMC::GenEvent::particle_const_iterator Ipart;
   for(Ipart ipart=event->particles_begin(); 
       ipart!=event->particles_end(); ++ipart) {
     const HepMC::GenParticle& ptc = **ipart; 
     // if(ptc.status()==1) { 
     // ptc.print();
-    ParticleHandle& outptc = particles->create();
+    MCParticleHandle& outptc = particles->create();
     BareParticle& core = outptc.mod().Core;
     core.Type = ptc.pdg_id();
     core.Status = ptc.status(); 

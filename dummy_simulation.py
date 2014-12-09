@@ -22,22 +22,46 @@ hepmc_converter = HepMCConverter("Converter")
 hepmc_converter.Inputs.hepmc.Path="hepmc"
 hepmc_converter.Outputs.genparticles.Path="all_genparticles"
 
+from Configurables import GenParticleFilter
+genfilter = GenParticleFilter("StableParticles")
+genfilter.Inputs.genparticles.Path = "all_genparticles"
+genfilter.Outputs.genparticles.Path = "genparticles"
+
 from Configurables import JetClustering_MCParticleCollection_GenJetCollection_
 genjet_clustering = JetClustering_MCParticleCollection_GenJetCollection_(
     "GenJetClustering",
     verbose=False
     )
-genjet_clustering.Inputs.particles.Path='all_genparticles'
+genjet_clustering.Inputs.particles.Path='genparticles'
 # giving a meaningful name for the output product
 genjet_clustering.Outputs.jets.Path='genjets'
 
+from Configurables import DummySimulation
+dummysimulation = DummySimulation("Simulation")
+dummysimulation.Inputs.genparticles.Path = "genparticles"
+dummysimulation.Outputs.particles.Path = "particles"
+
+# reads EDM Particles and creates EDM jets
+from Configurables import JetClustering_ParticleCollection_JetCollection_
+jet_clustering = JetClustering_ParticleCollection_JetCollection_(
+    "JetClustering",
+    verbose=False
+    )
+jet_clustering.Inputs.particles.Path='particles'
+# giving a meaningful name for the output product
+jet_clustering.Outputs.jets.Path='jets'
+
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
+out.outputCommands = ["drop *",
+                      "keep *jets",
+                      "keep particles"]
 
 ApplicationMgr( 
-    TopAlg = [reader,hepmc_converter,
+    TopAlg = [reader,hepmc_converter,genfilter,
               genjet_clustering,
+              dummysimulation,
+              jet_clustering, 
               out
               ],
     EvtSel = 'NONE',
