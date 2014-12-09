@@ -51,20 +51,23 @@ jet_clustering.Inputs.particles.Path='particles'
 # giving a meaningful name for the output product
 jet_clustering.Outputs.jets.Path='jets'
 
-
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
+out.outputCommands = ["drop *",
+                      "keep *jets",
+                      "keep particles"]
 
-ApplicationMgr( TopAlg = [reader,hepmc_converter,genfilter,
-                          genjet_clustering,
-                          dummysimulation,
-                          # jet_clustering, 
-                          out
-                          ],
-                EvtSel = 'NONE',
-                EvtMax   = 1000,
-                ExtSvc = [albersevent],
-                #                EventLoop = eventloopmgr,
-#                OutputLevel=DEBUG
+ApplicationMgr( 
+    TopAlg = [reader,hepmc_converter,genfilter,
+              genjet_clustering,
+              dummysimulation,
+              jet_clustering, 
+              out
+              ],
+    EvtSel = 'NONE',
+    EvtMax   = 1000,
+    ExtSvc = [albersevent],
+    #                EventLoop = eventloopmgr,
+    #                OutputLevel=DEBUG
  )
 
