@@ -1,6 +1,7 @@
 #ifndef JetParticle_H 
 #define JetParticle_H
 
+//COLIN obsolete
 // 
 // author: C. Bernet, B. Hegner
 

@@ -10,8 +10,15 @@
     <class name="BareJet"/>
 
     <class name="LorentzVector"/>
-    <class name="JetParticle"/>
-    <class name="JetParticleHandle">
+
+    <class name="JetParticleAssociation"/>
+    <class name="JetParticleAssociationHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class> 
+
+    <class name="GenJetParticleAssociation"/>
+    <class name="GenJetParticleAssociationHandle">
       <field name="m_registry"  transient="true"/>
       <field name="m_container"  transient="true"/>
     </class> 
@@ -45,6 +52,8 @@
       <field name="m_registry"  transient="true"/>
       <field name="m_container"  transient="true"/>
     </class>
+   <class name="GenJetParticleAssociation"/>
+   <class name="JetParticleAssociation"/>
 
   <class pattern="std::vector<*>"/>
   </selection>

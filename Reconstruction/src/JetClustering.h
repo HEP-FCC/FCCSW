@@ -37,7 +37,7 @@ private:
   DataObjectHandle<J> m_jets;
 
   /// Handle for particle-jet associations to be produced
-  DataObjectHandle<A> m_assoc;
+  DataObjectHandle<A> m_assocs;
 
   /// Name for the jet algorithm to be used 
   std::string m_jetAlgorithm; 
@@ -86,6 +86,7 @@ GaudiAlgorithm(name, svcLoc)
 {
   declareInput("particles", m_genphandle);
   declareOutput("jets", m_jets);
+  declareOutput("constituents", m_assocs);
 
   declareProperty("jetAlgorithm", m_jetAlgorithm = "antikt", "the Jet Algorithm to use [kt, antikt, cambridge]");
   declareProperty("coneRadius", m_R = 0.5, "cone radius");
@@ -169,6 +170,7 @@ template< class P, class J, class A>
   //setup input for fastjet
   const P* particles = m_genphandle.get();
   std::vector<fastjet::PseudoJet> input;
+  unsigned index = 0;
   for (auto it = particles->begin(); it != particles->end(); ++it) {
     auto ptchandle = *it;
     const BareParticle& ptc = ptchandle.read().Core;
@@ -176,8 +178,9 @@ template< class P, class J, class A>
     p4.SetPtEtaPhiM(ptc.P4.Pt, ptc.P4.Eta, 
                     ptc.P4.Phi, ptc.P4.Mass);
     //TODO apply some filtering if required
-    fastjet::PseudoJet pj(p4.Px(), p4.Py(), p4.Pz(), p4.E());
-    input.emplace_back(pj);
+    input.emplace_back(p4.Px(), p4.Py(), p4.Pz(), p4.E());
+    input.back().set_user_index(index);
+    ++index;
   }
   
   fastjet::ClusterSequence* cs; 
@@ -197,12 +200,15 @@ template< class P, class J, class A>
   //                            : m_njets != -1 ? cs.exclusive_jets(m_njets) : cs.exclusive_jets(m_dcut) ));
   //  std::vector<fastjet::PseudoJet> pjets = m_inclusiveJets ? cs.inclusive_jets(m_ptMin)
   //  : m_njets != -1 ? cs.exclusive_jets(m_njets) : cs.exclusive_jets(m_dcut);
-  std::vector<fastjet::PseudoJet> pjets = cs->inclusive_jets(m_ptMin);
+  std::vector<fastjet::PseudoJet> pjets = fastjet::sorted_by_pt(cs->inclusive_jets(m_ptMin));
 
   J* jets = new J();
+  A* assocs  = new A();
   if(m_verbose)
     std::cout<<"njets = "<<pjets.size()<<std::endl;
-  for(auto pjet : pjets) {
+  for(const auto& pjet : pjets) {
+    if(m_verbose)
+      std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
     auto& jet = jets->create();
     BareJet& core = jet.mod().Core; 
     core.P4.Pt = pjet.pt();
@@ -213,11 +219,17 @@ template< class P, class J, class A>
       core.Area = pjet.area();
     else 
       core.Area = -1;
-    if(m_verbose)
-      std::cout<<pjet.e()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
+    const std::vector<fastjet::PseudoJet>& constituents = pjet.constituents();
+    for(const auto& constit : constituents) {
+      if(m_verbose) 
+	std::cout<<"\t"<<constit.user_index()<<std::endl;
+      auto& assoc = assocs->create();
+      assoc.mod().Jet = jet;
+      assoc.mod().Particle = particles->get(constit.user_index());
+    }
   }
   m_jets.put(jets);
-  // m_jets.put(output);
+  m_assocs.put(assocs);
   
   delete cs;
   return StatusCode::SUCCESS;

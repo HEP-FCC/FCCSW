@@ -35,6 +35,7 @@ genjet_clustering = GenJetClustering(
 genjet_clustering.Inputs.particles.Path='genparticles'
 # giving a meaningful name for the output product
 genjet_clustering.Outputs.jets.Path='genjets'
+genjet_clustering.Outputs.constituents.Path='genjets_particles'
 
 from Configurables import DummySimulation
 dummysimulation = DummySimulation("Simulation")
@@ -50,11 +51,12 @@ jet_clustering = JetClustering(
 jet_clustering.Inputs.particles.Path='particles'
 # giving a meaningful name for the output product
 jet_clustering.Outputs.jets.Path='jets'
+jet_clustering.Outputs.constituents.Path='jets_particles'
 
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["drop *",
-                      "keep *jets",
+                      "keep *jets*",
                       "keep particles"]
 
 ApplicationMgr( 
