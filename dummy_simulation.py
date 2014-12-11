@@ -27,14 +27,15 @@ genfilter = GenParticleFilter("StableParticles")
 genfilter.Inputs.genparticles.Path = "all_genparticles"
 genfilter.Outputs.genparticles.Path = "genparticles"
 
-from Configurables import JetClustering_MCParticleCollection_GenJetCollection_
-genjet_clustering = JetClustering_MCParticleCollection_GenJetCollection_(
+from Configurables import JetClustering_MCParticleCollection_GenJetCollection_GenJetParticleAssociationCollection_ as GenJetClustering
+genjet_clustering = GenJetClustering(
     "GenJetClustering",
     verbose=False
     )
 genjet_clustering.Inputs.particles.Path='genparticles'
 # giving a meaningful name for the output product
 genjet_clustering.Outputs.jets.Path='genjets'
+genjet_clustering.Outputs.constituents.Path='genjets_particles'
 
 from Configurables import DummySimulation
 dummysimulation = DummySimulation("Simulation")
@@ -42,19 +43,20 @@ dummysimulation.Inputs.genparticles.Path = "genparticles"
 dummysimulation.Outputs.particles.Path = "particles"
 
 # reads EDM Particles and creates EDM jets
-from Configurables import JetClustering_ParticleCollection_JetCollection_
-jet_clustering = JetClustering_ParticleCollection_JetCollection_(
+from Configurables import JetClustering_ParticleCollection_JetCollection_JetParticleAssociationCollection_ as JetClustering
+jet_clustering = JetClustering(
     "JetClustering",
     verbose=False
     )
 jet_clustering.Inputs.particles.Path='particles'
 # giving a meaningful name for the output product
 jet_clustering.Outputs.jets.Path='jets'
+jet_clustering.Outputs.constituents.Path='jets_particles'
 
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["drop *",
-                      "keep *jets",
+                      "keep *jets*",
                       "keep particles"]
 
 ApplicationMgr( 
