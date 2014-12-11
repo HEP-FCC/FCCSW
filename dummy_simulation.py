@@ -27,8 +27,8 @@ genfilter = GenParticleFilter("StableParticles")
 genfilter.Inputs.genparticles.Path = "all_genparticles"
 genfilter.Outputs.genparticles.Path = "genparticles"
 
-from Configurables import JetClustering_MCParticleCollection_GenJetCollection_
-genjet_clustering = JetClustering_MCParticleCollection_GenJetCollection_(
+from Configurables import JetClustering_MCParticleCollection_GenJetCollection_GenJetParticleAssociationCollection_ as GenJetClustering
+genjet_clustering = GenJetClustering(
     "GenJetClustering",
     verbose=False
     )
@@ -42,8 +42,8 @@ dummysimulation.Inputs.genparticles.Path = "genparticles"
 dummysimulation.Outputs.particles.Path = "particles"
 
 # reads EDM Particles and creates EDM jets
-from Configurables import JetClustering_ParticleCollection_JetCollection_
-jet_clustering = JetClustering_ParticleCollection_JetCollection_(
+from Configurables import JetClustering_ParticleCollection_JetCollection_JetParticleAssociationCollection_ as JetClustering
+jet_clustering = JetClustering(
     "JetClustering",
     verbose=False
     )
