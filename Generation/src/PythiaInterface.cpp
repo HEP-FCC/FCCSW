@@ -50,6 +50,7 @@ StatusCode PythiaInterface::execute() {
      if (++iAbort > nAbort )
          return Error ( "Event generation aborted prematurely, owing to error!" );
 
+  /*
   for (int i = 0; i < m_pythia->event.size(); ++i){ 
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
       std::cout << "PythiaInterface : id : stat : px : py : pz : e : m : " 
@@ -66,13 +67,15 @@ StatusCode PythiaInterface::execute() {
                 << " " << m_pythia->event[i].m()
                 << std::endl;
   }
+  */
 
   // Construct new empty HepMC event
   //HepMC::GenEvent* theEvent = new HepMC::GenEvent();
   HepMC::GenEvent* theEvent = new HepMC::GenEvent(HepMC::Units::GEV, HepMC::Units::MM);
   toHepMC->fill_next_event(*m_pythia,theEvent);
 
-  /*for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
+  /*
+  for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
        ipart!=theEvent->particles_end(); ++ipart)
        std::cout << "HepMC : id : stat : px : py : pz : e : m : " 
               << (*ipart)->pdg_id()
@@ -82,7 +85,8 @@ StatusCode PythiaInterface::execute() {
               << " " << (*ipart)->momentum().pz() 
               << " " << (*ipart)->momentum().e()
               << " " << (*ipart)->momentum().m()
-              << std::endl;*/
+              << std::endl;
+  */
 
   HepMCEntry * entry = new HepMCEntry();
   entry->setEvent(theEvent);
