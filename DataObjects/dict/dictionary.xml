@@ -3,15 +3,34 @@
     <class name="albers::Registry">
       <field name="m_reader"  transient="true"/>
     </class>
+    <class name="Point"/>
+    <class name="BareHit"/>
+    <class name="BareCluster"/>
+    <class name="BareParticle"/>
+    <class name="BareJet"/>
+
     <class name="LorentzVector"/>
-    <class name="JetParticle"/>
-    <class name="JetParticleHandle">
+
+    <class name="JetParticleAssociation"/>
+    <class name="JetParticleAssociationHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class> 
+
+    <class name="GenJetParticleAssociation"/>
+    <class name="GenJetParticleAssociationHandle">
       <field name="m_registry"  transient="true"/>
       <field name="m_container"  transient="true"/>
     </class> 
 
     <class name="Particle"/>
     <class name="ParticleHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class>
+
+    <class name="MCParticle"/>
+    <class name="MCParticleHandle">
       <field name="m_registry"  transient="true"/>
       <field name="m_container"  transient="true"/>
     </class>
@@ -27,6 +46,14 @@
       <field name="m_registry"  transient="true"/>
       <field name="m_container"  transient="true"/>
     </class>
+
+   <class name="GenJet"/>
+    <class name="GenJetHandle">
+      <field name="m_registry"  transient="true"/>
+      <field name="m_container"  transient="true"/>
+    </class>
+   <class name="GenJetParticleAssociation"/>
+   <class name="JetParticleAssociation"/>
 
   <class pattern="std::vector<*>"/>
   </selection>

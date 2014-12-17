@@ -5,17 +5,18 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 
 // albers specific includes
 #include "albers/Registry.h"
 #include "albers/CollectionBase.h"
 
 // datamodel specific includes
-#include "Particle.h"
-#include "ParticleHandle.h"
+#include "DataObjects/Particle.h"
+#include "DataObjects/ParticleHandle.h"
 
 typedef std::vector<Particle> ParticleVector;
-typedef std::vector<ParticleHandle> ParticleHandleVector;
+typedef std::vector<ParticleHandle> ParticleHandleContainer;
 
 class ParticleCollectionIterator {
 
@@ -73,23 +74,27 @@ public:
     return const_iterator(m_handles.size(), this);
   }
 
+//  std::vector<std::pair<std::string,albers::CollectionBase*>>& referenceCollections();
+
   /// returns the address of the pointer to the data buffer
   void* _getRawBuffer() { return (void*)&m_data;};
 
   /// returns the pointer to the data buffer
   std::vector<Particle>* _getBuffer() { return m_data;};
 
-  /// returns the vector of Handles
-  const ParticleHandleVector& getHandles() { return m_handles; }
+  /// returns the collection of Handles
+  const ParticleHandleContainer& getHandles() { return m_handles; }
 
   /// print some information
   void print() const;
 
+
 private:
   unsigned m_collectionID;
   ParticleVector* m_data;
-  ParticleHandleVector m_handles;
-
+  ParticleHandleContainer m_handles;
+  // members to handle 1-to-N-relations
+  
 };
 
 #endif
