@@ -30,7 +30,6 @@ private:
   /// The output handle for what is being produced
   DataObjectHandle<HepMCEntry> m_hepmchandle;
   int nAbort;
-  //int nEvt;
 };
 
 #endif

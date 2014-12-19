@@ -15,7 +15,6 @@ PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
 {
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput("hepmc", m_hepmchandle);
-  //nEvt = 0;
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -23,13 +22,16 @@ StatusCode PythiaInterface::initialize() {
   if (!sc.isSuccess()) return sc;
   if ( m_parfile.empty() )
     { return Error ( "Define Pythia8 parameter file!" ); }
-  /// initialize Pythia
-  std::string xmlpath = "";
-  if ( "UNKNOWN" != System::getEnv( "PYTHIA8_XML" ) )
-    xmlpath = System::getEnv( "PYTHIA8_XML" );
+
+  /// initialize with path
+  std::string xmlpath = "" ;
+  if ( "UNKNOWN" != System::getEnv( "PYTHIA8_XML" ) ) 
+    xmlpath  = System::getEnv( "PYTHIA8_XML" ) ;
   m_pythia = new Pythia8::Pythia ( xmlpath );
+  /// read command file
   m_pythia->readFile( m_parfile.c_str() );
-  nAbort = m_pythia->settings.mode("Main:timesAllowErrors");   // how many aborts before run stops
+  // initial settings from param file
+  nAbort = m_pythia->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
   m_pythia->init();
   return sc;
 }
@@ -46,8 +48,6 @@ StatusCode PythiaInterface::execute() {
          return Error ( "Event generation aborted prematurely, owing to error!" );
 
   /*
-  std::cout << "Event : " << nEvt << std::endl;
-
   for (int i = 0; i < m_pythia->event.size(); ++i){ 
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
       std::cout << "PythiaInterface : id : stat : px : py : pz : e : m : " 
@@ -87,11 +87,10 @@ StatusCode PythiaInterface::execute() {
   HepMCEntry * entry = new HepMCEntry();
   entry->setEvent(theEvent);
   m_hepmchandle.put(entry);
-  //nEvt++;
   return StatusCode::SUCCESS;
 }
 
 StatusCode PythiaInterface::finalize() {
-  if ( 0 != m_pythia ) { delete m_pythia ; m_pythia = 0 ; }
+  if ( 0 != m_pythia ) { delete m_pythia ; m_pythia = 0; }
   return GaudiAlgorithm::finalize();
 }
