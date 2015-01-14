@@ -1,6 +1,7 @@
 """
-./run gaudirun.py simple_pythia.py
-export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
+to run example
+> export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
+> ./run gaudirun.py simple_pythia.py
 """
 from Gaudi.Configuration import *
 
