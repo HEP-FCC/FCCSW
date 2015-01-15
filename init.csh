@@ -22,3 +22,5 @@ setenv CMTCONFIG x86_64-slc6-gcc48-opt
 # set up the compilers
 setenv PATH /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts:${PATH}
 
+# set up Pythia8 Index.xml
+setenv PYTHIA8_XML /afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc

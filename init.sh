@@ -24,3 +24,6 @@ export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/Install
 #export LCG_hostos=x86_64-slc6
 #export LCG_external_area=/afs/cern.ch/sw/lcg/external
 #export PATH=/afs/cern.ch/sw/lcg/contrib/ninja/1.4.0/x86_64-slc6:$PATH
+
+# set up Pythia8 Index.xml
+export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc

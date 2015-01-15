@@ -7,7 +7,7 @@ gaudi_subdir(Generation v1r0)
 gaudi_depends_on_subdirs(GaudiAlg DataObjects)
 
 find_package(HepMC)
-find_package(Pythia8)
+find_package(Pythia8 COMPONENTS pythia8 pythia8tohepmc)
 
 gaudi_install_headers(Generation)
 
