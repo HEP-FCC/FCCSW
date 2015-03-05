@@ -1,18 +1,24 @@
 """
 to run example
 > export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
-> ./run gaudirun.py simple_pythia.py
+> ./run gaudirun.py simple_pythia.py 
 """
 from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc
+
+#example of pythia configuration file to generate events
+pythiafile="main03.cmnd"
+
+#example of pythia configuration file to read LH event file
+#pythiafile="main42.cmnd"
 
 albersevent   = FCCDataSvc("EventDataSvc")
 
 from Configurables import PythiaInterface 
 # PythiaInterface parameter 
 #pythia8gen = PythiaInterface("Pythia8Interface",Filename="main03.cmnd")
-pythia8gen = PythiaInterface(Filename="main03.cmnd")
+pythia8gen = PythiaInterface(Filename=pythiafile)
 # write the HepMC::GenEvent to the data service
 pythia8gen.Outputs.hepmc.Path = "hepmc"
 
