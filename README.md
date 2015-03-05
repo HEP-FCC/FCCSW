@@ -44,8 +44,8 @@ Prepare a global software zone for FCC:
 
 Clone the Gaudi repository: 
 
-    git clone -b dev/hive  http://cern.ch/gaudi/GaudiMC.git GAUDI/GAUDI_v25r2
-    export GAUDI=$FCCBASE/GAUDI/GAUDI_v25r2
+    git clone -b dev/hive  http://cern.ch/gaudi/GaudiMC.git GAUDI/GAUDI_v26r1
+    export GAUDI=$FCCBASE/GAUDI/GAUDI_v26r1
     
 Clone the FCCSW repository: **replace \<username\> by your github username**
 
