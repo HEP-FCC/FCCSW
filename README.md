@@ -77,3 +77,12 @@ Test
 
 You should see an HepMC printout. 
 
+
+Example reading LH event 
+----
+
+    cp ~helsens/public/events.lhe .
+
+uncomment pythiafile="main42.cmnd" in simple_pythia.py 
+
+    ./run gaudirun.py simple_pythia.py 
