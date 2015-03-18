@@ -1,6 +1,5 @@
 #include "Geant4Simulation.h"
 
-#include "B1PrimaryGeneratorAction.h"
 #include "B1DetectorConstruction.h"
 #include "FTFP_BERT.hh"
 #include "G4Event.hh"
