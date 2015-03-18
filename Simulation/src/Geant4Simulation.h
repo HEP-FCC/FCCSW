@@ -2,12 +2,13 @@
 #define _GEANT4SIMULATION_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/GeantEventEntry.h"
+#include "DataObjects/HepMCEntry.h"
 #include "GaudiKernel/DataObjectHandle.h"
 #include "DataObjects/ParticleCollection.h"
 #include "DataObjects/Particle.h"
 
 #include "G4RunManager.hh"
+#include "G4Event.hh"
 
 class Geant4Simulation: public GaudiAlgorithm {
   friend class AlgFactory<Geant4Simulation> ;
@@ -21,11 +22,13 @@ public:
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
+  /// Converter between HepMS::GenEvent and G4Event
+  void HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4Event);
 private:
   /* /// Pointer to Geant4 geometry */
   /*G4VUser.... * m_g4detector; */
-  /// Handle for the G4Event to be read
-  DataObjectHandle<GeantEventEntry> m_eventhandle;
+  /// Handle for the HepMC to be read
+  DataObjectHandle<HepMCEntry> m_eventhandle;
   /// Handle for the "reconstructed" to be written
   DataObjectHandle<ParticleCollection> m_recphandle;
 
