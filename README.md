@@ -42,11 +42,13 @@ Prepare a global software zone for FCC:
     cd FCC
     export FCCBASE=$PWD
 
-Clone the Gaudi repository: 
+Setup the Gaudi environment
 
-    git clone -b dev/hive  http://cern.ch/gaudi/GaudiMC.git GAUDI/GAUDI_v26r1
-    export GAUDI=$FCCBASE/GAUDI/GAUDI_v26r1
-    
+    mkdir GAUDI
+    cd GAUDI
+    ln -s GAUDI_v25r2 /afs/cern.ch/exp/fcc/sw/0.2/GAUDI/GAUDI_v25r2
+    export GAUDI=$FCCBASE/GAUDI/GAUDI_v25r2
+
 Clone the FCCSW repository: **replace \<username\> by your github username**
 
     git clone git@github.com:<username>/FCCSW.git FCCSW 
@@ -56,12 +58,6 @@ Set up your environment:
 
     cd $FCCSW
     source init.sh
-
-Compile Gaudi (it will take a bit of time, but you won't do this often):
-
-    cd $GAUDI
-    make -j 12 
-    make install  # _do not forget to install_
 
 Compile the FCC software:
 
