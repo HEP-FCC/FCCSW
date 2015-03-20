@@ -46,7 +46,7 @@ Setup the Gaudi environment
 
     mkdir GAUDI
     cd GAUDI
-    ln -s GAUDI_v25r2 /afs/cern.ch/exp/fcc/sw/0.2/GAUDI/GAUDI_v25r2
+    ln -s /afs/cern.ch/exp/fcc/sw/0.2/GAUDI/GAUDI_v25r2 GAUDI_v25r2
     export GAUDI=$FCCBASE/GAUDI/GAUDI_v25r2
 
 Clone the FCCSW repository: **replace \<username\> by your github username**
