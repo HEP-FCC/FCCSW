@@ -11,4 +11,4 @@ find_package(GaudiProject)
 #                  USE dep_project_1 version_1 [project_2 version_2 ...]
 #                  [DATA pkg1 [VERSION vers1] [pkg2 ...])
 gaudi_project(FCCSW HEAD
-              USE Gaudi v26r1)
+              USE Gaudi v25r2)
