@@ -1,11 +1,18 @@
 #include "Geant4Simulation.h"
 
-#include "B1DetectorConstruction.h"
+#include "GeantFast/B4DetectorConstruction.hh"
+#include "GeantFast/H03PrimaryGeneratorAction.hh"
+#include "GeantFast/B4RunAction.hh"
+#include "GeantFast/B4aEventAction.hh"
+#include "GeantFast/B4aSteppingAction.hh"
+
 #include "FTFP_BERT.hh"
 #include "DataObjects/HepMCEntry.h"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -20,14 +27,29 @@ GaudiAlgorithm(name, svcLoc)
 StatusCode Geant4Simulation::initialize() {
    GaudiAlgorithm::initialize();
    m_runManager = new G4RunManager;
-   // take geometry
-   ///.... from Service - check with Julia code, currently...
-   m_runManager->SetUserInitialization(new B1DetectorConstruction);
    // load physics list
    m_runManager->SetUserInitialization(new FTFP_BERT);
+   // take geometry
+   ///.... from Service - check with Julia code, currently...
+   //m_runManager->SetUserInitialization(new B4DetectorConstruction);
+
+  // Set mandatory initialization classes
+  //
+  B4DetectorConstruction* detConstruction = new B4DetectorConstruction();
+  m_runManager->SetUserInitialization(detConstruction);
+
+  B4aEventAction* eventAction = new B4aEventAction();
+  m_runManager->SetUserAction(eventAction);
+  m_runManager->SetUserAction(new B4RunAction());
+  m_runManager->SetUserAction(new H03PrimaryGeneratorAction());
+  B4aSteppingAction* steppingAction 
+    = new B4aSteppingAction(detConstruction, eventAction);
+  m_runManager->SetUserAction(steppingAction);
+
    // initialization
    m_runManager->Initialize();
    m_runManager->RunInitialization();
+
 	return StatusCode::SUCCESS;
 }
 
@@ -37,9 +59,9 @@ StatusCode Geant4Simulation::execute() {
    G4Event* geant_event = new G4Event();
    HepMC2G4(hepmc_event, geant_event);
 
-   // run geant
-   G4EventManager* eventManager = G4EventManager::GetEventManager();
-   eventManager->ProcessOneEvent(geant_event);
+   // // run geant
+   // G4EventManager* eventManager = G4EventManager::GetEventManager();
+   // eventManager->ProcessOneEvent(geant_event);
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
@@ -52,7 +74,6 @@ StatusCode Geant4Simulation::finalize() {
    delete  m_runManager;
    return GaudiAlgorithm::finalize();
 }
-
 
 void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4Event)
 {

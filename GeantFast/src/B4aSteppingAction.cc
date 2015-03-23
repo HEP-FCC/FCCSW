@@ -23,37 +23,61 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id: B1DetectorConstruction.hh 69565 2013-05-08 12:35:31Z gcosmo $
-//
-/// \file B1DetectorConstruction.hh
-/// \brief Definition of the B1DetectorConstruction class
+// $Id$
+// 
+/// \file B4aSteppingAction.cc
+/// \brief Implementation of the B4aSteppingAction class
 
-#ifndef B1DetectorConstruction_h
-#define B1DetectorConstruction_h 1
+#include "B4aSteppingAction.hh"
+#include "B4aEventAction.hh"
+#include "B4DetectorConstruction.hh"
 
-#include "G4VUserDetectorConstruction.hh"
-#include "globals.hh"
-
-class G4VPhysicalVolume;
-class G4LogicalVolume;
-
-/// Detector construction class to define materials and geometry.
-
-class B1DetectorConstruction : public G4VUserDetectorConstruction
-{
-  public:
-    B1DetectorConstruction();
-    virtual ~B1DetectorConstruction();
-
-    virtual G4VPhysicalVolume* Construct();
-    
-    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
-
-  protected:
-    G4LogicalVolume*  fScoringVolume;
-};
+#include "G4Step.hh"
+#include "G4RunManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif
+B4aSteppingAction::B4aSteppingAction(
+                      const B4DetectorConstruction* detectorConstruction,
+                      B4aEventAction* eventAction)
+  : G4UserSteppingAction(),
+    fDetConstruction(detectorConstruction),
+    fEventAction(eventAction)
+{
+}
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+B4aSteppingAction::~B4aSteppingAction()
+{ 
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void B4aSteppingAction::UserSteppingAction(const G4Step* step)
+{
+// Collect energy and track length step by step
+
+  // get volume of the current step
+  G4VPhysicalVolume* volume 
+    = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+  
+  // energy deposit
+  G4double edep = step->GetTotalEnergyDeposit();
+  
+  // step length
+  G4double stepLength = 0.;
+  if ( step->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
+    stepLength = step->GetStepLength();
+  }
+      
+  if ( volume == fDetConstruction->GetAbsorberPV() ) {
+    fEventAction->AddAbs(edep,stepLength);
+  }
+  
+  if ( volume == fDetConstruction->GetGapPV() ) {
+    fEventAction->AddGap(edep,stepLength);
+  }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
