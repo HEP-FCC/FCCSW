@@ -47,6 +47,7 @@ StatusCode Geant4Simulation::initialize() {
   m_runManager->SetUserAction(steppingAction);
 
    // initialization
+   m_runManager->ConstructScoringWorlds();
    m_runManager->Initialize();
    m_runManager->RunInitialization();
 
@@ -56,16 +57,22 @@ StatusCode Geant4Simulation::initialize() {
 StatusCode Geant4Simulation::execute() {
    //read event
    const HepMC::GenEvent* hepmc_event = m_eventhandle.get()->getEvent();
-   G4Event* geant_event = new G4Event();
-   HepMC2G4(hepmc_event, geant_event);
+   G4Event* geantEvent = new G4Event();
+   HepMC2G4(hepmc_event, geantEvent);
 
-   // // run geant
-   // G4EventManager* eventManager = G4EventManager::GetEventManager();
-   // eventManager->ProcessOneEvent(geant_event);
+   // run geant
+   G4EventManager* eventManager = G4EventManager::GetEventManager();
+   //as in  G4RunManager::ProcessOneEvent
+   eventManager->ProcessOneEvent(geantEvent);
+   //m_runManager->currentEvent = geantEvent;
+   m_runManager->AnalyzeEvent(geantEvent);
+   // m_runManager->UpdateScoring();
+   //m_runManager->TerminateOneEvent();
+
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
-   delete geant_event;
+   //delete geant_event;
    return StatusCode::SUCCESS;
 }
 
@@ -99,8 +106,8 @@ void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4
 
       // create G4PrimaryVertex and associated G4PrimaryParticles
       G4PrimaryVertex* g4vtx=
-         new G4PrimaryVertex(xvtx.x()*mm, xvtx.y()*mm, xvtx.z()*mm,
-                             xvtx.t()*mm/c_light);
+         new G4PrimaryVertex(xvtx.x()*cm, xvtx.y()*cm, xvtx.z()*cm,
+                             xvtx.t()*cm/c_light);
 
       for (HepMC::GenVertex::particle_iterator
               vpitr= (*vitr)->particles_begin(HepMC::children);
