@@ -23,66 +23,40 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file eventgenerator/HepMC/HepMCEx03/include/H03PrimaryGeneratorAction.hh
-/// \brief Definition of the H03PrimaryGeneratorAction class
-//
 
-#ifndef H03_PRIMARY_GENERATOR_ACTION_H
-#define H03_PRIMARY_GENERATOR_ACTION_H
+#ifndef FCC_PARTICLE_GUN_H
+#define FCC_PARTICLE_GUN_H
 
-#include <map>
+#include "G4ParticleGunMessenger.hh"
+#include "G4ParticleGun.hh"
+#include "G4Event.hh"
 #include "globals.hh"
-#include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4VPrimaryGenerator.hh"
+#include "G4ThreeVector.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4PrimaryVertex.hh"
+#include "G4ParticleMomentum.hh"
 
-class G4Event;
-class G4VPrimaryGenerator;
+/**
+   @brief     Extension of G4ParticleGun to shoot particles in random directions.
+   @details   An extension of G4ParticleGun. Shoots in a random direction a particle with given momentum and type).
+ 	@author    Anna Zaborowska
+*/
 
-class H03PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
+class FCCParticleGun: public G4ParticleGun
+{
 public:
-   H03PrimaryGeneratorAction();
-   ~H03PrimaryGeneratorAction();
-
-   virtual void GeneratePrimaries(G4Event* anEvent);
-
-   void SetGenerator(G4VPrimaryGenerator* gen);
-   void SetGenerator(G4String genname);
-
-   G4VPrimaryGenerator* GetGenerator() const;
-   G4String GetGeneratorName() const;
-
-private:
-   G4VPrimaryGenerator* hepmcAscii;
-
-   G4VPrimaryGenerator* currentGenerator;
-   G4String currentGeneratorName;
-   std::map<G4String, G4VPrimaryGenerator*> gentypeMap;
-
+   /**
+      A default constructor.
+   */
+   FCCParticleGun();
+   virtual ~FCCParticleGun();
+   /**
+      Generates an event containing a particle just as in G4ParticleGun, additionally it sets a vertex position and momentum direction using randomly generated numbers. Attaches FCCPrimaryParticleInformation to all the primaries.
+      @param aEvent A generated event.
+   */
+   void GeneratePrimaryVertex(G4Event* aEvent);
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-inline void H03PrimaryGeneratorAction::SetGenerator(G4VPrimaryGenerator* gen)
-{
-   currentGenerator= gen;
-}
-
-inline void H03PrimaryGeneratorAction::SetGenerator(G4String genname)
-{
-   std::map<G4String, G4VPrimaryGenerator*>::iterator
-      pos = gentypeMap.find(genname);
-   if(pos != gentypeMap.end()) {
-      currentGenerator= pos->second;
-      currentGeneratorName= genname;
-   }
-}
-
-inline G4VPrimaryGenerator* H03PrimaryGeneratorAction::GetGenerator() const
-{
-   return currentGenerator;
-}
-
-inline G4String H03PrimaryGeneratorAction::GetGeneratorName() const
-{
-   return currentGeneratorName;
-}
-
 #endif
+

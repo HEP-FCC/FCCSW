@@ -23,64 +23,48 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file eventgenerator/HepMC/HepMCEx01/include/HepMCG4AsciiReader.hh
-/// \brief Definition of the HepMCG4AsciiReader class
-//
-// $Id: HepMCG4AsciiReader.hh 77801 2013-11-28 13:33:20Z gcosmo $
-//
 
-#ifndef HEPMC_G4_ASCII_READER_H
-#define HEPMC_G4_ASCII_READER_H
+#ifndef FCC_DETECTOR_CONSTRUCTION_H
+#define FCC_DETECTOR_CONSTRUCTION_H
 
-#include "HepMCG4Interface.hh"
-#include "HepMC/IO_GenEvent.h"
+#include "G4VUserDetectorConstruction.hh"
 
-class HepMCG4AsciiReader : public HepMCG4Interface {
-protected:
-  G4String filename;
-  HepMC::IO_GenEvent* asciiInput;
 
-  G4int verbose;
+/**
+	@brief     Construction of detector geometry.
+ 	@details   A mandatory initialization class of the detector setup. Detector construction allows to use the geometry read from the GDML file. Based on G4 examples/persistency/gdml/G01/include/G01DetectorConstruction.hh.
+ 	@author    Anna Zaborowska
+ */
 
-  virtual HepMC::GenEvent* GenerateHepMCEvent();
+class FCCDetectorConstruction : public G4VUserDetectorConstruction
 
-public:
-  HepMCG4AsciiReader();
-  ~HepMCG4AsciiReader();
+{
+  public:
 
-  // set/get methods
-  void SetFileName(G4String name);
-  G4String GetFileName() const;
+		/**
+			A default constructor
+			@param setWorld A pointer to the G4VPhysicalVolume object.
+		*/
+    FCCDetectorConstruction(G4VPhysicalVolume *setWorld = 0)
+    {
+      fWorld = setWorld;
+    }
 
-  void SetVerboseLevel(G4int i);
-  G4int GetVerboseLevel() const; 
+		/**
+			A method invoked by G4RunManager::Initialize()
+         @return A pointer to the world volume.
+		*/
+    virtual G4VPhysicalVolume *Construct()
+    {
+      return fWorld;
+    }
 
-  // methods...
-  void Initialize();
+  private:
+
+		/**
+			A pointer to the world volume.
+		*/
+    G4VPhysicalVolume *fWorld;
 };
-
-// ====================================================================
-// inline functions
-// ====================================================================
-
-inline void HepMCG4AsciiReader::SetFileName(G4String name)
-{
-  filename= name;
-}
-
-inline G4String HepMCG4AsciiReader::GetFileName() const
-{
-  return filename;
-}
-
-inline void HepMCG4AsciiReader::SetVerboseLevel(G4int i)
-{
-  verbose= i;
-}
-
-inline G4int HepMCG4AsciiReader::GetVerboseLevel() const
-{
-  return verbose;
-}
 
 #endif

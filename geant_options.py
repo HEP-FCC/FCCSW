@@ -17,7 +17,7 @@ out.outputCommands = ["drop *"]
 
 ApplicationMgr( TopAlg = [reader, geant4simulation],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax   = 1,
                 ExtSvc = [albersevent],
 #                EventLoop = eventloopmgr,
 #OutputLevel=DEBUG

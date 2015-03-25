@@ -23,78 +23,41 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id$
-// 
-/// \file B4aEventAction.hh
-/// \brief Definition of the B4aEventAction class
 
-#ifndef B4aEventAction_h
-#define B4aEventAction_h 1
+#ifndef FCC_TRACKING_ACTION_H
+#define FCC_TRACKING_ACTION_H
 
-#include "G4UserEventAction.hh"
+#include "G4UserTrackingAction.hh"
 #include "globals.hh"
 
-class B4RunAction;
+/**
+	@brief     Tracking action (before/after track processing).
+   @details   Defines the action at the start and at the end of processing of each track. The class needs to be set in G4RunManager::SetUserAction().
+ 	@author    Anna Zaborowska
+*/
 
-class G4GenericMessenger;
-
-/// Event action class
-///
-/// It defines data members to hold the energy deposit and track lengths
-/// of charged particles in Absober and Gap layers:
-/// - fEnergyAbs, fEnergyGap, fTrackLAbs, fTrackLGap
-/// which are collected step by step via the functions
-/// - AddAbs(), AddGap()
-/// 
-/// The data member fPrintModulo defines the frequency of printing
-/// the accumulated quantities. Its value can be changed via a command
-/// defined using G4GenericMessenger class:
-/// - /B4/event/setPrintModulo value
-
-class B4aEventAction : public G4UserEventAction
+class FCCTrackingAction : public G4UserTrackingAction
 {
   public:
-    B4aEventAction();
-    virtual ~B4aEventAction();
+   /**
+      A default constructor.
+    */
+    FCCTrackingAction();
+    virtual ~FCCTrackingAction();
 
-    virtual void  BeginOfEventAction(const G4Event* event);
-    virtual void    EndOfEventAction(const G4Event* event);
-    
-    void AddAbs(G4double de, G4double dl);
-    void AddGap(G4double de, G4double dl);
-                     
-    void SetPrintModulo(G4int value);
-    
-  private:
-    G4GenericMessenger*  fMessenger;
-    B4RunAction*  fRunAction;
-   
-    G4double  fEnergyAbs;
-    G4double  fEnergyGap;
-    G4double  fTrackLAbs; 
-    G4double  fTrackLGap;
-                     
-    G4int     fPrintModulo;
+   /**
+     Defines the actions at the start of processing the track. It checks the pseudorapidity range and if the particle is primary.
+    */
+   virtual void  PreUserTrackingAction(const G4Track* track);
+   /**
+     Defines the actions at the end of processing the track. It saves the information of MC data (PDG code, initial momentum), tracker (momentum), EMCal and HCal (energy deposit and its position) as well as resolution and efficiency for all the detectors.
+    */
+   virtual void  PostUserTrackingAction(const G4Track* track);
+
 };
 
-// inline functions
-
-inline void B4aEventAction::AddAbs(G4double de, G4double dl) {
-  fEnergyAbs += de; 
-  fTrackLAbs += dl;
-}
-
-inline void B4aEventAction::AddGap(G4double de, G4double dl) {
-  fEnergyGap += de; 
-  fTrackLGap += dl;
-}
-
-inline void B4aEventAction::SetPrintModulo(G4int value) {
-  fPrintModulo = value;
-}
-                     
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 
-    
+

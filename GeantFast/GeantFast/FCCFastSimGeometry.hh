@@ -23,46 +23,60 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file eventgenerator/HepMC/HepMCEx01/src/HepMCG4AsciiReader.cc
-/// \brief Implementation of the HepMCG4AsciiReader class
-//
-// $Id: HepMCG4AsciiReader.cc 77801 2013-11-28 13:33:20Z gcosmo $
-//
+#ifndef FCC_FAST_SIM_GEOMETRY_H
+#define FCC_FAST_SIM_GEOMETRY_H
 
-#include "HepMCG4AsciiReader.hh"
+#include <vector>
+#include "FCCDetectorConstruction.hh"
+#include "G4LogicalVolumeStore.hh"
+#include "G4TransportationManager.hh"
+#include "G4RegionStore.hh"
+#include "G4GDMLParser.hh"
+#include "G4SDManager.hh"
+#include "G4UniformMagField.hh"
 
-#include <iostream>
-#include <fstream>
+#include "FCCFastSimModelTracker.hh"
+#include "FCCFastSimModelEMCal.hh"
+#include "FCCFastSimModelHCal.hh"
+#include "G4GlobalFastSimulationManager.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-HepMCG4AsciiReader::HepMCG4AsciiReader()
-  :  filename("example_MyPythia.dat"), verbose(0)
-{
-  asciiInput= new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
-
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-HepMCG4AsciiReader::~HepMCG4AsciiReader()
-{
-  delete asciiInput;
-}
+/**
+	@brief     Handling the auxiliary information from GDML file
+   @details   Reads the auxiliary information from the GDML file. Creates the logical volumes based on the detector type and attaches fast simulation models. Creates the magnetic field.
+   @author    Anna Zaborowska
+*/
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-void HepMCG4AsciiReader::Initialize()
+class FCCFastSimGeometry
 {
-  delete asciiInput;
+  public:
+   /**
+      A default constructor. Reads the map, creates the logical volumes for the detectors and attaches Fast Simulation Models (FCCFastSimModelTracker, FCCFastSimModelEMCal and FCCFastSimModelHCal). The magnetic field is created here.
+      @param aAuxMap a map of auxiliary information (type and value) from GDML file.
+    */
+    FCCFastSimGeometry(const G4GDMLAuxMapType* aAuxMap);
+    ~FCCFastSimGeometry();
 
-  asciiInput= new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
-}
+private:
+   /**
+      A uniform magnetic field.
+    */
+    G4UniformMagField*        fField;
+   /**
+      A vector of fast simulation models for a tracking detector.
+    */
+   std::vector<FCCFastSimModelTracker*> fTrackerSmearModel;
+   /**
+      A vector of fast simulation models for an electromagnetic calorimeter.
+    */
+   std::vector<FCCFastSimModelEMCal*> fEMCalSmearModel;
+   /**
+      A vector of fast simulation models for a hadronic calorimeter.
+    */
+   std::vector<FCCFastSimModelHCal*> fHCalSmearModel;
+   // std::vector<FCCMuonSmearModel*> fMuonSmearModel;
+};
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-HepMC::GenEvent* HepMCG4AsciiReader::GenerateHepMCEvent()
-{
-  HepMC::GenEvent* evt= asciiInput-> read_next_event();
-  if(!evt) return 0; // no more event
 
-  if(verbose>0) evt-> print();
-
-  return evt;
-}
+#endif

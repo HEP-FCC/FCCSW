@@ -8,10 +8,13 @@ gaudi_subdir(GeantFast v1r0)
 
 find_package(Geant4)
 find_package(HepMC)
+find_package(CLHEP)
+find_package(ROOT)
+find_package(Pythia8)
 
 gaudi_add_library(GeantFast
                  src/*.cc
-                 INCLUDE_DIRS Geant4 HepMC GeantFast
-                 LINK_LIBRARIES  Geant4 HepMC
+                 INCLUDE_DIRS GeantFast Geant4 HepMC CLHEP ROOT Pythia8
+                 LINK_LIBRARIES  Geant4 HepMC CLHEP ROOT Pythia8
 		           PUBLIC_HEADERS GeantFast)
 

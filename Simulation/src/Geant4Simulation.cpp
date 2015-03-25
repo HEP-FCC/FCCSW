@@ -1,10 +1,9 @@
 #include "Geant4Simulation.h"
 
-#include "GeantFast/B4DetectorConstruction.hh"
-#include "GeantFast/H03PrimaryGeneratorAction.hh"
-#include "GeantFast/B4RunAction.hh"
-#include "GeantFast/B4aEventAction.hh"
-#include "GeantFast/B4aSteppingAction.hh"
+#include "GeantFast/FCCDetectorConstruction.hh"
+#include "GeantFast/FCCActionInitialization.hh"
+#include "GeantFast/FCCPrimaryParticleInformation.hh"
+#include "G4GDMLParser.hh"
 
 #include "FTFP_BERT.hh"
 #include "DataObjects/HepMCEntry.h"
@@ -35,16 +34,15 @@ StatusCode Geant4Simulation::initialize() {
 
   // Set mandatory initialization classes
   //
-  B4DetectorConstruction* detConstruction = new B4DetectorConstruction();
+   G4GDMLParser parser;
+   parser.Read("FCCFullDetector.gdml");
+   FCCDetectorConstruction* detConstruction = new FCCDetectorConstruction(parser.GetWorldVolume());
   m_runManager->SetUserInitialization(detConstruction);
+  m_runManager->SetUserInitialization(new FCCActionInitialization);
 
-  B4aEventAction* eventAction = new B4aEventAction();
-  m_runManager->SetUserAction(eventAction);
-  m_runManager->SetUserAction(new B4RunAction());
-  m_runManager->SetUserAction(new H03PrimaryGeneratorAction());
-  B4aSteppingAction* steppingAction 
-    = new B4aSteppingAction(detConstruction, eventAction);
-  m_runManager->SetUserAction(steppingAction);
+   // const G4GDMLAuxMapType* auxmap = parser.GetAuxMap();
+   // FCCFastSimGeometry FastSimGeometry(auxmap);
+  
 
    // initialization
    m_runManager->ConstructScoringWorlds();
@@ -120,10 +118,10 @@ void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4
          G4LorentzVector p(pos.px(), pos.py(), pos.pz(), pos.e());
          G4PrimaryParticle* g4prim=
             new G4PrimaryParticle(pdgcode, p.x()*GeV, p.y()*GeV, p.z()*GeV);
-         // g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
-         //                               (*vpitr)->barcode(),
-         //                               pdgcode,
-         //                               G4ThreeVector(p.x(), p.y(), p.z())));
+         g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
+                                       (*vpitr)->barcode(),
+                                       pdgcode,
+                                       G4ThreeVector(p.x(), p.y(), p.z())));
          g4vtx-> SetPrimary(g4prim);
       }
       aG4Event-> AddPrimaryVertex(g4vtx);

@@ -23,61 +23,52 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id$
-// 
-/// \file B4aSteppingAction.cc
-/// \brief Implementation of the B4aSteppingAction class
 
-#include "B4aSteppingAction.hh"
-#include "B4aEventAction.hh"
-#include "B4DetectorConstruction.hh"
+#include "FCCEventInformation.hh"
 
-#include "G4Step.hh"
-#include "G4RunManager.hh"
+FCCEventInformation::FCCEventInformation() :fDoSmearing(true), fSavePerigee(false)
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+FCCEventInformation::FCCEventInformation(G4bool aSmear): fDoSmearing(aSmear), fSavePerigee(false)
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+FCCEventInformation::FCCEventInformation(G4bool aSmear, G4bool aSavePerigee): fDoSmearing(aSmear), fSavePerigee(aSavePerigee)
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+FCCEventInformation::~FCCEventInformation(){}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B4aSteppingAction::B4aSteppingAction(
-                      const B4DetectorConstruction* detectorConstruction,
-                      B4aEventAction* eventAction)
-  : G4UserSteppingAction(),
-    fDetConstruction(detectorConstruction),
-    fEventAction(eventAction)
+void FCCEventInformation::SetDoSmearing(G4bool aSmear)
 {
+   fDoSmearing = aSmear;
 }
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-B4aSteppingAction::~B4aSteppingAction()
-{ 
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void B4aSteppingAction::UserSteppingAction(const G4Step* step)
+G4bool FCCEventInformation::GetDoSmearing()
 {
-// Collect energy and track length step by step
+   return fDoSmearing;
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-  // get volume of the current step
-  G4VPhysicalVolume* volume 
-    = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
-  
-  // energy deposit
-  G4double edep = step->GetTotalEnergyDeposit();
-  
-  // step length
-  G4double stepLength = 0.;
-  if ( step->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
-    stepLength = step->GetStepLength();
-  }
-      
-  if ( volume == fDetConstruction->GetAbsorberPV() ) {
-    fEventAction->AddAbs(edep,stepLength);
-  }
-  
-  if ( volume == fDetConstruction->GetGapPV() ) {
-    fEventAction->AddGap(edep,stepLength);
-  }
+void FCCEventInformation::SetSavePerigee(G4bool aSavePerigee)
+{
+   fSavePerigee = aSavePerigee;
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+G4bool FCCEventInformation::GetSavePerigee()
+{
+   return fSavePerigee;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void FCCEventInformation::Print() const
+{
+   G4cout<<"FCCEventInformation: "<<G4endl
+         <<"do smearing: "<<fDoSmearing<<G4endl
+         <<"save perigee: "<<fSavePerigee<<G4endl;
+}

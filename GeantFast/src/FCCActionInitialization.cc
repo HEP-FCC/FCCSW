@@ -23,36 +23,48 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file eventgenerator/HepMC/HepMCEx03/src/H03PrimaryGeneratorAction.cc
-/// \brief Implementation of the H03PrimaryGeneratorAction class
+// based on G4 examples/extended/parametrisations/Par01/src/Par01ActionInitialization.cc
 //
-#include "G4Event.hh"
-#include "HepMCG4AsciiReader.hh"
-#include "H03PrimaryGeneratorAction.hh"
+
+#include "FCCActionInitialization.hh"
+#include "FCCRunAction.hh"
+#include "FCCEventAction.hh"
+ #include "FCCTrackingAction.hh"
+#include "G4UIcommand.hh"
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-H03PrimaryGeneratorAction::H03PrimaryGeneratorAction()
+
+FCCActionInitialization::FCCActionInitialization() : G4VUserActionInitialization(), fFileName("DefaultOutput"), fSmear(true)
+{}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+FCCActionInitialization::FCCActionInitialization(const G4String aOutName, const G4String aSmear) : G4VUserActionInitialization(), fFileName(aOutName),fSmear(G4UIcommand::ConvertToBool(aSmear))
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+FCCActionInitialization::FCCActionInitialization(const G4String aOutName) : G4VUserActionInitialization(), fFileName(aOutName),fSmear(true)
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+FCCActionInitialization::~FCCActionInitialization()
+{;}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void FCCActionInitialization::BuildForMaster() const
 {
-  // default generator is particle gun.
-  currentGenerator= hepmcAscii= new HepMCG4AsciiReader();
-  currentGeneratorName= "hepmcAscii";
-
-  gentypeMap["hepmcAscii"]= hepmcAscii;
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-H03PrimaryGeneratorAction::~H03PrimaryGeneratorAction()
+
+void FCCActionInitialization::Build() const
 {
+   SetUserAction(new FCCRunAction(fFileName));
+   SetUserAction(new FCCEventAction(fSmear));
+   SetUserAction(new FCCTrackingAction);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-void H03PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
-{
-  if(currentGenerator)
-    currentGenerator-> GeneratePrimaryVertex(anEvent);
-  else
-    G4Exception("H03PrimaryGeneratorAction::GeneratePrimaries",
-                "InvalidSetup", FatalException,
-                "Generator is not instanciated.");
-}
