@@ -46,7 +46,7 @@ Beams:eCM = 14000.                 ! CM energy of collision
 ! NOTE: to use this option, comment out the lines in section 5a above
 ! and uncomment the ones below. Section 3 is ignored for frameType = 4.
 Beams:frameType = 4                ! read info from a LHEF
-Beams:LHEF = tth.lhe             ! the LHEF to read from
+Beams:LHEF = events.lhe             ! the LHEF to read from
 
 ! 6) Other settings. Can be expanded as desired.
 ! Note: may overwrite some of the values above, so watch out.
