@@ -1,8 +1,8 @@
-
 #include "GaudiKernel/System.h"
+#include "GaudiKernel/IIncidentSvc.h"
+#include "GaudiKernel/Incident.h"
 
 #include "PythiaInterface.h"
-
 #include "Pythia8/Pythia.h"
 #include "Pythia8/Pythia8ToHepMC.h"
 
@@ -41,11 +41,13 @@ StatusCode PythiaInterface::execute() {
   /// Interface for conversion from Pythia8::Event to HepMC event.
   HepMC::Pythia8ToHepMC *toHepMC = new HepMC::Pythia8ToHepMC();
 
-  int iAbort = 0;
   /// Generate events. Quit if many failures
-  if ( !m_pythia->next() )
-     if (++iAbort > nAbort )
-         return Error ( "Event generation aborted prematurely, owing to error!" );
+  if ( !m_pythia->next() ) {
+    IIncidentSvc* incidentSvc;
+    service("IncidentSvc",incidentSvc);
+    incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
+    return Error ( "Event generation aborted prematurely, owing to error!" );
+  }
 
   /*
   for (int i = 0; i < m_pythia->event.size(); ++i){ 
