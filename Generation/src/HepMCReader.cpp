@@ -1,4 +1,6 @@
 #include "HepMCReader.h"
+#include "GaudiKernel/IIncidentSvc.h"
+#include "GaudiKernel/Incident.h"
 
 DECLARE_COMPONENT(HepMCReader)
 
@@ -30,8 +32,11 @@ StatusCode HepMCReader::initialize() {
 StatusCode HepMCReader::execute() {
   HepMC::GenEvent* theEvent = new HepMC::GenEvent();
   Assert ( 0 != m_file , "Invalid input file!" );
-  if ( !m_file->fill_next_event( theEvent ) )
-    { if ( m_file -> rdstate() != std::ios::eofbit )
+  if ( !m_file->fill_next_event( theEvent ) ) {
+    IIncidentSvc* incidentSvc;
+    service("IncidentSvc",incidentSvc);
+    incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
+    if ( m_file -> rdstate() == std::ios::eofbit )
         return Error ( "Error in event reading!" ) ;
       else return Error( "No more events in input file, set correct number of events in options" ) ;
       ;
