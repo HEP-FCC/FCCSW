@@ -23,37 +23,52 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id: B1DetectorConstruction.hh 69565 2013-05-08 12:35:31Z gcosmo $
-//
-/// \file B1DetectorConstruction.hh
-/// \brief Definition of the B1DetectorConstruction class
 
-#ifndef B1DetectorConstruction_h
-#define B1DetectorConstruction_h 1
+#include "FCCEventInformation.hh"
 
-#include "G4VUserDetectorConstruction.hh"
-#include "globals.hh"
+FCCEventInformation::FCCEventInformation() :fDoSmearing(true), fSavePerigee(false)
+{}
 
-class G4VPhysicalVolume;
-class G4LogicalVolume;
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+FCCEventInformation::FCCEventInformation(G4bool aSmear): fDoSmearing(aSmear), fSavePerigee(false)
+{}
 
-/// Detector construction class to define materials and geometry.
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+FCCEventInformation::FCCEventInformation(G4bool aSmear, G4bool aSavePerigee): fDoSmearing(aSmear), fSavePerigee(aSavePerigee)
+{}
 
-class B1DetectorConstruction : public G4VUserDetectorConstruction
-{
-  public:
-    B1DetectorConstruction();
-    virtual ~B1DetectorConstruction();
-
-    virtual G4VPhysicalVolume* Construct();
-    
-    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
-
-  protected:
-    G4LogicalVolume*  fScoringVolume;
-};
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+FCCEventInformation::~FCCEventInformation(){}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif
+void FCCEventInformation::SetDoSmearing(G4bool aSmear)
+{
+   fDoSmearing = aSmear;
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+G4bool FCCEventInformation::GetDoSmearing()
+{
+   return fDoSmearing;
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void FCCEventInformation::SetSavePerigee(G4bool aSavePerigee)
+{
+   fSavePerigee = aSavePerigee;
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+G4bool FCCEventInformation::GetSavePerigee()
+{
+   return fSavePerigee;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void FCCEventInformation::Print() const
+{
+   G4cout<<"FCCEventInformation: "<<G4endl
+         <<"do smearing: "<<fDoSmearing<<G4endl
+         <<"save perigee: "<<fSavePerigee<<G4endl;
+}
