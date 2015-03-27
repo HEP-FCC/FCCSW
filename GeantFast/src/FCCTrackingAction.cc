@@ -53,27 +53,13 @@ FCCTrackingAction::~FCCTrackingAction()
 
 void FCCTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
-
-  const  G4ParticleDefinition* particle = aTrack->GetParticleDefinition();
-    G4ProcessManager* pmanager = particle->GetProcessManager();
-    G4ProcessVector* myvector = pmanager->GetProcessList();
-
-    G4cout << "---PARTICLE=" << particle->GetParticleName() << G4endl;
-    for (G4int i=0 ; i < myvector->size(); ++i ) {
-       if ( (*myvector)[i] ) {
-          G4cout << "\t PROCESS-NAME=NOT-NULL" << (*myvector)[i]->GetProcessName() << G4endl;
-       } else {
-          G4cout << "\t PROCESS-NAME=NULL" << G4endl;
-       }
-    }
-
    if( aTrack->GetMomentum().perp() < 1.0*MeV ||
        std::abs(aTrack->GetMomentum().pseudoRapidity())>5.5 )
-    {
-       ((G4Track*)aTrack)->SetTrackStatus(fStopAndKill);
-    }
+   {
+      ((G4Track*)aTrack)->SetTrackStatus(fStopAndKill);
+   }
 // // filling data only for primary particles
-    if(aTrack->GetParentID()) return;
+   if(aTrack->GetParentID()) return;
    // G4cout<<" begin of tracking"<<G4endl;
    FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
    //info->Print();
@@ -92,54 +78,53 @@ void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
    if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0 )
    {
-   // G4cout<<" end of tracking"<<G4endl;
-   FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
-   //info->Print();
-   // G4cout<<" end of info"<<G4endl;
-   //    FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
-   //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveMC,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetMCMomentum()/MeV );
-   //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveTracker,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetTrackerMomentum()/MeV,
-   //                                     info->GetTrackerResolution(),
-   //                                     info->GetTrackerEfficiency());
-   //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveEMCal,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetEMCalPosition()/mm,
-   //                                     info->GetEMCalResolution(),
-   //                                     info->GetEMCalEfficiency(),
-   //                                     info->GetEMCalEnergy()/MeV);
-   //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveHCal,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetHCalPosition()/mm,
-   //                                     info->GetHCalResolution(),
-   //                                     info->GetHCalEfficiency(),
-   //                                     info->GetHCalEnergy()/MeV);
+      FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
+      //info->Print();
+      // G4cout<<" end of info"<<G4endl;
+      //    FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
+      //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveMC,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetMCMomentum()/MeV );
+      //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveTracker,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetTrackerMomentum()/MeV,
+      //                                     info->GetTrackerResolution(),
+      //                                     info->GetTrackerEfficiency());
+      //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveEMCal,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetEMCalPosition()/mm,
+      //                                     info->GetEMCalResolution(),
+      //                                     info->GetEMCalEfficiency(),
+      //                                     info->GetEMCalEnergy()/MeV);
+      //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveHCal,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetHCalPosition()/mm,
+      //                                     info->GetHCalResolution(),
+      //                                     info->GetHCalEfficiency(),
+      //                                     info->GetHCalEnergy()/MeV);
 
-   //    if(info->GetPerigeeMC())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveMC,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetPerigeeMC());
-   //    if(info->GetPerigeeTracker())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveTracker,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetPerigeeTracker());
-   //    if(info->GetPerigeeEMCal())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveEMCal,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetPerigeeEMCal());
-   //    if(info->GetPerigeeHCal()) FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveHCal,
-   //                                     info->GetPartID(),
-   //                                     info->GetPDG(),
-   //                                     info->GetPerigeeHCal());
-   //    if(info->GetPerigeeMC() || info->GetPerigeeTracker() || info->GetPerigeeEMCal() || info->GetPerigeeHCal() )
-   //       FCCOutput::Instance()->EndPerigeeRow();
+      //    if(info->GetPerigeeMC())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveMC,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetPerigeeMC());
+      //    if(info->GetPerigeeTracker())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveTracker,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetPerigeeTracker());
+      //    if(info->GetPerigeeEMCal())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveEMCal,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetPerigeeEMCal());
+      //    if(info->GetPerigeeHCal()) FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveHCal,
+      //                                     info->GetPartID(),
+      //                                     info->GetPDG(),
+      //                                     info->GetPerigeeHCal());
+      //    if(info->GetPerigeeMC() || info->GetPerigeeTracker() || info->GetPerigeeEMCal() || info->GetPerigeeHCal() )
+      //       FCCOutput::Instance()->EndPerigeeRow();
    }
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

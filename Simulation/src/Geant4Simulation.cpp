@@ -3,7 +3,6 @@
 #include "GeantFast/FCCDetectorConstruction.hh"
 #include "GeantFast/FCCActionInitialization.hh"
 #include "GeantFast/FCCPrimaryParticleInformation.hh"
-#include "GeantFast/FCCFastSimGeometry.hh"
 #include "GeantFast/FCCPhysicsList.hh"
 #include "G4GDMLParser.hh"
 
@@ -35,18 +34,10 @@ StatusCode Geant4Simulation::initialize() {
 
    // take geometry
    ///.... from Service - check with Julia code, currently...
-   //m_runManager->SetUserInitialization(new B4DetectorConstruction);
+   m_runManager->SetUserInitialization(new FCCDetectorConstruction);
 
-   G4GDMLParser parser;
-   parser.Read("FCCFullDetector.gdml");
-   G4cout << "Geometry loaded from  file .......FCCFullDetector.gdml " <<G4endl;
-   FCCDetectorConstruction* detConstruction = new FCCDetectorConstruction(parser.GetWorldVolume());
-  m_runManager->SetUserInitialization(detConstruction);
-  // user action classes
-  m_runManager->SetUserInitialization(new FCCActionInitialization);
-
-   const G4GDMLAuxMapType* auxmap = parser.GetAuxMap();
-   FCCFastSimGeometry FastSimGeometry(auxmap);
+   // user action classes
+   m_runManager->SetUserInitialization(new FCCActionInitialization);
 
    m_runManager->Initialize();
    // from BeamOn
@@ -64,7 +55,7 @@ StatusCode Geant4Simulation::execute() {
    const HepMC::GenEvent* hepmc_event = m_eventhandle.get()->getEvent();
    G4Event* geantEvent = new G4Event();
    HepMC2G4(hepmc_event, geantEvent);
-   //m_runManager->currentEvent = geantEvent;
+   m_runManager->currentEvent = geantEvent;
 
    // run geant
    G4EventManager* eventManager = G4EventManager::GetEventManager();
