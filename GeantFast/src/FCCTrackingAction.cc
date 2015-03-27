@@ -53,12 +53,31 @@ FCCTrackingAction::~FCCTrackingAction()
 
 void FCCTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
-   if( !(abs(aTrack->GetMomentum().pseudoRapidity())<5.5) )
-   {
-      ((G4Track*)aTrack)->SetTrackStatus(fStopAndKill);
-   }
-// filling data only for primary particles
-   if(aTrack->GetParentID()) return;
+
+  const  G4ParticleDefinition* particle = aTrack->GetParticleDefinition();
+    G4ProcessManager* pmanager = particle->GetProcessManager();
+    G4ProcessVector* myvector = pmanager->GetProcessList();
+
+    G4cout << "---PARTICLE=" << particle->GetParticleName() << G4endl;
+    for (G4int i=0 ; i < myvector->size(); ++i ) {
+       if ( (*myvector)[i] ) {
+          G4cout << "\t PROCESS-NAME=NOT-NULL" << (*myvector)[i]->GetProcessName() << G4endl;
+       } else {
+          G4cout << "\t PROCESS-NAME=NULL" << G4endl;
+       }
+    }
+
+   if( aTrack->GetMomentum().perp() < 1.0*MeV ||
+       std::abs(aTrack->GetMomentum().pseudoRapidity())>5.5 )
+    {
+       ((G4Track*)aTrack)->SetTrackStatus(fStopAndKill);
+    }
+// // filling data only for primary particles
+    if(aTrack->GetParentID()) return;
+   // G4cout<<" begin of tracking"<<G4endl;
+   FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
+   //info->Print();
+   // G4cout<<" end of info"<<G4endl;
 
 }
 
@@ -71,8 +90,12 @@ void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 // To be sure that we collect information about a track only once
 // when its   if ( aTrack->GetTrackStatus() == fStopAndKill )
 {
-   // if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0 )
-   // {
+   if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0 )
+   {
+   // G4cout<<" end of tracking"<<G4endl;
+   FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
+   //info->Print();
+   // G4cout<<" end of info"<<G4endl;
    //    FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
    //    FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveMC,
    //                                     info->GetPartID(),
@@ -117,7 +140,7 @@ void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
    //                                     info->GetPerigeeHCal());
    //    if(info->GetPerigeeMC() || info->GetPerigeeTracker() || info->GetPerigeeEMCal() || info->GetPerigeeHCal() )
    //       FCCOutput::Instance()->EndPerigeeRow();
-   // }
+   }
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

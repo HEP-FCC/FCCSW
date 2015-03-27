@@ -106,13 +106,13 @@ void FCCPhysicsList::ConstructProcess()
   AddTransportation();
   AddParameterisation();
 
-  // ConstructEM();
+  ConstructEM();
   ConstructGeneral();
 }
 
 void FCCPhysicsList::AddTransportation()
 {
-   UseCoupledTransportation();
+   //UseCoupledTransportation();
    G4VUserPhysicsList::AddTransportation();
 }
 
@@ -257,15 +257,33 @@ void FCCPhysicsList::AddParameterisation()
    {
       G4ParticleDefinition* particle = theParticleIterator->value();
       G4ProcessManager* pmanager = particle->GetProcessManager();
-      // if (particle->GetParticleName() == "pi+"  ||
-      //     particle->GetParticleName() == "pi-"  ||
-      //     particle->GetParticleName() == "mu+"  ||
-      //     particle->GetParticleName() == "mu-"  ||
-      //     particle->GetParticleName() == "e+"  ||
-      //     particle->GetParticleName() == "e-"  ||
-      //     particle->GetParticleName() == "gamma"  )
-         pmanager->AddDiscreteProcess(fastSimProcess);
-    }
+      //if (
+         //particle->GetParticleName() == "gamma"  )
+         //pmanager->AddDiscreteProcess(fastSimProcess);
+         pmanager->AddProcess(fastSimProcess, -1, 0, 0);
+   }
+   theParticleIterator->reset();
+   while( (*theParticleIterator)() )
+   {
+      G4ParticleDefinition* particle = theParticleIterator->value();
+      G4ProcessManager* pmanager = particle->GetProcessManager();
+      G4ProcessVector* myvector = pmanager->GetProcessList();
+
+      // if (
+      //    particle->GetParticleName() == "gamma"  )
+      {
+         G4cout << "FCCPhysicsLIst ---PARTICLE=" << particle->GetParticleName() << G4endl;
+         for (G4int i=0 ; i < myvector->size(); ++i ) {
+            if ( (*myvector)[i] ) {
+               G4cout << "\t PROCESS-NAME=NOT-NULL " << (*myvector)[i]->GetProcessName() << G4endl;
+            } else {
+               G4cout << "\t PROCESS-NAME=NULL" << G4endl;
+            }
+         }
+      }
+   }
+
+
 }
 
 void FCCPhysicsList::SetCuts()

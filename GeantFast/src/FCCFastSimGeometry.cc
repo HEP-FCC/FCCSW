@@ -82,49 +82,36 @@ FCCFastSimGeometry::FCCFastSimGeometry(const G4GDMLAuxMapType* aAuxMap): fField(
          (1.* ((*TrackerList[iterTracker]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       TrackerList[iterTracker]->GetProductionCuts()->SetProductionCut(
           1*m, idxG4GammaCut );
-      fTrackerSmearModel.push_back( new FCCFastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], FCCDetectorParametrisation::eATLFAST));
+      fTrackerSmearModel.push_back( new FCCFastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], FCCDetectorParametrisation::eCMS));
    }
-   for (G4int iterECal=0; iterECal<G4int(ECalList.size()); iterECal++)
-   {
-      ECalList[iterECal]->SetProductionCuts(new G4ProductionCuts());
-      ECalList[iterECal]->GetProductionCuts()->SetProductionCut
-         (0.5* ((*ECalList[iterECal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
-      ECalList[iterECal]->GetProductionCuts()->SetProductionCut(
-         0.1*m, idxG4GammaCut );
-      fEMCalSmearModel.push_back( new FCCFastSimModelEMCal("fastSimModelEMCal",ECalList[iterECal], FCCDetectorParametrisation::eATLFAST));
-   }
-   for (G4int iterHCal=0; iterHCal<G4int(HCalList.size()); iterHCal++)
-   {
-      HCalList[iterHCal]->SetProductionCuts(new G4ProductionCuts());
-      HCalList[iterHCal]->GetProductionCuts()->SetProductionCut(
-         0.5* ((*HCalList[iterHCal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
-      HCalList[iterHCal]->GetProductionCuts()->SetProductionCut(
-         1.*m, idxG4GammaCut );
-
-      fHCalSmearModel.push_back(new FCCFastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], FCCDetectorParametrisation::eATLFAST));
-   }
-
-   // for (G4int iterMuon=0; iterMuon<G4int(MuonList.size()); iterMuon++)
+   // for (G4int iterECal=0; iterECal<G4int(ECalList.size()); iterECal++)
    // {
-   //    MuonList[iterMuon]->SetProductionCuts(new G4ProductionCuts());
-   //    MuonList[iterMuon]->GetProductionCuts()->SetProductionCut(
-   //       0.5* ((*MuonList[iterMuon]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
-   //    MuonList[iterMuon]->GetProductionCuts()->SetProductionCut(
+   //    ECalList[iterECal]->SetProductionCuts(new G4ProductionCuts());
+   //    ECalList[iterECal]->GetProductionCuts()->SetProductionCut
+   //       (0.5* ((*ECalList[iterECal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
+   //    ECalList[iterECal]->GetProductionCuts()->SetProductionCut(
+   //       0.1*m, idxG4GammaCut );
+   //    fEMCalSmearModel.push_back( new FCCFastSimModelEMCal("fastSimModelEMCal",ECalList[iterECal], FCCDetectorParametrisation::eCMS));
+   // }
+   // for (G4int iterHCal=0; iterHCal<G4int(HCalList.size()); iterHCal++)
+   // {
+   //    HCalList[iterHCal]->SetProductionCuts(new G4ProductionCuts());
+   //    HCalList[iterHCal]->GetProductionCuts()->SetProductionCut(
+   //       0.5* ((*HCalList[iterHCal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
+   //    HCalList[iterHCal]->GetProductionCuts()->SetProductionCut(
    //       1.*m, idxG4GammaCut );
 
-   //    MuonSmearModel.push_back(
-   //       new FCCMuonSmearModel("MuonKillModel",fMuonList[iterMuon]));
+   //    fHCalSmearModel.push_back(new FCCFastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], FCCDetectorParametrisation::eCMS));
    // }
-
 
    // Electromagnetic field
 
-   fField = new G4UniformMagField(G4ThreeVector(0.,0.,0.01));
-   G4FieldManager* fieldMgr
-      = G4TransportationManager::GetTransportationManager()
-        ->GetFieldManager();
-       fieldMgr->SetDetectorField(fField);
-    fieldMgr->CreateChordFinder(fField);
+   // fField = new G4UniformMagField(G4ThreeVector(0.,0.,0.01));
+   // G4FieldManager* fieldMgr
+   //    = G4TransportationManager::GetTransportationManager()
+   //      ->GetFieldManager();
+   //     fieldMgr->SetDetectorField(fField);
+   //  fieldMgr->CreateChordFinder(fField);
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

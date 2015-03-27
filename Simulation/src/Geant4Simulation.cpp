@@ -3,6 +3,8 @@
 #include "GeantFast/FCCDetectorConstruction.hh"
 #include "GeantFast/FCCActionInitialization.hh"
 #include "GeantFast/FCCPrimaryParticleInformation.hh"
+#include "GeantFast/FCCFastSimGeometry.hh"
+#include "GeantFast/FCCPhysicsList.hh"
 #include "G4GDMLParser.hh"
 
 #include "FTFP_BERT.hh"
@@ -12,6 +14,7 @@
 #include "G4EventManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
+#include "G4ScoringManager.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -26,28 +29,32 @@ GaudiAlgorithm(name, svcLoc)
 StatusCode Geant4Simulation::initialize() {
    GaudiAlgorithm::initialize();
    m_runManager = new G4RunManager;
+
    // load physics list
-   m_runManager->SetUserInitialization(new FTFP_BERT);
+   m_runManager->SetUserInitialization(new FCCPhysicsList);
+
    // take geometry
    ///.... from Service - check with Julia code, currently...
    //m_runManager->SetUserInitialization(new B4DetectorConstruction);
 
-  // Set mandatory initialization classes
-  //
    G4GDMLParser parser;
    parser.Read("FCCFullDetector.gdml");
+   G4cout << "Geometry loaded from  file .......FCCFullDetector.gdml " <<G4endl;
    FCCDetectorConstruction* detConstruction = new FCCDetectorConstruction(parser.GetWorldVolume());
   m_runManager->SetUserInitialization(detConstruction);
+  // user action classes
   m_runManager->SetUserInitialization(new FCCActionInitialization);
 
-   // const G4GDMLAuxMapType* auxmap = parser.GetAuxMap();
-   // FCCFastSimGeometry FastSimGeometry(auxmap);
-  
+   const G4GDMLAuxMapType* auxmap = parser.GetAuxMap();
+   FCCFastSimGeometry FastSimGeometry(auxmap);
 
-   // initialization
-   m_runManager->ConstructScoringWorlds();
    m_runManager->Initialize();
+   // from BeamOn
+   m_runManager->numberOfEventToBeProcessed = 1;
+   m_runManager->ConstructScoringWorlds();
+   // initialization
    m_runManager->RunInitialization();
+
 
 	return StatusCode::SUCCESS;
 }
@@ -57,16 +64,32 @@ StatusCode Geant4Simulation::execute() {
    const HepMC::GenEvent* hepmc_event = m_eventhandle.get()->getEvent();
    G4Event* geantEvent = new G4Event();
    HepMC2G4(hepmc_event, geantEvent);
+   //m_runManager->currentEvent = geantEvent;
 
    // run geant
    G4EventManager* eventManager = G4EventManager::GetEventManager();
    //as in  G4RunManager::ProcessOneEvent
-   eventManager->ProcessOneEvent(geantEvent);
+   m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
    //m_runManager->currentEvent = geantEvent;
-   m_runManager->AnalyzeEvent(geantEvent);
-   // m_runManager->UpdateScoring();
-   //m_runManager->TerminateOneEvent();
+   m_runManager->AnalyzeEvent(m_runManager->currentEvent);
+   m_runManager->UpdateScoring();
 
+   // G4ScoringManager* ScM = G4ScoringManager::GetScoringManagerIfExist();
+   // if ( ScM ) {
+   //    G4int nPar = ScM->GetNumberOfMesh();
+   //    if ( nPar > 0 ) {
+   //       G4HCofThisEvent* HCE = geantEvent->GetHCofThisEvent();
+   //       if ( HCE ) {
+   //          G4int nColl = HCE->GetCapacity();
+   //          for ( G4int i = 0; i < nColl; i++ ) {
+   //             G4VHitsCollection* HC = HCE->GetHC(i);
+   //             if ( HC ) ScM->Accumulate( HC );
+   //          }
+   //       }
+   //    }
+   // }
+
+   m_runManager->TerminateOneEvent();
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
