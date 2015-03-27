@@ -16,7 +16,7 @@ fi
 # set up CMake:
 export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:$PATH
 #export CMAKEFLAGS='-DCMAKE_USE_CCACHE=ON'
-export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:/afs/cern.ch/sw/lcg/releases
+export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:/afs/cern.ch/sw/lcg/releases:/afs/cern.ch/user/r/ribon/public/ForAnna/Install
 export CMTCONFIG=x86_64-slc6-gcc48-opt
 
 # set up the compilers
@@ -27,3 +27,6 @@ export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/Install
 
 # set up Pythia8 Index.xml
 export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
+
+# add Geant4 data files
+source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh 
