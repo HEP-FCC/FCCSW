@@ -29,8 +29,8 @@ private:
   /*G4VUser.... * m_g4detector; */
   /// Handle for the HepMC to be read
   DataObjectHandle<HepMCEntry> m_eventhandle;
-  /// Handle for the "reconstructed" to be written
-  DataObjectHandle<ParticleCollection> m_recphandle;
+  /* /// Handle for the "reconstructed" to be written */
+  /* DataObjectHandle<ParticleCollection> m_recphandle; */
 
   G4RunManager* m_runManager;
 

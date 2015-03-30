@@ -54,7 +54,7 @@ FCCEventAction::~FCCEventAction()
 
 void FCCEventAction::BeginOfEventAction(const G4Event* /*aEvent*/)
 {
-   G4EventManager::GetEventManager()->SetUserInformation(new FCCEventInformation(fSmear, true));
+   G4EventManager::GetEventManager()->SetUserInformation(new FCCEventInformation(fSmear));
    FCCOutput::Instance()->CreateNtuples();
 }
 

@@ -60,7 +60,6 @@ void FCCTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
    }
    // filling data only for primary particles
    if(aTrack->GetParentID()) return;
-   FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -94,25 +93,6 @@ void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
                                           info->GetHCalResolution(),
                                           info->GetHCalEfficiency(),
                                           info->GetHCalEnergy()/MeV);
-
-         if(info->GetPerigeeMC())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveMC,
-                                          info->GetPartID(),
-                                          info->GetPDG(),
-                                          info->GetPerigeeMC());
-         if(info->GetPerigeeTracker())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveTracker,
-                                          info->GetPartID(),
-                                          info->GetPDG(),
-                                          info->GetPerigeeTracker());
-         if(info->GetPerigeeEMCal())FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveEMCal,
-                                          info->GetPartID(),
-                                          info->GetPDG(),
-                                          info->GetPerigeeEMCal());
-         if(info->GetPerigeeHCal()) FCCOutput::Instance()->SavePerigee(FCCOutput::eSaveHCal,
-                                          info->GetPartID(),
-                                          info->GetPDG(),
-                                          info->GetPerigeeHCal());
-         if(info->GetPerigeeMC() || info->GetPerigeeTracker() || info->GetPerigeeEMCal() || info->GetPerigeeHCal() )
-            FCCOutput::Instance()->EndPerigeeRow();
    }
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

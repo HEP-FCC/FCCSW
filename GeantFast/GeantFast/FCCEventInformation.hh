@@ -47,12 +47,6 @@ public:
       @param aSmear The flag indicating if smearing should be done.
    */
    FCCEventInformation(G4bool aSmear);
-   /**
-      A constructor.
-      @param aSmear The flag indicating if smearing should be done.
-      @param aSavePerigee The flag indicating if perigee representation should be saved.
-   */
-   FCCEventInformation(G4bool aSmear, G4bool aSavePerigee);
    virtual ~FCCEventInformation();
    /**
       Prints event information.
@@ -68,25 +62,11 @@ public:
    */
    G4bool GetDoSmearing();
 
-   /**
-      Sets the flag indicating if perigee representation should be saved.
-      @param aSavePerigee A boolean flag.
-   */
-   void SetSavePerigee(G4bool aSavePerigee);
-   /**
-      Gets the flag indicating if perigee representation should be saved.
-   */
-   G4bool GetSavePerigee();
-
 private:
    /**
       A flag indicating if smearing should be performed. It is read by implementations of G4VFastSimulationModel.
    */
    G4bool fDoSmearing;
-   /**
-      A flag indicating if perigee parametrisation should be saved.
-   */
-   G4bool fSavePerigee;
 };
 
 #endif

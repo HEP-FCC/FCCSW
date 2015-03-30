@@ -51,9 +51,9 @@ StatusCode Geant4Simulation::initialize() {
 StatusCode Geant4Simulation::execute() {
    //read event
    const HepMC::GenEvent* hepmc_event = m_eventhandle.get()->getEvent();
-   G4Event* geantEvent = new G4Event();
-   HepMC2G4(hepmc_event, geantEvent);
-   m_runManager->currentEvent = geantEvent;
+   G4Event* geant_event = new G4Event();
+   HepMC2G4(hepmc_event, geant_event);
+   m_runManager->currentEvent = geant_event;
 
    // run geant
    //as in  G4RunManager::ProcessOneEvent
@@ -64,7 +64,7 @@ StatusCode Geant4Simulation::execute() {
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
-   //delete geant_event;
+
    return StatusCode::SUCCESS;
 }
 

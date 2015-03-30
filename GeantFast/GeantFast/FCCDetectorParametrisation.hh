@@ -18,9 +18,9 @@ public:
    FCCDetectorParametrisation();
    ~FCCDetectorParametrisation();
    /**
-      A parametrisation type (CMS, ATLAS, ALEPH or AtlFast-like).
+      A parametrisation type (CMS, ATLAS, ALEPH).
     */
-   enum Parametrisation {eCMS, eATLAS, eALEPH, eATLFAST};
+   enum Parametrisation {eCMS, eATLAS, eALEPH};
    /**
       A detector type (tracking detector, electromagnetic calorimeter or hadronic calorimeter).
     */
