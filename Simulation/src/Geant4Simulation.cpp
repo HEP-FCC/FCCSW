@@ -17,10 +17,6 @@
 
 DECLARE_COMPONENT(Geant4Simulation)
 
-using CLHEP::c_light;
-using CLHEP::mm;
-using CLHEP::GeV;
-
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc)
 {
