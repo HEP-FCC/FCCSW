@@ -15,10 +15,9 @@ from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out")
 out.outputCommands = ["drop *"]
 
-ApplicationMgr( TopAlg = [reader, geant4simulation],
+ApplicationMgr( TopAlg = [reader, geant4simulation, out],
                 EvtSel = 'NONE',
-                EvtMax   = 100,
+                EvtMax   = 10,
                 ExtSvc = [albersevent],
-#                EventLoop = eventloopmgr,
-#OutputLevel=DEBUG
+                OutputLevel=DEBUG
  )
