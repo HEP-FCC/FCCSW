@@ -16,5 +16,5 @@ gaudi_add_library(GeantFast
                  src/*.cc
                  INCLUDE_DIRS GeantFast Geant4 HepMC CLHEP ROOT Pythia8
                  LINK_LIBRARIES  Geant4 HepMC CLHEP ROOT Pythia8
-		           PUBLIC_HEADERS GeantFast)
+                 PUBLIC_HEADERS GeantFast)
 

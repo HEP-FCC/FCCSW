@@ -5,22 +5,22 @@
 #include "globals.hh"
 
 /**
-	@brief     Handling saving to the file.
- 	@details   A singleton class manages creation, writing to and closing thr root output file.
- 	@author    Anna Zaborowska
+  @brief     Handling saving to the file.
+   @details   A singleton class manages creation, writing to and closing thr root output file.
+   @author    Anna Zaborowska
  */
 
 class FCCOutput
 {
 public:
 /**
-	Indicates to which ntuple save the information.
+  Indicates to which ntuple save the information.
  */
    enum SaveType {eNoSave, eSaveMC, eSaveTracker, eSaveEMCal, eSaveHCal};
 
 /**
    Allows the access to the FCCOutput class member without creating the class object.
-	@return A pointer to the FCCOutput class.
+  @return A pointer to the FCCOutput class.
  */
    static FCCOutput* Instance();
 /**
