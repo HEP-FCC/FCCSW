@@ -2,7 +2,8 @@
 #define GENERATION_PARTICLEGUNALG_H 1
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
+#include "FWCore/DataHandle.h"
+#include "HepMC/GenEvent.h"
 
 // Forward declarations
 class IParticleGunTool;
@@ -61,6 +62,6 @@ class ParticleGunAlg : public GaudiAlgorithm {
   /// Name to put in the event
   std::string m_particleGunName ;
   /// The output handle for what is being produced
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
 };
 #endif

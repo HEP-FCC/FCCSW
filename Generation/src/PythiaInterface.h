@@ -2,12 +2,11 @@
 #define _PYTHIAINTERFACE_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
-
 #include "Pythia8/Pythia.h"
 #include "Pythia8/Pythia8ToHepMC.h"
 
 #include "HepMC/GenEvent.h"
+#include "FWCore/DataHandle.h"
 
 class PythiaInterface: public GaudiAlgorithm {
   friend class AlgFactory<PythiaInterface> ;
@@ -28,7 +27,7 @@ private:
   /// the name of the Pythia parameter input file
   std::string       m_parfile;
   /// The output handle for what is being produced
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
   int nAbort;
 };
 

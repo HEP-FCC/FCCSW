@@ -12,8 +12,8 @@ StatusCode HepMCDumper::initialize() {
 }
 
 StatusCode HepMCDumper::execute() {
-  HepMCEntry* theEvent = m_hepmchandle.get();
-  theEvent->getEvent()->print();
+  const HepMC::GenEvent* theEvent = m_hepmchandle.get();
+  theEvent->print();
   return StatusCode::SUCCESS;
 }
 

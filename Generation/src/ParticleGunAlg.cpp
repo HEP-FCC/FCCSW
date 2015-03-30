@@ -13,7 +13,7 @@
 // from Generation
 #include "Generation/IParticleGunTool.h"
 #include "Generation/IVertexSmearingTool.h"
-#include "DataObjects/HepMCEntry.h"
+#include "HepMC/GenEvent.h"
 
 //-----------------------------------------------------------------------------
 // Implementation file for class : ParticleGun
@@ -109,9 +109,7 @@ StatusCode ParticleGunAlg::execute() {
   if(m_vertexSmearTool != nullptr)
 	  m_vertexSmearTool->smearVertex(theEvent);
 
-  HepMCEntry * entry = new HepMCEntry();
-  entry->setEvent(theEvent);
-  m_hepmchandle.put(entry);
+  m_hepmchandle.put(theEvent);
   return sc ;
 }
 

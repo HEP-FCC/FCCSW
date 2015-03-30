@@ -45,7 +45,7 @@ StatusCode HepMCHistograms::initialize() {
 
 StatusCode HepMCHistograms::execute() {
 
-	auto evt = m_hepmchandle.get()->getEvent();
+	auto evt = m_hepmchandle.get();
 
 	info() << "Processing event with " << evt->particles_size() << " particles" << endmsg;
 

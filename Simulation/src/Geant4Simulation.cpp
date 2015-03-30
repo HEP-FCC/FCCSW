@@ -2,7 +2,6 @@
 
 #include "B1DetectorConstruction.h"
 #include "FTFP_BERT.hh"
-#include "DataObjects/HepMCEntry.h"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -37,7 +36,7 @@ StatusCode Geant4Simulation::initialize() {
 
 StatusCode Geant4Simulation::execute() {
    //read event
-   const HepMC::GenEvent* hepmc_event = m_eventhandle.get()->getEvent();
+   auto hepmc_event = m_eventhandle.get();
    G4Event* geant_event = new G4Event();
    HepMC2G4(hepmc_event, geant_event);
 

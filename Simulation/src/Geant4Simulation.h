@@ -2,8 +2,8 @@
 #define _GEANT4SIMULATION_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
-#include "GaudiKernel/DataObjectHandle.h"
+#include "HepMC/GenEvent.h"
+#include "FWCore/DataHandle.h"
 #include "DataObjects/ParticleCollection.h"
 #include "DataObjects/Particle.h"
 
@@ -28,7 +28,7 @@ private:
   /* /// Pointer to Geant4 geometry */
   /*G4VUser.... * m_g4detector; */
   /// Handle for the HepMC to be read
-  DataObjectHandle<HepMCEntry> m_eventhandle;
+  DataHandle<HepMC::GenEvent> m_eventhandle;
   /// Handle for the "reconstructed" to be written
   DataObjectHandle<ParticleCollection> m_recphandle;
 

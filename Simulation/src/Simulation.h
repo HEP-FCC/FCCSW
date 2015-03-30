@@ -2,8 +2,8 @@
 #define _SIMULATION_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
-#include "GaudiKernel/DataObjectHandle.h"
+#include "HepMC/GenEvent.h"
+#include "FWCore/DataHandle.h"
 
 
 class Simulation: public GaudiAlgorithm {
@@ -20,7 +20,7 @@ public:
   virtual StatusCode finalize();
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
 
 };
 

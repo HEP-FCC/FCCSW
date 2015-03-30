@@ -10,6 +10,6 @@ find_package(Geant4)
 
 gaudi_add_module(Simulation
                  src/*.cpp
-                 INCLUDE_DIRS Geant4
+                 INCLUDE_DIRS Geant4 FWCore
                  LINK_LIBRARIES GaudiAlgLib DataObjects Geant4)
 

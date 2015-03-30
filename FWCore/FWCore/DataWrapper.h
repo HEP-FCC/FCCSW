@@ -7,7 +7,7 @@
 template<class T>
 class GAUDI_API DataWrapper : public DataObject {
  public:
-  DataWrapper() : m_data(0){};
+  DataWrapper() : m_data(nullptr){};
   virtual ~DataWrapper(); 
 
   const T* getData() {return m_data;} 
@@ -20,7 +20,7 @@ class GAUDI_API DataWrapper : public DataObject {
 
 template<class T>
 DataWrapper<T>::~DataWrapper<T>() {
-  if (m_data!=0) delete m_data;
+  if (m_data!=nullptr) delete m_data;
 }
 
 #endif

@@ -12,7 +12,7 @@ gaudi_add_dictionary(DataObjects dict/dictionary.h  dict/dictionary.xml
                      LINK_LIBRARIES DataObjects) 
 
 gaudi_add_library(DataObjects
-		  src/*.cpp src/*.cc
+		  src/*.cc
                   INCLUDE_DIRS HepMC 
                   LINK_LIBRARIES HepMC GaudiAlgLib albers
 		  PUBLIC_HEADERS DataObjects)

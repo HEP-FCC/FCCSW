@@ -16,8 +16,7 @@ StatusCode HepMCConverter::initialize() {
 }
 
 StatusCode HepMCConverter::execute() {
-  HepMCEntry* theEvent = m_hepmchandle.get();
-  const HepMC::GenEvent* event = theEvent->getEvent();
+  const HepMC::GenEvent* event = m_hepmchandle.get();
   MCParticleCollection* particles = new MCParticleCollection();
   typedef HepMC::GenEvent::particle_const_iterator Ipart;
   for(Ipart ipart=event->particles_begin(); 
