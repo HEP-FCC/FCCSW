@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project name="FCCSW" version="HEAD" />
+  <heptools>
+    <version>68</version>
+    <binary_tag>x86_64-slc6-gcc48-dbg</binary_tag>
+    <lcg_system>x86_64-slc6-gcc48</lcg_system>
+  </heptools>
+  <used_projects>
+    <project name="Gaudi" version="v25r2" />
+  </used_projects>
+</manifest>

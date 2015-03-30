@@ -1,0 +1,10 @@
+#ifndef ICONVERTER_VERSION
+/* Automatically generated file: do not modify! */
+#ifndef CALC_GAUDI_VERSION
+#define CALC_GAUDI_VERSION(maj,min) (((maj) << 16) + (min))
+#endif
+#define ICONVERTER_MAJOR_VERSION 1
+#define ICONVERTER_MINOR_VERSION 0
+#define ICONVERTER_PATCH_VERSION 0
+#define ICONVERTER_VERSION CALC_GAUDI_VERSION(ICONVERTER_MAJOR_VERSION,ICONVERTER_MINOR_VERSION)
+#endif

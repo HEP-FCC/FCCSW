@@ -1,0 +1,15 @@
+# ROOT map file generated automatically by genmap on Mon Mar 30 14:02:03 2015
+
+Library.__pf__@@Trap_EndCap: libDetectors.so
+Library.__pf__@@test_Calorimeter: libDetectors.so
+Library.__pf__@@test_Muon: libDetectors.so
+Library.__pf__@@test_Tracker: libDetectors.so
+Library.__pf__@@BeamTube: libDetectors.so
+Library.__pf__@@EndCap: libDetectors.so
+Library.__pf__@@SimpleCylinder: libDetectors.so
+Library.__pf__@@Barrel: libDetectors.so
+Library.__pf__@@test_IronCylinder: libDetectors.so
+Library.__pf__@@test_FCC_HcalBarrel2: libDetectors.so
+Library.__pf__@@Module: libDetectors.so
+Library.__pf__@@Disc: libDetectors.so
+Library.__pf__@@test_ZylinderShell: libDetectors.so

@@ -1,0 +1,3 @@
+libDetDesServices.so:DD4HepDetDesSvc
+libDetDesServices.so:Geant4GeoSvc
+libDetDesServices.so:RecoGeoSvc

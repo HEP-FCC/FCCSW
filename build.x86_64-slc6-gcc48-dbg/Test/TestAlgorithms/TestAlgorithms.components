@@ -1,0 +1,4 @@
+libTestAlgorithms.so:Geant4Test
+libTestAlgorithms.so:RecoGeoTest
+libTestAlgorithms.so:SurfaceTest
+libTestAlgorithms.so:TestAlgorithm

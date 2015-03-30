@@ -1,0 +1,256 @@
+The target system is: Linux -  - x86_64
+The host system is: Linux - 2.6.32-504.1.3.el6.x86_64 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/2.8.12.2/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/2.8.12.2/CompilerIdCXX/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1818654925/fast"
+gmake[1]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1818654925.dir/build.make CMakeFiles/cmTryCompileExec1818654925.dir/build
+gmake[2]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec1818654925.dir/testCCompiler.c.o
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1    -o CMakeFiles/cmTryCompileExec1818654925.dir/testCCompiler.c.o   -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTryCompileExec1818654925
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1818654925.dir/link.txt --verbose=1
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1       CMakeFiles/cmTryCompileExec1818654925.dir/testCCompiler.c.o  -o cmTryCompileExec1818654925 -rdynamic 
+gmake[2]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+gmake[1]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1990501057/fast"
+gmake[1]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1990501057.dir/build.make CMakeFiles/cmTryCompileExec1990501057.dir/build
+gmake[2]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1    -o CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o   -c /afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/share/cmake-2.8/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec1990501057
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1990501057.dir/link.txt --verbose=1
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1     -v CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec1990501057 -rdynamic  
+Using built-in specs.
+COLLECT_GCC=/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/bin/lcg-gcc-4.8.1
+COLLECT_LTO_WRAPPER=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/lto-wrapper
+Target: x86_64-unknown-linux-gnu
+Configured with: /build/vdiez/gcc-4.8.1/configure --prefix=/build/vdiez/gcc-4.8.1-installation --with-mpfr=/afs/cern.ch/sw/lcg/external/mpfr/3.1.2/x86_64-slc6-gcc48-opt --with-gmp=/afs/cern.ch/sw/lcg/external/gmp/5.1.1/x86_64-slc6-gcc48-opt --with-mpc=/afs/cern.ch/sw/lcg/external/mpc/1.0.1/x86_64-slc6-gcc48-opt --enable-libstdcxx-time --enable-lto --with-isl=/afs/cern.ch/sw/lcg/external/isl/0.11.1/x86_64-slc6-gcc48-opt --with-cloog=/afs/cern.ch/sw/lcg/external/cloog/0.18.0/x86_64-slc6-gcc48-opt --enable-languages=c,c++,fortran,go
+Thread model: posix
+gcc version 4.8.1 (GCC) 
+COMPILER_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/:/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/
+LIBRARY_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1990501057' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec1990501057 /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../.. CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o /usr/lib/../lib64/crtn.o
+gmake[2]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+gmake[1]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec1990501057/fast"]
+  ignore line: [gmake[1]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1990501057.dir/build.make CMakeFiles/cmTryCompileExec1990501057.dir/build]
+  ignore line: [gmake[2]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp']
+  ignore line: [/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1    -o CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o   -c /afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/share/cmake-2.8/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec1990501057]
+  ignore line: [/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1990501057.dir/link.txt --verbose=1]
+  ignore line: [/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-gcc-4.8.1     -v CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec1990501057 -rdynamic  ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/bin/lcg-gcc-4.8.1]
+  ignore line: [COLLECT_LTO_WRAPPER=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/lto-wrapper]
+  ignore line: [Target: x86_64-unknown-linux-gnu]
+  ignore line: [Configured with: /build/vdiez/gcc-4.8.1/configure --prefix=/build/vdiez/gcc-4.8.1-installation --with-mpfr=/afs/cern.ch/sw/lcg/external/mpfr/3.1.2/x86_64-slc6-gcc48-opt --with-gmp=/afs/cern.ch/sw/lcg/external/gmp/5.1.1/x86_64-slc6-gcc48-opt --with-mpc=/afs/cern.ch/sw/lcg/external/mpc/1.0.1/x86_64-slc6-gcc48-opt --enable-libstdcxx-time --enable-lto --with-isl=/afs/cern.ch/sw/lcg/external/isl/0.11.1/x86_64-slc6-gcc48-opt --with-cloog=/afs/cern.ch/sw/lcg/external/cloog/0.18.0/x86_64-slc6-gcc48-opt --enable-languages=c,c++,fortran,go]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 4.8.1 (GCC) ]
+  ignore line: [COMPILER_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/:/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/]
+  ignore line: [LIBRARY_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1990501057' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec1990501057 /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../.. CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o /usr/lib/../lib64/crtn.o]
+    arg [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/collect2] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTryCompileExec1990501057] ==> ignore
+    arg [/usr/lib/../lib64/crt1.o] ==> ignore
+    arg [/usr/lib/../lib64/crti.o] ==> ignore
+    arg [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o] ==> ignore
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1]
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc]
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../..] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../..]
+    arg [CMakeFiles/cmTryCompileExec1990501057.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o] ==> ignore
+    arg [/usr/lib/../lib64/crtn.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc/x86_64-unknown-linux-gnu/4.8.1]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../..] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib]
+  implicit libs: [c]
+  implicit dirs: [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc/x86_64-unknown-linux-gnu/4.8.1;/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc;/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64;/lib64;/usr/lib64;/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib]
+  implicit fwks: []
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/gmake "cmTryCompileExec2385975008/fast"
+gmake[1]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2385975008.dir/build.make CMakeFiles/cmTryCompileExec2385975008.dir/build
+gmake[2]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec2385975008.dir/testCXXCompiler.cxx.o
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1     -o CMakeFiles/cmTryCompileExec2385975008.dir/testCXXCompiler.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTryCompileExec2385975008
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2385975008.dir/link.txt --verbose=1
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1        CMakeFiles/cmTryCompileExec2385975008.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec2385975008 -rdynamic 
+gmake[2]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+gmake[1]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1442700045/fast"
+gmake[1]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1442700045.dir/build.make CMakeFiles/cmTryCompileExec1442700045.dir/build
+gmake[2]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1     -o CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o -c /afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec1442700045
+/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1442700045.dir/link.txt --verbose=1
+/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1      -v CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec1442700045 -rdynamic  
+Using built-in specs.
+COLLECT_GCC=/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/bin/lcg-g++-4.8.1
+COLLECT_LTO_WRAPPER=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/lto-wrapper
+Target: x86_64-unknown-linux-gnu
+Configured with: /build/vdiez/gcc-4.8.1/configure --prefix=/build/vdiez/gcc-4.8.1-installation --with-mpfr=/afs/cern.ch/sw/lcg/external/mpfr/3.1.2/x86_64-slc6-gcc48-opt --with-gmp=/afs/cern.ch/sw/lcg/external/gmp/5.1.1/x86_64-slc6-gcc48-opt --with-mpc=/afs/cern.ch/sw/lcg/external/mpc/1.0.1/x86_64-slc6-gcc48-opt --enable-libstdcxx-time --enable-lto --with-isl=/afs/cern.ch/sw/lcg/external/isl/0.11.1/x86_64-slc6-gcc48-opt --with-cloog=/afs/cern.ch/sw/lcg/external/cloog/0.18.0/x86_64-slc6-gcc48-opt --enable-languages=c,c++,fortran,go
+Thread model: posix
+gcc version 4.8.1 (GCC) 
+COMPILER_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/:/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/
+LIBRARY_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1442700045' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec1442700045 /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../.. CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o /usr/lib/../lib64/crtn.o
+gmake[2]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+gmake[1]: Leaving directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp'
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec1442700045/fast"]
+  ignore line: [gmake[1]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1442700045.dir/build.make CMakeFiles/cmTryCompileExec1442700045.dir/build]
+  ignore line: [gmake[2]: Entering directory `/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp']
+  ignore line: [/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1     -o CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o -c /afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec1442700045]
+  ignore line: [/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1442700045.dir/link.txt --verbose=1]
+  ignore line: [/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1      -v CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec1442700045 -rdynamic  ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/bin/lcg-g++-4.8.1]
+  ignore line: [COLLECT_LTO_WRAPPER=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/lto-wrapper]
+  ignore line: [Target: x86_64-unknown-linux-gnu]
+  ignore line: [Configured with: /build/vdiez/gcc-4.8.1/configure --prefix=/build/vdiez/gcc-4.8.1-installation --with-mpfr=/afs/cern.ch/sw/lcg/external/mpfr/3.1.2/x86_64-slc6-gcc48-opt --with-gmp=/afs/cern.ch/sw/lcg/external/gmp/5.1.1/x86_64-slc6-gcc48-opt --with-mpc=/afs/cern.ch/sw/lcg/external/mpc/1.0.1/x86_64-slc6-gcc48-opt --enable-libstdcxx-time --enable-lto --with-isl=/afs/cern.ch/sw/lcg/external/isl/0.11.1/x86_64-slc6-gcc48-opt --with-cloog=/afs/cern.ch/sw/lcg/external/cloog/0.18.0/x86_64-slc6-gcc48-opt --enable-languages=c,c++,fortran,go]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 4.8.1 (GCC) ]
+  ignore line: [COMPILER_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/:/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6/lib/gcc/x86_64-unknown-linux-gnu/4.8.1/]
+  ignore line: [LIBRARY_PATH=/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1442700045' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec1442700045 /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../.. CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o /usr/lib/../lib64/crtn.o]
+    arg [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../libexec/gcc/x86_64-unknown-linux-gnu/4.8.1/collect2] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTryCompileExec1442700045] ==> ignore
+    arg [/usr/lib/../lib64/crt1.o] ==> ignore
+    arg [/usr/lib/../lib64/crti.o] ==> ignore
+    arg [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o] ==> ignore
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1]
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc]
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../..] ==> dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../..]
+    arg [CMakeFiles/cmTryCompileExec1442700045.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o] ==> ignore
+    arg [/usr/lib/../lib64/crtn.o] ==> ignore
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc/x86_64-unknown-linux-gnu/4.8.1]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin/../lib/gcc/x86_64-unknown-linux-gnu/4.8.1/../../..] ==> [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib]
+  implicit libs: [stdc++;m;c]
+  implicit dirs: [/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc/x86_64-unknown-linux-gnu/4.8.1;/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib/gcc;/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64;/lib64;/usr/lib64;/afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib]
+  implicit fwks: []
+
+

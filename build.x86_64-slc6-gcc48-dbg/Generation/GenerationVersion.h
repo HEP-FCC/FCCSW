@@ -1,0 +1,10 @@
+#ifndef GENERATION_VERSION
+/* Automatically generated file: do not modify! */
+#ifndef CALC_GAUDI_VERSION
+#define CALC_GAUDI_VERSION(maj,min) (((maj) << 16) + (min))
+#endif
+#define GENERATION_MAJOR_VERSION 1
+#define GENERATION_MINOR_VERSION 0
+#define GENERATION_PATCH_VERSION 0
+#define GENERATION_VERSION CALC_GAUDI_VERSION(GENERATION_MAJOR_VERSION,GENERATION_MINOR_VERSION)
+#endif

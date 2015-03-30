@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:config xmlns:env="EnvSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="EnvSchema EnvSchema.xsd ">
+  <env:default variable="LCG_releases">/afs/cern.ch/sw/lcg/releases/LCG_68</env:default>
+  <env:default variable="LCG_external">/afs/cern.ch/sw/lcg/releases/LCG_68</env:default>
+  <env:search_path>/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt</env:search_path>
+  <env:include>GaudiEnvironment.xml</env:include>
+  <env:prepend variable="PYTHONPATH">${LCG_releases}/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="PATH">/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6-gcc48-opt/bin</env:prepend>
+  <env:prepend variable="PATH">${LCG_releases}/Python/2.7.6/x86_64-slc6-gcc48-opt/bin</env:prepend>
+  <env:prepend variable="PATH">${LCG_releases}/ROOT/5.34.18/x86_64-slc6-gcc48-opt/bin</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/fastjet/3.0.6/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64</env:prepend>
+  <env:set variable="ROOTSYS">${LCG_releases}/ROOT/5.34.18/x86_64-slc6-gcc48-opt</env:set>
+  <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/ROOT/5.34.18/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/tbb/42_20131118/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/AIDA/3.2.1/x86_64-slc6-gcc48-opt/src/cpp</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/HepMC/2.06.08/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/fastjet/3.0.6/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="PATH">${.}/scripts</env:prepend>
+  <env:prepend variable="PATH">${.}/bin</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${.}/lib</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${.}/include</env:prepend>
+  <env:prepend variable="PYTHONPATH">${.}/python</env:prepend>
+  <env:prepend variable="PYTHONPATH">${.}/python/lib-dynload</env:prepend>
+  <env:set variable="FCCSW_PROJECT_ROOT">${.}/../../</env:set>
+  <env:set variable="ALBERSROOT">${FCCSW_PROJECT_ROOT}/albers</env:set>
+  <env:set variable="DATAOBJECTSROOT">${FCCSW_PROJECT_ROOT}/DataObjects</env:set>
+  <env:set variable="FWCOREROOT">${FCCSW_PROJECT_ROOT}/FWCore</env:set>
+  <env:set variable="EXAMPLESROOT">${FCCSW_PROJECT_ROOT}/Examples</env:set>
+  <env:set variable="GENERATIONROOT">${FCCSW_PROJECT_ROOT}/Generation</env:set>
+  <env:set variable="RECONSTRUCTIONROOT">${FCCSW_PROJECT_ROOT}/Reconstruction</env:set>
+  <env:set variable="SIMULATIONROOT">${FCCSW_PROJECT_ROOT}/Simulation</env:set>
+</env:config>

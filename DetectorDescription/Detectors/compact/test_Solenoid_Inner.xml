@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  
+  <info name="FCC"
+        title="FCC Inner solenoid"
+        author="Clement"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>A solenoid</comment>
+  </info>
+
+  <define>
+    <constant name="InnerSolenoidZ" value="1050*cm"/> 
+    <constant name="InnerSolenoidRmin" value="801*cm"/> 
+    <constant name="InnerSolenoidRmax" value="850*cm"/> 
+  </define>
+  
+   <display>
+        <vis name="InnerSolenoidVis" alpha="1" r="0" g="0.3" b="0.3" showDaughters="false" visible="true"/>
+    </display>
+
+
+  <detectors>
+    <detector  id ="4" name="InnerSolenoid" type="test_SimpleCylinder" insideTrackingVolume="false" vis="InnerSolenoidVis">
+      <comment>Inner solenoid</comment>
+      <tubs rmin="InnerSolenoidRmin" rmax="InnerSolenoidRmax" dz="InnerSolenoidZ" phi0="0" deltaphi="360*deg"  z_offset="0*cm" material="Aluminum"/>  
+    </detector>
+  </detectors>
+
+
+
+</lccdd>
