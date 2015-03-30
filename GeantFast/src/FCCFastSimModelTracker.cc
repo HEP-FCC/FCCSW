@@ -63,18 +63,17 @@ FCCFastSimModelTracker::~FCCFastSimModelTracker()
 
 G4bool FCCFastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleType)
 {
-   return  false;//aParticleType.GetPDGCharge() != 0;
+   return aParticleType.GetPDGCharge() != 0;
 }
 
 G4bool FCCFastSimModelTracker::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
 {
-   return false;//true;
+   return true;
 }
 
 void FCCFastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
                             G4FastStep& aFastStep)
 {
-   G4cout<<" ________tracking model triggered _________"<<G4endl;
 // ================
    G4ThreeVector spin        = aFastTrack.GetPrimaryTrack()->GetPolarization() ;
    G4FieldTrack  theFieldTrack = G4FieldTrack( aFastTrack.GetPrimaryTrack()->GetPosition(),
@@ -118,7 +117,7 @@ void FCCFastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
             Psm = FCCSmearer::Instance()->SmearMomentum(aFastTrack.GetPrimaryTrack(), res, FCCOutput::eSaveTracker);
          else
             Psm = FCCSmearer::Instance()->SmearMomentum(aFastTrack.GetPrimaryTrack(), res);
-         // FCCOutput::Instance()->FillHistogram(0,((Psm.mag()/MeV) / (Porg.mag()/MeV)) );
+          FCCOutput::Instance()->FillHistogram(0,((Psm.mag()/MeV) / (Porg.mag()/MeV)) );
          // setting values of Psm, res and eff
          ((FCCPrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
                                            (aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetPrimaryParticle())->GetUserInformation()))->SetTrackerMomentum(Psm);

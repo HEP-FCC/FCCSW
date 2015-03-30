@@ -48,17 +48,15 @@ FCCRunAction::~FCCRunAction()
 
 void FCCRunAction::BeginOfRunAction(const G4Run* aRun)
 {
-   G4cout<<" ____ begin run "<<G4endl;
-   // FCCOutput::Instance()->StartAnalysis(aRun->GetRunID());
-   // FCCOutput::Instance()->CreateHistograms();
+   FCCOutput::Instance()->StartAnalysis(aRun->GetRunID());
+   FCCOutput::Instance()->CreateHistograms();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void FCCRunAction::EndOfRunAction(const G4Run* /*aRun*/)
 {
-   G4cout<<" ____ end run "<<G4endl;
-   // FCCOutput::Instance()->EndAnalysis();
+   FCCOutput::Instance()->EndAnalysis();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

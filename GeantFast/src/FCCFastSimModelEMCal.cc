@@ -59,9 +59,9 @@ FCCFastSimModelEMCal::~FCCFastSimModelEMCal()
 
 G4bool FCCFastSimModelEMCal::IsApplicable(const G4ParticleDefinition& aParticleType)
 {
-   return true;// &aParticleType == G4Electron::Definition() ||
-      // &aParticleType == G4Positron::Definition() ||
-      // &aParticleType == G4Gamma::Definition();
+   return &aParticleType == G4Electron::Definition() ||
+       &aParticleType == G4Positron::Definition() ||
+       &aParticleType == G4Gamma::Definition();
 }
 
 G4bool FCCFastSimModelEMCal::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
@@ -95,7 +95,7 @@ void FCCFastSimModelEMCal::DoIt(const G4FastTrack& aFastTrack,
             Esm = abs(FCCSmearer::Instance()->SmearEnergy(aFastTrack.GetPrimaryTrack(), res,  FCCOutput::eSaveEMCal));
          else
             Esm = abs(FCCSmearer::Instance()->SmearEnergy(aFastTrack.GetPrimaryTrack(), res));
-         // FCCOutput::Instance()->FillHistogram(1, (Esm/MeV) / (Edep/MeV));
+          FCCOutput::Instance()->FillHistogram(1, (Esm/MeV) / (Edep/MeV));
 
          ((FCCPrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
                                            (aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetPrimaryParticle())->GetUserInformation()))->SetEMCalPosition(Pos);

@@ -26,6 +26,9 @@
 #ifndef FCC_DETECTOR_CONSTRUCTION_H
 #define FCC_DETECTOR_CONSTRUCTION_H
 
+#include "FCCFastSimModelTracker.hh"
+#include "FCCFastSimModelEMCal.hh"
+#include "FCCFastSimModelHCal.hh"
 
 #include "G4LogicalVolume.hh"
 #include "G4VUserDetectorConstruction.hh"
@@ -51,6 +54,18 @@ public:
    */
    virtual G4VPhysicalVolume* Construct();
    // virtual void ConstructSDandField();
+   /**
+      A vector of fast simulation models for a tracking detector.
+    */
+   std::vector<FCCFastSimModelTracker*> fTrackerSmearModel;
+   /**
+      A vector of fast simulation models for an electromagnetic calorimeter.
+    */
+   std::vector<FCCFastSimModelEMCal*> fEMCalSmearModel;
+   /**
+      A vector of fast simulation models for a hadronic calorimeter.
+    */
+   std::vector<FCCFastSimModelHCal*> fHCalSmearModel;
 };
 
 

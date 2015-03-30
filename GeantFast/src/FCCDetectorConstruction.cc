@@ -24,9 +24,6 @@
 // ********************************************************************
 //
 #include "FCCDetectorConstruction.hh"
-#include "FCCFastSimModelTracker.hh"
-#include "FCCFastSimModelEMCal.hh"
-#include "FCCFastSimModelHCal.hh"
 
 #include "G4ProductionCuts.hh"
 #include "G4SystemOfUnits.hh"
@@ -37,7 +34,21 @@ FCCDetectorConstruction::FCCDetectorConstruction()
 {;}
 
 FCCDetectorConstruction::~FCCDetectorConstruction()
-{;}
+{
+   for (G4int iterTracker=0; iterTracker<G4int(fTrackerSmearModel.size()); iterTracker++)
+   {
+      delete fTrackerSmearModel[iterTracker];
+   }
+   for (G4int iterEMCal=0; iterEMCal<G4int(fEMCalSmearModel.size()); iterEMCal++)
+   {
+      delete fEMCalSmearModel[iterEMCal];
+   }
+   for (G4int iterHCal=0; iterHCal<G4int(fHCalSmearModel.size()); iterHCal++)
+   {
+
+      delete fHCalSmearModel[iterHCal];
+   }
+}
 
 G4VPhysicalVolume* FCCDetectorConstruction::Construct()
 {
@@ -89,9 +100,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          (1.* ((*TrackerList[iterTracker]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       TrackerList[iterTracker]->GetProductionCuts()->SetProductionCut(
           1*m, idxG4GammaCut );
-//      fTrackerSmearModel.push_back( 
-      new FCCFastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker]);
-//);
+      fTrackerSmearModel.push_back( new FCCFastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], FCCDetectorParametrisation::eCMS) );
    }
    for (G4int iterECal=0; iterECal<G4int(ECalList.size()); iterECal++)
    {
@@ -100,9 +109,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          (0.5* ((*ECalList[iterECal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       ECalList[iterECal]->GetProductionCuts()->SetProductionCut(
          0.1*m, idxG4GammaCut );
-      //fEMCalSmearModel.push_back( 
-         new FCCFastSimModelEMCal("fastSimModelEMCal",ECalList[iterECal], FCCDetectorParametrisation::eCMS);
-                                  //);
+      fEMCalSmearModel.push_back( new FCCFastSimModelEMCal("fastSimModelEMCal",ECalList[iterECal], FCCDetectorParametrisation::eCMS) );
    }
    for (G4int iterHCal=0; iterHCal<G4int(HCalList.size()); iterHCal++)
    {
@@ -111,10 +118,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          0.5* ((*HCalList[iterHCal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       HCalList[iterHCal]->GetProductionCuts()->SetProductionCut(
          1.*m, idxG4GammaCut );
-
-      //fHCalSmearModel.push_back(
-      new FCCFastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], FCCDetectorParametrisation::eCMS);
-         //);
+      fHCalSmearModel.push_back( new FCCFastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], FCCDetectorParametrisation::eCMS) );
    }
    //------------------
    // Returns the pointer to

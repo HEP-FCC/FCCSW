@@ -40,12 +40,10 @@ StatusCode Geant4Simulation::initialize() {
    m_runManager->SetUserInitialization(new FCCActionInitialization);
 
    m_runManager->Initialize();
-   // from BeamOn
+   // as in G4RunManager::BeamOn
    m_runManager->numberOfEventToBeProcessed = 1;
    m_runManager->ConstructScoringWorlds();
-   // initialization
    m_runManager->RunInitialization();
-
 
 	return StatusCode::SUCCESS;
 }
@@ -58,28 +56,10 @@ StatusCode Geant4Simulation::execute() {
    m_runManager->currentEvent = geantEvent;
 
    // run geant
-   G4EventManager* eventManager = G4EventManager::GetEventManager();
    //as in  G4RunManager::ProcessOneEvent
    m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
-   //m_runManager->currentEvent = geantEvent;
    m_runManager->AnalyzeEvent(m_runManager->currentEvent);
    m_runManager->UpdateScoring();
-
-   // G4ScoringManager* ScM = G4ScoringManager::GetScoringManagerIfExist();
-   // if ( ScM ) {
-   //    G4int nPar = ScM->GetNumberOfMesh();
-   //    if ( nPar > 0 ) {
-   //       G4HCofThisEvent* HCE = geantEvent->GetHCofThisEvent();
-   //       if ( HCE ) {
-   //          G4int nColl = HCE->GetCapacity();
-   //          for ( G4int i = 0; i < nColl; i++ ) {
-   //             G4VHitsCollection* HC = HCE->GetHC(i);
-   //             if ( HC ) ScM->Accumulate( HC );
-   //          }
-   //       }
-   //    }
-   // }
-
    m_runManager->TerminateOneEvent();
 
    // ParticleCollection* particles = new ParticleCollection();
