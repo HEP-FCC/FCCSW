@@ -23,37 +23,51 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id: B1DetectorConstruction.hh 69565 2013-05-08 12:35:31Z gcosmo $
-//
-/// \file B1DetectorConstruction.hh
-/// \brief Definition of the B1DetectorConstruction class
+#ifndef FCC_DETECTOR_CONSTRUCTION_H
+#define FCC_DETECTOR_CONSTRUCTION_H
 
-#ifndef B1DetectorConstruction_h
-#define B1DetectorConstruction_h 1
+#include "FCCFastSimModelTracker.hh"
+#include "FCCFastSimModelEMCal.hh"
+#include "FCCFastSimModelHCal.hh"
 
+#include "G4LogicalVolume.hh"
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
 
-class G4VPhysicalVolume;
-class G4LogicalVolume;
+/**
+	@brief     Construction of detector geometry.
+ 	@details   A mandatory initialization class of the detector setup. Detector construction allows to use the geometry read from the GDML file. Based on G4 examples/persistency/gdml/G01/include/G01DetectorConstruction.hh.
+ 	@author    Anna Zaborowska
+*/
 
-/// Detector construction class to define materials and geometry.
-
-class B1DetectorConstruction : public G4VUserDetectorConstruction
+class FCCDetectorConstruction : public G4VUserDetectorConstruction
 {
-  public:
-    B1DetectorConstruction();
-    virtual ~B1DetectorConstruction();
-
-    virtual G4VPhysicalVolume* Construct();
-    
-    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
-
-  protected:
-    G4LogicalVolume*  fScoringVolume;
+public:
+   /**
+      A default constructor
+   */
+   FCCDetectorConstruction();
+   virtual ~FCCDetectorConstruction();
+	/**
+      A method invoked by G4RunManager::Initialize()
+      @return A pointer to the world volume.
+   */
+   virtual G4VPhysicalVolume* Construct();
+   // virtual void ConstructSDandField();
+   /**
+      A vector of fast simulation models for a tracking detector.
+    */
+   std::vector<FCCFastSimModelTracker*> fTrackerSmearModel;
+   /**
+      A vector of fast simulation models for an electromagnetic calorimeter.
+    */
+   std::vector<FCCFastSimModelEMCal*> fEMCalSmearModel;
+   /**
+      A vector of fast simulation models for a hadronic calorimeter.
+    */
+   std::vector<FCCFastSimModelHCal*> fHCalSmearModel;
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 

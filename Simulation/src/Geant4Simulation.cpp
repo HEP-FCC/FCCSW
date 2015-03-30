@@ -1,16 +1,20 @@
 #include "Geant4Simulation.h"
 
-#include "B1DetectorConstruction.h"
+#include "GeantFast/FCCDetectorConstruction.hh"
+#include "GeantFast/FCCActionInitialization.hh"
+#include "GeantFast/FCCPrimaryParticleInformation.hh"
+#include "GeantFast/FCCPhysicsList.hh"
+#include "G4GDMLParser.hh"
+
 #include "FTFP_BERT.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
+#include "G4ScoringManager.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
-
-using CLHEP::c_light;
-using CLHEP::mm;
-using CLHEP::GeV;
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc)
@@ -23,14 +27,23 @@ GaudiAlgorithm(name, svcLoc)
 StatusCode Geant4Simulation::initialize() {
    GaudiAlgorithm::initialize();
    m_runManager = new G4RunManager;
+
+   // load physics list
+   m_runManager->SetUserInitialization(new FCCPhysicsList);
+
    // take geometry
    ///.... from Service - check with Julia code, currently...
-   m_runManager->SetUserInitialization(new B1DetectorConstruction);
-   // load physics list
-   m_runManager->SetUserInitialization(new FTFP_BERT);
-   // initialization
+   m_runManager->SetUserInitialization(new FCCDetectorConstruction);
+
+   // user action classes
+   m_runManager->SetUserInitialization(new FCCActionInitialization);
+
    m_runManager->Initialize();
+   // as in G4RunManager::BeamOn
+   m_runManager->numberOfEventToBeProcessed = 1;
+   m_runManager->ConstructScoringWorlds();
    m_runManager->RunInitialization();
+
 	return StatusCode::SUCCESS;
 }
 
@@ -39,14 +52,18 @@ StatusCode Geant4Simulation::execute() {
    auto hepmc_event = m_eventhandle.get();
    G4Event* geant_event = new G4Event();
    HepMC2G4(hepmc_event, geant_event);
+   m_runManager->currentEvent = geant_event;
 
    // run geant
-   G4EventManager* eventManager = G4EventManager::GetEventManager();
-   eventManager->ProcessOneEvent(geant_event);
+   //as in  G4RunManager::ProcessOneEvent
+   m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
+   m_runManager->AnalyzeEvent(m_runManager->currentEvent);
+   m_runManager->UpdateScoring();
+   m_runManager->TerminateOneEvent();
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
-   delete geant_event;
+
    return StatusCode::SUCCESS;
 }
 
@@ -55,7 +72,6 @@ StatusCode Geant4Simulation::finalize() {
    delete  m_runManager;
    return GaudiAlgorithm::finalize();
 }
-
 
 void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4Event)
 {
@@ -81,8 +97,8 @@ void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4
 
       // create G4PrimaryVertex and associated G4PrimaryParticles
       G4PrimaryVertex* g4vtx=
-         new G4PrimaryVertex(xvtx.x()*mm, xvtx.y()*mm, xvtx.z()*mm,
-                             xvtx.t()*mm/c_light);
+         new G4PrimaryVertex(xvtx.x()*cm, xvtx.y()*cm, xvtx.z()*cm,
+                             xvtx.t()*cm/c_light);
 
       for (HepMC::GenVertex::particle_iterator
               vpitr= (*vitr)->particles_begin(HepMC::children);
@@ -95,10 +111,10 @@ void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4
          G4LorentzVector p(pos.px(), pos.py(), pos.pz(), pos.e());
          G4PrimaryParticle* g4prim=
             new G4PrimaryParticle(pdgcode, p.x()*GeV, p.y()*GeV, p.z()*GeV);
-         // g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
-         //                               (*vpitr)->barcode(),
-         //                               pdgcode,
-         //                               G4ThreeVector(p.x(), p.y(), p.z())));
+         g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
+                                       (*vpitr)->barcode(),
+                                       pdgcode,
+                                       G4ThreeVector(p.x(), p.y(), p.z())));
          g4vtx-> SetPrimary(g4prim);
       }
       aG4Event-> AddPrimaryVertex(g4vtx);
