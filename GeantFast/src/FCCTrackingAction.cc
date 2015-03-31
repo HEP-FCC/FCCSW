@@ -1,5 +1,4 @@
 #include "FCCTrackingAction.hh"
-#include "FCCEventInformation.hh"
 #include "FCCPrimaryParticleInformation.hh"
 #include "FCCOutput.hh"
 

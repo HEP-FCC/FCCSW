@@ -1,5 +1,4 @@
 #include "FCCOutput.hh"
-#include "FCCEventInformation.hh"
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"

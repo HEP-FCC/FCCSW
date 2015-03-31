@@ -23,12 +23,6 @@ class FCCActionInitialization : public G4VUserActionInitialization
          @param aOutName The output file name passed to FCCRunAction.
     */
    FCCActionInitialization(const G4String aOutName);
-    /**
-      A constructor.
-         @param aOutName The output file name passed to FCCRunAction.
-         @param aSmear The flag indicating if smearing should be done, passed to FCCEventAction.
-    */
-   FCCActionInitialization(const G4String aOutName, const G4String aSmear);
    virtual ~FCCActionInitialization();
 
     virtual void BuildForMaster() const;
@@ -41,10 +35,6 @@ private:
       An output file name. Passed in Build() to the FCCRunAction.
     */
    G4String fFileName;
-    /**
-      A flag indicating if smearing should be performed. Passed in Build() to the FCCEventAction.
-    */
-   G4bool fSmear;
 };
 
 #endif

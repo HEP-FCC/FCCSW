@@ -16,26 +16,15 @@ public:
       A default constructor. Sets the flag fSmear to true indicating that smearing will be performed.
     */
     FCCEventAction();
-   /**
-      A constructor.
-      @param aSmear The flag indicating if smearing is to be done.
-    */
-   FCCEventAction(G4bool aSmear);
     virtual ~FCCEventAction();
-
    /**
-     Defines the actions at the beginning of the event. It sets the FCCEventInformation with fSmear flag. It creates all the ntuples defined in FCCOutput singleton class.
+     Defines the actions at the beginning of the event. It creates all the ntuples defined in FCCOutput singleton class.
     */
     virtual void BeginOfEventAction(const G4Event*);
    /**
       Defines the actions at the end of the event.
    */
     virtual void EndOfEventAction(const G4Event*);
-private:
-    /**
-      A flag indicating if smearing should be performed. Passed to FCCEventInformation in BeginOfEventAction(const G4Event*).
-    */
-   G4bool fSmear;
 
 };
 
