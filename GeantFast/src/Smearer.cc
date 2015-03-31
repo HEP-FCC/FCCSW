@@ -1,36 +1,36 @@
-#include "FCCSmearer.hh"
+#include "Smearer.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4TransportationManager.hh"
 #include "G4FieldManager.hh"
 #include "G4UniformMagField.hh"
 #include <ctime>
 
-FCCSmearer* FCCSmearer::fFCCSmearer = nullptr;
+Smearer* Smearer::fSmearer = nullptr;
 
-FCCSmearer::FCCSmearer()
+Smearer::Smearer()
 {
    unsigned seed = time(NULL);
    fRandomEngine = new CLHEP::HepJamesRandom( seed );
    fRandomGauss = new CLHEP::RandGauss(fRandomEngine);
 }
-FCCSmearer::~FCCSmearer()
+Smearer::~Smearer()
 {}
 
-FCCSmearer* FCCSmearer::Instance()
+Smearer* Smearer::Instance()
 {
-   if(!fFCCSmearer)
+   if(!fSmearer)
    {
-      fFCCSmearer = new FCCSmearer();
+      fSmearer = new Smearer();
    }
-   return fFCCSmearer;
+   return fSmearer;
 }
 
-G4ThreeVector FCCSmearer::SmearMomentum(const G4Track* aTrackOriginal, G4double aResolution)
+G4ThreeVector Smearer::SmearMomentum(const G4Track* aTrackOriginal, G4double aResolution)
 {
    return SmearGaussian(aTrackOriginal, aResolution);
 }
 
-G4double FCCSmearer::SmearEnergy(const G4Track* aTrackOriginal, G4double aResolution)
+G4double Smearer::SmearEnergy(const G4Track* aTrackOriginal, G4double aResolution)
 {
    G4double newE = -1;
    while (newE < 0) // to ensure the resulting value is not negative (vital for energy smearing, does not change direction for momentum smearing)
@@ -43,7 +43,7 @@ G4double FCCSmearer::SmearEnergy(const G4Track* aTrackOriginal, G4double aResolu
    return newE;
 }
 
-G4ThreeVector FCCSmearer::SmearGaussian(const G4Track* aTrackOriginal, G4double aResolution)
+G4ThreeVector Smearer::SmearGaussian(const G4Track* aTrackOriginal, G4double aResolution)
 {
    G4ThreeVector originP = aTrackOriginal->GetMomentum();
    G4ThreeVector originPos = aTrackOriginal->GetPosition();
@@ -52,7 +52,7 @@ G4ThreeVector FCCSmearer::SmearGaussian(const G4Track* aTrackOriginal, G4double 
    return smearedMom;
 }
 
-G4double FCCSmearer::Gauss(G4double aMean, G4double aStandardDeviation)
+G4double Smearer::Gauss(G4double aMean, G4double aStandardDeviation)
 {
    return fRandomGauss->fire(aMean, aStandardDeviation);
 }

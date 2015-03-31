@@ -1,5 +1,5 @@
-#ifndef FCC_PRIMARY_PARTICLE_INFORMATION_H
-#define FCC_PRIMARY_PARTICLE_INFORMATION_H
+#ifndef PRIMARY_PARTICLE_INFORMATION_H
+#define PRIMARY_PARTICLE_INFORMATION_H
 
 #include "G4VUserPrimaryParticleInformation.hh"
 #include "G4ThreeVector.hh"
@@ -11,7 +11,7 @@
    @author    Anna Zaborowska
 */
 
-class FCCPrimaryParticleInformation: public G4VUserPrimaryParticleInformation
+class PrimaryParticleInformation: public G4VUserPrimaryParticleInformation
 {
 public:
    /**
@@ -20,8 +20,8 @@ public:
       @param aPDG A PDG code of the particle.
       @param aMomentum An initial particle momentum (at the primary vertex).
     */
-   FCCPrimaryParticleInformation(G4int aID, G4int aPDG, G4ThreeVector aMomentum);
-   virtual ~FCCPrimaryParticleInformation();
+   PrimaryParticleInformation(G4int aID, G4int aPDG, G4ThreeVector aMomentum);
+   virtual ~PrimaryParticleInformation();
    /**
       Prints the information about the particle.
    */

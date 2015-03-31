@@ -1,7 +1,7 @@
-#ifndef FCC_SMEARER_H
-#define FCC_SMEARER_H
+#ifndef SMEARER_H
+#define SMEARER_H
 
-#include "FCCOutput.hh"
+#include "Output.hh"
 #include "globals.hh"
 #include "G4Track.hh"
 #include "CLHEP/Random/JamesRandom.h"
@@ -13,15 +13,15 @@
    @author    Anna Zaborowska
 */
 
-class FCCSmearer
+class Smearer
 {
 public:
 
 /**
-   Allows the access to the FCCSmearer class member without creating the class object.
-  @return A pointer to the FCCSmearer class.
+   Allows the access to the Smearer class member without creating the class object.
+  @return A pointer to the Smearer class.
  */
-   static FCCSmearer* Instance();
+   static Smearer* Instance();
 /**
    Smears the momentum with a given resolution. Perigee representation can be saved.
    @param aTrack A track to smear.
@@ -51,14 +51,14 @@ protected:
 /**
    A default constructor.
 */
-   FCCSmearer();
-   ~FCCSmearer();
+   Smearer();
+   ~Smearer();
 
 private:
 /**
-   A pointer to FCCSmearer object.
+   A pointer to Smearer object.
 */
-   static FCCSmearer* fFCCSmearer;
+   static Smearer* fSmearer;
 /**
    CLHEP random engine.
 */

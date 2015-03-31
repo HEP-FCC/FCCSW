@@ -1,7 +1,7 @@
-#include "FCCFastSimModelEMCal.hh"
-#include "FCCPrimaryParticleInformation.hh"
-#include "FCCSmearer.hh"
-#include "FCCOutput.hh"
+#include "FastSimModelEMCal.hh"
+#include "PrimaryParticleInformation.hh"
+#include "Smearer.hh"
+#include "Output.hh"
 
 #include "G4Track.hh"
 #include "G4Event.hh"
@@ -12,34 +12,34 @@
 #include "G4Positron.hh"
 #include "G4Gamma.hh"
 
-FCCFastSimModelEMCal::FCCFastSimModelEMCal(G4String aModelName, G4Region* aEnvelope, FCCDetectorParametrisation::Parametrisation aType)
+FastSimModelEMCal::FastSimModelEMCal(G4String aModelName, G4Region* aEnvelope, DetectorParametrisation::Parametrisation aType)
    : G4VFastSimulationModel(aModelName, aEnvelope), fCalculateParametrisation(), fParametrisation(aType)
 {}
 
-FCCFastSimModelEMCal::FCCFastSimModelEMCal(G4String aModelName, G4Region* aEnvelope)
-   : G4VFastSimulationModel(aModelName, aEnvelope), fCalculateParametrisation(), fParametrisation(FCCDetectorParametrisation::eCMS)
+FastSimModelEMCal::FastSimModelEMCal(G4String aModelName, G4Region* aEnvelope)
+   : G4VFastSimulationModel(aModelName, aEnvelope), fCalculateParametrisation(), fParametrisation(DetectorParametrisation::eCMS)
 {}
 
-FCCFastSimModelEMCal::FCCFastSimModelEMCal(G4String aModelName)
-   : G4VFastSimulationModel(aModelName), fCalculateParametrisation(), fParametrisation(FCCDetectorParametrisation::eCMS)
+FastSimModelEMCal::FastSimModelEMCal(G4String aModelName)
+   : G4VFastSimulationModel(aModelName), fCalculateParametrisation(), fParametrisation(DetectorParametrisation::eCMS)
 {}
 
-FCCFastSimModelEMCal::~FCCFastSimModelEMCal()
+FastSimModelEMCal::~FastSimModelEMCal()
 {}
 
-G4bool FCCFastSimModelEMCal::IsApplicable(const G4ParticleDefinition& aParticleType)
+G4bool FastSimModelEMCal::IsApplicable(const G4ParticleDefinition& aParticleType)
 {
    return &aParticleType == G4Electron::Definition() ||
        &aParticleType == G4Positron::Definition() ||
        &aParticleType == G4Gamma::Definition();
 }
 
-G4bool FCCFastSimModelEMCal::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
+G4bool FastSimModelEMCal::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
 {
    return true;
 }
 
-void FCCFastSimModelEMCal::DoIt(const G4FastTrack& aFastTrack,
+void FastSimModelEMCal::DoIt(const G4FastTrack& aFastTrack,
                             G4FastStep& aFastStep)
 {
    // Kill the parameterised particle:
@@ -53,19 +53,19 @@ void FCCFastSimModelEMCal::DoIt(const G4FastTrack& aFastTrack,
    if ( !aFastTrack.GetPrimaryTrack()->GetParentID() )
    {
       G4ThreeVector Porg = aFastTrack.GetPrimaryTrack()->GetMomentum();
-      G4double res = fCalculateParametrisation->GetResolution(FCCDetectorParametrisation::eEMCAL, fParametrisation, Porg.mag());
-      G4double eff = fCalculateParametrisation->GetEfficiency(FCCDetectorParametrisation::eEMCAL, fParametrisation, Porg.mag());
+      G4double res = fCalculateParametrisation->GetResolution(DetectorParametrisation::eEMCAL, fParametrisation, Porg.mag());
+      G4double eff = fCalculateParametrisation->GetEfficiency(DetectorParametrisation::eEMCAL, fParametrisation, Porg.mag());
       G4double Esm;
-      Esm = abs(FCCSmearer::Instance()->SmearEnergy(aFastTrack.GetPrimaryTrack(), res));
-      FCCOutput::Instance()->FillHistogram(1, (Esm/MeV) / (Edep/MeV));
+      Esm = abs(Smearer::Instance()->SmearEnergy(aFastTrack.GetPrimaryTrack(), res));
+      Output::Instance()->FillHistogram(1, (Esm/MeV) / (Edep/MeV));
 
-      ((FCCPrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
+      ((PrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
                                         (aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetPrimaryParticle())->GetUserInformation()))->SetEMCalPosition(Pos);
-      ((FCCPrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
+      ((PrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
                                         (aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetPrimaryParticle())->GetUserInformation()))->SetEMCalEnergy(Esm);
-      ((FCCPrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
+      ((PrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
                                         (aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetPrimaryParticle())->GetUserInformation()))->SetEMCalResolution(res);
-      ((FCCPrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
+      ((PrimaryParticleInformation*)(const_cast<G4PrimaryParticle*>
                                         (aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetPrimaryParticle())->GetUserInformation()))->SetEMCalEfficiency(eff);
       aFastStep.ProposeTotalEnergyDeposited(Esm);
    }

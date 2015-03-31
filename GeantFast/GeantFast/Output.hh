@@ -1,5 +1,5 @@
-#ifndef FCC_OUTPUT_H
-#define FCC_OUTPUT_H
+#ifndef OUTPUT_H
+#define OUTPUT_H
 
 #include "G4ThreeVector.hh"
 #include "globals.hh"
@@ -10,7 +10,7 @@
    @author    Anna Zaborowska
  */
 
-class FCCOutput
+class Output
 {
 public:
 /**
@@ -19,10 +19,10 @@ public:
    enum SaveType {eNoSave, eSaveMC, eSaveTracker, eSaveEMCal, eSaveHCal};
 
 /**
-   Allows the access to the FCCOutput class member without creating the class object.
-  @return A pointer to the FCCOutput class.
+   Allows the access to the Output class member without creating the class object.
+  @return A pointer to the Output class.
  */
-   static FCCOutput* Instance();
+   static Output* Instance();
 /**
    Sets the file name of the output root file.
    @param name The name of the file.
@@ -48,11 +48,11 @@ public:
  */
    void EndAnalysis();
 /**
-   Creates Ntuples used to store information about particle (its ID, PDG code, energy deposits, etc.). To be called for each event in FCCEventAction.
+   Creates Ntuples used to store information about particle (its ID, PDG code, energy deposits, etc.). To be called for each event in EventAction.
  */
    void CreateNtuples();
 /**
-   Creates histograms to combine information from all the events in the run. To be called for each run in FCCRunAction.
+   Creates histograms to combine information from all the events in the run. To be called for each run in RunAction.
  */
    void CreateHistograms();
 /**
@@ -63,7 +63,7 @@ public:
    @param aVector A vector to be stored (particle momentum in tracker or position of energy deposit in calorimeter).
    @param aResolution A resolution of the detector that was used.
    @param aEfficiency An efficiency of the detector that was used.
-   @param aEnergy An energy deposit (for calorimeters only: FCCOutput::SaveType::eEMCal or FCCOutput::SaveType::eHCal).
+   @param aEnergy An energy deposit (for calorimeters only: Output::SaveType::eEMCal or Output::SaveType::eHCal).
  */
    void SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
                   G4ThreeVector aVector, G4double aResolution = 0, G4double aEfficiency = 1, G4double aEnergy = 0) ;
@@ -73,17 +73,17 @@ public:
    @param value A value to be filled into the histogram.
  */
    void FillHistogram(G4int HNo, G4double value) const;
-   ~FCCOutput();
+   ~Output();
 protected:
 /**
    A default, protected constructor (due to singleton patern).
  */
-   FCCOutput();
+   Output();
 private:
 /**
-   A pointer to the only FCCOutput class object.
+   A pointer to the only Output class object.
  */
-   static FCCOutput* fFCCOutput;
+   static Output* fOutput;
 /**
    A name of the output root file.
  */

@@ -1,5 +1,5 @@
-#ifndef FCC_PHYSICS_LIST_H
-#define FCC_PHYSICS_LIST_H
+#ifndef PHYSICS_LIST_H
+#define PHYSICS_LIST_H
 
 #include "G4VUserPhysicsList.hh"
 #include "globals.hh"
@@ -10,14 +10,14 @@
    @author    Anna Zaborowska
  */
 
-class FCCPhysicsList: public G4VUserPhysicsList
+class PhysicsList: public G4VUserPhysicsList
 {
 public:
    /**
       A default constructor. Sets the default cut value.
     */
-  FCCPhysicsList();
-  virtual ~FCCPhysicsList();
+  PhysicsList();
+  virtual ~PhysicsList();
 
 protected:
    /**

@@ -1,4 +1,4 @@
-#include "FCCOutput.hh"
+#include "Output.hh"
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"
@@ -6,43 +6,43 @@
 #include "G4SystemOfUnits.hh"
 #include "g4root.hh"
 
-FCCOutput* FCCOutput::fFCCOutput = nullptr;
+Output* Output::fOutput = nullptr;
 
-FCCOutput::FCCOutput(): fFileNameWithRunNo(false), fCurrentID()
+Output::Output(): fFileNameWithRunNo(false), fCurrentID()
 {
    fFileName = "DefaultOutput.root";
 }
 
-FCCOutput::~FCCOutput()
+Output::~Output()
 {
    delete G4AnalysisManager::Instance();
 }
 
-FCCOutput* FCCOutput::Instance()
+Output* Output::Instance()
 {
-   if(!fFCCOutput)
+   if(!fOutput)
    {
-      fFCCOutput = new FCCOutput();
+      fOutput = new Output();
    }
-   return fFCCOutput;
+   return fOutput;
 }
 
-void FCCOutput::SetFileName(G4String aName)
+void Output::SetFileName(G4String aName)
 {
    fFileName = aName;
 }
 
-void FCCOutput::AppendName(G4bool aApp)
+void Output::AppendName(G4bool aApp)
 {
    fFileNameWithRunNo = aApp;
 }
 
-G4String FCCOutput::GetFileName()
+G4String Output::GetFileName()
 {
    return fFileName;
 }
 
-void FCCOutput::StartAnalysis(G4int aRunID)
+void Output::StartAnalysis(G4int aRunID)
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
    if ( fFileNameWithRunNo)
@@ -55,14 +55,14 @@ void FCCOutput::StartAnalysis(G4int aRunID)
    analysisManager->OpenFile(fFileName);
 }
 
-void FCCOutput::EndAnalysis()
+void Output::EndAnalysis()
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
    analysisManager->Write();
    analysisManager->CloseFile();
 }
 
-void FCCOutput::CreateNtuples()
+void Output::CreateNtuples()
 {
    const G4Event* event = G4RunManager::GetRunManager()->GetCurrentEvent();
    G4String evName = "Event_";
@@ -99,7 +99,7 @@ void FCCOutput::CreateNtuples()
    analysisManager->FinishNtuple(ntupID);
 }
 
-void FCCOutput::CreateHistograms()
+void Output::CreateHistograms()
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
    analysisManager->CreateH1("Pdiff","momentum smeared in tracker", 100, 0.8,1.2);
@@ -113,7 +113,7 @@ void FCCOutput::CreateHistograms()
    analysisManager->SetH1YAxisTitle(2, "Entries");
 }
 
-void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
+void Output::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
                           G4ThreeVector aVector, G4double aResolution, G4double aEfficiency, G4double aEnergy)
 {
    const G4Event* event = G4RunManager::GetRunManager()->GetCurrentEvent();
@@ -121,9 +121,9 @@ void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
    switch(aWhatToSave)
    {
-   case FCCOutput::eNoSave:
+   case Output::eNoSave:
       break;
-   case  FCCOutput::eSaveMC:
+   case  Output::eSaveMC:
    {
       analysisManager->FillNtupleIColumn(evNo, 0, aPartID);
       analysisManager->FillNtupleIColumn(evNo, 1, aPDG);
@@ -133,7 +133,7 @@ void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
       fCurrentID = aPartID;
       break;
    }
-   case  FCCOutput::eSaveTracker:
+   case  Output::eSaveTracker:
    {
       if (aPartID != fCurrentID)
          G4cout<<" Wrong particle - trying to save Tracker information of different particle"<<G4endl;
@@ -144,7 +144,7 @@ void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
       analysisManager->FillNtupleDColumn(evNo, 9, aVector.z());
       break;
    }
-   case  FCCOutput::eSaveEMCal:
+   case  Output::eSaveEMCal:
    {
       if (aPartID != fCurrentID)
          G4cout<<" Wrong particle - trying to save EMCal information of different particle"<<G4endl;
@@ -156,7 +156,7 @@ void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
       analysisManager->FillNtupleDColumn(evNo, 15, aEnergy);
       break;
    }
-   case  FCCOutput::eSaveHCal:
+   case  Output::eSaveHCal:
    {
       if (aPartID != fCurrentID)
          G4cout<<" Wrong particle - trying to save HCal information of different particle"<<G4endl;
@@ -173,7 +173,7 @@ void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    return;
 }
 
-void FCCOutput::FillHistogram(G4int aHistNo, G4double aValue) const
+void Output::FillHistogram(G4int aHistNo, G4double aValue) const
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
    analysisManager->FillH1(aHistNo, aValue);

@@ -1,5 +1,5 @@
-#ifndef FCC_DETECTOR_PARAMETRSIATION_H
-#define FCC_DETECTOR_PARAMETRSIATION_H
+#ifndef DETECTOR_PARAMETRSIATION_H
+#define DETECTOR_PARAMETRSIATION_H
 
 #include "globals.hh"
 
@@ -9,14 +9,14 @@
    @author    Anna Zaborowska
 */
 
-class FCCDetectorParametrisation
+class DetectorParametrisation
 {
 public:
    /**
       A default constructor.
     */
-   FCCDetectorParametrisation();
-   ~FCCDetectorParametrisation();
+   DetectorParametrisation();
+   ~DetectorParametrisation();
    /**
       A parametrisation type (CMS, ATLAS, ALEPH).
     */

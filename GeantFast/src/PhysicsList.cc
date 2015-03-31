@@ -1,4 +1,4 @@
-#include "FCCPhysicsList.hh"
+#include "PhysicsList.hh"
 #include "globals.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ProcessManager.hh"
@@ -20,16 +20,16 @@
 #include "G4IonConstructor.hh"
 
 
-FCCPhysicsList::FCCPhysicsList():  G4VUserPhysicsList()
+PhysicsList::PhysicsList():  G4VUserPhysicsList()
 {
   SetVerboseLevel(1);
   defaultCutValue = 0.1*m;
 }
 
-FCCPhysicsList::~FCCPhysicsList()
+PhysicsList::~PhysicsList()
 {}
 
-void FCCPhysicsList::ConstructParticle()
+void PhysicsList::ConstructParticle()
 {
   // In this method, static member functions should be called
   // for all particles which you want to use.
@@ -43,7 +43,7 @@ void FCCPhysicsList::ConstructParticle()
   ConstructIons();
 }
 
-void FCCPhysicsList::ConstructBosons()
+void PhysicsList::ConstructBosons()
 {
   G4Geantino::GeantinoDefinition();
   G4ChargedGeantino::ChargedGeantinoDefinition();
@@ -52,31 +52,31 @@ void FCCPhysicsList::ConstructBosons()
   G4OpticalPhoton::OpticalPhotonDefinition();
 }
 
-void FCCPhysicsList::ConstructLeptons()
+void PhysicsList::ConstructLeptons()
 {
   G4LeptonConstructor pConstructor;
   pConstructor.ConstructParticle();
 }
 
-void FCCPhysicsList::ConstructMesons()
+void PhysicsList::ConstructMesons()
 {
   G4MesonConstructor pConstructor;
   pConstructor.ConstructParticle();
 }
 
-void FCCPhysicsList::ConstructBaryons()
+void PhysicsList::ConstructBaryons()
 {
   G4BaryonConstructor  pConstructor;
   pConstructor.ConstructParticle();
 }
 
-void FCCPhysicsList::ConstructIons()
+void PhysicsList::ConstructIons()
 {
   G4IonConstructor pConstructor;
   pConstructor.ConstructParticle();
 }
 
-void FCCPhysicsList::ConstructProcess()
+void PhysicsList::ConstructProcess()
 {
   AddTransportation();
   AddParameterisation();
@@ -84,16 +84,16 @@ void FCCPhysicsList::ConstructProcess()
   ConstructGeneral();
 }
 
-void FCCPhysicsList::AddTransportation()
+void PhysicsList::AddTransportation()
 {
    UseCoupledTransportation();
    G4VUserPhysicsList::AddTransportation();
 }
 
-void FCCPhysicsList::ConstructEM()
+void PhysicsList::ConstructEM()
 {}
 
-void FCCPhysicsList::ConstructGeneral()
+void PhysicsList::ConstructGeneral()
 {
   G4Decay* theDecayProcess = new G4Decay();
   theParticleIterator->reset();
@@ -109,7 +109,7 @@ void FCCPhysicsList::ConstructGeneral()
   }
 }
 
-void FCCPhysicsList::AddParameterisation()
+void PhysicsList::AddParameterisation()
 {
    G4FastSimulationManagerProcess* fastSimProcess = new G4FastSimulationManagerProcess("G4FSMP");
 
@@ -122,10 +122,10 @@ void FCCPhysicsList::AddParameterisation()
    }
 }
 
-void FCCPhysicsList::SetCuts()
+void PhysicsList::SetCuts()
 {
   if (verboseLevel >1){
-    G4cout << "FCCPhysicsList::SetCuts:";
+    G4cout << "PhysicsList::SetCuts:";
   }
   SetCutsWithDefault();
 }
