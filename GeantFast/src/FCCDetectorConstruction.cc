@@ -20,7 +20,6 @@ FCCDetectorConstruction::~FCCDetectorConstruction()
    }
    for (G4int iterHCal=0; iterHCal<G4int(fHCalSmearModel.size()); iterHCal++)
    {
-
       delete fHCalSmearModel[iterHCal];
    }
 }
@@ -95,9 +94,5 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          1.*m, idxG4GammaCut );
       fHCalSmearModel.push_back( new FCCFastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], FCCDetectorParametrisation::eCMS) );
    }
-   //------------------
-   // Returns the pointer to
-   // the physical world:
-   //-----------------------
    return parser.GetWorldVolume();
 }

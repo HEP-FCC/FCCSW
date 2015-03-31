@@ -29,7 +29,4 @@ class FCCTrackingAction : public G4UserTrackingAction
    virtual void  PostUserTrackingAction(const G4Track* track);
 
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif

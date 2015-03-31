@@ -6,9 +6,7 @@
 #include "G4Track.hh"
 #include "G4Event.hh"
 #include "G4RunManager.hh"
-#include "g4root.hh"
 
-#include "Randomize.hh"
 #include "G4SystemOfUnits.hh"
 
 FCCFastSimModelHCal::FCCFastSimModelHCal(G4String aModelName, G4Region* aEnvelope, FCCDetectorParametrisation::Parametrisation aType)

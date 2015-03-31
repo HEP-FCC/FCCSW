@@ -6,21 +6,18 @@
 #include "G4SystemOfUnits.hh"
 #include "g4root.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-FCCOutput* FCCOutput::fFCCOutput = 0;
+FCCOutput* FCCOutput::fFCCOutput = nullptr;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 FCCOutput::FCCOutput(): fFileNameWithRunNo(false), fCurrentID()
 {
    fFileName = "DefaultOutput.root";
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 FCCOutput::~FCCOutput()
 {
    delete G4AnalysisManager::Instance();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 FCCOutput* FCCOutput::Instance()
 {
    if(!fFCCOutput)
@@ -30,24 +27,21 @@ FCCOutput* FCCOutput::Instance()
    return fFCCOutput;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void FCCOutput::SetFileName(G4String aName)
 {
    fFileName = aName;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void FCCOutput::AppendName(G4bool aApp)
 {
    fFileNameWithRunNo = aApp;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 G4String FCCOutput::GetFileName()
 {
    return fFileName;
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 void FCCOutput::StartAnalysis(G4int aRunID)
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -61,7 +55,6 @@ void FCCOutput::StartAnalysis(G4int aRunID)
    analysisManager->OpenFile(fFileName);
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void FCCOutput::EndAnalysis()
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -69,7 +62,6 @@ void FCCOutput::EndAnalysis()
    analysisManager->CloseFile();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void FCCOutput::CreateNtuples()
 {
    const G4Event* event = G4RunManager::GetRunManager()->GetCurrentEvent();
@@ -107,7 +99,6 @@ void FCCOutput::CreateNtuples()
    analysisManager->FinishNtuple(ntupID);
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 void FCCOutput::CreateHistograms()
 {
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
@@ -121,8 +112,6 @@ void FCCOutput::CreateHistograms()
    analysisManager->SetH1XAxisTitle(2, "E_{smeared}/E_{true}");
    analysisManager->SetH1YAxisTitle(2, "Entries");
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
                           G4ThreeVector aVector, G4double aResolution, G4double aEfficiency, G4double aEnergy)
@@ -183,7 +172,6 @@ void FCCOutput::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    }
    return;
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void FCCOutput::FillHistogram(G4int aHistNo, G4double aValue) const
 {
@@ -191,4 +179,3 @@ void FCCOutput::FillHistogram(G4int aHistNo, G4double aValue) const
    analysisManager->FillH1(aHistNo, aValue);
    return;
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

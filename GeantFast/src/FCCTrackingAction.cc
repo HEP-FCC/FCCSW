@@ -12,17 +12,11 @@
 #include <iomanip>
 #include <vector>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 FCCTrackingAction::FCCTrackingAction() : G4UserTrackingAction()
 {}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 FCCTrackingAction::~FCCTrackingAction()
 {}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void FCCTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
@@ -31,11 +25,7 @@ void FCCTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
    {
       ((G4Track*)aTrack)->SetTrackStatus(fStopAndKill);
    }
-   // filling data only for primary particles
-   if(aTrack->GetParentID()) return;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
@@ -68,5 +58,3 @@ void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
                                           info->GetHCalEnergy()/MeV);
    }
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

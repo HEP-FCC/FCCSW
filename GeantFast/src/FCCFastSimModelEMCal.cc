@@ -6,9 +6,6 @@
 #include "G4Track.hh"
 #include "G4Event.hh"
 #include "G4RunManager.hh"
-#include "g4root.hh"
-
-#include "Randomize.hh"
 #include "G4SystemOfUnits.hh"
 
 #include "G4Electron.hh"

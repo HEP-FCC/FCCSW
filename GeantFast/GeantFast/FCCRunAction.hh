@@ -31,7 +31,4 @@ class FCCRunAction : public G4UserRunAction
    */
    virtual void   EndOfRunAction(const G4Run*);
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif

@@ -43,6 +43,5 @@ public:
    std::vector<FCCFastSimModelHCal*> fHCalSmearModel;
 };
 
-
 #endif
 
