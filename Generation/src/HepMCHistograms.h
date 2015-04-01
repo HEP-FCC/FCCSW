@@ -2,9 +2,9 @@
 #define _HEPMCHISTOGRAMS_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
-#include "GaudiKernel/DataObjectHandle.h"
 #include "GaudiKernel/ITHistSvc.h"
+#include "FWCore/DataHandle.h"
+#include "HepMC/GenEvent.h"
 
 #include "TH1F.h"
 
@@ -23,7 +23,7 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
 
   ITHistSvc* m_ths; ///< THistogram service
 

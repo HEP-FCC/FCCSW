@@ -91,9 +91,7 @@ StatusCode PythiaInterface::execute() {
               << std::endl;
   */
 
-  HepMCEntry * entry = new HepMCEntry();
-  entry->setEvent(theEvent);
-  m_hepmchandle.put(entry);
+  m_hepmchandle.put(theEvent);
   return StatusCode::SUCCESS;
 }
 

@@ -2,7 +2,8 @@
 #define _HEPMCREADER_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
+#include "HepMC/IO_GenEvent.h"
+#include "FWCore/DataHandle.h"
 
 
 //---------------------------------------------------------------------------
@@ -34,7 +35,7 @@ private:
   /// the input file
   HepMC::IO_GenEvent* m_file;
   /// The output handle for what is being produced
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
 };
 
 #endif

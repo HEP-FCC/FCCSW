@@ -41,9 +41,7 @@ StatusCode HepMCReader::execute() {
       else return Error( "No more events in input file, set correct number of events in options" ) ;
       ;
     }
-  HepMCEntry * entry = new HepMCEntry();
-  entry->setEvent(theEvent);
-  m_hepmchandle.put(entry);
+  m_hepmchandle.put(theEvent);
   return StatusCode::SUCCESS;
 }
 

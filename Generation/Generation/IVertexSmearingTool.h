@@ -5,7 +5,7 @@
 // Include files
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
-#include "DataObjects/HepMCEntry.h"
+#include "HepMC/GenEvent.h"
 
 /** @class IVertexSmearingTool IVertexSmearingTool.h "Generators/IVertexSmearingTool.h"
  *  

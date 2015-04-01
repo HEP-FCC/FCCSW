@@ -2,9 +2,9 @@
 #define _HEPMCCONVERTER_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/HepMCEntry.h"
 #include "DataObjects/MCParticleCollection.h"
-#include "GaudiKernel/DataObjectHandle.h"
+#include "FWCore/DataHandle.h"
+#include "HepMC/GenEvent.h"
 
 class HepMCConverter: public GaudiAlgorithm {
   friend class AlgFactory<HepMCConverter> ;
@@ -20,7 +20,7 @@ public:
   virtual StatusCode finalize();
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
   /// Handle for the genparticles to be written
   DataObjectHandle<MCParticleCollection> m_genphandle;
 };

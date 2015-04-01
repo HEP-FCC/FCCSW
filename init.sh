@@ -29,4 +29,8 @@ export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/Install
 export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
 
 # add Geant4 data files
-source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh 
+source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh
+
+# add DD4hep
+source /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/bin/thisdd4hep.sh
+source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6/setup.sh
