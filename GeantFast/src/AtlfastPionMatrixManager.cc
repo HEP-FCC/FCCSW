@@ -14,18 +14,11 @@ namespace Atlfast
  * every eta/rT bin.
  */
 
-   //-----------------------------------------------------------
-   // PUBLIC: Constructor
-   //-----------------------------------------------------------
    PionMatrixManager::PionMatrixManager( )
    {
       G4cout <<  "Constructed PionMatrixManager with NO input data file" << G4endl;
    }
 
-
-   //-----------------------------------------------------------
-   // PUBLIC: Destructor
-   //-----------------------------------------------------------
    PionMatrixManager::~PionMatrixManager()
    {
       delete m_correlatedData;
@@ -37,9 +30,6 @@ namespace Atlfast
       }
    }
 
-   //------------------------------------------------------------
-   // PUBLIC: Constructor : read file and construct data bins
-   //------------------------------------------------------------
    PionMatrixManager::PionMatrixManager(string aFileName, int aRandSeed)
    {
       m_randSeed = aRandSeed;
@@ -233,10 +223,6 @@ namespace Atlfast
 
    }
 
-   //-----------------------------------------------------------
-   // PRIVATE: fillVector
-   //             reads n x M parameters into member variable
-   //-----------------------------------------------------------
    void PionMatrixManager::fillVector( ifstream& input,
                                        vector< vector<double> >& myVector,
                                        int M = 5 )
@@ -254,10 +240,6 @@ namespace Atlfast
       }
    }
 
-
-   //-----------------------------------------------------------
-   // PUBLIC: getMatrix : returns the sigma matrix corresponding
-   //                     to a given track trajectory
    //-----------------------------------------------------------
    vector<double> PionMatrixManager::getVariables( const G4Track& track,
                                                    CLHEP::HepSymMatrix& returnSigma ) const
@@ -275,10 +257,6 @@ namespace Atlfast
       return variables;
    }
 
-   //-----------------------------------------------------------
-   // Private: getBinData : returns the IBinData of bin corresponding
-   //                     to a given track trajectory
-   //-----------------------------------------------------------
    IBinData* PionMatrixManager::getBinData( const G4Track& track ) const
    {
       vector<double> rTEta;
@@ -310,7 +288,7 @@ namespace Atlfast
             return binIter->second;
          }
       }
-      // OOPS! couldn't fin bin
+      // couldn't fin bin
       G4cout<< "WARNING: PionMatrixManager - No bin; rT " << rT << ", eta " << eta
             << G4endl;
 

@@ -113,5 +113,4 @@ namespace Atlfast
 
       return Sigma;
    }
-
 } //namespace bracket

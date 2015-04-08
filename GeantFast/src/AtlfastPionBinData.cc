@@ -12,10 +12,6 @@ namespace Atlfast
     * can be calculated and returned via public methods.
     */
 
-
-   //-----------------------------------------------
-   // PUBLIC - Constructor
-   //-----------------------------------------------
    PionBinData::PionBinData( BinID& id,
                              vector< ParameterResolutions* > core,
                              vector< ParameterResolutions* > tails,
@@ -47,9 +43,6 @@ namespace Atlfast
    }
 
    //--------------------------------------------------------------------
-   // PUBLIC - CLHEP::HepSymMatrix getMatrix(random)
-   // returns appropriate Sigma (=covariance) matrix
-   //
    // NOTE: the representation of Sigma is determined by the track
    //       representation implicitly given in the parameter files,
    //       i.e., (d0, z0, phi0, cot(theta0), q/pT), which is for
@@ -114,18 +107,13 @@ namespace Atlfast
       Sigma(1,5) = Sigma(5,1) = rho15 * std::sqrt( Sigma(1,1) * Sigma(5,5) );
       Sigma(3,5) = Sigma(5,3) = rho35 * std::sqrt( Sigma(3,3) * Sigma(5,5) );
 
-
       // (2,4) ... cov(z0,cot(theta0))
       double rho24 = m_correlations[3]->resolution(track);
       // make sure that correlation coefficient stays within [-1,+1]
       if ( std::abs(rho24) > 1 )  rho24 *= 0.99 / std::abs(rho24);
       Sigma(2,4) = Sigma(4,2) = rho24 * std::sqrt( Sigma(2,2) * Sigma(4,4) );
 
-
-
       // DONE!
       return Sigma;
-
    }
-
 } //namespace bracket

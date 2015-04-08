@@ -30,9 +30,6 @@ namespace Atlfast
 
 
    //--------------------------------------------------------------------
-   // PUBLIC - CLHEP::HepSymMatrix getMatrix(random)
-   // returns appropriate Sigma (=covariance) matrix
-   //
    // NOTE: the representation of Sigma is determined by the track
    //       representation implicitly given in the parameter files,
    //       i.e., (d0, z0, phi0, cot(theta0), q/pT), which is for
@@ -91,7 +88,5 @@ namespace Atlfast
       Sigma(2,4) = Sigma(4,2) = rho24 * std::sqrt( Sigma(2,2) * Sigma(4,4) );
 
       return Sigma;
-
    }
-
 }//namespace bracket

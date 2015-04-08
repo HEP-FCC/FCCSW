@@ -33,9 +33,9 @@ Smearer* Smearer::Instance()
 void Smearer::MakeManagers()
 {
    //Create mangers for smeaing muons, pions and electrons
-   fMuonManager = new Atlfast::MuonMatrixManager("../data/Atlfast_MuonResParam_CSC.dat",time(NULL));
-   fPionManager = new Atlfast::PionMatrixManager("../data/Atlfast_PionResParam_DC1_NewUnits.dat",time(NULL));
-   fElectronManager = new Atlfast::ElectronMatrixManager("../data/Atlfast_ElectronResParam_CSC.dat",time(NULL));
+   fMuonManager = new Atlfast::MuonMatrixManager("GeantFast/data/Atlfast_MuonResParam_CSC.dat",time(NULL));
+   fPionManager = new Atlfast::PionMatrixManager("GeantFast/data/Atlfast_PionResParam_DC1_NewUnits.dat",time(NULL));
+   fElectronManager = new Atlfast::ElectronMatrixManager("GeantFast/data/Atlfast_ElectronResParam_CSC.dat",time(NULL));
 }
 
 G4ThreeVector Smearer::SmearMomentum(const G4Track* aTrackOriginal, G4double aResolution)
