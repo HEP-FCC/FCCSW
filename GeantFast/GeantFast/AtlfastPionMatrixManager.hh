@@ -12,49 +12,33 @@
 #include <map>
 #include <utility>
 
-//===========================================================
-//
-//  Matrix Manager
-//
-//  Used by tracksmearer to provide smear matrix data
-//  corresponding to a given track trajectory
-//
-//===========================================================
-// RMS 26/4/2001
-// Modified to use parametrisation provided by
-// Armin Nairz
-//===========================================================
-
-
-
 namespace Atlfast
 {
-  using std::string;
-  using std::ifstream;
-  using std::map;
+   using std::string;
+   using std::ifstream;
+   using std::map;
 
-  /** @brief Used by tracksmearer to provide smear matrices .
-
-   * corresponding to given track trajectories. It reads a flat
-   * file containing smear matrix data and creates a BinData object for
-   * every eta/rT bin.
-   */
-  class PionMatrixManager
-  {
-    public:
+   /** @brief Used by tracksmearer to provide smear matrices .
+    * corresponding to given track trajectories. It reads a flat
+    * file containing smear matrix data and creates a BinData object for
+    * every eta/rT bin.
+    */
+   class PionMatrixManager
+   {
+   public:
       /** returns correlation matrix corresponding to given track trajectory */
       vector<double> getVariables( const G4Track& track,
-				   CLHEP::HepSymMatrix& usedSigma ) const;
+                                   CLHEP::HepSymMatrix& usedSigma ) const;
 
       /** Default Constructor */
-     PionMatrixManager( );
+      PionMatrixManager( );
 
-     PionMatrixManager( string, int);
+      PionMatrixManager( string, int);
 
       /** Default Destructor */
       virtual ~PionMatrixManager();
 
-    private:
+   private:
       void fillVector( ifstream&, vector< vector<double> >&, int );
 
       /** returns BinData object corresponding to track trajectory */
@@ -74,7 +58,7 @@ namespace Atlfast
       vector<double> m_rTBoundaries;
       int m_nRTBins;
       int m_nEtaBins;
-  };
+   };
 
 }
 

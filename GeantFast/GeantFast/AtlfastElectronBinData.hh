@@ -10,30 +10,20 @@
 #include "AtlfastIBinData.hh"
 #include "AtlfastParameterResolutions.hh"
 
-//======================================================
-//
-// ElectronBinData
-//
-// Class to hold smearing matrix data
-// and calculate correlation matrix for a given track
-//
-//======================================================
-
-
 namespace Atlfast
 {
-  /** @brief Class to hold smearing matrix data.
-   *
-   * The data is provided through the constructor
-   * in the format found in the flat file and the
-   * correlation matrix corresponding to the bin
-   * can be calculated and returned via public methods.
-   */
-  using std::pair;
+   /** @brief Class to hold smearing matrix data.
+    *
+    * The data is provided through the constructor
+    * in the format found in the flat file and the
+    * correlation matrix corresponding to the bin
+    * can be calculated and returned via public methods.
+    */
+   using std::pair;
 
-  class ElectronBinData: public IBinData
-  {
-    public:
+   class ElectronBinData: public IBinData
+   {
+   public:
 
       /** Constructor from flat file contents */
       ElectronBinData( BinID&,
@@ -42,7 +32,7 @@ namespace Atlfast
                        vector< ParameterResolutions* >,
                        vector< ParameterResolutions* >,
                        int randSeed
-                     );
+         );
 
       virtual ~ElectronBinData();
 
@@ -54,7 +44,7 @@ namespace Atlfast
       CLHEP::HepSymMatrix getMatrix( const G4Track& track ) const;
 
 
-    private:
+   private:
 
       BinID m_id;
 
@@ -64,7 +54,7 @@ namespace Atlfast
       vector< ParameterResolutions* >  m_correlations;
 
       CLHEP::HepRandomEngine*  m_randomEngine;
-  };
+   };
 
 }
 #endif

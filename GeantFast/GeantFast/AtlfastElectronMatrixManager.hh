@@ -4,7 +4,6 @@
 #include "AtlfastElectronBinData.hh"
 #include "G4Track.hh"
 
-#include "AtlfastBremMatrixManager.hh"
 #include "AtlfastBinID.hh"
 #include "AtlfastCorrelatedData.hh"
 
@@ -12,16 +11,6 @@
 #include <string>
 #include <map>
 #include <utility>
-
-//===========================================================
-//
-//  Matrix Manager
-//
-//  Used by tracksmearer to provide smear matrix data
-//  corresponding to a given track trajectory
-//
-//===========================================================
-
 
 namespace Atlfast
 {
@@ -44,7 +33,7 @@ namespace Atlfast
       /** Default Constructor */
       ElectronMatrixManager( );
 
-      ElectronMatrixManager( string, string, int);
+      ElectronMatrixManager( string, int);
 
       /** Default Destructor */
       virtual ~ElectronMatrixManager();
@@ -55,11 +44,8 @@ namespace Atlfast
       /** returns BinData object corresponding to track trajectory */
       IBinData* getBinData( const G4Track& track ) const;
 
-      /** name of flat files containing bremsstrahlung corrections and smear matrix data. */
-      string m_bremFile, m_file;
-
-      /** matrix manager for bremsstrahlung corrections */
-      BremMatrixManager* m_bremMgr;
+      /** name of flat files containing smear matrix data. */
+      string  m_file;
 
       /** BinData objects, paired to a BinID */
       map<BinID, IBinData*> m_binData;

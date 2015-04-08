@@ -12,16 +12,6 @@
 #include <map>
 #include <utility>
 
-//===========================================================
-//
-//  Matrix Manager
-//
-//  Used by tracksmearer to provide smear matrix data
-//  corresponding to a given track trajectory
-//
-//===========================================================
-
-
 namespace Atlfast
 {
    using std::string;

@@ -13,18 +13,11 @@ namespace Atlfast
  * data and creates a BinData object for every eta/rT bin.
  */
 
-   //-----------------------------------------------------------
-   // PUBLIC: Constructor
-   //-----------------------------------------------------------
    MuonMatrixManager::MuonMatrixManager()
    {
       G4cout  << "Constructed MuonMatrixManager with NO input data file" << G4endl;
    }
 
-
-   //-----------------------------------------------------------
-   // PUBLIC: Destructor
-   //-----------------------------------------------------------
    MuonMatrixManager::~MuonMatrixManager()
    {
       delete m_correlatedData;
@@ -34,9 +27,6 @@ namespace Atlfast
       for ( ; iter != end; ++iter )  delete ( iter->second );
    }
 
-   //------------------------------------------------------------
-   // PUBLIC: Constructor : read file and construct data bins
-   //------------------------------------------------------------
    MuonMatrixManager::MuonMatrixManager(string aFileName, int aRandSeed)
    {
       m_randSeed = aRandSeed;
@@ -173,10 +163,6 @@ namespace Atlfast
       }
    }
 
-   //-----------------------------------------------------------
-   // PRIVATE: fillVector
-   //             reads n x M parameters into member variable
-   //-----------------------------------------------------------
    void MuonMatrixManager::fillVector( ifstream& input,
                                        vector< vector<double> >& myVector,
                                        int M=5 )
@@ -193,11 +179,6 @@ namespace Atlfast
       }
    }
 
-
-   //-----------------------------------------------------------
-   // PUBLIC: getMatrix : returns the Sigma (=covariance) matrix
-   //                  corresponding to a given track trajectory
-   //-----------------------------------------------------------
    vector<double> MuonMatrixManager::getVariables( const G4Track& track,
                                                    CLHEP::HepSymMatrix& returnSigma ) const
    {
@@ -214,11 +195,6 @@ namespace Atlfast
       return variables;
    }
 
-
-   //-----------------------------------------------------------
-   // Private: getBinData : returns the IBinData of bin
-   //                 corresponding to a given track trajectory
-   //-----------------------------------------------------------
    IBinData* MuonMatrixManager::getBinData( const G4Track& track ) const
    {
       vector<double> rTEta;
@@ -251,7 +227,7 @@ namespace Atlfast
          }
       }
 
-      // OOPS! couldn't fin bin
+      // couldn't fin bin
       G4cout << "WARNING: MuonMatrixManager - No bin; rT " << rT << ", eta " << eta
              << G4endl;
 

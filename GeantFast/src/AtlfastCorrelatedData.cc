@@ -20,7 +20,6 @@ namespace Atlfast{
    }
 
    vector<double> CorrelatedData::normal(int nDev) const{
-//      std::cout<<"______CorrelatedData::normal START"<<std::endl;
       vector<double> deviates;
       double deviate;
       for (int i=0; i<nDev; i++)
@@ -29,13 +28,11 @@ namespace Atlfast{
          while (success == false) {
             pair<double,double> randoms( m_randomEngine->flat(),
                                          m_randomEngine->flat() );
-//            std::cout<<"random: "<< randoms.first<<" , "<<randoms.second<<std::endl;
             success = makeDeviate(randoms, deviate);
          }
 
          deviates.push_back(deviate);
       }
-//      std::cout<<"_______CorrelatedData::normal END"<<std::endl;
       return deviates;
    }
 
@@ -44,7 +41,6 @@ namespace Atlfast{
 
       double v, x, y, q;
       bool success = false;
-      // std::ofstream pass, fail;
 
       //some maths stuff
       v = 1.7156*(randoms.second - 0.5);
@@ -57,16 +53,10 @@ namespace Atlfast{
       if ( (q < m_ellipse.first) || success )
       {
          deviate = v/(randoms.first);
-         // pass.open ("pass.dat", std::ofstream::out | std::ofstream::app);
-         // pass<<v<<"\t"<<x<<"\t"<<y<<"\t"<<q<<"\t"<<randoms.first<<"\t"<<randoms.second<<"\t"<<deviate<<std::endl;
-         // pass.close();
-         return true;}
+         return true;
+      }
       else
-      {
-         // fail.open ("fail.dat", std::ofstream::out | std::ofstream::app);
-         // fail<<v<<"\t"<<x<<"\t"<<y<<"\t"<<q<<"\t"<<randoms.first<<"\t"<<randoms.second<<"\t"<<deviate<<std::endl;
-         // fail.close();
-         return false;}
+         return false;
    }
 
    /** Generates smeared parameters from input matrix */
@@ -129,12 +119,9 @@ namespace Atlfast{
             for (int m = 0; m < j; m++){
                ck += sqRoot[l][m]*sqRoot[j][m];
             }
-
             sqRoot[l][j] = (matrix[l][j] - ck)/sqRoot[j][j];
          }
-
       }
-
       return sqRoot;
    }
 

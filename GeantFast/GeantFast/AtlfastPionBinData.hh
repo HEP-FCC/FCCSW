@@ -10,31 +10,21 @@
 #include "AtlfastIBinData.hh"
 #include "AtlfastParameterResolutions.hh"
 
-//======================================================
-//
-// PionBinData
-//
-// Class to hold smearing matrix data
-// and calculate correlation matrix for a given track
-//
-//======================================================
-
-
 namespace Atlfast
 {
-  /**
-   * @brief Class to hold smearing matrix data.
-   *
-   * The data is provided through the constructor
-   * in the format found in the flat file and the
-   * correlation matrix corresponding to the bin
-   * can be calculated and returned via public methods.
-   */
-  using std::pair;
+   /**
+    * @brief Class to hold smearing matrix data.
+    *
+    * The data is provided through the constructor
+    * in the format found in the flat file and the
+    * correlation matrix corresponding to the bin
+    * can be calculated and returned via public methods.
+    */
+   using std::pair;
 
-  class PionBinData: public IBinData
-  {
-    public:
+   class PionBinData: public IBinData
+   {
+   public:
 
       /** Constructor from flat file contents */
       PionBinData( BinID&,
@@ -43,7 +33,7 @@ namespace Atlfast
                    vector< ParameterResolutions* >,
                    vector< ParameterResolutions* >,
                    int randSeed
-                  );
+         );
 
       /** returns the correlation matrix depending on an
        * internally generated random number and
@@ -54,19 +44,14 @@ namespace Atlfast
       /** Default Destructor **/
       virtual ~PionBinData();
 
-
-
-    private:
-
+   private:
       BinID m_id;
-
       vector< ParameterResolutions* >  m_cores;
       vector< ParameterResolutions* >  m_tails;
       vector< ParameterResolutions* >  m_fractions;
       vector< ParameterResolutions* >  m_correlations;
-
       CLHEP::HepRandomEngine*  m_randomEngine;
-  };
+   };
 
 }
 #endif

@@ -13,21 +13,13 @@ namespace Atlfast
  * data and creates a BinData object for every eta/rT bin.
  */
 
-   //-----------------------------------------------------------
-   // PUBLIC: Constructor
-   //-----------------------------------------------------------
-   ElectronMatrixManager::ElectronMatrixManager() 
+   ElectronMatrixManager::ElectronMatrixManager()
    {
       G4cout  << "Constructed ElectronMatrixManager" << G4endl;
    }
 
-
-   //-----------------------------------------------------------
-   // PUBLIC: Destructor
-   //-----------------------------------------------------------
    ElectronMatrixManager::~ElectronMatrixManager()
    {
-      delete m_bremMgr;
       delete m_correlatedData;
       map<BinID, IBinData*>::iterator iter = m_binData.begin();
       map<BinID, IBinData*>::iterator end = m_binData.end();
@@ -37,15 +29,10 @@ namespace Atlfast
       }
    }
 
-   //------------------------------------------------------------
-   // PUBLIC: Constructor : read file and construct data bins
-   //------------------------------------------------------------
-   ElectronMatrixManager::ElectronMatrixManager(string aFileName, string /*aFileNameBrem*/, int aRandSeed)
+   ElectronMatrixManager::ElectronMatrixManager(string aFileName, int aRandSeed)
    {
       m_randSeed = aRandSeed;
       m_file = aFileName;
-      // m_bremFile = aFileNameBrem;
-      // m_bremMgr = new BremMatrixManager( m_bremFile, m_randSeed );
       m_correlatedData = new CorrelatedData(m_randSeed);
       // open file
       ifstream input;
@@ -236,10 +223,6 @@ namespace Atlfast
 
    }
 
-   //-----------------------------------------------------------
-   // PRIVATE: fillVector
-   //             reads n x M parameters into member variable
-   //-----------------------------------------------------------
    void ElectronMatrixManager::fillVector( ifstream& input,
                                            vector< vector<double> >& myVector,
                                            int M = 5 )
@@ -257,19 +240,11 @@ namespace Atlfast
       }
    }
 
-
-   //-----------------------------------------------------------
-   // PUBLIC: getMatrix : returns the sigma matrix corresponding
-   //                     to a given track trajectory
-   //-----------------------------------------------------------
    vector<double> ElectronMatrixManager::getVariables( const G4Track& track,
                                                        CLHEP::HepSymMatrix& returnSigma ) const
    {
       CLHEP::HepSymMatrix sigma;
       vector<double> variables;
-
-      // // get bremsstrahlung corrections
-      // G4Track* bremTrack = m_bremMgr->getBremTrack(track);
 
       // get data for gaussian smearing
       IBinData* binData = getBinData(track);
@@ -277,11 +252,6 @@ namespace Atlfast
 
       // do Dcorset and Dcorgen to get smeared parameters
       variables = m_correlatedData->generate( m_correlatedData->root(sigma) );
-
-      // // add bremsstahlung and gaussian smearing effects
-      // variables[0] += bremTrkParam.impactParameter();
-      // variables[2] += bremTrkParam.phi();
-      // variables[4] += bremTrkParam.invPtCharge();
 
       // adjust covariance matrix
       // (1,3) ... cov(d0,phi0)
@@ -304,11 +274,6 @@ namespace Atlfast
       return variables;
    }
 
-
-   //-----------------------------------------------------------
-   // Private: getBinData : returns the IBinData of bin corresponding
-   //                     to a given track trajectory
-   //-----------------------------------------------------------
    IBinData* ElectronMatrixManager::getBinData( const G4Track& track ) const
    {
       vector<double> rTEta;
@@ -340,7 +305,7 @@ namespace Atlfast
             return binIter->second;
          }
       }
-      // OOPS! couldn't fin bin
+      // couldn't fin bin
       G4cout << "WARNING: ElectronMatrixManager - No bin; rT " << rT << ", eta " << eta
              << G4endl;
 

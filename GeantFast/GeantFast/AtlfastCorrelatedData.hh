@@ -7,39 +7,38 @@
 #include <utility>
 
 namespace Atlfast{
-  using std::vector;
-  using std::pair;
-  using ::CLHEP::HepMatrix;
+   using std::vector;
+   using std::pair;
+   using ::CLHEP::HepMatrix;
 
-  /** @brief Class to smear parameters that are correlated. */
-  class CorrelatedData{
-  public:
+   /** @brief Class to smear parameters that are correlated. */
+   class CorrelatedData{
+   public:
 
-    /** Constructor accepts random seed */
-    CorrelatedData(int);
-    /** Destructor */
-    ~CorrelatedData() {delete m_randomEngine;}
+      /** Constructor accepts random seed */
+      CorrelatedData(int);
+      /** Destructor */
+      ~CorrelatedData() {delete m_randomEngine;}
 
-    /** Generates smeared parameters from input matrix */
-    vector<double> generate(const CLHEP::HepMatrix& matrix) const;
-    /** Generates smeared parameter from input number */
-    double generate(double) const;
+      /** Generates smeared parameters from input matrix */
+      vector<double> generate(const CLHEP::HepMatrix& matrix) const;
+      /** Generates smeared parameter from input number */
+      double generate(double) const;
 
-    /** Returns square root matrix of original matrix */
-    CLHEP::HepMatrix root(const CLHEP::HepMatrix& matrix)const;
+      /** Returns square root matrix of original matrix */
+      CLHEP::HepMatrix root(const CLHEP::HepMatrix& matrix)const;
 
+   private:
+      pair<double,double> m_ellipse;
+      pair<double,double> m_stFactors;
+      pair<double,double> m_abFactors;
+      CLHEP::HepRandomEngine*    m_randomEngine;
 
-    //private:
-    pair<double,double> m_ellipse;
-    pair<double,double> m_stFactors;
-    pair<double,double> m_abFactors;
-    CLHEP::HepRandomEngine*    m_randomEngine;
+      vector<double> normal(int nDev)const;
+      bool makeDeviate(pair<double,double> randoms,
+                       double& deviate)const;
 
-    vector<double> normal(int nDev)const;
-    bool makeDeviate(pair<double,double> randoms,
-		     double& deviate)const;
-
-  };
+   };
 
 }//end of namespace
 
