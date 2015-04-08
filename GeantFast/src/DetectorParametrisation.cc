@@ -60,6 +60,10 @@ G4double DetectorParametrisation::GetResolution(Detector aDetector, Parametrisat
          break;
       }
    }
+   else if(aParam == eATLFAST)
+   {
+      res = -1;
+   }
    return res;
 }
 

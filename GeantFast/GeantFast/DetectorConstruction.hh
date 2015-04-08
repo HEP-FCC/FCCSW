@@ -8,6 +8,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
+#include "G4UniformMagField.hh"
 
 /**
   @brief     Construction of detector geometry.
@@ -29,6 +30,7 @@ public:
    */
    virtual G4VPhysicalVolume* Construct();
    // virtual void ConstructSDandField();
+private:
    /**
       A vector of fast simulation models for a tracking detector.
     */
@@ -41,6 +43,10 @@ public:
       A vector of fast simulation models for a hadronic calorimeter.
     */
    std::vector<FastSimModelHCal*> fHCalSmearModel;
+   /**
+      A uniform magnetic field.
+    */
+    G4UniformMagField*        fField;
 };
 
 #endif

@@ -4,6 +4,8 @@
 #include "G4SystemOfUnits.hh"
 #include "G4RegionStore.hh"
 #include "G4GDMLParser.hh"
+#include "G4FieldManager.hh"
+#include "G4TransportationManager.hh"
 
 DetectorConstruction::DetectorConstruction()
 {;}
@@ -22,6 +24,7 @@ DetectorConstruction::~DetectorConstruction()
    {
       delete fHCalSmearModel[iterHCal];
    }
+   delete fField;
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
@@ -74,7 +77,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
          (1.* ((*TrackerList[iterTracker]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       TrackerList[iterTracker]->GetProductionCuts()->SetProductionCut(
           1*m, idxG4GammaCut );
-      fTrackerSmearModel.push_back( new FastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], DetectorParametrisation::eCMS) );
+      fTrackerSmearModel.push_back( new FastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], DetectorParametrisation::eATLFAST) );
    }
    for (G4int iterECal=0; iterECal<G4int(ECalList.size()); iterECal++)
    {
@@ -94,5 +97,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
          1.*m, idxG4GammaCut );
       fHCalSmearModel.push_back( new FastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], DetectorParametrisation::eCMS) );
    }
+
+   fField = new G4UniformMagField(G4ThreeVector(0.,0.,2.));
+   G4FieldManager* fieldMgr
+      = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+   fieldMgr->SetDetectorField(fField);
+   fieldMgr->CreateChordFinder(fField);
+
    return parser.GetWorldVolume();
 }
