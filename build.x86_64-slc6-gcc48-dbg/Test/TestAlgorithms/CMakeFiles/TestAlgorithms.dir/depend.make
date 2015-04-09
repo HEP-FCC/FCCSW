@@ -253,7 +253,7 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.c
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o: /afs/cern.ch/exp/fcc/sw/0.2/clhep/2.1.4.1/x86_64-slc6-gcc48-dbg/include/CLHEP/Vector/defs.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o: ../Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx
 
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o: ../DetectorDescription/DetDesInterfaces/DetDesInterfaces/IGeant4GeoSvc.h
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o: ../DetectorDescription/DetDesInterfaces/DetDesInterfaces/IGeoSvc.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o: ../Test/TestAlgorithms/TestAlgorithms/B1PrimaryGeneratorAction.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o: ../Test/TestAlgorithms/TestAlgorithms/Geant4Test.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o: /afs/cern.ch/exp/fcc/sw/0.2/Geant4/9.6.p03/x86_64-slc6-gcc48-dbg/include/Geant4/CompileTimeConstraints.hh

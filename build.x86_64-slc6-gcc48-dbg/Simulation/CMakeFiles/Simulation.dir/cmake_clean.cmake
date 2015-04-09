@@ -1,6 +1,8 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/Simulation.dir/src/DummySimulation.cpp.o"
   "CMakeFiles/Simulation.dir/src/Simulation.cpp.o"
+  "CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o"
+  "CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o"
   "../lib/libSimulation.pdb"
   "../lib/libSimulation.so"
 )

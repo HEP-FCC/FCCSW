@@ -32,7 +32,7 @@ SET(CPACK_IGNORE_FILES "/InstallArea/;/build\\..*/;/\\.svn/;/\\.settings/;\\..*p
 SET(CPACK_INSTALLED_DIRECTORIES "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW;/")
 SET(CPACK_INSTALL_CMAKE_PROJECTS "")
 SET(CPACK_INSTALL_PREFIX "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/InstallArea/x86_64-slc6-gcc48-opt")
-SET(CPACK_MODULE_PATH "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/cmake;/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/cmake;/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/cmake;/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/cmake/modules")
+SET(CPACK_MODULE_PATH "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/cmake;/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/cmake;/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/cmake;/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/cmake/modules;/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/cmake/")
 SET(CPACK_NSIS_DISPLAY_NAME "FCCSW 999.999.0")
 SET(CPACK_NSIS_INSTALLER_ICON_CODE "")
 SET(CPACK_NSIS_INSTALLER_MUI_ICON_CODE "")

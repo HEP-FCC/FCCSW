@@ -40,16 +40,13 @@
   <env:set variable="ALBERSROOT">${FCCSW_PROJECT_ROOT}/albers</env:set>
   <env:set variable="ALGEBRAROOT">${FCCSW_PROJECT_ROOT}/Algebra</env:set>
   <env:set variable="DATAOBJECTSROOT">${FCCSW_PROJECT_ROOT}/DataObjects</env:set>
-  <env:set variable="DETDESINTERFACESROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetDesInterfaces</env:set>
-  <env:set variable="ICONVERTERROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetConverterTools/IConverter</env:set>
   <env:set variable="TRKGEOMETRYUTILSROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkGeometry/TrkGeometryUtils</env:set>
   <env:set variable="TRKPARAMETERSBASEROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkParametersBase</env:set>
   <env:set variable="DETEXTENSIONSROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetExtensions</env:set>
   <env:set variable="RECOGEOMETRYROOT">${FCCSW_PROJECT_ROOT}/RecoGeometry</env:set>
+  <env:set variable="DETDESINTERFACESROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetDesInterfaces</env:set>
   <env:set variable="DETDESSERVICESROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetDesServices</env:set>
   <env:set variable="DETECTORSROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/Detectors</env:set>
-  <env:set variable="GEANT4GEOCONVERTERROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetConverterTools/Geant4GeoConverter</env:set>
-  <env:set variable="RECOGEOCONVERTERROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetConverterTools/RecoGeoConverter</env:set>
   <env:set variable="FWCOREROOT">${FCCSW_PROJECT_ROOT}/FWCore</env:set>
   <env:set variable="EXAMPLESROOT">${FCCSW_PROJECT_ROOT}/Examples</env:set>
   <env:set variable="GENERATIONROOT">${FCCSW_PROJECT_ROOT}/Generation</env:set>

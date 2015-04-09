@@ -2,7 +2,7 @@
 //  IRecoGeoSvc.h
 //  
 //
-//  Created by Julia Hrdinka on 25/02/15.
+//  Created by Julia Hrdinka on 31/03/15.
 //
 //
 
@@ -10,25 +10,19 @@
 #define IRECOGEOSVC_H
 
 #include "GaudiKernel/IService.h"
+//RecoGeometry
 #include "RecoGeometry/ContainerVolume.h"
 
 class GAUDI_API IRecoGeoSvc: virtual public IService {
-    
-public:
 
-    /// InterfaceID
+public:
+    //InterfaceID
     DeclareInterfaceID(IRecoGeoSvc,1,0);
-    
-    virtual StatusCode buildGeometry () = 0;
-    
-    virtual StatusCode destroyGeometry () = 0;
-    
-    virtual void setWorldVolume(std::shared_ptr<const Reco::ContainerVolume> worldVolume) = 0;
-    
-    virtual const Reco::ContainerVolume* getWorldVolume() = 0;
-    
+    //receive Reconstruction geometry
+    virtual const Reco::ContainerVolume* getRecoGeo() = 0;
+    virtual StatusCode buildGeometry() = 0;
     virtual ~IRecoGeoSvc() {}
-    
 };
+
 
 #endif //IRECOGEOSVC_H

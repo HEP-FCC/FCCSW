@@ -12,6 +12,9 @@ SET(CMAKE_FORCE_UNIX_PATHS 1)
 SET(CMAKE_C_INCLUDE_PATH
   "Simulation"
   "../Simulation"
+  "/afs/cern.ch/exp/fcc/sw/0.2/XercesC/3.1.1p1/x86_64-slc6-gcc48-dbg/include"
+  "/afs/cern.ch/exp/fcc/sw/0.2/clhep/2.1.4.1/x86_64-slc6-gcc48-dbg/include"
+  "/afs/cern.ch/exp/fcc/sw/0.2/Geant4/9.6.p03/x86_64-slc6-gcc48-dbg/include/Geant4"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/include"
   "../albers"
   "../DataObjects"

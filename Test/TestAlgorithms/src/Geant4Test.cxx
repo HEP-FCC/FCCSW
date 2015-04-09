@@ -27,8 +27,8 @@ StatusCode Geant4Test::initialize() {
         return StatusCode::FAILURE;
     }
     
-    if (service("Geant4GeoSvc", m_g4GeoSvc, true).isFailure()) {
-        error() << "Couldn't get Geant4GeoSvc" << endmsg;
+    if (service("GeoSvc", m_geoSvc, true).isFailure()) {
+        error() << "Couldn't GeoSvc" << endmsg;
         return StatusCode::FAILURE;
     }
     
@@ -38,9 +38,8 @@ StatusCode Geant4Test::initialize() {
 
 StatusCode Geant4Test::execute() {
     
-    m_g4GeoSvc->buildGeometry();
     G4RunManager * runManager = new G4RunManager;
-    runManager->SetUserInitialization( m_g4GeoSvc->getDetector()); //constructs detector (calls Construct in Geant4DetectorConstruction)
+    runManager->SetUserInitialization( m_geoSvc->getGeant4Geo()); //constructs detector (calls Construct in Geant4DetectorConstruction)
     
     runManager->SetUserInitialization(new FTFP_BERT);
     

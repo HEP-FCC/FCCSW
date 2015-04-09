@@ -7,6 +7,8 @@ SET(CMAKE_DEPENDS_LANGUAGES
 SET(CMAKE_TARGET_DEFINITIONS
   "BOOST_FILESYSTEM_VERSION=3"
   "BOOST_SPIRIT_USE_PHOENIX_V3"
+  "DD4HEP_USE_BOOST"
+  "DD4HEP_USE_TINYXML"
   "GAUDI_V20_COMPAT"
   "GOD_NOALLOC"
   "_GNU_SOURCE"
@@ -23,6 +25,7 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 SET(CMAKE_C_TARGET_INCLUDE_PATH
   "."
   ".."
+  "/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55"
   "include"
   "/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include"
   )

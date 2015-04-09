@@ -118,32 +118,9 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o.provides:
 
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o
 
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o: ../Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx
-
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.i"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx > CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.i
-
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx -o CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s
-
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires:
-.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
-
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
-	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides.build
-.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides
-
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o
-
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Test/TestAlgorithms/src/RecoGeoTest.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/RecoGeoTest.cxx
 
@@ -164,13 +141,36 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o.provides
 
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o
 
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o: ../Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles $(CMAKE_PROGRESS_5)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx > CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.i
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx -o CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires:
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides.build
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o
+
 # Object files for target TestAlgorithms
 TestAlgorithms_OBJECTS = \
 "CMakeFiles/TestAlgorithms.dir/src/SurfaceTest.cxx.o" \
 "CMakeFiles/TestAlgorithms.dir/src/TestAlgorithm.cxx.o" \
 "CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o" \
-"CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o" \
-"CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o"
+"CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o" \
+"CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o"
 
 # External object files for target TestAlgorithms
 TestAlgorithms_EXTERNAL_OBJECTS =
@@ -178,8 +178,8 @@ TestAlgorithms_EXTERNAL_OBJECTS =
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/SurfaceTest.cxx.o
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/TestAlgorithm.cxx.o
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o
-lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o
+lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o
 lib/libTestAlgorithms.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
 lib/libTestAlgorithms.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiAlgLib.so
 lib/libTestAlgorithms.so: lib/libDataObjects.so
@@ -287,8 +287,8 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build: lib/libTestAlgorithms.s
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/SurfaceTest.cxx.o.requires
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/TestAlgorithm.cxx.o.requires
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o.requires
-Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o.requires
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
 .PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires
 
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/clean:

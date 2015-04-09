@@ -98,20 +98,100 @@ Simulation/CMakeFiles/Simulation.dir/src/Simulation.cpp.o.provides: Simulation/C
 
 Simulation/CMakeFiles/Simulation.dir/src/Simulation.cpp.o.provides.build: Simulation/CMakeFiles/Simulation.dir/src/Simulation.cpp.o
 
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o: Simulation/CMakeFiles/Simulation.dir/flags.make
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o: ../Simulation/src/B1DetectorConstruction.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Simulation/src/B1DetectorConstruction.cpp
+
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Simulation/src/B1DetectorConstruction.cpp > CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.i
+
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Simulation/src/B1DetectorConstruction.cpp -o CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.s
+
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.requires:
+.PHONY : Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.requires
+
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.provides: Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.requires
+	$(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.provides.build
+.PHONY : Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.provides
+
+Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.provides.build: Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o
+
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o: Simulation/CMakeFiles/Simulation.dir/flags.make
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o: ../Simulation/src/Geant4Simulation.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Simulation/src/Geant4Simulation.cpp
+
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Simulation/src/Geant4Simulation.cpp > CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.i
+
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Simulation/src/Geant4Simulation.cpp -o CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.s
+
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.requires:
+.PHONY : Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.requires
+
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.provides: Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.requires
+	$(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.provides.build
+.PHONY : Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.provides
+
+Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.provides.build: Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o
+
 # Object files for target Simulation
 Simulation_OBJECTS = \
 "CMakeFiles/Simulation.dir/src/DummySimulation.cpp.o" \
-"CMakeFiles/Simulation.dir/src/Simulation.cpp.o"
+"CMakeFiles/Simulation.dir/src/Simulation.cpp.o" \
+"CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o" \
+"CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o"
 
 # External object files for target Simulation
 Simulation_EXTERNAL_OBJECTS =
 
 lib/libSimulation.so: Simulation/CMakeFiles/Simulation.dir/src/DummySimulation.cpp.o
 lib/libSimulation.so: Simulation/CMakeFiles/Simulation.dir/src/Simulation.cpp.o
+lib/libSimulation.so: Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o
+lib/libSimulation.so: Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o
 lib/libSimulation.so: Simulation/CMakeFiles/Simulation.dir/build.make
 lib/libSimulation.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
 lib/libSimulation.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiAlgLib.so
 lib/libSimulation.so: lib/libDataObjects.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4Tree.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4FR.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4GMocren.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4visHepRep.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4RayTracer.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4VRML.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4vis_management.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4modeling.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4interfaces.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4persistency.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4analysis.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4error_propagation.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4readout.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4physicslists.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4run.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4event.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4tracking.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4parmodels.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4processes.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4digits_hits.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4track.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4particles.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4geometry.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4materials.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4graphics_reps.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4intercoms.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4global.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4clhep.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4zlib.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4geomUSolids.so
 lib/libSimulation.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiUtilsLib.so
 lib/libSimulation.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_regex-gcc48-mt-1_55.so
 lib/libSimulation.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiKernel.so
@@ -134,6 +214,26 @@ lib/libSimulation.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/Install
 lib/libSimulation.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
 lib/libSimulation.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so
 lib/libSimulation.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4FR.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4vis_management.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4modeling.so
+lib/libSimulation.so: /afs/cern.ch/exp/fcc/sw/0.2/XercesC/3.1.1p1/x86_64-slc6-gcc48-dbg/lib/libxerces-c.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4run.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4event.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4tracking.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4processes.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4zlib.so
+lib/libSimulation.so: /usr/lib64/libexpat.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4digits_hits.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4track.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4particles.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4geometry.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4geomUSolids.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4materials.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4graphics_reps.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4intercoms.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4global.so
+lib/libSimulation.so: /afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/libG4clhep.so
 lib/libSimulation.so: Simulation/CMakeFiles/Simulation.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX shared module ../lib/libSimulation.so"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Simulation.dir/link.txt --verbose=$(VERBOSE)
@@ -144,6 +244,8 @@ Simulation/CMakeFiles/Simulation.dir/build: lib/libSimulation.so
 
 Simulation/CMakeFiles/Simulation.dir/requires: Simulation/CMakeFiles/Simulation.dir/src/DummySimulation.cpp.o.requires
 Simulation/CMakeFiles/Simulation.dir/requires: Simulation/CMakeFiles/Simulation.dir/src/Simulation.cpp.o.requires
+Simulation/CMakeFiles/Simulation.dir/requires: Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o.requires
+Simulation/CMakeFiles/Simulation.dir/requires: Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o.requires
 .PHONY : Simulation/CMakeFiles/Simulation.dir/requires
 
 Simulation/CMakeFiles/Simulation.dir/clean:

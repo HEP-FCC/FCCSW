@@ -10,7 +10,7 @@
 #define GEANT4TEST_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DetDesInterfaces/IGeant4GeoSvc.h"
+#include "DetDesInterfaces/IGeoSvc.h"
 
 class Geant4Test: public GaudiAlgorithm {
     friend class AlgFactory<Geant4Test> ;
@@ -27,7 +27,7 @@ public:
     
 private:
     
-    IGeant4GeoSvc* m_g4GeoSvc;
+    IGeoSvc* m_geoSvc;
     
 };
 

@@ -495,110 +495,6 @@ DetectorsRootmap/fast:
 .PHONY : DetectorsRootmap/fast
 
 #=============================================================================
-# Target rules for targets named Geant4GeoConverter
-
-# Build rule for target.
-Geant4GeoConverter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Geant4GeoConverter
-.PHONY : Geant4GeoConverter
-
-# fast build rule for target.
-Geant4GeoConverter/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverter.dir/build.make DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverter.dir/build
-.PHONY : Geant4GeoConverter/fast
-
-#=============================================================================
-# Target rules for targets named Geant4GeoConverterComponentsList
-
-# Build rule for target.
-Geant4GeoConverterComponentsList: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Geant4GeoConverterComponentsList
-.PHONY : Geant4GeoConverterComponentsList
-
-# fast build rule for target.
-Geant4GeoConverterComponentsList/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterComponentsList.dir/build.make DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterComponentsList.dir/build
-.PHONY : Geant4GeoConverterComponentsList/fast
-
-#=============================================================================
-# Target rules for targets named Geant4GeoConverterConf
-
-# Build rule for target.
-Geant4GeoConverterConf: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Geant4GeoConverterConf
-.PHONY : Geant4GeoConverterConf
-
-# fast build rule for target.
-Geant4GeoConverterConf/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterConf.dir/build.make DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterConf.dir/build
-.PHONY : Geant4GeoConverterConf/fast
-
-#=============================================================================
-# Target rules for targets named Geant4GeoConverterConfAll
-
-# Build rule for target.
-Geant4GeoConverterConfAll: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Geant4GeoConverterConfAll
-.PHONY : Geant4GeoConverterConfAll
-
-# fast build rule for target.
-Geant4GeoConverterConfAll/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterConfAll.dir/build.make DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterConfAll.dir/build
-.PHONY : Geant4GeoConverterConfAll/fast
-
-#=============================================================================
-# Target rules for targets named RecoGeoConverter
-
-# Build rule for target.
-RecoGeoConverter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RecoGeoConverter
-.PHONY : RecoGeoConverter
-
-# fast build rule for target.
-RecoGeoConverter/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverter.dir/build.make DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverter.dir/build
-.PHONY : RecoGeoConverter/fast
-
-#=============================================================================
-# Target rules for targets named RecoGeoConverterComponentsList
-
-# Build rule for target.
-RecoGeoConverterComponentsList: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RecoGeoConverterComponentsList
-.PHONY : RecoGeoConverterComponentsList
-
-# fast build rule for target.
-RecoGeoConverterComponentsList/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterComponentsList.dir/build.make DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterComponentsList.dir/build
-.PHONY : RecoGeoConverterComponentsList/fast
-
-#=============================================================================
-# Target rules for targets named RecoGeoConverterConf
-
-# Build rule for target.
-RecoGeoConverterConf: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RecoGeoConverterConf
-.PHONY : RecoGeoConverterConf
-
-# fast build rule for target.
-RecoGeoConverterConf/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterConf.dir/build.make DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterConf.dir/build
-.PHONY : RecoGeoConverterConf/fast
-
-#=============================================================================
-# Target rules for targets named RecoGeoConverterConfAll
-
-# Build rule for target.
-RecoGeoConverterConfAll: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RecoGeoConverterConfAll
-.PHONY : RecoGeoConverterConfAll
-
-# fast build rule for target.
-RecoGeoConverterConfAll/fast:
-	$(MAKE) -f DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterConfAll.dir/build.make DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterConfAll.dir/build
-.PHONY : RecoGeoConverterConfAll/fast
-
-#=============================================================================
 # Target rules for targets named FWCore
 
 # Build rule for target.
@@ -989,14 +885,6 @@ help:
 	@echo "... DetectorsConf"
 	@echo "... DetectorsConfAll"
 	@echo "... DetectorsRootmap"
-	@echo "... Geant4GeoConverter"
-	@echo "... Geant4GeoConverterComponentsList"
-	@echo "... Geant4GeoConverterConf"
-	@echo "... Geant4GeoConverterConfAll"
-	@echo "... RecoGeoConverter"
-	@echo "... RecoGeoConverterComponentsList"
-	@echo "... RecoGeoConverterConf"
-	@echo "... RecoGeoConverterConfAll"
 	@echo "... FWCore"
 	@echo "... FWCoreConfAll"
 	@echo "... FWCorePlugins"

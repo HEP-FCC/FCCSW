@@ -30,6 +30,8 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 SET(CMAKE_C_TARGET_INCLUDE_PATH
   "Simulation"
   "../Simulation"
+  "/afs/cern.ch/exp/fcc/sw/0.2/XercesC/3.1.1p1/x86_64-slc6-gcc48-dbg/include"
+  "/afs/cern.ch/user/r/ribon/public/ForAnna/Install/include/Geant4"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/include"
   "../albers"
   "../DataObjects"

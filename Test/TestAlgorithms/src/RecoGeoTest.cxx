@@ -32,13 +32,13 @@ StatusCode RecoGeoTest::initialize() {
         return StatusCode::FAILURE;
     }
     
-    if (service("RecoGeoSvc", m_recoGeoSvc, true).isFailure()) {
+    if (service("StandardRecoGeoSvc", m_recoGeoSvc, true).isFailure()) {
         error() << "Couldn't get RecoGeoSvc" << endmsg;
         return StatusCode::FAILURE;
     }
 
     m_recoGeoSvc->buildGeometry();
-    std::shared_ptr<const Reco::ContainerVolume> worldVolume(m_recoGeoSvc->getWorldVolume()->clone());
+    std::shared_ptr<const Reco::ContainerVolume> worldVolume(m_recoGeoSvc->getRecoGeo()->clone());
     m_worldVolume = worldVolume;
     if (m_worldVolume) {
         std::cout << "retrieved WorldVolume!!!" << std::endl;

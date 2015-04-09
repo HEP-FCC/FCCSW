@@ -9,8 +9,13 @@
 #ifndef DET_DETDISCLAYER
 #define DET_DETDISCLAYER
 
-#include "DD4hep/LCDD.h"
 #include "DetExtensions/IExtension.h"
+
+namespace DD4hep {
+    namespace Geometry {
+        class DetElement;
+    }
+}
 
 namespace Det {
     

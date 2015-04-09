@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget albers DataObjects FWCore)
+foreach(_expectedTarget albers DataObjects TrkGeometryUtils TrkParametersBase RecoGeometry FWCore TrkChargedParameters TrkNeutralParameters)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -48,8 +48,23 @@ add_library(albers SHARED IMPORTED)
 # Create imported target DataObjects
 add_library(DataObjects SHARED IMPORTED)
 
+# Create imported target TrkGeometryUtils
+add_library(TrkGeometryUtils SHARED IMPORTED)
+
+# Create imported target TrkParametersBase
+add_library(TrkParametersBase SHARED IMPORTED)
+
+# Create imported target RecoGeometry
+add_library(RecoGeometry SHARED IMPORTED)
+
 # Create imported target FWCore
 add_library(FWCore SHARED IMPORTED)
+
+# Create imported target TrkChargedParameters
+add_library(TrkChargedParameters SHARED IMPORTED)
+
+# Create imported target TrkNeutralParameters
+add_library(TrkNeutralParameters SHARED IMPORTED)
 
 # Load information for each installed configuration.
 get_filename_component(_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)

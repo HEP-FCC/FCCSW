@@ -9,7 +9,6 @@
 #ifndef DET_IEXTENSION_H
 #define DET_IEXTENSION_H
 
-#include "DD4hep/LCDD.h"
 
 namespace Det {
     

@@ -9,8 +9,13 @@
 #ifndef DET_DETVOLUME_H
 #define DET_DETVOLUME_H
 
-#include "DD4hep/LCDD.h"
 #include "DetExtensions/IExtension.h"
+
+namespace DD4hep {
+    namespace Geometry {
+        class DetElement;
+    }
+}
 
 namespace Det {
     

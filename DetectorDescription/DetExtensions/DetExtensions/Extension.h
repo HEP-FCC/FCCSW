@@ -10,7 +10,12 @@
 #define DET_EXTENSION_H
 
 #include "DetExtensions/IExtension.h"
-#include "DD4hep/LCDD.h"
+
+namespace DD4hep {
+    namespace Geometry {
+        class DetElement;
+    }
+}
 
 namespace Det {
     

@@ -3305,6 +3305,7 @@ Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IExceptionSvc.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IHistogramSvc.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IHiveWhiteBoard.h
+Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IIncidentSvc.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IInterface.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IMessageSvc.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IMonitorSvc.h
@@ -3322,6 +3323,7 @@ Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/ITimelineSvc.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IToolSvc.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IUpdateManagerSvc.h
+Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/Incident.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IssueSeverity.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/Kernel.h
 Generation/CMakeFiles/Generation.dir/src/HepMCReader.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/Map.h
@@ -5055,6 +5057,7 @@ Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/use
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IExceptionSvc.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IHistogramSvc.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IHiveWhiteBoard.h
+Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IIncidentSvc.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IInterface.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IMessageSvc.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IMonitorSvc.h
@@ -5072,6 +5075,7 @@ Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/use
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/ITimelineSvc.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IToolSvc.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IUpdateManagerSvc.h
+Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/Incident.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/IssueSeverity.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/Kernel.h
 Generation/CMakeFiles/Generation.dir/src/PythiaInterface.cpp.o: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/Map.h

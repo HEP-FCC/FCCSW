@@ -228,6 +228,30 @@ SimulationConfAll/fast:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/SimulationConfAll.dir/build.make Simulation/CMakeFiles/SimulationConfAll.dir/build
 .PHONY : SimulationConfAll/fast
 
+src/B1DetectorConstruction.o: src/B1DetectorConstruction.cpp.o
+.PHONY : src/B1DetectorConstruction.o
+
+# target to build an object file
+src/B1DetectorConstruction.cpp.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o
+.PHONY : src/B1DetectorConstruction.cpp.o
+
+src/B1DetectorConstruction.i: src/B1DetectorConstruction.cpp.i
+.PHONY : src/B1DetectorConstruction.i
+
+# target to preprocess a source file
+src/B1DetectorConstruction.cpp.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.i
+.PHONY : src/B1DetectorConstruction.cpp.i
+
+src/B1DetectorConstruction.s: src/B1DetectorConstruction.cpp.s
+.PHONY : src/B1DetectorConstruction.s
+
+# target to generate assembly for a file
+src/B1DetectorConstruction.cpp.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.s
+.PHONY : src/B1DetectorConstruction.cpp.s
+
 src/DummySimulation.o: src/DummySimulation.cpp.o
 .PHONY : src/DummySimulation.o
 
@@ -251,6 +275,30 @@ src/DummySimulation.s: src/DummySimulation.cpp.s
 src/DummySimulation.cpp.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/DummySimulation.cpp.s
 .PHONY : src/DummySimulation.cpp.s
+
+src/Geant4Simulation.o: src/Geant4Simulation.cpp.o
+.PHONY : src/Geant4Simulation.o
+
+# target to build an object file
+src/Geant4Simulation.cpp.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.o
+.PHONY : src/Geant4Simulation.cpp.o
+
+src/Geant4Simulation.i: src/Geant4Simulation.cpp.i
+.PHONY : src/Geant4Simulation.i
+
+# target to preprocess a source file
+src/Geant4Simulation.cpp.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.i
+.PHONY : src/Geant4Simulation.cpp.i
+
+src/Geant4Simulation.s: src/Geant4Simulation.cpp.s
+.PHONY : src/Geant4Simulation.s
+
+# target to generate assembly for a file
+src/Geant4Simulation.cpp.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/Geant4Simulation.cpp.s
+.PHONY : src/Geant4Simulation.cpp.s
 
 src/Simulation.o: src/Simulation.cpp.o
 .PHONY : src/Simulation.o
@@ -295,9 +343,15 @@ help:
 	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... src/B1DetectorConstruction.o"
+	@echo "... src/B1DetectorConstruction.i"
+	@echo "... src/B1DetectorConstruction.s"
 	@echo "... src/DummySimulation.o"
 	@echo "... src/DummySimulation.i"
 	@echo "... src/DummySimulation.s"
+	@echo "... src/Geant4Simulation.o"
+	@echo "... src/Geant4Simulation.i"
+	@echo "... src/Geant4Simulation.s"
 	@echo "... src/Simulation.o"
 	@echo "... src/Simulation.i"
 	@echo "... src/Simulation.s"

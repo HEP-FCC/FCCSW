@@ -130,7 +130,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
  //               PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,Transform3D(RotationX(0.5*M_PI)*RotationY(phi+0.5*M_PI)*RotationZ(0.1*M_PI),trans));
                 //assign the placed Volume to the DetElement
                 comp_det.setPlacement(placedcomp);
-                placedcomp.addPhysVolID("component",comp_num);
+  //              placedcomp.addPhysVolID("component",comp_num);
                 ++comp_num;
             }
             

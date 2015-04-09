@@ -19,10 +19,6 @@
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/FWCore/CMakeFiles/FWCorePlugins.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/FWCore/CMakeFiles/FWCorePluginsComponentsList.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/FWCore/CMakeFiles/FWCorePluginsConf.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverter.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterComponentsList.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterConf.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/Geant4GeoConverter/CMakeFiles/Geant4GeoConverterConfAll.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Generation/CMakeFiles/Generation.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Generation/CMakeFiles/GenerationComponentsList.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Generation/CMakeFiles/GenerationConf.dir
@@ -35,10 +31,6 @@
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles/MergedDictRootmap.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles/MergedDictRootmap_force.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/CMakeFiles/QMTestSummary.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverter.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterComponentsList.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterConf.dir
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/DetectorDescription/DetConverterTools/RecoGeoConverter/CMakeFiles/RecoGeoConverterConfAll.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/RecoGeometry/CMakeFiles/RecoGeometry.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Reconstruction/CMakeFiles/Reconstruction.dir
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg/Reconstruction/CMakeFiles/ReconstructionComponentsList.dir

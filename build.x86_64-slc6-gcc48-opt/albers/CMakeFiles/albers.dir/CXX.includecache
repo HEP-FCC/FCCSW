@@ -10,14 +10,6 @@
 GaudiKernel/DataObject.h
 ../albers/albers/GaudiKernel/DataObject.h
 
-../albers/albers/EventStore.h
-string
--
-vector
--
-albers/Registry.h
-../albers/albers/albers/Registry.h
-
 ../albers/albers/Reader.h
 algorithm
 -
@@ -370,14 +362,6 @@ unistd.h
 sys/types.h
 -
 
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/EventStore.cc
-albers/Reader.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/Reader.h
-albers/CollectionBase.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/CollectionBase.h
-albers/EventStore.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/EventStore.h
-
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/Reader.cc
 TFile.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/TFile.h
@@ -391,14 +375,6 @@ albers/Registry.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/Registry.h
 albers/CollectionBase.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/CollectionBase.h
-
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/Registry.cc
-albers/Reader.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/Reader.h
-albers/Registry.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/albers/Registry.h
-cassert
--
 
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/albers/src/Writer.cc
 TFile.h

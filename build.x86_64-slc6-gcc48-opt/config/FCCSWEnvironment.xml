@@ -12,6 +12,7 @@
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/fastjet/3.0.6/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64</env:prepend>
@@ -22,6 +23,9 @@
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/tbb/42_20131118/x86_64-slc6-gcc48-opt/include</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/AIDA/3.2.1/x86_64-slc6-gcc48-opt/src/cpp</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/HepMC/2.06.08/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/user/r/ribon/public/ForAnna/Install/include/Geant4</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/exp/fcc/sw/0.2/XercesC/3.1.1p1/x86_64-slc6-gcc48-dbg/include</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/include</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/fastjet/3.0.6/x86_64-slc6-gcc48-opt/include</env:prepend>
   <env:prepend variable="PATH">${.}/scripts</env:prepend>
@@ -32,10 +36,21 @@
   <env:prepend variable="PYTHONPATH">${.}/python/lib-dynload</env:prepend>
   <env:set variable="FCCSW_PROJECT_ROOT">${.}/../../</env:set>
   <env:set variable="ALBERSROOT">${FCCSW_PROJECT_ROOT}/albers</env:set>
+  <env:set variable="ALGEBRAROOT">${FCCSW_PROJECT_ROOT}/Algebra</env:set>
   <env:set variable="DATAOBJECTSROOT">${FCCSW_PROJECT_ROOT}/DataObjects</env:set>
+  <env:set variable="TRKGEOMETRYUTILSROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkGeometry/TrkGeometryUtils</env:set>
+  <env:set variable="TRKPARAMETERSBASEROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkParametersBase</env:set>
+  <env:set variable="DETEXTENSIONSROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetExtensions</env:set>
+  <env:set variable="RECOGEOMETRYROOT">${FCCSW_PROJECT_ROOT}/RecoGeometry</env:set>
+  <env:set variable="DETDESINTERFACESROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetDesInterfaces</env:set>
+  <env:set variable="DETDESSERVICESROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/DetDesServices</env:set>
+  <env:set variable="DETECTORSROOT">${FCCSW_PROJECT_ROOT}/DetectorDescription/Detectors</env:set>
   <env:set variable="FWCOREROOT">${FCCSW_PROJECT_ROOT}/FWCore</env:set>
   <env:set variable="EXAMPLESROOT">${FCCSW_PROJECT_ROOT}/Examples</env:set>
   <env:set variable="GENERATIONROOT">${FCCSW_PROJECT_ROOT}/Generation</env:set>
   <env:set variable="RECONSTRUCTIONROOT">${FCCSW_PROJECT_ROOT}/Reconstruction</env:set>
   <env:set variable="SIMULATIONROOT">${FCCSW_PROJECT_ROOT}/Simulation</env:set>
+  <env:set variable="TESTALGORITHMSROOT">${FCCSW_PROJECT_ROOT}/Test/TestAlgorithms</env:set>
+  <env:set variable="TRKCHARGEDPARAMETERSROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkChargedParameters</env:set>
+  <env:set variable="TRKNEUTRALPARAMETERSROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkNeutralParameters</env:set>
 </env:config>

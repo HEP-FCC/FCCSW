@@ -1,2 +1,2 @@
-#Mon Mar 30 14:02:10 2015"""Automatically generated. DO NOT EDIT please"""
+#Thu Apr  9 11:05:01 2015"""Automatically generated. DO NOT EDIT please"""
 from GaudiKernel.Proxy.Configurable import *

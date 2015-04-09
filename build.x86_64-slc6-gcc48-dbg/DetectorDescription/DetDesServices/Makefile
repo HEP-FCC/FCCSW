@@ -225,77 +225,53 @@ DetDesServicesConfAll/fast:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesConfAll.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesConfAll.dir/build
 .PHONY : DetDesServicesConfAll/fast
 
-src/DD4HepDetDesSvc.o: src/DD4HepDetDesSvc.cxx.o
-.PHONY : src/DD4HepDetDesSvc.o
+src/GeoSvc.o: src/GeoSvc.cxx.o
+.PHONY : src/GeoSvc.o
 
 # target to build an object file
-src/DD4HepDetDesSvc.cxx.o:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/DD4HepDetDesSvc.cxx.o
-.PHONY : src/DD4HepDetDesSvc.cxx.o
+src/GeoSvc.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o
+.PHONY : src/GeoSvc.cxx.o
 
-src/DD4HepDetDesSvc.i: src/DD4HepDetDesSvc.cxx.i
-.PHONY : src/DD4HepDetDesSvc.i
+src/GeoSvc.i: src/GeoSvc.cxx.i
+.PHONY : src/GeoSvc.i
 
 # target to preprocess a source file
-src/DD4HepDetDesSvc.cxx.i:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/DD4HepDetDesSvc.cxx.i
-.PHONY : src/DD4HepDetDesSvc.cxx.i
+src/GeoSvc.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.i
+.PHONY : src/GeoSvc.cxx.i
 
-src/DD4HepDetDesSvc.s: src/DD4HepDetDesSvc.cxx.s
-.PHONY : src/DD4HepDetDesSvc.s
+src/GeoSvc.s: src/GeoSvc.cxx.s
+.PHONY : src/GeoSvc.s
 
 # target to generate assembly for a file
-src/DD4HepDetDesSvc.cxx.s:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/DD4HepDetDesSvc.cxx.s
-.PHONY : src/DD4HepDetDesSvc.cxx.s
+src/GeoSvc.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.s
+.PHONY : src/GeoSvc.cxx.s
 
-src/Geant4GeoSvc.o: src/Geant4GeoSvc.cxx.o
-.PHONY : src/Geant4GeoSvc.o
+src/StandardRecoGeoSvc.o: src/StandardRecoGeoSvc.cxx.o
+.PHONY : src/StandardRecoGeoSvc.o
 
 # target to build an object file
-src/Geant4GeoSvc.cxx.o:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/Geant4GeoSvc.cxx.o
-.PHONY : src/Geant4GeoSvc.cxx.o
+src/StandardRecoGeoSvc.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o
+.PHONY : src/StandardRecoGeoSvc.cxx.o
 
-src/Geant4GeoSvc.i: src/Geant4GeoSvc.cxx.i
-.PHONY : src/Geant4GeoSvc.i
-
-# target to preprocess a source file
-src/Geant4GeoSvc.cxx.i:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/Geant4GeoSvc.cxx.i
-.PHONY : src/Geant4GeoSvc.cxx.i
-
-src/Geant4GeoSvc.s: src/Geant4GeoSvc.cxx.s
-.PHONY : src/Geant4GeoSvc.s
-
-# target to generate assembly for a file
-src/Geant4GeoSvc.cxx.s:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/Geant4GeoSvc.cxx.s
-.PHONY : src/Geant4GeoSvc.cxx.s
-
-src/RecoGeoSvc.o: src/RecoGeoSvc.cxx.o
-.PHONY : src/RecoGeoSvc.o
-
-# target to build an object file
-src/RecoGeoSvc.cxx.o:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/RecoGeoSvc.cxx.o
-.PHONY : src/RecoGeoSvc.cxx.o
-
-src/RecoGeoSvc.i: src/RecoGeoSvc.cxx.i
-.PHONY : src/RecoGeoSvc.i
+src/StandardRecoGeoSvc.i: src/StandardRecoGeoSvc.cxx.i
+.PHONY : src/StandardRecoGeoSvc.i
 
 # target to preprocess a source file
-src/RecoGeoSvc.cxx.i:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/RecoGeoSvc.cxx.i
-.PHONY : src/RecoGeoSvc.cxx.i
+src/StandardRecoGeoSvc.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.i
+.PHONY : src/StandardRecoGeoSvc.cxx.i
 
-src/RecoGeoSvc.s: src/RecoGeoSvc.cxx.s
-.PHONY : src/RecoGeoSvc.s
+src/StandardRecoGeoSvc.s: src/StandardRecoGeoSvc.cxx.s
+.PHONY : src/StandardRecoGeoSvc.s
 
 # target to generate assembly for a file
-src/RecoGeoSvc.cxx.s:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/RecoGeoSvc.cxx.s
-.PHONY : src/RecoGeoSvc.cxx.s
+src/StandardRecoGeoSvc.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-dbg && $(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.s
+.PHONY : src/StandardRecoGeoSvc.cxx.s
 
 # Help Target
 help:
@@ -316,15 +292,12 @@ help:
 	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... src/DD4HepDetDesSvc.o"
-	@echo "... src/DD4HepDetDesSvc.i"
-	@echo "... src/DD4HepDetDesSvc.s"
-	@echo "... src/Geant4GeoSvc.o"
-	@echo "... src/Geant4GeoSvc.i"
-	@echo "... src/Geant4GeoSvc.s"
-	@echo "... src/RecoGeoSvc.o"
-	@echo "... src/RecoGeoSvc.i"
-	@echo "... src/RecoGeoSvc.s"
+	@echo "... src/GeoSvc.o"
+	@echo "... src/GeoSvc.i"
+	@echo "... src/GeoSvc.s"
+	@echo "... src/StandardRecoGeoSvc.o"
+	@echo "... src/StandardRecoGeoSvc.i"
+	@echo "... src/StandardRecoGeoSvc.s"
 .PHONY : help
 
 

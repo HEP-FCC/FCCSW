@@ -342,6 +342,162 @@ DataObjectsGen/fast:
 .PHONY : DataObjectsGen/fast
 
 #=============================================================================
+# Target rules for targets named TrkGeometryUtils
+
+# Build rule for target.
+TrkGeometryUtils: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TrkGeometryUtils
+.PHONY : TrkGeometryUtils
+
+# fast build rule for target.
+TrkGeometryUtils/fast:
+	$(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build
+.PHONY : TrkGeometryUtils/fast
+
+#=============================================================================
+# Target rules for targets named TrkParametersBase
+
+# Build rule for target.
+TrkParametersBase: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TrkParametersBase
+.PHONY : TrkParametersBase
+
+# fast build rule for target.
+TrkParametersBase/fast:
+	$(MAKE) -f Tracking/TrkEvent/TrkParametersBase/CMakeFiles/TrkParametersBase.dir/build.make Tracking/TrkEvent/TrkParametersBase/CMakeFiles/TrkParametersBase.dir/build
+.PHONY : TrkParametersBase/fast
+
+#=============================================================================
+# Target rules for targets named RecoGeometry
+
+# Build rule for target.
+RecoGeometry: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 RecoGeometry
+.PHONY : RecoGeometry
+
+# fast build rule for target.
+RecoGeometry/fast:
+	$(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/build
+.PHONY : RecoGeometry/fast
+
+#=============================================================================
+# Target rules for targets named DetDesServices
+
+# Build rule for target.
+DetDesServices: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetDesServices
+.PHONY : DetDesServices
+
+# fast build rule for target.
+DetDesServices/fast:
+	$(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build
+.PHONY : DetDesServices/fast
+
+#=============================================================================
+# Target rules for targets named DetDesServicesComponentsList
+
+# Build rule for target.
+DetDesServicesComponentsList: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetDesServicesComponentsList
+.PHONY : DetDesServicesComponentsList
+
+# fast build rule for target.
+DetDesServicesComponentsList/fast:
+	$(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesComponentsList.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesComponentsList.dir/build
+.PHONY : DetDesServicesComponentsList/fast
+
+#=============================================================================
+# Target rules for targets named DetDesServicesConf
+
+# Build rule for target.
+DetDesServicesConf: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetDesServicesConf
+.PHONY : DetDesServicesConf
+
+# fast build rule for target.
+DetDesServicesConf/fast:
+	$(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesConf.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesConf.dir/build
+.PHONY : DetDesServicesConf/fast
+
+#=============================================================================
+# Target rules for targets named DetDesServicesConfAll
+
+# Build rule for target.
+DetDesServicesConfAll: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetDesServicesConfAll
+.PHONY : DetDesServicesConfAll
+
+# fast build rule for target.
+DetDesServicesConfAll/fast:
+	$(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesConfAll.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServicesConfAll.dir/build
+.PHONY : DetDesServicesConfAll/fast
+
+#=============================================================================
+# Target rules for targets named Detectors
+
+# Build rule for target.
+Detectors: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Detectors
+.PHONY : Detectors
+
+# fast build rule for target.
+Detectors/fast:
+	$(MAKE) -f DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build
+.PHONY : Detectors/fast
+
+#=============================================================================
+# Target rules for targets named DetectorsComponentsList
+
+# Build rule for target.
+DetectorsComponentsList: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetectorsComponentsList
+.PHONY : DetectorsComponentsList
+
+# fast build rule for target.
+DetectorsComponentsList/fast:
+	$(MAKE) -f DetectorDescription/Detectors/CMakeFiles/DetectorsComponentsList.dir/build.make DetectorDescription/Detectors/CMakeFiles/DetectorsComponentsList.dir/build
+.PHONY : DetectorsComponentsList/fast
+
+#=============================================================================
+# Target rules for targets named DetectorsConf
+
+# Build rule for target.
+DetectorsConf: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetectorsConf
+.PHONY : DetectorsConf
+
+# fast build rule for target.
+DetectorsConf/fast:
+	$(MAKE) -f DetectorDescription/Detectors/CMakeFiles/DetectorsConf.dir/build.make DetectorDescription/Detectors/CMakeFiles/DetectorsConf.dir/build
+.PHONY : DetectorsConf/fast
+
+#=============================================================================
+# Target rules for targets named DetectorsConfAll
+
+# Build rule for target.
+DetectorsConfAll: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetectorsConfAll
+.PHONY : DetectorsConfAll
+
+# fast build rule for target.
+DetectorsConfAll/fast:
+	$(MAKE) -f DetectorDescription/Detectors/CMakeFiles/DetectorsConfAll.dir/build.make DetectorDescription/Detectors/CMakeFiles/DetectorsConfAll.dir/build
+.PHONY : DetectorsConfAll/fast
+
+#=============================================================================
+# Target rules for targets named DetectorsRootmap
+
+# Build rule for target.
+DetectorsRootmap: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DetectorsRootmap
+.PHONY : DetectorsRootmap
+
+# fast build rule for target.
+DetectorsRootmap/fast:
+	$(MAKE) -f DetectorDescription/Detectors/CMakeFiles/DetectorsRootmap.dir/build.make DetectorDescription/Detectors/CMakeFiles/DetectorsRootmap.dir/build
+.PHONY : DetectorsRootmap/fast
+
+#=============================================================================
 # Target rules for targets named FWCore
 
 # Build rule for target.
@@ -614,6 +770,84 @@ SimulationConfAll/fast:
 	$(MAKE) -f Simulation/CMakeFiles/SimulationConfAll.dir/build.make Simulation/CMakeFiles/SimulationConfAll.dir/build
 .PHONY : SimulationConfAll/fast
 
+#=============================================================================
+# Target rules for targets named TestAlgorithms
+
+# Build rule for target.
+TestAlgorithms: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestAlgorithms
+.PHONY : TestAlgorithms
+
+# fast build rule for target.
+TestAlgorithms/fast:
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build
+.PHONY : TestAlgorithms/fast
+
+#=============================================================================
+# Target rules for targets named TestAlgorithmsComponentsList
+
+# Build rule for target.
+TestAlgorithmsComponentsList: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestAlgorithmsComponentsList
+.PHONY : TestAlgorithmsComponentsList
+
+# fast build rule for target.
+TestAlgorithmsComponentsList/fast:
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithmsComponentsList.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithmsComponentsList.dir/build
+.PHONY : TestAlgorithmsComponentsList/fast
+
+#=============================================================================
+# Target rules for targets named TestAlgorithmsConf
+
+# Build rule for target.
+TestAlgorithmsConf: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestAlgorithmsConf
+.PHONY : TestAlgorithmsConf
+
+# fast build rule for target.
+TestAlgorithmsConf/fast:
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithmsConf.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithmsConf.dir/build
+.PHONY : TestAlgorithmsConf/fast
+
+#=============================================================================
+# Target rules for targets named TestAlgorithmsConfAll
+
+# Build rule for target.
+TestAlgorithmsConfAll: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestAlgorithmsConfAll
+.PHONY : TestAlgorithmsConfAll
+
+# fast build rule for target.
+TestAlgorithmsConfAll/fast:
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithmsConfAll.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithmsConfAll.dir/build
+.PHONY : TestAlgorithmsConfAll/fast
+
+#=============================================================================
+# Target rules for targets named TrkChargedParameters
+
+# Build rule for target.
+TrkChargedParameters: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TrkChargedParameters
+.PHONY : TrkChargedParameters
+
+# fast build rule for target.
+TrkChargedParameters/fast:
+	$(MAKE) -f Tracking/TrkEvent/TrkChargedParameters/CMakeFiles/TrkChargedParameters.dir/build.make Tracking/TrkEvent/TrkChargedParameters/CMakeFiles/TrkChargedParameters.dir/build
+.PHONY : TrkChargedParameters/fast
+
+#=============================================================================
+# Target rules for targets named TrkNeutralParameters
+
+# Build rule for target.
+TrkNeutralParameters: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TrkNeutralParameters
+.PHONY : TrkNeutralParameters
+
+# fast build rule for target.
+TrkNeutralParameters/fast:
+	$(MAKE) -f Tracking/TrkEvent/TrkNeutralParameters/CMakeFiles/TrkNeutralParameters.dir/build.make Tracking/TrkEvent/TrkNeutralParameters/CMakeFiles/TrkNeutralParameters.dir/build
+.PHONY : TrkNeutralParameters/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -642,6 +876,18 @@ help:
 	@echo "... DataObjects"
 	@echo "... DataObjectsDict"
 	@echo "... DataObjectsGen"
+	@echo "... TrkGeometryUtils"
+	@echo "... TrkParametersBase"
+	@echo "... RecoGeometry"
+	@echo "... DetDesServices"
+	@echo "... DetDesServicesComponentsList"
+	@echo "... DetDesServicesConf"
+	@echo "... DetDesServicesConfAll"
+	@echo "... Detectors"
+	@echo "... DetectorsComponentsList"
+	@echo "... DetectorsConf"
+	@echo "... DetectorsConfAll"
+	@echo "... DetectorsRootmap"
 	@echo "... FWCore"
 	@echo "... FWCoreConfAll"
 	@echo "... FWCorePlugins"
@@ -663,6 +909,12 @@ help:
 	@echo "... SimulationComponentsList"
 	@echo "... SimulationConf"
 	@echo "... SimulationConfAll"
+	@echo "... TestAlgorithms"
+	@echo "... TestAlgorithmsComponentsList"
+	@echo "... TestAlgorithmsConf"
+	@echo "... TestAlgorithmsConfAll"
+	@echo "... TrkChargedParameters"
+	@echo "... TrkNeutralParameters"
 .PHONY : help
 
 
