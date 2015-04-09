@@ -5,6 +5,10 @@
 #include "G4RegionStore.hh"
 #include "G4GDMLParser.hh"
 
+#include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
+
 DetectorConstruction::DetectorConstruction()
 {;}
 
@@ -28,7 +32,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 {
    G4GDMLParser parser;
    parser.Read("FCCFullDetector.gdml");
-   G4cout << "Geometry loaded from  file .......FCCFullDetector.gdml " <<G4endl;
+   ServiceHandle<IMessageSvc> msgh("MessageSvc","DetectorConstr");
+   MsgStream log(&(*msgh), "DetectorConstr");
+   log << MSG::INFO << "Geometry loaded from  file .......FCCFullDetector.gdml " <<endreq;
 
    std::vector<G4Region*> TrackerList;
    std::vector<G4Region*> ECalList;
@@ -62,7 +68,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                MuonList.back()->AddRootLogicalVolume(myvol);
             }
             else {
-               G4cout << G4endl << "NOT A KNOWN DETECTOR !!!" << G4endl;
+               log << MSG::INFO << endreq << "NOT A KNOWN DETECTOR !!!" << endreq;
             }
          }
       }

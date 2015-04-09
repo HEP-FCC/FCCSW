@@ -19,11 +19,14 @@
 #include "G4BaryonConstructor.hh"
 #include "G4IonConstructor.hh"
 
+#include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
 
 PhysicsList::PhysicsList():  G4VUserPhysicsList()
 {
-  SetVerboseLevel(1);
-  defaultCutValue = 0.1*m;
+   SetVerboseLevel(1);
+   defaultCutValue = 0.1*m;
 }
 
 PhysicsList::~PhysicsList()
@@ -31,57 +34,57 @@ PhysicsList::~PhysicsList()
 
 void PhysicsList::ConstructParticle()
 {
-  // In this method, static member functions should be called
-  // for all particles which you want to use.
-  // This ensures that objects of these particle types will be
-  // created in the program.
+   // In this method, static member functions should be called
+   // for all particles which you want to use.
+   // This ensures that objects of these particle types will be
+   // created in the program.
 
-  ConstructBosons();
-  ConstructLeptons();
-  ConstructMesons();
-  ConstructBaryons();
-  ConstructIons();
+   ConstructBosons();
+   ConstructLeptons();
+   ConstructMesons();
+   ConstructBaryons();
+   ConstructIons();
 }
 
 void PhysicsList::ConstructBosons()
 {
-  G4Geantino::GeantinoDefinition();
-  G4ChargedGeantino::ChargedGeantinoDefinition();
+   G4Geantino::GeantinoDefinition();
+   G4ChargedGeantino::ChargedGeantinoDefinition();
 
-  G4Gamma::GammaDefinition();
-  G4OpticalPhoton::OpticalPhotonDefinition();
+   G4Gamma::GammaDefinition();
+   G4OpticalPhoton::OpticalPhotonDefinition();
 }
 
 void PhysicsList::ConstructLeptons()
 {
-  G4LeptonConstructor pConstructor;
-  pConstructor.ConstructParticle();
+   G4LeptonConstructor pConstructor;
+   pConstructor.ConstructParticle();
 }
 
 void PhysicsList::ConstructMesons()
 {
-  G4MesonConstructor pConstructor;
-  pConstructor.ConstructParticle();
+   G4MesonConstructor pConstructor;
+   pConstructor.ConstructParticle();
 }
 
 void PhysicsList::ConstructBaryons()
 {
-  G4BaryonConstructor  pConstructor;
-  pConstructor.ConstructParticle();
+   G4BaryonConstructor  pConstructor;
+   pConstructor.ConstructParticle();
 }
 
 void PhysicsList::ConstructIons()
 {
-  G4IonConstructor pConstructor;
-  pConstructor.ConstructParticle();
+   G4IonConstructor pConstructor;
+   pConstructor.ConstructParticle();
 }
 
 void PhysicsList::ConstructProcess()
 {
-  AddTransportation();
-  AddParameterisation();
+   AddTransportation();
+   AddParameterisation();
 
-  ConstructGeneral();
+   ConstructGeneral();
 }
 
 void PhysicsList::AddTransportation()
@@ -95,18 +98,18 @@ void PhysicsList::ConstructEM()
 
 void PhysicsList::ConstructGeneral()
 {
-  G4Decay* theDecayProcess = new G4Decay();
-  theParticleIterator->reset();
-  while( (*theParticleIterator)() ){
-    G4ParticleDefinition* particle = theParticleIterator->value();
-    G4ProcessManager* pmanager = particle->GetProcessManager();
-    if (theDecayProcess->IsApplicable(*particle)) {
-      pmanager ->AddProcess(theDecayProcess);
-      // set ordering for PostStepDoIt and AtRestDoIt
-      pmanager ->SetProcessOrdering(theDecayProcess, idxPostStep);
-      pmanager ->SetProcessOrdering(theDecayProcess, idxAtRest);
-    }
-  }
+   G4Decay* theDecayProcess = new G4Decay();
+   theParticleIterator->reset();
+   while( (*theParticleIterator)() ){
+      G4ParticleDefinition* particle = theParticleIterator->value();
+      G4ProcessManager* pmanager = particle->GetProcessManager();
+      if (theDecayProcess->IsApplicable(*particle)) {
+         pmanager ->AddProcess(theDecayProcess);
+         // set ordering for PostStepDoIt and AtRestDoIt
+         pmanager ->SetProcessOrdering(theDecayProcess, idxPostStep);
+         pmanager ->SetProcessOrdering(theDecayProcess, idxAtRest);
+      }
+   }
 }
 
 void PhysicsList::AddParameterisation()
@@ -124,10 +127,10 @@ void PhysicsList::AddParameterisation()
 
 void PhysicsList::SetCuts()
 {
-  if (verboseLevel >1){
-    G4cout << "PhysicsList::SetCuts:";
-  }
-  SetCutsWithDefault();
+   ServiceHandle<IMessageSvc> msgh("MessageSvc","PhysicsList");
+   MsgStream log(&(*msgh), "PhysicsList");
+   log << MSG::INFO << "Setting default cuts." << endreq;
+   SetCutsWithDefault();
 }
 
 

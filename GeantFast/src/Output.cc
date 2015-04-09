@@ -6,6 +6,10 @@
 #include "G4SystemOfUnits.hh"
 #include "g4root.hh"
 
+#include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
+
 Output* Output::fOutput = nullptr;
 
 Output::Output(): fFileNameWithRunNo(false), fCurrentID()
@@ -119,6 +123,8 @@ void Output::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    const G4Event* event = G4RunManager::GetRunManager()->GetCurrentEvent();
    G4int evNo = event->GetEventID();
    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+   ServiceHandle<IMessageSvc> msgh("MessageSvc","GeantOutput");
+   MsgStream log(&(*msgh), "GeantOutput");
    switch(aWhatToSave)
    {
    case Output::eNoSave:
@@ -136,7 +142,7 @@ void Output::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    case  Output::eSaveTracker:
    {
       if (aPartID != fCurrentID)
-         G4cout<<" Wrong particle - trying to save Tracker information of different particle"<<G4endl;
+         log << MSG::WARNING <<" Wrong particle - trying to save Tracker information of different particle"<<endreq;
       analysisManager->FillNtupleDColumn(evNo, 5, aResolution);
       analysisManager->FillNtupleDColumn(evNo, 6, aEfficiency);
       analysisManager->FillNtupleDColumn(evNo, 7, aVector.x());
@@ -147,7 +153,7 @@ void Output::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    case  Output::eSaveEMCal:
    {
       if (aPartID != fCurrentID)
-         G4cout<<" Wrong particle - trying to save EMCal information of different particle"<<G4endl;
+         log << MSG::WARNING <<" Wrong particle - trying to save EMCal information of different particle"<<endreq;
       analysisManager->FillNtupleDColumn(evNo, 10, aResolution);
       analysisManager->FillNtupleDColumn(evNo, 11, aEfficiency);
       analysisManager->FillNtupleDColumn(evNo, 12, aVector.x());
@@ -159,7 +165,7 @@ void Output::SaveTrack(SaveType aWhatToSave, G4int aPartID,  G4int aPDG,
    case  Output::eSaveHCal:
    {
       if (aPartID != fCurrentID)
-         G4cout<<" Wrong particle - trying to save HCal information of different particle"<<G4endl;
+         log << MSG::WARNING<<" Wrong particle - trying to save HCal information of different particle"<<endreq;
       analysisManager->FillNtupleDColumn(evNo, 16, aResolution);
       analysisManager->FillNtupleDColumn(evNo, 17, aEfficiency);
       analysisManager->FillNtupleDColumn(evNo, 18, aVector.x());
