@@ -142,41 +142,6 @@ public:
       Gets the standard PDG code. Can be set only in the constructor.
    */
    inline G4int GetPDG() const {return fPDG;};
-   /**
-      Sets a perigee representation for MC.
-   */
-   inline void SetPerigeeMC(G4double* aPerigee)  {fPerigeeMC = aPerigee;};
-   /**
-      Gets a perigee representation for MC.
-   */
-   inline G4double* GetPerigeeMC() const {return fPerigeeMC;};
-
-   /**
-      Sets a perigee representation for Tracker.
-   */
-   inline void SetPerigeeTracker(G4double* aPerigee)  {fPerigeeTracker = aPerigee;};
-   /**
-      Gets a perigee representation for Tracker.
-   */
-   inline G4double* GetPerigeeTracker() const { return fPerigeeTracker;};
-
-   /**
-      Sets a perigee representation for EMCal.
-   */
-   inline void SetPerigeeEMCal(G4double* aPerigee)  {fPerigeeEMCal = aPerigee;};
-   /**
-      Gets a perigee representation for EMCal.
-   */
-   inline G4double* GetPerigeeEMCal() const { return fPerigeeEMCal;};
-
-   /**
-      Sets a perigee representation for HCal.
-   */
-   inline void SetPerigeeHCal(G4double* aPerigee)  {fPerigeeHCal = aPerigee;};
-   /**
-      Gets a perigee representation for HCal.
-   */
-   inline G4double* GetPerigeeHCal() const {return fPerigeeHCal;};
 
   private:
    /**
@@ -235,23 +200,6 @@ public:
       An efficiency of the hadronic calorimeter. Currently not used (equal to 1).
    */
    G4double fEfficiencyHCal;
-
-   /**
-      Perigee representation.
-   */
-   G4double* fPerigeeMC;
-   /**
-      Perigee representation.
-   */
-   G4double* fPerigeeTracker;
-   /**
-      Perigee representation.
-   */
-   G4double* fPerigeeEMCal;
-   /**
-      Perigee representation.
-   */
-   G4double* fPerigeeHCal;
 };
 
 #endif
