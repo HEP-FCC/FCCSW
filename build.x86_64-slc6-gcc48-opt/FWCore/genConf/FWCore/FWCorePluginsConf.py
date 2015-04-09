@@ -1,4 +1,4 @@
-#Wed Apr  1 16:52:47 2015"""Automatically generated. DO NOT EDIT please"""
+#Thu Apr  9 15:46:56 2015"""Automatically generated. DO NOT EDIT please"""
 from GaudiKernel.Proxy.Configurable import *
 
 class FCCDataSvc( ConfigurableService ) :

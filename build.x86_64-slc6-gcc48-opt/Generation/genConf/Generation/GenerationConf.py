@@ -1,4 +1,4 @@
-#Wed Apr  1 16:57:58 2015"""Automatically generated. DO NOT EDIT please"""
+#Thu Apr  9 15:47:37 2015"""Automatically generated. DO NOT EDIT please"""
 from GaudiKernel.DataObjectDescriptor import *
 from GaudiKernel.Proxy.Configurable import *
 

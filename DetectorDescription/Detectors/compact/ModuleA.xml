@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+    
+    <includes>
+        <gdmlFile  ref="elements.xml"/>
+        <gdmlFile  ref="materials.xml"/>
+    </includes>
+    
+    <info name="FCC_Test"
+        title="FCC Tracker"
+        author="Julia"
+        url="no"
+        status="development"
+        version="$Id:??$">
+        <comment>A Test for a Tracker</comment>
+    </info>
+    
+    <define>
+        <constant name="world_size" value="30*m"/>
+        <constant name="world_x" value="world_size"/>
+        <constant name="world_y" value="world_size"/>
+        <constant name="world_z" value="world_size"/>
+        
+        <constant name="pixelcounter0" value="1"/>
+        <constant name="pixelcounter1" value="38"/>
+        <constant name="pixelcounter2" value="52"/>
+        
+        <constant name="radius0" value="50.5*mm"/>
+        <constant name="radius01" value="50.8*mm"/>
+        
+        <constant name="radius1" value="88.5*mm"/>
+        <constant name="radius11" value="88.8*mm"/>
+        
+        <constant name="radius2" value="122.5*mm"/>
+        <constant name="radius21" value="122.8*mm"/>
+        
+        <constant name="rmin0" value="42.1*mm"/>
+        <constant name="rmax0" value="58.9*mm"/>
+        
+        <constant name="rmin1" value="80.1*mm"/>
+        <constant name="rmax1" value="96.9*mm"/>
+        
+        <constant name="rmin2" value="114.1*mm"/>
+        <constant name="rmax2" value="130.9*mm"/>
+        
+        
+        <constant name="Tracker_rmin" value="0.*mm"/>
+        <constant name="Tracker_rmax" value="150.*mm"/>
+        <constant name="Tracker_length" value="400.5*mm"/>
+        
+        
+        <constant name="length" value="10*m"/>
+
+        <constant name="zpos" value="60*mm"/>
+        <constant name="det_length" value="400.5*mm"/>
+        
+        <constant name="box_width" value="8.4*mm"/>
+        <constant name="box_length" value="30.4*mm"/>
+        
+        <constant name="box_width1" value="8.4*mm"/>
+        <constant name="box_length1" value="15.2*mm"/>
+        
+        <constant name="box_width2" value="4.2*mm"/>
+        <constant name="box_length2" value="30.4*mm"/>
+        
+        <constant name="EndCapRmin" value="88.8*mm"/>
+        <constant name="EndCapRmax" value="149.6*mm"/>
+        <constant name="EndCapZ" value="0.125*mm"/>
+        <constant name="positionz1" value="-400.5*mm"/>
+        <constant name="positionz2" value="400.5*mm"/>
+        
+        <constant name="zrepeat" value="0"/>
+        
+        
+    </define>
+    
+    <display>
+        <vis name="TrackerVis0" r="0.9" g="1.0" b="0.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="TrackerVis01" r="1.0" g="0.5" b="0.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        
+        <vis name="TrackerVis1" r="1.0" g="0.0" b="0.8" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="TrackerVis11" r="1.0" g="0.0" b="1.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        
+        <vis name="TrackerVis2" r="0.0" g="0.0" b="1.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="TrackerVis21" r="0.0" g="0.0" b="0.7" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        
+        <vis name="EndCapVis" r="0.0" g="7.0" b="0.1" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp0" r="0." g="0." b="1.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp1" r="0." g="1.0" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp2" r="1.0" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="notvis" r="0." g="0." b="0." alpha="1" showDaugthers="true" visible="false"/>
+        
+        
+        <!-- <vis name="EndCapVis" r="0.0" g="0.0" b="1.0" alpha="1" showDaugthers"true" visible"true" drawingStyle="solid"/>-->
+    </display>
+    
+    <readouts>
+        <readout name="TrackerReadout">
+            <id></id>
+        </readout>
+    </readouts>
+    
+    <detectors>
+        <detector id="0" name="Tracker0" type="Module" readout="TrackerReadout">
+            <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" z="Tracker_length"/>
+            <layer id="0"  inner_r="rmin0" outer_r="rmax0" z="Tracker_length" material="Air">
+                <slice z="zpos" repeat="zrepeat"/>
+                <module name ="Box0" width="box_width" length="box_length" thickness="0.6*mm" repeat="pixelcounter0">
+                    <module_component width="box_width" length="box_length" thickness="0.2*mm"  material="Copper
+                    " sensitive="false" vis="comp0">
+                    <position x = "0.*mm" y="0.*mm" z ="-0.2*mm"/>
+                    </module_component>
+                    <module_component width="box_width1" length="box_length1" thickness="0.2*mm"  material="Silicon" sensitive="true" vis="comp1">
+                    <position x = "0.*mm" y="0.*mm" z ="0.*mm"/>
+                    </module_component>
+                    <module_component width="box_width2" length="box_length2" thickness="0.2*mm"  material="Tungsten" sensitive="false" vis="comp2">
+                    <position x = "0.*mm" y="0.*mm" z ="0.2*mm"/>
+                    </module_component>
+                </module>
+            </layer>
+        </detector>
+        
+        <!--<detector id="3" name="EndCap" type="Disc" vis="EndCapVis">
+         <tubs rmin="EndCapRmin" rmax="EndCapRmax" dz="EndCapZ" phi0="0" deltaphi"360*deg" z_offset="positionz1" material="Aluminium"/>
+         </detector>-->
+        
+        <!-- <detector  id ="3" name="EndCap1" type="Disc" vis="EndCapVis">
+         <tubs rmin="EndCapRmin" rmax="EndCapRmax" dz="EndCapZ" phi0="0" deltaphi="360*deg"  z_offset="positionz1"  material="Aluminum"/>
+         </detector>-->
+        
+        <!--    <detector  id ="4" name="EndCap2" type="Disc" vis="EndCapVis">
+         <tubs rmin="EndCapRmin" rmax="EndCapRmax" dz="EndCapZ" phi0="0" deltaphi="360*deg"  z_offset="positionz2"  material="Aluminum"/>
+         </detector>-->
+    </detectors>
+    
+    
+    
+</lccdd>

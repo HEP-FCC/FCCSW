@@ -20,8 +20,8 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o"
   "CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o"
   "CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o"
-  "CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o"
   "CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o"
+  "CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o"
   "../lib/libRecoGeometry.pdb"
   "../lib/libRecoGeometry.so"
 )
