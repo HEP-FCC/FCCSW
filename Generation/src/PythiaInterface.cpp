@@ -72,7 +72,7 @@ StatusCode PythiaInterface::execute() {
   HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
   toHepMC->fill_next_event(*m_pythia,theEvent);
 
-  /* 
+  /*
   for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
        ipart!=theEvent->particles_end(); ++ipart)
        std::cout << "HepMC : id : stat : px : py : pz : e : m : " 
