@@ -24,3 +24,8 @@ setenv PATH /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/Install
 
 # set up Pythia8 Index.xml
 setenv PYTHIA8_XML /afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
+
+
+#set up Python (need python 2.7 for ROOT 5.34 requested for DD4HEP)
+setenv PATH /afs/cern.ch/sw/lcg/external/Python/2.7.4/x86_64-slc6-gcc48-opt/bin:${PATH}
+setenv PYTHONPATH /afs/cern.ch/sw/lcg/external/Python/2.7.4/x86_64-slc6-gcc48-opt/lib:${PYTHONPATH}

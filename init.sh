@@ -34,3 +34,7 @@ source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh
 # add DD4hep
 source /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/bin/thisdd4hep.sh
 source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6/setup.sh
+
+#set up Python (need python 2.7 for ROOT 5.34 requested for DD4HEP)
+export PATH=/afs/cern.ch/sw/lcg/external/Python/2.7.4/x86_64-slc6-gcc48-opt/bin:$PATH
+export PYTHONPATH=/afs/cern.ch/sw/lcg/external/Python/2.7.4/x86_64-slc6-gcc48-opt/lib:$PYTHONPATH 
