@@ -30,8 +30,6 @@ StatusCode PythiaInterface::initialize() {
   m_pythia = new Pythia8::Pythia ( xmlpath );
   /// read command file
   m_pythia->readFile( m_parfile.c_str() );
-
-
   // initial settings from param file
   nAbort = m_pythia->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
   m_pythia->init();
@@ -73,6 +71,7 @@ StatusCode PythiaInterface::execute() {
   /// Construct new empty HepMC event
   HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
   toHepMC->fill_next_event(*m_pythia,theEvent);
+
   /*  
   for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
        ipart!=theEvent->particles_end(); ++ipart)
