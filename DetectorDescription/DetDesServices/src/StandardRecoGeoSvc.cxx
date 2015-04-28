@@ -17,7 +17,9 @@ base_class(name, svc),
 m_worldVolume(0),
 m_DD4HepSvc(),
 m_log(msgSvc(), name)
-{}
+{
+    m_file.open("volumeIDs.dat", std::ofstream::out);
+}
 
 StandardRecoGeoSvc::~StandardRecoGeoSvc()
 {}
@@ -33,6 +35,7 @@ StatusCode StandardRecoGeoSvc::initialize()
 
 StatusCode StandardRecoGeoSvc::finalize()
 {
+    m_file.close();
     return StatusCode::SUCCESS;
 }
 
@@ -653,6 +656,18 @@ StatusCode StandardRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det,
             TGeoNode* node = pv.ptr();
             double halflength = 0.;
             double halfwidth = 0.;
+            //get the ID of the surface
+            //first convert the signed in unsigned
+            long long unsigned volumeID = detelement.volumeID();
+            long long signed volumeID1 = detelement.volumeID();
+            m_file << "volumeID signed: " << volumeID1 << std::endl;
+            m_file << "volumeID       : " << volumeID << std::endl;
+            //then extract the first 32 bits
+            long unsigned surfaceID = volumeID & 0xffffffffUL;
+            m_file << "surfaceID      :" << surfaceID << std::endl;
+            long unsigned high      = (volumeID >> 32);
+            //and check if the second 32 bits are unused, if not throw exception
+            //checken if high>0 ?? oder wie macht man das richtig?
             if (node)
             {
                 TGeoShape* shape = node->GetVolume()->GetShape();
@@ -754,7 +769,7 @@ StatusCode StandardRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det,
                         //create MaterialMap
                         Reco::MaterialMap* materialmap = new Reco::MaterialMap(binutility, map);
                         //create Surface
-                        std::shared_ptr<const Reco::PlaneSurface> plane(new Reco::PlaneSurface(box,materialmap,transf));
+                        std::shared_ptr<const Reco::SensitivePlaneSurface> plane(new Reco::SensitivePlaneSurface(box,materialmap,transf, surfaceID, new Trk::ReadoutSegmentation2D(binutility)));
                         if(plane) {
      //                       ++module_counter;
                             //l m_out << "#created plane# number: " << module_counter << std::endl;
@@ -862,7 +877,7 @@ StatusCode StandardRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det,
                         //create MaterialMap
                         Reco::MaterialMap* materialmap = new Reco::MaterialMap(binutility, binXvector, map);
                         //create Surface
-                        std::shared_ptr<const Reco::TrapezoidSurface> trapez(new Reco::TrapezoidSurface(trapezoid,materialmap,transf));
+                        std::shared_ptr<const Reco::SensitiveTrapezoidSurface> trapez(new Reco::SensitiveTrapezoidSurface(trapezoid,materialmap,transf, surfaceID, new Trk::ReadoutSegmentation1D1D(binutility, binXvector)));
                         if(trapez) {
                             //l                           //l m_out << "#created trapezoid#" << std::endl;
                             Alg::Point3D center = trapez->center();

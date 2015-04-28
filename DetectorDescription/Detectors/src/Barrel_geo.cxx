@@ -122,7 +122,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                     PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,trans);
                     //assign the placed Volume to the DetElement
                     comp_det.setPlacement(placedcomp);
-        //            placedcomp.addPhysVolID("component",comp_num);
+                    placedcomp.addPhysVolID("component",comp_num);
                     ++comp_num;
                 }
                 

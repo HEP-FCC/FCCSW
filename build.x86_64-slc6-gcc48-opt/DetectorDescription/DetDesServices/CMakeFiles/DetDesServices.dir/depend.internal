@@ -905,6 +905,9 @@ DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRec
  ../RecoGeometry/RecoGeometry/MaterialMap.h
  ../RecoGeometry/RecoGeometry/NavigationLayer.h
  ../RecoGeometry/RecoGeometry/PlaneSurface.h
+ ../RecoGeometry/RecoGeometry/SensitivePlaneSurface.h
+ ../RecoGeometry/RecoGeometry/SensitiveSurface.h
+ ../RecoGeometry/RecoGeometry/SensitiveTrapezoidSurface.h
  ../RecoGeometry/RecoGeometry/Surface.h
  ../RecoGeometry/RecoGeometry/TrapezoidSurface.h
  ../RecoGeometry/RecoGeometry/Volume.h
@@ -924,6 +927,9 @@ DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRec
  ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/DefinedParameter.h
  ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Intersection.h
  ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ParamDefs.h
+ ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
+ ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation1D1D.h
+ ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation2D.h
  /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
  /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
  /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h

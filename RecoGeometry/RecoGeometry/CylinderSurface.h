@@ -53,6 +53,8 @@ namespace Reco {
         virtual void localToGlobal(const Alg::Point2D& locpos, const Alg::Vector3D& mom, Alg::Point3D& glopos) const override;
         //converts local position in global position
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const override;
+        //returns if the surface is sensitive (and has a readout)
+        virtual bool isSensitive() const override;
         
         
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */

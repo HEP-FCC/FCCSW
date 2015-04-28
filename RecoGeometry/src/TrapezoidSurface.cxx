@@ -163,3 +163,7 @@ bool Reco::TrapezoidSurface::globalToLocal(const Alg::Point3D& glopos, const Alg
     return(isInside(locpos,s_onSurfaceTolerance,s_onSurfaceTolerance) && (loc3D.Z()*loc3D.Z())<(s_onSurfaceTolerance*s_onSurfaceTolerance));
 }
 
+bool Reco::TrapezoidSurface::isSensitive() const
+{
+    return false;
+}

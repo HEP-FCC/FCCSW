@@ -7,6 +7,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/B1PrimaryGeneratorAction.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o"
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/Geant4Test.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o"
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/RecoGeoTest.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o"
+  "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/RecoGeoWrite.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o"
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/SurfaceTest.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/SurfaceTest.cxx.o"
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/TestAlgorithm.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/TestAlgorithm.cxx.o"
   )
@@ -54,6 +55,7 @@ SET(CMAKE_C_TARGET_INCLUDE_PATH
   "/afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/include"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/include"
   "../DetectorDescription/DetExtensions"
+  "../Test/TestInterfaces"
   "../DetectorDescription/DetDesInterfaces"
   "include"
   "/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include"

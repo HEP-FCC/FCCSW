@@ -120,3 +120,8 @@ bool Reco::PlaneSurface::globalToLocal(const Alg::Point3D& glopos, const Alg::Ve
     locpos.SetCoordinates(loc3D.X(),loc3D.Y());
     return(isInside(locpos,s_onSurfaceTolerance,s_onSurfaceTolerance) && (loc3D.Z()*loc3D.Z())<(s_onSurfaceTolerance*s_onSurfaceTolerance));
 }
+
+bool Reco::PlaneSurface::isSensitive() const
+{
+    return false;
+}

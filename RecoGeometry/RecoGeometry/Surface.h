@@ -61,6 +61,8 @@ namespace Reco {
         virtual void localToGlobal(const Alg::Point2D& locpos, const Alg::Vector3D& mom, Alg::Point3D& glopos) const = 0;
         //converts global position in local position and checks whether the result is on the surface or not
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const = 0;
+        //returns if the surface is sensitive (and has a readout)
+        virtual bool isSensitive() const = 0;
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */
         virtual const Trk::ParametersBase<5, Trk::Charged>* createTrackParameters(double, double, double, double, double, Alg::AmgSymMatrix<5>* cov = 0) const = 0;
         

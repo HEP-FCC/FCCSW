@@ -904,6 +904,9 @@ DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRec
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/MaterialMap.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/NavigationLayer.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/PlaneSurface.h
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/SensitivePlaneSurface.h
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/SensitiveSurface.h
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/SensitiveTrapezoidSurface.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/Surface.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/TrapezoidSurface.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../RecoGeometry/RecoGeometry/Volume.h
@@ -923,6 +926,9 @@ DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRec
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/DefinedParameter.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Intersection.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ParamDefs.h
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation1D1D.h
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation2D.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/StandardRecoGeoSvc.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h

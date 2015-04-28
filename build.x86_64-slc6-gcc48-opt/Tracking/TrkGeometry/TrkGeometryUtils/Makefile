@@ -234,6 +234,102 @@ src/CurvilinearUVT.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.s
 .PHONY : src/CurvilinearUVT.cxx.s
 
+src/ReadoutSegmentation.o: src/ReadoutSegmentation.cxx.o
+.PHONY : src/ReadoutSegmentation.o
+
+# target to build an object file
+src/ReadoutSegmentation.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o
+.PHONY : src/ReadoutSegmentation.cxx.o
+
+src/ReadoutSegmentation.i: src/ReadoutSegmentation.cxx.i
+.PHONY : src/ReadoutSegmentation.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.i
+.PHONY : src/ReadoutSegmentation.cxx.i
+
+src/ReadoutSegmentation.s: src/ReadoutSegmentation.cxx.s
+.PHONY : src/ReadoutSegmentation.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.s
+.PHONY : src/ReadoutSegmentation.cxx.s
+
+src/ReadoutSegmentation1D.o: src/ReadoutSegmentation1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D.o
+
+# target to build an object file
+src/ReadoutSegmentation1D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D.cxx.o
+
+src/ReadoutSegmentation1D.i: src/ReadoutSegmentation1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation1D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D.cxx.i
+
+src/ReadoutSegmentation1D.s: src/ReadoutSegmentation1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation1D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D.cxx.s
+
+src/ReadoutSegmentation1D1D.o: src/ReadoutSegmentation1D1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D1D.o
+
+# target to build an object file
+src/ReadoutSegmentation1D1D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D1D.cxx.o
+
+src/ReadoutSegmentation1D1D.i: src/ReadoutSegmentation1D1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D1D.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation1D1D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D1D.cxx.i
+
+src/ReadoutSegmentation1D1D.s: src/ReadoutSegmentation1D1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D1D.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation1D1D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D1D.cxx.s
+
+src/ReadoutSegmentation2D.o: src/ReadoutSegmentation2D.cxx.o
+.PHONY : src/ReadoutSegmentation2D.o
+
+# target to build an object file
+src/ReadoutSegmentation2D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o
+.PHONY : src/ReadoutSegmentation2D.cxx.o
+
+src/ReadoutSegmentation2D.i: src/ReadoutSegmentation2D.cxx.i
+.PHONY : src/ReadoutSegmentation2D.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation2D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.i
+.PHONY : src/ReadoutSegmentation2D.cxx.i
+
+src/ReadoutSegmentation2D.s: src/ReadoutSegmentation2D.cxx.s
+.PHONY : src/ReadoutSegmentation2D.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation2D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.s
+.PHONY : src/ReadoutSegmentation2D.cxx.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -256,6 +352,18 @@ help:
 	@echo "... src/CurvilinearUVT.o"
 	@echo "... src/CurvilinearUVT.i"
 	@echo "... src/CurvilinearUVT.s"
+	@echo "... src/ReadoutSegmentation.o"
+	@echo "... src/ReadoutSegmentation.i"
+	@echo "... src/ReadoutSegmentation.s"
+	@echo "... src/ReadoutSegmentation1D.o"
+	@echo "... src/ReadoutSegmentation1D.i"
+	@echo "... src/ReadoutSegmentation1D.s"
+	@echo "... src/ReadoutSegmentation1D1D.o"
+	@echo "... src/ReadoutSegmentation1D1D.i"
+	@echo "... src/ReadoutSegmentation1D1D.s"
+	@echo "... src/ReadoutSegmentation2D.o"
+	@echo "... src/ReadoutSegmentation2D.i"
+	@echo "... src/ReadoutSegmentation2D.s"
 .PHONY : help
 
 

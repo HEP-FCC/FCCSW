@@ -279,26 +279,33 @@ namespace Trk {
             }
             return sl;
        }
-       
-       float bincenter (int i, size_t ba=0) {
+       //returns the center of the bin
+       float bincenter (size_t i, size_t ba=0) {
        
            if (ba >= m_binningData.size())
                throw GaudiException("BinUtility", "dimension out of bounds", StatusCode::FAILURE);
            return (m_binningData[ba].bincenter(i));
        }
        
-       float binhigh (int i, size_t ba=0) {
+       float binhigh (size_t i, size_t ba=0) {
            
            if (ba >= m_binningData.size())
                throw GaudiException("BinUtility", "dimension out of bounds", StatusCode::FAILURE);
            return (m_binningData[ba].binhigh(i));
        }
        
-       float binlow (int i, size_t ba=0) {
+       float binlow (size_t i, size_t ba=0) {
            
            if (ba >= m_binningData.size())
                throw GaudiException("BinUtility", "dimension out of bounds", StatusCode::FAILURE);
            return (m_binningData[ba].binlow(i));
+       }
+       
+       float binwidth(size_t i, size_t ba=0) {
+       
+           if (ba >= m_binningData.size())
+               throw GaudiException("BinUtility", "dimension out of bounds", StatusCode::FAILURE);
+           return (m_binningData[ba].binwidth(i));
        }
 
      private :

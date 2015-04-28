@@ -823,6 +823,58 @@ TestAlgorithmsConfAll/fast:
 .PHONY : TestAlgorithmsConfAll/fast
 
 #=============================================================================
+# Target rules for targets named TestTools
+
+# Build rule for target.
+TestTools: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestTools
+.PHONY : TestTools
+
+# fast build rule for target.
+TestTools/fast:
+	$(MAKE) -f Test/TestTools/CMakeFiles/TestTools.dir/build.make Test/TestTools/CMakeFiles/TestTools.dir/build
+.PHONY : TestTools/fast
+
+#=============================================================================
+# Target rules for targets named TestToolsComponentsList
+
+# Build rule for target.
+TestToolsComponentsList: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestToolsComponentsList
+.PHONY : TestToolsComponentsList
+
+# fast build rule for target.
+TestToolsComponentsList/fast:
+	$(MAKE) -f Test/TestTools/CMakeFiles/TestToolsComponentsList.dir/build.make Test/TestTools/CMakeFiles/TestToolsComponentsList.dir/build
+.PHONY : TestToolsComponentsList/fast
+
+#=============================================================================
+# Target rules for targets named TestToolsConf
+
+# Build rule for target.
+TestToolsConf: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestToolsConf
+.PHONY : TestToolsConf
+
+# fast build rule for target.
+TestToolsConf/fast:
+	$(MAKE) -f Test/TestTools/CMakeFiles/TestToolsConf.dir/build.make Test/TestTools/CMakeFiles/TestToolsConf.dir/build
+.PHONY : TestToolsConf/fast
+
+#=============================================================================
+# Target rules for targets named TestToolsConfAll
+
+# Build rule for target.
+TestToolsConfAll: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TestToolsConfAll
+.PHONY : TestToolsConfAll
+
+# fast build rule for target.
+TestToolsConfAll/fast:
+	$(MAKE) -f Test/TestTools/CMakeFiles/TestToolsConfAll.dir/build.make Test/TestTools/CMakeFiles/TestToolsConfAll.dir/build
+.PHONY : TestToolsConfAll/fast
+
+#=============================================================================
 # Target rules for targets named TrkChargedParameters
 
 # Build rule for target.
@@ -913,6 +965,10 @@ help:
 	@echo "... TestAlgorithmsComponentsList"
 	@echo "... TestAlgorithmsConf"
 	@echo "... TestAlgorithmsConfAll"
+	@echo "... TestTools"
+	@echo "... TestToolsComponentsList"
+	@echo "... TestToolsConf"
+	@echo "... TestToolsConfAll"
 	@echo "... TrkChargedParameters"
 	@echo "... TrkNeutralParameters"
 .PHONY : help

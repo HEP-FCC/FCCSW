@@ -1,30 +1,30 @@
 # --Beg DetDesServices.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libDetDesServices.so:GeoSvc
 libDetDesServices.so:StandardRecoGeoSvc
 # --End DetDesServices.components
 
 
 # --Beg Detectors.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 # --End Detectors.components
 
 
 # --Beg FWCorePlugins.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libFWCorePlugins.so:FCCDataSvc
 # --End FWCorePlugins.components
 
 
 # --Beg Examples.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libExamples.so:AlbersOutput
 libExamples.so:AlbersWrite
 # --End Examples.components
 
 
 # --Beg Generation.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libGeneration.so:FlatSmearVertex
 libGeneration.so:GenParticleFilter
 libGeneration.so:HepMCConverter
@@ -38,7 +38,7 @@ libGeneration.so:PythiaInterface
 
 
 # --Beg Reconstruction.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libReconstruction.so:HepMCJetClustering
 libReconstruction.so:JetClustering<MCParticleCollection, GenJetCollection, GenJetParticleAssociationCollection>
 libReconstruction.so:JetClustering<ParticleCollection, JetCollection, JetParticleAssociationCollection>
@@ -51,7 +51,7 @@ libReconstruction.so:ParticleJetClustering
 
 
 # --Beg Simulation.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libSimulation.so:DummySimulation
 libSimulation.so:Geant4Simulation
 libSimulation.so:Simulation
@@ -59,9 +59,17 @@ libSimulation.so:Simulation
 
 
 # --Beg TestAlgorithms.components
-# --Date inserted: 2015-04-09 15:47:53.187601
+# --Date inserted: 2015-04-28 10:48:28.679414
 libTestAlgorithms.so:Geant4Test
 libTestAlgorithms.so:RecoGeoTest
+libTestAlgorithms.so:RecoGeoWrite
 libTestAlgorithms.so:SurfaceTest
 libTestAlgorithms.so:TestAlgorithm
 # --End TestAlgorithms.components
+
+
+# --Beg TestTools.components
+# --Date inserted: 2015-04-28 10:48:28.679414
+libTestTools.so:GaussDigitizer
+libTestTools.so:SmearingTool
+# --End TestTools.components

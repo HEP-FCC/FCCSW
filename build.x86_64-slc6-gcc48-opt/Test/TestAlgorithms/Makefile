@@ -300,6 +300,30 @@ src/RecoGeoTest.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.s
 .PHONY : src/RecoGeoTest.cxx.s
 
+src/RecoGeoWrite.o: src/RecoGeoWrite.cxx.o
+.PHONY : src/RecoGeoWrite.o
+
+# target to build an object file
+src/RecoGeoWrite.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o
+.PHONY : src/RecoGeoWrite.cxx.o
+
+src/RecoGeoWrite.i: src/RecoGeoWrite.cxx.i
+.PHONY : src/RecoGeoWrite.i
+
+# target to preprocess a source file
+src/RecoGeoWrite.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.i
+.PHONY : src/RecoGeoWrite.cxx.i
+
+src/RecoGeoWrite.s: src/RecoGeoWrite.cxx.s
+.PHONY : src/RecoGeoWrite.s
+
+# target to generate assembly for a file
+src/RecoGeoWrite.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.s
+.PHONY : src/RecoGeoWrite.cxx.s
+
 src/SurfaceTest.o: src/SurfaceTest.cxx.o
 .PHONY : src/SurfaceTest.o
 
@@ -376,6 +400,9 @@ help:
 	@echo "... src/RecoGeoTest.o"
 	@echo "... src/RecoGeoTest.i"
 	@echo "... src/RecoGeoTest.s"
+	@echo "... src/RecoGeoWrite.o"
+	@echo "... src/RecoGeoWrite.i"
+	@echo "... src/RecoGeoWrite.s"
 	@echo "... src/SurfaceTest.o"
 	@echo "... src/SurfaceTest.i"
 	@echo "... src/SurfaceTest.s"

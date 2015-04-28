@@ -37,6 +37,8 @@ namespace Reco {
         virtual const Material* material(Alg::Point2D& locpos) const override;
         //returns the surfacerepresentation
         virtual const CylinderSurface* surfaceRepresentation() const override;
+        //returns if the surface is sensitive (and has a readout)
+        virtual bool isSensitive() const override;
     };
 }
 

@@ -7,9 +7,6 @@
 //
 
 #include "TestAlgorithms/RecoGeoTest.h"
-// albers specific includes
-
-
 
 DECLARE_COMPONENT(RecoGeoTest)
 
@@ -18,12 +15,17 @@ GaudiAlgorithm(name, svcLoc),
 m_recoGeoSvc(nullptr),
 m_worldVolume(0),
 m_graph(new TGraph2D()),
-m_counter(0)
+m_counter(0),
+m_particlecoll(new ParticleCollection())
+//m_hitcoll(new TrackHitCollection()),
 {
     m_out.open ("recogeo.dat", std::ofstream::out);
     m_layers.open("layers.dat", std::ofstream::out);
     m_boundaries.open("boundaries.dat", std::ofstream::out);
     m_modules.open("modules.dat", std::ofstream::out);
+    m_sens.open("sens.dat", std::ofstream::out);
+ //   declareOutput("trackHits", m_trackhits, "in");
+    declareOutput("particles", m_particles, "in");
 }
 
 StatusCode RecoGeoTest::initialize() {
@@ -43,7 +45,7 @@ StatusCode RecoGeoTest::initialize() {
     if (m_worldVolume) {
         std::cout << "retrieved WorldVolume!!!" << std::endl;
     }
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -138,6 +140,18 @@ StatusCode RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Poin
     if (intersection.onSurface) {
         Alg::Point3D intersectPoint = intersection.position;
         m_modules << intersectPoint.X() << " " << intersectPoint.Y() << " " << intersectPoint.Z() << std::endl;
+        ParticleHandle& part = m_particlecoll->create();
+        part.mod().Core.Vertex.X =  intersectPoint.X();
+        part.mod().Core.Vertex.Y =  intersectPoint.Y();
+        part.mod().Core.Vertex.Z =  intersectPoint.Z();
+ /*       if (surface.isSensitive()) {
+            Alg::Point2D locpos;
+            //const Reco::SensitiveSurface sens(dynamic_cast<const Reco::SensitiveSurface&>(surface));
+            //surface representation machen
+            if(surface.globalToLocal(intersectPoint, dir, locpos)) m_sens << (dynamic_cast<const Reco::SensitiveSurface&>(surface)).cellID(locpos) << std::endl;
+            TrackHitHandle& hit = m_hitcoll->create();
+            hit.mod().Core.Cellid = (dynamic_cast<const Reco::SensitiveSurface&>(surface)).cellID(locpos);
+        }*/
     }
         ++m_counter;
     
@@ -179,12 +193,18 @@ StatusCode RecoGeoTest::execute() {
             intersect(volume, start, randomdir());
         }
 
+  //      m_trackhits.put(m_hitcoll);
+        //hier dann auch fehler mitgeben
+        m_particles.put(m_particlecoll);
         m_out.close();
         m_boundaries.close();
         m_layers.close();
         m_modules.close();
+        m_sens.close();
+
         
     }// if volume
+//    m_hitcoll->print();
     
     return StatusCode::SUCCESS;
 }

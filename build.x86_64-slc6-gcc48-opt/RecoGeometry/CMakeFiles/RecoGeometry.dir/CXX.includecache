@@ -69,6 +69,8 @@ RecoGeometry/CylinderSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/CylinderSurface.h
 RecoGeometry/SensitiveSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/SensitiveSurface.h
+TrkGeometryUtils/ReadoutSegmentation.h
+../RecoGeometry/RecoGeometry/TrkGeometryUtils/ReadoutSegmentation.h
 TrkGeometryUtils/BinUtility.h
 ../RecoGeometry/RecoGeometry/TrkGeometryUtils/BinUtility.h
 
@@ -77,6 +79,8 @@ RecoGeometry/DiscSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/DiscSurface.h
 RecoGeometry/SensitiveSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/SensitiveSurface.h
+TrkGeometryUtils/ReadoutSegmentation.h
+../RecoGeometry/RecoGeometry/TrkGeometryUtils/ReadoutSegmentation.h
 TrkGeometryUtils/BinUtility.h
 ../RecoGeometry/RecoGeometry/TrkGeometryUtils/BinUtility.h
 
@@ -85,6 +89,8 @@ RecoGeometry/PlaneSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/PlaneSurface.h
 RecoGeometry/SensitiveSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/SensitiveSurface.h
+TrkGeometryUtils/ReadoutSegmentation.h
+../RecoGeometry/RecoGeometry/TrkGeometryUtils/ReadoutSegmentation.h
 TrkGeometryUtils/BinUtility.h
 ../RecoGeometry/RecoGeometry/TrkGeometryUtils/BinUtility.h
 
@@ -97,6 +103,8 @@ RecoGeometry/TrapezoidSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/TrapezoidSurface.h
 RecoGeometry/SensitiveSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/SensitiveSurface.h
+TrkGeometryUtils/ReadoutSegmentation.h
+../RecoGeometry/RecoGeometry/TrkGeometryUtils/ReadoutSegmentation.h
 TrkGeometryUtils/BinUtility.h
 ../RecoGeometry/RecoGeometry/TrkGeometryUtils/BinUtility.h
 
@@ -227,6 +235,10 @@ vector
 -
 string
 -
+
+../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
+Algebra/AlgPrimitives.h
+../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Algebra/AlgPrimitives.h
 
 /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/aligned_storage.hpp
 cstddef

@@ -114,16 +114,16 @@
     <!--noetig fuer sensitives detelement-->
     <readouts>
         <readout name="TrackerReadout">
-            <id>system:3,layer:2,module:10</id><!--,component:2</id>-->
+            <id>system:3,layer:2,module:10, component:2</id>
         </readout>
         <readout name="TrackerBigReadout">
-            <id>system:3,layer:2,module:11</id><!--,component:2</id>-->
+            <id>system:3,layer:2,module:11, component:2</id>
         </readout>
         <readout name="EndCapReadout">
-            <id>system:3,layer:2,module:6</id><!--,component:2</id>-->
+            <id>system:3,layer:2,module:6, component:2</id>
         </readout>
         <readout name="EndCapBigReadout">
-            <id>system:3,layer:2,module:7</id><!--,component:2</id>-->
+            <id>system:3,layer:2,module:7,component:2</id>
         </readout>
     </readouts>
     

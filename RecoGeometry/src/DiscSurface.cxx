@@ -131,3 +131,8 @@ bool Reco::DiscSurface::globalToLocal(const Alg::Point3D& glopos, const Alg::Vec
     locpos.SetCoordinates(r,phi);
     return (isInside(locpos,s_onSurfaceTolerance,s_onSurfaceTolerance) && (loc3D.Z()*loc3D.Z())<(s_onSurfaceTolerance*s_onSurfaceTolerance));
 }
+
+bool Reco::DiscSurface::isSensitive() const
+{
+    return false;
+}

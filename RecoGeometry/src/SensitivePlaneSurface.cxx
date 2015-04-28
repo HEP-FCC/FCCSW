@@ -8,56 +8,46 @@
 
 #include "RecoGeometry/SensitivePlaneSurface.h"
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, size_t binsX, size_t binsY, long long int volumeID) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(node,box),
-Reco::SensitiveSurface(volumeID)
-{
-    m_binutility    = new Trk::BinUtility(binsX, -PlaneSurface::getHalfX(), PlaneSurface::getHalfX(), Trk::open, Trk::binX);
-    *m_binutility  += Trk::BinUtility(binsY, -PlaneSurface::getHalfY(), PlaneSurface::getHalfY(), Trk::open, Trk::binY);
-}
+Reco::SensitiveSurface(volumeID),
+m_segmentation(segmentation)
+{}
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf, size_t binsX, size_t binsY, long long int volumeID) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(box, transf),
-Reco::SensitiveSurface(volumeID)
-{
-    m_binutility    = new Trk::BinUtility(binsX, -PlaneSurface::getHalfX(), PlaneSurface::getHalfX(), Trk::open, Trk::binX);
-    *m_binutility  += Trk::BinUtility(binsY, -PlaneSurface::getHalfY(), PlaneSurface::getHalfY(), Trk::open, Trk::binY);
-}
+Reco::SensitiveSurface(volumeID),
+m_segmentation(segmentation)
+{}
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, size_t binsX , size_t binsY, long long int volumeID) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(node, box, materialmap),
-Reco::SensitiveSurface(volumeID)
-{
-    m_binutility    = new Trk::BinUtility(binsX, -PlaneSurface::getHalfX(), PlaneSurface::getHalfX(), Trk::open, Trk::binX);
-    *m_binutility  += Trk::BinUtility(binsY, -PlaneSurface::getHalfY(), PlaneSurface::getHalfY(), Trk::open, Trk::binY);
-}
+Reco::SensitiveSurface(volumeID),
+m_segmentation(segmentation)
+{}
 
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, size_t binsX, size_t binsY, long long int volumeID) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(box, materialmap, transf),
-Reco::SensitiveSurface(volumeID)
-{
-    m_binutility    = new Trk::BinUtility(binsX, -PlaneSurface::getHalfX(), PlaneSurface::getHalfX(), Trk::open, Trk::binX);
-    *m_binutility  += Trk::BinUtility(binsY, -PlaneSurface::getHalfY(), PlaneSurface::getHalfY(), Trk::open, Trk::binY);
-}
+Reco::SensitiveSurface(volumeID),
+m_segmentation(segmentation)
+{}
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, size_t binsX, size_t binsY, long long int volumeID) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(transf,halfX,halfY),
-Reco::SensitiveSurface(volumeID)
-{
-    m_binutility    = new Trk::BinUtility(binsX, -PlaneSurface::getHalfX(), PlaneSurface::getHalfX(), Trk::open, Trk::binX);
-    *m_binutility  += Trk::BinUtility(binsY, -PlaneSurface::getHalfY(), PlaneSurface::getHalfY(), Trk::open, Trk::binY);
-}
+Reco::SensitiveSurface(volumeID),
+m_segmentation(segmentation)
+{}
 
 Reco::SensitivePlaneSurface::SensitivePlaneSurface(const Reco::SensitivePlaneSurface& sensplane) :
 Reco::PlaneSurface(sensplane),
 Reco::SensitiveSurface(sensplane),
-m_binutility(new Trk::BinUtility(*sensplane.m_binutility))
+m_segmentation(sensplane.m_segmentation->clone())
 {}
 
 Reco::SensitivePlaneSurface::~SensitivePlaneSurface()
 {
-    delete m_binutility;
+    delete m_segmentation;
 }
 
 Reco::SensitivePlaneSurface* Reco::SensitivePlaneSurface::clone() const
@@ -70,19 +60,33 @@ Reco::SensitivePlaneSurface& Reco::SensitivePlaneSurface::operator=(const Reco::
     if (this!=&sensplane) {
         Reco::PlaneSurface::operator=(sensplane);
         Reco::SensitiveSurface::operator=(sensplane);
-        delete m_binutility;
-        m_binutility = new Trk::BinUtility(*sensplane.m_binutility);
+        delete m_segmentation;
+        m_segmentation = m_segmentation->clone();
     }
     return (*this);
 }
-size_t Reco::SensitivePlaneSurface::bin(const Alg::Point2D&locpos) const
+unsigned long Reco::SensitivePlaneSurface::bin(const Alg::Point2D&locpos) const
 {
-    size_t i = m_binutility->bin(locpos,0);
-    size_t j = m_binutility->bin(locpos,1);
-    int n = m_binutility->bins(1);
-    return(j+i*n);
+    return(m_segmentation->bin(locpos));
 }
 
+Alg::Point2D Reco::SensitivePlaneSurface::binToLocpos(unsigned long bin) const
+{
+    return (binToLocpos(bin));
+}
 
+bool Reco::SensitivePlaneSurface::isSensitive() const
+{
+    return true;
+}
 
+float Reco::SensitivePlaneSurface::binWidth(const Alg::Point2D& locpos, size_t ba) const
+{
+    return(m_segmentation->binwidth(locpos, ba));
+}
+
+const std::vector<unsigned long> Reco::SensitivePlaneSurface::compatibleBins(const Alg::Point2D& locpos) const
+{
+    return(m_segmentation->compatibleBins(locpos));
+}
 

@@ -47,6 +47,7 @@ SET(CMAKE_C_TARGET_INCLUDE_PATH
   "/afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/include"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/include"
   "../DetectorDescription/DetExtensions"
+  "../Test/TestInterfaces"
   "../DetectorDescription/DetDesInterfaces"
   "include"
   "/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include"

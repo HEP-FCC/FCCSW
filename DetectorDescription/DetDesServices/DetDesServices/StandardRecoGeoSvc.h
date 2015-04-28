@@ -27,6 +27,9 @@
 #include "RecoGeometry/TrapezoidSurface.h"
 #include "RecoGeometry/BoundarySurface.h"
 
+#include "RecoGeometry/SensitivePlaneSurface.h"
+#include "RecoGeometry/SensitiveTrapezoidSurface.h"
+
 #include "RecoGeometry/Layer.h"
 #include "RecoGeometry/CylinderLayer.h"
 #include "RecoGeometry/DiscLayer.h"
@@ -48,6 +51,8 @@
 #include "TrkGeometryUtils/BinUtility.h"
 #include "TrkGeometryUtils/BinnedArray1D.h"
 #include "TrkGeometryUtils/BinnedArray2D.h"
+#include "TrkGeometryUtils/ReadoutSegmentation1D1D.h"
+#include "TrkGeometryUtils/ReadoutSegmentation2D.h"
 //std
 #include <iostream>
 #include <fstream>
@@ -103,6 +108,7 @@ private:
     std::shared_ptr<const Reco::ContainerVolume> m_worldVolume;
     IGeoSvc*                                     m_DD4HepSvc;
     MsgStream                                    m_log;
+    mutable std::ofstream                        m_file;
 };
 
 #endif //STANDARDRECOGEOSVC_H

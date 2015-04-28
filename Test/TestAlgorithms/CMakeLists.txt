@@ -8,10 +8,9 @@ gaudi_subdir(TestAlgorithms v1r0)
 gaudi_depends_on_subdirs(GaudiAlg
 			 GaudiKernel
              		 DetectorDescription/DetDesInterfaces
-			 RecoGeometry)
-			# DetectorDescription/DetDesServices
-			# DetectorDescription/Detectors)
-			 #DD4hep/v00-09/share/sources/DDCore)
+			 Test/TestInterfaces
+			 RecoGeometry
+			 DataObjects)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
 
@@ -21,7 +20,7 @@ find_package(Geant4)
 
 gaudi_add_module(TestAlgorithms
 		 src/*.cxx
-		 INCLUDE_DIRS Algebra ROOT  DetDesInterfaces DD4hep RecoGeometry GaudiKernel Geant4
+		 INCLUDE_DIRS Algebra ROOT  DetDesInterfaces DD4hep RecoGeometry GaudiKernel Geant4 DataObjects TestInterfaces
                  LINK_LIBRARIES GaudiAlgLib DataObjects ROOT GaudiKernel DD4hep RecoGeometry Geant4)
 
 	

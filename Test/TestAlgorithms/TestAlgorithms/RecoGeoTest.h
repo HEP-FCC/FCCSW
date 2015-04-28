@@ -25,10 +25,18 @@
 #include "RecoGeometry/Volume.h"
 #include "RecoGeometry/ContainerVolume.h"
 #include "RecoGeometry/BoundarySurface.h"
+#include "RecoGeometry/SensitiveSurface.h"
 //std
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+//albers
+//#include "DataObjects/TrackHit.h"
+//#include "DataObjects/TrackHitCollection.h"
+#include "DataObjects/Particle.h"
+#include "DataObjects/ParticleCollection.h"
+
+
 
 class RecoGeoTest: public GaudiAlgorithm {
     friend class AlgFactory<RecoGeoTest> ;
@@ -76,6 +84,12 @@ private:
     mutable std::ofstream                           m_layers;
     mutable std::ofstream                           m_boundaries;
     mutable std::ofstream                           m_modules;
+    mutable std::ofstream                           m_sens;
+//    DataObjectHandle<TrackHitCollection>            m_trackhits;
+//    TrackHitCollection*                             m_hitcoll;
+    DataObjectHandle<ParticleCollection>            m_particles;
+    ParticleCollection*                             m_particlecoll;
+
 };
 
 

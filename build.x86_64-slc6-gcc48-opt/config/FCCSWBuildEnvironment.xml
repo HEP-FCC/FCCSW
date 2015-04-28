@@ -68,8 +68,12 @@
   <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Reconstruction/genConf</env:prepend>
   <env:set variable="SIMULATIONROOT">${FCCSW_PROJECT_ROOT}/Simulation</env:set>
   <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Simulation/genConf</env:prepend>
+  <env:set variable="TESTINTERFACESROOT">${FCCSW_PROJECT_ROOT}/Test/TestInterfaces</env:set>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${FCCSW_PROJECT_ROOT}/Test/TestInterfaces</env:prepend>
   <env:set variable="TESTALGORITHMSROOT">${FCCSW_PROJECT_ROOT}/Test/TestAlgorithms</env:set>
   <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms/genConf</env:prepend>
+  <env:set variable="TESTTOOLSROOT">${FCCSW_PROJECT_ROOT}/Test/TestTools</env:set>
+  <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestTools/genConf</env:prepend>
   <env:set variable="TRKCHARGEDPARAMETERSROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkChargedParameters</env:set>
   <env:prepend variable="ROOT_INCLUDE_PATH">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkChargedParameters</env:prepend>
   <env:set variable="TRKNEUTRALPARAMETERSROOT">${FCCSW_PROJECT_ROOT}/Tracking/TrkEvent/TrkNeutralParameters</env:set>

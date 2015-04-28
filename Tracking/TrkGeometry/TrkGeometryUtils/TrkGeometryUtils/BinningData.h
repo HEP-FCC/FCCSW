@@ -264,19 +264,24 @@ namespace Trk {
             
         }
         //added
-        float bincenter(int i) {
+        float bincenter(size_t i) {
             
             return (0.5*(binlow(i)+binhigh(i)));
         }
         
-        float binlow(int i) {
+        float binlow(size_t i) {
             
             return (boundaries[i]);
         }
         
-        float binhigh(int i) {
+        float binhigh(size_t i) {
             
             return (boundaries[i+1]);
+        }
+        
+        float binwidth(size_t i) {
+            
+            return (fabs(binhigh(i)-binlow(i)));
         }
         
         

@@ -66,6 +66,7 @@ DD4hep::Geometry::LCDD* GeoSvc::lcdd()
 
 DD4hep::Geometry::DetElement GeoSvc::getDD4HepGeo()
 {
+    lcdd()->volumeManager();
     return (lcdd()->world());
 }
 

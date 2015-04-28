@@ -55,3 +55,8 @@ const Reco::DiscSurface* Reco::BoundaryDiscSurface::surfaceRepresentation() cons
 {
     return (this);
 }
+
+bool Reco::BoundaryDiscSurface::isSensitive() const
+{
+    return false;
+}

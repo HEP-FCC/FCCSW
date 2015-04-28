@@ -270,4 +270,8 @@ Trk::Intersection Reco::CylinderSurface::straightLineIntersection(const Alg::Poi
     return Trk::Intersection(transform()*solution, path, isValid );
 }
 
+bool Reco::CylinderSurface::isSensitive() const
+{
+    return false;
+}
 

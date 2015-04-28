@@ -4,6 +4,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o"
   "CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o"
   "CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o"
+  "CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o"
   "../../lib/libTestAlgorithms.pdb"
   "../../lib/libTestAlgorithms.so"
 )

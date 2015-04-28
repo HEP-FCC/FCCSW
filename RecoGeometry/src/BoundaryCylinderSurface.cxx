@@ -54,3 +54,8 @@ const Reco::CylinderSurface* Reco::BoundaryCylinderSurface::surfaceRepresentatio
 {
     return (this);
 }
+
+bool Reco::BoundaryCylinderSurface::isSensitive() const
+{
+    return false;
+}

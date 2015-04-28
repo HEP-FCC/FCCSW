@@ -7199,6 +7199,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: ../
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/DefinedParameter.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Intersection.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ParamDefs.h
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/aligned_storage.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/assert.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/checked_delete.hpp
@@ -7714,6 +7715,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: ../Trac
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/DefinedParameter.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Intersection.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ParamDefs.h
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/aligned_storage.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/assert.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/checked_delete.hpp
@@ -8229,6 +8231,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: ../Tra
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/DefinedParameter.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Intersection.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ParamDefs.h
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/aligned_storage.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/assert.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/checked_delete.hpp
@@ -8818,6 +8821,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: ..
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/DefinedParameter.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Intersection.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ParamDefs.h
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/aligned_storage.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/assert.hpp
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/checked_delete.hpp

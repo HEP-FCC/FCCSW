@@ -37,6 +37,8 @@ namespace Reco {
         virtual const Material* material(Alg::Point2D& locpos) const override;
         //returns the surface representation of the boundary surface
         virtual const DiscSurface* surfaceRepresentation() const override;
+        //returns if the surface is sensitive (and has a readout)
+        virtual bool isSensitive() const override;
     };
 }
 #endif //RECO_BOUNDARYDISCSURFACE_H
