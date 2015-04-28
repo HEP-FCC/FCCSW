@@ -12,54 +12,62 @@
 Reco::CylinderSurface::CylinderSurface() :
 Reco::Surface(),
 m_R(0.),
-m_halfZ(0.)
+m_halfZ(0.),
+m_thickness(0.)
 {}
 
-Reco::CylinderSurface::CylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ) :
+Reco::CylinderSurface::CylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness) :
 Reco::Surface(transf),
 m_R(radius),
-m_halfZ(halfZ)
+m_halfZ(halfZ),
+m_thickness(HalfThickness)
 {}
 
-Reco::CylinderSurface::CylinderSurface(double radius, double halfZ) :
+Reco::CylinderSurface::CylinderSurface(double radius, double halfZ, double HalfThickness) :
 Reco::Surface(),
 m_R(radius),
-m_halfZ(halfZ)
+m_halfZ(halfZ),
+m_thickness(HalfThickness)
 {}
 
 Reco::CylinderSurface::CylinderSurface(TGeoNode* node, TGeoConeSeg* tube) :
 Reco::Surface(node)
 {
     //myconeseg in DD4Hep is only defined with Rmax1 and Rmin1
-    m_R = 0.5*(tube->GetRmax1()+tube->GetRmin1());
-    m_halfZ = tube->GetDz();
+    m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
+    m_halfZ     = tube->GetDz();
+    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface(transf)
 {
-    m_R = 0.5*(tube->GetRmax1()+tube->GetRmin1());
-    m_halfZ = tube->GetDz();
+    m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
+    m_halfZ     = tube->GetDz();
+    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(TGeoNode* node, TGeoConeSeg* tube, Reco::MaterialMap* materialmap) :
 Reco::Surface(node,materialmap)
 {
-    m_R = 0.5*(tube->GetRmax1()+tube->GetRmin1());
-    m_halfZ = tube->GetDz();
+    m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
+    m_halfZ     = tube->GetDz();
+    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(TGeoConeSeg* tube, Reco::MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface(materialmap, transf)
 {
-    m_R = 0.5*(tube->GetRmax1()+tube->GetRmin1());
-    m_halfZ = tube->GetDz();
+    m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
+    m_halfZ     = tube->GetDz();
+    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(const CylinderSurface& cylindersurface) :
 Reco::Surface(cylindersurface),
 m_R(cylindersurface.m_R),
-m_halfZ(cylindersurface.m_halfZ)
+m_halfZ(cylindersurface.m_halfZ),
+m_thickness(cylindersurface.m_thickness)
 {}
 
 Reco::CylinderSurface::~CylinderSurface()
@@ -74,8 +82,9 @@ Reco::CylinderSurface& Reco::CylinderSurface::operator=(const CylinderSurface& c
 {
     if (this!=&cylindersurface) {
         Reco::Surface::operator=(cylindersurface);
-        m_R = cylindersurface.m_R;
-        m_halfZ = cylindersurface.m_halfZ;
+        m_R         = cylindersurface.m_R;
+        m_halfZ     = cylindersurface.m_halfZ;
+        m_thickness = cylindersurface.m_thickness;
     }
     return (*this);
 }
@@ -88,6 +97,11 @@ double Reco::CylinderSurface::getR() const
 double Reco::CylinderSurface::getHalfZ() const
 {
     return (m_halfZ);
+}
+
+double Reco::CylinderSurface::thickness() const
+{
+    return (m_thickness);
 }
 
 const Alg::Vector3D& Reco::CylinderSurface::normal() const

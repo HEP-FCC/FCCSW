@@ -27,7 +27,7 @@ namespace Reco {
         DiscSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap);
         DiscSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf);
         //manuel constructor with transform matrix and dimensions of the Disc
-        DiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax);
+        DiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness = 0.);
         //copy constructor
         DiscSurface(const DiscSurface& discsurface);
         //copy constructor
@@ -39,6 +39,7 @@ namespace Reco {
         //get dimensions
         double getRmin() const;
         double getRmax() const;
+        virtual double thickness() const override;
         //get the normal vector of the surface
         virtual const Alg::Vector3D& normal() const override;
         // normal vector to local position
@@ -134,6 +135,8 @@ namespace Reco {
         
         double m_Rmin;
         double m_Rmax;
+        //halfthickness
+        double m_thickness;
     };
     
     inline Trk::Intersection DiscSurface::straightLineIntersection(const Alg::Point3D& pos,

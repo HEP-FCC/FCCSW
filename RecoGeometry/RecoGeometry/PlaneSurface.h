@@ -29,7 +29,7 @@ namespace Reco {
         PlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap);
         PlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf);
         //manuel constructor, to set transform and dimensions manuel
-        PlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY);
+        PlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness = 0.);
         //copy constructor
         PlaneSurface(const PlaneSurface& planesurface);
         //destructor
@@ -41,7 +41,7 @@ namespace Reco {
         //get dimensions
         double getHalfX() const;
         double getHalfY() const;
-        
+        virtual double thickness() const override;
         //get the normal vector of the surface
         virtual const Alg::Vector3D& normal() const override;
         //normal vector to local position
@@ -136,6 +136,8 @@ namespace Reco {
         //halflength:
         double m_halfX;
         double m_halfY;
+        //halfthickness
+        double m_thickness;
     };
     
     inline Trk::Intersection PlaneSurface::straightLineIntersection(const Alg::Point3D& pos,

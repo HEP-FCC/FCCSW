@@ -29,9 +29,9 @@ m_Rmin(tube->GetRmin1()),
 m_Rmax(tube->GetRmax1())
 {}
 
-Reco::CylinderLayer::CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double halfZ, Trk::BinnedArray<Surface>* sf) :
+Reco::CylinderLayer::CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double halfZ, double HalfThickness, Trk::BinnedArray<Surface>* sf) :
 Layer(sf),
-CylinderSurface(transf, 0.5*(rmin+rmax), halfZ),
+CylinderSurface(transf, 0.5*(rmin+rmax), halfZ, HalfThickness),
 m_Rmin(rmin),
 m_Rmax(rmax)
 {}

@@ -27,9 +27,9 @@ namespace Reco {
         CylinderSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap);
         CylinderSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf);
         //constructor with transform matrix and dimensions of the cylinder
-        CylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ);
+        CylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness = 0.);
         //constructor with rmin and rmax
-        CylinderSurface(double radius, double halfZ);
+        CylinderSurface(double radius, double halfZ, double HalfThickness = 0.);
         //copy constructor
         CylinderSurface(const CylinderSurface& cylindersurface);
         //destructor
@@ -41,6 +41,7 @@ namespace Reco {
         //get dimensions
         double getR() const;
         double getHalfZ() const;
+        virtual double thickness() const override;
         //get the normal vector of the surface
         virtual const Alg::Vector3D& normal() const override;
         // normal vector to local position
@@ -55,7 +56,6 @@ namespace Reco {
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const override;
         //returns if the surface is sensitive (and has a readout)
         virtual bool isSensitive() const override;
-        
         
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */
         virtual const Trk::ParametersT<5, Trk::Charged, CylinderSurface>* createTrackParameters(double l1,
@@ -132,6 +132,8 @@ namespace Reco {
         
         double m_R;
         double m_halfZ;
+        //halfthickness
+        double m_thickness;
     };
 }
 

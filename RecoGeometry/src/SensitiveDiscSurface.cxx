@@ -33,8 +33,8 @@ Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveDiscSurface::SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
-Reco::DiscSurface(transf, Rmin, Rmax),
+Reco::SensitiveDiscSurface::SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::DiscSurface(transf, Rmin, Rmax, HalfThickness),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}

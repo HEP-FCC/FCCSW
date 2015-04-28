@@ -18,9 +18,9 @@ BoundarySurface(),
 CylinderSurface(tube,transf)
 {}
 
-Reco::BoundaryCylinderSurface::BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ) :
+Reco::BoundaryCylinderSurface::BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness) :
 BoundarySurface(),
-CylinderSurface(transf,radius,halfZ)
+CylinderSurface(transf,radius,halfZ, HalfThickness)
 {}
 
 Reco::BoundaryCylinderSurface::BoundaryCylinderSurface(const Reco::BoundaryCylinderSurface& boundarycylindersurface) :

@@ -18,9 +18,9 @@ BoundarySurface(),
 DiscSurface(tube, transf)
 {}
 
-Reco::BoundaryDiscSurface::BoundaryDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax) :
+Reco::BoundaryDiscSurface::BoundaryDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness) :
 BoundarySurface(),
-DiscSurface(transf,Rmin,Rmax)
+DiscSurface(transf,Rmin,Rmax, HalfThickness)
 {}
 
 Reco::BoundaryDiscSurface::BoundaryDiscSurface(const Reco::BoundaryDiscSurface& boundarydiscsurface) :

@@ -30,7 +30,7 @@ namespace Reco {
         SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //manuel constructor, to set transform and dimensions manuel
-        SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitivePlaneSurface(const SensitivePlaneSurface& planesurface);
         //destructor

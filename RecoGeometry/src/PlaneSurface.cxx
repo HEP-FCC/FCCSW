@@ -11,47 +11,54 @@
 Reco::PlaneSurface::PlaneSurface() :
 Reco::Surface(),
 m_halfX(0.),
-m_halfY(0.)
+m_halfY(0.),
+m_thickness(0.)
 {}
 
-Reco::PlaneSurface::PlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY) :
+Reco::PlaneSurface::PlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness) :
 Reco::Surface (transf),
 m_halfX(halfX),
-m_halfY(halfY)
+m_halfY(halfY),
+m_thickness(HalfThickness)
 {}
 
 Reco::PlaneSurface::PlaneSurface(TGeoNode* node, TGeoBBox* box) :
 Reco::Surface (node)
 {
-    m_halfX = box->GetDX();
-    m_halfY = box->GetDY();
+    m_halfX     = box->GetDX();
+    m_halfY     = box->GetDY();
+    m_thickness = box->GetDZ();
 }
 
 Reco::PlaneSurface::PlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface (transf)
 {
-    m_halfX = box->GetDX();
-    m_halfY = box->GetDY();
+    m_halfX     = box->GetDX();
+    m_halfY     = box->GetDY();
+    m_thickness = box->GetDZ();;
 }
 
 Reco::PlaneSurface::PlaneSurface(TGeoNode* node,  TGeoBBox* box, Reco::MaterialMap* materialmap) :
 Reco::Surface (node, materialmap)
 {
-    m_halfX = box->GetDX();
-    m_halfY = box->GetDY();
+    m_halfX     = box->GetDX();
+    m_halfY     = box->GetDY();
+    m_thickness = box->GetDZ();
 }
 
 Reco::PlaneSurface::PlaneSurface(TGeoBBox* box, Reco::MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface (materialmap, transf)
 {
-    m_halfX = box->GetDX();
-    m_halfY = box->GetDY();
+    m_halfX     = box->GetDX();
+    m_halfY     = box->GetDY();
+    m_thickness = box->GetDZ();
 }
 
 Reco::PlaneSurface::PlaneSurface(const PlaneSurface& planesurface) :
 Reco::Surface(planesurface),
 m_halfX(planesurface.m_halfX),
-m_halfY(planesurface.m_halfY)
+m_halfY(planesurface.m_halfY),
+m_thickness(planesurface.m_thickness)
 {}
 
 Reco::PlaneSurface::~PlaneSurface()
@@ -66,8 +73,9 @@ Reco::PlaneSurface& Reco::PlaneSurface::operator=(const PlaneSurface& planesurfa
 {
     if (this!=&planesurface) {
         Reco::Surface::operator=(planesurface);
-        m_halfX = planesurface.getHalfX();
-        m_halfY = planesurface.getHalfY();
+        m_halfX = planesurface.m_halfX;
+        m_halfY = planesurface.m_halfY;
+        m_thickness = planesurface.m_thickness;
     }
     return (*this);
 }
@@ -80,6 +88,11 @@ double Reco::PlaneSurface::getHalfX() const
 double Reco::PlaneSurface::getHalfY() const
 {
     return (m_halfY);
+}
+
+double Reco::PlaneSurface::thickness() const
+{
+    return (m_thickness);
 }
 
 const Alg::Vector3D& Reco::PlaneSurface::normal() const

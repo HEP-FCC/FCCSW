@@ -29,7 +29,7 @@ namespace Reco {
         TrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, MaterialMap* materialmap);
         TrapezoidSurface(TGeoTrd2* trapezoid, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf);
         //manuel constructor, to set transform and dimensions manuel
-        TrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY);
+        TrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness = 0.);
         //copy constructor
         TrapezoidSurface(const TrapezoidSurface& trapezoidsurface);
         //destructor
@@ -42,6 +42,7 @@ namespace Reco {
         double getHalfX1() const;
         double getHalfX2() const;
         double getHalfY() const;
+        virtual double thickness() const override;
         //get the normal vector of the surface
         virtual const Alg::Vector3D& normal() const override;
         // normal vector to local position 
@@ -135,6 +136,8 @@ namespace Reco {
         double m_halfX1;
         double m_halfX2;
         double m_halfY;
+        //half thickness
+        double m_thickness;
 
 
     };

@@ -137,5 +137,12 @@ const Reco::MaterialMap* Reco::Surface::materialmap() const
     return (m_materialmap);
 }
 
+double Reco::Surface::pathlength(const Alg::Vector3D& dir) const
+{
+    Alg::Vector3D d = dir.unit();
+    double phi   = acos((dir.Dot(normal())));
+    double theta = 0.5*M_PI-phi;
+    return(2.*(thickness()/sin(theta)));
+}
 
 

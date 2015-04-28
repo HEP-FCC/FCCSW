@@ -24,7 +24,7 @@ namespace Reco {
         //constructor with transformation, TGeoConeSeg(dimesnions) and a BinnedArray of Surfaces
         CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* tube, Trk::BinnedArray<Surface>* sf);
         //constructor with transformation, dimensions and a BinnedArray of Surfaces
-        CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double halfZ, Trk::BinnedArray<Surface>* sf);
+        CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double halfZ, double HalfThickness, Trk::BinnedArray<Surface>* sf);
         //destructor
         ~CylinderLayer();
         //clone method

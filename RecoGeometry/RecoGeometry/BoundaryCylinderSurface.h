@@ -23,7 +23,7 @@ namespace Reco {
         //constructor to set transform manually
         BoundaryCylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf);
         //manuel constructor, to set transform and dimensions manuel
-        BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ);
+        BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness = 0.);
         //copy constructor
         BoundaryCylinderSurface(const BoundaryCylinderSurface& boundarycylindersurface);
         //destructor

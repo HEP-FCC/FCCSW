@@ -13,59 +13,64 @@ Reco::TrapezoidSurface::TrapezoidSurface() :
 Surface(),
 m_halfX1(0.),
 m_halfX2(0.),
-m_halfY(0.)
+m_halfY(0.),
+m_thickness(0.)
+{}
+
+Reco::TrapezoidSurface::TrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness) :
+Reco::Surface(transf),
+m_halfX1(halfX1),
+m_halfX2(halfX2),
+m_halfY(halfY),
+m_thickness(HalfThickness)
 {}
 
 Reco::TrapezoidSurface::TrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid) :
 Surface(node)
 {
     //convention: y'=Z, thicknesss = Y(X,Z)
-    m_halfX1 = trapezoid->GetDx1();
-    m_halfX2 = trapezoid->GetDx2();
-    m_halfY  = trapezoid->GetDz();
+    m_halfX1    = trapezoid->GetDx1();
+    m_halfX2    = trapezoid->GetDx2();
+    m_halfY     = trapezoid->GetDz();
+    m_thickness = 0.5*(trapezoid->GetDy1()+trapezoid->GetDy2());
 }
 
 Reco::TrapezoidSurface::TrapezoidSurface(TGeoTrd2* trapezoid, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface(transf)
 {
     //convention: y'=Z, thicknesss = Y(X,Z)
-    m_halfX1 = trapezoid->GetDx1();
-    m_halfX2 = trapezoid->GetDx2();
-    m_halfY  = trapezoid->GetDz();
+    m_halfX1    = trapezoid->GetDx1();
+    m_halfX2    = trapezoid->GetDx2();
+    m_halfY     = trapezoid->GetDz();
+    m_thickness = 0.5*(trapezoid->GetDy1()+trapezoid->GetDy2());
 }
 
 Reco::TrapezoidSurface::TrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, Reco::MaterialMap* materialmap) :
 Reco::Surface(node, materialmap)
 {
     //convention: y'=Z, thicknesss = Y(X,Z)
-    m_halfX1 = trapezoid->GetDx1();
-    m_halfX2 = trapezoid->GetDx2();
-    m_halfY  = trapezoid->GetDz();
+    m_halfX1    = trapezoid->GetDx1();
+    m_halfX2    = trapezoid->GetDx2();
+    m_halfY     = trapezoid->GetDz();
+    m_thickness = 0.5*(trapezoid->GetDy1()+trapezoid->GetDy2());
 }
 
 Reco::TrapezoidSurface::TrapezoidSurface(TGeoTrd2* trapezoid, Reco::MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface(materialmap,transf)
 {
     //convention: y'=Z, thicknesss = Y(X,Z)
-    m_halfX1 = trapezoid->GetDx1();
-    m_halfX2 = trapezoid->GetDx2();
-    m_halfY  = trapezoid->GetDz();
-}
-
-Reco::TrapezoidSurface::TrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY) :
-Reco::Surface(transf)
-{
-
-    m_halfX2 = halfX2;
-    m_halfX1 = halfX1;
-    m_halfY  = halfY;
+    m_halfX1    = trapezoid->GetDx1();
+    m_halfX2    = trapezoid->GetDx2();
+    m_halfY     = trapezoid->GetDz();
+    m_thickness = 0.5*(trapezoid->GetDy1()+trapezoid->GetDy2());
 }
 
 Reco::TrapezoidSurface::TrapezoidSurface(const TrapezoidSurface& trapezoidsurface) :
 Reco::Surface(trapezoidsurface),
 m_halfX1(trapezoidsurface.m_halfX1),
 m_halfX2(trapezoidsurface.m_halfX2),
-m_halfY(trapezoidsurface.m_halfY)
+m_halfY(trapezoidsurface.m_halfY),
+m_thickness(trapezoidsurface.m_thickness)
 {}
 
 Reco::TrapezoidSurface::~TrapezoidSurface()
@@ -80,9 +85,10 @@ Reco::TrapezoidSurface& Reco::TrapezoidSurface::operator=(const TrapezoidSurface
 {
     if (this!=&trapezoidsurface) {
         Reco::Surface::operator=(trapezoidsurface);
-        m_halfX1 = trapezoidsurface.m_halfX1;
-        m_halfX2 = trapezoidsurface.m_halfX2;
-        m_halfY  = trapezoidsurface.m_halfY;
+        m_halfX1    = trapezoidsurface.m_halfX1;
+        m_halfX2    = trapezoidsurface.m_halfX2;
+        m_halfY     = trapezoidsurface.m_halfY;
+        m_thickness = trapezoidsurface.m_thickness;
     }
     return (*this);
 }
@@ -100,6 +106,11 @@ double Reco::TrapezoidSurface::getHalfX2() const
 double Reco::TrapezoidSurface::getHalfY() const
 {
     return (m_halfY);
+}
+
+double Reco::TrapezoidSurface::thickness() const
+{
+    return (m_thickness);
 }
 
 const Alg::Vector3D& Reco::TrapezoidSurface::normal() const

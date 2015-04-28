@@ -140,6 +140,9 @@ StatusCode RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Poin
     if (intersection.onSurface) {
         Alg::Point3D intersectPoint = intersection.position;
         m_modules << intersectPoint.X() << " " << intersectPoint.Y() << " " << intersectPoint.Z() << std::endl;
+  //      m_modules << "Thickness : " << surface.thickness() << std::endl;
+  //      m_modules << "Pathlength: " << surface.pathlength(dir) << std::endl;
+
         ParticleHandle& part = m_particlecoll->create();
         part.mod().Core.Vertex.X =  intersectPoint.X();
         part.mod().Core.Vertex.Y =  intersectPoint.Y();
@@ -168,7 +171,6 @@ const Reco::Volume* RecoGeoTest::nextVolume(std::weak_ptr<const Reco::BoundarySu
                 success = false;
                 glopos = intersection.position;
                 m_boundaries << glopos.X() << " " << glopos.Y() << " " << glopos.Z() << " " << std::endl;
-                
                 return(surface->nextVolume(intersection.position));
             } //if onSurface
         } //if Surface

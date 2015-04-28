@@ -32,8 +32,8 @@ Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
-Reco::CylinderSurface(transf, radius, halfZ),
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::CylinderSurface(transf, radius, halfZ, HalfThickness),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}

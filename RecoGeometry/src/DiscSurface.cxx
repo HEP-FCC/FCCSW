@@ -12,53 +12,54 @@
 Reco::DiscSurface::DiscSurface() :
 Reco::Surface(),
 m_Rmin(0.),
-m_Rmax(0.)
+m_Rmax(0.),
+m_thickness(0.)
 {}
 
-Reco::DiscSurface::DiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax) :
+Reco::DiscSurface::DiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness) :
 Reco::Surface(transf),
 m_Rmin(Rmin),
-m_Rmax(Rmax)
+m_Rmax(Rmax),
+m_thickness(HalfThickness)
 {}
 
 Reco::DiscSurface::DiscSurface(TGeoNode* node, TGeoConeSeg* tube) :
 Reco::Surface(node)
 {
-    m_Rmin = tube->GetRmin1();
-    m_Rmax = tube->GetRmax1();
-    //vl noch ueberpruefung mit z machen??
-
+    m_Rmin      = tube->GetRmin1();
+    m_Rmax      = tube->GetRmax1();
+    m_thickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface(transf)
 {
-    m_Rmin = tube->GetRmin1();
-    m_Rmax = tube->GetRmax1();
-    //vl noch ueberpruefung mit z machen??
-    
+    m_Rmin      = tube->GetRmin1();
+    m_Rmax      = tube->GetRmax1();
+    m_thickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(TGeoNode* node, TGeoConeSeg* tube, Reco::MaterialMap* materialmap) :
 Reco::Surface(node, materialmap)
 {
-    m_Rmin = tube->GetRmin1();
-    m_Rmax = tube->GetRmax1();
-    //vl noch ueberpruefung mit z machen??
+    m_Rmin      = tube->GetRmin1();
+    m_Rmax      = tube->GetRmax1();
+    m_thickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(TGeoConeSeg* tube, Reco::MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf) :
 Reco::Surface(materialmap, transf)
 {
-    m_Rmin = tube->GetRmin1();
-    m_Rmax = tube->GetRmax1();
-    //vl noch ueberpruefung mit z machen??
+    m_Rmin      = tube->GetRmin1();
+    m_Rmax      = tube->GetRmax1();
+    m_thickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(const Reco::DiscSurface& discsurface) :
 Reco::Surface(discsurface),
 m_Rmin(discsurface.m_Rmin),
-m_Rmax(discsurface.m_Rmax)
+m_Rmax(discsurface.m_Rmax),
+m_thickness(discsurface.m_thickness)
 {}
 
 Reco::DiscSurface::~DiscSurface()
@@ -73,8 +74,9 @@ Reco::DiscSurface& Reco::DiscSurface::operator=(const DiscSurface& discsurface)
 {
     if (this!=&discsurface) {
         Reco::Surface::operator=(discsurface);
-        m_Rmin = discsurface.getRmin();
-        m_Rmax = discsurface.getRmax();
+        m_Rmin      = discsurface.m_Rmin;
+        m_Rmax      = discsurface.m_Rmax;
+        m_thickness = discsurface.m_thickness;
     }
     return (*this);
 }
@@ -87,6 +89,11 @@ double Reco::DiscSurface::getRmin() const
 double Reco::DiscSurface::getRmax() const
 {
     return (m_Rmax);
+}
+
+double Reco::DiscSurface::thickness() const
+{
+    return (m_thickness);
 }
 
 const Alg::Vector3D& Reco::DiscSurface::normal() const

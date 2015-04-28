@@ -30,7 +30,7 @@ namespace Reco {
         SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //manuel constructor, to set transform and dimensions manuel
-        SensitiveTrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveTrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitiveTrapezoidSurface(const SensitiveTrapezoidSurface& trapezoidsurface);
         //destructor

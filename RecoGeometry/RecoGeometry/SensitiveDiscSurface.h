@@ -28,7 +28,7 @@ namespace Reco {
         SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         SensitiveDiscSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //manuel constructor with transform matrix and dimensions of the Disc
-        SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitiveDiscSurface(const SensitiveDiscSurface& sensdisc);
         //copy constructor

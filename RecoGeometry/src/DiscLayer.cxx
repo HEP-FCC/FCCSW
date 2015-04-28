@@ -26,8 +26,8 @@ Layer(sf),
 m_dz(tube->GetDZ())
 {}
 
-Reco::DiscLayer::DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, Trk::BinnedArray<Surface>* sf) :
-DiscSurface(transf, rmin, rmax),
+Reco::DiscLayer::DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, double HalfThickness, Trk::BinnedArray<Surface>* sf) :
+DiscSurface(transf, rmin, rmax, HalfThickness),
 Layer(sf),
 m_dz(dz)
 {}

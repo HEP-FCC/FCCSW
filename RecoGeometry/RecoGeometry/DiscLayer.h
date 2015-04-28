@@ -24,7 +24,7 @@ namespace Reco  {
         //constructor with transformation, TGeoConeSeg(dimesnions) and a BinnedArray of Surfaces
         DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* disc, Trk::BinnedArray<Surface>* sf);
         //constructor with transformation, dimensions and a BinnedArray of Surfaces
-        DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, Trk::BinnedArray<Surface>* sf);
+        DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, double HalfThickness, Trk::BinnedArray<Surface>* sf);
         //destructor
         ~DiscLayer();
         //clone method

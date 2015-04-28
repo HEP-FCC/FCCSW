@@ -30,7 +30,7 @@ namespace Reco {
         SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         SensitiveCylinderSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //constructor with transform matrix and dimensions of the cylinder
-        SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //constructor with rmin and rmax
         SensitiveCylinderSurface(double radius, double halfZ, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
         //copy constructor
