@@ -8,32 +8,32 @@
 
 #include "RecoGeometry/SensitiveDiscSurface.h"
 
-Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::DiscSurface(node, tube),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::DiscSurface(tube,transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
 
-Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::DiscSurface(node, tube, materialmap),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveDiscSurface::SensitiveDiscSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::DiscSurface(tube, materialmap, transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveDiscSurface::SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveDiscSurface::SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::DiscSurface(transf, Rmin, Rmax, HalfThickness),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)

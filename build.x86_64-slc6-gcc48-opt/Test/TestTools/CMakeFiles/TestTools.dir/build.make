@@ -75,9 +75,32 @@ Test/TestTools/CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o.provides: Test/Te
 
 Test/TestTools/CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o.provides.build: Test/TestTools/CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o
 
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o: Test/TestTools/CMakeFiles/TestTools.dir/flags.make
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o: ../Test/TestTools/src/PrintHits.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestTools && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestTools.dir/src/PrintHits.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestTools/src/PrintHits.cxx
+
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestTools.dir/src/PrintHits.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestTools && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestTools/src/PrintHits.cxx > CMakeFiles/TestTools.dir/src/PrintHits.cxx.i
+
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestTools.dir/src/PrintHits.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestTools && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestTools/src/PrintHits.cxx -o CMakeFiles/TestTools.dir/src/PrintHits.cxx.s
+
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.requires:
+.PHONY : Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.requires
+
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.provides: Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.requires
+	$(MAKE) -f Test/TestTools/CMakeFiles/TestTools.dir/build.make Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.provides.build
+.PHONY : Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.provides
+
+Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.provides.build: Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o
+
 Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o: Test/TestTools/CMakeFiles/TestTools.dir/flags.make
 Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o: ../Test/TestTools/src/GaussDigitizer.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestTools && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestTools/src/GaussDigitizer.cxx
 
@@ -101,27 +124,30 @@ Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o.provides.build:
 # Object files for target TestTools
 TestTools_OBJECTS = \
 "CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o" \
+"CMakeFiles/TestTools.dir/src/PrintHits.cxx.o" \
 "CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o"
 
 # External object files for target TestTools
 TestTools_EXTERNAL_OBJECTS =
 
 lib/libTestTools.so: Test/TestTools/CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o
+lib/libTestTools.so: Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o
 lib/libTestTools.so: Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o
 lib/libTestTools.so: Test/TestTools/CMakeFiles/TestTools.dir/build.make
 lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
 lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiAlgLib.so
 lib/libTestTools.so: lib/libDataObjects.so
 lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiKernel.so
+lib/libTestTools.so: lib/libRecoGeometry.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so
 lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiUtilsLib.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_regex-gcc48-mt-1_55.so
-lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libHist.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libXMLIO.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libThread.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMatrix.so
-lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_filesystem-gcc48-mt-1_55.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_thread-gcc48-mt-1_55.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_system-gcc48-mt-1_55.so
@@ -130,10 +156,27 @@ lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallA
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so
 lib/libTestTools.so: lib/libalbers.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libGenVector.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libGeom.so
+lib/libTestTools.so: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepCore.so
+lib/libTestTools.so: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDDSegmentation.so
+lib/libTestTools.so: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepRec.so
+lib/libTestTools.so: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepPlugins.so
+lib/libTestTools.so: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepG4.so
+lib/libTestTools.so: lib/libTrkParametersBase.so
+lib/libTestTools.so: lib/libTrkGeometryUtils.so
 lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiAlgLib.so
-lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so
 lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so
+lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
+lib/libTestTools.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiKernel.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_filesystem-gcc48-mt-1_55.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_thread-gcc48-mt-1_55.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_system-gcc48-mt-1_55.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib/libtbb.so
+lib/libTestTools.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libGenVector.so
 lib/libTestTools.so: Test/TestTools/CMakeFiles/TestTools.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX shared module ../../lib/libTestTools.so"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestTools && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TestTools.dir/link.txt --verbose=$(VERBOSE)
@@ -143,6 +186,7 @@ Test/TestTools/CMakeFiles/TestTools.dir/build: lib/libTestTools.so
 .PHONY : Test/TestTools/CMakeFiles/TestTools.dir/build
 
 Test/TestTools/CMakeFiles/TestTools.dir/requires: Test/TestTools/CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o.requires
+Test/TestTools/CMakeFiles/TestTools.dir/requires: Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o.requires
 Test/TestTools/CMakeFiles/TestTools.dir/requires: Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o.requires
 .PHONY : Test/TestTools/CMakeFiles/TestTools.dir/requires
 

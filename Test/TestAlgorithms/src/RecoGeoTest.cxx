@@ -16,7 +16,10 @@ m_recoGeoSvc(nullptr),
 m_worldVolume(0),
 m_graph(new TGraph2D()),
 m_counter(0),
-m_particlecoll(new ParticleCollection())
+m_particlecoll(new ParticleCollection()),
+m_toolsvc(0),
+m_printhits(0),
+m_hits()
 //m_hitcoll(new TrackHitCollection()),
 {
     m_out.open ("recogeo.dat", std::ofstream::out);
@@ -44,6 +47,14 @@ StatusCode RecoGeoTest::initialize() {
     m_worldVolume = worldVolume;
     if (m_worldVolume) {
         std::cout << "retrieved WorldVolume!!!" << std::endl;
+    }
+    
+    if (service("ToolSvc", m_toolsvc).isFailure()) {
+        error() << "Couldn't get ToolSvc" << endmsg;
+        return StatusCode::FAILURE;
+    }
+    if (m_toolsvc->retrieveTool("PrintHits", m_printhits).isFailure()) {
+        error() << "Couldn't get PrintHits Tool" << endmsg;
     }
 
     return StatusCode::SUCCESS;
@@ -138,11 +149,13 @@ StatusCode RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Poin
 {
     Trk::Intersection intersection(surface.straightLineIntersection(glopos,dir,true));
     if (intersection.onSurface) {
-        Alg::Point3D intersectPoint = intersection.position;
-        m_modules << intersectPoint.X() << " " << intersectPoint.Y() << " " << intersectPoint.Z() << std::endl;
-  //      m_modules << "Thickness : " << surface.thickness() << std::endl;
-  //      m_modules << "Pathlength: " << surface.pathlength(dir) << std::endl;
-
+        const Alg::Point3D intersectPoint = intersection.position;
+ //       m_modules << intersectPoint.X() << " " << intersectPoint.Y() << " " << intersectPoint.Z() << std::endl;
+        m_sumh++;
+        m_hits.push_back(std::make_tuple(&surface, intersectPoint, dir));
+        
+        m_modules << 0.5*M_PI-acos(dir.Dot(surface.normal())) << std::endl;
+        
         ParticleHandle& part = m_particlecoll->create();
         part.mod().Core.Vertex.X =  intersectPoint.X();
         part.mod().Core.Vertex.Y =  intersectPoint.Y();
@@ -181,6 +194,7 @@ const Reco::Volume* RecoGeoTest::nextVolume(std::weak_ptr<const Reco::BoundarySu
 StatusCode RecoGeoTest::execute() {
     
     Alg::Point3D start(0.,0.,0.);
+    std::vector<std::pair<double, const Alg::Vector3D>> sumh;
     
     const Reco::Volume* volume (m_worldVolume->getVolume(start));
     if (volume) {
@@ -192,11 +206,26 @@ StatusCode RecoGeoTest::execute() {
         //intersect
         for (int i = 0; i < N_REPEAT; i++) {
             start.SetCoordinates(0.,0.,0.);
-            intersect(volume, start, randomdir());
+            m_sumh = 0.;
+            Alg::Vector3D dir = randomdir();
+            intersect(volume, start, dir);
+            sumh.push_back(std::make_pair(m_sumh, dir));
         }
 
   //      m_trackhits.put(m_hitcoll);
         //hier dann auch fehler mitgeben
+        std::cout << "before!!!" << std::endl;
+  //      if (m_hits.empty()) {
+  //          std::cout << "VECTOR EMPTY" << std::endl;
+  //      }
+        m_printhits->printMaterial(m_hits);
+        m_printhits->printHits(sumh);
+        
+  /*      for (auto& hit : m_hits) {
+            m_modules << hit.second.X() << " " << hit.second.Y() << " " << hit.second.Z() << std::endl;
+        }*/
+        
+        std::cout << "after!!!" << std::endl;
         m_particles.put(m_particlecoll);
         m_out.close();
         m_boundaries.close();

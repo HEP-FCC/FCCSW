@@ -44,6 +44,7 @@ digraph subdirs_deps {
 "Test/TestTools" -> "GaudiKernel";
 "Test/TestTools" -> "DataObjects";
 "Test/TestTools" -> "Test/TestInterfaces";
+"Test/TestTools" -> "RecoGeometry";
 "Tracking/TrkEvent/TrkChargedParameters" -> "Tracking/TrkEvent/TrkParametersBase";
 "Tracking/TrkEvent/TrkChargedParameters" -> "RecoGeometry";
 "Tracking/TrkEvent/TrkNeutralParameters" -> "Tracking/TrkEvent/TrkParametersBase";

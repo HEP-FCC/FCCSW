@@ -56,22 +56,6 @@ utility
 
 ../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/BinningType.h
 
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
-Algebra/AlgPrimitives.h
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/Algebra/AlgPrimitives.h
-
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation1D.h
-TrkGeometryUtils/BinUtility.h
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/TrkGeometryUtils/BinUtility.h
-TrkGeometryUtils/ReadoutSegmentation.h
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
-
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation2D.h
-TrkGeometryUtils/ReadoutSegmentation.h
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/TrkGeometryUtils/ReadoutSegmentation.h
-TrkGeometryUtils/BinUtility.h
-../Tracking/TrkGeometry/TrkGeometryUtils/TrkGeometryUtils/TrkGeometryUtils/BinUtility.h
-
 /afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55/boost/aligned_storage.hpp
 cstddef
 -
@@ -4744,13 +4728,13 @@ unistd.h
 sys/types.h
 -
 
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D.cxx
-TrkGeometryUtils/ReadoutSegmentation1D.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/TrkGeometryUtils/ReadoutSegmentation1D.h
-
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation2D.cxx
-TrkGeometryUtils/ReadoutSegmentation2D.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/TrkGeometryUtils/ReadoutSegmentation2D.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/BinUtility.cxx
+TrkGeometryUtils/BinUtility.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/TrkGeometryUtils/BinUtility.h
+GaudiKernel/MsgStream.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/GaudiKernel/MsgStream.h
+iostream
+-
 
 /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/GaudiKernel/GaudiException.h
 GaudiKernel/Kernel.h

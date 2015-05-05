@@ -39,6 +39,9 @@
 #include "RecoGeometry/CylinderVolume.h"
 #include "RecoGeometry/ContainerVolume.h"
 #include "RecoGeometry/ContainerCylinderVolume.h"
+
+#include "RecoGeometry/ReadoutSegmentation1D1D.h"
+#include "RecoGeometry/ReadoutSegmentation2D.h"
 //DetExtensions
 #include "DetExtensions/IExtension.h"
 #include "DetExtensions/Extension.h"
@@ -51,8 +54,7 @@
 #include "TrkGeometryUtils/BinUtility.h"
 #include "TrkGeometryUtils/BinnedArray1D.h"
 #include "TrkGeometryUtils/BinnedArray2D.h"
-#include "TrkGeometryUtils/ReadoutSegmentation1D1D.h"
-#include "TrkGeometryUtils/ReadoutSegmentation2D.h"
+
 //std
 #include <iostream>
 #include <fstream>

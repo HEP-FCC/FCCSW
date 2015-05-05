@@ -8,32 +8,32 @@
 
 #include "RecoGeometry/SensitivePlaneSurface.h"
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(node,box),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(box, transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(node, box, materialmap),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(box, materialmap, transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitivePlaneSurface::SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitivePlaneSurface::SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::PlaneSurface(transf, halfX, halfY, HalfThickness),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)

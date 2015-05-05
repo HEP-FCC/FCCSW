@@ -11,7 +11,7 @@
 
 #include "RecoGeometry/TrapezoidSurface.h"
 #include "RecoGeometry/SensitiveSurface.h"
-#include "TrkGeometryUtils/ReadoutSegmentation.h"
+#include "RecoGeometry/ReadoutSegmentation.h"
 
 #include "TrkGeometryUtils/BinUtility.h"
 
@@ -23,14 +23,14 @@ namespace Reco {
         //constructors from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //constructor with TGeoNode - transform is set automatically
         //binsX and binsY are the number of bins in X and Y for the readout at this surface
-        SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor to set transform manually
-        SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructors with materialmap
-        SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
-        SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
+        SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //manuel constructor, to set transform and dimensions manuel
-        SensitiveTrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveTrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitiveTrapezoidSurface(const SensitiveTrapezoidSurface& trapezoidsurface);
         //destructor
@@ -53,7 +53,7 @@ namespace Reco {
 
     private:
         
-        Trk::ReadoutSegmentation* m_segmentation;
+        Reco::ReadoutSegmentation* m_segmentation;
     };
 }
 

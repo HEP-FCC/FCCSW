@@ -11,7 +11,7 @@
 
 #include "RecoGeometry/CylinderSurface.h"
 #include "RecoGeometry/SensitiveSurface.h"
-#include "TrkGeometryUtils/ReadoutSegmentation.h"
+#include "RecoGeometry/ReadoutSegmentation.h"
 
 #include "TrkGeometryUtils/BinUtility.h"
 
@@ -23,16 +23,16 @@ namespace Reco {
         //constructor from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //material is set atomatically (node->Material)
         //binsRPhi and binsZ are the number of bins in RPhi and Z for the readout at this surface (at the moment set randomly 1000 as default - maybe later hand over size of cell)
-        SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         
-        SensitiveCylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf,long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf,long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor to set Material extra
-        SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
-        SensitiveCylinderSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor with transform matrix and dimensions of the cylinder
-        SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor with rmin and rmax
-        SensitiveCylinderSurface(double radius, double halfZ, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveCylinderSurface(double radius, double halfZ, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitiveCylinderSurface(const SensitiveCylinderSurface& senscyl);
         //destructor
@@ -55,7 +55,7 @@ namespace Reco {
         
     private:
     
-        Trk::ReadoutSegmentation* m_segmentation;
+        Reco::ReadoutSegmentation* m_segmentation;
         
     };
 }

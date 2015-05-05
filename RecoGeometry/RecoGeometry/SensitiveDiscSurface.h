@@ -11,7 +11,7 @@
 
 #include "RecoGeometry/DiscSurface.h"
 #include "RecoGeometry/SensitiveSurface.h"
-#include "TrkGeometryUtils/ReadoutSegmentation.h"
+#include "RecoGeometry/ReadoutSegmentation.h"
 
 #include "TrkGeometryUtils/BinUtility.h"
 
@@ -22,13 +22,13 @@ namespace Reco {
     public:
         //constructor from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //material is set atomatically (node->Material)
-        SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
-        SensitiveDiscSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
+        SensitiveDiscSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor to set Material extra
-        SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
-        SensitiveDiscSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveDiscSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
+        SensitiveDiscSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //manuel constructor with transform matrix and dimensions of the Disc
-        SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitiveDiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitiveDiscSurface(const SensitiveDiscSurface& sensdisc);
         //copy constructor
@@ -51,7 +51,7 @@ namespace Reco {
         
     private:
         //BinUtility 2D grid for every surface
-        Trk::ReadoutSegmentation*    m_segmentation;
+        Reco::ReadoutSegmentation*    m_segmentation;
     
     };
 }

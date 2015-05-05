@@ -11,7 +11,7 @@
 
 #include "RecoGeometry/PlaneSurface.h"
 #include "RecoGeometry/SensitiveSurface.h"
-#include "TrkGeometryUtils/ReadoutSegmentation.h"
+#include "RecoGeometry/ReadoutSegmentation.h"
 
 #include "TrkGeometryUtils/BinUtility.h"
 
@@ -23,14 +23,14 @@ namespace Reco {
         //constructors from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //constructor with TGeoNode - transform is set automatically
         //binsX and binsY are the number of bins in X and Y for the readout at this surface
-        SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor to set transform manually
-        SensitivePlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitivePlaneSurface(TGeoBBox* box, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //constructor with materialmap
-        SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
-        SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitivePlaneSurface(TGeoNode* node, TGeoBBox* box, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
+        SensitivePlaneSurface(TGeoBBox* box, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //manuel constructor, to set transform and dimensions manuel
-        SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation);
+        SensitivePlaneSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX, double halfY, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation);
         //copy constructor
         SensitivePlaneSurface(const SensitivePlaneSurface& planesurface);
         //destructor
@@ -53,7 +53,7 @@ namespace Reco {
         
     private:
         
-        Trk::ReadoutSegmentation* m_segmentation;
+        Reco::ReadoutSegmentation* m_segmentation;
         
     };
 }

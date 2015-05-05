@@ -252,6 +252,30 @@ src/GaussDigitizer.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestTools/CMakeFiles/TestTools.dir/build.make Test/TestTools/CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.s
 .PHONY : src/GaussDigitizer.cxx.s
 
+src/PrintHits.o: src/PrintHits.cxx.o
+.PHONY : src/PrintHits.o
+
+# target to build an object file
+src/PrintHits.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestTools/CMakeFiles/TestTools.dir/build.make Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.o
+.PHONY : src/PrintHits.cxx.o
+
+src/PrintHits.i: src/PrintHits.cxx.i
+.PHONY : src/PrintHits.i
+
+# target to preprocess a source file
+src/PrintHits.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestTools/CMakeFiles/TestTools.dir/build.make Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.i
+.PHONY : src/PrintHits.cxx.i
+
+src/PrintHits.s: src/PrintHits.cxx.s
+.PHONY : src/PrintHits.s
+
+# target to generate assembly for a file
+src/PrintHits.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestTools/CMakeFiles/TestTools.dir/build.make Test/TestTools/CMakeFiles/TestTools.dir/src/PrintHits.cxx.s
+.PHONY : src/PrintHits.cxx.s
+
 src/SmearingTool.o: src/SmearingTool.cxx.o
 .PHONY : src/SmearingTool.o
 
@@ -298,6 +322,9 @@ help:
 	@echo "... src/GaussDigitizer.o"
 	@echo "... src/GaussDigitizer.i"
 	@echo "... src/GaussDigitizer.s"
+	@echo "... src/PrintHits.o"
+	@echo "... src/PrintHits.i"
+	@echo "... src/PrintHits.s"
 	@echo "... src/SmearingTool.o"
 	@echo "... src/SmearingTool.i"
 	@echo "... src/SmearingTool.s"

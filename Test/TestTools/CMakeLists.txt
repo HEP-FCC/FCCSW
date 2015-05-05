@@ -8,12 +8,15 @@ gaudi_subdir(TestTools v1r0)
 gaudi_depends_on_subdirs(GaudiAlg
 			 GaudiKernel
 			 DataObjects
-			 Test/TestInterfaces)
+			 Test/TestInterfaces
+			 RecoGeometry)
+
+find_package(ROOT COMPONENTS MathCore)
 
 gaudi_add_module(TestTools
 		 src/*.cxx
-		 INCLUDE_DIRS GaudiAlgLib GaudiKernel DataObjects TestInterfaces
-                 LINK_LIBRARIES GaudiAlgLib DataObjects GaudiKernel)
+		 INCLUDE_DIRS GaudiAlgLib GaudiKernel DataObjects TestInterfaces Algebra RecoGeometry ROOT
+                 LINK_LIBRARIES GaudiAlgLib DataObjects GaudiKernel RecoGeometry ROOT)
 
 	
 

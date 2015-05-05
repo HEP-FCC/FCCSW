@@ -546,6 +546,102 @@ src/PlaneSurface.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.s
 .PHONY : src/PlaneSurface.cxx.s
 
+src/ReadoutSegmentation.o: src/ReadoutSegmentation.cxx.o
+.PHONY : src/ReadoutSegmentation.o
+
+# target to build an object file
+src/ReadoutSegmentation.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o
+.PHONY : src/ReadoutSegmentation.cxx.o
+
+src/ReadoutSegmentation.i: src/ReadoutSegmentation.cxx.i
+.PHONY : src/ReadoutSegmentation.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.i
+.PHONY : src/ReadoutSegmentation.cxx.i
+
+src/ReadoutSegmentation.s: src/ReadoutSegmentation.cxx.s
+.PHONY : src/ReadoutSegmentation.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.s
+.PHONY : src/ReadoutSegmentation.cxx.s
+
+src/ReadoutSegmentation1D.o: src/ReadoutSegmentation1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D.o
+
+# target to build an object file
+src/ReadoutSegmentation1D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D.cxx.o
+
+src/ReadoutSegmentation1D.i: src/ReadoutSegmentation1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation1D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D.cxx.i
+
+src/ReadoutSegmentation1D.s: src/ReadoutSegmentation1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation1D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D.cxx.s
+
+src/ReadoutSegmentation1D1D.o: src/ReadoutSegmentation1D1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D1D.o
+
+# target to build an object file
+src/ReadoutSegmentation1D1D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o
+.PHONY : src/ReadoutSegmentation1D1D.cxx.o
+
+src/ReadoutSegmentation1D1D.i: src/ReadoutSegmentation1D1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D1D.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation1D1D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.i
+.PHONY : src/ReadoutSegmentation1D1D.cxx.i
+
+src/ReadoutSegmentation1D1D.s: src/ReadoutSegmentation1D1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D1D.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation1D1D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.s
+.PHONY : src/ReadoutSegmentation1D1D.cxx.s
+
+src/ReadoutSegmentation2D.o: src/ReadoutSegmentation2D.cxx.o
+.PHONY : src/ReadoutSegmentation2D.o
+
+# target to build an object file
+src/ReadoutSegmentation2D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o
+.PHONY : src/ReadoutSegmentation2D.cxx.o
+
+src/ReadoutSegmentation2D.i: src/ReadoutSegmentation2D.cxx.i
+.PHONY : src/ReadoutSegmentation2D.i
+
+# target to preprocess a source file
+src/ReadoutSegmentation2D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.i
+.PHONY : src/ReadoutSegmentation2D.cxx.i
+
+src/ReadoutSegmentation2D.s: src/ReadoutSegmentation2D.cxx.s
+.PHONY : src/ReadoutSegmentation2D.s
+
+# target to generate assembly for a file
+src/ReadoutSegmentation2D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.s
+.PHONY : src/ReadoutSegmentation2D.cxx.s
+
 src/SensitiveCylinderSurface.o: src/SensitiveCylinderSurface.cxx.o
 .PHONY : src/SensitiveCylinderSurface.o
 
@@ -799,6 +895,18 @@ help:
 	@echo "... src/PlaneSurface.o"
 	@echo "... src/PlaneSurface.i"
 	@echo "... src/PlaneSurface.s"
+	@echo "... src/ReadoutSegmentation.o"
+	@echo "... src/ReadoutSegmentation.i"
+	@echo "... src/ReadoutSegmentation.s"
+	@echo "... src/ReadoutSegmentation1D.o"
+	@echo "... src/ReadoutSegmentation1D.i"
+	@echo "... src/ReadoutSegmentation1D.s"
+	@echo "... src/ReadoutSegmentation1D1D.o"
+	@echo "... src/ReadoutSegmentation1D1D.i"
+	@echo "... src/ReadoutSegmentation1D1D.s"
+	@echo "... src/ReadoutSegmentation2D.o"
+	@echo "... src/ReadoutSegmentation2D.i"
+	@echo "... src/ReadoutSegmentation2D.s"
 	@echo "... src/SensitiveCylinderSurface.o"
 	@echo "... src/SensitiveCylinderSurface.i"
 	@echo "... src/SensitiveCylinderSurface.s"

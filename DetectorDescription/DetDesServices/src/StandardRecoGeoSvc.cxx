@@ -769,7 +769,7 @@ StatusCode StandardRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det,
                         //create MaterialMap
                         Reco::MaterialMap* materialmap = new Reco::MaterialMap(binutility, map);
                         //create Surface
-                        std::shared_ptr<const Reco::SensitivePlaneSurface> plane(new Reco::SensitivePlaneSurface(box,materialmap,transf, surfaceID, new Trk::ReadoutSegmentation2D(binutility)));
+                        std::shared_ptr<const Reco::SensitivePlaneSurface> plane(new Reco::SensitivePlaneSurface(box,materialmap,transf, surfaceID, new Reco::ReadoutSegmentation2D(binutility)));
                         if(plane) {
      //                       ++module_counter;
                             //l m_out << "#created plane# number: " << module_counter << std::endl;
@@ -793,7 +793,7 @@ StatusCode StandardRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det,
                         int binsY = 100;
                         Trk::BinUtility* binutility  = new Trk::BinUtility(binsY,-halfY,halfY,Trk::open,Trk::binY);
                         std::vector<Trk::BinUtility*>* binXvector = new std::vector<Trk::BinUtility*>(binsY);
-                        double k = (2.*halfY)/(halfX2-halfX1);
+                        double k = (2.*halfY)/(halfX1-halfX2); //hier x1 und x2 umgetauscht
                         double d = -k*(halfX2+halfX1)*0.5;
                         double stepsizeY = (2.*halfY)/binsY;
                         double x = 0;
@@ -877,7 +877,7 @@ StatusCode StandardRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det,
                         //create MaterialMap
                         Reco::MaterialMap* materialmap = new Reco::MaterialMap(binutility, binXvector, map);
                         //create Surface
-                        std::shared_ptr<const Reco::SensitiveTrapezoidSurface> trapez(new Reco::SensitiveTrapezoidSurface(trapezoid,materialmap,transf, surfaceID, new Trk::ReadoutSegmentation1D1D(binutility, binXvector)));
+                        std::shared_ptr<const Reco::SensitiveTrapezoidSurface> trapez(new Reco::SensitiveTrapezoidSurface(trapezoid,materialmap,transf, surfaceID, new Reco::ReadoutSegmentation1D1D(binutility, binXvector)));
                         if(trapez) {
                             //l                           //l m_out << "#created trapezoid#" << std::endl;
                             Alg::Point3D center = trapez->center();

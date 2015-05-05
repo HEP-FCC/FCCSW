@@ -466,9 +466,32 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.o.provides: RecoGe
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.o.provides.build: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.o
 
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o: ../RecoGeometry/src/ReadoutSegmentation.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_19)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation.cxx
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation.cxx > CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.i
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation.cxx -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.s
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.requires:
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.requires
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.provides: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.requires
+	$(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.provides.build
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.provides
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.provides.build: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o
+
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o: ../RecoGeometry/src/SensitiveDiscSurface.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_19)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_20)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/SensitiveDiscSurface.cxx
 
@@ -491,7 +514,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o.provides
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o: ../RecoGeometry/src/SensitivePlaneSurface.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_20)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_21)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/SensitivePlaneSurface.cxx
 
@@ -514,7 +537,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o.provide
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o: ../RecoGeometry/src/SensitiveTrapezoidSurface.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_21)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_22)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/SensitiveTrapezoidSurface.cxx
 
@@ -537,7 +560,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o.pro
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o: ../RecoGeometry/src/SensitiveSurface.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_22)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_23)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/SensitiveSurface.cxx
 
@@ -560,7 +583,7 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o.provides.bui
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o: ../RecoGeometry/src/SensitiveCylinderSurface.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_23)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_24)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/SensitiveCylinderSurface.cxx
 
@@ -580,6 +603,75 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o.prov
 .PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o.provides
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o.provides.build: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o: ../RecoGeometry/src/ReadoutSegmentation1D.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_25)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation1D.cxx
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation1D.cxx > CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.i
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation1D.cxx -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.s
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.requires:
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.requires
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.provides: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.requires
+	$(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.provides.build
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.provides
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.provides.build: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o: ../RecoGeometry/src/ReadoutSegmentation1D1D.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_26)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation1D1D.cxx
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation1D1D.cxx > CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.i
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation1D1D.cxx -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.s
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.requires:
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.requires
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.provides: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.requires
+	$(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.provides.build
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.provides
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.provides.build: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o: RecoGeometry/CMakeFiles/RecoGeometry.dir/flags.make
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o: ../RecoGeometry/src/ReadoutSegmentation2D.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_27)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation2D.cxx
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation2D.cxx > CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.i
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/RecoGeometry && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/RecoGeometry/src/ReadoutSegmentation2D.cxx -o CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.s
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.requires:
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.requires
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.provides: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.requires
+	$(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.provides.build
+.PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.provides
+
+RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.provides.build: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o
 
 # Object files for target RecoGeometry
 RecoGeometry_OBJECTS = \
@@ -601,11 +693,15 @@ RecoGeometry_OBJECTS = \
 "CMakeFiles/RecoGeometry.dir/src/BoundaryCylinderSurface.cxx.o" \
 "CMakeFiles/RecoGeometry.dir/src/ContainerCylinderVolume.cxx.o" \
 "CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.o" \
+"CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o" \
 "CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o" \
 "CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o" \
 "CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o" \
 "CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o" \
-"CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o"
+"CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o" \
+"CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o" \
+"CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o" \
+"CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o"
 
 # External object files for target RecoGeometry
 RecoGeometry_EXTERNAL_OBJECTS =
@@ -628,11 +724,15 @@ lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/BoundaryDis
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/BoundaryCylinderSurface.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ContainerCylinderVolume.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.o
+lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o
+lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o
+lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o
+lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o
 lib/libRecoGeometry.so: RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make
 lib/libRecoGeometry.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
 lib/libRecoGeometry.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so
@@ -685,11 +785,15 @@ RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoG
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/BoundaryCylinderSurface.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ContainerCylinderVolume.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/PlaneSurface.cxx.o.requires
+RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveDiscSurface.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitivePlaneSurface.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveTrapezoidSurface.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveSurface.cxx.o.requires
 RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/SensitiveCylinderSurface.cxx.o.requires
+RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D.cxx.o.requires
+RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation1D1D.cxx.o.requires
+RecoGeometry/CMakeFiles/RecoGeometry.dir/requires: RecoGeometry/CMakeFiles/RecoGeometry.dir/src/ReadoutSegmentation2D.cxx.o.requires
 .PHONY : RecoGeometry/CMakeFiles/RecoGeometry.dir/requires
 
 RecoGeometry/CMakeFiles/RecoGeometry.dir/clean:

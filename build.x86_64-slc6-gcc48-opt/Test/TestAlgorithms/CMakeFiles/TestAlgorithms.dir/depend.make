@@ -1650,6 +1650,7 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Reco
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../RecoGeometry/RecoGeometry/Surface.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../RecoGeometry/RecoGeometry/Volume.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Test/TestAlgorithms/TestAlgorithms/RecoGeoTest.h
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Test/TestInterfaces/TestInterfaces/IPrintHits.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/ChargeDefinition.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/Charged.h
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o: ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/Neutral.h

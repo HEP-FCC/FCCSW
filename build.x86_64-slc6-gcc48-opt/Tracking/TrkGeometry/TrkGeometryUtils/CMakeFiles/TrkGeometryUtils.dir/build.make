@@ -98,116 +98,16 @@ Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/Curvil
 
 Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.o.provides.build: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.o
 
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/flags.make
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation2D.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation2D.cxx
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.i"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation2D.cxx > CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.i
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.s"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation2D.cxx -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.s
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.requires:
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.requires
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.provides: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.requires
-	$(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.provides.build
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.provides
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.provides.build: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/flags.make
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation.cxx
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.i"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation.cxx > CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.i
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.s"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation.cxx -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.s
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.requires:
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.requires
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.provides: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.requires
-	$(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.provides.build
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.provides
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.provides.build: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/flags.make
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D1D.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_5)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D1D.cxx
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.i"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D1D.cxx > CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.i
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.s"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D1D.cxx -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.s
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.requires:
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.requires
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.provides: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.requires
-	$(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.provides.build
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.provides
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.provides.build: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/flags.make
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o: ../Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_6)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D.cxx
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.i"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D.cxx > CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.i
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.s"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Tracking/TrkGeometry/TrkGeometryUtils && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Tracking/TrkGeometry/TrkGeometryUtils/src/ReadoutSegmentation1D.cxx -o CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.s
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.requires:
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.requires
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.provides: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.requires
-	$(MAKE) -f Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.provides.build
-.PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.provides
-
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.provides.build: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o
-
 # Object files for target TrkGeometryUtils
 TrkGeometryUtils_OBJECTS = \
 "CMakeFiles/TrkGeometryUtils.dir/src/BinUtility.cxx.o" \
-"CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.o" \
-"CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o" \
-"CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o" \
-"CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o" \
-"CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o"
+"CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.o"
 
 # External object files for target TrkGeometryUtils
 TrkGeometryUtils_EXTERNAL_OBJECTS =
 
 lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/BinUtility.cxx.o
 lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.o
-lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o
-lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o
-lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o
-lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o
 lib/libTrkGeometryUtils.so: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build.make
 lib/libTrkGeometryUtils.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiKernel.so
 lib/libTrkGeometryUtils.so: /afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so
@@ -228,10 +128,6 @@ Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/build: lib
 
 Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/BinUtility.cxx.o.requires
 Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/CurvilinearUVT.cxx.o.requires
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation2D.cxx.o.requires
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation.cxx.o.requires
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D1D.cxx.o.requires
-Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires: Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/src/ReadoutSegmentation1D.cxx.o.requires
 .PHONY : Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/requires
 
 Tracking/TrkGeometry/TrkGeometryUtils/CMakeFiles/TrkGeometryUtils.dir/clean:

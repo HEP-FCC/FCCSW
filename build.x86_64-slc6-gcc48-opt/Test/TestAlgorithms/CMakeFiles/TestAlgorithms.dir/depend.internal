@@ -1651,6 +1651,7 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o
  ../RecoGeometry/RecoGeometry/Surface.h
  ../RecoGeometry/RecoGeometry/Volume.h
  ../Test/TestAlgorithms/TestAlgorithms/RecoGeoTest.h
+ ../Test/TestInterfaces/TestInterfaces/IPrintHits.h
  ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/ChargeDefinition.h
  ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/Charged.h
  ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/Neutral.h

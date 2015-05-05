@@ -35,6 +35,9 @@
 //#include "DataObjects/TrackHitCollection.h"
 #include "DataObjects/Particle.h"
 #include "DataObjects/ParticleCollection.h"
+//tools
+#include "GaudiKernel/IToolSvc.h"
+#include "TestInterfaces/IPrintHits.h"
 
 
 
@@ -89,6 +92,11 @@ private:
 //    TrackHitCollection*                             m_hitcoll;
     DataObjectHandle<ParticleCollection>            m_particles;
     ParticleCollection*                             m_particlecoll;
+    IToolSvc*                                       m_toolsvc;
+    IPrintHits*                                     m_printhits;
+    
+    mutable std::vector<std::tuple<const Reco::Surface*, const Alg::Point3D, const Alg::Vector3D>> m_hits;
+    mutable double m_sumh;
 
 };
 

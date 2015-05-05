@@ -1,2 +1,3 @@
 libTestTools.so:GaussDigitizer
+libTestTools.so:PrintHits
 libTestTools.so:SmearingTool

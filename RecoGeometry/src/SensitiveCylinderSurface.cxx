@@ -8,37 +8,37 @@
 
 #include "RecoGeometry/SensitiveCylinderSurface.h"
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::CylinderSurface(node, tube),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::CylinderSurface(tube, transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoNode* node, TGeoConeSeg* tube, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::CylinderSurface(node, tube, materialmap),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(TGeoConeSeg* tube, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::CylinderSurface(tube, materialmap, transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::CylinderSurface(transf, radius, halfZ, HalfThickness),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(double radius, double halfZ, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveCylinderSurface::SensitiveCylinderSurface(double radius, double halfZ, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::CylinderSurface(radius, halfZ),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)

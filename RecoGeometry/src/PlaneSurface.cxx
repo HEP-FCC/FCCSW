@@ -118,6 +118,7 @@ const Reco::Material* Reco::PlaneSurface::material(Alg::Point2D& locpos) const
 
 bool Reco::PlaneSurface::isInside(const Alg::Point2D& locpos, double tol1, double tol2) const
 {
+ //   std::cout << "Planesurface::isinside:: " << locpos.X() << " " << locpos.Y() << ", coordinates: " << m_halfY << " " << m_halfY << ", tolerances: " << tol1 << " " << tol2 << std::endl;
     return ((fabs(locpos.X()) < (m_halfX + tol1)) && (fabs(locpos.Y()) < (m_halfY + tol2)));
 }
 

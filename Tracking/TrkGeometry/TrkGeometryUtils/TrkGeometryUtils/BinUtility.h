@@ -279,6 +279,8 @@ namespace Trk {
             }
             return sl;
        }
+       
+       //added
        //returns the center of the bin
        float bincenter (size_t i, size_t ba=0) {
        
@@ -307,6 +309,11 @@ namespace Trk {
                throw GaudiException("BinUtility", "dimension out of bounds", StatusCode::FAILURE);
            return (m_binningData[ba].binwidth(i));
        }
+       
+       size_t dimension() {
+           return(m_binningData.size());
+       }
+       
 
      private :
         std::vector<BinningData>    m_binningData;

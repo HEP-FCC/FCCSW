@@ -11,11 +11,6 @@
 
 
 #include "GaudiKernel/IService.h"
-//DD4Hep
-//#include "DD4hep/LCDD.h"
-//Geant4
-// #include "G4RunManager.hh"
-
 
 namespace DD4hep {
     namespace Geometry {

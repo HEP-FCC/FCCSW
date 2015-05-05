@@ -128,6 +128,12 @@ RecoGeometry/Material.h
 RecoGeometry/MaterialMap.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/MaterialMap.h
 
+../RecoGeometry/RecoGeometry/SurfaceData.h
+GaudiKernel/DataObject.h
+../RecoGeometry/RecoGeometry/GaudiKernel/DataObject.h
+RecoGeometry/Surface.h
+../RecoGeometry/RecoGeometry/RecoGeometry/Surface.h
+
 ../RecoGeometry/RecoGeometry/Volume.h
 Algebra/AlgPrimitives.h
 ../RecoGeometry/RecoGeometry/Algebra/AlgPrimitives.h
@@ -181,6 +187,40 @@ DataObjects/Particle.h
 ../Test/TestAlgorithms/TestAlgorithms/DataObjects/Particle.h
 DataObjects/ParticleCollection.h
 ../Test/TestAlgorithms/TestAlgorithms/DataObjects/ParticleCollection.h
+GaudiKernel/IToolSvc.h
+../Test/TestAlgorithms/TestAlgorithms/GaudiKernel/IToolSvc.h
+TestInterfaces/IPrintHits.h
+../Test/TestAlgorithms/TestAlgorithms/TestInterfaces/IPrintHits.h
+
+../Test/TestAlgorithms/TestAlgorithms/RecoGeoWrite.h
+GaudiAlg/GaudiAlgorithm.h
+../Test/TestAlgorithms/TestAlgorithms/GaudiAlg/GaudiAlgorithm.h
+DataObjects/Particle.h
+../Test/TestAlgorithms/TestAlgorithms/DataObjects/Particle.h
+DataObjects/ParticleCollection.h
+../Test/TestAlgorithms/TestAlgorithms/DataObjects/ParticleCollection.h
+RecoGeometry/SurfaceData.h
+../Test/TestAlgorithms/TestAlgorithms/RecoGeometry/SurfaceData.h
+iostream
+-
+fstream
+-
+stdlib.h
+-
+GaudiKernel/IToolSvc.h
+../Test/TestAlgorithms/TestAlgorithms/GaudiKernel/IToolSvc.h
+TestInterfaces/IDigitizer.h
+../Test/TestAlgorithms/TestAlgorithms/TestInterfaces/IDigitizer.h
+
+../Test/TestInterfaces/TestInterfaces/IDigitizer.h
+GaudiKernel/IAlgTool.h
+../Test/TestInterfaces/TestInterfaces/GaudiKernel/IAlgTool.h
+
+../Test/TestInterfaces/TestInterfaces/IPrintHits.h
+GaudiKernel/IAlgTool.h
+../Test/TestInterfaces/TestInterfaces/GaudiKernel/IAlgTool.h
+Algebra/AlgPrimitives.h
+../Test/TestInterfaces/TestInterfaces/Algebra/AlgPrimitives.h
 
 ../Tracking/TrkEvent/TrkParametersBase/TrkParametersBase/ChargeDefinition.h
 GaudiKernel/MsgStream.h
@@ -6081,6 +6121,10 @@ stdint.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/RecoGeoTest.cxx
 TestAlgorithms/RecoGeoTest.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/TestAlgorithms/RecoGeoTest.h
+
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/RecoGeoWrite.cxx
+TestAlgorithms/RecoGeoWrite.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/TestAlgorithms/RecoGeoWrite.h
 
 /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/Gaudi/Details/PluginServiceDetails.h
 string

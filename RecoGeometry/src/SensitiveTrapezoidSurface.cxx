@@ -8,31 +8,31 @@
 
 #include "RecoGeometry/SensitiveTrapezoidSurface.h"
 
-Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 TrapezoidSurface(node, trapezoid),
 SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 TrapezoidSurface(trapezoid, transf),
 SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, MaterialMap* materialmap, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoNode* node, TGeoTrd2* trapezoid, MaterialMap* materialmap, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::TrapezoidSurface(node, trapezoid, materialmap),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
 
-Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(TGeoTrd2* trapezoid, MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::TrapezoidSurface(trapezoid, materialmap, transf),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)
 {}
                                                            
-Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness, long long int volumeID, Trk::ReadoutSegmentation* segmentation) :
+Reco::SensitiveTrapezoidSurface::SensitiveTrapezoidSurface(std::shared_ptr<const Alg::Transform3D> transf, double halfX1, double halfX2, double halfY, double HalfThickness, long long int volumeID, Reco::ReadoutSegmentation* segmentation) :
 Reco::TrapezoidSurface(transf, halfX1, halfX2, halfY, HalfThickness),
 Reco::SensitiveSurface(volumeID),
 m_segmentation(segmentation)

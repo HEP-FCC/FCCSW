@@ -1,5 +1,6 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/TestTools.dir/src/SmearingTool.cxx.o"
+  "CMakeFiles/TestTools.dir/src/PrintHits.cxx.o"
   "CMakeFiles/TestTools.dir/src/GaussDigitizer.cxx.o"
   "../../lib/libTestTools.pdb"
   "../../lib/libTestTools.so"

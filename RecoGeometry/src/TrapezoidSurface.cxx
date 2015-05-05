@@ -128,7 +128,7 @@ const Reco::Material* Reco::TrapezoidSurface::material(Alg::Point2D& locpos) con
     if (materialmap()->binutility()) {
         int biny = materialmap()->binutility()->bin(locpos,0);
         if (materialmap()->binvectorAt(biny)) {
-            int binx = materialmap()->binvectorAt(biny)->bin(locpos,1);
+            int binx = materialmap()->binvectorAt(biny)->bin(locpos,0);
             std::pair<int,int> bins = std::make_pair(binx,biny);
             return (materialmap()->material(bins));
         }
