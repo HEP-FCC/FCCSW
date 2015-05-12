@@ -1,2 +1,0 @@
-#!/bin/sh
-exec  /afs/cern.ch/sw/lcg/releases/LCG_68/Python/2.7.6/x86_64-slc6-gcc48-opt/bin/python /afs/cern.ch/work/d/degrutto/private/FCC260315/FCC/GAUDI/GAUDI_v25r2/cmake/env.py --xml /afs/cern.ch/work/d/degrutto/private/FCC260315/FCC/myFCCSW/build.x86_64-slc6-gcc48-opt/config/FCCSWBuildEnvironment.xml "$@"
