@@ -11,8 +11,8 @@
 #include "GaudiKernel/RndmGenerators.h"
 
 // from Generation
-#include "Generation/IParticleGunTool.h"
-#include "Generation/IVertexSmearingTool.h"
+#include "Generators/IParticleGunTool.h"
+#include "Generators/IVertexSmearingTool.h"
 #include "HepMC/GenEvent.h"
 
 //-----------------------------------------------------------------------------

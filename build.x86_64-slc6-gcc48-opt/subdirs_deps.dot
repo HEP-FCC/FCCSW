@@ -1,0 +1,19 @@
+digraph subdirs_deps {
+"albers" -> "GaudiAlg";
+"DataObjects" -> "GaudiAlg";
+"DataObjects" -> "albers";
+"FWCore" -> "GaudiAlg";
+"FWCore" -> "GaudiKernel";
+"FWCore" -> "albers";
+"Examples" -> "GaudiAlg";
+"Examples" -> "DataObjects";
+"Examples" -> "FWCore";
+"Reconstruction" -> "GaudiAlg";
+"Reconstruction" -> "DataObjects";
+"Simulation" -> "GaudiAlg";
+"Simulation" -> "DataObjects";
+"Simulation" -> "GeantFast";
+"Generators" -> "GaudiAlg";
+"Generators" -> "DataObjects";
+"Generators" -> "FWCore";
+}
