@@ -29,6 +29,8 @@ private:
   /// The output handle for what is being produced
   DataHandle<HepMC::GenEvent> m_hepmchandle;
   int nAbort;
+  int iAbort;
+
 };
 
 #endif

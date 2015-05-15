@@ -30,13 +30,11 @@ StatusCode PythiaInterface::initialize() {
   m_pythia = new Pythia8::Pythia ( xmlpath );
   /// read command file
   m_pythia->readFile( m_parfile.c_str() );
-  m_pythia->readString("Random:setSeed = on");
-  m_pythia->readString("Random:Seed = 144");
 
   // initial settings from param file
   nAbort = m_pythia->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
   m_pythia->init();
-
+  iAbort=0;
   return sc;
 }
 
@@ -46,13 +44,23 @@ StatusCode PythiaInterface::execute() {
   HepMC::Pythia8ToHepMC *toHepMC = new HepMC::Pythia8ToHepMC();
 
   /// Generate events. Quit if many failures
-  if ( !m_pythia->next() ) {
-    IIncidentSvc* incidentSvc;
-    service("IncidentSvc",incidentSvc);
-    incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
-    return Error ( "Event generation aborted prematurely, owing to error!" );
-  }
 
+
+  while ( !m_pythia->next() ) {
+    std::cout << "---------------- "<< iAbort << "  " <<nAbort<<std::endl;
+
+    if (++iAbort > nAbort) {
+      std::cout << "----------------++++++++++++++++++++ "<< iAbort << "  " <<nAbort<<std::endl;
+
+      IIncidentSvc* incidentSvc;
+      service("IncidentSvc",incidentSvc);
+      incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
+      return Error ( "Event generation aborted prematurely, owing to error!" );
+    }
+    else{
+      std::cout << iAbort << "  " <<nAbort<<std::endl;
+    }
+  }
   /*
   for (int i = 0; i < m_pythia->event.size(); ++i){ 
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
