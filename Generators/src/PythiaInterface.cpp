@@ -53,7 +53,7 @@ StatusCode PythiaInterface::execute() {
       return Error ( "Event generation aborted prematurely, owing to error!" );
     }
     else{
-      std::cout << "PythiaInterface Pythia8 abort : "<< iAbort << "/" <<nAbort<<std::endl;
+       warning () << "PythiaInterface Pythia8 abort : "<< iAbort << "/" <<nAbort<<std::endl;
     }
   }
   /// reset the counter to count failed events in a raw
