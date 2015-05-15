@@ -47,10 +47,7 @@ StatusCode PythiaInterface::execute() {
 
 
   while ( !m_pythia->next() ) {
-    std::cout << "---------------- "<< iAbort << "  " <<nAbort<<std::endl;
-
     if (++iAbort > nAbort) {
-      std::cout << "----------------++++++++++++++++++++ "<< iAbort << "  " <<nAbort<<std::endl;
 
       IIncidentSvc* incidentSvc;
       service("IncidentSvc",incidentSvc);
@@ -58,7 +55,7 @@ StatusCode PythiaInterface::execute() {
       return Error ( "Event generation aborted prematurely, owing to error!" );
     }
     else{
-      std::cout << iAbort << "  " <<nAbort<<std::endl;
+      std::cout << "PythiaInterface Pythia8 abort : "<< iAbort << "/" <<nAbort<<std::endl;
     }
   }
   /*
