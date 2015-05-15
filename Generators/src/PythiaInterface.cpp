@@ -30,9 +30,11 @@ StatusCode PythiaInterface::initialize() {
   m_pythia = new Pythia8::Pythia ( xmlpath );
   /// read command file
   m_pythia->readFile( m_parfile.c_str() );
+
   // initial settings from param file
   nAbort = m_pythia->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
   m_pythia->init();
+  iAbort=0;
   return sc;
 }
 
@@ -41,13 +43,21 @@ StatusCode PythiaInterface::execute() {
   /// Interface for conversion from Pythia8::Event to HepMC event.
   HepMC::Pythia8ToHepMC *toHepMC = new HepMC::Pythia8ToHepMC();
 
-  /// Generate events. Quit if many failures
-  if ( !m_pythia->next() ) {
-    IIncidentSvc* incidentSvc;
-    service("IncidentSvc",incidentSvc);
-    incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
-    return Error ( "Event generation aborted prematurely, owing to error!" );
+  /// Generate events. Quit if many failures in a raw
+  while ( !m_pythia->next() ) {
+    if (++iAbort > nAbort) {
+
+      IIncidentSvc* incidentSvc;
+      service("IncidentSvc",incidentSvc);
+      incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
+      return Error ( "Event generation aborted prematurely, owing to error!" );
+    }
+    else{
+       warning () << "PythiaInterface Pythia8 abort : "<< iAbort << "/" <<nAbort<<std::endl;
+    }
   }
+  /// reset the counter to count failed events in a raw
+  iAbort=0;
 
   /*
   for (int i = 0; i < m_pythia->event.size(); ++i){ 
@@ -68,11 +78,12 @@ StatusCode PythiaInterface::execute() {
   }
   */
 
-  /// Construct new empty HepMC event
+  /// Construct new emhepmcevtpty HepMC event
   HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
   toHepMC->fill_next_event(*m_pythia,theEvent);
+  //theEvent-> print();
+  /*  
 
-  /*
   for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
        ipart!=theEvent->particles_end(); ++ipart)
        std::cout << "HepMC : id : stat : px : py : pz : e : m : " 

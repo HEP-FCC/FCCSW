@@ -7,7 +7,7 @@
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h" 
 
-#include "Generation/IVertexSmearingTool.h"
+#include "Generators/IVertexSmearingTool.h"
 
 /** @class FlatSmearVertex FlatSmearVertex.h "FlatSmearVertex.h"
  *  
