@@ -43,9 +43,7 @@ StatusCode PythiaInterface::execute() {
   /// Interface for conversion from Pythia8::Event to HepMC event.
   HepMC::Pythia8ToHepMC *toHepMC = new HepMC::Pythia8ToHepMC();
 
-  /// Generate events. Quit if many failures
-
-
+  /// Generate events. Quit if many failures in a raw
   while ( !m_pythia->next() ) {
     if (++iAbort > nAbort) {
 
@@ -58,6 +56,9 @@ StatusCode PythiaInterface::execute() {
       std::cout << "PythiaInterface Pythia8 abort : "<< iAbort << "/" <<nAbort<<std::endl;
     }
   }
+  /// reset the counter to count failed events in a raw
+  iAbort=0;
+
   /*
   for (int i = 0; i < m_pythia->event.size(); ++i){ 
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
