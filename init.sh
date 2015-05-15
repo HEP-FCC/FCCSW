@@ -16,8 +16,12 @@ fi
 # set up CMake:
 export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:$PATH
 #export CMAKEFLAGS='-DCMAKE_USE_CCACHE=ON'
-export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:/afs/cern.ch/sw/lcg/releases:/afs/cern.ch/user/r/ribon/public/ForAnna/Install
+
+export DELPHES_DIR=/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/
+
+export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:/afs/cern.ch/sw/lcg/releases:/afs/cern.ch/user/r/ribon/public/ForAnna/Install:$DELPHES_DIR
 export CMTCONFIG=x86_64-slc6-gcc48-opt
+
 
 # set up the compilers
 export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts:$PATH
