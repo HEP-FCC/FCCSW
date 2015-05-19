@@ -1,48 +1,6 @@
 #include "DelphesSimulation.h"
-// for Delphes
-
-// ROOT
-#include "TLorentzVector.h"
-#include "TBranch.h"
-#include "TFile.h"
-#include "TTree.h"
 
 
-#include "TApplication.h"
-
-
-#include "TStopwatch.h"
-#include "TDatabasePDG.h"
-#include "TParticlePDG.h"
-#include "Math/GenVector/LorentzVector.h"
-
-#include "classes/DelphesModule.h"
-
-//#include "SortableObject.h"
-#include "classes/DelphesClasses.h"
-#include "modules/Delphes.h"
-
-
-#include "classes/DelphesFactory.h"
-#include "classes/DelphesHepMCReader.h"
-#include "ExRootAnalysis/ExRootConfReader.h"
-#include "ExRootAnalysis/ExRootTreeWriter.h"
-
-#include "ExRootAnalysis/ExRootTask.h"
-#include "ExRootAnalysis/ExRootTreeBranch.h"
-#include "ExRootAnalysis/ExRootProgressBar.h"
-
-#include "modules/ParticlePropagator.h"
-// STL
-#include <iostream>
-#include <vector>
-
-#include <stdexcept>
-#include <sstream>
-
-#include <signal.h>
-
-static bool interrupted = false;
 using namespace std;
 
 
@@ -72,29 +30,9 @@ GaudiAlgorithm(name, svcLoc) ,
 }
 
 StatusCode DelphesSimulation::initialize() {
-  return StatusCode::SUCCESS;
-}
-
-StatusCode DelphesSimulation::execute() {
-  // delphes stuff here
-  ExRootTreeWriter *treeWriter = 0; 
-  ExRootTreeBranch *branchEvent = 0;
-  ExRootConfReader *confReader = 0;
-  Delphes *modularDelphes = 0;
-  DelphesFactory *factory = 0;
-
-  TObjArray *stableParticleOutputArray = 0, *allParticleOutputArray = 0, *partonOutputArray = 0, *muonOutputArray =0,  *electronOutputArray =0, *photonOutputArray =0, *jetOutputArray =0,  *metOutputArray =0,  *htOutputArray =0;
-  
-  DelphesHepMCReader *reader = 0;
-  Int_t  maxEvents, skipEvents;
-  Long64_t length, eventCounter;
-  FILE *inputFile = 0;
-  // FILE *detectorFile = 0;
-  TFile *outputFile = 0; 
+  inputFile = 0;
+  outputFile = 0; 
   stringstream message;
-  TStopwatch readStopWatch, procStopWatch;
-  
-  
   
   // the input files is an HEPMC file
   cout << "** Reading " << m_filename << endl;
@@ -114,153 +52,171 @@ StatusCode DelphesSimulation::execute() {
     {
       fclose(inputFile);
     }
-  // now read delphes card
-  confReader = new ExRootConfReader;
-  confReader->ReadFile(m_detectorcard.c_str());
-  maxEvents = confReader->GetInt("::MaxEvents", 0);
-  skipEvents = confReader->GetInt("::SkipEvents", 0);
-  if(maxEvents < 0)
-    {
-      throw runtime_error("MaxEvents must be zero or positive");
-    }
-  if(skipEvents < 0)
-    {
-      throw runtime_error("SkipEvents must be zero or positive");
-    }
-  
+   confReader = new ExRootConfReader;
+   confReader->ReadFile(m_detectorcard.c_str());
+   
+     
   modularDelphes = new Delphes("Delphes");
   modularDelphes->SetConfReader(confReader);
+
   if (m_debug_delphes) outputFile = TFile::Open("DelphesOutput.root", "RECREATE");
+
   treeWriter = new ExRootTreeWriter( outputFile , "Delphes"); 
+
   modularDelphes->SetTreeWriter(treeWriter);
   branchEvent = treeWriter->NewBranch("Event", HepMCEvent::Class());
-
+  
   factory = modularDelphes->GetFactory();
+  
   allParticleOutputArray = modularDelphes->ExportArray("allParticles");
   stableParticleOutputArray = modularDelphes->ExportArray("stableParticles");
   partonOutputArray = modularDelphes->ExportArray("partons");
+  
   reader = new DelphesHepMCReader;
- // now access delphes recontructed particles
-  modularDelphes->InitTask();
-  reader->SetInputFile(inputFile);
-  TString name;
-  //  const ExRootConfReader::ExRootTaskMap *modules = confReader->GetModules();
+  
+   modularDelphes->InitTask();
+   reader->SetInputFile(inputFile);
+   TString name;
+   //  const ExRootConfReader::ExRootTaskMap *modules = confReader->GetModules();
   //  ExRootConfReader::ExRootTaskMap::const_iterator itModules;
-  ExRootConfParam param = confReader->GetParam("::ExecutionPath");
-  Long_t k, size = param.GetSize();
-    for( k = 0; k < size; ++k)
-      {
+   ExRootConfParam param = confReader->GetParam("::ExecutionPath");
+   Long_t k, size = param.GetSize();
+   for( k = 0; k < size; ++k)
+     {
 	name = param[k].GetString();
 	std::cout << "delphes modules with name " <<  name << std::endl;
-      } 
+     } 
+   
 
-  ExRootProgressBar progressBar(length);
-
-
-  // Loop over all objects                                                                              
-  eventCounter = 0;
-  treeWriter->Clear();
-  modularDelphes->Clear();
-  reader->Clear();
-  
-
-  readStopWatch.Start();
-  
-  ParticleCollection* genparticles = new ParticleCollection();
-  ParticleCollection* partons = new ParticleCollection();
-  ParticleCollection* particles = new ParticleCollection();
-  ParticleCollection* muons = new ParticleCollection();
-  ParticleCollection* electrons = new ParticleCollection();
-  ParticleCollection* photons = new ParticleCollection();
-  GenJetCollection* jets = new GenJetCollection();
-  ParticleCollection* mets = new ParticleCollection();
-  ParticleCollection* hts = new ParticleCollection();
-
-
-  const char *  _string;
-
+   progressBar = new ExRootProgressBar(length);
+   
+   eventCounter = 0 ;
+   treeWriter->Clear();
+   modularDelphes->Clear();
+   reader->Clear();  
  
-  while((maxEvents <= 0 || eventCounter - skipEvents < maxEvents) &&
-	reader->ReadBlock(factory, allParticleOutputArray,
-  			  stableParticleOutputArray, partonOutputArray ) && !interrupted)
-    {
-      if(reader->EventReady())
-        {
-          ++eventCounter;
-	
-          readStopWatch.Stop();
-	  
-          if(eventCounter > skipEvents)
-	    {
-	      procStopWatch.Start();
-	      modularDelphes->ProcessTask();
-	      procStopWatch.Stop();           
-	      reader->AnalyzeEvent(branchEvent, eventCounter, &readStopWatch, &procStopWatch);
-	      if (m_debug_delphes) treeWriter->Fill();
-	                    
-	      DelphesSimulation::ConvertParticle( stableParticleOutputArray , particles  );
-	      DelphesSimulation::ConvertParticle( allParticleOutputArray , genparticles  );
-	      DelphesSimulation::ConvertParticle( partonOutputArray , partons  );
-	      
-	      for ( unsigned int l=0; l<m_outputcollections.size() ; l++){
-		if ( m_outputcollections[l].find("muons")!= std::string::npos ) {
-		  _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
-		  muonOutputArray = modularDelphes->ImportArray( _string);
-		  DelphesSimulation::ConvertParticle( muonOutputArray , muons  );
-		}
-		if ( m_outputcollections[l].find("electrons")!= std::string::npos ) {
-		  _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
-		  electronOutputArray = modularDelphes->ImportArray( _string);
-		  DelphesSimulation::ConvertParticle( electronOutputArray , electrons  );
-		}
-		if ( m_outputcollections[l].find("photons")!= std::string::npos ) {
-		  _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
-		  photonOutputArray = modularDelphes->ImportArray( _string);
-		  DelphesSimulation::ConvertParticle( photonOutputArray , photons  );
-		}
-		if ( m_outputcollections[l].find("jets")!= std::string::npos ) {
-		  _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
-		  jetOutputArray = modularDelphes->ImportArray( _string);
-		  DelphesSimulation::ConvertJet( jetOutputArray , jets  );
-		}
-		if ( m_outputcollections[l].find("MissingET")!= std::string::npos ) {
-		  _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
-		  metOutputArray = modularDelphes->ImportArray( _string);
-		  DelphesSimulation::ConvertMET( metOutputArray , mets  );
-		}
-		if ( m_outputcollections[l].find("ScalarHT")!= std::string::npos ) {
-		  _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
-		  htOutputArray = modularDelphes->ImportArray( _string);
-		  DelphesSimulation::ConvertParticle( htOutputArray , hts  );
-		}
-	      } 
-	      treeWriter->Clear();
-	    }
-	  
-	  modularDelphes->Clear();
-	  reader->Clear();
-	  readStopWatch.Start();
-	}
-      progressBar.Update(ftello(inputFile), eventCounter);
-    } 
-  
-  m_recgphandle.put(genparticles);
-  m_recparthandle.put(partons);
-  m_recphandle.put(particles);
-  m_recmhandle.put(muons);  
-  m_recehandle.put(electrons);  
-  m_recphhandle.put(photons);  
-  m_recjhandle.put(jets);  
-  m_recmethandle.put(mets);  
-  m_rechthandle.put(hts);  
-  
+   return StatusCode::SUCCESS;
+}
+
+
+StatusCode DelphesSimulation::execute() {
+  // delphes stuff here
+ readStopWatch.Start(); 
+ bool eventReady = false;
+
+ ParticleCollection* genparticles = new ParticleCollection();
+ ParticleCollection* partons = new ParticleCollection();
+ ParticleCollection* particles = new ParticleCollection();
+ ParticleCollection* muons = new ParticleCollection();
+ ParticleCollection* electrons = new ParticleCollection();
+ ParticleCollection* photons = new ParticleCollection();
+ GenJetCollection* jets = new GenJetCollection();
+ ParticleCollection* mets = new ParticleCollection();
+ ParticleCollection* hts = new ParticleCollection();
+ 
+
+ const char *  _string;
+ 
+   if ( ftello(inputFile) == length) {
+     cout << "** end of file reached" << length << endl;
+     return StatusCode::SUCCESS;
+   }
+   
+   while(
+	 reader->ReadBlock(factory, allParticleOutputArray, stableParticleOutputArray, partonOutputArray) && !eventReady && (ftello(inputFile) != length )  ) 
+     {
+
+       if(reader->EventReady())
+	 {
+	   
+	   eventCounter++;
+	   eventReady = true;
+	   
+	   readStopWatch.Stop();
+	   
+	   
+	   procStopWatch.Start();
+	   modularDelphes->ProcessTask();
+	   procStopWatch.Stop();           
+	   reader->AnalyzeEvent(branchEvent, eventCounter, &readStopWatch, &procStopWatch);
+	   if (m_debug_delphes) treeWriter->Fill();
+	   
+	   DelphesSimulation::ConvertParticle( stableParticleOutputArray , particles  );
+	   DelphesSimulation::ConvertParticle( allParticleOutputArray , genparticles  );
+	   DelphesSimulation::ConvertParticle( partonOutputArray , partons  );
+	   
+	   for ( unsigned int l=0; l<m_outputcollections.size() ; l++){
+	     if ( m_outputcollections[l].find("muons")!= std::string::npos ) {
+	       _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
+	       muonOutputArray = modularDelphes->ImportArray( _string);
+	       DelphesSimulation::ConvertParticle( muonOutputArray , muons  );
+	     }
+	     if ( m_outputcollections[l].find("electrons")!= std::string::npos ) {
+	       _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
+	       electronOutputArray = modularDelphes->ImportArray( _string);
+	       DelphesSimulation::ConvertParticle( electronOutputArray , electrons  );
+	     }
+	     if ( m_outputcollections[l].find("photons")!= std::string::npos ) {
+	       _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
+	       photonOutputArray = modularDelphes->ImportArray( _string);
+	       DelphesSimulation::ConvertParticle( photonOutputArray , photons  );
+	     }
+	     if ( m_outputcollections[l].find("jets")!= std::string::npos ) {
+	       _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
+	       jetOutputArray = modularDelphes->ImportArray( _string);
+	       DelphesSimulation::ConvertJet( jetOutputArray , jets  );
+	     }
+	     if ( m_outputcollections[l].find("MissingET")!= std::string::npos ) {
+	       _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
+	       metOutputArray = modularDelphes->ImportArray( _string);
+	       DelphesSimulation::ConvertMET( metOutputArray , mets  );
+	     }
+	     if ( m_outputcollections[l].find("ScalarHT")!= std::string::npos ) {
+	       _string =  modularDelphes->GetString("Branch",m_outputcollections[l].c_str() ) ;
+	       htOutputArray = modularDelphes->ImportArray( _string);
+	       DelphesSimulation::ConvertParticle( htOutputArray , hts  );
+	     }
+	     //} 
+	     
+	   }
+	   treeWriter->Clear();
+	   modularDelphes->Clear();
+	   reader->Clear();
+	   readStopWatch.Start();
+	   
+	 }
+       
+       progressBar->Update(ftello(inputFile), eventCounter);
+     }
+   
+
+   
+   
+   m_recgphandle.put(genparticles);
+   m_recparthandle.put(partons);
+   m_recphandle.put(particles);
+   m_recmhandle.put(muons);  
+   m_recehandle.put(electrons);  
+   m_recphhandle.put(photons);  
+   m_recjhandle.put(jets);  
+   m_recmethandle.put(mets);  
+   m_rechthandle.put(hts);  
+
+   return StatusCode::SUCCESS;
+}
+
+
+
+
+StatusCode DelphesSimulation::finalize() {
   fseek(inputFile, 0L, SEEK_END);
-  progressBar.Update(ftello(inputFile), eventCounter, kTRUE);
-  progressBar.Finish();
+  progressBar->Update(ftello(inputFile), eventCounter, kTRUE);
+  
+  progressBar->Finish();
   
   if(inputFile != stdin) fclose(inputFile);
   modularDelphes->FinishTask();
-
+  
   if (m_debug_delphes) treeWriter->Write();
   
   cout << "** Exiting..." << endl;
@@ -269,14 +225,8 @@ StatusCode DelphesSimulation::execute() {
   delete confReader;
   delete treeWriter;
   delete outputFile;
-
-  return StatusCode::SUCCESS;
-}
-
-
-
-
-StatusCode DelphesSimulation::finalize() {
+  
+  
   return GaudiAlgorithm::finalize();
 }
 
@@ -289,15 +239,15 @@ void DelphesSimulation::ConvertParticle(   TObjArray *  Input , ParticleCollecti
       ParticleHandle& outptc = coll->create();		  
       BareParticle& core = outptc.mod().Core;
       if (cand->Momentum.Pt()!=0) { // protection against the boring message Warning in <TVector3::PseudoRapidity>: transvers momentum = 0! return +/- 10e10
-      core.Type = cand->PID; 
-      core.Status = cand->Status;
-      core.P4.Pt = (double  ) cand->Momentum.Pt();
-      core.P4.Eta = (double ) cand->Momentum.Eta();
-      core.P4.Phi = (double ) cand->Momentum.Phi();
-      core.P4.Mass = (double) cand->Mass ;
-      core.Vertex.X = (double) cand->Position.X() ;
-      core.Vertex.Y = (double) cand->Position.Y() ;
-      core.Vertex.Z = (double) cand->Position.Z() ;	  
+	core.Type = cand->PID; 
+	core.Status = cand->Status;
+	core.P4.Pt = (double  ) cand->Momentum.Pt();
+	core.P4.Eta = (double ) cand->Momentum.Eta();
+	core.P4.Phi = (double ) cand->Momentum.Phi();
+	core.P4.Mass = (double) cand->Mass ;
+	core.Vertex.X = (double) cand->Position.X() ;
+	core.Vertex.Y = (double) cand->Position.Y() ;
+	core.Vertex.Z = (double) cand->Position.Z() ;	  
       }
     }
   
@@ -343,14 +293,14 @@ void DelphesSimulation::ConvertMET(   TObjArray *  Input , ParticleCollection * 
 
 void DelphesSimulation::ConvertHT(   TObjArray *  Input , ParticleCollection *  coll  ){
   Candidate * cand;
-        for(int j = 0; j < Input->GetEntries(); ++j)
-	  {
-	    cand = static_cast<Candidate *>(Input->At(j));	   
-	    ParticleHandle& outptc = coll->create();		  
-	    BareParticle& core = outptc.mod().Core;
-	    core.P4.Pt = (double  ) cand->Momentum.Pt();
-	  }
-
+  for(int j = 0; j < Input->GetEntries(); ++j)
+    {
+      cand = static_cast<Candidate *>(Input->At(j));	   
+      ParticleHandle& outptc = coll->create();		  
+      BareParticle& core = outptc.mod().Core;
+      core.P4.Pt = (double  ) cand->Momentum.Pt();
+    }
+  
 }   
 
 

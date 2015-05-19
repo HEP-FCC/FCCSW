@@ -42,7 +42,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 1, # n of events are decided by Delphes, fixme!
+    EvtMax   = 10000, # n of events are decided by Delphes, fixme!
     ExtSvc = [albersevent],
     #                EventLoop = eventloopmgr,
     #                OutputLevel=DEBUG
