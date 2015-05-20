@@ -32,22 +32,21 @@ GaudiAlgorithm(name, svcLoc) ,
 StatusCode DelphesSimulation::initialize() {
   inputFile = 0;
   outputFile = 0; 
-  stringstream message;
   
   // the input files is an HEPMC file
-  cout << "** Reading " << m_filename << endl;
+  info()  << "** Reading " << m_filename << endmsg;
   inputFile = fopen(m_filename.c_str(), "r");
   
   if(inputFile == NULL)
     {
-      message << "can't open " << m_filename;
-      throw runtime_error(message.str());
+      debug() << "can't open " << m_filename << endmsg;
+      return Error ("ERROR, can't open hepmc input file ");
     }
   
   fseek(inputFile, 0L, SEEK_END);     
   length = ftello(inputFile);
   fseek(inputFile, 0L, SEEK_SET);
-  cout << "** length of input file " << length << endl;
+  info() << "** length of input file " << length << endmsg;
   if(length <= 0)
     {
       fclose(inputFile);
@@ -84,12 +83,10 @@ StatusCode DelphesSimulation::initialize() {
    for( k = 0; k < size; ++k)
      {
 	name = param[k].GetString();
-	std::cout << "delphes modules with name " <<  name << std::endl;
+	info()  << "the cfg contains a delphes module with name " <<  name << endmsg;
      } 
    
 
-   progressBar = new ExRootProgressBar(length);
-   
    eventCounter = 0 ;
    treeWriter->Clear();
    modularDelphes->Clear();
@@ -118,7 +115,7 @@ StatusCode DelphesSimulation::execute() {
  const char *  _string;
  
    if ( ftello(inputFile) == length) {
-     cout << "** end of file reached" << length << endl;
+     info() << "** end of file reached at lenght " << length << endmsg ;
      return StatusCode::SUCCESS;
    }
    
@@ -186,7 +183,6 @@ StatusCode DelphesSimulation::execute() {
 	   
 	 }
        
-       progressBar->Update(ftello(inputFile), eventCounter);
      }
    
 
@@ -210,16 +206,14 @@ StatusCode DelphesSimulation::execute() {
 
 StatusCode DelphesSimulation::finalize() {
   fseek(inputFile, 0L, SEEK_END);
-  progressBar->Update(ftello(inputFile), eventCounter, kTRUE);
-  
-  progressBar->Finish();
   
   if(inputFile != stdin) fclose(inputFile);
   modularDelphes->FinishTask();
   
   if (m_debug_delphes) treeWriter->Write();
   
-  cout << "** Exiting..." << endl;
+  info() << "** Exiting..." << endmsg;
+  
   delete reader;
   delete modularDelphes;
   delete confReader;

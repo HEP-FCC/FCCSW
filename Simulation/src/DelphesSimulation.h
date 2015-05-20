@@ -41,7 +41,6 @@
 
 #include "ExRootAnalysis/ExRootTask.h"
 #include "ExRootAnalysis/ExRootTreeBranch.h"
-#include "ExRootAnalysis/ExRootProgressBar.h"
 
 #include "modules/ParticlePropagator.h"
 // STL
@@ -100,8 +99,6 @@ private:
   TStopwatch readStopWatch, procStopWatch;
   
   Long64_t length, eventCounter; // fixme 
-  ExRootProgressBar *progressBar;
-
   bool  m_debug_delphes; // if true one run the standalone delphes as well 
 
   /// Handle for the MCParticleCollection to be read
