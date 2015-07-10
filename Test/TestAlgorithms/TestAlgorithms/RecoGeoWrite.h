@@ -4,7 +4,6 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "DataObjects/Particle.h"
 #include "DataObjects/ParticleCollection.h"
-#include "RecoGeometry/SurfaceData.h"
 //std
 #include <iostream>
 #include <fstream>

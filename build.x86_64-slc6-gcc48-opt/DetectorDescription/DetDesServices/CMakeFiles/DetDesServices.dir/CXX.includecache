@@ -42,7 +42,7 @@ GaudiKernel/IService.h
 RecoGeometry/ContainerVolume.h
 ../DetectorDescription/DetDesInterfaces/DetDesInterfaces/RecoGeometry/ContainerVolume.h
 
-../DetectorDescription/DetDesServices/DetDesServices/StandardRecoGeoSvc.h
+../DetectorDescription/DetDesServices/DetDesServices/ClassicalRecoGeoSvc.h
 DetDesInterfaces/IRecoGeoSvc.h
 ../DetectorDescription/DetDesServices/DetDesServices/DetDesInterfaces/IRecoGeoSvc.h
 DetDesInterfaces/IGeoSvc.h
@@ -89,10 +89,14 @@ RecoGeometry/ReadoutSegmentation1D1D.h
 ../DetectorDescription/DetDesServices/DetDesServices/RecoGeometry/ReadoutSegmentation1D1D.h
 RecoGeometry/ReadoutSegmentation2D.h
 ../DetectorDescription/DetDesServices/DetDesServices/RecoGeometry/ReadoutSegmentation2D.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/IExtension.h
-DetExtensions/Extension.h
-../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/Extension.h
+RecoGeometry/MaterialMap2D.h
+../DetectorDescription/DetDesServices/DetDesServices/RecoGeometry/MaterialMap2D.h
+RecoGeometry/MaterialMap1D1D.h
+../DetectorDescription/DetDesServices/DetDesServices/RecoGeometry/MaterialMap1D1D.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/IDetExtension.h
+DetExtensions/DetExtension.h
+../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/DetExtension.h
 DetExtensions/DetCylinderVolume.h
 ../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/DetCylinderVolume.h
 DetExtensions/DetDiscVolume.h
@@ -103,6 +107,8 @@ DetExtensions/DetDiscLayer.h
 ../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/DetDiscLayer.h
 DetExtensions/DetModule.h
 ../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/DetModule.h
+DetExtensions/DetSensComponent.h
+../DetectorDescription/DetDesServices/DetDesServices/DetExtensions/DetSensComponent.h
 TrkGeometryUtils/BinUtility.h
 ../DetectorDescription/DetDesServices/DetDesServices/TrkGeometryUtils/BinUtility.h
 TrkGeometryUtils/BinnedArray1D.h
@@ -117,30 +123,36 @@ stdlib.h
 -
 
 ../DetectorDescription/DetExtensions/DetExtensions/DetCylinderLayer.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IExtension.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
 
 ../DetectorDescription/DetExtensions/DetExtensions/DetCylinderVolume.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IExtension.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
 
 ../DetectorDescription/DetExtensions/DetExtensions/DetDiscLayer.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IExtension.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
 
 ../DetectorDescription/DetExtensions/DetExtensions/DetDiscVolume.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IExtension.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
+
+../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
 
 ../DetectorDescription/DetExtensions/DetExtensions/DetModule.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IExtension.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
 
-../DetectorDescription/DetExtensions/DetExtensions/Extension.h
-DetExtensions/IExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetSensComponent.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
+memory
+-
 
-../DetectorDescription/DetExtensions/DetExtensions/IExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
 
 ../RecoGeometry/RecoGeometry/BoundarySurface.h
 TrkGeometryUtils/BinnedArray1D.h
@@ -216,6 +228,14 @@ TrkGeometryUtils/BinUtility.h
 RecoGeometry/Material.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/Material.h
 
+../RecoGeometry/RecoGeometry/MaterialMap1D1D.h
+RecoGeometry/MaterialMap.h
+../RecoGeometry/RecoGeometry/RecoGeometry/MaterialMap.h
+
+../RecoGeometry/RecoGeometry/MaterialMap2D.h
+RecoGeometry/MaterialMap.h
+../RecoGeometry/RecoGeometry/RecoGeometry/MaterialMap.h
+
 ../RecoGeometry/RecoGeometry/NavigationLayer.h
 RecoGeometry/Layer.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/Layer.h
@@ -249,22 +269,26 @@ RecoGeometry/PlaneSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/PlaneSurface.h
 RecoGeometry/SensitiveSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/SensitiveSurface.h
-RecoGeometry/ReadoutSegmentation.h
-../RecoGeometry/RecoGeometry/RecoGeometry/ReadoutSegmentation.h
 TrkGeometryUtils/BinUtility.h
 ../RecoGeometry/RecoGeometry/TrkGeometryUtils/BinUtility.h
 
 ../RecoGeometry/RecoGeometry/SensitiveSurface.h
 Algebra/AlgPrimitives.h
 ../RecoGeometry/RecoGeometry/Algebra/AlgPrimitives.h
+RecoGeometry/ReadoutSegmentation.h
+../RecoGeometry/RecoGeometry/RecoGeometry/ReadoutSegmentation.h
+memory
+-
+DD4hep/Detector.h
+../RecoGeometry/RecoGeometry/DD4hep/Detector.h
+RecoGeometry/Surface.h
+../RecoGeometry/RecoGeometry/RecoGeometry/Surface.h
 
 ../RecoGeometry/RecoGeometry/SensitiveTrapezoidSurface.h
 RecoGeometry/TrapezoidSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/TrapezoidSurface.h
 RecoGeometry/SensitiveSurface.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/SensitiveSurface.h
-RecoGeometry/ReadoutSegmentation.h
-../RecoGeometry/RecoGeometry/RecoGeometry/ReadoutSegmentation.h
 TrkGeometryUtils/BinUtility.h
 ../RecoGeometry/RecoGeometry/TrkGeometryUtils/BinUtility.h
 
@@ -285,6 +309,12 @@ RecoGeometry/Material.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/Material.h
 RecoGeometry/MaterialMap.h
 ../RecoGeometry/RecoGeometry/RecoGeometry/MaterialMap.h
+iostream
+-
+fstream
+-
+stdlib.h
+-
 
 ../RecoGeometry/RecoGeometry/TrapezoidSurface.h
 RecoGeometry/Surface.h
@@ -6390,9 +6420,9 @@ internal/_tbb_windef.h
 stdint.h
 -
 
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/StandardRecoGeoSvc.cxx
-DetDesServices/StandardRecoGeoSvc.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/DetDesServices/StandardRecoGeoSvc.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx
+DetDesServices/ClassicalRecoGeoSvc.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/DetDesServices/ClassicalRecoGeoSvc.h
 
 /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include/Gaudi/Details/PluginServiceDetails.h
 string

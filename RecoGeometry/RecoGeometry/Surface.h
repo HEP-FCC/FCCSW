@@ -21,6 +21,11 @@
 #include "RecoGeometry/Material.h"
 #include "RecoGeometry/MaterialMap.h"
 
+//std
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+
 namespace Reco {
     
     class Surface {
@@ -45,6 +50,8 @@ namespace Reco {
         Surface& operator=(const Surface& surface);
         //get transform matrix - returns identity transformation if not set
         const Alg::Transform3D& transform() const;
+        //possibility to set transformation matrix
+        void setTransform(std::shared_ptr<const Alg::Transform3D> transf);
         //get the center of the surface - returns origin if not set
         const Alg::Point3D& center() const;
         //get the normal vector of the surface
@@ -63,10 +70,14 @@ namespace Reco {
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const = 0;
         //returns if the surface is sensitive (and has a readout)
         virtual bool isSensitive() const = 0;
-        //returns the thickness of the module
-        virtual double thickness() const = 0;
+        //returns the half thickness of the module
+        virtual double halfThickness() const = 0;
+        //return the half thcikness of the module at a localposition
+ //       double halfThickness(const Alg::Point2D& locpos) const;
         //returns the pathlength
         double pathlength(const Alg::Vector3D& dir) const;
+        //returns the pathlength
+        virtual double pathlength(const Alg::Point3D& pos, const Alg::Vector3D& dir) const = 0;
         
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */
         virtual const Trk::ParametersBase<5, Trk::Charged>* createTrackParameters(double, double, double, double, double, Alg::AmgSymMatrix<5>* cov = 0) const = 0;
@@ -97,8 +108,6 @@ namespace Reco {
         mutable Alg::Vector3D*                  m_normal;
         //transformation matrix of the surface
         std::shared_ptr<const Alg::Transform3D> m_transform;
-        //TGeoNode for the conversion of the DD4Hep geometry
-        TGeoNode*                               m_node;
         //2D grid of Material (set to zero if surface has none)
         MaterialMap*                            m_materialmap;
         

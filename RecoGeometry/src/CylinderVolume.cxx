@@ -216,37 +216,13 @@ double Reco::CylinderVolume::getHalfZ() const
     return m_halfZ;
 }
 
-const Reco::BoundarySurface* Reco::CylinderVolume::getPosDisc() const
-{
-    return (m_boundarySurfaces[Reco::CylinderVolume::posDisc].get());
-}
-
-const Reco::BoundarySurface* Reco::CylinderVolume::getNegDisc() const
-{
-    return (m_boundarySurfaces[Reco::CylinderVolume::negDisc].get());
-}
-
-const Reco::BoundarySurface* Reco::CylinderVolume::getOuterCylinder() const
-{
-    return (m_boundarySurfaces[Reco::CylinderVolume::outerCylinder].get());
-}
-
-const Reco::BoundarySurface* Reco::CylinderVolume::getInnerCylinder() const
-{
-    return (m_boundarySurfaces[Reco::CylinderVolume::innerCylinder].get());
-}
-
-bool Reco::CylinderVolume::setBoundarySurface(size_t n, std::shared_ptr<const BoundarySurface> boundarysurface) const
-{
-    return (Reco::Volume::setBoundarySurface(n,boundarysurface));
-}
-
 bool Reco::CylinderVolume::isInside(const Alg::Point3D& glopos, double tol) const
 {
     Alg::Point3D locpos = Reco::Volume::m_transform ? (transform().Inverse()*glopos) : glopos;
     double r    = sqrt(locpos.X()*locpos.X()+locpos.Y()*locpos.Y());
     return ((r>=(m_Rmin-tol)) && (r<=(m_Rmax+tol)) && (fabs(locpos.Z())<=(m_halfZ+tol)));
 }
+
 
 
 

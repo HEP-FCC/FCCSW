@@ -271,12 +271,12 @@ namespace Trk {
         
         float binlow(size_t i) {
             
-            return (boundaries[i]);
+            return (boundaries.at(i));
         }
         
         float binhigh(size_t i) {
             
-            return (boundaries[i+1]);
+            return (boundaries.at(i+1));
         }
         
         float binwidth(size_t i) {

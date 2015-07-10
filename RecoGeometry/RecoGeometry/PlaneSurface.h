@@ -41,7 +41,7 @@ namespace Reco {
         //get dimensions
         double getHalfX() const;
         double getHalfY() const;
-        virtual double thickness() const override;
+        virtual double halfThickness() const override;
         //get the normal vector of the surface
         virtual const Alg::Vector3D& normal() const override;
         //normal vector to local position
@@ -56,6 +56,8 @@ namespace Reco {
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const override;
         //returns if the surface is sensitive (and has a readout)
         virtual bool isSensitive() const override;
+        //returns the pathlength
+        virtual double pathlength(const Alg::Point3D& pos, const Alg::Vector3D& dir) const override;
         
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */
         virtual const Trk::ParametersT<5, Trk::Charged, PlaneSurface>* createTrackParameters(double l1,
@@ -137,7 +139,7 @@ namespace Reco {
         double m_halfX;
         double m_halfY;
         //halfthickness
-        double m_thickness;
+        double m_halfThickness;
     };
     
     inline Trk::Intersection PlaneSurface::straightLineIntersection(const Alg::Point3D& pos,

@@ -25,7 +25,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     int status     = x_status.id();
     //add Extension to Detlement for the RecoGeometry
     Det::DetCylinderVolume* detvolume = new Det::DetCylinderVolume(status);
-    beamtube.addExtension<Det::IExtension>(detvolume);
+    beamtube.addExtension<Det::IDetExtension>(detvolume);
     //make Volume
     DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
     Tube tube_shape(x_det_dim.rmin(),x_det_dim.rmax(),x_det_dim.z());

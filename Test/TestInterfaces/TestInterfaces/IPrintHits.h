@@ -15,6 +15,7 @@
 
 namespace Reco {
     class Surface;
+    class ContainerVolume;
 }
 
 static const InterfaceID IID_IPrintHits ("IPrintHits", 1, 0);
@@ -26,8 +27,9 @@ public:
         return IID_IPrintHits;
     }
     
-    virtual StatusCode printMaterial(std::vector<std::tuple<const Reco::Surface*, const Alg::Point3D, const Alg::Vector3D>>& hits) = 0;
+    virtual StatusCode printMaterial(std::shared_ptr<const Reco::ContainerVolume> worldVolume, const Alg::Point3D& start, size_t Nevents) = 0;
     virtual StatusCode printHits(std::vector<std::pair<double, const Alg::Vector3D>>& hits) = 0;
+    virtual StatusCode printMaterial(std::shared_ptr<const Reco::ContainerVolume> worldVolume, const Alg::Point3D& start, std::vector<Alg::Vector3D> directions) = 0;
     
 protected:
     ~IPrintHits() {}

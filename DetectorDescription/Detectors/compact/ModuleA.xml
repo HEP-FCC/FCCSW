@@ -108,7 +108,7 @@
             <layer id="0"  inner_r="rmin0" outer_r="rmax0" z="Tracker_length" material="Air">
                 <slice z="zpos" repeat="zrepeat"/>
                 <module name ="Box0" width="box_width" length="box_length" thickness="0.6*mm" repeat="pixelcounter0">
-                    <module_component width="box_width" length="box_length" thickness="0.2*mm"  material="Copper
+                    <module_component width="box_width" length="box_length" thickness="0.2*mm"  material="Carbon
                     " sensitive="false" vis="comp0">
                     <position x = "0.*mm" y="0.*mm" z ="-0.2*mm"/>
                     </module_component>

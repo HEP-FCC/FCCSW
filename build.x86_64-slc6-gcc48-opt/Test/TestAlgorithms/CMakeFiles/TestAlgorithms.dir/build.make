@@ -190,6 +190,121 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o.provide
 
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o
 
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o: ../Test/TestAlgorithms/src/MaterialRunAction.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialRunAction.cxx
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialRunAction.cxx > CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.i
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialRunAction.cxx -o CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.s
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.requires:
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.requires
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.requires
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.provides.build
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.provides
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o: ../Test/TestAlgorithms/src/MaterialPrimaryGeneratorAction.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_8)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialPrimaryGeneratorAction.cxx
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialPrimaryGeneratorAction.cxx > CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.i
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialPrimaryGeneratorAction.cxx -o CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.s
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.requires:
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.requires
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.requires
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.provides.build
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.provides
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o: ../Test/TestAlgorithms/src/MaterialSteppingAction.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_9)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialSteppingAction.cxx
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialSteppingAction.cxx > CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.i
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialSteppingAction.cxx -o CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.s
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.requires:
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.requires
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.requires
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.provides.build
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.provides
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o: ../Test/TestAlgorithms/src/MaterialEventAction.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_10)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialEventAction.cxx
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialEventAction.cxx > CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.i
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/MaterialEventAction.cxx -o CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.s
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.requires:
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.requires
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.requires
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.provides.build
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.provides
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/flags.make
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o: ../Test/TestAlgorithms/src/CompareMaterial.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_11)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/CompareMaterial.cxx
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/CompareMaterial.cxx > CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.i
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Test/TestAlgorithms && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/Test/TestAlgorithms/src/CompareMaterial.cxx -o CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.s
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.requires:
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.requires
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.provides: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.requires
+	$(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.provides.build
+.PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.provides
+
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.provides.build: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o
+
 # Object files for target TestAlgorithms
 TestAlgorithms_OBJECTS = \
 "CMakeFiles/TestAlgorithms.dir/src/SurfaceTest.cxx.o" \
@@ -197,7 +312,12 @@ TestAlgorithms_OBJECTS = \
 "CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.o" \
 "CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o" \
 "CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o" \
-"CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o"
+"CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o" \
+"CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o" \
+"CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o" \
+"CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o" \
+"CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o" \
+"CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o"
 
 # External object files for target TestAlgorithms
 TestAlgorithms_EXTERNAL_OBJECTS =
@@ -208,6 +328,11 @@ lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o
+lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o
+lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o
+lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o
+lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o
+lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o
 lib/libTestAlgorithms.so: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make
 lib/libTestAlgorithms.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
 lib/libTestAlgorithms.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiAlgLib.so
@@ -322,6 +447,11 @@ Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o.requires
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o.requires
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o.requires
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o.requires
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o.requires
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o.requires
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o.requires
+Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires: Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o.requires
 .PHONY : Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/requires
 
 Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/clean:

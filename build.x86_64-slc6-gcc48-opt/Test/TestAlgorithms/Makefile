@@ -252,6 +252,30 @@ src/B1PrimaryGeneratorAction.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.s
 .PHONY : src/B1PrimaryGeneratorAction.cxx.s
 
+src/CompareMaterial.o: src/CompareMaterial.cxx.o
+.PHONY : src/CompareMaterial.o
+
+# target to build an object file
+src/CompareMaterial.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o
+.PHONY : src/CompareMaterial.cxx.o
+
+src/CompareMaterial.i: src/CompareMaterial.cxx.i
+.PHONY : src/CompareMaterial.i
+
+# target to preprocess a source file
+src/CompareMaterial.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.i
+.PHONY : src/CompareMaterial.cxx.i
+
+src/CompareMaterial.s: src/CompareMaterial.cxx.s
+.PHONY : src/CompareMaterial.s
+
+# target to generate assembly for a file
+src/CompareMaterial.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.s
+.PHONY : src/CompareMaterial.cxx.s
+
 src/Geant4Test.o: src/Geant4Test.cxx.o
 .PHONY : src/Geant4Test.o
 
@@ -275,6 +299,102 @@ src/Geant4Test.s: src/Geant4Test.cxx.s
 src/Geant4Test.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/Geant4Test.cxx.s
 .PHONY : src/Geant4Test.cxx.s
+
+src/MaterialEventAction.o: src/MaterialEventAction.cxx.o
+.PHONY : src/MaterialEventAction.o
+
+# target to build an object file
+src/MaterialEventAction.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o
+.PHONY : src/MaterialEventAction.cxx.o
+
+src/MaterialEventAction.i: src/MaterialEventAction.cxx.i
+.PHONY : src/MaterialEventAction.i
+
+# target to preprocess a source file
+src/MaterialEventAction.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.i
+.PHONY : src/MaterialEventAction.cxx.i
+
+src/MaterialEventAction.s: src/MaterialEventAction.cxx.s
+.PHONY : src/MaterialEventAction.s
+
+# target to generate assembly for a file
+src/MaterialEventAction.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.s
+.PHONY : src/MaterialEventAction.cxx.s
+
+src/MaterialPrimaryGeneratorAction.o: src/MaterialPrimaryGeneratorAction.cxx.o
+.PHONY : src/MaterialPrimaryGeneratorAction.o
+
+# target to build an object file
+src/MaterialPrimaryGeneratorAction.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o
+.PHONY : src/MaterialPrimaryGeneratorAction.cxx.o
+
+src/MaterialPrimaryGeneratorAction.i: src/MaterialPrimaryGeneratorAction.cxx.i
+.PHONY : src/MaterialPrimaryGeneratorAction.i
+
+# target to preprocess a source file
+src/MaterialPrimaryGeneratorAction.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.i
+.PHONY : src/MaterialPrimaryGeneratorAction.cxx.i
+
+src/MaterialPrimaryGeneratorAction.s: src/MaterialPrimaryGeneratorAction.cxx.s
+.PHONY : src/MaterialPrimaryGeneratorAction.s
+
+# target to generate assembly for a file
+src/MaterialPrimaryGeneratorAction.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.s
+.PHONY : src/MaterialPrimaryGeneratorAction.cxx.s
+
+src/MaterialRunAction.o: src/MaterialRunAction.cxx.o
+.PHONY : src/MaterialRunAction.o
+
+# target to build an object file
+src/MaterialRunAction.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o
+.PHONY : src/MaterialRunAction.cxx.o
+
+src/MaterialRunAction.i: src/MaterialRunAction.cxx.i
+.PHONY : src/MaterialRunAction.i
+
+# target to preprocess a source file
+src/MaterialRunAction.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.i
+.PHONY : src/MaterialRunAction.cxx.i
+
+src/MaterialRunAction.s: src/MaterialRunAction.cxx.s
+.PHONY : src/MaterialRunAction.s
+
+# target to generate assembly for a file
+src/MaterialRunAction.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.s
+.PHONY : src/MaterialRunAction.cxx.s
+
+src/MaterialSteppingAction.o: src/MaterialSteppingAction.cxx.o
+.PHONY : src/MaterialSteppingAction.o
+
+# target to build an object file
+src/MaterialSteppingAction.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o
+.PHONY : src/MaterialSteppingAction.cxx.o
+
+src/MaterialSteppingAction.i: src/MaterialSteppingAction.cxx.i
+.PHONY : src/MaterialSteppingAction.i
+
+# target to preprocess a source file
+src/MaterialSteppingAction.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.i
+.PHONY : src/MaterialSteppingAction.cxx.i
+
+src/MaterialSteppingAction.s: src/MaterialSteppingAction.cxx.s
+.PHONY : src/MaterialSteppingAction.s
+
+# target to generate assembly for a file
+src/MaterialSteppingAction.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/build.make Test/TestAlgorithms/CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.s
+.PHONY : src/MaterialSteppingAction.cxx.s
 
 src/RecoGeoTest.o: src/RecoGeoTest.cxx.o
 .PHONY : src/RecoGeoTest.o
@@ -394,9 +514,24 @@ help:
 	@echo "... src/B1PrimaryGeneratorAction.o"
 	@echo "... src/B1PrimaryGeneratorAction.i"
 	@echo "... src/B1PrimaryGeneratorAction.s"
+	@echo "... src/CompareMaterial.o"
+	@echo "... src/CompareMaterial.i"
+	@echo "... src/CompareMaterial.s"
 	@echo "... src/Geant4Test.o"
 	@echo "... src/Geant4Test.i"
 	@echo "... src/Geant4Test.s"
+	@echo "... src/MaterialEventAction.o"
+	@echo "... src/MaterialEventAction.i"
+	@echo "... src/MaterialEventAction.s"
+	@echo "... src/MaterialPrimaryGeneratorAction.o"
+	@echo "... src/MaterialPrimaryGeneratorAction.i"
+	@echo "... src/MaterialPrimaryGeneratorAction.s"
+	@echo "... src/MaterialRunAction.o"
+	@echo "... src/MaterialRunAction.i"
+	@echo "... src/MaterialRunAction.s"
+	@echo "... src/MaterialSteppingAction.o"
+	@echo "... src/MaterialSteppingAction.i"
+	@echo "... src/MaterialSteppingAction.s"
 	@echo "... src/RecoGeoTest.o"
 	@echo "... src/RecoGeoTest.i"
 	@echo "... src/RecoGeoTest.s"

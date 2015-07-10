@@ -16,7 +16,7 @@ GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) :
 base_class(name, svc),
 m_dd4hepgeo(0),
 m_geant4geo(0),
-m_xmlFileName("file:DetectorDescription/Detectors/compact/TestTracker.xml"), //over joboptions
+m_xmlFileName("file:DetectorDescription/Detectors/compact/FCCTestTracker.xml"), //over joboptions
 m_log(msgSvc(), name)
 {}
 
@@ -28,14 +28,14 @@ GeoSvc::~GeoSvc()
 StatusCode GeoSvc::initialize()
 {
     if (buildDD4HepGeo().isFailure())
-        m_log << MSG::WARNING << "Could not build DD4Hep geometry" << endmsg;
+        m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;
     else
-        m_log << MSG::INFO << "Buildet DD4Hep geometry SUCCESSFUL" << endmsg;
+        m_log << MSG::INFO << "DD4Hep geometry SUCCESSFULLY built" << endmsg;
     
     if (buildGeant4Geo().isFailure())
-        m_log << MSG::WARNING << "Could not build Geant4 geometry" << endmsg;
+        m_log << MSG::ERROR << "Could not build Geant4 geometry" << endmsg;
     else
-        m_log << MSG::INFO << "Buildet Geant4 geometry SUCCESSFUL." << endmsg;
+        m_log << MSG::INFO << "Geant4 geometry SUCCESSFULLY built" << endmsg;
     
     return StatusCode::SUCCESS;
 }
@@ -55,6 +55,8 @@ StatusCode GeoSvc::buildDD4HepGeo()
     m_log << MSG::INFO << "loading geometry from file:  '" << m_xmlFileName << "'" << endmsg;
     char* arg = (char*) m_xmlFileName.c_str();
     m_dd4hepgeo->apply("DD4hepXMLLoader", 1, &arg);
+    m_dd4hepgeo->volumeManager();
+    m_dd4hepgeo->apply("DD4hepVolumeManager",0,0);
     
     return StatusCode::SUCCESS;
 }
@@ -66,7 +68,6 @@ DD4hep::Geometry::LCDD* GeoSvc::lcdd()
 
 DD4hep::Geometry::DetElement GeoSvc::getDD4HepGeo()
 {
-    lcdd()->volumeManager();
     return (lcdd()->world());
 }
 

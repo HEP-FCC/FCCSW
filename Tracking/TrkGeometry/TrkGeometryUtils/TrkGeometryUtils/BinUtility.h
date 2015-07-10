@@ -143,9 +143,9 @@ namespace Trk {
         /** Bin from a 3D vector (already in binning frame) */
         size_t bin(const Alg::Point3D& position, size_t ba=0) const throw (GaudiException)
         {
-          if (ba >= m_binningData.size()) 
+          if (ba >= m_binningData.size())
                 throw GaudiException("BinUtility", "dimension out of bounds", StatusCode::FAILURE); 
-          size_t bEval = m_binningData[ba].searchGlobal(position);          
+          size_t bEval = m_binningData[ba].searchGlobal(position);
           return ( bEval > bins(ba)-1 ? bins(ba)-1 : bEval );     // ST additional protection : DEBUG source
         }
         
@@ -310,7 +310,7 @@ namespace Trk {
            return (m_binningData[ba].binwidth(i));
        }
        
-       size_t dimension() {
+       size_t dimension() const {
            return(m_binningData.size());
        }
        

@@ -10,7 +10,7 @@
 #include "DD4hep/TGeoUnits.h"
 #include "DetExtensions/DetCylinderLayer.h"
 #include "DetExtensions/DetModule.h"
-#include "DetExtensions/Extension.h"
+#include "DetExtensions/DetExtension.h"
 
 using namespace std;
 using namespace DD4hep;
@@ -30,8 +30,8 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     //Detector envelope of SubDetector
     DetElement tracker(det_name, x_det.id());
     //add Extension to Detlement for the RecoGeometry
-    Det::Extension* ex = new Det::Extension();
-    tracker.addExtension<Det::IExtension> (ex);
+    Det::DetExtension* ex = new Det::DetExtension();
+    tracker.addExtension<Det::IDetExtension> (ex);
     
     //Create the Volume of the Detector envelope
     DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
@@ -72,8 +72,8 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         double dz = x_slice.z();
         
         //add Extension to Detlement for the RecoGeometry
-        Det::DetCylinderLayer* detcylinderlayer = new Det::DetCylinderLayer(repeat,2*zrepeat,0., 2.*M_PI);
-        lay_det.addExtension<Det::IExtension>(detcylinderlayer);
+        Det::DetCylinderLayer* detcylinderlayer = new Det::DetCylinderLayer();
+        lay_det.addExtension<Det::IDetExtension>(detcylinderlayer);
         
         int module_num = 0;
         //Place the Modules in z
@@ -100,7 +100,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                 DetElement mod_det(lay_det,module_name,module_num);
                 //add Extension to Detlement for the RecoGeometry
                 Det::DetModule* detmod = new Det::DetModule();
-                mod_det.addExtension<Det::IExtension> (detmod);
+                mod_det.addExtension<Det::IDetExtension> (detmod);
                 
                 int comp_num = 0;
                 //go through module components
@@ -108,7 +108,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                     xml_comp_t x_comp = n;
                     
                     Volume comp_vol("component " + x_comp.materialStr(), Box(x_comp.length(),x_comp.width(), x_comp.thickness()),lcdd.material(x_comp.materialStr()));
-                    comp_vol.setVisAttributes(lcdd, x_comp.visStr());
+  //                  comp_vol.setVisAttributes(lcdd, x_comp.visStr());
                     //Set Sensitive Volmes sensitive
                     if (x_comp.isSensitive()) {
                         comp_vol.setSensitiveDetector(sens);
@@ -116,7 +116,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                     //Create DetElement
                     DetElement comp_det(mod_det, "component, " + x_comp.materialStr(),comp_num);
                     //add Extension
-                    comp_det.addExtension<Det::IExtension> (ex);
+                    comp_det.addExtension<Det::IDetExtension> (ex);
                     //place component in Module
                     xml_comp_t x_pos = x_comp.position(false);
                     Position trans (x_pos.x(),x_pos.y(),x_pos.z());

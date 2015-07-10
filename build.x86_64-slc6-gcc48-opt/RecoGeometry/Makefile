@@ -498,6 +498,54 @@ src/MaterialMap.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap.cxx.s
 .PHONY : src/MaterialMap.cxx.s
 
+src/MaterialMap1D1D.o: src/MaterialMap1D1D.cxx.o
+.PHONY : src/MaterialMap1D1D.o
+
+# target to build an object file
+src/MaterialMap1D1D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap1D1D.cxx.o
+.PHONY : src/MaterialMap1D1D.cxx.o
+
+src/MaterialMap1D1D.i: src/MaterialMap1D1D.cxx.i
+.PHONY : src/MaterialMap1D1D.i
+
+# target to preprocess a source file
+src/MaterialMap1D1D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap1D1D.cxx.i
+.PHONY : src/MaterialMap1D1D.cxx.i
+
+src/MaterialMap1D1D.s: src/MaterialMap1D1D.cxx.s
+.PHONY : src/MaterialMap1D1D.s
+
+# target to generate assembly for a file
+src/MaterialMap1D1D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap1D1D.cxx.s
+.PHONY : src/MaterialMap1D1D.cxx.s
+
+src/MaterialMap2D.o: src/MaterialMap2D.cxx.o
+.PHONY : src/MaterialMap2D.o
+
+# target to build an object file
+src/MaterialMap2D.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap2D.cxx.o
+.PHONY : src/MaterialMap2D.cxx.o
+
+src/MaterialMap2D.i: src/MaterialMap2D.cxx.i
+.PHONY : src/MaterialMap2D.i
+
+# target to preprocess a source file
+src/MaterialMap2D.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap2D.cxx.i
+.PHONY : src/MaterialMap2D.cxx.i
+
+src/MaterialMap2D.s: src/MaterialMap2D.cxx.s
+.PHONY : src/MaterialMap2D.s
+
+# target to generate assembly for a file
+src/MaterialMap2D.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f RecoGeometry/CMakeFiles/RecoGeometry.dir/build.make RecoGeometry/CMakeFiles/RecoGeometry.dir/src/MaterialMap2D.cxx.s
+.PHONY : src/MaterialMap2D.cxx.s
+
 src/NavigationLayer.o: src/NavigationLayer.cxx.o
 .PHONY : src/NavigationLayer.o
 
@@ -889,6 +937,12 @@ help:
 	@echo "... src/MaterialMap.o"
 	@echo "... src/MaterialMap.i"
 	@echo "... src/MaterialMap.s"
+	@echo "... src/MaterialMap1D1D.o"
+	@echo "... src/MaterialMap1D1D.i"
+	@echo "... src/MaterialMap1D1D.s"
+	@echo "... src/MaterialMap2D.o"
+	@echo "... src/MaterialMap2D.i"
+	@echo "... src/MaterialMap2D.s"
 	@echo "... src/NavigationLayer.o"
 	@echo "... src/NavigationLayer.i"
 	@echo "... src/NavigationLayer.s"

@@ -9,7 +9,7 @@
 #ifndef DET_DETCYLINDERVOLUME_H
 #define DET_DETCYLINDERVOLUME_H
 
-#include "DetExtensions/IExtension.h"
+#include "DetExtensions/IDetExtension.h"
 
 namespace DD4hep {
     namespace Geometry {
@@ -19,7 +19,7 @@ namespace DD4hep {
 
 namespace Det {
     
-    class DetCylinderVolume : public IExtension {
+    class DetCylinderVolume : public IDetExtension {
         
     public:
         

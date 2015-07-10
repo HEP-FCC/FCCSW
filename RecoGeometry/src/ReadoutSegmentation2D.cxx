@@ -48,7 +48,7 @@ size_t Reco::ReadoutSegmentation2D::bins() const
     return ((m_binutility->bins(0))*(m_binutility->bins(1)));
 }
 
-const unsigned long Reco::ReadoutSegmentation2D::bin(const Alg::Point2D& locpos) const
+unsigned long Reco::ReadoutSegmentation2D::bin(const Alg::Point2D& locpos) const
 {
     unsigned long i = m_binutility->bin(locpos,0);
     unsigned long j = m_binutility->bin(locpos,1);

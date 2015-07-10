@@ -20,11 +20,11 @@ namespace Reco  {
     public:
         //constructors from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //constructor with TGeoNode (transformation matrix) and TGeoConeSeg(dimesnions) and a BinnedArray of Surfaces
-        DiscLayer(TGeoNode* node, TGeoConeSeg* disc, Trk::BinnedArray<Surface>* sf);
+        DiscLayer(TGeoNode* node, TGeoConeSeg* disc, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf);
         //constructor with transformation, TGeoConeSeg(dimesnions) and a BinnedArray of Surfaces
-        DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* disc, Trk::BinnedArray<Surface>* sf);
+        DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* disc, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf);
         //constructor with transformation, dimensions and a BinnedArray of Surfaces
-        DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, double HalfThickness, Trk::BinnedArray<Surface>* sf);
+        DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, double HalfThickness, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf);
         //destructor
         ~DiscLayer();
         //clone method
@@ -32,7 +32,7 @@ namespace Reco  {
         //get the half length in z
         double getHalfZ() const;
         //returns the surface at this position plus the eight surrounding surfaces
-        virtual const std::vector<const Surface*> compatibleSurfaces(const Alg::Point3D& glopos) const override;
+        virtual const std::vector<SurfaceVector> compatibleSurfaces(const Alg::Point3D& glopos) const override;
         //set the next layer - spherical direction beginning from center of the detector to outside
         virtual void setNextLayer(std::shared_ptr<const Layer> layer) const override;
         //set the previous layer - spherical direction beginning from center of the detector to outside

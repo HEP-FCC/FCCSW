@@ -10,8 +10,9 @@
 #include "DD4hep/TGeoUnits.h"
 #include "DetExtensions/DetCylinderLayer.h"
 #include "DetExtensions/DetModule.h"
-#include "DetExtensions/Extension.h"
+#include "DetExtensions/DetExtension.h"
 #include "DetExtensions/DetCylinderVolume.h"
+#include "DetExtensions/DetSensComponent.h"
 
 using namespace std;
 using namespace DD4hep;
@@ -31,7 +32,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     int status     = x_status.id();
     //add Extension to Detlement for the RecoGeometry
     Det::DetCylinderVolume* detvolume = new Det::DetCylinderVolume(status);
-    tracker.addExtension<Det::IExtension>(detvolume);
+    tracker.addExtension<Det::IDetExtension>(detvolume);
     //Create the Volume of the Detector envelope
     DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
     double z = x_det_dim.z();
@@ -39,6 +40,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     Volume tracker_vol(x_det.nameStr()+"_envelope",tracker_shape, air);
     //Vizualization
     tracker_vol.setVisAttributes(lcdd.invisible());
+//    tracker_vol.setVisAttributes(lcdd, x_det.visStr());
     //Set sensitive type tracker
     sens.setType("Geant4Tracker");
     
@@ -52,6 +54,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         double rmax     = x_layer.outer_r();
         double radius   = (rmax+rmin)*0.5;
         double layer_z  = x_layer.z();
+        double dr       = x_layer.dr();
         
         //Create Volume and DetElement for Layer
         string layer_name  = det_name + _toString(layer_num,"layer%d");
@@ -69,54 +72,62 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         xml_comp_t x_slice = x_layer.child(_U(slice));
         int zrepeat = x_slice.repeat();
         double dz       = x_slice.z();
-        double minphi   = 0.;
-        double maxphi   = (repeat-1.)*deltaphi;
         //add Extension to Detlement for the RecoGeometry
-        Det::DetCylinderLayer* detcylinderlayer = new Det::DetCylinderLayer(repeat,2*zrepeat+1, minphi, maxphi);
-        lay_det.addExtension<Det::IExtension>(detcylinderlayer);
+        Det::DetCylinderLayer* detcylinderlayer = new Det::DetCylinderLayer();
+        lay_det.addExtension<Det::IDetExtension>(detcylinderlayer);
         
         int module_num = 0;
         //Place the Modules in z
         for (int k = -zrepeat; k<=zrepeat; k++)
         {
+            double r = radius;
             string zname = _toString(k,"z%d");
-            
+            if (k % 2==0) {
+                r += dr;
+            }
             //Place the Modules in phi
             for (int i = 0; i < repeat; ++i)
             {
                 //Create Module Volume
-                Volume mod_vol("module", Box(x_module.length(),x_module.width(),x_module.thickness()), air);
+                Volume mod_vol("module", Box(x_module.length(),x_module.width(),x_module.thickness()), lcdd.material(x_module.materialStr()));
                 //Visualization
                 mod_vol.setVisAttributes(lcdd.invisible());
                 
                 double phi = deltaphi/dd4hep::rad * i;
                 string module_name = zname + _toString(i,"module%d");
                 
-                Position trans(radius*cos(phi),
-                               radius*sin(phi),
+                Position trans(r*cos(phi),
+                               r*sin(phi),
                                k*dz);
                 
                 //Create module Detelement
                 DetElement mod_det(lay_det,module_name,module_num);
                 //add Extension to Detlement for the RecoGeometry
                 Det::DetModule* detmod = new Det::DetModule();
-                mod_det.addExtension<Det::IExtension> (detmod);
+                mod_det.addExtension<Det::IDetExtension> (detmod);
                 
                 int comp_num = 0;
                 //go through module components
                 for (xml_coll_t n(x_module,_U(module_component)); n; ++n) {
                     xml_comp_t x_comp = n;
-                    
-                    Volume comp_vol(_toString(module_num, "component% ") + x_comp.materialStr(), Box(x_comp.length(),x_comp.width(), x_comp.thickness()),lcdd.material(x_comp.materialStr()));
+                    Volume comp_vol(_toString(comp_num, "component% ") + x_comp.materialStr(), Box(x_comp.length(),x_comp.width(), x_comp.thickness()),lcdd.material(x_comp.materialStr()));
                     //Visualization
                     comp_vol.setVisAttributes(lcdd, x_comp.visStr());
-                    //Set Sensitive Volmes sensitive
-                    if (x_comp.isSensitive()) comp_vol.setSensitiveDetector(sens);
                     //Create DetElement
                     DetElement comp_det(mod_det, "component, " + x_comp.materialStr(),comp_num);
-                    //add Extension
-                    Det::Extension* ex = new Det::Extension();
-                    comp_det.addExtension<Det::IExtension> (ex);
+                    //Set Sensitive Volmes sensitive
+                    if (x_comp.isSensitive()) {
+                        comp_vol.setSensitiveDetector(sens);
+                        //add Extension for sensitive component
+                        Segmentation segmentation(sens.readout().segmentation());
+                        Det::DetSensComponent* ex = new Det::DetSensComponent(segmentation);
+                        comp_det.addExtension<Det::IDetExtension> (ex);
+                    }
+                    else {
+                        //add Extension
+                        Det::DetExtension* ex = new Det::DetExtension();
+                        comp_det.addExtension<Det::IDetExtension> (ex);
+                    }
                     //place component in module
                     Position trans (0.,0.,x_comp.z());
                     PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,trans);

@@ -53,13 +53,6 @@ namespace Reco {
         double getRmin() const;
         double getRmax() const;
         double getHalfZ() const;
-        //get the BoundarySurfaces
-        const BoundarySurface* getPosDisc() const;
-        const BoundarySurface* getNegDisc() const;
-        const BoundarySurface* getOuterCylinder() const;
-        const BoundarySurface* getInnerCylinder() const;
-        //set pointer to boundary surface at n - for definition of n see enum BoundarySurfaceType
-        virtual bool setBoundarySurface(size_t n, std::shared_ptr<const BoundarySurface> boundarysurface) const;
         //checks if global position glopos is inside the bounds of the volume with a tolerance tol
         virtual bool isInside(const Alg::Point3D& glopos, double tol) const override;
 

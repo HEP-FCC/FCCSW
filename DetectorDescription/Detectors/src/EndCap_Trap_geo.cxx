@@ -10,8 +10,9 @@
 #include "DD4hep/TGeoUnits.h"
 #include "DetExtensions/DetDiscLayer.h"
 #include "DetExtensions/DetModule.h"
-#include "DetExtensions/Extension.h"
+#include "DetExtensions/DetExtension.h"
 #include "DetExtensions/DetDiscVolume.h"
+#include "DetExtensions/DetSensComponent.h"
 
 //std
 #include <iostream>
@@ -36,7 +37,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     int status     = x_status.id();
     //add Extension to Detlement for the RecoGeometry
     Det::DetDiscVolume* detvolume = new Det::DetDiscVolume(status);
-    endcap.addExtension<Det::IExtension>(detvolume);
+    endcap.addExtension<Det::IDetExtension>(detvolume);
     //Volume for the envelope
     DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
     Tube endcap_shape(x_det_dim.rmin(),x_det_dim.rmax(),x_det_dim.dz());
@@ -46,6 +47,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     if (endcap_pos<0.) sign = -1.;
     //Visualization
     endcap_vol.setVisAttributes(lcdd.invisible());
+ //   endcap_vol.setVisAttributes(lcdd, x_det.visStr());
     //Set sensitive Type
     sens.setType("Geant4Tracker");
     
@@ -64,13 +66,9 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     //Create Volume and DetELement for Layer
     Volume layer_vol(layer_name, Tube(rmin,rmax,layer_z), air);
     DetElement detlayer(endcap,layer_name, layer_num);
-    double minphi   = 0.;
-    double maxphi   = (repeat-1.)*deltaphi;
     
     //Visualization
     layer_vol.setVisAttributes(lcdd.invisible());
-    //vector of rValues
-        std::vector<std::pair<float,float>> rValues;
     
     int module_num_num = 0;
     
@@ -78,7 +76,6 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         xml_comp_t x_module = i;
         
         double radius   = x_module.radius();
-        rValues.push_back(std::make_pair<float,float>(radius-x_module.length(),radius+x_module.length()));
         double slicedz  = x_module.dz();
         
         int module_num = 0;
@@ -102,7 +99,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
             DetElement mod_det(detlayer,module_name,repeat*module_num_num+module_num);
             //add Extension to Detelement for the RecoGeometry
             Det::DetModule* detmod = new Det::DetModule();
-            mod_det.addExtension<Det::IExtension> (detmod);
+            mod_det.addExtension<Det::IDetExtension> (detmod);
             
             int comp_num = 0;
     //        std::ofstream m_out;
@@ -111,20 +108,31 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
             for (xml_coll_t n(x_module,_U(module_component)); n; n++) {
                 xml_comp_t x_comp = n;
                 
-                Volume comp_vol(_toString(comp_num, "component% ") + x_comp.materialStr(), Trapezoid(x_comp.x1(),x_comp.x2(),x_comp.thickness(), x_comp.length(), x_comp.thickness()),lcdd.material(x_comp.materialStr()));
+                Volume comp_vol(_toString(comp_num, "component% ") + x_comp.materialStr(), Trapezoid(x_comp.x1(),x_comp.x2(),x_comp.thickness(), x_comp.thickness(), x_comp.length()),lcdd.material(x_comp.materialStr()));
                 
-           //     if (module_num % 2 == 0) {
+    //            if (module_num % 2 == 0) {
                     comp_vol.setVisAttributes(lcdd, x_comp.visStr());
-           //     }
-                
-                if(x_comp.isSensitive()) comp_vol.setSensitiveDetector(sens);
+    //            }
                 //Create DetElement
                 DetElement comp_det(mod_det, "component, " + x_comp.materialStr(),comp_num);
-                //add Extension
-                Det::Extension* ex = new Det::Extension();
-                comp_det.addExtension<Det::IExtension>(ex);
+                //Set Sensitive Volmes sensitive
+                if (x_comp.isSensitive()) {
+                    comp_vol.setSensitiveDetector(sens);
+                    //add Extension for sensitive component
+           //         if (sens.readout().segmentation()) std::cout << "readout" << std::endl;
+           //         else std::cout << "no readout" << std::endl;
+                    
+                    Segmentation segmentation(sens.readout().segmentation());
+                    Det::DetSensComponent* ex = new Det::DetSensComponent(segmentation);
+                    comp_det.addExtension<Det::IDetExtension> (ex);
+                }
+                else {
+                    //add Extension
+                    Det::DetExtension* ex = new Det::DetExtension();
+                    comp_det.addExtension<Det::IDetExtension> (ex);
+                }
                 //place component in module
-                Position trans (0.,0., x_comp.z());
+                Position trans (0., x_comp.z(), 0.);
            //     PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,Transform3D(RotationX(0.5*M_PI)*RotationY(phi+0.5*M_PI)*RotationZ(0.1*M_PI),trans));
                 PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,trans);
  //               PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,Transform3D(RotationX(0.5*M_PI)*RotationY(phi+0.5*M_PI)*RotationZ(0.1*M_PI),trans));
@@ -135,7 +143,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
             }
             
             //Place Module Box Volumes in layer
-            PlacedVolume placedmodule = layer_vol.placeVolume(mod_vol,Transform3D(RotationZ(phi+0.5*M_PI)*RotationY(0.1*M_PI),trans));
+            PlacedVolume placedmodule = layer_vol.placeVolume(mod_vol,Transform3D(RotationX(0.5*M_PI)*RotationY(phi+0.5*M_PI)*RotationZ(0.1*M_PI),trans)); //RotationZ(phi+0.5*M_PI)*RotationY(0.1*M_PI), RotationX(0.5*M_PI)*RotationY(phi+0.5*M_PI)*RotationZ(0.1*M_PI
             placedmodule.addPhysVolID("module", repeat*module_num_num+module_num);
             // assign module DetElement to the placed Module volume
             mod_det.setPlacement(placedmodule);
@@ -145,8 +153,8 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         ++module_num_num;
     }
         //add Extension to Detlement for the RecoGeometry
-        Det::DetDiscLayer* detdisclayer = new Det::DetDiscLayer(rValues.size(), rValues,repeat,minphi,maxphi);
-        detlayer.addExtension<Det::IExtension>(detdisclayer);
+        Det::DetDiscLayer* detdisclayer = new Det::DetDiscLayer();
+        detlayer.addExtension<Det::IDetExtension>(detdisclayer);
         //Placed Layer Volume
         Position layer_pos(0.,0.,x_layer.z());
         PlacedVolume placedLayer = endcap_vol.placeVolume(layer_vol, layer_pos);
@@ -158,9 +166,13 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     //Place envelope Volume
     Volume mother_vol = lcdd.pickMotherVolume(endcap);
     Position endcap_trans(0.,0.,endcap_pos);
+    Rotation3D rotation;
     
     if (sign ==-1) {
-        Transform3D endcap_transform(RotationX(M_PI), endcap_trans);
+        rotation.SetComponents(1.,0.,0.,
+                               0.,1.,0.,
+                               0.,0.,-1.);
+        Transform3D endcap_transform(rotation, endcap_trans);
         PlacedVolume placedEndCap = mother_vol.placeVolume(endcap_vol, endcap_transform);
         placedEndCap.addPhysVolID("system",x_det.id());
         //assign tracker DetElement to tracker volume

@@ -140,8 +140,7 @@ namespace Trk {
       */
      const T* object(const Alg::Point3D& gp) const
      {
-       if (m_binUtility->inside(gp))
-           return ((*((*m_array)[m_binUtility->bin(gp, 1)]))[m_binUtility->bin(gp, 0)]).get();
+       if (m_binUtility->inside(gp)) return ((*((*m_array)[m_binUtility->bin(gp, 1)]))[m_binUtility->bin(gp, 0)]).get();
       return 0;
      }
 

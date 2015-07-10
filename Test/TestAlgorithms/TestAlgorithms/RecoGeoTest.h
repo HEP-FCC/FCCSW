@@ -20,12 +20,13 @@
 #include "TGraph.h"
 #include "TFile.h"
 #include "TCanvas.h"
-#include "TH1F.h"
+#include "TProfile.h"
 //RecoGeometry
 #include "RecoGeometry/Volume.h"
 #include "RecoGeometry/ContainerVolume.h"
 #include "RecoGeometry/BoundarySurface.h"
 #include "RecoGeometry/SensitiveSurface.h"
+#include "RecoGeometry/Layer.h"
 //std
 #include <iostream>
 #include <fstream>
@@ -58,7 +59,7 @@ public:
     //scan trough volumes to get the volume at this point, which is not a container volume
     const Reco::Volume* scanVolumes(const Reco::Volume* volume, const Alg::Point3D& glopos) const;
     //intersect with the material layers of a volume
-    StatusCode intersectSurface(const Reco::Surface& surface, Alg::Point3D& glopos, const Alg::Vector3D& dir) const;
+    bool intersectSurface(const Reco::Surface& surface, Alg::Point3D& glopos, const Alg::Vector3D& dir) const;
     //get the next volume, if you are in a volume without material layers - intersects the boundarysurface and if it hits the surface changes glopos to the position of intersection
     const Reco::Volume* nextVolume(std::weak_ptr<const Reco::BoundarySurface> surf, Alg::Point3D& glopos, const Alg::Vector3D& dir, bool& success) const;
     /// Execute.
@@ -94,8 +95,12 @@ private:
     ParticleCollection*                             m_particlecoll;
     IToolSvc*                                       m_toolsvc;
     IPrintHits*                                     m_printhits;
+    mutable double                                  m_tInX0;
+    mutable double                                  m_pathlength;
+    ITHistSvc*                                      m_ths;
+    TProfile*                                       m_profile;
     
-    mutable std::vector<std::tuple<const Reco::Surface*, const Alg::Point3D, const Alg::Vector3D>> m_hits;
+//    mutable std::vector<std::tuple<const Reco::Surface*, const Alg::Point3D, const Alg::Vector3D>> m_hits;
     mutable double m_sumh;
 
 };

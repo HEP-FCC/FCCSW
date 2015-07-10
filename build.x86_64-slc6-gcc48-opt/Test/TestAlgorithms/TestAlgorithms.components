@@ -1,3 +1,4 @@
+libTestAlgorithms.so:CompareMaterial
 libTestAlgorithms.so:Geant4Test
 libTestAlgorithms.so:RecoGeoTest
 libTestAlgorithms.so:RecoGeoWrite

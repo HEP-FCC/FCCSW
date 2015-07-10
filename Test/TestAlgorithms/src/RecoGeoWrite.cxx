@@ -31,13 +31,13 @@ StatusCode RecoGeoWrite::initialize() {
 
 StatusCode RecoGeoWrite::execute() {
     
-    ParticleCollection* particlecoll = m_particles.get();
+ /*   ParticleCollection* particlecoll = m_particles.get();
     
     if (particlecoll) {
         m_smeartool->smear(particlecoll);
     }
     
-    m_particles.put(particlecoll);
+    m_particles.put(particlecoll);*/
     
     return StatusCode::SUCCESS;
 }

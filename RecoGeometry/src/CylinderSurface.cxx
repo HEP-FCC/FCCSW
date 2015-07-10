@@ -13,21 +13,21 @@ Reco::CylinderSurface::CylinderSurface() :
 Reco::Surface(),
 m_R(0.),
 m_halfZ(0.),
-m_thickness(0.)
+m_halfThickness(0.)
 {}
 
 Reco::CylinderSurface::CylinderSurface(std::shared_ptr<const Alg::Transform3D> transf, double radius, double halfZ, double HalfThickness) :
 Reco::Surface(transf),
 m_R(radius),
 m_halfZ(halfZ),
-m_thickness(HalfThickness)
+m_halfThickness(HalfThickness)
 {}
 
 Reco::CylinderSurface::CylinderSurface(double radius, double halfZ, double HalfThickness) :
 Reco::Surface(),
 m_R(radius),
 m_halfZ(halfZ),
-m_thickness(HalfThickness)
+m_halfThickness(HalfThickness)
 {}
 
 Reco::CylinderSurface::CylinderSurface(TGeoNode* node, TGeoConeSeg* tube) :
@@ -36,7 +36,7 @@ Reco::Surface(node)
     //myconeseg in DD4Hep is only defined with Rmax1 and Rmin1
     m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
     m_halfZ     = tube->GetDz();
-    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
+    m_halfThickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf) :
@@ -44,7 +44,7 @@ Reco::Surface(transf)
 {
     m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
     m_halfZ     = tube->GetDz();
-    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
+    m_halfThickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(TGeoNode* node, TGeoConeSeg* tube, Reco::MaterialMap* materialmap) :
@@ -52,7 +52,7 @@ Reco::Surface(node,materialmap)
 {
     m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
     m_halfZ     = tube->GetDz();
-    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
+    m_halfThickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(TGeoConeSeg* tube, Reco::MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf) :
@@ -60,14 +60,14 @@ Reco::Surface(materialmap, transf)
 {
     m_R         = 0.5*(tube->GetRmax1()+tube->GetRmin1());
     m_halfZ     = tube->GetDz();
-    m_thickness = fabs(tube->GetRmax2()-tube->GetRmax1());
+    m_halfThickness = fabs(tube->GetRmax2()-tube->GetRmax1());
 }
 
 Reco::CylinderSurface::CylinderSurface(const CylinderSurface& cylindersurface) :
 Reco::Surface(cylindersurface),
 m_R(cylindersurface.m_R),
 m_halfZ(cylindersurface.m_halfZ),
-m_thickness(cylindersurface.m_thickness)
+m_halfThickness(cylindersurface.m_halfThickness)
 {}
 
 Reco::CylinderSurface::~CylinderSurface()
@@ -84,7 +84,7 @@ Reco::CylinderSurface& Reco::CylinderSurface::operator=(const CylinderSurface& c
         Reco::Surface::operator=(cylindersurface);
         m_R         = cylindersurface.m_R;
         m_halfZ     = cylindersurface.m_halfZ;
-        m_thickness = cylindersurface.m_thickness;
+        m_halfThickness = cylindersurface.m_halfThickness;
     }
     return (*this);
 }
@@ -99,9 +99,9 @@ double Reco::CylinderSurface::getHalfZ() const
     return (m_halfZ);
 }
 
-double Reco::CylinderSurface::thickness() const
+double Reco::CylinderSurface::halfThickness() const
 {
-    return (m_thickness);
+    return (m_halfThickness);
 }
 
 const Alg::Vector3D& Reco::CylinderSurface::normal() const
@@ -120,12 +120,7 @@ const Alg::Vector3D* Reco::CylinderSurface::normal(const Alg::Point2D& locpos) c
 
 const Reco::Material* Reco::CylinderSurface::material(Alg::Point2D& locpos) const
 {
-    if (materialmap()->binutility()) {
-        int binx = materialmap()->binutility()->bin(locpos,0);
-        int biny = materialmap()->binutility()->bin(locpos,1);
-        std::pair<int,int> bins = std::make_pair(binx,biny);
-        return (materialmap()->material(bins));
-    }
+    if (materialmap()) return materialmap()->material(locpos);
     return 0;
 }
 
@@ -287,5 +282,11 @@ Trk::Intersection Reco::CylinderSurface::straightLineIntersection(const Alg::Poi
 bool Reco::CylinderSurface::isSensitive() const
 {
     return false;
+}
+
+double Reco::CylinderSurface::pathlength(const Alg::Point3D& pos, const Alg::Vector3D& dir) const
+{
+    return (Reco::Surface::pathlength(dir));
+    
 }
 

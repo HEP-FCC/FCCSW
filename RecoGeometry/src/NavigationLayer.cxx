@@ -27,19 +27,9 @@ Reco::NavigationLayer* Reco::NavigationLayer::clone() const
     return (new Reco::NavigationLayer(*this));
 }
 
-const Reco::Surface* Reco::NavigationLayer::getModule(const Alg::Point3D&) const
+const std::vector<Reco::SurfaceVector> Reco::NavigationLayer::compatibleSurfaces(const Alg::Point3D&) const
 {
-    return (0);
-}
-
-const Reco::Surface* Reco::NavigationLayer::getModule(const Alg::Point2D&) const
-{
-    return (0);
-}
-
-const std::vector<const Reco::Surface*> Reco::NavigationLayer::compatibleSurfaces(const Alg::Point3D&) const
-{
-    return(std::vector <const Reco::Surface*>());
+    return(std::vector <SurfaceVector>());
 }
 
 void Reco::NavigationLayer::setNextLayer(std::shared_ptr<const Layer> layer) const

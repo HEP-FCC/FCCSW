@@ -31,7 +31,7 @@ namespace Reco {
         virtual size_t bins() const override;
         //every position on the surface corresponds to a unique bin of this sensitive surface
         //calculates the unique bin in the local 2D grid of the surface corresponding to this local position locpos
-        virtual const unsigned long bin(const Alg::Point2D& locpos) const override;
+        virtual unsigned long bin(const Alg::Point2D& locpos) const override;
         //returns the corresponding local position to this local bin
         virtual Alg::Point2D binToLocpos(unsigned long bin) const override;
         //returns the local error in x and y in a 2D Point at the local position locpos

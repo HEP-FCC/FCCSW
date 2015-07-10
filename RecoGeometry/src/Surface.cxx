@@ -18,26 +18,23 @@ Reco::Surface::Surface() :
 m_center    (0),
 m_normal    (0),
 m_transform (0),
-m_node      (0),
 m_materialmap  (0)
 {}
 
 Reco::Surface::Surface(std::shared_ptr<const Alg::Transform3D> transf) :
 m_center    (0),
 m_normal    (0),
-m_transform (transf),
-m_node      (0)
+m_transform (transf)
 {}
 
 Reco::Surface::Surface(TGeoNode* node) :
 m_center    (0),
 m_normal    (0),
-m_node      (node),
 m_materialmap(0)
 {
     //get Transformation
-    const Double_t* rotation    = (m_node->GetMatrix()->GetRotationMatrix());
-    const Double_t* translation = (m_node->GetMatrix()->GetTranslation());
+    const Double_t* rotation    = (node->GetMatrix()->GetRotationMatrix());
+    const Double_t* translation = (node->GetMatrix()->GetTranslation());
     
     m_transform = std::make_shared<const Alg::Transform3D> (Alg::Transform3D(
                                        rotation[0], rotation[1], rotation[2], translation[0],
@@ -49,12 +46,11 @@ m_materialmap(0)
 Reco::Surface::Surface(TGeoNode* node, MaterialMap* materialmap) :
 m_center(0),
 m_normal(0),
-m_node(node),
 m_materialmap(materialmap)
 {
     //get Transformation
-    const Double_t* rotation    = (m_node->GetMatrix()->GetRotationMatrix());
-    const Double_t* translation = (m_node->GetMatrix()->GetTranslation());
+    const Double_t* rotation    = (node->GetMatrix()->GetRotationMatrix());
+    const Double_t* translation = (node->GetMatrix()->GetTranslation());
     
     m_transform = std::make_shared<const Alg::Transform3D> (Alg::Transform3D(
                                     rotation[0], rotation[1], rotation[2], translation[0],
@@ -66,7 +62,6 @@ Reco::Surface::Surface(MaterialMap* materialmap, std::shared_ptr<const Alg::Tran
 m_center(0),
 m_normal(0),
 m_transform (transf),
-m_node(0),
 m_materialmap(materialmap)
 {}
 
@@ -74,18 +69,17 @@ Reco::Surface::Surface(const Reco::Surface& surface) :
 m_center    (0),
 m_normal    (0),
 m_transform (0),
-m_node      (0),
-m_materialmap  (0){
+m_materialmap  (0)
+{
 
     m_transform  = std::make_shared<const Alg::Transform3D>(surface.transform());
-    m_materialmap= new Reco::MaterialMap(*materialmap());
+    m_materialmap= materialmap()->clone();
 }
 
 Reco::Surface::~Surface()
 {
     delete m_center;
     delete m_normal;
-    m_node        = 0;
     m_materialmap = 0;
 }
 
@@ -94,10 +88,8 @@ Reco::Surface& Reco::Surface::operator=(const Reco::Surface& surface)
     if (this!=&surface){
         delete m_center; m_center = 0;
         delete m_normal; m_normal = 0;
-        delete m_node;   m_node = 0;
-        delete m_materialmap;
         
-        m_transform.reset(surface.m_transform.get());
+        m_transform = surface.m_transform;
         m_materialmap = surface.m_materialmap;
     }
     return (*this);
@@ -107,6 +99,11 @@ const Alg::Transform3D& Reco::Surface::transform() const
 {
     if(m_transform) return (*m_transform);
     return s_idTransform;
+}
+
+void Reco::Surface::setTransform(std::shared_ptr<const Alg::Transform3D> transf)
+{
+    m_transform = transf;
 }
 
 const Alg::Point3D& Reco::Surface::center() const
@@ -139,12 +136,18 @@ const Reco::MaterialMap* Reco::Surface::materialmap() const
 
 double Reco::Surface::pathlength(const Alg::Vector3D& dir) const
 {
-    Alg::Vector3D d     = dir.unit();
+    Alg::Vector3D d     = dir.Unit();
+    Alg::Vector3D n     = normal().Unit();
+//o    std::cout << "normal: " << n << std::endl;
     double pathlength   = 0.;
-    if (d.Dot(normal())!=0.) {
-        pathlength   = 2.*thickness()/(d.Dot(normal()));
+    double phi = acos(d.Dot(n));
+    if (phi!=0.5*M_PI) {
+        double theta = (0.5*M_PI)-phi;
+        pathlength = 2.*(halfThickness()/(sin(theta)));
+        if (pathlength<0.) {
+  //          std::cout << "negativ! Theta: " << theta << " halfthickness: " << halfThickness() << " dir: " << dir << " phi: " << phi << " normal: " << n << std::endl;
+        }
     }
-        
     return(pathlength);
 }
 

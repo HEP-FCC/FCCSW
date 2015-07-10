@@ -15,21 +15,21 @@ m_Rmin(0.),
 m_Rmax(0.)
 {}
 
-Reco::CylinderLayer::CylinderLayer(TGeoNode* node, TGeoConeSeg* tube, Trk::BinnedArray<Surface>* sf) :
+Reco::CylinderLayer::CylinderLayer(TGeoNode* node, TGeoConeSeg* tube, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf) :
 Layer(sf),
 CylinderSurface(node, tube),
 m_Rmin(tube->GetRmin1()),
 m_Rmax(tube->GetRmax1())
 {}
 
-Reco::CylinderLayer::CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* tube, Trk::BinnedArray<Surface>* sf) :
+Reco::CylinderLayer::CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* tube, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf) :
 Layer(sf),
 CylinderSurface(tube, transf),
 m_Rmin(tube->GetRmin1()),
 m_Rmax(tube->GetRmax1())
 {}
 
-Reco::CylinderLayer::CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double halfZ, double HalfThickness, Trk::BinnedArray<Surface>* sf) :
+Reco::CylinderLayer::CylinderLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double halfZ, double HalfThickness, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf) :
 Layer(sf),
 CylinderSurface(transf, 0.5*(rmin+rmax), halfZ, HalfThickness),
 m_Rmin(rmin),
@@ -58,9 +58,9 @@ double Reco::CylinderLayer::getDR() const
     return (fabs(m_Rmax-m_Rmin));
 }
 
-const std::vector<const Reco::Surface*> Reco::CylinderLayer::compatibleSurfaces(const Alg::Point3D& glopos) const
+const std::vector<Reco::SurfaceVector> Reco::CylinderLayer::compatibleSurfaces(const Alg::Point3D& glopos) const
 {
-    std::vector <const Reco::Surface*> surfaces;
+    std::vector <Reco::SurfaceVector> surfaces;
     double r    = sqrt(glopos.Perp2());
     double phi  = 0.;
     double z    = 0.;
@@ -69,16 +69,19 @@ const std::vector<const Reco::Surface*> Reco::CylinderLayer::compatibleSurfaces(
     int n = binutil.bin(glopos,1);
     int maxPhi   = binutil.bins(0);
     int maxZ     = binutil.bins(1);
+    int k        = 0;
     for (int i = m-1; i<=m+1; i++) {
-        if (i>=0 && i <maxPhi) {
+        if (i==-1)          k = maxPhi-1;
+        else if (i==maxPhi) k = 0;
+        else k = i;
             for (int j = n-1; j<=n+1; j++) {
                 if (j>=0 && j<maxZ) {
-                    phi = binutil.bincenter(i,0);
+                    phi = binutil.bincenter(k,0);
                     z   = binutil.bincenter(j,1);
-                    surfaces.push_back(m_surfaces->object(Alg::Point3D(r*cos(phi),r*sin(phi),z)));
+                    std::vector<std::shared_ptr<const Reco::Surface>> surf(*m_surfaces->object(Alg::Point3D(r*cos(phi),r*sin(phi),z)));
+                    surfaces.push_back(*(m_surfaces->object(Alg::Point3D(r*cos(phi),r*sin(phi),z))));
                 }
             }
-        }
     }
     
     return(surfaces);

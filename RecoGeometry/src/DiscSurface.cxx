@@ -13,14 +13,14 @@ Reco::DiscSurface::DiscSurface() :
 Reco::Surface(),
 m_Rmin(0.),
 m_Rmax(0.),
-m_thickness(0.)
+m_halfThickness(0.)
 {}
 
 Reco::DiscSurface::DiscSurface(std::shared_ptr<const Alg::Transform3D> transf, double Rmin, double Rmax, double HalfThickness) :
 Reco::Surface(transf),
 m_Rmin(Rmin),
 m_Rmax(Rmax),
-m_thickness(HalfThickness)
+m_halfThickness(HalfThickness)
 {}
 
 Reco::DiscSurface::DiscSurface(TGeoNode* node, TGeoConeSeg* tube) :
@@ -28,7 +28,7 @@ Reco::Surface(node)
 {
     m_Rmin      = tube->GetRmin1();
     m_Rmax      = tube->GetRmax1();
-    m_thickness = tube->GetDZ();
+    m_halfThickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(TGeoConeSeg* tube, std::shared_ptr<const Alg::Transform3D> transf) :
@@ -36,7 +36,7 @@ Reco::Surface(transf)
 {
     m_Rmin      = tube->GetRmin1();
     m_Rmax      = tube->GetRmax1();
-    m_thickness = tube->GetDZ();
+    m_halfThickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(TGeoNode* node, TGeoConeSeg* tube, Reco::MaterialMap* materialmap) :
@@ -44,7 +44,7 @@ Reco::Surface(node, materialmap)
 {
     m_Rmin      = tube->GetRmin1();
     m_Rmax      = tube->GetRmax1();
-    m_thickness = tube->GetDZ();
+    m_halfThickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(TGeoConeSeg* tube, Reco::MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf) :
@@ -52,14 +52,14 @@ Reco::Surface(materialmap, transf)
 {
     m_Rmin      = tube->GetRmin1();
     m_Rmax      = tube->GetRmax1();
-    m_thickness = tube->GetDZ();
+    m_halfThickness = tube->GetDZ();
 }
 
 Reco::DiscSurface::DiscSurface(const Reco::DiscSurface& discsurface) :
 Reco::Surface(discsurface),
 m_Rmin(discsurface.m_Rmin),
 m_Rmax(discsurface.m_Rmax),
-m_thickness(discsurface.m_thickness)
+m_halfThickness(discsurface.m_halfThickness)
 {}
 
 Reco::DiscSurface::~DiscSurface()
@@ -76,7 +76,7 @@ Reco::DiscSurface& Reco::DiscSurface::operator=(const DiscSurface& discsurface)
         Reco::Surface::operator=(discsurface);
         m_Rmin      = discsurface.m_Rmin;
         m_Rmax      = discsurface.m_Rmax;
-        m_thickness = discsurface.m_thickness;
+        m_halfThickness = discsurface.m_halfThickness;
     }
     return (*this);
 }
@@ -91,9 +91,9 @@ double Reco::DiscSurface::getRmax() const
     return (m_Rmax);
 }
 
-double Reco::DiscSurface::thickness() const
+double Reco::DiscSurface::halfThickness() const
 {
-    return (m_thickness);
+    return (m_halfThickness);
 }
 
 const Alg::Vector3D& Reco::DiscSurface::normal() const
@@ -108,12 +108,7 @@ const Alg::Vector3D* Reco::DiscSurface::normal(const Alg::Point2D&) const
 
 const Reco::Material* Reco::DiscSurface::material(Alg::Point2D& locpos) const
 {
-    if (materialmap()->binutility()) {
-        int binx = materialmap()->binutility()->bin(locpos,0);
-        int biny = materialmap()->binutility()->bin(locpos,1);
-        std::pair<int,int> bins = std::make_pair(binx,biny);
-        return (materialmap()->material(bins));
-    }
+    if (materialmap()) return materialmap()->material(locpos);
     return 0;
 }
 
@@ -142,4 +137,9 @@ bool Reco::DiscSurface::globalToLocal(const Alg::Point3D& glopos, const Alg::Vec
 bool Reco::DiscSurface::isSensitive() const
 {
     return false;
+}
+
+double Reco::DiscSurface::pathlength(const Alg::Point3D&, const Alg::Vector3D& dir) const
+{
+    return (Reco::Surface::pathlength(dir));
 }

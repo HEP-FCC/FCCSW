@@ -14,8 +14,8 @@
 
 namespace Reco {
     
-    typedef Trk::BinnedArray<Surface> SurfaceArray;
     typedef std::vector<std::shared_ptr<const Surface>> SurfaceVector;
+    typedef Trk::BinnedArray<SurfaceVector> SurfaceArray;
     
     class Layer {
     
@@ -37,14 +37,12 @@ namespace Reco {
         virtual ~Layer();
         //clone method
         virtual Layer* clone() const = 0;
-        //get the BinnedArray of the surfaces which the layer contains
-        const std::vector<const Surface*>& getSurfaces() const;
-        //get the specific module(=surface) at the global position glopos - returns nullptr if no surface is at this point
-        const Surface* getModule(const Alg::Point3D& glopos) const;
-        //get the specific module(=surface) at the local position locpos on the layer - returns nullptr if no surface is at this point
-        const Surface* getModule(const Alg::Point2D& locpos) const;
-        //returns the surface at this position plus the eight surrounding surfaces - returns empty vector for a NavogationLayer
-        virtual const std::vector<const Surface*> compatibleSurfaces(const Alg::Point3D& glopos) const = 0;
+        //get the specific modules(=surfaces) at the global position glopos - returns empty vector if no surface is at this point
+        const SurfaceVector getModules(const Alg::Point3D& glopos) const;
+        //get the specific modules(=surfaces) at the local position locpos - returns empty vector if no surface is at this point
+        const SurfaceVector getModules(const Alg::Point2D& locpos) const;
+        //returns the surfaces at this position plus the eight surrounding surfaces - returns empty vector for a NavogationLayer
+        virtual const std::vector<SurfaceVector> compatibleSurfaces(const Alg::Point3D& glopos) const = 0;
         //set the next layer - spherical direction beginning from center of the detector to outside
         virtual void setNextLayer(std::shared_ptr<const Layer> layer) const;
         //set the previous layer - spherical direction beginning from center of the detector to outside

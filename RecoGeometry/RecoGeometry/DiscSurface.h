@@ -39,7 +39,7 @@ namespace Reco {
         //get dimensions
         double getRmin() const;
         double getRmax() const;
-        virtual double thickness() const override;
+        virtual double halfThickness() const override;
         //get the normal vector of the surface
         virtual const Alg::Vector3D& normal() const override;
         // normal vector to local position
@@ -54,6 +54,8 @@ namespace Reco {
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const override;
         //returns if the surface is sensitive (and has a readout)
         virtual bool isSensitive() const override;
+        //returns the pathlength
+        virtual double pathlength(const Alg::Point3D& pos, const Alg::Vector3D& dir) const override;
         
         
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */
@@ -136,7 +138,7 @@ namespace Reco {
         double m_Rmin;
         double m_Rmax;
         //halfthickness
-        double m_thickness;
+        double m_halfThickness;
     };
     
     inline Trk::Intersection DiscSurface::straightLineIntersection(const Alg::Point3D& pos,

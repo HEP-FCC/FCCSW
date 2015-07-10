@@ -9,7 +9,7 @@
 #ifndef DET_DETVOLUME_H
 #define DET_DETVOLUME_H
 
-#include "DetExtensions/IExtension.h"
+#include "DetExtensions/IDetExtension.h"
 
 namespace DD4hep {
     namespace Geometry {
@@ -19,7 +19,7 @@ namespace DD4hep {
 
 namespace Det {
     
-    class DetVolume : public IExtension {
+    class DetVolume : public IDetExtension {
     
     public:
         

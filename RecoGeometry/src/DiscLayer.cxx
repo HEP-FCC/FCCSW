@@ -14,19 +14,19 @@ Layer (),
 m_dz (0.)
 {}
 
-Reco::DiscLayer::DiscLayer(TGeoNode* node, TGeoConeSeg* tube, Trk::BinnedArray<Surface>* sf) :
+Reco::DiscLayer::DiscLayer(TGeoNode* node, TGeoConeSeg* tube, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf) :
 DiscSurface(node, tube),
 Layer(sf),
 m_dz(tube->GetDz())
 {}
 
-Reco::DiscLayer::DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* tube, Trk::BinnedArray<Surface>* sf) :
+Reco::DiscLayer::DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, TGeoConeSeg* tube, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf) :
 DiscSurface(tube,transf),
 Layer(sf),
 m_dz(tube->GetDZ())
 {}
 
-Reco::DiscLayer::DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, double HalfThickness, Trk::BinnedArray<Surface>* sf) :
+Reco::DiscLayer::DiscLayer(std::shared_ptr<const Alg::Transform3D> transf, double rmin, double rmax, double dz, double HalfThickness, Trk::BinnedArray<std::vector<std::shared_ptr<const Surface>>>* sf) :
 DiscSurface(transf, rmin, rmax, HalfThickness),
 Layer(sf),
 m_dz(dz)
@@ -45,9 +45,9 @@ double Reco::DiscLayer::getHalfZ() const
     return(m_dz);
 }
 
-const std::vector<const Reco::Surface*> Reco::DiscLayer::compatibleSurfaces(const Alg::Point3D& glopos) const
+const std::vector<Reco::SurfaceVector> Reco::DiscLayer::compatibleSurfaces(const Alg::Point3D& glopos) const
 {
-    std::vector <const Reco::Surface*> surfaces;
+    std::vector <Reco::SurfaceVector> surfaces;
     double r    = 0.;
     double phi  = 0.;
     Trk::BinUtility binutil(*(m_surfaces->binUtility()));
@@ -55,18 +55,19 @@ const std::vector<const Reco::Surface*> Reco::DiscLayer::compatibleSurfaces(cons
     int n = binutil.bin(glopos,1);
     int maxR    = binutil.bins(0);
     int maxPhi  = binutil.bins(1);
+    int l       = 0;
     for (int i = m-1; i<=m+1; i++) {
         if (i >= 0 && i < maxR) {
             for (int j = n-1; j<=n+1; j++) {
-                if (j>=0 && j<maxPhi) {
+                if (j==-1)          l = maxPhi-1;
+                else if (j==maxPhi) l = 0;
+                else l = j;
                     r   = binutil.bincenter(i,0);
-                    phi = binutil.bincenter(j,1);
-                    surfaces.push_back(m_surfaces->object(Alg::Point3D(r*cos(phi),r*sin(phi),glopos.Z())));
-                }
+                    phi = binutil.bincenter(l,1);
+                    surfaces.push_back(*(m_surfaces->object(Alg::Point3D(r*cos(phi),r*sin(phi),glopos.Z()))));
             }
         }
     }
-    
     return(surfaces);
 }
 

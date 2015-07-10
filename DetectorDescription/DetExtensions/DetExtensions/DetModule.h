@@ -9,7 +9,7 @@
 #ifndef DET_DETMODULE_H
 #define DET_DETMODULE_H
 
-#include "DetExtensions/IExtension.h"
+#include "DetExtensions/IDetExtension.h"
 
 namespace DD4hep {
     namespace Geometry {
@@ -19,16 +19,19 @@ namespace DD4hep {
 
 namespace Det {
     
-    class DetModule : public IExtension {
+    class DetModule : public IDetExtension {
     
     public:
         
-        DetModule ()
+        DetModule()
         {}
+        
         DetModule (const DetModule&, const DD4hep::Geometry::DetElement&)
         {}
+        
         virtual ~DetModule()
         {}
+        
     };
 }
 #endif  //DET_MODULE_H

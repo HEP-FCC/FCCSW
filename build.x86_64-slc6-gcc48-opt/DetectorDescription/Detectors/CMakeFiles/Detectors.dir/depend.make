@@ -3,9 +3,10 @@
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetCylinderLayer.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetCylinderVolume.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetModule.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/Extension.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IExtension.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetSensComponent.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h
@@ -175,7 +176,7 @@ DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: /af
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o: ../DetectorDescription/Detectors/src/Barrel_geo.cxx
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetCylinderVolume.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IExtension.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h
@@ -513,9 +514,10 @@ DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Disc_geo.cxx.o: ../De
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetDiscLayer.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetDiscVolume.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetModule.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/Extension.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IExtension.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetSensComponent.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h
@@ -686,9 +688,9 @@ DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetDiscLayer.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetDiscVolume.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetModule.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/Extension.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IExtension.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h
@@ -858,9 +860,9 @@ DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: /af
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o: ../DetectorDescription/Detectors/src/EndCap_geo.cxx
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetCylinderLayer.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/DetModule.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/Extension.h
-DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IExtension.h
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: ../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Callback.h
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o: /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Conditions.h

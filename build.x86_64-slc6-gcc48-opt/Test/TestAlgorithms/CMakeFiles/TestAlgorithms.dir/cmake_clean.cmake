@@ -5,6 +5,11 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/TestAlgorithms.dir/src/RecoGeoTest.cxx.o"
   "CMakeFiles/TestAlgorithms.dir/src/B1PrimaryGeneratorAction.cxx.o"
   "CMakeFiles/TestAlgorithms.dir/src/RecoGeoWrite.cxx.o"
+  "CMakeFiles/TestAlgorithms.dir/src/MaterialRunAction.cxx.o"
+  "CMakeFiles/TestAlgorithms.dir/src/MaterialPrimaryGeneratorAction.cxx.o"
+  "CMakeFiles/TestAlgorithms.dir/src/MaterialSteppingAction.cxx.o"
+  "CMakeFiles/TestAlgorithms.dir/src/MaterialEventAction.cxx.o"
+  "CMakeFiles/TestAlgorithms.dir/src/CompareMaterial.cxx.o"
   "../../lib/libTestAlgorithms.pdb"
   "../../lib/libTestAlgorithms.so"
 )

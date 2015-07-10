@@ -10,6 +10,10 @@
 #define RECO_SENSITIVESURFACE_H
 
 #include "Algebra/AlgPrimitives.h"
+#include "RecoGeometry/ReadoutSegmentation.h"
+#include <memory>
+#include "DD4hep/Detector.h"
+#include "RecoGeometry/Surface.h"
 
 namespace Reco {
     
@@ -27,24 +31,27 @@ namespace Reco {
         SensitiveSurface& operator=(const SensitiveSurface& senssurf);
         //every position on the surface corresponds to a unique bin of this sensitive surface
         //calculates the unique bin in the local 2D grid of the surface corresponding to this local position locpos
-        virtual unsigned long bin(const Alg::Point2D& locpos) const = 0;
+//        unsigned long bin(const Alg::Point2D& locpos) const;
         //returns a global unique ID for this local position on the surface
-        unsigned long long cellID(const Alg::Point2D& locpos) const;
+        long long int cellID(const Alg::Point2D& locpos) const;
         //returns the corresponding local position to this local bin
-        virtual Alg::Point2D binToLocpos(unsigned long bin) const = 0;
+//        Alg::Point2D binToLocpos(unsigned long bin) const;
         //returns the globalposition belonging to this cellID
-        Alg::Point2D locpos(unsigned long long cellID) const;
+        Alg::Point2D locpos(long long int cellID) const;
         //returns the cell width, ba represents the coordinate
-        virtual float binWidth(const Alg::Point2D& locpos, size_t ba=0) const = 0;
-        //returns bin at this position plus the surrounding bins
-        virtual const std::vector<unsigned long> compatibleBins(const Alg::Point2D& locpos) const = 0;
+//        float binWidth(const Alg::Point2D& locpos, size_t ba=0) const;
+        //returns CellID at this position plus the surrounding CellID's
+        const std::set<long long int> neighbours(long long int cellID) const;
+        //returns the surface representation of the sensitive surface
+        virtual const Surface* surfaceRepresentation() const = 0;
+   
     protected:
         
-        SensitiveSurface(unsigned long surfaceID);
+        SensitiveSurface(long long int volumeID, std::shared_ptr<const DD4hep::Geometry::Segmentation> segmentation);
         
         //uniquely identifies the position of the surface in the detector
-        unsigned long m_surfaceID;
-        
+        long long int m_volumeID;
+        std::shared_ptr<const DD4hep::Geometry::Segmentation> m_segmentation;
 //        mutable std::ofstream m_IDs;
     };
 }

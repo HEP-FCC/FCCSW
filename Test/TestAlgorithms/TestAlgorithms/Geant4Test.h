@@ -12,6 +12,14 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "DetDesInterfaces/IGeoSvc.h"
 
+#include "GaudiKernel/ITHistSvc.h"
+#include "TProfile.h"
+#include "TFile.h"
+//std
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+
 class Geant4Test: public GaudiAlgorithm {
     friend class AlgFactory<Geant4Test> ;
     
@@ -28,6 +36,10 @@ public:
 private:
     
     IGeoSvc* m_geoSvc;
+ //   mutable std::ofstream m_radlen;
+ //   ITHistSvc*      m_ths;
+ //   TProfile*       m_tInX0;
+ //   TFile* file;
     
 };
 

@@ -1,6 +1,6 @@
 
 #for the moment only opt mode is working
-#export COMOPT=dbg #opt ## changed
+export COMOPT=opt  #dbg ## changed
 
 #export CMTCONFIG=x86_64-slc6-gcc48-$COMOPT ##changed
 

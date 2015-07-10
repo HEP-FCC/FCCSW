@@ -32,27 +32,23 @@ Reco::Layer::~Layer()
     delete m_surfaces;
 }
 
-const Reco::Surface* Reco::Layer::getModule(const Alg::Point3D& glopos) const
+const Reco::SurfaceVector Reco::Layer::getModules(const Alg::Point3D& glopos) const
 {
-    if (this->onLayer(glopos)) {
-    Alg::Point2D locpos(0.,0.);
-    const Alg::Vector3D mom(0.,0.,0.);
-    if (this->surfaceRepresentation()->globalToLocal(glopos,mom,locpos)) return (m_surfaces->object(locpos));
+    if (m_surfaces && this->onLayer(glopos)) {
+        return (*(m_surfaces->object(glopos)));
+ //       Alg::Point2D locpos(0.,0.);
+ //       const Alg::Vector3D mom(0.,0.,0.);
+ //       if (this->surfaceRepresentation()->globalToLocal(glopos,mom,locpos)) return (m_surfaces->object(locpos));
     }
-    return 0;
+    return SurfaceVector();
 }
 
-const Reco::Surface* Reco::Layer::getModule(const Alg::Point2D& locpos) const
+const Reco::SurfaceVector Reco::Layer::getModules(const Alg::Point2D& locpos) const
 {
     Alg::Point3D glopos(0.,0.,0.);
     const Alg::Vector3D mom(0.,0.,0.);
     this->surfaceRepresentation()->localToGlobal(locpos,mom,glopos);
-    return (Reco::Layer::getModule(glopos));
-}
-
-const std::vector<const Reco::Surface*>& Reco::Layer::getSurfaces() const
-{
-    return (m_surfaces->arrayObjects());
+    return (Reco::Layer::getModules(glopos));
 }
 
 void Reco::Layer::setNextLayer(std::shared_ptr<const Layer> layer) const

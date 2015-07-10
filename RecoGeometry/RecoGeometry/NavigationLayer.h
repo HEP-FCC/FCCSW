@@ -25,12 +25,8 @@ namespace Reco {
         ~NavigationLayer();
         //clone method
         virtual NavigationLayer* clone() const override;
-        //return nullptr
-        virtual const Surface* getModule(const Alg::Point3D& glopos) const;
-        //return nullptr
-        virtual const Surface* getModule(const Alg::Point2D& locpos) const;
         //returns the surface at this position plus the eight surrounding surfaces - returns empty vector
-        virtual const std::vector<const Surface*> compatibleSurfaces(const Alg::Point3D& glopos) const override;
+        virtual const std::vector<Reco::SurfaceVector> compatibleSurfaces(const Alg::Point3D& glopos) const override;
         //set the next layer - spherical direction beginning from center of the detector to outside
         virtual void setNextLayer(std::shared_ptr<const Layer> layer) const override;
         //set the previous layer - spherical direction beginning from center of the detector to outside
