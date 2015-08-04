@@ -64,7 +64,7 @@
         <constant name="rmin2_2" value="214.1*mm"/>
         <constant name="rmax2_2" value="230.9*mm"/>
         <constant name="pixelcounter2_0" value="68"/>
-        <constant name="pixelcounter2_1" value="81"/>
+        <constant name="pixelcounter2_1" value="80"/>
         <constant name="pixelcounter2_2" value="94"/>
         <constant name="zrepeat2" value="7"/>
         <!--Dimensions of EndCaps2-->
@@ -114,16 +114,20 @@
     <!--noetig fuer sensitives detelement-->
     <readouts>
         <readout name="TrackerReadout">
-            <id>system:3,layer:2,module:10,component:2</id>
+            <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
+            <id>system:3,layer:2,module:10,component:2,x:32:-16,y:-16</id>
         </readout>
         <readout name="TrackerBigReadout">
-            <id>system:3,layer:2,module:11,component:2</id>
+            <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
+            <id>system:3,layer:2,module:11,component:2,x:32:-16,y:-16</id>
         </readout>
         <readout name="EndCapReadout">
-            <id>system:3,layer:2,module:6,component:2</id>
+            <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>
+            <id>system:3,layer:2,module:6,component:2,x:32:-16,z:-16</id>
         </readout>
         <readout name="EndCapBigReadout">
-            <id>system:3,layer:2,module:7,component:2</id>
+            <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>
+            <id>system:3,layer:2,module:7,component:2,x:32:-16,z:-16</id>
         </readout>
     </readouts>
     

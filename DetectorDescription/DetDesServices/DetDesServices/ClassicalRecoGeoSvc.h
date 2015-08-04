@@ -118,6 +118,7 @@ private:
     IGeoSvc*                                     m_DD4HepSvc;
     MsgStream                                    m_log;
     mutable std::ofstream                        m_file;
+    
 };
 
 #endif //CLASSICALRECOGEOSVC_H

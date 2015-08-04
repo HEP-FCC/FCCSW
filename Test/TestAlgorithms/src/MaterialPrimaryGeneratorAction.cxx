@@ -65,25 +65,28 @@ void MaterialPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     //hier random generator
     //mit G4UnifotmRand()
 
-    G4int sign  = 1;
+ /*   G4int sign  = 1;
     if (G4UniformRand()>0.5) {
         sign = -1;
     }
-   
+ */
     G4double x0 = 2.*(G4UniformRand()-0.5);
     G4double y0 = 2.*(G4UniformRand()-0.5);
     G4double z0 = 2.*(G4UniformRand()-0.5);
 
     
-   // G4double theta  = (2.8133-0.3282)*G4UniformRand()+0.3282;
-  //  G4double phi    = sign*M_PI*G4UniformRand();
+/*    G4double theta = 0.4;
+    G4double phi   = 0.;*/
+ //   G4double theta  = (2.8133-0.3282)*G4UniformRand()+0.3282;
+ //   G4double phi    = sign*M_PI*G4UniformRand();
     
-   // m_dir = G4ThreeVector(cos(phi)*sin(theta),sin(phi)*sin(theta),cos(theta));
+//    m_dir = G4ThreeVector(cos(phi)*sin(theta),sin(phi)*sin(theta),cos(theta));
  
 //    m_dir = G4ThreeVector(-0.146748,0.11085,0.982943);
     
     
     m_dir = G4ThreeVector(x0,y0,z0);
+    
     
 //    m_dir = G4ThreeVector(1.,0.,0.);
     

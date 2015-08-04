@@ -139,7 +139,7 @@
     <readouts>
         <readout name="B0_Readout">
             <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
-            <id>system:3,layer:2,module:11,component:2,x:32:-16,y:-16</id>
+            <id>system:3,layer:3,module:11,component:2,x:32:-16,y:-16</id>
         </readout>
         <readout name="E0_Readout">
          <!--   <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>-->
@@ -210,7 +210,7 @@
                     <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
                 <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
-                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/.>
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
                     <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
@@ -227,7 +227,7 @@
                     <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-  <!--          <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L2_pos" repeat="E0_L_modulesInPhi">
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L2_pos" repeat="E0_L_modulesInPhi">
                 <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
                     <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
@@ -239,7 +239,7 @@
                     <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-        </detector>-->
+        </detector>
         <!--posEndCap0-->
         <detector id="3" name="pEndCap0" type="Trap_EndCap" readout="E0_Readout" vis="lightblue">
             <status id="1"/>
@@ -280,10 +280,8 @@
                     <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-        </detector>
+        </detector> 
     </detectors>
-    
-    
 </lccdd>
 
 

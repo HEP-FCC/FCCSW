@@ -371,9 +371,9 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
     for (DD4hep::Geometry::DetElement::Children::const_iterator i=children.begin(); i!=children.end(); ++i) {
         
         DD4hep::Geometry::DetElement detelement = (*i).second;
-        Det::IDetExtension* ex = detelement.extension<Det::IDetExtension>();
-        Det::DetCylinderVolume* detcylindervolume = dynamic_cast<Det::DetCylinderVolume*>(ex);
-        Det::DetDiscVolume* detdiscvolume = dynamic_cast<Det::DetDiscVolume*>(ex);
+        Det::IDetExtension* ext = detelement.extension<Det::IDetExtension>();
+        Det::DetCylinderVolume* detcylindervolume = dynamic_cast<Det::DetCylinderVolume*>(ext);
+        Det::DetDiscVolume* detdiscvolume = dynamic_cast<Det::DetDiscVolume*>(ext);
         
         if (detcylindervolume) {
             //l m_out << "detcylindervolume" << std::endl;
@@ -545,9 +545,9 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
     {
         DD4hep::Geometry::DetElement detelement = (*i).second;
         Det::IDetExtension* ext = detelement.extension<Det::IDetExtension>();
-        Det::DetCylinderLayer* detcylinderlayer = dynamic_cast<Det::DetCylinderLayer*>(ext);
+//        Det::DetCylinderLayer* detcylinderlayer = dynamic_cast<Det::DetCylinderLayer*>(ext);
         //CylinderLayer
-        if (detelement.isValid() && detcylinderlayer) {
+        if (detelement.isValid() && ext->type()==Det::ExtensionType::CylinderLayer) {
             //l m_out << "detcylinderlayer" << std::endl;
             DD4hep::Geometry::PlacedVolume placedvolume = detelement.placement();
             TGeoNode* geonode = placedvolume.ptr();
@@ -697,9 +697,9 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
             //           ++m_counter;
         } //if detcyinderlayer
         
-        Det::DetDiscLayer* detdisclayer = dynamic_cast<Det::DetDiscLayer*>(ext);
+//        Det::DetDiscLayer* detdisclayer = dynamic_cast<Det::DetDiscLayer*>(ext);
         //DiscLayer
-        if (detelement.isValid() && detdisclayer) {
+        if (detelement.isValid() && ext->type()==Det::ExtensionType::DiscLayer) {
             //l m_out << "detdisclayer" << std::endl;
             DD4hep::Geometry::PlacedVolume placedvolume = detelement.placement();
             TGeoNode* geonode = placedvolume.ptr();
@@ -865,10 +865,10 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
         m++;
         DD4hep::Geometry::PlacedVolume pv = (*i).second.placement();
         Det::IDetExtension* ext = (*i).second.extension<Det::IDetExtension>();
-        Det::DetModule* detm = dynamic_cast<Det::DetModule*>(ext);
+//        Det::DetModule* detm = dynamic_cast<Det::DetModule*>(ext);
         DD4hep::Geometry::DetElement detelement = (*i).second;
         //MODULE
-        if  (detm) {
+        if  (ext->type()==Det::ExtensionType::Module) {
             //l m_out << "Module" << std::endl;
             //l m_out << "Child from Layer: " << m_counter << ", " << (*i).first << std::endl;
             TGeoNode* node = pv.ptr();
@@ -942,8 +942,8 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                     //calculate the sensitive volume
                                     if(vol.isSensitive()) {
                                         sensper += vol.ptr()->Capacity();
-                                        Det::IDetExtension* extension1 = (*j).second.extension<Det::IDetExtension>();
-                                        Det::DetSensComponent* sens = dynamic_cast<Det::DetSensComponent*>(extension1);
+                                        Det::IDetExtension* ext1 = (*j).second.extension<Det::IDetExtension>();
+                                        Det::DetSensComponent* sens = dynamic_cast<Det::DetSensComponent*>(ext1);
                                         if (sens) {
                                             seg = std::make_shared<const DD4hep::Geometry::Segmentation>(sens->segmentation());
                                         }
@@ -965,6 +965,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                                 Z         += mat.density()*mat.Z();
                                                 density   += mat.density()*t;
                                                 sumdens   += mat.density();
+                                            //    std::cout << "A: " << mat.A() << " Z: " << mat.Z() << " lambda: " << mat.intLength() << " RL: " << mat.radLength() << std::endl;
                                             }
                                         }
                                         
@@ -1091,8 +1092,8 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                     //calculate the sensitive volume
                                     if(vol.isSensitive()) {
                                         sensper += vol.ptr()->Capacity();
-                                        Det::IDetExtension* extension1 = (*j).second.extension<Det::IDetExtension>();
-                                        Det::DetSensComponent* sens = dynamic_cast<Det::DetSensComponent*>(extension1);
+                                        Det::IDetExtension* ext1 = (*j).second.extension<Det::IDetExtension>();
+                                        Det::DetSensComponent* sens = dynamic_cast<Det::DetSensComponent*>(ext1);
                                         if (sens) {
                                             seg = std::make_shared<const DD4hep::Geometry::Segmentation>(sens->segmentation());
                                         }

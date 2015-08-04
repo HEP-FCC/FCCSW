@@ -67,8 +67,10 @@ const std::vector<Reco::SurfaceVector> Reco::CylinderLayer::compatibleSurfaces(c
     Trk::BinUtility binutil(*(m_surfaces->binUtility()));
     int m = binutil.bin(glopos,0);
     int n = binutil.bin(glopos,1);
+ //   std::cout << "CylinderLayer::compatibleSurfaces:: " << " m: " << m << " n: " << n << std::endl;
     int maxPhi   = binutil.bins(0);
     int maxZ     = binutil.bins(1);
+ //   std::cout << "maxPhi: " << maxPhi << " maxZ: " << maxZ << std::endl;
     int k        = 0;
     for (int i = m-1; i<=m+1; i++) {
         if (i==-1)          k = maxPhi-1;
@@ -76,6 +78,7 @@ const std::vector<Reco::SurfaceVector> Reco::CylinderLayer::compatibleSurfaces(c
         else k = i;
             for (int j = n-1; j<=n+1; j++) {
                 if (j>=0 && j<maxZ) {
+         //           std::cout << "k: " << k << " j: " << j << std::endl;
                     phi = binutil.bincenter(k,0);
                     z   = binutil.bincenter(j,1);
                     std::vector<std::shared_ptr<const Reco::Surface>> surf(*m_surfaces->object(Alg::Point3D(r*cos(phi),r*sin(phi),z)));

@@ -1,4 +1,4 @@
-#Wed Jul  8 10:14:45 2015"""Automatically generated. DO NOT EDIT please"""
+#Mon Aug  3 17:27:51 2015"""Automatically generated. DO NOT EDIT please"""
 from GaudiKernel.Proxy.Configurable import *
 
 class GaussDigitizer( ConfigurableAlgTool ) :

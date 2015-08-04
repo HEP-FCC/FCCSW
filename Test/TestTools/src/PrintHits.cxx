@@ -189,17 +189,17 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
         }
     }
 
-    m_tInX0Prof = new TProfile("tInX0", "tInX0 over Eta", 5000, -10., 10.);
+    m_tInX0Prof = new TProfile("tInX0", "tInX0 over Eta", 3000, -10., 10.);
     if (m_ths->regHist("tInX0", m_tInX0Prof).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
     
-    m_pathProf = new TProfile("Pathlength", "Pathlength over Eta", 5000, -10., 10.);
+    m_pathProf = new TProfile("Pathlength", "Pathlength over Eta", 3000, -10., 10.);
     if (m_ths->regHist("Pathlength", m_pathProf).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
     
-    m_hitsProf = new TProfile("Hits", "Hits over Eta", Nevents, -10.,10.);
+    m_hitsProf = new TProfile("Hits", "Hits over Eta", 3000, -10.,10.);
     if (m_ths->regHist("Hits", m_hitsProf).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
@@ -245,17 +245,17 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
         }
     }
     
-    m_tInX0Prof1 = new TProfile("tInX01", "tInX0 over Eta", 5000, -10., 10.);
+    m_tInX0Prof1 = new TProfile("tInX01", "Thickness in x0 over Eta", 100, -4., 4.);
     if (m_ths->regHist("tInX01", m_tInX0Prof1).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
     
-    m_pathProf1 = new TProfile("Pathlength1", "Pathlength in Eta", 5000, -10., 10.);
+    m_pathProf1 = new TProfile("Pathlength1", "Pathlength in Eta", 100, -4., 4.);
     if (m_ths->regHist("Pathlength1", m_pathProf1).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
     
-    m_hitsProf = new TProfile("Hits", "Hits over Eta", 5000, -10.,10.);
+    m_hitsProf = new TProfile("Hits", "Hits over Eta", 100, -4.,4.);
     if (m_ths->regHist("Hits", m_hitsProf).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
@@ -268,7 +268,7 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
         m_pathlength1 = 0.;
         m_counter = 0;
         m_hits = 0;
-        double eta = dir.Eta();
+        double eta = dir.eta();
  /*       std::cout << "---------------------------------------------" << std::endl;
         std::cout << "-----------------new direction---------------" << std::endl;
         std::cout << dir << std::endl;

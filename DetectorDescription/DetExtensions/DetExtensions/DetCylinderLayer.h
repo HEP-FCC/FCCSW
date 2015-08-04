@@ -1,13 +1,13 @@
 //
-//  DetLayer.h
+//  DetCylinderLayer.h
 //  
 //
 //  Created by Julia Hrdinka on 12/12/14.
 //
 //
 
-#ifndef DET_DETLAYER_H
-#define DET_DETLAYER_H
+#ifndef DET_DETCYLINDERLAYER_H
+#define DET_DETCYLINDERLAYER_H
 
 #include "DetExtensions/IDetExtension.h"
 
@@ -32,9 +32,14 @@ namespace Det {
         
         virtual ~DetCylinderLayer()
         {}
+        
+        virtual ExtensionType type()
+        {
+            return ExtensionType::CylinderLayer;
+        }
     };
 }
 
 
 
-#endif //DET_DETLAYER_H
+#endif //DET_DETCYLINDERLAYER_H

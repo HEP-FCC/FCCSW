@@ -1,6 +1,6 @@
 FILE(REMOVE_RECURSE
-  "CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o"
   "CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o"
+  "CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o"
   "../../lib/libDetDesServices.pdb"
   "../../lib/libDetDesServices.so"
 )

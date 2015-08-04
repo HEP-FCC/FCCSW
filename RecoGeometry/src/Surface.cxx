@@ -144,6 +144,7 @@ double Reco::Surface::pathlength(const Alg::Vector3D& dir) const
     if (phi!=0.5*M_PI) {
         double theta = (0.5*M_PI)-phi;
         pathlength = 2.*(halfThickness()/(sin(theta)));
+//        std::cout << "Phi: " << phi << " Theta: " << theta << " halfthickness: " << halfThickness() << " dir: " << dir << " phi: " << phi << " normal: " << n << std::endl;
         if (pathlength<0.) {
   //          std::cout << "negativ! Theta: " << theta << " halfthickness: " << halfThickness() << " dir: " << dir << " phi: " << phi << " normal: " << n << std::endl;
         }

@@ -18,6 +18,12 @@
 #include "g4root.hh"
 #include "Algebra/AlgPrimitives.h"
 
+
+//std
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+
 class G4Run;
 
 class MaterialRunAction : public G4UserRunAction
@@ -40,6 +46,7 @@ private:
     std::vector<Alg::Vector3D> m_directions;
 //    ITHistSvc*      m_ths;
 //    TProfile*       m_tInX0;
+    mutable std::ofstream                           m_out;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

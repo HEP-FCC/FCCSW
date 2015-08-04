@@ -89,9 +89,11 @@ const Reco::Volume* RecoGeoTest::scanVolumes(const Reco::Volume* volume, const A
 
 const Alg::Vector3D RecoGeoTest::randomdir() const
 {
-    double phi   = flatrand(0.,2.*M_PI);
+    double phi   = 0.;//flatrand(0.,2.*M_PI);
 //    double theta = flatrand(-0.4282,0.4282);
-    double theta = flatrand(0.,M_PI);
+//    double theta = flatrand(0.,M_PI);
+    double theta = 0.4;
+//    double theta = flatrand(0.5237,2.6874);
   //  double theta = flatrand(2.69,M_PI);
 //    double theta = flatrand(-1.24253,1.24253);
 //    double theta = flatrand(1.68,1.9);
@@ -104,7 +106,7 @@ const Alg::Vector3D RecoGeoTest::randomdir() const
 StatusCode RecoGeoTest::intersect(const Reco::Volume* volume, Alg::Point3D& glopos, const Alg::Vector3D& dir) const
 {
     if (volume) {
-//o        std::cout << "############# entered volume: #############" << volume->center() << " RMax: " << volume->getCoordinate(Reco::CylinderVolume::Rmax) << std::endl; //b
+        std::cout << "############# entered volume: #############" << volume->center() << " RMax: " << volume->getCoordinate(Reco::CylinderVolume::Rmax) << std::endl; //b
         std::vector<const Reco::Layer*> materialLayers = volume->materialLayersOrdered(glopos,dir,0.);
         if (materialLayers.empty()) {
             //std::cout << "no material try go to next volume" << std::endl; //b
@@ -124,17 +126,18 @@ StatusCode RecoGeoTest::intersect(const Reco::Volume* volume, Alg::Point3D& glop
             }
         }
         else {
-//o          std::cout << "$$$$$$$$$$$$$ materiallayers, try to intersect with surfaces $$$$$$$$$$$$$" << std::endl; //b
+          std::cout << "$$$$$$$$$$$$$ materiallayers, try to intersect with surfaces $$$$$$$$$$$$$" << std::endl; //b
             for (auto layer_it : materialLayers) {
                     Trk::Intersection layerintersect(layer_it->surfaceRepresentation()->straightLineIntersection(glopos,dir,true));
                     if (layerintersect.onSurface) {
                         Alg::Point3D layerpoint = layerintersect.position;
                         m_layers << layerpoint.X() << " " << layerpoint.Y() << " " << layerpoint.Z() << std::endl;
+                        std::cout << "layerpoint: " << layerpoint << std::endl;
                         std::vector<Reco::SurfaceVector> csurfaces = layer_it->compatibleSurfaces(layerpoint);
- //o                      std::cout << "try to intersect surfaces: " << csurfaces.size() << std::endl; //b
+                       std::cout << "try to intersect surfaces: " << csurfaces.size() << std::endl; //b
                         for (auto vector_it : csurfaces)
                         {
- //o                           std::cout << " with: " << vector_it.size() <<std::endl; //b
+                            std::cout << " with: " << vector_it.size() <<std::endl; //b
                             for (auto surf_it : vector_it)
                             {
                                 if (surf_it) {
@@ -167,6 +170,7 @@ bool RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Point3D& g
 {
     Trk::Intersection intersection(surface.straightLineIntersection(glopos,dir,true));
     bool result = false;
+    std::cout << "surface center: " << surface.center() << std::endl;
     if (intersection.onSurface) {
         result = true;
         const Alg::Point3D intersectPoint = intersection.position;
@@ -179,10 +183,10 @@ bool RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Point3D& g
  //h       m_modules << 0.5*M_PI-acos(dir.Dot(surface.normal())) << std::endl;
         Alg::Point2D locpos(0.,0.);
         if(surface.globalToLocal(intersectPoint, dir, locpos)) {
-            m_tInX0 += (surface.material(locpos)->tInX0())*(surface.pathlength(intersectPoint,dir)/(2.*surface.halfThickness()));
+            m_tInX0 += (surface.material(locpos)->tInX0());//*(surface.pathlength(intersectPoint,dir)/(2.*surface.halfThickness()));
             m_pathlength += surface.pathlength(intersectPoint,dir);
-//o            std::cout << "@@@@@@@@ INTERSECTED " << "R:" << sqrt(intersectPoint.X()*intersectPoint.X()+intersectPoint.Y()*intersectPoint.Y()) << " surface: " << surface.center() << " SUCCESSFULL: " << intersectPoint << std::endl;//b
-//o            std::cout << "halfThickness: " << surface.halfThickness() << " pathlength1: " << surface.pathlength(intersectPoint,dir) << " pathlength2: " << m_pathlength << " tInX0: " << m_tInX0 << std::endl;//b
+            std::cout << "@@@@@@@@ INTERSECTED " << "R:" << sqrt(intersectPoint.X()*intersectPoint.X()+intersectPoint.Y()*intersectPoint.Y()) << " surface: " << surface.center() << " SUCCESSFULL: " << intersectPoint << std::endl;//b
+            std::cout << "halfThickness: " << surface.halfThickness() << " pathlength1: " << surface.pathlength(intersectPoint,dir) << " pathlength2: " << m_pathlength << " tInX0: " << m_tInX0 << std::endl;//b
  //v           std::cout << " tInX0: " << m_tInX0 << std::endl;
         }
  /*       ParticleHandle& part = m_particlecoll->create();
@@ -205,11 +209,11 @@ bool RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Point3D& g
 
 const Reco::Volume* RecoGeoTest::nextVolume(std::weak_ptr<const Reco::BoundarySurface> surf, Alg::Point3D& glopos , const Alg::Vector3D& dir, bool& success) const
 {
-//o    std::cout << "next volume" <<  std::endl; //b
+    std::cout << "next volume" <<  std::endl; //b
     if (std::shared_ptr<const Reco::BoundarySurface> surface = surf.lock()) {
         if (surface->surfaceRepresentation()) {
             glopos = glopos+0.0000000001*dir;
-//o            std::cout << "at: " << glopos << std::endl; //b
+            std::cout << "at: " << glopos << std::endl; //b
             Trk::Intersection intersection(surface->surfaceRepresentation()->straightLineIntersection(glopos,dir,true));
             if (intersection.onSurface) {
                 success = false;
@@ -254,16 +258,21 @@ StatusCode RecoGeoTest::execute() {
             error() << "Couldn't register Histogram" << endmsg;
         }
         
-        for (int i = 0; i < 150000; i++) {
+        Alg::Vector3D dir = randomdir();
+        std::cout << "___________________new direction" << dir << " theta: " << dir.Theta()  <<  "___________________: " << std::endl;
+        intersect(volume, start, dir);
+        
+  /*      for (int i = 0; i < 150000; i++) {
             start.SetCoordinates(0.,0.,0.);
             m_tInX0 = 0.;
             m_pathlength = 0.;
             Alg::Vector3D dir = randomdir();
-//o            std::cout << "___________________new direction" << dir << " theta: " << dir.Theta()  <<  "___________________: " << std::endl;
+            std::cout << "___________________new direction" << dir << " theta: " << dir.Theta()  <<  "___________________: " << std::endl;
             intersect(volume, start, dir);
             double eta = dir.Eta();
             m_profile->Fill(eta,m_tInX0);
         }
+        */
    /*     start.SetCoordinates(0.,0.,0.);
         std::cout << "new direction: " << dir1 << std::endl;
         intersect(volume,start,dir1);

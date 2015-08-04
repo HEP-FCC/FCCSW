@@ -129,7 +129,8 @@
   <atom type="A" unit="g/mol" value="12.0107" />
  </element>
  <material formula="C" name="Carbon" state="solid" >
-  <RL type="X0" unit="cm" value="21.3485" />
+<!--  <RL type="X0" unit="cm" value="21.3485" />-->
+  <RL type="X0" unit="cm" value="50.3485" />
   <NIL type="lambda" unit="cm" value="40.1008" />
   <D type="density" unit="g/cm3" value="2" />
   <composite n="1" ref="C" />

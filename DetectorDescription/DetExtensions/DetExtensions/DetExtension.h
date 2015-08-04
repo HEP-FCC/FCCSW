@@ -1,5 +1,5 @@
 //
-//  Extension.h
+//  DetExtension.h
 //  
 //
 //  Created by Julia Hrdinka on 12/12/14.
@@ -29,7 +29,10 @@ namespace Det {
         {}
         virtual ~DetExtension()
         {}
-        
+        virtual ExtensionType type()
+        {
+            return ExtensionType::None;
+        }
     };
 }
 #endif //DET_DETEXTENSION_H

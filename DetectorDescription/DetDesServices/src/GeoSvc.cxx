@@ -16,7 +16,7 @@ GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) :
 base_class(name, svc),
 m_dd4hepgeo(0),
 m_geant4geo(0),
-m_xmlFileName("file:DetectorDescription/Detectors/compact/FCCTestTracker.xml"), //over joboptions
+m_xmlFileName("file:DetectorDescription/Detectors/compact/TestTracker_sameMat.xml"), //over joboptions
 m_log(msgSvc(), name)
 {}
 

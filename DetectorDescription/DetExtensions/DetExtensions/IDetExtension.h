@@ -12,12 +12,24 @@
 
 namespace Det {
     
+    enum ExtensionType {
+        
+        None           = 0,
+        CylinderVolume = 1,
+        DiscVolume     = 2,
+        CylinderLayer  = 3,
+        DiscLayer      = 4,
+        Module         = 5,
+        SensComponent  = 6
+    };
+    
     class IDetExtension {
     
     public:
         
         virtual ~IDetExtension()
         {}
+        virtual ExtensionType type() = 0;
         
     protected:
         

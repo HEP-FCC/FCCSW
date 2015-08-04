@@ -36,6 +36,10 @@ namespace Det {
         {
             return m_status;
         }
+        virtual ExtensionType type()
+        {
+            return ExtensionType::CylinderVolume;
+        }
         
     private:
         

@@ -64,7 +64,7 @@
         <constant name="rmin2_2" value="214.1*mm"/>
         <constant name="rmax2_2" value="230.9*mm"/>
         <constant name="pixelcounter2_0" value="68"/>
-        <constant name="pixelcounter2_1" value="81"/>
+        <constant name="pixelcounter2_1" value="80"/>
         <constant name="pixelcounter2_2" value="94"/>
         <constant name="zrepeat2" value="7"/>
         <!--Dimensions of EndCaps2-->

@@ -52,32 +52,9 @@ include DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/progres
 # Include the compile flags for this target's objects.
 include DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/flags.make
 
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/flags.make
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o: ../DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx
-
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.i"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx > CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.i
-
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.s"
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx -o CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.s
-
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires:
-.PHONY : DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires
-
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires
-	$(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides.build
-.PHONY : DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides
-
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides.build: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o
-
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/flags.make
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o: ../DetectorDescription/DetDesServices/src/GeoSvc.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o"
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/GeoSvc.cxx
 
@@ -98,16 +75,39 @@ DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.
 
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o.provides.build: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o
 
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/flags.make
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o: ../DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx
+
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx > CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.i
+
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/DetDesServices && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/DetDesServices/src/ClassicalRecoGeoSvc.cxx -o CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.s
+
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires:
+.PHONY : DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires
+
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires
+	$(MAKE) -f DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides.build
+.PHONY : DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides
+
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.provides.build: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o
+
 # Object files for target DetDesServices
 DetDesServices_OBJECTS = \
-"CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o" \
-"CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o"
+"CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o" \
+"CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o"
 
 # External object files for target DetDesServices
 DetDesServices_EXTERNAL_OBJECTS =
 
-lib/libDetDesServices.so: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o
 lib/libDetDesServices.so: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o
+lib/libDetDesServices.so: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o
 lib/libDetDesServices.so: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build.make
 lib/libDetDesServices.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
 lib/libDetDesServices.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiKernel.so
@@ -201,8 +201,8 @@ lib/libDetDesServices.so: DetectorDescription/DetDesServices/CMakeFiles/DetDesSe
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build: lib/libDetDesServices.so
 .PHONY : DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/build
 
-DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/requires: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/requires: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/GeoSvc.cxx.o.requires
+DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/requires: DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/src/ClassicalRecoGeoSvc.cxx.o.requires
 .PHONY : DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/requires
 
 DetectorDescription/DetDesServices/CMakeFiles/DetDesServices.dir/clean:

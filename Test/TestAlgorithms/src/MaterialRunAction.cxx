@@ -54,6 +54,7 @@ void MaterialRunAction::BeginOfRunAction(const G4Run* aRun)
 {
     G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
     
+    m_out.open ("geant4hits.dat", std::ofstream::out);
     //initialize event cumulative quantities
     MaterialEventAction::Instance()->Reset();
 }
@@ -71,7 +72,7 @@ void MaterialRunAction::EndOfRunAction(const G4Run* aRun)
  //   if(!file->IsOpen()) throw GaudiException("Could not open Root file", name(), sc);
     
     std::vector<std::pair<G4double, G4ThreeVector>> tvector(MaterialEventAction::Instance()->GetTInX0());
-    TProfile* tInX0 = new TProfile("G4::tInX0", "G4::tInX0 over Eta", 5000, -10., 10.);
+    TProfile* tInX0 = new TProfile("G4::tInX0", "G4::tInX0 over Eta", 100, -4.,4.);
     for (auto& it : tvector)
     {
         tInX0->Fill(it.second.eta(),it.first);
@@ -81,7 +82,7 @@ void MaterialRunAction::EndOfRunAction(const G4Run* aRun)
 
     
     std::vector<std::pair<G4double, G4ThreeVector>> pvector(MaterialEventAction::Instance()->GetPathlength());
-    TProfile* pathlength = new TProfile("G4::Pathlength", "G4::Pathlength over Eta", 5000, -10,10);
+    TProfile* pathlength = new TProfile("G4::Pathlength", "G4::Pathlength over Eta", 100, -4,4);
     for (auto& it : pvector)
     {
         pathlength->Fill(it.second.eta(),it.first);
@@ -89,7 +90,7 @@ void MaterialRunAction::EndOfRunAction(const G4Run* aRun)
     pathlength->Write();
     
     std::vector<std::pair<G4int, G4ThreeVector>> hvector(MaterialEventAction::Instance()->GetHits());
-    TProfile* hits = new TProfile("G4::Hits", "G4::Hits over Eta", 5000, -10,10);
+    TProfile* hits = new TProfile("G4::Hits", "G4::Hits over Eta", 100, -4,4);
     for (auto& it : hvector)
     {
         hits->Fill(it.second.eta(),it.first);
@@ -104,6 +105,13 @@ void MaterialRunAction::EndOfRunAction(const G4Run* aRun)
     << "\n--------------------End of Run------------------------------\n"
     << "\n------------------------------------------------------------\n"
     << G4endl;
+    
+    std::vector<G4ThreeVector> pos = MaterialSteppingAction::Instance()->GetPos();
+    
+    for (auto& it : pos) {
+     m_out << it.x() << " " << it.y() << " " << it.z() << std::endl;
+    }
+    m_out.close();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

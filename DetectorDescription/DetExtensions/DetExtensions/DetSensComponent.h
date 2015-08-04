@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef DET_DETSENSCOMPINENT_H
-#define DET_DETSENSCOMPINENT_H
+#ifndef DET_DETSENSCOMPONENT_H
+#define DET_DETSENSCOMPONENT_H
 
 #include "DetExtensions/IDetExtension.h"
 #include <memory>
@@ -27,7 +27,9 @@ namespace Det {
         
         DetSensComponent(const DD4hep::Geometry::Segmentation segmentation) :
         m_segmentation(segmentation)
-        {}
+        {
+            
+        }
         DetSensComponent (const DetSensComponent&, const DD4hep::Geometry::DetElement&)
         {}
         virtual ~DetSensComponent()
@@ -36,6 +38,10 @@ namespace Det {
         {
             return (m_segmentation);
         }
+        virtual ExtensionType type()
+        {
+            return ExtensionType::SensComponent;
+        }
         
     private:
         
@@ -43,4 +49,4 @@ namespace Det {
     };
 }
 
-#endif //DET_DETSENSCOMPINENT_H
+#endif //DET_DETSENSCOMPONENT_H

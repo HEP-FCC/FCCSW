@@ -56,20 +56,25 @@ void MaterialSteppingAction::UserSteppingAction(const G4Step* step)
        // steplength = step->GetStepLength();
         G4double radlength  = step->GetPreStepPoint()->GetTouchableHandle()
         ->GetVolume()->GetLogicalVolume()->GetMaterial()->GetRadlen();
+    //    m_tInX0 = radlength;
         m_tInX0 += steplength/radlength;
     //    steplength = steplength/cm;
         m_pathlength += steplength;
+        
+  /*      G4cout << " Mat: " << material << " A: " << step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetMaterial()->GetA() << " Z: " << step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetMaterial()->GetZ() << " lambda: "<< step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetMaterial()->GetNuclearInterLength()  <<   " RL: " << m_tInX0 << G4endl;*/
     }
     G4VSensitiveDetector* sensdet= step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetSensitiveDetector();
-    G4Step* g4step = const_cast<G4Step*>(step);
-    if (sensdet) m_hits++;
+    if (sensdet) {
+        m_hits++;
+        m_pos.push_back(step->GetPreStepPoint()->GetPosition());
+    }
 /*    if(sensdet && sensdet->Hit(g4step)) {
       m_hits++;
         G4cout << "HIT" << std::endl;
     }*/
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
     G4double r = sqrt(position.x()*position.x()+position.y()*position.y());
-//    G4cout << "R: " << r << " Point: " << step->GetPreStepPoint() << " Mat: " << material << " SL: " << steplength << " PL: " << m_pathlength <<  " RL: " << m_tInX0 << G4endl;
+  //  G4cout << "R: " << r << " Point: " << step->GetPreStepPoint() << " Mat: " << material << " SL: " << steplength << " PL: " << m_pathlength << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -22,6 +22,33 @@ void printTuple (const char* file, const char* draw, int color = 0, const char* 
     ntuple->Draw(draw, drawcase, drawopt);
 }
 
+
+/*
+ cd /afs/cern.ch/work/j/jhrdinka/Backup_FCCSW_22_Jan/
+ 
+ 
+ 
+ TFile f("histogram.root")
+ TH2F* t2 = (TH2F*)f.Get("Thickness")
+ 
+ // number of colours (here black & white)
+ const UInt_t Number = 2;
+ // define colour black and white (rgb):
+ Double_t Red[Number]   = { 0.00, 1.00};
+ Double_t Green[Number] = { 0.00, 1.00};
+ Double_t Blue[Number]  = { 0.00, 1.00};
+ // define what are the start/end points of each colour - for 2 colours obvoiusly (0,1)
+ Double_t Stops[Number] = { 0.00, 1.00};
+ // number of colours generated in a pallette (the smaller, the less difference on z axis)
+ Int_t nb=50;
+ TColor::CreateGradientColorTable(Number,Stops,Red,Green,Blue,nb)
+ 
+ t2->Draw("colz")
+ 
+ 
+ 
+ */
+
 //example: .x printTuple.cxx(“modules.dat","x:y:z",1)
 
 

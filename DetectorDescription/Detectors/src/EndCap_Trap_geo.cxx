@@ -119,9 +119,6 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                 if (x_comp.isSensitive()) {
                     comp_vol.setSensitiveDetector(sens);
                     //add Extension for sensitive component
-           //         if (sens.readout().segmentation()) std::cout << "readout" << std::endl;
-           //         else std::cout << "no readout" << std::endl;
-                    
                     Segmentation segmentation(sens.readout().segmentation());
                     Det::DetSensComponent* ex = new Det::DetSensComponent(segmentation);
                     comp_det.addExtension<Det::IDetExtension> (ex);

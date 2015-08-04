@@ -14,6 +14,14 @@ DetExtensions/IDetExtension.h
 DetExtensions/IDetExtension.h
 ../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
 
+../DetectorDescription/DetExtensions/DetExtensions/DetDiscLayer.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
+
+../DetectorDescription/DetExtensions/DetExtensions/DetDiscVolume.h
+DetExtensions/IDetExtension.h
+../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
+
 ../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
 DetExtensions/IDetExtension.h
 ../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
@@ -1505,4 +1513,26 @@ DetExtensions/DetCylinderVolume.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetCylinderVolume.h
 DetExtensions/DetSensComponent.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetSensComponent.h
+
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/EndCap_Trap_geo.cxx
+DD4hep/DetFactoryHelper.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DD4hep/DetFactoryHelper.h
+DD4hep/TGeoUnits.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DD4hep/TGeoUnits.h
+DetExtensions/DetDiscLayer.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetDiscLayer.h
+DetExtensions/DetModule.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetModule.h
+DetExtensions/DetExtension.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetExtension.h
+DetExtensions/DetDiscVolume.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetDiscVolume.h
+DetExtensions/DetSensComponent.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetSensComponent.h
+iostream
+-
+fstream
+-
+stdlib.h
+-
 
