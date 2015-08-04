@@ -39,10 +39,6 @@ export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/
 source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh
 
 # add DD4hep
-<<<<<<< HEAD
-source /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/bin/thisdd4hep.sh
-source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6/setup.sh
-=======
 source /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-14/bin/thisdd4hep.sh
 source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6/setup.sh
->>>>>>> official/master
+
