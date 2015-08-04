@@ -11,6 +11,6 @@ find_package(ROOT COMPONENTS Physics)
 
 gaudi_add_module(Reconstruction
                  src/*.cpp
-                 INCLUDE_DIRS FastJet ROOT
+                 INCLUDE_DIRS FastJet ROOT FWCore
                  LINK_LIBRARIES Fastjet ROOT GaudiAlgLib DataObjects)
 

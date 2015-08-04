@@ -81,7 +81,7 @@ StatusCode HepMCJetClustering::initialize() {
 }
 
 StatusCode HepMCJetClustering::execute() {
-        auto theEvent = m_hepmchandle.get()->getEvent();
+        auto theEvent = m_hepmchandle.get();
 
     //setup input for fastjet
     std::vector<PseudoJet> input;

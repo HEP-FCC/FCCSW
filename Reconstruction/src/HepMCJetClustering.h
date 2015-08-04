@@ -3,8 +3,8 @@
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "DataObjects/PseudoJetEntry.h"
-#include "DataObjects/HepMCEntry.h"
-#include "GaudiKernel/DataObjectHandle.h"
+#include "HepMC/GenEvent.h"
+#include "FWCore/DataHandle.h"
 
 #include "fastjet/JetDefinition.hh"
 
@@ -22,7 +22,7 @@ public:
   virtual StatusCode finalize();
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<HepMCEntry> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle;
 
   /// Handle for PseudoJets to be produced
   DataObjectHandle<PseudoJetEntry> m_jets;

@@ -32,7 +32,7 @@ public:
   /**
    * Retrieve object from transient data store
    */
-  T* get();
+  const T* get();
 
   /**
    * Register object in transient store
@@ -55,7 +55,7 @@ DataHandle<T>::DataHandle() {}
  * static cast: we do not need the checks of the dynamic cast for every access!
  */
 template<typename T>  
-T* DataHandle<T>::get() {
+const T* DataHandle<T>::get() {
   return DataObjectHandle<DataWrapper<T> >::get()->getData();
 }
   
