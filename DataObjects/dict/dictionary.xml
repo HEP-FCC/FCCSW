@@ -1,0 +1,11 @@
+<lcgdict>
+  <selection>
+    <class name="albers::Registry">
+      <field name="m_reader"  transient="true"/>
+      <field name="m_addresses"  transient="true"/>
+      <field name="m_collections"  transient="true"/>
+    </class>
+  </selection>
+  <exclusion>
+  </exclusion>
+</lcgdict>
