@@ -2,6 +2,7 @@
 #include "GaudiKernel/IConversionSvc.h"
 
 #include "FWCore/AlbersDataSvc.h"
+#include "FWCore/DataWrapper.h"
 
 /// Service initialisation
 StatusCode AlbersDataSvc::initialize()    {
@@ -41,13 +42,14 @@ AlbersDataSvc::AlbersDataSvc(const std::string& name,ISvcLocator* svc):
 AlbersDataSvc::~AlbersDataSvc() {
 }
 
-StatusCode AlbersDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
-  albers::CollectionBase* coll = dynamic_cast<albers::CollectionBase*>(pObject);
+StatusCode AlbersDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {  
+  DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
+  albers::CollectionBase* coll=0;
   if (coll!=0){
     size_t pos = fullPath.find_last_of("/");
     std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
-    m_registry.registerPOD(coll, shortPath);
-			  m_collections.emplace_back(std::make_pair(shortPath,coll)); 
+    //    m_registry.registerPOD(coll, shortPath);
+    //			  m_collections.emplace_back(std::make_pair(shortPath,coll)); 
   }
   return DataSvc::registerObject(fullPath,pObject);
 }

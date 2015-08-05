@@ -13,6 +13,13 @@ else
     echo "FCC root:    $FCCBASE"
 fi
 
+if [[ "x$FCCEDM" == "x" ]]; then
+    echo "Need to set the FCCEDM environment variable to the path of the FCC EDM software."
+    return 1
+else
+    echo "FCCEDM:    $FCCEDM"
+fi
+
 # set up CMake:
 export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:$PATH
 #export CMAKEFLAGS='-DCMAKE_USE_CCACHE=ON'

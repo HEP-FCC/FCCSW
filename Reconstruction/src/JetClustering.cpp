@@ -9,13 +9,13 @@
 
 // using namespace fastjet;
 
-#include "DataObjects/ParticleCollection.h"
-#include "DataObjects/BareParticle.h"
-#include "DataObjects/JetCollection.h"
-#include "DataObjects/MCParticleCollection.h"
-#include "DataObjects/GenJetCollection.h"
-#include "DataObjects/JetParticleAssociationCollection.h"
-#include "DataObjects/GenJetParticleAssociationCollection.h"
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/BareParticle.h"
+#include "datamodel/JetCollection.h"
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenJetCollection.h"
+#include "datamodel/JetParticleAssociationCollection.h"
+#include "datamodel/GenJetParticleAssociationCollection.h"
 
 typedef JetClustering<ParticleCollection, JetCollection, JetParticleAssociationCollection> ParticleJetClustering;
 typedef JetClustering<MCParticleCollection, GenJetCollection, GenJetParticleAssociationCollection> MCParticleGenJetClustering;

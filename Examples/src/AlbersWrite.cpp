@@ -21,11 +21,11 @@ StatusCode AlbersWrite::initialize() {
 StatusCode AlbersWrite::execute() {
   JetCollection* jets = new JetCollection();
   LorentzVector lv1;
-  lv1.Phi  = 0;
-  lv1.Eta  = 1 ;
+  lv1.Px  = 20.;
+  lv1.Py  = 20. ;
   lv1.Mass = 125;
-  lv1.Pt   = 50.;  
-  JetHandle& j1 = jets->create(); 
+  lv1.Pz   = 0.;  
+  JetHandle j1 = jets->create(); 
   BareJet& core = j1.mod().Core;
   core.P4 = lv1;
   m_jethandle.put(jets);

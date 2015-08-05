@@ -4,6 +4,7 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/DataObjectHandle.h"
 
+#include "FWCore/DataHandle.h"
 #include "fastjet/JetDefinition.hh"
 #include "fastjet/ClusterSequence.hh"
 #include "fastjet/AreaDefinition.hh"
@@ -31,13 +32,13 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<P> m_genphandle;
+  DataHandle<P> m_genphandle;
 
   /// Handle for PseudoJets to be produced
-  DataObjectHandle<J> m_jets;
+  DataHandle<J> m_jets;
 
   /// Handle for particle-jet associations to be produced
-  DataObjectHandle<A> m_assocs;
+  DataHandle<A> m_assocs;
 
   /// Name for the jet algorithm to be used 
   std::string m_jetAlgorithm; 
@@ -209,7 +210,7 @@ template< class P, class J, class A>
   for(const auto& pjet : pjets) {
     if(m_verbose)
       std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
-    auto& jet = jets->create();
+    auto jet = jets->create();
     BareJet& core = jet.mod().Core; 
     core.P4.Pt = pjet.pt();
     core.P4.Eta = pjet.eta();
@@ -223,7 +224,7 @@ template< class P, class J, class A>
     for(const auto& constit : constituents) {
       if(m_verbose) 
 	std::cout<<"\t"<<constit.user_index()<<std::endl;
-      auto& assoc = assocs->create();
+      auto assoc = assocs->create();
       assoc.mod().Jet = jet;
       assoc.mod().Particle = particles->get(constit.user_index());
     }
