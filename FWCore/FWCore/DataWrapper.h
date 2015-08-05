@@ -1,14 +1,15 @@
 #ifndef FWCORE_DATAWRAPPER_H
 #define FWCORE_DATAWRAPPER_H
 
-#include <typeinfo>
-
 //Include files
 #include "GaudiKernel/DataObject.h"
+#include "albers/CollectionBase.h"
 
 class GAUDI_API DataWrapperBase : public DataObject {
  public:
-   virtual const std::type_info& wrappedTypeID() = 0;
+   // ugly hack to circumvent the usage of boost::any yet 
+   // DataSvc would need a templated register method 
+   virtual albers::CollectionBase* collectionBase() = 0;
    virtual ~DataWrapperBase(){};
 };
 
@@ -22,7 +23,7 @@ class GAUDI_API DataWrapper : public DataWrapperBase {
   const T* getData() {return m_data;} 
   void setData(T* data) {m_data = data;}
 
-  const std::type_info& wrappedTypeID() {return typeid(m_data); }
+  virtual albers::CollectionBase* collectionBase(){return dynamic_cast<albers::CollectionBase*>(m_data); }
 
  private:
   T* m_data; 
