@@ -190,6 +190,29 @@ DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o.provides.build: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o
 
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/flags.make
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o: ../DetectorDescription/Detectors/src/TestBox1_geo.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o -c /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/TestBox1_geo.cxx
+
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.i"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -E /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/TestBox1_geo.cxx > CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.i
+
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.s"
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors && /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts/lcg-g++-4.8.1  $(CXX_DEFINES) $(CXX_FLAGS) -S /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/TestBox1_geo.cxx -o CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.s
+
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.requires:
+.PHONY : DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.requires
+
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.provides: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.requires
+	$(MAKE) -f DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.provides.build
+.PHONY : DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.provides
+
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.provides.build: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o
+
 # Object files for target Detectors
 Detectors_OBJECTS = \
 "CMakeFiles/Detectors.dir/src/Disc_geo.cxx.o" \
@@ -197,7 +220,8 @@ Detectors_OBJECTS = \
 "CMakeFiles/Detectors.dir/src/Barrel_geo.cxx.o" \
 "CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o" \
 "CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o" \
-"CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o"
+"CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o" \
+"CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o"
 
 # External object files for target Detectors
 Detectors_EXTERNAL_OBJECTS =
@@ -208,6 +232,7 @@ lib/libDetectors.so: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/
 lib/libDetectors.so: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o
 lib/libDetectors.so: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o
 lib/libDetectors.so: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o
+lib/libDetectors.so: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o
 lib/libDetectors.so: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make
 lib/libDetectors.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiPluginService.so
 lib/libDetectors.so: /afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/lib/libGaudiKernel.so
@@ -290,6 +315,7 @@ DetectorDescription/Detectors/CMakeFiles/Detectors.dir/requires: DetectorDescrip
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/requires: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o.requires
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/requires: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o.requires
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/requires: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o.requires
+DetectorDescription/Detectors/CMakeFiles/Detectors.dir/requires: DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o.requires
 .PHONY : DetectorDescription/Detectors/CMakeFiles/Detectors.dir/requires
 
 DetectorDescription/Detectors/CMakeFiles/Detectors.dir/clean:

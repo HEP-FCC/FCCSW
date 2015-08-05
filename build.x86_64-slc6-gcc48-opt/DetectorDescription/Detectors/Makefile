@@ -386,6 +386,30 @@ src/Module_geo.cxx.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.s
 .PHONY : src/Module_geo.cxx.s
 
+src/TestBox1_geo.o: src/TestBox1_geo.cxx.o
+.PHONY : src/TestBox1_geo.o
+
+# target to build an object file
+src/TestBox1_geo.cxx.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o
+.PHONY : src/TestBox1_geo.cxx.o
+
+src/TestBox1_geo.i: src/TestBox1_geo.cxx.i
+.PHONY : src/TestBox1_geo.i
+
+# target to preprocess a source file
+src/TestBox1_geo.cxx.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.i
+.PHONY : src/TestBox1_geo.cxx.i
+
+src/TestBox1_geo.s: src/TestBox1_geo.cxx.s
+.PHONY : src/TestBox1_geo.s
+
+# target to generate assembly for a file
+src/TestBox1_geo.cxx.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DetectorDescription/Detectors/CMakeFiles/Detectors.dir/build.make DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.s
+.PHONY : src/TestBox1_geo.cxx.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -424,6 +448,9 @@ help:
 	@echo "... src/Module_geo.o"
 	@echo "... src/Module_geo.i"
 	@echo "... src/Module_geo.s"
+	@echo "... src/TestBox1_geo.o"
+	@echo "... src/TestBox1_geo.i"
+	@echo "... src/TestBox1_geo.s"
 .PHONY : help
 
 

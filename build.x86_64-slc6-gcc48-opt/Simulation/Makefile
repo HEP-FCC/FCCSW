@@ -228,29 +228,29 @@ SimulationConfAll/fast:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/SimulationConfAll.dir/build.make Simulation/CMakeFiles/SimulationConfAll.dir/build
 .PHONY : SimulationConfAll/fast
 
-src/B1DetectorConstruction.o: src/B1DetectorConstruction.cpp.o
-.PHONY : src/B1DetectorConstruction.o
+src/DelphesSimulation.o: src/DelphesSimulation.cpp.o
+.PHONY : src/DelphesSimulation.o
 
 # target to build an object file
-src/B1DetectorConstruction.cpp.o:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.o
-.PHONY : src/B1DetectorConstruction.cpp.o
+src/DelphesSimulation.cpp.o:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/DelphesSimulation.cpp.o
+.PHONY : src/DelphesSimulation.cpp.o
 
-src/B1DetectorConstruction.i: src/B1DetectorConstruction.cpp.i
-.PHONY : src/B1DetectorConstruction.i
+src/DelphesSimulation.i: src/DelphesSimulation.cpp.i
+.PHONY : src/DelphesSimulation.i
 
 # target to preprocess a source file
-src/B1DetectorConstruction.cpp.i:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.i
-.PHONY : src/B1DetectorConstruction.cpp.i
+src/DelphesSimulation.cpp.i:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/DelphesSimulation.cpp.i
+.PHONY : src/DelphesSimulation.cpp.i
 
-src/B1DetectorConstruction.s: src/B1DetectorConstruction.cpp.s
-.PHONY : src/B1DetectorConstruction.s
+src/DelphesSimulation.s: src/DelphesSimulation.cpp.s
+.PHONY : src/DelphesSimulation.s
 
 # target to generate assembly for a file
-src/B1DetectorConstruction.cpp.s:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/B1DetectorConstruction.cpp.s
-.PHONY : src/B1DetectorConstruction.cpp.s
+src/DelphesSimulation.cpp.s:
+	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f Simulation/CMakeFiles/Simulation.dir/build.make Simulation/CMakeFiles/Simulation.dir/src/DelphesSimulation.cpp.s
+.PHONY : src/DelphesSimulation.cpp.s
 
 src/DummySimulation.o: src/DummySimulation.cpp.o
 .PHONY : src/DummySimulation.o
@@ -343,9 +343,9 @@ help:
 	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... src/B1DetectorConstruction.o"
-	@echo "... src/B1DetectorConstruction.i"
-	@echo "... src/B1DetectorConstruction.s"
+	@echo "... src/DelphesSimulation.o"
+	@echo "... src/DelphesSimulation.i"
+	@echo "... src/DelphesSimulation.s"
 	@echo "... src/DummySimulation.o"
 	@echo "... src/DummySimulation.i"
 	@echo "... src/DummySimulation.s"

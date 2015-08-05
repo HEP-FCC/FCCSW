@@ -574,30 +574,6 @@ src/GenJetParticleAssociationHandle.cc.s:
 	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DataObjects/CMakeFiles/DataObjects.dir/build.make DataObjects/CMakeFiles/DataObjects.dir/src/GenJetParticleAssociationHandle.cc.s
 .PHONY : src/GenJetParticleAssociationHandle.cc.s
 
-src/HepMCEntry.o: src/HepMCEntry.cpp.o
-.PHONY : src/HepMCEntry.o
-
-# target to build an object file
-src/HepMCEntry.cpp.o:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DataObjects/CMakeFiles/DataObjects.dir/build.make DataObjects/CMakeFiles/DataObjects.dir/src/HepMCEntry.cpp.o
-.PHONY : src/HepMCEntry.cpp.o
-
-src/HepMCEntry.i: src/HepMCEntry.cpp.i
-.PHONY : src/HepMCEntry.i
-
-# target to preprocess a source file
-src/HepMCEntry.cpp.i:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DataObjects/CMakeFiles/DataObjects.dir/build.make DataObjects/CMakeFiles/DataObjects.dir/src/HepMCEntry.cpp.i
-.PHONY : src/HepMCEntry.cpp.i
-
-src/HepMCEntry.s: src/HepMCEntry.cpp.s
-.PHONY : src/HepMCEntry.s
-
-# target to generate assembly for a file
-src/HepMCEntry.cpp.s:
-	cd /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt && $(MAKE) -f DataObjects/CMakeFiles/DataObjects.dir/build.make DataObjects/CMakeFiles/DataObjects.dir/src/HepMCEntry.cpp.s
-.PHONY : src/HepMCEntry.cpp.s
-
 src/JetCollection.o: src/JetCollection.cc.o
 .PHONY : src/JetCollection.o
 
@@ -1909,9 +1885,6 @@ help:
 	@echo "... src/GenJetParticleAssociationHandle.o"
 	@echo "... src/GenJetParticleAssociationHandle.i"
 	@echo "... src/GenJetParticleAssociationHandle.s"
-	@echo "... src/HepMCEntry.o"
-	@echo "... src/HepMCEntry.i"
-	@echo "... src/HepMCEntry.s"
 	@echo "... src/JetCollection.o"
 	@echo "... src/JetCollection.i"
 	@echo "... src/JetCollection.s"

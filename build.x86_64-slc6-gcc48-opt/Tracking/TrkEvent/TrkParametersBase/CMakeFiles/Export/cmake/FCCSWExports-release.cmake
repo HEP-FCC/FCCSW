@@ -71,6 +71,17 @@ set_target_properties(FWCore PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS FWCore )
 list(APPEND _IMPORT_CHECK_FILES_FOR_FWCore "${_IMPORT_PREFIX}/lib/libFWCore.so" )
 
+# Import target "GeantFast" for configuration "Release"
+set_property(TARGET GeantFast APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(GeantFast PROPERTIES
+  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "G4Tree;G4FR;G4GMocren;G4visHepRep;G4RayTracer;G4VRML;G4vis_management;G4modeling;G4interfaces;G4persistency;G4analysis;G4error_propagation;G4readout;G4physicslists;G4run;G4event;G4tracking;G4parmodels;G4processes;G4digits_hits;G4track;G4particles;G4geometry;G4materials;G4graphics_reps;G4intercoms;G4global;G4clhep;G4zlib;G4geomUSolids;/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Cast-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Evaluator-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Exceptions-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-GenericFunctions-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Geometry-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Random-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RandomObjects-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RefCount-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Vector-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Matrix-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so;/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib/libpythia8.so"
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib/libGeantFast.so"
+  IMPORTED_SONAME_RELEASE "libGeantFast.so"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS GeantFast )
+list(APPEND _IMPORT_CHECK_FILES_FOR_GeantFast "${_IMPORT_PREFIX}/lib/libGeantFast.so" )
+
 # Import target "TrkChargedParameters" for configuration "Release"
 set_property(TARGET TrkChargedParameters APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(TrkChargedParameters PROPERTIES

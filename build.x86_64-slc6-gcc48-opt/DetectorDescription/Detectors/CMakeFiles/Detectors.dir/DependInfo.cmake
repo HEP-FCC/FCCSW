@@ -10,6 +10,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/EndCap_Trap_geo.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o"
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/EndCap_geo.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o"
   "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/Module_geo.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/Module_geo.cxx.o"
+  "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/TestBox1_geo.cxx" "/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/DetectorDescription/Detectors/CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

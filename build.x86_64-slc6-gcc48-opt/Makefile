@@ -615,6 +615,19 @@ ExamplesConfAll/fast:
 .PHONY : ExamplesConfAll/fast
 
 #=============================================================================
+# Target rules for targets named GeantFast
+
+# Build rule for target.
+GeantFast: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 GeantFast
+.PHONY : GeantFast
+
+# fast build rule for target.
+GeantFast/fast:
+	$(MAKE) -f GeantFast/CMakeFiles/GeantFast.dir/build.make GeantFast/CMakeFiles/GeantFast.dir/build
+.PHONY : GeantFast/fast
+
+#=============================================================================
 # Target rules for targets named Generation
 
 # Build rule for target.
@@ -624,7 +637,7 @@ Generation: cmake_check_build_system
 
 # fast build rule for target.
 Generation/fast:
-	$(MAKE) -f Generation/CMakeFiles/Generation.dir/build.make Generation/CMakeFiles/Generation.dir/build
+	$(MAKE) -f Generators/CMakeFiles/Generation.dir/build.make Generators/CMakeFiles/Generation.dir/build
 .PHONY : Generation/fast
 
 #=============================================================================
@@ -637,7 +650,7 @@ GenerationComponentsList: cmake_check_build_system
 
 # fast build rule for target.
 GenerationComponentsList/fast:
-	$(MAKE) -f Generation/CMakeFiles/GenerationComponentsList.dir/build.make Generation/CMakeFiles/GenerationComponentsList.dir/build
+	$(MAKE) -f Generators/CMakeFiles/GenerationComponentsList.dir/build.make Generators/CMakeFiles/GenerationComponentsList.dir/build
 .PHONY : GenerationComponentsList/fast
 
 #=============================================================================
@@ -650,7 +663,7 @@ GenerationConf: cmake_check_build_system
 
 # fast build rule for target.
 GenerationConf/fast:
-	$(MAKE) -f Generation/CMakeFiles/GenerationConf.dir/build.make Generation/CMakeFiles/GenerationConf.dir/build
+	$(MAKE) -f Generators/CMakeFiles/GenerationConf.dir/build.make Generators/CMakeFiles/GenerationConf.dir/build
 .PHONY : GenerationConf/fast
 
 #=============================================================================
@@ -663,7 +676,7 @@ GenerationConfAll: cmake_check_build_system
 
 # fast build rule for target.
 GenerationConfAll/fast:
-	$(MAKE) -f Generation/CMakeFiles/GenerationConfAll.dir/build.make Generation/CMakeFiles/GenerationConfAll.dir/build
+	$(MAKE) -f Generators/CMakeFiles/GenerationConfAll.dir/build.make Generators/CMakeFiles/GenerationConfAll.dir/build
 .PHONY : GenerationConfAll/fast
 
 #=============================================================================
@@ -949,6 +962,7 @@ help:
 	@echo "... ExamplesComponentsList"
 	@echo "... ExamplesConf"
 	@echo "... ExamplesConfAll"
+	@echo "... GeantFast"
 	@echo "... Generation"
 	@echo "... GenerationComponentsList"
 	@echo "... GenerationConf"

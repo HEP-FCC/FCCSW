@@ -1,4 +1,4 @@
-#Tue Aug  4 16:18:30 2015"""Automatically generated. DO NOT EDIT please"""
+#Wed Aug  5 12:20:50 2015"""Automatically generated. DO NOT EDIT please"""
 from GaudiKernel.Proxy.Configurable import *
 
 class ClassicalRecoGeoSvc( ConfigurableService ) :

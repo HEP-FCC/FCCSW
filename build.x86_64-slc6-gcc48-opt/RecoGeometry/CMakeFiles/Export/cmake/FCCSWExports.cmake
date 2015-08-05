@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget albers DataObjects TrkGeometryUtils TrkParametersBase RecoGeometry FWCore TrkChargedParameters TrkNeutralParameters)
+foreach(_expectedTarget albers DataObjects TrkGeometryUtils TrkParametersBase RecoGeometry FWCore GeantFast TrkChargedParameters TrkNeutralParameters)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -59,6 +59,9 @@ add_library(RecoGeometry SHARED IMPORTED)
 
 # Create imported target FWCore
 add_library(FWCore SHARED IMPORTED)
+
+# Create imported target GeantFast
+add_library(GeantFast SHARED IMPORTED)
 
 # Create imported target TrkChargedParameters
 add_library(TrkChargedParameters SHARED IMPORTED)

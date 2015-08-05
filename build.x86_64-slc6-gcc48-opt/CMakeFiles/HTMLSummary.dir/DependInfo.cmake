@@ -25,6 +25,8 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 SET(CMAKE_C_TARGET_INCLUDE_PATH
   "."
   ".."
+  "/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0"
+  "/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/external"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/include/boost-1_55"
   "include"
   "/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include"

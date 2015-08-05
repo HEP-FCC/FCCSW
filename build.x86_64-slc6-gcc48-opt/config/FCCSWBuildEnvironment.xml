@@ -13,8 +13,10 @@
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">${LCG_releases}/fastjet/3.0.6/x86_64-slc6-gcc48-opt/lib</env:prepend>
+  <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/sw/lcg/external/gcc/4.8.1/x86_64-slc6-gcc48-opt/lib64</env:prepend>
   <env:set variable="ROOTSYS">${LCG_releases}/ROOT/5.34.18/x86_64-slc6-gcc48-opt</env:set>
   <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/user/j/jhrdinka/FCC/GAUDI/GAUDI_v25r2/InstallArea/x86_64-slc6-gcc48-opt/include</env:prepend>
@@ -26,8 +28,11 @@
   <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/user/r/ribon/public/ForAnna/Install/include/Geant4</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/exp/fcc/sw/0.2/XercesC/3.1.1p1/x86_64-slc6-gcc48-dbg/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/include</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/include</env:prepend>
   <env:prepend variable="ROOT_INCLUDE_PATH">${LCG_releases}/fastjet/3.0.6/x86_64-slc6-gcc48-opt/include</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/external</env:prepend>
   <env:prepend variable="PATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/InstallArea/x86_64-slc6-gcc48-opt/scripts</env:prepend>
   <env:prepend variable="PATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/InstallArea/x86_64-slc6-gcc48-opt/bin</env:prepend>
   <env:prepend variable="LD_LIBRARY_PATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/InstallArea/x86_64-slc6-gcc48-opt/lib</env:prepend>
@@ -61,9 +66,11 @@
   <env:prepend variable="ROOT_INCLUDE_PATH">${FCCSW_PROJECT_ROOT}/FWCore</env:prepend>
   <env:set variable="EXAMPLESROOT">${FCCSW_PROJECT_ROOT}/Examples</env:set>
   <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Examples/genConf</env:prepend>
-  <env:set variable="GENERATIONROOT">${FCCSW_PROJECT_ROOT}/Generation</env:set>
-  <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Generation/genConf</env:prepend>
-  <env:prepend variable="ROOT_INCLUDE_PATH">${FCCSW_PROJECT_ROOT}/Generation</env:prepend>
+  <env:set variable="GEANTFASTROOT">${FCCSW_PROJECT_ROOT}/GeantFast</env:set>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${FCCSW_PROJECT_ROOT}/GeantFast</env:prepend>
+  <env:set variable="GENERATORSROOT">${FCCSW_PROJECT_ROOT}/Generators</env:set>
+  <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Generators/genConf</env:prepend>
+  <env:prepend variable="ROOT_INCLUDE_PATH">${FCCSW_PROJECT_ROOT}/Generators</env:prepend>
   <env:set variable="RECONSTRUCTIONROOT">${FCCSW_PROJECT_ROOT}/Reconstruction</env:set>
   <env:prepend variable="PYTHONPATH">/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/build.x86_64-slc6-gcc48-opt/Reconstruction/genConf</env:prepend>
   <env:set variable="SIMULATIONROOT">${FCCSW_PROJECT_ROOT}/Simulation</env:set>

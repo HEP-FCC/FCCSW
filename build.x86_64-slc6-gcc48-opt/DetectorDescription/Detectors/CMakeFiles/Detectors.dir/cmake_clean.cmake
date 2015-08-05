@@ -5,6 +5,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/Detectors.dir/src/EndCap_geo.cxx.o"
   "CMakeFiles/Detectors.dir/src/BeamTube_geo.cxx.o"
   "CMakeFiles/Detectors.dir/src/EndCap_Trap_geo.cxx.o"
+  "CMakeFiles/Detectors.dir/src/TestBox1_geo.cxx.o"
   "../../lib/libDetectors.pdb"
   "../../lib/libDetectors.so"
 )

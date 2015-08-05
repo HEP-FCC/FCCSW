@@ -1,5 +1,4 @@
 FILE(REMOVE_RECURSE
-  "CMakeFiles/DataObjects.dir/src/HepMCEntry.cpp.o"
   "CMakeFiles/DataObjects.dir/src/CaloClusterCollection.cc.o"
   "CMakeFiles/DataObjects.dir/src/CaloClusterHandle.cc.o"
   "CMakeFiles/DataObjects.dir/src/CaloHitAssociationCollection.cc.o"

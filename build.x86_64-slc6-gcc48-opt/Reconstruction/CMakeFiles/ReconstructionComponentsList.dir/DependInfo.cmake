@@ -23,6 +23,7 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 SET(CMAKE_C_TARGET_INCLUDE_PATH
   "Reconstruction"
   "../Reconstruction"
+  "../FWCore"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/fastjet/3.0.6/x86_64-slc6-gcc48-opt/include"
   "/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/include"
   "../albers"

@@ -35,6 +35,42 @@ Boost_config_version:STRING=1.55.0_python2.7
 //Version of CASTOR
 CASTOR_config_version:STRING=2.1.13-6
 
+//Path to a library.
+CLHEP_Cast_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Cast-2.1.4.1.so
+
+//Path to a library.
+CLHEP_Evaluator_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Evaluator-2.1.4.1.so
+
+//Path to a library.
+CLHEP_Exceptions_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Exceptions-2.1.4.1.so
+
+//Path to a library.
+CLHEP_GenericFunctions_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-GenericFunctions-2.1.4.1.so
+
+//Path to a library.
+CLHEP_Geometry_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Geometry-2.1.4.1.so
+
+//Path to a file.
+CLHEP_INCLUDE_DIR:PATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/include
+
+//Path to a library.
+CLHEP_MAIN_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP.so
+
+//Path to a library.
+CLHEP_Matrix_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Matrix-2.1.4.1.so
+
+//Path to a library.
+CLHEP_RandomObjects_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RandomObjects-2.1.4.1.so
+
+//Path to a library.
+CLHEP_Random_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Random-2.1.4.1.so
+
+//Path to a library.
+CLHEP_RefCount_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RefCount-2.1.4.1.so
+
+//Path to a library.
+CLHEP_Vector_LIBRARY:FILEPATH=/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Vector-2.1.4.1.so
+
 //Version of CLHEP
 CLHEP_config_version:STRING=1.9.4.7
 
@@ -280,6 +316,15 @@ DD4hep_DIR:PATH=/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09
 //(This variable does not exist and should not be used)
 DD4hep_INCLUDE_DIRS:PATH=/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include
 
+//Path to a file.
+DELPHES_EXTERNALS_INCLUDE_DIR:PATH=/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0
+
+//Path to a file.
+DELPHES_INCLUDE_DIR:PATH=/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0
+
+//Path to a library.
+DELPHES_LIBRARY:FILEPATH=/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/libDelphes.so
+
 //Pick a version of QT to use: 3 or 4
 DESIRED_QT_VERSION:STRING=4
 
@@ -407,6 +452,9 @@ Geant4GeoConverter_LIB_DEPENDS:STATIC=general;GaudiPluginService;general;GaudiKe
 
 //The directory containing a CMake configuration file for Geant4.
 Geant4_DIR:PATH=/afs/cern.ch/user/r/ribon/public/ForAnna/Install/lib64/Geant4-10.1.1
+
+//Dependencies for the target
+GeantFast_LIB_DEPENDS:STATIC=general;G4Tree;general;G4FR;general;G4GMocren;general;G4visHepRep;general;G4RayTracer;general;G4VRML;general;G4vis_management;general;G4modeling;general;G4interfaces;general;G4persistency;general;G4analysis;general;G4error_propagation;general;G4readout;general;G4physicslists;general;G4run;general;G4event;general;G4tracking;general;G4parmodels;general;G4processes;general;G4digits_hits;general;G4track;general;G4particles;general;G4geometry;general;G4materials;general;G4graphics_reps;general;G4intercoms;general;G4global;general;G4clhep;general;G4zlib;general;G4geomUSolids;general;/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Cast-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Evaluator-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Exceptions-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-GenericFunctions-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Geometry-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Random-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RandomObjects-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RefCount-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Vector-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Matrix-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib/libpythia8.so;
 
 //Dependencies for the target
 Generation_LIB_DEPENDS:STATIC=general;GaudiPluginService;general;/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so;general;GaudiAlgLib;general;DataObjects;general;/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib/libpythia8.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib/libpythia8tohepmc.so;general;GaudiUtilsLib;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_regex-gcc48-mt-1_55.so;general;GaudiKernel;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libHist.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libXMLIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libThread.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMatrix.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so;general;dl;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_filesystem-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_thread-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_system-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib/libtbb.so;general;GaudiPluginService;general;albers;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so;
@@ -561,7 +609,7 @@ RecoGeometry_LIB_DEPENDS:STATIC=general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT
 Reconstruction_LIB_DEPENDS:STATIC=general;GaudiPluginService;general;/afs/cern.ch/sw/lcg/releases/LCG_68/fastjet/3.0.6/x86_64-slc6-gcc48-opt/lib/libfastjet.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libPhysics.so;general;GaudiAlgLib;general;DataObjects;general;GaudiUtilsLib;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_regex-gcc48-mt-1_55.so;general;GaudiKernel;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libHist.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libXMLIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libThread.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMatrix.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so;general;dl;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_filesystem-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_thread-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_system-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib/libtbb.so;general;GaudiPluginService;general;/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so;general;albers;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so;
 
 //Dependencies for the target
-Simulation_LIB_DEPENDS:STATIC=general;GaudiPluginService;general;GaudiAlgLib;general;DataObjects;general;G4Tree;general;G4FR;general;G4GMocren;general;G4visHepRep;general;G4RayTracer;general;G4VRML;general;G4vis_management;general;G4modeling;general;G4interfaces;general;G4persistency;general;G4analysis;general;G4error_propagation;general;G4readout;general;G4physicslists;general;G4run;general;G4event;general;G4tracking;general;G4parmodels;general;G4processes;general;G4digits_hits;general;G4track;general;G4particles;general;G4geometry;general;G4materials;general;G4graphics_reps;general;G4intercoms;general;G4global;general;G4clhep;general;G4zlib;general;G4geomUSolids;general;GaudiUtilsLib;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_regex-gcc48-mt-1_55.so;general;GaudiKernel;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libHist.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libXMLIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libThread.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMatrix.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so;general;dl;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_filesystem-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_thread-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_system-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib/libtbb.so;general;GaudiPluginService;general;/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so;general;albers;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so;
+Simulation_LIB_DEPENDS:STATIC=general;GaudiPluginService;general;GaudiAlgLib;general;DataObjects;general;G4Tree;general;G4FR;general;G4GMocren;general;G4visHepRep;general;G4RayTracer;general;G4VRML;general;G4vis_management;general;G4modeling;general;G4interfaces;general;G4persistency;general;G4analysis;general;G4error_propagation;general;G4readout;general;G4physicslists;general;G4run;general;G4event;general;G4tracking;general;G4parmodels;general;G4processes;general;G4digits_hits;general;G4track;general;G4particles;general;G4geometry;general;G4materials;general;G4graphics_reps;general;G4intercoms;general;G4global;general;G4clhep;general;G4zlib;general;G4geomUSolids;general;GeantFast;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libCore.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libPhysics.so;general;/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/libDelphes.so;general;GaudiUtilsLib;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_regex-gcc48-mt-1_55.so;general;GaudiKernel;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libRIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libHist.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libXMLIO.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libThread.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMatrix.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libMathCore.so;general;dl;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_filesystem-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_thread-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/Boost/1.55.0_python2.7/x86_64-slc6-gcc48-opt/lib/libboost_system-gcc48-mt-1_55.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/tbb/42_20131118/x86_64-slc6-gcc48-opt/lib/libtbb.so;general;GaudiPluginService;general;/afs/cern.ch/sw/lcg/releases/LCG_68/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib/libHepMC.so;general;albers;general;/afs/cern.ch/sw/lcg/releases/LCG_68/ROOT/5.34.18/x86_64-slc6-gcc48-opt/lib/libTree.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Cast-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Evaluator-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Exceptions-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-GenericFunctions-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Geometry-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Random-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RandomObjects-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RefCount-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Vector-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Matrix-2.1.4.1.so;general;/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/lib/libpythia8.so;
 
 //TBB binary directory
 TBB_BINARY_DIR:PATH=
@@ -835,6 +883,30 @@ Boost_INCLUDE_DIR-ADVANCED:INTERNAL=1
 Boost_config_version-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CASTOR_config_version
 CASTOR_config_version-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_Cast_LIBRARY
+CLHEP_Cast_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_Evaluator_LIBRARY
+CLHEP_Evaluator_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_Exceptions_LIBRARY
+CLHEP_Exceptions_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_GenericFunctions_LIBRARY
+CLHEP_GenericFunctions_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_Geometry_LIBRARY
+CLHEP_Geometry_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_INCLUDE_DIR
+CLHEP_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_Matrix_LIBRARY
+CLHEP_Matrix_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_RandomObjects_LIBRARY
+CLHEP_RandomObjects_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_Random_LIBRARY
+CLHEP_Random_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CLHEP_RefCount_LIBRARY
+CLHEP_RefCount_LIBRARY-ADVANCED:INTERNAL=1
+//Detected version of CLHEP
+CLHEP_VERSION:INTERNAL=2.1.4.1
+//ADVANCED property for variable: CLHEP_Vector_LIBRARY
+CLHEP_Vector_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CLHEP_config_version
 CLHEP_config_version-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -947,7 +1019,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=21
+CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=22
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1016,14 +1088,24 @@ DD4hep_DD4HEPREC_LIBRARY-ADVANCED:INTERNAL=1
 DD4hep_DDSEGMENTATION_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: DD4hep_INCLUDE_DIRS
 DD4hep_INCLUDE_DIRS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: DELPHES_EXTERNALS_INCLUDE_DIR
+DELPHES_EXTERNALS_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: DELPHES_INCLUDE_DIR
+DELPHES_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: DELPHES_LIBRARY
+DELPHES_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: DESIRED_QT_VERSION
 DESIRED_QT_VERSION-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: FASTJET_INCLUDE_DIR
 FASTJET_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: FASTJET_LIBRARY
 FASTJET_LIBRARY-ADVANCED:INTERNAL=1
+//Details about finding CLHEP
+FIND_PACKAGE_MESSAGE_DETAILS_CLHEP:INTERNAL=[/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/include][/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Cast-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Evaluator-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Exceptions-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-GenericFunctions-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Geometry-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Random-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RandomObjects-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-RefCount-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Vector-2.1.4.1.so;/afs/cern.ch/sw/lcg/releases/LCG_68/clhep/2.1.4.1/x86_64-slc6-gcc48-opt/lib/libCLHEP-Matrix-2.1.4.1.so][v()]
 //Details about finding DD4hep
 FIND_PACKAGE_MESSAGE_DETAILS_DD4hep:INTERNAL=[/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09][/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include][/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepCore.so;/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDDSegmentation.so;/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepRec.so;/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepPlugins.so;/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/lib/libDD4hepG4.so][v()]
+//Details about finding Delphes
+FIND_PACKAGE_MESSAGE_DETAILS_Delphes:INTERNAL=[/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0][/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0][/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/libDelphes.so][v()]
 //Details about finding FastJet
 FIND_PACKAGE_MESSAGE_DETAILS_FastJet:INTERNAL=[/afs/cern.ch/sw/lcg/releases/LCG_68/fastjet/3.0.6/x86_64-slc6-gcc48-opt/include][/afs/cern.ch/sw/lcg/releases/LCG_68/fastjet/3.0.6/x86_64-slc6-gcc48-opt/lib/libfastjet.so][v()]
 //Details about finding HepMC

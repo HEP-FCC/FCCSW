@@ -1,5 +1,6 @@
-# ROOT map file generated automatically by genmap on Tue Aug  4 16:18:17 2015
+# ROOT map file generated automatically by genmap on Wed Aug  5 12:17:40 2015
 
+Library.__pf__@@TestBox1: libDetectors.so
 Library.__pf__@@Trap_EndCap: libDetectors.so
 Library.__pf__@@BeamTube: libDetectors.so
 Library.__pf__@@EndCap: libDetectors.so

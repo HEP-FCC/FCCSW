@@ -6,38 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../DetectorDescription/DetExtensions/DetExtensions/DetCylinderLayer.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-
-../DetectorDescription/DetExtensions/DetExtensions/DetCylinderVolume.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-
-../DetectorDescription/DetExtensions/DetExtensions/DetDiscLayer.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-
-../DetectorDescription/DetExtensions/DetExtensions/DetDiscVolume.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-
-../DetectorDescription/DetExtensions/DetExtensions/DetExtension.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-
-../DetectorDescription/DetExtensions/DetExtensions/DetModule.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-
-../DetectorDescription/DetExtensions/DetExtensions/DetSensComponent.h
-DetExtensions/IDetExtension.h
-../DetectorDescription/DetExtensions/DetExtensions/DetExtensions/IDetExtension.h
-memory
--
-
-../DetectorDescription/DetExtensions/DetExtensions/IDetExtension.h
-
 /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/Alignment.h
 DD4hep/Objects.h
 /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/DD4hep/Objects.h
@@ -266,10 +234,6 @@ TGeoTorus.h
 TGeoCompositeShape.h
 /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/TGeoCompositeShape.h
 
-/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/TGeoUnits.h
-DD4hepUnits.h
-/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/DD4hepUnits.h
-
 /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/VolumeManager.h
 DD4hep/Volumes.h
 /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/DD4hep/DD4hep/Volumes.h
@@ -347,6 +311,12 @@ string
 -
 typeinfo
 -
+vector
+-
+
+/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/XML/Layering.h
+XML/XMLElements.h
+/afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/include/XML/XML/XMLElements.h
 vector
 -
 
@@ -1498,41 +1468,9 @@ unistd.h
 sys/types.h
 -
 
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/Barrel_geo.cxx
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/TestBox1_geo.cxx
 DD4hep/DetFactoryHelper.h
 /afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DD4hep/DetFactoryHelper.h
-DD4hep/TGeoUnits.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DD4hep/TGeoUnits.h
-DetExtensions/DetCylinderLayer.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetCylinderLayer.h
-DetExtensions/DetModule.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetModule.h
-DetExtensions/DetExtension.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetExtension.h
-DetExtensions/DetCylinderVolume.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetCylinderVolume.h
-DetExtensions/DetSensComponent.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetSensComponent.h
-
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/EndCap_Trap_geo.cxx
-DD4hep/DetFactoryHelper.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DD4hep/DetFactoryHelper.h
-DD4hep/TGeoUnits.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DD4hep/TGeoUnits.h
-DetExtensions/DetDiscLayer.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetDiscLayer.h
-DetExtensions/DetModule.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetModule.h
-DetExtensions/DetExtension.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetExtension.h
-DetExtensions/DetDiscVolume.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetDiscVolume.h
-DetExtensions/DetSensComponent.h
-/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/DetExtensions/DetSensComponent.h
-iostream
--
-fstream
--
-stdlib.h
--
+XML/Layering.h
+/afs/cern.ch/user/j/jhrdinka/FCC/FCCSW/DetectorDescription/Detectors/src/XML/Layering.h
 
