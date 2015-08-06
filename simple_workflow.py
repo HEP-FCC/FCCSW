@@ -30,6 +30,7 @@ genjet_clustering = JetClustering(
 genjet_clustering.Inputs.particles.Path='all_genparticles'
 # giving a meaningful name for the output product
 genjet_clustering.Outputs.jets.Path='genjets'
+genjet_clustering.Outputs.constituents.Path='genjets_particles'
 
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
