@@ -14,7 +14,7 @@ class GAUDI_API PseudoJetEntry: public DataObject {
 
   virtual ~PseudoJetEntry();
 
-  std::vector<fastjet::PseudoJet>* getJets() {
+  const std::vector<fastjet::PseudoJet>* getJets() const {
     return m_jets;
   }
 

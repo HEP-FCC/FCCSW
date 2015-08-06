@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+    
+    <includes>
+        <gdmlFile  ref="elements.xml"/>
+        <gdmlFile  ref="materials.xml"/>
+    </includes>
+    
+    <info name="FCCTestTracker"
+        title="FCCTestTracker"
+        author="Julia"
+        url="no"
+        status="development"
+        version="$Id:??$">
+        <comment>TestTracker for FCC</comment>
+    </info>
+    
+    <define>
+        <constant name="world_size" value="30*m"/>
+        <constant name="world_x" value="world_size"/>
+        <constant name="world_y" value="world_size"/>
+        <constant name="world_z" value="world_size"/>
+        <!--Dimensions of BeamTube-->
+        <constant name="Tube_rmin" value="0*mm"/>
+        <constant name="Tube_rmax" value="30*mm"/>
+        <constant name="Tube_length" value="700*mm"/>
+        <!-------------------------------------------->
+        <!--Dimensions of Barrel1-->
+        <constant name="B0_rmin" value="30*mm"/>
+        <constant name="B0_rmax" value="111*mm"/>
+        <constant name="B0_length" value="580.8*mm"/>
+        <constant name="B0_modulesInZ" value="14"/>
+            <!--Layer0-->
+        <constant name="B0_L0_rmin" value="33*mm"/>
+        <constant name="B0_L0_rmax" value="43*mm"/>
+        <constant name="B0_L0_modulesInPhi" value="20"/>
+            <!--Layer1-->
+        <constant name="B0_L1_rmin" value="50*mm"/>
+        <constant name="B0_L1_rmax" value="60*mm"/>
+        <constant name="B0_L1_modulesInPhi" value="29"/>
+            <!--Layer2-->
+        <constant name="B0_L2_rmin" value="67*mm"/>
+        <constant name="B0_L2_rmax" value="77*mm"/>
+        <constant name="B0_L2_modulesInPhi" value="38"/>
+            <!--Layer3-->
+        <constant name="B0_L3_rmin" value="84*mm"/>
+        <constant name="B0_L3_rmax" value="94*mm"/>
+        <constant name="B0_L3_modulesInPhi" value="47"/>
+            <!--Layer4-->
+        <constant name="B0_L4_rmin" value="101*mm"/>
+        <constant name="B0_L4_rmax" value="111*mm"/>
+        <constant name="B0_L4_modulesInPhi" value="56"/>
+        
+        <!--Dimensions of Barrel Module-->
+        <constant name="B_mod_width" value="8.0*mm"/>
+        <constant name="B_mod_length" value="20.4*mm"/>
+        <constant name="B_mod_thick" value="0.1375*mm"/>
+        <constant name="B_mod_zpos" value="40*mm"/>
+        <!--Dimensions of Components-->
+        <constant name="B_Si_width" value="8.0*mm"/>
+        <constant name="B_Si_length" value="20.4*mm"/>
+        <constant name="B_Si_thick" value="0.0625*mm"/>
+        <constant name="B_Si_pos" value="-0.075*mm"/>
+        
+        <constant name="B_C_width" value="8.0*mm"/>
+        <constant name="B_C_length" value="15.4*mm"/>
+        <constant name="B_C_thick" value="0.05*mm"/>
+        <constant name="B_C_pos" value="0.0375*mm"/>
+        
+        <constant name="B_Al_width" value="2.0*mm"/>
+        <constant name="B_Al_length" value="20.4*mm"/>
+        <constant name="B_Al_thick" value="0.025*mm"/>
+        <constant name="B_Al_pos" value="0.1125*mm"/>
+        <!-------------------------------------------->
+        <!--Dimensions of Endcaps-->
+        <constant name="E0_rmin" value="30*mm"/>
+        <constant name="E0_rmax" value="111*mm"/>
+        <constant name="E0_dz"   value="50*mm"/>
+        <constant name="nE0_zpos" value="-630.8*mm"/>
+        <constant name="pE0_zpos" value="630.8*mm"/>
+        <constant name="E0_L_dz" value="10*mm"/>
+        <constant name="E0_L_modulesInPhi" value="32"/>
+
+        <constant name="E0_L0_pos" value="-40.*mm"/>
+        <constant name="E0_L1_pos" value="0.*mm"/>
+        <constant name="E0_L2_pos" value="40.*mm"/>
+        
+        <!--Dimensions of EndCap Module-->
+        <constant name="E0_L0_mod_X1" value="6.0*mm"/>
+        <constant name="E0_L0_mod_X2" value="8.0*mm"/>
+        <constant name="E0_L0_mod1_X1" value="8.0*mm"/>
+        <constant name="E0_L0_mod1_X2" value="12.0*mm"/>
+        <constant name="E0_L0_mod_length" value="20.4*mm"/>
+        <constant name="E0_L0_mod_thick" value="0.1375*mm"/>
+        <constant name="E0_L0_mod_zpos" value="40*mm"/>
+        <constant name="E0_L0_mod0_r" value="50.4*mm"/>
+        <constant name="E0_L0_mod1_r" value="88.6*mm"/>
+        <constant name="E0_L0_mod0_pos" value="0.*mm"/>
+        <constant name="E0_L0_mod1_pos" value="-0.275*mm"/>
+        <!--Dimensions of Components-->
+        <constant name="E0_L0_Si_X1" value="6.0*mm"/>
+        <constant name="E0_L0_Si_X2" value="8.0*mm"/>
+        <constant name="E0_L0_Si1_X1" value="8.0*mm"/>
+        <constant name="E0_L0_Si1_X2" value="12.0*mm"/>
+        <constant name="E0_L0_Si_length" value="20.4*mm"/>
+        <constant name="E0_L0_Si_thick" value="0.0625*mm"/>
+        <constant name="E0_L0_Si_pos" value="-0.075*mm"/>
+        
+        <constant name="E0_L0_C_X1" value="6.0*mm"/>
+        <constant name="E0_L0_C_X2" value="8.0*mm"/>
+        <constant name="E0_L0_C1_X1" value="8.0*mm"/>
+        <constant name="E0_L0_C1_X2" value="12.0*mm"/>
+        <constant name="E0_L0_C_length" value="15.4*mm"/>
+        <constant name="E0_L0_C_thick" value="0.05*mm"/>
+        <constant name="E0_L0_C_pos" value="0.0375*mm"/>
+        
+        <constant name="E0_L0_Al_X1" value="2.0*mm"/>
+        <constant name="E0_L0_Al_X2" value="2.0*mm"/>
+        <constant name="E0_L0_Al1_X1" value="2.0*mm"/>
+        <constant name="E0_L0_Al1_X2" value="2.0*mm"/>
+        <constant name="E0_L0_Al_length" value="20.4*mm"/>
+        <constant name="E0_L0_Al_thick" value="0.025*mm"/>
+        <constant name="E0_L0_Al_pos" value="0.1125*mm"/>
+        <!-------------------------------------------->
+        
+    </define>
+    
+    <display>
+        <vis name="violet" r="0.4" g="0." b="0.4" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="red" r="0.6" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="orange" r="0.6" g="0.4" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="lightblue" r="0." g="0." b="0.5" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="lightred" r="0.5" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="lightgreen" r="0." g="0.5" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+    </display>
+
+    <readouts>
+        <readout name="B0_Readout">
+            <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
+            <id>system:3,layer:3,module:11,component:2,x:32:-16,y:-16</id>
+        </readout>
+        <readout name="E0_Readout">
+         <!--   <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>-->
+            <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>
+            <id>system:3,layer:2,module:8,component:2,x:32:-16,z:-16</id>
+        </readout>
+    </readouts>
+
+    <detectors>
+        <!--BeamTube-->
+        <detector id="0" name="BeamTube" type="BeamTube">
+            <status id="0"/>
+            <dimensions rmin="Tube_rmin" rmax="Tube_rmax" z="Tube_length" vis="violet" material="Air"/>
+        </detector>
+        <!--Barrel0-->
+        <detector id="1" name="Barrel0" type="Barrel" readout="B0_Readout" vis="red">
+            <status id="1"/>
+            <dimensions rmin="B0_rmin" rmax="B0_rmax" z="B0_length" material="Air"/>
+            <layer id="0"  inner_r="B0_L0_rmin" outer_r="B0_L0_rmax" dr="2.*B_mod_thick" z="B0_length" material="Air">
+                <slice z="B_mod_zpos" repeat="B0_modulesInZ"/>
+                <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="B0_L0_modulesInPhi" material="Air">
+                    <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component width="B_C_width" length="B_C_length" thickness="B_C_thick" z = "B_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="1"  inner_r="B0_L1_rmin" outer_r="B0_L1_rmax" dr="2.*B_mod_thick" z="B0_length" material="Air">
+                <slice z="B_mod_zpos" repeat="B0_modulesInZ"/>
+                <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="B0_L1_modulesInPhi" material="Air">
+                    <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component width="B_C_width" length="B_C_length" thickness="B_C_thick" z = "B_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="2"  inner_r="B0_L2_rmin" outer_r="B0_L2_rmax" dr="2.*B_mod_thick" z="B0_length" material="Air">
+                <slice z="B_mod_zpos" repeat="B0_modulesInZ"/>
+                <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="B0_L2_modulesInPhi" material="Air">
+                    <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component width="B_C_width" length="B_C_length" thickness="B_C_thick" z = "B_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="3"  inner_r="B0_L3_rmin" outer_r="B0_L3_rmax" dr="2.*B_mod_thick" z="B0_length" material="Air">
+                <slice z="B_mod_zpos" repeat="B0_modulesInZ"/>
+                <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="B0_L3_modulesInPhi" material="Air">
+                    <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component width="B_C_width" length="B_C_length" thickness="B_C_thick" z = "B_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="4"  inner_r="B0_L4_rmin" outer_r="B0_L4_rmax" dr="2.*B_mod_thick" z="B0_length" material="Air">
+                <slice z="B_mod_zpos" repeat="B0_modulesInZ"/>
+                <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="B0_L4_modulesInPhi" material="Air">
+                    <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component width="B_C_width" length="B_C_length" thickness="B_C_thick" z = "B_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+        </detector>
+        <!--negEndCap0-->
+        <detector id="2" name="nEndCap0" type="Trap_EndCap" readout="E0_Readout" vis="lightblue">
+            <status id="1"/>
+            <dimensions rmin="E0_rmin" rmax = "E0_rmax" dz="E0_dz" z ="nE0_zpos"/>
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L0_pos" repeat="E0_L_modulesInPhi">
+                <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+                <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L1_pos" repeat="E0_L_modulesInPhi">
+                <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+                <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L2_pos" repeat="E0_L_modulesInPhi">
+                <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+                <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+        </detector>
+        <!--posEndCap0-->
+        <detector id="3" name="pEndCap0" type="Trap_EndCap" readout="E0_Readout" vis="lightblue">
+            <status id="1"/>
+            <dimensions rmin="E0_rmin" rmax = "E0_rmax" dz="E0_dz" z ="pE0_zpos"/>
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L0_pos" repeat="E0_L_modulesInPhi">
+                <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+                <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L1_pos" repeat="E0_L_modulesInPhi">
+                <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+                <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+            <layer id="0" inner_r="E0_rmin" outer_r="E0_rmax" dz="E0_L_dz" z="E0_L2_pos" repeat="E0_L_modulesInPhi">
+                <module name ="TrMod0" radius="E0_L0_mod0_r" dz="E0_L0_mod0_pos" x1="E0_L0_mod_X1" x2="E0_L0_mod_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si_X1" x2="E0_L0_Si_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C_X1" x2="E0_L0_C_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al_X1" x2="E0_L0_Al_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+                <module name ="TrMod1" radius="E0_L0_mod1_r" dz="E0_L0_mod1_pos" x1="E0_L0_mod1_X1"  x2="E0_L0_mod1_X2" length="E0_L0_mod_length" thickness="E0_L0_mod_thick">
+                    <module_component x1="E0_L0_Si1_X1" x2="E0_L0_Si1_X2" length="E0_L0_Si_length" thickness="E0_L0_Si_thick" z ="E0_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
+                    <module_component x1="E0_L0_C1_X1" x2="E0_L0_C1_X2" length="E0_L0_C_length" thickness="E0_L0_C_thick" z ="E0_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
+                    <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
+                </module>
+            </layer>
+        </detector> 
+    </detectors>
+</lccdd>
+
+
+
+
+
+
+
+
+

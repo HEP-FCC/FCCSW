@@ -3,7 +3,6 @@
 
 #include "TObjArray.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/DataObjectHandle.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/GenJetCollection.h"
 #include "datamodel/MissingEnergyCollection.h"
@@ -101,8 +100,6 @@ private:
   Long64_t length, eventCounter; // fixme 
   bool  m_debug_delphes; // if true one run the standalone delphes as well 
 
-  /// Handle for the MCParticleCollection to be read
-  //DataObjectHandle<MCParticleCollection> m_genphandle;
   /// Handle for the "reconstructed" to be written
   DataHandle<ParticleCollection> m_recgphandle; // genparticles particles
   DataHandle<ParticleCollection> m_recparthandle; // partons

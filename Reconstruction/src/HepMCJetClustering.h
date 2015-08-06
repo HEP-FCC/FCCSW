@@ -25,7 +25,7 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmchandle;
 
   /// Handle for PseudoJets to be produced
-  DataObjectHandle<PseudoJetEntry> m_jets;
+  DataHandle<PseudoJetEntry> m_jets;
 
   std::string m_jetAlgorithm; ///< the jet algorithm to use
   fastjet::JetAlgorithm m_fj_jetAlgorithm;

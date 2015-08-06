@@ -5,6 +5,7 @@
 #include "GaudiKernel/ITHistSvc.h"
 #include "DataObjects/PseudoJetEntry.h"
 
+#include "FWCore/DataHandle.h"
 #include "TH1F.h"
 
 class JetHistograms: public GaudiAlgorithm {
@@ -22,7 +23,7 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<PseudoJetEntry> m_jethandle;
+  DataHandle<PseudoJetEntry> m_jethandle;
 
   ITHistSvc* m_ths; ///< THistogram service
 
