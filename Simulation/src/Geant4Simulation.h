@@ -4,8 +4,8 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "HepMC/GenEvent.h"
 #include "FWCore/DataHandle.h"
-#include "DataObjects/ParticleCollection.h"
-#include "DataObjects/Particle.h"
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/Particle.h"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"
@@ -30,7 +30,7 @@ private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_eventhandle;
   /// Handle for the "reconstructed" to be written
-  DataObjectHandle<ParticleCollection> m_recphandle;
+  DataHandle<ParticleCollection> m_recphandle;
 
   G4RunManager* m_runManager;
 

@@ -1,0 +1,32 @@
+<!--Barrel1-->
+<detector id="1" name="Tracker0" type="Barrel" readout="TrackerReadout">
+    <status id="1"/>
+    <dimensions rmin="Tracker_rmin1" rmax="Tracker_rmax1" z="Barrel_length1"/>
+    <layer id="0"  inner_r="rmin1_0" outer_r="rmax1_0" z="Barrel_length1" material="Air">
+        <slice z="zpos" repeat="zrepeat1"/>
+        <module name ="Box0" width="box_width" length="box_length" thickness="0.6*mm" repeat="pixelcounter1_0">
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="0.*mm" material="Copper" sensitive="false" vis="comp1"/>
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        
+    </layer>
+    <layer id="1"  inner_r="rmin1_1" outer_r="rmax1_1" z="Barrel_length1" material="Air">
+        <slice z="zpos" repeat="zrepeat1"/>
+        <module name ="Box0" width="box_width" length="box_length" thickness="0.6*mm" repeat="pixelcounter1_1">
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="0.*mm" material="Copper" sensitive="false" vis="comp1"/>
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+    </layer>
+    
+    <layer id="2"  inner_r="rmin1_2" outer_r="rmax1_2" z="Barrel_length1" material="Air">
+        <slice z="zpos" repeat="zrepeat1"/>
+        <module name ="Box0" width="box_width" length="box_length" thickness="0.6*mm" repeat="pixelcounter1_2">
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="0.*mm" material="Copper" sensitive="false" vis="comp1"/>
+            <module_component width="box_width" length="box_length" thickness="0.2*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+    </layer>
+</detector>
+

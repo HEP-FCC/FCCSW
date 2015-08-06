@@ -1,5 +1,5 @@
 #ifndef FWCORE_DATAHANDLE_H
-#define FWCORE_DATHANDLE_H
+#define FWCORE_DATAHANDLE_H
 
 #include "FWCore/DataWrapper.h"
 

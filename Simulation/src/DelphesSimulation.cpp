@@ -230,14 +230,14 @@ void DelphesSimulation::ConvertParticle(   TObjArray *  Input , ParticleCollecti
   for(int j = 0; j < Input->GetEntries(); ++j)
     {
       cand = static_cast<Candidate *>(Input->At(j));	   
-      ParticleHandle& outptc = coll->create();		  
+      ParticleHandle outptc = coll->create();		  
       BareParticle& core = outptc.mod().Core;
       if (cand->Momentum.Pt()!=0) { // protection against the boring message Warning in <TVector3::PseudoRapidity>: transvers momentum = 0! return +/- 10e10
 	core.Type = cand->PID; 
 	core.Status = cand->Status;
-	core.P4.Pt = (double  ) cand->Momentum.Pt();
-	core.P4.Eta = (double ) cand->Momentum.Eta();
-	core.P4.Phi = (double ) cand->Momentum.Phi();
+	core.P4.Px = (double  ) cand->Momentum.X();
+	core.P4.Py = (double ) cand->Momentum.Y();
+	core.P4.Pz = (double ) cand->Momentum.Z();
 	core.P4.Mass = (double) cand->Mass ;
 	core.Vertex.X = (double) cand->Position.X() ;
 	core.Vertex.Y = (double) cand->Position.Y() ;
@@ -255,12 +255,12 @@ void DelphesSimulation::ConvertJet(   TObjArray *  Input , GenJetCollection *  c
   for(int j = 0; j < Input->GetEntries(); ++j)
     {
       cand = static_cast<Candidate *>(Input->At(j));
-      GenJetHandle& outptc = coll->create();		  
+      GenJetHandle outptc = coll->create();		  
       BareJet& core = outptc.mod().Core;
       core.Area = cand->Area.Mag();
-      core.P4.Pt = (double  ) cand->Momentum.Pt();
-      core.P4.Eta = (double ) cand->Momentum.Eta();
-      core.P4.Phi = (double ) cand->Momentum.Phi();
+      core.P4.Px = (double  ) cand->Momentum.X();
+      core.P4.Py = (double ) cand->Momentum.Y();
+      core.P4.Pz = (double ) cand->Momentum.Z();
       core.P4.Mass = (double) cand->Mass ;
       
     }
@@ -275,10 +275,10 @@ void DelphesSimulation::ConvertMET(   TObjArray *  Input , ParticleCollection * 
   for(int j = 0; j < Input->GetEntries(); ++j)
     {
       cand = static_cast<Candidate *>(Input->At(j));	   
-      ParticleHandle& outptc = coll->create();		  
+      ParticleHandle outptc = coll->create();		  
       BareParticle& core = outptc.mod().Core;
-      core.P4.Pt = (double  ) cand->Momentum.Pt();
-      core.P4.Phi = (double ) cand->Momentum.Phi();
+      core.P4.Px = (double  ) cand->Momentum.X();
+      core.P4.Py = (double ) cand->Momentum.Y();
       
     }
   
@@ -290,9 +290,10 @@ void DelphesSimulation::ConvertHT(   TObjArray *  Input , ParticleCollection *  
   for(int j = 0; j < Input->GetEntries(); ++j)
     {
       cand = static_cast<Candidate *>(Input->At(j));	   
-      ParticleHandle& outptc = coll->create();		  
+      ParticleHandle outptc = coll->create();		  
       BareParticle& core = outptc.mod().Core;
-      core.P4.Pt = (double  ) cand->Momentum.Pt();
+      core.P4.Px = (double  ) cand->Momentum.X();
+      core.P4.Py = (double  ) cand->Momentum.Y();
     }
   
 }   

@@ -32,7 +32,6 @@ StatusCode AlbersOutput::initialize() {
 StatusCode AlbersOutput::execute() {
   // for now assume identical content for every event
   // register for writing
-
   for (auto& i : m_albersDataSvc->getCollections()){
     // TODO: we need the class name in a better way
     if (m_first) {    
@@ -58,6 +57,7 @@ StatusCode AlbersOutput::execute() {
     i.second->prepareForWrite(m_registry);  
   }
   m_first = false;
+  std::cout << "filling data tree" << std::endl;
   m_datatree->Fill();
   return StatusCode::SUCCESS;
 }

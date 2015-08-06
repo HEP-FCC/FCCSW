@@ -9,15 +9,15 @@ reader.Outputs.hepmc.Path = "hepmc"
 dumper = HepMCDumper("Dumper")
 dumper.Inputs.hepmc.Path="hepmc"
 
-alberswrite = AlbersWrite("AlbersWrite")
+alberswrite = AlbersWrite("AlbersWrite",OutputLevel=DEBUG)
 alberswrite.Outputs.albersJets.Path = "albersJets"
 out = AlbersOutput("out")
 
 
 ApplicationMgr( TopAlg = [reader,dumper,alberswrite,out],
                 EvtSel = 'NONE',
-                EvtMax   = 2,
+                EvtMax   = 3,
                 ExtSvc = [albersevent],
 #                EventLoop = eventloopmgr,
-OutputLevel=DEBUG
+                OutputLevel=DEBUG
  )

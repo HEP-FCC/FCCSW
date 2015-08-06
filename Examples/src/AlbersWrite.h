@@ -2,8 +2,8 @@
 #define _ALBERSWRITE_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/JetCollection.h"
-
+#include "datamodel/JetCollection.h"
+#include "FWCore/DataHandle.h"
 
 class AlbersWrite: public GaudiAlgorithm {
   friend class AlgFactory<AlbersWrite> ;
@@ -20,7 +20,7 @@ public:
 
 private:
   /// Handle for the jets to be written
-  DataObjectHandle<JetCollection> m_jethandle;
+  DataHandle<JetCollection> m_jethandle;
 
 };
 

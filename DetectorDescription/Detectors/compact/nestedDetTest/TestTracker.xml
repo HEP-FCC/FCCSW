@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+    
+    <includes>
+        <gdmlFile  ref="elements.xml"/>
+        <gdmlFile  ref="materials.xml"/>
+    </includes>
+    
+    <info name="FCC_TestTracker"
+        title="Test for a FCC Tracker"
+        author="Julia"
+        url="none"
+        status="development"
+        version="$Id:??$">
+        <comment>A Test for a FCC Tracker</comment>
+    </info>
+    
+    <define>
+        <constant name="world_size" value="30*m"/>
+        <constant name="world_x" value="world_size"/>
+        <constant name="world_y" value="world_size"/>
+        <constant name="world_z" value="world_size"/>
+        
+        <!--Dimensions of BeamTube-->
+        <constant name="Tube_rmin" value="0.*mm"/>
+        <constant name="Tube_rmax" value="40.*mm"/>
+        <constant name="Tube_length" value="510.5*mm"/>
+        <!--Dimensions of Barrel1-->
+        <constant name="Tracker_rmin1" value="40.*mm"/>
+        <constant name="Tracker_rmax1" value="133.*mm"/>
+        <constant name="Barrel_length1" value="390.5*mm"/>
+        <constant name="rmin1_0" value="42.1*mm"/>
+        <constant name="rmax1_0" value="58.9*mm"/>
+        <constant name="rmin1_1" value="80.1*mm"/>
+        <constant name="rmax1_1" value="96.9*mm"/>
+        <constant name="rmin1_2" value="114.1*mm"/>
+        <constant name="rmax1_2" value="130.9*mm"/>
+        <constant name="pixelcounter1_0" value="22"/>
+        <constant name="pixelcounter1_1" value="38"/>
+        <constant name="pixelcounter1_2" value="52"/>
+        <constant name="zrepeat1" value="6"/>
+        <!--Dimensions of EndCaps1-->
+        <constant name="positionz1_1" value="-420.5*mm"/>
+        <constant name="positionz1_2" value="420.5*mm"/>
+        <constant name="EndCapRmin1" value="42.1*mm"/>
+        <constant name="EndCapRmax1" value="133.*mm"/>
+        <constant name="pixelcounter1_3" value="30"/>
+        <constant name="slice1radius1" value="72.5*mm"/>
+        <constant name="slice2radius1" value="98.04*mm"/>
+        <constant name="TrdXmin1" value="5.*mm"/>
+        <constant name="TrdXmax1" value="11.*mm"/>
+        <constant name="TrdXmin2" value="10.*mm"/>
+        <constant name="TrdXmax2" value="13.*mm"/>
+        <!--Dimensions of Barrel2-->
+        <constant name="Tracker_rmin2" value="133.*mm"/>
+        <constant name="Tracker_rmax2" value="233.*mm"/>
+        <constant name="Barrel_length2" value="450.5*mm"/>
+        <constant name="rmin2_0" value="142.1*mm"/>
+        <constant name="rmax2_0" value="158.9*mm"/>
+        <constant name="rmin2_1" value="180.1*mm"/>
+        <constant name="rmax2_1" value="196.9*mm"/>
+        <constant name="rmin2_2" value="214.1*mm"/>
+        <constant name="rmax2_2" value="230.9*mm"/>
+        <constant name="pixelcounter2_0" value="68"/>
+        <constant name="pixelcounter2_1" value="81"/>
+        <constant name="pixelcounter2_2" value="94"/>
+        <constant name="zrepeat2" value="7"/>
+        <!--Dimensions of EndCaps2-->
+        <constant name="positionz2_1" value="-480.5*mm"/>
+        <constant name="positionz2_2" value="480.5*mm"/>
+        <constant name="EndCapRmin2" value="42.1*mm"/>
+        <constant name="EndCapRmax2" value="233.*mm"/>
+        <constant name="pixelcounter2_3" value="60"/>
+        <constant name="slice1radius2" value="158.84*mm"/>
+        <constant name="slice2radius2" value="189.24*mm"/>
+        <constant name="TrdXmin3" value="15.*mm"/>
+        <constant name="TrdXmax3" value="21.*mm"/>
+        <constant name="TrdXmin4" value="18.*mm"/>
+        <constant name="TrdXmax4" value="25.*mm"/>
+        <!--Dimensions of Module-->
+        <constant name="length" value="10*m"/>
+        <constant name="box_width" value="8.4*mm"/>
+        <constant name="box_length" value="30.4*mm"/>
+        <constant name="box_thick" value="0.125*mm"/>
+        <constant name="zpos" value="60*mm"/>
+        <constant name="box2_width" value="11.34*mm"/>
+        <!--Dimensions of Layer-->
+        <constant name="LayerDZ" value="8.*mm"/>
+        <constant name="layerpos1" value="22.*mm"/>
+        <constant name="layerpos2" value="0.*mm"/>
+        <constant name="layerpos3" value="-22.*mm"/>
+        <constant name="EndCapZ" value="30.*mm"/>
+        <constant name="slice1positionz1" value="0.*mm"/>
+        <constant name="slice2positionz1" value="-0.125*mm"/>
+        <!-- laenge is 390.4-->
+        
+    </define>
+    
+    <display>
+        <vis name="comp0" r="0." g="0." b="1.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp1" r="0." g="1.0" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp2" r="1.0" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp3" r="0." g="0." b="0.5" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp4" r="0." g="0.5" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp5" r="0.5" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+    </display>
+    
+    <!--noetig fuer sensitives detelement-->
+    <readouts>
+        <readout name="TrackerReadout">
+            <id>system:3,layer:2,module:10,component:2</id>
+        </readout>
+        <readout name="TrackerBigReadout">
+            <id>system:3,layer:2,module:11,component:2</id>
+        </readout>
+        <readout name="EndCapReadout">
+            <id>system:3,layer:2,module:6,component:2</id>
+        </readout>
+        <readout name="EndCapBigReadout">
+            <id>system:3,layer:2,module:7,component:2</id>
+        </readout>
+    </readouts>
+    
+    <include ref="Barrel1.xml"/>
+    <include ref="Barrel2.xml"/>
+    <include ref="nEndCap1.xml"/>
+    <include ref="pEndCap1.xml"/>
+    <include ref="nEndCap2.xml"/>
+    <include ref="pEndCap2.xml"/>
+    
+    <detectors>
+        <!--BeamTube-->
+        <detector id="0" name="BeamTube" type="DD4hep_SubdetectorAssembly">
+            <status id="0"/>
+            <dimensions rmin="Tube_rmin" rmax="Tube_rmax" z="Tube_length" vis="comp1"/>
+        </detector>
+        <!--Envelope1-->
+        <detector id="1" name="Envelope1" type="DD4hep_SubdetectorAssembly">
+            <shape name="Envelope1" type="Tube" rmin="Tracker_rmin1" rmax="Tracker_rmax1" dz="Tube_length" material="Air"/>
+            <composite name="Barrel1"/>
+            <composite name="nEndCap1"/>
+            <composite name="pEndCap1"/>
+        </detector>
+        <!--Envelope2-->
+        <detector id="2" name="Envelope2" type="DD4hep_SubdetectorAssembly">
+            <!--eventuell rmin noch rmin1 umaendern abhaengig davon, ob och gleich die dimensionen fuer den contaienr so uebernehmen kann-->
+            <shape name="Envelope2" type="Tube" rmin="Tracker_rmin2" rmax="Tracker_rmax2" dz="Tube_length" material="Air"/>
+            <composite name="Barrel2"/>
+            <composite name="nEndCap2"/>
+            <composite name="pEndCap2"/>
+        </detector>
+    </detectors>
+    
+    
+    
+</lccdd>
