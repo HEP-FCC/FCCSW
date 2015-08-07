@@ -1,0 +1,48 @@
+// $Id: GaussMonitoringInclD.opts,v 1.4 2008-07-01 14:14:42 robbep Exp $ 
+
+/** @file 
+ * 
+ *  Job option for checking Pythia generator for inclusive D production
+ *
+ */
+
+#include "$GAUSSOPTS/Common.opts"    // Necessary for any Gauss executable
+
+ApplicationMgr.TopAlg += { "GaudiSequencer/Generator"  };
+
+Generator.Members         = { "GenInit/GaussGen" };
+
+GaussGen.FirstEventNumber = 991;
+GaussGen.RunNumber        = 88;
+EventClockSvc.FakeEventTime.StartTime   = 0;
+EventClockSvc.FakeEventTime.TimeStep    = 25*ns;
+
+#include "$GAUSSOPTS/Generator.opts"
+Generator.MeasureTime = true;
+#include "$GAUSSOPTS/GenStandAlone.opts"
+
+Generator.Members       += { "GaudiSequencer/GenMonitor" };
+GenMonitor.MeasureTime = true;
+
+ApplicationMgr.OutStream +=  { "GaussTape" };
+
+ApplicationMgr.EvtMax     = 5000 ;
+
+// The monitor part
+GenMonitor.Members += { "GeneratorAnalysis" } ;
+GeneratorAnalysis.NeutralParticleHistos = true ;
+
+GaussTape.Output = "DATAFILE='PFN:Gauss.sim' TYP='POOL_ROOTTREE' OPT='RECREATE'";
+
+ApplicationMgr.HistogramPersistency = "ROOT" ;
+HistogramPersistencySvc.OutputFile = "GaussHistos_20000000.root";  // Monitoring histos
+
+#include "$DECFILESROOT/options/20000000.opts"  // Min Bias
+Generation.PileUpTool = "FixedNInteractions" ;
+Generation.FixedNInteractions.NInteractions = 1 ;
+
+Generation.Inclusive.PythiaProduction.Commands +=
+{ "pydat1 mstu 12 1" } ;
+
+Generation.Inclusive.InclusivePIDList = {421, -421, 411, -411, 431, -431, 4122,-4122, 443, 4112, -4112, 4212, -4212, 4222, -4222, 4312, -4312, 4322, -4322, 4332, -4332, 4132, -4132, 4232, -4232, 100443, 441, 10441, 20443, 445, 4214, -4214, 4224, -4224, 4314, -4314, 4324, -4324, 4334, -4334, 4412, -4412, 4414,-4414, 4422, -4422, 4424, -4424, 4432, -4432, 4434, -4434, 4444, -4444, 14122, -14122, 100441};
+

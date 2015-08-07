@@ -1,0 +1,41 @@
+#============================================================================
+# Created    : 2004-07-21
+# Maintainer : Gloria CORTI, Patrick ROBBE
+#
+# Documentation on the requirement file can be found at
+# http://cern.ch/lhcb-comp/Support/html/new_structure.pdf
+#============================================================================
+
+package          LbPGuns
+version          v6r0p1
+
+# Structure
+#============================================================================
+branches         LbPGuns cmt options doc src
+
+
+# Used packages. 
+#============================================================================
+use GaudiAlg       v*
+use GenEvent       v*      Event
+use DetDesc        v*      Det
+use Generators     v*      Gen
+
+use PGunsData      v*      Gen
+
+# Export include files
+#============================================================================
+apply_pattern install_more_includes more=LbPGuns
+
+# Component library building rule
+#============================================================================
+library          LbPGuns    *.cpp
+
+# define component library link options
+#============================================================================
+apply_pattern    component_library library=LbPGuns
+
+# do not build on windows
+#============================================================================
+apply_pattern disable_package_on platform=target-winxp
+

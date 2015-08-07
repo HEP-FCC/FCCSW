@@ -1,0 +1,55 @@
+!=! $Id: release.notes,v 1.12 2009-09-18 14:29:17 gcorti Exp $
+! Package     : GenTests
+! Responsible : Patrick ROBBE
+! Purpose     : Package holding options and scripts to run generator level
+!               tests with Gauss
+!=============================================================================
+
+!========================= GenTests v1r6p2 2014-12-18 ========================
+! 2014-11-19 - Marco Clemencic
+ - Updated CMake configuration
+
+!========================= GenTests v1r6p1 2013-10-10 ========================
+! 2013-09-23 - Marco Clemencic
+ - Added CMake configuration file.
+
+!========================= GenTests v1r6 2012-05-14 ==========================
+! 2011-11-18 - by Aurelien Martens
+ - Adapt refernce plot script for pythia8 production
+
+!========================= GenTests v1r5 2011-03-15 ==========================
+! 2011-03-15 - Silvia Miglioranzi
+ - Updated the GeneratorReferencePlots.py script to take into account new 
+   histos names and different format ("D" instead of "E") in the cross section
+   printout.
+
+!========================= GenTests v1r4 2009-09-18 ==========================
+! 2009-05-15 - Patrick Robbe
+ - Move to python options
+
+!========================= GenTests v1r3 2008-08-25 ==========================
+! 2008-07-14 - Patrick Robbe
+ - Add B0 decay test (Bd -> D0 K*) 
+
+!========================= GenTests v1r2 2008-07-06 ==========================
+! 2008-07-01 - Patrick Robbe
+ - Remove bad PDG id code from list of particles in Inclusive D 
+   production
+ - Increase version in requirements
+ - Add script to produce web page : CheckAllHistograms.py
+
+!========================= GenTests v1r1 2008-06-29 ==========================
+! 2008-06-29 - Gloria CORTI
+ - Increase version and follow template for requirements
+
+! 2008-06-23 - Patrick Robbe
+ - Add script to produce the test jobs via Ganga
+
+!========================= GenTests v1r0 2008-06-16 ==========================
+! 2008-04-30 - Patrick Robbe
+  - Add new option for inclusive bb
+
+! 2008-04-07 - Patrick Robbe
+  - First version of the package
+!=============================================================================
+ 

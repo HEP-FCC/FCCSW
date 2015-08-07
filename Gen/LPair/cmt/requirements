@@ -1,0 +1,30 @@
+#============================================================================
+# Created    : 2015-08-03
+# Maintainer : Philip Ilten
+#============================================================================
+package       LPair
+version       v1r0
+
+# Structure, i.e. directories to process.
+#============================================================================
+branches      LPair doc cmt src
+
+# Used packages.
+#============================================================================
+macro lhapdf_native_version "6.1.4"
+use GaudiPolicy v*
+use lhapdf      v* LCG_GeneratorsInterfaces
+use LHAPDFSets  v*
+use Generators  v* Gen
+
+# Export include files.
+#============================================================================
+include_dirs $(LPAIRROOT)/src
+apply_pattern install_more_includes more=LPair
+
+# Linker library building rules.
+#============================================================================
+library       LPair        *.f *.F *.c
+apply_pattern linker_library library=LPair
+apply_pattern library_stamps library=LPair
+macro_append libraryshr_linkopts "-lgfortran"

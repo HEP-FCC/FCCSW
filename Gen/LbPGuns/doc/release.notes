@@ -1,0 +1,300 @@
+!-----------------------------------------------------------------------------
+! Package     : Gen/ParticleGuns
+! Responsible : Gloria CORTI, Patrick ROBBE
+! Purpose     : Holds code for generaion of particle guns
+!-----------------------------------------------------------------------------
+
+!========================= LbPGuns v6r0p1 2015-01-26 =========================
+! 2015-01-26 - Gloria Corti
+ - Fix bug in particle guns that does not reject events that do not satisfy the
+   decay cuts but just clean the decay product. 
+   See https://its.cern.ch/jira/browse/LHCBGAUSS-349
+
+!========================== LbPGuns v6r0 2014-12-17 ==========================
+! 2014-11-28 - Gloria Corti
+ - Try to fix warnings when compiling with --pedantic
+
+! 2014-11-19 - Marco Clemencic
+ - Updated CMake configuration
+
+! 2014-11-04 - Gloria Corti
+ - Move to Generators package smearing vertex tools
+
+! 2014-10-13 - Angelo Di Canto
+ - Modified MomentumSpectrum to improve logic and accept also pt-eta (TH2D)
+   input spectra
+ - Modified ParticleGun to handle signal decays, fixed usage of GenCutTools
+
+! 2014-10-03 - Angelo Di Canto
+ - Added HistoSmearVertex
+
+! 2014-10-01 - Stefanie Reichert
+ - Modified ParticleGun.cpp and ParticleGun.h to enable usage of GenCutTools
+   like DaughtersInLHCb.
+
+!========================== LbPGuns v5r0 2014-07-03 ==========================
+! 2014-07-03 - Gloria Corti
+ - Use new data package with v*. Exact version to be set in Gauss itself.
+
+!========================== LbPGuns v4r3 2014-06-23 ==========================
+! 2014-06-06 - Victor Coco
+ - Modified MomentumSpectrum so that GetRandom from the TH2D and TH3D gets a 
+   seed from the event number and run number (same seed in each jobs otherwise)
+
+! 2014-01-03 - Dan Johnson
+ - Modified MomentumSpectrum class to accept a pre-defined momentum spectrum
+   in terms of pt-pz (TH2D), as well as the original px-py-pz (TH3D).
+
+!========================== LbPGuns v4r2 2014-01-23 ==========================
+! 2014-01-20 - Sajan Easo
+ - Added two options files TargetMaterialGun.py for Target studies,
+   ParticleGunRich.py for RICH studies
+
+! 2013-12-20 - Marco Clemencic
+ - Removed obsolete file (not working with Gaudi >= v25).
+
+!========================= LbPGuns v4r1p1 2013-12-02 =========================
+! 2013-11-15 - Michel De Cian
+ - Added MomentumSpectrum.py and BSpectrum.root as example files for the class 
+   MomentumSpectrum to options.
+
+!========================== LbPGuns v4r1 2013-10-10 ==========================
+! 2013-09-23 - Marco Clemencic
+ - Added CMake configuration file.
+
+! 2013-08-30 - Michel De Cian
+ - Added tool MomentumSpectrum, which allows to generate events with a particle
+   gun according to a given spectrum from a 3D histogram
+
+!========================== LbPGuns v4r0 2012-07-23 ==========================
+! 2012-07-23 - Patrick Robbe
+ - Changes for the new particle property service
+
+!========================== LbPGuns v3r0 2012-05-14 ==========================
+! 2012-05-10 - Gloria Corti
+ - Fix run time problem with finding of ParticlePropertySvc that in Gaudi
+   v23 is in the Gaudi:: namespace.
+
+!========================== LbPGuns v2r1 2011-11-11 ==========================
+! 2011-11-09 - Patrick Robbe
+ - OTCosmic.cpp: fix compilation warning
+
+! 2011-10-20 - Patrick Robbe
+ - ParticleGun.cpp
+ - OTCosmic.cpp
+ - BeamShape.cpp
+ - RichPatternGun.cpp:
+   fix coverity warnings
+
+!========================== LbPGuns v2r0 2011-07-23 ==========================
+! 2011-07-15 - Gloria Corti
+ - Apply pattern not to build on windows, so that conditional use can be
+   removed from GaussSys
+
+! 2011-06-24 - Patrick Robbe
+ - ParticleGun.cpp: use tool headers from MCInterfaces
+
+! 2011-05-31 - Patrick Robbe
+ - FlatNParticles, ParticleGun, FlatNParticles, RichPatternGun: adapt to use
+   the new BeamParameters class.
+
+!========================== LbPGuns v1r2 2009-11-04 ==========================
+! 2009-11-04 - Magnus Lieng
+ - Changed .opts files into .py files
+   . ParticleGun.opts -> ParticleGun.py
+   . CosmicsGun.opst -> CosmicsGun.py
+   . MaterialEvalGun.opts -> MaterialEvalGun.py
+   . Rich1Cosmics.opts -> Rich1Cosmics.py
+   . UpsilonGun.opts -> UpsilonGun.py
+! 2009-10-28 - Magnus Lieng
+ - Added Beam Shape tool. By defining beam centroid and optics parameters at 
+   the generation point a "beam-like" particle distribution (position and 
+   momenta) is created.
+   . BeamShape.py
+   . BeamShape.cpp
+   . BeamShape.h
+
+!========================== LbPGuns v1r1 2009-09-18 ==========================
+! 2009-10-05 - Gloria CORTI
+ - Adapt example options to Gauss configurable, hence remove sequencing.
+   . CosmicsGun.opts
+   . MaterialEvalGun.opts
+   . ParticleGun.opts
+   . Rich1Cosmics.opts (inconsistency with latest options)
+   . UpsilonGun.opts
+   RichPatternGun as it is an algorithm is not forseen and does not work
+   for the moment.
+
+!========================= LbPGuns v1r0 2009-09-18 ==========================
+! 2009-09-18 - Gloria CORTI
+ - 'Rename' of the package ParticleGuns into LbPGuns to make it consistent
+   with all othe generators and allow consistent way of selecting the options
+   in the production system. 
+   The include of the IParticleGun.h is now taken from LbPGuns and a new
+   file Pguns.py to be included for event types with this generator is 
+   provided: it sets the appropriate options in Gauss() to execute the 
+   ParticleGun algorithm.
+   The release notes of ParticleGuns are kept here for historical reasons.
+
+!======================= ParticleGuns v7r1 2009-09-16 =======================
+! 2009-09-02 - Giulia Manca 
+-  Updated the CosmicGun generator to generate particle through a 
+	 vertical surface, with the correct angular and momentum distribution.
+	 Also updated the CosmicGun option file to allow generation in a larger
+	 volume. Tested with Gauss v37r2.
+ 
+! 2009-07-15 - Chris Jones
+ - Extend the Cosmic generator tool to allow the trajectories of the cosmics
+   to be defined by points in two planes, as well as the original point in a 
+   single plane and direction. Useful for generating events for the RICH1
+   cosmic trigger which consists of two scintillator planes upstream and 
+   downstream of RICH1. The options file Rich1Cosmics.opts shows an example
+   configuration.
+
+!======================= ParticleGuns v7r0 2009-04-07 =======================
+! 2009-04-07 - Gloria CORTI
+ - Adapt to changes in IPileUpTool interface.
+   . ParticleGun.cpp
+   . FlatNParticles.{h,cpp}
+
+! 2009-04-03 - Gloria CORTI
+ - Fix bug #48912 reported by Aras Papadelis about smearing of primary vertex
+   being applied only if a DecayTool is used (so not for stable particle
+   guns). 
+
+!======================= ParticleGuns v6r2 2008-12-08 =======================
+! 2008-12-02 - Gloria CORTI
+ - Put ToF based on z of vertex and direction of 'beam'/'particle gun'. By
+   default it is off (beamdirection = 0)
+   . FlatSmearVertex.{h,cpp}
+
+!======================= ParticleGuns v6r1 2008-10-10 =======================
+! 2008-10-09 - Gloria CORTI for Silvia BORGHI
+ - Fix bug #42653. Variable assoicated to yVertexMin and zVertexMin was
+   xmin instead of ymin and zmin.
+   . FlatSmearVertex.cpp
+
+!======================= ParticleGuns v6r0 2008-08-25 =======================
+! 2008-07-25 - Patrick Robbe
+ - Move to HEPMc2
+
+!======================= ParticleGuns v5r2 2008-07-18 =======================
+! 2008-07-11 - Patrick Robbe
+ - Remove SEAL functions from ParticleGun.cpp
+
+!======================= ParticleGuns v5r1 2008-06-26 =======================
+! 2008-06-12 - Patrick Robbe
+ - Add optical photon particle gun for RICH
+ - Add Gaussian theta angle distribution around axis possibility for
+   particle gun tool
+
+!======================= ParticleGuns v5r0 2008-06-09 =======================
+! 2008-06-09 - Patrick ROBBE
+ - Add example options for generation of a resonance particle gun
+   . options/UpsilonGun.opts
+
+! 2008-05-29 - Gloria CORTI
+ - Adapt to having removed LHCbDefinitions and picking vectors definitions
+   from GaudiKernel
+   . src/FlatSmearVertex.cpp
+
+! 2008-05-19 - Patrick Robbe
+ - Restructure ParticleGuns package to use tools:
+   . ParticleGuns/IParticleGunTool.h is the abstract interface of the tool
+     used to generate particle guns.
+   . ParticleGun.cpp is the main algorithm steering the generation of particle
+     guns (similar to Generation.cpp in the Generators package) and which 
+     calls the "ParticleGun" tool.
+   . Existing particle gun codes have been migrated to the new structure
+     and job options in the options directory have been also modified to 
+     take into account the new syntax.
+   . FlatNParticles: new tool of type "PileUpTool" to generate a random 
+     number of particles, with flat distribution between a min and a max
+     value. To be called by the new ParticleGun algorithm.
+   . FlatSmearVertex: new tool of type "VertexSmearingTool" to generate 
+     random position of the vertex of the particle gun with a flat distribution
+     within limits in x, y, z.
+
+!======================= ParticleGuns v4r0 2008-02-12 =======================
+! 2008-02-12 - Gloria CORTI
+ - Remove obsolete ParticleGun_load.cpp (imcompatible with Gaudi < 19)
+
+! 2008-02-12 - Wouter Hulsbergen
+ - Adapted OTCosmicGenerator to change in ROOT::Math::Transform3D
+
+! 2008-01-24 - Giulia Manca
+ - Added CosmicsGun, to generate cosmic rays in the all detector,
+  accorded to the model described in hep-ph 0604145.
+
+!======================= ParticleGuns v3r4 2007-12-07 =======================
+! 2007-11-21 - Gloria Corti
+ - Add use of DetDesc to compile new OTCosmicGenerator
+
+! 2007-10-16 Wouter Hulsbergen
+ - Added OTCosmicGenerator
+
+!======================= ParticleGuns v3r3 2007-08-24 =======================
+! 2007-08-24 - Gloria CORTI
+ - Introduce in "MaterialEvalGun" uniform production in eta-phi and regular
+   grid in both eta-phi and on a plane at given distance (default at 10*m).
+   New properties have been introduce to chose eta-phi or x-y plane, randomly
+   uniform or regular grid, and min/max in eta-phi, plus steps in x-y and
+   eta-phi. 
+ - Introduce example options for both ParticleGun (moved from Gauss) and
+   MaterialEvalGrid. Look there for specific list of available properties
+   and default values.
+ - Code changes
+   . MaterialEvalGun.{h,cpp}      - modified
+   . options/MaterialEvalGun.opts - NEW
+   . options/ParticleGun.opts     - NEW  
+ - Change default of ParticleGun to uniform distributions in abs(P), theta,
+   phi instead of fiex px,py,pz values.
+   . ParticleGun.cpp              - modified
+
+!====================== ParticleGuns v3r2 2007-02-08 =====================
+! 2007-01-08 - Florence Ranjard
+ - update SingleParticleGuns.cpp, ParticlrGuns.cpp, MaterialEvalGun.cpp
+   to use new FACTORY
+
+! ==================== ParticleGuns v3r1 2006-07-04 =======================
+! 2006-07-04 - Gloria CORTI
+ - Follow general LHCb convention for name of componenet libraries
+   loading and declaration file.
+   . factories declared in ParticleGuns_load.cpp (modified)
+   . remove ParticleGuns_entries.cpp and add ParticleGuns_dll.cpp
+ 
+! ==================== ParticleGuns v3r0 2006-04-04 =======================
+! 2006-04-04 - Gloria CORTI
+ - Adapt to change in base class for put method that no longer returns 
+   StatusCode
+   . src/ParticleGunBaseAlg.cpp 
+
+! 2006-03-29 - Florence RANJARD
+ - remove use of HepEvt and CLHEP. GenEvent uses HepMC from lcg/external
+
+! ===================== ParticleGuns v2r1 2006-03-27 =======================
+! 2006-03-23 - Patrick Robbe
+ - ParticleGunBaseAlg: remove all what is not necessary.
+ - ParticleGun, SingleParticleGun, MaterialEvalGun: follow base class
+   changes, use Gaudi random number generator, use mm and MeV units
+
+! ===================== ParticleGuns v2r0 2006-01-19 =======================
+! 2006-01-19 - Gloria CORTI
+ - Modify ParticleGunBaseAlg to remove all unnecessary part regarding
+   physics event generation. 
+   Do not create a GenHeader but update the one already in TES.
+
+! 2005-12-15 - Gloria CORTI
+ - Modify necessary files to adapt to new event model and LHCb namespace
+   In particular to collapse of HardInfo in GenCollisions.
+   . src/MaterialEvalGun.cpp
+   . src/ParticleGunBaseAlg.{h,cpp} 
+ - Remove unnecessary include of PhysicalConstants.h
+   . src/ParticleGun.cpp
+
+! ======================= ParticleGuns v1r0 ================================
+! 2005-07-21 - Patrick Robbe
+ - New package to contain Particle Guns
+
+! ==========================================================================
+ 

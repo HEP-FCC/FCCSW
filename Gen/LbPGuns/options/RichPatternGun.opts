@@ -1,0 +1,24 @@
+// ==========================================================================
+// include this file in Gauss.opts instead of Generator.opts
+// =========================================================================
+
+Generator.Members -= { "Generation", "GaudiSequencer/GenMonitor" };
+Generator.Members += { "RichPatternGun", "GaudiSequencer/GenMonitor" };
+SimMonitor.Members -= { "EvtTypeChecker" };
+
+// Event type is set as described in LHCb-2005-034 : G=5!
+RichPatternGun.EventType = 53210205;
+
+/// Pattern Gun Options
+RichPatternGun.xPatternCentre = 0;
+RichPatternGun.yPatternCentre = 0;
+RichPatternGun.zPatternCentre = 5000;
+RichPatternGun.Mean = 0;
+RichPatternGun.XSigma = 1000;
+RichPatternGun.YSigma = 1000;
+RichPatternGun.Peak = 10;
+RichPatternGun.NParticles = 1;
+
+/// entry to be added to ParticlePropertySvc to enable optical photons
+//ParticlePropertySvc.Particles = {"opticalphoton 50 10000022 0.0 0.000000e+000   1.000000e+016                 Cerenkov           0   0.000000e+000"};
+GiGa.TrackSeq.PostTrack.RejectOpticalPhotons = false;

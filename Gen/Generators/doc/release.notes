@@ -1,0 +1,1130 @@
+$! $Id: release.notes,v 1.167 2010-09-19 09:03:47 robbep Exp $
+!-----------------------------------------------------------------------------
+! Package     : Gen/Generators
+! Responsible : Patrick ROBBE
+! Purpose     : Common algorithms and tools for all production engines
+!-----------------------------------------------------------------------------
+
+!======================= Generators v15r0 2015-08-05 =========================
+! 2015-08-01 - Patrick Robbe 
+ - Generation.cpp: add the possibility to generate all interactions at the
+   same PV -- used for signal embeding between different generators. The signal
+   is seen as a separate interaction.
+
+!======================= Generators v14r8 2015-05-12 =========================
+! 2015-05-07 - Patrick Robbe 
+ - Special.cpp: fix to allow not reinitializing the generator, mandatory
+   when reading events from file (in that case the same events would be 
+   processed several times)
+
+!======================= Generators v14r7 2014-12-16 =========================
+! 20014-11-28 - Gloria Corti
+ - Try to fix warnings when compiling with --pedantic
+
+! 2014-11-19 - Marco Clemencic
+ - Updated CMake configuration
+
+! 2014-11-04 - Gloria Corti
+ - Move here HistoSmearVertex and FlatSmearVertex tools from LbPGuns
+
+!======================= Generators v14r6 2013-10-10 =========================
+! 2013-09-23 - Marco Clemencic
+ - Added CMake configuration file.
+
+! 2013-08-20 - Patrick Robbe
+ - Generation.cpp: add extra informations to the xml log file
+ - SignalPlain.cpp: fix the generator level cut efficiency counter
+
+!======================= Generators v14r5 2013-07-23 =========================
+! 2013-07-15 - Patrick Robbe
+ - src/components/XmlCounterLogFile.cpp: fix cross-section format
+
+! 2013-07-07 - Patrick Robbe
+ - src/components/SaveSignalBInformation.h/.cpp : algorithm to save
+ in locate "Gen/BInfo" the string from which the B signal comes from
+
+!======================= Generators v14r4 2013-06-27 =========================
+! 2013-06-26 - Patrick Robbe
+ - Fix coverity warnings
+
+! 2013-05-31 - Patrick Robbe
+ - Add interface code to TAULA and PHOTOS to suppress part of their outputs:
+   . src/Lib/LbTaula.cpp
+   . src/Lib/LBTAULA.F
+   . src/Lib/LbPhotos.cpp
+   . src/Lib/LBPHOTOS.F
+   . Generators/LbPhotos.h
+   . Generators/LbTaula.h
+ - EvtGenDecay: suppress PHOTOS and TAULA outputs
+
+! 2013-05-29 - Patrick Robbe
+ - Inclusive.cpp: fix problem with release of particle property service
+
+!======================= Generators v14r3 2013-05-16 =========================
+! 2013-05-14 - Aurelien Martens
+ - move the call to setIsSignal() in SRH.cpp before the call of generateEvent
+this allows the production tool to know if it is generating a signal of pile up
+at the generatio time to avoid double storing of parton level HepMC
+
+!======================= Generators v14r2 2013-03-27 =========================
+! 2013-03-22 - Stephane Tourneur
+ - Minor modification to allow the inclusive production of baryons with
+   no charm nor bottom content
+
+!======================= Generators v14r1 2013-03-13 =========================
+! 2013-02-13 - Patrick Robbe
+ - Fix compilation warnings with gcc46
+
+!======================= Generators v14r0 2013-02-04 =========================
+! 2013-02-01 - Aurelien Martens
+ - ExternalGenerator.cpp: add call to initializeGenerator, so that
+particle properties are set before initialization of the pythia instance
+
+
+! 2013-01-31 - Patrick Robbe
+ - Use Gaudi random number in ApplyPhotos
+
+! 2013-01-27 - Patrick Robbe
+ - ApplyPhotos.cpp: adapt to new photos++ interface
+
+! 2013-01-21 - Patrick Robbe
+ - EvtGenInPhSpDecay.cpp: remove Photos functions
+ - ICounterLogFile, XmlCounterLogFile: add counters for cross-section
+
+! 2013-01-20 - Patrick Robbe
+ - Remove Pythia6 from EvtGenDecay tool
+
+! 2013-01-16 - Patrick Robbe
+ - Add ICounterLogFile and XmlCounterLogFile classes to store in XML 
+   files the counters that allow to compute the generator level cut 
+   efficiencies.
+
+! 2012-12-19 - Aurelien Martens
+ - Fix SignalRH for pythia8 so that it also hadronize pile-up events.
+
+!======================= Generators v13r0 2012-11-29 =========================
+! 2012-09-27 - Patrick Robbe
+ - Added an option to switch off the reinitialization of the pile-up
+   production in the Special method.
+ - Fix the bug that events are not smeared (vertex) when there is no
+   decay tool.
+
+! 2012-09-11 - John Back
+ - Added the use of the namespace Photospp for src/component/ApplyPhotos.cpp,
+   which is required for Photos++ version 3.5.
+
+! 2012-07-13 - Patrick Robbe
+ - Use ParticlePropertySvc for the new particle property service
+   name
+
+! 2012-07-22 - Gloria Corti
+ - Fix bug in FlatZSmearVertex where the location where to take the beam
+   parameters was empty. (merge from v11r4b)
+
+! 2012-06-11 - Alex Shires
+ - update EvtGenInPhSpDecay to allow a configurable input file name
+
+! 2012-05-27 - Patrick Robbe
+ - use new ParticlePropertySvc
+
+! 2012-05-08 - Gloria Corti
+ - Fix linking problems with boost newer version from building with Gaudi v23r2
+
+! 2012-05-04 - John Back
+ - Changed src/component/ApplyPhotos.cpp to use Photos++
+ - Removed src/Lib/photos_utils.F
+
+! 2012-04-16 - John Back
+ - Some changes in EvtGenDecay.cpp to be compatible with the trunk of EvtGen:
+    a) use updated static instance for EvtGen/EvtDecayTable functions
+    b) added EvtPythia6 include header to still allow Pythia6 initialisation
+      (for some reason, this is still needed here for the initial p-p event)
+    c) commented out photos external fortran function calls.
+   Branch v11r4b is a copy of the trunk prior to the above changes.
+
+!==================== Generators v12 series on a branch ======================
+
+!======================= Generators v11r4 2012-02-12 =========================
+! 2012-02-12 - Gloria Corti
+ - Few changes in Generation.cpp and GenCounters for counting in Pythia8 and 
+   excited particles in November by Aureliens Martens
+
+! 2012-02-04 - Patrick Robbe
+ - Fix decayHeavyParticle function in ExternalGenerator for generation
+   of signal Ks.
+
+!======================= Generators v11r3 2011-11-11 =========================
+! 2011-11-08 - Patrick Robbe
+ - cleanup of Generator code
+
+! 2011-10-28 - Alex Shires
+ - Added IEvtGenTool to allow sharing of a sibgle EvtGen instance 
+   between DecayTools
+   A EvtGenTool.{h,cpp}
+   A IEvtGenTool.h
+   M EvtGenDecay.{h,cpp} 
+
+! 2011-10-20 - Patrick Robbe
+ - EvtGenDecay.cpp
+ - Generation.cpp
+ - LHAPDFCommonBlocks.cpp:
+   Fix coverity warnings
+
+!======================= Generators v11r2 2011-10-17 =========================
+! 2011-10-14 - Patrick Robbe
+ - EvtGenDecay.cpp
+ - SignalPlain.cpp
+ - SignalForcedFragmentation.cpp
+ - SignalRepeatedHadronization.cpp
+ - Generation.cpp
+ - Signal.cpp
+ - Signal.h
+   Modifications to skip event in case of EvtGen failure
+
+! 2011-09-28 - Alex Shires
+ - Added configurable call limit to EvtGenInPhSpDecay
+
+! 2011-09-28 - Patrick Robbe
+ - Rename EvtGenDecayInPhSp as EvtGenInPhSpDecay
+
+!======================= Generators v11r1 2011-09-19 =========================
+! 2011-09-14 - Alex Shires
+ - Fixes and new parameter file location for EvtGenDecayInPhSp
+
+! 2011-09-13 - Alex Shires
+ - Add new DecayTool, EvtGenDecayInPhSp, for reweighting the Kstmumu phase space 
+    distribution such that it is flat in q2.
+
+!======================= Generators v11r0 2011-07-15 =========================
+! 2011-07-15 - Gloria Corti
+ - Apply pattern not to build on windows, so that conditional use can be
+   removed from GaussSys
+
+! 2011-07-07 - Patrick Robbe
+ - Fix coverity warnings
+
+! 2011-06-23 - Patrick Robbe
+ - clean header files
+ - move IDecayTool.h to MCInterfaces
+
+! 2011-06-22 - Patrick Robbe
+ - Move IGenCutTool.h and IFullGenEventCutTool.h to MCInterfaces package
+ - Move cut tools to a new Gen/GenCuts package
+
+! 2011-06-20 - Patrick Robbe
+ - src/component/ApplyPhotos.cpp: add the possibility to use it for more
+   than one particle type.
+
+! 2011-06-16 - Patrick Robbe
+ - src/component/ApplyPhotos.cpp: new algorithm to be able to apply Photos 
+   on Z0 decays.
+
+! 2011-06-05 - Vanya Belyaev
+
+ - add ``generic'' full-event cut:
+   it analyses the event and accept them according to cuts.
+     e.g. accept ebents with at least two J/psi :
+    xxx.Code = " count( 'J/psi(1S)' == GID ) > 1.5 "
+     in a similar way one can use anyproerteis, including the acceptance
+
+! 2011-05-31 - Victor Coco
+ - BiasedBB: add some cuts on number of stable charged daugthers of the B and 
+   on minimal R displacement. By default gives the same result than without 
+   those cuts
+
+! 2011-05-31 - Patrick Robbe
+ - SemilepCutForADS: fix warnings
+
+! 2011-05-29 - Patrick Robbe
+ - Generators/IPileUpTool.h: change interface (remove unneeded GenHeader argument,
+   replaced by new beam parameters object)
+ - src/component/FixedLuminosity.h
+ - src/component/FixedTarget.h
+ - src/component/CollidingBeams.h
+ - src/component/BeamSpotSmearVertex.cpp
+ - src/component/FixedLuminosityForRareProcess.cpp
+ - src/component/VariableLuminosity.cpp
+ - src/component/Generation.cpp
+ - src/component/FixedNInteractions.cpp
+ - src/component/BeamSpotSmearVertex.h
+ - src/component/FlatZSmearVertex.cpp
+ - src/component/FixedLuminosityForSpillOver.h
+ - src/component/FixedLuminosityForRareProcess.h
+ - src/component/VariableLuminosity.h
+ - src/component/FixedLuminosity.cpp
+ - src/component/FixedLuminosityForSpillOver.cpp
+ - src/component/FixedNInteractions.h
+ - src/component/FixedTarget.cpp
+ - src/component/FlatZSmearVertex.h
+ - src/component/CollidingBeams.cpp
+     Adapt for new BeamParameters event model class
+
+! 2011-05-23 - Alex T. Grecu
+ - Replace HepMC::IO_Ascii with HepMC::IO_GenEvent in WriteHepMCAsciiFile 
+   algorithm. This way Gauss may be used as MC generator for rivet analyses.
+
+!====================== Generators v10r10 2011-03-17 =========================
+! 2011-03-16 - Alex Shires
+ - Rename tool from DaughtersInLHCbAcceptance to DaughtersInLHCbAndWithMinP
+
+! 2011-03-15 - Alex Shires
+ - Add in DaughtersInLHCbAcceptance tool to src/components. 
+   Allows both DecProdCut and a momentum cut to be made on tracks - 
+   default values are 3 GeV for muons and 1 GeV for other charged tracks
+
+! 2011-03-10 - Paolo Gandini
+ - Introdude a new cut for applying a cut on minimum value on invariant mass 
+   of D0 mu in Bu->D0 mu nu decay. The value can be set via the property 
+   "MassMin" with default value at 4600 MeV. 
+   Cuts on acceptance of charged and neutral particle are also applied:
+   "ChargedThetaMin" (default = 10mrad), "ChargedThetaMax" (default = 400mrad),
+   "NeutralThetaMin" (defalut = 5mrad), "NeutralThetaMax" (default = 400mrad)
+   . src/component/SemilepCutForADS.{h,cpp}
+
+!====================== Generators v10r9 2010-12-10 ==========================
+! 2010-12-10 - Gloria Corti
+ - Allow for a rotation of the beam line with respect to the nominal one.
+   . CollidingBeams.{h,cpp}: the px and py components will be modified
+     accordingly. Angle controllable via properties, by default set to
+     zero.
+   . Not yet implemented in other tools for FixedTarget and Smearing to be
+     used for beam gas simulation.
+
+! 2010-09-19 - Patrick Robbe
+ - UpsilonInAcceptance.h/.cpp: add and print counter to be able to 
+   determine generator level efficiencies for Upsilon productions.
+
+! 2010-08-01 - Vanya Belyaev
+
+ - GenericGenCutTool.cpp
+
+      New generic generator cut tool.
+      It allows fine tuning and configuration of generator 
+      level cuts, inclusing 'LHCb-acceptance'-cuts 
+
+      One can specify different crietria for different particles,
+      ignore certain particles (e.g. neutrinos) etc...
+    
+      The tool also produce the generatorcut efficiencty 2D-histogram.
+      The histogram can be cofigured therough property
+
+!====================== Generators v10r8 2010-05-09 ==========================
+! 2010-05-06 - Gloria CORTI
+ - Introduce possibility to have beam spot centered in a given value in the
+   x and y axis. The same for interactions for beam-gas vertex smearing. 
+   Values given in options. Default set to zero. 
+   . BeamSpotSmearVertex.{h,cpp}
+   . FlatZSmearVertex.{h,cpp}
+ - Introduce possibility to have crossing angle included in smearing of
+   interaction, togheter with beam direction, for tools used in beam-gas 
+   vertex smearing. The value of the crossing angle can be set by options.
+   Default set to zero.
+   . FlatZSmearVertex.{h,cpp}
+
+! 2010-05-05 - Patrick Robbe
+ - EvtGenDecay.cpp: use tmpnam to have unique files when creating the
+   temporary files for photos and EvtGen particle table
+
+!====================== Generators v10r7 2010-03-22 ==========================
+! 2010-03-21 - Patrick Robbe
+ - EvtGenDecay.cpp: force Pythia LHCb interface to be initialized to be sure
+   that Pythia is using the correct LHCb settings, even if Pythia is not used
+   as production generator
+
+!====================== Generators v10r6 2009-12-17 ==========================
+! 2009-12-03 - Patrick Robbe
+ - src/Lib/ExternalGenerator.h/.cpp: remove the contraint that only 
+   B and D excited states can be pre-decayed.
+
+!====================== Generators v10r5 2009-11-04 ==========================
+! 2009-10-22 - Patrick Robbe
+ - src/Lib/Signal.cpp: remove the constraint that the signal has a b
+   or a c quark. This will allow Sigma+ signal generation for example.
+ - Small fixes for SLC5 compilation
+
+!====================== Generators v10r4 2009-10-05 ==========================
+! 2009-10-02 - Jibo He
+ - Correct the Initialize/Finalize (mis)balance for UpsilonDaughtersInLHCb.
+
+! 2009-09-20 - Patrick Robbe
+ - Special.cpp: fix initialization sequence for LHAPDF
+
+!====================== Generators v10r3 2009-09-18 ==========================
+! 2009-09-09 - Thomas BLAKE
+ - DiLeptonInAcceptance.cpp: Fix bug in mass calculation
+
+! 2009-08-10 - Thomas BLAKE
+ - DiLeptonInAcceptance.cpp: Updated code to allow for same sign combinations.
+
+!====================== Generators v10r2 2009-07-15 ==========================
+! 2009-06-19 - Patrick Robbe
+ - EvtGenDecay.cpp: reactivates computing of branching fraction in 
+    DECAY.DEC
+
+! 2009-06-15 - Gloria CORTI
+ - Fix compilation warning of unused variable removing leftover old variable
+   when modified how to store luminosity
+   . Generation.cpp
+
+!====================== Generators v10r1 2009-05-27 ==========================
+! 2009-04-23 - Patrick Robbe
+ - Add possibility to obtain Upsilon from higher mass states, in 
+   UpsilonDaughtersInLHCb 
+
+!====================== Generators v10r0 2009-04-07 ==========================
+! 2009-04-07 - Gloria CORTI
+ - Fill new information in GenHeader (frequency and total cross section) in
+   order to be able to reproduce n_mean (collisions/bunch). In order to
+   fill information modify IPileUpTool interface to pass GenHeader rather
+   than "current luminosity". Modify all implemementations of PileUp tools
+   to adopt new interface and fill GenHeader.
+   . IPileUpTool.h
+   . FixedLuminosity.{h,cpp}
+   . FixedLuminosityForRareProcess.{h,cpp}
+   . FixedLuminosityForSpillOver.{h,cpp}
+   . FixedNInteractions.{h,cpp}
+   . VariableLuminosity.{h,cpp}
+   . Generation.cpp
+
+!====================== Generators v9r4 2009-04-06 ===========================
+! 2009-04-06 - Gloria CORTI
+ - Tag only, to keep next changes separate
+
+! 2009-04-01 - Patrick Robbe
+ - Generation: make it a filter to skip the generation and simulation
+   sequence for 0 interaction
+ - Add new pile-up tool: FixedLuminosityForSpillOver which allows 0 
+   interaction
+
+! 2009-03-16 - Patrick Robbe
+ - EvtGenDecay: fixes for new EvtGen version
+
+! 2009-03-02 - Patrick Robbe
+ - ReadHepMCAsciiFile.cpp: move to new method IO_GenEvent instead
+   of deprecated IO_Ascii method for external input files
+
+! 2009-02-26 - Patrick Robbe
+ - UpsilonDaughtersInLHCb: add new cut tool specific for Upsilon 
+   generation
+
+!====================== Generators v9r3 2009-02-09 ===========================
+! 2009-01-20 - Will REECE
+ - EvtGenDecay: Passes the list of models from EvtGenExtras into EvtGen.
+   requirements: Adds dependency on EvtGenExtras.
+
+!====================== Generators v9r2 2009-01-13 ===========================
+! 2008-12-11 - Patrick Robbe
+ - Signal.cpp: associate production_vertex to signal_vertex for clean 
+   events, to allow correct primary vertex assignment for Geant4.
+
+!====================== Generators v9r1 2008-10-10 ===========================
+! 2008-09-20 - Patrick Robbe
+ - ExternalGenerator.cpp: create ParticlePropertySvc if not existing (needed
+   if DecayTool is not used)
+ - Signal.cpp: protect in case of empty decay tool
+
+!====================== Generators v9r0 2008-08-25 ===========================
+! 2008-07-24 - Patrick Robbe
+ - Move to HEPMC2
+
+! 2008-07-23 - Marco Cattaneo
+ - Removed DumpHepMCTree, DumpMC, DumpMCDecay algorithms, moved to 
+   Sim/SimComponents, last two renamed DumpHepMC and DumpHepMCDecay
+ - Generator/HepMCUtils.h has been moved to GenEvent package. A dummy file is
+   kept for backwards compatibility, forwarding to the new include 
+
+! 2008-07-21 - Patrick Robbe 
+ - EvtGenDecay.cpp: add possibility to generate polarized charmonium
+
+! 2008-07-20 - Patrick Robbe
+ - Special.cpp: suppress LHAPDF output
+
+!====================== Generators v8r2 2008-07-18 ===========================
+! 2008-07-18 - Patrick Robbe
+ - Generation.cpp: fix compilation warning
+
+! 2008-07-16 - Gloria CORTI
+ - Remove use of SEAL from requirements file
+
+! 2008-07-10 - Patrick Robbe
+ - Remove completly SEAL functions and replace them with BOOST
+   functions for file handling
+   . src/component/EvtGenDecay.cpp/.h
+
+! 2008-07-09 - Patrick ROBBE and Gloria CORTI 
+ - Use Gaudi units explicitely instead of CLHEP implecitely via HepMC
+   (preparation for migration to HepMC 2.0)
+ - Replace use of SEAL utility for environment variables with that of Gaudi
+   . src/component/BiasedBB.cpp
+   . src/component/DaughtersInLHCb.cpp
+   . src/component/EvtGenDecay.cpp
+   . src/component/Generation.cpp
+   . src/component/LHCbAcceptance.cpp
+   . src/component/LeptonInAcceptance.cpp
+   . src/component/ListOfDaughtersInLHCb.cpp
+   . src/component/ReadHepMCAsciiFile.cpp
+   . src/component/SelectedDaughterInLHCb.cpp
+   . src/component/WriteHepMCAsciiFile.cpp
+
+!====================== Generators v8r2 2008-07-06 ===========================
+! 2008-07-04 - Patrick Robbe
+ - src/component/Inclusive.cpp: protect againts inexistent PDG Id for
+   inclusive production
+
+!====================== Generators v8r1 2008-06-09 ===========================
+! 2008-05-29 - Gloria CORTI
+ - Modify code to pick Vector{3D,4D}Types, etc. from GaudiKernel since 
+   LHCbDefinitions has been removed from GAUSS, given that the package 
+   will no longer be used with Gauss DC06.
+   . Generators/IBeamTool.h
+   . src/component/BiasedBB.cpp
+   . src/component/DaughtersInLHCb.{h,cpp}
+   . src/component/EvtGenDecay.h
+   . src/component/FlatZSmearVertex.cpp
+   . src/component/ListOfDaughtersInLHCb.{h,cpp}
+   . src/component/SelectedDaughterInLHCb.{h,cpp}
+   . src/component/SignalForcedFragmentation.{h,cpp}
+   . src/component/UniformSmearVertex.cpp
+
+! 2008-05-23 - Patrick Robbe
+ - Move Photos fortran files to GENSER
+ - Remove unnecessary LHAPDF routines
+
+!====================== Generators v8r0 2008-05-06 ===========================
+! 2008-05-06 - Gloria CORTI
+ - New algorithm to allow filtering of "merged" events, i.e. events where
+   a pp-collision is alwasys forced togheter with a MIB event, eg. beam
+   gas in Experimental area, in Long Straight Section or quartiary halo.
+   In this case two algorithms are executed one after the other and global
+   event cuts need to be applied afterward, since the one in "Generation" is
+   only applied on the event generated by the given instance of the algorithm.
+   . src/component/MergedEventsFilter.{h,cpp} - NEW
+
+ - Introduce options to allow generation of pp-collisions elsewhere than
+   in IP8, for example in the center of the cavern. This can also be used 
+   for interactions of satellite bunches.
+   Give mean z position of vertex as an option, "MeanZ" (Default = 0.0 as
+   in IP8, for center of the cavern it should be set to 11.22 m).
+   Can also set option to fix if time of interaction vs T0 of IP8 occured
+   before, after or at the same time, setting "SignOfTimeVsT0" (Default = 0.0
+   as in IP8, can be -1 or 1 in addition)
+   . src/component/BeamSpotSmearVertex.{h,cpp}
+
+! 2008-05-05 - Gloria CORTI
+ - Introduce direction of beam to take into account that time of interaction
+   for beam 2 with beam gas has to be negative to have the beam arriving at 
+   t = 0 in IP8. To allow for events where beam 1 and beam 2 are togheter
+   the "BeamDirection" can be set to "dummy" zero value in which case the
+   time of interaction is set to zero. The option is called "BeamDirection"
+   and can have integer values -1, 1 and 0 (Default = 1, as for beam 1)
+   . src/component/FlatZSmearVertex.{h,cpp}
+   . src/component/UniformSmearVertex.{h,cpp}
+
+! 2008-03-20 - Gloria CORTI
+ - Temporarly exclude from library MuXMaxBias.cpp because of compilation 
+   problems
+   . cmt/requirements
+ - Put time of vertex as z/c, assuming these smearing are used for beam 
+   gas so the time on which the occur is the time the beam has travelled
+   at that z from IP. 
+   . src/component/FlatZSmearVertex.cpp, UniformSmearVertex.cpp
+
+! 2008-03-16 - Patrick Robbe
+ - src/Lib/pyr.F: move to GENSER package
+
+! 2008-01-25 - Patrick Robbe
+ - Special.cpp: set pile-up generation tool as a private tool
+
+!====================== Generators v7r7 2007-12-19 ===========================
+! 2007-12-06 - Vanya BELYAEV
+ - src/Lib/ExternalGenerator.cpp
+   src/Lib/Signal.cpp
+   Allow the production of inclusive taus with SignalPlain tool 
+ 
+!====================== Generators v7r6 2007-12-06 ===========================
+! 2007-11-30 - Gloria Corti
+ - On Win32 put Signal and ExternalGenerators base classes in component
+   library rather then linker to allow compilation.
+   . requirements
+
+!====================== Generators v7r6 2007-12-06 ===========================
+! 2007-11-26 - Chris Jones
+ - Add three new Signal selection 'Cut' tools
+  + SignalIsFromBDecay      : Selects only decays that originate from a b
+  + LHCbAcceptanceAndFromB  : The AND of the SignalIsFromBDecay and 
+    LHCbAcceptance selections
+  + DaughtersInLHCbAndFromB : The AND of the SignalIsFromBDecay and 
+    DaughtersInLHCb selections
+
+! 2007-11-08 - Gloria Corti for Karl Harrison
+ - Linking of HepMCfio for WIN32
+
+! 2007-10-11 - Patrick Robbe
+ - Move inline functions in StreamForGenerator and RandomForGenerator in 
+   the .cpp files
+
+!====================== Generators v7r5 2007-10-11 ===========================
+! 2007-10-11 - Gloria Corti
+ - Really add src/component/UniforSmearVertex.{h,cpp}
+
+! 2007-10-10 - Patrick Robbe
+ - Add static class to hold external Gaudi random generator and message 
+   stream to interface with Pythia and EvtGen
+   . Generators/StreamForGenerator.h, src/Lib/StreamForGenerator.cpp
+   . Generators/RandomForGenerator.h, src/Lib/RandomForGenerator.cpp
+   . src/Lib/EvtReport.cpp
+   . src/component/EvtGenDecay.cpp
+   . src/component/Generation.cpp
+
+!====================== Generators v7r4 2007-09-27 ===========================
+! 2007-09-27 - Gloria Corti for Massimiliano Ferro-Luzzi
+ - Add new tool for uniform distribution in z and xy (within max radius)
+   of primary vertex
+   . src/component/UniformSmearVertex.{h,cpp} - NEW
+   . src/component/Generators_load.cpp - add factory also for other vertex
+                                         smearing tools that were missing
+                                         (Necessary for DC06 compatibility)
+
+! 2007-09-11 - Patrick Robbe
+ - src/Lib/GenCounters.cpp: fix problem with D counters
+
+! 2007-09-09 - Patrick Robbe
+ - src/component/SignalForcedFragmentation: fix problem with particles
+   already decayed (bug introduced when fixing CP violation with other
+   generation methods).
+ - src/Lib/Signal.cpp: change name of iterators in nested loops for Windows
+   compilation.
+ - src/Lib/LHAPDFCommonBlocks.cpp, LHAPDFUtils.F: rename routine whose names
+   are used in the new LHAPDF version
+ - Various fixes for Windows compilation:
+   . StandAloneDecayTool.h
+   . EvtGenDecay.{h,cpp}
+
+!====================== Generators v7r3 2007-08-22 ===========================
+! 2007-07-17 - Patrick Robbe
+ - src/Lib/Signal.cpp: fix generation of clean events
+
+!====================== Generators v7r2 2007-07-03 ===========================
+! 2007-07-03 - Gloria Corti
+ - Allow possibility of running different instances of Generation algorithm 
+   (ex. pp collisions and p-gas) in the same job. To do this the collisions
+   and hepmc events are kept in temporary containers and contents added to
+   containers in TES that are created in case they do not already exist.
+   The header information is updated accordingly.
+   . src/component/Generation.cpp
+
+! 2007-06-29 - Vanya BELYAEV
+ - Generators/F77Utils.h, src/Lib/F77Utils.h
+     a) add  new function F77Utils::getUnit to obtain free FORTRAN unit
+        trrough scan of all available units between 99 and 10
+     b) for other function add optional argument "verbose" 
+        with the default value equal to "false"(backward compatible).
+        It is *VERY* convinient for debugging...
+ - src/Lib/f77units.F 
+     add new function: INTEGER FUNCITON F77GETUNIT
+
+!====================== Generators v7r1 2007-05-08 ===========================
+! 2007-05-08 - Patrick Robbe
+ - Clean cut tools to remove unused functions: 
+    . src/component/DaughtersInLHCb.cpp
+    . src/component/DaughtersInLHCb.h
+    . src/component/ListOfDaughtersInLHCb.cpp
+    . src/component/ListOfDaughtersInLHCb.h
+    . src/component/SelectedDaughterInLHCb.cpp
+    . src/component/SelectedDaughterInLHCb.h
+
+! 2007-05-03 - Gloria CORTI
+ - Slighlty change message levels at initialization to see in info() 
+   primary interation vertex for flat vertex ( FlatZSmearVertex.cpp )
+ - Explicitely use LHCbDefinitions so that package is compatible with 
+   Gauss version using latest Gaudi v19r3 as well as DC06 version.
+
+! 2007-04-01 - Patrick Robbe
+ - Add new tool (RepeatDecay) to re-use the same event several times,
+   calling only the decay phase.
+
+!====================== Generators v7r0 2007-03-13 ===========================
+! 2007-03-08 - Patrick Robbe
+ - IProductionTool: Add new function "initializeGenerator()" which will
+   contain the generator specific initialization procedure.
+ - ReadHepMCAsciiFile: adapt for new production tool interface
+ - Special: Add the possibility to generate pile-up for special production
+ - FixedLuminosityForRareProcess: new pile-up tool to generate correctly
+   pile-up distributions for rare process events
+
+! 2007-03-08 - Patrick Robbe for Thomas Blake
+ - DiLeptonInAcceptance: new FullEventGenCutTool to accept events with dimuons.
+
+! 2007-02-27 - Patrick Robbe
+ - Fix output level of Special production tool
+
+! 2007-02-23 - Gloria Corti
+ - Increase major version due to change in IGenCutTool interface 
+
+! 2007-02-22 - Gloria CORTI
+ - Change default values of ZMin and ZMax of flat primary vertex according
+   to what chosen for Luminosity studies for beam gas (+/- 1500 mm) as
+   communicated by Daniele GREGORI
+   . FlatZSmearVertex.cpp
+
+! 2007-02-20 - Patrick Robbe
+ - Fix efficiency counters for CP violation decay modes (=> change IGenCutTool
+   applyCut function arguments). The signal decay is now always performed
+   before applying any generator cut.
+
+!====================== Generators v6r8 2007-02-08 ===========================
+! 2007-02-08 - Gloria Corti
+ - Slighlty change message levels at initialization to see beam energy and
+   primary interation vertex ( CollidingBeams.cpp, FixedTarget.cpp,
+   BeamSpotSmearVertex.cpp, FixedNInteractions.cpp)
+
+! 2007-02-06 - Patrick Robbe
+ - Fix problem with biased hadron fractions (SignalPlain and
+   SignalRepeatedHadronization)
+
+! 2007-01-30 - Patrick Robbe
+ - Fix problem with flip by EvtGen in Cut tools (DaughtersInLHCb, 
+   SelectedDaughtersInLHCb and ListOfDaughtersInLHCb)
+
+! 2007-01-23 - Gloria Corti
+ - Modify requirements to have a version with all changes in code but 
+   compatible with DC06.
+ - Change default for flat smearing of primary vertex, to have correct values
+   at 7 TeV for beam gas, i.e. 100 microns in x and y
+
+! 2007-01-08 - Florence Ranjard
+ - update in many *.cpp to use new FACTORY and SystemOfUnits from GaudiKernel
+
+!====================== Generators v6r7p1 2006-12-04 =========================
+! 2006-11-30 - Vanya BELYAEV
+ - src/componet/Generation.cpp
+   add a guard for "0 != m_pileUpTool" in 
+   Generation::finalize method 
+
+!======================= Generators v6r7 2006-11-09 ==========================
+! 2006-10-31 - Patrick Robbe
+ - src/Lib/Signal.cpp: fix unitialized variable.
+
+! 2006-10-25 - Vanya BELYAEV
+ - src/component/DumpHepMCTree.cpp
+     simple algorithm to dump the HepMC-tree in readable format 
+ - src/component/DumpMCDecay.h, src/component/DumpMCDecay.cpp
+     reshuffling of lines to allow the reuse functionality 
+     in DumpHepMCTree algorithm 
+ - src/component/Generators_load.cpp 
+     add a factory for new algorithm 
+
+!======================= Generators v6r6 2006-10-23 ==========================
+! 2006-10-23 - Patrick Robbe
+ - src/component/ListOfDaugthersInLHCb.h/.cpp: cut on a list of
+   daughters of the signal to be in the acceptance.
+
+! 2006-10-19 - Vanya BELYAEV
+ - src/component/DumpMCDecay.cpp
+     - improve the printout
+     - introduce benw property "MaxLevels" to represent the maximal 
+       printout level pit is much more easier to debug now!]
+     - reshuffle the lines a bit 
+ - src/component/DumpMCDecay.h  - remove the file 
+
+!======================= Generators v6r5 2006-10-10 ==========================
+! 2006-10-09 - Patrick Robbe
+ - SelectedDaughterInLHCb: modify to be able to give more than 
+   1 PID in list of daughters to select on.
+
+! 2006-10-06 - Vanya BELYAEV
+ - src/component/ReadHepMCAsciiFile.cpp
+
+    Simple "production tool", which actually reads HepMC events 
+    from  ascii input file. The tool could be useful to read 
+    information from external generators, if their integration 
+   into Gauss is impossible, difficult or not needed. 
+   
+   The tool has 2 properties:
+ 
+     - <c>Input</c>  : The name of input fiel in HepMC Ascii format 
+                     ( the default value is <c>""</c> (empty string))
+     - <c>Rescale<c> : Boolean flag to rescal the input event from 
+                      Pythia units to LHCb units.
+                      The default value is <c>true</c>.
+ - src/component/WriteHepMCAsciiFile.cpp    
+
+    Simple class to dump generators events in plain 
+    output file in HepMC Ascii format. It coudl be used for portable 
+    cross-transitions of events inbetween different degerators 
+ 
+    The algorithm has 3 properties:
+  
+     - <c>Input</c>  : The TES location of LHCb::HepMCEvent::Container
+               ( the default value is <c>LHCb::HepMCEventLocation::Default</c>)
+     - <c>Ouput</c>  : The name of output HepMC Ascii file. 
+                      The file is opened in "new/overwrite" mode.
+                      ( the default value is <c>""</c> (empty string)
+     - <c>Rescale<c> : Boolean flag to rescal the event from 
+                       LHCb units to Pythia units.
+                       The default value is <c>true</c>.
+ 
+ - src/components/Generators_load.cpp
+      declare 2 new componenst 
+
+ - Generators/Scale.h, src/Lib/Scale.cpp
+     simple utility to scale HepMC event inbetween Pythia and LHCb units
+
+!======================= Generators v6r4 2006-10-05 ==========================
+! 2006-10-04 - Patrick Robbe
+ - Add a new tool (SelectedDaughterInLHCb) to cut only on the daughters
+  of a single daughter of the signal particle (for example daughter 
+ from a J/psi, Ds, ...), and require they are in the LHCb acceptance.
+
+! 2006-10-04 - Vanya BELYAEV
+
+ - Generators/F77Utils.h
+       new file with few C++ utilities to manipulate(open&close) FORTRAN file
+      (Old/New/Unknown & their "Formatted" counterpartters)
+ - src/Lib/F77Utils.cpp
+ - src/Lib/f77units.F
+      Implementation of the functions from the file Generators/F77Utils.h
+ - cmt/requirements 
+      version incrmeent to v6r4
+ 
+
+! 2006-10-01 - Patrick Robbe
+ - Add possibility to cut on daughters of signal particle (New
+   DaughtersInLHCb cut tool). Change of IGenCutTool interface to 
+   allow this.
+
+!======================= Generators v6r3 2006-09-19 ==========================
+! 2006-09-06 - Gloria Corti
+ - Generators/GenCounters.h: put explicitely include of <cmath> to compile
+   on slc4
+
+! 2006-08-30 - Patrick Robbe
+ - src/Lib/phocin.F: put XPHCUT in double precision explicitly
+
+!======================= Generators v6r2 2006-08-29 ==========================
+! 2006-08-28 - Patrick Robbe
+ - src/component/Generation.cpp: protect against b quark without production
+   vertex.
+ - src/Lib/ExternalGenerator.cpp: order HepMC particles to be sure to 
+   reproduce events.
+ - src/component/StandAloneDecayTool.cpp: add a flag (Inclusive) to 
+   be able to generate generic decays with the decay tool.
+
+!======================= Generators v6r1 2006-07-27 ==========================
+! 2006-07-27 - Gloria CORTI
+ - Move update of EventType in GenHeader at beginning of execution to allow
+   production tools to access its value.
+   . src/component/Generation.cpp
+
+!=================== Generators v6r0 2006-07-04 ===========================
+! 2006-07-04 - Gloria CORTI
+ - Introduce use of Gaudi::Units namespace as required by LHCb v21r1
+   . BeamSpotSmearVertex.cpp, EvtGenDecay.cpp, FlatZSmearVertex.cpp
+ - Follow general LHCb convention for name of componenet libraries 
+   loading and declaration file.  
+   . factories declared in Generators_load.cpp (modified)
+   . remove Generators_entries.cpp and add Generators_dll.cpp
+
+!=================== Generators v5r3 2006-06-22 ===========================
+! 2006-06-22 - Gloria CORTI
+ - Always print Event type code requested at initialization
+   . src/component/Generation.cpp
+
+! 2006-06-16 - Patrick Robbe
+ - src/Lib/ExternalGenerator.cpp: set default value for job option 
+   parameter (not in constructor).
+
+!=================== Generators v5r2 2006-06-07 ===========================
+! 2006-06-05 - Patrick Robbe
+ - src/Lib/EVLCTEQ.F: Fix use of uninitialized value.
+ - src/component/BiasedBB.h/.cpp : new cut tool to implement maximum
+   bias b/bbar sample for DC06.
+ - src/component/Generators_entries.cpp: declare new cut tol BiasedBB.
+ - src/component/SignalForcedFragmentation: Use ns for HepMC unit
+
+!=================== Generators v5r1 2006-05-19 ===========================
+! 2006-05-08 - Vanya BELYAEV
+ - src/component/MuXMaxBias.cpp
+    really commit new tool.. 
+ - cmt/requirement
+    (re)add the usage of Phys/LoKiGen v* 
+
+! 2006-05-02 - Patrick Robbe
+ - src/Lib/Signal.cpp: rename counters to be consistent with inclusive.
+
+! 2006-04-23 - Patrick Robbe
+ - Add new tool to use EvtGen in standalone mode: StandAloneDecayTool
+
+! 2006-04-08 - Vanya BELYAEV
+ - src/component/MuXMaxBias.cpp
+   new tool ("generator cut") for the 
+   selection of "maximum bias sample for Bs -> mu+ mu- backhround studies"
+ - src/component/Generators_entries.cpp
+   new tool is declared 
+ - cmt/requirement
+   add the usage of Phys/LoKiGen v* 
+
+!=================== Generators v5r0 2006-04-07 ===========================
+! 2006-04-06 - Patrick Robbe
+ - SignalForcedFragmentation: Fix counters.
+ - GenCounters: do not count Bc with D hadrons.
+
+! 2006-04-05 - Patrick Robbe
+ - requirements: GENSER 1.3.0 compiles now LHAPDF with -O2, remove
+   -O in requirements
+
+! 2006-04-04 - Patrick Robbe
+ - ExternalGenerators.h/.cpp: add a switch (KeepOriginalProperties) in 
+   options to be able to keep the original particle properties of the
+   external generator.
+ - StringParse.h/.cpp: returns a double instead of a float when decoding
+   job option commands.
+ - requirements: use "-O" flag to compile LHAPDF code instead of -O2.
+ - Generation.cpp: improve counting of B hadrons
+
+! 2006-04-04 - Gloria CORTI
+ - Adapt to changes in put method signature in GaudiAlgorithm base class
+   . src/Lib/Signal.cpp
+   . src/component/Generation.cpp
+
+! 2006-03-29 - Florence Ranjard
+ - use HepMC from lcg/external : link with HepMCfio
+
+!=================== Generators v4r2 2006-03-22 ===========================
+! 2006-03-22 - Patrick Robbe
+ - ExternalGenerators: adapt to new HepMCEvent constructor and set to false
+   isSignal for pile up collisions
+ - Signal: use new HepMCEvent constructor and set HepMC container name of
+   clean events.
+ - BeamSpotSmearVertex, FlatZSmearVertex: use mm
+ - EvtGenDecay: use MeV and interface EvtGen engine with GeV in the tool
+ - Inclusive: set IsSignal flag of collision containing the inclusive type.
+ - LeptonInAcceptance: use MeV
+ - SignalPlain, SignalForcedFragmentation, SignalRepeatedHadronization, 
+   Special: set IsSignal flag for collision with signal.
+
+!=================== Generators v4r1 2006-03-16 ===========================
+! 2006-03-12 - Patrick Robbe
+ - Generation: fix interaction counters to count direct B from protons
+   as b quark.
+
+! 2006-03-07 - Patrick Robbe
+ - phocin: set up PHOTOS to work with more than 2 charged tracks
+   and interferences
+ - SignalPlain: add counters
+
+! 2006-02-22 - Patrick Robbe
+ - requirements: use names with double underscore
+ - ExternalGenerator, EvtGenDecay: use names with __
+ - GenCounters: fix counter when there is a B oscillating
+ - Signal: use end vertex as signal process
+ - Generation: number HepMC::GenEvent with pile up number
+
+! 2006-02-17 - Patrick Robbe
+ - HepMCUtils: add utility functions to help with HepMC structures.
+ - ExternalGenerator: change decay heavy particle methods to be able
+     to reproduce events.
+ - Signal: add counters of excited states and B hadron types,
+     fix clean events.
+ - EvtReport, EvtGenDecay: fix overload of EvtGen output facility.
+ - GenCouters: add counters for signal event types.
+ - DumpMC: order particles when printing them.
+ - Generation: improve reproducibility of events.
+ - Inclusive, Signal...: use new function to decay heavy particles.
+
+! 2006-02-07 - Patrick Robbe
+ - EvtGenDecay: finalize random generator at destruction of EvtGenGaudiRandom
+ - LHAPdf interface: fix memoty leaks
+
+! 2006-02-06 - Patrick Robbe
+ - Generation: fix problem with HepMCEvents (crashing for inclusive and 
+       signal productions)
+ - GenCounters: add several utility functions to handle array of counters.
+
+! 2006-02-05 - Patrick Robbe
+ - requirements: use SEAL 
+ - Generation: use arrays to contain counters
+ - Use temporary file class from SEAL to make temporary files.
+
+! 2006-02-01 - Patrick Robbe
+ - ExternalGenerator and src/Lib/EVLCTEQ.F: remove warnings when not in DEBUG 
+     mode for LHAPDF.
+ - Remove includes of CLHEP SystemOfUnits
+
+!=================== Generators v4r0 2006-01-19 ===========================
+! 2006-01-19 - Gloria CORTI
+ - Generation: do not create new GenHeader but unpdate info already in TES
+
+! 2006-01-18 - Patrick Robbe
+ - ExternalGenerator: create HepMC::GenEvent by hand to store in 
+   HepMCEvent 
+
+! 2005-12-31 - Patrick Robbe
+ - Adapt to new event model and new vector classes.
+
+! 2005-12-21 - Patrick Robbe
+ - phocin.F: activate exponentiation in PHOTOS
+ - GenCounters.h: print shorter fractions 
+
+!=================== Generators v3r0 2005-12-15 ===========================
+! 2005-12-15 - Patrick Robbe
+ - ExternalGenerator: Do not decay signal particle with status
+   code equal to 3.
+
+! 2005-12-10 - Patrick Robbe
+ - Add comments for doxygen
+
+! 2005-12-08 - Patrick Robbe
+ - Remove old structure
+ - ExternalGenerators: allow possibility to change LHAPDF settings by job 
+   option.
+
+! 2005-12-07 - Patrick Robbe
+ - GenCounters.h: common functions to print counters and compute efficiencies
+ - VariableLuminosity, Special, Generation, SignalPlain: use common function 
+   to print counters.
+ - SignalRepeatedHadronization: remove HepMCUtils dependency  and add
+   Clear function to clear content of HepMC Event
+ - Inclusive: fix counters
+ - ExternalGenerator: manage LHAPDF output and remove HepMC dependency
+ - LHAPDFCommonBlocks.{h,cpp}: wrapper for LHAPDF common blocks
+ - LhaPdf.{h,cpp}: static class to access LHAPDF functions from C++
+ - LHAPDFUtils.F: Fortran functions to access LHAPDF common blocks
+ - FixedLuminosity: new luminosity tool for fixed luminosity
+
+! 2005-11-29 - Patrick Robbe
+ - LeptonInAcceptance: add full event cut tool to keep events with one
+   lepton with pT > 4 GeV
+ - ExternalGenerator: add computation of efficiencies and counters
+ - Signal, Generation, Inclusive, Special, VariableLuminosity: add print out 
+   and computation of various counters
+
+! 2005-11-21 - Patrick Robbe
+ - Signal.h/.cpp: add functions and counters to be able to compute
+   the generator level cut efficiencies. Each tool deriving from 
+   "Signal" has to increment at the correct place these counters. 
+ - ExternalGenerator.cpp: use HepMC::GenEvent iterators (which are
+   sorted according to barcodes) in order to remove need to call 
+   sort function (to reproduce events with HepMC) 
+ - IFullGenEventCutTool: add new tool to be able to cut on full event
+   properties.
+ - Generation.cpp: 
+       . sort GenParticles when using HepMC::GenParticle
+         iterators (which are not sorted) according to the barcode.
+       . use new Full event cut tool 
+ - SignalPlain, SignalForcedFragmentation, SignalRepeatedHadronization:
+   increment counters to compute generator level cut efficiencies.
+
+! 2005-11-17 - Patrick Robbe
+ - src/component/Signal*.cpp : add possibility to generate clean events
+ - src/component/SignalForcedFragmentation: add forced fragmentation
+   method
+ - src/component/Special.cpp : add special generation method.
+
+!========================= Generators v2r1 ===========================
+! 2005-11-07 - Patrick Robbe
+ - src/Lib/EvtReport.cpp: add function to overwrite EvtGen printing
+   utilities.
+ - EvtGenDecay: use this new function.
+ - ExternalGenerator and IProductionTool: set particle properties from 
+   ParticlePropertySvc.
+
+! 2005-11-04 - Patrick Robbe
+ - src/component/SignalRepeatedHadronization.h/cpp: tool to generate
+   signal events with repeated hadronization.
+ - ExternalGenerator: add utility function to deal with event model
+   classes and prepare them before each generation of interactions.
+ - HepMCUtils: add function to clear HepMC events
+ - IProductionTool: add virtual functions for repeated hadronization 
+   method.
+ - Signal: add utility functions (choose one B amongst several and
+   function to choose correct signal multiplicity).
+ - phocin.F: adapt for PHOTOS 2.15
+ - pythiaoutput_utils.F : adapt for PYTHIA 6.3
+ - Generation: correct status of particles to decay with EvtGen.
+
+!========================= Generators v2r0 ===========================
+! 2005-10-17 - Patrick Robbe
+ - EvtGenTool : add possibility to control polarization parameters
+   by job options.
+
+! 2005-10-13 - Patrick Robbe
+ - Generators/GenBaseAlg : remove forward declaration not used
+
+! 2005-10-03 - Patrick Robbe
+ - HepMCUtils : use a static class instead of a namespace and add 
+   IsBAtProduction utility function.
+ - EvtDecayAlg : use new name of sort function.
+ - EvtGenTool : declare global stream variable extern to avoid conflicts
+ - Generators/IBeamTool.h : New abstract interface to tools to obtain beam
+     parameters in generator interfaces.
+ - Generators/IDecayTool.h : New abstract interface to decay generators.
+ - Generators/IGenCutTool.h : New abstract interface to generator level cut
+     tools.
+ - Generators/IPileUpTool.h : New abstract interface to tools computing the 
+     number of pile up interactions.
+ - Generators/IProductionTool.h : New abstract interface to production 
+     generators.
+ - Generators/ISampleGenerationTool.h : New abstract interface to tools
+     producing the different samples.
+ - Generators/IVertexSmearingTool.h : New abstract interface to vertex smearing
+     tools.
+ - VariableLuminosity: pile up tool to decide the number of pile up 
+     interactions depending on the current luminosity.
+ - FixedNInteractions: pile up tool with fixed number of interactions per 
+     event.
+ - CollidingBeams: Beam tool for colliding beams and beam smearing
+ - FixedTarget: Beam tool for fixed target
+ - BeamSpotSmearVertex: vertex smearing tool for gaussian smearing.
+ - FlatZSmearVertex: vertex smearing with flat Z distribution.
+ - LHCbAcceptance: generator level cut tool with angular cut.
+ - ExternalGenerator: base class for sample generation tool using an 
+     external generator.
+ - Signal: base class for sample generation tool using an external generator
+     and generating signal samples.
+ - EvtGenDecay: Decay tool interfacing EvtGen
+ - Generation: Main algorithm steering production of event samples with an 
+     external generator.
+ - MinimumBias: Sample generation tool to generate minimum bias.
+ - Inclusive: Sample generation tool to generate inclusive events.
+ - SignalPlain: Sample generation tool to generate signal events with plain 
+     method.
+
+!========================= Generators v1r2 ===========================
+! 2005-08-22 - Florence RANJARD
+ - phocin.F - remove the #include nmxhep.inc, replace it with 10000.
+
+!========================== Generators v1r1 ===========================
+! 2005-07-11 - Gloria CORTI
+ - requirements: introduce macro for fortran flags (no second underscore)
+
+! 2005-06-24 - Gloria CORTI
+ - Import changes as done in GeneratorModules v15r3 for merging of
+   beam gas with min bias events
+  + Changes to add possibility to set with properties the Generator data
+   paths in the TES. By defaut they are set to XxxLocation::Default
+   . src/component/EvtDecayAlg.{h,cpp} - property "HepMCEventLocation"
+   . src/component/SetDecayAlg.{h,cpp} - property "HepMCEventLocation"
+   . src/component/SmearVertexAlg.{h,cpp} - property "HepMCEventLocation"
+   . Generators/GenBaseAlg.h
+     src/Lib/GenBaseAlg.cpp - property "HepMCEventLocation"
+                              property "HardInfoLocation"
+                              property "GenHeaderLocation"
+  + Changes to add possibility to apply smearing of primary vertex only
+   to events produced with a certain generator (identified by name in
+   HepMCEvent container). Controlled by setting name of generator in
+   property "ApplyTo". The default is set to an empty string, in which
+   case the smearing is applied to all events in container
+   . src/component/SmearVertexAlg.{h,cpp}
+   
+
+!========================== Generators v1r0 ===========================
+! 2005-06-20 - Patrick Robbe
+ - new package. This package contains the base classes used by the
+   generator algorithms and tools. It also contains generic algorithms
+   and tools for debugging (DumpMC, DumpMCDecay), for EvtGen access
+   (EvtGenTool, SetDecayAlg, EvtDecayAlg), for vertex smearing (SmearVertexAlg)
+   and also utility functions (random number interfaces, HepMC help functions,
+   String utilities to read generator Fortran-like options)
+
+! ====================================================================

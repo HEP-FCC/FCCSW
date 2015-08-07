@@ -1,0 +1,36 @@
+# $Id: $ 
+#============================================================================
+# Created    : 2011-06-18
+# Maintainer : Patrick ROBBE
+#============================================================================
+package       GenCuts
+version       v3r12
+
+#============================================================================
+# Structure, i.e. directories to process. 
+#============================================================================
+branches      doc cmt src
+
+#============================================================================
+# Used packages. Specify the version, * at the end specifies 'any revision'
+#    Put as many lines as needed, with all packages, without the '#'
+#============================================================================
+use           GaudiAlg          v*
+use           MCInterfaces      v*                Kernel
+use           LoKiGen           v*                Phys 
+use           fastjet           v*                LCG_Interfaces
+
+#============================================================================
+# Component and linker libraries building rule
+#============================================================================
+library       GenCuts    *.cpp
+
+#============================================================================
+# define component and linker libraries link options (order is essential)
+#============================================================================
+apply_pattern component_library library=GenCuts
+private 
+
+macro_append ROOT_linkopts " -lHist " \
+              target-winxp " libHist.lib " \
+             target-mac104 " -lHist -lMatrix "
