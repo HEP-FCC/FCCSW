@@ -171,15 +171,13 @@ namespace LHCb
     template <Location L>
     int digit_() const 
     {
-      Gaudi::Math::Digit<unsigned int,L-1> _eval ;
-      return _eval ( abspid() ) ;
+      return Gaudi::Math::digit( abspid(), L-1 ) ;
     } 
     /// get the digits at the given fixed range 
     template <Location L1,Location L2>
     int digits_() const 
     {
-      Gaudi::Math::Digits<unsigned int,L1-1,L2-1> _eval ;
-      return _eval ( abspid() ) ;
+      return Gaudi::Math::digits ( abspid(),L1-1,L2-1 ) ;
     } 
     // ========================================================================
   public:
