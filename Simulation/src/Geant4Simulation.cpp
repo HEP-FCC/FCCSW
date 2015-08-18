@@ -17,32 +17,37 @@
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc)
+GaudiAlgorithm(name, svcLoc), G4RunManager()
 {
    declareInput("hepmcevent", m_eventhandle);
-   // declareInput("g4detector", m_g4detector);
    // declareOutput("particles", m_recphandle);
 }
 
-StatusCode Geant4Simulation::initialize() {
-   GaudiAlgorithm::initialize();
-   m_runManager = new G4RunManager;
+StatusCode Geant4Simulation::initialize()
+{
+    if (GaudiAlgorithm::initialize().isFailure())
+        return StatusCode::FAILURE;
+
+    if (service("GeoSvc", m_geoSvc, true).isFailure())
+    {
+        error() << "Couldn't GeoSvc" << endmsg;
+        return StatusCode::FAILURE;
+    }
 
    // load physics list
-   m_runManager->SetUserInitialization(new FCCPhysicsList);
+   SetUserInitialization(new FTFP_BERT);
 
    // take geometry
-   ///.... from Service - check with Julia code, currently...
-   m_runManager->SetUserInitialization(new FCCDetectorConstruction);
+   SetUserInitialization(m_geoSvc->getGeant4Geo());
 
    // user action classes
-   m_runManager->SetUserInitialization(new FCCActionInitialization);
+   // SetUserInitialization(new FCCActionInitialization);
 
-   m_runManager->Initialize();
+   Initialize();
    // as in G4RunManager::BeamOn
-   m_runManager->numberOfEventToBeProcessed = 1;
-   m_runManager->ConstructScoringWorlds();
-   m_runManager->RunInitialization();
+   numberOfEventToBeProcessed = 1;
+   ConstructScoringWorlds();
+   RunInitialization();
 
 	return StatusCode::SUCCESS;
 }
@@ -52,14 +57,14 @@ StatusCode Geant4Simulation::execute() {
    auto hepmc_event = m_eventhandle.get();
    G4Event* geant_event = new G4Event();
    HepMC2G4(hepmc_event, geant_event);
-   m_runManager->currentEvent = geant_event;
+   currentEvent = geant_event;
 
    // run geant
    //as in  G4RunManager::ProcessOneEvent
-   m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
-   m_runManager->AnalyzeEvent(m_runManager->currentEvent);
-   m_runManager->UpdateScoring();
-   m_runManager->TerminateOneEvent();
+   eventManager->ProcessOneEvent( currentEvent);
+   AnalyzeEvent(currentEvent);
+   UpdateScoring();
+   TerminateOneEvent();
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
@@ -68,8 +73,7 @@ StatusCode Geant4Simulation::execute() {
 }
 
 StatusCode Geant4Simulation::finalize() {
-   m_runManager->RunTermination();
-   delete  m_runManager;
+   RunTermination();
    return GaudiAlgorithm::finalize();
 }
 

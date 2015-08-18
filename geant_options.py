@@ -6,6 +6,9 @@ albersevent   = FCCDataSvc("EventDataSvc")
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.Outputs.hepmc.Path = "hepmc"
 
+from Configurables import GeoSvc
+geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
+
 from Configurables import Geant4Simulation
 geant4simulation = Geant4Simulation("Geant4Simulation")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
@@ -17,7 +20,7 @@ out.outputCommands = ["drop *"]
 
 ApplicationMgr( TopAlg = [reader, geant4simulation, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
-                ExtSvc = [albersevent],
+                EvtMax   = 1,
+                ExtSvc = [albersevent,geoservice],
                 OutputLevel=DEBUG
  )
