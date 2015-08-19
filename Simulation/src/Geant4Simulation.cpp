@@ -19,7 +19,7 @@ StatusCode Geant4Simulation::initialize()
 
    if (service("GeoSvc", m_geoSvc, true).isFailure())
    {
-      error() << "Couldn't GeoSvc" << endmsg;
+      error() << "Couldn't get GeoSvc" << endmsg;
       return StatusCode::FAILURE;
    }
 
