@@ -17,29 +17,26 @@
 #include "G4RunManager.hh"
 #include "G4Event.hh"
 
-class Geant4Simulation: public GaudiAlgorithm , private G4RunManager{
-  friend class AlgFactory<Geant4Simulation> ;
-
+class Geant4Simulation: public GaudiAlgorithm , public G4RunManager{
+   friend class AlgFactory<Geant4Simulation> ;
 public:
-  /// Constructor.
-  Geant4Simulation(const std::string& name, ISvcLocator* svcLoc);
-  /// Initialize.
-  virtual StatusCode initialize();
-  /// Execute.
-  virtual StatusCode execute();
-  /// Finalize.
-  virtual StatusCode finalize();
-  /// Converter between HepMS::GenEvent and G4Event
-  void HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4Event);
+   /// Constructor.
+   Geant4Simulation(const std::string& name, ISvcLocator* svcLoc);
+   /// Initialize.
+   virtual StatusCode initialize();
+   /// Execute.
+   virtual StatusCode execute();
+   /// Finalize.
+   virtual StatusCode finalize();
+   /// Converter between HepMC::GenEvent and G4Event
+   G4Event* HepMC2G4(const HepMC::GenEvent* aHepMCEvent);
 private:
-  /// Handle for the HepMC to be read
-  DataHandle<HepMC::GenEvent> m_eventhandle;
-  /// Handle for the "reconstructed" to be written
-  DataHandle<ParticleCollection> m_recphandle;
-
-  // G4RunManager* m_runManager;
-    IGeoSvc* m_geoSvc;
-
+   /// Handle for the HepMC event to be read
+   DataHandle<HepMC::GenEvent> m_eventhandle;
+   /// Handle for the particles to be written
+   DataHandle<ParticleCollection> m_recphandle;
+   /// Pointer to the interface of geometry service
+   IGeoSvc* m_geoSvc;
 };
 
 #endif

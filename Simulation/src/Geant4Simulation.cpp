@@ -1,18 +1,7 @@
 #include "Geant4Simulation.h"
 
-#include "GeantFast/FCCDetectorConstruction.hh"
-#include "GeantFast/FCCActionInitialization.hh"
-#include "GeantFast/FCCPrimaryParticleInformation.hh"
-#include "GeantFast/FCCPhysicsList.hh"
-#include "G4GDMLParser.hh"
-
+// Geant4
 #include "FTFP_BERT.hh"
-
-#include "G4Event.hh"
-#include "G4EventManager.hh"
-#include "G4SystemOfUnits.hh"
-#include "G4PhysicalConstants.hh"
-#include "G4ScoringManager.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -20,51 +9,53 @@ Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc)
 GaudiAlgorithm(name, svcLoc), G4RunManager()
 {
    declareInput("hepmcevent", m_eventhandle);
-   // declareOutput("particles", m_recphandle);
+   declareOutput("particles", m_recphandle);
 }
 
 StatusCode Geant4Simulation::initialize()
 {
-    if (GaudiAlgorithm::initialize().isFailure())
-        return StatusCode::FAILURE;
+   if (GaudiAlgorithm::initialize().isFailure())
+      return StatusCode::FAILURE;
 
-    if (service("GeoSvc", m_geoSvc, true).isFailure())
-    {
-        error() << "Couldn't GeoSvc" << endmsg;
-        return StatusCode::FAILURE;
-    }
+   if (service("GeoSvc", m_geoSvc, true).isFailure())
+   {
+      error() << "Couldn't GeoSvc" << endmsg;
+      return StatusCode::FAILURE;
+   }
 
-   // load physics list
-   SetUserInitialization(new FTFP_BERT);
+   // load standard physics list (full G4 sim)
+   // deleted in ~G4RunManager()
+   G4RunManager::SetUserInitialization(new FTFP_BERT);
 
-   // take geometry
-   SetUserInitialization(m_geoSvc->getGeant4Geo());
+   // take geometry (DD4Hep)
+   // deleted in ~G4RunManager()
+   G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
 
-   // user action classes
-   // SetUserInitialization(new FCCActionInitialization);
-
-   Initialize();
-   // as in G4RunManager::BeamOn
-   numberOfEventToBeProcessed = 1;
-   ConstructScoringWorlds();
-   RunInitialization();
-
-	return StatusCode::SUCCESS;
+   G4RunManager::Initialize();
+   // as in G4RunManager::BeamOn()
+   if(G4RunManager::ConfirmBeamOnCondition())
+   {
+      G4RunManager::numberOfEventToBeProcessed = 1;
+      G4RunManager::ConstructScoringWorlds();
+      G4RunManager::RunInitialization();
+      return StatusCode::SUCCESS;
+   }
+   else
+   {
+      error() << "Geant hasn't been initialised correctly." << endmsg;
+      return StatusCode::FAILURE;
+   }
 }
 
 StatusCode Geant4Simulation::execute() {
    //read event
    auto hepmc_event = m_eventhandle.get();
-   G4Event* geant_event = new G4Event();
-   HepMC2G4(hepmc_event, geant_event);
-   currentEvent = geant_event;
 
-   // run geant
-   //as in  G4RunManager::ProcessOneEvent
-   eventManager->ProcessOneEvent( currentEvent);
-   AnalyzeEvent(currentEvent);
-   UpdateScoring();
-   TerminateOneEvent();
+   G4RunManager::currentEvent = HepMC2G4(hepmc_event);
+   G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
+   G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
+   G4RunManager::UpdateScoring();
+   G4RunManager::TerminateOneEvent();
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
@@ -73,55 +64,48 @@ StatusCode Geant4Simulation::execute() {
 }
 
 StatusCode Geant4Simulation::finalize() {
-   RunTermination();
+   G4RunManager::RunTermination();
    return GaudiAlgorithm::finalize();
 }
 
-void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4Event)
+G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent)
 {
-   for(HepMC::GenEvent::vertex_const_iterator vitr= aHepMCEvent->vertices_begin();
-       vitr != aHepMCEvent->vertices_end(); ++vitr ) { // loop for vertex ...
-
-      // real vertex?
-      G4bool qvtx=false;
-      for (HepMC::GenVertex::particle_iterator
-              pitr= (*vitr)->particles_begin(HepMC::children);
-           pitr != (*vitr)->particles_end(HepMC::children); ++pitr) {
-
-         if (!(*pitr)->end_vertex() && (*pitr)->status()==1) {
-            qvtx=true;
+   G4Event* aG4Event = new G4Event;
+   for(auto vertex_i = aHepMCEvent->vertices_begin();
+       vertex_i != aHepMCEvent->vertices_end(); ++vertex_i )
+   {
+      // check if the vertex is valid
+      bool true_vertex=false;
+      for (auto particle_i= (*vertex_i)->particles_begin(HepMC::children);
+           particle_i != (*vertex_i)->particles_end(HepMC::children); ++particle_i)
+      {
+         if (!(*particle_i)->end_vertex() && (*particle_i)->status()==1)
+         {
+            true_vertex=true;
             break;
          }
       }
-      if (!qvtx) continue;
+      if (!true_vertex) continue;
 
-      // check world boundary
-      HepMC::FourVector pos= (*vitr)-> position();
-      G4LorentzVector xvtx(pos.x(), pos.y(), pos.z(), pos.t());
+      HepMC::FourVector tmp= (*vertex_i)->position();
+      G4LorentzVector vertex_pos(tmp.x(), tmp.y(), tmp.z(), tmp.t());
 
       // create G4PrimaryVertex and associated G4PrimaryParticles
-      G4PrimaryVertex* g4vtx=
-         new G4PrimaryVertex(xvtx.x()*cm, xvtx.y()*cm, xvtx.z()*cm,
-                             xvtx.t()*cm/c_light);
+      G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(vertex_pos.x()*cm, vertex_pos.y()*cm, vertex_pos.z()*cm, vertex_pos.t()*cm/c_light);
 
-      for (HepMC::GenVertex::particle_iterator
-              vpitr= (*vitr)->particles_begin(HepMC::children);
-           vpitr != (*vitr)->particles_end(HepMC::children); ++vpitr) {
+      for (auto particle_i= (*vertex_i)->particles_begin(HepMC::children);
+           particle_i != (*vertex_i)->particles_end(HepMC::children); ++particle_i) {
+         if( (*particle_i)->status() != 1 ) continue;
 
-         if( (*vpitr)->status() != 1 ) continue;
-
-         G4int pdgcode= (*vpitr)-> pdg_id();
-         pos= (*vpitr)-> momentum();
-         G4LorentzVector p(pos.px(), pos.py(), pos.pz(), pos.e());
-         G4PrimaryParticle* g4prim=
-            new G4PrimaryParticle(pdgcode, p.x()*GeV, p.y()*GeV, p.z()*GeV);
-         g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
-                                       (*vpitr)->barcode(),
-                                       pdgcode,
-                                       G4ThreeVector(p.x(), p.y(), p.z())));
-         g4vtx-> SetPrimary(g4prim);
+         int pdgcode= (*particle_i)-> pdg_id();
+         tmp= (*particle_i)-> momentum();
+         G4LorentzVector mom(tmp.px(), tmp.py(), tmp.pz(), tmp.e());
+         G4PrimaryParticle* g4_particle=
+            new G4PrimaryParticle(pdgcode, mom.x()*GeV, mom.y()*GeV, mom.z()*GeV);
+         g4_vertex->SetPrimary(g4_particle);
       }
-      aG4Event-> AddPrimaryVertex(g4vtx);
+      aG4Event->AddPrimaryVertex(g4_vertex);
    }
+   return aG4Event;
 }
 
