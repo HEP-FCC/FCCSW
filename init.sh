@@ -33,12 +33,12 @@ export PATH=/afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:$PATH
 
 export DELPHES_DIR=/afs/cern.ch/exp/fcc/sw/0.3/Delphes/3.2.0/
 
-export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:$FCCEDM:$ALBERS:/afs/cern.ch/sw/lcg/releases:/afs/cern.ch/user/r/ribon/public/ForAnna/Install:$DELPHES_DIR
+export CMAKE_PREFIX_PATH=$GAUDI/cmake:$FCCBASE:$FCCEDM:$ALBERS:/afs/cern.ch/sw/lcg/releases:$DELPHES_DIR:/afs/cern.ch/sw/lcg/external/geant4/10.0.p04/x86_64-slc6-gcc47-opt/
+
 export CMTCONFIG=x86_64-slc6-gcc48-opt
 
-
-# set up the compilers
-export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts:$PATH
+# # set up the compilers
+# export PATH=/afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts:$PATH
 #export LCG_hostos=x86_64-slc6
 #export LCG_external_area=/afs/cern.ch/sw/lcg/external
 #export PATH=/afs/cern.ch/sw/lcg/contrib/ninja/1.4.0/x86_64-slc6:$PATH
@@ -52,3 +52,4 @@ source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh
 # add DD4hep
 source /afs/cern.ch/exp/fcc/sw/0.3/DD4hep/v00-09/bin/thisdd4hep.sh
 source /afs/cern.ch/sw/lcg/contrib/gcc/4.8.1/x86_64-slc6/setup.sh
+
