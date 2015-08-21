@@ -1,6 +1,6 @@
 //
 //  GeoSvc.cxx
-//  
+//
 //
 //  Created by Julia Hrdinka on 30/03/15.
 //
@@ -16,7 +16,7 @@ GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) :
 base_class(name, svc),
 m_dd4hepgeo(0),
 m_geant4geo(0),
-m_xmlFileName("file:DetectorDescription/Detectors/compact/TestTracker_sameMat.xml"), //over joboptions
+m_xmlFileName("file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml"), //over joboptions
 m_log(msgSvc(), name)
 {}
 
@@ -31,12 +31,12 @@ StatusCode GeoSvc::initialize()
         m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;
     else
         m_log << MSG::INFO << "DD4Hep geometry SUCCESSFULLY built" << endmsg;
-    
+
     if (buildGeant4Geo().isFailure())
         m_log << MSG::ERROR << "Could not build Geant4 geometry" << endmsg;
     else
         m_log << MSG::INFO << "Geant4 geometry SUCCESSFULLY built" << endmsg;
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -50,14 +50,14 @@ StatusCode GeoSvc::buildDD4HepGeo()
     // we retrieve the the static instance of the DD4HEP::Geometry
     m_dd4hepgeo = &(DD4hep::Geometry::LCDD::getInstance());
     m_dd4hepgeo->addExtension<IGeoSvc>(this);
-    
+
     //load geometry
     m_log << MSG::INFO << "loading geometry from file:  '" << m_xmlFileName << "'" << endmsg;
     char* arg = (char*) m_xmlFileName.c_str();
     m_dd4hepgeo->apply("DD4hepXMLLoader", 1, &arg);
     m_dd4hepgeo->volumeManager();
     m_dd4hepgeo->apply("DD4hepVolumeManager",0,0);
-    
+
     return StatusCode::SUCCESS;
 }
 

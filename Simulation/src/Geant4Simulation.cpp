@@ -50,23 +50,19 @@ StatusCode Geant4Simulation::initialize()
 StatusCode Geant4Simulation::execute() {
    //read event
    auto hepmc_event = m_eventhandle.get();
-
-   G4RunManager::currentEvent = HepMC2G4(hepmc_event);
-   if(G4RunManager::ConfirmBeamOnCondition())
+   if ( !hepmc_event->is_valid() )
    {
-      G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
-      G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
-      G4RunManager::UpdateScoring();
-      G4RunManager::TerminateOneEvent();
-      // ParticleCollection* particles = new ParticleCollection();
-      // m_recphandle.put(particles);
-      return StatusCode::SUCCESS;
-   }
-   else
-   {
-      error() << "Geant isn't initialised correctly." << endmsg;
+      error() << "Couldn't get event" << endmsg;
       return StatusCode::FAILURE;
    }
+   G4RunManager::currentEvent = HepMC2G4(hepmc_event);
+   G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
+   G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
+   G4RunManager::UpdateScoring();
+   G4RunManager::TerminateOneEvent();
+   // ParticleCollection* particles = new ParticleCollection();
+   // m_recphandle.put(particles);
+   return StatusCode::SUCCESS;
 }
 
 StatusCode Geant4Simulation::finalize() {
