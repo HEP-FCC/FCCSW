@@ -39,6 +39,8 @@ private:
    DataHandle<ParticleCollection> m_recphandle;
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
+   /// Envelopes that are used in a parametric simulation
+   std::vector<std::unique_ptr<G4Region>> m_g4regions;
 };
 
 #endif

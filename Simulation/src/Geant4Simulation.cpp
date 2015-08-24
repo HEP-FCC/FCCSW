@@ -3,6 +3,7 @@
 // Geant4
 #include "FTFP_BERT.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4RegionStore.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -33,11 +34,36 @@ StatusCode Geant4Simulation::initialize()
    G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
 
    G4RunManager::Initialize();
+
+   // create envelopes for the geometry:
+   for(int iter_region = 0; iter_region<(*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetNoDaughters(); ++iter_region)
+   {
+      m_g4regions.emplace_back(new G4Region((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetName()+"_fastsim"));
+      m_g4regions[iter_region]->AddRootLogicalVolume((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetLogicalVolume());
+   }
+
    // as in G4RunManager::BeamOn()
    if(G4RunManager::ConfirmBeamOnCondition())
    {
       G4RunManager::ConstructScoringWorlds();
       G4RunManager::RunInitialization();
+      G4RegionStore* regionStore = G4RegionStore::GetInstance();
+      if (regionStore)
+      {
+         for(auto i:*regionStore)
+         {
+            info()<<" region : name = "<<i->GetName()<<endmsg;
+            if(i->GetName().find("fastsim") != std::string::npos)
+               info()<<"  Ill attach fast sim model! "<<endmsg;
+         }
+         info()<<" did I get anything? "<<endmsg;
+      }
+      else
+         info()<<"_____________ no region stor .... "<<endmsg;
+
+
+   // info()<<G4RunManager::currentWorld->GetName()<<endmsg;
+
       return StatusCode::SUCCESS;
    }
    else
