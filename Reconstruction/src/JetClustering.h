@@ -2,16 +2,16 @@
 #define _JETCLUSTERING_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/DataObjectHandle.h"
 
+#include "FWCore/DataHandle.h"
 #include "fastjet/JetDefinition.hh"
 #include "fastjet/ClusterSequence.hh"
 #include "fastjet/AreaDefinition.hh"
 #include "fastjet/ClusterSequenceArea.hh"
 
-#include "DataObjects/BareParticle.h"
-#include "DataObjects/LorentzVector.h"
-#include "DataObjects/BareJet.h"
+#include "datamodel/BareParticle.h"
+#include "datamodel/LorentzVector.h"
+#include "datamodel/BareJet.h"
 
 #include "TLorentzVector.h"
 
@@ -31,13 +31,13 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataObjectHandle<P> m_genphandle;
+  DataHandle<P> m_genphandle;
 
   /// Handle for PseudoJets to be produced
-  DataObjectHandle<J> m_jets;
+  DataHandle<J> m_jets;
 
   /// Handle for particle-jet associations to be produced
-  DataObjectHandle<A> m_assocs;
+  DataHandle<A> m_assocs;
 
   /// Name for the jet algorithm to be used 
   std::string m_jetAlgorithm; 
@@ -175,8 +175,8 @@ template< class P, class J, class A>
     auto ptchandle = *it;
     const BareParticle& ptc = ptchandle.read().Core;
     TLorentzVector p4; 
-    p4.SetPtEtaPhiM(ptc.P4.Pt, ptc.P4.Eta, 
-                    ptc.P4.Phi, ptc.P4.Mass);
+    p4.SetXYZM(ptc.P4.Px, ptc.P4.Py, 
+                    ptc.P4.Pz, ptc.P4.Mass);
     //TODO apply some filtering if required
     input.emplace_back(p4.Px(), p4.Py(), p4.Pz(), p4.E());
     input.back().set_user_index(index);
@@ -209,11 +209,11 @@ template< class P, class J, class A>
   for(const auto& pjet : pjets) {
     if(m_verbose)
       std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
-    auto& jet = jets->create();
+    auto jet = jets->create();
     BareJet& core = jet.mod().Core; 
-    core.P4.Pt = pjet.pt();
-    core.P4.Eta = pjet.eta();
-    core.P4.Phi = pjet.phi();
+    core.P4.Px = pjet.px();
+    core.P4.Py = pjet.py();
+    core.P4.Pz = pjet.pz();
     core.P4.Mass = pjet.m();
     if(pjet.has_area())
       core.Area = pjet.area();
@@ -223,7 +223,7 @@ template< class P, class J, class A>
     for(const auto& constit : constituents) {
       if(m_verbose) 
 	std::cout<<"\t"<<constit.user_index()<<std::endl;
-      auto& assoc = assocs->create();
+      auto assoc = assocs->create();
       assoc.mod().Jet = jet;
       assoc.mod().Particle = particles->get(constit.user_index());
     }

@@ -2,7 +2,7 @@
 #define _HEPMCCONVERTER_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/MCParticleCollection.h"
+#include "datamodel/MCParticleCollection.h"
 #include "FWCore/DataHandle.h"
 #include "HepMC/GenEvent.h"
 
@@ -22,7 +22,7 @@ private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle;
   /// Handle for the genparticles to be written
-  DataObjectHandle<MCParticleCollection> m_genphandle;
+  DataHandle<MCParticleCollection> m_genphandle;
 };
 
 #endif

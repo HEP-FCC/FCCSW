@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+    
+    <includes>
+        <gdmlFile  ref="elements.xml"/>
+        <gdmlFile  ref="materials.xml"/>
+    </includes>
+    
+    <info name="FCC_Test"
+        title="FCC Tracker"
+        author="Julia"
+        url="no"
+        status="development"
+        version="$Id:??$">
+        <comment>Just a Box</comment>
+    </info>
+    
+    <define>
+        <constant name="world_size" value="30*m"/>
+        <constant name="world_x" value="world_size"/>
+        <constant name="world_y" value="world_size"/>
+        <constant name="world_z" value="world_size"/>
+    
+        <constant name="length" value="10*m"/>
+        <constant name="box_width" value="8.4*mm"/>
+        <constant name="box_length" value="30.4*mm"/>
+        <constant name="box_thick" value="0.125*mm"/>
+        
+    </define>
+    
+    <display>
+        <vis name="BoxVis" r="0.9" g="1.0" b="0.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+    </display>
+    
+    <detectors>
+        
+        <detector id="0" name="Box0" type="Box">
+            <box width="box_width" thickness="box_thick" length="box_length" vis="BoxVis" material="Silicon"/>
+        </detector>
+ 
+        </detector>
+    </detectors>
+    
+    
+    
+</lccdd>

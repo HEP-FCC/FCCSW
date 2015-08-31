@@ -3,14 +3,13 @@
 
 #include "TObjArray.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/DataObjectHandle.h"
-#include "DataObjects/ParticleCollection.h"
-#include "DataObjects/GenJetCollection.h"
-#include "DataObjects/MissingEnergyCollection.h"
-#include "DataObjects/MCParticleCollection.h"
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/GenJetCollection.h"
+#include "datamodel/MissingEnergyCollection.h"
+#include "datamodel/MCParticleCollection.h"
 #include "TFile.h"
 #include "ExRootAnalysis/ExRootTreeWriter.h"
-
+#include "FWCore/DataHandle.h"
 
 // for Delphes
 
@@ -101,18 +100,16 @@ private:
   Long64_t length, eventCounter; // fixme 
   bool  m_debug_delphes; // if true one run the standalone delphes as well 
 
-  /// Handle for the MCParticleCollection to be read
-  //DataObjectHandle<MCParticleCollection> m_genphandle;
   /// Handle for the "reconstructed" to be written
-  DataObjectHandle<ParticleCollection> m_recgphandle; // genparticles particles
-  DataObjectHandle<ParticleCollection> m_recparthandle; // partons
-  DataObjectHandle<ParticleCollection> m_recphandle; // stable particles
-  DataObjectHandle<ParticleCollection> m_recmhandle; // muons
-  DataObjectHandle<ParticleCollection> m_recehandle; // electrons
-  DataObjectHandle<ParticleCollection> m_recphhandle; // photons
-  DataObjectHandle<GenJetCollection> m_recjhandle; // jets
-  DataObjectHandle<ParticleCollection> m_recmethandle; // met
-  DataObjectHandle<ParticleCollection> m_rechthandle; // ht
+  DataHandle<ParticleCollection> m_recgphandle; // genparticles particles
+  DataHandle<ParticleCollection> m_recparthandle; // partons
+  DataHandle<ParticleCollection> m_recphandle; // stable particles
+  DataHandle<ParticleCollection> m_recmhandle; // muons
+  DataHandle<ParticleCollection> m_recehandle; // electrons
+  DataHandle<ParticleCollection> m_recphhandle; // photons
+  DataHandle<GenJetCollection> m_recjhandle; // jets
+  DataHandle<ParticleCollection> m_recmethandle; // met
+  DataHandle<ParticleCollection> m_rechthandle; // ht
 };
 
 #endif

@@ -1,0 +1,11 @@
+#Macro to test geometry
+
+/vis/scene/create
+/vis/scene/add/volume world
+/vis/scene/add/axes
+/vis/scene/add/scale
+
+/vis/open OGL
+
+/vis/viewer/set/viewpointThetaPhi 70 160 deg
+/vis/viewer/flush

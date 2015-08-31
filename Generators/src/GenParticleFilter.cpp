@@ -22,7 +22,7 @@ StatusCode GenParticleFilter::execute() {
       ipart!=inparticles->end(); ++ipart) {
     const MCParticle& ptc = (*ipart).read();
     if(ptc.Core.Status==1) { 
-      MCParticleHandle& outptc = particles->create();
+      MCParticleHandle outptc = particles->create();
       outptc.mod().Core = ptc.Core; //COLIN Should not clone only the core!
     }
   }

@@ -21,4 +21,5 @@ gaudi_project(FCCSW HEAD
 include_directories( 
 		     ${DELPHES_INCLUDE_DIRS}  
                      ${DELPHES_EXTERNALS_INCLUDE_DIRS}  
+                     ${FCCEDM_INCLUDE_DIRS}
 )  		     

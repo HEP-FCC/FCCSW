@@ -1,0 +1,71 @@
+<!--nEndCap2-->
+<detector id="22" name="EndCap2_1" type="Trap_EndCap" readout="EndCapBigReadout">
+    <status id="2"/>
+    <dimensions rmin="Tracker_rmin1" rmax = "Tracker_rmax2" dz="EndCapZ" z ="positionz2_1"/>
+    <layer id="0" inner_r="EndCapRmin2" outer_r="EndCapRmax2" dz="LayerDZ" z="layerpos1" repeat="pixelcounter1_3">
+        <module name ="Trd0" radius="slice1radius1" dz="slice1positionz1" x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp1"/>
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        <module name ="Trd1" radius="slice2radius1" dz="slice2positionz1" x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp3"/>
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp4"/>
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp5"/>
+        </module>
+        <module name ="Trd2" radius="slice1radius2" dz="slice1positionz1" x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp1"/>
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        <module name ="Trd3" radius="slice2radius2" dz="slice2positionz1" x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp3"/>
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp4"/>
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp5"/>
+        </module>
+    </layer>
+    <layer id="1" inner_r="EndCapRmin2" outer_r="EndCapRmax2" dz="LayerDZ" z="layerpos2" repeat="pixelcounter1_3">
+        <module name ="Trd0" radius="slice1radius1" dz="slice1positionz1" x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp1"/>
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        <module name ="Trd1" radius="slice2radius1" dz="slice2positionz1" x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp3"/>
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp4"/>
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp5"/>
+        </module>
+        <module name ="Trd2" radius="slice1radius2" dz="slice1positionz1" x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp1"/>
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        <module name ="Trd3" radius="slice2radius2" dz="slice2positionz1" x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp3"/>
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp4"/>
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp5"/>
+        </module>
+    </layer>
+    <layer id="2" inner_r="EndCapRmin2" outer_r="EndCapRmax2" dz="LayerDZ" z="layerpos3" repeat="pixelcounter1_3">
+        <module name ="Trd0" radius="slice1radius1" dz="slice1positionz1" x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp1"/>
+            <module_component x1="TrdXmin1" x2="TrdXmax1" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        <module name ="Trd1" radius="slice2radius1" dz="slice2positionz1" x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp3"/>
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp4"/>
+            <module_component x1="TrdXmin2"  x2="TrdXmax2" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp5"/>
+        </module>
+        <module name ="Trd2" radius="slice1radius2" dz="slice1positionz1" x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp0"/>
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp1"/>
+            <module_component x1="TrdXmin3" x2="TrdXmax3" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp2"/>
+        </module>
+        <module name ="Trd3" radius="slice2radius2" dz="slice2positionz1" x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.3*mm">
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="-0.2*mm" material="Silicon" sensitive="true" vis="comp3"/>
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="0.*mm" material="Carbon" sensitive="false" vis="comp4"/>
+            <module_component x1="TrdXmin4"  x2="TrdXmax4" length="box_length" thickness="0.1*mm" z ="0.2*mm" material="Tungsten" sensitive="false" vis="comp5"/>
+        </module>
+    </layer>
+</detector>
