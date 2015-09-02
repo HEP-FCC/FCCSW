@@ -7,6 +7,7 @@
 #include "G4VModularPhysicsList.hh"
 
 #include "GeantFast/FastSimPhysics.h"
+// #include "GeantFast/FastSimPhysicsList.h"
 #include "GeantFast/TrackingAction.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
@@ -30,9 +31,10 @@ StatusCode Geant4Simulation::initialize()
    // load standard physics list (full G4 sim)
    // deleted in ~G4RunManager()
    G4VModularPhysicsList* physics_list = new FTFP_BERT;
+   //   G4VUserPhysicsList* physics_list = new PhysicsList;
    // attach Fast Simulation Process (will take over normal transportation if FastSimModel triggered
    // deleted in ~G4VModularPhysicsList()
-   physics_list->RegisterPhysics(new FastSimPhysics);
+    physics_list->RegisterPhysics(new FastSimPhysics);
    G4RunManager::SetUserInitialization(physics_list);
    // G4RunManager::SetUserAction(new TrackingAction);
 
@@ -51,7 +53,7 @@ StatusCode Geant4Simulation::initialize()
    if (region_store)
       for(auto& i:*region_store)
       {
-         if(i->GetName().find("fastsim") != std::string::npos)
+         if(i->GetName().find("Tracker") != std::string::npos && i->GetName().find("fastsim") != std::string::npos)
          {
             m_models.emplace_back(new FastSimModelTest(i->GetName(),i));
             info()<<"Attaching a Fast Simulation Model to the region "<<i->GetName()<<endmsg;

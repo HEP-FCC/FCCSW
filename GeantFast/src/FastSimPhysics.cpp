@@ -29,6 +29,8 @@ void FastSimPhysics::ConstructProcess()
 
       G4ProcessManager* process_manager = particle->GetProcessManager();
       process_manager->AddProcess(fastSimProcess);
+      process_manager->SetProcessOrdering(fastSimProcess, idxPostStep);
+      //proper way doesn't work now - no process type 8:301 (fastsim) in OrderingTable of G4PhysicsListHelper::theTable
       //RegisterProcess(fastSimProcess, particle);
    }
 }
