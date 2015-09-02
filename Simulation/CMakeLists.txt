@@ -15,7 +15,7 @@ find_package(ROOT COMPONENTS Physics)
 
 gaudi_add_module(Simulation
                  src/*.cpp
-                 INCLUDE_DIRS Geant4 FWCore ROOT Delphes FCCEDM ALBERS
+                 INCLUDE_DIRS Simulation Geant4 FWCore ROOT Delphes FCCEDM ALBERS
                  LINK_LIBRARIES GaudiAlgLib DataObjects Geant4 GeantFast ROOT Delphes FCCEDM ALBERS)
 #                 LINK_LIBRARIES GaudiAlgLib DataObjects Geant4  Delphes)
 
