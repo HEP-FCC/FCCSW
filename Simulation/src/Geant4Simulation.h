@@ -7,6 +7,7 @@
 // FCCSW
 #include "DetDesInterfaces/IGeoSvc.h"
 #include "FWCore/DataHandle.h"
+#include "GeantFast/FastSimModelTest.h"
 
 // albers
 #include "datamodel/ParticleCollection.h"
@@ -40,7 +41,10 @@ private:
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
    /// Envelopes that are used in a parametric simulation
-   std::vector<std::unique_ptr<G4Region>> m_g4regions;
+   /// deleted by the G4RegionStore
+   std::vector<G4Region*> m_g4regions;
+   /// Fast Simulation Models
+   std::vector<std::unique_ptr<FastSimModelTest>> m_models;
 };
 
 #endif
