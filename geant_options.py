@@ -12,6 +12,7 @@ geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
 from Configurables import Geant4Simulation
 geant4simulation = Geant4Simulation("Geant4Simulation")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
+geant4simulation.simtype = "fast"
 # geant4simulation.Outputs.particles.Path = "particles"
 
 from Configurables import AlbersWrite, AlbersOutput

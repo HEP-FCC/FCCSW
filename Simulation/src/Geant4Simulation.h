@@ -31,9 +31,10 @@ public:
    virtual StatusCode execute();
    /// Finalize.
    virtual StatusCode finalize();
+   enum SimType { FULL, FAST };
 private:
    /// Converter between HepMC::GenEvent and G4Event
-   G4Event* HepMC2G4(const HepMC::GenEvent* aHepMCEvent);
+   G4Event* HepMC2G4(const HepMC::GenEvent* aHepMCEvent) const;
    /// Handle for the HepMC event to be read
    DataHandle<HepMC::GenEvent> m_eventhandle;
    /// Handle for the particles to be written
@@ -45,6 +46,10 @@ private:
    std::vector<G4Region*> m_g4regions;
    /// Fast Simulation Models
    std::vector<std::unique_ptr<FastSimModelTest>> m_models;
+   /// Switch full/fast sim (set by options)
+   std::string m_simtype;
+   /// Switch full/fast sim (used further)
+   SimType m_type;
 };
 
 #endif

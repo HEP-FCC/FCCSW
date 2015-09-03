@@ -13,14 +13,16 @@
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc), G4RunManager()
+GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
 {
    declareInput("hepmcevent", m_eventhandle);
    declareOutput("particles", m_recphandle);
+   declareProperty("simtype", m_simtype = "full");
 }
 
 StatusCode Geant4Simulation::initialize()
 {
+   // Initialization - Gaudi part
    if (GaudiAlgorithm::initialize().isFailure())
       return StatusCode::FAILURE;
    if (service("GeoSvc", m_geoSvc, true).isFailure())
@@ -28,37 +30,48 @@ StatusCode Geant4Simulation::initialize()
       error() << "Couldn't get GeoSvc" << endmsg;
       return StatusCode::FAILURE;
    }
-   // load standard physics list (full G4 sim)
-   // deleted in ~G4RunManager()
-   G4VModularPhysicsList* physics_list = new FTFP_BERT;
-   //   G4VUserPhysicsList* physics_list = new PhysicsList;
-   // attach Fast Simulation Process (will take over normal transportation if FastSimModel triggered
-   // deleted in ~G4VModularPhysicsList()
-    physics_list->RegisterPhysics(new FastSimPhysics);
-   G4RunManager::SetUserInitialization(physics_list);
-   // G4RunManager::SetUserAction(new TrackingAction);
+   if( !m_simtype.compare("fast"))
+      m_type = SimType::FAST;
+   else if( !m_simtype.compare("full"))
+      m_type = SimType::FULL;
+   else
+   {
+      error() << "Simulation type set to invalid value <<"<<m_simtype<<">>. Please enter either <<fast>> or <<full>>."<< endmsg;
+      return StatusCode::FAILURE;
+   }
+   debug()<<"Simulation type set to (0-full, 1-fast): "<<m_type<<endmsg;
 
-   // take geometry (DD4Hep)
-   // deleted in ~G4RunManager()
+   // Initialization - Geant part
+   // Load physics list, deleted in ~G4RunManager()
+   G4VModularPhysicsList* physics_list = new FTFP_BERT;
+   if(m_type == SimType::FAST)
+   {
+      // Coupled transportation enables calculation of particle trajectory in envelopes with fast sim models attached
+      G4PhysicsListHelper::GetPhysicsListHelper()->UseCoupledTransportation();
+      // Attach Fast Simulation Process (will take over normal transportation if FastSimModel triggered
+      physics_list->RegisterPhysics(new FastSimPhysics);
+   }
+   // Deleted in ~G4VModularPhysicsList()
+   G4RunManager::SetUserInitialization(physics_list);
+
+   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
    G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
    G4RunManager::Initialize();
 
-   // create envelopes for the geometry
-   for(int iter_region = 0; iter_region<(*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetNoDaughters(); ++iter_region)
+   if(m_type == SimType::FAST)
    {
-      m_g4regions.emplace_back(new G4Region((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetName()+"_fastsim"));
-      m_g4regions[iter_region]->AddRootLogicalVolume((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetLogicalVolume());
-   }
-   G4RegionStore* region_store = G4RegionStore::GetInstance();
-   if (region_store)
-      for(auto& i:*region_store)
+      // Create the envelopes for the geometry, attach fast sim models for Tracker, EMCal, HCal
+      for(int iter_region = 0; iter_region<(*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetNoDaughters(); ++iter_region)
       {
-         if(i->GetName().find("Tracker") != std::string::npos && i->GetName().find("fastsim") != std::string::npos)
+         m_g4regions.emplace_back(new G4Region((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetName()+"_fastsim"));
+         m_g4regions[iter_region]->AddRootLogicalVolume((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetLogicalVolume());
+         if(m_g4regions.back()->GetName().find("Tracker") != std::string::npos)
          {
-            m_models.emplace_back(new FastSimModelTest(i->GetName(),i));
-            info()<<"Attaching a Fast Simulation Model to the region "<<i->GetName()<<endmsg;
+            m_models.emplace_back(new FastSimModelTest(m_g4regions.back()->GetName(),m_g4regions.back()));
+            debug()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
          }
       }
+   }
    // as in G4RunManager::BeamOn()
    if(G4RunManager::ConfirmBeamOnCondition())
    {
@@ -68,7 +81,7 @@ StatusCode Geant4Simulation::initialize()
    }
    else
    {
-      error() << "Geant hasn't been initialised correctly." << endmsg;
+      error() << "Geant hasn't been initialized correctly." << endmsg;
       return StatusCode::FAILURE;
    }
 }
@@ -78,7 +91,7 @@ StatusCode Geant4Simulation::execute() {
    auto hepmc_event = m_eventhandle.get();
    if ( !hepmc_event->is_valid() )
    {
-      error() << "Couldn't get event" << endmsg;
+      error() << "Couldn't get a HepMC event" << endmsg;
       return StatusCode::FAILURE;
    }
    G4RunManager::currentEvent = HepMC2G4(hepmc_event);
@@ -96,7 +109,7 @@ StatusCode Geant4Simulation::finalize() {
    return GaudiAlgorithm::finalize();
 }
 
-G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event)
+G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
 {
    G4Event* g4_event = new G4Event();
    double length_unit = HepMC::Units::conversion_factor(aHepMC_event->length_unit(), HepMC::Units::MM)*mm;

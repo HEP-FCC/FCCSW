@@ -1,18 +1,5 @@
 #include "FastSimModelTest.h"
 
-// #include "G4Track.hh"
-// #include "G4Event.hh"
-// #include "G4RunManager.hh"
-// #include "g4root.hh"
-
-// #include "Randomize.hh"
-// #include "G4SystemOfUnits.hh"
-
-#include "G4Electron.hh"
-#include "G4Positron.hh"
-#include "G4Gamma.hh"
-
-
 FastSimModelTest::FastSimModelTest(G4String aModelName, G4Region* aEnvelope)
    : G4VFastSimulationModel(aModelName, aEnvelope)
 {
@@ -29,9 +16,7 @@ FastSimModelTest::~FastSimModelTest()
 G4bool FastSimModelTest::IsApplicable(const G4ParticleDefinition& aParticleType)
 {
    std::cout<<" ________CHECK IF: Test model applicable _________"<<std::endl;
-   return &aParticleType == G4Electron::Definition() ||
-       &aParticleType == G4Positron::Definition() ||
-       &aParticleType == G4Gamma::Definition();
+   return true;
 }
 
 G4bool FastSimModelTest::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
