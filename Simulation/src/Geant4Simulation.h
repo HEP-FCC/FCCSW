@@ -42,19 +42,19 @@ private:
    DataHandle<ParticleCollection> m_recphandle;
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
+   /// Name of the ISmearingTool (set by options)
+   std::string m_smearToolName ;
    /// Pointer to the smearing tool
    ISmearingTool* m_smearTool;
+   /// Switch full/fast sim (set by options)
+   std::string m_simtype;
+   /// Switch full/fast sim (used further)
+   SimType m_type;
    /// Envelopes that are used in a parametric simulation
    /// deleted by the G4RegionStore
    std::vector<G4Region*> m_g4regions;
    /// Fast Simulation Models
    std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
-   /// Switch full/fast sim (set by options)
-   std::string m_simtype;
-   /// Switch full/fast sim (used further)
-   SimType m_type;
-   /// Name of the ISmearingTool (set by options)
-   std::string m_smearToolName ;
 };
 
 #endif

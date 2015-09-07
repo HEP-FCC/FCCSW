@@ -77,8 +77,8 @@ StatusCode Geant4Simulation::initialize()
          m_g4regions[iter_region]->AddRootLogicalVolume((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetLogicalVolume());
          if(m_g4regions.back()->GetName().find("Tracker") != std::string::npos)
          {
-            m_models.emplace_back(new FastSimModelTest(m_g4regions.back()->GetName(),m_g4regions.back()));
-            debug()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
+            m_models.emplace_back(new FastSimModelTest(m_g4regions.back()->GetName(),m_g4regions.back(),m_smearToolName));
+            info()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
          }
       }
    }

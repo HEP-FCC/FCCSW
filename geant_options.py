@@ -11,7 +11,7 @@ geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
 
 from Configurables import Geant4Simulation
 geant4simulation = Geant4Simulation("Geant4Simulation", simtype="fast",
-                                    smearingtoolname = "DummySmear")
+                                    smearingtoolname = "SimpleSmear")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
 # geant4simulation.Outputs.particles.Path = "particles"
 

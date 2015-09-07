@@ -1,9 +1,17 @@
 #ifndef FAST_SIM_MODEL_TEST_H
 #define FAST_SIM_MODEL_TEST_H
 
+// Geant
 #include "G4VFastSimulationModel.hh"
 #include "G4Step.hh"
-// #include "GaudiKernel/IMessageSvc.h"
+
+// Gaudi
+#include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/IToolSvc.h"
+#include "GaudiKernel/MsgStream.h"
+#include "GeantFast/ISmearingTool.h"
 
 /**
   @brief     Shortcut to the ordinary tracking for electromagnetic calorimeters.
@@ -19,7 +27,7 @@ public:
       @param aModelName A name of the fast simulation model.
       @param aEnvelope A region where the model can take over the ordinary tracking.
     */
-   FastSimModelTest (G4String aModelName, G4Region* aEnvelope);
+   FastSimModelTest (G4String aModelName, G4Region* aEnvelope, std::string);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
@@ -45,7 +53,13 @@ public:
 
 
 private:
-   /// Pointer to the interface of msg service
-   // IMessageSvc* m_msgSvc;
+   /// Message Service
+    ServiceHandle<IMessageSvc> m_msgSvc;
+    // Message Stream
+    MsgStream log;
+   /// Tool Service
+    ServiceHandle<IToolSvc> m_toolSvc;
+   /// Pointer to a smearing tool
+    ISmearingTool* m_smearTool;
 };
 #endif
