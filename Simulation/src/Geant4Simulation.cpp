@@ -28,7 +28,7 @@ StatusCode Geant4Simulation::initialize()
       return StatusCode::FAILURE;
    if (service("GeoSvc", m_geoSvc, true).isFailure())
    {
-      error() << "Couldn't get GeoSvc" << endmsg;
+      error() << "Unable to locate Geometry Service" << endmsg;
       return StatusCode::FAILURE;
    }
    if( !m_simtype.compare("fast"))
@@ -37,10 +37,19 @@ StatusCode Geant4Simulation::initialize()
       m_type = SimType::FULL;
    else
    {
-      error() << "Simulation type set to invalid value <<"<<m_simtype<<">>. Please enter either <<fast>> or <<full>>."<< endmsg;
+      error() << "Simulation type set to invalid value <<"<<m_simtype<<">>. Possible values: <<fast>> or <<full>>."<< endmsg;
       return StatusCode::FAILURE;
    }
-   debug()<<"Simulation type set to (0-full, 1-fast): "<<m_type<<endmsg;
+   info()<<"Simulation type set to (0-full, 1-fast): "<<m_type<<endmsg;
+
+   if ( m_smearToolName.compare("") )
+      if(m_type == SimType::FAST)
+        m_smearTool = tool<ISmearingTool>(m_smearToolName, this);
+      else
+         info()<<"No smearing tool can be used in Geant FULL sim."<<endmsg;
+   else
+      if(m_type == SimType::FAST)
+         info()<<"No smearing tool will be used."<<endmsg;
 
    // Initialization - Geant part
    // Load physics list, deleted in ~G4RunManager()
@@ -82,7 +91,7 @@ StatusCode Geant4Simulation::initialize()
    }
    else
    {
-      error() << "Geant hasn't been initialized correctly." << endmsg;
+      error() << "Unable to initialize GEANT correctly." << endmsg;
       return StatusCode::FAILURE;
    }
 }
@@ -92,7 +101,7 @@ StatusCode Geant4Simulation::execute() {
    auto hepmc_event = m_eventhandle.get();
    if ( !hepmc_event->is_valid() )
    {
-      error() << "Couldn't get a HepMC event" << endmsg;
+      error() << "Unable to get a HepMC event" << endmsg;
       return StatusCode::FAILURE;
    }
    G4RunManager::currentEvent = HepMC2G4(hepmc_event);

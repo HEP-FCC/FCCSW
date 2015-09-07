@@ -10,9 +10,9 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
 
 from Configurables import Geant4Simulation
-geant4simulation = Geant4Simulation("Geant4Simulation")
+geant4simulation = Geant4Simulation("Geant4Simulation", simtype="fast",
+                                    smearingtoolname = "DummySmear")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
-geant4simulation.simtype = "fast"
 # geant4simulation.Outputs.particles.Path = "particles"
 
 from Configurables import AlbersWrite, AlbersOutput
@@ -22,6 +22,6 @@ out.outputCommands = ["drop *"]
 ApplicationMgr( TopAlg = [reader, geant4simulation, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [albersevent,geoservice],
+                ExtSvc = [albersevent, geoservice],
                 OutputLevel=DEBUG
  )
