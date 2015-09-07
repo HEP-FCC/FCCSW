@@ -18,6 +18,7 @@ GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
    declareInput("hepmcevent", m_eventhandle);
    declareOutput("particles", m_recphandle);
    declareProperty("simtype", m_simtype = "full");
+  declareProperty ("smearingtoolname", m_smearToolName = "" ) ;
 }
 
 StatusCode Geant4Simulation::initialize()
