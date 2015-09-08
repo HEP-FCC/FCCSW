@@ -44,7 +44,7 @@ StatusCode Geant4Simulation::initialize()
 
    if ( m_smearToolName.compare("") )
       if(m_type == SimType::FAST)
-        m_smearTool = tool<ISmearingTool>(m_smearToolName, this);
+        m_smearTool = tool<ISmearingTool>(m_smearToolName);
       else
          info()<<"No smearing tool can be used in Geant FULL sim."<<endmsg;
    else

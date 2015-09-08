@@ -9,7 +9,6 @@ FastSimModelTest::FastSimModelTest(G4String aModelName, G4Region* aEnvelope, std
    : G4VFastSimulationModel(aModelName, aEnvelope), m_msgSvc("MessageSvc","FastSimModelTest"),
      log(&(*m_msgSvc), "FastSimModelTest"), m_toolSvc("ToolSvc","ToolSvc")
 {
-   log << MSG::INFO << "Initialising _______________________" << endmsg;
    if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())
         throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                              "FastSimModelTest", StatusCode::FAILURE);
@@ -69,7 +68,5 @@ void FastSimModelTest::DoIt(const G4FastTrack& aFastTrack,
    G4double Ekinorg = aFastTrack.GetPrimaryTrack()->GetKineticEnergy();
    // aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg+(Psm-Porg), Psm.unit());
 
-   log << MSG::INFO << "P org = "<<Porg<<"  _______________________" << endmsg;
-        m_smearTool->smearMomentum(Porg);
-        log << MSG::INFO << "P sme = "<<Porg<<"  _______________________" << endmsg;
+   m_smearTool->smearMomentum(Porg);
 }
