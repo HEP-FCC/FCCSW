@@ -4,7 +4,7 @@
 gaudi_subdir(Simulation v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg DataObjects GeantFast DetectorDescription/DetDesInterfaces)
+gaudi_depends_on_subdirs(GaudiAlg DataObjects GeantSim/GeantFast DetectorDescription/DetDesInterfaces)
 
 find_package(Geant4)
 find_package(Delphes)

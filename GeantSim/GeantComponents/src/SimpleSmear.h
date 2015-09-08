@@ -11,7 +11,7 @@
 #include "TH1F.h"
 
 // FCCSW
-#include "GeantFast/ISmearingTool.h"
+#include "GeantComponents/ISmearingTool.h"
 
 class SimpleSmear: public GaudiTool, virtual public ISmearingTool
 {

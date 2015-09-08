@@ -8,7 +8,7 @@
 #include "DetDesInterfaces/IGeoSvc.h"
 #include "FWCore/DataHandle.h"
 #include "GeantFast/FastSimModelTest.h"
-#include "GeantFast/ISmearingTool.h"
+#include "GeantComponents/ISmearingTool.h"
 
 // albers
 #include "datamodel/ParticleCollection.h"

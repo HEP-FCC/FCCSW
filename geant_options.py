@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
-albersevent   = FCCDataSvc("EventDataSvc")
+albersevent = FCCDataSvc("EventDataSvc")
 
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.Outputs.hepmc.Path = "hepmc"
@@ -14,9 +14,10 @@ geant4simulation = Geant4Simulation("Geant4Simulation", simtype="fast",
                                     smearingtoolname = "SimpleSmear")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
 # geant4simulation.Outputs.particles.Path = "particles"
-# from Configurables import SimpleSmear
-# geant4simulation.addTool(SimpleSmear, name="SimpleSmear")
-# geant4simulation.SimpleSmear.histograms = True
+
+from Configurables import SimpleSmear
+geant4simulation.addTool(SimpleSmear, name="SimpleSmear")
+geant4simulation.SimpleSmear.histograms = True
 
 from Configurables import THistSvc
 

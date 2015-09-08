@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "GeantFast/ISmearingTool.h"
+#include "GeantComponents/ISmearingTool.h"
 
 class DummySmear: public GaudiTool, virtual public ISmearingTool
 {

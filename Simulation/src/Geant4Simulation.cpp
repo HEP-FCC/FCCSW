@@ -6,6 +6,7 @@
 #include "G4RegionStore.hh"
 #include "G4VModularPhysicsList.hh"
 
+// FCCSW
 #include "GeantFast/FastSimPhysics.h"
 // #include "GeantFast/FastSimPhysicsList.h"
 #include "GeantFast/TrackingAction.h"
@@ -18,7 +19,7 @@ GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
    declareInput("hepmcevent", m_eventhandle);
    declareOutput("particles", m_recphandle);
    declareProperty("simtype", m_simtype = "full");
-  declareProperty ("smearingtoolname", m_smearToolName = "" ) ;
+   declareProperty ("smearingtoolname", m_smearToolName = "" ) ;
 }
 
 StatusCode Geant4Simulation::initialize()
@@ -109,6 +110,7 @@ StatusCode Geant4Simulation::execute() {
    G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
    G4RunManager::UpdateScoring();
    G4RunManager::TerminateOneEvent();
+
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
    return StatusCode::SUCCESS;
@@ -121,6 +123,7 @@ StatusCode Geant4Simulation::finalize() {
 
 G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
 {
+   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
    G4Event* g4_event = new G4Event();
    double length_unit = HepMC::Units::conversion_factor(aHepMC_event->length_unit(), HepMC::Units::MM)*mm;
    double mom_unit = HepMC::Units::conversion_factor(aHepMC_event->momentum_unit(),HepMC::Units::GEV)*GeV;

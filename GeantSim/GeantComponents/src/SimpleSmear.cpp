@@ -2,7 +2,7 @@
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
 
-DECLARE_TOOL_FACTORY(SimpleSmear)
+DECLARE_COMPONENT(SimpleSmear)
 
 SimpleSmear::SimpleSmear( const std::string& type,  const std::string& name,
                           const IInterface* parent ) : GaudiTool(type, name, parent), m_hSmMom(nullptr), m_hSmEn(nullptr)

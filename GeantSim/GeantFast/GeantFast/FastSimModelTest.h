@@ -11,7 +11,9 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/IToolSvc.h"
 #include "GaudiKernel/MsgStream.h"
-#include "GeantFast/ISmearingTool.h"
+
+//FCCSW
+#include "GeantComponents/ISmearingTool.h"
 
 /**
   @brief     Shortcut to the ordinary tracking for electromagnetic calorimeters.
