@@ -3,7 +3,8 @@
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
-//#include "GaudiKernel/RndmGenerators.h"
+#include "GaudiKernel/RndmGenerators.h"
+#include "GaudiKernel/IRndmGenSvc.h"
 
 // FCCSW
 #include "GeantFast/ISmearingTool.h"
@@ -23,10 +24,12 @@ public:
    /// Implementation of ISmearingTool method that smears the energy of the particle
    virtual StatusCode smearEnergy(G4double& aEn);
 private:
-   /// Tmp: example resolution for the smearing
+   /// Tmp: example resolution for the smearing (set by job options)
    double m_sigma;
-   /// Flat random number generator
-   //Rndm::Gauss m_gaussDist;
+   /// Random Number Service
+   IRndmGenSvc* m_randSvc;
+   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
+   Rndm::Numbers m_gauss;
 };
 
 #endif
