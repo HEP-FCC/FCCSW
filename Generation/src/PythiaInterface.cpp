@@ -37,6 +37,7 @@ StatusCode PythiaInterface::initialize() {
   // Initialize variables from configuration file
   m_nAbort = m_pythia->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
   m_iAbort = 0;
+  m_iEvent = 0;
 
   m_pythia->init();
 
@@ -67,8 +68,7 @@ StatusCode PythiaInterface::execute() {
   m_iAbort=0;
 
   // Print out event
-  /*
-  for (int i = 0; i < m_pythia->event.size(); ++i){ 
+  /*for (int i = 0; i < m_pythia->event.size(); ++i){
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
       std::cout << "PythiaInterface : id : stat : px : py : pz : e : m : " 
                 << " " << m_pythia->event[i].id()
@@ -83,12 +83,11 @@ StatusCode PythiaInterface::execute() {
                 << " " << m_pythia->event[i].e()
                 << " " << m_pythia->event[i].m()
                 << std::endl;
-  }
-  */
+  }*/
 
   // Define HepMC event and convert Pythia event into this HepMC event type
   HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
-  toHepMC->fill_next_event(*m_pythia, theEvent);
+  toHepMC->fill_next_event(*m_pythia, theEvent, m_iEvent);
   //theEvent-> print();
 
   // Print out event
@@ -118,6 +117,7 @@ StatusCode PythiaInterface::execute() {
 
   // Handle event via standard Gaudi mechanism
   m_hepmchandle.put(theEvent);
+  m_iEvent++;
   return StatusCode::SUCCESS;
 }
 

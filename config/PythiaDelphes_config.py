@@ -25,31 +25,31 @@ from Configurables import ApplicationMgr, FCCDataSvc
 ############################################################
 
 ## N-events
-nEvents=1
+nEvents=100
 
 ## Define either pythia configuration file to generate events
-#pythiafile="config/Pythia_standard.cmd"
+#pythiaConfFile="config/Pythia_standard.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
-pythiafile="config/Pythia_LHEinput.cmd"
+pythiaConfFile="config/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphescard="config/FCChh_Delphes.tcl"
+delphesCard="config/FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes objects (allParticles, partons and stable particles are flushed automatically)
-delphesoutcol=[]
+delphesOutCol=[]
 #delphesoutcol=["muons","electrons","photons","jets","mets","hts"]
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if hepMC file not defined --> data read-in from Gaudi data store (Inputs)
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
-hepmcinfile=""
-#hepmcinfile="data/ZLEP_toAll.hepmc"
-#rootoutfile=""
-rootoutfile="DelphesOutput.root" 
+delphesHepMCInFile=""
+#delphesHepMCInFile="data/ZLEP_toAll.hepmc"
+delphesRootOutFile="DelphesOutput.root" 
+#delphesRootOutFile=""
 
 ## Data event model based on Albers
-albersevent=FCCDataSvc("EventDataSvc")
+albersEvent=FCCDataSvc("EventDataSvc")
 
 ############################################################
 # 
@@ -60,16 +60,16 @@ albersevent=FCCDataSvc("EventDataSvc")
 ## Pythia generator
 from Configurables import PythiaInterface 
 
-pythia8gen = PythiaInterface(Filename=pythiafile, OutputLevel=INFO)
+pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=INFO)
 ## Write the HepMC::GenEvent to the data service
 pythia8gen.Outputs.hepmc.Path = "hepmc"
 
 ## Delphes simulator
 from Configurables import DelphesSimulation
-delphessim = DelphesSimulation(DelphesCard=delphescard, 
-                               OutputCollections=delphesoutcol,
-                               HepMCInputFile=hepmcinfile, 
-                               ROOTOutputFile=rootoutfile, 
+delphessim = DelphesSimulation(DelphesCard=delphesCard, 
+                               OutputCollections=delphesOutCol,
+                               HepMCInputFile=delphesHepMCInFile, 
+                               ROOTOutputFile=delphesRootOutFile, 
                                OutputLevel=DEBUG)
 delphessim.Inputs.hepmc.Path               = "hepmc"
 delphessim.Outputs.allParticles.Path       = "allParticles"
@@ -93,17 +93,17 @@ out.outputCommands = ["drop *",
 ############################################################
 
 # Run Pythia + Delphes
-if hepmcinfile == "": 
+if delphesHepMCInFile == "": 
   ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
                   EvtSel = 'NONE',
                   EvtMax = nEvents,
-                  ExtSvc = [albersevent],
+                  ExtSvc = [albersEvent],
                   OutputLevel=INFO)
 # Run only Delphes - hepmc input file provided
 else:
  ApplicationMgr( TopAlg = [ delphessim, out ],
                   EvtSel = 'NONE',
                   EvtMax = nEvents,
-                  ExtSvc = [albersevent],
+                  ExtSvc = [albersEvent],
                   OutputLevel=DEBUG)
 

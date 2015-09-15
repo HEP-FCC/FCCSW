@@ -143,7 +143,7 @@ bool DelphesExtHepMCReader::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent
     else if(lengthUnit == HepMC::Units::CM) fPositionCoefficient = 10.0;
 
     // Event info
-    fEventNumber = hepMCEvent->event_number();
+    fEventNumber   = hepMCEvent->event_number();
 
     fMPI           = hepMCEvent->mpi();
     fScale         = hepMCEvent->event_scale();

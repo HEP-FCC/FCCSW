@@ -37,6 +37,7 @@ private:
 
   int m_nAbort;
   int m_iAbort;
+  int m_iEvent;
 
 };
 
