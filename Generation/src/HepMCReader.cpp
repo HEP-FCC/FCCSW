@@ -1,6 +1,7 @@
 #include "HepMCReader.h"
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
+#include "GaudiKernel/IEventProcessor.h"
 
 DECLARE_COMPONENT(HepMCReader)
 
@@ -38,7 +39,11 @@ StatusCode HepMCReader::execute() {
     incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
     if ( m_file -> rdstate() == std::ios::eofbit )
         return Error ( "Error in event reading!" ) ;
-      else return Error( "No more events in input file, set correct number of events in options" ) ;
+    else {
+      IEventProcessor* eventProcessor;
+      service("ApplicationMgr",eventProcessor);
+      eventProcessor->stopRun();
+    }
       ;
     }
   m_hepmchandle.put(theEvent);
