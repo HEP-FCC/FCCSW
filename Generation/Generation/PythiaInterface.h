@@ -6,7 +6,7 @@
 // Pythia version 8.1
 #include "Pythia8/Pythia8ToHepMC.h"
 // Pythia version 8.2
-#include "Pythia8Plugins/HepMC2.h"
+//#include "Pythia8Plugins/HepMC2.h"
 
 #include "HepMC/GenEvent.h"
 #include "FWCore/DataHandle.h"

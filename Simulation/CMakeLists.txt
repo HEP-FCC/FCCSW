@@ -10,7 +10,7 @@ find_package(Geant4)
 find_package(Delphes) 
 find_package(FCCEDM)
 find_package(ALBERS)
-find_package(ROOT COMPONENTS Physics)
+find_package(ROOT COMPONENTS Physics EG)
 
 
 gaudi_add_module(Simulation
