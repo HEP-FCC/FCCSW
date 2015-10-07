@@ -2,6 +2,8 @@
 #define TRACKING_ACTION_H
 
 #include "G4UserTrackingAction.hh"
+#include "FWCore/DataHandle.h"
+#include "datamodel/ParticleCollection.h"
 
 /**
   @brief     Tracking action (before/after track processing).
@@ -16,6 +18,10 @@ class TrackingAction : public G4UserTrackingAction
       A default constructor.
     */
     TrackingAction();
+   /**
+      A constructor.
+    */
+    TrackingAction(DataHandle<ParticleCollection>* aPartColl);
     virtual ~TrackingAction();
 
    /**
@@ -26,7 +32,8 @@ class TrackingAction : public G4UserTrackingAction
      Defines the actions at the end of processing the track. It saves the information of MC data (PDG code, initial momentum), tracker (momentum), EMCal and HCal (energy deposit and its position) as well as resolution and efficiency for all the detectors.
     */
    virtual void  PostUserTrackingAction(const G4Track* track);
-
+private:
+   DataHandle<ParticleCollection>* m_particleCollection;
 };
 
 #endif
