@@ -21,7 +21,7 @@ Next:numberShowEvent = 0           ! print event record n times
 ! 3) Beam parameter settings. Values below agree with default ones.
 Beams:idA = 2212                   ! first beam, p = 2212, pbar = -2212
 Beams:idB = 2212                   ! second beam, p = 2212, pbar = -2212
-Beams:eCM = 13000.                 ! CM energy of collision in GeV
+Beams:eCM = 100000.                ! CM energy of collision in GeV
 
 ! 4) Settings for the hard-process generation.
 ! Example a): QCD + prompt photon production; must set pTmin.
