@@ -9,7 +9,6 @@
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
 // #include "GeantFast/FastSimPhysicsList.h"
-#include "GeantFast/EventAction.h"
 #include "datamodel/ParticleHandle.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
@@ -84,7 +83,6 @@ StatusCode Geant4Simulation::initialize()
          }
       }
    }
-   //G4RunManager::SetUserAction(new EventAction);
 
    // as in G4RunManager::BeamOn()
    if(G4RunManager::ConfirmBeamOnCondition())
@@ -109,25 +107,15 @@ StatusCode Geant4Simulation::execute() {
       return StatusCode::FAILURE;
    }
    G4RunManager::currentEvent = HepMC2G4(hepmc_event);
-   std::cout<<"current event 1 = "<<G4RunManager::currentEvent->GetNumberOfPrimaryVertex ()<<std::endl;
    G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
-   std::cout<<"current event 2 = "<<G4RunManager::currentEvent->GetNumberOfPrimaryVertex () <<std::endl;
    G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
-   std::cout<<"current event 3 = "<<G4RunManager::currentEvent->GetNumberOfPrimaryVertex () <<std::endl;
    G4RunManager::UpdateScoring();
-   std::cout<<"current event 4 = "<<G4RunManager::currentEvent->GetNumberOfPrimaryVertex () <<std::endl;
-   std::cout<<"current event 5 = "<<G4RunManager::currentEvent->GetNumberOfPrimaryVertex () <<std::endl;
-   int tmp4=0;
 
    ParticleCollection* particles = new ParticleCollection();
    for(int i=0; i<G4RunManager::currentEvent->GetNumberOfPrimaryVertex(); ++i)
    {
-      std::cout<<"current event 6 = "<<G4RunManager::currentEvent->GetPrimaryVertex (i)->GetNumberOfParticle() <<std::endl;
-
       for(int j=0; j<G4RunManager::currentEvent->GetPrimaryVertex (i)->GetNumberOfParticle(); ++j)
       {
-         tmp4++;
-         std::cout<<"current event 6 ______ALL ______ = "<<tmp4<<std::endl;
          ParticleHandle ptc = particles->create();
          G4PrimaryParticle* g4_part = G4RunManager::currentEvent->GetPrimaryVertex (i)->GetPrimary(j);
          ptc.mod().Core.Type = g4_part->GetPDGcode();
@@ -140,7 +128,6 @@ StatusCode Geant4Simulation::execute() {
    }
 
    m_recphandle.put(particles);
-   // m_recphandle.put(((EventAction*)(G4RunManager::eventManager->GetUserEventAction()))->GetParticleCollection());
 
    G4RunManager::TerminateOneEvent();
 
@@ -158,7 +145,7 @@ G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
    G4Event* g4_event = new G4Event();
    double length_unit = HepMC::Units::conversion_factor(aHepMC_event->length_unit(), HepMC::Units::MM)*mm;
    double mom_unit = HepMC::Units::conversion_factor(aHepMC_event->momentum_unit(),HepMC::Units::GEV)*GeV;
-   int tmp1=0,tmp2=0, tmp3=0;
+
    for(auto vertex_i = aHepMC_event->vertices_begin();
        vertex_i != aHepMC_event->vertices_end(); ++vertex_i )
    {
@@ -181,17 +168,11 @@ G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
       // create G4PrimaryVertex and associated G4PrimaryParticles
       G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(vertex_pos.x()*length_unit, vertex_pos.y()*length_unit,
                                                       vertex_pos.z()*length_unit, vertex_pos.t()*length_unit/c_light);
-      tmp1++;
-      tmp2=0;
-      std::cout<<" ___ HepMC VERTEX "<<tmp1 <<"\t:\n";
+
       for (auto particle_i= (*vertex_i)->particles_begin(HepMC::children);
            particle_i != (*vertex_i)->particles_end(HepMC::children); ++particle_i) {
          if( (*particle_i)->status() != 1 ) continue;
 
-      tmp2++;
-      tmp3++;
-      std::cout<<" ___ ___ HepMC particle "<<tmp2 <<"\t\n";
-      std::cout<<" ___ ___ HepMC ALL _________________ "<<tmp3 <<"\n";
          int pdgcode= (*particle_i)-> pdg_id();
          tmp= (*particle_i)-> momentum();
          G4LorentzVector mom(tmp.px(), tmp.py(), tmp.pz(), tmp.e());
@@ -201,8 +182,6 @@ G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
       }
       g4_event->AddPrimaryVertex(g4_vertex);
    }
-   std::cout<<" ___ HepMC event no of verices "<<aHepMC_event->vertices_size () <<std::endl;
-   std::cout<<" ___ HepMC event no of particles "<<aHepMC_event->vertices_size () <<std::endl;
    return g4_event;
 }
 
