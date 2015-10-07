@@ -25,18 +25,16 @@ from Configurables import ApplicationMgr, FCCDataSvc
 ############################################################
 
 ## N-events
-nEvents=10000000
+nEvents=100
 
 ## Define either pythia configuration file to generate events
 #pythiaConfFile="config/Pythia_standard.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
 pythiaConfFile="config/Pythia_LHEinput.cmd"
-pythiaConfFile="Pythia_LHEinput.cmd"
 
 ## Define Delphes card
 delphesCard="config/FCChh_DelphesCard_WithDipole_v00.tcl"
-delphesCard="FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes objects (allParticles, partons and stable particles are flushed automatically)
 delphesOutCol=[]
