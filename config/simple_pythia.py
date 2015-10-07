@@ -8,10 +8,10 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc
 
 #example of pythia configuration file to generate events
-pythiafile="main03.cmnd"
+pythiafile="Pythia_standard.cmnd"
 
 #example of pythia configuration file to read LH event file
-#pythiafile="main42.cmnd"
+#pythiafile="Pythia_LHEinput.cmnd"
 
 albersevent   = FCCDataSvc("EventDataSvc")
 
