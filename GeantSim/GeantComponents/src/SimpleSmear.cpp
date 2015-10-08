@@ -9,7 +9,7 @@ SimpleSmear::SimpleSmear( const std::string& type,  const std::string& name,
 {
    declareInterface<ISmearingTool>(this);
    declareProperty("sigma", m_sigma = 0.01);
-   declareProperty("histograms", m_hist = true);
+   declareProperty("histograms", m_hist = false);
 }
 
 SimpleSmear::~SimpleSmear(){}

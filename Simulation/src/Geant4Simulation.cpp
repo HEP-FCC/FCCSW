@@ -8,7 +8,6 @@
 
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
-// #include "GeantFast/FastSimPhysicsList.h"
 #include "datamodel/ParticleHandle.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
