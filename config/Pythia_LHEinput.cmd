@@ -39,7 +39,8 @@ HadronLevel:all = off
 
 ! 4) Read-in Les Houches Event file - alternative beam and process selection.
 Beams:frameType = 4                      ! read info from a LHEF
-Beams:LHEF = data/events_hh125-13TeV.lhe ! the LHEF to read from
+#Beams:LHEF = data/events_hh125-13TeV.lhe ! the LHEF to read from
+Beams:LHEF = config/events.lhe ! the LHEF to read from
 
 ! 5) Other settings. Can be expanded as desired.
 ! Note: may overwrite some of the values above, so watch out.
