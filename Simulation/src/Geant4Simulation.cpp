@@ -114,19 +114,19 @@ StatusCode Geant4Simulation::execute() {
    ParticleCollection* particles = new ParticleCollection();
    for(int i=0; i<G4RunManager::currentEvent->GetNumberOfPrimaryVertex(); ++i)
    {
-      for(int j=0; j<G4RunManager::currentEvent->GetPrimaryVertex (i)->GetNumberOfParticle(); ++j)
+      G4PrimaryVertex* g4_vertex = G4RunManager::currentEvent->GetPrimaryVertex(i);
+      for(int j=0; j<g4_vertex->GetNumberOfParticle(); ++j)
       {
          ParticleHandle ptc = particles->create();
-         G4PrimaryParticle* g4_part = G4RunManager::currentEvent->GetPrimaryVertex (i)->GetPrimary(j);
-         ptc.mod().Core.Type = g4_part->GetPDGcode();
-         auto& p4 = ptc.mod().Core.P4;
-         p4.Px = g4_part->GetPx();
-         p4.Py = g4_part->GetPy();
-         p4.Pz = g4_part->GetPz();
-         p4.Mass = g4_part->GetMass();
+         G4PrimaryParticle* g4_part = g4_vertex->GetPrimary(j);
+         auto& core = ptc.mod().Core;
+         core.Type = g4_part->GetPDGcode();
+         core.P4.Px = g4_part->GetPx();
+         core.P4.Py = g4_part->GetPy();
+         core.P4.Pz = g4_part->GetPz();
+         core.P4.Mass = g4_part->GetMass();
       }
    }
-
    m_recphandle.put(particles);
 
    G4RunManager::TerminateOneEvent();
@@ -167,14 +167,14 @@ G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
 
       // create G4PrimaryVertex and associated G4PrimaryParticles
       G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(vertex_pos.x()*length_unit, vertex_pos.y()*length_unit,
-                                                      vertex_pos.z()*length_unit, vertex_pos.t()*length_unit/c_light);
+                                                      vertex_pos.z()*length_unit, vertex_pos.t()*length_unit/CLHEP::c_light);
 
       for (auto particle_i= (*vertex_i)->particles_begin(HepMC::children);
            particle_i != (*vertex_i)->particles_end(HepMC::children); ++particle_i) {
          if( (*particle_i)->status() != 1 ) continue;
 
-         int pdgcode= (*particle_i)-> pdg_id();
-         tmp= (*particle_i)-> momentum();
+         int pdgcode = (*particle_i)-> pdg_id();
+         tmp = (*particle_i)-> momentum();
          G4LorentzVector mom(tmp.px(), tmp.py(), tmp.pz(), tmp.e());
          G4PrimaryParticle* g4_particle=
             new G4PrimaryParticle(pdgcode, mom.x()*mom_unit, mom.y()*mom_unit, mom.z()*mom_unit);

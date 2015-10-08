@@ -15,10 +15,10 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
 
 from Configurables import Geant4Simulation
-geant4simulation = Geant4Simulation("Geant4Simulation", simtype="fast",
+geant4simulation = Geant4Simulation("Geant4Simulation", simtype="full",
                                     smearingtoolname = "SimpleSmear")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
-geant4simulation.Outputs.particles.Path = "particles"
+geant4simulation.Outputs.particles.Path = "all_recparticles"
 
 from Configurables import SimpleSmear
 geant4simulation.addTool(SimpleSmear, name="SimpleSmear")
@@ -39,7 +39,7 @@ out.outputCommands = ["keep *"]
 
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, out],
                 EvtSel = 'NONE',
-                EvtMax   = 1,
+                EvtMax   = 2,
                 ExtSvc = [albersevent, geoservice],
                 OutputLevel=DEBUG
  )
