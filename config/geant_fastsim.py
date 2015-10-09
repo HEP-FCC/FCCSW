@@ -10,6 +10,7 @@ from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
 hepmc_converter.Inputs.hepmc.Path="hepmc"
 hepmc_converter.Outputs.genparticles.Path="all_genparticles"
+hepmc_converter.Outputs.genvertices.Path="all_genvertices"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)

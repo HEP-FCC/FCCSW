@@ -3,6 +3,7 @@
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertexCollection.h"
 #include "FWCore/DataHandle.h"
 #include "HepMC/GenEvent.h"
 
@@ -23,6 +24,8 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmchandle;
   /// Handle for the genparticles to be written
   DataHandle<MCParticleCollection> m_genphandle;
+  /// Handle for the genvertices to be written
+  DataHandle<GenVertexCollection> m_genvhandle;
 };
 
 #endif
