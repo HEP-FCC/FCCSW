@@ -12,7 +12,8 @@
 
 // albers
 #include "datamodel/ParticleCollection.h"
-#include "datamodel/Particle.h"
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertexCollection.h"
 
 // Geant4
 #include "G4RunManager.hh"
@@ -36,8 +37,14 @@ public:
 private:
    /// Converter between HepMC::GenEvent and G4Event
    G4Event* HepMC2G4(const HepMC::GenEvent* aHepMCEvent) const;
+   /// Converter between EDM and G4Event
+   G4Event* EDM2G4();
    /// Handle for the HepMC event to be read
    DataHandle<HepMC::GenEvent> m_eventhandle;
+   /// Handle for the EDM MC vertices
+   DataHandle<GenVertexCollection> m_genvhandle;
+   /// Handle for the EDM MC particles
+   DataHandle<MCParticleCollection> m_genphandle;
    /// Handle for the particles to be written
    DataHandle<ParticleCollection> m_recphandle;
    /// Pointer to the interface of geometry service

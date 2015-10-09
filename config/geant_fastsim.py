@@ -19,6 +19,8 @@ from Configurables import Geant4Simulation
 geant4simulation = Geant4Simulation("Geant4Simulation", simtype="fast",
                                     smearingtoolname = "SimpleSmear")
 geant4simulation.Inputs.hepmcevent.Path = "hepmc"
+geant4simulation.Inputs.genvertices.Path="all_genvertices"
+geant4simulation.Inputs.genparticles.Path="all_genparticles"
 geant4simulation.Outputs.particles.Path = "all_recparticles"
 
 from Configurables import SimpleSmear

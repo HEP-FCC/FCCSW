@@ -8,7 +8,6 @@
 
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
-#include "datamodel/ParticleHandle.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -16,6 +15,8 @@ Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc)
 GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
 {
    declareInput("hepmcevent", m_eventhandle);
+   declareInput("genvertices", m_genvhandle);
+   declareInput("genparticles", m_genphandle);
    declareOutput("particles", m_recphandle);
    declareProperty("simtype", m_simtype = "full");
    declareProperty ("smearingtoolname", m_smearToolName = "" ) ;
@@ -105,7 +106,7 @@ StatusCode Geant4Simulation::execute() {
       error() << "Unable to get a HepMC event" << endmsg;
       return StatusCode::FAILURE;
    }
-   G4RunManager::currentEvent = HepMC2G4(hepmc_event);
+   G4RunManager::currentEvent = EDM2G4(); //HepMC2G4(hepmc_event);
    G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
    G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
    G4RunManager::UpdateScoring();
@@ -179,6 +180,27 @@ G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
             new G4PrimaryParticle(pdgcode, mom.x()*mom_unit, mom.y()*mom_unit, mom.z()*mom_unit);
          g4_vertex->SetPrimary(g4_particle);
       }
+      g4_event->AddPrimaryVertex(g4_vertex);
+   }
+   return g4_event;
+}
+
+G4Event* Geant4Simulation::EDM2G4()
+{
+   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
+   G4Event* g4_event = new G4Event();
+   // always check if the units are converted properly !!
+   const MCParticleCollection* particles = m_genphandle.get();
+   // adding one particle to each vertex -> Vertices repeated !!
+   // TODO proper vertices-particles addition
+   for(const auto& part : *particles)
+   {
+      const GenVertex& v = part.read().StartVertex.read();
+      G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(v.Position.X, v.Position.Y, v.Position.Z, v.Ctau);
+      const BareParticle& p = part.read().Core;
+      G4PrimaryParticle* g4_particle=
+         new G4PrimaryParticle(p.Type, p.P4.Px, p.P4.Py, p.P4.Pz);
+      g4_vertex->SetPrimary(g4_particle);
       g4_event->AddPrimaryVertex(g4_vertex);
    }
    return g4_event;
