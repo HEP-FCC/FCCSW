@@ -7,7 +7,6 @@
 // FCCSW
 #include "DetDesInterfaces/IGeoSvc.h"
 #include "FWCore/DataHandle.h"
-#include "GeantFast/FastSimModelTest.h"
 #include "GeantComponents/ISmearingTool.h"
 
 // albers
@@ -17,10 +16,8 @@
 
 // Geant4
 #include "G4RunManager.hh"
+#include "G4VFastSimulationModel.hh"
 #include "G4Event.hh"
-
-// HepMC
-#include "HepMC/GenEvent.h"
 
 class Geant4Simulation: public GaudiAlgorithm , public G4RunManager{
    friend class AlgFactory<Geant4Simulation> ;
@@ -35,27 +32,23 @@ public:
    virtual StatusCode finalize();
    enum SimType { FULL, FAST };
 private:
-   /// Converter between HepMC::GenEvent and G4Event
-   G4Event* HepMC2G4(const HepMC::GenEvent* aHepMCEvent) const;
    /// Converter between EDM and G4Event
    G4Event* EDM2G4();
-   /// Handle for the HepMC event to be read
-   DataHandle<HepMC::GenEvent> m_eventhandle;
-   /// Handle for the EDM MC vertices
+   /// Handle for the EDM MC vertices to be read
    DataHandle<GenVertexCollection> m_genvhandle;
-   /// Handle for the EDM MC particles
+   /// Handle for the EDM MC particles to be read
    DataHandle<MCParticleCollection> m_genphandle;
    /// Handle for the particles to be written
    DataHandle<ParticleCollection> m_recphandle;
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
-   /// Name of the ISmearingTool (set by options)
-   std::string m_smearToolName ;
    /// Pointer to the smearing tool
    ISmearingTool* m_smearTool;
+   /// Name of the ISmearingTool (set by options)
+   std::string m_smearToolName ;
    /// Switch full/fast sim (set by options)
    std::string m_simtype;
-   /// Switch full/fast sim (used further)
+   /// Switch full/fast sim (used in the code)
    SimType m_type;
    /// Envelopes that are used in a parametric simulation
    /// deleted by the G4RegionStore

@@ -8,13 +8,13 @@
 
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
+#include "GeantFast/FastSimModelTest.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
 {
-   declareInput("hepmcevent", m_eventhandle);
    declareInput("genvertices", m_genvhandle);
    declareInput("genparticles", m_genphandle);
    declareOutput("particles", m_recphandle);
@@ -100,13 +100,12 @@ StatusCode Geant4Simulation::initialize()
 
 StatusCode Geant4Simulation::execute() {
    //read event
-   auto hepmc_event = m_eventhandle.get();
-   if ( !hepmc_event->is_valid() )
+   G4RunManager::currentEvent = EDM2G4();
+   if ( !G4RunManager::currentEvent )
    {
-      error() << "Unable to get a HepMC event" << endmsg;
+      error() << "Unable to translate EDM MC data to G4Event" << endmsg;
       return StatusCode::FAILURE;
    }
-   G4RunManager::currentEvent = EDM2G4(); //HepMC2G4(hepmc_event);
    G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
    G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
    G4RunManager::UpdateScoring();
@@ -137,52 +136,6 @@ StatusCode Geant4Simulation::execute() {
 StatusCode Geant4Simulation::finalize() {
    G4RunManager::RunTermination();
    return GaudiAlgorithm::finalize();
-}
-
-G4Event* Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMC_event) const
-{
-   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
-   G4Event* g4_event = new G4Event();
-   double length_unit = HepMC::Units::conversion_factor(aHepMC_event->length_unit(), HepMC::Units::MM)*mm;
-   double mom_unit = HepMC::Units::conversion_factor(aHepMC_event->momentum_unit(),HepMC::Units::GEV)*GeV;
-
-   for(auto vertex_i = aHepMC_event->vertices_begin();
-       vertex_i != aHepMC_event->vertices_end(); ++vertex_i )
-   {
-      // check if the vertex is valid
-      bool true_vertex=false;
-      for (auto particle_i= (*vertex_i)->particles_begin(HepMC::children);
-           particle_i != (*vertex_i)->particles_end(HepMC::children); ++particle_i)
-      {
-         if (!(*particle_i)->end_vertex() && (*particle_i)->status()==1)
-         {
-            true_vertex=true;
-            break;
-         }
-      }
-      if (!true_vertex) continue;
-
-      HepMC::FourVector tmp= (*vertex_i)->position();
-      G4LorentzVector vertex_pos(tmp.x(), tmp.y(), tmp.z(), tmp.t());
-
-      // create G4PrimaryVertex and associated G4PrimaryParticles
-      G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(vertex_pos.x()*length_unit, vertex_pos.y()*length_unit,
-                                                      vertex_pos.z()*length_unit, vertex_pos.t()*length_unit/CLHEP::c_light);
-
-      for (auto particle_i= (*vertex_i)->particles_begin(HepMC::children);
-           particle_i != (*vertex_i)->particles_end(HepMC::children); ++particle_i) {
-         if( (*particle_i)->status() != 1 ) continue;
-
-         int pdgcode = (*particle_i)-> pdg_id();
-         tmp = (*particle_i)-> momentum();
-         G4LorentzVector mom(tmp.px(), tmp.py(), tmp.pz(), tmp.e());
-         G4PrimaryParticle* g4_particle=
-            new G4PrimaryParticle(pdgcode, mom.x()*mom_unit, mom.y()*mom_unit, mom.z()*mom_unit);
-         g4_vertex->SetPrimary(g4_particle);
-      }
-      g4_event->AddPrimaryVertex(g4_vertex);
-   }
-   return g4_event;
 }
 
 G4Event* Geant4Simulation::EDM2G4()
