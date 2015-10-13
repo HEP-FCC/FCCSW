@@ -13,6 +13,7 @@
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
+#include "datamodel/ParticleMCAssociationCollection.h"
 
 // Geant4
 #include "G4RunManager.hh"
@@ -40,6 +41,8 @@ private:
    DataHandle<MCParticleCollection> m_genphandle;
    /// Handle for the particles to be written
    DataHandle<ParticleCollection> m_recphandle;
+   /// Handle for the associations between particles and MC particles to be written
+   DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
    /// Pointer to the smearing tool

@@ -9,6 +9,7 @@
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
 #include "GeantFast/FastSimModelTest.h"
+#include "GeantFast/ParticleInformation.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -18,6 +19,7 @@ GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
    declareInput("genvertices", m_genvhandle);
    declareInput("genparticles", m_genphandle);
    declareOutput("particles", m_recphandle);
+   declareOutput("particleassociation", m_partassociationhandle);
    declareProperty("simtype", m_simtype = "full");
    declareProperty ("smearingtoolname", m_smearToolName = "" ) ;
 }
@@ -111,6 +113,7 @@ StatusCode Geant4Simulation::execute() {
    G4RunManager::UpdateScoring();
 
    ParticleCollection* particles = new ParticleCollection();
+   ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
    for(int i=0; i<G4RunManager::currentEvent->GetNumberOfPrimaryVertex(); ++i)
    {
       G4PrimaryVertex* g4_vertex = G4RunManager::currentEvent->GetPrimaryVertex(i);
@@ -124,9 +127,13 @@ StatusCode Geant4Simulation::execute() {
          core.P4.Py = g4_part->GetPy();
          core.P4.Pz = g4_part->GetPz();
          core.P4.Mass = g4_part->GetMass();
+         ParticleMCAssociationHandle association = associations->create();
+         association.mod().Rec = ptc;
+         association.mod().Sim = dynamic_cast<ParticleInformation*>(g4_part->GetUserInformation())->GetMCParticleHandle();
       }
    }
    m_recphandle.put(particles);
+   m_partassociationhandle.put(associations);
 
    G4RunManager::TerminateOneEvent();
 
@@ -143,16 +150,17 @@ G4Event* Geant4Simulation::EDM2G4()
    // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
    G4Event* g4_event = new G4Event();
    // always check if the units are converted properly !!
-   const MCParticleCollection* particles = m_genphandle.get();
+   const MCParticleCollection* mcparticles = m_genphandle.get();
    // adding one particle to each vertex -> Vertices repeated !!
    // TODO proper vertices-particles addition
-   for(const auto& part : *particles)
+   for(const auto& mcpart : *mcparticles)
    {
-      const GenVertex& v = part.read().StartVertex.read();
+      const GenVertex& v = mcpart.read().StartVertex.read();
       G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(v.Position.X, v.Position.Y, v.Position.Z, v.Ctau);
-      const BareParticle& p = part.read().Core;
+      const BareParticle& p = mcpart.read().Core;
       G4PrimaryParticle* g4_particle=
          new G4PrimaryParticle(p.Type, p.P4.Px, p.P4.Py, p.P4.Pz);
+      g4_particle->SetUserInformation(new ParticleInformation(mcpart));
       g4_vertex->SetPrimary(g4_particle);
       g4_event->AddPrimaryVertex(g4_vertex);
    }

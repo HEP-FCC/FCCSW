@@ -19,7 +19,8 @@ from Configurables import Geant4Simulation
 geant4simulation = Geant4Simulation("Geant4Simulation", simtype="full")
 geant4simulation.Inputs.genvertices.Path="all_genvertices"
 geant4simulation.Inputs.genparticles.Path="all_genparticles"
-geant4simulation.Outputs.particles.Path = "all_recparticles"
+geant4simulation.Outputs.particles.Path = "recparticles"
+geant4simulation.Outputs.particleassociation.Path = "particleMCparticle"
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",
