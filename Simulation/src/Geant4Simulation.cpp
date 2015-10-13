@@ -17,7 +17,6 @@ DECLARE_COMPONENT(Geant4Simulation)
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL)
 {
-   declareInput("genvertices", m_genvhandle);
    declareInput("genparticles", m_genphandle);
    declareOutput("particles", m_recphandle);
    declareOutput("particleassociation", m_partassociationhandle);

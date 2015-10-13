@@ -35,8 +35,6 @@ public:
 private:
    /// Converter between EDM and G4Event
    G4Event* EDM2G4();
-   /// Handle for the EDM MC vertices to be read
-   DataHandle<GenVertexCollection> m_genvhandle;
    /// Handle for the EDM MC particles to be read
    DataHandle<MCParticleCollection> m_genphandle;
    /// Handle for the particles to be written
