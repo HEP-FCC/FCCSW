@@ -10,6 +10,7 @@
 #include "GeantFast/FastSimPhysics.h"
 #include "GeantFast/FastSimModelTest.h"
 #include "GeantFast/ParticleInformation.h"
+#include "GeantFast/TrackingAction.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -69,6 +70,10 @@ StatusCode Geant4Simulation::initialize()
 
    // Take geometry (from DD4Hep), deleted in ~G4RunManager()
    G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
+
+   // Attach UserActions
+   // G4VUserTrackingAction deleted in ~G4TrackingManager()
+   G4RunManager::SetUserAction(new TrackingAction);
    G4RunManager::Initialize();
 
    if(m_type == SimType::FAST)
@@ -111,30 +116,6 @@ StatusCode Geant4Simulation::execute() {
    G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
    G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
    G4RunManager::UpdateScoring();
-
-   ParticleCollection* particles = new ParticleCollection();
-   ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
-   for(int i=0; i<G4RunManager::currentEvent->GetNumberOfPrimaryVertex(); ++i)
-   {
-      G4PrimaryVertex* g4_vertex = G4RunManager::currentEvent->GetPrimaryVertex(i);
-      for(int j=0; j<g4_vertex->GetNumberOfParticle(); ++j)
-      {
-         ParticleHandle ptc = particles->create();
-         G4PrimaryParticle* g4_part = g4_vertex->GetPrimary(j);
-         auto& core = ptc.mod().Core;
-         core.Type = g4_part->GetPDGcode();
-         core.P4.Px = g4_part->GetPx();
-         core.P4.Py = g4_part->GetPy();
-         core.P4.Pz = g4_part->GetPz();
-         core.P4.Mass = g4_part->GetMass();
-         ParticleMCAssociationHandle association = associations->create();
-         association.mod().Rec = ptc;
-         association.mod().Sim = dynamic_cast<ParticleInformation*>(g4_part->GetUserInformation())->GetMCParticleHandle();
-      }
-   }
-   m_recphandle.put(particles);
-   m_partassociationhandle.put(associations);
-
    G4RunManager::TerminateOneEvent();
 
    return StatusCode::SUCCESS;
@@ -151,19 +132,27 @@ G4Event* Geant4Simulation::EDM2G4()
    G4Event* g4_event = new G4Event();
    // always check if the units are converted properly !!
    const MCParticleCollection* mcparticles = m_genphandle.get();
-   // adding one particle to each vertex -> Vertices repeated !!
-   // TODO proper vertices-particles addition
-   for(const auto& mcpart : *mcparticles)
+   ParticleCollection* particles = new ParticleCollection();
+   ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
+   // adding one particle per one vertex -> vertices repeated
+   for(const auto& mcparticle : *mcparticles)
    {
-      const GenVertex& v = mcpart.read().StartVertex.read();
+      const GenVertex& v = mcparticle.read().StartVertex.read();
       G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(v.Position.X, v.Position.Y, v.Position.Z, v.Ctau);
-      const BareParticle& p = mcpart.read().Core;
+      const BareParticle& mccore = mcparticle.read().Core;
       G4PrimaryParticle* g4_particle=
-         new G4PrimaryParticle(p.Type, p.P4.Px, p.P4.Py, p.P4.Pz);
-      g4_particle->SetUserInformation(new ParticleInformation(mcpart));
+         new G4PrimaryParticle(mccore.Type, mccore.P4.Px, mccore.P4.Py, mccore.P4.Pz);
+         ParticleHandle particle = particles->create();
+      g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
+         ParticleMCAssociationHandle association = associations->create();
+         association.mod().Rec = particle;
+         association.mod().Sim = mcparticle;
+
       g4_vertex->SetPrimary(g4_particle);
       g4_event->AddPrimaryVertex(g4_vertex);
    }
+   m_recphandle.put(particles);
+   m_partassociationhandle.put(associations);
    return g4_event;
 }
 

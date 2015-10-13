@@ -3,6 +3,7 @@
 
 // albers
 #include "datamodel/MCParticleHandle.h"
+#include "datamodel/ParticleHandle.h"
 
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"
@@ -20,12 +21,14 @@ public:
       A constructor.
       @param aMC A handle to the MC particle used for the association with the simulated particle.
     */
-   ParticleInformation(const MCParticleHandle aMC);
+   ParticleInformation(const MCParticleHandle aMCpart, ParticleHandle aPart);
    virtual ~ParticleInformation();
    virtual void Print() const;
    const MCParticleHandle GetMCParticleHandle() const;
+   ParticleHandle GetParticleHandle() const;
 private:
    const MCParticleHandle m_mcpart;
+   ParticleHandle m_part;
 };
 
 #endif

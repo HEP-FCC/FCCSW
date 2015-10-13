@@ -31,7 +31,8 @@ out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, analysis, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, analysis,
+out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 ExtSvc = [albersevent, geoservice],
