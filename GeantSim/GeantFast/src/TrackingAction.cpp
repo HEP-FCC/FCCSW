@@ -1,9 +1,13 @@
 #include "TrackingAction.h"
+
+// Geant4
 #include "G4TrackingManager.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4ThreeVector.hh"
-#include "globals.hh"
 #include "ParticleInformation.h"
+
+//FCCSW
+#include "Units.h"
 
 TrackingAction::TrackingAction() : G4UserTrackingAction()
 {}
@@ -24,17 +28,13 @@ void TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
       core.Type = g4dynamicparticle->GetPDGcode();
       core.Status = 1; // how it is defined ???? as in HepMC ?
       core.Charge = g4dynamicparticle->GetCharge();
-      // Default units for EDM: GeV and cm
-      // Default units for G4:  MeV and mm
-      float length_unit = CLHEP::mm/CLHEP::cm;
-      float mom_unit = CLHEP::MeV/CLHEP::GeV;
-      core.P4.Px = g4dynamicparticle->GetMomentum().x()*mom_unit;
-      core.P4.Py = g4dynamicparticle->GetMomentum().y()*mom_unit;
-      core.P4.Pz = g4dynamicparticle->GetMomentum().z()*mom_unit;
-      core.P4.Mass = g4dynamicparticle->GetMass()*mom_unit;
-      core.Vertex.X = aTrack->GetVertexPosition().x()*length_unit;
-      core.Vertex.Y = aTrack->GetVertexPosition().y()*length_unit;
-      core.Vertex.Z = aTrack->GetVertexPosition().z()*length_unit;
+      core.P4.Px = g4dynamicparticle->GetMomentum().x()*g42edm::energy;
+      core.P4.Py = g4dynamicparticle->GetMomentum().y()*g42edm::energy;
+      core.P4.Pz = g4dynamicparticle->GetMomentum().z()*g42edm::energy;
+      core.P4.Mass = g4dynamicparticle->GetMass()*g42edm::energy;
+      core.Vertex.X = aTrack->GetVertexPosition().x()*g42edm::length;
+      core.Vertex.Y = aTrack->GetVertexPosition().y()*g42edm::length;
+      core.Vertex.Z = aTrack->GetVertexPosition().z()*g42edm::length;
    }
    return;
 }

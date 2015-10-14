@@ -11,6 +11,7 @@
 #include "GeantFast/FastSimModelTest.h"
 #include "GeantFast/ParticleInformation.h"
 #include "GeantFast/TrackingAction.h"
+#include "GeantFast/Units.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -129,28 +130,24 @@ G4Event* Geant4Simulation::EDM2G4()
 {
    // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
    G4Event* g4_event = new G4Event();
-   // Default units for EDM: GeV and cm
-   // Default units for G4:  MeV and mm
-   float length_unit = CLHEP::cm/CLHEP::mm;
-   float mom_unit = CLHEP::GeV/CLHEP::MeV;
-
+   // Creating EDM collections
    const MCParticleCollection* mcparticles = m_genphandle.get();
    ParticleCollection* particles = new ParticleCollection();
    ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
-   // adding one particle per one vertex -> vertices repeated
+   // Adding one particle per one vertex => vertices repeated
    for(const auto& mcparticle : *mcparticles)
    {
       const GenVertex& v = mcparticle.read().StartVertex.read();
-      G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(v.Position.X*length_unit, v.Position.Y*length_unit, v.Position.Z*length_unit, v.Ctau*length_unit);
+      G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
+         (v.Position.X*edm2g4::length, v.Position.Y*edm2g4::length, v.Position.Z*edm2g4::length, v.Ctau*edm2g4::length);
       const BareParticle& mccore = mcparticle.read().Core;
-      G4PrimaryParticle* g4_particle=
-         new G4PrimaryParticle(mccore.Type, mccore.P4.Px*mom_unit, mccore.P4.Py*mom_unit, mccore.P4.Pz*mom_unit);
-         ParticleHandle particle = particles->create();
+      G4PrimaryParticle* g4_particle = new G4PrimaryParticle
+         (mccore.Type, mccore.P4.Px*edm2g4::energy, mccore.P4.Py*edm2g4::energy, mccore.P4.Pz*edm2g4::energy);
+      ParticleHandle particle = particles->create();
       g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
-         ParticleMCAssociationHandle association = associations->create();
-         association.mod().Rec = particle;
-         association.mod().Sim = mcparticle;
-
+      ParticleMCAssociationHandle association = associations->create();
+      association.mod().Rec = particle;
+      association.mod().Sim = mcparticle;
       g4_vertex->SetPrimary(g4_particle);
       g4_event->AddPrimaryVertex(g4_vertex);
    }
