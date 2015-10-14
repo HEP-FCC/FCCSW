@@ -8,10 +8,10 @@
 
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
-#include "GeantFast/FastSimModelTest.h"
-#include "GeantFast/ParticleInformation.h"
-#include "GeantFast/TrackingAction.h"
-#include "GeantFast/Units.h"
+#include "GeantFast/FastSimModelTracker.h"
+#include "GeantGeneral/ParticleInformation.h"
+#include "GeantGeneral/TrackingAction.h"
+#include "GeantGeneral/Units.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
@@ -85,7 +85,7 @@ StatusCode Geant4Simulation::initialize()
          m_g4regions[iter_region]->AddRootLogicalVolume((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetLogicalVolume());
          if(m_g4regions.back()->GetName().find("Tracker") != std::string::npos)
          {
-            m_models.emplace_back(new FastSimModelTest(m_g4regions.back()->GetName(),m_g4regions.back(),m_smearToolName));
+            m_models.emplace_back(new FastSimModelTracker(m_g4regions.back()->GetName(),m_g4regions.back(),m_smearToolName));
             info()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
          }
       }

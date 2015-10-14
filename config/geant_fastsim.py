@@ -33,16 +33,12 @@ THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
 THistSvc().OutputLevel=VERBOSE
 
-from Configurables import Analyse
-analysis = Analyse("Analyse")
-analysis.Inputs.particleassociation.Path = "particleMCparticle"
-
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, analysis, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 ExtSvc = [albersevent, geoservice],

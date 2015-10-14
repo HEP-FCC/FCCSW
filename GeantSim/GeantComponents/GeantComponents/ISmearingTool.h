@@ -1,10 +1,16 @@
 #ifndef GEANTFAST_ISMEARINGTOOL_H
 #define GEANTFAST_ISMEARINGTOOL_H
 
+// Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
 // Geant4
 #include "G4ThreeVector.hh"
+
+/**
+   @brief     Interface to the smearing tool.
+   @author    Anna Zaborowska
+*/
 
 static const InterfaceID IID_ISmearingTool("ISmearingTool",1,0);
 

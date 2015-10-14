@@ -1,5 +1,5 @@
-#ifndef FAST_SIM_MODEL_TEST_H
-#define FAST_SIM_MODEL_TEST_H
+#ifndef GEANT_FAST_MODEL_TRACKER_H
+#define GEANT_FAST_MODEL_TRACKER_H
 
 // Geant
 #include "G4VFastSimulationModel.hh"
@@ -16,12 +16,12 @@
 #include "GeantComponents/ISmearingTool.h"
 
 /**
-  @brief     Shortcut to the ordinary tracking for electromagnetic calorimeters.
-   @details   Fast simulation model describes what should be done instead of a normal tracking. Instead of the ordinary tracking, a particle deposits its energy at the entrance to the detector and its value is smeared (by FCCSmearer::SmearMomentum()). Based on G4 examples/extended/parametrisations/Par01/include/Par01EMShowerModel.hh.
+   @brief     Shortcut to the ordinary tracking.
+   @details   Fast simulation model describes what should be done instead of a normal tracking for certain particle in certain volumes. Instead of the ordinary tracking, a particle deposits its energy at the entrance to the detector and its value is smeared.
    @author    Anna Zaborowska
 */
 
-class FastSimModelTest : public G4VFastSimulationModel
+class FastSimModelTracker : public G4VFastSimulationModel
 {
 public:
    /**
@@ -29,13 +29,13 @@ public:
       @param aModelName A name of the fast simulation model.
       @param aEnvelope A region where the model can take over the ordinary tracking.
     */
-   FastSimModelTest (G4String aModelName, G4Region* aEnvelope, std::string);
+   FastSimModelTracker (G4String aModelName, G4Region* aEnvelope, std::string);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
     */
-   FastSimModelTest (G4String aModelName);
-   ~FastSimModelTest ();
+   FastSimModelTracker (G4String aModelName);
+   ~FastSimModelTracker ();
    /**
       Checks if this model should be applied to this particle type.
       @param aParticle A particle definition (type).
@@ -53,15 +53,14 @@ public:
     */
    virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep);
 
-
 private:
    /// Message Service
-    ServiceHandle<IMessageSvc> m_msgSvc;
-    // Message Stream
-    MsgStream log;
+   ServiceHandle<IMessageSvc> m_msgSvc;
+   /// Message Stream
+   MsgStream log;
    /// Tool Service
-    ServiceHandle<IToolSvc> m_toolSvc;
+   ServiceHandle<IToolSvc> m_toolSvc;
    /// Pointer to a smearing tool
-    ISmearingTool* m_smearTool;
+   ISmearingTool* m_smearTool;
 };
 #endif

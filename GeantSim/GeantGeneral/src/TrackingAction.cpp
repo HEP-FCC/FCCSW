@@ -4,10 +4,10 @@
 #include "G4TrackingManager.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4ThreeVector.hh"
-#include "ParticleInformation.h"
 
 //FCCSW
 #include "Units.h"
+#include "ParticleInformation.h"
 
 TrackingAction::TrackingAction() : G4UserTrackingAction()
 {}

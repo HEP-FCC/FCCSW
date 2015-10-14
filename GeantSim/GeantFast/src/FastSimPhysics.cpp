@@ -3,7 +3,6 @@
 //Geant4
 #include "G4FastSimulationManagerProcess.hh"
 #include "G4ProcessManager.hh"
-
 #include "G4PhysicsConstructorFactory.hh"
 
 G4_DECLARE_PHYSCONSTR_FACTORY(FastSimPhysics);
@@ -22,10 +21,10 @@ void FastSimPhysics::ConstructProcess()
 {
    G4FastSimulationManagerProcess* fastSimProcess = new G4FastSimulationManagerProcess("G4FSMP");
    aParticleIterator->reset();
+   // Fast simulation manager process is available for all the particles
    while( (*aParticleIterator)() )
    {
       G4ParticleDefinition* particle = aParticleIterator->value();
-
       G4ProcessManager* process_manager = particle->GetProcessManager();
       process_manager->AddDiscreteProcess(fastSimProcess);
    }

@@ -4,8 +4,9 @@
 
 DECLARE_COMPONENT(SimpleSmear)
 
-SimpleSmear::SimpleSmear( const std::string& type,  const std::string& name,
-                          const IInterface* parent ) : GaudiTool(type, name, parent), m_hSmMom(nullptr), m_hSmEn(nullptr)
+SimpleSmear::SimpleSmear(const std::string& type, const std::string& name,
+                         const IInterface* parent) :
+GaudiTool(type, name, parent), m_hSmMom(nullptr), m_hSmEn(nullptr)
 {
    declareInterface<ISmearingTool>(this);
    declareProperty("sigma", m_sigma = 0.01);

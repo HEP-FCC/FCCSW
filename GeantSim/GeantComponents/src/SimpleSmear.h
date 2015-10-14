@@ -1,5 +1,5 @@
-#ifndef GEANTFAST_SIMPLESMEAR_H
-#define GEANTFAST_SIMPLESMEAR_H
+#ifndef GEANT_FAST_SIMPLESMEAR_H
+#define GEANT_FAST_SIMPLESMEAR_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -12,6 +12,12 @@
 
 // FCCSW
 #include "GeantComponents/ISmearingTool.h"
+
+/**
+   @brief     Simple smearing tool.
+   @details   Simple smearing tool. It smears either momentum or energy with Gaussian which std dev is set in job option file.
+   @author    Anna Zaborowska
+*/
 
 class SimpleSmear: public GaudiTool, virtual public ISmearingTool
 {

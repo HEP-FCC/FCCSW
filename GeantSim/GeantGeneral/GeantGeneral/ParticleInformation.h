@@ -1,5 +1,5 @@
-#ifndef PARTICLE_INFORMATION_H
-#define PARTICLE_INFORMATION_H
+#ifndef GEANT_PARTICLE_INFORMATION_H
+#define GEANT_PARTICLE_INFORMATION_H
 
 // albers
 #include "datamodel/MCParticleHandle.h"
@@ -10,7 +10,7 @@
 
 /**
 	@brief     Primary particle information
-   @details   Describes the information that can be assosiated with a G4PrimaryParticle class object.
+   @details   Describes the information that can be assosiated with a G4PrimaryParticle class object. It contains handles to the EDM particles.
  	@author    Anna Zaborowska
 */
 
@@ -19,7 +19,8 @@ class ParticleInformation: public G4VUserPrimaryParticleInformation
 public:
    /**
       A constructor.
-      @param aMC A handle to the MC particle used for the association with the simulated particle.
+      @param aMCpart A handle to the EDM MCParticle.
+      @param aPart A handle to the EDM Particle.
     */
    ParticleInformation(const MCParticleHandle aMCpart, ParticleHandle aPart);
    virtual ~ParticleInformation();
@@ -27,7 +28,9 @@ public:
    const MCParticleHandle GetMCParticleHandle() const;
    ParticleHandle GetParticleHandle() const;
 private:
+   /// Handle to the MC particle
    const MCParticleHandle m_mcpart;
+   /// Handle to the particle associated with a MCParticle. It is meant to be filled with information on particle momentum etc. at the end of Geant processing (done in TrackingAction::PostUserTrackingAction).
    ParticleHandle m_part;
 };
 

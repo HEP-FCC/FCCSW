@@ -1,41 +1,41 @@
-#include "FastSimModelTest.h"
-#include <memory>
+#include "FastSimModelTracker.h"
 
 // Geant4
 #include "G4PathFinder.hh"
 #include "G4SystemOfUnits.hh"
 
-FastSimModelTest::FastSimModelTest(G4String aModelName, G4Region* aEnvelope, std::string aSmearToolName)
-   : G4VFastSimulationModel(aModelName, aEnvelope), m_msgSvc("MessageSvc","FastSimModelTest"),
-     log(&(*m_msgSvc), "FastSimModelTest"), m_toolSvc("ToolSvc","ToolSvc")
+FastSimModelTracker::FastSimModelTracker(G4String aModelName, G4Region* aEnvelope, std::string aSmearToolName)
+   : G4VFastSimulationModel(aModelName, aEnvelope), m_msgSvc("MessageSvc","FastSimModelTracker"),
+     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc")
 {
    if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())
-        throw GaudiException("Smearing tool "+aSmearToolName+" not found",
-                             "FastSimModelTest", StatusCode::FAILURE);
+      throw GaudiException("Smearing tool "+aSmearToolName+" not found",
+                           "FastSimModelTracker", StatusCode::FAILURE);
 }
 
-FastSimModelTest::FastSimModelTest(G4String aModelName)
-   : G4VFastSimulationModel(aModelName), m_msgSvc("MessageSvc","FastSimModelTest"),
-     log(&(*m_msgSvc), "FastSimModelTest"), m_toolSvc("ToolSvc","ToolSvc")
+FastSimModelTracker::FastSimModelTracker(G4String aModelName)
+   : G4VFastSimulationModel(aModelName), m_msgSvc("MessageSvc","FastSimModelTracker"),
+     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc")
 {}
 
-FastSimModelTest::~FastSimModelTest()
+FastSimModelTracker::~FastSimModelTracker()
 {}
 
-G4bool FastSimModelTest::IsApplicable(const G4ParticleDefinition& aParticleType)
+G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleType)
 {
+   log<<"is applicable"<<endmsg;
    return aParticleType.GetPDGCharge() != 0;
 }
 
-G4bool FastSimModelTest::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
+G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
 {
    return true;
 }
 
-void FastSimModelTest::DoIt(const G4FastTrack& aFastTrack,
+void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
                             G4FastStep& aFastStep)
 {
-// Calculate the position of the particle at the end of volume
+   // Calculate the position of the particle at the end of volume
    G4ThreeVector spin = aFastTrack.GetPrimaryTrack()->GetPolarization() ;
    G4FieldTrack theFieldTrack = G4FieldTrack( aFastTrack.GetPrimaryTrack()->GetPosition(),
                                               aFastTrack.GetPrimaryTrack()->GetMomentumDirection(),
@@ -61,12 +61,11 @@ void FastSimModelTest::DoIt(const G4FastTrack& aFastTrack,
                              aFastTrack.GetPrimaryTrack()->GetVolume() );
    aFastStep.ProposePrimaryTrackFinalPosition( endTrack.GetPosition() );
 
-// Smear particle's momentum according to the tracker resolution
+   // Smear particle's momentum according to the tracker resolution (set in SimpleSmear)
    G4ThreeVector Porg = aFastTrack.GetPrimaryTrack()->GetMomentum();
-   // G4ThreeVector Psm = TOOOL->ReturnMyValue();
-
-   G4double Ekinorg = aFastTrack.GetPrimaryTrack()->GetKineticEnergy();
-   // aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg+(Psm-Porg), Psm.unit());
-
+   G4ThreeVector Psm = Porg;
    m_smearTool->smearMomentum(Porg);
+   G4double Ekinorg = aFastTrack.GetPrimaryTrack()->GetKineticEnergy();
+   // Geant doesn't allow increasing energy
+   aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg-fabs(Psm.mag()-Porg.mag()), Psm.unit());
 }
