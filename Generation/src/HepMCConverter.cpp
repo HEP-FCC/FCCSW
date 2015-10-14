@@ -37,7 +37,7 @@ StatusCode HepMCConverter::execute() {
       position.X = tmp.x()*hepmc2edm_length;
       position.Y = tmp.y()*hepmc2edm_length;
       position.Z = tmp.z()*hepmc2edm_length;
-      vertex.mod().Ctau = tmp.t()/Gaudi::Units::c_light/hepmc2edm_length;
+      vertex.mod().Ctau = tmp.t()*Gaudi::Units::c_light*hepmc2edm_length; // is ctau like this?
 
       for (auto particle_i = (*vertex_i)->particles_begin(HepMC::children);
            particle_i != (*vertex_i)->particles_end(HepMC::children);
