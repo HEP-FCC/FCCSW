@@ -83,7 +83,7 @@ StatusCode ParticleGunAlg::execute() {
   int thePdgId ;
 
   // prepare a new HepMC event
-  HepMC::GenEvent * theEvent = new HepMC::GenEvent() ;
+  HepMC::GenEvent * theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::CM) ;
     
   m_particleGunTool->generateParticle( theFourMomentum , origin , thePdgId );
     

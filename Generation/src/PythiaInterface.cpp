@@ -86,7 +86,7 @@ StatusCode PythiaInterface::execute() {
   }*/
 
   // Define HepMC event and convert Pythia event into this HepMC event type
-  HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
+  HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::CM);
   toHepMC->fill_next_event(*m_pythia, theEvent, m_iEvent);
   //theEvent-> print();
 

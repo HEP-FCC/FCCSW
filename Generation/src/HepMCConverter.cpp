@@ -21,9 +21,10 @@ StatusCode HepMCConverter::execute() {
    MCParticleCollection* particles = new MCParticleCollection();
    GenVertexCollection* vertices = new GenVertexCollection();
 
-   // conversion of units to mm and GeV
-   double length_unit = HepMC::Units::conversion_factor(event->length_unit(), HepMC::Units::MM)*Gaudi::Units::mm;
-   double mom_unit = HepMC::Units::conversion_factor(event->momentum_unit(),HepMC::Units::GEV)*Gaudi::Units::GeV;
+   // conversion of units to cm and GeV
+   double length_unit = HepMC::Units::conversion_factor(event->length_unit(), HepMC::Units::CM);
+   double mom_unit = HepMC::Units::conversion_factor(event->momentum_unit(),HepMC::Units::GEV);
+   debug()<<" EDM conversion (Gev->GeV mm->cm) :\tlength = *"<<length_unit<<"\tmom: = *"<<mom_unit<<endmsg;
 
    // currently only final state particles converted (no EndVertex as they didn't decay)
    // TODO add translation of decayed particles

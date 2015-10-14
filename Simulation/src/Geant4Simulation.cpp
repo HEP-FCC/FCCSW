@@ -129,7 +129,11 @@ G4Event* Geant4Simulation::EDM2G4()
 {
    // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
    G4Event* g4_event = new G4Event();
-   // always check if the units are converted properly !!
+   // Default units for EDM: GeV and cm
+   // Default units for G4:  MeV and mm
+   float length_unit = CLHEP::cm/CLHEP::mm;
+   float mom_unit = CLHEP::GeV/CLHEP::MeV;
+
    const MCParticleCollection* mcparticles = m_genphandle.get();
    ParticleCollection* particles = new ParticleCollection();
    ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
@@ -137,10 +141,10 @@ G4Event* Geant4Simulation::EDM2G4()
    for(const auto& mcparticle : *mcparticles)
    {
       const GenVertex& v = mcparticle.read().StartVertex.read();
-      G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(v.Position.X, v.Position.Y, v.Position.Z, v.Ctau);
+      G4PrimaryVertex* g4_vertex= new G4PrimaryVertex(v.Position.X*length_unit, v.Position.Y*length_unit, v.Position.Z*length_unit, v.Ctau*length_unit);
       const BareParticle& mccore = mcparticle.read().Core;
       G4PrimaryParticle* g4_particle=
-         new G4PrimaryParticle(mccore.Type, mccore.P4.Px, mccore.P4.Py, mccore.P4.Pz);
+         new G4PrimaryParticle(mccore.Type, mccore.P4.Px*mom_unit, mccore.P4.Py*mom_unit, mccore.P4.Pz*mom_unit);
          ParticleHandle particle = particles->create();
       g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
          ParticleMCAssociationHandle association = associations->create();
