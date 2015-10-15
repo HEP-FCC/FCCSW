@@ -1,14 +1,18 @@
-#include "FCCDetectorConstruction.hh"
+#include "DetectorConstruction.hh"
 
 #include "G4ProductionCuts.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4RegionStore.hh"
 #include "G4GDMLParser.hh"
 
-FCCDetectorConstruction::FCCDetectorConstruction()
+#include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
+
+DetectorConstruction::DetectorConstruction()
 {;}
 
-FCCDetectorConstruction::~FCCDetectorConstruction()
+DetectorConstruction::~DetectorConstruction()
 {
    for (G4int iterTracker=0; iterTracker<G4int(fTrackerSmearModel.size()); iterTracker++)
    {
@@ -20,16 +24,17 @@ FCCDetectorConstruction::~FCCDetectorConstruction()
    }
    for (G4int iterHCal=0; iterHCal<G4int(fHCalSmearModel.size()); iterHCal++)
    {
-
       delete fHCalSmearModel[iterHCal];
    }
 }
 
-G4VPhysicalVolume* FCCDetectorConstruction::Construct()
+G4VPhysicalVolume* DetectorConstruction::Construct()
 {
    G4GDMLParser parser;
    parser.Read("FCCFullDetector.gdml");
-   G4cout << "Geometry loaded from  file .......FCCFullDetector.gdml " <<G4endl;
+   ServiceHandle<IMessageSvc> msgh("MessageSvc","DetectorConstr");
+   MsgStream log(&(*msgh), "DetectorConstr");
+   log << MSG::INFO << "Geometry loaded from  file .......FCCFullDetector.gdml " <<endreq;
 
    std::vector<G4Region*> TrackerList;
    std::vector<G4Region*> ECalList;
@@ -63,7 +68,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
                MuonList.back()->AddRootLogicalVolume(myvol);
             }
             else {
-               G4cout << G4endl << "NOT A KNOWN DETECTOR !!!" << G4endl;
+               log << MSG::INFO << endreq << "NOT A KNOWN DETECTOR !!!" << endreq;
             }
          }
       }
@@ -75,7 +80,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          (1.* ((*TrackerList[iterTracker]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       TrackerList[iterTracker]->GetProductionCuts()->SetProductionCut(
           1*m, idxG4GammaCut );
-      fTrackerSmearModel.push_back( new FCCFastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], FCCDetectorParametrisation::eCMS) );
+      fTrackerSmearModel.push_back( new FastSimModelTracker("fastSimModelTracker",TrackerList[iterTracker], DetectorParametrisation::eCMS) );
    }
    for (G4int iterECal=0; iterECal<G4int(ECalList.size()); iterECal++)
    {
@@ -84,7 +89,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          (0.5* ((*ECalList[iterECal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       ECalList[iterECal]->GetProductionCuts()->SetProductionCut(
          0.1*m, idxG4GammaCut );
-      fEMCalSmearModel.push_back( new FCCFastSimModelEMCal("fastSimModelEMCal",ECalList[iterECal], FCCDetectorParametrisation::eCMS) );
+      fEMCalSmearModel.push_back( new FastSimModelEMCal("fastSimModelEMCal",ECalList[iterECal], DetectorParametrisation::eCMS) );
    }
    for (G4int iterHCal=0; iterHCal<G4int(HCalList.size()); iterHCal++)
    {
@@ -93,11 +98,7 @@ G4VPhysicalVolume* FCCDetectorConstruction::Construct()
          0.5* ((*HCalList[iterHCal]->GetRootLogicalVolumeIterator())->GetMaterial()->GetRadlen()) );
       HCalList[iterHCal]->GetProductionCuts()->SetProductionCut(
          1.*m, idxG4GammaCut );
-      fHCalSmearModel.push_back( new FCCFastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], FCCDetectorParametrisation::eCMS) );
+      fHCalSmearModel.push_back( new FastSimModelHCal("fastSimModelHCal",HCalList[iterHCal], DetectorParametrisation::eCMS) );
    }
-   //------------------
-   // Returns the pointer to
-   // the physical world:
-   //-----------------------
    return parser.GetWorldVolume();
 }

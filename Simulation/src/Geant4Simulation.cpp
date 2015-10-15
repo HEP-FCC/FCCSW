@@ -1,9 +1,9 @@
 #include "Geant4Simulation.h"
 
-#include "GeantFast/FCCDetectorConstruction.hh"
-#include "GeantFast/FCCActionInitialization.hh"
-#include "GeantFast/FCCPrimaryParticleInformation.hh"
-#include "GeantFast/FCCPhysicsList.hh"
+#include "GeantFast/DetectorConstruction.hh"
+#include "GeantFast/ActionInitialization.hh"
+#include "GeantFast/PrimaryParticleInformation.hh"
+#include "GeantFast/PhysicsList.hh"
 #include "G4GDMLParser.hh"
 
 #include "FTFP_BERT.hh"
@@ -29,14 +29,14 @@ StatusCode Geant4Simulation::initialize() {
    m_runManager = new G4RunManager;
 
    // load physics list
-   m_runManager->SetUserInitialization(new FCCPhysicsList);
+   m_runManager->SetUserInitialization(new PhysicsList);
 
    // take geometry
    ///.... from Service - check with Julia code, currently...
-   m_runManager->SetUserInitialization(new FCCDetectorConstruction);
+   m_runManager->SetUserInitialization(new DetectorConstruction);
 
    // user action classes
-   m_runManager->SetUserInitialization(new FCCActionInitialization);
+   m_runManager->SetUserInitialization(new ActionInitialization);
 
    m_runManager->Initialize();
    // as in G4RunManager::BeamOn
@@ -111,7 +111,7 @@ void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4
          G4LorentzVector p(pos.px(), pos.py(), pos.pz(), pos.e());
          G4PrimaryParticle* g4prim=
             new G4PrimaryParticle(pdgcode, p.x()*GeV, p.y()*GeV, p.z()*GeV);
-         g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
+         g4prim->SetUserInformation(new PrimaryParticleInformation(
                                        (*vpitr)->barcode(),
                                        pdgcode,
                                        G4ThreeVector(p.x(), p.y(), p.z())));

@@ -1,17 +1,17 @@
-#ifndef FCC_EMCAL_FAST_SIM_MODEL_H
-#define FCC_EMCAL_FAST_SIM_MODEL_H
+#ifndef EMCAL_FAST_SIM_MODEL_H
+#define EMCAL_FAST_SIM_MODEL_H
 
 #include "G4VFastSimulationModel.hh"
-#include "FCCDetectorParametrisation.hh"
+#include "DetectorParametrisation.hh"
 #include "G4Step.hh"
 
 /**
   @brief     Shortcut to the ordinary tracking for electromagnetic calorimeters.
-   @details   Fast simulation model describes what should be done instead of a normal tracking. Instead of the ordinary tracking, a particle deposits its energy at the entrance to the detector and its value is smeared (by FCCSmearer::SmearMomentum()). Based on G4 examples/extended/parametrisations/Par01/include/Par01EMShowerModel.hh.
+   @details   Fast simulation model describes what should be done instead of a normal tracking. Instead of the ordinary tracking, a particle deposits its energy at the entrance to the detector and its value is smeared (by Smearer::SmearMomentum()). Based on G4 examples/extended/parametrisations/Par01/include/Par01EMShowerModel.hh.
    @author    Anna Zaborowska
 */
 
-class FCCFastSimModelEMCal : public G4VFastSimulationModel
+class FastSimModelEMCal : public G4VFastSimulationModel
 {
 public:
    /**
@@ -20,19 +20,19 @@ public:
       @param aEnvelope A region where the model can take over the ordinary tracking.
       @param aParamType A parametrisation type.
     */
-   FCCFastSimModelEMCal (G4String aModelName, G4Region* aEnvelope, FCCDetectorParametrisation::Parametrisation aParamType);
+   FastSimModelEMCal (G4String aModelName, G4Region* aEnvelope, DetectorParametrisation::Parametrisation aParamType);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
       @param aEnvelope A region where the model can take over the ordinary tracking.
     */
-   FCCFastSimModelEMCal (G4String aModelName, G4Region* aEnvelope);
+   FastSimModelEMCal (G4String aModelName, G4Region* aEnvelope);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
     */
-   FCCFastSimModelEMCal (G4String aModelName);
-   ~FCCFastSimModelEMCal ();
+   FastSimModelEMCal (G4String aModelName);
+   ~FastSimModelEMCal ();
    /**
       Checks if this model should be applied to this particle type.
       @param aParticle A particle definition (type).
@@ -44,7 +44,7 @@ public:
     */
    virtual G4bool ModelTrigger(const G4FastTrack & aFastTrack);
    /**
-      Smears the energy deposit and saves it, together with the position of the deposit, the detector resolution and efficiency to the FCCPrimaryParticleInformation.
+      Smears the energy deposit and saves it, together with the position of the deposit, the detector resolution and efficiency to the PrimaryParticleInformation.
       @param aFastTrack A track.
       @param aFastStep A step.
     */
@@ -53,13 +53,13 @@ public:
 
 private:
    /**
-      A pointer to FCCDetectorParametrisation used to get the efficiency and resolution of the detector for a given particle and parametrisation type (fParam).
+      A pointer to DetectorParametrisation used to get the efficiency and resolution of the detector for a given particle and parametrisation type (fParam).
     */
-   FCCDetectorParametrisation* fCalculateParametrisation;
+   DetectorParametrisation* fCalculateParametrisation;
    /**
       A parametrisation type.
     */
-   FCCDetectorParametrisation::Parametrisation fParametrisation;
+   DetectorParametrisation::Parametrisation fParametrisation;
 };
 #endif
 

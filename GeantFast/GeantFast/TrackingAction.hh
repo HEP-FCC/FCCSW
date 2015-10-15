@@ -1,5 +1,5 @@
-#ifndef FCC_TRACKING_ACTION_H
-#define FCC_TRACKING_ACTION_H
+#ifndef TRACKING_ACTION_H
+#define TRACKING_ACTION_H
 
 #include "G4UserTrackingAction.hh"
 #include "globals.hh"
@@ -10,14 +10,14 @@
    @author    Anna Zaborowska
 */
 
-class FCCTrackingAction : public G4UserTrackingAction
+class TrackingAction : public G4UserTrackingAction
 {
   public:
    /**
       A default constructor.
     */
-    FCCTrackingAction();
-    virtual ~FCCTrackingAction();
+    TrackingAction();
+    virtual ~TrackingAction();
 
    /**
      Defines the actions at the start of processing the track. It checks the pseudorapidity range and if the particle is primary.
@@ -29,7 +29,4 @@ class FCCTrackingAction : public G4UserTrackingAction
    virtual void  PostUserTrackingAction(const G4Track* track);
 
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif

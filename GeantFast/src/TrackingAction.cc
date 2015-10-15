@@ -1,7 +1,6 @@
-#include "FCCTrackingAction.hh"
-#include "FCCEventInformation.hh"
-#include "FCCPrimaryParticleInformation.hh"
-#include "FCCOutput.hh"
+#include "TrackingAction.hh"
+#include "PrimaryParticleInformation.hh"
+#include "Output.hh"
 
 #include "G4ThreeVector.hh"
 #include "G4EventManager.hh"
@@ -13,54 +12,44 @@
 #include <iomanip>
 #include <vector>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-FCCTrackingAction::FCCTrackingAction() : G4UserTrackingAction()
+TrackingAction::TrackingAction() : G4UserTrackingAction()
 {}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-FCCTrackingAction::~FCCTrackingAction()
+TrackingAction::~TrackingAction()
 {}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void FCCTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
+void TrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
    if( aTrack->GetMomentum().perp() < 1.0*MeV ||
        std::abs(aTrack->GetMomentum().pseudoRapidity())>5.5 )
    {
       ((G4Track*)aTrack)->SetTrackStatus(fStopAndKill);
    }
-   // filling data only for primary particles
-   if(aTrack->GetParentID()) return;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
+void TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
    if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0 )
    {
-      FCCPrimaryParticleInformation* info = (FCCPrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
-         FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveMC,
+      PrimaryParticleInformation* info = (PrimaryParticleInformation*)aTrack->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation();
+         Output::Instance()->SaveTrack(Output::eSaveMC,
                                           info->GetPartID(),
                                           info->GetPDG(),
                                           info->GetMCMomentum()/MeV );
-         FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveTracker,
+         Output::Instance()->SaveTrack(Output::eSaveTracker,
                                           info->GetPartID(),
                                           info->GetPDG(),
                                           info->GetTrackerMomentum()/MeV,
                                           info->GetTrackerResolution(),
                                           info->GetTrackerEfficiency());
-         FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveEMCal,
+         Output::Instance()->SaveTrack(Output::eSaveEMCal,
                                           info->GetPartID(),
                                           info->GetPDG(),
                                           info->GetEMCalPosition()/mm,
                                           info->GetEMCalResolution(),
                                           info->GetEMCalEfficiency(),
                                           info->GetEMCalEnergy()/MeV);
-         FCCOutput::Instance()->SaveTrack(FCCOutput::eSaveHCal,
+         Output::Instance()->SaveTrack(Output::eSaveHCal,
                                           info->GetPartID(),
                                           info->GetPDG(),
                                           info->GetHCalPosition()/mm,
@@ -69,5 +58,3 @@ void FCCTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
                                           info->GetHCalEnergy()/MeV);
    }
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

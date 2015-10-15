@@ -1,9 +1,9 @@
-#ifndef FCC_DETECTOR_CONSTRUCTION_H
-#define FCC_DETECTOR_CONSTRUCTION_H
+#ifndef DETECTOR_CONSTRUCTION_H
+#define DETECTOR_CONSTRUCTION_H
 
-#include "FCCFastSimModelTracker.hh"
-#include "FCCFastSimModelEMCal.hh"
-#include "FCCFastSimModelHCal.hh"
+#include "FastSimModelTracker.hh"
+#include "FastSimModelEMCal.hh"
+#include "FastSimModelHCal.hh"
 
 #include "G4LogicalVolume.hh"
 #include "G4VUserDetectorConstruction.hh"
@@ -15,14 +15,14 @@
    @author    Anna Zaborowska
 */
 
-class FCCDetectorConstruction : public G4VUserDetectorConstruction
+class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
    /**
       A default constructor
    */
-   FCCDetectorConstruction();
-   virtual ~FCCDetectorConstruction();
+   DetectorConstruction();
+   virtual ~DetectorConstruction();
   /**
       A method invoked by G4RunManager::Initialize()
       @return A pointer to the world volume.
@@ -32,17 +32,16 @@ public:
    /**
       A vector of fast simulation models for a tracking detector.
     */
-   std::vector<FCCFastSimModelTracker*> fTrackerSmearModel;
+   std::vector<FastSimModelTracker*> fTrackerSmearModel;
    /**
       A vector of fast simulation models for an electromagnetic calorimeter.
     */
-   std::vector<FCCFastSimModelEMCal*> fEMCalSmearModel;
+   std::vector<FastSimModelEMCal*> fEMCalSmearModel;
    /**
       A vector of fast simulation models for a hadronic calorimeter.
     */
-   std::vector<FCCFastSimModelHCal*> fHCalSmearModel;
+   std::vector<FastSimModelHCal*> fHCalSmearModel;
 };
-
 
 #endif
 
