@@ -36,15 +36,16 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
                             G4FastStep& aFastStep)
 {
    // Calculate the position of the particle at the end of volume
-   G4ThreeVector spin = aFastTrack.GetPrimaryTrack()->GetPolarization() ;
-   G4FieldTrack theFieldTrack = G4FieldTrack( aFastTrack.GetPrimaryTrack()->GetPosition(),
-                                              aFastTrack.GetPrimaryTrack()->GetMomentumDirection(),
+   const G4Track* track = aFastTrack.GetPrimaryTrack();
+   G4ThreeVector spin = track->GetPolarization() ;
+   G4FieldTrack theFieldTrack = G4FieldTrack( track->GetPosition(),
+                                              track->GetMomentumDirection(),
                                               0.0,
-                                              aFastTrack.GetPrimaryTrack()->GetKineticEnergy(),
-                                              aFastTrack.GetPrimaryTrack()->GetDynamicParticle()->GetDefinition()->GetPDGMass(),
+                                              track->GetKineticEnergy(),
+                                              track->GetDynamicParticle()->GetDefinition()->GetPDGMass(),
                                               0.0,
-                                              aFastTrack.GetPrimaryTrack()->GetGlobalTime(), // Lab.
-                                              aFastTrack.GetPrimaryTrack()->GetProperTime(), // Part.
+                                              track->GetGlobalTime(), // Lab.
+                                              track->GetProperTime(), // Part.
                                               &spin) ;
    G4double retSafety= -1.0;
    ELimited retStepLimited;
@@ -54,18 +55,18 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
    fPathFinder->ComputeStep( theFieldTrack,
                              currentMinimumStep,
                              0,
-                             aFastTrack.GetPrimaryTrack()->GetCurrentStepNumber(),
+                             track->GetCurrentStepNumber(),
                              retSafety,
                              retStepLimited,
                              endTrack,
-                             aFastTrack.GetPrimaryTrack()->GetVolume() );
+                             track->GetVolume() );
    aFastStep.ProposePrimaryTrackFinalPosition( endTrack.GetPosition() );
 
    // Smear particle's momentum according to the tracker resolution (set in SimpleSmear)
-   G4ThreeVector Porg = aFastTrack.GetPrimaryTrack()->GetMomentum();
-   G4ThreeVector Psm = Porg;
-   m_smearTool->smearMomentum(Porg);
-   G4double Ekinorg = aFastTrack.GetPrimaryTrack()->GetKineticEnergy();
-   // Geant doesn't allow increasing energy
-   aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg-fabs(Psm.mag()-Porg.mag()), Psm.unit());
+   G4ThreeVector Psm = track->GetMomentum();
+   m_smearTool->smearMomentum(Psm);
+   G4ThreeVector DeltaP = track->GetMomentum() - Psm;
+   G4double Ekinorg = track->GetKineticEnergy();
+   aFastStep.ClearDebugFlag(); // to disable Geant checks on energy
+   aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg+DeltaP.mag(), Psm.unit());
 }
