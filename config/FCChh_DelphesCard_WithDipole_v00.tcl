@@ -37,7 +37,6 @@ TowerMerger
 EFlowMerger
 
 PhotonEfficiency
-#PhotonEnergySmearing
 
 MuonIsolation
 ElectronIsolation
@@ -219,7 +218,7 @@ set ResolutionFormula {
 #################################
 # Energy resolution for photons
 #################################
-#not used for the moment
+#not used for the moment (has been removed from the ExecutionPath)
 
 module EnergySmearing PhotonEnergySmearing {
 set InputArray PhotonEfficiency/photons
