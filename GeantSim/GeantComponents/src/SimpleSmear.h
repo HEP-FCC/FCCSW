@@ -19,8 +19,7 @@
    @author    Anna Zaborowska
 */
 
-class SimpleSmear: public GaudiTool, virtual public ISmearingTool
-{
+class SimpleSmear: public GaudiTool, virtual public ISmearingTool {
 public:
    SimpleSmear(const std::string& type , const std::string& name,
                const IInterface* parent);

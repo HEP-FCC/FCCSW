@@ -10,18 +10,15 @@
  	@author    Anna Zaborowska
 */
 
-namespace edmdefault
-{
+namespace edmdefault {
    constexpr double length = CLHEP::cm;
    constexpr double energy = CLHEP::GeV;
 }
-namespace edm2g4
-{
+namespace edm2g4 {
    constexpr double length = edmdefault::length/CLHEP::mm;
    constexpr double energy = edmdefault::energy/CLHEP::MeV;
 }
-namespace g42edm
-{
+namespace g42edm {
    constexpr double length = CLHEP::mm/edmdefault::length;
    constexpr double energy = CLHEP::MeV/edmdefault::energy;
 }

@@ -17,16 +17,13 @@ base_class(name, svc),
 m_dd4hepgeo(0),
 m_geant4geo(0),
 m_xmlFileName("file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml"), //over joboptions
-m_log(msgSvc(), name)
-{}
+m_log(msgSvc(), name) {}
 
-GeoSvc::~GeoSvc()
-{
+GeoSvc::~GeoSvc() {
     m_dd4hepgeo->destroyInstance();
 }
 
-StatusCode GeoSvc::initialize()
-{
+StatusCode GeoSvc::initialize() {
     if (buildDD4HepGeo().isFailure())
         m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;
     else
@@ -40,13 +37,11 @@ StatusCode GeoSvc::initialize()
     return StatusCode::SUCCESS;
 }
 
-StatusCode GeoSvc::finalize()
-{
+StatusCode GeoSvc::finalize() {
     return StatusCode::SUCCESS;
 }
 
-StatusCode GeoSvc::buildDD4HepGeo()
-{
+StatusCode GeoSvc::buildDD4HepGeo(){
     // we retrieve the the static instance of the DD4HEP::Geometry
     m_dd4hepgeo = &(DD4hep::Geometry::LCDD::getInstance());
     m_dd4hepgeo->addExtension<IGeoSvc>(this);
@@ -61,18 +56,15 @@ StatusCode GeoSvc::buildDD4HepGeo()
     return StatusCode::SUCCESS;
 }
 
-DD4hep::Geometry::LCDD* GeoSvc::lcdd()
-{
+DD4hep::Geometry::LCDD* GeoSvc::lcdd() {
     return (m_dd4hepgeo);
 }
 
-DD4hep::Geometry::DetElement GeoSvc::getDD4HepGeo()
-{
+DD4hep::Geometry::DetElement GeoSvc::getDD4HepGeo() {
     return (lcdd()->world());
 }
 
-StatusCode GeoSvc::buildGeant4Geo()
-{
+StatusCode GeoSvc::buildGeant4Geo() {
     std::shared_ptr<G4VUserDetectorConstruction> detector(new DD4hep::Simulation::Geant4DetectorConstruction(*lcdd()));
     m_geant4geo = detector;
     if (m_geant4geo) {
@@ -81,7 +73,6 @@ StatusCode GeoSvc::buildGeant4Geo()
     else return StatusCode::FAILURE;
 }
 
-G4VUserDetectorConstruction* GeoSvc::getGeant4Geo()
-{
+G4VUserDetectorConstruction* GeoSvc::getGeant4Geo() {
     return (m_geant4geo.get());
 }

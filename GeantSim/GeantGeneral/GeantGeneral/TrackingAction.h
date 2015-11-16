@@ -9,8 +9,7 @@
    @author    Anna Zaborowska
 */
 
-class TrackingAction : public G4UserTrackingAction
-{
+class TrackingAction : public G4UserTrackingAction {
 public:
    TrackingAction();
    virtual ~TrackingAction();

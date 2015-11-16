@@ -14,8 +14,7 @@
 
 static const InterfaceID IID_ISmearingTool("ISmearingTool",1,0);
 
-class ISmearingTool : virtual public IAlgTool
-{
+class ISmearingTool : virtual public IAlgTool {
 public:
    static const InterfaceID& interfaceID() { return IID_ISmearingTool; }
 

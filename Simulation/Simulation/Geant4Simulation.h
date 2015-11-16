@@ -20,7 +20,7 @@
 #include "G4VFastSimulationModel.hh"
 #include "G4Event.hh"
 
-class Geant4Simulation: public GaudiAlgorithm , public G4RunManager{
+class Geant4Simulation: public GaudiAlgorithm , public G4RunManager {
    friend class AlgFactory<Geant4Simulation> ;
 public:
    /// Constructor.

@@ -21,8 +21,7 @@
    @author    Anna Zaborowska
 */
 
-class FastSimModelTracker : public G4VFastSimulationModel
-{
+class FastSimModelTracker : public G4VFastSimulationModel {
 public:
    /**
       A constructor.

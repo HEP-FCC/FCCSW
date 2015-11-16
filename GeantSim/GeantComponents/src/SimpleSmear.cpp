@@ -6,29 +6,25 @@ DECLARE_COMPONENT(SimpleSmear)
 
 SimpleSmear::SimpleSmear(const std::string& type, const std::string& name,
                          const IInterface* parent) :
-GaudiTool(type, name, parent), m_hSmMom(nullptr), m_hSmEn(nullptr)
-{
+GaudiTool(type, name, parent), m_hSmMom(nullptr), m_hSmEn(nullptr) {
    declareInterface<ISmearingTool>(this);
    declareProperty("sigma", m_sigma = 0.01);
    declareProperty("histograms", m_hist = false);
 }
 
-SimpleSmear::~SimpleSmear(){}
+SimpleSmear::~SimpleSmear() {}
 
-StatusCode SimpleSmear::initialize()
-{
-   if(GaudiTool::initialize().isFailure())
+StatusCode SimpleSmear::initialize() {
+   if(GaudiTool::initialize().isFailure()) {
       return StatusCode::FAILURE;
-   if(service( "RndmGenSvc" , m_randSvc ).isFailure())
-   {
+   }
+   if(service( "RndmGenSvc" , m_randSvc ).isFailure()) {
       error() << "Couldn't get RndmGenSvc" << endmsg;
       return StatusCode::FAILURE;
    }
    m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_sigma));
-   if(m_hist)
-   {
-      if(service( "THistSvc" , m_tHistSvc ).isFailure())
-      {
+   if(m_hist) {
+      if(service( "THistSvc" , m_tHistSvc ).isFailure()) {
          error() << "Couldn't get THistSvc" << endmsg;
          return StatusCode::FAILURE;
       }
@@ -44,8 +40,7 @@ StatusCode SimpleSmear::initialize()
    return StatusCode::SUCCESS;
 }
 
-StatusCode SimpleSmear::smearMomentum( G4ThreeVector& aMom )
-{
+StatusCode SimpleSmear::smearMomentum( G4ThreeVector& aMom ) {
    double tmp = m_gauss.shoot();
    aMom *= tmp;
    if(m_hist)
@@ -53,11 +48,9 @@ StatusCode SimpleSmear::smearMomentum( G4ThreeVector& aMom )
    return StatusCode::SUCCESS;
 }
 
-StatusCode SimpleSmear::smearEnergy( G4double& aEn )
-{
+StatusCode SimpleSmear::smearEnergy( G4double& aEn ) {
    double tmp;
-   do
-   {
+   do {
       tmp = m_gauss.shoot();
       aEn *= tmp;
    }

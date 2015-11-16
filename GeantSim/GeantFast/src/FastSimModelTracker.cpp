@@ -6,8 +6,7 @@
 
 FastSimModelTracker::FastSimModelTracker(G4String aModelName, G4Region* aEnvelope, std::string aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_msgSvc("MessageSvc","FastSimModelTracker"),
-     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc")
-{
+     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc") {
    if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())
       throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                            "FastSimModelTracker", StatusCode::FAILURE);
@@ -15,26 +14,21 @@ FastSimModelTracker::FastSimModelTracker(G4String aModelName, G4Region* aEnvelop
 
 FastSimModelTracker::FastSimModelTracker(G4String aModelName)
    : G4VFastSimulationModel(aModelName), m_msgSvc("MessageSvc","FastSimModelTracker"),
-     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc")
-{}
+     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc") {}
 
-FastSimModelTracker::~FastSimModelTracker()
-{}
+FastSimModelTracker::~FastSimModelTracker() {}
 
-G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleType)
-{
+G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleType) {
    log<<"is applicable"<<endmsg;
    return aParticleType.GetPDGCharge() != 0;
 }
 
-G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& /*aFastTrack*/)
-{
+G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& /*aFastTrack*/) {
    return true;
 }
 
 void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
-                            G4FastStep& aFastStep)
-{
+                            G4FastStep& aFastStep) {
    // Calculate the position of the particle at the end of volume
    const G4Track* track = aFastTrack.GetPrimaryTrack();
    G4ThreeVector spin = track->GetPolarization() ;

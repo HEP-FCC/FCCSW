@@ -14,8 +14,7 @@
  	@author    Anna Zaborowska
 */
 
-class ParticleInformation: public G4VUserPrimaryParticleInformation
-{
+class ParticleInformation: public G4VUserPrimaryParticleInformation {
 public:
    /**
       A constructor.
