@@ -13,8 +13,6 @@ TrackingAction::TrackingAction() : G4UserTrackingAction() {}
 
 TrackingAction::~TrackingAction() {}
 
-void TrackingAction::PreUserTrackingAction(const G4Track* /*aTrack*/) {}
-
 void TrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
    if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0) {
       const G4DynamicParticle* g4dynamicparticle = aTrack->GetDynamicParticle();
