@@ -7,10 +7,7 @@
 
 // Gaudi
 #include "GaudiKernel/ServiceHandle.h"
-#include "GaudiKernel/IMessageSvc.h"
-#include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/IToolSvc.h"
-#include "GaudiKernel/MsgStream.h"
 
 //FCCSW
 #include "GeantComponents/ISmearingTool.h"
@@ -53,10 +50,6 @@ public:
    virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep);
 
 private:
-   /// Message Service
-   ServiceHandle<IMessageSvc> m_msgSvc;
-   /// Message Stream
-   MsgStream log;
    /// Tool Service
    ServiceHandle<IToolSvc> m_toolSvc;
    /// Pointer to a smearing tool

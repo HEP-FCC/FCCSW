@@ -5,21 +5,18 @@
 #include "G4SystemOfUnits.hh"
 
 FastSimModelTracker::FastSimModelTracker(G4String aModelName, G4Region* aEnvelope, std::string aSmearToolName)
-   : G4VFastSimulationModel(aModelName, aEnvelope), m_msgSvc("MessageSvc","FastSimModelTracker"),
-     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc") {
+   : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {
    if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())
       throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                            "FastSimModelTracker", StatusCode::FAILURE);
 }
 
 FastSimModelTracker::FastSimModelTracker(G4String aModelName)
-   : G4VFastSimulationModel(aModelName), m_msgSvc("MessageSvc","FastSimModelTracker"),
-     log(&(*m_msgSvc), "FastSimModelTracker"), m_toolSvc("ToolSvc","ToolSvc") {}
+   : G4VFastSimulationModel(aModelName), m_toolSvc("ToolSvc","ToolSvc") {}
 
 FastSimModelTracker::~FastSimModelTracker() {}
 
 G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleType) {
-   log<<"is applicable"<<endmsg;
    return aParticleType.GetPDGCharge() != 0;
 }
 
