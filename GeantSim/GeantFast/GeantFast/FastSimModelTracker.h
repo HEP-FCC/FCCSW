@@ -3,17 +3,13 @@
 
 // Geant
 #include "G4VFastSimulationModel.hh"
-#include "G4Step.hh"
 
 // Gaudi
 #include "GaudiKernel/ServiceHandle.h"
-#include "GaudiKernel/IMessageSvc.h"
-#include "GaudiKernel/MsgStream.h"
-#include "GaudiKernel/IToolSvc.h"
-#include "GaudiKernel/MsgStream.h"
+class IToolSvc;
 
 //FCCSW
-#include "GeantComponents/ISmearingTool.h"
+class ISmearingTool;
 
 /**
    @brief     Shortcut to the ordinary tracking.
@@ -21,20 +17,19 @@
    @author    Anna Zaborowska
 */
 
-class FastSimModelTracker : public G4VFastSimulationModel
-{
+class FastSimModelTracker : public G4VFastSimulationModel {
 public:
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
       @param aEnvelope A region where the model can take over the ordinary tracking.
     */
-   FastSimModelTracker (G4String aModelName, G4Region* aEnvelope, std::string);
+   FastSimModelTracker (const std::string aModelName, G4Region* aEnvelope, std::string);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
     */
-   FastSimModelTracker (G4String aModelName);
+   FastSimModelTracker (const std::string aModelName);
    ~FastSimModelTracker ();
    /**
       Checks if this model should be applied to this particle type.
@@ -54,10 +49,6 @@ public:
    virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep);
 
 private:
-   /// Message Service
-   ServiceHandle<IMessageSvc> m_msgSvc;
-   /// Message Stream
-   MsgStream log;
    /// Tool Service
    ServiceHandle<IToolSvc> m_toolSvc;
    /// Pointer to a smearing tool

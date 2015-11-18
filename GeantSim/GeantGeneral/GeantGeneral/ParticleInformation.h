@@ -14,19 +14,18 @@
  	@author    Anna Zaborowska
 */
 
-class ParticleInformation: public G4VUserPrimaryParticleInformation
-{
+class ParticleInformation: public G4VUserPrimaryParticleInformation {
 public:
    /**
       A constructor.
       @param aMCpart A handle to the EDM MCParticle.
       @param aPart A handle to the EDM Particle.
     */
-   ParticleInformation(const MCParticleHandle aMCpart, ParticleHandle aPart);
+   ParticleInformation(const MCParticleHandle& aMCpart, ParticleHandle& aPart);
    virtual ~ParticleInformation();
    virtual void Print() const;
-   const MCParticleHandle GetMCParticleHandle() const;
-   ParticleHandle GetParticleHandle() const;
+   const MCParticleHandle& GetMCParticleHandle() const;
+   ParticleHandle& GetParticleHandle();
 private:
    /// Handle to the MC particle
    const MCParticleHandle m_mcpart;

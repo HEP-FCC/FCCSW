@@ -10,8 +10,7 @@
    @author    Anna Zaborowska
 */
 
-class FastSimPhysics: public G4VPhysicsConstructor
-{
+class FastSimPhysics: public G4VPhysicsConstructor {
 public:
    /**
       A constructor.

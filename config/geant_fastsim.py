@@ -23,15 +23,8 @@ geant4simulation.Outputs.particles.Path = "recparticles"
 geant4simulation.Outputs.particleassociation.Path = "particleMCparticle"
 
 from Configurables import SimpleSmear
-smear = SimpleSmear("SimpleSmear", histograms = True, sigma = 0.015)
+smear = SimpleSmear("SimpleSmear", sigma = 0.015)
 geant4simulation.addTool(smear)
-
-from Configurables import THistSvc
-THistSvc().Output = ["sim DATAFILE='GeantFastSim_SmearingHist.root' TYP='ROOT' OPT='RECREATE'"]
-THistSvc().PrintAll=True
-THistSvc().AutoSave=True
-THistSvc().AutoFlush=True
-THistSvc().OutputLevel=VERBOSE
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",

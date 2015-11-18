@@ -9,21 +9,14 @@
 #include "Units.h"
 #include "ParticleInformation.h"
 
-TrackingAction::TrackingAction() : G4UserTrackingAction()
-{}
+TrackingAction::TrackingAction() : G4UserTrackingAction() {}
 
-TrackingAction::~TrackingAction()
-{}
+TrackingAction::~TrackingAction() {}
 
-void TrackingAction::PreUserTrackingAction(const G4Track* /*aTrack*/)
-{}
-
-void TrackingAction::PostUserTrackingAction(const G4Track* aTrack)
-{
-   if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0)
-   {
+void TrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
+   if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0) {
       const G4DynamicParticle* g4dynamicparticle = aTrack->GetDynamicParticle();
-      ParticleHandle particle = dynamic_cast<ParticleInformation*>(g4dynamicparticle->GetPrimaryParticle()->GetUserInformation())->GetParticleHandle();
+      ParticleHandle& particle = dynamic_cast<ParticleInformation*>(g4dynamicparticle->GetPrimaryParticle()->GetUserInformation())->GetParticleHandle();
       BareParticle& core = particle.mod().Core;
       core.Type = g4dynamicparticle->GetPDGcode();
       core.Status = 1; // how it is defined ???? as in HepMC ?

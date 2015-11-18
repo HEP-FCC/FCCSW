@@ -1,12 +1,16 @@
 #include "HepMCConverter.h"
 
+//Gaudi
 #include "GaudiKernel/PhysicalConstants.h"
+
+// EDM
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertexCollection.h"
 
 DECLARE_COMPONENT(HepMCConverter)
 
 HepMCConverter::HepMCConverter(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc)
-{
+GaudiAlgorithm(name, svcLoc) {
    declareInput("hepmc", m_hepmchandle);
    declareOutput("genparticles", m_genphandle);
    declareOutput("genvertices", m_genvhandle);
@@ -29,8 +33,7 @@ StatusCode HepMCConverter::execute() {
    // TODO add translation of decayed particles
    HepMC::FourVector tmp;
    for(auto vertex_i = event->vertices_begin();
-       vertex_i != event->vertices_end(); ++vertex_i )
-   {
+       vertex_i != event->vertices_end(); ++vertex_i ) {
       tmp = (*vertex_i)->position();
       GenVertexHandle vertex = vertices->create();
       Point& position = vertex.mod().Position;
@@ -41,8 +44,7 @@ StatusCode HepMCConverter::execute() {
 
       for (auto particle_i = (*vertex_i)->particles_begin(HepMC::children);
            particle_i != (*vertex_i)->particles_end(HepMC::children);
-           ++particle_i)
-      {
+           ++particle_i) {
          // take only final state particles
          if( (*particle_i)->status() != 1 ) continue;
 

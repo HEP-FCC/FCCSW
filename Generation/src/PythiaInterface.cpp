@@ -9,8 +9,7 @@
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile()
-{
+  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile() {
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput(  "hepmc"   , m_hepmchandle);
 

@@ -9,13 +9,10 @@
    @author    Anna Zaborowska
 */
 
-class TrackingAction : public G4UserTrackingAction
-{
+class TrackingAction : public G4UserTrackingAction {
 public:
    TrackingAction();
    virtual ~TrackingAction();
-   /// Defines the actions at the start of processing the track.
-   virtual void  PreUserTrackingAction(const G4Track*);
    /// Defines the actions at the end of processing the track.
    virtual void  PostUserTrackingAction(const G4Track*);
 

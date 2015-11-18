@@ -33,8 +33,7 @@ ParticleGunAlg::ParticleGunAlg( const std::string& name,
                           ISvcLocator* pSvcLocator)
   : GaudiAlgorithm ( name , pSvcLocator ) ,
     m_particleGunTool       ( nullptr ),
-    m_vertexSmearTool		( nullptr )
-{
+    m_vertexSmearTool		( nullptr ) {
   // Generation Method
   declareProperty ( "ParticleGunTool" ,
                     m_particleGunToolName = "GenericGun" ) ;
