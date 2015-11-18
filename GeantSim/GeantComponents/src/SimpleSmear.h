@@ -4,11 +4,11 @@
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
-#include "GaudiKernel/IRndmGenSvc.h"
-#include "GaudiKernel/ITHistSvc.h"
+class IRndmGenSvc;
+class ITHistSvc;
 
 // ROOT
-#include "TH1F.h"
+class TH1F;
 
 // FCCSW
 #include "GeantComponents/ISmearingTool.h"
@@ -31,7 +31,7 @@ public:
    virtual StatusCode smearMomentum(G4ThreeVector& aMom);
 
    /// Implementation of ISmearingTool method that smears the energy of the particle
-   virtual StatusCode smearEnergy(G4double& aEn);
+   virtual StatusCode smearEnergy(double& aEn);
 private:
    /// Constant resolution for the smearing (set by job options)
    double m_sigma;

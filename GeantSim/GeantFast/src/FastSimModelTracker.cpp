@@ -4,6 +4,12 @@
 #include "G4PathFinder.hh"
 #include "G4SystemOfUnits.hh"
 
+// Gaudi
+#include "GaudiKernel/IToolSvc.h"
+
+// FCCSW
+#include "GeantComponents/ISmearingTool.h"
+
 FastSimModelTracker::FastSimModelTracker(const std::string aModelName, G4Region* aEnvelope, std::string aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {
    if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())

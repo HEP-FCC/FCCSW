@@ -22,6 +22,6 @@ public:
    virtual StatusCode smearMomentum( G4ThreeVector& aMom ) = 0;
 
    /// Smear the energy of the particle
-   virtual StatusCode smearEnergy( G4double& aMom ) = 0;
+   virtual StatusCode smearEnergy( double& aMom ) = 0;
 };
 #endif

@@ -5,20 +5,18 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 
 // FCCSW
-#include "DetDesInterfaces/IGeoSvc.h"
 #include "FWCore/DataHandle.h"
-#include "GeantComponents/ISmearingTool.h"
+class IGeoSvc;
+class ISmearingTool;
 
 // albers
-#include "datamodel/ParticleCollection.h"
-#include "datamodel/MCParticleCollection.h"
-#include "datamodel/GenVertexCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
+class ParticleCollection;
+class MCParticleCollection;
+class ParticleMCAssociationCollection;
 
 // Geant4
 #include "G4RunManager.hh"
-#include "G4VFastSimulationModel.hh"
-#include "G4Event.hh"
+class G4VFastSimulationModel;
 
 class Geant4Simulation: public GaudiAlgorithm , public G4RunManager {
    friend class AlgFactory<Geant4Simulation> ;

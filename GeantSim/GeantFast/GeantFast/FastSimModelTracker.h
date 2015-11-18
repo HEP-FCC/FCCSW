@@ -3,14 +3,13 @@
 
 // Geant
 #include "G4VFastSimulationModel.hh"
-#include "G4Step.hh"
 
 // Gaudi
 #include "GaudiKernel/ServiceHandle.h"
-#include "GaudiKernel/IToolSvc.h"
+class IToolSvc;
 
 //FCCSW
-#include "GeantComponents/ISmearingTool.h"
+class ISmearingTool;
 
 /**
    @brief     Shortcut to the ordinary tracking.

@@ -5,6 +5,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4RegionStore.hh"
 #include "G4VModularPhysicsList.hh"
+#include "G4VFastSimulationModel.hh"
 
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
@@ -12,6 +13,14 @@
 #include "GeantGeneral/ParticleInformation.h"
 #include "GeantGeneral/TrackingAction.h"
 #include "GeantGeneral/Units.h"
+#include "DetDesInterfaces/IGeoSvc.h"
+#include "GeantComponents/ISmearingTool.h"
+
+// albers
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertexCollection.h"
+#include "datamodel/ParticleMCAssociationCollection.h"
 
 DECLARE_COMPONENT(Geant4Simulation)
 

@@ -1,6 +1,12 @@
 #include "SimpleSmear.h"
 
+// Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
+#include "GaudiKernel/IRndmGenSvc.h"
+#include "GaudiKernel/ITHistSvc.h"
+
+// ROOT
+#include "TH1F.h"
 
 DECLARE_COMPONENT(SimpleSmear)
 
@@ -48,7 +54,7 @@ StatusCode SimpleSmear::smearMomentum( G4ThreeVector& aMom ) {
    return StatusCode::SUCCESS;
 }
 
-StatusCode SimpleSmear::smearEnergy( G4double& aEn ) {
+StatusCode SimpleSmear::smearEnergy( double& aEn ) {
    double tmp;
    do {
       tmp = m_gauss.shoot();

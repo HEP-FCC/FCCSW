@@ -1,6 +1,11 @@
 #include "HepMCConverter.h"
 
+//Gaudi
 #include "GaudiKernel/PhysicalConstants.h"
+
+// EDM
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertexCollection.h"
 
 DECLARE_COMPONENT(HepMCConverter)
 
