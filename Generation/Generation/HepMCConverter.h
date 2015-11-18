@@ -3,8 +3,10 @@
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
-#include "HepMC/GenEvent.h"
 
+namespace HepMC{
+   class GenEvent;
+}
 class MCParticleCollection;
 class GenVertexCollection;
 

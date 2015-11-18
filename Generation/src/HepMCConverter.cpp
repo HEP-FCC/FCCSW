@@ -7,6 +7,8 @@
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
 
+#include "HepMC/GenEvent.h"
+
 DECLARE_COMPONENT(HepMCConverter)
 
 HepMCConverter::HepMCConverter(const std::string& name, ISvcLocator* svcLoc):

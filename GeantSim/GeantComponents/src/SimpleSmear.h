@@ -24,7 +24,7 @@ public:
    virtual StatusCode initialize();
 
    /// Implementation of ISmearingTool method that smears the momentum of the particle
-   virtual StatusCode smearMomentum(G4ThreeVector& aMom);
+   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom);
 
    /// Implementation of ISmearingTool method that smears the energy of the particle
    virtual StatusCode smearEnergy(double& aEn);

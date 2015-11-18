@@ -4,6 +4,9 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 
+//CLHEP
+#include "CLHEP/Vector/ThreeVector.h"
+
 DECLARE_COMPONENT(SimpleSmear)
 
 SimpleSmear::SimpleSmear(const std::string& type, const std::string& name,
@@ -27,7 +30,7 @@ StatusCode SimpleSmear::initialize() {
    return StatusCode::SUCCESS;
 }
 
-StatusCode SimpleSmear::smearMomentum( G4ThreeVector& aMom ) {
+StatusCode SimpleSmear::smearMomentum( CLHEP::Hep3Vector& aMom ) {
    double tmp = m_gauss.shoot();
    aMom *= tmp;
    return StatusCode::SUCCESS;
