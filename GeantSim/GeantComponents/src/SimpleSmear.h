@@ -5,10 +5,6 @@
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
 class IRndmGenSvc;
-class ITHistSvc;
-
-// ROOT
-class TH1F;
 
 // FCCSW
 #include "GeantComponents/ISmearingTool.h"
@@ -35,14 +31,6 @@ public:
 private:
    /// Constant resolution for the smearing (set by job options)
    double m_sigma;
-   /// Bool: make control histogams or not (set by job options)
-   bool m_hist;
-   /// Histogram Service
-   ITHistSvc* m_tHistSvc;
-   /// Histogram for relative difference in smeared momentum
-   TH1F* m_hSmMom;
-   /// Histogram for relative difference in smeared energy
-   TH1F* m_hSmEn;
    /// Random Number Service
    IRndmGenSvc* m_randSvc;
    /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
