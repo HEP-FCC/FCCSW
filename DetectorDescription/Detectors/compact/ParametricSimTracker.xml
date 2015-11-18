@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+    <includes>
+        <gdmlFile  ref="elements.xml"/>
+        <gdmlFile  ref="materials.xml"/>
+    </includes>
+
+    <info name="ParametricSimTracker"
+        title="ParametricSimTracker"
+        author="Anna"
+        url="no"
+        status="development"
+        version="$Id:??$">
+        <comment>Barrel Tracker for Parametric Sim</comment>
+    </info>
+
+    <define>
+        <constant name="world_size" value="10*m"/>
+        <constant name="world_x" value="world_size"/>
+        <constant name="world_y" value="world_size"/>
+        <constant name="world_z" value="world_size"/>
+
+        <!--Dimensions of BeamTube-->
+        <constant name="Tube_rmin" value="0.*mm"/>
+        <constant name="Tube_rmax" value="40.*mm"/>
+        <constant name="Tube_length" value="510.5*mm"/>
+        <!--Dimensions of Barrel1-->
+        <constant name="Tracker_rmin" value="40.*mm"/>
+        <constant name="Tracker_rmax" value="500.*mm"/>
+        <constant name="Barrel_length" value="1500.*mm"/>
+
+    </define>
+
+    <display>
+        <vis name="comp0" r="0." g="0." b="1.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp1" r="1.0" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+        <vis name="comp2" r="0." g="0.1" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
+    </display>
+
+    <detectors>
+        <!--BeamTube-->
+        <detector id="0" name="BeamTube" type="BeamTube">
+            <status id="0"/>
+            <dimensions rmin="Tube_rmin" rmax="Tube_rmax" z="Tube_length" vis="comp1" material="Air"/>
+        </detector>
+        <!--Barrel1-->
+        <detector id="1" name="ParametricSimTracker" type="ParametricSimTracker">
+            <status id="1"/>
+            <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" z="Barrel_length" vis="comp2" material="Air"/>
+        </detector>
+    </detectors>
+</lccdd>

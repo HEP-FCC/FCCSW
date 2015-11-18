@@ -9,8 +9,7 @@
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile()
-{
+  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile() {
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput(  "hepmc"   , m_hepmchandle);
 
@@ -86,7 +85,7 @@ StatusCode PythiaInterface::execute() {
   }*/
 
   // Define HepMC event and convert Pythia event into this HepMC event type
-  HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
+  HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::CM);
   toHepMC->fill_next_event(*m_pythia, theEvent, m_iEvent);
   //theEvent-> print();
 
