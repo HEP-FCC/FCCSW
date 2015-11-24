@@ -13,7 +13,7 @@ hepmc_converter.Outputs.genparticles.Path="all_genparticles"
 hepmc_converter.Outputs.genvertices.Path="all_genvertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
+geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml', OutputLevel = ERROR)
 
 from Configurables import Geant4Simulation
 geant4simulation = Geant4Simulation("Geant4Simulation", simtype="full")

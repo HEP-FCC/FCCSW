@@ -7,6 +7,7 @@
 //
 
 #include "DetDesServices/GeoSvc.h"
+#include "GaudiKernel/Service.h"
 
 using namespace Gaudi;
 
@@ -16,14 +17,17 @@ GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) :
 base_class(name, svc),
 m_dd4hepgeo(0),
 m_geant4geo(0),
-m_xmlFileName("file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml"), //over joboptions
-m_log(msgSvc(), name) {}
+m_log(msgSvc(), name) {
+   declareProperty("detector", m_xmlFileName = "", "XML file with detector description");
+}
 
 GeoSvc::~GeoSvc() {
     m_dd4hepgeo->destroyInstance();
 }
 
 StatusCode GeoSvc::initialize() {
+  StatusCode sc = Service::initialize();
+  if (!sc.isSuccess()) return sc;
     if (buildDD4HepGeo().isFailure())
         m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;
     else
