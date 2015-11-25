@@ -1,36 +1,27 @@
 #include "Geant4Simulation.h"
 
-// Geant4
-#include "FTFP_BERT.hh"
-#include "G4SystemOfUnits.hh"
-#include "G4RegionStore.hh"
-#include "G4VModularPhysicsList.hh"
-#include "G4VFastSimulationModel.hh"
-
 // FCCSW
-#include "GeantFast/FastSimPhysics.h"
-#include "GeantFast/FastSimModelTracker.h"
 #include "GeantGeneral/ParticleInformation.h"
-#include "GeantGeneral/TrackingAction.h"
 #include "GeantGeneral/Units.h"
 #include "DetDesInterfaces/IGeoSvc.h"
-#include "GeantComponents/ISmearingTool.h"
+#include "GeantConfig/IGeantConfigTool.h"
 
 // albers
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
-#include "datamodel/GenVertexCollection.h"
 #include "datamodel/ParticleMCAssociationCollection.h"
+
+// Geant
+#include "G4VModularPhysicsList.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc), G4RunManager(), m_type(SimType::FULL) {
+GaudiAlgorithm(name, svcLoc), G4RunManager() {
    declareInput("genparticles", m_genphandle);
    declareOutput("particles", m_recphandle);
    declareOutput("particleassociation", m_partassociationhandle);
-   declareProperty("simtype", m_simtype = "full");
-   declareProperty ("smearingtoolname", m_smearToolName = "" ) ;
+   declareProperty ("config", m_geantConfigName = "" ) ;
 }
 
 StatusCode Geant4Simulation::initialize() {
@@ -41,35 +32,9 @@ StatusCode Geant4Simulation::initialize() {
       error() << "Unable to locate Geometry Service" << endmsg;
       return StatusCode::FAILURE;
    }
-   if( !m_simtype.compare("fast"))
-      m_type = SimType::FAST;
-   else if( !m_simtype.compare("full"))
-      m_type = SimType::FULL;
-   else {
-      error() << "Simulation type set to invalid value <<"<<m_simtype<<">>. Possible values: <<fast>> or <<full>>."<< endmsg;
-      return StatusCode::FAILURE;
-   }
-   info()<<"Simulation type set to (0-full, 1-fast): "<<m_type<<endmsg;
-
-   if ( m_smearToolName.compare("") ) {
-      if(m_type == SimType::FAST)
-        m_smearTool = tool<ISmearingTool>(m_smearToolName);
-      else
-         info()<<"No smearing tool can be used in Geant FULL sim."<<endmsg;
-   }
-   else {
-      if(m_type == SimType::FAST)
-         info()<<"No smearing tool will be used."<<endmsg;
-   }
-   // Initialization - Geant part
+   m_geantConfigTool = tool<IGeantConfigTool>(m_geantConfigName);   // Initialization - Geant part
    // Load physics list, deleted in ~G4RunManager()
-   G4VModularPhysicsList* physics_list = new FTFP_BERT;
-   if(m_type == SimType::FAST) {
-      // Coupled transportation enables calculation of particle trajectory in envelopes with fast sim models attached
-      G4PhysicsListHelper::GetPhysicsListHelper()->UseCoupledTransportation();
-      // Attach Fast Simulation Process (will take over normal transportation if FastSimModel triggered
-      physics_list->RegisterPhysics(new FastSimPhysics);
-   }
+   G4VModularPhysicsList* physics_list = m_geantConfigTool->getPhysicsList();
    // Deleted in ~G4VModularPhysicsList()
    G4RunManager::SetUserInitialization(physics_list);
 
@@ -78,20 +43,8 @@ StatusCode Geant4Simulation::initialize() {
 
    // Attach UserActions
    // G4VUserTrackingAction deleted in ~G4TrackingManager()
-   G4RunManager::SetUserAction(new TrackingAction);
+   G4RunManager::SetUserAction( m_geantConfigTool->getTrackingAction());
    G4RunManager::Initialize();
-
-   if(m_type == SimType::FAST) {
-      // Create the envelopes for the geometry, attach fast sim models for Tracker, EMCal, HCal
-      for(int iter_region = 0; iter_region<(*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetNoDaughters(); ++iter_region) {
-         m_g4regions.emplace_back(new G4Region((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetName()+"_fastsim"));
-         m_g4regions[iter_region]->AddRootLogicalVolume((*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume()->GetDaughter(iter_region)->GetLogicalVolume());
-         if(m_g4regions.back()->GetName().find("Tracker") != std::string::npos) {
-            m_models.emplace_back(new FastSimModelTracker(m_g4regions.back()->GetName(),m_g4regions.back(),m_smearToolName));
-            info()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
-         }
-      }
-   }
 
    // as in G4RunManager::BeamOn()
    if(G4RunManager::ConfirmBeamOnCondition()) {
