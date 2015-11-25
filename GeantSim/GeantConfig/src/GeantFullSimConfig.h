@@ -25,7 +25,7 @@ public:
 
    virtual G4UserTrackingAction* getTrackingAction();
 
-   virtual StatusCode setOther();
+   virtual StatusCode getOtherSettings();
 };
 
 #endif

@@ -46,6 +46,8 @@ StatusCode Geant4Simulation::initialize() {
    G4RunManager::SetUserAction( m_geantConfigTool->getTrackingAction());
    G4RunManager::Initialize();
 
+   m_geantConfigTool->getOtherSettings();
+
    // as in G4RunManager::BeamOn()
    if(G4RunManager::ConfirmBeamOnCondition()) {
       G4RunManager::ConstructScoringWorlds();

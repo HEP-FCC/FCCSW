@@ -36,6 +36,6 @@ G4UserTrackingAction* GeantFullSimConfig::getTrackingAction() {
    return trackingAction;
 }
 
-StatusCode GeantFullSimConfig::setOther() {
+StatusCode GeantFullSimConfig::getOtherSettings() {
    return StatusCode::SUCCESS;
 }
