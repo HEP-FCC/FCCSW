@@ -3,7 +3,7 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, GeoSvc , ClassicalRecoGeoSvc, RecoGeoTest, SmearingTool, RecoGeoWrite, GaussDigitizer, PrintHits
 
 #services
-detservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
+detservice = GeoSvc("GeoSvc", detector="file:DetectorDescription/Detectors/compact/TestTracker_sameMat.xml", OutputLevel = VERBOSE)
 recoservice= ClassicalRecoGeoSvc("ClassicalRecoGeoSvc", OutputLevel = VERBOSE)
 #tools
 smeartool = SmearingTool("SmearingTool", OutputLevel = VERBOSE)

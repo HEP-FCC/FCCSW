@@ -6,7 +6,7 @@ from Configurables import ApplicationMgr, Geant4Test, GeoSvc
 
 #detservice = DD4HepDetDesSvc("DD4HepDetDesSvc", OutputLevel = VERBOSE)
 
-detservice = GeoSvc("GeoSvc", OutputLevel = VERBOSE)
+detservice = GeoSvc("GeoSvc", detector = 'file:DetectorDescription/Detectors/compact/TestTracker_sameMat.xml',  OutputLevel = VERBOSE)
 
 test = Geant4Test("Geant4Test")
 
