@@ -55,12 +55,12 @@ StatusCode GeantFastSimConfig::getOtherSettings() {
    for(int iter_region = 0; iter_region<world->GetNoDaughters(); ++iter_region) {
       // TO DO: proper integration with DD4hep to resolve where to attach a fast sim model
       if(world->GetDaughter(iter_region)->GetName().find("Tracker") != std::string::npos) {
-          m_g4regions.emplace_back(new G4Region(world->GetDaughter(iter_region)->GetName()+"_fastsim"));
-          info()<<world->GetDaughter(iter_region)->GetName()<<"\t"<<world->GetDaughter(iter_region)->IsRegion()<<endmsg;
-          //m_g4regions[iter_region]->AddRootLogicalVolume(world->GetDaughter(iter_region)->GetLogicalVolume());
-          //m_models.emplace_back(new FastSimModelTracker(m_g4regions.back()->GetName(),m_g4regions.back(),m_smearToolName));
-   // info()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
-         }
-          }
+         /// deleted by the G4RegionStore
+         m_g4regions.emplace_back(new G4Region(world->GetDaughter(iter_region)->GetLogicalVolume()->GetName()+"_fastsim"));
+         m_g4regions.back()->AddRootLogicalVolume(world->GetDaughter(iter_region)->GetLogicalVolume());
+         m_models.emplace_back(new FastSimModelTracker(m_g4regions.back()->GetName(),m_g4regions.back(),m_smearToolName));
+         info()<<"Attaching a Fast Simulation Model to the region "<<m_g4regions.back()->GetName()<<endmsg;
+      }
+   }
    return StatusCode::SUCCESS;
 }
