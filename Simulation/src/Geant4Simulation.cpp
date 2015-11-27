@@ -41,9 +41,8 @@ StatusCode Geant4Simulation::initialize() {
    // Take geometry (from DD4Hep), deleted in ~G4RunManager()
    G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
 
-   // Attach UserActions
-   // G4VUserTrackingAction deleted in ~G4TrackingManager()
-   G4RunManager::SetUserAction( m_geantConfigTool->getTrackingAction());
+   // Attach user actions
+   G4RunManager::SetUserInitialization(m_geantConfigTool->getActionInitialization());
    G4RunManager::Initialize();
 
    m_geantConfigTool->getOtherSettings();

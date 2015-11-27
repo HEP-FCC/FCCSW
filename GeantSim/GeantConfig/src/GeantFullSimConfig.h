@@ -23,9 +23,11 @@ public:
 
    virtual G4VModularPhysicsList* getPhysicsList();
 
-   virtual G4UserTrackingAction* getTrackingAction();
+   virtual G4VUserActionInitialization* getActionInitialization();
 
    virtual StatusCode getOtherSettings();
+private:
+   G4VUserActionInitialization* m_actions;
 };
 
 #endif

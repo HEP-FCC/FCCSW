@@ -6,12 +6,12 @@
 // Geant4
 #include "FTFP_BERT.hh"
 #include "G4VModularPhysicsList.hh"
-#include "GeantGeneral/TrackingAction.h"
+#include "GeantGeneral/FullSimActions.h"
 
 DECLARE_COMPONENT(GeantFullSimConfig)
 
 GeantFullSimConfig::GeantFullSimConfig(const std::string& type, const std::string& name, const IInterface* parent) :
-GaudiTool(type, name, parent) {
+GaudiTool(type, name, parent), m_actions(nullptr) {
    declareInterface<IGeantConfigTool>(this);
 }
 
@@ -30,10 +30,9 @@ G4VModularPhysicsList* GeantFullSimConfig::getPhysicsList() {
    return physicsList;
 }
 
-G4UserTrackingAction* GeantFullSimConfig::getTrackingAction() {
-   // G4VUserTrackingAction deleted in ~G4TrackingManager()
-   G4UserTrackingAction* trackingAction = new TrackingAction;
-   return trackingAction;
+G4VUserActionInitialization* GeantFullSimConfig::getActionInitialization() {
+   m_actions = new FullSimActions;
+   return m_actions;
 }
 
 StatusCode GeantFullSimConfig::getOtherSettings() {

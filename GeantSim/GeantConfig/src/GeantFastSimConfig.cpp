@@ -12,13 +12,13 @@
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
 #include "GeantFast/FastSimModelTracker.h"
-#include "GeantGeneral/TrackingAction.h"
+#include "GeantFast/FastSimActions.h"
 #include "GeantComponents/ISmearingTool.h"
 
 DECLARE_COMPONENT(GeantFastSimConfig)
 
 GeantFastSimConfig::GeantFastSimConfig(const std::string& type, const std::string& name, const IInterface* parent) :
-GaudiTool(type, name, parent) {
+GaudiTool(type, name, parent), m_actions(nullptr) {
    declareInterface<IGeantConfigTool>(this);
    declareProperty ("smearing", m_smearToolName = "SimpleSmear" ) ;
 }
@@ -43,10 +43,9 @@ G4VModularPhysicsList* GeantFastSimConfig::getPhysicsList() {
    return physicsList;
 }
 
-G4UserTrackingAction* GeantFastSimConfig::getTrackingAction() {
-   // G4VUserTrackingAction deleted in ~G4TrackingManager()
-   G4UserTrackingAction* trackingAction = new TrackingAction;
-   return trackingAction;
+G4VUserActionInitialization* GeantFastSimConfig::getActionInitialization() {
+   m_actions = new FastSimActions;
+   return m_actions;
 }
 
 StatusCode GeantFastSimConfig::getOtherSettings() {

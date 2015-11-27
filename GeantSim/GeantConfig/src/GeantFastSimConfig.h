@@ -28,7 +28,7 @@ public:
 
    virtual G4VModularPhysicsList* getPhysicsList();
 
-   virtual G4UserTrackingAction* getTrackingAction();
+   virtual G4VUserActionInitialization* getActionInitialization();
 
    virtual StatusCode getOtherSettings();
 private:
@@ -41,6 +41,7 @@ private:
    ISmearingTool* m_smearTool;
    /// Name of the ISmearingTool (set by options)
    std::string m_smearToolName ;
+   G4VUserActionInitialization* m_actions;
 };
 
 #endif

@@ -6,7 +6,7 @@
 
 // Geant4
 class G4VModularPhysicsList;
-class G4UserTrackingAction;
+class G4VUserActionInitialization;
 
 /**
    @brief     Interface to the Geant configuration tool.
@@ -21,7 +21,7 @@ public:
 
    virtual G4VModularPhysicsList* getPhysicsList() = 0;
 
-   virtual G4UserTrackingAction* getTrackingAction() = 0;
+   virtual G4VUserActionInitialization* getActionInitialization() = 0;
 
    virtual StatusCode getOtherSettings() = 0;
 };
