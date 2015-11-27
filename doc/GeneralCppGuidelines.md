@@ -119,6 +119,31 @@ Special cases may arise where pointers are needed (e.g. interface to external pa
 
 _If you **really** need to_ declare a pointer without instantiating the corresponding object, use `nullptr`. Avoid null-pointers wherever possible.
 
+**Examples**
+
+Unique pointers: They hold sole ownership over the contained object. It is not possible to have two `unique_ptr` managing the same object.
+```C++
+{
+  std::unique_ptr<Foo> myPtr(new Foo);
+  // Smart pointers allow normal pointer semantics:
+  myPtr->doSomething();  // Calls the member function of Foo
+  f(*myPtr);             // Passes a reference to Foo (or value, depending on the function argument)
+} // myPtr goes out of scope and the instance of Foo is deleted automatically
+
+```
+
+Shared pointers: Shared ownership of the object across several instances of the pointers. The object is deleted when the last `shared_ptr` managing it is destroyed or the last managing `shared_ptr` is assigned another object to hold.
+```C++
+{
+  // Let's assume Bar is derived from Foo:
+  std::shared_ptr<Foo> myPtr1 = std::make_shared<Bar>();
+  {
+    // This myPtr2 points to the same instance of Bar:
+    std::shared_ptr<Foo> myPtr2 = myPtr1;
+  } // myPtr2 goes out of scope, but myPtr1 stays in scope, the instance still exists
+} // Here, the instance of Bar is deleted: The last pointer, myPtr1, goes out of scope
+```
+
 ## Constness
 Use `const` wherever you can.
 
@@ -186,7 +211,7 @@ _currently a stub_
 ### Auto
 Where the type of an object can be inferred by the compiler, `auto` can be used.
 
-It can be useful to decouple from specific implementations of data-structures. If constness is ambiguous, you can use `const auto`. Similarly you can make sure to get a reference with `const auto&`.
+It can be useful to decouple from specific implementations of data-structures. To take constness into account, use `const auto`. Similarly you can get a reference with `const auto&`.
 
 **Examples**
 ```C++
@@ -256,7 +281,7 @@ Foo(Foo&& other);
 While most C-code compiles as C++, it is strongly discouraged.
 
 An incomplete list:
-- Use const-expressions instead of macros (see below for details)
+- Use const-expressions instead of macros (see [above](#const-expressions) for details)
 - Use enums or `static const` variables instead of constants
 - Forget about `malloc`, etc.
 - Prefer C++ style casts: `static_cast<int>(variable)` instead of `(int) variable`
