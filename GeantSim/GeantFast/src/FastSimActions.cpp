@@ -1,10 +1,10 @@
 #include "FastSimActions.h"
-#include "GeantGeneral/TrackingAction.h"
+#include "GeantGeneral/SaveParticlesTrackingAction.h"
 
 FastSimActions::FastSimActions(): G4VUserActionInitialization() {}
 
 FastSimActions::~FastSimActions() {}
 
 void FastSimActions::Build() const {
-   SetUserAction(new TrackingAction);
+   SetUserAction(new SaveParticlesTrackingAction);
 }

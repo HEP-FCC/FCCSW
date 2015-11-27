@@ -1,4 +1,4 @@
-#include "TrackingAction.h"
+#include "SaveParticlesTrackingAction.h"
 
 // Geant4
 #include "G4TrackingManager.hh"
@@ -9,11 +9,11 @@
 #include "Units.h"
 #include "ParticleInformation.h"
 
-TrackingAction::TrackingAction() : G4UserTrackingAction() {}
+SaveParticlesTrackingAction::SaveParticlesTrackingAction() : G4UserTrackingAction() {}
 
-TrackingAction::~TrackingAction() {}
+SaveParticlesTrackingAction::~SaveParticlesTrackingAction() {}
 
-void TrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
+void SaveParticlesTrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
    if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0) {
       const G4DynamicParticle* g4dynamicparticle = aTrack->GetDynamicParticle();
       ParticleHandle& particle = dynamic_cast<ParticleInformation*>(g4dynamicparticle->GetPrimaryParticle()->GetUserInformation())->GetParticleHandle();
