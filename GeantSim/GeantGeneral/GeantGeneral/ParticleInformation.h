@@ -29,7 +29,7 @@ public:
 private:
    /// Handle to the MC particle
    const MCParticleHandle m_mcpart;
-   /// Handle to the particle associated with a MCParticle. It is meant to be filled with information on particle momentum etc. at the end of Geant processing (done in TrackingAction::PostUserTrackingAction).
+   /// Handle to the particle associated with a MCParticle. It is meant to be filled with information on particle momentum etc. at the end of Geant processing (done in SaveParticlesTrackingAction::PostUserTrackingAction).
    ParticleHandle m_part;
 };
 

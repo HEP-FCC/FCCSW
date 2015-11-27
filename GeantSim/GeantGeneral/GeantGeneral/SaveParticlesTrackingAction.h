@@ -1,5 +1,5 @@
-#ifndef GEANT_TRACKING_ACTION_H
-#define GEANT_TRACKING_ACTION_H
+#ifndef GEANT_SAVEPARTICLES_TRACKINGACTION_H
+#define GEANT_SAVEPARTICLES_TRACKINGACTION_H
 
 #include "G4UserTrackingAction.hh"
 
@@ -9,10 +9,10 @@
    @author    Anna Zaborowska
 */
 
-class TrackingAction : public G4UserTrackingAction {
+class SaveParticlesTrackingAction : public G4UserTrackingAction {
 public:
-   TrackingAction();
-   virtual ~TrackingAction();
+   SaveParticlesTrackingAction();
+   virtual ~SaveParticlesTrackingAction();
    /// Defines the actions at the end of processing the track.
    virtual void  PostUserTrackingAction(const G4Track*);
 

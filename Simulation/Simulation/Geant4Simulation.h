@@ -7,7 +7,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 class IGeoSvc;
-class ISmearingTool;
+class IGeantConfigTool;
 
 // albers
 class ParticleCollection;
@@ -16,7 +16,6 @@ class ParticleMCAssociationCollection;
 
 // Geant4
 #include "G4RunManager.hh"
-class G4VFastSimulationModel;
 
 class Geant4Simulation: public GaudiAlgorithm , public G4RunManager {
    friend class AlgFactory<Geant4Simulation> ;
@@ -41,19 +40,10 @@ private:
    DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
-   /// Pointer to the smearing tool
-   ISmearingTool* m_smearTool;
+   /// Pointer to the Geant configuration tool
+   IGeantConfigTool* m_geantConfigTool;
    /// Name of the ISmearingTool (set by options)
-   std::string m_smearToolName ;
-   /// Switch full/fast sim (set by options)
-   std::string m_simtype;
-   /// Switch full/fast sim (used in the code)
-   SimType m_type;
-   /// Envelopes that are used in a parametric simulation
-   /// deleted by the G4RegionStore
-   std::vector<G4Region*> m_g4regions;
-   /// Fast Simulation Models
-   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
+   std::string m_geantConfigName;
 };
 
 #endif

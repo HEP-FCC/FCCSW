@@ -16,15 +16,18 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml', OutputLevel = DEBUG)
 
 from Configurables import Geant4Simulation
-geant4simulation = Geant4Simulation("Geant4Simulation", simtype="fast",
-                                    smearingtoolname = "SimpleSmear")
+geant4simulation = Geant4Simulation("Geant4Simulation", config="GeantFastSimConfig")
 geant4simulation.Inputs.genparticles.Path="all_genparticles"
 geant4simulation.Outputs.particles.Path = "recparticles"
 geant4simulation.Outputs.particleassociation.Path = "particleMCparticle"
 
+from Configurables import GeantFastSimConfig
+fastsimconfig = GeantFastSimConfig("FastSimConfig", smearing = "SimpleSmear")
+geant4simulation.addTool(fastsimconfig)
+
 from Configurables import SimpleSmear
 smear = SimpleSmear("SimpleSmear", sigma = 0.015)
-geant4simulation.addTool(smear)
+fastsimconfig.addTool(smear)
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",
