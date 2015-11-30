@@ -21,4 +21,3 @@ source bin/thisdd4hep.sh
 cd $inithere
 
 export CMTPROJECTPATH=/afs/cern.ch/exp/fcc/sw/0.5/
-

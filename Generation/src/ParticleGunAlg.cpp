@@ -33,8 +33,7 @@ ParticleGunAlg::ParticleGunAlg( const std::string& name,
                           ISvcLocator* pSvcLocator)
   : GaudiAlgorithm ( name , pSvcLocator ) ,
     m_particleGunTool       ( nullptr ),
-    m_vertexSmearTool		( nullptr )
-{
+    m_vertexSmearTool		( nullptr ) {
   // Generation Method
   declareProperty ( "ParticleGunTool" ,
                     m_particleGunToolName = "GenericGun" ) ;
@@ -83,7 +82,7 @@ StatusCode ParticleGunAlg::execute() {
   int thePdgId ;
 
   // prepare a new HepMC event
-  HepMC::GenEvent * theEvent = new HepMC::GenEvent() ;
+  HepMC::GenEvent * theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::CM) ;
     
   m_particleGunTool->generateParticle( theFourMomentum , origin , thePdgId );
     
