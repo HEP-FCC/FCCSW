@@ -132,7 +132,7 @@ Consider additional `.impl` files for performance critical `inline` functions th
 ## Function Declaration
 All entities should be contained in a namespace.
 ### Parameter Order
-Parameter order is: constant inputs, editable inputs and then outputs (if any).
+Parameter order is: constant inputs, non-const inputs, outputs.
 
 Inputs should generally be const references or values. Inputs that can be changed are references. Outputs are pointers.
 
