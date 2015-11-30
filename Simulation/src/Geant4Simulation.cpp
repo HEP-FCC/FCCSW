@@ -1,123 +1,109 @@
 #include "Geant4Simulation.h"
 
-#include "GeantFast/FCCDetectorConstruction.hh"
-#include "GeantFast/FCCActionInitialization.hh"
-#include "GeantFast/FCCPrimaryParticleInformation.hh"
-#include "GeantFast/FCCPhysicsList.hh"
-#include "G4GDMLParser.hh"
+// FCCSW
+#include "GeantGeneral/ParticleInformation.h"
+#include "GeantGeneral/Units.h"
+#include "DetDesInterfaces/IGeoSvc.h"
+#include "GeantConfig/IGeantConfigTool.h"
 
-#include "FTFP_BERT.hh"
+// albers
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/ParticleMCAssociationCollection.h"
 
-#include "G4Event.hh"
-#include "G4EventManager.hh"
-#include "G4SystemOfUnits.hh"
-#include "G4PhysicalConstants.hh"
-#include "G4ScoringManager.hh"
+// Geant
+#include "G4VModularPhysicsList.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc)
-{
-   declareInput("hepmcevent", m_eventhandle);
-   // declareInput("g4detector", m_g4detector);
-   // declareOutput("particles", m_recphandle);
+GaudiAlgorithm(name, svcLoc), G4RunManager() {
+   declareInput("genparticles", m_genphandle);
+   declareOutput("particles", m_recphandle);
+   declareOutput("particleassociation", m_partassociationhandle);
+   declareProperty ("config", m_geantConfigName = "" ) ;
 }
 
 StatusCode Geant4Simulation::initialize() {
-   GaudiAlgorithm::initialize();
-   m_runManager = new G4RunManager;
+   // Initialization - Gaudi part
+   if (GaudiAlgorithm::initialize().isFailure())
+      return StatusCode::FAILURE;
+   if (service("GeoSvc", m_geoSvc, true).isFailure()) {
+      error() << "Unable to locate Geometry Service" << endmsg;
+      return StatusCode::FAILURE;
+   }
+   m_geantConfigTool = tool<IGeantConfigTool>(m_geantConfigName);   // Initialization - Geant part
+   // Load physics list, deleted in ~G4RunManager()
+   G4VModularPhysicsList* physics_list = m_geantConfigTool->getPhysicsList();
+   // Deleted in ~G4VModularPhysicsList()
+   G4RunManager::SetUserInitialization(physics_list);
 
-   // load physics list
-   m_runManager->SetUserInitialization(new FCCPhysicsList);
+   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
+   G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
 
-   // take geometry
-   ///.... from Service - check with Julia code, currently...
-   m_runManager->SetUserInitialization(new FCCDetectorConstruction);
+   // Attach user actions
+   G4RunManager::SetUserInitialization(m_geantConfigTool->getActionInitialization());
+   G4RunManager::Initialize();
 
-   // user action classes
-   m_runManager->SetUserInitialization(new FCCActionInitialization);
+   m_geantConfigTool->getOtherSettings();
 
-   m_runManager->Initialize();
-   // as in G4RunManager::BeamOn
-   m_runManager->numberOfEventToBeProcessed = 1;
-   m_runManager->ConstructScoringWorlds();
-   m_runManager->RunInitialization();
-
-	return StatusCode::SUCCESS;
+   // as in G4RunManager::BeamOn()
+   if(G4RunManager::ConfirmBeamOnCondition()) {
+      G4RunManager::ConstructScoringWorlds();
+      G4RunManager::RunInitialization();
+      return StatusCode::SUCCESS;
+   }
+   else {
+      error() << "Unable to initialize GEANT correctly." << endmsg;
+      return StatusCode::FAILURE;
+   }
 }
 
 StatusCode Geant4Simulation::execute() {
    //read event
-   auto hepmc_event = m_eventhandle.get();
-   G4Event* geant_event = new G4Event();
-   HepMC2G4(hepmc_event, geant_event);
-   m_runManager->currentEvent = geant_event;
-
-   // run geant
-   //as in  G4RunManager::ProcessOneEvent
-   m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
-   m_runManager->AnalyzeEvent(m_runManager->currentEvent);
-   m_runManager->UpdateScoring();
-   m_runManager->TerminateOneEvent();
-
-   // ParticleCollection* particles = new ParticleCollection();
-   // m_recphandle.put(particles);
+   G4RunManager::currentEvent = EDM2G4();
+   if ( !G4RunManager::currentEvent ) {
+      error() << "Unable to translate EDM MC data to G4Event" << endmsg;
+      return StatusCode::FAILURE;
+   }
+   G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
+   G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
+   G4RunManager::UpdateScoring();
+   G4RunManager::TerminateOneEvent();
 
    return StatusCode::SUCCESS;
 }
 
 StatusCode Geant4Simulation::finalize() {
-   m_runManager->RunTermination();
-   delete  m_runManager;
+   G4RunManager::RunTermination();
    return GaudiAlgorithm::finalize();
 }
 
-void Geant4Simulation::HepMC2G4(const HepMC::GenEvent* aHepMCEvent, G4Event* aG4Event)
-{
-   for(HepMC::GenEvent::vertex_const_iterator vitr= aHepMCEvent->vertices_begin();
-       vitr != aHepMCEvent->vertices_end(); ++vitr ) { // loop for vertex ...
-
-      // real vertex?
-      G4bool qvtx=false;
-      for (HepMC::GenVertex::particle_iterator
-              pitr= (*vitr)->particles_begin(HepMC::children);
-           pitr != (*vitr)->particles_end(HepMC::children); ++pitr) {
-
-         if (!(*pitr)->end_vertex() && (*pitr)->status()==1) {
-            qvtx=true;
-            break;
-         }
-      }
-      if (!qvtx) continue;
-
-      // check world boundary
-      HepMC::FourVector pos= (*vitr)-> position();
-      G4LorentzVector xvtx(pos.x(), pos.y(), pos.z(), pos.t());
-
-      // create G4PrimaryVertex and associated G4PrimaryParticles
-      G4PrimaryVertex* g4vtx=
-         new G4PrimaryVertex(xvtx.x()*cm, xvtx.y()*cm, xvtx.z()*cm,
-                             xvtx.t()*cm/c_light);
-
-      for (HepMC::GenVertex::particle_iterator
-              vpitr= (*vitr)->particles_begin(HepMC::children);
-           vpitr != (*vitr)->particles_end(HepMC::children); ++vpitr) {
-
-         if( (*vpitr)->status() != 1 ) continue;
-
-         G4int pdgcode= (*vpitr)-> pdg_id();
-         pos= (*vpitr)-> momentum();
-         G4LorentzVector p(pos.px(), pos.py(), pos.pz(), pos.e());
-         G4PrimaryParticle* g4prim=
-            new G4PrimaryParticle(pdgcode, p.x()*GeV, p.y()*GeV, p.z()*GeV);
-         g4prim->SetUserInformation(new FCCPrimaryParticleInformation(
-                                       (*vpitr)->barcode(),
-                                       pdgcode,
-                                       G4ThreeVector(p.x(), p.y(), p.z())));
-         g4vtx-> SetPrimary(g4prim);
-      }
-      aG4Event-> AddPrimaryVertex(g4vtx);
+G4Event* Geant4Simulation::EDM2G4() {
+   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
+   G4Event* g4_event = new G4Event();
+   // Creating EDM collections
+   const MCParticleCollection* mcparticles = m_genphandle.get();
+   ParticleCollection* particles = new ParticleCollection();
+   ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
+   // Adding one particle per one vertex => vertices repeated
+   for(const auto& mcparticle : *mcparticles) {
+      const GenVertex& v = mcparticle.read().StartVertex.read();
+      G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
+         (v.Position.X*edm2g4::length, v.Position.Y*edm2g4::length, v.Position.Z*edm2g4::length, v.Ctau*edm2g4::length);
+      const BareParticle& mccore = mcparticle.read().Core;
+      G4PrimaryParticle* g4_particle = new G4PrimaryParticle
+         (mccore.Type, mccore.P4.Px*edm2g4::energy, mccore.P4.Py*edm2g4::energy, mccore.P4.Pz*edm2g4::energy);
+      ParticleHandle particle = particles->create();
+      g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
+      ParticleMCAssociationHandle association = associations->create();
+      association.mod().Rec = particle;
+      association.mod().Sim = mcparticle;
+      g4_vertex->SetPrimary(g4_particle);
+      g4_event->AddPrimaryVertex(g4_vertex);
    }
+   m_recphandle.put(particles);
+   m_partassociationhandle.put(associations);
+   return g4_event;
 }
 
