@@ -4,13 +4,13 @@ from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc, 
 albersevent   = FCCDataSvc("EventDataSvc")
 
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
-reader.Outputs.hepmc.Path = "hepmc"
+reader.DataOutputs.hepmc.Path = "hepmc"
 
 dumper = HepMCDumper("Dumper")
-dumper.Inputs.hepmc.Path="hepmc"
+dumper.DataInputs.hepmc.Path="hepmc"
 
 alberswrite = AlbersWrite("AlbersWrite",OutputLevel=DEBUG)
-alberswrite.Outputs.albersJets.Path = "albersJets"
+alberswrite.DataOutputs.albersJets.Path = "albersJets"
 out = AlbersOutput("out")
 
 
