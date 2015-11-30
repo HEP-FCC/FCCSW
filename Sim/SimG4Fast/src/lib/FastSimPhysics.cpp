@@ -1,4 +1,4 @@
-#include "FastSimPhysics.h"
+#include "SimG4Fast/FastSimPhysics.h"
 
 //Geant4
 #include "G4FastSimulationManagerProcess.hh"
