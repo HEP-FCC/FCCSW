@@ -7,6 +7,7 @@ gaudi_subdir(Simulation v1r0)
 gaudi_depends_on_subdirs(GaudiAlg DataObjects GeantFast)
 
 find_package(Geant4)
+include(${Geant4_USE_FILE})
 find_package(Delphes) 
 find_package(FCCEDM)
 find_package(ALBERS)
