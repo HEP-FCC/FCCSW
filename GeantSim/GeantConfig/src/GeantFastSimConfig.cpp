@@ -8,6 +8,7 @@
 #include "G4VModularPhysicsList.hh"
 #include "G4RegionStore.hh"
 #include "G4VFastSimulationModel.hh"
+#include "G4TransportationManager.hh"
 
 // FCCSW
 #include "GeantFast/FastSimPhysics.h"
