@@ -23,6 +23,8 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmchandle;
   /// Handle for the genparticles to be written
   DataHandle<MCParticleCollection> m_genphandle;
+  /// Handle for the genvertices to be written
+  DataHandle<GenVertexCollection> m_genvhandle;
 };
 
 #endif
