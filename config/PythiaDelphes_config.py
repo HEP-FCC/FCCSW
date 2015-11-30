@@ -62,7 +62,7 @@ from Configurables import PythiaInterface
 
 pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=INFO)
 ## Write the HepMC::GenEvent to the data service
-pythia8gen.Outputs.hepmc.Path = "hepmc"
+pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 
 ## Delphes simulator
 from Configurables import DelphesSimulation
@@ -71,10 +71,10 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                HepMCInputFile=delphesHepMCInFile, 
                                ROOTOutputFile=delphesRootOutFile, 
                                OutputLevel=DEBUG)
-delphessim.Inputs.hepmc.Path               = "hepmc"
-delphessim.Outputs.allParticles.Path       = "allParticles"
-delphessim.Outputs.genPartons.Path         = "genPartons"
-delphessim.Outputs.genStableParticles.Path = "genStableParticles"
+delphessim.DataInputs.hepmc.Path               = "hepmc"
+delphessim.DataOutputs.allParticles.Path       = "allParticles"
+delphessim.DataOutputs.genPartons.Path         = "genPartons"
+delphessim.DataOutputs.genStableParticles.Path = "genStableParticles"
 
 ## FCC event-data model output
 from Configurables import AlbersWrite, AlbersOutput
