@@ -40,9 +40,9 @@ StatusCode Geant4Simulation::initialize() {
 
    m_runManager->Initialize();
    // as in G4RunManager::BeamOn
-   m_runManager->numberOfEventToBeProcessed = 1;
-   m_runManager->ConstructScoringWorlds();
-   m_runManager->RunInitialization();
+   ///m_runManager->numberOfEventToBeProcessed = 1;
+   ///m_runManager->ConstructScoringWorlds();
+   ///m_runManager->RunInitialization();
 
 	return StatusCode::SUCCESS;
 }
@@ -52,14 +52,14 @@ StatusCode Geant4Simulation::execute() {
    auto hepmc_event = m_eventhandle.get();
    G4Event* geant_event = new G4Event();
    HepMC2G4(hepmc_event, geant_event);
-   m_runManager->currentEvent = geant_event;
+   ///   m_runManager->currentEvent = geant_event;
 
    // run geant
    //as in  G4RunManager::ProcessOneEvent
-   m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
-   m_runManager->AnalyzeEvent(m_runManager->currentEvent);
-   m_runManager->UpdateScoring();
-   m_runManager->TerminateOneEvent();
+///   m_runManager->eventManager->ProcessOneEvent( m_runManager->currentEvent);
+///   m_runManager->AnalyzeEvent(m_runManager->currentEvent);
+///   m_runManager->UpdateScoring();
+///   m_runManager->TerminateOneEvent();
 
    // ParticleCollection* particles = new ParticleCollection();
    // m_recphandle.put(particles);
