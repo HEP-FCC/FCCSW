@@ -17,5 +17,5 @@ gaudi_add_dictionary(DataObjects dict/dictionary.h  dict/dictionary.xml
 gaudi_add_library(DataObjects
 		  src/*.cc
                   INCLUDE_DIRS HepMC FastJet 
-                  LINK_LIBRARIES HepMC GaudiAlgLib
+                  LINK_LIBRARIES HepMC GaudiAlgLib FastJet
 		  PUBLIC_HEADERS DataObjects)
