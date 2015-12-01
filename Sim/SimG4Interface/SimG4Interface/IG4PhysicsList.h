@@ -5,12 +5,11 @@
 #include  "GaudiKernel/AlgTool.h"
 
 // Forward declarations from Geant4
-class G4VUserActionInitialization;
+class G4VModularPhysicsList;
 
-
-/** @class IG4ActionTool IG4ActionTool.h G4Interface/IG4ActionTool.h
+/** @class IG4PhysicsList IG4PhysicsList.h SimG4Interface/IG4PhysicsList.h
  *
- *  abstract interface to load G4UserActionInitializations 
+ *  abstract interface to load physics lists
  *
  *  @author Benedikt HEGNER
  */
@@ -32,9 +31,9 @@ public:
   virtual StatusCode   finalize() = 0 ;
 
   /** get initilization hook
-   *  @return  pointer to G4VUserActionInitialization
+   *  @return  pointer to G4VModularPhysicsList
    */
-   virtual G4VUserActionInitialization* getUserActionInitialization() = 0 ;
+   virtual G4VModularPhysicsList* getPhysicsList() = 0 ;
 
 protected:
   
@@ -46,42 +45,3 @@ protected:
 // ============================================================================
 #endif 
 // ============================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
