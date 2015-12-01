@@ -16,7 +16,7 @@ source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh
 
 # add DD4hep
 export inithere=$PWD
-cd  /afs/cern.ch/exp/fcc/sw/0.5/DD4hep/20152711/x86_64-slc6-gcc49-opt
+cd  /afs/cern.ch/exp/fcc/sw/0.5/DD4hep/20152311/x86_64-slc6-gcc49-opt
 source bin/thisdd4hep.sh
 cd $inithere
 
