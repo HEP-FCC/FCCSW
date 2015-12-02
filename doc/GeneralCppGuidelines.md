@@ -89,7 +89,7 @@ If non-member functions are associated to a specific class they belong in the sa
 
 Non-member functions that are not associated to specific classes are grouped in namespaces by functionality.
 
-### Avoid Using Namespace
+### Avoid Using `using namespace`
 Never write `using namespace`.
 
 If the statement is used in a header file, the statement holds in any code that includes that header file. While the effect may be less detrimental in implementation files, consider that it hides information from future maintainers.
@@ -189,7 +189,7 @@ private:
 Always consider what the lifetime of an entity is and restrict it to the shortest period that makes sense.
 
 Sometimes it is not inherently clear what the lifetime of an object in memory is. While names only exist in the scope in which they are defined, the objects they refer to can exist longer:
-- Objects created with `new` live until they are `delete`d
+- Objects created with `new` live until they are destroyed using `delete`.
 - The lifetime of static objects is from the time they are defined the first time until the program exits
 
 If objects exist longer than their name, the corresponding memory is "leaked" (i.e. practically, it becomes unusable). This directly translates into performance issues. Therefore
