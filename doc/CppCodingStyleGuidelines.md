@@ -42,11 +42,11 @@ General tips on how to write good code can be found in ... (add link)
 ### Variable Names
 Names should be as descriptive as possible.
 
-Do not worry about space; Worry about how understandable the name is. Avoid unclear abbriviations.
+Do not worry about space; Worry about how understandable the name is. Avoid unclear abbreviations.
 
 **Examples**:
 ```C++
-int trackParameter;  // no abbrivations
+int trackParameter;  // no abbrevations
 int numErrors;       // num is unambigous
 // Do not:
 int n;               // meaningless
