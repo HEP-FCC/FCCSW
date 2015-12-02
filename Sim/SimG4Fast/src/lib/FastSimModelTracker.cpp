@@ -1,4 +1,4 @@
-#include "FastSimModelTracker.h"
+#include "SimG4Fast/FastSimModelTracker.h"
 
 // Geant4
 #include "G4PathFinder.hh"
@@ -8,7 +8,7 @@
 #include "GaudiKernel/IToolSvc.h"
 
 // FCCSW
-#include "GeantComponents/ISmearingTool.h"
+#include "SimG4Components/ISmearingTool.h"
 
 FastSimModelTracker::FastSimModelTracker(const std::string aModelName, G4Region* aEnvelope, std::string aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {

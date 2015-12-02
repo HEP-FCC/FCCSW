@@ -7,7 +7,7 @@
 class IRndmGenSvc;
 
 // FCCSW
-#include "GeantComponents/ISmearingTool.h"
+#include "SimG4Components/ISmearingTool.h"
 
 /**
    @brief     Simple smearing tool.

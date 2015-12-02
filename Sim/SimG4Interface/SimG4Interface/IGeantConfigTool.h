@@ -1,5 +1,5 @@
- #ifndef GEANTSIM_IGEANTCONFIGTOOL_H
-#define GEANTSIM_IGEANTCONFIGTOOL_H
+#ifndef SIM_IGEANTCONFIGTOOL_H
+#define SIM_IGEANTCONFIGTOOL_H
 
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"

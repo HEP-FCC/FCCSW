@@ -10,7 +10,7 @@ gaudi_depends_on_subdirs(GaudiKernel
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
 
-find_package(DD4hep)
+find_package(DD4hep COMPONENTS DDG4)
 
 find_package(Geant4)
 
@@ -19,4 +19,4 @@ gaudi_install_headers(DetDesServices)
 gaudi_add_module(DetDesServices
 		 src/*.cxx
 		 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 RecoGeometry  DetDesInterfaces DetExtensions
-		 LINK_LIBRARIES GaudiKernel ROOT DD4hep Geant4 RecoGeometry)
+		 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_DDG4_LIBRARY} Geant4 RecoGeometry)

@@ -4,7 +4,7 @@
 #include "GeantGeneral/ParticleInformation.h"
 #include "GeantGeneral/Units.h"
 #include "DetDesInterfaces/IGeoSvc.h"
-#include "GeantConfig/IGeantConfigTool.h"
+#include "SimG4Interface/IGeantConfigTool.h"
 
 // albers
 #include "datamodel/ParticleCollection.h"

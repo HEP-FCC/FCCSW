@@ -1,6 +1,8 @@
 #ifndef FWCORE_DATAWRAPPER_H
 #define FWCORE_DATAWRAPPER_H
 
+#include <type_traits>
+
 //Include files
 #include "GaudiKernel/DataObject.h"
 #include "albers/CollectionBase.h"
@@ -23,8 +25,7 @@ class GAUDI_API DataWrapper : public DataWrapperBase {
   const T* getData() {return m_data;} 
   void setData(T* data) {m_data = data;}
 
-  virtual albers::CollectionBase* collectionBase(){return dynamic_cast<albers::CollectionBase*>(m_data); }
-
+  virtual albers::CollectionBase* collectionBase(){if (std::is_base_of<albers::CollectionBase,T>::value) return reinterpret_cast<albers::CollectionBase*>(m_data); return nullptr;}
  private:
   T* m_data; 
 

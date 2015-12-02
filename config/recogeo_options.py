@@ -9,14 +9,14 @@ recoservice= ClassicalRecoGeoSvc("ClassicalRecoGeoSvc", OutputLevel = VERBOSE)
 smeartool = SmearingTool("SmearingTool", OutputLevel = VERBOSE)
 gausssmear= GaussDigitizer("GaussDigitizer", OutputLevel = VERBOSE)
 printhits = PrintHits("PrintHis", OutputLevel = VERBOSE)
-#smeartool.Inputs.trackHits.Path = "trackHits" das geht nicht
+#smeartool.DataInputs.trackHits.Path = "trackHits" das geht nicht
 #algorithms
 test = RecoGeoTest("RecoGeoTest")
-#test.Outputs.particles.Path = "particles"
-#test.Inputs.trackHits.Path = "trackHits"
+#test.DataOutputs.particles.Path = "particles"
+#test.DataInputs.trackHits.Path = "trackHits"
 
 write = RecoGeoWrite("RecoGeoWrite")
-#write.Inputs.particles.Path = "particles"
+#write.DataInputs.particles.Path = "particles"
 
 ApplicationMgr(EvtSel='NONE',
                EvtMax=1,
