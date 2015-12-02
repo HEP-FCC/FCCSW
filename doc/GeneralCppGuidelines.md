@@ -200,7 +200,11 @@ If objects exist longer than their name, the corresponding memory is "leaked" (i
 ### Statelessness
 Write stateless functions and classes wherever possible.
 
-_currently a stub_
+Practically speaking, stateless functions are functions that always produce the same result given the same inputs. Examples are implementations of mathematical functions or pure functions.  Note that statelessness is a stricter concept than constness: A const function may still depend on a member of the object (i.e. the state of the object) that can be altered between calls.
+
+Stateless objects do not have any member fields that can be altered. I.e. they only have compile-time constants as members. Note that being stateless is a stricter requirement than immutable: An immutable object has only `const` members but they may depend on the initialisation.
+
+The benefit in terms of parallelism is that the function / object can be safely used in different threads and will still produce the desired result, as there is no shared information / state that can be altered between the threads.
 
 ### Re-entrancy
 If a function cannot be stateless, the state should be local.
