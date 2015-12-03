@@ -8,7 +8,7 @@
 #include "GaudiKernel/IToolSvc.h"
 
 // FCCSW
-#include "SimG4Components/ISmearingTool.h"
+#include "SimG4Interface/ISmearingTool.h"
 
 FastSimModelTracker::FastSimModelTracker(const std::string aModelName, G4Region* aEnvelope, std::string aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {

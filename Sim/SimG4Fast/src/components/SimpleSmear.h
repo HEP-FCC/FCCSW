@@ -7,7 +7,7 @@
 class IRndmGenSvc;
 
 // FCCSW
-#include "SimG4Components/ISmearingTool.h"
+#include "SimG4Interface/ISmearingTool.h"
 
 /**
    @brief     Simple smearing tool.

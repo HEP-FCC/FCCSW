@@ -13,5 +13,5 @@ gaudi_install_headers(SimG4Components)
 
 gaudi_add_module(SimG4Components
                  src/*.cpp
-                 INCLUDE_DIRS Geant4 FWCore SimG4Common
+                 INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface
                  LINK_LIBRARIES GaudiAlgLib Geant4 FWCore SimG4Common)
