@@ -80,7 +80,7 @@ for (int i = 0; i < 1000; ++i) {
 }
 ```
 ## Namespaces
-All entities are contained in a namespace.
+All entities are contained in a namespace. The only exception are classes that are plugins / components (i.e. classes that are not used by other code).
 
 _Warning_: Do not include header files within the namespace region but before!
 
