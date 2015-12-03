@@ -275,4 +275,41 @@ Comments should be abundant and non-trivial.
 
 Both `/* */` and `//` style comments are OK. Inline comments should be short, prefer to comment before the relevant code block.
 
-Keep in mind doxygen pages are created and read through the [how-to for doxygen comments](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
+Keep in mind doxygen pages are created and read through the [how-to for doxygen comments](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html):
+- Use `@` for [commands](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmd_intro). 
+- Member functions are described on the line above the function definition with `///` starting the comment. 
+- A short description of a member may be put on the same line starting with `///<`. 
+- Longer descriptions are put above the member definition starting with `///`. 
+- A class description is put above the namespace region with author information and a description of the class. A date may optionally be added.
+
+**Example**
+```C++
+/** @class foo::MyClass MyPackage/MyPackage/MyClass.h MyClass.h
+ *
+ *  Short description of what your class does
+ *  
+ *  @author Main Author
+ *  @author Other Contributor
+ *  @date yyyy-mm-dd
+ */
+namespace foo {
+class MyClass {
+public:
+  /** @enum foo::MyEnum
+   *  Description of the enum  
+   */
+  enum class MyEnum {
+    kVal1, kVal2
+  };
+  
+  /// Description about ctor
+  MyClass(int a, int b);
+  
+private:
+  int m_a;  ///< short member a documentation
+  /// a rather long description for member b that needs a whole line
+  int m_b
+};
+}
+```
+
