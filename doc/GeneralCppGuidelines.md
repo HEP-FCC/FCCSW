@@ -206,10 +206,12 @@ Stateless objects do not have any member fields that can be altered. I.e. they o
 
 The benefit in terms of parallelism is that the function / object can be safely used in different threads and will still produce the desired result, as there is no shared information / state that can be altered between the threads.
 
+See also [const-expressions](#const-expressions) below.
+
 ### Re-entrancy
 If a function cannot be stateless, the state should be local.
 
-_currently a stub_
+Re-entrant functions can be interrupted at any point and re-entered without altering results. They may depend on the state of the object but the state cannot change between calls (e.g. const members of an object). Especially the use of non-const static or global data breaks re-entrancy. For a function to be re-entrant, it can only call re-entrant code.
 
 ## Useful C++11 Features
 ### Auto
