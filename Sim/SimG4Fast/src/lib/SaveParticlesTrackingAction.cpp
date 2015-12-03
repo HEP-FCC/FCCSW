@@ -6,8 +6,8 @@
 #include "G4ThreeVector.hh"
 
 //FCCSW
-#include "Units.h"
-#include "ParticleInformation.h"
+#include "SimG4Common/Units.h"
+#include "SimG4Common/ParticleInformation.h"
 
 SaveParticlesTrackingAction::SaveParticlesTrackingAction() : G4UserTrackingAction() {}
 

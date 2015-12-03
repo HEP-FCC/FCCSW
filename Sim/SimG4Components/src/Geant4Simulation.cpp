@@ -1,8 +1,8 @@
 #include "Geant4Simulation.h"
 
 // FCCSW
-#include "GeantGeneral/ParticleInformation.h"
-#include "GeantGeneral/Units.h"
+#include "SimG4Common/ParticleInformation.h"
+#include "SimG4Common/Units.h"
 #include "DetDesInterfaces/IGeoSvc.h"
 #include "SimG4Interface/IGeantConfigTool.h"
 

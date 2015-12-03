@@ -1,4 +1,4 @@
-#include "ParticleInformation.h"
+#include "SimG4Common/ParticleInformation.h"
 
 ParticleInformation::ParticleInformation(const MCParticleHandle& aMCpart, ParticleHandle& aPart): m_mcpart(aMCpart), m_part(aPart) {}
 
