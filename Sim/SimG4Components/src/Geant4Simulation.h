@@ -6,6 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+#include "SimG4Common/RunManager.h"
 class IGeoSvc;
 class IGeantConfigTool;
 
@@ -14,10 +15,7 @@ class ParticleCollection;
 class MCParticleCollection;
 class ParticleMCAssociationCollection;
 
-// Geant4
-#include "G4RunManager.hh"
-
-class Geant4Simulation: public GaudiAlgorithm , public G4RunManager {
+class Geant4Simulation: public GaudiAlgorithm {
    friend class AlgFactory<Geant4Simulation> ;
 public:
    /// Constructor.
@@ -28,7 +26,6 @@ public:
    virtual StatusCode execute();
    /// Finalize.
    virtual StatusCode finalize();
-   enum SimType { FULL, FAST };
 private:
    /// Converter between EDM and G4Event
    G4Event* EDM2G4();
@@ -38,6 +35,8 @@ private:
    DataHandle<ParticleCollection> m_recphandle;
    /// Handle for the associations between particles and MC particles to be written
    DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
+   /// Geant Run Manager
+   sim::RunManager m_runManager;
    /// Pointer to the interface of geometry service
    IGeoSvc* m_geoSvc;
    /// Pointer to the Geant configuration tool

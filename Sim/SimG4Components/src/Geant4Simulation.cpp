@@ -17,7 +17,7 @@
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc), G4RunManager() {
+GaudiAlgorithm(name, svcLoc) {
    declareInput("genparticles", m_genphandle);
    declareOutput("particles", m_recphandle);
    declareOutput("particleassociation", m_partassociationhandle);
@@ -34,48 +34,45 @@ StatusCode Geant4Simulation::initialize() {
    }
    m_geantConfigTool = tool<IGeantConfigTool>(m_geantConfigName);   // Initialization - Geant part
    // Load physics list, deleted in ~G4RunManager()
-   G4VModularPhysicsList* physics_list = m_geantConfigTool->getPhysicsList();
-   // Deleted in ~G4VModularPhysicsList()
-   G4RunManager::SetUserInitialization(physics_list);
+   m_runManager.SetUserInitialization(m_geantConfigTool->getPhysicsList());
 
    // Take geometry (from DD4Hep), deleted in ~G4RunManager()
-   G4RunManager::SetUserInitialization(m_geoSvc->getGeant4Geo());
+   m_runManager.SetUserInitialization(m_geoSvc->getGeant4Geo());
 
    // Attach user actions
-   G4RunManager::SetUserInitialization(m_geantConfigTool->getActionInitialization());
-   G4RunManager::Initialize();
+    m_runManager.SetUserInitialization(m_geantConfigTool->getActionInitialization());
+    m_runManager.Initialize();
 
    m_geantConfigTool->getOtherSettings();
 
-   // as in G4RunManager::BeamOn()
-   if(G4RunManager::ConfirmBeamOnCondition()) {
-      G4RunManager::ConstructScoringWorlds();
-      G4RunManager::RunInitialization();
-      return StatusCode::SUCCESS;
-   }
-   else {
+   if( !m_runManager.start())
+   {
       error() << "Unable to initialize GEANT correctly." << endmsg;
       return StatusCode::FAILURE;
    }
+   return StatusCode::SUCCESS;
 }
 
 StatusCode Geant4Simulation::execute() {
-   //read event
-   G4RunManager::currentEvent = EDM2G4();
-   if ( !G4RunManager::currentEvent ) {
+   // first translate event
+  G4Event* event = EDM2G4();
+   if ( !event ) {
       error() << "Unable to translate EDM MC data to G4Event" << endmsg;
       return StatusCode::FAILURE;
    }
-   G4RunManager::eventManager->ProcessOneEvent(G4RunManager::currentEvent);
-   G4RunManager::AnalyzeEvent(G4RunManager::currentEvent);
-   G4RunManager::UpdateScoring();
-   G4RunManager::TerminateOneEvent();
-
+   bool status = m_runManager.processEvent( event );
+   if ( !status ) {
+      error() << "Unable to process event in Geant" << endmsg;
+      return StatusCode::FAILURE;
+   }
+   const G4Event* constevent;
+   status = m_runManager.retrieveEvent(constevent);
+   m_runManager.terminateEvent();
    return StatusCode::SUCCESS;
 }
 
 StatusCode Geant4Simulation::finalize() {
-   G4RunManager::RunTermination();
+   m_runManager.finalize();
    return GaudiAlgorithm::finalize();
 }
 
