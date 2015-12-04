@@ -277,7 +277,9 @@ Both `/* */` and `//` style comments are OK. Inline comments should be short, pr
 
 Keep in mind doxygen pages are created and read through the [how-to for doxygen comments](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html):
 - Use `@` for [commands](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmd_intro). 
-- Member functions are described on the line above the function definition with `///` starting the comment.
+- Member functions documentation depends on the detail level:
+  - Short descriptions on the line above the function definition with `///` starting the comment.
+  - Complex descriptions using [return cmd](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmdreturn) and [params cmd](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmdparam) should follow the same style as class descriptions (see example).
 - Member variable documentation depends on the length of the comment:
   - A short description of a member may be put on the same line starting with `///<`. 
   - Longer descriptions are put above the member definition starting with `///`. 
@@ -307,6 +309,12 @@ public:
   
   /// Description about ctor
   MyClass(int a, int b);
+  
+  /** doSomething: does something
+    * @param[in] f is used to do...
+    * @returns an integer
+    */
+  int doSomething(const float& f);
   
 private:
   int m_a;  ///< short member a documentation
