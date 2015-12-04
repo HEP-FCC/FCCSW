@@ -5,11 +5,12 @@
 #include "SimG4Common/Units.h"
 #include "DetDesInterfaces/IGeoSvc.h"
 #include "SimG4Interface/IGeantConfigTool.h"
+#include "SimG4Interface/IG4IOTool.h"
 
 // albers
-#include "datamodel/ParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
+// #include "datamodel/ParticleCollection.h"
+// #include "datamodel/ParticleMCAssociationCollection.h"
 
 // Geant
 #include "G4VModularPhysicsList.hh"
@@ -19,9 +20,10 @@ DECLARE_COMPONENT(Geant4Simulation)
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc) {
    declareInput("genparticles", m_genphandle);
-   declareOutput("particles", m_recphandle);
-   declareOutput("particleassociation", m_partassociationhandle);
+   // declareOutput("particles", m_recphandle);
+   // declareOutput("particleassociation", m_partassociationhandle);
    declareProperty ("config", m_geantConfigName = "" ) ;
+   declareProperty ("io", m_geantIOToolName = "" ) ;
 }
 
 StatusCode Geant4Simulation::initialize() {
@@ -32,7 +34,9 @@ StatusCode Geant4Simulation::initialize() {
       error() << "Unable to locate Geometry Service" << endmsg;
       return StatusCode::FAILURE;
    }
-   m_geantConfigTool = tool<IGeantConfigTool>(m_geantConfigName);   // Initialization - Geant part
+   m_geantConfigTool = tool<IGeantConfigTool>(m_geantConfigName);
+   m_geantIOTool = tool<IG4IOTool>(m_geantIOToolName);
+   // Initialization - Geant part
    // Load physics list, deleted in ~G4RunManager()
    m_runManager.SetUserInitialization(m_geantConfigTool->getPhysicsList());
 
@@ -81,8 +85,8 @@ G4Event* Geant4Simulation::EDM2G4() {
    G4Event* g4_event = new G4Event();
    // Creating EDM collections
    const MCParticleCollection* mcparticles = m_genphandle.get();
-   ParticleCollection* particles = new ParticleCollection();
-   ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
+   // ParticleCollection* particles = new ParticleCollection();
+   // ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
    // Adding one particle per one vertex => vertices repeated
    for(const auto& mcparticle : *mcparticles) {
       const GenVertex& v = mcparticle.read().StartVertex.read();
@@ -91,16 +95,16 @@ G4Event* Geant4Simulation::EDM2G4() {
       const BareParticle& mccore = mcparticle.read().Core;
       G4PrimaryParticle* g4_particle = new G4PrimaryParticle
          (mccore.Type, mccore.P4.Px*edm2g4::energy, mccore.P4.Py*edm2g4::energy, mccore.P4.Pz*edm2g4::energy);
-      ParticleHandle particle = particles->create();
-      g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
-      ParticleMCAssociationHandle association = associations->create();
-      association.mod().Rec = particle;
-      association.mod().Sim = mcparticle;
+      // ParticleHandle particle = particles->create();
+      // g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
+      // ParticleMCAssociationHandle association = associations->create();
+      // association.mod().Rec = particle;
+      // association.mod().Sim = mcparticle;
       g4_vertex->SetPrimary(g4_particle);
       g4_event->AddPrimaryVertex(g4_vertex);
    }
-   m_recphandle.put(particles);
-   m_partassociationhandle.put(associations);
+   // m_recphandle.put(particles);
+   // m_partassociationhandle.put(associations);
    return g4_event;
 }
 
