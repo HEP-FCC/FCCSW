@@ -292,7 +292,7 @@ Keep in mind doxygen pages are created and read through the [how-to for doxygen 
 /** @class foo::MyClass MyPackage/MyPackage/MyClass.h MyClass.h
  *
  *  Short description of what your class does
- *  
+ *
  *  @author Main Author
  *  @author Other Contributor
  *  @date yyyy-mm-dd
