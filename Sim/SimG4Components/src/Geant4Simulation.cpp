@@ -100,12 +100,12 @@ G4Event* Geant4Simulation::EDM2G4() {
    for(const auto& mcparticle : *mcparticles) {
       const GenVertex& v = mcparticle.read().StartVertex.read();
       G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
-         (v.Position.X*edm2g4::length, v.Position.Y*edm2g4::length, v.Position.Z*edm2g4::length, v.Ctau*edm2g4::length);
+        (v.Position.X*sim::edm2g4::length, v.Position.Y*sim::edm2g4::length, v.Position.Z*sim::edm2g4::length, v.Ctau*sim::edm2g4::length);
       const BareParticle& mccore = mcparticle.read().Core;
       G4PrimaryParticle* g4_particle = new G4PrimaryParticle
-         (mccore.Type, mccore.P4.Px*edm2g4::energy, mccore.P4.Py*edm2g4::energy, mccore.P4.Pz*edm2g4::energy);
+        (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
       ParticleHandle particle = particles->create();
-      g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
+      g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle, particle));
       ParticleMCAssociationHandle association = associations->create();
       association.mod().Rec = particle;
       association.mod().Sim = mcparticle;
