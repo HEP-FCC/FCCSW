@@ -1,4 +1,6 @@
 #include "Geant4Simulation.h"
+// tmp
+#include <fstream>
 
 // FCCSW
 #include "SimG4Common/ParticleInformation.h"
@@ -6,22 +8,26 @@
 #include "DetDesInterfaces/IGeoSvc.h"
 #include "SimG4Interface/IGeantConfigTool.h"
 #include "SimG4Interface/IG4IOTool.h"
+#include "SimG4Data/GeantTrackerHit.h"
 
 // albers
 #include "datamodel/MCParticleCollection.h"
-// #include "datamodel/ParticleCollection.h"
-// #include "datamodel/ParticleMCAssociationCollection.h"
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/ParticleMCAssociationCollection.h"
+#include "datamodel/TrackClusterCollection.h"
 
 // Geant
 #include "G4VModularPhysicsList.hh"
+#include "G4HCofThisEvent.hh"
 
 DECLARE_COMPONENT(Geant4Simulation)
 
 Geant4Simulation::Geant4Simulation(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc) {
    declareInput("genparticles", m_genphandle);
-   // declareOutput("particles", m_recphandle);
-   // declareOutput("particleassociation", m_partassociationhandle);
+   declareOutput("particles", m_recphandle);
+   declareOutput("particleassociation", m_partassociationhandle);
+   declareOutput("trackclusters", m_trackClusters);
    declareProperty ("config", m_geantConfigName = "" ) ;
    declareProperty ("io", m_geantIOToolName = "" ) ;
 }
@@ -35,7 +41,9 @@ StatusCode Geant4Simulation::initialize() {
       return StatusCode::FAILURE;
    }
    m_geantConfigTool = tool<IGeantConfigTool>(m_geantConfigName);
-   m_geantIOTool = tool<IG4IOTool>(m_geantIOToolName);
+   if(!m_geantIOToolName.empty()) {
+     m_geantIOTool = tool<IG4IOTool>(m_geantIOToolName);
+   }
    // Initialization - Geant part
    // Load physics list, deleted in ~G4RunManager()
    m_runManager.SetUserInitialization(m_geantConfigTool->getPhysicsList());
@@ -71,6 +79,7 @@ StatusCode Geant4Simulation::execute() {
    }
    const G4Event* constevent;
    status = m_runManager.retrieveEvent(constevent);
+   SaveTrackerHits(constevent);
    m_runManager.terminateEvent();
    return StatusCode::SUCCESS;
 }
@@ -85,8 +94,8 @@ G4Event* Geant4Simulation::EDM2G4() {
    G4Event* g4_event = new G4Event();
    // Creating EDM collections
    const MCParticleCollection* mcparticles = m_genphandle.get();
-   // ParticleCollection* particles = new ParticleCollection();
-   // ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
+   ParticleCollection* particles = new ParticleCollection();
+   ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
    // Adding one particle per one vertex => vertices repeated
    for(const auto& mcparticle : *mcparticles) {
       const GenVertex& v = mcparticle.read().StartVertex.read();
@@ -95,16 +104,38 @@ G4Event* Geant4Simulation::EDM2G4() {
       const BareParticle& mccore = mcparticle.read().Core;
       G4PrimaryParticle* g4_particle = new G4PrimaryParticle
          (mccore.Type, mccore.P4.Px*edm2g4::energy, mccore.P4.Py*edm2g4::energy, mccore.P4.Pz*edm2g4::energy);
-      // ParticleHandle particle = particles->create();
-      // g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
-      // ParticleMCAssociationHandle association = associations->create();
-      // association.mod().Rec = particle;
-      // association.mod().Sim = mcparticle;
+      ParticleHandle particle = particles->create();
+      g4_particle->SetUserInformation(new ParticleInformation(mcparticle, particle));
+      ParticleMCAssociationHandle association = associations->create();
+      association.mod().Rec = particle;
+      association.mod().Sim = mcparticle;
       g4_vertex->SetPrimary(g4_particle);
       g4_event->AddPrimaryVertex(g4_vertex);
    }
-   // m_recphandle.put(particles);
-   // m_partassociationhandle.put(associations);
+   m_recphandle.put(particles);
+   m_partassociationhandle.put(associations);
    return g4_event;
 }
 
+void Geant4Simulation::SaveTrackerHits(const G4Event* aEvent) {
+  G4HCofThisEvent* collections = aEvent->GetHCofThisEvent();
+  GeantTrackerHitsCollection* track_collection;
+  if(collections) {
+    track_collection = (GeantTrackerHitsCollection*)(collections->GetHC(0));
+    if(track_collection) {
+      // HERE: Save hits to the EDM?
+      int n_hit = track_collection->entries();
+      debug() << "     " << n_hit
+             << " hits are stored in SaveHitsTrackerHitsCollection." << endmsg;
+      // tmp solution
+      std::ofstream file;
+      CLHEP::Hep3Vector pos;
+      file.open("tracker_hits.txt");
+      for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
+        pos = dynamic_cast<GeantTrackerHit*>(track_collection->GetHit(iter_hit))->GetPosition();
+        file<<pos.x()<<" "<<pos.y()<<" "<<pos.z()<<std::endl;
+      }
+      file.close();
+    }
+  }
+}

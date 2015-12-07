@@ -13,8 +13,9 @@ class IG4IOTool;
 
 // albers
 class MCParticleCollection;
-/* class ParticleCollection; */
-/* class ParticleMCAssociationCollection; */
+class ParticleCollection;
+class ParticleMCAssociationCollection;
+class TrackClusterCollection;
 
 class Geant4Simulation: public GaudiAlgorithm {
    friend class AlgFactory<Geant4Simulation> ;
@@ -30,12 +31,16 @@ public:
 private:
    /// Converter between EDM and G4Event
    G4Event* EDM2G4();
+   /// Save tracker hits.
+   void SaveTrackerHits(const G4Event*);
    /// Handle for the EDM MC particles to be read
    DataHandle<MCParticleCollection> m_genphandle;
-   /* /// Handle for the particles to be written */
-   /* DataHandle<ParticleCollection> m_recphandle; */
-   /* /// Handle for the associations between particles and MC particles to be written */
-   /* DataHandle<ParticleMCAssociationCollection> m_partassociationhandle; */
+   /// Handle for the particles to be written
+   DataHandle<ParticleCollection> m_recphandle;
+   /// Handle for the associations between particles and MC particles to be written
+   DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
+   /// Handle for tracker clusters
+   DataHandle<TrackClusterCollection> m_trackClusters;
    /// Geant Run Manager
    sim::RunManager m_runManager;
    /// Pointer to the interface of geometry service

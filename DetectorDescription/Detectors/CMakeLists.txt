@@ -5,10 +5,11 @@ gaudi_subdir(Detectors v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel
 			 DataObjects
-			 DetectorDescription/DetExtensions)
+			 DetectorDescription/DetExtensions
+          Sim/SimG4Full)
 
 
-find_package(DD4hep)
+find_package(DD4hep COMPONENTS DDG4)
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 
@@ -19,8 +20,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_add_module(Detectors
 		  src/*.cxx
-		  INCLUDE_DIRS  DD4hep ROOT DetExtensions Geant4
-		  LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4)
+		  INCLUDE_DIRS  DD4hep ROOT DetExtensions Geant4 SimG4Full
+		  LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 SimG4Full)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")

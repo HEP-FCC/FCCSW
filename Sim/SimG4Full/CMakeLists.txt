@@ -4,7 +4,7 @@
 gaudi_subdir(SimG4Full v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg DataObjects Sim/SimG4Components Sim/SimG4Interface Sim/SimG4Common)
+gaudi_depends_on_subdirs(GaudiAlg DataObjects Sim/SimG4Components Sim/SimG4Interface Sim/SimG4Common Sim/SimG4Data)
 
 find_package(Geant4)
 include(${Geant4_USE_FILE})
@@ -14,8 +14,8 @@ gaudi_install_headers(SimG4Full)
 
 gaudi_add_library(SimG4Full
                  src/lib/*.cpp
-                 INCLUDE_DIRS SimG4Common FWCore SimG4Components SimG4Interface Geant4 ROOT
-                 LINK_LIBRARIES GaudiAlgLib DataObjects SimG4Common Geant4 ROOT
+                 INCLUDE_DIRS SimG4Common FWCore SimG4Data SimG4Components SimG4Interface Geant4 ROOT
+                 LINK_LIBRARIES GaudiAlgLib DataObjects SimG4Data SimG4Common Geant4 ROOT
                  PUBLIC_HEADERS SimG4Full)
 
 gaudi_add_module(SimG4FullPlugins
