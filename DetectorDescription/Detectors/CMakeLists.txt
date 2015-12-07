@@ -19,7 +19,7 @@ include( DD4hep )
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_add_module(Detectors
-		  src/*.cxx
+		  src/*.cxx src/*.cpp
 		  INCLUDE_DIRS  DD4hep ROOT DetExtensions Geant4 SimG4Full
 		  LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 SimG4Full)
 

@@ -126,7 +126,7 @@ void Geant4Simulation::SaveTrackerHits(const G4Event* aEvent) {
       // HERE: Save hits to the EDM?
       int n_hit = track_collection->entries();
       debug() << "     " << n_hit
-             << " hits are stored in SaveHitsTrackerHitsCollection." << endmsg;
+             << " hits are stored in SaveHitsTrackerHitsCollection" << endmsg;
       // tmp solution
       std::ofstream file;
       CLHEP::Hep3Vector pos;

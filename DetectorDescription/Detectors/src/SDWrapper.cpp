@@ -7,7 +7,7 @@ namespace DD4hep { namespace Simulation {
 
       // Factory method to create an instance of ExN04TrackerSD
     static G4VSensitiveDetector* createTrackerSD(const std::string& name,  DD4hep::Geometry::LCDD& lcdd)  {
-       std::string trackerSDname = "/mydet/tracker";
+       std::string trackerSDname = "/mydet/tracker/"+name;
        std::cout<<" Creating /mydet/tracker SD in G4"<<std::endl;
       return new GeantTrackerSD(trackerSDname);
     }
