@@ -4,7 +4,7 @@
 gaudi_subdir(GeantGeneral v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg DataObjects GeantSim/GeantComponents)
+gaudi_depends_on_subdirs(GaudiAlg DataObjects)
 
 find_package(Geant4)
 find_package(ROOT)

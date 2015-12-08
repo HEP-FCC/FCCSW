@@ -8,12 +8,13 @@
 #include "G4VModularPhysicsList.hh"
 #include "G4RegionStore.hh"
 #include "G4VFastSimulationModel.hh"
+#include "G4TransportationManager.hh"
 
 // FCCSW
-#include "GeantFast/FastSimPhysics.h"
-#include "GeantFast/FastSimModelTracker.h"
-#include "GeantFast/FastSimActions.h"
-#include "GeantComponents/ISmearingTool.h"
+#include "SimG4Fast/FastSimPhysics.h"
+#include "SimG4Fast/FastSimModelTracker.h"
+#include "SimG4Fast/FastSimActions.h"
+#include "SimG4Components/ISmearingTool.h"
 
 DECLARE_COMPONENT(GeantFastSimConfig)
 

@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "GeantConfig/IGeantConfigTool.h"
+#include "SimG4Interface/IGeantConfigTool.h"
 
 /**
    @brief     Geant config tool for full simulation.

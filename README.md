@@ -36,21 +36,6 @@ Installation
 
 Log in to lxplus SLC6. Please note that these instructions might not work on another SLC6 machine. Instructions to compile on a mac are in preparation. 
 
-Prepare a global software zone for FCC:
-
-    mkdir FCC
-    cd FCC
-    export FCCBASE=$PWD
-
-Setup the Gaudi and other environment
-
-    mkdir GAUDI
-    cd GAUDI
-    ln -s /afs/cern.ch/exp/fcc/sw/0.2/GAUDI/GAUDI_v25r2 GAUDI_v25r2
-    export GAUDI=$FCCBASE/GAUDI/GAUDI_v25r2
-    export ALBERS=/afs/cern.ch/exp/fcc/sw/0.3/albers/0.1/x86_64-slc6-gcc48-opt
-    export FCCEDM=/afs/cern.ch/exp/fcc/sw/0.3/fcc-edm/0.1/x86_64-slc6-gcc48-opt
-
 Clone the FCCSW repository: **replace \<username\> by your github username**
 
     git clone git@github.com:<username>/FCCSW.git FCCSW 
@@ -58,14 +43,12 @@ Clone the FCCSW repository: **replace \<username\> by your github username**
 
 Set up your environment:
 
-    cd $FCCSW
+    cd FCCSW
     source init.sh
 
 Compile the FCC software:
 
-    cd $FCCSW
     make -j 12
-
 
 Test
 ----
