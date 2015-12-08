@@ -9,9 +9,9 @@
 
 class GAUDI_API DataWrapperBase : public DataObject {
  public:
-   // ugly hack to circumvent the usage of boost::any yet 
-   // DataSvc would need a templated register method 
-   virtual podio::CollectionBase* collectionBase() = 0;
+   // ugly hack to circumvent the usage of boost::any yet
+   // DataSvc would need a templated register method
+   virtual albers::CollectionBase* collectionBase() = 0;
    virtual ~DataWrapperBase(){};
 };
 
@@ -20,7 +20,7 @@ class GAUDI_API DataWrapper : public DataWrapperBase {
  public:
 
   DataWrapper() : DataWrapperBase(), m_data(nullptr){};
-  virtual ~DataWrapper(); 
+  virtual ~DataWrapper();
 
   const T* getData() {return m_data;}
   void setData(T* data) {m_data = data;}
@@ -28,7 +28,7 @@ class GAUDI_API DataWrapper : public DataWrapperBase {
   virtual albers::CollectionBase* collectionBase();
 
  private:
-  T* m_data; 
+  T* m_data;
 
 };
 
