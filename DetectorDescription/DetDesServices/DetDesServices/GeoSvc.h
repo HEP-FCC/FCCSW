@@ -1,6 +1,6 @@
 //
 //  GeoSvc.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 30/03/15.
 //
@@ -28,9 +28,9 @@
 class GeoSvc: public extends1<Service, IGeoSvc> {
 
 public:
-    
+
     GeoSvc(const std::string& name, ISvcLocator* svc);
-    
+
     virtual ~GeoSvc();
     virtual StatusCode initialize();
     virtual StatusCode finalize();
@@ -41,14 +41,16 @@ public:
     virtual DD4hep::Geometry::LCDD* lcdd() override;
     //receive Geant4 Geometry
     virtual G4VUserDetectorConstruction* getGeant4Geo() override;
-    
+
 public:
     //pointer to the interface to the DD4hep geometry
     DD4hep::Geometry::LCDD* m_dd4hepgeo;
     //pointer to the detector construction of DDG4
     std::shared_ptr<G4VUserDetectorConstruction> m_geant4geo;
     //xml-file with the detector description
-    std::string   m_xmlFileName;
+    std::string   m_xmlLCDDFileName;
+    //optional xml-file with the sensitive detector description (binding to Geant4)
+    std::string   m_xmlGeant4FileName;
     //output
     MsgStream m_log;
 };

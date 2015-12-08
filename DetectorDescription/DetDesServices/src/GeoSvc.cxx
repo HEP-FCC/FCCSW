@@ -15,10 +15,11 @@ DECLARE_COMPONENT(GeoSvc)
 
 GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) :
 base_class(name, svc),
-m_dd4hepgeo(0),
-m_geant4geo(0),
-m_log(msgSvc(), name) {
-   declareProperty("detector", m_xmlFileName = "", "XML file with detector description");
+  m_dd4hepgeo(0),
+  m_geant4geo(0),
+  m_log(msgSvc(), name) {
+  declareProperty("detector", m_xmlLCDDFileName = "", "XML file with detector description");
+  declareProperty("sensitive", m_xmlGeant4FileName = "", "(optional) XML file with bindings to Geant4 sensitive detector description");
 }
 
 GeoSvc::~GeoSvc() {
@@ -51,11 +52,14 @@ StatusCode GeoSvc::buildDD4HepGeo(){
     m_dd4hepgeo->addExtension<IGeoSvc>(this);
 
     //load geometry
-    m_log << MSG::INFO << "loading geometry from file:  '" << m_xmlFileName << "'" << endmsg;
-    char* arg = (char*) m_xmlFileName.c_str();
+    m_log << MSG::INFO << "loading geometry from file:  '" << m_xmlLCDDFileName << "'" << endmsg;
+    char* arg = (char*) m_xmlLCDDFileName.c_str();
     m_dd4hepgeo->apply("DD4hepXMLLoader", 1, &arg);
     m_dd4hepgeo->volumeManager();
     m_dd4hepgeo->apply("DD4hepVolumeManager",0,0);
+    if(!m_xmlGeant4FileName.empty()) {
+      m_dd4hepgeo->fromCompact(m_xmlGeant4FileName.c_str());
+    }
 
     return StatusCode::SUCCESS;
 }

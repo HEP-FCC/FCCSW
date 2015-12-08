@@ -1,5 +1,5 @@
 #include "SimG4Fast/FastSimActions.h"
-#include "GeantGeneral/SaveParticlesTrackingAction.h"
+#include "SimG4Fast/SaveParticlesTrackingAction.h"
 
 FastSimActions::FastSimActions(): G4VUserActionInitialization() {}
 

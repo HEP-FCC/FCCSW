@@ -15,17 +15,18 @@ hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml', OutputLevel = DEBUG)
 
-from Configurables import Geant4Simulation
-geant4simulation = Geant4Simulation("Geant4Simulation", config="GeantFastSimConfig")
+from Configurables import Geant4Simulation, GeantFastSimConfig, SimpleSmear, G4FastIO
+geant4simulation = Geant4Simulation("Geant4Simulation", config="GeantFastSimConfig", io="G4FastIO")
 geant4simulation.DataInputs.genparticles.Path="all_genparticles"
-geant4simulation.DataOutputs.particles.Path = "recparticles"
-geant4simulation.DataOutputs.particleassociation.Path = "particleMCparticle"
 
-from Configurables import GeantFastSimConfig
+fastsimio = G4FastIO("FastSimIO")
+geant4simulation.addTool(fastsimio)
+fastsimio.DataOutputs.particles.Path = "recparticles"
+fastsimio.DataOutputs.particleassociation.Path = "particleMCparticle"
+
 fastsimconfig = GeantFastSimConfig("FastSimConfig", smearing = "SimpleSmear")
 geant4simulation.addTool(fastsimconfig)
 
-from Configurables import SimpleSmear
 smear = SimpleSmear("SimpleSmear", sigma = 0.015)
 fastsimconfig.addTool(smear)
 
