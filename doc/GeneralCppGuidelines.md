@@ -255,14 +255,13 @@ Const expressions are evaluated at compile time (i.e. no computation during run 
 
 **Example**
 
-TBD Need to think of something better.
 ```C++
 constexpr int addTwo(int arg) {
   return arg+2;
 }
 
 constexpr int a(4);
-int b = addTwo(a);
+constexpr int b = addTwo(a);
 int c = addTwo(b);
 ```
 
