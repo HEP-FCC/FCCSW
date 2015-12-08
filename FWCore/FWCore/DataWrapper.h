@@ -5,7 +5,7 @@
 
 //Include files
 #include "GaudiKernel/DataObject.h"
-#include "podio/CollectionBase.h"
+#include "albers/CollectionBase.h"
 
 class GAUDI_API DataWrapperBase : public DataObject {
  public:
@@ -25,7 +25,7 @@ class GAUDI_API DataWrapper : public DataWrapperBase {
   const T* getData() {return m_data;}
   void setData(T* data) {m_data = data;}
   /// try to cast to collectionBase; may return nullptr;
-  virtual podio::CollectionBase* collectionBase();
+  virtual albers::CollectionBase* collectionBase();
 
  private:
   T* m_data; 
@@ -38,9 +38,9 @@ DataWrapper<T>::~DataWrapper<T>() {
 }
 
 template<class T>
-podio::CollectionBase* DataWrapper<T>::collectionBase(){
-  if (std::is_base_of<podio::CollectionBase,T>::value){
-    return reinterpret_cast<podio::CollectionBase*>(m_data);
+albers::CollectionBase* DataWrapper<T>::collectionBase(){
+  if (std::is_base_of<albers::CollectionBase,T>::value){
+    return reinterpret_cast<albers::CollectionBase*>(m_data);
   }
   return nullptr;
 }
