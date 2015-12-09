@@ -13,7 +13,6 @@ class IToolSvc;
 
 namespace sim {
 class GeantSvc: public extends1<Service, IGeantSvc> {
-  friend class SvcFactory<GeantSvc>;
 public:
   /// Standard constructor
   GeantSvc(const std::string& aName, ISvcLocator* aSL);

@@ -17,7 +17,7 @@ geantservice = sim__GeantSvc("GeantSvc", config="GeantFullSimConfig")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
-                   # sensitive='file:DetectorDescription/Detectors/compact/TestTracker_geant4.xml',
+                   sensitive='file:DetectorDescription/Detectors/compact/TestTracker_geant4.xml',
                     OutputLevel = DEBUG)
 
 from Configurables import sim__GeantFullSimAlg
@@ -34,6 +34,6 @@ out.outputCommands = ["keep *"]
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [albersevent, geoservice, geantservice],
+                ExtSvc = [albersevent, geoservice, geantservice], # order! geo needed by geant
                 OutputLevel=DEBUG
  )
