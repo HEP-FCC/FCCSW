@@ -12,26 +12,28 @@ hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
 hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 
+from Configurables import sim__GeantSvc
+geantservice = sim__GeantSvc("GeantSvc", config="GeantFullSimConfig")
+
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
-                    sensitive='file:DetectorDescription/Detectors/compact/TestTracker_geant4.xml',
+                   # sensitive='file:DetectorDescription/Detectors/compact/TestTracker_geant4.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import Geant4Simulation
-geant4simulation = Geant4Simulation("Geant4Simulation", config="GeantFullSimConfig")
-geant4simulation.DataInputs.genparticles.Path="all_genparticles"
-geant4simulation.DataOutputs.particles.Path = "recparticles"
-geant4simulation.DataOutputs.particleassociation.Path = "particleMCparticle"
-geant4simulation.DataOutputs.trackclusters.Path = "clusters"
+from Configurables import sim__GeantFullSimAlg
+geantsim = sim__GeantFullSimAlg("GeantFullSimAlg")
+geantsim.DataInputs.genParticles.Path="all_genparticles"
+geantsim.DataOutputs.trackClusters.Path = "clusters"
+
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [albersevent, geoservice],
+                ExtSvc = [albersevent, geoservice, geantservice],
                 OutputLevel=DEBUG
  )
