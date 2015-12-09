@@ -5,10 +5,13 @@
 
 namespace sim {
 namespace detectors {
-// Factory method to create an instance of ExN04TrackerSD
+// Factory method to create an instance of GeantTrackerSD
 static G4VSensitiveDetector* createTrackerSD(const std::string& name,  DD4hep::Geometry::LCDD& lcdd) {
   std::string trackerSDname = "/mydet/tracker/"+name;
-  return new GeantTrackerSD(trackerSDname);
+  /// tmp debug
+  std::cout<<" SENSITIVE VOLUME: "<<trackerSDname<<std::endl;
+  std::cout<<" SENSITIVE VOLUME hits : "<<lcdd.sensitiveDetector(name).hitsCollection()<<std::endl;
+  return new GeantTrackerSD(trackerSDname,lcdd.sensitiveDetector(name).hitsCollection());
 }
 }
 }

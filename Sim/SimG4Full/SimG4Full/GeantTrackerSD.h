@@ -9,7 +9,7 @@ class GeantTrackerSD : public G4VSensitiveDetector
 {
 
 public:
-  GeantTrackerSD(std::string name);
+  GeantTrackerSD(std::string aDetName, std::string aCollectionName);
   ~GeantTrackerSD();
 
   void Initialize(G4HCofThisEvent*HCE);

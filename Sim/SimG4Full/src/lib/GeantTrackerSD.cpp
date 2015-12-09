@@ -1,7 +1,7 @@
 #include "SimG4Full/GeantTrackerSD.h"
 
-GeantTrackerSD::GeantTrackerSD(std::string aName): G4VSensitiveDetector(aName) {
-  collectionName.insert("TrackerReadout");
+GeantTrackerSD::GeantTrackerSD(std::string aDetName, std::string aCollectionName): G4VSensitiveDetector(aDetName) {
+  collectionName.insert(aCollectionName);
 }
 
 GeantTrackerSD::~GeantTrackerSD() {}
