@@ -48,9 +48,7 @@ public:
     //pointer to the detector construction of DDG4
     std::shared_ptr<G4VUserDetectorConstruction> m_geant4geo;
     //xml-file with the detector description
-    std::string   m_xmlLCDDFileName;
-    //optional xml-file with the sensitive detector description (binding to Geant4)
-    std::string   m_xmlGeant4FileName;
+    std::string   m_xmlFileName;
     //output
     MsgStream m_log;
 };

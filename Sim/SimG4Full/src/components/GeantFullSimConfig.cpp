@@ -1,8 +1,5 @@
 #include "GeantFullSimConfig.h"
 
-// Gaudi
-#include "GaudiKernel/DeclareFactoryEntries.h"
-
 // Geant4
 #include "FTFP_BERT.hh"
 #include "G4VModularPhysicsList.hh"
