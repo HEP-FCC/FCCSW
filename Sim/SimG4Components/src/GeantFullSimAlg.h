@@ -13,6 +13,8 @@ class IGeantSvc;
 // albers
 class MCParticleCollection;
 class TrackClusterCollection;
+class TrackHitCollection;
+class TrackClusterHitsAssociationCollection;
 
 // Geant
 class G4Event;
@@ -37,6 +39,10 @@ public:
   DataHandle<MCParticleCollection> m_genParticles;
   /// Handle for tracker clusters
   DataHandle<TrackClusterCollection> m_trackClusters;
+  /// Handle for tracker hits
+  DataHandle<TrackHitCollection> m_trackHits;
+  /// Handle for tracker hits-clusters associations
+  DataHandle<TrackClusterHitsAssociationCollection> m_trackHitsClusters;
   /// Pointer to the interface of Geant Simulation service
   IGeantSvc* m_geantSvc;
 };

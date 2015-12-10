@@ -1,20 +1,21 @@
 #include "GeantFullSimAlg.h"
 
-// tmp
-#include <fstream>
-
 // FCCSW
 #include "SimG4Common/Units.h"
 #include "SimG4Interface/IGeantSvc.h"
-#include "SimG4Data/GeantTrackerHit.h"
 
 // albers
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/TrackClusterCollection.h"
+#include "datamodel/TrackHitCollection.h"
+#include "datamodel/TrackClusterHitsAssociationCollection.h"
 
 // Geant
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
+
+// DD4hep
+#include "DDG4/Geant4Hits.h"
 
 DECLARE_ALGORITHM_FACTORY(sim::GeantFullSimAlg)
 
@@ -23,6 +24,8 @@ GeantFullSimAlg::GeantFullSimAlg(const std::string& aName, ISvcLocator* aSvcLoc)
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
   declareOutput("trackClusters", m_trackClusters);
+  declareOutput("trackHits", m_trackHits);
+  declareOutput("trackHitsClusters", m_trackHitsClusters);
 }
 GeantFullSimAlg::~GeantFullSimAlg() {}
 
@@ -77,29 +80,39 @@ G4Event* GeantFullSimAlg::EDM2G4() {
 
 void GeantFullSimAlg::SaveTrackerHits(const G4Event* aEvent) {
   G4HCofThisEvent* collections = aEvent->GetHCofThisEvent();
-  debug() << "     " << collections->GetNumberOfCollections()<< " Collections" << endmsg;
-    info()<<collections->GetHC(0)->GetName()<<endmsg;
-    info()<<collections->GetHC(0)->GetSDname()<<endmsg;
-  GeantTrackerHitsCollection* track_collection;
+  G4VHitsCollection* collect;
+  DD4hep::Simulation::Geant4TrackerHit* hit;
   if(collections) {
-    track_collection = dynamic_cast<GeantTrackerHitsCollection*>(collections->GetHC(0));
-    info()<<collections->GetHC(0)->GetName()<<endmsg;
-    info()<<collections->GetHC(0)->GetSDname()<<endmsg;
-    if(track_collection) {
-      // HERE: Save hits to the EDM?
-      int n_hit = track_collection->GetSize();
-      debug() << "     " << n_hit
-              << " hits are stored in SaveHitsTrackerHitsCollection" << endmsg;
-      // tmp solution
-      std::ofstream file;
-      CLHEP::Hep3Vector pos;
-      file.open("tracker_hits.txt");
+    TrackClusterCollection* edmClusters = new TrackClusterCollection();
+    TrackHitCollection* edmHits = new TrackHitCollection();
+    TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
+    for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
+      collect = collections->GetHC(iter_coll);
+      // HERE: check if it's tracker coll
+      int n_hit = collect->GetSize();
+      debug() << "     " << n_hit<< " hits are stored in collection #"<<iter_coll<<endmsg;
       for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-        pos = dynamic_cast<GeantTrackerHit*>(track_collection->GetHit(iter_hit))->GetPosition();
-        file<<pos.x()<<" "<<pos.y()<<" "<<pos.z()<<std::endl;
+        hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
+        TrackHitHandle edmHit = edmHits->create();
+        TrackClusterHandle edmCluster = edmClusters->create();
+        BareHit& edmHitCore = edmHit.mod().Core;
+        BareCluster& edmClusterCore = edmCluster.mod().Core;
+        edmHitCore.Cellid = hit->cellID;
+        edmHitCore.Energy = hit->energyDeposit;
+        edmHitCore.Time = hit->truth.time;
+        edmClusterCore.position.X = hit->position.x();
+        edmClusterCore.position.Y = hit->position.y();
+        edmClusterCore.position.Z = hit->position.z();
+        edmClusterCore.Energy = hit->energyDeposit;
+        edmClusterCore.Time = hit->truth.time;
+        TrackClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
+        edmAssociation.mod().Cluster = edmCluster;
+        edmAssociation.mod().Hit = edmHit;
       }
-      file.close();
     }
+    m_trackClusters.put(edmClusters);
+    m_trackHits.put(edmHits);
+    m_trackHitsClusters.put(edmAssociations);
   }
 }
 }

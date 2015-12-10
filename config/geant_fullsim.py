@@ -9,21 +9,22 @@ reader.DataOutputs.hepmc.Path = "hepmc"
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
 hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
-hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
+hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
+hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import sim__GeantSvc
 geantservice = sim__GeantSvc("GeantSvc", config="GeantFullSimConfig")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
-                   sensitive='file:DetectorDescription/Detectors/compact/TestTracker_geant4.xml',
                     OutputLevel = DEBUG)
 
 from Configurables import sim__GeantFullSimAlg
 geantsim = sim__GeantFullSimAlg("GeantFullSimAlg")
-geantsim.DataInputs.genParticles.Path="all_genparticles"
+geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.trackClusters.Path = "clusters"
+geantsim.DataOutputs.trackHits.Path = "hits"
+geantsim.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 
 
 from Configurables import AlbersWrite, AlbersOutput
