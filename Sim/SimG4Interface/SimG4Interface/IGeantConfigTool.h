@@ -13,11 +13,9 @@ class G4VUserActionInitialization;
    @author    Anna Zaborowska
 */
 
-static const InterfaceID IID_IGeantConfigTool("IGeantConfigTool",1,0);
-
 class IGeantConfigTool : virtual public IAlgTool {
 public:
-   static const InterfaceID& interfaceID() { return IID_IGeantConfigTool; }
+   DeclareInterfaceID(IGeantConfigTool,1,0);
 
    virtual G4VModularPhysicsList* getPhysicsList() = 0;
 

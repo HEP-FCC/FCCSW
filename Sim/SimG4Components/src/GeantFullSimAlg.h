@@ -6,9 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-namespace sim {
 class IGeantSvc;
-}
 
 // albers
 class MCParticleCollection;
@@ -21,7 +19,6 @@ class CaloHitCollection;
 // Geant
 class G4Event;
 
-namespace sim {
 class GeantFullSimAlg: public GaudiAlgorithm {
 public:
   GeantFullSimAlg(const std::string&, ISvcLocator*);
@@ -52,7 +49,6 @@ private:
   /// Handle for hadron calo hits
   DataHandle<CaloHitCollection> m_caloHits;
   /// Pointer to the interface of Geant Simulation service
-  IGeantSvc* m_geantSvc;
+  SmartIF<IGeantSvc> m_geantSvc;
 };
-}
 #endif /* SIMG4COMPONENTS_GEANTFULLSIMALG_H */

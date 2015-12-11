@@ -12,20 +12,20 @@ hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
-from Configurables import sim__GeantSvc
-geantservice = sim__GeantSvc("GeantSvc", config="GeantFastSimConfig")
+from Configurables import GeantSvc
+geantservice = GeantSvc("GeantSvc", config="GeantFastSimConfig")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import sim__GeantFastSimAlg, GeantFastSimConfig, SimpleSmear
-geantsim = sim__GeantFastSimAlg("GeantFastSimAlg")
+from Configurables import GeantFastSimAlg, GeantFastSimConfig, SimpleSmear
+geantsim = GeantFastSimAlg("GeantFastSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.particles.Path = "recParticles"
 geantsim.DataOutputs.particleassociation.Path = "particleMCparticleAssociation"
 fastsimconfig = GeantFastSimConfig("FastSimConfig", smearing = "SimpleSmear")
-geantsim.addTool(fastsimconfig)
+geantservice.addTool(fastsimconfig)
 smear = SimpleSmear("SimpleSmear", sigma = 0.015)
 fastsimconfig.addTool(smear)
 

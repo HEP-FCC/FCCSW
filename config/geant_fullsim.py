@@ -12,15 +12,15 @@ hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
-from Configurables import sim__GeantSvc
-geantservice = sim__GeantSvc("GeantSvc", config="GeantFullSimConfig")
+from Configurables import GeantSvc
+geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import sim__GeantFullSimAlg
-geantsim = sim__GeantFullSimAlg("GeantFullSimAlg")
+from Configurables import GeantFullSimAlg
+geantsim = GeantFullSimAlg("GeantFullSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.trackClusters.Path = "clusters"
 geantsim.DataOutputs.trackHits.Path = "hits"

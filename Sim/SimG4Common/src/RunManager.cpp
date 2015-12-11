@@ -21,6 +21,7 @@ StatusCode RunManager::start() {
 
 StatusCode RunManager::processEvent(G4Event* aEvent) {
   if(!m_prevEventTerminated) {
+    m_log<<MSG::ERROR<<"Trying to process an event, but previous event has not been terminated"<<endmsg;
     return StatusCode::FAILURE;
   }
   G4RunManager::currentEvent = aEvent;
@@ -33,7 +34,7 @@ StatusCode RunManager::processEvent(G4Event* aEvent) {
 
 StatusCode RunManager::retrieveEvent(const G4Event*& aEvent) {
   if(m_prevEventTerminated) {
-    m_log<<MSG::ERROR<<"Trying to retrieve an event, but no event has been processed by GEant"<<endmsg;
+    m_log<<MSG::ERROR<<"Trying to retrieve an event, but no event has been processed by Geant"<<endmsg;
     return StatusCode::FAILURE;
   }
   aEvent = G4RunManager::GetCurrentEvent();
@@ -41,6 +42,10 @@ StatusCode RunManager::retrieveEvent(const G4Event*& aEvent) {
 }
 
 StatusCode RunManager::terminateEvent() {
+  if(m_prevEventTerminated) {
+    m_log<<MSG::ERROR<<"Trying to terminate an event, but no event has been processed by Geant"<<endmsg;
+    return StatusCode::FAILURE;
+  }
   G4RunManager::TerminateOneEvent();
   m_prevEventTerminated = true;
   return StatusCode::SUCCESS;

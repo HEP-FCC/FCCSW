@@ -1,8 +1,5 @@
 #include "GeantFastSimAlg.h"
 
-// tmp
-#include <fstream>
-
 // FCCSW
 #include "SimG4Common/ParticleInformation.h"
 #include "SimG4Common/Units.h"
@@ -17,9 +14,8 @@
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 
-DECLARE_ALGORITHM_FACTORY(sim::GeantFastSimAlg)
+DECLARE_ALGORITHM_FACTORY(GeantFastSimAlg)
 
-namespace sim {
 GeantFastSimAlg::GeantFastSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
@@ -31,7 +27,8 @@ GeantFastSimAlg::~GeantFastSimAlg() {}
 StatusCode GeantFastSimAlg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
-  if (service("GeantSvc", m_geantSvc, true).isFailure()) {
+  m_geantSvc = service("GeantSvc");
+  if (! m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -48,7 +45,7 @@ StatusCode GeantFastSimAlg::execute() {
   m_geantSvc->processEvent(event);
   const G4Event* constevent;
   m_geantSvc->retrieveEvent(constevent);
-  // here save the output
+  // here save the output from constevent
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -83,5 +80,4 @@ G4Event* GeantFastSimAlg::EDM2G4() {
   m_recphandle.put(particles);
   m_partassociationhandle.put(associations);
   return g4_event;
-}
 }

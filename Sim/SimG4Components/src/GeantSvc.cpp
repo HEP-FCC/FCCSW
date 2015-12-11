@@ -3,17 +3,16 @@
 #include "GaudiKernel/IToolSvc.h"
 // FCCSW
 #include "DetDesInterfaces/IGeoSvc.h"
-#include "SimG4Interface/IGeantConfigTool.h"
 
 // Geant
 #include "G4Event.hh"
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_SERVICE_FACTORY(sim::GeantSvc)
+DECLARE_SERVICE_FACTORY(GeantSvc)
 
-namespace sim {
 GeantSvc::GeantSvc(const std::string& aName, ISvcLocator* aSL): base_class(aName, aSL) {
-  declareProperty("config", m_geantConfigName = "GeantFullSimConfig", "Configuration file" );
+  declareProperty("config", m_geantConfigTool);
+  declarePrivateTool(m_geantConfigTool);
 }
 
 GeantSvc::~GeantSvc(){}
@@ -24,16 +23,18 @@ StatusCode GeantSvc::initialize(){
     error()<<"Unable to initialize Service()"<<endmsg;
     return StatusCode::FAILURE;
   }
-  if (service("ToolSvc", m_toolSvc, true).isFailure()) {
+  m_toolSvc = service("ToolSvc");
+  if (!m_toolSvc) {
     error()<<"Unable to locate Tool Service"<<endmsg;
     return StatusCode::FAILURE;
   }
-  if (service("GeoSvc", m_geoSvc, true).isFailure()) {
+  m_geoSvc = service ("GeoSvc");
+  if (!m_geoSvc) {
     error()<<"Unable to locate Geometry Service"<<endmsg;
     return StatusCode::FAILURE;
   }
-  if (m_toolSvc->retrieveTool(m_geantConfigName, m_geantConfigTool).isFailure()) {
-    error()<<"Unable to locate Geometry Service"<<endmsg;
+  if (!m_geantConfigTool.retrieve()) {
+    error()<<"Unable to locate Geant configuration"<<endmsg;
     return StatusCode::FAILURE;
   }
   // Initialize Geant run manager
@@ -69,11 +70,10 @@ StatusCode GeantSvc::retrieveEvent(const G4Event*& aEvent) {
 }
 
 StatusCode GeantSvc::terminateEvent() {
-  m_runManager.TerminateOneEvent();
+  m_runManager.terminateEvent();
   return StatusCode::SUCCESS;
 }
 StatusCode GeantSvc::finalize() {
   m_runManager.finalize();
   return StatusCode::SUCCESS;
-}
 }
