@@ -69,7 +69,7 @@ StatusCode GeantSvc::retrieveEvent(const G4Event*& aEvent) {
 }
 
 StatusCode GeantSvc::terminateEvent() {
-  m_runManager.TerminateOneEvent();
+  m_runManager.terminateEvent();
   return StatusCode::SUCCESS;
 }
 StatusCode GeantSvc::finalize() {
