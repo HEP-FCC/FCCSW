@@ -27,7 +27,7 @@ GeantFastSimAlg::~GeantFastSimAlg() {}
 StatusCode GeantFastSimAlg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
-  m_geantSvc = service("GeantService");
+  m_geantSvc = service("GeantSvc");
   if (! m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;
