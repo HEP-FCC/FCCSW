@@ -3,15 +3,15 @@
 
 // FCCSW
 #include "SimG4Interface/IGeantSvc.h"
+#include "SimG4Interface/IGeantConfigTool.h"
 #include "SimG4Common/RunManager.h"
 class IGeoSvc;
-class IGeantConfigTool;
 
 //Gaudi
 #include "GaudiKernel/Service.h"
+#include "GaudiKernel/ToolHandle.h"
 class IToolSvc;
 
-namespace sim {
 class GeantSvc: public extends1<Service, IGeantSvc> {
 public:
   /// Standard constructor
@@ -25,17 +25,13 @@ public:
   StatusCode terminateEvent();
 private:
   /// Pointer to the tool service
-  IToolSvc* m_toolSvc;
+  SmartIF<IToolSvc> m_toolSvc;
   /// Pointer to the interface of geometry service
-  IGeoSvc* m_geoSvc;
+  SmartIF<IGeoSvc> m_geoSvc;
   /// Pointer to the Geant configuration tool
-  IGeantConfigTool* m_geantConfigTool;
-  /// Name of the IGeantConfigName (set by options)
-  std::string m_geantConfigName;
+  ToolHandle<IGeantConfigTool> m_geantConfigTool;
   /// Run Manager
-  RunManager m_runManager;
-  /* std::unique_ptr<RunManager> m_runManager; */
-  };
-}
+  sim::RunManager m_runManager;
+};
 
 #endif /* SIMG4COMPONENTS_GEANTSVC_H */

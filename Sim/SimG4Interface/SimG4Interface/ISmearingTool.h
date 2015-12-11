@@ -14,11 +14,10 @@ namespace CLHEP{
    @author    Anna Zaborowska
 */
 
-static const InterfaceID IID_ISmearingTool("ISmearingTool",1,0);
 
 class ISmearingTool : virtual public IAlgTool {
 public:
-   static const InterfaceID& interfaceID() { return IID_ISmearingTool; }
+  DeclareInterfaceID(ISmearingTool,1,0);
 
    /// Smear the momentum of the particle
    virtual StatusCode smearMomentum( CLHEP::Hep3Vector& aMom ) = 0;

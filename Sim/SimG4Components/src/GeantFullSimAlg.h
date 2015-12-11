@@ -6,9 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-namespace sim {
 class IGeantSvc;
-}
 
 // albers
 class MCParticleCollection;
@@ -19,7 +17,6 @@ class TrackClusterHitsAssociationCollection;
 // Geant
 class G4Event;
 
-namespace sim {
 class GeantFullSimAlg: public GaudiAlgorithm {
 public:
   GeantFullSimAlg(const std::string&, ISvcLocator*);
@@ -30,7 +27,7 @@ public:
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
-    private:
+private:
   /// Converter between EDM and G4Event
   G4Event* EDM2G4();
   /// Save tracker hits.
@@ -44,7 +41,6 @@ public:
   /// Handle for tracker hits-clusters associations
   DataHandle<TrackClusterHitsAssociationCollection> m_trackHitsClusters;
   /// Pointer to the interface of Geant Simulation service
-  IGeantSvc* m_geantSvc;
+  SmartIF<IGeantSvc> m_geantSvc;
 };
-}
 #endif /* SIMG4COMPONENTS_GEANTFULLSIMALG_H */

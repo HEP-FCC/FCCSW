@@ -17,9 +17,8 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_ALGORITHM_FACTORY(sim::GeantFullSimAlg)
+DECLARE_ALGORITHM_FACTORY(GeantFullSimAlg)
 
-namespace sim {
 GeantFullSimAlg::GeantFullSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
@@ -32,7 +31,8 @@ GeantFullSimAlg::~GeantFullSimAlg() {}
 StatusCode GeantFullSimAlg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
-  if (service("GeantSvc", m_geantSvc, true).isFailure()) {
+  m_geantSvc = service("GeantSvc");
+  if (!m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -114,5 +114,4 @@ void GeantFullSimAlg::SaveTrackerHits(const G4Event* aEvent) {
     m_trackHits.put(edmHits);
     m_trackHitsClusters.put(edmAssociations);
   }
-}
 }
