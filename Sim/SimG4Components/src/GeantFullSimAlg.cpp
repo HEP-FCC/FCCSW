@@ -1,3 +1,4 @@
+#include <iostream>
 #include "GeantFullSimAlg.h"
 
 // FCCSW
@@ -9,6 +10,8 @@
 #include "datamodel/TrackClusterCollection.h"
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackClusterHitsAssociationCollection.h"
+#include "datamodel/CaloClusterCollection.h"
+#include "datamodel/CaloHitCollection.h"
 
 // Geant
 #include "G4HCofThisEvent.hh"
@@ -26,6 +29,8 @@ GaudiAlgorithm(aName, aSvcLoc) {
   declareOutput("trackClusters", m_trackClusters);
   declareOutput("trackHits", m_trackHits);
   declareOutput("trackHitsClusters", m_trackHitsClusters);
+  declareOutput("caloClusters", m_caloClusters);
+  declareOutput("caloHits", m_caloHits);
 }
 GeantFullSimAlg::~GeantFullSimAlg() {}
 
@@ -51,6 +56,7 @@ StatusCode GeantFullSimAlg::execute() {
   m_geantSvc->retrieveEvent(constevent);
   // here specify what is the output of interest
   SaveTrackerHits(constevent);
+  saveHCalDeposits(*constevent);
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -88,6 +94,8 @@ void GeantFullSimAlg::SaveTrackerHits(const G4Event* aEvent) {
     TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
+      if (collect->GetName().operator==("BarHCal_Readout"))
+        continue;
       // HERE: check if it's tracker coll
       int n_hit = collect->GetSize();
       debug() << "     " << n_hit<< " hits are stored in collection #"<<iter_coll<<endmsg;
@@ -113,6 +121,52 @@ void GeantFullSimAlg::SaveTrackerHits(const G4Event* aEvent) {
     m_trackClusters.put(edmClusters);
     m_trackHits.put(edmHits);
     m_trackHitsClusters.put(edmAssociations);
+  }
+}
+
+void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
+  // G4HCofThisEvent* collections = aEvent->GetHCofThisEvent();
+  G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
+  G4VHitsCollection* collect;
+  DD4hep::Simulation::Geant4CalorimeterHit* hit;
+  if(collections) {
+    CaloClusterCollection* edmClusters = new CaloClusterCollection();
+    CaloHitCollection* edmHits = new CaloHitCollection();
+    // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
+    for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
+      collect = collections->GetHC(iter_coll);
+      if (collect->GetName().operator==("BarHCal_Readout")) {
+        unsigned int n_hit = collect->GetSize();
+        debug() << "     " << n_hit<< " hits are stored in collection #"<<iter_coll<<endmsg;
+        for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
+          hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
+          debug() << hit->cellID << " ";
+          debug() << hit->energyDeposit << " ";
+
+          debug() << hit->position.x() << " ";
+          debug() << hit->position.y() << " ";
+          debug() << hit->position.z() << endmsg;
+
+          CaloHitHandle edmHit = edmHits->create();
+          CaloClusterHandle edmCluster = edmClusters->create();
+          BareHit& edmHitCore = edmHit.mod().Core;
+          BareCluster& edmClusterCore = edmCluster.mod().Core;
+          edmHitCore.Cellid = hit->cellID;
+          edmHitCore.Energy = hit->energyDeposit;
+
+          edmClusterCore.position.X = hit->position.x();
+          edmClusterCore.position.Y = hit->position.y();
+          edmClusterCore.position.Z = hit->position.z();
+          edmClusterCore.Energy = hit->energyDeposit;
+
+          // CaloClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
+          // edmAssociation.mod().Cluster = edmCluster;
+          // edmAssociation.mod().Hit = edmHit;
+        }
+      }
+    }
+    m_caloClusters.put(edmClusters);
+    m_caloHits.put(edmHits);
   }
 }
 }
