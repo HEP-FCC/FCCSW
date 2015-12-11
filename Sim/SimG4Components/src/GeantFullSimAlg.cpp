@@ -169,4 +169,4 @@ void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
     m_caloHits.put(edmHits);
   }
 }
-}
+
