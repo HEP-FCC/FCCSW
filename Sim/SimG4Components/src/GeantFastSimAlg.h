@@ -21,11 +21,11 @@ public:
   GeantFastSimAlg(const std::string&, ISvcLocator*);
   virtual ~GeantFastSimAlg();
   /// Initialize.
-  virtual StatusCode initialize();
+  virtual StatusCode initialize() final;
   /// Execute.
-  virtual StatusCode execute();
+  virtual StatusCode execute() final;
   /// Finalize.
-  virtual StatusCode finalize();
+  virtual StatusCode finalize() final;
   private:
   /// Converter between EDM and G4Event
   G4Event* EDM2G4();

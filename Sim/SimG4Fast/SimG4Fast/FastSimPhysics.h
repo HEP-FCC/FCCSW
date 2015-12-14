@@ -19,8 +19,8 @@ public:
    FastSimPhysics(const G4String& aName);
    FastSimPhysics();
    virtual ~FastSimPhysics();
-   virtual void ConstructProcess();
-   virtual void ConstructParticle();
+   virtual void ConstructProcess() final;
+   virtual void ConstructParticle() final;
 };
 
 #endif

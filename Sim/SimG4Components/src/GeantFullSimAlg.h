@@ -24,18 +24,18 @@ public:
   GeantFullSimAlg(const std::string&, ISvcLocator*);
   virtual ~GeantFullSimAlg();
   /// Initialize.
-  virtual StatusCode initialize();
+  virtual StatusCode initialize() final;
   /// Execute.
-  virtual StatusCode execute();
+  virtual StatusCode execute() final;
   /// Finalize.
-  virtual StatusCode finalize();
+  virtual StatusCode finalize() final;
 private:
   /// Converter between EDM and G4Event
   G4Event* EDM2G4();
-  /// Save tracker hits.
-  void SaveTrackerHits(const G4Event*);
   /// Save hadronic calorimeter deposits
   void saveHCalDeposits(const G4Event&);
+  /// Save tracker hits.
+  void saveTrackerHits(const G4Event*);
   /// Handle for the EDM MC particles to be read
   DataHandle<MCParticleCollection> m_genParticles;
   /// Handle for tracker clusters

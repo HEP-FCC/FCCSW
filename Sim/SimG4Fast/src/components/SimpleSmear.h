@@ -21,13 +21,13 @@ public:
                const IInterface* parent);
    virtual ~SimpleSmear();
 
-   virtual StatusCode initialize();
+   virtual StatusCode initialize() final;
 
    /// Implementation of ISmearingTool method that smears the momentum of the particle
-   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom);
+   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom) final;
 
    /// Implementation of ISmearingTool method that smears the energy of the particle
-   virtual StatusCode smearEnergy(double& aEn);
+   virtual StatusCode smearEnergy(double& aEn) final;
 private:
    /// Constant resolution for the smearing (set by job options)
    double m_sigma;

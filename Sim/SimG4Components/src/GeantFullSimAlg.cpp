@@ -55,8 +55,8 @@ StatusCode GeantFullSimAlg::execute() {
   const G4Event* constevent;
   m_geantSvc->retrieveEvent(constevent);
   // here specify what is the output of interest
-  SaveTrackerHits(constevent);
   saveHCalDeposits(*constevent);
+  saveTrackerHits(constevent);
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -84,7 +84,7 @@ G4Event* GeantFullSimAlg::EDM2G4() {
   return g4_event;
 }
 
-void GeantFullSimAlg::SaveTrackerHits(const G4Event* aEvent) {
+void GeantFullSimAlg::saveTrackerHits(const G4Event* aEvent) {
   G4HCofThisEvent* collections = aEvent->GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4TrackerHit* hit;

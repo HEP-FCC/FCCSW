@@ -14,7 +14,7 @@ public:
    SaveParticlesTrackingAction();
    virtual ~SaveParticlesTrackingAction();
    /// Defines the actions at the end of processing the track.
-   virtual void  PostUserTrackingAction(const G4Track*);
+   virtual void  PostUserTrackingAction(const G4Track*) final;
 
 };
 #endif

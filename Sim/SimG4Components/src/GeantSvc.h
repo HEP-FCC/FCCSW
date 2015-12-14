@@ -18,8 +18,8 @@ public:
   GeantSvc(const std::string& aName, ISvcLocator* aSL);
   /// Standard destructor
   virtual ~GeantSvc();
-  virtual StatusCode initialize();
-  virtual StatusCode finalize();
+  virtual StatusCode initialize() final;
+  virtual StatusCode finalize() final;
   StatusCode processEvent(G4Event* aEvent);
   StatusCode retrieveEvent(const G4Event*& aEvent);
   StatusCode terminateEvent();
