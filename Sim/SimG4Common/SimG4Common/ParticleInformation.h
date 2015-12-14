@@ -30,7 +30,7 @@ public:
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
-  virtual void Print() const;
+  virtual void Print() const final;
   /** Getter of the handle to the MCParticle.
    *  @returns handle to the EDM MCParticle.
    */
