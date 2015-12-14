@@ -42,6 +42,7 @@ public:
   StatusCode processEvent(G4Event* aEvent);
   /** Retrieves an event.
    *  It allows to retrieve the event containing the data that may be stored (eg. collections of hits in the sensitive detectors).
+   *  The lifetime of the pointer to G4Event ends when method terminateEvent() is called.
    *  @param[out] aEvent a processed event
    *  @returns the status code
    */

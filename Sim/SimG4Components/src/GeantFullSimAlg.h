@@ -31,7 +31,7 @@ private:
   /// Converter between EDM and G4Event
   G4Event* EDM2G4();
   /// Save tracker hits.
-  void SaveTrackerHits(const G4Event*);
+  void saveTrackerHits(const G4Event*);
   /// Handle for the EDM MC particles to be read
   DataHandle<MCParticleCollection> m_genParticles;
   /// Handle for tracker clusters
