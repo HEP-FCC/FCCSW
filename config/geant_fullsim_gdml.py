@@ -16,8 +16,10 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import GeantSvc
-geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig", detector='DD4hepDetector')
+from Configurables import GeantSvc, GdmlDetector
+det = GdmlDetector("GdmlDetector", gdml = "Sim/SimG4Common/gdml/example.xml")
+geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig", detector="GdmlDetector")
+geantservice.addTool(det)
 
 from Configurables import GeantFullSimAlg
 geantsim = GeantFullSimAlg("GeantFullSimAlg")

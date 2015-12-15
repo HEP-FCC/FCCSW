@@ -39,14 +39,14 @@ public:
    *  @param[in] aEvent a generated event to be processed in a simulation
    *  @returns the status code
    */
-  StatusCode processEvent(G4Event* aEvent);
+  StatusCode processEvent(G4Event& aEvent);
   /** Retrieves an event.
    *  It allows to retrieve the event containing the data that may be stored (eg. collections of hits in the sensitive detectors).
    *  The lifetime of the pointer to G4Event ends when method terminateEvent() is called.
    *  @param[out] aEvent a processed event
    *  @returns the status code
    */
-  StatusCode retrieveEvent(const G4Event*& aEvent);
+  StatusCode retrieveEvent(G4Event*& aEvent);
   /** Termination of the event processing.
    *  @returns the status code
    */

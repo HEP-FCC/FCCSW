@@ -35,7 +35,7 @@ private:
   /// Save hadronic calorimeter deposits
   void saveHCalDeposits(const G4Event&);
   /// Save tracker hits.
-  void saveTrackerHits(const G4Event*);
+  void saveTrackerHits(const G4Event&);
   /// Handle for the EDM MC particles to be read
   DataHandle<MCParticleCollection> m_genParticles;
   /// Handle for tracker clusters

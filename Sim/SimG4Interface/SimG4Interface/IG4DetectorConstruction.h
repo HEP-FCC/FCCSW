@@ -1,8 +1,8 @@
 #ifndef SIM_IG4DETECTORCONSTRUCTION_H
-#define SIM_IG4DETECTORCONSTRUCTION_H 1 
+#define SIM_IG4DETECTORCONSTRUCTION_H
 
 /// Include files from the Framework
-#include  "GaudiKernel/AlgTool.h"
+#include  "GaudiKernel/IAlgTool.h"
 
 // Forward declarations from Geant4
 class G4VUserDetectorConstruction;
@@ -14,35 +14,22 @@ class G4VUserDetectorConstruction;
  *  @author Benedikt HEGNER
  */
 
-class IG4DetectorConstruction : virtual public AlgTool {
+class IG4DetectorConstruction : virtual public IAlgTool {
 public:
-  
+
   /// Retrieve interface ID
-  static const InterfaceID& interfaceID() ;
-  
-  /**  initialize 
-   *   @return status code 
+  DeclareInterfaceID(IG4DetectorConstruction,1,0) ;
+
+  /**  initialize
+   *   @return status code
    */
   virtual StatusCode   initialize() = 0 ;
-  
-  /**  initialize 
-   *   @return status code 
-   */
-  virtual StatusCode   finalize() = 0 ;
 
-  /** get initilization hook
+  /** get initilization hook for the geometry
    *  @return pointer to G4VUserDetectorConstruction
    */
    virtual G4VUserDetectorConstruction* getDetectorConstruction() = 0 ;
 
-protected:
-  
-  /// virtual destructor
-  virtual ~IG4DetectorConstruction();
-
 };
 
-// ============================================================================
-#endif 
-// ============================================================================
-
+#endif /*SIM_IG4DETECTORCONSTRUCTION_H */
