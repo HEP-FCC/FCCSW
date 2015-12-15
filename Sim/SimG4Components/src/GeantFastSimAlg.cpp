@@ -42,8 +42,8 @@ StatusCode GeantFastSimAlg::execute() {
     error() << "Unable to translate EDM MC data to G4Event" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geantSvc->processEvent(event);
-  const G4Event* constevent;
+  m_geantSvc->processEvent(*event);
+  G4Event* constevent;
   m_geantSvc->retrieveEvent(constevent);
   // here save the output from constevent
   m_geantSvc->terminateEvent();

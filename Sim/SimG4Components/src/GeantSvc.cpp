@@ -54,7 +54,7 @@ StatusCode GeantSvc::initialize(){
   }
   return StatusCode::SUCCESS;
 }
-StatusCode GeantSvc::processEvent(G4Event* aEvent) {
+StatusCode GeantSvc::processEvent(G4Event& aEvent) {
   bool status = m_runManager.processEvent( aEvent );
   if ( !status ) {
      error() << "Unable to process event in Geant" << endmsg;
@@ -62,7 +62,7 @@ StatusCode GeantSvc::processEvent(G4Event* aEvent) {
   }
   return StatusCode::SUCCESS;
 }
-StatusCode GeantSvc::retrieveEvent(const G4Event*& aEvent) {
+StatusCode GeantSvc::retrieveEvent(G4Event*& aEvent) {
   return m_runManager.retrieveEvent(aEvent);
 }
 

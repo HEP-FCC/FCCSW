@@ -20,8 +20,8 @@ public:
   virtual ~GeantSvc();
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
-  StatusCode processEvent(G4Event* aEvent);
-  StatusCode retrieveEvent(const G4Event*& aEvent);
+  StatusCode processEvent(G4Event& aEvent);
+  StatusCode retrieveEvent(G4Event*& aEvent);
   StatusCode terminateEvent();
 private:
   /// Pointer to the tool service

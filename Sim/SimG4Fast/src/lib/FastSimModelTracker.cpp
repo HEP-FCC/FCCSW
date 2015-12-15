@@ -10,7 +10,7 @@
 // FCCSW
 #include "SimG4Interface/ISmearingTool.h"
 
-FastSimModelTracker::FastSimModelTracker(const std::string aModelName, G4Region* aEnvelope, std::string aSmearToolName)
+FastSimModelTracker::FastSimModelTracker(const std::string aModelName, G4Region* aEnvelope, std::string& aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {
    if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())
       throw GaudiException("Smearing tool "+aSmearToolName+" not found",

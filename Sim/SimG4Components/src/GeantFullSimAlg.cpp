@@ -46,11 +46,11 @@ StatusCode GeantFullSimAlg::execute() {
     error() << "Unable to translate EDM MC data to G4Event" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geantSvc->processEvent(event);
-  const G4Event* constevent;
+  m_geantSvc->processEvent(*event);
+  G4Event* constevent;
   m_geantSvc->retrieveEvent(constevent);
   // here specify what is the output of interest
-  saveTrackerHits(constevent);
+  saveTrackerHits(*constevent);
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -78,8 +78,8 @@ G4Event* GeantFullSimAlg::EDM2G4() {
   return g4_event;
 }
 
-void GeantFullSimAlg::saveTrackerHits(const G4Event* aEvent) {
-  G4HCofThisEvent* collections = aEvent->GetHCofThisEvent();
+void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
+  G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4TrackerHit* hit;
   if(collections) {
