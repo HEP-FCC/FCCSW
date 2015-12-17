@@ -25,7 +25,8 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.trackClusters.Path = "clusters"
 geantsim.DataOutputs.trackHits.Path = "hits"
 geantsim.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-
+geantsim.DataOutputs.caloClusters.Path = "caloClusters"
+geantsim.DataOutputs.caloHits.Path = "caloHits"
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",
