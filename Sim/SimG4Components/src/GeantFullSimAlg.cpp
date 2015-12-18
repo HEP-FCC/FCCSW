@@ -88,7 +88,7 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4TrackerHit* hit;
-  if(collections) {
+  if(collections != nullptr) {
     TrackClusterCollection* edmClusters = new TrackClusterCollection();
     TrackHitCollection* edmHits = new TrackHitCollection();
     TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
@@ -129,7 +129,7 @@ void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;
-  if(collections) {
+  if(collections != nullptr) {
     CaloClusterCollection* edmClusters = new CaloClusterCollection();
     CaloHitCollection* edmHits = new CaloHitCollection();
     // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
