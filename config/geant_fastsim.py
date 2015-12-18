@@ -9,23 +9,23 @@ reader.DataOutputs.hepmc.Path = "hepmc"
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
 hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
-hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
+hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
+hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml', OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml',
+                    OutputLevel = DEBUG)
 
-from Configurables import Geant4Simulation
-geant4simulation = Geant4Simulation("Geant4Simulation", config="GeantFastSimConfig")
-geant4simulation.DataInputs.genparticles.Path="all_genparticles"
-geant4simulation.DataOutputs.particles.Path = "recparticles"
-geant4simulation.DataOutputs.particleassociation.Path = "particleMCparticle"
+from Configurables import GeantSvc
+geantservice = GeantSvc("GeantSvc", config="GeantFastSimConfig", detector='DD4hepDetector')
 
-from Configurables import GeantFastSimConfig
+from Configurables import GeantFastSimAlg, GeantFastSimConfig, SimpleSmear
+geantsim = GeantFastSimAlg("GeantFastSimAlg")
+geantsim.DataInputs.genParticles.Path="allGenParticles"
+geantsim.DataOutputs.particles.Path = "recParticles"
+geantsim.DataOutputs.particleassociation.Path = "particleMCparticleAssociation"
 fastsimconfig = GeantFastSimConfig("FastSimConfig", smearing = "SimpleSmear")
-geant4simulation.addTool(fastsimconfig)
-
-from Configurables import SimpleSmear
+geantservice.addTool(fastsimconfig)
 smear = SimpleSmear("SimpleSmear", sigma = 0.015)
 fastsimconfig.addTool(smear)
 
@@ -34,9 +34,9 @@ out = AlbersOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geant4simulation, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [albersevent, geoservice],
+                ExtSvc = [albersevent, geoservice, geantservice], # order! geo needed by geant
                 OutputLevel=DEBUG
  )

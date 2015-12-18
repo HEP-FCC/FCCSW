@@ -19,13 +19,13 @@ public:
                const IInterface* parent);
    virtual ~GeantFullSimConfig();
 
-   virtual StatusCode initialize();
+   virtual StatusCode initialize() final;
 
-   virtual G4VModularPhysicsList* getPhysicsList();
+   virtual G4VModularPhysicsList* getPhysicsList() final;
 
-   virtual G4VUserActionInitialization* getActionInitialization();
+   virtual G4VUserActionInitialization* getActionInitialization() final;
 
-   virtual StatusCode getOtherSettings();
+   virtual StatusCode getOtherSettings() final;
 private:
    G4VUserActionInitialization* m_actions;
 };

@@ -10,7 +10,6 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens) {
     string det_name = x_det.nameStr();
     //Make DetElement
     DetElement simpletracker(det_name, x_det.id());
-    std::cout<<"sdjfksdhfsdjhfkjsdhfkjsdhfkjdshfkjdshfkjshfoehfsfkj "<<det_name<<std::endl;
     //get status for the RecoGeometry
     xml_comp_t x_status = x_det.child(_U(status));
     int status     = x_status.id();
@@ -25,7 +24,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens) {
     //Place Volume
     Volume mother_vol = lcdd.pickMotherVolume(simpletracker);
     PlacedVolume placedTube = mother_vol.placeVolume(tube_vol);
-    placedTube.addPhysVolID("tracker",simpletracker.id());
+    placedTube.addPhysVolID(det_name,simpletracker.id());
     simpletracker.setPlacement(placedTube);
 
     return simpletracker;

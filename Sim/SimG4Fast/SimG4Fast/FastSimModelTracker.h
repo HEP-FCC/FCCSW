@@ -24,7 +24,7 @@ public:
       @param aModelName A name of the fast simulation model.
       @param aEnvelope A region where the model can take over the ordinary tracking.
     */
-   FastSimModelTracker (const std::string aModelName, G4Region* aEnvelope, std::string);
+   FastSimModelTracker (const std::string aModelName, G4Region* aEnvelope, std::string&);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
@@ -35,18 +35,18 @@ public:
       Checks if this model should be applied to this particle type.
       @param aParticle A particle definition (type).
     */
-   virtual G4bool IsApplicable(const G4ParticleDefinition& aParticle);
+   virtual G4bool IsApplicable(const G4ParticleDefinition& aParticle) final;
    /**
       Checks if the model should be applied taking into account the kinematics of a track.
       @param aFastTrack A track.
     */
-   virtual G4bool ModelTrigger(const G4FastTrack & aFastTrack);
+   virtual G4bool ModelTrigger(const G4FastTrack & aFastTrack) final;
    /**
       Smears the energy deposit and saves it, together with the position of the deposit, the detector resolution and efficiency to the PrimaryParticleInformation.
       @param aFastTrack A track.
       @param aFastStep A step.
     */
-   virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep);
+   virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep) final;
 
 private:
    /// Tool Service

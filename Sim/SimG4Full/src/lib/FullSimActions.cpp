@@ -1,4 +1,4 @@
-#include "FullSimActions.h"
+#include "SimG4Full/FullSimActions.h"
 
 FullSimActions::FullSimActions(): G4VUserActionInitialization() {}
 

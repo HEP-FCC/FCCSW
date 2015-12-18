@@ -13,7 +13,7 @@ public:
    FullSimActions();
    ~FullSimActions();
    /// A method where all  user actions are created.
-   virtual void Build() const;
+   virtual void Build() const final;
 };
 
 

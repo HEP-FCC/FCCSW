@@ -15,10 +15,10 @@ DECLARE_COMPONENT(GeoSvc)
 
 GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) :
 base_class(name, svc),
-m_dd4hepgeo(0),
-m_geant4geo(0),
-m_log(msgSvc(), name) {
-   declareProperty("detector", m_xmlFileName = "", "XML file with detector description");
+  m_dd4hepgeo(0),
+  m_geant4geo(0),
+  m_log(msgSvc(), name) {
+  declareProperty("detector", m_xmlFileName = "", "XML file with detector description");
 }
 
 GeoSvc::~GeoSvc() {

@@ -14,7 +14,7 @@
 #include "SimG4Fast/FastSimPhysics.h"
 #include "SimG4Fast/FastSimModelTracker.h"
 #include "SimG4Fast/FastSimActions.h"
-#include "SimG4Components/ISmearingTool.h"
+#include "SimG4Interface/ISmearingTool.h"
 
 DECLARE_COMPONENT(GeantFastSimConfig)
 

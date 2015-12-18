@@ -1,12 +1,9 @@
 #include "GeantFullSimConfig.h"
 
-// Gaudi
-#include "GaudiKernel/DeclareFactoryEntries.h"
-
 // Geant4
 #include "FTFP_BERT.hh"
 #include "G4VModularPhysicsList.hh"
-#include "GeantGeneral/FullSimActions.h"
+#include "SimG4Full/FullSimActions.h"
 
 DECLARE_COMPONENT(GeantFullSimConfig)
 

@@ -12,7 +12,7 @@ find_package(DD4hep)
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 
-set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake ) 
+set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
