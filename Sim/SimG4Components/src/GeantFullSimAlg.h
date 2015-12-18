@@ -13,6 +13,8 @@ class MCParticleCollection;
 class TrackClusterCollection;
 class TrackHitCollection;
 class TrackClusterHitsAssociationCollection;
+class CaloClusterCollection;
+class CaloHitCollection;
 
 // Geant
 class G4Event;
@@ -30,6 +32,8 @@ public:
 private:
   /// Converter between EDM and G4Event
   G4Event* EDM2G4();
+  /// Save hadronic calorimeter deposits
+  void saveHCalDeposits(const G4Event&);
   /// Save tracker hits.
   void saveTrackerHits(const G4Event&);
   /// Handle for the EDM MC particles to be read
@@ -40,6 +44,10 @@ private:
   DataHandle<TrackHitCollection> m_trackHits;
   /// Handle for tracker hits-clusters associations
   DataHandle<TrackClusterHitsAssociationCollection> m_trackHitsClusters;
+  /// Handle for hadron calo clusters
+  DataHandle<CaloClusterCollection> m_caloClusters;
+  /// Handle for hadron calo hits
+  DataHandle<CaloHitCollection> m_caloHits;
   /// Pointer to the interface of Geant Simulation service
   SmartIF<IGeantSvc> m_geantSvc;
 };
