@@ -13,6 +13,8 @@ GeantSvc::GeantSvc(const std::string& aName, ISvcLocator* aSL): base_class(aName
   declarePrivateTool(m_geantConfigTool);
   declareProperty("detector", m_detectorTool);
   declarePrivateTool(m_detectorTool);
+  declareProperty("physicslist", m_physicsListTool);
+  declarePrivateTool(m_physicsListTool);
 }
 
 GeantSvc::~GeantSvc(){}
@@ -36,10 +38,14 @@ StatusCode GeantSvc::initialize(){
     error()<<"Unable to retrieve detector construction"<<endmsg;
     return StatusCode::FAILURE;
   }
+  if (!m_physicsListTool.retrieve()) {
+    error()<<"Unable to retrieve physics list"<<endmsg;
+    return StatusCode::FAILURE;
+  }
 
   // Initialize Geant run manager
   // Load physics list, deleted in ~G4RunManager()
-  m_runManager.SetUserInitialization(m_geantConfigTool->getPhysicsList());
+  m_runManager.SetUserInitialization(m_physicsListTool->getPhysicsList());
   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_detectorTool->getDetectorConstruction());
   m_runManager.Initialize();
