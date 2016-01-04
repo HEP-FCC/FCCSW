@@ -1,10 +1,10 @@
-#ifndef GIGA_IG4PHYSICSLIST_H
-#define GIGA_IG4PHYSICSLIST_H 1 
+#ifndef SIM_IG4PHYSICSLIST_H
+#define SIM_IG4PHYSICSLIST_H
 
-/// Include files from the Framework
-#include  "GaudiKernel/AlgTool.h"
+// Gaudi
+#include  "GaudiKernel/IAlgTool.h"
 
-// Forward declarations from Geant4
+// Geant4
 class G4VModularPhysicsList;
 
 /** @class IG4PhysicsList IG4PhysicsList.h SimG4Interface/IG4PhysicsList.h
@@ -14,34 +14,22 @@ class G4VModularPhysicsList;
  *  @author Benedikt HEGNER
  */
 
-class IG4PhysicsList : virtual public AlgTool {
+class IG4PhysicsList : virtual public IAlgTool {
 public:
-  
-  /// Retrieve interface ID
-  static const InterfaceID& interfaceID() ;
-  
-  /**  initialize 
-   *   @return status code 
-   */
-  virtual StatusCode   initialize() = 0 ;
-  
-  /**  initialize 
-   *   @return status code 
-   */
-  virtual StatusCode   finalize() = 0 ;
 
-  /** get initilization hook
+  /// Retrieve interface ID
+  DeclareInterfaceID(IG4PhysicsList,1,0);
+
+  /**  initialize
+   *   @return status code
+   */
+  virtual StatusCode   initialize() = 0;
+
+  /** get initilization hook for the physics list
    *  @return  pointer to G4VModularPhysicsList
    */
-   virtual G4VModularPhysicsList* getPhysicsList() = 0 ;
-
-protected:
-  
-  /// virtual destructor
-  virtual ~IG4PhysicsList();
+   virtual G4VModularPhysicsList* getPhysicsList() = 0;
 
 };
 
-// ============================================================================
-#endif 
-// ============================================================================
+#endif /* SIM_IG4PHYSICSLIST_H */
