@@ -17,9 +17,9 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
                     OutputLevel = DEBUG)
 
 from Configurables import GeantSvc
-geantservice = GeantSvc("GeantSvc", config="GeantFastSimConfig", physicslist='G4FastSimPhysicsList', detector='DD4hepDetector')
+geantservice = GeantSvc("GeantSvc", detector='DD4hepDetector', physicslist='G4FastSimPhysicsList', actions="G4FastSimActions")
 
-from Configurables import GeantFastSimAlg, GeantFastSimConfig, SimpleSmear, G4FastSimPhysicsList
+from Configurables import GeantFastSimAlg, G4FastSimPhysicsList
 geantsim = GeantFastSimAlg("GeantFastSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.particles.Path = "recParticles"
@@ -27,11 +27,6 @@ geantsim.DataOutputs.particleassociation.Path = "particleMCparticleAssociation"
 
 physicslist = G4FastSimPhysicsList("G4FastSimPhysicsList", fullphysics="G4FTFP_BERT")
 geantservice.addTool(physicslist)
-
-fastsimconfig = GeantFastSimConfig("FastSimConfig", smearing = "SimpleSmear")
-geantservice.addTool(fastsimconfig)
-smear = SimpleSmear("SimpleSmear", sigma = 0.015)
-fastsimconfig.addTool(smear)
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",

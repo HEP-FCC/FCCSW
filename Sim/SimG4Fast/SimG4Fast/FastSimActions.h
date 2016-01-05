@@ -1,13 +1,15 @@
-#ifndef GEANT_FAST_ACTIONS_H
-#define GEANT_FAST_ACTIONS_H
+#ifndef SIM_FASTSIMACTIONS_H
+#define SIM_FASTSIMACTIONS_H
 
 #include "G4VUserActionInitialization.hh"
 
-/**
+/** @class FastSimActions FastSimActions.h SimG4Fast/FastSimActions.h
+ *
    @brief     User action initialization.
    @author    Anna Zaborowska
 */
 
+namespace sim {
 class FastSimActions : public G4VUserActionInitialization {
 public:
    FastSimActions();
@@ -15,6 +17,6 @@ public:
    /// A method where all  user actions are created.
    virtual void Build() const final;
 };
+}
 
-
-#endif
+#endif /* SIM_FASTSIMACTIONS_H */
