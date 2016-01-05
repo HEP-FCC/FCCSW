@@ -17,7 +17,7 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
                     OutputLevel = DEBUG)
 
 from Configurables import GeantSvc
-geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig", physicslist="G4FTFP_BERT", detector='DD4hepDetector')
+geantservice = GeantSvc("GeantSvc", detector='DD4hepDetector', physicslist="G4FTFP_BERT", actions="G4FullSimActions", )
 
 from Configurables import GeantFullSimAlg
 geantsim = GeantFullSimAlg("GeantFullSimAlg")

@@ -4,9 +4,9 @@
 // FCCSW
 #include "SimG4Common/RunManager.h"
 #include "SimG4Interface/IGeantSvc.h"
-#include "SimG4Interface/IGeantConfigTool.h"
 #include "SimG4Interface/IG4DetectorConstruction.h"
 #include "SimG4Interface/IG4PhysicsList.h"
+#include "SimG4Interface/IG4ActionTool.h"
 
 //Gaudi
 #include "GaudiKernel/Service.h"
@@ -27,12 +27,12 @@ public:
 private:
   /// Pointer to the tool service
   SmartIF<IToolSvc> m_toolSvc;
-  /// Pointer to the detector construction tool
+  /// Handle for the detector construction tool
   ToolHandle<IG4DetectorConstruction> m_detectorTool;
-  /// Pointer to the Geant configuration tool
-  ToolHandle<IGeantConfigTool> m_geantConfigTool;
-  /// Pointer to the Geant physics list tool
+  /// Handle for the Geant physics list tool
   ToolHandle<IG4PhysicsList> m_physicsListTool;
+  /// Handle for the list of user actions
+  ToolHandle<IG4ActionTool> m_actionsTool;
   /// Run Manager
   sim::RunManager m_runManager;
 };
