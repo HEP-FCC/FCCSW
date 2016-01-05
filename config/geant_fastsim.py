@@ -17,13 +17,17 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
                     OutputLevel = DEBUG)
 
 from Configurables import GeantSvc
-geantservice = GeantSvc("GeantSvc", config="GeantFastSimConfig", detector='DD4hepDetector')
+geantservice = GeantSvc("GeantSvc", config="GeantFastSimConfig", physicslist='G4FastSimPhysicsList', detector='DD4hepDetector')
 
-from Configurables import GeantFastSimAlg, GeantFastSimConfig, SimpleSmear
+from Configurables import GeantFastSimAlg, GeantFastSimConfig, SimpleSmear, G4FastSimPhysicsList
 geantsim = GeantFastSimAlg("GeantFastSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.particles.Path = "recParticles"
 geantsim.DataOutputs.particleassociation.Path = "particleMCparticleAssociation"
+
+physicslist = G4FastSimPhysicsList("G4FastSimPhysicsList", fullphysics="G4FTFP_BERT")
+geantservice.addTool(physicslist)
+
 fastsimconfig = GeantFastSimConfig("FastSimConfig", smearing = "SimpleSmear")
 geantservice.addTool(fastsimconfig)
 smear = SimpleSmear("SimpleSmear", sigma = 0.015)
@@ -38,5 +42,5 @@ ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 ExtSvc = [albersevent, geoservice, geantservice], # order! geo needed by geant
-                OutputLevel=DEBUG
+                OutputLevel=INFO
  )

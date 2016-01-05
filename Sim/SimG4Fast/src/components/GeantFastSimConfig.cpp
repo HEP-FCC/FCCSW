@@ -21,7 +21,7 @@ DECLARE_COMPONENT(GeantFastSimConfig)
 GeantFastSimConfig::GeantFastSimConfig(const std::string& type, const std::string& name, const IInterface* parent) :
 GaudiTool(type, name, parent), m_actions(nullptr) {
    declareInterface<IGeantConfigTool>(this);
-   declareProperty ("smearing", m_smearToolName = "SimpleSmear" ) ;
+   declareProperty ("smearing", m_smearToolName = "SimpleSmear" );
 }
 
 GeantFastSimConfig::~GeantFastSimConfig() {}

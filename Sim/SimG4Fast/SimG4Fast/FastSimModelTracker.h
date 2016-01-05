@@ -24,12 +24,12 @@ public:
       @param aModelName A name of the fast simulation model.
       @param aEnvelope A region where the model can take over the ordinary tracking.
     */
-   FastSimModelTracker (const std::string aModelName, G4Region* aEnvelope, std::string&);
+   FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string&);
    /**
       A constructor.
       @param aModelName A name of the fast simulation model.
     */
-   FastSimModelTracker (const std::string aModelName);
+   FastSimModelTracker (const std::string& aModelName);
    ~FastSimModelTracker ();
    /**
       Checks if this model should be applied to this particle type.
