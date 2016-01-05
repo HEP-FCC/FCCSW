@@ -27,6 +27,7 @@ StatusCode SimpleSmear::initialize() {
       return StatusCode::FAILURE;
    }
    m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_sigma));
+   info() << "Tool used for smearing particles initialized with sigma = "<<m_sigma << endmsg;
    return StatusCode::SUCCESS;
 }
 

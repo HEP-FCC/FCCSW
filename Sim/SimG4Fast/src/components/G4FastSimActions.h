@@ -1,11 +1,12 @@
-#ifndef GEANTSIM_GEANTFASTCONFIG_H
-#define GEANTSIM_GEANTFASTCONFIG_H
+#ifndef SIM_G4FASTSIMACTIONS_H
+#define SIM_G4FASTSIMACTIONS_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
 #include "SimG4Interface/IG4ActionTool.h"
+class ISmearingTool;
 
 
 /** @class G4FastSimActions G4FastSimActions.h SimG4Fast/G4FastSimActions.h
@@ -17,13 +18,17 @@
 
 class G4FastSimActions: public GaudiTool, virtual public IG4ActionTool {
 public:
-   G4FastSimActions(const std::string& type , const std::string& name,
-               const IInterface* parent);
-   virtual ~G4FastSimActions();
+  G4FastSimActions(const std::string& type , const std::string& name,
+                   const IInterface* parent);
+  virtual ~G4FastSimActions();
+  virtual StatusCode initialize() final;
+  virtual G4VUserActionInitialization* getUserActionInitialization() final;
 
-   virtual StatusCode initialize() final;
-
-   virtual G4VUserActionInitialization* getUserActionInitialization() final;
+private:
+  /// Popinter to the smearing tool
+  ISmearingTool* m_smearTool;
+  /// Name of the ISmearingTool
+  std::string m_smearToolName;
 };
 
-#endif
+#endif /* SIM_G4FASTSIMACTIONS_H */
