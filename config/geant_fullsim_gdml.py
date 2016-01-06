@@ -12,13 +12,9 @@ hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
-from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
-                    OutputLevel = DEBUG)
-
 from Configurables import GeantSvc, GdmlDetector
 det = GdmlDetector("GdmlDetector", gdml = "Sim/SimG4Common/gdml/example.xml")
-geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig", detector="GdmlDetector")
+geantservice = GeantSvc("GeantSvc", detector="GdmlDetector", physicslist="G4FTFP_BERT", actions="G4FullSimActions")
 geantservice.addTool(det)
 
 from Configurables import GeantFullSimAlg
@@ -28,7 +24,6 @@ geantsim.DataOutputs.trackClusters.Path = "clusters"
 geantsim.DataOutputs.trackHits.Path = "hits"
 geantsim.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 
-
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",
                    OutputLevel=DEBUG)
@@ -37,6 +32,6 @@ out.outputCommands = ["keep *"]
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [albersevent, geoservice, geantservice], # order! geo needed by geant
+                ExtSvc = [albersevent, geantservice], # order! geo needed by geant
                 OutputLevel=DEBUG
  )

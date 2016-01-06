@@ -13,7 +13,7 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeantSvc
-geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig", detector="DD4hepDetector")
+geantservice = GeantSvc("GeantSvc", detector="DD4hepDetector", physicslist="G4FTFP_BERT", actions="G4FullSimActions")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestHCal.xml',
