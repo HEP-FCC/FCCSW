@@ -94,28 +94,27 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
     TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
-      if (collect->GetName().operator==("BarHCal_Readout"))
-        continue;
-      // HERE: check if it's tracker coll
-      int n_hit = collect->GetSize();
-      debug() << "     " << n_hit<< " hits are stored in collection #"<<iter_coll<<endmsg;
-      for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-        hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-        TrackHitHandle edmHit = edmHits->create();
-        TrackClusterHandle edmCluster = edmClusters->create();
-        BareHit& edmHitCore = edmHit.mod().Core;
-        BareCluster& edmClusterCore = edmCluster.mod().Core;
-        edmHitCore.Cellid = hit->cellID;
-        edmHitCore.Energy = hit->energyDeposit;
-        edmHitCore.Time = hit->truth.time;
-        edmClusterCore.position.X = hit->position.x();
-        edmClusterCore.position.Y = hit->position.y();
-        edmClusterCore.position.Z = hit->position.z();
-        edmClusterCore.Energy = hit->energyDeposit;
-        edmClusterCore.Time = hit->truth.time;
-        TrackClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
-        edmAssociation.mod().Cluster = edmCluster;
-        edmAssociation.mod().Hit = edmHit;
+      if (collect->GetName().find("Tracker") != std::string::npos) {
+        int n_hit = collect->GetSize();
+        info() << "\t" << n_hit<< " hits are stored in a tracker collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
+        for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
+          hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
+          TrackHitHandle edmHit = edmHits->create();
+          TrackClusterHandle edmCluster = edmClusters->create();
+          BareHit& edmHitCore = edmHit.mod().Core;
+          BareCluster& edmClusterCore = edmCluster.mod().Core;
+          edmHitCore.Cellid = hit->cellID;
+          edmHitCore.Energy = hit->energyDeposit;
+          edmHitCore.Time = hit->truth.time;
+          edmClusterCore.position.X = hit->position.x();
+          edmClusterCore.position.Y = hit->position.y();
+          edmClusterCore.position.Z = hit->position.z();
+          edmClusterCore.Energy = hit->energyDeposit;
+          edmClusterCore.Time = hit->truth.time;
+          TrackClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
+          edmAssociation.mod().Cluster = edmCluster;
+          edmAssociation.mod().Hit = edmHit;
+        }
       }
     }
     m_trackClusters.put(edmClusters);
@@ -125,7 +124,6 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
 }
 
 void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
-  // G4HCofThisEvent* collections = aEvent->GetHCofThisEvent();
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;
@@ -135,9 +133,9 @@ void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
     // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
-      if (collect->GetName().operator==("BarHCal_Readout")) {
+      if (collect->GetName().find("HCal") != std::string::npos) {
         unsigned int n_hit = collect->GetSize();
-        debug() << "     " << n_hit<< " hits are stored in collection #"<<iter_coll<<endmsg;
+        info() << "\t" << n_hit<< " hits are stored in a HCal collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
         for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
           debug() << hit->cellID << " ";
