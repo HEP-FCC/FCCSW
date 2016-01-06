@@ -18,6 +18,7 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom)
 find_package(DD4hep)
 
 find_package(Geant4)
+include(${Geant4_USE_FILE})
 find_package(ALBERS)
 find_package(FCCEDM)
 
