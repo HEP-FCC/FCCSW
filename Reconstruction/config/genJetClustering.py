@@ -3,24 +3,24 @@ from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, HepMCJetClus
 from Configurables import HepMCHistograms, JetHistograms
 
 reader = HepMCReader("Reader", Filename="pythia.dat")
-reader.Outputs.hepmc.Path = "hepmc"
+reader.DataOutputs.hepmc.Path = "hepmc"
 
 dumper = HepMCDumper("Dumper")
-dumper.Inputs.hepmc.Path="hepmc"
+dumper.DataInputs.hepmc.Path="hepmc"
 
 genHisto = HepMCHistograms("GenHistograms")
-genHisto.Inputs.hepmc.Path="hepmc"
+genHisto.DataInputs.hepmc.Path="hepmc"
 
 jets = HepMCJetClustering("ktCluster")
 jets.JetAlgorithm = "kt"
 jets.RecominbationScheme = "E"
 jets.ConeRadius = 0.7
 jets.PtMin = 1
-jets.Inputs.hepmc.Path="hepmc"
-jets.Outputs.jets.Path="ktJets"
+jets.DataInputs.hepmc.Path="hepmc"
+jets.DataOutputs.jets.Path="ktJets"
 
 jetHisto = JetHistograms("JetHistograms")
-jetHisto.Inputs.jets.Path="ktJets"
+jetHisto.DataInputs.jets.Path="ktJets"
 
 THistSvc().Output = ["rec DATAFILE='GenHistograms.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
