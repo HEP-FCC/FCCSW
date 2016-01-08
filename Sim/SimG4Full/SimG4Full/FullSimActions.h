@@ -1,9 +1,9 @@
-#ifndef SIM_FULLSIMACTIONS_H
-#define SIM_FULLSIMACTIONS_H
+#ifndef SIMG4FULL_FULLSIMACTIONS_H
+#define SIMG4FULL_FULLSIMACTIONS_H
 
 #include "G4VUserActionInitialization.hh"
 
-/** @class FullSimActions FullSimActions.h SimG4Full/FullSimActions.h
+/** @class FullSimActions SimG4Full/SimG4Full/FullSimActions.h FullSimActions.h 
  *
  *  User action initialization for full simulation.
  *
@@ -15,9 +15,9 @@ class FullSimActions : public G4VUserActionInitialization {
 public:
    FullSimActions();
    ~FullSimActions();
-   /// A method where all  user actions are created.
+   /// Create all user actions.
    virtual void Build() const final;
 };
 }
 
-#endif /* SIM_FULLSIMACTIONS_H */
+#endif /* SIMG4FULL_FULLSIMACTIONS_H */
