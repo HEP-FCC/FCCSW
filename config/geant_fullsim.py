@@ -17,10 +17,10 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
                     OutputLevel = DEBUG)
 
 from Configurables import G4SimGeant
-geantservice = G4SimGeant("G4SimGeant", detector='DD4hepDetector', physicslist="G4FTFP_BERT", actions="G4FullSimActions", )
+geantservice = G4SimGeant("G4SimGeant", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
 
-from Configurables import GeantFullSimAlg
-geantsim = GeantFullSimAlg("GeantFullSimAlg")
+from Configurables import G4FullSimAlg
+geantsim = G4FullSimAlg("G4FullSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.trackClusters.Path = "clusters"
 geantsim.DataOutputs.trackHits.Path = "hits"

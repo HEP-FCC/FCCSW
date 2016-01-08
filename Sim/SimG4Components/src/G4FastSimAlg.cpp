@@ -1,4 +1,4 @@
-#include "GeantFastSimAlg.h"
+#include "G4FastSimAlg.h"
 
 // FCCSW
 #include "SimG4Common/ParticleInformation.h"
@@ -14,17 +14,17 @@
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 
-DECLARE_ALGORITHM_FACTORY(GeantFastSimAlg)
+DECLARE_ALGORITHM_FACTORY(G4FastSimAlg)
 
-GeantFastSimAlg::GeantFastSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
+G4FastSimAlg::G4FastSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
   declareOutput("particles", m_recphandle);
   declareOutput("particleassociation", m_partassociationhandle);
 }
-GeantFastSimAlg::~GeantFastSimAlg() {}
+G4FastSimAlg::~G4FastSimAlg() {}
 
-StatusCode GeantFastSimAlg::initialize() {
+StatusCode G4FastSimAlg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   m_geantSvc = service("G4SimSvc");
@@ -35,7 +35,7 @@ StatusCode GeantFastSimAlg::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode GeantFastSimAlg::execute() {
+StatusCode G4FastSimAlg::execute() {
   // first translate the event
   G4Event* event = EDM2G4();
   if ( !event ) {
@@ -43,18 +43,18 @@ StatusCode GeantFastSimAlg::execute() {
     return StatusCode::FAILURE;
   }
   m_geantSvc->processEvent(*event);
-  G4Event* constevent;
-  m_geantSvc->retrieveEvent(constevent);
-  // here save the output from constevent
+  // G4Event* constevent;
+  // m_geantSvc->retrieveEvent(constevent);
+  // // here save the output from constevent
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
 
-StatusCode GeantFastSimAlg::finalize() {
+StatusCode G4FastSimAlg::finalize() {
   return GaudiAlgorithm::finalize();
 }
 
-G4Event* GeantFastSimAlg::EDM2G4() {
+G4Event* G4FastSimAlg::EDM2G4() {
   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
   G4Event* g4_event = new G4Event();
   // Creating EDM collections

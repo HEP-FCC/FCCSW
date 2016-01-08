@@ -13,14 +13,14 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import G4SimSvc
-geantservice = G4SimSvc("G4SimSvc", detector="DD4hepDetector", physicslist="G4FTFP_BERT", actions="G4FullSimActions")
+geantservice = G4SimSvc("G4SimSvc", detector="G4DD4hepDetector", physicslist="G4FtfpBert", actions="G4FullSimActions")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:../DetectorDescription/Detectors/compact/TestHCal.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import GeantFullSimAlg
-geantsim = GeantFullSimAlg("GeantFullSimAlg")
+from Configurables import G4FullSimAlg
+geantsim = G4FullSimAlg("G4FullSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.trackClusters.Path = "clusters"
 geantsim.DataOutputs.trackHits.Path = "hits"

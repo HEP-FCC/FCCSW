@@ -1,4 +1,4 @@
-#include "GdmlDetector.h"
+#include "G4GdmlDetector.h"
 
 // FCCSW
 #include "SimG4Common/GdmlDetectorConstruction.h"
@@ -6,24 +6,24 @@
 // Geant4
 #include "G4VUserDetectorConstruction.hh"
 
-DECLARE_COMPONENT(GdmlDetector)
+DECLARE_TOOL_FACTORY(G4GdmlDetector)
 
-GdmlDetector::GdmlDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
+G4GdmlDetector::G4GdmlDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
 GaudiTool(aType, aName, aParent) {
   declareInterface<IG4DetectorConstruction>(this);
   declareProperty("gdml", m_gdmlFile);
 }
 
-GdmlDetector::~GdmlDetector() {}
+G4GdmlDetector::~G4GdmlDetector() {}
 
-StatusCode GdmlDetector::initialize() {
+StatusCode G4GdmlDetector::initialize() {
   return GaudiTool::initialize();
 }
-StatusCode GdmlDetector::finalize() {
+StatusCode G4GdmlDetector::finalize() {
   return GaudiTool::finalize();
 }
 
-G4VUserDetectorConstruction* GdmlDetector::getDetectorConstruction() {
+G4VUserDetectorConstruction* G4GdmlDetector::getDetectorConstruction() {
   return new sim::GdmlDetectorConstruction(m_gdmlFile);
 }
 

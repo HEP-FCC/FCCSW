@@ -1,5 +1,4 @@
-#include <iostream>
-#include "GeantFullSimAlg.h"
+#include "G4FullSimAlg.h"
 
 // FCCSW
 #include "SimG4Common/Units.h"
@@ -20,9 +19,9 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_ALGORITHM_FACTORY(GeantFullSimAlg)
+DECLARE_ALGORITHM_FACTORY(G4FullSimAlg)
 
-GeantFullSimAlg::GeantFullSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
+G4FullSimAlg::G4FullSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
   declareOutput("trackClusters", m_trackClusters);
@@ -31,9 +30,9 @@ GaudiAlgorithm(aName, aSvcLoc) {
   declareOutput("caloClusters", m_caloClusters);
   declareOutput("caloHits", m_caloHits);
 }
-GeantFullSimAlg::~GeantFullSimAlg() {}
+G4FullSimAlg::~G4FullSimAlg() {}
 
-StatusCode GeantFullSimAlg::initialize() {
+StatusCode G4FullSimAlg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   m_geantSvc = service("G4SimSvc");
@@ -44,7 +43,7 @@ StatusCode GeantFullSimAlg::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode GeantFullSimAlg::execute() {
+StatusCode G4FullSimAlg::execute() {
   // first translate the event
   G4Event* event = EDM2G4();
   if ( !event ) {
@@ -61,11 +60,11 @@ StatusCode GeantFullSimAlg::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode GeantFullSimAlg::finalize() {
+StatusCode G4FullSimAlg::finalize() {
   return GaudiAlgorithm::finalize();
 }
 
-G4Event* GeantFullSimAlg::EDM2G4() {
+G4Event* G4FullSimAlg::EDM2G4() {
   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
   G4Event* g4_event = new G4Event();
   // Creating EDM collections
@@ -84,7 +83,7 @@ G4Event* GeantFullSimAlg::EDM2G4() {
   return g4_event;
 }
 
-void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
+void G4FullSimAlg::saveTrackerHits(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4TrackerHit* hit;
@@ -123,7 +122,7 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
   }
 }
 
-void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
+void G4FullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;
