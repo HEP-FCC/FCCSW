@@ -6,12 +6,12 @@ states = []
 #xmllist=glob.glob('DetectorDescription/Detectors/compact/*.xml')
 #print xmllist
 compactpath='DetectorDescription/Detectors/compact/'
-xmllist=['BeamTube.xml', 'Tracker.xml', 'HCal_Barrel.xml', 'Solenoids.xml', 'Dipoles.xml' ]
+xmllist=['FCChh_BeamTube.xml', 'FCChh_Tracker.xml', 'FCChh_HCalBarrel.xml', 'FCChh_Solenoids.xml', 'FCChh_Dipoles.xml' ]
 xmllist=[compactpath+p for p in xmllist]
 root = Tk()
 
 def RunAll():
-    cmd='geoDisplay -compact file:%sFCCDectMaster.xml'%compactpath
+    cmd='geoDisplay -compact file:%sFCChh_DectMaster.xml'%compactpath
     for v in xrange(len(xmllist)):
         cmd+=' -compact file:'
         cmd+=xmllist[v]
@@ -19,7 +19,7 @@ def RunAll():
     os.system(cmd)
 
 def showcommand():
-    cmd='geoDisplay -compact file:%sFCCDectMaster.xml'%compactpath
+    cmd='geoDisplay -compact file:%sFCChh_DectMaster.xml'%compactpath
     for v in xrange(len(states)):
          if states[v].get(): 
              cmd+=' -compact file:'
