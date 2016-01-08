@@ -52,6 +52,8 @@ public:
    */
   StatusCode terminateEvent();
 private:
+   /// Pointer to the tool service
+  SmartIF<IToolSvc> m_toolSvc;
   /// Handle for the detector construction tool
   ToolHandle<IG4DetectorConstruction> m_detectorTool;
   /// Handle for the Geant physics list tool
