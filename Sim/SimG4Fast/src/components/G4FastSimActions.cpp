@@ -22,6 +22,10 @@ StatusCode G4FastSimActions::initialize() {
   return StatusCode::SUCCESS;
 }
 
+StatusCode G4FastSimActions::finalize() {
+  return GaudiTool::finalize();
+}
+
 G4VUserActionInitialization* G4FastSimActions::getUserActionInitialization() {
   return new sim::FastSimActions(m_smearToolName);
 }

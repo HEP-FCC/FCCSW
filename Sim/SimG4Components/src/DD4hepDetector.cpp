@@ -27,6 +27,10 @@ StatusCode DD4hepDetector::initialize() {
   return StatusCode::SUCCESS;
 }
 
+StatusCode DD4hepDetector::finalize() {
+  return GaudiTool::finalize();
+}
+
 G4VUserDetectorConstruction* DD4hepDetector::getDetectorConstruction() {
   return m_geoSvc->getGeant4Geo();
 }

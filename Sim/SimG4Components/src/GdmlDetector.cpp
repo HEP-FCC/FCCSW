@@ -17,10 +17,10 @@ GaudiTool(aType, aName, aParent) {
 GdmlDetector::~GdmlDetector() {}
 
 StatusCode GdmlDetector::initialize() {
-  if(GaudiTool::initialize().isFailure()) {
-    return StatusCode::FAILURE;
-  }
-  return StatusCode::SUCCESS;
+  return GaudiTool::initialize();
+}
+StatusCode GdmlDetector::finalize() {
+  return GaudiTool::finalize();
 }
 
 G4VUserDetectorConstruction* GdmlDetector::getDetectorConstruction() {

@@ -14,6 +14,7 @@ public:
   virtual ~G4FastSimPhysicsList();
 
   virtual StatusCode initialize();
+  virtual StatusCode finalize();
 
   virtual G4VModularPhysicsList* getPhysicsList();
 

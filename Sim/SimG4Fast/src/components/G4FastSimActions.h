@@ -22,6 +22,7 @@ public:
                    const IInterface* parent);
   virtual ~G4FastSimActions();
   virtual StatusCode initialize() final;
+  virtual StatusCode finalize() final;
   virtual G4VUserActionInitialization* getUserActionInitialization() final;
 
 private:

@@ -74,7 +74,8 @@ StatusCode GeantSvc::terminateEvent() {
   m_runManager.terminateEvent();
   return StatusCode::SUCCESS;
 }
+
 StatusCode GeantSvc::finalize() {
   m_runManager.finalize();
-  return StatusCode::SUCCESS;
+  return Service::finalize();
 }

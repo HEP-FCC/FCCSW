@@ -22,6 +22,7 @@ public:
    virtual ~SimpleSmear();
 
    virtual StatusCode initialize() final;
+   virtual StatusCode finalize() final;
 
    /// Implementation of ISmearingTool method that smears the momentum of the particle
    virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom) final;

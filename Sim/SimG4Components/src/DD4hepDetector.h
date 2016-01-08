@@ -15,6 +15,7 @@ class DD4hepDetector: public GaudiTool, virtual public IG4DetectorConstruction {
   virtual ~DD4hepDetector();
 
   virtual StatusCode initialize();
+  virtual StatusCode finalize();
 
   virtual G4VUserDetectorConstruction* getDetectorConstruction();
 private:

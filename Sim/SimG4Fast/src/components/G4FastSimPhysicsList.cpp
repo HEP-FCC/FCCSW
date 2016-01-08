@@ -25,6 +25,10 @@ StatusCode G4FastSimPhysicsList::initialize() {
   return StatusCode::SUCCESS;
 }
 
+StatusCode G4FastSimPhysicsList::finalize() {
+  return GaudiTool::finalize();
+}
+
 G4VModularPhysicsList* G4FastSimPhysicsList::getPhysicsList() {
   // ownership passed to GeantSvc which will register it in G4RunManager. To be deleted in ~G4RunManager()
   G4VModularPhysicsList* physicsList = m_physicsListTool->getPhysicsList();

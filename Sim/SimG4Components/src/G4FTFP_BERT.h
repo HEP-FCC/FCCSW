@@ -14,6 +14,7 @@ public:
   virtual ~G4FTFP_BERT();
 
   virtual StatusCode initialize();
+  virtual StatusCode finalize();
 
   virtual G4VModularPhysicsList* getPhysicsList();
 

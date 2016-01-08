@@ -31,6 +31,10 @@ StatusCode SimpleSmear::initialize() {
    return StatusCode::SUCCESS;
 }
 
+StatusCode SimpleSmear::finalize() {
+  return GaudiTool::finalize();
+}
+
 StatusCode SimpleSmear::smearMomentum( CLHEP::Hep3Vector& aMom ) {
    double tmp = m_gauss.shoot();
    aMom *= tmp;

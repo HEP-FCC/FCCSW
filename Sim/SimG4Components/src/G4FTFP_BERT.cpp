@@ -14,10 +14,11 @@ GaudiTool(aType, aName, aParent) {
 G4FTFP_BERT::~G4FTFP_BERT() {}
 
 StatusCode G4FTFP_BERT::initialize() {
-  if(GaudiTool::initialize().isFailure()) {
-    return StatusCode::FAILURE;
-  }
-  return StatusCode::SUCCESS;
+  return GaudiTool::initialize();
+}
+
+StatusCode G4FTFP_BERT::finalize() {
+  return GaudiTool::finalize();
 }
 
 G4VModularPhysicsList* G4FTFP_BERT::getPhysicsList() {

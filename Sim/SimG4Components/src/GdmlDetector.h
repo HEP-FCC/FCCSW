@@ -17,6 +17,7 @@ public:
   virtual ~GdmlDetector();
 
   virtual StatusCode initialize();
+  virtual StatusCode finalize();
 
   virtual G4VUserDetectorConstruction* getDetectorConstruction();
 private:
