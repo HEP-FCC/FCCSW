@@ -3,6 +3,7 @@
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
 #include "SimG4Interface/IG4PhysicsList.h"
@@ -20,9 +21,7 @@ public:
 
 private:
    /// Handle for the full physics list tool
-   IG4PhysicsList* m_physicsListTool;
-   /// Name of the full physics list tool
-   std::string m_physicsListToolName;
+   ToolHandle<IG4PhysicsList> m_physicsListTool;
 
 };
 

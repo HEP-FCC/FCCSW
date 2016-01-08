@@ -2,14 +2,14 @@
 
 // FCCSW
 #include "SimG4Fast/FastSimActions.h"
-#include "SimG4Interface/ISmearingTool.h"
 
-DECLARE_COMPONENT(G4FastSimActions)
+DECLARE_TOOL_FACTORY(G4FastSimActions)
 
 G4FastSimActions::G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent) :
 GaudiTool(type, name, parent) {
   declareInterface<IG4ActionTool>(this);
-  declareProperty ("smearing", m_smearToolName = "SimpleSmear");
+  declareProperty("smearing", m_smearTool);
+  declarePublicTool(m_smearTool);
 }
 
 G4FastSimActions::~G4FastSimActions() {}
@@ -18,7 +18,7 @@ StatusCode G4FastSimActions::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_smearTool = tool<ISmearingTool>(m_smearToolName);
+  m_smearTool.retrieve();
   return StatusCode::SUCCESS;
 }
 
@@ -27,5 +27,5 @@ StatusCode G4FastSimActions::finalize() {
 }
 
 G4VUserActionInitialization* G4FastSimActions::getUserActionInitialization() {
-  return new sim::FastSimActions(m_smearToolName);
+  return new sim::FastSimActions(m_smearTool.name());
 }

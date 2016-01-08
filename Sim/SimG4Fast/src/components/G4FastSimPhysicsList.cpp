@@ -7,12 +7,13 @@
 // Geant4
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_COMPONENT(G4FastSimPhysicsList)
+DECLARE_TOOL_FACTORY(G4FastSimPhysicsList)
 
 G4FastSimPhysicsList::G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent) :
 GaudiTool(aType, aName, aParent) {
   declareInterface<IG4PhysicsList>(this);
-  declareProperty("fullphysics", m_physicsListToolName);
+  declareProperty("fullphysics", m_physicsListTool);
+  declarePrivateTool(m_physicsListTool);
 }
 
 G4FastSimPhysicsList::~G4FastSimPhysicsList() {}
@@ -21,7 +22,7 @@ StatusCode G4FastSimPhysicsList::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_physicsListTool = tool<IG4PhysicsList>(m_physicsListToolName);
+  m_physicsListTool.retrieve();
   return StatusCode::SUCCESS;
 }
 

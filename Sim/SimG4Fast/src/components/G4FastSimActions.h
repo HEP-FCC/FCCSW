@@ -3,10 +3,11 @@
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
 #include "SimG4Interface/IG4ActionTool.h"
-class ISmearingTool;
+#include "SimG4Interface/ISmearingTool.h"
 
 
 /** @class G4FastSimActions G4FastSimActions.h SimG4Fast/G4FastSimActions.h
@@ -26,10 +27,9 @@ public:
   virtual G4VUserActionInitialization* getUserActionInitialization() final;
 
 private:
-  /// Popinter to the smearing tool
-  ISmearingTool* m_smearTool;
-  /// Name of the ISmearingTool
-  std::string m_smearToolName;
+  /// Pointer to the smearing tool
+  ToolHandle<ISmearingTool> m_smearTool;
+
 };
 
 #endif /* SIM_G4FASTSIMACTIONS_H */

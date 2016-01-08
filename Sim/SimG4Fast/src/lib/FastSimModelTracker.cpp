@@ -12,7 +12,7 @@
 
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {
-   if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool).isFailure())
+  if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
       throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                            "FastSimModelTracker", StatusCode::FAILURE);
 }
