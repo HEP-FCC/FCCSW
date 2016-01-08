@@ -10,12 +10,14 @@
 
 namespace sim {
 InitializeModelsRunAction::InitializeModelsRunAction(const std::string& aSmearingToolName) :
-  G4UserRunAction(), m_smearToolName(aSmearingToolName),
-  m_msgSvc("MessageSvc","InitializeModelsRunAction"),m_log(&(*m_msgSvc),"InitializeModelsRunAction") {}
+  G4UserRunAction(),
+  m_msgSvc("MessageSvc","InitializeModelsRunAction"),
+  m_log(&(*m_msgSvc),"InitializeModelsRunAction"),
+  m_smearToolName(aSmearingToolName) {}
 
 InitializeModelsRunAction::~InitializeModelsRunAction() {}
 
-void InitializeModelsRunAction::BeginOfRunAction(const G4Run* aRun) {
+void InitializeModelsRunAction::BeginOfRunAction(const G4Run* /*aRun*/) {
   G4LogicalVolume* world = (*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume();
    for(int iter_region = 0; iter_region<world->GetNoDaughters(); ++iter_region) {
       // TO DO: proper integration with DD4hep to resolve where to attach a fast sim model

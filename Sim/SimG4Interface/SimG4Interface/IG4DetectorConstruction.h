@@ -1,5 +1,5 @@
-#ifndef SIM_IG4DETECTORCONSTRUCTION_H
-#define SIM_IG4DETECTORCONSTRUCTION_H
+#ifndef SIMG4INTERFACE_IG4DETECTORCONSTRUCTION_H
+#define SIMG4INTERFACE_IG4DETECTORCONSTRUCTION_H
 
 // Gaudi
 #include  "GaudiKernel/IAlgTool.h"
@@ -7,7 +7,7 @@
 // Geant4
 class G4VUserDetectorConstruction;
 
-/** @class IG4DetectorConstruction IG4DetectorConstruction.h SimG4Interface/DetectorConstruction.h
+/** @class IG4DetectorConstruction SimG4Interface/SimG4Interface/DetectorConstruction.h IG4DetectorConstruction.h
  *
  *  abstract interface to load G4VUserDetectorConstruction
  *
@@ -32,4 +32,4 @@ public:
 
 };
 
-#endif /* SIM_IG4DETECTORCONSTRUCTION_H */
+#endif /* SIMG4INTERFACE_IG4DETECTORCONSTRUCTION_H */

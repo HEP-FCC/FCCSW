@@ -3,7 +3,7 @@
 
 // FCCSW
 #include "SimG4Common/Units.h"
-#include "SimG4Interface/IGeantSvc.h"
+#include "SimG4Interface/IG4SimSvc.h"
 
 // albers
 #include "datamodel/MCParticleCollection.h"
@@ -36,7 +36,7 @@ GeantFullSimAlg::~GeantFullSimAlg() {}
 StatusCode GeantFullSimAlg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
-  m_geantSvc = service("GeantSvc");
+  m_geantSvc = service("G4SimSvc");
   if (!m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;

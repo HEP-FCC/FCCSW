@@ -6,7 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-class IGeantSvc;
+class IG4SimSvc;
 
 // albers
 class MCParticleCollection;
@@ -49,6 +49,6 @@ private:
   /// Handle for hadron calo hits
   DataHandle<CaloHitCollection> m_caloHits;
   /// Pointer to the interface of Geant Simulation service
-  SmartIF<IGeantSvc> m_geantSvc;
+  SmartIF<IG4SimSvc> m_geantSvc;
 };
 #endif /* SIMG4COMPONENTS_GEANTFULLSIMALG_H */

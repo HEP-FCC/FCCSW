@@ -6,7 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-class IGeantSvc;
+class IG4SimSvc;
 
 // albers
 class MCParticleCollection;
@@ -37,6 +37,6 @@ public:
   /// Handle for the associations between particles and MC particles to be written
   DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
   /// Pointer to the interface of Geant Simulation service
-  SmartIF<IGeantSvc> m_geantSvc;
+  SmartIF<IG4SimSvc> m_geantSvc;
 };
 #endif /* SIMG4COMPONENTS_GEANTFASTSIMALG_H */

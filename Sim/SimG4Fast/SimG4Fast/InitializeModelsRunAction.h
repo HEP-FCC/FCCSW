@@ -37,7 +37,7 @@ private:
   std::vector<G4Region*> m_g4regions;
   /// Fast Simulation Models
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
-  /// Name of the ISmearingTool
+  /// Name of the used implementation of the IG4ParticleSmearTool
   std::string m_smearToolName;
 };
 }

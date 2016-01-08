@@ -1,4 +1,4 @@
-#include "SimpleSmear.h"
+#include "G4ParticleSmearSimple.h"
 
 // Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
@@ -7,18 +7,18 @@
 //CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
-DECLARE_COMPONENT(SimpleSmear)
+DECLARE_TOOL_FACTORY(G4ParticleSmearSimple)
 
-SimpleSmear::SimpleSmear(const std::string& type, const std::string& name,
+G4ParticleSmearSimple::G4ParticleSmearSimple(const std::string& type, const std::string& name,
                          const IInterface* parent) :
 GaudiTool(type, name, parent) {
-   declareInterface<ISmearingTool>(this);
+   declareInterface<IG4ParticleSmearTool>(this);
    declareProperty("sigma", m_sigma = 0.01);
 }
 
-SimpleSmear::~SimpleSmear() {}
+G4ParticleSmearSimple::~G4ParticleSmearSimple() {}
 
-StatusCode SimpleSmear::initialize() {
+StatusCode G4ParticleSmearSimple::initialize() {
    if(GaudiTool::initialize().isFailure()) {
       return StatusCode::FAILURE;
    }
@@ -31,17 +31,17 @@ StatusCode SimpleSmear::initialize() {
    return StatusCode::SUCCESS;
 }
 
-StatusCode SimpleSmear::finalize() {
+StatusCode G4ParticleSmearSimple::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode SimpleSmear::smearMomentum( CLHEP::Hep3Vector& aMom ) {
+StatusCode G4ParticleSmearSimple::smearMomentum( CLHEP::Hep3Vector& aMom ) {
    double tmp = m_gauss.shoot();
    aMom *= tmp;
    return StatusCode::SUCCESS;
 }
 
-StatusCode SimpleSmear::smearEnergy( double& aEn ) {
+StatusCode G4ParticleSmearSimple::smearEnergy( double& aEn ) {
    double tmp;
    do {
       tmp = m_gauss.shoot();

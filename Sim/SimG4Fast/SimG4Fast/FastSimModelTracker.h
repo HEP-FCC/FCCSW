@@ -9,7 +9,7 @@
 class IToolSvc;
 
 //FCCSW
-class ISmearingTool;
+class IG4ParticleSmearTool;
 
 /**
    @brief     Shortcut to the ordinary tracking.
@@ -52,6 +52,6 @@ private:
    /// Tool Service
    ServiceHandle<IToolSvc> m_toolSvc;
    /// Pointer to a smearing tool
-   ISmearingTool* m_smearTool;
+   IG4ParticleSmearTool* m_smearTool;
 };
 #endif

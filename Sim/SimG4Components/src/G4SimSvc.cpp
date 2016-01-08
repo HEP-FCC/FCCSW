@@ -1,4 +1,4 @@
-#include "GeantSvc.h"
+#include "G4SimSvc.h"
 // Gaudi
 #include "GaudiKernel/IToolSvc.h"
 
@@ -6,9 +6,9 @@
 #include "G4Event.hh"
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_SERVICE_FACTORY(GeantSvc)
+DECLARE_SERVICE_FACTORY(G4SimSvc)
 
-GeantSvc::GeantSvc(const std::string& aName, ISvcLocator* aSL): base_class(aName, aSL) {
+G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL): base_class(aName, aSL) {
   declareProperty("detector", m_detectorTool);
   declarePrivateTool(m_detectorTool);
   declareProperty("physicslist", m_physicsListTool);
@@ -17,9 +17,9 @@ GeantSvc::GeantSvc(const std::string& aName, ISvcLocator* aSL): base_class(aName
   declarePrivateTool(m_actionsTool);
 }
 
-GeantSvc::~GeantSvc(){}
+G4SimSvc::~G4SimSvc(){}
 
-StatusCode GeantSvc::initialize(){
+StatusCode G4SimSvc::initialize(){
   // Initialize necessary Gaudi components
   if (Service::initialize().isFailure()){
     error()<<"Unable to initialize Service()"<<endmsg;
@@ -58,7 +58,7 @@ StatusCode GeantSvc::initialize(){
   }
   return StatusCode::SUCCESS;
 }
-StatusCode GeantSvc::processEvent(G4Event& aEvent) {
+StatusCode G4SimSvc::processEvent(G4Event& aEvent) {
   bool status = m_runManager.processEvent( aEvent );
   if ( !status ) {
      error() << "Unable to process event in Geant" << endmsg;
@@ -66,16 +66,16 @@ StatusCode GeantSvc::processEvent(G4Event& aEvent) {
   }
   return StatusCode::SUCCESS;
 }
-StatusCode GeantSvc::retrieveEvent(G4Event*& aEvent) {
+StatusCode G4SimSvc::retrieveEvent(G4Event*& aEvent) {
   return m_runManager.retrieveEvent(aEvent);
 }
 
-StatusCode GeantSvc::terminateEvent() {
+StatusCode G4SimSvc::terminateEvent() {
   m_runManager.terminateEvent();
   return StatusCode::SUCCESS;
 }
 
-StatusCode GeantSvc::finalize() {
+StatusCode G4SimSvc::finalize() {
   m_runManager.finalize();
   return Service::finalize();
 }

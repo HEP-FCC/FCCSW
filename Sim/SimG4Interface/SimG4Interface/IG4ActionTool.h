@@ -1,5 +1,5 @@
-#ifndef SIM_IG4ACTIONTOOL_H
-#define SIM_IG4ACTIONTOOL_H
+#ifndef SIMG4INTERFACE_IG4ACTIONTOOL_H
+#define SIMG4INTERFACE_IG4ACTIONTOOL_H
 
 // Gaudi
 #include  "GaudiKernel/IAlgTool.h"
@@ -8,14 +8,14 @@
 class G4VUserActionInitialization;
 
 
-/** @class IG4ActionTool IG4ActionTool.h G4Interface/IG4ActionTool.h
+/** @class IG4ActionTool SimG4Interface/SimG4Interface/IG4ActionTool.h IG4ActionTool.h
  *
- *  abstract interface to load G4UserActionInitializations
+ *  abstract interface to load initialization list of user actions
  *
  *  @author Benedikt HEGNER
  */
 
-class IG4ActionTool : virtual public IAlgTool {
+class IG4ActionTool: virtual public IAlgTool {
 public:
 
   /// Retrieve interface ID
@@ -33,4 +33,4 @@ public:
 
 };
 
-#endif /* SIM_IG4ACTIONTOOL_H */
+#endif /* SIMG4INTERFACE_IG4ACTIONTOOL_H */

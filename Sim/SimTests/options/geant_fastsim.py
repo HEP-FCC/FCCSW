@@ -16,10 +16,10 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:../DetectorDescription/Detectors/compact/ParametricSimTracker.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import GeantSvc
-geantservice = GeantSvc("GeantSvc", detector='DD4hepDetector', physicslist='G4FastSimPhysicsList', actions="G4FastSimActions")
+from Configurables import G4SimSvc
+geantservice = G4SimSvc("G4SimSvc", detector='DD4hepDetector', physicslist='G4FastSimPhysicsList', actions="G4FastSimActions")
 
-from Configurables import GeantFastSimAlg, G4FastSimPhysicsList, G4FastSimActions, SimpleSmear
+from Configurables import GeantFastSimAlg, G4FastSimPhysicsList, G4FastSimActions, G4ParticleSmearSimple
 geantsim = GeantFastSimAlg("GeantFastSimAlg")
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 geantsim.DataOutputs.particles.Path = "recParticles"
@@ -28,9 +28,9 @@ geantsim.DataOutputs.particleassociation.Path = "particleMCparticleAssociation"
 physicslist = G4FastSimPhysicsList("G4FastSimPhysicsList", fullphysics="G4FTFP_BERT")
 geantservice.addTool(physicslist)
 
-actions = G4FastSimActions("G4FastSimActions", smearing="SimpleSmear")
+actions = G4FastSimActions("G4FastSimActions", smearing="G4ParticleSmearSimple")
 geantservice.addTool(actions)
-smear = SimpleSmear("SimpleSmear", sigma = 0.015)
+smear = G4ParticleSmearSimple("G4ParticleSmearSimple", sigma = 0.015)
 actions.addTool(smear)
 
 from Configurables import AlbersWrite, AlbersOutput

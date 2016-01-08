@@ -22,7 +22,7 @@ StatusCode G4FTFP_BERT::finalize() {
 }
 
 G4VModularPhysicsList* G4FTFP_BERT::getPhysicsList() {
-   // ownership passed to GeantSvc which will register it in G4RunManager. To be deleted in ~G4RunManager()
+   // ownership passed to G4SimSvc which will register it in G4RunManager. To be deleted in ~G4RunManager()
   return new FTFP_BERT;
 }
 

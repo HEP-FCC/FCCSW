@@ -7,7 +7,7 @@
 
 // FCCSW
 #include "SimG4Interface/IG4ActionTool.h"
-#include "SimG4Interface/ISmearingTool.h"
+#include "SimG4Interface/IG4ParticleSmearTool.h"
 
 
 /** @class G4FastSimActions G4FastSimActions.h SimG4Fast/G4FastSimActions.h
@@ -28,7 +28,7 @@ public:
 
 private:
   /// Pointer to the smearing tool
-  ToolHandle<ISmearingTool> m_smearTool;
+  ToolHandle<IG4ParticleSmearTool> m_smearTool;
 
 };
 

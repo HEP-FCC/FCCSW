@@ -12,9 +12,9 @@ hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
-from Configurables import GeantSvc, GdmlDetector
+from Configurables import G4SimSvc, GdmlDetector
 det = GdmlDetector("GdmlDetector", gdml = "../Sim/SimG4Common/gdml/example.xml")
-geantservice = GeantSvc("GeantSvc", detector="GdmlDetector", physicslist="G4FTFP_BERT", actions="G4FullSimActions")
+geantservice = G4SimSvc("G4SimSvc", detector="GdmlDetector", physicslist="G4FTFP_BERT", actions="G4FullSimActions")
 geantservice.addTool(det)
 
 from Configurables import GeantFullSimAlg

@@ -31,7 +31,7 @@ StatusCode G4FastSimPhysicsList::finalize() {
 }
 
 G4VModularPhysicsList* G4FastSimPhysicsList::getPhysicsList() {
-  // ownership passed to GeantSvc which will register it in G4RunManager. To be deleted in ~G4RunManager()
+  // ownership passed to G4SimSvc which will register it in G4RunManager. To be deleted in ~G4RunManager()
   G4VModularPhysicsList* physicsList = m_physicsListTool->getPhysicsList();
   // Coupled transportation enables calculation of particle trajectory in envelopes with fast sim models attached
   G4PhysicsListHelper::GetPhysicsListHelper()->UseCoupledTransportation();

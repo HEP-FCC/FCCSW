@@ -8,7 +8,7 @@
 #include "GaudiKernel/IToolSvc.h"
 
 // FCCSW
-#include "SimG4Interface/ISmearingTool.h"
+#include "SimG4Interface/IG4ParticleSmearTool.h"
 
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName)
    : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {
