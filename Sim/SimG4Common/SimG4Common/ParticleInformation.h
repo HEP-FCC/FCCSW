@@ -8,7 +8,7 @@
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"
 
-/** @class sim::FastSimParticleInformation SimG4Common/SimG4Common/FastSimParticleInformation.h FastSimParticleInformation.h
+/** @class FastSimParticleInformation SimG4Common/SimG4Common/FastSimParticleInformation.h FastSimParticleInformation.h
  *
  *  Describes the information that can be assosiated with a G4PrimaryParticle class object.
  *  It contains handles to the EDM objects.
