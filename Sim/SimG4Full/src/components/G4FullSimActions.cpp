@@ -19,6 +19,10 @@ StatusCode G4FullSimActions::initialize() {
    return StatusCode::SUCCESS;
 }
 
+StatusCode G4FullSimActions::finalize() {
+  return GaudiTool::finalize();
+}
+
 G4VUserActionInitialization* G4FullSimActions::getUserActionInitialization() {
   return new sim::FullSimActions;
 }

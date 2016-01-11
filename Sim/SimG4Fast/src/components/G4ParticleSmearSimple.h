@@ -9,7 +9,7 @@ class IRndmGenSvc;
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 
-/** @class G4ParticleSmearSimple SimG4Fast/src/G4ParticleSmearSimple.h G4ParticleSmearSimple.h
+/** @class G4ParticleSmearSimple SimG4Fast/src/components/G4ParticleSmearSimple.h G4ParticleSmearSimple.h
  *
  *  Simple particle smearing tool.
  *  Smears the momentum/energy of the particle following the Gaussian distribution.

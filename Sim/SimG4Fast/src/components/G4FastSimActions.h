@@ -1,5 +1,5 @@
-#ifndef SIM_G4FASTSIMACTIONS_H
-#define SIM_G4FASTSIMACTIONS_H
+#ifndef SIMG4FAST_G4FASTSIMACTIONS_H
+#define SIMG4FAST_G4FASTSIMACTIONS_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -10,9 +10,9 @@
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 
 
-/** @class G4FastSimActions G4FastSimActions.h SimG4Fast/G4FastSimActions.h
+/** @class G4FastSimActions SimG4Fast/src/components/G4FastSimActions.h G4FastSimActions.h
  *
- *  implementation of a tool to load Fast Simulation User Action Initialization (list of user actions)
+ *  Tool for loading fast simulation user action initialization (list of user actions)
  *
  *  @author Anna Zaborowska
 */
@@ -22,8 +22,17 @@ public:
   G4FastSimActions(const std::string& type , const std::string& name,
                    const IInterface* parent);
   virtual ~G4FastSimActions();
+  /**  Initialize.
+   *   @return status code
+   */
   virtual StatusCode initialize() final;
+  /**  Finalize.
+   *   @return status code
+   */
   virtual StatusCode finalize() final;
+  /** Get the user action initialization.
+   *  @return pointer to G4VUserActionInitialization
+   */
   virtual G4VUserActionInitialization* getUserActionInitialization() final;
 
 private:
@@ -32,4 +41,4 @@ private:
 
 };
 
-#endif /* SIM_G4FASTSIMACTIONS_H */
+#endif /* SIMG4FAST_G4FASTSIMACTIONS_H */

@@ -1,5 +1,5 @@
-#ifndef SIM_G4FULLSIMACTIONS_H
-#define SIM_G4FULLSIMACTIONS_H
+#ifndef SIMG4FULL_G4FULLSIMACTIONS_H
+#define SIMG4FULL_G4FULLSIMACTIONS_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -7,9 +7,9 @@
 // FCCSW
 #include "SimG4Interface/IG4ActionTool.h"
 
-/** @class G4FullSimActions G4FullSimActions.h SimG4Full/G4FullSimActions.h
+/** @class G4FullSimActions SimG4Full/src/components/G4FullSimActions.h G4FullSimActions.h
  *
- *  implementation of a tool to load Full Simulation User Action Initialization (list of user actions)
+ *  Tool for loading full simulation user action initialization (list of user actions)
  *
  *  @author Anna Zaborowska
  */
@@ -20,9 +20,18 @@ public:
                const IInterface* parent);
    virtual ~G4FullSimActions();
 
+  /**  Initialize.
+   *   @return status code
+   */
    virtual StatusCode initialize() final;
-
+  /**  Finalize.
+   *   @return status code
+   */
+  virtual StatusCode finalize();
+  /** Get the user action initialization.
+   *  @return pointer to G4VUserActionInitialization
+   */
    virtual G4VUserActionInitialization* getUserActionInitialization() final;
 };
 
-#endif /* SIM_G4FULLSIMACTIONS_H */
+#endif /* SIMG4FULL_G4FULLSIMACTIONS_H */
