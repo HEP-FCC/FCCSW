@@ -8,13 +8,14 @@
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"
 
-/** @class sim::ParticleInformation SimG4Common/ParticleInformation.h ParticleInformation.h
+/** @class sim::FastSimParticleInformation SimG4Common/SimG4Common/FastSimParticleInformation.h FastSimParticleInformation.h
  *
  *  Describes the information that can be assosiated with a G4PrimaryParticle class object.
  *  It contains handles to the EDM objects.
  *  It is used for the fast simulation in Geant to associate MC particle with a 'reconstructed' particle.
  *  MCParticle information is filled when EDM event is translated to G4Event.
- *  Particle is meant to be filled with information on particle momentum etc. at the end of Geant processing (done in SaveParticlesTrackingAction::PostUserTrackingAction()).
+ *  Particle is meant to be filled with information on particle momentum etc.
+ *  at the end of Geant processing (done in sim::SaveParticlesTrackingAction::PostUserTrackingAction()).
  *
  *  @author Anna Zaborowska
  */

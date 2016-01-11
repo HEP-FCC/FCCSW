@@ -36,7 +36,7 @@ G4VModularPhysicsList* G4FastSimPhysicsList::getPhysicsList() {
   // Coupled transportation enables calculation of particle trajectory in envelopes with fast sim models attached
   G4PhysicsListHelper::GetPhysicsListHelper()->UseCoupledTransportation();
   // Attach Fast Simulation Process (will take over normal transportation if FastSimModel triggered
-  physicsList->RegisterPhysics(new FastSimPhysics);
+  physicsList->RegisterPhysics(new sim::FastSimPhysics);
   return physicsList;
 }
 

@@ -3,12 +3,12 @@
 
 #include "G4VUserActionInitialization.hh"
 
-/** @class FullSimActions SimG4Full/SimG4Full/FullSimActions.h FullSimActions.h 
+/** @class FullSimActions SimG4Full/SimG4Full/FullSimActions.h FullSimActions.h
  *
  *  User action initialization for full simulation.
  *
- *  @author    Anna Zaborowska
-*/
+ *  @author Anna Zaborowska
+ */
 
 namespace sim {
 class FullSimActions : public G4VUserActionInitialization {

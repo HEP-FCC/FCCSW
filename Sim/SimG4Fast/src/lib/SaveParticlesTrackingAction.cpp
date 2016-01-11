@@ -1,14 +1,15 @@
 #include "SimG4Fast/SaveParticlesTrackingAction.h"
 
+//FCCSW
+#include "SimG4Common/Units.h"
+#include "SimG4Common/ParticleInformation.h"
+
 // Geant4
 #include "G4TrackingManager.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4ThreeVector.hh"
 
-//FCCSW
-#include "SimG4Common/Units.h"
-#include "SimG4Common/ParticleInformation.h"
-
+namespace sim {
 SaveParticlesTrackingAction::SaveParticlesTrackingAction() : G4UserTrackingAction() {}
 
 SaveParticlesTrackingAction::~SaveParticlesTrackingAction() {}
@@ -16,7 +17,7 @@ SaveParticlesTrackingAction::~SaveParticlesTrackingAction() {}
 void SaveParticlesTrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
    if ( aTrack->GetTrackStatus() == fStopAndKill && aTrack->GetParentID()==0) {
       const G4DynamicParticle* g4dynamicparticle = aTrack->GetDynamicParticle();
-      ParticleHandle& particle = dynamic_cast<sim::ParticleInformation*>(g4dynamicparticle->GetPrimaryParticle()->GetUserInformation())->GetParticleHandle();
+      ParticleHandle& particle = dynamic_cast<ParticleInformation*>(g4dynamicparticle->GetPrimaryParticle()->GetUserInformation())->GetParticleHandle();
       BareParticle& core = particle.mod().Core;
       core.Type = g4dynamicparticle->GetPDGcode();
       core.Status = 1; // how it is defined ???? as in HepMC ?
@@ -30,4 +31,5 @@ void SaveParticlesTrackingAction::PostUserTrackingAction(const G4Track* aTrack) 
       core.Vertex.Z = aTrack->GetVertexPosition().z()*sim::g42edm::length;
    }
    return;
+}
 }

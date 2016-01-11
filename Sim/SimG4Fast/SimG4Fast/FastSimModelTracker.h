@@ -1,5 +1,8 @@
-#ifndef GEANT_FAST_MODEL_TRACKER_H
-#define GEANT_FAST_MODEL_TRACKER_H
+#ifndef SIMG4FAST_FASTSIMMODELTRACKER_H
+#define SIMG4FAST_FASTSIMMODELTRACKER_H
+
+//FCCSW
+class IG4ParticleSmearTool;
 
 // Geant
 #include "G4VFastSimulationModel.hh"
@@ -8,50 +11,58 @@
 #include "GaudiKernel/ServiceHandle.h"
 class IToolSvc;
 
-//FCCSW
-class IG4ParticleSmearTool;
 
-/**
-   @brief     Shortcut to the ordinary tracking.
-   @details   Fast simulation model describes what should be done instead of a normal tracking for certain particle in certain volumes. Instead of the ordinary tracking, a particle deposits its energy at the entrance to the detector and its value is smeared.
-   @author    Anna Zaborowska
-*/
+/** FastSimModelTracker SimG4Fast/SimG4Fast/FastSimModelTracker.h FastSimModelTracker.h
+ *
+ *  Fast simulation model describes what should be done instead of a normal tracking
+ *  for the certain particle in the certain volumes.
+ *  Particles need to have the parametrisation process attached (FastSimPhysics)
+ *  and fulfill conditions of FastSimModelTracker::IsApplicable() and FastSimModelTracker::ModelTrigger().
+ *  Volumes are represented by G4Region given to the constructor of FastSimModelTracker.
+ *  For those volumes, if the model is triggered, instead of the ordinary tracking,
+ *  a particle is moved to the exit of the tracker (as it would be transported with initial momentum and no
+ *  physics processes on the way) and the particle momentum is smeared according to the smearing tool
+ *  defined in the job options file.
+ *
+ *  @author    Anna Zaborowska
+ */
 
+namespace sim {
 class FastSimModelTracker : public G4VFastSimulationModel {
-public:
-   /**
-      A constructor.
-      @param aModelName A name of the fast simulation model.
-      @param aEnvelope A region where the model can take over the ordinary tracking.
-    */
-   FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string&);
-   /**
-      A constructor.
-      @param aModelName A name of the fast simulation model.
-    */
-   FastSimModelTracker (const std::string& aModelName);
-   ~FastSimModelTracker ();
-   /**
-      Checks if this model should be applied to this particle type.
-      @param aParticle A particle definition (type).
-    */
-   virtual G4bool IsApplicable(const G4ParticleDefinition& aParticle) final;
-   /**
-      Checks if the model should be applied taking into account the kinematics of a track.
-      @param aFastTrack A track.
-    */
-   virtual G4bool ModelTrigger(const G4FastTrack & aFastTrack) final;
-   /**
-      Smears the energy deposit and saves it, together with the position of the deposit, the detector resolution and efficiency to the PrimaryParticleInformation.
-      @param aFastTrack A track.
-      @param aFastStep A step.
-    */
-   virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep) final;
+  public:
+  /** Constructor.
+   *  @param aModelName Name of the fast simulation model.
+   *  @param aEnvelope Region where the model can take over the ordinary tracking.
+   *  @param aSmearToolName Name of the implementation of IG4ParticleSmearTool to be searched for by ToolSvc.
+   */
+  FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName);
+  /** Constructor.
+   *  @param aModelName Name of the fast simulation model.
+   */
+  FastSimModelTracker (const std::string& aModelName);
+  ~FastSimModelTracker ();
+  /** Check if this model should be applied to this particle type.
+   *  @param aParticle Particle definition (type).
+   */
+  virtual G4bool IsApplicable(const G4ParticleDefinition& aParticle) final;
+  /** Check if the model should be applied taking into account the kinematics of a track.
+   *  @param aFastTrack Track.
+   */
+  virtual G4bool ModelTrigger(const G4FastTrack & aFastTrack) final;
+  /** Apply the parametrisation.
+   *  Move the particle to the exit from the volume along the computed trajectory.
+   *  Smear the momentum with the smearing tool m_smearTool.
+   *  @param aFastTrack Track.
+   *  @param aFastStep Step.
+   */
+  virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep) final;
 
-private:
-   /// Tool Service
-   ServiceHandle<IToolSvc> m_toolSvc;
-   /// Pointer to a smearing tool
-   IG4ParticleSmearTool* m_smearTool;
+  private:
+  /// Tool Service
+  ServiceHandle<IToolSvc> m_toolSvc;
+  /// Pointer to a smearing tool
+  IG4ParticleSmearTool* m_smearTool;
 };
-#endif
+}
+
+#endif /* SIMG4FAST_FASTSIMMODELTRACKER_H */

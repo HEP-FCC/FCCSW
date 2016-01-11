@@ -1,8 +1,8 @@
 #include "G4FastSimAlg.h"
 
 // FCCSW
-#include "SimG4Common/ParticleInformation.h"
 #include "SimG4Common/Units.h"
+#include "SimG4Common/ParticleInformation.h"
 #include "SimG4Interface/IG4SimSvc.h"
 
 // albers
