@@ -16,8 +16,8 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import G4SimGeant
-geantservice = G4SimGeant("G4SimGeant", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
+from Configurables import G4SimSvc
+geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
 
 from Configurables import G4FullSimAlg
 geantsim = G4FullSimAlg("G4FullSimAlg")
