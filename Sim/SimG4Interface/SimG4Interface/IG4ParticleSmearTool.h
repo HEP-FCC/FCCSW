@@ -23,14 +23,16 @@ public:
 
   /**  Smear the momentum of the particle
    *   @param aMom Particle momentum to be smeared.
+   *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
-   virtual StatusCode smearMomentum( CLHEP::Hep3Vector& aMom ) = 0;
+  virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) = 0;
 
   /**  Smear the energy of the particle
    *   @param aEn Particle energy to be smeared.
+   *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
-   virtual StatusCode smearEnergy( double& aEn ) = 0;
+  virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) = 0;
 };
 #endif /* SIMG4INTERFACE_IG4PARTICLESMEARTOOL_H */

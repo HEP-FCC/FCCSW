@@ -35,13 +35,13 @@ StatusCode G4ParticleSmearSimple::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4ParticleSmearSimple::smearMomentum( CLHEP::Hep3Vector& aMom ) {
+StatusCode G4ParticleSmearSimple::smearMomentum( CLHEP::Hep3Vector& aMom, int aPdg) {
    double tmp = m_gauss.shoot();
    aMom *= tmp;
    return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearSimple::smearEnergy( double& aEn ) {
+StatusCode G4ParticleSmearSimple::smearEnergy( double& aEn, int aPdg) {
    double tmp;
    do {
       tmp = m_gauss.shoot();

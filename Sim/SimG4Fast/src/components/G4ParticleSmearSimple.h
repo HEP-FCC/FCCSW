@@ -35,15 +35,17 @@ public:
 
   /**  Smear the momentum of the particle
    *   @param aMom Particle momentum to be smeared.
+   *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
-   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom) final;
+   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
 
   /**  Smear the energy of the particle
    *   @param aEn Particle energy to be smeared.
+   *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
-   virtual StatusCode smearEnergy(double& aEn) final;
+   virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) final;
 private:
    /// Constant resolution for the smearing (set by job options)
    double m_sigma;
