@@ -6,9 +6,6 @@
 
 // albers
 #include "datamodel/MCParticleCollection.h"
-#include "datamodel/TrackClusterCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackClusterHitsAssociationCollection.h"
 #include "datamodel/CaloClusterCollection.h"
 #include "datamodel/CaloHitCollection.h"
 
@@ -24,11 +21,10 @@ DECLARE_ALGORITHM_FACTORY(G4FullSimAlg)
 G4FullSimAlg::G4FullSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
-  declareOutput("trackClusters", m_trackClusters);
-  declareOutput("trackHits", m_trackHits);
-  declareOutput("trackHitsClusters", m_trackHitsClusters);
   declareOutput("caloClusters", m_caloClusters);
   declareOutput("caloHits", m_caloHits);
+  declareProperty("outputs",m_saveTool);
+  declarePrivateTool(m_saveTool);
 }
 G4FullSimAlg::~G4FullSimAlg() {}
 
@@ -38,6 +34,10 @@ StatusCode G4FullSimAlg::initialize() {
   m_geantSvc = service("G4SimSvc");
   if (!m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  if (!m_saveTool.retrieve()) {
+    error() << "Unable to retrieve the output saving tool." << endmsg;
     return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
@@ -55,7 +55,7 @@ StatusCode G4FullSimAlg::execute() {
   m_geantSvc->retrieveEvent(constevent);
   // here specify what is the output of interest
   saveHCalDeposits(*constevent);
-  saveTrackerHits(*constevent);
+  m_saveTool->saveOutput(*constevent);
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -81,45 +81,6 @@ G4Event* G4FullSimAlg::EDM2G4() {
     g4_event->AddPrimaryVertex(g4_vertex);
   }
   return g4_event;
-}
-
-void G4FullSimAlg::saveTrackerHits(const G4Event& aEvent) {
-  G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
-  G4VHitsCollection* collect;
-  DD4hep::Simulation::Geant4TrackerHit* hit;
-  if(collections != nullptr) {
-    TrackClusterCollection* edmClusters = new TrackClusterCollection();
-    TrackHitCollection* edmHits = new TrackHitCollection();
-    TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
-    for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
-      collect = collections->GetHC(iter_coll);
-      if (collect->GetName().find("Tracker") != std::string::npos) {
-        int n_hit = collect->GetSize();
-        info() << "\t" << n_hit<< " hits are stored in a tracker collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
-        for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-          hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-          TrackHitHandle edmHit = edmHits->create();
-          TrackClusterHandle edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.mod().Core;
-          BareCluster& edmClusterCore = edmCluster.mod().Core;
-          edmHitCore.Cellid = hit->cellID;
-          edmHitCore.Energy = hit->energyDeposit;
-          edmHitCore.Time = hit->truth.time;
-          edmClusterCore.position.X = hit->position.x();
-          edmClusterCore.position.Y = hit->position.y();
-          edmClusterCore.position.Z = hit->position.z();
-          edmClusterCore.Energy = hit->energyDeposit;
-          edmClusterCore.Time = hit->truth.time;
-          TrackClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
-          edmAssociation.mod().Cluster = edmCluster;
-          edmAssociation.mod().Hit = edmHit;
-        }
-      }
-    }
-    m_trackClusters.put(edmClusters);
-    m_trackHits.put(edmHits);
-    m_trackHitsClusters.put(edmAssociations);
-  }
 }
 
 void G4FullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
