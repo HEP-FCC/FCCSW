@@ -22,12 +22,8 @@ savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-savehcaltool = G4SaveCalHits("G4SaveHCalHits", caloType = "HCal")
-savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
-savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = G4FullSimAlg("G4FullSimAlg",
-                        outputTracker= savetrackertool,
-                        outputHCal = savehcaltool )
+                        outputs = ["G4SaveTrackerHits/G4SaveTrackerHits"] )
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import AlbersWrite, AlbersOutput

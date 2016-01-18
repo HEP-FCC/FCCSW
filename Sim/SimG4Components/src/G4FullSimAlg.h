@@ -59,11 +59,11 @@ private:
   DataHandle<MCParticleCollection> m_genParticles;
   /// Pointer to the interface of Geant simulation service
   SmartIF<IG4SimSvc> m_geantSvc;
-  /// Handle to the tool saving the output from an event (with tracker hits)
+  /// Handle to the tools saving the output
   /// to be replaced with the ToolHandleArray<IG4SaveOutputTool> m_saveTools
-  ToolHandle<IG4SaveOutputTool> m_saveTrackerTool;
-  /// Handle to the tool saving the output from an event (with HCAL hits)
-  /// to be replaced with the ToolHandleArray<IG4SaveOutputTool> m_saveTools
-  ToolHandle<IG4SaveOutputTool> m_saveHCalTool;
+  std::vector<IG4SaveOutputTool*> m_saveTools;
+  /// Names for the saving tools
+  /// to be deleted once the ToolHandleArray<IG4SaveOutputTool> m_saveTools is in place
+  std::vector<std::string> m_saveToolNames;
 };
 #endif /* SIMG4COMPONENTS_G4FULLSIMALG_H */

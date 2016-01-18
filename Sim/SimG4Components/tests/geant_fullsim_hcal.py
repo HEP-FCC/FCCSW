@@ -19,17 +19,12 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detector='file:../DetectorDescription/Detectors/compact/TestHCal.xml',
                     OutputLevel = DEBUG)
 
-from Configurables import G4FullSimAlg, G4SaveTrackerHits, G4SaveCalHits
-savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
-savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
+from Configurables import G4FullSimAlg, G4SaveCalHits
 savehcaltool = G4SaveCalHits("G4SaveHCalHits", caloType = "HCal")
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = G4FullSimAlg("G4FullSimAlg",
-                        outputTracker= savetrackertool,
-                        outputHCal = savehcaltool )
+                        outputs = ["G4SaveCalHits/G4SaveHCalHits"] )
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import AlbersWrite, AlbersOutput
