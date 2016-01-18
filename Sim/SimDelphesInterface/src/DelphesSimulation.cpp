@@ -27,7 +27,7 @@ GaudiAlgorithm(name, svcLoc) ,
    declareProperty("ROOTOutputFile"   , m_outRootFileName, "Name of Root output file, if defined file write out / if not data written to the transient data store");
 
    declareInput("hepmc", m_hepmcHandle);
-   
+
    declareOutput("allParticles"      , m_allPartclsHandle);
    declareOutput("genPartons"        , m_genPartonsHandle);
    declareOutput("genStableParticles", m_genStablesHandle);
@@ -64,18 +64,18 @@ StatusCode DelphesSimulation::initialize() {
       error() << "Can't open " << m_inHepMCFileName << endmsg;
       return Error ("ERROR, can't open defined HepMC input file.");
     }
-  
+
     fseek(m_inHepMCFile, 0L, SEEK_END);
     m_inHepMCFileLength = ftello(m_inHepMCFile);
     fseek(m_inHepMCFile, 0L, SEEK_SET);
     info() << "Length of HepMC input file: " << m_inHepMCFileLength << endmsg;
     if (m_inHepMCFileLength<=0) {
-  
+
       fclose(m_inHepMCFile);
       return Error ("ERROR, zero length HepMC input file.");
     }
   }
-  
+
   // If required, export output directly to root file
   if (m_outRootFileName!="") {
 
@@ -91,7 +91,7 @@ StatusCode DelphesSimulation::initialize() {
   // Read Delphes configuration card
   m_confReader = new ExRootConfReader;
   m_confReader->ReadFile(m_DelphesCard.c_str());
-   
+
   // Instance of Delphes
   m_Delphes = new Delphes("Delphes");
   m_Delphes->SetConfReader(m_confReader);
@@ -109,7 +109,7 @@ StatusCode DelphesSimulation::initialize() {
   //  HepMC reader --> reads either from a file or directly from data store
   m_HepMCReader    = new DelphesExtHepMCReader;
   if (m_inHepMCFile) m_HepMCReader->SetInputFile(m_inHepMCFile);
-  
+
   // Create following arrays of Delphes objects --> starting objects
   m_allPartOutArray    = m_Delphes->ExportArray("allParticles");
   m_stablePartOutArray = m_Delphes->ExportArray("stableParticles");
@@ -127,13 +127,13 @@ StatusCode DelphesSimulation::initialize() {
     TString name = param[k].GetString();
     info()  << "-- Module: " <<  name << endmsg;
   }
-  
+
   // Initialize all variables
   m_eventCounter = 0;
   if (m_outRootFile!=nullptr) m_treeWriter->Clear();
   m_Delphes->Clear();
   m_HepMCReader->Clear();
- 
+
   return StatusCode::SUCCESS;
 }
 
@@ -343,14 +343,14 @@ StatusCode DelphesSimulation::finalize() {
     m_outRootFile->Close();
     if (m_outRootFile){delete m_outRootFile; m_outRootFile = nullptr;}
   }
-  
+
   info() << "Exiting Delphes..." << endmsg;
-  
+
   // Clear memory
   if (m_HepMCReader) {delete m_HepMCReader; m_HepMCReader = nullptr; } // Releases also the memory allocated by inHepMCFile
   if (m_Delphes)     {delete m_Delphes;     m_Delphes     = nullptr; } // Releases also the memory allocated by treeWriter
   if (m_confReader)  {delete m_confReader;  m_confReader  = nullptr; }
-  
+
   return GaudiAlgorithm::finalize();
 }
 
@@ -360,8 +360,8 @@ void DelphesSimulation::ConvertParticle(   TObjArray *  Input , ParticleCollecti
   for(int j = 0; j < Input->GetEntries(); ++j) {
 
     cand = static_cast<Candidate *>(Input->At(j));
-    ParticleHandle outptc = coll->create();
-    BareParticle&  core   = outptc.mod().Core;
+    Particle outptc = coll->create();
+    BareParticle&  core   = outptc.Core();
     if (cand->Momentum.Pt()!=0) { // protection against the boring message Warning in <TVector3::PseudoRapidity>: transvers momentum = 0! return +/- 10e10
 
       core.Type     = cand->PID;
@@ -375,36 +375,36 @@ void DelphesSimulation::ConvertParticle(   TObjArray *  Input , ParticleCollecti
 	    core.Vertex.Z = (double) cand->Position.Z() ;
     }
   }
-}   
+}
 
 void DelphesSimulation::ConvertJet(   TObjArray *  Input , GenJetCollection *  coll  ){
 
   Candidate * cand;
   for(int j = 0; j < Input->GetEntries(); ++j) {
-      
+
     cand = static_cast<Candidate *>(Input->At(j));
-    GenJetHandle outptc = coll->create();
-    BareJet& core = outptc.mod().Core;
+    GenJet outptc = coll->create();
+    BareJet& core = outptc.Core();
     core.Area     = cand->Area.Mag();
     core.P4.Px    = (double) cand->Momentum.X();
     core.P4.Py    = (double) cand->Momentum.Y();
     core.P4.Pz    = (double) cand->Momentum.Z();
     core.P4.Mass  = (double) cand->Mass ;
   }
-}   
+}
 
 void DelphesSimulation::ConvertMET(   TObjArray *  Input , ParticleCollection *  coll  ){
 
   Candidate * cand;
   for(int j = 0; j < Input->GetEntries(); ++j) {
-      
+
     cand = static_cast<Candidate *>(Input->At(j));
-    ParticleHandle outptc = coll->create();
-    BareParticle& core = outptc.mod().Core;
+    Particle outptc = coll->create();
+    BareParticle& core = outptc.Core();
     core.P4.Px         = (double) cand->Momentum.X();
     core.P4.Py         = (double) cand->Momentum.Y();
   }
-}   
+}
 
 void DelphesSimulation::ConvertHT(   TObjArray *  Input , ParticleCollection *  coll  ){
 
@@ -412,8 +412,8 @@ void DelphesSimulation::ConvertHT(   TObjArray *  Input , ParticleCollection *  
   for(int j = 0; j < Input->GetEntries(); ++j) {
 
     cand = static_cast<Candidate *>(Input->At(j));
-    ParticleHandle outptc = coll->create();
-    BareParticle& core = outptc.mod().Core;
+    Particle outptc = coll->create();
+    BareParticle& core = outptc.Core();
     core.P4.Px         = (double) cand->Momentum.X();
     core.P4.Py         = (double) cand->Momentum.Y();
   }

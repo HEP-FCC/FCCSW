@@ -11,7 +11,7 @@ dumper.DataInputs.hepmc.Path="hepmc"
 
 alberswrite = AlbersWrite("AlbersWrite",OutputLevel=DEBUG)
 alberswrite.DataOutputs.albersJets.Path = "albersJets"
-out = AlbersOutput("out")
+out = AlbersOutput("out", OutputLevel=DEBUG)
 
 
 ApplicationMgr( TopAlg = [reader,dumper,alberswrite,out],

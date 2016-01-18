@@ -24,9 +24,9 @@ StatusCode AlbersWrite::execute() {
   lv1.Px  = 20.;
   lv1.Py  = 20. ;
   lv1.Mass = 125;
-  lv1.Pz   = 0.;  
-  JetHandle j1 = jets->create(); 
-  BareJet& core = j1.mod().Core;
+  lv1.Pz   = 0.;
+  Jet j1 = jets->create();
+  BareJet& core = j1.Core();
   core.P4 = lv1;
   m_jethandle.put(jets);
 

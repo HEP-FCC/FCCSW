@@ -1,7 +1,7 @@
 #ifdef __CINT__
 
 #include <vector>
-#include "albers/CollectionBase.h"
+#include "podio/CollectionBase.h"
 
 #pragma link off all globals;
 #pragma link off all classes;

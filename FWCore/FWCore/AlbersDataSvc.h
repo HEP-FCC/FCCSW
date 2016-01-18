@@ -3,22 +3,22 @@
 
 #include "GaudiKernel/DataSvc.h"
 #include "GaudiKernel/IConversionSvc.h"
-#include "albers/Registry.h"
-#include "albers/CollectionBase.h"
+#include "podio/CollectionBase.h"
+#include "podio/CollectionIDTable.h"
 #include <utility>
 // Forward declarations
 
 
 /** @class AlbersEvtSvc EvtDataSvc.h
  *
- *   An EvtDataSvc for Albers classes
+ *   An EvtDataSvc for PODIO classes
  *
  *  @author B. Hegner
  */
 class AlbersDataSvc  : public DataSvc   {
 public:
 
-  typedef std::vector<std::pair<std::string, albers::CollectionBase*>> CollRegistry;
+  typedef std::vector<std::pair<std::string, podio::CollectionBase*>> CollRegistry;
 
   virtual StatusCode initialize();
   virtual StatusCode reinitialize();
@@ -36,15 +36,14 @@ public:
   /// Register object with the data store.
   virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject );
 
-  virtual const CollRegistry& getCollections() const {return m_collections;};
-  virtual albers::Registry* getRegistry() {return &m_registry;};
+  virtual const CollRegistry& getCollections() const {return m_collections;}
+  virtual podio::CollectionIDTable* getCollectionIDs() {return m_collectionIDs;}
 
 private:
   SmartIF<IConversionSvc> m_cnvSvc;
 
-  // special members for albers handling
-  albers::Registry   m_registry;  
-  std::vector<std::pair<std::string, albers::CollectionBase*>> m_collections;
-
+  // special members for podio handling
+  std::vector<std::pair<std::string, podio::CollectionBase*>> m_collections;
+  podio::CollectionIDTable* m_collectionIDs;
 };
 #endif // CORE_ALBERSDATASVC_H

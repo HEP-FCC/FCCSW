@@ -2,8 +2,7 @@
 #define _ALBERSOUTPUT_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "albers/CollectionBase.h"
-#include "albers/Registry.h"
+#include "podio/CollectionBase.h"
 #include "KeepDropSwitch.h"
 
 #include "TTree.h"
@@ -32,13 +31,12 @@ private:
   std::string m_filename;
   std::vector<std::string> m_outputCommands;
   KeepDropSwitch m_switch;
-  albers::Registry* m_registry;
   AlbersDataSvc* m_albersDataSvc;
   TFile* m_file;
   TTree* m_datatree;
   TTree* m_metadatatree;
-  std::vector<albers::CollectionBase*> m_storedCollections;
-  
+  std::vector<podio::CollectionBase*> m_storedCollections;
+
 };
 
 #endif

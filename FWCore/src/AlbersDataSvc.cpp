@@ -35,22 +35,23 @@ StatusCode AlbersDataSvc::clearStore()    {
 
 /// Standard Constructor
 AlbersDataSvc::AlbersDataSvc(const std::string& name,ISvcLocator* svc):
-  DataSvc(name,svc) {
+  DataSvc(name,svc), m_collectionIDs(new podio::CollectionIDTable()) {
 }
 
 /// Standard Destructor
 AlbersDataSvc::~AlbersDataSvc() {
 }
 
-StatusCode AlbersDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {  
+StatusCode AlbersDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
   if (wrapper){
-    albers::CollectionBase* coll = wrapper->collectionBase();
+    podio::CollectionBase* coll = wrapper->collectionBase();
     if (coll!=0){
-    size_t pos = fullPath.find_last_of("/");
-    std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
-    m_registry.registerPOD(coll, shortPath);
-    m_collections.emplace_back(std::make_pair(shortPath,coll)); 
+      size_t pos = fullPath.find_last_of("/");
+      std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
+      int id = m_collectionIDs->add(shortPath);
+      coll->setID(id);
+      m_collections.emplace_back(std::make_pair(shortPath,coll));
     }
   }
   return DataSvc::registerObject(fullPath,pObject);

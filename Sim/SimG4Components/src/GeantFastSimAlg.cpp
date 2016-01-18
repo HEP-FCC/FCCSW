@@ -6,9 +6,10 @@
 #include "SimG4Interface/IGeantSvc.h"
 
 // albers
+#include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/ParticleCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
+#include "datamodel/ParticleMCParticleAssociationCollection.h"
 
 // Geant
 #include "G4HCofThisEvent.hh"
@@ -60,20 +61,20 @@ G4Event* GeantFastSimAlg::EDM2G4() {
   // Creating EDM collections
   const MCParticleCollection& mcparticles = *(m_genParticles.get());
   ParticleCollection* particles = new ParticleCollection();
-  ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
+  ParticleMCParticleAssociationCollection* associations = new ParticleMCParticleAssociationCollection();
   // Adding one particle per one vertex => vertices repeated
   for(const auto& mcparticle : mcparticles) {
-    const GenVertex& v = mcparticle.read().StartVertex.read();
+    const ConstGenVertex& v = mcparticle.StartVertex();
     G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
-      (v.Position.X*sim::edm2g4::length, v.Position.Y*sim::edm2g4::length, v.Position.Z*sim::edm2g4::length, v.Ctau*sim::edm2g4::length);
-    const BareParticle& mccore = mcparticle.read().Core;
+      (v.Position().X*sim::edm2g4::length, v.Position().Y*sim::edm2g4::length, v.Position().Z*sim::edm2g4::length, v.Ctau()*sim::edm2g4::length);
+    const BareParticle& mccore = mcparticle.Core();
     G4PrimaryParticle* g4_particle = new G4PrimaryParticle
       (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
-    ParticleHandle particle = particles->create();
+    Particle particle = particles->create();
     g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle, particle));
-    ParticleMCAssociationHandle association = associations->create();
-    association.mod().Rec = particle;
-    association.mod().Sim = mcparticle;
+    ParticleMCParticleAssociation association = associations->create();
+    association.Rec(particle);
+    association.Sim(mcparticle);
     g4_vertex->SetPrimary(g4_particle);
     g4_event->AddPrimaryVertex(g4_vertex);
   }

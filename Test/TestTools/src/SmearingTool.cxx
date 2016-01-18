@@ -1,6 +1,6 @@
 //
 //  SmearingTool.cpp
-//  
+//
 //
 //  Created by Julia Hrdinka on 14/04/15.
 //
@@ -19,7 +19,7 @@ AlgTool(type,name,parent)
 StatusCode SmearingTool::initialize()
 {
     declareInterface<IDigitizer>(this);
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -30,8 +30,9 @@ StatusCode SmearingTool::finalize()
 
 StatusCode SmearingTool::smear(ParticleCollection* particlecoll)
 {
+	// FIXME / TODO: This function should be renamed or re-written, as I would expect something else from the name...
     for (const auto& part : *particlecoll) {
-        m_points << part.read().Core.Vertex.X << " " << part.read().Core.Vertex.Y << " " << part.read().Core.Vertex.Z << std::endl;
+        m_points << part.Core().Vertex.X << " " << part.Core().Vertex.Y << " " << part.Core().Vertex.Z << std::endl;
     }
 
     return StatusCode::SUCCESS;

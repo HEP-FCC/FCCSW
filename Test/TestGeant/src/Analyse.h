@@ -11,7 +11,7 @@
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
+#include "datamodel/ParticleMCParticleAssociationCollection.h"
 
 
 class Analyse: public GaudiAlgorithm {
@@ -34,7 +34,7 @@ private:
    /// Handle for the particles to be written
    DataHandle<ParticleCollection> m_recphandle;
    /// Handle for the associations between particles and MC particles to be written
-   DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
+   DataHandle<ParticleMCParticleAssociationCollection> m_partassociationhandle;
    /// Pointer to the interface of geometry service
 };
 

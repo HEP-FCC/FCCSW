@@ -2,8 +2,8 @@
 #define SIMG4COMMON_PARTICLEINFORMATION_H
 
 // albers
-#include "datamodel/MCParticleHandle.h"
-#include "datamodel/ParticleHandle.h"
+#include "datamodel/MCParticle.h"
+#include "datamodel/Particle.h"
 
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"
@@ -26,7 +26,7 @@ public:
    *  @param[in] aMCpart handle to the EDM MCParticle.
    *  @param[in] aPart handle to the EDM Particle.
    */
-  ParticleInformation(const MCParticleHandle& aMCpart, ParticleHandle& aPart);
+  ParticleInformation(const MCParticle& aMCpart, Particle& aPart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
@@ -34,16 +34,16 @@ public:
   /** Getter of the handle to the MCParticle.
    *  @returns handle to the EDM MCParticle.
    */
-  const MCParticleHandle& GetMCParticleHandle() const;
+  const MCParticle& GetMCParticle() const;
   /** Getter of the handle to the Particle.
    *  @returns handle to the EDM Particle.
    */
-  ParticleHandle& GetParticleHandle();
+  Particle& GetParticle();
 private:
   /// Handle to the MC particle
-  const MCParticleHandle m_mcpart;
+  const MCParticle m_mcpart;
   /// Handle to the particle associated with a MCParticle.
-  ParticleHandle m_part;
+  Particle m_part;
 };
 }
 
