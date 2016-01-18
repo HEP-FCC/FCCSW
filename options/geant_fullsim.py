@@ -19,15 +19,18 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
 
-from Configurables import G4FullSimAlg, G4SaveTrackerHits
-savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits");
+from Configurables import G4FullSimAlg, G4SaveTrackerHits, G4SaveCalHits
+savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-geantsim = G4FullSimAlg("G4FullSimAlg", outputs=savetrackertool)
+savehcaltool = G4SaveCalHits("G4SaveHCalHits", caloType = "HCal")
+savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savehcaltool.DataOutputs.caloHits.Path = "caloHits"
+geantsim = G4FullSimAlg("G4FullSimAlg",
+                        outputTracker= savetrackertool,
+                        outputHCal = savehcaltool )
 geantsim.DataInputs.genParticles.Path="allGenParticles"
-geantsim.DataOutputs.caloClusters.Path = "caloClusters"
-geantsim.DataOutputs.caloHits.Path = "caloHits"
 
 from Configurables import AlbersWrite, AlbersOutput
 out = AlbersOutput("out",

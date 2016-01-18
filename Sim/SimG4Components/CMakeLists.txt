@@ -17,3 +17,10 @@ gaudi_add_module(SimG4Components
                  src/*.cpp
                  INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface DD4hep ROOT
                  LINK_LIBRARIES GaudiAlgLib Geant4 FWCore SimG4Common DD4hep ROOT)
+
+
+include(CTest)
+gaudi_add_test(GeantFullSimHCal
+               FRAMEWORK tests/geant_fullsim_hcal.py)
+gaudi_add_test(GeantFullSimGdmlDetector
+               FRAMEWORK tests/geant_fullsim_gdml.py)

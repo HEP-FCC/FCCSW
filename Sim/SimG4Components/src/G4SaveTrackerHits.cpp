@@ -1,8 +1,6 @@
 #include "G4SaveTrackerHits.h"
 
 // Geant4
-#include "G4VModularPhysicsList.hh"
-#include "FTFP_BERT.hh"
 #include "G4Event.hh"
 
 // albers
@@ -18,9 +16,9 @@ DECLARE_TOOL_FACTORY(G4SaveTrackerHits)
 G4SaveTrackerHits::G4SaveTrackerHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
 GaudiTool(aType, aName, aParent) {
   declareInterface<IG4SaveOutputTool>(this);
-  declareOutput("trackClusters", m_trackClusters);
-  declareOutput("trackHits", m_trackHits);
-  declareOutput("trackHitsClusters", m_trackHitsClusters);
+  declareOutput("trackClusters", m_trackClusters,"hits/trackerClusters");
+  declareOutput("trackHits", m_trackHits,"hits/trackerHits");
+  declareOutput("trackHitsClusters", m_trackHitsClusters,"hits/trackerAssociations");
   declareProperty("DataInputs", inputDataObjects());
   declareProperty("DataOutputs", outputDataObjects());
 }

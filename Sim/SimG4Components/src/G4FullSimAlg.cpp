@@ -6,11 +6,8 @@
 
 // albers
 #include "datamodel/MCParticleCollection.h"
-#include "datamodel/CaloClusterCollection.h"
-#include "datamodel/CaloHitCollection.h"
 
 // Geant
-#include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 
 // DD4hep
@@ -21,10 +18,10 @@ DECLARE_ALGORITHM_FACTORY(G4FullSimAlg)
 G4FullSimAlg::G4FullSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
-  declareOutput("caloClusters", m_caloClusters);
-  declareOutput("caloHits", m_caloHits);
-  declareProperty("outputs",m_saveTool);
-  declarePrivateTool(m_saveTool);
+  declareProperty("outputTracker",m_saveTrackerTool);
+  declarePrivateTool(m_saveTrackerTool);
+  declareProperty("outputHCal",m_saveHCalTool);
+  declarePrivateTool(m_saveHCalTool);
 }
 G4FullSimAlg::~G4FullSimAlg() {}
 
@@ -36,8 +33,12 @@ StatusCode G4FullSimAlg::initialize() {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;
   }
-  if (!m_saveTool.retrieve()) {
-    error() << "Unable to retrieve the output saving tool." << endmsg;
+  if (!m_saveHCalTool.retrieve()) {
+    error() << "Unable to retrieve the output saving tool (for HCal)." << endmsg;
+    return StatusCode::FAILURE;
+  }
+  if (!m_saveTrackerTool.retrieve()) {
+    error() << "Unable to retrieve the output saving tool (for tracker)." << endmsg;
     return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
@@ -53,9 +54,8 @@ StatusCode G4FullSimAlg::execute() {
   m_geantSvc->processEvent(*event);
   G4Event* constevent;
   m_geantSvc->retrieveEvent(constevent);
-  // here specify what is the output of interest
-  saveHCalDeposits(*constevent);
-  m_saveTool->saveOutput(*constevent);
+  m_saveTrackerTool->saveOutput(*constevent);
+  m_saveHCalTool->saveOutput(*constevent);
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -81,50 +81,5 @@ G4Event* G4FullSimAlg::EDM2G4() {
     g4_event->AddPrimaryVertex(g4_vertex);
   }
   return g4_event;
-}
-
-void G4FullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
-  G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
-  G4VHitsCollection* collect;
-  DD4hep::Simulation::Geant4CalorimeterHit* hit;
-  if(collections != nullptr) {
-    CaloClusterCollection* edmClusters = new CaloClusterCollection();
-    CaloHitCollection* edmHits = new CaloHitCollection();
-    // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
-    for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
-      collect = collections->GetHC(iter_coll);
-      if (collect->GetName().find("HCal") != std::string::npos) {
-        unsigned int n_hit = collect->GetSize();
-        info() << "\t" << n_hit<< " hits are stored in a HCal collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
-        for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-          hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
-          debug() << hit->cellID << " ";
-          debug() << hit->energyDeposit << " ";
-
-          debug() << hit->position.x() << " ";
-          debug() << hit->position.y() << " ";
-          debug() << hit->position.z() << endmsg;
-
-          CaloHitHandle edmHit = edmHits->create();
-          CaloClusterHandle edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.mod().Core;
-          BareCluster& edmClusterCore = edmCluster.mod().Core;
-          edmHitCore.Cellid = hit->cellID;
-          edmHitCore.Energy = hit->energyDeposit;
-
-          edmClusterCore.position.X = hit->position.x();
-          edmClusterCore.position.Y = hit->position.y();
-          edmClusterCore.position.Z = hit->position.z();
-          edmClusterCore.Energy = hit->energyDeposit;
-
-          // CaloClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
-          // edmAssociation.mod().Cluster = edmCluster;
-          // edmAssociation.mod().Hit = edmHit;
-        }
-      }
-    }
-    m_caloClusters.put(edmClusters);
-    m_caloHits.put(edmHits);
-  }
 }
 

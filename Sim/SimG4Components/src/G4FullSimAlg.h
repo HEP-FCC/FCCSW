@@ -12,8 +12,6 @@ class IG4SimSvc;
 
 // albers
 class MCParticleCollection;
-class CaloClusterCollection;
-class CaloHitCollection;
 
 // Geant
 class G4Event;
@@ -57,17 +55,15 @@ private:
    *   @return translated event
    */
   G4Event* EDM2G4();
-  /// Save hadronic calorimeter deposits
-  void saveHCalDeposits(const G4Event&);
   /// Handle for the EDM MC particles to be read
   DataHandle<MCParticleCollection> m_genParticles;
-  /// Handle for hadron calo clusters
-  DataHandle<CaloClusterCollection> m_caloClusters;
-  /// Handle for hadron calo hits
-  DataHandle<CaloHitCollection> m_caloHits;
   /// Pointer to the interface of Geant simulation service
   SmartIF<IG4SimSvc> m_geantSvc;
-  /// Handle to the tool saving the output from an event
-  ToolHandle<IG4SaveOutputTool> m_saveTool;
+  /// Handle to the tool saving the output from an event (with tracker hits)
+  /// to be replaced with the ToolHandleArray<IG4SaveOutputTool> m_saveTools
+  ToolHandle<IG4SaveOutputTool> m_saveTrackerTool;
+  /// Handle to the tool saving the output from an event (with HCAL hits)
+  /// to be replaced with the ToolHandleArray<IG4SaveOutputTool> m_saveTools
+  ToolHandle<IG4SaveOutputTool> m_saveHCalTool;
 };
 #endif /* SIMG4COMPONENTS_G4FULLSIMALG_H */
