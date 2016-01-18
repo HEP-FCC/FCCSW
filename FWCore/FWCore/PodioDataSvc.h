@@ -1,5 +1,5 @@
-#ifndef FWCORE_ALBERSDATASVC_H
-#define FWCORE_ALBERSDATASVC_H
+#ifndef FWCORE_PODIODATASVC_H
+#define FWCORE_PODIODATASVC_H
 
 #include "GaudiKernel/DataSvc.h"
 #include "GaudiKernel/IConversionSvc.h"
@@ -9,13 +9,13 @@
 // Forward declarations
 
 
-/** @class AlbersEvtSvc EvtDataSvc.h
+/** @class PodioEvtSvc EvtDataSvc.h
  *
  *   An EvtDataSvc for PODIO classes
  *
  *  @author B. Hegner
  */
-class AlbersDataSvc  : public DataSvc   {
+class PodioDataSvc  : public DataSvc   {
 public:
 
   typedef std::vector<std::pair<std::string, podio::CollectionBase*>> CollRegistry;
@@ -26,10 +26,10 @@ public:
   virtual StatusCode clearStore();
 
   /// Standard Constructor
-  AlbersDataSvc(const std::string& name, ISvcLocator* svc);
+  PodioDataSvc(const std::string& name, ISvcLocator* svc);
 
   /// Standard Destructor
-  virtual ~AlbersDataSvc();
+  virtual ~PodioDataSvc();
 
   /// Overriding standard behaviour of evt service
 
@@ -46,4 +46,4 @@ private:
   std::vector<std::pair<std::string, podio::CollectionBase*>> m_collections;
   podio::CollectionIDTable* m_collectionIDs;
 };
-#endif // CORE_ALBERSDATASVC_H
+#endif // CORE_PODIODATASVC_H

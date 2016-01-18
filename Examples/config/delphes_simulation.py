@@ -1,8 +1,8 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, FCCDataSvc, AlbersWrite, AlbersOutput
+from Configurables import ApplicationMgr, FCCDataSvc, PodioWrite, PodioOutput
 
-albersevent   = FCCDataSvc("EventDataSvc")
+podioevent   = FCCDataSvc("EventDataSvc")
 
 
 from Configurables import DelphesSimulation
@@ -21,7 +21,7 @@ delphessimulation.DataOutputs.mets.Path = "met"
 delphessimulation.DataOutputs.hts.Path = "ht"
 
 
-out = AlbersOutput("out",
+out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["drop *",
                       "keep genparticles",
@@ -43,7 +43,7 @@ ApplicationMgr(
               ],
     EvtSel = 'NONE',
     EvtMax   = 10000, # n of events are decided by Delphes, fixme!
-    ExtSvc = [albersevent],
+    ExtSvc = [podioevent],
     #                EventLoop = eventloopmgr,
     #                OutputLevel=DEBUG
  )

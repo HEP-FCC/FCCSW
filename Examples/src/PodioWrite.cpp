@@ -1,16 +1,16 @@
-#include "AlbersWrite.h"
+#include "PodioWrite.h"
 #include "DataObjects/LorentzVector.h"
 
-DECLARE_COMPONENT(AlbersWrite)
+DECLARE_COMPONENT(PodioWrite)
 
-AlbersWrite::AlbersWrite(const std::string& name, ISvcLocator* svcLoc) :
+PodioWrite::PodioWrite(const std::string& name, ISvcLocator* svcLoc) :
 		GaudiAlgorithm(name, svcLoc)
 
 {
-  declareOutput("albersJets", m_jethandle);
+  declareOutput("podioJets", m_jethandle);
 }
 
-StatusCode AlbersWrite::initialize() {
+StatusCode PodioWrite::initialize() {
 
 	if (GaudiAlgorithm::initialize().isFailure())
 		return StatusCode::FAILURE;
@@ -18,7 +18,7 @@ StatusCode AlbersWrite::initialize() {
 	return StatusCode::SUCCESS;
 }
 
-StatusCode AlbersWrite::execute() {
+StatusCode PodioWrite::execute() {
   JetCollection* jets = new JetCollection();
   LorentzVector lv1;
   lv1.Px  = 20.;
@@ -33,7 +33,7 @@ StatusCode AlbersWrite::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode AlbersWrite::finalize() {
+StatusCode PodioWrite::finalize() {
 	if (GaudiAlgorithm::finalize().isFailure())
 		return StatusCode::FAILURE;
 

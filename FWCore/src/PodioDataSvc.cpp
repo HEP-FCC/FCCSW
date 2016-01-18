@@ -1,11 +1,11 @@
 #include "GaudiKernel/ISvcLocator.h"
 #include "GaudiKernel/IConversionSvc.h"
 
-#include "FWCore/AlbersDataSvc.h"
+#include "FWCore/PodioDataSvc.h"
 #include "FWCore/DataWrapper.h"
 
 /// Service initialisation
-StatusCode AlbersDataSvc::initialize()    {
+StatusCode PodioDataSvc::initialize()    {
   // Nothing to do: just call base class initialisation
   StatusCode      status  = DataSvc::initialize();
   ISvcLocator*    svc_loc = serviceLocator();
@@ -16,33 +16,33 @@ StatusCode AlbersDataSvc::initialize()    {
   return status;
 }
 /// Service reinitialisation
-StatusCode AlbersDataSvc::reinitialize()    {
+StatusCode PodioDataSvc::reinitialize()    {
   // Do nothing for this service
   return StatusCode::SUCCESS;
 }
 /// Service finalization
-StatusCode AlbersDataSvc::finalize()    {
+StatusCode PodioDataSvc::finalize()    {
   m_cnvSvc = 0; // release
   DataSvc::finalize().ignore();
   return StatusCode::SUCCESS ;
 }
 
-StatusCode AlbersDataSvc::clearStore()    {
+StatusCode PodioDataSvc::clearStore()    {
   DataSvc::clearStore().ignore();
   m_collections.clear();
   return StatusCode::SUCCESS ;
 }
 
 /// Standard Constructor
-AlbersDataSvc::AlbersDataSvc(const std::string& name,ISvcLocator* svc):
+PodioDataSvc::PodioDataSvc(const std::string& name,ISvcLocator* svc):
   DataSvc(name,svc), m_collectionIDs(new podio::CollectionIDTable()) {
 }
 
 /// Standard Destructor
-AlbersDataSvc::~AlbersDataSvc() {
+PodioDataSvc::~PodioDataSvc() {
 }
 
-StatusCode AlbersDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
+StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
   if (wrapper){
     podio::CollectionBase* coll = wrapper->collectionBase();

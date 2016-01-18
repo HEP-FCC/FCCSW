@@ -1,5 +1,5 @@
-#ifndef _ALBERSOUTPUT_H_
-#define _ALBERSOUTPUT_H_
+#ifndef _PODIOOUTPUT_H_
+#define _PODIOOUTPUT_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "podio/CollectionBase.h"
@@ -11,14 +11,14 @@
 
 // forward declarations
 class TFile;
-class AlbersDataSvc;
+class PodioDataSvc;
 
-class AlbersOutput : public GaudiAlgorithm {
-  friend class AlgFactory<AlbersOutput> ;
+class PodioOutput : public GaudiAlgorithm {
+  friend class AlgFactory<PodioOutput> ;
 
 public:
   /// Constructor.
-  AlbersOutput(const std::string& name, ISvcLocator* svcLoc);
+  PodioOutput(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
   virtual StatusCode initialize();
   /// Execute.
@@ -31,7 +31,7 @@ private:
   std::string m_filename;
   std::vector<std::string> m_outputCommands;
   KeepDropSwitch m_switch;
-  AlbersDataSvc* m_albersDataSvc;
+  PodioDataSvc* m_podioDataSvc;
   TFile* m_file;
   TTree* m_datatree;
   TTree* m_metadatatree;
