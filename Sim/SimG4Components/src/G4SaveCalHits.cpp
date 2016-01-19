@@ -18,6 +18,7 @@ GaudiTool(aType, aName, aParent) {
   declareProperty("caloType", m_calType);
   declareOutput("caloClusters", m_caloClusters,"hits/caloClusters");
   declareOutput("caloHits", m_caloHits,"hits/caloHits");
+  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
   declareProperty("DataOutputs", outputDataObjects());
 }

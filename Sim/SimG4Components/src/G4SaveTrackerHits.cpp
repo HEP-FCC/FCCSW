@@ -19,6 +19,7 @@ GaudiTool(aType, aName, aParent) {
   declareOutput("trackClusters", m_trackClusters,"hits/trackerClusters");
   declareOutput("trackHits", m_trackHits,"hits/trackerHits");
   declareOutput("trackHitsClusters", m_trackHitsClusters,"hits/trackerAssociations");
+  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
   declareProperty("DataOutputs", outputDataObjects());
 }
