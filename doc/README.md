@@ -3,8 +3,8 @@ FCCSW Documentation
 
 In this directory
 --
-[C++ Coding Style](./CppCodingStyleGuidelines.md)
-[C++ Best Practices](./GeneralCppGuidelines.md)
+- [C++ Coding Style](./CppCodingStyleGuidelines.md)
+- [C++ Best Practices](./GeneralCppGuidelines.md)
 
 Doxygen
 --
