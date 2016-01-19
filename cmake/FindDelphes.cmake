@@ -1,4 +1,4 @@
-set(searchpath ${DELPHES_DIR}  ${DELPHES_DIR}/external )
+set(searchpath ${DELPHES_DIR} ${DELPHES_DIR}/external ${DELPHES_DIR}/lib ${DELPHES_DIR}/include)
 
 
 find_library(DELPHES_LIBRARY
@@ -8,13 +8,13 @@ find_library(DELPHES_LIBRARY
 
 find_path(DELPHES_INCLUDE_DIR
         #   NAMES DelphesClasses.h Delphes.h
-           NAMES classes/DelphesClasses.h modules/Delphes.h external/ExRootAnalysis 
+           NAMES classes/DelphesClasses.h modules/Delphes.h external/ExRootAnalysis
            HINTS ${searchpath}
            PATH_SUFFIXES include)
 
 find_path(DELPHES_EXTERNALS_INCLUDE_DIR
              #   NAMES DelphesClasses.h Delphes.h
-           NAMES external/ExRootAnalysis/ExRootConfReader.h
+           NAMES ExRootAnalysis/ExRootConfReader.h
            HINTS ${searchpath}
            PATH_SUFFIXES include
 )
@@ -22,7 +22,7 @@ find_path(DELPHES_EXTERNALS_INCLUDE_DIR
 
 unset(searchpath)
 
-set(DELPHES_INCLUDE_DIRS ${DELPHES_INCLUDE_DIR} ${DELPHES_INCLUDE_DIR}/external)
+set(DELPHES_INCLUDE_DIRS ${DELPHES_INCLUDE_DIR} ${DELPHES_EXTERNALS_INCLUDE_DIR})
 set(DELPHES_EXTERNALS_INCLUDE_DIRS ${DELPHES_EXTERNALS_INCLUDE_DIR})
 set(DELPHES_LIBRARIES ${DELPHES_LIBRARY})
 
