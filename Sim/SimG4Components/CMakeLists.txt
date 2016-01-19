@@ -24,3 +24,5 @@ gaudi_add_test(GeantFullSimHCal
                FRAMEWORK tests/geant_fullsim_hcal.py)
 gaudi_add_test(GeantFullSimGdmlDetector
                FRAMEWORK tests/geant_fullsim_gdml.py)
+gaudi_add_test(GeantFullSimMoreEvents
+               FRAMEWORK tests/geant_fullsim_moreEvents.py)

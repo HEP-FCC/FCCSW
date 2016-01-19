@@ -24,25 +24,25 @@ include_directories(
                      ${FCCEDM_INCLUDE_DIRS}
 )
 
-# include(CTest)
-# gaudi_add_test(GeantFullSimTrackerHits
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/geant_fullsim.py)
-# gaudi_add_test(GeantFastSimTracker
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/geant_fastsim.py)
-# gaudi_add_test(RecoGeo
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/recogeo_options.py)
-# gaudi_add_test(SimplePythia
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/simple_pythia.py)
-# gaudi_add_test(SimpleWorkflow
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/simple_workflow.py)
-# gaudi_add_test(ExampleOptions
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/example_options.py)
-# gaudi_add_test(PythiaDelphes
-#                 WORKING_DIRECTORY ..
-#                FRAMEWORK options/PythiaDelphes_config.py)
+include(CTest)
+gaudi_add_test(GeantFullSimTrackerHits
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim.py)
+gaudi_add_test(GeantFastSimTracker
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fastsim.py)
+gaudi_add_test(RecoGeo
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/recogeo_options.py)
+gaudi_add_test(SimplePythia
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/simple_pythia.py)
+gaudi_add_test(SimpleWorkflow
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/simple_workflow.py)
+gaudi_add_test(ExampleOptions
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/example_options.py)
+gaudi_add_test(PythiaDelphes
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/PythiaDelphes_config.py)

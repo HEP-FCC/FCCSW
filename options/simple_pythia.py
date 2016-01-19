@@ -8,10 +8,10 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc
 
 #example of pythia configuration file to generate events
-pythiafile="config/Pythia_standard.cmd"
+pythiafile="options/Pythia_standard.cmd"
 
 #example of pythia configuration file to read LH event file
-#pythiafile="config/Pythia_LHEinput.cmd"
+#pythiafile="options/Pythia_LHEinput.cmd"
 
 albersevent   = FCCDataSvc("EventDataSvc")
 
@@ -29,6 +29,7 @@ hepmc_converter = HepMCConverter("Converter")
 # the input product name matches the output product name of the previous module
 hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
+hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 
 from Configurables import GenParticleFilter
 genfilter = GenParticleFilter("StableParticles")

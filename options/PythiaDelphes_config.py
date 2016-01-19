@@ -1,11 +1,11 @@
 ###########################################################
 #    
-# FCCSw Pythia-->Delphes simulation config file
+# FCCSw Pythia-->Delphes simulation options file
 # 
 #  author: Z. Drasal (CERN)
 #
 #  - define variables & delphes sim outputs
-#  - run: ./run gaudirun.py config/PythiaDelphes_config.py 
+#  - run: ./run gaudirun.py options/PythiaDelphes_config.py 
 #
 ###########################################################
 
@@ -28,13 +28,13 @@ from Configurables import ApplicationMgr, FCCDataSvc
 nEvents=100
 
 ## Define either pythia configuration file to generate events
-#pythiaConfFile="config/Pythia_standard.cmd"
+#pythiaConfFile="options/Pythia_standard.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
-pythiaConfFile="config/Pythia_LHEinput.cmd"
+pythiaConfFile="options/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphesCard="config/FCChh_DelphesCard_WithDipole_v00.tcl"
+delphesCard="options/FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes objects (allParticles, partons and stable particles are flushed automatically)
 delphesOutCol=[]
