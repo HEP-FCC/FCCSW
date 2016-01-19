@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
-albersevent = FCCDataSvc("EventDataSvc")
+podioevent = FCCDataSvc("EventDataSvc")
 
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
@@ -17,9 +17,9 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
                     OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
-geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
+geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions" )
 
-from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits
+from Configurables import G4SimAlg, G4SaveTrackerHits
 savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
@@ -28,14 +28,14 @@ geantsim = G4SimAlg("G4SimAlg",
                         outputs= ["G4SaveTrackerHits/G4SaveTrackerHits" ])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
-from Configurables import AlbersWrite, AlbersOutput
-out = AlbersOutput("out",
+from Configurables import PodioWrite, PodioOutput
+out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [albersevent, geoservice, geantservice], # order! geo needed by geant
+                ExtSvc = [podioevent, geoservice, geantservice], # order! geo needed by geant
                 OutputLevel=DEBUG
  )

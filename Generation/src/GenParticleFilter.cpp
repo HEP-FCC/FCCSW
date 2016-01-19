@@ -18,12 +18,10 @@ StatusCode GenParticleFilter::initialize() {
 StatusCode GenParticleFilter::execute() {
   const MCParticleCollection* inparticles = m_igenphandle.get();
   MCParticleCollection* particles = new MCParticleCollection();
-  for(auto ipart=inparticles->begin(); 
-      ipart!=inparticles->end(); ++ipart) {
-    const MCParticle& ptc = (*ipart).read();
-    if(ptc.Core.Status==1) { 
-      MCParticleHandle outptc = particles->create();
-      outptc.mod().Core = ptc.Core; //COLIN Should not clone only the core!
+  for(auto ptc : (*inparticles)) {
+    if(ptc.Core().Status == 1) {
+      MCParticle outptc = particles->create();
+      outptc.Core(ptc.Core()); //COLIN Should not clone only the core!
     }
   }
   m_ogenphandle.put(particles);

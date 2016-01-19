@@ -1,14 +1,14 @@
 #include "SimG4Common/ParticleInformation.h"
 
 namespace sim {
-ParticleInformation::ParticleInformation(const MCParticleHandle& aMCpart): m_mcParticleHandle(aMCpart) {}
+ParticleInformation::ParticleInformation(const MCParticle& aMCpart): m_mcParticle(aMCpart) {}
 
 ParticleInformation::~ParticleInformation() {}
 
 void ParticleInformation::Print() const {}
 
-const MCParticleHandle& ParticleInformation::mcParticleHandle() const {
-  return m_mcParticleHandle;
+const MCParticle& ParticleInformation::mcParticle() const {
+  return m_mcParticle;
 }
 void ParticleInformation::setEndMomentum(const CLHEP::Hep3Vector& aMom) {
   m_endMomentum = aMom;

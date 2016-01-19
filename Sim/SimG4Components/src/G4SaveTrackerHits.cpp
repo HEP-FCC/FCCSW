@@ -49,10 +49,10 @@ StatusCode G4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
         info() << "\t" << n_hit<< " hits are stored in a tracker collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
         for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-          TrackHitHandle edmHit = edmHits->create();
-          TrackClusterHandle edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.mod().Core;
-          BareCluster& edmClusterCore = edmCluster.mod().Core;
+          TrackHit edmHit = edmHits->create();
+          TrackCluster edmCluster = edmClusters->create();
+          BareHit& edmHitCore = edmHit.Core();
+          BareCluster& edmClusterCore = edmCluster.Core();
           edmHitCore.Cellid = hit->cellID;
           edmHitCore.Energy = hit->energyDeposit;
           edmHitCore.Time = hit->truth.time;
@@ -61,9 +61,9 @@ StatusCode G4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
           edmClusterCore.position.Z = hit->position.z();
           edmClusterCore.Energy = hit->energyDeposit;
           edmClusterCore.Time = hit->truth.time;
-          TrackClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
-          edmAssociation.mod().Cluster = edmCluster;
-          edmAssociation.mod().Hit = edmHit;
+          TrackClusterHitsAssociation edmAssociation = edmAssociations->create();
+          edmAssociation.Cluster(edmCluster);
+          edmAssociation.Hit(edmHit);
         }
       }
     }

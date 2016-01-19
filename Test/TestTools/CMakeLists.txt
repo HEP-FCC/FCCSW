@@ -13,13 +13,13 @@ gaudi_depends_on_subdirs(GaudiAlg
 
 find_package(ROOT COMPONENTS MathCore)
 
-find_package(ALBERS)
+find_package(PODIO)
 find_package(FCCEDM)
 
 gaudi_add_module(TestTools
 		 src/*.cxx
-		 INCLUDE_DIRS GaudiAlgLib GaudiKernel DataObjects TestInterfaces Algebra RecoGeometry ROOT ALBERS FCCEDM
-                 LINK_LIBRARIES GaudiAlgLib DataObjects GaudiKernel RecoGeometry ROOT ALBERS FCCEDM)
+		 INCLUDE_DIRS GaudiAlgLib GaudiKernel DataObjects TestInterfaces Algebra RecoGeometry ROOT PODIO FCCEDM
+                 LINK_LIBRARIES GaudiAlgLib DataObjects GaudiKernel RecoGeometry ROOT PODIO FCCEDM)
 
-	
+
 

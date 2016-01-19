@@ -6,6 +6,7 @@
 #include "SimG4Interface/IG4SimSvc.h"
 
 // albers
+#include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
 // Geant
@@ -67,10 +68,10 @@ G4Event* G4SimAlg::EDM2G4() {
   const MCParticleCollection& mcparticles = *(m_genParticles.get());
   // Adding one particle per one vertex => vertices repeated
   for(const auto& mcparticle : mcparticles) {
-    const GenVertex& v = mcparticle.read().StartVertex.read();
+    const ConstGenVertex& v = mcparticle.StartVertex();
     G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
-      (v.Position.X*sim::edm2g4::length, v.Position.Y*sim::edm2g4::length, v.Position.Z*sim::edm2g4::length, v.Ctau*sim::edm2g4::length);
-    const BareParticle& mccore = mcparticle.read().Core;
+      (v.Position().X*sim::edm2g4::length, v.Position().Y*sim::edm2g4::length, v.Position().Z*sim::edm2g4::length, v.Ctau()*sim::edm2g4::length);
+    const BareParticle& mccore = mcparticle.Core();
     G4PrimaryParticle* g4_particle = new G4PrimaryParticle
       (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
     g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle));

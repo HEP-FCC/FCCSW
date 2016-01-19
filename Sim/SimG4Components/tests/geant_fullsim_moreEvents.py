@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
-albersevent = FCCDataSvc("EventDataSvc")
+podioevent = FCCDataSvc("EventDataSvc")
 
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
@@ -28,8 +28,8 @@ geantsim = G4SimAlg("G4SimAlg",
                         outputs= ["G4SaveTrackerHits/G4SaveTrackerHits" ])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
-from Configurables import AlbersWrite, AlbersOutput
-out = AlbersOutput("out",
+from Configurables import PodioWrite, PodioOutput
+out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 

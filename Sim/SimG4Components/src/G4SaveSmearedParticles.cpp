@@ -46,9 +46,9 @@ StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
       const MCParticleHandle& MCparticle = info->mcParticleHandle();
       ParticleHandle particle = particles->create();
       ParticleMCAssociationHandle association = associations->create();
-      association.mod().Rec = particle;
-      association.mod().Sim = MCparticle;
-      BareParticle& core = particle.mod().Core;
+      association.Rec(particle);
+      association.Sim(MCparticle);
+      BareParticle& core = particle.Core();
       core.Type = g4particle->GetPDGcode();
       core.Status = 1; // how it is defined ???? as in HepMC ?
       core.Charge = g4particle->GetCharge();

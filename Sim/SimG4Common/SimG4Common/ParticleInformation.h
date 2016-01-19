@@ -2,8 +2,8 @@
 #define SIMG4COMMON_PARTICLEINFORMATION_H
 
 // albers
-#include "datamodel/MCParticleHandle.h"
-#include "datamodel/ParticleHandle.h"
+#include "datamodel/MCParticle.h"
+#include "datamodel/Particle.h"
 
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"
@@ -27,17 +27,17 @@ namespace sim {
 class ParticleInformation: public G4VUserPrimaryParticleInformation {
 public:
   /** A constructor.
-   *  @param[in] aMCpart handle to the EDM MCParticle.
+   *  @param[in] aMCpart EDM MCParticle.
    */
-  ParticleInformation(const MCParticleHandle& aMCpartt);
+  ParticleInformation(const MCParticle& aMCpart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
   virtual void Print() const final;
-  /** Getter of the handle to the MCParticle.
-   *  @returns handle to the EDM MCParticle.
+  /** Getter of the MCParticle.
+   *  @returns EDM MCParticle.
    */
-  const MCParticleHandle& mcParticleHandle() const;
+  const MCParticle& mcParticle() const;
   /** Setter of the end-of-tracking momentum (used for fast simulation).
    *  @param[in] aMom Particle momentum.
    */
@@ -63,8 +63,8 @@ public:
    */
   const int endStatus() const;
 private:
-  /// Handle to the MC particle
-  const MCParticleHandle m_mcParticleHandle;
+  /// EDM MC particle
+  const MCParticle m_mcParticle;
   /// Particle momentum at the end of tracking (filled for fast-sim)
   CLHEP::Hep3Vector m_endMomentum;
   /// Particle vertex position saved at the end of tracking (filled for fast-sim)

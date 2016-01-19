@@ -64,10 +64,10 @@ StatusCode G4SaveCalHits::saveOutput(const G4Event& aEvent) {
           debug() << hit->position.y() << " ";
           debug() << hit->position.z() << endmsg;
 
-          CaloHitHandle edmHit = edmHits->create();
-          CaloClusterHandle edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.mod().Core;
-          BareCluster& edmClusterCore = edmCluster.mod().Core;
+          CaloHit edmHit = edmHits->create();
+          CaloCluster edmCluster = edmClusters->create();
+          BareHit& edmHitCore = edmHit.Core();
+          BareCluster& edmClusterCore = edmCluster.Core();
           edmHitCore.Cellid = hit->cellID;
           edmHitCore.Energy = hit->energyDeposit;
 

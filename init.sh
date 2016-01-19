@@ -9,7 +9,7 @@ export PYTHIA_DIR=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/x
 export CMAKE_PREFIX_PATH=$FCCEDM:$ALBERS:$DELPHES_DIR:$CMAKE_PREFIX_PATH:$PYTHIA_DIR
 
 # set up Pythia8 Index.xml
-export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/x86_64-slc6-gcc49-opt/xmldoc
+export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/x86_64-slc6-gcc49-opt/share/Pythia8/xmldoc
 
 # add Geant4 data files
 source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.sh

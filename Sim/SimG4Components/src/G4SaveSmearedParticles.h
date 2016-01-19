@@ -10,7 +10,7 @@
 
 // albers
 class ParticleCollection;
-class ParticleMCAssociationCollection;
+class ParticleMCParticleAssociationCollection;
 
 /** @class G4SaveSmearedParticles SimG4Components/src/G4SaveSmearedParticles.h G4SaveSmearedParticles.h
  *
@@ -42,7 +42,7 @@ private:
   /// Handle for the particles to be written
   DataHandle<ParticleCollection> m_particles;
   /// Handle for the associations between particles and MC particles to be written
-  DataHandle<ParticleMCAssociationCollection> m_particlesMCparticles;
+  DataHandle<ParticleMCParticleAssociationCollection> m_particlesMCparticles;
 
 };
 
