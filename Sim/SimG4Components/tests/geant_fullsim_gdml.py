@@ -17,12 +17,12 @@ det = G4GdmlDetector("G4GdmlDetector", gdml = "../Sim/SimG4Common/gdml/example.x
 geantservice = G4SimSvc("G4SimSvc", detector=det, physicslist="G4FtfpBert", actions="G4FullSimActions")
 geantservice.addTool(det)
 
-from Configurables import G4FullSimAlg, G4SaveTrackerHits, G4SaveCalHits
+from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits
 savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-geantsim = G4FullSimAlg("G4FullSimAlg",
+geantsim = G4SimAlg("G4SimAlg",
                         outputs = ["G4SaveTrackerHits/G4SaveTrackerHits"] )
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 

@@ -19,12 +19,12 @@ geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compa
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
 
-from Configurables import G4FullSimAlg, G4SaveTrackerHits, G4SaveCalHits
+from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits
 savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-geantsim = G4FullSimAlg("G4FullSimAlg",
+geantsim = G4SimAlg("G4SimAlg",
                         outputs= ["G4SaveTrackerHits/G4SaveTrackerHits" ])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 

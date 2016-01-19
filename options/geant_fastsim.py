@@ -22,11 +22,11 @@ actionstool = G4FastSimActions("Actions", smearing=smeartool)
 physicslisttool = G4FastSimPhysicsList("Physics", fullphysics="G4FtfpBert")
 geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist=physicslisttool, actions=actionstool)
 
-from Configurables import G4FastSimAlg, G4SaveSmearedParticles
+from Configurables import G4SimAlg, G4SaveSmearedParticles
 saveparticlestool = G4SaveSmearedParticles("G4SaveSmearedParticles")
 saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
-geantsim = G4FastSimAlg("G4Alg", outputs = ["G4SaveSmearedParticles/G4SaveSmearedParticles"])
+geantsim = G4SimAlg("G4SimAlg", outputs = ["G4SaveSmearedParticles/G4SaveSmearedParticles"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 
