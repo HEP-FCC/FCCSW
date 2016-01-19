@@ -28,6 +28,9 @@ include(CTest)
 gaudi_add_test(GeantFullSimTrackerHits
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim.py)
+gaudi_add_test(GeantFullSimParticleGun
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_pgun_fullsim.py)
 gaudi_add_test(GeantFastSimTracker
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fastsim.py)

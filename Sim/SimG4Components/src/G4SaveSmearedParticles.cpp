@@ -9,7 +9,7 @@
 
 // albers
 #include "datamodel/ParticleCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
+#include "datamodel/ParticleMCParticleAssociationCollection.h"
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -38,14 +38,14 @@ StatusCode G4SaveSmearedParticles::finalize() {
 
 StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
   ParticleCollection* particles = new ParticleCollection();
-  ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
+  ParticleMCParticleAssociationCollection* associations = new ParticleMCParticleAssociationCollection();
   for(int i=0;i<aEvent.GetNumberOfPrimaryVertex();i++) {
     for(int j=0;j<aEvent.GetPrimaryVertex(i)->GetNumberOfParticle();j++) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
       sim::ParticleInformation* info = dynamic_cast<sim::ParticleInformation*>(g4particle->GetUserInformation());
-      const MCParticleHandle& MCparticle = info->mcParticleHandle();
-      ParticleHandle particle = particles->create();
-      ParticleMCAssociationHandle association = associations->create();
+      const MCParticle& MCparticle = info->mcParticle();
+      Particle particle = particles->create();
+      ParticleMCParticleAssociation association = associations->create();
       association.Rec(particle);
       association.Sim(MCparticle);
       BareParticle& core = particle.Core();
