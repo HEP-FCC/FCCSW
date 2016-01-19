@@ -7,8 +7,6 @@
 
 // albers
 #include "datamodel/MCParticleCollection.h"
-#include "datamodel/ParticleCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
 
 // Geant
 #include "G4HCofThisEvent.hh"
@@ -19,8 +17,7 @@ DECLARE_ALGORITHM_FACTORY(G4FastSimAlg)
 G4FastSimAlg::G4FastSimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
-  declareOutput("particles", m_recphandle);
-  declareOutput("particleassociation", m_partassociationhandle);
+  declareProperty("outputs",m_saveToolNames);
 }
 G4FastSimAlg::~G4FastSimAlg() {}
 
@@ -31,6 +28,13 @@ StatusCode G4FastSimAlg::initialize() {
   if (! m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;
+  }
+  for(auto& toolname: m_saveToolNames) {
+    m_saveTools.push_back(tool<IG4SaveOutputTool>(toolname));
+  // if (!) {
+  //   error() << "Unable to retrieve the output saving tool." << endmsg;
+  //   return StatusCode::FAILURE;
+  // }
   }
   return StatusCode::SUCCESS;
 }
@@ -43,9 +47,11 @@ StatusCode G4FastSimAlg::execute() {
     return StatusCode::FAILURE;
   }
   m_geantSvc->processEvent(*event);
-  // G4Event* constevent;
-  // m_geantSvc->retrieveEvent(constevent);
-  // // here save the output from constevent
+  G4Event* constevent;
+  m_geantSvc->retrieveEvent(constevent);
+  for(auto& tool: m_saveTools) {
+    tool->saveOutput(*constevent);
+  }
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;
 }
@@ -59,8 +65,6 @@ G4Event* G4FastSimAlg::EDM2G4() {
   G4Event* g4_event = new G4Event();
   // Creating EDM collections
   const MCParticleCollection& mcparticles = *(m_genParticles.get());
-  ParticleCollection* particles = new ParticleCollection();
-  ParticleMCAssociationCollection* associations = new ParticleMCAssociationCollection();
   // Adding one particle per one vertex => vertices repeated
   for(const auto& mcparticle : mcparticles) {
     const GenVertex& v = mcparticle.read().StartVertex.read();
@@ -69,15 +73,9 @@ G4Event* G4FastSimAlg::EDM2G4() {
     const BareParticle& mccore = mcparticle.read().Core;
     G4PrimaryParticle* g4_particle = new G4PrimaryParticle
       (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
-    ParticleHandle particle = particles->create();
-    g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle, particle));
-    ParticleMCAssociationHandle association = associations->create();
-    association.mod().Rec = particle;
-    association.mod().Sim = mcparticle;
+    g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle));
     g4_vertex->SetPrimary(g4_particle);
     g4_event->AddPrimaryVertex(g4_vertex);
   }
-  m_recphandle.put(particles);
-  m_partassociationhandle.put(associations);
   return g4_event;
 }

@@ -1,17 +1,31 @@
 #include "SimG4Common/ParticleInformation.h"
 
 namespace sim {
-ParticleInformation::ParticleInformation(const MCParticleHandle& aMCpart, ParticleHandle& aPart): m_mcpart(aMCpart), m_part(aPart) {}
+ParticleInformation::ParticleInformation(const MCParticleHandle& aMCpart): m_mcParticleHandle(aMCpart) {}
 
 ParticleInformation::~ParticleInformation() {}
 
 void ParticleInformation::Print() const {}
 
-const MCParticleHandle& ParticleInformation::GetMCParticleHandle() const {
-  return m_mcpart;
+const MCParticleHandle& ParticleInformation::mcParticleHandle() const {
+  return m_mcParticleHandle;
 }
-
-ParticleHandle& ParticleInformation::GetParticleHandle() {
-  return m_part;
+void ParticleInformation::setEndMomentum(const CLHEP::Hep3Vector& aMom) {
+  m_endMomentum = aMom;
+}
+const CLHEP::Hep3Vector& ParticleInformation::endMomentum() const {
+  return m_endMomentum;
+}
+void ParticleInformation::setVertexPosition(const CLHEP::Hep3Vector& aPos) {
+  m_vertexPosition = aPos;
+}
+const CLHEP::Hep3Vector& ParticleInformation::vertexPosition() const {
+  return m_vertexPosition;
+}
+void ParticleInformation::setEndStatus(int aStat) {
+  m_endStatus = aStat;
+}
+const int ParticleInformation::endStatus() const {
+  return m_endStatus;
 }
 }

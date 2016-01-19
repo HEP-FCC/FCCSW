@@ -6,12 +6,11 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+#include "SimG4Interface/IG4SaveOutputTool.h"
 class IG4SimSvc;
 
 // albers
 class MCParticleCollection;
-class ParticleCollection;
-class ParticleMCAssociationCollection;
 
 // Geant
 class G4Event;
@@ -56,11 +55,13 @@ public:
   G4Event* EDM2G4();
   /// Handle for the EDM MC particles to be read
   DataHandle<MCParticleCollection> m_genParticles;
-  /// Handle for the particles to be written
-  DataHandle<ParticleCollection> m_recphandle;
-  /// Handle for the associations between particles and MC particles to be written
-  DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
   /// Pointer to the interface of Geant simulation service
   SmartIF<IG4SimSvc> m_geantSvc;
+  /// Handle to the tools saving the output
+  /// to be replaced with the ToolHandleArray<IG4SaveOutputTool> m_saveTools
+  std::vector<IG4SaveOutputTool*> m_saveTools;
+  /// Names for the saving tools
+  /// to be deleted once the ToolHandleArray<IG4SaveOutputTool> m_saveTools is in place
+  std::vector<std::string> m_saveToolNames;
 };
 #endif /* SIMG4COMPONENTS_G4FASTSIMALG_H */
