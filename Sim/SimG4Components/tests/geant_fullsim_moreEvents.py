@@ -35,7 +35,7 @@ out.outputCommands = ["keep *"]
 
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 100,
-                ExtSvc = [albersevent, geoservice, geantservice], # order! geo needed by geant
+                EvtMax   = 5,
+                ExtSvc = [podioevent, geoservice, geantservice], # order! geo needed by geant
                 OutputLevel=DEBUG
  )

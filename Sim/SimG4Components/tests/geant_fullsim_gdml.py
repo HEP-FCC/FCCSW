@@ -1,9 +1,9 @@
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
-albersevent = FCCDataSvc("EventDataSvc")
+podioevent = FCCDataSvc("EventDataSvc")
 
-reader = HepMCReader("Reader", Filename="../example_MyPythia.dat")
+reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
@@ -13,9 +13,8 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import G4SimSvc, G4GdmlDetector
-det = G4GdmlDetector("G4GdmlDetector", gdml = "../Sim/SimG4Common/gdml/example.xml")
+det = G4GdmlDetector("G4GdmlDetector", gdml = "Sim/SimG4Common/gdml/example.xml")
 geantservice = G4SimSvc("G4SimSvc", detector=det, physicslist="G4FtfpBert", actions="G4FullSimActions")
-geantservice.addTool(det)
 
 from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits
 savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
@@ -26,8 +25,8 @@ geantsim = G4SimAlg("G4SimAlg",
                         outputs = ["G4SaveTrackerHits/G4SaveTrackerHits"] )
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
-from Configurables import AlbersWrite, AlbersOutput
-out = AlbersOutput("out",
+from Configurables import PodioWrite, PodioOutput
+out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
