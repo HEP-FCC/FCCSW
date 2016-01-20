@@ -1,7 +1,7 @@
 #!/bin/sh -u
 source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r4p3/InstallArea/scripts/LbLogin.sh --cmtconfig x86_64-slc6-gcc49-opt
 
-export DELPHES_DIR=/afs/cern.ch/exp/fcc/sw/0.5/Delphes-3.3.1/x86_64-slc6-gcc49-opt
+export DELPHES_DIR=/afs/cern.ch/exp/fcc/sw/0.5/Delphes-3.3.1-newPCMs/x86_64-slc6-gcc49-opt
 export PYTHIA_DIR=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/x86_64-slc6-gcc49-opt/
 
 export CMAKE_PREFIX_PATH=$FCCEDM:$ALBERS:$DELPHES_DIR:$CMAKE_PREFIX_PATH:$PYTHIA_DIR
