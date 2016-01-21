@@ -38,7 +38,7 @@ if(DOXYGEN_FOUND)
     set(MATHJAX_RELPATH "../mathjax")
   else()
     set(MATHJAX_RELPATH "http://cdn.mathjax.org/mathjax/latest")
-  endif()
+  endif(DOXYGEN_WITH_LOCAL_MATHJAX)
 
   # massage some version numbers
   string(REGEX REPLACE "_python.*" "" Boost_version "${Boost_config_version}")
