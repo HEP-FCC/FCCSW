@@ -29,6 +29,7 @@ hepmc_converter = HepMCConverter("Converter")
 # the input product name matches the output product name of the previous module
 hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
+hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 
 from Configurables import GenParticleFilter
 genfilter = GenParticleFilter("StableParticles")
