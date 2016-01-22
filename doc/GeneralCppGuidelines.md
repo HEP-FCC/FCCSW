@@ -54,31 +54,31 @@ For class members use the member initialiser list instead of constructor-body to
 **Examples**
 
 Initialise where you declare:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 auto vec = std::vector<int>{1, 2}; // C++11
 int i = f();
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 Member initialiser list:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 Foo::Foo(int bar, int foo) :
   m_bar(bar),
   m_foo(foo) {
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Variables needed for loops should be declared within the statements to confine to scope:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 for (int i = 0; i < 1000; ++i) {
   doSomething(i);
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 Caveat: Objects needed in the loop should not be created on each iteration:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 Foo f();
 for (int i = 0; i < 1000; ++i) {
   f.doSomething(i);
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 ## Namespaces
 All entities are contained in a namespace. The only exception are classes that are plugins / components (i.e. classes that are not used by other code).
 
@@ -95,7 +95,7 @@ Never write `using namespace`.
 If the statement is used in a header file, the statement holds in any code that includes that header file. While the effect may be less detrimental in implementation files, consider that it hides information from future maintainers.
 
 Similar to python's importing rules, only use the statement for single entities from a namespace so it is clear where it is defined and to avoid name hiding:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 using std::cout;
 using std::endl;
 using mathpackage::sqrt;
@@ -103,7 +103,7 @@ using mathpackage::sqrt;
 void printSqrt(float value) {
   cout << sqrt(value) << endl;
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Pointers and References
 The code should not contain `new` outside of braces. Avoid raw-pointers where possible.
@@ -122,7 +122,7 @@ _If you **really** need to_ declare a pointer without instantiating the correspo
 **Examples**
 
 Unique pointers: They hold sole ownership over the contained object. It is not possible to have two `unique_ptr` managing the same object.
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 {
   std::unique_ptr<Foo> myPtr(new Foo);
   // Smart pointers allow normal pointer semantics:
@@ -130,10 +130,10 @@ Unique pointers: They hold sole ownership over the contained object. It is not p
   f(*myPtr);             // Passes a reference to Foo (or value, depending on the function argument)
 } // myPtr goes out of scope and the instance of Foo is deleted automatically
 
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Shared pointers: Shared ownership of the object across several instances of the pointers. The object is deleted when the last `shared_ptr` managing it is destroyed or the last managing `shared_ptr` is assigned another object to hold.
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 {
   // Let's assume Bar is derived from Foo:
   std::shared_ptr<Foo> myPtr1 = std::make_shared<Bar>();
@@ -142,7 +142,7 @@ Shared pointers: Shared ownership of the object across several instances of the 
     std::shared_ptr<Foo> myPtr2 = myPtr1;
   } // myPtr2 goes out of scope, but myPtr1 stays in scope, the instance still exists
 } // Here, the instance of Bar is deleted: The last pointer, myPtr1, goes out of scope
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Constness
 Use `const` wherever you can.
@@ -156,7 +156,7 @@ If your function is only "an observer" of an argument, make it explicit. This wa
 Getter functions should return const values or references. _Note_ that when returning a reference and you cannot guarantee the object's validity after the function call, you risk a dangling reference.
 
 **Example**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 class Foo {
 public:
   // Omitting ctor and dtor
@@ -183,7 +183,7 @@ public:
 private:
  Vector3 m_position;
 };
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Lifetime
 Always consider what the lifetime of an entity is and restrict it to the shortest period that makes sense.
@@ -220,14 +220,14 @@ Where the type of an object can be inferred by the compiler, `auto` can be used.
 It can be useful to decouple from specific implementations of data-structures. To take constness into account, use `const auto`. Similarly you can get a reference with `const auto&`.
 
 **Examples**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 // An iterator:
 auto vectorIterator = myVector.begin();
 // A const iterator:
 auto vectorConstIterator = myVector.cbegin();
 // A reference to the collection of tracks:
 auto& trackCollection = getTracks();
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### For Loops
 Use the C++11 for-loop syntax to avoid common mistakes.
@@ -235,7 +235,7 @@ Use the C++11 for-loop syntax to avoid common mistakes.
 In combination with `auto`, iterators are even easier to use in C++ and should be preferred over index loops when looping over container contents. C++11 also defines a syntax for a loop that iterates automatically over each object in a container.
 
 **Examples**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 std::vector<int> myVec = {1, 2, 3, 4, 5};
 // Iterate over all contents
 for (const auto& cntr : myVec) {
@@ -246,7 +246,7 @@ for (const auto& cntr : myVec) {
 for (auto it = myVec.begin(); it != myVec.end(); ++it) {
   std::cout << *it << std::endl;
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Const-Expressions
 Use `constexpr` if an expression can be calculated at compile time.
@@ -255,7 +255,7 @@ Const expressions are evaluated at compile time (i.e. no computation during run 
 
 **Example**
 
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 constexpr int addTwo(int arg) {
   return arg+2;
 }
@@ -263,7 +263,7 @@ constexpr int addTwo(int arg) {
 constexpr int a(4);
 constexpr int b = addTwo(a);
 int c = addTwo(b);
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Move semantics
 A destructive(!) variant of copy which can optimise performance.
@@ -273,9 +273,9 @@ Sometimes it makes sense not to duplicate the data contained in an object but ju
 - The object that is moved somewhere else cannot be used afterwards
 
 Example use case: Storing objects instead of pointers in `std::vector` can be made efficient when implementing the move constructor:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 Foo(Foo&& other);
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Other Things to Avoid
 - Do not write singletons
