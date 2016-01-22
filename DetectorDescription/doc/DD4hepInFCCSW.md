@@ -35,6 +35,7 @@ Similarly to Geant4 itself, DD4hep tries to re-use detector elements without hav
 Converting from Geant4 / GDML
 --
 A minimal running example may be found *add link*
+
 **Factory method**: The minimal part to define a factory method for a sub-detector is:
 ~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 static DD4hep::Geometry::Ref_t create_element(
@@ -55,7 +56,7 @@ DECLARE_DETELEMENT(DetName, detector::create_element) // factory method
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Coordinate conventions
-----------------------
+--
 - Position vector points to center of volume
 - Sizes are defined as the offset position vector
 - Local coordinates start at position vector
