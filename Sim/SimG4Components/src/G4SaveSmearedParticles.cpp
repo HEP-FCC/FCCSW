@@ -17,7 +17,7 @@
 DECLARE_TOOL_FACTORY(G4SaveSmearedParticles)
 
 G4SaveSmearedParticles::G4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-GaudiTool(aType, aName, aParent) {
+AlgTool(aType, aName, aParent) {
   declareInterface<IG4SaveOutputTool>(this);
   declareOutput("particles", m_particles,"particles/smearedParticles");
   declareOutput("particlesMCparticles", m_particlesMCparticles,"particles/smearedParticles");
@@ -29,11 +29,11 @@ GaudiTool(aType, aName, aParent) {
 G4SaveSmearedParticles::~G4SaveSmearedParticles() {}
 
 StatusCode G4SaveSmearedParticles::initialize() {
-  return GaudiTool::initialize();
+  return AlgTool::initialize();
 }
 
 StatusCode G4SaveSmearedParticles::finalize() {
-  return GaudiTool::finalize();
+  return AlgTool::finalize();
 }
 
 StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {

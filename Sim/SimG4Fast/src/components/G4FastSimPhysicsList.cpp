@@ -10,7 +10,7 @@
 DECLARE_TOOL_FACTORY(G4FastSimPhysicsList)
 
 G4FastSimPhysicsList::G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-GaudiTool(aType, aName, aParent) {
+AlgTool(aType, aName, aParent) {
   declareInterface<IG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool);
   declarePrivateTool(m_physicsListTool);
@@ -19,7 +19,7 @@ GaudiTool(aType, aName, aParent) {
 G4FastSimPhysicsList::~G4FastSimPhysicsList() {}
 
 StatusCode G4FastSimPhysicsList::initialize() {
-  if(GaudiTool::initialize().isFailure()) {
+  if(AlgTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
   m_physicsListTool.retrieve();
@@ -27,7 +27,7 @@ StatusCode G4FastSimPhysicsList::initialize() {
 }
 
 StatusCode G4FastSimPhysicsList::finalize() {
-  return GaudiTool::finalize();
+  return AlgTool::finalize();
 }
 
 G4VModularPhysicsList* G4FastSimPhysicsList::getPhysicsList() {

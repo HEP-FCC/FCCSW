@@ -2,7 +2,7 @@
 #define SIMG4FULL_G4FULLSIMACTIONS_H
 
 // Gaudi
-#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/AlgTool.h"
 
 // FCCSW
 #include "SimG4Interface/IG4ActionTool.h"
@@ -14,7 +14,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4FullSimActions: public GaudiTool, virtual public IG4ActionTool {
+class G4FullSimActions: public AlgTool, virtual public IG4ActionTool {
 public:
    G4FullSimActions(const std::string& type , const std::string& name,
                const IInterface* parent);

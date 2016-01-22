@@ -6,7 +6,7 @@
 DECLARE_TOOL_FACTORY(G4FastSimActions)
 
 G4FastSimActions::G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent) :
-GaudiTool(type, name, parent) {
+AlgTool(type, name, parent) {
   declareInterface<IG4ActionTool>(this);
   declareProperty("smearing", m_smearTool);
   declarePublicTool(m_smearTool);
@@ -15,7 +15,7 @@ GaudiTool(type, name, parent) {
 G4FastSimActions::~G4FastSimActions() {}
 
 StatusCode G4FastSimActions::initialize() {
-  if(GaudiTool::initialize().isFailure()) {
+  if(AlgTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
   m_smearTool.retrieve();
@@ -23,7 +23,7 @@ StatusCode G4FastSimActions::initialize() {
 }
 
 StatusCode G4FastSimActions::finalize() {
-  return GaudiTool::finalize();
+  return AlgTool::finalize();
 }
 
 G4VUserActionInitialization* G4FastSimActions::getUserActionInitialization() {

@@ -2,7 +2,7 @@
 #define SIMG4COMPONENTS_G4GDMLDETECTOR_H
 
 // Gaudi
-#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/AlgTool.h"
 
 // FCCSW
 #include "SimG4Interface/IG4DetectorConstruction.h"
@@ -18,7 +18,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4GdmlDetector: public GaudiTool, virtual public IG4DetectorConstruction {
+class G4GdmlDetector: public AlgTool, virtual public IG4DetectorConstruction {
 public:
   G4GdmlDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

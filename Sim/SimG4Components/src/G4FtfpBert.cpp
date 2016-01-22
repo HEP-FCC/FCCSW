@@ -7,18 +7,18 @@
 DECLARE_TOOL_FACTORY(G4FtfpBert)
 
 G4FtfpBert::G4FtfpBert(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-GaudiTool(aType, aName, aParent) {
+AlgTool(aType, aName, aParent) {
   declareInterface<IG4PhysicsList>(this);
 }
 
 G4FtfpBert::~G4FtfpBert() {}
 
 StatusCode G4FtfpBert::initialize() {
-  return GaudiTool::initialize();
+  return AlgTool::initialize();
 }
 
 StatusCode G4FtfpBert::finalize() {
-  return GaudiTool::finalize();
+  return AlgTool::finalize();
 }
 
 G4VModularPhysicsList* G4FtfpBert::getPhysicsList() {

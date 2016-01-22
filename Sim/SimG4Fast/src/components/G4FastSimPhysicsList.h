@@ -2,7 +2,7 @@
 #define SIMG4FAST_G4FASTSIMPHYSICSLIST_H
 
 // Gaudi
-#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/AlgTool.h"
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
@@ -16,7 +16,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4FastSimPhysicsList: public GaudiTool, virtual public IG4PhysicsList {
+class G4FastSimPhysicsList: public AlgTool, virtual public IG4PhysicsList {
 public:
   G4FastSimPhysicsList(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

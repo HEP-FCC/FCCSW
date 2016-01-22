@@ -1,8 +1,7 @@
 #ifndef SIMG4COMPONENTS_G4FTFPBERT_H
 #define SIMG4COMPONENTS_G4FTFPBERT_H
-
 // Gaudi
-#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/AlgTool.h"
 
 // FCCSW
 #include "SimG4Interface/IG4PhysicsList.h"
@@ -14,7 +13,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4FtfpBert: public GaudiTool, virtual public IG4PhysicsList {
+class G4FtfpBert: public AlgTool, virtual public IG4PhysicsList {
 public:
   G4FtfpBert(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

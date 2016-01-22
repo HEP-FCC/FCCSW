@@ -2,7 +2,7 @@
 #define SIMG4FAST_G4FASTSIMACTIONS_H
 
 // Gaudi
-#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/AlgTool.h"
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
@@ -17,7 +17,7 @@
  *  @author Anna Zaborowska
 */
 
-class G4FastSimActions: public GaudiTool, virtual public IG4ActionTool {
+class G4FastSimActions: public AlgTool, virtual public IG4ActionTool {
 public:
   G4FastSimActions(const std::string& type , const std::string& name,
                    const IInterface* parent);
