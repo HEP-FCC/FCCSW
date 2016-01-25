@@ -1,5 +1,5 @@
-#ifndef _GENPARTICLEFILTER_H_
-#define _GENPARTICLEFILTER_H_
+#ifndef GENERATION_GENPARTICLEFILTER_H
+#define GENERATION_GENPARTICLEFILTER_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
@@ -7,7 +7,7 @@
 
 class GenParticleFilter: public GaudiAlgorithm {
   friend class AlgFactory<GenParticleFilter> ;
-
+  
 public:
   /// Constructor.
   GenParticleFilter(const std::string& name, ISvcLocator* svcLoc);
@@ -24,4 +24,4 @@ private:
   DataHandle<MCParticleCollection> m_ogenphandle;
 };
 
-#endif
+#endif // GENERATION_GENPARTICLEFILTER_H
