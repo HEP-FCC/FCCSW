@@ -3,14 +3,14 @@ from Configurables import ApplicationMgr, THistSvc, Gaudi__ParticlePropertySvc
 from Configurables import HepMCDumper, ParticleGunAlg, MomentumRangeParticleGun, HepMCHistograms, FlatSmearVertex
 
 dumper = HepMCDumper("Dumper")
-dumper.Inputs.hepmc.Path="hepmc"
+dumper.DataInputs.hepmc.Path="hepmc"
 
 particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc")
 
 guntool = MomentumRangeParticleGun()
 
 gun = ParticleGunAlg("gun", ParticleGunTool = "MomentumRangeParticleGun", VertexSmearingTool = "FlatSmearVertex" )
-gun.Outputs.hepmc.Path = "hepmc"
+gun.DataOutputs.hepmc.Path = "hepmc"
 
 gun.addTool(FlatSmearVertex, name="FlatSmearVertex")
 
@@ -22,7 +22,7 @@ gun.FlatSmearVertex.zVertexMin = -30
 gun.FlatSmearVertex.zVertexMax = 30
 
 histo = HepMCHistograms("GenHistograms")
-histo.Inputs.hepmc.Path="hepmc"
+histo.DataInputs.hepmc.Path="hepmc"
 
 THistSvc().Output = ["rec DATAFILE='GenHistograms.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

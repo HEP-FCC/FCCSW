@@ -10,15 +10,15 @@ delphessimulation = DelphesSimulation("Simulation", filename="/afs/cern.ch/user/
 #delphessimulation = DelphesSimulation("Simulation", filename="example_MyPythia.dat" , detectorcard = "Simulation/examples/delphes_card_FCC_basic.tcl" , outputcollections =  [ "ElectronEnergySmearing/electrons", "MuonMomentumSmearing/muons",  "JetEnergyScale/jets",  "MissingET/momentum", "ScalarHT/energy" ] )
 
 # we shouls add b-jets and track inpact parameters, fixme
-delphessimulation.Outputs.genparticles.Path = "genparticles"
-delphessimulation.Outputs.particles.Path = "particles"
-delphessimulation.Outputs.partons.Path = "partons"
-delphessimulation.Outputs.muons.Path = "muons"
-delphessimulation.Outputs.electrons.Path = "electrons"
-delphessimulation.Outputs.photons.Path = "photons"
-delphessimulation.Outputs.jets.Path = "jets"
-delphessimulation.Outputs.mets.Path = "met"
-delphessimulation.Outputs.hts.Path = "ht"
+delphessimulation.DataOutputs.genparticles.Path = "genparticles"
+delphessimulation.DataOutputs.particles.Path = "particles"
+delphessimulation.DataOutputs.partons.Path = "partons"
+delphessimulation.DataOutputs.muons.Path = "muons"
+delphessimulation.DataOutputs.electrons.Path = "electrons"
+delphessimulation.DataOutputs.photons.Path = "photons"
+delphessimulation.DataOutputs.jets.Path = "jets"
+delphessimulation.DataOutputs.mets.Path = "met"
+delphessimulation.DataOutputs.hts.Path = "ht"
 
 
 out = AlbersOutput("out",
@@ -36,7 +36,7 @@ out.outputCommands = ["drop *",
 
 ]
 
-ApplicationMgr( 
+ApplicationMgr(
     TopAlg = [
               delphessimulation,
               out
