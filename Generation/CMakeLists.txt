@@ -14,6 +14,6 @@ find_package(ALBERS)
 gaudi_install_headers(Generation)
 
 gaudi_add_module(Generation
-                 src/*.cpp
+                 src/components/*.cpp
                  INCLUDE_DIRS Generation HepMC Pythia8 FWCore FCCEDM ALBERS
                  LINK_LIBRARIES HepMC GaudiAlgLib DataObjects Pythia8 FCCEDM ALBERS)
