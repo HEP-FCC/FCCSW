@@ -8,32 +8,30 @@
 //====================================================================
 #include "DD4hep/DetFactoryHelper.h"
 
-using namespace std;
-using namespace DD4hep;
-using namespace DD4hep::Geometry;
+
+static  DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, 
+                                               xml_h e, 
+                                               DD4hep::Geometry::SensitiveDetector sens)  {
 
 
-static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
-
-
-  xml_det_t    x_det = e;
-  string       name  = x_det.nameStr();
-  DetElement   cylinderDet( name, x_det.id() );
+  xml_det_t x_det = e;
+  std::string  name  = x_det.nameStr();
+  DD4hep::Geometry::DetElement cylinderDet( name, x_det.id() );
   
-  Volume experimentalHall =  lcdd.pickMotherVolume( cylinderDet ) ;
+  DD4hep::Geometry::Volume experimentalHall =  lcdd.pickMotherVolume( cylinderDet ) ;
   
   xml_comp_t  cylinderDim ( x_det.child( _U(dimensions) ) );
   
-  Tube cylinder( cylinderDim.rmin(),cylinderDim.rmax(),cylinderDim.dz(), cylinderDim.phi0(),cylinderDim.deltaphi() ); 
+  DD4hep::Geometry::Tube cylinder( cylinderDim.rmin(),cylinderDim.rmax(),cylinderDim.dz(), cylinderDim.phi0(),cylinderDim.deltaphi() ); 
   
-  Volume cylinderVol( x_det.nameStr()+ "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()) );
+  DD4hep::Geometry::Volume cylinderVol( x_det.nameStr()+ "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()) );
   
-  PlacedVolume cylinderPhys;
+  DD4hep::Geometry::PlacedVolume cylinderPhys;
  
   double zoff = cylinderDim.z_offset();
   if (fabs(zoff)>0.000000000001) {
-    Position trans(0.,0.,zoff ) ;
-    cylinderPhys = experimentalHall.placeVolume( cylinderVol, Transform3D( RotationZ(0.) , trans ));
+    DD4hep::Geometry::Position trans(0.,0.,zoff ) ;
+    cylinderPhys = experimentalHall.placeVolume( cylinderVol, DD4hep::Geometry::Transform3D( DD4hep::Geometry::RotationZ(0.) , trans ));
   }  
   else cylinderPhys = experimentalHall.placeVolume( cylinderVol );
   
