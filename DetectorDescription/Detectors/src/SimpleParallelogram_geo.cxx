@@ -8,44 +8,44 @@
 //====================================================================
 #include "DD4hep/DetFactoryHelper.h"
 
-using namespace std;
-using namespace DD4hep;
-using namespace DD4hep::Geometry;
 
 
-static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
+static DD4hep::Geometry::Ref_t createSimpleParallelogram(DD4hep::Geometry::LCDD& lcdd, 
+                                              xml_h e, 
+                                              DD4hep::Geometry::SensitiveDetector)  {
 
 
-  xml_det_t    x_det = e;
-  string       name  = x_det.nameStr();
-  DetElement   parallelogramDet( name, x_det.id() );
+  xml_det_t x_det = e;
+  std::string  name  = x_det.nameStr();
+  DD4hep::Geometry::DetElement  parallelogramDet( name, x_det.id() );
   
-  Volume experimentalHall =  lcdd.pickMotherVolume( parallelogramDet ) ;
+  DD4hep::Geometry::Volume experimentalHall =  lcdd.pickMotherVolume( parallelogramDet ) ;
   
   xml_comp_t  parallelogramDim ( x_det.child( _U(dimensions) ) );  
   ///correct implementation but bug in the xml parser??
 
-   const double parallelogramPoints[16] = {parallelogramDim.x0(),parallelogramDim.y0(),
-                                           parallelogramDim.x0(),parallelogramDim.y0()+parallelogramDim.dy(),
-                                           parallelogramDim.x0()+parallelogramDim.dx(),parallelogramDim.y0()+parallelogramDim.dy(),
-                                           parallelogramDim.x0()+parallelogramDim.dx(),parallelogramDim.y0(),
-                                           parallelogramDim.x1(),parallelogramDim.y1(),
-                                           parallelogramDim.x1(),parallelogramDim.y1()+parallelogramDim.dy(),
-                                           parallelogramDim.x1()+parallelogramDim.dx(),parallelogramDim.y1()+parallelogramDim.dy(),
-                                           parallelogramDim.x1()+parallelogramDim.dx(),parallelogramDim.y1()};
+  //const std::array<double,16> parallelogramPoints = {parallelogramDim.x0(),parallelogramDim.y0(),
+  const double parallelogramPoints[16] = {parallelogramDim.x0(),parallelogramDim.y0(),
+                                          parallelogramDim.x0(),parallelogramDim.y0()+parallelogramDim.dy(),
+                                          parallelogramDim.x0()+parallelogramDim.dx(),parallelogramDim.y0()+parallelogramDim.dy(),
+                                          parallelogramDim.x0()+parallelogramDim.dx(),parallelogramDim.y0(),
+                                          parallelogramDim.x1(),parallelogramDim.y1(),
+                                          parallelogramDim.x1(),parallelogramDim.y1()+parallelogramDim.dy(),
+                                          parallelogramDim.x1()+parallelogramDim.dx(),parallelogramDim.y1()+parallelogramDim.dy(),
+                                          parallelogramDim.x1()+parallelogramDim.dx(),parallelogramDim.y1()};
 
 
-   EightPointSolid parallelogram(parallelogramDim.dz(), parallelogramPoints);
+   DD4hep::Geometry::EightPointSolid parallelogram(parallelogramDim.dz(), parallelogramPoints);
 
-   Volume parallelogramVol( x_det.nameStr()+ "_SimpleParallelogram", parallelogram, lcdd.material(parallelogramDim.materialStr()) );
+   DD4hep::Geometry::Volume parallelogramVol( x_det.nameStr()+ "_SimpleParallelogram", parallelogram, lcdd.material(parallelogramDim.materialStr()) );
   
-   PlacedVolume parallelogramPhys;
+   DD4hep::Geometry::PlacedVolume parallelogramPhys;
  
    double zoff = parallelogramDim.z_offset();
 
    if ( fabs(zoff)>0.000000000001) {
-     Position trans(0.,0.,zoff ) ;
-     parallelogramPhys = experimentalHall.placeVolume( parallelogramVol, Transform3D( RotationZ(0.) , trans ));
+     DD4hep::Geometry::Position trans(0.,0.,zoff ) ;
+     parallelogramPhys = experimentalHall.placeVolume( parallelogramVol, DD4hep::Geometry::Transform3D( DD4hep::Geometry::RotationZ(0.) , trans ));
    }  
   else parallelogramPhys = experimentalHall.placeVolume( parallelogramVol );
   
@@ -62,4 +62,4 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)  {
   return parallelogramDet;
 }
 
-DECLARE_DETELEMENT( SimpleParallelogram ,create_element )
+DECLARE_DETELEMENT( SimpleParallelogram ,createSimpleParallelogram )
