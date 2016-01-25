@@ -1,5 +1,5 @@
-#ifndef _HEPMCREADER_H_
-#define _HEPMCREADER_H_
+#ifndef GENERATION_HEPMCREADER_H
+#define GENERATION_HEPMCREADER_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "HepMC/IO_GenEvent.h"
@@ -38,4 +38,4 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmchandle;
 };
 
-#endif
+#endif //GENERATION_HEPMCREADER_H

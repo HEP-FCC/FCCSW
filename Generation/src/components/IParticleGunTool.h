@@ -1,13 +1,11 @@
 #ifndef GENERATION_IPARTICLEGUNTOOL_H
 #define GENERATION_IPARTICLEGUNTOOL_H
 
-// Include files
-// from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 #include "GaudiKernel/Vector4DTypes.h"
 
 
-/** @class IParticleGunTool IParticleGunTool.h "Generation/IParticleGunTool.h"
+/** @class IParticleGunTool IParticleGunTool.h "IParticleGunTool.h"
  *  
  *  Abstract interface to particle gun tool. Generates a single particle.
  * 
@@ -34,4 +32,5 @@ class IParticleGunTool : virtual public IAlgTool {
   /// Print various counters at the end of the job
   virtual void printCounters( ) = 0 ;
 };
+
 #endif

@@ -1,5 +1,5 @@
-#ifndef _HEPMCHISTOGRAMS_H_
-#define _HEPMCHISTOGRAMS_H_
+#ifndef GENERATION_HEPMCHISTOGRAMS_H
+#define GENERATION_HEPMCHISTOGRAMS_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ITHistSvc.h"
@@ -32,7 +32,6 @@ private:
 
   TH1F* m_d0; ///< histogram for transversal IP
   TH1F* m_z0; ///< histogram for longidudinal IP
-
 };
 
-#endif
+#endif // GENERATION_HEPMCHISTOGRAMS_H

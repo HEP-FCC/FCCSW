@@ -1,11 +1,9 @@
-#ifndef GENERATORS_IPILEUPTOOL_H
-#define GENERATORS_IPILEUPTOOL_H 1
+#ifndef GENERATION_IPILEUPTOOL_H
+#define GENERATION_IPILEUPTOOL_H 1
 
-// Include files
-// from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
-/** @class IPileUpTool IPileUpTool.h "Generators/IPileUpTool.h"
+/** @class IPileUpTool IPileUpTool.h "IPileUpTool.h"
  * 
  *  Abstract interface to pile up tools. Generates the number of pile-up
  *  interactions to generate for each event.
@@ -30,4 +28,4 @@ public:
   virtual void printPileUpCounters( ) = 0 ;
 };
 
-#endif // GENERATORS_IPILEUPTOOL_H
+#endif // GENERATION_IPILEUPTOOL_H

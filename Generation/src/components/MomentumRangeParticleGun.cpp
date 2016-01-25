@@ -1,10 +1,7 @@
-// This class
 #include "MomentumRangeParticleGun.h"
 
-// From STL
 #include <cmath>
 
-// FromGaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IParticlePropertySvc.h"
 #include "GaudiKernel/ParticleProperty.h"
@@ -21,9 +18,7 @@
 
 DECLARE_TOOL_FACTORY( MomentumRangeParticleGun )
 
-//===========================================================================
-// Constructor
-//===========================================================================
+/// Constructor
 MomentumRangeParticleGun::MomentumRangeParticleGun( const std::string & type ,
                               const std::string & name , 
                               const IInterface * parent )
@@ -32,27 +27,23 @@ MomentumRangeParticleGun::MomentumRangeParticleGun( const std::string & type ,
   declareProperty( "MomentumMin"  , m_minMom = 100.0 * Gaudi::Units::GeV, "Minimal momentum"  ) ;
   declareProperty( "ThetaMin"     , m_minTheta = 0.1 * Gaudi::Units::rad, "Minimal theta"     ) ;
   declareProperty( "PhiMin"       , m_minPhi = 0. * Gaudi::Units::rad,    "Minimal phi"       ) ;
-    
+  
   declareProperty( "MomentumMax" , m_maxMom   = 100.0 * Gaudi::Units::GeV, "Maximal momentum" ) ;
   declareProperty( "ThetaMax"     , m_maxTheta = 0.4 * Gaudi::Units::rad,  "Maximal theta"    ) ;
   declareProperty( "PhiMax"      , m_maxPhi   = Gaudi::Units::twopi * Gaudi::Units::rad, "Maximal phi" ) ;
-
+  
   m_pdgCodes.push_back( -211 ); // default pi-
   declareProperty("PdgCodes",m_pdgCodes, "list of pdg codes to produce");
 }
 
-//===========================================================================
-// Destructor
-//===========================================================================
+/// Destructor
 MomentumRangeParticleGun::~MomentumRangeParticleGun() { }
 
-//===========================================================================
-// Initialize Particle Gun parameters
-//===========================================================================
+/// Initialize Particle Gun parameters
 StatusCode MomentumRangeParticleGun::initialize() {
   StatusCode sc = GaudiTool::initialize() ;
   if ( ! sc.isSuccess() ) return sc ;
-
+  
   IRndmGenSvc * randSvc = svc< IRndmGenSvc >( "RndmGenSvc" , true ) ;
   sc = m_flatGenerator.initialize( randSvc , Rndm::Flat( 0. , 1. ) ) ;
   if ( ! sc.isSuccess() ) 
@@ -62,7 +53,7 @@ StatusCode MomentumRangeParticleGun::initialize() {
   //
   IParticlePropertySvc* ppSvc = 
     svc< IParticlePropertySvc >( "ParticlePropertySvc" , true ) ;
-
+  
   // check momentum and angles
   if ( ( m_minMom   > m_maxMom ) || ( m_minTheta > m_maxTheta ) || 
        ( m_minPhi   > m_maxPhi ) )
@@ -71,10 +62,10 @@ StatusCode MomentumRangeParticleGun::initialize() {
   m_deltaMom = m_maxMom - m_minMom;
   m_deltaPhi = m_maxPhi - m_minPhi;
   m_deltaTheta = m_maxTheta - m_minTheta;
-
+  
   // setup particle information
   m_masses.clear();
-
+  
   info() << "Particle type chosen randomly from :";
   PIDs::iterator icode ;
   for ( icode = m_pdgCodes.begin(); icode != m_pdgCodes.end(); ++icode ) {
@@ -85,29 +76,27 @@ StatusCode MomentumRangeParticleGun::initialize() {
   }
   
   info() << endmsg ;
-
-  info() << "Momentum range: " << m_minMom / Gaudi::Units::GeV << " GeV <-> " 
-	 << m_maxMom / Gaudi::Units::GeV << " GeV" << endmsg ;
-  info() << "Theta range: " << m_minTheta / Gaudi::Units::rad << " rad <-> " 
-	 << m_maxTheta / Gaudi::Units::rad << " rad" << endmsg ;
-  info() << "Phi range: " << m_minPhi / Gaudi::Units::rad << " rad <-> " 
-	 << m_maxPhi / Gaudi::Units::rad << " rad" << endmsg ;
+  
+  info() << "Momentum range: " << m_minMom / Gaudi::Units::GeV << " GeV <-> "
+   << m_maxMom / Gaudi::Units::GeV << " GeV" << endmsg ;
+  info() << "Theta range: " << m_minTheta / Gaudi::Units::rad << " rad <-> "
+   << m_maxTheta / Gaudi::Units::rad << " rad" << endmsg ;
+  info() << "Phi range: " << m_minPhi / Gaudi::Units::rad << " rad <-> "
+   << m_maxPhi / Gaudi::Units::rad << " rad" << endmsg ;
   
   release( ppSvc ) ;
-
+  
   return sc ;
 }
 
-//===========================================================================
-// Generate the particles
-//===========================================================================
-void MomentumRangeParticleGun::generateParticle( Gaudi::LorentzVector & momentum , 
+/// Generate the particles
+void MomentumRangeParticleGun::generateParticle( Gaudi::LorentzVector & momentum ,
                                       Gaudi::LorentzVector & origin , 
                                       int & pdgId ) {  
   
-  origin.SetCoordinates( 0. , 0. , 0. , 0.  );                                      
+  origin.SetCoordinates( 0. , 0. , 0. , 0.  );
   double px(0.), py(0.), pz(0.) ;
-      
+  
   // Generate values for energy, theta and phi
   double p = m_minMom + m_flatGenerator() * (m_deltaMom) ;
   double theta = m_minTheta + m_flatGenerator() * (m_deltaTheta) ;
@@ -118,20 +107,20 @@ void MomentumRangeParticleGun::generateParticle( Gaudi::LorentzVector & momentum
   px = pt*cos(phi);
   py = pt*sin(phi);
   pz = p*cos(theta);
-    
+  
   // randomly choose a particle type
   unsigned int currentType = 
     (unsigned int)( m_pdgCodes.size() * m_flatGenerator() );
   // protect against funnies
   if ( currentType >= m_pdgCodes.size() ) currentType = 0; 
-
+  
   momentum.SetPx( px ) ; momentum.SetPy( py ) ; momentum.SetPz( pz ) ;
-  momentum.SetE( std::sqrt( m_masses[currentType] * m_masses[currentType] + 
+  momentum.SetE( std::sqrt( m_masses[currentType] * m_masses[currentType] +
                             momentum.P2() ) ) ;  
                         
   pdgId = m_pdgCodes[ currentType ] ;
     
-  debug() << " -> " << m_names[ currentType ] << endmsg 
+  debug() << " -> " << m_names[ currentType ] << endmsg
           << "   P   = " << momentum << endmsg ;
 }
 

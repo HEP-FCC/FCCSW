@@ -25,8 +25,6 @@ StatusCode HepMCReader::initialize() {
   //  
   if ( ( 0 == m_file ) || ( m_file->rdstate() == std::ios::failbit ) )
     { return Error ( "Failure to read the file '"+m_filename+"'" ) ; }
-  //
-
   return sc;
 }
 

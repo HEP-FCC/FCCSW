@@ -70,7 +70,7 @@ StatusCode FlatSmearVertex::initialize( ) {
   return sc ;
 }
 
-i/// Smearing function
+/// Smearing function
 StatusCode FlatSmearVertex::smearVertex( HepMC::GenEvent * theEvent ) {
   double dx , dy , dz , dt ;
   

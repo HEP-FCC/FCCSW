@@ -1,5 +1,5 @@
-#ifndef _HEPMCDUMPER_H_
-#define _HEPMCDUMPER_H_
+#ifndef GENERATION_HEPMCDUMPER_H
+#define GENERATION_HEPMCDUMPER_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "HepMC/GenEvent.h"
@@ -17,9 +17,11 @@ public:
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
+
 private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle;
 };
 
-#endif
+#endif // GENERATION_HEPMCDUMPER_H
+
