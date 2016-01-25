@@ -9,9 +9,9 @@
 #include "DD4hep/DetFactoryHelper.h"
 
 
-static  DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, 
+static  DD4hep::Geometry::Ref_t createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, 
                                                xml_h e, 
-                                               DD4hep::Geometry::SensitiveDetector sens)  {
+                                               DD4hep::Geometry::SensitiveDetector)  {
 
 
   xml_det_t x_det = e;
@@ -48,4 +48,4 @@ static  DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd,
   return cylinderDet;
 }
 
-DECLARE_DETELEMENT( SimpleCylinder ,create_element )
+DECLARE_DETELEMENT( SimpleCylinder ,createSimpleCylinder )
