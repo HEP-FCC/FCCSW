@@ -1,5 +1,5 @@
-#ifndef _HEPMCCONVERTER_H_
-#define _HEPMCCONVERTER_H_
+#ifndef GENERATION_HEPMCCONVERTER_H
+#define GENERATION_HEPMCCONVERTER_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/MCParticleCollection.h"
@@ -8,7 +8,7 @@
 
 class HepMCConverter: public GaudiAlgorithm {
   friend class AlgFactory<HepMCConverter> ;
-
+  
 public:
   /// Constructor.
   HepMCConverter(const std::string& name, ISvcLocator* svcLoc);
