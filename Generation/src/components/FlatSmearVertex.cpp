@@ -16,12 +16,12 @@ FlatSmearVertex::FlatSmearVertex(
     : GaudiTool ( type, name , parent ) {
   declareInterface< IVertexSmearingTool >( this ) ;
   
-  declareProperty( "xVertexMin" , m_xmin = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "xVertexMax" , m_xmax = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "yVertexMin" , m_ymin = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "yVertexMax" , m_ymax = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "zVertexMin" , m_zmin = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "zVertexMax" , m_zmax = 0.0 * Gaudi::Units::mm ) ;
+  declareProperty( "xVertexMin" , m_xmin = 0.0 * Gaudi::Units::cm ) ;
+  declareProperty( "xVertexMax" , m_xmax = 0.0 * Gaudi::Units::cm ) ;
+  declareProperty( "yVertexMin" , m_ymin = 0.0 * Gaudi::Units::cm ) ;
+  declareProperty( "yVertexMax" , m_ymax = 0.0 * Gaudi::Units::cm ) ;
+  declareProperty( "zVertexMin" , m_zmin = 0.0 * Gaudi::Units::cm ) ;
+  declareProperty( "zVertexMax" , m_zmax = 0.0 * Gaudi::Units::cm ) ;
   declareProperty( "BeamDirection", m_zDir = 0 );
 }
 
@@ -56,12 +56,12 @@ StatusCode FlatSmearVertex::initialize( ) {
   info() << "Smearing of interaction point with flat distribution "
          << " in x, y and z " << endmsg;
   info() << infoMsg << endmsg;
-  info() << " with " << m_xmin / Gaudi::Units::mm 
-         << " mm <= x <= " << m_xmax / Gaudi::Units::mm << " mm, "
-         << m_ymin / Gaudi::Units::mm << " mm <= y <= "
-         << m_ymax / Gaudi::Units::mm << " mm and "
-         << m_zmin / Gaudi::Units::mm << " mm <= z <= "
-         << m_zmax / Gaudi::Units::mm << " mm." << endmsg;
+  info() << " with " << m_xmin / Gaudi::Units::cm 
+         << " cm <= x <= " << m_xmax / Gaudi::Units::cm << " cm, "
+         << m_ymin / Gaudi::Units::cm << " cm <= y <= "
+         << m_ymax / Gaudi::Units::cm << " cm and "
+         << m_zmin / Gaudi::Units::cm << " cm <= z <= "
+         << m_zmax / Gaudi::Units::cm << " cm." << endmsg;
   
   if ( ! sc.isSuccess() ) 
     return Error( "Could not initialize flat random number generator" ) ;
