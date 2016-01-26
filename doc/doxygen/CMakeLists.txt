@@ -50,6 +50,8 @@ if(DOXYGEN_FOUND)
     configure_file(${template}.in ${CMAKE_CURRENT_BINARY_DIR}/${template} @ONLY)
   endforeach()
 
+  configure_file(doxy-boot.js.in ${CMAKE_BINARY_DIR}/doxygen/html/doxy-boot.js)
+
   # the cmake directory is not scanned
   foreach(doc_file)
     configure_file(${CMAKE_SOURCE_DIR}/cmake/${doc_file}
