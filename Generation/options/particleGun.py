@@ -5,8 +5,13 @@ from Configurables import HepMCDumper, ParticleGunAlg, MomentumRangeParticleGun,
 dumper = HepMCDumper("Dumper")
 dumper.DataInputs.hepmc.Path="hepmc"
 
-particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc")
 
+# A particle table file needs to be present in the directory 
+# from which Gaudi is run. If you run from the top-level directory,
+# the following option can be added to the service to use the file in this directory.
+#ParticlePropertiesFile='Generation/options/ParticleTable.txt'
+
+particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc")
 guntool = MomentumRangeParticleGun()
 
 gun = ParticleGunAlg("gun", ParticleGunTool = "MomentumRangeParticleGun", VertexSmearingTool = "FlatSmearVertex" )
