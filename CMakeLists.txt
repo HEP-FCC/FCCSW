@@ -19,3 +19,35 @@ include_directories(
                      ${DELPHES_EXTERNALS_INCLUDE_DIRS}  
                      ${FCCEDM_INCLUDE_DIRS}
 )  		     
+
+include(CTest)
+gaudi_add_test(GeantFullSimTracker
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/geant_fullsim.py)
+gaudi_add_test(GeantFullSimHCal
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/geant_fullsim_hcal.py)
+gaudi_add_test(GeantFullSimGdml
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/geant_fullsim_gdml.py)
+gaudi_add_test(GeantFastSimTracker
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/geant_fastsim.py)
+gaudi_add_test(RecoGeo
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/recogeo_options.py)
+gaudi_add_test(SimplePythia
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/simple_pythia.py)
+gaudi_add_test(SimpleWorkflow
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/simple_workflow.py)
+gaudi_add_test(ExampleOptions
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/example_options.py)
+gaudi_add_test(PythiaDelphes
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/PythiaDelphes_config.py)
+gaudi_add_test(FCChhDD4hep
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK config/FCChh_DD4HEPgui.py)
