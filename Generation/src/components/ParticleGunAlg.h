@@ -9,7 +9,7 @@
 class IParticleGunTool;
 class IVertexSmearingTool;
 
-/** @class ParticleGunAlg ParticleGunAlg.h "Generation/ParticleGunAlg.h"
+/** @class ParticleGunAlg ParticleGunAlg.h "ParticleGunAlg.h"
  *  
  *  Main algorithm to generate particle gun events.
  *

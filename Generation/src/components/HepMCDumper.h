@@ -1,9 +1,12 @@
 #ifndef GENERATION_HEPMCDUMPER_H
 #define GENERATION_HEPMCDUMPER_H
 
+
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "HepMC/GenEvent.h"
+
 #include "FWCore/DataHandle.h"
+
+#include "HepMC/GenEvent.h"
 
 class HepMCDumper: public GaudiAlgorithm {
   friend class AlgFactory<HepMCDumper> ;

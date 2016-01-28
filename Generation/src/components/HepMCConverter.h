@@ -1,9 +1,12 @@
 #ifndef GENERATION_HEPMCCONVERTER_H
 #define GENERATION_HEPMCCONVERTER_H
 
+
 #include "GaudiAlg/GaudiAlgorithm.h"
+
 #include "datamodel/MCParticleCollection.h"
 #include "FWCore/DataHandle.h"
+
 #include "HepMC/GenEvent.h"
 
 class HepMCConverter: public GaudiAlgorithm {
