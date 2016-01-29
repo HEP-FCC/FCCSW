@@ -41,7 +41,7 @@ class PoissonPileUp : public GaudiTool, virtual public IPileUpTool {
  private:
   /// average number of min bias events to pile on signal event.
   double m_meanPileUpEvents;
-  int m_currentNumPileUpEvents;
+  unsigned int m_currentNumPileUpEvents;
   std::string m_filename;
 
 
