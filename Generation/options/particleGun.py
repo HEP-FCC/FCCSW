@@ -11,10 +11,10 @@ dumper.DataInputs.hepmc.Path="hepmc"
 # the following option can be added to the service to use the file in this directory.
 #ParticlePropertiesFile='Generation/options/ParticleTable.txt'
 
-particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc")
+particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile='/afs/cern.ch/lhcb/software/releases/GAUDI/GAUDI_v26r4/GaudiExamples/tests/data/ParticleTable.txt')
 guntool = MomentumRangeParticleGun()
 
-gun = ParticleGunAlg("gun", ParticleGunTool = "MomentumRangeParticleGun", VertexSmearingTool = "FlatSmearVertex" )
+gun = ParticleGunAlg("gun", ParticleGunTool = "MomentumRangeParticleGun", VertexSmearingTool = "FlatSmearVertex")
 gun.DataOutputs.hepmc.Path = "hepmc"
 
 gun.addTool(FlatSmearVertex, name="FlatSmearVertex")
