@@ -17,3 +17,7 @@ gaudi_add_module(Generation
                  src/components/*.cpp
                  INCLUDE_DIRS Generation HepMC Pythia8 FWCore FCCEDM ALBERS
                  LINK_LIBRARIES HepMC GaudiAlgLib DataObjects Pythia8 FCCEDM ALBERS)
+
+include(CTest)
+gaudi_add_test(particleGun
+               FRAMEWORK options/particleGun.py)
