@@ -12,7 +12,7 @@ ConstPileUp::ConstPileUp( const std::string& type,
   declareInterface< IPileUpTool >( this );
   
   declareProperty( "numPileUpEvents", m_numPileUpEvents = 0 );
-  declareProperty( "Filename_Pileup", m_filename = "" );
+  declareProperty( "Filename", m_filename = "" );
 }
 
 ConstPileUp::~ConstPileUp( ) { ; }
