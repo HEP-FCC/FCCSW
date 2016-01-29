@@ -17,6 +17,9 @@ HepMCSimpleMerge::HepMCSimpleMerge(
   declareInterface< IHepMCMergeTool >( this );
 }
 
+HepMCSimpleMerge::~HepMCSimpleMerge() {
+}
+
 StatusCode HepMCSimpleMerge::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (!sc.isSuccess()) return sc;

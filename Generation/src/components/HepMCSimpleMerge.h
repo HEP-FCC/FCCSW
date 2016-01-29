@@ -16,7 +16,7 @@ public:
   HepMCSimpleMerge( const std::string& type, 
     const std::string& name, const IInterface* parent);
 
-  virtual ~HepMCSimpleMerge() {;} final;
+  virtual ~HepMCSimpleMerge() final;
 
   virtual StatusCode initialize() final;
 
