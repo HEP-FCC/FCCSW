@@ -1,4 +1,6 @@
+
 #include "HepMCReader.h"
+
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
 #include "GaudiKernel/IEventProcessor.h"
@@ -7,48 +9,60 @@ DECLARE_COMPONENT(HepMCReader)
 
 HepMCReader::HepMCReader(const std::string& name, ISvcLocator* svcLoc):
   GaudiAlgorithm(name, svcLoc),
-  m_filename()
-{
+  m_filename() {
   declareProperty("Filename", m_filename="",
                   "Name of the HepMC file to read");
+  
+  declareProperty("PileUpTool", m_pileUpTool);
+  declarePublicTool(m_pileUpTool, "ConstPileUp/PileUpTool");
+  
+  declareProperty("VertexSmearingTool", m_vertexSmearingTool);
+  declarePublicTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
+  
+  declareProperty("HepMCMergeTool", m_HepMCMergeTool);
+  declarePublicTool(m_HepMCMergeTool, "HepMCSimpleMerge/HepMCMergeTool");
+  
+  declareProperty("FileReaderSignal", m_signalFileReader);
+  declarePrivateTool(m_signalFileReader, "HepMCFileReader/FileReaderSignal");
+  declareProperty("FileReaderPileUp", m_pileupFileReader);
+  declarePrivateTool(m_pileupFileReader, "HepMCFileReader/FileReaderPileup");
+  
   declareOutput("hepmc", m_hepmchandle);
 }
 
 StatusCode HepMCReader::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (!sc.isSuccess()) return sc;
-
-  if ( m_filename.empty() )
-    { return Error ( "Input file name is not specified!" ) ; }
-  // open the file
-  m_file = new HepMC::IO_GenEvent ( m_filename.c_str() , std::ios::in ) ;
-  //  
-  if ( ( 0 == m_file ) || ( m_file->rdstate() == std::ios::failbit ) )
-    { return Error ( "Failure to read the file '"+m_filename+"'" ) ; }
+  if ( 0 < m_pileUpTool->numberOfPileUp() ) {
+    sc = m_pileupFileReader->open(m_pileUpTool->getFilename());
+    if (!sc.isSuccess()) return sc;
+  }
+  sc = m_signalFileReader->open(m_filename);
+  if (!sc.isSuccess()) return sc;
   return sc;
 }
 
 StatusCode HepMCReader::execute() {
-  HepMC::GenEvent* theEvent = new HepMC::GenEvent();
-  Assert ( 0 != m_file , "Invalid input file!" );
-  if ( !m_file->fill_next_event( theEvent ) ) {
-    IIncidentSvc* incidentSvc;
-    service("IncidentSvc",incidentSvc);
-    incidentSvc->fireIncident(Incident(name(),IncidentType::AbortEvent));
-    if ( m_file -> rdstate() == std::ios::eofbit )
-        return Error ( "Error in event reading!" ) ;
-    else {
-      IEventProcessor* eventProcessor;
-      service("ApplicationMgr",eventProcessor);
-      eventProcessor->stopRun();
-    }
-      ;
-    }
-  m_hepmchandle.put(theEvent);
+  HepMC::GenEvent* tmpEvent;
+  tmpEvent = m_signalFileReader->readNextEvent();
+  m_vertexSmearingTool->smearVertex(tmpEvent);
+  std::vector<HepMC::GenEvent> eventVector;
+  eventVector.push_back(*tmpEvent);
+  
+  const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();
+  for (unsigned int i_pileup=0;
+      i_pileup < numPileUp;
+      ++i_pileup) {
+    tmpEvent = m_pileupFileReader->readNextEvent();
+    m_vertexSmearingTool->smearVertex(tmpEvent);
+    eventVector.push_back(*tmpEvent);
+  }
+  tmpEvent = m_HepMCMergeTool->merge(eventVector);
+  m_hepmchandle.put(tmpEvent);
   return StatusCode::SUCCESS;
 }
+  
 
 StatusCode HepMCReader::finalize() {
-  if ( 0 != m_file ) { delete m_file ; m_file = 0 ; }
   return GaudiAlgorithm::finalize();
 }
