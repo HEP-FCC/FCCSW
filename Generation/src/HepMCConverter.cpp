@@ -24,8 +24,8 @@ StatusCode HepMCConverter::initialize() {
 
 StatusCode HepMCConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
-  MCParticleCollection* particles = new MCParticleCollection();
-  GenVertexCollection* vertices = new GenVertexCollection();
+  fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
+  fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
 
   // conversion of units to cm and GeV
   double hepmc2edm_length = HepMC::Units::conversion_factor(event->length_unit(), HepMC::Units::CM);
@@ -37,8 +37,8 @@ StatusCode HepMCConverter::execute() {
   for(auto vertex_i = event->vertices_begin();
       vertex_i != event->vertices_end(); ++vertex_i ) {
     tmp = (*vertex_i)->position();
-    GenVertex vertex = vertices->create();
-    Point& position = vertex.Position();
+    auto vertex = vertices->create();
+    auto& position = vertex.Position();
     position.X = tmp.x()*hepmc2edm_length;
     position.Y = tmp.y()*hepmc2edm_length;
     position.Z = tmp.z()*hepmc2edm_length;
@@ -51,8 +51,8 @@ StatusCode HepMCConverter::execute() {
       if( (*particle_i)->status() != 1 ) continue;
 
       tmp = (*particle_i)->momentum();
-      MCParticle particle = particles->create();
-      BareParticle& core = particle.Core();
+      fcc::MCParticle particle = particles->create();
+      fcc::BareParticle& core = particle.Core();
       core.Type = (*particle_i)->pdg_id();
       core.Status = (*particle_i)->status();
       core.P4.Px = tmp.px()*hepmc2edm_energy;

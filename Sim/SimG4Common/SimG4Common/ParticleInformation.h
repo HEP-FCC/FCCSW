@@ -26,7 +26,7 @@ public:
    *  @param[in] aMCpart handle to the EDM MCParticle.
    *  @param[in] aPart handle to the EDM Particle.
    */
-  ParticleInformation(const MCParticle& aMCpart, Particle& aPart);
+  ParticleInformation(const fcc::MCParticle& aMCpart, fcc::Particle& aPart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
@@ -34,16 +34,16 @@ public:
   /** Getter of the handle to the MCParticle.
    *  @returns handle to the EDM MCParticle.
    */
-  const MCParticle& GetMCParticle() const;
+  const fcc::MCParticle& GetMCParticle() const;
   /** Getter of the handle to the Particle.
    *  @returns handle to the EDM Particle.
    */
-  Particle& GetParticle();
+  fcc::Particle& GetParticle();
 private:
   /// Handle to the MC particle
-  const MCParticle m_mcpart;
+  const fcc::MCParticle m_mcpart;
   /// Handle to the particle associated with a MCParticle.
-  Particle m_part;
+  fcc::Particle m_part;
 };
 }
 

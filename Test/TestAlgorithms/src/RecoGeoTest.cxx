@@ -17,7 +17,7 @@ m_recoGeoSvc(nullptr),
 m_worldVolume(0),
 m_graph(new TGraph2D()),
 m_counter(0),
-m_particlecoll(new ParticleCollection()),
+m_particlecoll(new fcc::ParticleCollection()),
 m_toolsvc(0),
 m_printhits(0),
 //m_hits(),
@@ -35,11 +35,11 @@ m_pathlength(0.)
 }
 
 StatusCode RecoGeoTest::initialize() {
-    
+
     if (GaudiAlgorithm::initialize().isFailure()){
         return StatusCode::FAILURE;
     }
-    
+
     if (service("ClassicalRecoGeoSvc", m_recoGeoSvc, true).isFailure()) {
         error() << "Couldn't get RecoGeoSvc" << endmsg;
         return StatusCode::FAILURE;
@@ -52,12 +52,12 @@ StatusCode RecoGeoTest::initialize() {
         std::cout << "retrieved WorldVolume!!!" << std::endl; //b
     }
     else std::cout << "no worldvolume" << std::endl;
-    
+
     if (service("ToolSvc", m_toolsvc).isFailure()) {
         error() << "Couldn't get ToolSvc" << endmsg;
         return StatusCode::FAILURE;
     }
-    
+
     if (m_toolsvc->retrieveTool("PrintHits", m_printhits).isFailure()) {
         error() << "Couldn't get PrintHits Tool" << endmsg;
     }
@@ -71,7 +71,7 @@ double RecoGeoTest::flatrand(double min, double max) const {
     std::uniform_real_distribution<double> unif(min,max);
     std::random_device rd;
     std::mt19937 gen(rd());
-    
+
     return (unif(gen));
 }
 
@@ -97,7 +97,7 @@ const Alg::Vector3D RecoGeoTest::randomdir() const
   //  double theta = flatrand(2.69,M_PI);
 //    double theta = flatrand(-1.24253,1.24253);
 //    double theta = flatrand(1.68,1.9);
-    
+
 //    double theta = flatrand(0.,0.3282);
     Alg::Vector3D dir(cos(phi)*sin(theta),sin(phi)*sin(theta),cos(theta));
     return (dir);
@@ -160,9 +160,9 @@ StatusCode RecoGeoTest::intersect(const Reco::Volume* volume, Alg::Point3D& glop
                 }
             }
         }//if materiallayers
-        
+
     }
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -174,12 +174,12 @@ bool RecoGeoTest::intersectSurface(const Reco::Surface& surface, Alg::Point3D& g
     if (intersection.onSurface) {
         result = true;
         const Alg::Point3D intersectPoint = intersection.position;
-        
-    
+
+
         m_modules << intersectPoint.X() << " " << intersectPoint.Y() << " " << intersectPoint.Z() << std::endl;
 //        m_sumh++;
 //t        m_hits.push_back(std::make_tuple(&surface, intersectPoint, dir));
-        
+
  //h       m_modules << 0.5*M_PI-acos(dir.Dot(surface.normal())) << std::endl;
         Alg::Point2D locpos(0.,0.);
         if(surface.globalToLocal(intersectPoint, dir, locpos)) {
@@ -228,7 +228,7 @@ const Reco::Volume* RecoGeoTest::nextVolume(std::weak_ptr<const Reco::BoundarySu
 }
 
 StatusCode RecoGeoTest::execute() {
-    
+
     Alg::Point3D start(0.,0.,0.);
  /*   Alg::Vector3D dir1(0.5542,0.,0.8324);
     Alg::Vector3D dir2(0.5542,0.,-0.8324);
@@ -236,7 +236,7 @@ StatusCode RecoGeoTest::execute() {
     Alg::Vector3D dir4(47.,0.,15.);
     Alg::Vector3D dir5(47.,0.,9.);*/
  //   std::vector<std::pair<double, const Alg::Vector3D>> sumh;
-    
+
     const Reco::Volume* volume (m_worldVolume->getVolume(start));
     if (volume) {
         //scan through volumes if it is a container volume
@@ -244,7 +244,7 @@ StatusCode RecoGeoTest::execute() {
          const Reco::Volume* subvolume(scanVolumes(volume, start));
          volume = subvolume;
          }
- 
+
      //   (0.195152,-0.265202,0.944237)
       //  Alg::Vector3D dir(-0.146748,0.11085,0.982943);
  //       Alg::Vector3D dir(1.,0.,0.);
@@ -252,16 +252,16 @@ StatusCode RecoGeoTest::execute() {
  //       std::cout << "new direction: " << dir << std::endl;
   //      intersect(volume,start,dir);
 
-        
+
         m_profile = new TProfile("tInX0_1", "tInX0 over Eta", N_REPEAT, -10., 10.);
         if (m_ths->regHist("tInX0_1", m_profile).isFailure()) {
             error() << "Couldn't register Histogram" << endmsg;
         }
-        
+
         Alg::Vector3D dir = randomdir();
         std::cout << "___________________new direction" << dir << " theta: " << dir.Theta()  <<  "___________________: " << std::endl;
         intersect(volume, start, dir);
-        
+
   /*      for (int i = 0; i < 150000; i++) {
             start.SetCoordinates(0.,0.,0.);
             m_tInX0 = 0.;
@@ -294,7 +294,7 @@ StatusCode RecoGeoTest::execute() {
         if (m_ths->regHist("tInX0_1", m_profile).isFailure()) {
             error() << "Couldn't register Histogram" << endmsg;
         }*/
-        
+
      /*   for (int i = 0; i < N_REPEAT; i++) {
             start.SetCoordinates(0.,0.,0.);
   //          m_sumh = 0.;
@@ -314,13 +314,13 @@ StatusCode RecoGeoTest::execute() {
   //      }
    //t     m_printhits->printMaterial(m_hits);
    //t     m_printhits->printHits(sumh);
-        
-  
+
+
   /*      for (auto& hit : m_hits) {
             m_modules << hit.second.X() << " " << hit.second.Y() << " " << hit.second.Z() << std::endl;
         }*/
-    
-    
+
+
 //        m_printhits->printMaterial(m_worldVolume, Alg::Point3D(0.,0.,0.), N_REPEAT);
      //   m_particles.put(m_particlecoll);
         m_out.close();
@@ -329,26 +329,26 @@ StatusCode RecoGeoTest::execute() {
         m_modules.close();
         m_sens.close();
 
-        
+
    }// if volume
 //    m_hitcoll->print();
-    
+
     return StatusCode::SUCCESS;
 }
 
 
 StatusCode RecoGeoTest::finalize() {
-    
+
     if (GaudiAlgorithm::finalize().isFailure())
         return StatusCode::FAILURE;
-    
+
     TFile* file = new TFile("tInX0.root", "RECREATE");
     if (!file->IsOpen()) error() << "Could not open Root file" << endmsg;
-    
+
   //  m_profile->Write();
-    
+
     file->Print();
-    
+
     return StatusCode::SUCCESS;
-    
+
 }
