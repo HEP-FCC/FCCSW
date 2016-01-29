@@ -5,14 +5,19 @@ from Configurables import ApplicationMgr, FCCDataSvc, AlbersWrite, AlbersOutput
 albersevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
+genpileup = PoissonPileUp(name="ConstPileUp", Filename="example_MyPythia.dat", numPileUpEvents=1)
+reader = HepMCReader("Reader", Filename="example_MyPythia.dat", PileUpTool=genpileup)
 # have a look at the source code of HepMCReader, in Generation/src/HepMCReader
 # In the following line,
 #   reader.DataOutputs.YYY.Path = "ZZZ"
 # YYY matches the string passed to declareOutput in the constructor of the algorithm
 # XXX declares a name for the product (the HepMC::GenEvent)
 reader.DataOutputs.hepmc.Path = "hepmc"
+
+
+dumper = HepMCDumper()
+dumper.DataInputs.hepmc.Path="hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes
 # a collection of EDM Particles
@@ -38,12 +43,12 @@ out = AlbersOutput("out",
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(
-    TopAlg = [reader,hepmc_converter,
+    TopAlg = [reader, dumper,hepmc_converter,
               genjet_clustering,
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 1000,
+    EvtMax   = 1,
     ExtSvc = [albersevent],
     #                EventLoop = eventloopmgr,
     #                OutputLevel=DEBUG
