@@ -1,7 +1,7 @@
 #include "PoissonPileUp.h"
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
-#include "GaudiKernel/IRndmGenSvc.h" 
+#include "GaudiKernel/IRndmGenSvc.h"
 
 DECLARE_TOOL_FACTORY( PoissonPileUp )
 
@@ -23,8 +23,8 @@ StatusCode PoissonPileUp::initialize( ) {
   StatusCode sc = GaudiTool::initialize( );
   if ( sc.isFailure() ) return sc ;
   IRndmGenSvc * randSvc = svc< IRndmGenSvc >( "RndmGenSvc" , true ) ;
-  if ( m_numPileUpEvents < 0 ) return Error( "Number of Pileup events cannot be negative!" ) ;
-  sc = m_PoissonDist.initialize( randSvc , Rndm::Poisson( m_numPileUpEvents ) ) ;
+  if ( m_meanPileUpEvents < 0 ) return Error( "Number of Pileup events cannot be negative!" ) ;
+  sc = m_PoissonDist.initialize( randSvc , Rndm::Poisson( m_meanPileUpEvents ) ) ;
   if ( ! sc.isSuccess() ) 
     return Error( "Could not initialize Poisson random number generator" ) ;
 
@@ -43,5 +43,5 @@ unsigned int PoissonPileUp::numberOfPileUp( ) {
 }
 
 void PoissonPileUp::printPileUpCounters () {
-  info() << "Adding " << m_numPileUpEvents << " pileup events." << endmsg;
+  info() << "Adding " << m_currentNumPileUpEvents << " pileup events." << endmsg;
 }
