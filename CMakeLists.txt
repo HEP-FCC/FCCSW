@@ -48,6 +48,3 @@ gaudi_add_test(ExampleOptions
 gaudi_add_test(PythiaDelphes
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK config/PythiaDelphes_config.py)
-gaudi_add_test(FCChhDD4hep
-                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK config/FCChh_DD4HEPgui.py)
