@@ -1,6 +1,6 @@
 
 #ifndef GENERATION_HEPMCFILEREADER_H 
-#define GENERATION_HEPMCFILEREADER_H 1
+#define GENERATION_HEPMCFILEREADER_H
 
 #include "GaudiAlg/GaudiTool.h"
 #include "IHepMCFileReaderTool.h"

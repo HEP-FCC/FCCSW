@@ -1,5 +1,5 @@
 #ifndef GENERATION_CONSTPILEUP_H
-#define GENERATION_CONSTPILEUP_H 1
+#define GENERATION_CONSTPILEUP_H
 
 #include "IPileUpTool.h"
 

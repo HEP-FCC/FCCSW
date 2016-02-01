@@ -1,5 +1,5 @@
 #ifndef GENERATION_PARTICLEGUNALG_H
-#define GENERATION_PARTICLEGUNALG_H 1
+#define GENERATION_PARTICLEGUNALG_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"

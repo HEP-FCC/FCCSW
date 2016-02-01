@@ -1,5 +1,5 @@
 #ifndef GENERATION_FLATSMEARVERTEX_H
-#define GENERATION_FLATSMEARVERTEX_H 1
+#define GENERATION_FLATSMEARVERTEX_H
 
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h" 

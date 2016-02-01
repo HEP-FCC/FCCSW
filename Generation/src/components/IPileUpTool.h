@@ -1,5 +1,5 @@
 #ifndef GENERATION_IPILEUPTOOL_H
-#define GENERATION_IPILEUPTOOL_H 1
+#define GENERATION_IPILEUPTOOL_H
 
 #include "GaudiKernel/IAlgTool.h"
 

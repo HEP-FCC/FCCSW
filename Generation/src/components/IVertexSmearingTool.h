@@ -1,5 +1,5 @@
 #ifndef GENERATION_IVERTEXSMEARINGTOOL_H
-#define GENERATION_IVERTEXSMEARINGTOOL_H 1
+#define GENERATION_IVERTEXSMEARINGTOOL_H
 
 #include "GaudiKernel/IAlgTool.h"
 #include "HepMC/GenEvent.h"
