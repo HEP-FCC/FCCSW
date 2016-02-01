@@ -1,14 +1,14 @@
-Full Simulation with Geant4 in FCCSW (after restructure)
+Full Simulation with Geant4 in FCCSW
 ====
 
-Instruction on how to use Geant4 within FCCSW (GAUDI framework).
+Instruction how to use Geant4 within FCCSW (GAUDI framework).
 
-For additional information on fast simulation [see](Geant4_fastsim.md).
+For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 
-All relative paths refer to the main FCCSW directory.
+> All relative paths refer to the main FCCSW directory.
 
 ## Contents
-1. [Ovierview](#1-overview)
+1. [Overview](#1-overview)
    * [GAUDI](#11-gaudi)
    * [Geant](#12-geant-components)
    * [Sim in FCCSW](#13-simulation-package-in-fccsw)
@@ -37,7 +37,7 @@ All relative paths refer to the main FCCSW directory.
 
 ### 1.1. GAUDI
 
-GAUDI application framework provides 'blocks' of software that can interact with each other. Those 'blocks' (GAUDI components) are: tools, algortihms and serivices. Each of them has its own interface that defines the basic functionality.
+GAUDI application framework provides 'blocks' of software that can interact with each other. Those 'blocks' (GAUDI components) are: tools, algorithms and services. Each of them has its own interface that defines the basic functionality.
 User may specify which 'blocks' (and how) should be created in a job configuration file (written in python).
 Basic usage of GAUDI application can be limited to only editing that job configuration file.
 
@@ -102,11 +102,9 @@ Geant main manager class is `G4RunManager`. It has own implementation in FCCSW `
 The main simulation service `G4SimSvc` owns `sim::RunManager` and controls the communication between GAUDI and Geant (`sim::RunManager`).
 
 Necessary information about the simulation that needs to be given:
-* detector geometry
-* physics list describing all the particles that can be created in the simulation and all the processes they may encounter
-* additional requirements (so-called user actions)
-
-All those may be set by Gaudi Tools in a job configuration file. Tools need to derive from interfaces (respectively): `IG4DetectorConstruction`, `IG4PhysicsList` and `IG4ActionTool`.
+* detector geometry (`IG4DetectorConstruction` tool)
+* physics list describing all the particles that can be created in the simulation and all the processes they may encounter (`IG4PhysicsList` tool)
+* additional requirements (so-called user actions) (`IG4ActionTool`)
 
 This service is also passing events (`G4Event`) to and from Geant.
 
@@ -114,9 +112,9 @@ This service is also passing events (`G4Event`) to and from Geant.
 
 The main simulation algorithm communicates with `G4SimSvc` in each event loop execution.
 It is responsible for the translation of the EDM event (`MCParticleCollection`) to `G4Event`, passing it to be simulated and retrieving it afterwards.
-Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and various information. In particular, user may implement `G4VUserEventInformation`, `G4VUserTrackInformation` etc.
-To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `IG4SaveOutputTool`. Currently there are `G4SaveTrackerHits` and `G4SaveCalHits` tools.
-A property `outputs` of `G4SimAlg` takes a list of strings with the tool names.
+
+Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and various information. To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `IG4SaveOutputTool`.
+A property **outputs** of `G4SimAlg` takes a list of strings with those tool names.
 Those tools should declare the output that is supposed to be further stored by the algorithm `PodioOutput`.
 
 ### 1.3. Simulation package in FCCSW
@@ -159,9 +157,9 @@ The configuration file (options/geant_fullsim.py) contains:
     ~~~
 
   * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-g4simsvc))
-    - `detector` - tool providing the [geometry](#3-1-geometry-construction), possible: G4DD4hepDetector and [G4GdmlDetector](#gdml-example)
-    - `physicslist` - tool providing the [physics list](#3-2-physics-list), possible: [G4FtfpBert](#)
-    - `actions` - tool providing the [user actions initialization list](#3-3-user-actions), possible: G4FullSimActions
+    - **detector** - tool providing the [geometry](#31-geometry-construction), possible: G4DD4hepDetector and [G4GdmlDetector](#gdml-example)
+    - **physicslist** - tool providing the [physics list](#32-physics-list), possible: [G4FtfpBert](#)
+    - **actions** - tool providing the [user actions initialisation list](#33-user-actions), possible: G4FullSimActions
     ~~~{.py}
     from Configurables import G4SimSvc
     geantservice = G4SimSvc("G4SimSvc",
@@ -212,14 +210,14 @@ The configuration file (options/geant_fullsim.py) contains:
     ~~~
 
 #### HCal example
-As an alternative, user can eg. create a hadronic calorimeter using DD4hep and save the hits:
+As an alternative, user can e.g. create a hadronic calorimeter using DD4hep and save the hits:
 
 ~~~{.sh}
 ./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_hcal.py
 ~~~
 
 #### GDML example
-or create a detector using GDML. In this case, however, no sensitive detectors are predifined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (eg. DD4hep::Simulation::Geant4CalorimeterHit), this way user may use the saving output utilities that are already provided.
+or create a detector using GDML. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. DD4hep::Simulation::Geant4CalorimeterHit), this way user may use the saving output utilities that are already provided.
 
 ~~~{.sh}
 ./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_gdml.py
@@ -238,8 +236,8 @@ The general concept of the simulation in Geant is to divide each simulation 'sta
 Any communication with the Geant Run Manager is handled by this service:
 - configuration:
   - [geometry construction](#31-geometry-construction)
-  - [physics list initialization](#32-physics-list)
-  - [user actions initialization](#33-user-actions)
+  - [physics list initialisation](#32-physics-list)
+  - [user actions initialisation](#33-user-actions)
 - simulation:
   - [passing an event to `G4EventManager`](#41-event-processing)
   - [retrieving a simulated event (with hits collections and other information)](#42-output)
@@ -286,7 +284,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
   > Names of the readouts structures are used further in the implementations if IG4SaveOutputTool, hence they should contain the name of the detector type they represent: "Tracker", "ECal" (or "EMCal"), "HCal".
 
 * C++ factory method should:
-  * actually construct all the modules of the detector (extracting detail information eg. on number of modules in z direction or in phi, their material, etc. from the XML file)
+  * actually construct all the modules of the detector (extracting detail information e.g. on number of modules in z direction or in phi, their material, etc. from the XML file)
   * set the sensitive detector type to either **Geant4Tracker** or **Geant4Calorimeter**.
     This way hits can be stored in either `DD4hep::Simulation::Geant4TrackerHit` or `DD4hep::Simulation::Geant4CalorimeterHit`
 
@@ -329,12 +327,12 @@ ___
 User actions tool needs to be added as a property **actions** to `G4SimSvc`.
 
 Geant allows users to specify what should be performed at any stage of simulation.
-User actions are created in the implementation of `GVUserActionInitialization` class, eg. `FullSimActions::Build()`.
-Any implementation of action initialization list should have a relevant GAUDI component (tool) that creates it. Tool creating `FullSimActions` is called `G4FullSimActions`.
+User actions are created in the implementation of `GVUserActionInitialization` class, e.g. `FullSimActions::Build()`.
+Any implementation of action initialisation list should have a relevant GAUDI component (tool) that creates it. Tool creating `FullSimActions` is called `G4FullSimActions`.
 
 Currently `FullSimActions` is empty and no user actions are created.
 
-User actions may derive from the following G4 intefaces:
+User actions may derive from the following G4 interfaces:
 * G4UserRunAction.hh
 * G4UserEventAction.hh
 * G4UserStackingAction.hh
@@ -349,31 +347,32 @@ Any user action that derives from Geant4 interface can be implemented in Sim/Sim
 
 In order to invoke this action in the simulation, it should be created in the `FullSimActions::Build()` method.
 
-If one wants to use different sets of user actions without a need to recompile FCCSW, one may implement his own implementation of `GVUserActionInitialization`. In that case, a relevant GAUDI tool should be created, basing on `G4FullSimActions`. Its name should follow the convention of adding a prefix "G4" to the name of the class that it creates.
+However, if one uses interchangeably different 'sets' of user actions and do not want to recompile FCCSW with every change (addition/deletion) of user action in `FullSimActions`, it is possible to create another implementation(s) of `G4VUserActionInitialization`.
+In that case, a relevant GAUDI tool should be created, basing on `G4FullSimActions`. Its name should follow the convention of adding a prefix "G4" to the name of the class (implementation of `G4VUserActionInitialization` that it creates.
 ___
 
 ## 4. Simulation in GAUDI algorithm G4SimAlg
 
-Simulation algorithm handles all the communication between other algorithms and G4SimSvc.
+Simulation algorithm handles all the communication between other algorithms and `G4SimSvc`.
 
-It takes as input **genParticles** the EDM MCParticleCollection.
+It takes as input **genParticles** the EDM `MCParticleCollection`.
 
 Also, a list of names to the output-saving tools can be specified in **outputs**.
 
 
 ### 4.1. Event Processing
 
-For each execution of the algorithm an EDM `MCParticleCollection` is translated into `G4Event` using the method `G4SimAlg::EDM2G4()`. At the translation time, for each `G4PrimaryParticle` `sim::ParticleInformation` is created with a reference to the EDM's `MCParticle`. This can be used further eg. in the saving output tool.
+For each execution of the algorithm an EDM `MCParticleCollection` is translated into `G4Event` using the method `G4SimAlg::EDM2G4()`. At the translation time, for each `G4PrimaryParticle` `sim::ParticleInformation` is created with a reference to the EDM's `MCParticle`. This can be used further e.g. in the saving output tool.
 
-A translated G4Event is passed to G4SimSvc and after the simulation is done, it is retrieved. Here all (if any) saving tools are called. Finally, an event is terminated.
+A translated `G4Event` is passed to `G4SimSvc` and after the simulation is done, it is retrieved. Here all (if any) saving tools are called. Finally, an event is terminated.
 
 
 ### 4.2. Output
 
-Saving the output from a simulated G4Event is performed by tools deriving from an interface IG4SaveOutputTool.
+Saving the output from a simulated `G4Event` is performed by tools deriving from an interface `IG4SaveOutputTool`.
 Tools may have the data outputs specified.
-A method ::SaveOutput(const G4Event &aEvent) is meant to retrieve any useful information and save it to EDM.
-Useful information means eg. hits collections (`G4HCofThisEvent`) or anything stored in an implementation of G4VUserEventInformation, G4VUserEventInformation, G4VUserTrackInformation, G4VUserPrimaryParticleInformation etc.
+A method `IG4SaveOutputTool::SaveOutput(const G4Event &aEvent)` is meant to retrieve any useful information and save it to EDM.
+Useful information means e.g. hits collections (`G4HCofThisEvent`) or anything stored in an implementation of `G4VUserEventInformation`, `G4VUserEventInformation`, `G4VUserTrackInformation`, `G4VUserPrimaryParticleInformation` etc.
 
 Existing tools store hits collections from the tracker detectors (`G4SaveTrackerHits`) or calorimeters (`G4SaveCalHits`).
 
