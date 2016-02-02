@@ -38,7 +38,7 @@ For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 ### 1.1. GAUDI
 
 GAUDI application framework provides 'blocks' of software that can interact with each other. Those 'blocks' (GAUDI components) are: tools, algorithms and services. Each of them has its own interface that defines the basic functionality.
-User may specify which 'blocks' (and how) should be created in a job configuration file (written in python).
+User may specify which 'blocks' (and how) should be created in a job configuration file written in python.
 Basic usage of GAUDI application can be limited to only editing that job configuration file.
 
 #### Properties
@@ -70,7 +70,7 @@ out.outputCommands = ["keep *"]
 
 #### Data inputs and outputs
 
-In particular, both tools and algorithms may have specified data input and output (`DataHandle<T>`). They are declared in the constructor as well.
+In particular, both tools and algorithms may have data input and output (`DataHandle<T>`) specified. They are declared in the constructor as well.
 
 ~~~{.py}
 # algorithm HepMCReader with output "hepmc"
@@ -113,7 +113,7 @@ This service is also passing events (`G4Event`) to and from Geant.
 The main simulation algorithm communicates with `G4SimSvc` in each event loop execution.
 It is responsible for the translation of the EDM event (`MCParticleCollection`) to `G4Event`, passing it to be simulated and retrieving it afterwards.
 
-Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and various information. To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `IG4SaveOutputTool`.
+Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and [various information](#4-simulation-in-gaudi-algorithm-g4simalg). To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `IG4SaveOutputTool`.
 A property **outputs** of `G4SimAlg` takes a list of strings with those tool names.
 Those tools should declare the output that is supposed to be further stored by the algorithm `PodioOutput`.
 
@@ -127,7 +127,7 @@ TODO short intro what is where
 ./run gaudirun.py options/geant_fullsim.py
 ~~~
 
-The configuration file (options/geant_fullsim.py) contains:
+The configuration file (`options/geant_fullsim.py`) contains:
   * reading an event from a HepMC file
 
     ~~~{.py}
@@ -210,14 +210,14 @@ The configuration file (options/geant_fullsim.py) contains:
     ~~~
 
 #### HCal example
-As an alternative, user can e.g. create a hadronic calorimeter using DD4hep and save the hits:
+Another example: user can create a hadronic calorimeter using DD4hep and save the hits:
 
 ~~~{.sh}
 ./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_hcal.py
 ~~~
 
 #### GDML example
-or create a detector using GDML. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. DD4hep::Simulation::Geant4CalorimeterHit), this way user may use the saving output utilities that are already provided.
+or create a detector using GDML. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `DD4hep::Simulation::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
 
 ~~~{.sh}
 ./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_gdml.py

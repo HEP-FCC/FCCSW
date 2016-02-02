@@ -20,7 +20,7 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
   * [Output](#42-output)
 
 [DD4hep]: http://aidasoft.web.cern.ch/DD4hep "DD4hep user manuals"
-[gflash]: http://inspirehep.net/record/352388 "GFlash"
+[GFlash]: http://inspirehep.net/record/352388 "GFlash"
 
 ## How to
 
@@ -36,20 +36,20 @@ Full simulation uses the detailed detector description and simulates the particl
 
 Therefore for many tasks, especially in the early stage of detector design, the fast simulation is used. It takes a less detailed description of the detector and does not simulate every particle step-by-step. Instead, it simulates the overall response of the (particular) detector in a parametric way.
 
-Generated particles are transported inside the detector and they (their 4-momentum and/or position) are smeared taking into account the resolutions and efficiency. Those smeared particles may be analysed and treated as reconstructed particles, even though no hits were produced and no reconstruction was performed. All the detector effects (both physics processes that may encounter and detector resolutions) come from the smearing process (or rather the resolutions that were used for smearing).
+Generated particles are transported inside the detector and their 4-momentum and/or position are smeared taking into account the resolutions and efficiency. Those smeared particles may be analysed and treated as the reconstructed particles, even though no hits were produced and no reconstruction was performed. All the detector effects (both physics processes that may encounter and detector resolutions) come from the smearing process (or rather the resolutions that were used for smearing).
 
-The resolutions used in the smearing may come arbitrary from our knowledge of the detectors. In that case one applies a Gaussian smearing with a given standard deviation. That approach may be also used by the physicists to test how the detector resolution affect the results. That smearing is currently implemented in FCCSW.
+The resolutions used in the smearing may come arbitrary from our knowledge of the detectors. In that case one applies a Gaussian smearing with a given standard deviation. That approach may be also used by the physicists to test how the detector resolution affects the results. That smearing is currently implemented in FCCSW.
 
-More complex approach involves construction of the tables with the detector resolutions (pseudorapidity/momentum/particle dependent). They are calculated from a small (relatively) sample of full simulations of single-particle events. Single-particle events simplify the reconstruction process (they don't involve the pattern recognition etc.). Such resolutions are unique for tested detectors hence they may be used for smearing the particles with a better accuracy. Implementation of this approach is still in progress.
+More complex approach involves the construction of the tables with the detector resolutions (pseudorapidity/momentum/particle dependent). They are calculated from a small (relatively) sample of full simulations of single-particle events. Single-particle events simplify the reconstruction process (they don't involve the pattern recognition etc.). Such resolutions are unique for tested detectors hence they may be used for smearing the particles with a better accuracy. Implementation of this approach is still in progress.
 
-Fast simulation in the calorimeters may involve using the so-called frozen showers. Taking into account the calorimeter material and the energy of the particle (e+,e-) one may describe the resulting electromagnetic shower with the equations, hence instead of a detailed simulation, hits in the calorimeter may be created instantly. Such an approach in Geant4 originates from [hep-ex/0001020](#gflash)
+Fast simulation in the calorimeters may involve using the so-called frozen showers. Taking into account the calorimeter material and the energy of the particle (e+,e-) one may describe the resulting electromagnetic shower with the equations, hence instead of a detailed simulation, hits in the calorimeter may be created instantly. Such an approach in Geant4 originates from [hep-ex/0001020][GFlash]
 
-Both full and fast simulation can be performed in FCCSW using Geant4. Since the same tools are used for both of them, each simulation may be an interplay of both with full simulation performed in some volumes and fast simulation in others.
+Both full and fast simulation can be performed in FCCSW using Geant4. Since the same tools are used for both of them, each simulation may be an interplay of both with the full simulation performed in some volumes and fast simulation in others.
 
 
 ## 2. Example
 
-To run fast simulation:
+To run the fast simulation:
 
 ~~~{.sh}
 ./run gaudirun.py options/geant_fastsim.py
@@ -114,7 +114,7 @@ Described in details in the [instruction on Geant4 simulation in FCCSW](Geant4fu
 
 Geometry is provided by DD4hep via GAUDI's service `GeoSvc`.
 
-In fast simulation user wants a specific behaviour in certain geometry volumes. That specific behaviour is described in classes derived from `G4VFastSimulationModel`. Geant will not perform normal transportation inside volumes with fast simulation models attached (providing that particle triggers that model).
+In the fast simulation user wants a specific behaviour in certain geometry volumes. That specific behaviour is described in classes derived from `G4VFastSimulationModel`. Geant will not perform normal transportation inside volumes with fast simulation models attached (providing that particle triggers that model).
 
   The fast simulation model needs to be attached to a `G4Region` object. That `G4Region` can contain one or many logical volumes (parts of the detector). Logical volumes are created by DD4hep. `G4Region` object is created automatically in `sim::InitializeModelsRunAction` for any detector that has in its name 'Tracker', 'ECal', 'EMCal' or 'HCal'. Name of the detector is specified in DD4hep xml file (see more in [short description](#Geant4fullsim.md#31-geometry-construction) or [DD4hep user guides][DD4hep]):
 
@@ -138,7 +138,7 @@ Currently only smearing for tracker is supported. Simple smearing tool, `G4Parti
 [WIP] Ongoing work involves implementation of a tool that would smear according to the resolutions read from a ROOT file. Those resolutions can be particle, momentum an pseudorapidity dependent.
 For instance, user would be able to generate resolution files with a simplistic geometry layout using [TkLayout](https://indico.cern.ch/event/446599/contribution/5/attachments/1202368/1750485/OccupancyStudies_ZDrasal.pdf).
 
-[WIP] Regarding the calorimeter parametrisation, there is an ongoing work on the implementation of the frozen showers approach. It is based on the [GFlash library](#gflash), already existing in Geant4.
+[WIP] Regarding the calorimeter parametrisation, there is an ongoing work on the implementation of the frozen showers approach. It is based on the [GFlash library][GFlash], already existing in Geant4.
 ___
 
 
@@ -150,7 +150,7 @@ Fast simulation requires some additions to the standard physics list, hence ther
 
 Additionally:
 * "Coupled Transportation" is used to allow invoking `G4PathFinder` that propagates the particle in the magnetic field.
-   It is used within fast simulation model for tracker to compute the exit position of a particle from the volume (taking the momentum from the entrance to the tracker volume).
+   It is used within the fast simulation model for tracker to compute the exit position of a particle from the volume (taking the momentum from the entrance to the tracker volume).
 
 * `sim::FastSimPhysics` is registered as an additional process. It attaches the fast simulation manager process to ALL the particles. That means that along with the standard processes such as transportation, multiple scattering etc. the particle can encounter 'fast simulation' process. That happens if a particle enters a volume with fast simulation model attached and if that particle fulfils trigger conditions (is charged in case of `sim::FastSimModelTracker`).
 
@@ -159,7 +159,7 @@ Additionally:
 
 ### 3.4. User Actions
 
-For the fast simulation purposes run user action `sim::InitializeModelsRunAction` is created. It checks the names of the logical volume in the world volume for the key-words: 'Tracker', 'ECal', 'EMCal' and 'HCal'. Currently only 'Tracker' name is valid (other detectors do not have yet the parametrisation).
+For the fast simulation purposes a run user action `sim::InitializeModelsRunAction` is created. It checks the names of the logical volume in the world volume for the key-words: 'Tracker', 'ECal', 'EMCal' and 'HCal'. Currently only 'Tracker' name is valid (other detectors do not have yet the parametrisation).
 
 First, for any name containing 'Tracker', `G4Region`is created. That region becomes an envelope for the `sim::FastSimModelTracker`.
 Each model will use the smearing tool for the momentum/energy smearing, so the name of the smearing tool needs to be passed to the `sim::InitializeModelsRunAction` through the property of `G4FastSimActions` (**smearing**).
@@ -169,7 +169,7 @@ Furthermore, there is a tracking user action `SaveParticlesUserAction` that sets
 
 ## 4. Simulation in GAUDI algorithm G4SimAlg
 
-There is one, common algorithm handling fast and full simulation in Geant4. In fact, full simulation is performed for all the particles and all the detectors that do not have fast simulation models attached (in `sim::InitializeModelsRunAction`, [see](#31-geometry-construction)).
+There is one, common algorithm handling fast and full simulation in Geant4. Indeed, full simulation is performed for all the particles and all the detectors that do not have fast simulation models attached (in `sim::InitializeModelsRunAction`, [see](#31-geometry-construction)).
 
 However, in order to be able to save the smeared particles, user need to create `G4SaveSmearedParticles` tool.
 
