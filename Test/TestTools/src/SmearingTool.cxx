@@ -28,7 +28,7 @@ StatusCode SmearingTool::finalize()
     return StatusCode::SUCCESS;
 }
 
-StatusCode SmearingTool::smear(ParticleCollection* particlecoll)
+StatusCode SmearingTool::smear(fcc::ParticleCollection* particlecoll)
 {
 	// FIXME / TODO: This function should be renamed or re-written, as I would expect something else from the name...
     for (const auto& part : *particlecoll) {

@@ -15,7 +15,7 @@
 
 class RecoGeoWrite: public GaudiAlgorithm {
     friend class AlgFactory<RecoGeoWrite> ;
-    
+
 public:
     /// Constructor.
     RecoGeoWrite(const std::string& name, ISvcLocator* svcLoc);
@@ -25,13 +25,13 @@ public:
     virtual StatusCode execute();
     /// Finalize.
     virtual StatusCode finalize();
-    
+
 private:
-  
-    DataHandle<ParticleCollection>          m_particles;
+
+    DataHandle<fcc::ParticleCollection>          m_particles;
     IToolSvc*                               m_toolsvc;
     IDigitizer*                             m_smeartool;
-    
+
 };
 
 #endif //RECOGEOWRITE_H
