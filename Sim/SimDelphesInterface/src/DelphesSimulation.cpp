@@ -120,7 +120,7 @@ StatusCode DelphesSimulation::initialize() {
   // Create following arrays of Delphes objects --> starting objects
   m_allPartOutArray    = m_Delphes->ExportArray("allParticles");
   m_stablePartOutArray = m_Delphes->ExportArray("stableParticles");
-  //m_partonOutArray     = m_Delphes->ExportArray("partons");
+  m_partonOutArray     = m_Delphes->ExportArray("partons");
 
   // Init Delphes - read in configuration & define modules to be executed
   m_Delphes->InitTask();
@@ -347,7 +347,7 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input ,
     auto barePart = new fcc::BareParticle();
     barePart->Type     = cand->PID;
     barePart->Status   = cand->Status;
-  	barePart->P4.Px    = cand->P4().Px();
+    barePart->P4.Px    = cand->P4().Px();
     barePart->P4.Py    = cand->P4().Py();
     barePart->P4.Pz    = cand->P4().Pz();
     barePart->P4.Mass  = cand->P4().M();

@@ -4,8 +4,22 @@
 #
 #  author: Z. Drasal (CERN)
 #
+#  - GAUDI run in a mode: Pythia + Delphes or Delphes only (if delphesHepMCInFile defined)
 #  - define variables & delphes sim outputs
-#  - run: ./run gaudirun.py config/PythiaDelphes_config.py
+#
+#  - inputs: 
+#    * Define pythiaConfFile -> configure Pythia parameters & input (simulate or read LHE file)
+#    * Define delphesCard -> describe detector response & configure Delphes - process modules, detector parameters etc.
+#    * Define delphesHepMCInFile -> read Delphes input from hepMC file (if Pythia not used)
+#    * Undefine ("") delphesHepMCInFile -> read Delphes input from GAUDI data store
+#
+#  - outputs:
+#    * Define delphesRootOutFile -> write output using Delphes I/O library (Delphes objects)
+#    * Undefine ("") delphesRootOutFile -> no output using Delphes I/O library
+#    * Define out module to write output using FCC-EDM lib (standard FCC output)
+#   
+#  - run: 
+#    * ./run gaudirun.py config/PythiaDelphes_config.py
 #
 ###########################################################
 
@@ -25,7 +39,7 @@ from Configurables import ApplicationMgr, FCCDataSvc
 ############################################################
 
 ## N-events
-nEvents=100
+nEvents=1
 
 ## Define either pythia configuration file to generate events
 #pythiaConfFile="config/Pythia_standard.cmd"
@@ -36,17 +50,13 @@ pythiaConfFile="config/Pythia_LHEinput.cmd"
 ## Define Delphes card
 delphesCard="config/FCChh_DelphesCard_WithDipole_v00.tcl"
 
-## Define Delphes objects (allParticles, partons and stable particles are flushed automatically)
-delphesOutCol=[]
-#delphesoutcol=["muons","electrons","photons","jets","mets","hts"]
-
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if hepMC file not defined --> data read-in from Gaudi data store (Inputs)
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
 delphesHepMCInFile=""
+delphesRootOutFile=""
 #delphesHepMCInFile="data/ZLEP_toAll.hepmc"
-delphesRootOutFile="DelphesOutput.root"
-#delphesRootOutFile=""
+#delphesRootOutFile="DelphesOutput.root"
 
 ## Data event model based on Podio
 podioEvent=FCCDataSvc("EventDataSvc")
@@ -64,27 +74,31 @@ pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=INFO)
 ## Write the HepMC::GenEvent to the data service
 pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 
-## Delphes simulator
+## Delphes simulator -> define objects to be written out
 from Configurables import DelphesSimulation
 delphessim = DelphesSimulation(DelphesCard=delphesCard,
-                               OutputCollections=delphesOutCol,
                                HepMCInputFile=delphesHepMCInFile,
                                ROOTOutputFile=delphesRootOutFile,
                                OutputLevel=DEBUG)
 delphessim.DataInputs.hepmc.Path               = "hepmc"
-delphessim.DataOutputs.allParticles.Path       = "allParticles"
-delphessim.DataOutputs.genPartons.Path         = "genPartons"
-delphessim.DataOutputs.genStableParticles.Path = "genStableParticles"
+delphessim.DataOutputs.genParticles.Path       = "genParticles"
+delphessim.DataOutputs.recMuons.Path           = "recMuons"
+delphessim.DataOutputs.recElectrons.Path       = "recElectrons"
+delphessim.DataOutputs.recPhotons.Path         = "recPhotons"
+delphessim.DataOutputs.recJets.Path            = "recJets"
+delphessim.DataOutputs.recMETs.Path            = "recMETs"
+delphessim.DataOutputs.recMuonsToMC.Path       = "recMuonsToMC"
+delphessim.DataOutputs.recElectronsToMC.Path   = "recElectronsToMC"
+delphessim.DataOutputs.recPhotonsToMC.Path     = "recPhotonsToMC"
 
-## FCC event-data model output
+## FCC event-data model output -> define objects to be written out
 from Configurables import PodioWrite, PodioOutput
 
 out = PodioOutput("out",OutputLevel=DEBUG)
-#out.outputCommands = ["keep *"]
+out.filename       = "FCCDelphesOutput.root"
 out.outputCommands = ["drop *",
-                      "keep allParticles",
-                      "keep genPartons",
-                      "keep genStableParticles"]
+                      "keep genParticles"]
+#out.outputCommands = ["keep *"]
 
 ############################################################
 #
