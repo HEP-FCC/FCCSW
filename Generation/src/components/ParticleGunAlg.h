@@ -4,10 +4,11 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
 #include "HepMC/GenEvent.h"
+#include "GaudiKernel/ToolHandle.h"
 
 /// Forward declarations
-class IParticleGunTool;
-class IVertexSmearingTool;
+#include "IParticleGunTool.h"
+#include "IVertexSmearingTool.h"
 
 /** @class ParticleGunAlg ParticleGunAlg.h "ParticleGunAlg.h"
  *  
@@ -51,13 +52,9 @@ private:
   /// Location where to store generator events (set by options)
   std::string  m_hepMCEventLocation ; 
   
-  IParticleGunTool          * m_particleGunTool        ; ///< Particle gun tool
-  /// Name of the IParticleGunTool (set by options)
-  std::string m_particleGunToolName ;
+  ToolHandle<IParticleGunTool> m_particleGunTool; ///< Particle gun tool
   
-  IVertexSmearingTool          * m_vertexSmearTool        ; ///< Vertex smear tool
-  /// Name of the IVertexSmearingTool (set by options)
-  std::string m_vertexSmearingToolName ;
+  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool; ///< Vertex smear tool
   
   /// Name to put in the event
   std::string m_particleGunName ;

@@ -12,19 +12,28 @@ dumper.DataInputs.hepmc.Path="hepmc"
 #ParticlePropertiesFile='Generation/options/ParticleTable.txt'
 
 particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile='/afs/cern.ch/lhcb/software/releases/GAUDI/GAUDI_v26r4/GaudiExamples/tests/data/ParticleTable.txt')
-guntool = MomentumRangeParticleGun()
+guntool = MomentumRangeParticleGun(PdgCodes=[-211, 211, -11, -13,  13, 11 ])
 
-gun = ParticleGunAlg("gun", ParticleGunTool = "MomentumRangeParticleGun", VertexSmearingTool = "FlatSmearVertex")
+smeartool = FlatSmearVertex("smeartoolname")
+# FCCSW standard unit of length: [cm]
+smeartool.xVertexMin = -10
+smeartool.xVertexMax = 10
+smeartool.yVertexMin = -10
+smeartool.yVertexMax = 10
+smeartool.zVertexMin = -30
+smeartool.zVertexMax = 30
+
+gun = ParticleGunAlg("gun", ParticleGunTool = guntool, VertexSmearingToolPGun=smeartool)
 gun.DataOutputs.hepmc.Path = "hepmc"
 
-gun.addTool(FlatSmearVertex, name="FlatSmearVertex")
 
-gun.FlatSmearVertex.xVertexMin = -10
-gun.FlatSmearVertex.xVertexMax = 10
-gun.FlatSmearVertex.yVertexMin = -10
-gun.FlatSmearVertex.yVertexMax = 10
-gun.FlatSmearVertex.zVertexMin = -30
-gun.FlatSmearVertex.zVertexMax = 30
+
+
+from Configurables import HepMCConverter
+hepmc_converter = HepMCConverter("Converter")
+hepmc_converter.DataInputs.hepmc.Path="hepmc"
+hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
+hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 histo = HepMCHistograms("GenHistograms")
 histo.DataInputs.hepmc.Path="hepmc"
@@ -37,7 +46,7 @@ THistSvc().OutputLevel=VERBOSE
 
 ApplicationMgr(EvtSel='NONE',
                EvtMax=1,
-               TopAlg=[gun,dumper,histo],
+               TopAlg=[gun,dumper, hepmc_converter,histo],
                OutputLevel=VERBOSE,
                SvcOptMapping = ["Gaudi::ParticlePropertySvc/ParticlePropertySvc"]
 )

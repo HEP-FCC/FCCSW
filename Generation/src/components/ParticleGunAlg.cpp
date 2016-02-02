@@ -6,8 +6,6 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/RndmGenerators.h"
 
-#include "IParticleGunTool.h"
-#include "IVertexSmearingTool.h"
 #include "HepMC/GenEvent.h"
 
 //-----------------------------------------------------------------------------
@@ -23,14 +21,14 @@ DECLARE_ALGORITHM_FACTORY( ParticleGunAlg )
 /// Standard constructor, initializes variables
 ParticleGunAlg::ParticleGunAlg( const std::string& name,
                           ISvcLocator* pSvcLocator)
-  : GaudiAlgorithm ( name , pSvcLocator ) ,
-    m_particleGunTool       ( nullptr ),
-    m_vertexSmearTool		( nullptr ) {
+  : GaudiAlgorithm ( name , pSvcLocator ) {
   // Generation Method
   declareProperty ( "ParticleGunTool" ,
-                    m_particleGunToolName = "GenericGun" ) ;
-  declareProperty ( "VertexSmearingTool" ,
-                     m_vertexSmearingToolName = "" ) ;
+                    m_particleGunTool ) ;
+  declareProperty ( "VertexSmearingToolPGun" ,
+                     m_vertexSmearingTool ) ;
+  declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingToolPGun");
+  declarePrivateTool(m_particleGunTool, "MomentumRangeParticleGun/ParticleGunTool");
   declareOutput("hepmc", m_hepmchandle);
 }
 
@@ -42,19 +40,6 @@ StatusCode ParticleGunAlg::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize( ) ; // Initialize base class
   if ( sc.isFailure() ) return sc ;
   debug() << "==> Initialise" << endmsg ;
-  
-  // Retrieve generation method tool
-  if ( "" == m_particleGunToolName )
-    return Error( "No ParticleGun Generation Tool is defined. This is mandatory" ) ;
-  
-  m_particleGunTool = tool< IParticleGunTool >( m_particleGunToolName , this ) ;
-  
-  // Retrieve smearing tool, if required
-  if ( "" != m_vertexSmearingToolName )
-    m_vertexSmearTool = tool< IVertexSmearingTool >( m_vertexSmearingToolName , this ) ;
-  
-  // Retrieve
-  
   return StatusCode::SUCCESS;
 }
 
@@ -81,7 +66,7 @@ StatusCode ParticleGunAlg::execute() {
 								      theFourMomentum.Pz() ,
 								      theFourMomentum.E()  ) ,
 						   thePdgId ,
-						   3 ) ;
+						   1 ) ; // hepmc status code for final state particle
   
   v -> add_particle_out( p ) ;
     
@@ -89,17 +74,12 @@ StatusCode ParticleGunAlg::execute() {
   theEvent -> set_signal_process_id( 0 ) ;
   theEvent -> set_signal_process_vertex( v ) ;
 
-  if(m_vertexSmearTool != nullptr)
-    m_vertexSmearTool->smearVertex(theEvent);
+  m_vertexSmearingTool->smearVertex(theEvent);
   
   m_hepmchandle.put(theEvent);
-  return sc ;
+  return sc;
 }
 
-///  Finalize
 StatusCode ParticleGunAlg::finalize() {
-  if ( 0 != m_particleGunTool ) release( m_particleGunTool ) ;
-  if ( 0 != m_vertexSmearTool ) release( m_vertexSmearTool ) ;
-  
-  return GaudiAlgorithm::finalize( ) ;
+  return GaudiAlgorithm::finalize();
 }
