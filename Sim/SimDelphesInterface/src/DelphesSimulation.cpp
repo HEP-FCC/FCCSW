@@ -356,8 +356,6 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input ,
 
     cand = static_cast<Candidate *>(m_allPartOutArray->At(j));
 
-    std::cout << ">>UId> " << cand->GetUniqueID() << std::endl;
-
     auto particle      = colMCParticles->create();
     auto barePart      = new fcc::BareParticle();
     barePart->Type     = cand->PID;
@@ -424,7 +422,8 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input ,
         if (iDaughter>=0 && m_vecPartProdVtxIDDecVtxID[iDaughter].second==-1) m_vecPartProdVtxIDDecVtxID[iDaughter].first = j;
       }
     }
-    /*std::cout << "Delphes FCCEDM: "
+    // Test print
+    /*std::cout << "Delphes MCParticle: "
               << " Id: "       << setw(3)  << j+1
               << " Pdg: "      << setw(5)  << particle.Core().Type
               << " Stat: "     << setw(2)  << particle.Core().Status
@@ -458,7 +457,6 @@ void DelphesSimulation::ConvertParticles(const TObjArray*  Input,
                                          fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC)
 {
   Candidate* cand = nullptr;
-  std::cout << "Electron: " << Input->GetEntries() << std::endl;
   for(int j=0; j<Input->GetEntries(); j++) {
 
     cand = static_cast<Candidate *>(Input->At(j));
@@ -505,7 +503,8 @@ void DelphesSimulation::ConvertParticles(const TObjArray*  Input,
     }
     if (barePart!=nullptr) delete barePart;
 
-    double energy = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
+    // Test print
+    /*double energy = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
                          particle.Core().P4.Py*particle.Core().P4.Py +
                          particle.Core().P4.Pz*particle.Core().P4.Pz +
                          particle.Core().P4.Mass*particle.Core().P4.Mass);
@@ -533,7 +532,7 @@ void DelphesSimulation::ConvertParticles(const TObjArray*  Input,
               << " Vz: "       << setw(10) << particle.Core().Vertex.Z
               << " RefId: "    << setw(3)  << idRefMCPart+1
               << " Rel E: "    << setw(10) << relation.getObjectID().index << " " << simE << " " << recE;
-    std::cout << std::endl;
+    std::cout << std::endl;*/
   }
 }
 
