@@ -27,8 +27,9 @@ StatusCode PoissonPileUp::initialize( ) {
   sc = m_PoissonDist.initialize( randSvc , Rndm::Poisson( m_meanPileUpEvents ) ) ;
   if ( ! sc.isSuccess() ) 
     return Error( "Could not initialize Poisson random number generator" ) ;
-
   release( randSvc ) ;
+  m_currentNumPileUpEvents = m_PoissonDist();
+  printPileUpCounters();
   return sc;
 }
 
@@ -37,11 +38,9 @@ std::string PoissonPileUp::getFilename() {
 }
 
 unsigned int PoissonPileUp::numberOfPileUp( ) {
-  m_currentNumPileUpEvents = m_PoissonDist();
-  printPileUpCounters();
   return m_currentNumPileUpEvents;
 }
 
 void PoissonPileUp::printPileUpCounters () {
-  info() << "Adding " << m_currentNumPileUpEvents << " pileup events." << endmsg;
+  info() << "Current number of pileup events:  " << m_currentNumPileUpEvents << endmsg;
 }

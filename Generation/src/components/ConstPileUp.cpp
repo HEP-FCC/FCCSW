@@ -19,11 +19,11 @@ ConstPileUp::~ConstPileUp( ) { ; }
 
 StatusCode ConstPileUp::initialize( ) {
   StatusCode sc = GaudiTool::initialize( );
+  printPileUpCounters();
   return sc;
 }
 
 unsigned int ConstPileUp::numberOfPileUp( ) {
-  printPileUpCounters();
   return m_numPileUpEvents;
 }
 
@@ -32,5 +32,5 @@ std::string ConstPileUp::getFilename() {
 }
 
 void ConstPileUp::printPileUpCounters () {
-  info() << "Adding " << m_numPileUpEvents << " pileup events." << endmsg;
+  info() << "Current number of pileup events: " << m_numPileUpEvents << endmsg;
 }
