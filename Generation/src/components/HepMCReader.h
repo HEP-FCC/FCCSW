@@ -2,10 +2,10 @@
 #ifndef GENERATION_HEPMCREADER_H
 #define GENERATION_HEPMCREADER_H
 
-#include "IHepMCFileReaderTool.h"
-#include "IVertexSmearingTool.h"
-#include "IPileUpTool.h"
-#include "IHepMCMergeTool.h"
+#include "Generation/IHepMCFileReaderTool.h"
+#include "Generation/IVertexSmearingTool.h"
+#include "Generation/IPileUpTool.h"
+#include "Generation/IHepMCMergeTool.h"
 
 #include "FWCore/DataHandle.h"
 

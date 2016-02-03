@@ -4,7 +4,7 @@
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
 
-#include "IParticleGunTool.h"
+#include "Generation/IParticleGunTool.h"
 
 /** @class MomentumRangeParticleGun MomentumRangeParticleGun.h "MomentumRangeParticleGun.h"
  *

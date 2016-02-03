@@ -3,7 +3,7 @@
 #define GENERATION_HEPMCPILEMERGETOOL_H
 
 #include "FWCore/DataHandle.h"
-#include "IHepMCMergeTool.h"
+#include "Generation/IHepMCMergeTool.h"
 
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h" 

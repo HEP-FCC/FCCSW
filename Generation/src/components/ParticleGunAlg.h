@@ -7,8 +7,8 @@
 #include "GaudiKernel/ToolHandle.h"
 
 /// Forward declarations
-#include "IParticleGunTool.h"
-#include "IVertexSmearingTool.h"
+#include "Generation/IParticleGunTool.h"
+#include "Generation/IVertexSmearingTool.h"
 
 /** @class ParticleGunAlg ParticleGunAlg.h "ParticleGunAlg.h"
  *  

@@ -3,7 +3,7 @@
 #define GENERATION_HEPMCFILEREADER_H
 
 #include "GaudiAlg/GaudiTool.h"
-#include "IHepMCFileReaderTool.h"
+#include "Generation/IHepMCFileReaderTool.h"
 
 #include "HepMC/GenEvent.h"
 #include "HepMC/IO_GenEvent.h"
