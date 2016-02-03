@@ -13,7 +13,7 @@ HepMCFileReader::HepMCFileReader(
     const std::string& type,
     const std::string& name,
     const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent), m_file(0) {
   declareInterface<IHepMCFileReaderTool> (this);
 }
 
@@ -47,15 +47,12 @@ HepMC::GenEvent* HepMCFileReader::readNextEvent() {
   return tmpEvent;
 }
 
-void HepMCFileReader::close() {
+
+StatusCode HepMCFileReader::finalize() {
   if ( 0 != m_file ) {
     delete m_file;
     m_file = 0;
   }
-}
-
-StatusCode HepMCFileReader::finalize() {
-  close();
   return GaudiTool::finalize();
 }
 
