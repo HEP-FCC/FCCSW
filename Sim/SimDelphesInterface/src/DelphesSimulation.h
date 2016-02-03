@@ -95,6 +95,7 @@ private:
 
   // Handle for the generated or reconstructed objects to be written out
   DataHandle<fcc::MCParticleCollection> m_handleGenParticles;    // Generated particles handle
+  DataHandle<fcc::GenVertexCollection>  m_handleGenVertices;     // Handle to vertices of generated particles
   DataHandle<fcc::ParticleCollection>   m_handleRecMuons;        // Reconstructed muons
   DataHandle<fcc::ParticleCollection>   m_handleRecElectrons;    // Reconstructed electrons
   //DataHandle<fcc::ParticleCollection>   m_handleRecCharged;      // Reconstructed charged hadrons
@@ -109,10 +110,11 @@ private:
   //DataHandle<fcc::JetParticleAssociationCollection>         m_handleRecJetsToPart;    // Relation between jets & particle
 
   // Convert internal Delphes objects to FCC EDM objects - UPDATE
-  void ConvertMCParticles(const TObjArray* Input, fcc::MCParticleCollection* colMCParticles);
-  template <class T> void ConvertParticles(const TObjArray*  Input, fcc::ParticleCollection*   colParticles,
-                                                                    fcc::MCParticleCollection* colMCParticles,
-                                                                    fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
+  void ConvertMCParticles(const TObjArray* Input, fcc::MCParticleCollection* colMCParticles,
+                                                  fcc::GenVertexCollection* colGenVertices);
+  void ConvertParticles(const TObjArray*  Input, fcc::ParticleCollection*   colParticles,
+                                                 fcc::MCParticleCollection* colMCParticles,
+                                                 fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
   void ConvertPhotons(const TObjArray* Input, fcc::ParticleCollection*   colParticles,
                                               fcc::MCParticleCollection* colMCParticles,
                                               fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
@@ -140,6 +142,7 @@ private:
             *m_jetOutArray ,
             *m_metOutArray ,
             *m_htOutArray ;
+
 };
 
 #endif

@@ -12,10 +12,11 @@ namespace ParticleStatus {
 
   // Particle bits related to status
   static const int Beam           = 0x000;
-  static const int Decayed        = 0x001;
-  static const int Stable         = 0x002;
-  static const int Unmatched      = 0x003;
-  static const int MatchInCascade = 0x004;
+  static const int Stable         = 0x001;
+  static const int Decayed        = 0x002;
+  static const int Matched        = 0x003;
+  static const int Unmatched      = 0x004;
+  static const int MatchInCascade = 0x005;
 
 } // Namespace
 
