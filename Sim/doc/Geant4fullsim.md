@@ -70,6 +70,7 @@ out.outputCommands = ["keep *"]
 
 #### Data inputs and outputs
 
+
 In particular, both tools and algorithms may have data input and output (`DataHandle<T>`) specified. They are declared in the constructor as well.
 
 ~~~{.py}
@@ -92,6 +93,52 @@ Path "hepmc" is further an input to the next algorithm, which is an algorithm `H
 #                  declareInput("hepmc", m_hepmchandle);
 hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
 ~~~
+#### Execution
+
+Compilation of FCCSW produces an executable `./run` that is responsible for setting the correct environment.
+Any command may be run in the FCCSW environment by passing it as argument to `./run`, e.g. `./run echo $LD_LIBRARY_PATH`,
+which should give a printout including the library paths of your FCCSW install. 
+
+Gaudi provides a script `gaudirun.py` to parse the python job configuration file, create the Gaudi `AppMgr` and run the configured algorithms.
+It is present in the installation area of Gaudi, which is added to the environment by `./run`, and can be run from any directory (e.g. `./run gaudirun.py config/simple_workflow.py`).
+
+During development and when performance is not critical, the flexibility and interactivity of interpreters such as `ipython` can be very helpful. For this purpose, Gaudi provides `GaudiPython`: Python-bindings to its C++ classes. Because of the C++ nature of Gaudi, these bindings are ['pythonic'](https://www.python.org/dev/peps/pep-0020/) only to a degree, but can nevertheless be useful.
+The job configuration file may be used with GaudiPython by simply executing it before `AppMgr` is constructed:
+
+```{.py}
+./run python -i config/simple_workflow.py
+>>> from GaudiPython import AppMgr # 
+>>> gaudi = AppMgr()
+>>> gaudi.run(1)
+```
+This way offers some limited possibilities to inspect the transient event store between events by calling
+
+```{.py}
+>>> evt = gaudi.evtSvc()
+>>> evt.dump()
+>>> unreadableDataObject = evt['/Event/hepmc']
+```
+
+It might be possible to further process the DataObject returned from the event service by loading its dictionary (TODO).
+
+`GaudiPython` also includes a baseclass `PyAlgorithm` for Algorithms written in python, that can be useful for prototyping. As a simple example, the following code can be
+inserted before the call to gaudi.run (which implies gaudi.initialize).
+
+```{.py}
+class MyPyAlg(PyAlgorithm):
+  def initialize(self):
+    print 'Initializing User Analysis...'
+  def execute(self):
+    print 'Executing User Analysis...'
+  def finalize(self):
+    print 'Finalizing User Analysis...'
+
+mypythonalg = MyPyAlg('MyPyAlg')
+gaudi.addAlgorithm('MyPyAlg')
+```
+
+
+
 
 ### 1.2. Geant components
 
