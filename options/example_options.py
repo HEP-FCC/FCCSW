@@ -16,7 +16,7 @@ out = PodioOutput("out", OutputLevel=DEBUG)
 
 ApplicationMgr( TopAlg = [reader,dumper,podiowrite,out],
                 EvtSel = 'NONE',
-                EvtMax   = -1,
+                EvtMax   = 1,
                 ExtSvc = [podioevent],
 #                EventLoop = eventloopmgr,
                 OutputLevel=INFO
