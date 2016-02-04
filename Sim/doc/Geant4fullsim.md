@@ -93,14 +93,15 @@ Path "hepmc" is further an input to the next algorithm, which is an algorithm `H
 #                  declareInput("hepmc", m_hepmchandle);
 hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
 ~~~
-#### Execution
+#### Running Gaudi 
 
-Compilation of FCCSW produces an executable `./run` that is responsible for setting the correct environment.
+FCCSW provides an executable `./run` that is responsible for setting the correct environment.
 Any command may be run in the FCCSW environment by passing it as argument to `./run`, e.g. `./run echo $LD_LIBRARY_PATH`,
 which should give a printout including the library paths of your FCCSW install. 
+Gaudi provides a script `gaudirun.py` to parse the users python job configuration file, create the Gaudi `AppMgr` and run the configured algorithms, which can be done by entering `./run gaudirun.py config/simple_workflow.py`.
 
-Gaudi provides a script `gaudirun.py` to parse the python job configuration file, create the Gaudi `AppMgr` and run the configured algorithms.
-It is present in the installation area of Gaudi, which is added to the environment by `./run`, and can be run from any directory (e.g. `./run gaudirun.py config/simple_workflow.py`).
+
+#### For Developers: Running Gaudi from the interpreter
 
 During development and when performance is not critical, the flexibility and interactivity of interpreters such as `ipython` can be very helpful. For this purpose, Gaudi provides `GaudiPython`: Python-bindings to its C++ classes. Because of the C++ nature of Gaudi, these bindings are ['pythonic'](https://www.python.org/dev/peps/pep-0020/) only to a degree, but can nevertheless be useful.
 The job configuration file may be used with GaudiPython by simply executing it before `AppMgr` is constructed:
