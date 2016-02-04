@@ -33,9 +33,6 @@ gaudi_add_test(GeantFullSimGdml
 gaudi_add_test(GeantFastSimTracker
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK config/geant_fastsim.py)
-gaudi_add_test(RecoGeo
-                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK config/recogeo_options.py)
 gaudi_add_test(SimplePythia
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK config/simple_pythia.py)
