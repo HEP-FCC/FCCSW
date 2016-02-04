@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, FCCDataSvc, AlbersWrite, AlbersOutput
+from Configurables import ApplicationMgr, FCCDataSvc
 
 albersevent   = FCCDataSvc("EventDataSvc")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
