@@ -9,9 +9,8 @@ For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 
 ## Contents
 1. [Overview](#1-overview)
-   * [GAUDI](#11-gaudi)
-   * [Geant](#12-geant-components)
-   * [Sim in FCCSW](#13-simulation-package-in-fccsw)
+   * [Geant](#11-geant-components)
+   * [Sim in FCCSW](#12-simulation-package-in-fccsw)
 2. [Example of full sim configuration](#2-example)
 3. [Geant configuration via GAUDI service `G4SimSvc`](#3-geant-configuration-via-gaudi-service-g4simsvc)
   * [Geometry construction](#31-geometry-construction)
@@ -35,113 +34,7 @@ For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 
 ## 1. Overview
 
-### 1.1. GAUDI
-
-GAUDI application framework provides 'blocks' of software that can interact with each other. Those 'blocks' (GAUDI components) are: tools, algorithms and services. Each of them has its own interface that defines the basic functionality.
-User may specify which 'blocks' (and how) should be created in a job configuration file written in python.
-Basic usage of GAUDI application can be limited to only editing that job configuration file.
-
-#### Properties
-
-All components may contain data members which can be initialised from the job configuration file. Those variables are called *properties* and need to be declared in the constructor. For instance that may be `int`, `double`, `std::string`, but also a `ToolHandle` or `std::vector<std::string>`.
-A property may be set in a python configuration either when a component is created
-
-~~~{.py}
-# algorithm HepMCReader with a property "Filename"
-# in HepMCReader class declaration:
-#                  std::string m_filename;
-# in HepMCReader constructor:
-#                  declareProperty("Filename", m_filename="");
-# in python configuration file:
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
-~~~
-
-or afterwards (except for ToolHandle - TODO CHECK)
-
-~~~{.py}
-# algorithm PodioOutput with a property "outputCommands"
-# in PodioOutput class declaration:
-#                  std::vector<std::string> m_outputCommands;
-# in PodioOutput constructor:
-#                  declareProperty("outputCommands", m_outputCommands=defaultCommands);
-# in python configuration file:
-out.outputCommands = ["keep *"]
-~~~
-
-#### Data inputs and outputs
-
-
-In particular, both tools and algorithms may have data input and output (`DataHandle<T>`) specified. They are declared in the constructor as well.
-
-~~~{.py}
-# algorithm HepMCReader with output "hepmc"
-# in HepMCReader class declaration:
-#                  DataHandle<HepMC::GenEvent> m_hepmchandle;
-# in HepMCReader constructor:
-#                  declareOutput("hepmc", m_hepmchandle);
-reader.DataOutputs.hepmc.Path = "hepmcevent"
-~~~
-
-Path "hepmc" is further an input to the next algorithm, which is an algorithm `HepMCConverter`
-(Note that common name `hepmc` in those algorithms is just a coincidence. What matters is the path specified in python file).
-
-~~~{.py}
-# algorithm HepMCReader with a property "outputCommands"
-# in HepMCConverter class declaration:
-#                  DataHandle<HepMC::GenEvent> m_hepmchandle;
-# in HepMCConverter constructor:
-#                  declareInput("hepmc", m_hepmchandle);
-hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
-~~~
-#### Running Gaudi 
-
-FCCSW provides an executable `./run` that is responsible for setting the correct environment.
-Any command may be run in the FCCSW environment by passing it as argument to `./run`, e.g. `./run echo $LD_LIBRARY_PATH`,
-which should give a printout including the library paths of your FCCSW install. 
-Gaudi provides a script `gaudirun.py` to parse the users python job configuration file, create the Gaudi `AppMgr` and run the configured algorithms, which can be done by entering `./run gaudirun.py config/simple_workflow.py`.
-
-
-#### For Developers: Running Gaudi from the interpreter
-
-During development and when performance is not critical, the flexibility and interactivity of interpreters such as `ipython` can be very helpful. For this purpose, Gaudi provides `GaudiPython`: Python-bindings to its C++ classes. Because of the C++ nature of Gaudi, these bindings are ['pythonic'](https://www.python.org/dev/peps/pep-0020/) only to a degree, but can nevertheless be useful.
-The job configuration file may be used with GaudiPython by simply executing it before `AppMgr` is constructed:
-
-```{.py}
-./run python -i config/simple_workflow.py
->>> from GaudiPython import AppMgr # 
->>> gaudi = AppMgr()
->>> gaudi.run(1)
-```
-This way offers some limited possibilities to inspect the transient event store between events by calling
-
-```{.py}
->>> evt = gaudi.evtSvc()
->>> evt.dump()
->>> unreadableDataObject = evt['/Event/hepmc']
-```
-
-It might be possible to further process the DataObject returned from the event service by loading its dictionary (TODO).
-
-`GaudiPython` also includes a baseclass `PyAlgorithm` for Algorithms written in python, that can be useful for prototyping. As a simple example, the following code can be
-inserted before the call to gaudi.run (which implies gaudi.initialize).
-
-```{.py}
-class MyPyAlg(PyAlgorithm):
-  def initialize(self):
-    print 'Initializing User Analysis...'
-  def execute(self):
-    print 'Executing User Analysis...'
-  def finalize(self):
-    print 'Finalizing User Analysis...'
-
-mypythonalg = MyPyAlg('MyPyAlg')
-gaudi.addAlgorithm('MyPyAlg')
-```
-
-
-
-
-### 1.2. Geant components
+### 1.1. Geant components
 
 Geant main manager class is `G4RunManager`. It has own implementation in FCCSW `sim::RunManager` as the event flow is governed by GAUDI and not by Geant.
 
@@ -165,9 +58,22 @@ Retrieved `G4Event` contains the very same primary particles and vertices, thoug
 A property **outputs** of `G4SimAlg` takes a list of strings with those tool names.
 Those tools should declare the output that is supposed to be further stored by the algorithm `PodioOutput`.
 
-### 1.3. Simulation package in FCCSW
+### 1.2. Simulation package in FCCSW
 
-TODO short intro what is where
+Simulation package contains following directories:
+
+* *SimG4Interfaces*
+  * interfaces to tools, algorithms and services;
+* *SimG4Components*
+  * all main components (e.g. `SimG4Svc`, `G4DD4hepDetector`)
+  * tests, further examples (e.g. `Sim/SimG4Components/tests/geant_fullsim_hcal.py`)
+* *SimG4Common*
+  * Geant classes' implementations, common for both the full and fast simuliation (e.g. `sim::RunManager`)
+* *SimG4Full*
+  * components and Geant classes' implementations used in the full simulation (e.g. `G4FullSimActions`)
+* *SimG4Fast*
+  * components and Geant classes' implementations used in the fast simulation (e.g. `sim::FastSimPhysics`)
+
 
 ## 2. Example
 
@@ -346,7 +252,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
 ### How to use different geometry
 
 In order to describe a detector, one needs an XML file and relevant C++ factory methods.
-To describe a sensitive detector consult the [short description](#sensitive-detectors) and sections 2.11 and 2.11 in [DD4hep manual].
+To describe a sensitive detector consult the [short description](#sensitive-detectors) and sections 2.11 and 2.12 in [DD4hep manual].
 Further information may be also found on [DD4hep documentation webpage][DD4hep] and in DetectorDescription/doc/ (TODO add link).
 
 Once XML file is done, it can be passed as a property **detector** to `GeoSvc` which will parse it and translate the geometry to Geant format.
