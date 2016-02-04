@@ -173,7 +173,7 @@ template< class P, class J, class A>
   unsigned index = 0;
   for (auto it = particles->begin(); it != particles->end(); ++it) {
     auto ptchandle = *it;
-    const BareParticle& ptc = ptchandle.Core();
+    auto& ptc = ptchandle.Core();
     TLorentzVector p4;
     p4.SetXYZM(ptc.P4.Px, ptc.P4.Py,
                     ptc.P4.Pz, ptc.P4.Mass);
@@ -210,7 +210,7 @@ template< class P, class J, class A>
     if(m_verbose)
       std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
     auto jet = jets->create();
-    BareJet& core = jet.Core();
+    auto& core = jet.Core();
     core.P4.Px = pjet.px();
     core.P4.Py = pjet.py();
     core.P4.Pz = pjet.pz();

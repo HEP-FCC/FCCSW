@@ -354,14 +354,14 @@ StatusCode DelphesSimulation::finalize() {
   return GaudiAlgorithm::finalize();
 }
 
-void DelphesSimulation::ConvertParticle(   TObjArray *  Input , ParticleCollection *  coll  ){
+void DelphesSimulation::ConvertParticle(   TObjArray *  Input , fcc::ParticleCollection *  coll  ){
 
   Candidate * cand;
   for(int j = 0; j < Input->GetEntries(); ++j) {
 
     cand = static_cast<Candidate *>(Input->At(j));
-    Particle outptc = coll->create();
-    BareParticle&  core   = outptc.Core();
+    fcc::Particle outptc = coll->create();
+    fcc::BareParticle&  core   = outptc.Core();
     if (cand->Momentum.Pt()!=0) { // protection against the boring message Warning in <TVector3::PseudoRapidity>: transvers momentum = 0! return +/- 10e10
 
       core.Type     = cand->PID;
@@ -377,14 +377,14 @@ void DelphesSimulation::ConvertParticle(   TObjArray *  Input , ParticleCollecti
   }
 }
 
-void DelphesSimulation::ConvertJet(   TObjArray *  Input , GenJetCollection *  coll  ){
+void DelphesSimulation::ConvertJet(   TObjArray *  Input , fcc::GenJetCollection *  coll  ){
 
   Candidate * cand;
   for(int j = 0; j < Input->GetEntries(); ++j) {
 
     cand = static_cast<Candidate *>(Input->At(j));
-    GenJet outptc = coll->create();
-    BareJet& core = outptc.Core();
+    fcc::GenJet outptc = coll->create();
+    fcc::BareJet& core = outptc.Core();
     core.Area     = cand->Area.Mag();
     core.P4.Px    = (double) cand->Momentum.X();
     core.P4.Py    = (double) cand->Momentum.Y();
@@ -393,27 +393,27 @@ void DelphesSimulation::ConvertJet(   TObjArray *  Input , GenJetCollection *  c
   }
 }
 
-void DelphesSimulation::ConvertMET(   TObjArray *  Input , ParticleCollection *  coll  ){
+void DelphesSimulation::ConvertMET(   TObjArray *  Input , fcc::ParticleCollection *  coll  ){
 
   Candidate * cand;
   for(int j = 0; j < Input->GetEntries(); ++j) {
 
     cand = static_cast<Candidate *>(Input->At(j));
-    Particle outptc = coll->create();
-    BareParticle& core = outptc.Core();
+    fcc::Particle outptc = coll->create();
+    fcc::BareParticle& core = outptc.Core();
     core.P4.Px         = (double) cand->Momentum.X();
     core.P4.Py         = (double) cand->Momentum.Y();
   }
 }
 
-void DelphesSimulation::ConvertHT(   TObjArray *  Input , ParticleCollection *  coll  ){
+void DelphesSimulation::ConvertHT(   TObjArray *  Input , fcc::ParticleCollection *  coll  ){
 
   Candidate * cand;
   for(int j = 0; j < Input->GetEntries(); ++j) {
 
     cand = static_cast<Candidate *>(Input->At(j));
-    Particle outptc = coll->create();
-    BareParticle& core = outptc.Core();
+    fcc::Particle outptc = coll->create();
+    fcc::BareParticle& core = outptc.Core();
     core.P4.Px         = (double) cand->Momentum.X();
     core.P4.Py         = (double) cand->Momentum.Y();
   }

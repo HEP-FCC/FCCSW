@@ -13,11 +13,11 @@ StatusCode Analyse::initialize() {
 
 StatusCode Analyse::execute() {
    // always check if the units are converted properly !!
-   const ParticleMCParticleAssociationCollection* associations = m_partassociationhandle.get();
+   const fcc::ParticleMCParticleAssociationCollection* associations = m_partassociationhandle.get();
    info()<<" START ANALYSIS"<<endmsg;
    for(const auto& assoc : *associations) {
-      const BareParticle& mccore = assoc.Sim().Core();
-      const BareParticle& core = assoc.Rec().Core();
+      const fcc::BareParticle& mccore = assoc.Sim().Core();
+      const fcc::BareParticle& core = assoc.Rec().Core();
       if(
          core.P4.Px-mccore.P4.Px < 0.00001 &&
          core.P4.Py-mccore.P4.Py < 0.00001 &&

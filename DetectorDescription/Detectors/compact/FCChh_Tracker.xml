@@ -2,12 +2,7 @@
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
-
-    <includes>
-        <gdmlFile  ref="elements.xml"/>
-        <gdmlFile  ref="materials.xml"/>
-    </includes>
-
+    
     <info name="FCCTestTracker"
         title="FCCTestTracker"
         author="Julia"
@@ -16,17 +11,8 @@
         version="$Id:??$">
         <comment>TestTracker for FCC</comment>
     </info>
-
+    
     <define>
-        <constant name="world_size" value="30*m"/>
-        <constant name="world_x" value="world_size"/>
-        <constant name="world_y" value="world_size"/>
-        <constant name="world_z" value="world_size"/>
-        <!--Dimensions of BeamTube-->
-        <constant name="Tube_rmin" value="0*mm"/>
-        <constant name="Tube_rmax" value="30*mm"/>
-        <constant name="Tube_length" value="700*mm"/>
-        <!-------------------------------------------->
         <!--Dimensions of Barrel1-->
         <constant name="B0_rmin" value="30*mm"/>
         <constant name="B0_rmax" value="111*mm"/>
@@ -52,7 +38,7 @@
         <constant name="B0_L4_rmin" value="101*mm"/>
         <constant name="B0_L4_rmax" value="111*mm"/>
         <constant name="B0_L4_modulesInPhi" value="56"/>
-
+        
         <!--Dimensions of Barrel Module-->
         <constant name="B_mod_width" value="8.0*mm"/>
         <constant name="B_mod_length" value="20.4*mm"/>
@@ -63,12 +49,12 @@
         <constant name="B_Si_length" value="20.4*mm"/>
         <constant name="B_Si_thick" value="0.0625*mm"/>
         <constant name="B_Si_pos" value="-0.075*mm"/>
-
+        
         <constant name="B_C_width" value="8.0*mm"/>
         <constant name="B_C_length" value="15.4*mm"/>
         <constant name="B_C_thick" value="0.05*mm"/>
         <constant name="B_C_pos" value="0.0375*mm"/>
-
+        
         <constant name="B_Al_width" value="2.0*mm"/>
         <constant name="B_Al_length" value="20.4*mm"/>
         <constant name="B_Al_thick" value="0.025*mm"/>
@@ -86,7 +72,7 @@
         <constant name="E0_L0_pos" value="-40.*mm"/>
         <constant name="E0_L1_pos" value="0.*mm"/>
         <constant name="E0_L2_pos" value="40.*mm"/>
-
+        
         <!--Dimensions of EndCap Module-->
         <constant name="E0_L0_mod_X1" value="6.0*mm"/>
         <constant name="E0_L0_mod_X2" value="8.0*mm"/>
@@ -107,7 +93,7 @@
         <constant name="E0_L0_Si_length" value="20.4*mm"/>
         <constant name="E0_L0_Si_thick" value="0.0625*mm"/>
         <constant name="E0_L0_Si_pos" value="-0.075*mm"/>
-
+        
         <constant name="E0_L0_C_X1" value="6.0*mm"/>
         <constant name="E0_L0_C_X2" value="8.0*mm"/>
         <constant name="E0_L0_C1_X1" value="8.0*mm"/>
@@ -115,7 +101,7 @@
         <constant name="E0_L0_C_length" value="15.4*mm"/>
         <constant name="E0_L0_C_thick" value="0.05*mm"/>
         <constant name="E0_L0_C_pos" value="0.0375*mm"/>
-
+        
         <constant name="E0_L0_Al_X1" value="2.0*mm"/>
         <constant name="E0_L0_Al_X2" value="2.0*mm"/>
         <constant name="E0_L0_Al1_X1" value="2.0*mm"/>
@@ -124,32 +110,9 @@
         <constant name="E0_L0_Al_thick" value="0.025*mm"/>
         <constant name="E0_L0_Al_pos" value="0.1125*mm"/>
         <!-------------------------------------------->
-
-        <!-- HCAL BARREL -->
-        <!-- NOTE: All lengths (anything but radii) given below are interpreted as half-lenghts! -->
-        <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
-        <constant name="BarHCal_rmin" value="1010*mm"/>
-        <constant name="BarHCal_rmax" value="10010*mm"/>
-        <!-- length in z -->
-        <!-- Note that this is just a guideline to the factory method: It will actually do a HCal of length
-          static_cast<int>(BarHCal_dz / Module_thickness) +
-        -->
-        <constant name="BarHCal_dz" value="6000*mm"/>
-        <!-- tile dimensions -->
-        <constant name="BarHCal_n_phi_modules" value="120"/>
-        <constant name="BarHCal_module_drho" value="10*mm"/>
-        <constant name="BarHCAL_module_spacing_phi" value="0.5*mm"/>
-        <!-- component dimensions -->
-        <constant name="BarHCal_master_plate_thickness" value="5*mm" />
-        <constant name="BarHCal_spacer_plate_thickness" value="4*mm" />
-        <constant name="BarHCal_air_space_thickness" value="0.5*mm" />
-        <constant name="BarHCal_scintillator_thickness" value="3*mm" />
-        <!-- face and end-plate dimensions -->
-        <constant name="BarHCal_end_plate_thickness" value="5*mm" />
-        <constant name="BarHCal_face_plate_thickness" value="10*mm" />
-
+        
     </define>
-
+    
     <display>
         <vis name="violet" r="0.4" g="0." b="0.4" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
         <vis name="red" r="0.6" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
@@ -157,15 +120,6 @@
         <vis name="lightblue" r="0." g="0." b="0.5" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
         <vis name="lightred" r="0.5" g="0." b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
         <vis name="lightgreen" r="0." g="0.5" b="0." alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
-        <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-        <vis name="hcal_steel_master_vis" r="0.6" g="0.6" b="0.6" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-        <vis name="hcal_face_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-        <vis name="hcal_end_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-        <vis name="hcal_polystyrene_vis" r="0.4" g="0.4" b="0.8" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-        <vis name="hcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="false" />
-        <vis name="hcal_barrel_seq1_vis" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
-        <vis name="hcal_barrel_seq2_vis" r="0.6" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
-        <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" />
     </display>
 
     <readouts>
@@ -176,21 +130,11 @@
         <readout name="E0_Readout">
          <!--   <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>-->
             <segmentation type="CartesianGridXZ" grid_size_x="0.05*mm" grid_size_z="0.05*mm"/>
-            <id>system:3,layer:3,module:8,component:2,x:32:-16,z:-16</id>
-        </readout>
-        <readout name="BarHCal_Readout">
-            <segmentation type="CartesianGridXZ" grid_size_x="10*mm" grid_size_z="10*mm"/>
-            <!-- <id>system:3,layer:3,module:11,component:2,x:32:-16,y:-16</id> -->
-            <id>system:3,layer:10,wedge:7,sub_module:2,row:9,x:32:-16,y:-16</id>
+            <id>system:3,layer:2,module:8,component:2,x:32:-16,z:-16</id>
         </readout>
     </readouts>
 
     <detectors>
-        <!--BeamTube-->
-        <detector id="0" name="BeamTube" type="SimpleCylinder">
-            <status id="0"/>
-            <dimensions rmin="Tube_rmin" rmax="Tube_rmax" z_offset="0*cm" dz="Tube_length" phi0="0" deltaphi="360*deg" vis="violet" material="Air"/>
-        </detector>
         <!--Barrel0-->
         <detector id="1" name="Barrel0" type="Barrel" readout="B0_Readout" vis="red">
             <status id="1"/>
@@ -317,8 +261,7 @@
                     <module_component x1="E0_L0_Al1_X1" x2="E0_L0_Al1_X2" length="E0_L0_Al_length" thickness="E0_L0_Al_thick" z ="E0_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-        </detector>
-        <include ref="HCal.xml" />
+        </detector> 
     </detectors>
 </lccdd>
 

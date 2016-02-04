@@ -9,9 +9,11 @@
 class IGeantSvc;
 
 // albers
+namespace fcc {
 class MCParticleCollection;
 class ParticleCollection;
 class ParticleMCParticleAssociationCollection;
+}
 
 // Geant
 class G4Event;
@@ -31,11 +33,11 @@ public:
   G4Event* EDM2G4();
   // saving methods......
   /// Handle for the EDM MC particles to be read
-  DataHandle<MCParticleCollection> m_genParticles;
+  DataHandle<fcc::MCParticleCollection> m_genParticles;
   /// Handle for the particles to be written
-  DataHandle<ParticleCollection> m_recphandle;
+  DataHandle<fcc::ParticleCollection> m_recphandle;
   /// Handle for the associations between particles and MC particles to be written
-  DataHandle<ParticleMCParticleAssociationCollection> m_partassociationhandle;
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_partassociationhandle;
   /// Pointer to the interface of Geant Simulation service
   SmartIF<IGeantSvc> m_geantSvc;
 };

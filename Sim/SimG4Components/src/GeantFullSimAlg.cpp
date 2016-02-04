@@ -70,13 +70,13 @@ G4Event* GeantFullSimAlg::EDM2G4() {
   // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
   G4Event* g4_event = new G4Event();
   // Creating EDM collections
-  const MCParticleCollection* mcparticles = m_genParticles.get();
+  const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
   // Adding one particle per one vertex => vertices repeated
   for(const auto& mcparticle : *mcparticles) {
-    const ConstGenVertex& v = mcparticle.StartVertex();
+    const fcc::ConstGenVertex& v = mcparticle.StartVertex();
     G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
       (v.Position().X*sim::edm2g4::length, v.Position().Y*sim::edm2g4::length, v.Position().Z*sim::edm2g4::length, v.Ctau()*sim::edm2g4::length);
-    const BareParticle& mccore = mcparticle.Core();
+    const fcc::BareParticle& mccore = mcparticle.Core();
     G4PrimaryParticle* g4_particle = new G4PrimaryParticle
       (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
     g4_vertex->SetPrimary(g4_particle);
@@ -90,9 +90,9 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4TrackerHit* hit;
   if(collections != nullptr) {
-    TrackClusterCollection* edmClusters = new TrackClusterCollection();
-    TrackHitCollection* edmHits = new TrackHitCollection();
-    TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
+    fcc::TrackClusterCollection* edmClusters = new fcc::TrackClusterCollection();
+    fcc::TrackHitCollection* edmHits = new fcc::TrackHitCollection();
+    fcc::TrackClusterHitsAssociationCollection* edmAssociations = new fcc::TrackClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (collect->GetName().operator==("BarHCal_Readout"))
@@ -102,10 +102,10 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
       debug() << "     " << n_hit<< " hits are stored in collection #"<<iter_coll<<endmsg;
       for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
         hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-        TrackHit edmHit = edmHits->create();
-        TrackCluster edmCluster = edmClusters->create();
-        BareHit& edmHitCore = edmHit.Core();
-        BareCluster& edmClusterCore = edmCluster.Core();
+        fcc::TrackHit edmHit = edmHits->create();
+        fcc::TrackCluster edmCluster = edmClusters->create();
+        fcc::BareHit& edmHitCore = edmHit.Core();
+        fcc::BareCluster& edmClusterCore = edmCluster.Core();
         edmHitCore.Cellid = hit->cellID;
         edmHitCore.Energy = hit->energyDeposit;
         edmHitCore.Time = hit->truth.time;
@@ -114,7 +114,7 @@ void GeantFullSimAlg::saveTrackerHits(const G4Event& aEvent) {
         edmClusterCore.position.Z = hit->position.z();
         edmClusterCore.Energy = hit->energyDeposit;
         edmClusterCore.Time = hit->truth.time;
-        TrackClusterHitsAssociation edmAssociation = edmAssociations->create();
+        fcc::TrackClusterHitsAssociation edmAssociation = edmAssociations->create();
         edmAssociation.Cluster(edmCluster);
         edmAssociation.Hit(edmHit);
       }
@@ -131,8 +131,8 @@ void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;
   if(collections != nullptr) {
-    CaloClusterCollection* edmClusters = new CaloClusterCollection();
-    CaloHitCollection* edmHits = new CaloHitCollection();
+    fcc::CaloClusterCollection* edmClusters = new fcc::CaloClusterCollection();
+    fcc::CaloHitCollection* edmHits = new fcc::CaloHitCollection();
     // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
@@ -148,10 +148,10 @@ void GeantFullSimAlg::saveHCalDeposits(const G4Event& aEvent) {
           debug() << hit->position.y() << " ";
           debug() << hit->position.z() << endmsg;
 
-          CaloHit edmHit = edmHits->create();
-          CaloCluster edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.Core();
-          BareCluster& edmClusterCore = edmCluster.Core();
+          fcc::CaloHit edmHit = edmHits->create();
+          fcc::CaloCluster edmCluster = edmClusters->create();
+          fcc::BareHit& edmHitCore = edmHit.Core();
+          fcc::BareCluster& edmClusterCore = edmCluster.Core();
           edmHitCore.Cellid = hit->cellID;
           edmHitCore.Energy = hit->energyDeposit;
 
