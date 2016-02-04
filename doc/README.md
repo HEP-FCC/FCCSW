@@ -5,6 +5,7 @@ In this directory
 --
 - [C++ Coding Style](./CppCodingStyleGuidelines.md)
 - [C++ Best Practices](./GeneralCppGuidelines.md)
+- [Basic introduction for GAUDI users](./GAUDIbasics.md)
 
 Doxygen
 --
