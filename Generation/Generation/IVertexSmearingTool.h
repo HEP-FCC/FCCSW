@@ -4,7 +4,7 @@
 #include "GaudiKernel/IAlgTool.h"
 #include "HepMC/GenEvent.h"
 
-/** @class IVertexSmearingTool IVertexSmearingTool.h "IVertexSmearingTool.h"
+/** @class IVertexSmearingTool IVertexSmearingTool.h "Generation/IVertexSmearingTool.h"
  *  
  *  Abstract interface to vertex smearing tools. Concrete implementations 
  *  apply vertex smearing algorithms to each generated pile-up interactions.

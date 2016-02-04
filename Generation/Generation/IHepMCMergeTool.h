@@ -5,7 +5,7 @@
 
 #include "HepMC/GenEvent.h"
 
-/** @class IHepMCMergeTool IHepMCMergeTool.h "IHepMCMergeTool.h"
+/** @class IHepMCMergeTool IHepMCMergeTool.h "Generation/IHepMCMergeTool.h"
  * 
  *  Abstract interface to merge HepMC Events
  *

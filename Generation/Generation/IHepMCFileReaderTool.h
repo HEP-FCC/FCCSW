@@ -7,7 +7,7 @@ namespace HepMC {
   class GenEvent;
 }
 
-/** @class IHepMCFileReaderTool IHepMCFileReaderTool.h "IHepMCFileReaderTool.h"
+/** @class IHepMCFileReaderTool IHepMCFileReaderTool.h "Generation/IHepMCFileReaderTool.h"
  * 
  *  Abstract interface to  read files.
  *
