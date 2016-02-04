@@ -20,20 +20,17 @@
 
 class PoissonPileUp : public GaudiTool, virtual public IPileUpTool {
  public:
-  /// Standard constructor
   PoissonPileUp( const std::string& type , const std::string& name,
                     const IInterface* parent ) ;
   
-  virtual ~PoissonPileUp( ); ///< Destructor
+  virtual ~PoissonPileUp();
 
-  /// Initialize method
   virtual StatusCode initialize( ) ;
   
-  /** Implements IPileUpTool::numberOfPileUp.
-   */
   virtual unsigned int numberOfPileUp( ) ;
-  /** Implements IPileUpTool::printPileUpCounters.
-   */
+
+  virtual double getMeanPileUp();
+
   virtual void printPileUpCounters( ) ;
   
   virtual std::string getFilename();
@@ -41,9 +38,9 @@ class PoissonPileUp : public GaudiTool, virtual public IPileUpTool {
  private:
   /// average number of min bias events to pile on signal event.
   double m_meanPileUpEvents;
+  /// holds last realization of the random variable
   unsigned int m_currentNumPileUpEvents;
   std::string m_filename;
-
 
   Rndm::Numbers m_PoissonDist ; ///< Poisson random number generator
 };

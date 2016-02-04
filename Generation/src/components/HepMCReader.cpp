@@ -33,7 +33,7 @@ HepMCReader::HepMCReader(const std::string& name, ISvcLocator* svcLoc):
 StatusCode HepMCReader::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (!sc.isSuccess()) return sc;
-  if ( 0 < m_pileUpTool->numberOfPileUp() ) {
+  if ( 0 < m_pileUpTool->getMeanPileUp() ) {
     sc = m_pileupFileReader->open(m_pileUpTool->getFilename());
     if (!sc.isSuccess()) return sc;
   }

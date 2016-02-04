@@ -29,6 +29,8 @@ public:
   /** Implements IPileUpTool::numberOfPileUp.
    */
   virtual unsigned int numberOfPileUp( ) ;
+
+  virtual double getMeanPileUp();
   /** Implements IPileUpTool::printPileUpCounters.
    */
   virtual void printPileUpCounters( ) ;

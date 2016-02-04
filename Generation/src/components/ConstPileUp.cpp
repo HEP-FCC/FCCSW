@@ -27,6 +27,10 @@ unsigned int ConstPileUp::numberOfPileUp( ) {
   return m_numPileUpEvents;
 }
 
+double ConstPileUp::getMeanPileUp() {
+  return m_numPileUpEvents;
+}
+
 std::string ConstPileUp::getFilename() {
   return m_filename;
 }

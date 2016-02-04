@@ -41,6 +41,10 @@ unsigned int PoissonPileUp::numberOfPileUp( ) {
   return m_currentNumPileUpEvents;
 }
 
+double PoissonPileUp::getMeanPileUp() {
+  return m_meanPileUpEvents;
+}
+
 void PoissonPileUp::printPileUpCounters () {
   info() << "Current number of pileup events:  " << m_currentNumPileUpEvents << endmsg;
 }
