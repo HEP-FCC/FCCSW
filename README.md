@@ -58,3 +58,7 @@ Test
 
 You should see an HepMC printout.
 
+Documentation
+----
+
+Please consult [this](./doc/README.md)
