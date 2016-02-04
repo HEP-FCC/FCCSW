@@ -43,7 +43,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 1000,
+    EvtMax   = 10,
     ExtSvc = [albersevent],
     #                EventLoop = eventloopmgr,
     #                OutputLevel=DEBUG

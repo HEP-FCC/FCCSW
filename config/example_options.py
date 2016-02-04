@@ -16,7 +16,7 @@ out = AlbersOutput("out")
 
 ApplicationMgr( TopAlg = [reader,dumper,alberswrite,out],
                 EvtSel = 'NONE',
-                EvtMax   = -1,
+                EvtMax   = 1,
                 ExtSvc = [albersevent],
 #                EventLoop = eventloopmgr,
                 OutputLevel=INFO
