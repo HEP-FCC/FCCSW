@@ -50,8 +50,11 @@
 
 /** @class DelphesSimulation
  *
- *  Gaudi algorithm: reads-in HepMC event (from file or memory), calls Dephes and performs Delphes simulation,
- *                   output to Delphes-based root file or FCC-EDM-based root file (recommended!).
+ *  Gaudi algorithm: reads-in HepMC events (from file or memory), calls Dephes interface and performs the Delphes simulation.
+ *                   Data on output saved in Delphes-based root format or in FCC-EDM-based format (standard & recommended!).
+ *                   The data output is defined through an outArray variables (->ImportArray method). If different objects
+ *                   of the same type (e.g. muon) provided by different Delphes module needs to be saved in FCC-EDM, change
+ *                   its name in the code accordingly.
  *
  *  @author: Z. Drasal (CERN), M. de Gruttola (CERN)
  *
@@ -98,29 +101,31 @@ private:
   DataHandle<fcc::GenVertexCollection>  m_handleGenVertices;     // Handle to vertices of generated particles
   DataHandle<fcc::ParticleCollection>   m_handleRecMuons;        // Reconstructed muons
   DataHandle<fcc::ParticleCollection>   m_handleRecElectrons;    // Reconstructed electrons
-  //DataHandle<fcc::ParticleCollection>   m_handleRecCharged;      // Reconstructed charged hadrons
+  DataHandle<fcc::ParticleCollection>   m_handleRecCharged;      // Reconstructed charged hadrons
+  DataHandle<fcc::ParticleCollection>   m_handleRecNeutral;      // Reconstructed neutral hadrons
   DataHandle<fcc::ParticleCollection>   m_handleRecPhotons;      // Reconstructed photons
   DataHandle<fcc::JetCollection>        m_handleRecJets;         // Reconstructed jets
   DataHandle<fcc::METCollection>        m_handleRecMETs;         // MET
 
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecMuonsToMC;     // Relation between muons & MC particle
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecElectronsToMC; // Relation between electrons & MC particle
-  //DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecChargedToMC;   // Relation between charged hadrons & MC particle
+  DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecChargedToMC;   // Relation between charged hadrons & MC particle
+  DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecNeutralToMC;   // Relation between neutral hadrons & MC particle
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecPhotonsToMC;   // Relation between photons & MC particle
   //DataHandle<fcc::JetParticleAssociationCollection>         m_handleRecJetsToPart;    // Relation between jets & particle
 
   // Convert internal Delphes objects to FCC EDM objects - UPDATE
-  void ConvertMCParticles(const TObjArray* Input, fcc::MCParticleCollection* colMCParticles,
-                                                  fcc::GenVertexCollection* colGenVertices);
-  void ConvertParticles(const TObjArray*  Input, fcc::ParticleCollection*   colParticles,
-                                                 fcc::MCParticleCollection* colMCParticles,
-                                                 fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
-  void ConvertPhotons(const TObjArray* Input, fcc::ParticleCollection*   colParticles,
-                                              fcc::MCParticleCollection* colMCParticles,
-                                              fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
-  void ConvertJets(const TObjArray* Input, fcc::JetCollection* colJets);
-  void ConvertMET(const TObjArray* Input, fcc::METCollection * colMET);
-  //void  ConvertHT(TObjArray * Input, ParticleCollection * coll );
+  void ConvertMCParticles(const TObjArray* Input,    fcc::MCParticleCollection* colMCParticles,
+                                                     fcc::GenVertexCollection* colGenVertices);
+  void ConvertTracks(     const TObjArray* Input,    fcc::ParticleCollection*   colParticles,
+                                                     fcc::MCParticleCollection* colMCParticles,
+                                                     fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
+  void ConvertTowers(     const TObjArray* Input,    fcc::ParticleCollection*   colParticles,
+                                                     fcc::MCParticleCollection* colMCParticles,
+                                                     fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
+  void ConvertJets(       const TObjArray* Input   , fcc::JetCollection* colJets);
+  void ConvertMET(        const TObjArray* InputMET,
+                          const TObjArray* InputSHT, fcc::METCollection* colMET);
 
   int m_eventCounter;
 
@@ -133,15 +138,16 @@ private:
 
   // Internal Delphes object arrays
   TObjArray *m_stablePartOutArray,
-            *m_allPartOutArray ,
-            *m_partonOutArray ,
-            *m_muonOutArray ,
-            *m_electronOutArray ,
-            *m_chargedOutArray ,
-            *m_photonOutArray ,
-            *m_jetOutArray ,
-            *m_metOutArray ,
-            *m_htOutArray ;
+            *m_allPartOutArray,
+            *m_partonOutArray,
+            *m_muonOutArray,
+            *m_electronOutArray,
+            *m_chargedOutArray,
+            *m_neutralOutArray,
+            *m_photonOutArray,
+            *m_jetOutArray,
+            *m_metOutArray,
+            *m_shtOutArray;
 
 };
 
