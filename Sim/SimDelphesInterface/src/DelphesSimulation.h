@@ -8,8 +8,8 @@
 //#include "datamodel/GenJetCollection.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
-#include "datamodel/JetCollection.h"
-#include "datamodel/JetParticleAssociationCollection.h"
+#include "datamodel/GenJetCollection.h"
+#include "datamodel/GenJetParticleAssociationCollection.h"
 #include "datamodel/METCollection.h"
 
 #include "TFile.h"
@@ -104,7 +104,7 @@ private:
   DataHandle<fcc::ParticleCollection>   m_handleRecCharged;      // Reconstructed charged hadrons
   DataHandle<fcc::ParticleCollection>   m_handleRecNeutral;      // Reconstructed neutral hadrons
   DataHandle<fcc::ParticleCollection>   m_handleRecPhotons;      // Reconstructed photons
-  DataHandle<fcc::JetCollection>        m_handleRecJets;         // Reconstructed jets
+  DataHandle<fcc::GenJetCollection>     m_handleRecJets;         // Reconstructed jets - used GenJet class due to needed MCParticle relation
   DataHandle<fcc::METCollection>        m_handleRecMETs;         // MET
 
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecMuonsToMC;     // Relation between muons & MC particle
@@ -112,18 +112,20 @@ private:
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecChargedToMC;   // Relation between charged hadrons & MC particle
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecNeutralToMC;   // Relation between neutral hadrons & MC particle
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecPhotonsToMC;   // Relation between photons & MC particle
-  //DataHandle<fcc::JetParticleAssociationCollection>         m_handleRecJetsToPart;    // Relation between jets & particle
+  DataHandle<fcc::GenJetParticleAssociationCollection>      m_handleRecJetsToMC;      // Relation between jets & MC particle
 
   // Convert internal Delphes objects to FCC EDM objects - UPDATE
   void ConvertMCParticles(const TObjArray* Input,    fcc::MCParticleCollection* colMCParticles,
-                                                     fcc::GenVertexCollection* colGenVertices);
+                                                     fcc::GenVertexCollection*  colGenVertices);
   void ConvertTracks(     const TObjArray* Input,    fcc::ParticleCollection*   colParticles,
                                                      fcc::MCParticleCollection* colMCParticles,
                                                      fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
   void ConvertTowers(     const TObjArray* Input,    fcc::ParticleCollection*   colParticles,
                                                      fcc::MCParticleCollection* colMCParticles,
                                                      fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC);
-  void ConvertJets(       const TObjArray* Input   , fcc::JetCollection* colJets);
+  void ConvertJets(       const TObjArray* Input   , fcc::GenJetCollection*     colJets,
+                                                     fcc::MCParticleCollection* colMCParticles,
+                                                     fcc::GenJetParticleAssociationCollection* ascColJetsToMC);
   void ConvertMET(        const TObjArray* InputMET,
                           const TObjArray* InputSHT, fcc::METCollection* colMET);
 

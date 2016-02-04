@@ -39,7 +39,7 @@ from Configurables import ApplicationMgr, FCCDataSvc
 ############################################################
 
 ## N-events
-nEvents=1
+nEvents=100
 
 ## Define either pythia configuration file to generate events
 #pythiaConfFile="config/Pythia_standard.cmd"
@@ -82,14 +82,20 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                OutputLevel=DEBUG)
 delphessim.DataInputs.hepmc.Path               = "hepmc"
 delphessim.DataOutputs.genParticles.Path       = "genParticles"
+delphessim.DataOutputs.genVertices.Path        = "genVertices"
 delphessim.DataOutputs.recMuons.Path           = "recMuons"
 delphessim.DataOutputs.recElectrons.Path       = "recElectrons"
+delphessim.DataOutputs.recCharged.Path         = "recCharged"
+delphessim.DataOutputs.recNeutral.Path         = "recNeutral"
 delphessim.DataOutputs.recPhotons.Path         = "recPhotons"
 delphessim.DataOutputs.recJets.Path            = "recJets"
 delphessim.DataOutputs.recMETs.Path            = "recMETs"
 delphessim.DataOutputs.recMuonsToMC.Path       = "recMuonsToMC"
 delphessim.DataOutputs.recElectronsToMC.Path   = "recElectronsToMC"
+delphessim.DataOutputs.recChargedToMC.Path     = "recChargedToMC"
+delphessim.DataOutputs.recNeutralToMC.Path     = "recNeutralToMC"
 delphessim.DataOutputs.recPhotonsToMC.Path     = "recPhotonsToMC"
+delphessim.DataOutputs.recJetsToMC.Path        = "recJetsToMC" 
 
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioWrite, PodioOutput
@@ -97,7 +103,8 @@ from Configurables import PodioWrite, PodioOutput
 out = PodioOutput("out",OutputLevel=DEBUG)
 out.filename       = "FCCDelphesOutput.root"
 out.outputCommands = ["drop *",
-                      "keep genParticles"]
+                      "keep genParticles",
+                      "keep genVertices"]
 #out.outputCommands = ["keep *"]
 
 ############################################################

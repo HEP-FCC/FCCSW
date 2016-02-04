@@ -44,7 +44,7 @@ GaudiAlgorithm(name, svcLoc) ,
    declareOutput("recChargedToMC"    , m_handleRecChargedToMC);
    declareOutput("recNeutralToMC"    , m_handleRecNeutralToMC);
    declareOutput("recPhotonsToMC"    , m_handleRecPhotonsToMC);
-   //declareOutput("recJetsToPart"     , m_handleRecJetsToPart);
+   declareOutput("recJetsToMC"       , m_handleRecJetsToMC);
 
 
    m_stablePartOutArray = nullptr;
@@ -264,7 +264,7 @@ StatusCode DelphesSimulation::execute() {
   auto recCharged       = new fcc::ParticleCollection();
   auto recNeutral       = new fcc::ParticleCollection();
   auto recPhotons       = new fcc::ParticleCollection();
-  auto recJets          = new fcc::JetCollection();
+  auto recJets          = new fcc::GenJetCollection();
   auto recMETs          = new fcc::METCollection();
 
   auto recMuonsToMC     = new fcc::ParticleMCParticleAssociationCollection();
@@ -272,7 +272,7 @@ StatusCode DelphesSimulation::execute() {
   auto recChargedToMC   = new fcc::ParticleMCParticleAssociationCollection();
   auto recNeutralToMC   = new fcc::ParticleMCParticleAssociationCollection();
   auto recPhotonsToMC   = new fcc::ParticleMCParticleAssociationCollection();
-  //auto recJetsToPart    = new fcc::JetParticleAssociationCollection();
+  auto recJetsToMC      = new fcc::GenJetParticleAssociationCollection();
 
   // Fill FCC collections
   m_muonOutArray     = m_Delphes->ImportArray("MuonMomentumSmearing/muons"); //m_muonOutArray     = m_Delphes->ImportArray("MuonIsolation/muons");
@@ -290,7 +290,7 @@ StatusCode DelphesSimulation::execute() {
   DelphesSimulation::ConvertTracks(     m_chargedOutArray , recCharged   , genParticles, recChargedToMC  );
   DelphesSimulation::ConvertTowers(     m_neutralOutArray , recNeutral   , genParticles, recNeutralToMC  );
   DelphesSimulation::ConvertTowers(     m_photonOutArray  , recPhotons   , genParticles, recPhotonsToMC  );
-//  DelphesSimulation::ConvertJets(       m_jetOutArray     , recJets);
+  DelphesSimulation::ConvertJets(       m_jetOutArray     , recJets      , genParticles, recJetsToMC     );
   DelphesSimulation::ConvertMET(        m_metOutArray     , m_shtOutArray, recMETs);
 
   // Save FCC-EDM collections to FCCSw data store
@@ -307,7 +307,7 @@ StatusCode DelphesSimulation::execute() {
   m_handleRecPhotons.put(recPhotons);
   m_handleRecPhotonsToMC.put(recPhotonsToMC);
   m_handleRecJets.put(recJets);
-  //m_handleRecJetsToPart.put(recJetsToPart);
+  m_handleRecJetsToMC.put(recJetsToMC);
   m_handleRecMETs.put(recMETs);
 
   // Initialize for next event reading (Will also zero Delphes arrays)
@@ -539,7 +539,7 @@ void DelphesSimulation::ConvertTracks(const TObjArray*  Input,
               << " Vy: "       << setw(10) << particle.Core().Vertex.Y
               << " Vz: "       << setw(10) << particle.Core().Vertex.Z
               << " RefId: "    << setw(3)  << idRefMCPart+1
-              << " Rel E: "    << setw(10) << simE << " " << recE;
+              << " Rel E: "    << setw(10) << simE << " <-> " << recE;
     std::cout << std::endl;*/
   }
 }
@@ -618,7 +618,7 @@ void DelphesSimulation::ConvertTowers(const TObjArray*  Input,
                                relation.Sim().Core().P4.Pz*relation.Sim().Core().P4.Pz +
                                relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
           std::cout << " RefId: "    << setw(3)  << idRefMCPart+1
-                    << " Rel E: "    << setw(10) << simE << " " << recE;
+                    << " Rel E: "    << setw(10) << simE << " <-> " << recE;
           if (colMCParticles->at(idRefMCPart).Core().Type ==22) std::cout << " Gamma";
           if (colMCParticles->at(idRefMCPart).Core().Charge==0) std::cout << " Neutral";*/
 
@@ -630,27 +630,115 @@ void DelphesSimulation::ConvertTowers(const TObjArray*  Input,
     }
     // Test print
     /*std::cout << std::endl;*/
+
+    if (barePart!=nullptr) delete barePart;
   }
 }
 
-void DelphesSimulation::ConvertJets(const TObjArray* Input, fcc::JetCollection* colJets)
+void DelphesSimulation::ConvertJets(const TObjArray* Input,
+                                    fcc::GenJetCollection*     colJets,
+                                    fcc::MCParticleCollection* colMCParticles,
+                                    fcc::GenJetParticleAssociationCollection* ascColJetsToMC)
 {
-  Jet* cand = nullptr;
+  Candidate* cand = nullptr;
   for(int j = 0; j < Input->GetEntries(); ++j) {
       
-    cand = static_cast<Jet *>(Input->At(j));
+    cand = static_cast<Candidate *>(Input->At(j));
 
-    auto jet = colJets->create();
+    auto jet      = colJets->create();
+    auto relation = ascColJetsToMC->create();
 
     auto bareJet      = new fcc::BareJet();
     bareJet->Area     = -1;
-    bareJet->P4.Px    = (double) cand->P4().X();
-    bareJet->P4.Py    = (double) cand->P4().Y();
-    bareJet->P4.Pz    = (double) cand->P4().Z();
-    bareJet->P4.Mass  = (double) cand->Mass ;
-
+    bareJet->P4.Px    = cand->Momentum.Px();
+    bareJet->P4.Py    = cand->Momentum.Py();
+    bareJet->P4.Pz    = cand->Momentum.Pz();
+    bareJet->P4.Mass  = cand->Mass;
     jet.Core(*bareJet);
-    delete bareJet;
+
+    // Test print
+    /*double energy = sqrt(jet.Core().P4.Px*jet.Core().P4.Px +
+                         jet.Core().P4.Py*jet.Core().P4.Py +
+                         jet.Core().P4.Pz*jet.Core().P4.Pz +
+                         jet.Core().P4.Mass*jet.Core().P4.Mass);
+    std::cout << "Delphes Jet: "
+              << " Id: "       << setw(3)  << j+1
+              << " Px: "       << setw(10) << jet.Core().P4.Px
+              << " Py: "       << setw(10) << jet.Core().P4.Py
+              << " Pz: "       << setw(10) << jet.Core().P4.Pz
+              << " E: "        << setw(10) << energy
+              << " M: "        << setw(10) << jet.Core().P4.Mass << std::endl;*/
+
+    // Reference to MC - Delphes holds references to all objects related to the Jet object,
+    // several relations might exist -> find "recursively" in a tree history a MC particle
+    std::set<int> idRefMCPart; // Avoid double counting when referencingh MC particles
+
+    Candidate* refCand  = nullptr;
+    Candidate* ref2Cand = nullptr;
+    Candidate* ref3Cand = nullptr;
+    Candidate* ref4Cand = nullptr;
+
+    TIter it1(cand->GetCandidates());
+    it1.Reset();
+    while((refCand = static_cast<Candidate*>(it1.Next()))) {
+
+      TIter it2(refCand->GetCandidates());
+      it2.Reset();
+      while((ref2Cand = static_cast<Candidate*>(it2.Next()))) {
+
+        int id = ref2Cand->GetUniqueID()-1;
+        if (id<colMCParticles->size()) idRefMCPart.insert(id);
+        else {
+
+          TIter it3(ref2Cand->GetCandidates());
+          it3.Reset();
+          while((ref3Cand = static_cast<Candidate*>(it3.Next()))) {
+
+            int id = ref3Cand->GetUniqueID()-1;
+            if (id<colMCParticles->size()) idRefMCPart.insert(id);
+            else {
+
+              TIter it4(ref3Cand->GetCandidates());
+              it4.Reset();
+              while((ref4Cand = static_cast<Candidate*>(it4.Next()))) {
+
+                int id = ref4Cand->GetUniqueID()-1;
+                if (id<colMCParticles->size()) idRefMCPart.insert(id);
+                else {
+
+                  std::cout << "WARNING: Can't build one of the relations from Jet to MC particle!" << std::endl;
+                }
+              } // Iter4
+            }
+          } // Iter3
+        }
+      } // Iter2
+    } // Iter1
+
+    double totSimE = 0;
+    for (auto id : idRefMCPart) {
+
+      auto relation = ascColJetsToMC->create();
+      relation.Jet(jet);
+      relation.Particle(colMCParticles->at(id));
+
+      // Test print
+      /*double recE   = sqrt(relation.Jet().Core().P4.Px*relation.Jet().Core().P4.Px +
+                           relation.Jet().Core().P4.Py*relation.Jet().Core().P4.Py +
+                           relation.Jet().Core().P4.Pz*relation.Jet().Core().P4.Pz +
+                           relation.Jet().Core().P4.Mass*relation.Jet().Core().P4.Mass);
+      double simE   = sqrt(relation.Particle().Core().P4.Px*relation.Particle().Core().P4.Px +
+                           relation.Particle().Core().P4.Py*relation.Particle().Core().P4.Py +
+                           relation.Particle().Core().P4.Pz*relation.Particle().Core().P4.Pz +
+                           relation.Particle().Core().P4.Mass*relation.Particle().Core().P4.Mass);
+      totSimE += simE;
+      std::cout << " RefId: "    << setw(3)  << id
+                << " Rel E: "    << setw(10) << totSimE << " " << simE << " <-> " << recE << std::endl;*/
+    }
+    // Test print
+    /*std::cout << std::endl;*/
+
+    if (bareJet!=nullptr) delete bareJet;
   }
 }   
 
