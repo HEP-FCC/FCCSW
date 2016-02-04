@@ -11,7 +11,7 @@
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
-#include "datamodel/ParticleMCAssociationCollection.h"
+#include "datamodel/ParticleMCParticleAssociationCollection.h"
 
 
 class Analyse: public GaudiAlgorithm {
@@ -28,13 +28,13 @@ public:
    enum SimType { FULL, FAST };
 private:
    /// Handle for the EDM MC vertices to be read
-   DataHandle<GenVertexCollection> m_genvhandle;
+   DataHandle<fcc::GenVertexCollection> m_genvhandle;
    /// Handle for the EDM MC particles to be read
-   DataHandle<MCParticleCollection> m_genphandle;
+   DataHandle<fcc::MCParticleCollection> m_genphandle;
    /// Handle for the particles to be written
-   DataHandle<ParticleCollection> m_recphandle;
+   DataHandle<fcc::ParticleCollection> m_recphandle;
    /// Handle for the associations between particles and MC particles to be written
-   DataHandle<ParticleMCAssociationCollection> m_partassociationhandle;
+   DataHandle<fcc::ParticleMCParticleAssociationCollection> m_partassociationhandle;
    /// Pointer to the interface of geometry service
 };
 

@@ -1,9 +1,9 @@
 #ifndef FWCORE_FCCDATASVC_H
 #define FWCORE_FCCDATASVC_H
 
-#include "FWCore/AlbersDataSvc.h"
+#include "FWCore/PodioDataSvc.h"
 
-class FCCDataSvc  : public AlbersDataSvc   {
+class FCCDataSvc  : public PodioDataSvc   {
   friend class SvcFactory<FCCDataSvc>;
 
  public:

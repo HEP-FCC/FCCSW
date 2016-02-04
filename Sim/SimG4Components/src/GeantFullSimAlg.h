@@ -9,12 +9,14 @@
 class IGeantSvc;
 
 // albers
+namespace fcc {
 class MCParticleCollection;
 class TrackClusterCollection;
 class TrackHitCollection;
 class TrackClusterHitsAssociationCollection;
 class CaloClusterCollection;
 class CaloHitCollection;
+}
 
 // Geant
 class G4Event;
@@ -37,17 +39,17 @@ private:
   /// Save tracker hits.
   void saveTrackerHits(const G4Event&);
   /// Handle for the EDM MC particles to be read
-  DataHandle<MCParticleCollection> m_genParticles;
+  DataHandle<fcc::MCParticleCollection> m_genParticles;
   /// Handle for tracker clusters
-  DataHandle<TrackClusterCollection> m_trackClusters;
+  DataHandle<fcc::TrackClusterCollection> m_trackClusters;
   /// Handle for tracker hits
-  DataHandle<TrackHitCollection> m_trackHits;
+  DataHandle<fcc::TrackHitCollection> m_trackHits;
   /// Handle for tracker hits-clusters associations
-  DataHandle<TrackClusterHitsAssociationCollection> m_trackHitsClusters;
+  DataHandle<fcc::TrackClusterHitsAssociationCollection> m_trackHitsClusters;
   /// Handle for hadron calo clusters
-  DataHandle<CaloClusterCollection> m_caloClusters;
+  DataHandle<fcc::CaloClusterCollection> m_caloClusters;
   /// Handle for hadron calo hits
-  DataHandle<CaloHitCollection> m_caloHits;
+  DataHandle<fcc::CaloHitCollection> m_caloHits;
   /// Pointer to the interface of Geant Simulation service
   SmartIF<IGeantSvc> m_geantSvc;
 };

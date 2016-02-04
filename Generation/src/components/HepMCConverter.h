@@ -3,11 +3,16 @@
 
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-
-#include "datamodel/MCParticleCollection.h"
 #include "FWCore/DataHandle.h"
 
-#include "HepMC/GenEvent.h"
+namespace fcc {
+class MCParticleCollection;
+class GenVertexCollection;
+}
+
+namespace HepMC {
+class GenEvent;
+}
 
 class HepMCConverter: public GaudiAlgorithm {
   friend class AlgFactory<HepMCConverter> ;
@@ -25,9 +30,9 @@ private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle;
   /// Handle for the genparticles to be written
-  DataHandle<MCParticleCollection> m_genphandle;
+  DataHandle<fcc::MCParticleCollection> m_genphandle;
   /// Handle for the genvertices to be written
-  DataHandle<GenVertexCollection> m_genvhandle;
+  DataHandle<fcc::GenVertexCollection> m_genvhandle;
 };
 
 #endif

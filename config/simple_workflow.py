@@ -1,8 +1,8 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, FCCDataSvc, AlbersWrite, AlbersOutput
+from Configurables import ApplicationMgr, FCCDataSvc, PodioWrite, PodioOutput
 
-albersevent   = FCCDataSvc("EventDataSvc")
+podioevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
@@ -28,7 +28,7 @@ hepmc_converter.DataInputs.hepmc.Path="hepmc"
 hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
 hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 
-from Configurables import JetClustering_MCParticleCollection_GenJetCollection_GenJetParticleAssociationCollection_ as JetClustering
+from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_fcc__GenJetParticleAssociationCollection_ as JetClustering
 genjet_clustering = JetClustering(
     "GenJetClustering",
     verbose = False
@@ -38,7 +38,7 @@ genjet_clustering.DataInputs.particles.Path='all_genparticles'
 genjet_clustering.DataOutputs.jets.Path='genjets'
 genjet_clustering.DataOutputs.constituents.Path='genjets_particles'
 
-out = AlbersOutput("out",
+out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
@@ -48,9 +48,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 1,
-    ExtSvc = [albersevent],
-    #                EventLoop = eventloopmgr,
-    #                OutputLevel=DEBUG
+    EvtMax   = 10,
+    ExtSvc = [podioevent],
  )
 

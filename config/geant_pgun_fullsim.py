@@ -1,10 +1,16 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
+from Configurables import ApplicationMgr, HepMCDumper, FCCDataSvc
 
 podioevent = FCCDataSvc("EventDataSvc")
 
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+# reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+# reader.DataOutputs.hepmc.Path = "hepmc"
+from Configurables import ParticleGunAlg, MomentumRangeParticleGun, FlatSmearVertex#, Gaudi__ParticlePropertySvc
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool="MomentumRangeParticleGun", VertexSmearingTool="FlatSmearVertex")
+gen.DataOutputs.hepmc.Path = "hepmc"
+
+from Configurables import Gaudi__ParticlePropertySvc
+ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="/afs/cern.ch/lhcb/software/releases/GAUDI/GAUDI_v26r4/GaudiExamples/tests/data/ParticleTable.txt")
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
@@ -13,7 +19,7 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
+geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestHCal.xml',
                     OutputLevel = DEBUG)
 
 from Configurables import GeantSvc
@@ -33,9 +39,9 @@ out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [podioevent, geoservice, geantservice], # order! geo needed by geant
+                ExtSvc = [podioevent, geoservice, geantservice, ppservice], # order! geo needed by geant
                 OutputLevel=DEBUG
  )
