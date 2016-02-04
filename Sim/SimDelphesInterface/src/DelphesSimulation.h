@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/GenJetCollection.h"
-#include "datamodel/MissingEnergyCollection.h"
+#include "datamodel/METCollection.h"
 #include "datamodel/MCParticleCollection.h"
 #include "TFile.h"
 #include "FWCore/DataHandle.h"
