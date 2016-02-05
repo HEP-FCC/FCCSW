@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/GenJetCollection.h"
-#include "datamodel/MissingEnergyCollection.h"
+#include "datamodel/METCollection.h"
 #include "datamodel/MCParticleCollection.h"
 #include "TFile.h"
 #include "FWCore/DataHandle.h"
@@ -71,10 +71,10 @@ public:
   virtual StatusCode finalize();
 
   // Convert internal Delphes objects to FCC EDM objects - UPDATE
-  void  ConvertParticle(TObjArray *  Input, ParticleCollection * coll );
-  void  ConvertJet(     TObjArray *  Input, GenJetCollection   * coll );
-  void  ConvertMET(     TObjArray *  Input, ParticleCollection * coll );
-  void  ConvertHT(      TObjArray *  Input, ParticleCollection * coll );
+  void  ConvertParticle(TObjArray *  Input, fcc::ParticleCollection * coll );
+  void  ConvertJet(     TObjArray *  Input, fcc::GenJetCollection   * coll );
+  void  ConvertMET(     TObjArray *  Input, fcc::ParticleCollection * coll );
+  void  ConvertHT(      TObjArray *  Input, fcc::ParticleCollection * coll );
 
 private:
 
@@ -100,15 +100,15 @@ private:
   Long64_t     m_inHepMCFileLength;
 
   // Handle for the "reconstructed" objects to be written out
-  DataHandle<ParticleCollection> m_allPartclsHandle; // All particles
-  DataHandle<ParticleCollection> m_genPartonsHandle; // Partons
-  DataHandle<ParticleCollection> m_genStablesHandle; // Stable particles
-  DataHandle<ParticleCollection> m_recMuonHandle;    // Muons
-  DataHandle<ParticleCollection> m_recElecHandle;    // Electrons
-  DataHandle<ParticleCollection> m_recPhotHandle;    // Photons
-  DataHandle<GenJetCollection>   m_recJetsHandle;    // Jets
-  DataHandle<ParticleCollection> m_recMETHandle;     // MET
-  DataHandle<ParticleCollection> m_recHTSHandle;     // Scalar HT
+  DataHandle<fcc::ParticleCollection> m_allPartclsHandle; // All particles
+  DataHandle<fcc::ParticleCollection> m_genPartonsHandle; // Partons
+  DataHandle<fcc::ParticleCollection> m_genStablesHandle; // Stable particles
+  DataHandle<fcc::ParticleCollection> m_recMuonHandle;    // Muons
+  DataHandle<fcc::ParticleCollection> m_recElecHandle;    // Electrons
+  DataHandle<fcc::ParticleCollection> m_recPhotHandle;    // Photons
+  DataHandle<fcc::GenJetCollection>   m_recJetsHandle;    // Jets
+  DataHandle<fcc::ParticleCollection> m_recMETHandle;     // MET
+  DataHandle<fcc::ParticleCollection> m_recHTSHandle;     // Scalar HT
 
   int m_eventCounter;
 

@@ -19,9 +19,9 @@ public:
   virtual StatusCode finalize();
 private:
   /// Handle for the ParticleCollection to be read
-  DataHandle<MCParticleCollection> m_igenphandle;
+  DataHandle<fcc::MCParticleCollection> m_igenphandle;
   /// Handle for the genparticles to be written
-  DataHandle<MCParticleCollection> m_ogenphandle;
+  DataHandle<fcc::MCParticleCollection> m_ogenphandle;
 };
 
 #endif
