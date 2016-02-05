@@ -11,7 +11,6 @@
 #include "datamodel/GenJetCollection.h"
 #include "datamodel/GenJetParticleAssociationCollection.h"
 #include "datamodel/METCollection.h"
-
 #include "TFile.h"
 #include "FWCore/DataHandle.h"
 #include "HepMC/GenEvent.h"
