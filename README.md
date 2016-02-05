@@ -61,4 +61,4 @@ You should see an HepMC printout.
 Documentation
 ----
 
-Please consult [this](./doc/README.md)
+Please consult [doc/README.md](./doc/README.md)
