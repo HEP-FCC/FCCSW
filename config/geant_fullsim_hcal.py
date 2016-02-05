@@ -16,7 +16,8 @@ from Configurables import GeantSvc
 geantservice = GeantSvc("GeantSvc", config="GeantFullSimConfig", detector="DD4hepDetector")
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestHCal.xml',
+geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/FCChh_DectMaster.xml',
+                                         'file:DetectorDescription/Detectors/compact/FCChh_HCalBarrel.xml' ],
                     OutputLevel = DEBUG)
 
 from Configurables import GeantFullSimAlg
