@@ -39,13 +39,13 @@ private:
   /// Handle for particle-jet associations to be produced
   DataHandle<A> m_assocs;
 
-  /// Name for the jet algorithm to be used 
-  std::string m_jetAlgorithm; 
+  /// Name for the jet algorithm to be used
+  std::string m_jetAlgorithm;
   fastjet::JetAlgorithm m_fj_jetAlgorithm;
 
-  /// Cone radius. COLIN: not sure how it's interpreted 
+  /// Cone radius. COLIN: not sure how it's interpreted
   /// depending on the algorithm... should be described here
-  float m_R; 
+  float m_R;
 
   /// Recombination scheme name
   std::string m_recombinationScheme;
@@ -57,23 +57,23 @@ private:
   /// if not, for the reconstruction of m_njets jets.
   bool m_inclusiveJets; ///< use inclusive or exclusive jets
 
-  /// pT threshold for inclusive jets 
-  float m_ptMin; 
+  /// pT threshold for inclusive jets
+  float m_ptMin;
 
-  /// distance threshold for exclusive jets 
+  /// distance threshold for exclusive jets
   float m_dcut;
 
-  /// number of jets for exclusive jets 
-  int m_njets; 
+  /// number of jets for exclusive jets
+  int m_njets;
 
   /// name of the area calculation method
-  std::string m_areaTypeName; 
-  
+  std::string m_areaTypeName;
+
   /// type of area calculation
   fastjet::AreaType m_areaType;
 
   /// verbosity flag
-  bool m_verbose; 
+  bool m_verbose;
 };
 
 
@@ -134,7 +134,7 @@ template<class P, class J, class A>
   }
   else if (m_areaTypeName == "passive") {
     m_areaType = fastjet::passive_area;
-  } 
+  }
   else {
     m_areaType = fastjet::invalid_area;
   }
@@ -173,17 +173,17 @@ template< class P, class J, class A>
   unsigned index = 0;
   for (auto it = particles->begin(); it != particles->end(); ++it) {
     auto ptchandle = *it;
-    const BareParticle& ptc = ptchandle.read().Core;
-    TLorentzVector p4; 
-    p4.SetXYZM(ptc.P4.Px, ptc.P4.Py, 
+    auto& ptc = ptchandle.Core();
+    TLorentzVector p4;
+    p4.SetXYZM(ptc.P4.Px, ptc.P4.Py,
                     ptc.P4.Pz, ptc.P4.Mass);
     //TODO apply some filtering if required
     input.emplace_back(p4.Px(), p4.Py(), p4.Pz(), p4.E());
     input.back().set_user_index(index);
     ++index;
   }
-  
-  fastjet::ClusterSequence* cs; 
+
+  fastjet::ClusterSequence* cs;
 
   fastjet::JetDefinition def(m_fj_jetAlgorithm, m_R, m_fj_recombinationScheme);
   if(m_areaType != fastjet::invalid_area) {
@@ -210,27 +210,27 @@ template< class P, class J, class A>
     if(m_verbose)
       std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
     auto jet = jets->create();
-    BareJet& core = jet.mod().Core; 
+    auto& core = jet.Core();
     core.P4.Px = pjet.px();
     core.P4.Py = pjet.py();
     core.P4.Pz = pjet.pz();
     core.P4.Mass = pjet.m();
     if(pjet.has_area())
       core.Area = pjet.area();
-    else 
+    else
       core.Area = -1;
     const std::vector<fastjet::PseudoJet>& constituents = pjet.constituents();
     for(const auto& constit : constituents) {
-      if(m_verbose) 
+      if(m_verbose)
 	std::cout<<"\t"<<constit.user_index()<<std::endl;
       auto assoc = assocs->create();
-      assoc.mod().Jet = jet;
-      assoc.mod().Particle = particles->get(constit.user_index());
+      assoc.Jet(jet);
+      assoc.Particle(particles->at(constit.user_index()));
     }
   }
   m_jets.put(jets);
   m_assocs.put(assocs);
-  
+
   delete cs;
   return StatusCode::SUCCESS;
 }

@@ -1,4 +1,4 @@
-set(searchpath ${FCCEDM_DIR} ${ALBERS_DIR}  )
+set(searchpath ${FCCEDM_DIR} ${PODIO_DIR}  )
 
 # first find the FCC EDM
 find_library(FCCEDM_LIBRARY

@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><meta name="robots" content="noindex">
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+<link rel="icon" type="image/jpg" href="http://cern.ch/gaudi/images/gaudisf.jpg">
+<link rel="stylesheet" href="http://cern.ch/gaudi/css/gaudi.css" type="text/css" media="screen">
+<style type="text/css">
+/** Special overrides to simplify coexistence of doxygen.css, tabs.css and gaudi.css **/
+
+/* Fit the search box in the space allocated for the tabs */ 
+DIV.tabs TD
+{
+  font-size        : x-small;
+  font-weight      : bold;
+  text-decoration  : none;
+  border-width: 0;
+  background-color: #FEFFF1;  
+  margin: 0; padding: 0;
+  font-family: "Arial",sans-serif;
+}
+
+/* Fix styles for links in the body of the page */
+.contents A:link    { color: #68228B ; } 
+.contents A:visited { color: #68228B ; }
+.contents A:hover   { color: #EE7600 ; background: none; }
+.contents A:active  { color: lime    ; }
+
+/* Fix style for links in the title */
+.ctitle A:hover { background: none; }
+
+/* Fix size of the title */
+.ctitle H1 { font-size: xx-large; }
+
+.contents TD { 
+  border-width: 0;
+  padding: 0;
+  border-style: none;
+  background-color: #FEFFF1;
+}
+
+.navigation A:hover   { color: #EE7600 ; background: none; }
+
+.memproto TABLE {
+  background-color: #d5e1e8;
+  -moz-border-radius: 8px;
+}
+
+.memproto TD { 
+  border-width: 0;
+  padding: 0px 3px 0px 3px;
+  border-style: none;
+  background-color: #d5e1e8;
+  -moz-border-radius: 8px;
+}
+
+TD.mdescLeft {
+	padding: 0px 8px 4px 8px;
+	font-size: 80%;
+	font-style: italic;
+	background-color: #FAFAFA;
+	border-top: 1px none #E0E0E0;
+	border-right: 1px none #E0E0E0;
+	border-bottom: 1px none #E0E0E0;
+	border-left: 1px none #E0E0E0;
+	margin: 0px;
+}
+TD.mdescRight {
+        padding: 0px 8px 4px 8px;
+	font-size: 80%;
+	font-style: italic;
+	background-color: #FAFAFA;
+	border-top: 1px none #E0E0E0;
+	border-right: 1px none #E0E0E0;
+	border-bottom: 1px none #E0E0E0;
+	border-left: 1px none #E0E0E0;
+	margin: 0px;
+}
+TD.memItemLeft  {
+	padding: 1px 0px 0px 8px;
+	margin: 4px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #E0E0E0;
+	border-right-color: #E0E0E0;
+	border-bottom-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #FAFAFA;
+	font-size: 80%;
+}
+TD.memItemRight {
+	padding: 1px 8px 0px 8px;
+	margin: 4px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #E0E0E0;
+	border-right-color: #E0E0E0;
+	border-bottom-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #FAFAFA;
+	font-size: 80%;
+}
+TD.memTemplItemLeft {
+	padding: 1px 0px 0px 8px;
+	margin: 4px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #E0E0E0;
+	border-right-color: #E0E0E0;
+	border-bottom-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #FAFAFA;
+	font-size: 80%;
+}
+TD.memTemplItemRight {
+	padding: 1px 8px 0px 8px;
+	margin: 4px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #E0E0E0;
+	border-right-color: #E0E0E0;
+	border-bottom-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #FAFAFA;
+	font-size: 80%;
+}
+TD.memTemplParams {
+	padding: 1px 0px 0px 8px;
+	margin: 4px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #E0E0E0;
+	border-right-color: #E0E0E0;
+	border-bottom-color: #E0E0E0;
+	border-left-color: #E0E0E0;
+	border-top-style: solid;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	color: #606060;
+	background-color: #FAFAFA;
+	font-size: 80%;
+}
+
+TD.indexkey {
+	background-color: #e8eef2;
+	font-weight: bold;
+	padding-right  : 10px;
+	padding-top    : 2px;
+	padding-left   : 10px;
+	padding-bottom : 2px;
+	margin-left    : 0px;
+	margin-right   : 0px;
+	margin-top     : 2px;
+	margin-bottom  : 2px;
+	border: 1px solid #CCCCCC;
+}
+
+TD.indexvalue {
+	background-color: #e8eef2;
+	font-style: italic;
+	padding-right  : 10px;
+	padding-top    : 2px;
+	padding-left   : 10px;
+	padding-bottom : 2px;
+	margin-left    : 0px;
+	margin-right   : 0px;
+	margin-top     : 2px;
+	margin-bottom  : 2px;
+	border: 1px solid #CCCCCC;
+}
+
+BODY DIV.contents {
+  margin: 1.5em;
+}
+
+</style>
+<title>$title</title>
+</head><body>
+<div class="ctitle">
+<table id="pagetitle">
+  <tbody>
+    <tr>
+      <td class="iconspace" rowspan=2>
+        <img border=0 src="http://cern.ch/gaudi/images/gaudisf2.png">
+      </td>
+      <td valign="middle">
+        <h1><a href="http://cern.ch/gaudi">$projectname</a></h1>
+      </td><td></td>
+    </tr>
+  </tbody>
+</table>
+<table id="pagetitle">
+  <tbody>
+    <tr>
+      <td class=iconspace><a href="http://cern.ch/gaudi">Home</a></td>
+      <td>&nbsp;</td>
+      <td width="25%">Generated: $date</td>
+    </tr>
+  <tbody>
+</table>
+</div>

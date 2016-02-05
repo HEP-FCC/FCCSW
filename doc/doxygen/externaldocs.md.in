@@ -1,0 +1,9 @@
+Related External Libraries {#externaldocs}
+==
+From [LCG version @heptools_version@][lcg-details]:
+- LCG Application Area:
+  - [ROOT @ROOT_config_version@][root] I/O persistence
+
+- Externals:
+  - [HepMC @HepMC_config_version@][HepMC](http://lcgapp.cern.ch/project/simu/HepMC/)
+  - More to be added

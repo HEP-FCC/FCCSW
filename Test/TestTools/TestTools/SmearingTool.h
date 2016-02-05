@@ -1,6 +1,6 @@
 //
 //  SmearingTool1.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 14/04/15.
 //
@@ -29,10 +29,10 @@ public:
     ~SmearingTool() {}
     virtual StatusCode initialize();
     virtual StatusCode finalize();
-    virtual StatusCode smear(ParticleCollection* particlecoll) override;
-    
+    virtual StatusCode smear(fcc::ParticleCollection* particlecoll) override;
+
 private:
-    
+
     mutable std::ofstream   m_points;
 };
 

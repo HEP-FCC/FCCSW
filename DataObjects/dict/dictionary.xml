@@ -1,9 +1,8 @@
 <lcgdict>
   <selection>
     <class name="albers::Registry">
-      <field name="m_reader"  transient="true"/>
-      <field name="m_addresses"  transient="true"/>
-      <field name="m_collections"  transient="true"/>
+      <field name="m_names"  transient="true"/>
+      <field name="m_collectionIDs"  transient="true"/>
     </class>
   </selection>
   <exclusion>

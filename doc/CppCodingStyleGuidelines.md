@@ -45,12 +45,12 @@ Names should be as descriptive as possible.
 Do not worry about space; Worry about how understandable the name is. Avoid unclear abbreviations.
 
 **Examples**:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 int trackParameter;  // no abbrevations
 int numErrors;       // num is unambigous
 // Do not:
 int n;               // meaningless
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Names of Member Variables
 Member variables should be prefixed with `m_` otherwise the same rules as above apply.
@@ -81,7 +81,7 @@ Additionally, getter functions do *not* start with get. Instead, the related var
 Setter functions start with `set` and continue with the related variable name (omitting the `m_`).
 
 **Example**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 class Foo {
 public:
   // ctor + dtor should be here
@@ -90,7 +90,7 @@ public:
 private:
   int m_bar;
 };
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Namespace names
 Namespaces are all lower case.
@@ -99,11 +99,11 @@ Namespaces are all lower case.
 Enumerators should follow the same rules as constants (start with k).
 
 **Example**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 enum class ErrorCode {
   kSuccess, kFileNotFound, kError
 };
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ***
 
@@ -170,12 +170,12 @@ A guard should follow the naming convention of `PACKAGE_FILE_H` where `PACKAGE` 
 **Example**
 
 In file `BarPackage/BarPackage/Foo.h`:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 #ifndef BARPACKAGE_FOO_H
 #define BARPACKAGE_FOO_H
 // header body
 #endif /* BARPACKAGE_FOO_H */
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Include Ordering
 Standard order for readability: Related header, C library, C++ library, other libraries, project headers, e.g. for class `Foo` in `Foo.cpp`:
@@ -190,7 +190,7 @@ Standard order for readability: Related header, C library, C++ library, other li
 Prefer forward declaration over including the corresponding header-files.
 
 **Examples**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 // Forward declaration of class in the same namespace:
 class Foo;
 // Forward declaration of a class in another namespace:
@@ -203,7 +203,7 @@ namespace bar {
 class FooBar;
 }
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### One Class per Header
 Each header file should only contain the declaration of one class.
@@ -219,7 +219,7 @@ Indentations should be done with spaces, 2 spaces per indentation step.
 - Indent for member initialiser lists
 
 **Example**:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 namespace foo {
 class Foo {
 public:
@@ -230,45 +230,45 @@ private:
   int m_foo;
 };
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 Member initialiser list:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 Foo::Foo() :
   m_bar(1),
   m_foo(1) {
   // ctor body
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Curly braces
 Opening curly braces should be placed in the same line; Closing curly braces should be in a new line.
 
 **Examples**:
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 class Foo() {
   // my class definition
 };
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 if (condition) {
   // doSomething
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 if (condition) {
   // doSomething
 } else {
   // doSomethingElse
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 for (int a = 10; a < 20; ++a) {
   // doSomethingRepeatedly
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Comments
 Comments should be abundant and non-trivial.
@@ -276,17 +276,17 @@ Comments should be abundant and non-trivial.
 Both `/* */` and `//` style comments are OK. Inline comments should be short, prefer to comment before the relevant code block.
 
 Keep in mind doxygen pages are created and read through the [how-to for doxygen comments](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html):
-- Use `@` for [commands](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmd_intro). 
+- Use `@` for [commands](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmd_intro).
 - Member functions documentation depends on the detail level:
   - Short descriptions on the line above the function definition with `///` starting the comment.
   - Complex descriptions using [return cmd](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmdreturn) and [params cmd](http://www.stack.nl/%7Edimitri/doxygen/manual/commands.html#cmdparam) should follow the same style as class descriptions (see example).
 - Member variable documentation depends on the length of the comment:
-  - A short description of a member may be put on the same line starting with `///<`. 
-  - Longer descriptions are put above the member definition starting with `///`. 
+  - A short description of a member may be put on the same line starting with `///<`.
+  - Longer descriptions are put above the member definition starting with `///`.
 - A class description is put above the namespace region with author information and a description of the class. A date may optionally be added.
 
 **Example**
-```C++
+~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 #include "OtherClass.h"
 
 /** @class foo::MyClass MyPackage/MyPackage/MyClass.h MyClass.h
@@ -301,26 +301,26 @@ namespace foo {
 class MyClass : public OtherClass {
 public:
   /** @enum foo::MyEnum
-   *  Description of the enum  
+   *  Description of the enum
    */
   enum class MyEnum {
     kVal1, kVal2
   };
-  
+
   /// Description about ctor
   MyClass(int a, int b);
-  
+
   /** doSomething: does something
     * @param[in] f is used to do...
     * @returns an integer
     */
   int doSomething(const float& f);
-  
+
 private:
   int m_a;  ///< short member a documentation
   /// a rather long description for member b that needs a whole line
   int m_b
 };
 }
-```
+~~~~~~~~~~~~~~~~~~~~~~~~
 
