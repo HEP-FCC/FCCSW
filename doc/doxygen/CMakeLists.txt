@@ -38,7 +38,7 @@ if(DOXYGEN_FOUND)
     set(MATHJAX_RELPATH "../mathjax")
   else()
     set(MATHJAX_RELPATH "http://cdn.mathjax.org/mathjax/latest")
-  endif()
+  endif(DOXYGEN_WITH_LOCAL_MATHJAX)
 
   # massage some version numbers
   string(REGEX REPLACE "_python.*" "" Boost_version "${Boost_config_version}")
@@ -49,6 +49,8 @@ if(DOXYGEN_FOUND)
   foreach(template Doxyfile mainpage.md externaldocs.md)
     configure_file(${template}.in ${CMAKE_CURRENT_BINARY_DIR}/${template} @ONLY)
   endforeach()
+
+  configure_file(doxy-boot.js.in ${CMAKE_BINARY_DIR}/doxygen/html/doxy-boot.js)
 
   # the cmake directory is not scanned
   foreach(doc_file)
