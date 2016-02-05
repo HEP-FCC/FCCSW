@@ -10,12 +10,12 @@ find_package(Geant4)
 include(${Geant4_USE_FILE})
 find_package(ROOT)
 find_package(FCCEDM)
-find_package(ALBERS)
+find_package(PODIO)
 
 gaudi_install_headers(SimG4Common)
 
 gaudi_add_library(SimG4Common
                  src/*.cpp
-                 INCLUDE_DIRS FWCore Geant4 ROOT FCCEDM ALBERS
-                 LINK_LIBRARIES GaudiAlgLib DataObjects Geant4 ROOT  FCCEDM ALBERS
+                 INCLUDE_DIRS FWCore Geant4 ROOT FCCEDM PODIO
+                 LINK_LIBRARIES GaudiAlgLib DataObjects Geant4 ROOT  FCCEDM PODIO
                  PUBLIC_HEADERS SimG4Common)

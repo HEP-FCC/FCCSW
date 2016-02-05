@@ -10,7 +10,7 @@ DECLARE_SERVICE_FACTORY(FCCDataSvc)
 
 /// Standard Constructor
 FCCDataSvc::FCCDataSvc(const std::string& name,ISvcLocator* svc):
-  AlbersDataSvc(name,svc) {
+  PodioDataSvc(name,svc) {
 }
 
 /// Standard Destructor

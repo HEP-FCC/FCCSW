@@ -1,26 +1,24 @@
 #!/usr/bin/csh
+source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r4p3/InstallArea/scripts/LbLogin.csh --cmtconfig x86_64-slc6-gcc49-opt
 
-if ! $?GAUDI then
-    echo "Need to set GAUDI environmental variable: setenv GAUDI $FCCBASE/GAUDI/GAUDI_v25r2"
-    exit 1
-else 
-    echo "Gaudi   :    $GAUDI"
-endif
+setenv FCCEDM /afs/cern.ch/exp/fcc/sw/0.6/fcc-edm/0.1/x86_64-slc6-gcc49-opt/
+setenv PODIO /afs/cern.ch/exp/fcc/sw/0.6/podio/0.1/x86_64-slc6-gcc49-opt
+setenv DELPHES_DIR /afs/cern.ch/exp/fcc/sw/0.6/Delphes-3.3.1/x86_64-slc6-gcc49-opt
+setenv PYTHIA_DIR /afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/x86_64-slc6-gcc49-opt/
 
-if ! $?FCCBASE then
-    echo "Need to set the FCCBASE environment variable to root path of the software (contains both Gaudi and the FCC software)."
-    exit 1
-else 
-    echo "FCC root:    $FCCBASE"
-endif
-
-# set up CMake:
-setenv PATH /afs/cern.ch/sw/lcg/contrib/CMake/2.8.12.2/Linux-i386/bin:${PATH}
-setenv CMAKE_PREFIX_PATH ${GAUDI}/cmake:${FCCBASE}:/afs/cern.ch/sw/lcg/releases
-setenv CMTCONFIG x86_64-slc6-gcc48-opt
-
-# set up the compilers
-setenv PATH /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r0/InstallArea/scripts:${PATH}
+setenv CMAKE_PREFIX_PATH ${FCCEDM}:${PODIO}:${DELPHES_DIR}:${CMAKE_PREFIX_PATH}:${PYTHIA_DIR}
 
 # set up Pythia8 Index.xml
-setenv PYTHIA8_XML /afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
+setenv PYTHIA8_XML /afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/x86_64-slc6-gcc49-opt/share/Pythia8/xmldoc
+
+# add Geant4 data files
+source /afs/cern.ch/sw/lcg/external/geant4/10.1/setup_g4datasets.csh
+
+# add DD4hep
+setenv inithere ${PWD}
+cd /afs/cern.ch/exp/fcc/sw/0.6/DD4hep/20152311/x86_64-slc6-gcc49-opt
+source bin/thisdd4hep.csh
+cd $inithere
+
+setenv CMTPROJECTPATH /afs/cern.ch/exp/fcc/sw/0.6/
+source /afs/cern.ch/sw/lcg/contrib/gcc/4.9.3/x86_64-slc6/setup.csh

@@ -1,18 +1,18 @@
 ###########################################################
-#    
+#
 # FCCSw Pythia-->Delphes simulation config file
-# 
+#
 #  author: Z. Drasal (CERN)
 #
 #  - define variables & delphes sim outputs
-#  - run: ./run gaudirun.py config/PythiaDelphes_config.py 
+#  - run: ./run gaudirun.py config/PythiaDelphes_config.py
 #
 ###########################################################
 
 """
 To run Pythia together with Delphes
 > export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
-> ./run gaudirun.py PythiaDelphes_config.py 
+> ./run gaudirun.py PythiaDelphes_config.py
 """
 from Gaudi.Configuration import *
 
@@ -45,20 +45,20 @@ delphesOutCol=[]
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
 delphesHepMCInFile=""
 #delphesHepMCInFile="data/ZLEP_toAll.hepmc"
-delphesRootOutFile="DelphesOutput.root" 
+delphesRootOutFile="DelphesOutput.root"
 #delphesRootOutFile=""
 
-## Data event model based on Albers
-albersEvent=FCCDataSvc("EventDataSvc")
+## Data event model based on Podio
+podioEvent=FCCDataSvc("EventDataSvc")
 
 ############################################################
-# 
+#
 # Configure individual modules (algorithms)
 #
 ############################################################
 
 ## Pythia generator
-from Configurables import PythiaInterface 
+from Configurables import PythiaInterface
 
 pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=INFO)
 ## Write the HepMC::GenEvent to the data service
@@ -66,10 +66,10 @@ pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 
 ## Delphes simulator
 from Configurables import DelphesSimulation
-delphessim = DelphesSimulation(DelphesCard=delphesCard, 
+delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                OutputCollections=delphesOutCol,
-                               HepMCInputFile=delphesHepMCInFile, 
-                               ROOTOutputFile=delphesRootOutFile, 
+                               HepMCInputFile=delphesHepMCInFile,
+                               ROOTOutputFile=delphesRootOutFile,
                                OutputLevel=DEBUG)
 delphessim.DataInputs.hepmc.Path               = "hepmc"
 delphessim.DataOutputs.allParticles.Path       = "allParticles"
@@ -77,9 +77,9 @@ delphessim.DataOutputs.genPartons.Path         = "genPartons"
 delphessim.DataOutputs.genStableParticles.Path = "genStableParticles"
 
 ## FCC event-data model output
-from Configurables import AlbersWrite, AlbersOutput
+from Configurables import PodioWrite, PodioOutput
 
-out = AlbersOutput("out",OutputLevel=DEBUG)
+out = PodioOutput("out",OutputLevel=DEBUG)
 #out.outputCommands = ["keep *"]
 out.outputCommands = ["drop *",
                       "keep allParticles",
@@ -93,17 +93,17 @@ out.outputCommands = ["drop *",
 ############################################################
 
 # Run Pythia + Delphes
-if delphesHepMCInFile == "": 
+if delphesHepMCInFile == "":
   ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
                   EvtSel = 'NONE',
                   EvtMax = nEvents,
-                  ExtSvc = [albersEvent],
+                  ExtSvc = [podioEvent],
                   OutputLevel=INFO)
 # Run only Delphes - hepmc input file provided
 else:
  ApplicationMgr( TopAlg = [ delphessim, out ],
                   EvtSel = 'NONE',
                   EvtMax = nEvents,
-                  ExtSvc = [albersEvent],
+                  ExtSvc = [podioEvent],
                   OutputLevel=DEBUG)
 
