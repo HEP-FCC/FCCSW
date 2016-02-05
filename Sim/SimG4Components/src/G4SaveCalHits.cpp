@@ -3,7 +3,7 @@
 // Geant4
 #include "G4Event.hh"
 
-// albers
+// podio
 #include "datamodel/CaloClusterCollection.h"
 #include "datamodel/CaloHitCollection.h"
 
@@ -47,8 +47,8 @@ StatusCode G4SaveCalHits::saveOutput(const G4Event& aEvent) {
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;
   if(collections != nullptr) {
-    CaloClusterCollection* edmClusters = new CaloClusterCollection();
-    CaloHitCollection* edmHits = new CaloHitCollection();
+    fcc::CaloClusterCollection* edmClusters = new fcc::CaloClusterCollection();
+    fcc::CaloHitCollection* edmHits = new fcc::CaloHitCollection();
     // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
@@ -64,10 +64,10 @@ StatusCode G4SaveCalHits::saveOutput(const G4Event& aEvent) {
           debug() << hit->position.y() << " ";
           debug() << hit->position.z() << endmsg;
 
-          CaloHit edmHit = edmHits->create();
-          CaloCluster edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.Core();
-          BareCluster& edmClusterCore = edmCluster.Core();
+          fcc::CaloHit edmHit = edmHits->create();
+          fcc::CaloCluster edmCluster = edmClusters->create();
+          fcc::BareHit& edmHitCore = edmHit.Core();
+          fcc::BareCluster& edmClusterCore = edmCluster.Core();
           edmHitCore.Cellid = hit->cellID;
           edmHitCore.Energy = hit->energyDeposit;
 

@@ -1,6 +1,6 @@
 //
 //  RecoGeoTest.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 26/02/15.
 //
@@ -44,7 +44,7 @@
 
 class RecoGeoTest: public GaudiAlgorithm {
     friend class AlgFactory<RecoGeoTest> ;
-    
+
 public:
     /// Constructor.
     RecoGeoTest(const std::string& name, ISvcLocator* svcLoc);
@@ -66,9 +66,9 @@ public:
     virtual StatusCode execute();
     /// Finalize.
     virtual StatusCode finalize();
-    
+
 private:
-    
+
     IRecoGeoSvc* m_recoGeoSvc; //Detector Description Service
     std::shared_ptr<const Reco::ContainerVolume>    m_worldVolume;
     mutable std::ofstream                           m_out;
@@ -90,15 +90,15 @@ private:
     mutable std::ofstream                           m_modules;
     mutable std::ofstream                           m_sens;
 //    TrackHitCollection*                             m_hitcoll;
-    DataHandle<ParticleCollection>                  m_particles;
-    ParticleCollection*                             m_particlecoll;
+    DataHandle<fcc::ParticleCollection>                  m_particles;
+    fcc::ParticleCollection*                             m_particlecoll;
     IToolSvc*                                       m_toolsvc;
     IPrintHits*                                     m_printhits;
     mutable double                                  m_tInX0;
     mutable double                                  m_pathlength;
     ITHistSvc*                                      m_ths;
     TProfile*                                       m_profile;
-    
+
 //    mutable std::vector<std::tuple<const Reco::Surface*, const Alg::Point3D, const Alg::Vector3D>> m_hits;
     mutable double m_sumh;
 

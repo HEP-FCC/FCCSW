@@ -3,7 +3,7 @@
 // Geant4
 #include "G4Event.hh"
 
-// albers
+// podio
 #include "datamodel/TrackClusterCollection.h"
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackClusterHitsAssociationCollection.h"
@@ -39,20 +39,20 @@ StatusCode G4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4TrackerHit* hit;
   if(collections != nullptr) {
-    TrackClusterCollection* edmClusters = new TrackClusterCollection();
-    TrackHitCollection* edmHits = new TrackHitCollection();
-    TrackClusterHitsAssociationCollection* edmAssociations = new TrackClusterHitsAssociationCollection();
+    fcc::TrackClusterCollection* edmClusters = new fcc::TrackClusterCollection();
+    fcc::TrackHitCollection* edmHits = new fcc::TrackHitCollection();
+    fcc::TrackClusterHitsAssociationCollection* edmAssociations = new fcc::TrackClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (collect->GetName().find("Tracker") != std::string::npos) {
-        int n_hit = collect->GetSize();
+        unsigned int n_hit = collect->GetSize();
         info() << "\t" << n_hit<< " hits are stored in a tracker collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
         for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-          TrackHit edmHit = edmHits->create();
-          TrackCluster edmCluster = edmClusters->create();
-          BareHit& edmHitCore = edmHit.Core();
-          BareCluster& edmClusterCore = edmCluster.Core();
+          fcc::TrackHit edmHit = edmHits->create();
+          fcc::TrackCluster edmCluster = edmClusters->create();
+          fcc::BareHit& edmHitCore = edmHit.Core();
+          fcc::BareCluster& edmClusterCore = edmCluster.Core();
           edmHitCore.Cellid = hit->cellID;
           edmHitCore.Energy = hit->energyDeposit;
           edmHitCore.Time = hit->truth.time;
@@ -61,7 +61,7 @@ StatusCode G4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
           edmClusterCore.position.Z = hit->position.z();
           edmClusterCore.Energy = hit->energyDeposit;
           edmClusterCore.Time = hit->truth.time;
-          TrackClusterHitsAssociation edmAssociation = edmAssociations->create();
+          fcc::TrackClusterHitsAssociation edmAssociation = edmAssociations->create();
           edmAssociation.Cluster(edmCluster);
           edmAssociation.Hit(edmHit);
         }

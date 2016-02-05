@@ -8,10 +8,12 @@
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
 
-// albers
+// podio
+namespace fcc {
 class TrackClusterCollection;
 class TrackHitCollection;
 class TrackClusterHitsAssociationCollection;
+}
 
 /** @class G4SaveTrackerHits SimG4Components/src/G4SaveTrackerHits.h G4SaveTrackerHits.h
  *
@@ -42,11 +44,11 @@ public:
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
 private:
   /// Handle for tracker clusters
-  DataHandle<TrackClusterCollection> m_trackClusters;
+  DataHandle<fcc::TrackClusterCollection> m_trackClusters;
   /// Handle for tracker hits
-  DataHandle<TrackHitCollection> m_trackHits;
+  DataHandle<fcc::TrackHitCollection> m_trackHits;
   /// Handle for tracker hits-clusters associations
-  DataHandle<TrackClusterHitsAssociationCollection> m_trackHitsClusters;
+  DataHandle<fcc::TrackClusterHitsAssociationCollection> m_trackHitsClusters;
 
 };
 

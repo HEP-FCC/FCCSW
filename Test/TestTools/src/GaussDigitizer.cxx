@@ -30,7 +30,7 @@ StatusCode GaussDigitizer::finalize()
     return StatusCode::SUCCESS;
 }
 
-StatusCode GaussDigitizer::smear(ParticleCollection* particlecoll)
+StatusCode GaussDigitizer::smear(fcc::ParticleCollection* particlecoll)
 {
     // FIXME / TODO: This function needs to be re-written to create a new collection
     //      instead of modifying an existing one!

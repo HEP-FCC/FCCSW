@@ -36,7 +36,7 @@ genfilter = GenParticleFilter("StableParticles")
 genfilter.DataInputs.genparticles.Path = "all_genparticles"
 genfilter.DataOutputs.genparticles.Path = "genparticles"
 
-from Configurables import JetClustering_MCParticleCollection_GenJetCollection_GenJetParticleAssociationCollection_ as JetClustering
+from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_fcc__GenJetParticleAssociationCollection_ as JetClustering
 genjet_clustering = JetClustering("GenJetClustering", verbose = False)
 genjet_clustering.DataInputs.particles.Path='genparticles'
 # giving a meaningful name for the output product

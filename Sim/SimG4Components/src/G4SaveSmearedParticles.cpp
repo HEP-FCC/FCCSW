@@ -7,7 +7,7 @@
 // Geant4
 #include "G4Event.hh"
 
-// albers
+// podio
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
 
@@ -37,18 +37,18 @@ StatusCode G4SaveSmearedParticles::finalize() {
 }
 
 StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
-  ParticleCollection* particles = new ParticleCollection();
-  ParticleMCParticleAssociationCollection* associations = new ParticleMCParticleAssociationCollection();
+  fcc::ParticleCollection* particles = new fcc::ParticleCollection();
+  fcc::ParticleMCParticleAssociationCollection* associations = new fcc::ParticleMCParticleAssociationCollection();
   for(int i=0;i<aEvent.GetNumberOfPrimaryVertex();i++) {
     for(int j=0;j<aEvent.GetPrimaryVertex(i)->GetNumberOfParticle();j++) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
       sim::ParticleInformation* info = dynamic_cast<sim::ParticleInformation*>(g4particle->GetUserInformation());
-      const MCParticle& MCparticle = info->mcParticle();
-      Particle particle = particles->create();
-      ParticleMCParticleAssociation association = associations->create();
+      const fcc::MCParticle& MCparticle = info->mcParticle();
+      fcc::Particle particle = particles->create();
+      fcc::ParticleMCParticleAssociation association = associations->create();
       association.Rec(particle);
       association.Sim(MCparticle);
-      BareParticle& core = particle.Core();
+      fcc::BareParticle& core = particle.Core();
       core.Type = g4particle->GetPDGcode();
       core.Status = 1; // how it is defined ???? as in HepMC ?
       core.Charge = g4particle->GetCharge();

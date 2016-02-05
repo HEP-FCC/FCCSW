@@ -1,6 +1,6 @@
 //
 //  IDigitizer.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 14/04/15.
 //
@@ -11,7 +11,9 @@
 
 #include "GaudiKernel/IAlgTool.h"
 
+namespace fcc {
 class ParticleCollection;
+}
 
 static const InterfaceID IID_IDigitizer ("IDigitizer", 1, 0);
 
@@ -21,9 +23,9 @@ public:
     static const InterfaceID& interfaceID() {
             return IID_IDigitizer;
     }
-    
-    virtual StatusCode smear(ParticleCollection* particlecoll) = 0;
-    
+
+    virtual StatusCode smear(fcc::ParticleCollection* particlecoll) = 0;
+
 protected:
     ~IDigitizer() {}
 };

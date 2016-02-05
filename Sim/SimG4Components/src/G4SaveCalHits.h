@@ -8,10 +8,12 @@
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
 
-// albers
+// podio
+namespace fcc {
 class CaloClusterCollection;
 class CaloHitCollection;
 class CaloClusterHitsAssociationCollection;
+}
 
 /** @class G4SaveCalHits SimG4Components/src/G4SaveCalHits.h G4SaveCalHits.h
  *
@@ -42,9 +44,9 @@ public:
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
 private:
   /// Handle for calo clusters
-  DataHandle<CaloClusterCollection> m_caloClusters;
+  DataHandle<fcc::CaloClusterCollection> m_caloClusters;
   /// Handle for calo hits
-  DataHandle<CaloHitCollection> m_caloHits;
+  DataHandle<fcc::CaloHitCollection> m_caloHits;
   /// Name of the calorimeter type (ECal/HCal)
   std::string m_calType;
 

@@ -1,7 +1,7 @@
 #ifndef SIMG4COMMON_PARTICLEINFORMATION_H
 #define SIMG4COMMON_PARTICLEINFORMATION_H
 
-// albers
+// podio
 #include "datamodel/MCParticle.h"
 #include "datamodel/Particle.h"
 
@@ -29,7 +29,7 @@ public:
   /** A constructor.
    *  @param[in] aMCpart EDM MCParticle.
    */
-  ParticleInformation(const MCParticle& aMCpart);
+  ParticleInformation(const fcc::MCParticle& aMCpart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
@@ -37,7 +37,7 @@ public:
   /** Getter of the MCParticle.
    *  @returns EDM MCParticle.
    */
-  const MCParticle& mcParticle() const;
+  const fcc::MCParticle& mcParticle() const;
   /** Setter of the end-of-tracking momentum (used for fast simulation).
    *  @param[in] aMom Particle momentum.
    */
@@ -61,10 +61,10 @@ public:
   /** Getter of the end-of-tracking particle status (used for fast simulation).
    *  @returns Particle status.
    */
-  const int endStatus() const;
+  int endStatus() const;
 private:
   /// EDM MC particle
-  const MCParticle m_mcParticle;
+  const fcc::MCParticle m_mcParticle;
   /// Particle momentum at the end of tracking (filled for fast-sim)
   CLHEP::Hep3Vector m_endMomentum;
   /// Particle vertex position saved at the end of tracking (filled for fast-sim)

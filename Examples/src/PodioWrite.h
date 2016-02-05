@@ -20,7 +20,7 @@ public:
 
 private:
   /// Handle for the jets to be written
-  DataHandle<JetCollection> m_jethandle;
+  DataHandle<fcc::JetCollection> m_jethandle;
 
 };
 

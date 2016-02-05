@@ -9,8 +9,10 @@
 #include "SimG4Interface/IG4SaveOutputTool.h"
 class IG4SimSvc;
 
-// albers
+// podio
+namespace fcc {
 class MCParticleCollection;
+}
 
 // Geant
 class G4Event;
@@ -53,7 +55,7 @@ public:
    */
   G4Event* EDM2G4();
   /// Handle for the EDM MC particles to be read
-  DataHandle<MCParticleCollection> m_genParticles;
+  DataHandle<fcc::MCParticleCollection> m_genParticles;
   /// Pointer to the interface of Geant simulation service
   SmartIF<IG4SimSvc> m_geantSvc;
   /// Handle to the tools saving the output
