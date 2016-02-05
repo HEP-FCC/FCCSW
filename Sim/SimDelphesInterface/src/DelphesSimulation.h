@@ -88,6 +88,16 @@ private:
   DelphesFactory        *m_DelphesFactory ;
   DelphesExtHepMCReader *m_HepMCReader ;
 
+  // Names of Delphes output arrays -> needed to correctly write out Delphes objects into FCC-EDM
+  std::string m_DelphesMuonsArrayName;
+  std::string m_DelphesElectronsArrayName;
+  std::string m_DelphesChargedArrayName;
+  std::string m_DelphesNeutralArrayName;
+  std::string m_DelphesPhotonsArrayName;
+  std::string m_DelphesJetsArrayName;
+  std::string m_DelphesMETsArrayName;
+  std::string m_DelphesSHTsArrayName;
+
   // Handle for the HepMC to be read in from data store
   DataHandle<HepMC::GenEvent> m_hepmcHandle;
 

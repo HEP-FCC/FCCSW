@@ -58,6 +58,18 @@ delphesRootOutFile=""
 #delphesHepMCInFile="data/ZLEP_toAll.hepmc"
 #delphesRootOutFile="DelphesOutput.root"
 
+## Define Delphes outpu arrays for studied objects -> various Delphes modules
+## provide the same type of particle with different level of processing ...
+## Needed due to required output to FCC-EDM!
+delphesMuonsOutArray    ="MuonMomentumSmearing/muons"
+delphesElectronsOutArray="ElectronEnergySmearing/electrons"
+delphesChargedOutArray  ="ChargedHadronMomentumSmearing/chargedHadrons"
+delphesNeutralOutArray  ="Hcal/eflowNeutralHadrons"
+delphesPhotonsOutArray  ="PhotonEfficiency/photons"
+delphesJetsOutArray     ="JetEnergyScale/jets"
+delphesMETsOutArray     ="MissingET/momentum"
+delphesSHTsOutArray     ="ScalarHT/energy"
+
 ## Data event model based on Podio
 podioEvent=FCCDataSvc("EventDataSvc")
 
@@ -79,6 +91,14 @@ from Configurables import DelphesSimulation
 delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                HepMCInputFile=delphesHepMCInFile,
                                ROOTOutputFile=delphesRootOutFile,
+                               MuonsOutArray=delphesMuonsOutArray,
+                               ElectronsOutArray=delphesElectronsOutArray,
+                               ChargedOutArray=delphesChargedOutArray,
+                               NeutralOutArray=delphesNeutralOutArray,
+                               PhotonsOutArray=delphesPhotonsOutArray,
+                               JetsOutArray=delphesJetsOutArray,
+                               METsOutArray=delphesMETsOutArray,
+                               SHTsOutArray=delphesSHTsOutArray,  
                                OutputLevel=DEBUG)
 delphessim.DataInputs.hepmc.Path               = "hepmc"
 delphessim.DataOutputs.genParticles.Path       = "genParticles"
@@ -104,7 +124,18 @@ out = PodioOutput("out",OutputLevel=DEBUG)
 out.filename       = "FCCDelphesOutput.root"
 out.outputCommands = ["drop *",
                       "keep genParticles",
-                      "keep genVertices"]
+                      "keep genVertices",
+                      "keep recMuons",
+                      "keep recElectrons",
+                      "keep recCharged",
+                      "keep recPhotons",
+                      "keep recJets",
+                      "keep recMETs",
+                      "keep recMuonsToMC",
+                      "keep recElectronsToMC",
+                      "keep recChargedToMC",
+                      "keep recPhotonsToMC",
+                      "keep recJetsToMC"]
 #out.outputCommands = ["keep *"]
 
 ############################################################

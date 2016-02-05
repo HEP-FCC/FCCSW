@@ -23,9 +23,17 @@ GaudiAlgorithm(name, svcLoc) ,
   m_confReader(nullptr)
  {
    //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
-   declareProperty("DelphesCard"      , m_DelphesCard    , "Name of Delphes tcl config file with detector and simulation parameters");
-   declareProperty("HepMCInputFile"   , m_inHepMCFileName, "Name of HepMC input file, if defined file read in / if not data read in directly from the transient data store");
-   declareProperty("ROOTOutputFile"   , m_outRootFileName, "Name of Root output file, if defined file write out / if not data written to the transient data store");
+   declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
+   declareProperty("HepMCInputFile"   , m_inHepMCFileName          , "Name of HepMC input file, if defined file read in / if not data read in directly from the transient data store");
+   declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Root output file, if defined file write out / if not data written to the transient data store");
+   declareProperty("MuonsOutArray"    , m_DelphesMuonsArrayName    , "Name of Delphes muons array to be written out to FCC-EDM");
+   declareProperty("ElectronsOutArray", m_DelphesElectronsArrayName, "Name of Delphes electrons array to be written out to FCC-EDM");
+   declareProperty("ChargedOutArray"  , m_DelphesChargedArrayName  , "Name of Delphes charged hadrons array to be written out to FCC-EDM");
+   declareProperty("NeutralOutArray"  , m_DelphesNeutralArrayName  , "Name of Delphes neutral hadrons array to be written out to FCC-EDM");
+   declareProperty("PhotonsOutArray"  , m_DelphesPhotonsArrayName  , "Name of Delphes photons array to be written out to FCC-EDM");
+   declareProperty("JetsOutArray"     , m_DelphesJetsArrayName     , "Name of Delphes jets array to be written out to FCC-EDM");
+   declareProperty("METsOutArray"     , m_DelphesMETsArrayName     , "Name of Delphes METs array to be written out to FCC-EDM");
+   declareProperty("SHTsOutArray"     , m_DelphesSHTsArrayName     , "Name of Delphes Scalar HTs array to be written out to FCC-EDM");
 
    declareInput("hepmc", m_hepmcHandle);
    
@@ -177,7 +185,7 @@ StatusCode DelphesSimulation::execute() {
     isEventReady = m_HepMCReader->ReadEventFromStore(hepMCEvent, m_DelphesFactory, m_allPartOutArray, m_stablePartOutArray, m_partonOutArray);
 
     // Print HepMC event info
-    for(auto ipart=hepMCEvent->particles_begin(); ipart!=hepMCEvent->particles_end(); ++ipart) {
+    /*for(auto ipart=hepMCEvent->particles_begin(); ipart!=hepMCEvent->particles_end(); ++ipart) {
 
       int motherID        = 0;
       int motherIDRange   = 0;
@@ -212,7 +220,7 @@ StatusCode DelphesSimulation::execute() {
                 << " T: "        << setw(10) << (*ipart)->production_vertex()->position().t();
       }
       std::cout << std::endl;
-    }
+    }*/
   }
 
   if (!isEventReady) return StatusCode::FAILURE;
@@ -275,23 +283,48 @@ StatusCode DelphesSimulation::execute() {
   auto recJetsToMC      = new fcc::GenJetParticleAssociationCollection();
 
   // Fill FCC collections
-  m_muonOutArray     = m_Delphes->ImportArray("MuonMomentumSmearing/muons"); //m_muonOutArray     = m_Delphes->ImportArray("MuonIsolation/muons");
-  m_electronOutArray = m_Delphes->ImportArray("ElectronEnergySmearing/electrons"); //m_electronOutArray = m_Delphes->ImportArray("ElectronIsolation/electrons");
-  m_chargedOutArray  = m_Delphes->ImportArray("ChargedHadronMomentumSmearing/chargedHadrons");
-  m_neutralOutArray  = m_Delphes->ImportArray("Hcal/eflowNeutralHadrons");
-  m_photonOutArray   = m_Delphes->ImportArray("PhotonEfficiency/photons"); //m_photonOutArray   = m_Delphes->ImportArray("PhotonIsolation/photons");
-  m_jetOutArray      = m_Delphes->ImportArray("JetEnergyScale/jets");
-  m_metOutArray      = m_Delphes->ImportArray("MissingET/momentum");
-  m_shtOutArray      = m_Delphes->ImportArray("ScalarHT/energy");
+  m_muonOutArray     = m_Delphes->ImportArray(m_DelphesMuonsArrayName.c_str());     // "MuonMomentumSmearing/muons" / "MuonIsolation/muons"
+  m_electronOutArray = m_Delphes->ImportArray(m_DelphesElectronsArrayName.c_str()); // "ElectronEnergySmearing/electrons" / "ElectronIsolation/electrons"
+  m_chargedOutArray  = m_Delphes->ImportArray(m_DelphesChargedArrayName.c_str());   // "ChargedHadronMomentumSmearing/chargedHadrons"
+  m_neutralOutArray  = m_Delphes->ImportArray(m_DelphesNeutralArrayName.c_str());   // "Hcal/eflowNeutralHadrons"
+  m_photonOutArray   = m_Delphes->ImportArray(m_DelphesPhotonsArrayName.c_str());   // "PhotonEfficiency/photons" / "PhotonIsolation/photons"
+  m_jetOutArray      = m_Delphes->ImportArray(m_DelphesJetsArrayName.c_str());      // "JetEnergyScale/jets"
+  m_metOutArray      = m_Delphes->ImportArray(m_DelphesMETsArrayName.c_str());      // "MissingET/momentum"
+  m_shtOutArray      = m_Delphes->ImportArray(m_DelphesSHTsArrayName.c_str());      // "ScalarHT/energy"
 
-  DelphesSimulation::ConvertMCParticles(m_allPartOutArray , genParticles , genVertices);
-  DelphesSimulation::ConvertTracks(     m_muonOutArray    , recMuons     , genParticles, recMuonsToMC    );
-  DelphesSimulation::ConvertTracks(     m_electronOutArray, recElectrons , genParticles, recElectronsToMC);
-  DelphesSimulation::ConvertTracks(     m_chargedOutArray , recCharged   , genParticles, recChargedToMC  );
-  DelphesSimulation::ConvertTowers(     m_neutralOutArray , recNeutral   , genParticles, recNeutralToMC  );
-  DelphesSimulation::ConvertTowers(     m_photonOutArray  , recPhotons   , genParticles, recPhotonsToMC  );
-  DelphesSimulation::ConvertJets(       m_jetOutArray     , recJets      , genParticles, recJetsToMC     );
-  DelphesSimulation::ConvertMET(        m_metOutArray     , m_shtOutArray, recMETs);
+  if (m_muonOutArray    ==nullptr) warning () << "Can't save Delphes muon array: "
+                                              << m_DelphesMuonsArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_electronOutArray==nullptr) warning () << "Can't save Delphes electron array: "
+                                              << m_DelphesElectronsArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_chargedOutArray ==nullptr) warning () << "Can't save Delphes charged hadron array: "
+                                              << m_DelphesChargedArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_neutralOutArray ==nullptr) warning () << "Can't save Delphes neutral hadron array: "
+                                              << m_DelphesNeutralArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_photonOutArray  ==nullptr) warning () << "Can't save Delphes photon array: "
+                                              << m_DelphesPhotonsArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_jetOutArray     ==nullptr) warning () << "Can't save Delphes jet array: "
+                                              << m_DelphesJetsArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_metOutArray     ==nullptr) warning () << "Can't save Delphes MET array: "
+                                              << m_DelphesMETsArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+  if (m_shtOutArray     ==nullptr) warning () << "Can't save Delphes Scalar HT array: "
+                                              << m_DelphesSHTsArrayName
+                                              << " to FCCEDM. Doesn't exist!!!";
+
+  if (m_muonOutArray    !=nullptr) DelphesSimulation::ConvertMCParticles(m_allPartOutArray , genParticles , genVertices);
+  if (m_electronOutArray!=nullptr) DelphesSimulation::ConvertTracks(     m_muonOutArray    , recMuons     , genParticles, recMuonsToMC);
+  if (m_chargedOutArray !=nullptr) DelphesSimulation::ConvertTracks(     m_electronOutArray, recElectrons , genParticles, recElectronsToMC);
+  if (m_neutralOutArray !=nullptr) DelphesSimulation::ConvertTracks(     m_chargedOutArray , recCharged   , genParticles, recChargedToMC  );
+  if (m_photonOutArray  !=nullptr) DelphesSimulation::ConvertTowers(     m_neutralOutArray , recNeutral   , genParticles, recNeutralToMC  );
+  if (m_jetOutArray     !=nullptr) DelphesSimulation::ConvertTowers(     m_photonOutArray  , recPhotons   , genParticles, recPhotonsToMC  );
+  if (m_metOutArray     !=nullptr) DelphesSimulation::ConvertJets(       m_jetOutArray     , recJets      , genParticles, recJetsToMC     );
+  if (m_shtOutArray     !=nullptr) DelphesSimulation::ConvertMET(        m_metOutArray     , m_shtOutArray, recMETs);
 
   // Save FCC-EDM collections to FCCSw data store
   m_handleGenParticles.put(genParticles);
@@ -501,13 +534,13 @@ void DelphesSimulation::ConvertTracks(const TObjArray*  Input,
       else {
         barePart->Bits = ParticleStatus::Unmatched;
         particle.Core(*barePart);
-        std::cout << "WARNING: Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
+        warning() << "Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
       }
     }
     else {
       barePart->Bits = ParticleStatus::Unmatched;
       particle.Core(*barePart);
-      std::cout << "WARNING: Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
+      warning() << "Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
     }
     if (barePart!=nullptr) delete barePart;
 
@@ -541,7 +574,7 @@ void DelphesSimulation::ConvertTracks(const TObjArray*  Input,
               << " RefId: "    << setw(3)  << idRefMCPart+1
               << " Rel E: "    << setw(10) << simE << " <-> " << recE;
     std::cout << std::endl;*/
-  }
+  } // For - tracks
 }
 
 void DelphesSimulation::ConvertTowers(const TObjArray*  Input,
@@ -569,13 +602,6 @@ void DelphesSimulation::ConvertTowers(const TObjArray*  Input,
     barePart->Vertex.Z = cand->Position.Z();
     particle.Core(*barePart);
 
-    // Reference to MC - Delphes holds references to all objects related to the Photon object, several relations might exist for gammas
-    TIter it1(cand->GetCandidates());
-    it1.Reset();
-
-    Candidate* refCand  = nullptr;
-    Candidate* ref2Cand = nullptr;
-
     // Test print
     /*double energy = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
                          particle.Core().P4.Py*particle.Core().P4.Py +
@@ -593,46 +619,63 @@ void DelphesSimulation::ConvertTowers(const TObjArray*  Input,
               << " M: "        << setw(10) << particle.Core().P4.Mass
               << " Vx: "       << setw(10) << particle.Core().Vertex.X
               << " Vy: "       << setw(10) << particle.Core().Vertex.Y
-              << " Vz: "       << setw(10) << particle.Core().Vertex.Z;*/
+              << " Vz: "       << setw(10) << particle.Core().Vertex.Z
+              << std::endl;*/
 
+    // Reference to MC - Delphes holds references to all objects related to the Photon object, several relations might exist for gammas
+    std::set<int> idRefMCPart; // Avoid double counting when referencingh MC particles
+
+    Candidate* refCand  = nullptr;
+    Candidate* ref2Cand = nullptr;
+
+    TIter it1(cand->GetCandidates());
+    it1.Reset();
     while((refCand = static_cast<Candidate*>(it1.Next()))) {
 
       TIter it2(refCand->GetCandidates());
       it2.Reset();
       while((ref2Cand = static_cast<Candidate*>(it2.Next()))) {
 
-        int idRefMCPart = ref2Cand->GetUniqueID()-1;
-        if (idRefMCPart<colMCParticles->size()) {
-
-          auto relation = ascColParticlesToMC->create();
-          relation.Rec(particle);
-          relation.Sim(colMCParticles->at(idRefMCPart));
-
-          // Test print
-          /*double recE   = sqrt(relation.Rec().Core().P4.Px*relation.Rec().Core().P4.Px +
-                               relation.Rec().Core().P4.Py*relation.Rec().Core().P4.Py +
-                               relation.Rec().Core().P4.Pz*relation.Rec().Core().P4.Pz +
-                               relation.Rec().Core().P4.Mass*relation.Rec().Core().P4.Mass);
-          double simE   = sqrt(relation.Sim().Core().P4.Px*relation.Sim().Core().P4.Px +
-                               relation.Sim().Core().P4.Py*relation.Sim().Core().P4.Py +
-                               relation.Sim().Core().P4.Pz*relation.Sim().Core().P4.Pz +
-                               relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
-          std::cout << " RefId: "    << setw(3)  << idRefMCPart+1
-                    << " Rel E: "    << setw(10) << simE << " <-> " << recE;
-          if (colMCParticles->at(idRefMCPart).Core().Type ==22) std::cout << " Gamma";
-          if (colMCParticles->at(idRefMCPart).Core().Charge==0) std::cout << " Neutral";*/
-
-        }
+        int id = ref2Cand->GetUniqueID()-1;
+        if (id<colMCParticles->size()) idRefMCPart.insert(id);
         else {
-          std::cout << "WARNING: Can't build one of the relations from Photon/NHadron to MC particle!" << std::endl;
+          warning() << "Can't build one of the relations from Photon/NHadron to MC particle!" << std::endl;
         }
-      }
+      } // Iter2
+    } // Iter1
+
+    // Test print
+    /*double totSimE = 0;*/
+
+    for (auto id : idRefMCPart) {
+
+      auto relation = ascColParticlesToMC->create();
+      relation.Rec(particle);
+      relation.Sim(colMCParticles->at(id));
+
+      // Test print
+      /*double recE   = sqrt(relation.Rec().Core().P4.Px*relation.Rec().Core().P4.Px +
+                           relation.Rec().Core().P4.Py*relation.Rec().Core().P4.Py +
+                           relation.Rec().Core().P4.Pz*relation.Rec().Core().P4.Pz +
+                           relation.Rec().Core().P4.Mass*relation.Rec().Core().P4.Mass);
+      double simE   = sqrt(relation.Sim().Core().P4.Px*relation.Sim().Core().P4.Px +
+                           relation.Sim().Core().P4.Py*relation.Sim().Core().P4.Py +
+                           relation.Sim().Core().P4.Pz*relation.Sim().Core().P4.Pz +
+                           relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
+
+      totSimE += simE;
+      std::cout << " RefId: "    << setw(3)  << id+1
+                << " Rel E: "    << setw(10) << totSimE << " " << simE << " <-> " << recE;
+      if      (colMCParticles->at(id).Core().Type ==22) std::cout << " Gamma";
+      else if (colMCParticles->at(id).Core().Charge==0) std::cout << " Neutral";
+      std::cout << std::endl;*/
     }
+
     // Test print
     /*std::cout << std::endl;*/
 
     if (barePart!=nullptr) delete barePart;
-  }
+  } // For - towers
 }
 
 void DelphesSimulation::ConvertJets(const TObjArray* Input,
@@ -706,7 +749,7 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
                 if (id<colMCParticles->size()) idRefMCPart.insert(id);
                 else {
 
-                  std::cout << "WARNING: Can't build one of the relations from Jet to MC particle!" << std::endl;
+                  warning() << "Can't build one of the relations from Jet to MC particle!" << std::endl;
                 }
               } // Iter4
             }
@@ -715,7 +758,9 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
       } // Iter2
     } // Iter1
 
-    double totSimE = 0;
+    // Test print
+    /*double totSimE = 0;*/
+
     for (auto id : idRefMCPart) {
 
       auto relation = ascColJetsToMC->create();
@@ -732,26 +777,26 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
                            relation.Particle().Core().P4.Pz*relation.Particle().Core().P4.Pz +
                            relation.Particle().Core().P4.Mass*relation.Particle().Core().P4.Mass);
       totSimE += simE;
-      std::cout << " RefId: "    << setw(3)  << id
+      std::cout << " RefId: "    << setw(3)  << id+1
                 << " Rel E: "    << setw(10) << totSimE << " " << simE << " <-> " << recE << std::endl;*/
     }
     // Test print
     /*std::cout << std::endl;*/
 
     if (bareJet!=nullptr) delete bareJet;
-  }
+  } // For - jets
 }   
 
 void DelphesSimulation::ConvertMET(const TObjArray* InputMET , const TObjArray* InputSHT, fcc::METCollection*  colMET){
 
-  Candidate* candMET;
-  Candidate* candSHT;
+  Candidate* candMET = nullptr;
+  Candidate* candSHT = nullptr;
 
   bool saveSHT = true;
   if (InputMET->GetEntries()!=InputSHT->GetEntries()) {
 
     saveSHT = false;
-    std::cout << "WARNING: Can't save in a common FCC-EDM MET object both information from Delphes MET & scalarHT. Only MET will be saved!" << std::endl;
+    warning() << "Can't save in a common FCC-EDM MET object both information from Delphes MET & scalarHT. Only MET will be saved!" << std::endl;
   }
 
   for(int j = 0; j < InputMET->GetEntries(); ++j) {
