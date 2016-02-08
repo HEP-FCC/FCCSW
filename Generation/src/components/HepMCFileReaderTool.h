@@ -17,7 +17,8 @@ public:
   virtual StatusCode finalize();
 
   /// Wrapper for HepMC's fill_next_event() --
-  /// ownership of the event is given to the data service (in algorithm HepMCReader)
+  ///  as in the hepmc original, the user is responsible 
+  ///  for the deletion of the event returned from this function  
   virtual HepMC::GenEvent* readNextEvent();
   /// Wrapper for HepMC file io.
   virtual StatusCode open(const std::string& filename);
