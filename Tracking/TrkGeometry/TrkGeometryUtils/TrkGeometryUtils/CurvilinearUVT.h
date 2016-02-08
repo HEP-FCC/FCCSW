@@ -42,7 +42,7 @@ namespace Trk {
        CurvilinearUVT(){}
        
      /** Create from Alg::Vector3D */
-       CurvilinearUVT(const Alg::Vector3D& dir);
+       explicit CurvilinearUVT(const Alg::Vector3D& dir);
        
      /** Destructor */  
        ~CurvilinearUVT();

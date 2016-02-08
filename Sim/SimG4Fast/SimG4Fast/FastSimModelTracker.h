@@ -29,8 +29,8 @@ public:
       A constructor.
       @param aModelName A name of the fast simulation model.
     */
-   FastSimModelTracker (const std::string aModelName);
-   ~FastSimModelTracker ();
+   explicit FastSimModelTracker (const std::string aModelName);
+   virtual ~FastSimModelTracker ();
    /**
       Checks if this model should be applied to this particle type.
       @param aParticle A particle definition (type).

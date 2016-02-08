@@ -18,7 +18,7 @@ namespace Reco {
         
     public:
         //constructor from BinUtility
-        ReadoutSegmentation1D1D(Trk::BinUtility* binutil, std::vector<Trk::BinUtility*>* m_binvector);
+        ReadoutSegmentation1D1D(Trk::BinUtility* binutil, std::vector<Trk::BinUtility*>* binvector);
         //copy constructor
         ReadoutSegmentation1D1D(const ReadoutSegmentation1D1D& seg);
         //destructor

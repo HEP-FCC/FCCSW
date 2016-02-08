@@ -22,7 +22,7 @@ namespace Reco {
         typedef Trk::BinnedArray<Volume> VolumeArray;
         
         //standard constructor with a BinnedArray of the containing volumes
-        ContainerVolume(VolumeArray* volumes);
+        explicit ContainerVolume(VolumeArray* volumes);
         //copyconstructor
         ContainerVolume(const ContainerVolume& containervolume);
         //checks if global position glopos is inside bounds
