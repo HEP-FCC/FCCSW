@@ -32,10 +32,11 @@ StatusCode G4SimAlg::initialize() {
   }
   for(auto& toolname: m_saveToolNames) {
     m_saveTools.push_back(tool<IG4SaveOutputTool>(toolname));
-  // if (!) {
-  //   error() << "Unable to retrieve the output saving tool." << endmsg;
-  //   return StatusCode::FAILURE;
-  // }
+    // FIXME: check StatusCode once the m_saveTools is a ToolHandleArray
+    // if (!) {
+    //   error() << "Unable to retrieve the output saving tool." << endmsg;
+    //   return StatusCode::FAILURE;
+    // }
   }
   return StatusCode::SUCCESS;
 }
