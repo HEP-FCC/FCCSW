@@ -7,7 +7,7 @@
 // Geant4
 #include "G4Event.hh"
 
-// podio
+// datamodel
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
 

@@ -8,7 +8,7 @@
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
 
-// podio
+// datamodel
 namespace fcc {
 class CaloClusterCollection;
 class CaloHitCollection;

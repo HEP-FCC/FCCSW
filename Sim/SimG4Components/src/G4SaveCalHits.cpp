@@ -3,7 +3,7 @@
 // Geant4
 #include "G4Event.hh"
 
-// podio
+// datamodel
 #include "datamodel/CaloClusterCollection.h"
 #include "datamodel/CaloHitCollection.h"
 

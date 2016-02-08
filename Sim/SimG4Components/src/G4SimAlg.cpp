@@ -5,7 +5,7 @@
 #include "SimG4Common/ParticleInformation.h"
 #include "SimG4Interface/IG4SimSvc.h"
 
-// podio
+// datamodel
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 

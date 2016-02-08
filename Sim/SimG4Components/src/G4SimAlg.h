@@ -9,7 +9,7 @@
 #include "SimG4Interface/IG4SaveOutputTool.h"
 class IG4SimSvc;
 
-// podio
+// datamodel
 namespace fcc {
 class MCParticleCollection;
 }
