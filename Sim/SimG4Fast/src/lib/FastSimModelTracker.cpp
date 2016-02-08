@@ -11,8 +11,9 @@
 #include "G4SystemOfUnits.hh"
 
 namespace sim {
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName)
-  : G4VFastSimulationModel(aModelName, aEnvelope), m_toolSvc("ToolSvc","ToolSvc") {
+FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName):
+  G4VFastSimulationModel(aModelName, aEnvelope),
+  m_toolSvc("ToolSvc","ToolSvc") {
   if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
     throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                          "FastSimModelTracker", StatusCode::FAILURE);

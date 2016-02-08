@@ -10,7 +10,8 @@
 #include "G4ThreeVector.hh"
 
 namespace sim {
-SaveParticlesTrackingAction::SaveParticlesTrackingAction() : G4UserTrackingAction() {}
+SaveParticlesTrackingAction::SaveParticlesTrackingAction():
+  G4UserTrackingAction() {}
 
 SaveParticlesTrackingAction::~SaveParticlesTrackingAction() {}
 

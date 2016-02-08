@@ -9,7 +9,7 @@
 DECLARE_TOOL_FACTORY(G4DD4hepDetector)
 
 G4DD4hepDetector::G4DD4hepDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IG4DetectorConstruction>(this);
 }
 

@@ -14,7 +14,7 @@
 DECLARE_TOOL_FACTORY(G4SaveTrackerHits)
 
 G4SaveTrackerHits::G4SaveTrackerHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IG4SaveOutputTool>(this);
   declareOutput("trackClusters", m_trackClusters,"hits/trackerClusters");
   declareOutput("trackHits", m_trackHits,"hits/trackerHits");

@@ -13,7 +13,7 @@
 DECLARE_TOOL_FACTORY(G4SaveCalHits)
 
 G4SaveCalHits::G4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IG4SaveOutputTool>(this);
   declareProperty("caloType", m_calType);
   declareOutput("caloClusters", m_caloClusters,"hits/caloClusters");
