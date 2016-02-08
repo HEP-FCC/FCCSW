@@ -49,13 +49,17 @@ StatusCode HepMCHistograms::execute() {
   
   info() << "Processing event with " << evt->particles_size() << " particles" << endmsg;
   
-  for (auto it = evt->particles_begin(); it != evt->particles_end(); ++it) {
+  for (HepMC::GenEvent::particle_const_iterator it = evt->particles_begin(), end = evt->particles_end();
+    it != end;
+    ++it) {
     auto particle = *it;
     m_eta->Fill(particle->momentum().eta());
     m_pt->Fill(particle->momentum().perp());
   }
 
-  for(auto it = evt->vertices_begin(); it != evt->vertices_end(); ++it) {
+  for (HepMC::GenEvent::vertex_const_iterator it = evt->vertices_begin(), end = evt->vertices_end();
+    it != end;
+    ++it) {
     auto vertex = *it;
     m_d0->Fill(vertex->position().perp());
     m_z0->Fill(vertex->position().z());
