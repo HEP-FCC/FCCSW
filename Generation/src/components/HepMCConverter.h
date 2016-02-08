@@ -15,7 +15,7 @@ class GenVertexCollection;
 
 class HepMCConverter: public GaudiAlgorithm {
   friend class AlgFactory<HepMCConverter> ;
-  
+
 public:
   /// Constructor.
   HepMCConverter(const std::string& name, ISvcLocator* svcLoc);

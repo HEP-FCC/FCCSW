@@ -7,7 +7,7 @@
 
 class GenParticleFilter: public GaudiAlgorithm {
   friend class AlgFactory<GenParticleFilter> ;
-  
+
 public:
   /// Constructor.
   GenParticleFilter(const std::string& name, ISvcLocator* svcLoc);

@@ -33,27 +33,27 @@ public:
 private:
   /// Minimum value for the x coordinate of the vertex (set by options)
   double m_xmin   ;
-  
+
   /// Minimum value for the y coordinate of the vertex (set by options)
   double m_ymin   ;
-  
+
   /// Minimum value for the z coordinate of the vertex (set by options)
   double m_zmin   ;
   
   /// Maximum value for the x coordinate of the vertex (set by options)
   double m_xmax   ;
-  
+
   /// Maximum value for the y coordinate of the vertex (set by options)
   double m_ymax   ;
-  
+
   /// Maximum value for the z coordinate of the vertex (set by options)
   double m_zmax   ;
-  
+
   /// Direction of the beam to take into account TOF vs nominal IP8, can have
   /// only values -1 or 1, or 0 to switch off the TOF and set time of 
   /// interaction to zero (default = 1, as for beam 1)
   int m_zDir;
-  
+
   Rndm::Numbers m_flatDist ; ///< Flat random number generator
 };
 

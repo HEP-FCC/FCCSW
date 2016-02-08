@@ -10,10 +10,10 @@ DECLARE_TOOL_FACTORY( FlatSmearVertex )
 
 /// Standard constructor, initializes variables
 FlatSmearVertex::FlatSmearVertex(
-    const std::string& type,
-    const std::string& name,
-    const IInterface* parent )
-    : GaudiTool ( type, name , parent ) {
+  const std::string& type,
+  const std::string& name,
+  const IInterface* parent )
+  : GaudiTool ( type, name , parent ) {
   declareInterface< IVertexSmearingTool >( this ) ;
   
   declareProperty( "xVertexMin" , m_xmin = 0.0 * Gaudi::Units::mm ) ;
@@ -52,7 +52,7 @@ StatusCode FlatSmearVertex::initialize( ) {
   } else {
     return Error("BeamDirection can only be set to -1 or 1, or 0 to switch off TOF");
   }
-  
+
   info() << "Smearing of interaction point with flat distribution "
          << " in x, y and z " << endmsg;
   info() << infoMsg << endmsg;
@@ -62,10 +62,10 @@ StatusCode FlatSmearVertex::initialize( ) {
          << m_ymax / Gaudi::Units::mm << " mm and "
          << m_zmin / Gaudi::Units::mm << " mm <= z <= "
          << m_zmax / Gaudi::Units::mm << " mm." << endmsg;
-  
+
   if ( ! sc.isSuccess() ) 
     return Error( "Could not initialize flat random number generator" ) ;
-  
+
   release( randSvc ) ;
   return sc ;
 }
@@ -78,17 +78,17 @@ StatusCode FlatSmearVertex::smearVertex( HepMC::GenEvent * theEvent ) {
   dy = m_ymin + m_flatDist( ) * ( m_ymax - m_ymin ) ;
   dz = m_zmin + m_flatDist( ) * ( m_zmax - m_zmin ) ;
   dt = m_zDir * dz/Gaudi::Units::c_light ;
-  
+
   Gaudi::LorentzVector dpos( dx , dy , dz , dt ) ;
   
   debug() << "Smearing vertices by " << dpos << endmsg;
-  
+
   for (auto vit = theEvent->vertices_begin(); vit != theEvent->vertices_end(); ++vit ) {
     Gaudi::LorentzVector pos ( (*vit) -> position() ) ;
     pos += dpos ;
     (*vit)->set_position( HepMC::FourVector(pos.x(), pos.y(), pos.z(), pos.t() ) ) ;
   }
-  
+
   return StatusCode::SUCCESS ;
 }
 

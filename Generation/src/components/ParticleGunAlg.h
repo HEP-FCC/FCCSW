@@ -23,9 +23,9 @@ class ParticleGunAlg : public GaudiAlgorithm {
 public:
   /// Standard constructor
   ParticleGunAlg( const std::string& name, ISvcLocator* pSvcLocator );
-  
+
   virtual ~ParticleGunAlg( ); ///< Destructor
-  
+
   /** Algorithm initialization.
    *  -# Initializes the common Gaudi random number generator used in all
    *     generators,
@@ -33,14 +33,14 @@ public:
    *     full event cut tool used in the generation of events.
    */
   virtual StatusCode initialize();
-  
+
   /** Algorithm execution.
    *  Repeat the following sequence until a good set of interactions is
    *  generated.
    *  -#
    */
   virtual StatusCode execute   ();
-  
+
   /** Algorithm finalization.
    *  Print generation counters.
    */
