@@ -15,12 +15,11 @@ smeartool = FlatSmearVertex(
     zVertexMin = -35,
     zVertexMax = 35 )
 
-
 genpileup = PoissonPileUp(name="Pileup", 
-    Filename="/afs/cern.ch/user/v/vavolkl/public/example_MyPythia.dat", 
+    Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
     numPileUpEvents=2)
 reader = HepMCReader("Reader", 
-    Filename="/afs/cern.ch/user/v/vavolkl/public/example_MyPythia.dat", 
+    Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
     PileUpTool=genpileup,
     VertexSmearingTool = smeartool)
 reader.DataOutputs.hepmc.Path = "hepmc"
