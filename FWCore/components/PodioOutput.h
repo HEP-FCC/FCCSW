@@ -3,7 +3,7 @@
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "podio/CollectionBase.h"
-#include "KeepDropSwitch.h"
+#include "FWCore/KeepDropSwitch.h"
 
 #include "TTree.h"
 

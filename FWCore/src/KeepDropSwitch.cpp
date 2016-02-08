@@ -1,4 +1,4 @@
-#include "KeepDropSwitch.h"
+#include "FWCore/KeepDropSwitch.h"
 
 #include <sstream>
 #include <iostream>
