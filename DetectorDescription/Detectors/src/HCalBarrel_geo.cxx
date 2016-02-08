@@ -100,8 +100,6 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   double drWedge = (dimensions.rmax() - dimensions.rmin()) * 0.5;
 
-  unsigned int idxModComp = 0;
-
   double dxWedge1 = tn * dimensions.rmin() - spacing;
   double dxWedge2 = tn * dimensions.rmax() - spacing;
 
@@ -110,11 +108,11 @@ static DD4hep::Geometry::Ref_t createHCal (
         dxWedge1, dxWedge2, dzModule, dzModule, drWedge
       ), lcdd.material("Air")
   );
-  for (unsigned int idxLayer = 0; idxLayer < numModulesR; ++idxLayer) {
+  for (unsigned int idxLayer = 1; idxLayer < numModulesR + 1; ++idxLayer) {
     auto layerName = std::string("wedge") + DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
     double rminLayer = idxLayer * moduleDimensions.dr();
-    double rmaxLayer = (idxLayer + 1) * moduleDimensions.dr();
+    double rmaxLayer = idxLayer + 1 * moduleDimensions.dr();
     double dx1 = tn * rminLayer - spacing;
     double dx2 = tn * rmaxLayer - spacing;
     // -drWedge to place it in the middle of the wedge-volume
