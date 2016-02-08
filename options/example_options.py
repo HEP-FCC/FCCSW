@@ -1,23 +1,43 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc, PodioWrite, PodioOutput
 
+# data service
+from Configurables import FCCDataSvc
 podioevent   = FCCDataSvc("EventDataSvc")
 
+# reads HepMC text file and write the HepMC::GenEvent to the data service
+from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+# In the following line,
+#   reader.DataOutputs.YYY.Path = "XXX"
+# YYY matches the string passed to declareOutput in the constructor of the algorithm (here "hepmc")
+# XXX declares a name for the product (here the product is HepMC::GenEvent: "hepmcevent")
+reader.DataOutputs.hepmc.Path = "hepmcevent"
 
+# dumps the HepMC::GenEvent
+from Configurables import HepMCDumper
 dumper = HepMCDumper("Dumper")
-dumper.DataInputs.hepmc.Path="hepmc"
+# the input product name matches the output product name of the previous module ("hepmcevent")
+# the string "hepmc" is passed in the constructor of HepMCDumper in DeclareProperty method
+#     note that it is only by coincidence the same as in HepMCReader
+dumper.DataInputs.hepmc.Path="hepmcevent"
 
+# PODIO algorithms
+from Configurables import PodioWrite, PodioOutput
 podiowrite = PodioWrite("PodioWrite",OutputLevel=DEBUG)
 podiowrite.DataOutputs.podioJets.Path = "podioJets"
 out = PodioOutput("out", OutputLevel=DEBUG)
 
 
-ApplicationMgr( TopAlg = [reader,dumper,podiowrite,out],
-                EvtSel = 'NONE',
-                EvtMax = 1,
-                ExtSvc = [podioevent],
-#                EventLoop = eventloopmgr,
-                OutputLevel=INFO
- )
+# ApplicationMgr
+from Configurables import ApplicationMgr
+ApplicationMgr(
+    # all algorithms should be put here
+    TopAlg = [reader,dumper,podiowrite,out],
+    EvtSel = 'NONE',
+    # number of events
+    EvtMax = 1,
+    # all services should be put here
+    ExtSvc = [podioevent],
+    # output level
+    OutputLevel=INFO
+)

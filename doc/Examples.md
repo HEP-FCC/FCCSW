@@ -3,10 +3,13 @@ List of examples
 
 * options/simple_workflow.py
   * reading events from a HepMC file
-  * converting HepMC::GenEvent to EDM
+  * converting `HepMC::GenEvent` to EDM
   * using sample (jet clustering) algorithm
-  * writing the EDM output using PODIO algorithms and service
+  * writing the EDM output using PODIO algorithm
 * options/example_options.py
+  * reading events from a HepMC file
+  * dumping `HepMC::GenEvent`
+  * using dummy algorithm `PodioWrite` that creates EDM `fcc::JetCollection`
 * options/simple_pythia.py
 * options/geant_pgun_fullsim.py
 * options/geant_fullsim.py
