@@ -5,9 +5,10 @@
 
 DECLARE_TOOL_FACTORY( PoissonPileUp )
 
-PoissonPileUp::PoissonPileUp( const std::string& type,
-                              const std::string& name,
-                              const IInterface* parent )
+PoissonPileUp::PoissonPileUp(
+  const std::string& type,
+  const std::string& name,
+  const IInterface* parent )
   : GaudiTool ( type, name , parent ) {
   declareInterface< IPileUpTool >( this );
   
