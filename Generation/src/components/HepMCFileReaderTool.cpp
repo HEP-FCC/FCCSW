@@ -42,6 +42,8 @@ StatusCode HepMCFileReader::open(const std::string& filename) {
 
 HepMC::GenEvent* HepMCFileReader::readNextEvent() {
   Assert(nullptr != m_file, "Invalid input file!");
+  // this function is to be used in conjunction with
+  // the data service or some other memory manager
   HepMC::GenEvent* tmpEvent = new HepMC::GenEvent();
   m_file->fill_next_event(tmpEvent);
   return tmpEvent;
