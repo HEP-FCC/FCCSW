@@ -53,8 +53,7 @@ StatusCode GeoSvc::buildDD4HepGeo(){
     //load geometry
     for (auto& filename : m_xmlFileNames) {
         m_log << MSG::INFO << "loading geometry from file:  '" << filename << "'" << endmsg;
-        char* arg = (char*) filename.c_str();
-        m_dd4hepgeo->apply("DD4hepXMLLoader", 1, &arg);
+        m_dd4hepgeo->fromCompact(filename);
     }
     m_dd4hepgeo->volumeManager();
     m_dd4hepgeo->apply("DD4hepVolumeManager",0,0);
