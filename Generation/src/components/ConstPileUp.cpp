@@ -5,10 +5,11 @@
 
 DECLARE_TOOL_FACTORY( ConstPileUp )
 
-ConstPileUp::ConstPileUp( const std::string& type,
-                          const std::string& name,
-                          const IInterface* parent )
-    : GaudiTool ( type, name , parent ) {
+ConstPileUp::ConstPileUp(
+  const std::string& type,
+  const std::string& name,
+  const IInterface* parent)
+  : GaudiTool ( type, name , parent ) {
   declareInterface< IPileUpTool >( this );
   
   declareProperty( "numPileUpEvents", m_numPileUpEvents = 0 );
