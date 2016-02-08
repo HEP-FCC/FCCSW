@@ -19,8 +19,9 @@
 DECLARE_ALGORITHM_FACTORY( ParticleGunAlg )
 
 /// Standard constructor, initializes variables
-ParticleGunAlg::ParticleGunAlg( const std::string& name,
-                          ISvcLocator* pSvcLocator)
+ParticleGunAlg::ParticleGunAlg(
+  const std::string& name,
+  ISvcLocator* pSvcLocator)
   : GaudiAlgorithm ( name , pSvcLocator ) {
   // Generation Method
   declareProperty ( "ParticleGunTool" ,
@@ -48,19 +49,26 @@ StatusCode ParticleGunAlg::execute() {
   StatusCode sc = StatusCode::SUCCESS ;
   Gaudi::LorentzVector theFourMomentum ;
   Gaudi::LorentzVector origin ;
-  int thePdgId ;
   
-  // prepare a new HepMC event
+  // prepare a new HepMC event --
+  // the data service (through m_hepmchandle) will be
+  // responsible for deletion of the GenEvent
   HepMC::GenEvent * theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::CM) ;
   
+  // note: pgdid is set in function generateParticle
+  int thePdgId ;
   m_particleGunTool->generateParticle( theFourMomentum , origin , thePdgId );
   
-  // create HepMC Vertex
+  // create HepMC Vertex --
+  // by calling add_vertex(), the hepmc event is given ownership
+  //  of the vertex
   HepMC::GenVertex * v = new HepMC::GenVertex( HepMC::FourVector( origin.X() ,
 								  origin.Y() ,
 								  origin.Z() ,
 								  origin.T() ) ) ;
-  // create HepMC particle
+  // create HepMC particle --
+  // by calling add_particle_out(), the hepmc vertex is given ownership
+  // of the particle
   HepMC::GenParticle * p = new HepMC::GenParticle( HepMC::FourVector( theFourMomentum.Px() ,
 								      theFourMomentum.Py() ,
 								      theFourMomentum.Pz() ,
