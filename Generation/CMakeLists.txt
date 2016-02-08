@@ -21,7 +21,8 @@ gaudi_add_module(Generation
 include(CTest)
 
 gaudi_add_test(particleGun
-               FRAMEWORK options/particleGun.py)
+               FRAMEWORK options/particleGun.py
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 gaudi_add_test(PileUpReader
                FRAMEWORK options/pileup_hepmcreader.py)

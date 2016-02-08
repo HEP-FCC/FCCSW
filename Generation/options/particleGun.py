@@ -6,12 +6,9 @@ dumper = HepMCDumper("Dumper")
 dumper.DataInputs.hepmc.Path="hepmc"
 
 
-# A particle table file needs to be present in the directory 
-# from which Gaudi is run. If you run from the top-level directory,
-# the following option can be added to the service to use the file in this directory.
-#ParticlePropertiesFile='Generation/options/ParticleTable.txt'
 
-particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile='/afs/cern.ch/lhcb/software/releases/GAUDI/GAUDI_v26r4/GaudiExamples/tests/data/ParticleTable.txt')
+particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc",
+    ParticlePropertiesFile='Generation/options/ParticleTable.txt')
 guntool = MomentumRangeParticleGun(PdgCodes=[-211, 211, -11, -13,  13, 11 ])
 
 smeartool = FlatSmearVertex("smeartoolname")
