@@ -24,7 +24,7 @@ public:
 private:
   void close();
   std::string m_filename;
-  HepMC::IO_GenEvent* m_file;
+  std::unique_ptr<HepMC::IO_GenEvent> m_file;
 };
 
 #endif // GENERATION_HEPMCFILEREADER_H

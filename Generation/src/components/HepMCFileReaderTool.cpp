@@ -10,10 +10,10 @@
 DECLARE_TOOL_FACTORY(HepMCFileReader)
 
 HepMCFileReader::HepMCFileReader(
-    const std::string& type,
-    const std::string& name,
-    const IInterface* parent)
-    : GaudiTool(type, name, parent), m_file(0) {
+  const std::string& type,
+  const std::string& name,
+  const IInterface* parent)
+  : GaudiTool(type, name, parent), m_file(nullptr) {
   declareInterface<IHepMCFileReaderTool> (this);
 }
 
@@ -31,9 +31,9 @@ StatusCode HepMCFileReader::open(const std::string& filename) {
     return StatusCode::FAILURE;
   }
   // open file using HepMC routines
-  m_file = new HepMC::IO_GenEvent ( filename.c_str(), std::ios::in ) ;
+  m_file = std::unique_ptr<HepMC::IO_GenEvent>( new HepMC::IO_GenEvent ( filename.c_str(), std::ios::in ));
   // check that readable 
-  if ( ( 0 == m_file ) || ( m_file->rdstate() == std::ios::failbit ) ) {
+  if ( ( nullptr == m_file ) || ( m_file->rdstate() == std::ios::failbit ) ) {
     error()   <<  "Failure to read the file '"+filename+"'" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -41,7 +41,7 @@ StatusCode HepMCFileReader::open(const std::string& filename) {
 }
 
 HepMC::GenEvent* HepMCFileReader::readNextEvent() {
-  Assert(0 != m_file, "Invalid input file!");
+  Assert(nullptr != m_file, "Invalid input file!");
   HepMC::GenEvent* tmpEvent = new HepMC::GenEvent();
   m_file->fill_next_event(tmpEvent);
   return tmpEvent;
@@ -49,10 +49,7 @@ HepMC::GenEvent* HepMCFileReader::readNextEvent() {
 
 
 StatusCode HepMCFileReader::finalize() {
-  if ( 0 != m_file ) {
-    delete m_file;
-    m_file = 0;
-  }
+  m_file.reset();
   return GaudiTool::finalize();
 }
 
