@@ -22,7 +22,7 @@ List of examples
 * Sim/SimG4Components/tests/geant_fullsim_moreEvents.py
 
 * Generation/config/particleGun.py
-* Examples/config/delphes_simulation.py
-* Examples/config/dummy_simulation.py
-* Examples/config/compare_material.py
-* Reconstruction/config/genJetClustering.py
+* Examples/options/delphes_simulation.py
+* Examples/options/dummy_simulation.py
+* Examples/options/compare_material.py
+* Reconstruction/options/genJetClustering.py
