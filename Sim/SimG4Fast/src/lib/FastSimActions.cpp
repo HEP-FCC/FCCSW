@@ -12,7 +12,7 @@ FastSimActions::FastSimActions(const std::string& aSmearingToolName):
 FastSimActions::~FastSimActions() {}
 
 void FastSimActions::Build() const {
-   SetUserAction(new SaveParticlesTrackingAction);
-   SetUserAction(new InitializeModelsRunAction(m_smearToolName));
+  SetUserAction(new SaveParticlesTrackingAction);
+  SetUserAction(new InitializeModelsRunAction(m_smearToolName));
 }
 }

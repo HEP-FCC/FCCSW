@@ -19,8 +19,7 @@
 
 class G4FastSimActions: public AlgTool, virtual public IG4ActionTool {
 public:
-  G4FastSimActions(const std::string& type , const std::string& name,
-                   const IInterface* parent);
+  G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~G4FastSimActions();
   /**  Initialize.
    *   @return status code
