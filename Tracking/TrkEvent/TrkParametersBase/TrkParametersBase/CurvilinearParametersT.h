@@ -48,11 +48,11 @@ template <int DIM, class T, class S> class CurvilinearParametersT : public Param
     friend class MaterialEffectsEngine;  
       
     /**Default constructor for POOL. Do not use!*/
-    CurvilinearParametersT(Alg::AmgSymMatrix<DIM>* covariance = 0);
+    explicit CurvilinearParametersT(Alg::AmgSymMatrix<DIM>* covariance = 0);
 
     /** Create CurvilinearParametersT from DIM+2 parameters 
 	  - these are: global position, momentum, charge, extension */
-    CurvilinearParametersT(const Alg::AmgVector<DIM+2>& parameters, 
+    explicit CurvilinearParametersT(const Alg::AmgVector<DIM+2>& parameters, 
 	                       Alg::AmgSymMatrix<DIM>* covariance = 0,
                            unsigned int cIdenfier = 0); 
 

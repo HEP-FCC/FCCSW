@@ -27,7 +27,7 @@ class ChargeDefinition
      {}
 
     /** ctor with argument */
-    ChargeDefinition(double charge) :
+    explicit ChargeDefinition(double charge) :
      m_charge(charge)
      {}
 

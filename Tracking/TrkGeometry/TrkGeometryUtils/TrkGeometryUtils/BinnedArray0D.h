@@ -35,7 +35,7 @@ namespace Trk {
      {}
 
      /**Constructor  from oneobject  */
-      BinnedArray0D(const std::shared_ptr<const T>& obj) throw (GaudiException) :
+      explicit BinnedArray0D(const std::shared_ptr<const T>& obj) throw (GaudiException) :
       BinnedArray<T>(),
       m_object(obj),
       m_arrayObjects(1,obj.get())

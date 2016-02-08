@@ -39,8 +39,8 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   /** Constructor.
    *  @param aModelName Name of the fast simulation model.
    */
-  FastSimModelTracker (const std::string& aModelName);
-  ~FastSimModelTracker ();
+  explicit FastSimModelTracker (const std::string& aModelName);
+  virtual ~FastSimModelTracker ();
   /** Check if this model should be applied to this particle type.
    *  @param aParticle Particle definition (type).
    */
