@@ -34,14 +34,14 @@ namespace Reco {
         //constructors from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //constructor with TGeoNode - transform is set automaticall
         //constructor only with TGeoNode, creates a Surface without material, is used only for layers
-        Surface (TGeoNode* node);
+        explicit Surface (TGeoNode* node);
         //standard constructor with TGeoNode and MateriaMap
         Surface (TGeoNode* node, MaterialMap* materialmap);
         //constructor to set transform manually
         Surface (MaterialMap* materialmap, std::shared_ptr<const Alg::Transform3D> transf);
-        Surface (std::shared_ptr<const Alg::Transform3D> transf);
+        explicit Surface (std::shared_ptr<const Alg::Transform3D> transf);
         //copy constructor
-        Surface (const Surface& surface);
+        explicit Surface (const Surface& surface);
         //destructor
         virtual ~Surface();
         //clone method

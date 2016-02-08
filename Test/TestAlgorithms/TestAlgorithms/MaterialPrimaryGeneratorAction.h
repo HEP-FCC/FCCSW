@@ -20,7 +20,7 @@ class G4Event;
 class MaterialPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
-    MaterialPrimaryGeneratorAction(
+    explicit MaterialPrimaryGeneratorAction(
                                  const G4String& particleName = "geantino",
                                  G4double energy = 1.*MeV,
                                  G4ThreeVector position= G4ThreeVector(0,0,0),
