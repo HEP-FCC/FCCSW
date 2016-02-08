@@ -3,8 +3,12 @@
 DECLARE_COMPONENT(HepMCHistograms)
 
 HepMCHistograms::HepMCHistograms(const std::string& name, ISvcLocator* svcLoc) :
-    GaudiAlgorithm(name, svcLoc), m_ths(nullptr),
-    m_pt(nullptr), m_eta(nullptr), m_d0(nullptr), m_z0(nullptr) {
+  GaudiAlgorithm(name, svcLoc),
+  m_ths(nullptr),
+  m_pt(nullptr),
+  m_eta(nullptr),
+  m_d0(nullptr),
+  m_z0(nullptr) {
   declareInput("hepmc", m_hepmchandle);
 }
 
