@@ -33,9 +33,8 @@ HepMC::GenEvent* HepMCSimpleMerge::merge(const std::vector<HepMC::GenEvent>& eve
   for (auto it=eventVector.begin()+1; 
       it != eventVector.end();
        ++it) {
-    HepMC::GenEvent* tmpEvent = new HepMC::GenEvent(*it);
-    for ( HepMC::GenEvent::particle_iterator p = tmpEvent->particles_begin();
-          p != tmpEvent->particles_end();
+    for (auto p = (*it).particles_begin();
+          p != (*it).particles_end();
           ++p ) {
         // simple check if final-state particle: 
         // has no end vertex and correct status code meaning no further decays
@@ -48,7 +47,6 @@ HepMC::GenEvent* HepMCSimpleMerge::merge(const std::vector<HepMC::GenEvent>& eve
           pileEvent->add_vertex(tmpVertex);
         }
     }
-    delete tmpEvent;
   }
   return pileEvent;
 }
