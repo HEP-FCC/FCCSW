@@ -34,7 +34,7 @@ genjet_clustering.DataInputs.particles.Path='all_genparticles'
 genjet_clustering.DataOutputs.jets.Path='genjets'
 genjet_clustering.DataOutputs.constituents.Path='genjets_particles'
 
-# PODIO algorithms
+# PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
                   OutputLevel=DEBUG)

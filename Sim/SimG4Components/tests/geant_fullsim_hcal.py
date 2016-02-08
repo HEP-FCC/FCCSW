@@ -27,7 +27,7 @@ geantsim = G4SimAlg("G4SimAlg",
                         outputs = ["G4SaveCalHits/G4SaveHCalHits"] )
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
-from Configurables import PodioWrite, PodioOutput
+from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]

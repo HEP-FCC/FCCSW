@@ -141,7 +141,7 @@ The configuration file (`options/geant_fullsim.py`) contains:
   * saving the output to ROOT file
 
     ~~~{.py}
-    from Configurables import PodioWrite, PodioOutput
+    from Configurables import PodioOutput
     out = PodioOutput("out",
                        OutputLevel=DEBUG)
     out.outputCommands = ["keep *"]

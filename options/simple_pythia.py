@@ -43,7 +43,7 @@ genjet_clustering.DataInputs.particles.Path='genparticles'
 genjet_clustering.DataOutputs.jets.Path='genjets'
 genjet_clustering.DataOutputs.constituents.Path='genjets_particles'
 
-from Configurables import PodioWrite, PodioOutput
+from Configurables import PodioOutput
 out = PodioOutput("out",OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 

@@ -1,16 +1,16 @@
-#ifndef _PODIOWRITE_H_
-#define _PODIOWRITE_H_
+#ifndef EXAMPLES_CREATESAMPLEJET_H
+#define EXAMPLES_CREATESAMPLEJET_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/JetCollection.h"
 #include "FWCore/DataHandle.h"
 
-class PodioWrite: public GaudiAlgorithm {
-  friend class AlgFactory<PodioWrite> ;
+class CreateSampleJet: public GaudiAlgorithm {
+  friend class AlgFactory<CreateSampleJet> ;
 
 public:
   /// Constructor.
-  PodioWrite(const std::string& name, ISvcLocator* svcLoc);
+  CreateSampleJet(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
   virtual StatusCode initialize();
   /// Execute.
@@ -24,4 +24,4 @@ private:
 
 };
 
-#endif
+#endif /* EXAMPLES_CREATESAMPLEJET_H */

@@ -9,7 +9,7 @@ List of examples
 * options/example_options.py
   * reading events from a HepMC file
   * dumping `HepMC::GenEvent`
-  * using dummy algorithm `PodioWrite` that creates EDM `fcc::JetCollection`
+  * using dummy algorithm `CreateSampleJet` that creates EDM `fcc::JetCollection`
 * options/simple_pythia.py
 * options/geant_pgun_fullsim.py
 * options/geant_fullsim.py

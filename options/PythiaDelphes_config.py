@@ -77,7 +77,7 @@ delphessim.DataOutputs.genPartons.Path         = "genPartons"
 delphessim.DataOutputs.genStableParticles.Path = "genStableParticles"
 
 ## FCC event-data model output
-from Configurables import PodioWrite, PodioOutput
+from Configurables import PodioOutput
 
 out = PodioOutput("out",OutputLevel=DEBUG)
 #out.outputCommands = ["keep *"]

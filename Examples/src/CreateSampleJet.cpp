@@ -1,16 +1,16 @@
-#include "PodioWrite.h"
+#include "CreateSampleJet.h"
 #include "DataObjects/LorentzVector.h"
 
-DECLARE_COMPONENT(PodioWrite)
+DECLARE_COMPONENT(CreateSampleJet)
 
-PodioWrite::PodioWrite(const std::string& name, ISvcLocator* svcLoc) :
+CreateSampleJet::CreateSampleJet(const std::string& name, ISvcLocator* svcLoc) :
 		GaudiAlgorithm(name, svcLoc)
 
 {
   declareOutput("podioJets", m_jethandle);
 }
 
-StatusCode PodioWrite::initialize() {
+StatusCode CreateSampleJet::initialize() {
 
 	if (GaudiAlgorithm::initialize().isFailure())
 		return StatusCode::FAILURE;
@@ -18,7 +18,7 @@ StatusCode PodioWrite::initialize() {
 	return StatusCode::SUCCESS;
 }
 
-StatusCode PodioWrite::execute() {
+StatusCode CreateSampleJet::execute() {
   fcc::JetCollection* jets = new fcc::JetCollection();
   fcc::LorentzVector lv1;
   lv1.Px  = 20.;
@@ -33,7 +33,7 @@ StatusCode PodioWrite::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PodioWrite::finalize() {
+StatusCode CreateSampleJet::finalize() {
 	if (GaudiAlgorithm::finalize().isFailure())
 		return StatusCode::FAILURE;
 

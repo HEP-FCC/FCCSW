@@ -21,12 +21,14 @@ dumper = HepMCDumper("Dumper")
 #     note that it is only by coincidence the same as in HepMCReader
 dumper.DataInputs.hepmc.Path="hepmcevent"
 
-# PODIO algorithms
-from Configurables import PodioWrite, PodioOutput
-podiowrite = PodioWrite("PodioWrite",OutputLevel=DEBUG)
+# dummy algorithm creating a sample jet
+from Configurables import CreateSampleJet, PodioOutput
+podiowrite = CreateSampleJet("SampleJet",OutputLevel=DEBUG)
 podiowrite.DataOutputs.podioJets.Path = "podioJets"
-out = PodioOutput("out", OutputLevel=DEBUG)
 
+# PODIO algorithm
+from Configurables import PodioOutput
+out = PodioOutput("out", OutputLevel=DEBUG)
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
@@ -38,6 +40,6 @@ ApplicationMgr(
     EvtMax = 1,
     # all services should be put here
     ExtSvc = [podioevent],
-    # output level
+    # possible: DEBUG, INFO, WARNING, ERROR, FATAL
     OutputLevel=INFO
 )
