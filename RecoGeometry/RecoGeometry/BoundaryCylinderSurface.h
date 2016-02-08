@@ -27,7 +27,7 @@ namespace Reco {
         //copy constructor
         BoundaryCylinderSurface(const BoundaryCylinderSurface& boundarycylindersurface);
         //destructor
-        ~BoundaryCylinderSurface();
+        virtual ~BoundaryCylinderSurface();
         //clone method
         virtual BoundaryCylinderSurface* clone() const override;
         //assignment operator

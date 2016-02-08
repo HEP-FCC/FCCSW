@@ -13,7 +13,7 @@
 namespace sim {
 class GdmlDetectorConstruction: public G4VUserDetectorConstruction {
 public:
-  GdmlDetectorConstruction(const std::string& aFileName);
+  explicit GdmlDetectorConstruction(const std::string& aFileName);
   virtual ~GdmlDetectorConstruction();
 
   virtual G4VPhysicalVolume* Construct() override;

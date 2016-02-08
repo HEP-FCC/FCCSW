@@ -1,11 +1,12 @@
-#include <iostream>
 #include "GeantFullSimAlg.h"
+
+#include <iostream>
 
 // FCCSW
 #include "SimG4Common/Units.h"
 #include "SimG4Interface/IGeantSvc.h"
 
-// albers
+// datamodel
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/TrackClusterCollection.h"
 #include "datamodel/TrackHitCollection.h"

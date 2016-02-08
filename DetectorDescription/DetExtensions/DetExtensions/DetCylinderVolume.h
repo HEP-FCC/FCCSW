@@ -23,7 +23,7 @@ namespace Det {
         
     public:
         
-        DetCylinderVolume(int status) :
+        explicit DetCylinderVolume(int status) :
         m_status(status)
         {}
         DetCylinderVolume(const DetCylinderVolume& volume, const DD4hep::Geometry::DetElement&)

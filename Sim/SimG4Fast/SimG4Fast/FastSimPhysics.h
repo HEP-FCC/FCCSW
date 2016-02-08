@@ -16,7 +16,7 @@ public:
       A constructor.
       @param aName A name of the physics constructor.
     */
-   FastSimPhysics(const G4String& aName);
+   explicit FastSimPhysics(const G4String& aName);
    FastSimPhysics();
    virtual ~FastSimPhysics();
    virtual void ConstructProcess() final;
