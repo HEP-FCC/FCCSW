@@ -63,11 +63,9 @@ List of examples
 
 
 * Sim/SimG4Components/tests/geant_fullsim_hcal.py
+  * different xml
 * Sim/SimG4Components/tests/geant_fullsim_gdml.py
-* Sim/SimG4Components/tests/geant_fullsim_moreEvents.py
+  * geo from GDML and example .gdml
 
 * Generation/config/particleGun.py
-* Examples/options/delphes_simulation.py
-* Examples/options/dummy_simulation.py
-* Examples/options/compare_material.py
 * Reconstruction/options/genJetClustering.py
