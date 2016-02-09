@@ -80,9 +80,7 @@ void DataHandle<T>::put (T *objectp){
 template<typename T>
 T* DataHandle<T>::createAndPut () {
     T *objectp = new T();
-    DataWrapper<T>* dw = new DataWrapper<T>();
-    dw->setData(objectp);
-    DataObjectHandle<DataWrapper<T> >::put(dw);
+    this->put(objectp);
     return objectp;
 }
 
