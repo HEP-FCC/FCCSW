@@ -77,6 +77,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   // NOTE: This assumes that both have the same dimensions!
   Dimension moduleDimensions(sequences[0].dimensions());
   double dzModule = moduleDimensions.dz();
+  double barrelRmin = dimensions.rmin();
 
   // calculate the number of modules fitting in phi, Z and Rho
   unsigned int numModulesPhi = moduleDimensions.phiBins();
@@ -100,8 +101,6 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   double drWedge = (dimensions.rmax() - dimensions.rmin()) * 0.5;
 
-  unsigned int idxModComp = 0;
-
   double dxWedge1 = tn * dimensions.rmin() - spacing;
   double dxWedge2 = tn * dimensions.rmax() - spacing;
 
@@ -115,8 +114,8 @@ static DD4hep::Geometry::Ref_t createHCal (
     unsigned int sequenceIdx = idxLayer % 2;
     double rminLayer = idxLayer * moduleDimensions.dr();
     double rmaxLayer = (idxLayer + 1) * moduleDimensions.dr();
-    double dx1 = tn * rminLayer - spacing;
-    double dx2 = tn * rmaxLayer - spacing;
+    double dx1 = tn * (rminLayer + barrelRmin) - spacing;
+    double dx2 = tn * (rmaxLayer + barrelRmin) - spacing;
     // -drWedge to place it in the middle of the wedge-volume
     double rMiddle = rminLayer + 0.5 * moduleDimensions.dr() - drWedge;
     Volume moduleVolume(layerName, DD4hep::Geometry::Trapezoid(
