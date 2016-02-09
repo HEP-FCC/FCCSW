@@ -17,7 +17,7 @@ List of examples
   * writing the EDM output to ROOT file using PODIO
 
 * [simple_pythia.py](../options/simple_pythia.py)
-  * genereting PYTHIA events and saving them to HepMC
+  * generating PYTHIA events and saving them to HepMC
   * converting `HepMC::GenEvent` to EDM
   * filtering MC particles
   * using sample jet clustering algorithm
@@ -42,7 +42,7 @@ List of examples
 ## SIMULATION examples
 
 * [PythiaDelphes_config.py](../options/PythiaDelphes_config.py)
-  * genereting PYTHIA events and saving them to HepMC
+  * generating PYTHIA events and saving them to HepMC
   * running Delphes simulation algorithm
   * writing the EDM output to ROOT file using PODIO
 
@@ -53,7 +53,7 @@ List of examples
   * Geant4 configured (`G4SimSvc`) with:
     * DD4hep geometry,
     * FTFP_BERT physics list,
-    * (empty) action initialization list.
+    * (empty) action initialisation list.
   * running Geant4 simulation algorithm (`G4SimAlg`), saving the output (tracker and HCal hits)
   * writing the EDM output to ROOT file using PODIO
 
@@ -66,7 +66,7 @@ List of examples
   * Geant4 configured (`G4SimSvc`) with:
     * DD4hep geometry,
     * FTFP_BERT physics list,
-    * (empty) action initialization list.
+    * (empty) action initialisation list.
   * running Geant4 simulation algorithm (`G4SimAlg`), saving the output (tracker and HCal hits)
   * writing the EDM output to ROOT file using PODIO
 
@@ -77,7 +77,7 @@ List of examples
   * Geant4 configured (`G4SimSvc`) with:
     * DD4hep geometry,
     * FTFP_BERT physics list,
-    * (empty) action initialization list.
+    * (empty) action initialisation list.
   * running Geant4 simulation algorithm (`G4SimAlg`), saving the output (HCal hits)
   * writing the EDM output to ROOT file using PODIO
 
@@ -87,7 +87,7 @@ List of examples
   * Geant4 configured (`G4SimSvc`) with:
     * geometry taken from [GDML file](../Sim/SimG4Common/gdml/example.xml) (no sensitive detectors!),
     * FTFP_BERT physics list,
-    * (empty) action initialization list.
+    * (empty) action initialisation list.
   * running Geant4 simulation algorithm (`G4SimAlg`)
   * writing the EDM output to ROOT file using PODIO
 
@@ -99,6 +99,6 @@ List of examples
     * DD4hep geometry,
     * FTFP_BERT physics list with `sim::FastSimPhysics` attached,
     * `G4ParticleSmearSimple` smearing tool for tracker,
-    * (empty) action initialization list.
+    * (empty) action initialisation list.
   * running Geant4 simulation algorithm (`G4SimAlg`), saving the output (smeared particles)
   * writing the EDM output to ROOT file using PODIO
