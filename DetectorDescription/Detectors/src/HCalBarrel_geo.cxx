@@ -55,21 +55,21 @@ static DD4hep::Geometry::Ref_t createHCal (
   xml_comp_t xEndPlate = xmlElement.child("end_plate");
   double dZEndPlate = xEndPlate.thickness();
 
-  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
-  Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
-  endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
+  // DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
+  // Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
+  // endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
 
-  DetElement endPlatePos("endPlate", 0);
-  DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz());
-  PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
-  placedEndPlatePos.addPhysVolID("endPlatePos", endPlatePos.id());
-  endPlatePos.setPlacement(placedEndPlatePos);
+  // DetElement endPlatePos("endPlate", 0);
+  // DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz());
+  // PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
+  // placedEndPlatePos.addPhysVolID("endPlatePos", endPlatePos.id());
+  // endPlatePos.setPlacement(placedEndPlatePos);
 
-  DetElement endPlateNeg("endPlate", 1);
-  DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz());
-  PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
-  placedEndPlateNeg.addPhysVolID("endPlateNeg", endPlateNeg.id());
-  endPlateNeg.setPlacement(placedEndPlateNeg);
+  // DetElement endPlateNeg("endPlate", 1);
+  // DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz());
+  // PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
+  // placedEndPlateNeg.addPhysVolID("endPlateNeg", endPlateNeg.id());
+  // endPlateNeg.setPlacement(placedEndPlateNeg);
 
 
   // Hard-coded assumption that we have two different sequences for the modules
@@ -77,6 +77,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   // NOTE: This assumes that both have the same dimensions!
   Dimension moduleDimensions(sequences[0].dimensions());
   double dzModule = moduleDimensions.dz();
+  double barrelRmin = dimensions.rmin();
 
   // calculate the number of modules fitting in phi, Z and Rho
   unsigned int numModulesPhi = moduleDimensions.phiBins();
@@ -108,13 +109,13 @@ static DD4hep::Geometry::Ref_t createHCal (
         dxWedge1, dxWedge2, dzModule, dzModule, drWedge
       ), lcdd.material("Air")
   );
-  for (unsigned int idxLayer = 1; idxLayer < numModulesR + 1; ++idxLayer) {
+  for (unsigned int idxLayer = 0; idxLayer <= numModulesR; ++idxLayer) {
     auto layerName = std::string("wedge") + DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
     double rminLayer = idxLayer * moduleDimensions.dr();
-    double rmaxLayer = idxLayer + 1 * moduleDimensions.dr();
-    double dx1 = tn * rminLayer - spacing;
-    double dx2 = tn * rmaxLayer - spacing;
+    double rmaxLayer = (idxLayer + 1) * moduleDimensions.dr();
+    double dx1 = tn * (rminLayer + barrelRmin) - spacing;
+    double dx2 = tn * (rmaxLayer + barrelRmin) - spacing;
     // -drWedge to place it in the middle of the wedge-volume
     double rMiddle = rminLayer + 0.5 * moduleDimensions.dr() - drWedge;
     Volume moduleVolume(layerName, DD4hep::Geometry::Trapezoid(
