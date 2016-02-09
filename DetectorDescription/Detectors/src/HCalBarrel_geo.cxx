@@ -55,21 +55,21 @@ static DD4hep::Geometry::Ref_t createHCal (
   xml_comp_t xEndPlate = xmlElement.child("end_plate");
   double dZEndPlate = xEndPlate.thickness();
 
-  // DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
-  // Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
-  // endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
+  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
+  Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
+  endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
 
-  // DetElement endPlatePos("endPlate", 0);
-  // DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz());
-  // PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
-  // placedEndPlatePos.addPhysVolID("endPlatePos", endPlatePos.id());
-  // endPlatePos.setPlacement(placedEndPlatePos);
+  DetElement endPlatePos("endPlate", 0);
+  DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz());
+  PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
+  placedEndPlatePos.addPhysVolID("endPlatePos", endPlatePos.id());
+  endPlatePos.setPlacement(placedEndPlatePos);
 
-  // DetElement endPlateNeg("endPlate", 1);
-  // DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz());
-  // PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
-  // placedEndPlateNeg.addPhysVolID("endPlateNeg", endPlateNeg.id());
-  // endPlateNeg.setPlacement(placedEndPlateNeg);
+  DetElement endPlateNeg("endPlate", 1);
+  DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz());
+  PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
+  placedEndPlateNeg.addPhysVolID("endPlateNeg", endPlateNeg.id());
+  endPlateNeg.setPlacement(placedEndPlateNeg);
 
 
   // Hard-coded assumption that we have two different sequences for the modules
