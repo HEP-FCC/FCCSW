@@ -34,7 +34,7 @@ public:
   /// Overriding standard behaviour of evt service
 
   /// Register object with the data store.
-  virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject );
+  virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject ) final;
 
   virtual const CollRegistry& getCollections() const {return m_collections;}
   virtual podio::CollectionIDTable* getCollectionIDs() {return m_collectionIDs;}
@@ -45,5 +45,11 @@ private:
   // special members for podio handling
   std::vector<std::pair<std::string, podio::CollectionBase*>> m_collections;
   podio::CollectionIDTable* m_collectionIDs;
+
+  // Forbid standard Gaudi object registration until they are implemented:
+  virtual StatusCode  registerObject (const std::string &parentPath, const std::string &objPath, DataObject *pObject) final;
+  virtual StatusCode  registerObject (const std::string &parentPath, int item, DataObject *pObject) final;
+  virtual StatusCode  registerObject (DataObject *parentObj, const std::string &objPath, DataObject *pObject) final;
+  virtual StatusCode  registerObject (DataObject *parentObj, int item, DataObject *pObject) final;
 };
 #endif // CORE_PODIODATASVC_H

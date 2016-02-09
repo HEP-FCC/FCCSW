@@ -1,6 +1,6 @@
 //
 //  CylinderSurface.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 25/11/14.
 //
@@ -15,9 +15,9 @@
 #include "TrkParametersBase/ParametersT.h"
 
 namespace Reco {
-    
+
     class CylinderSurface : public Surface {
-    
+
     public:
         //constructor from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //material is set atomatically (node->Material)
@@ -56,9 +56,9 @@ namespace Reco {
         virtual bool globalToLocal(const Alg::Point3D& glopos, const Alg::Vector3D& mom, Alg::Point2D& locpos) const override;
         //returns if the surface is sensitive (and has a readout)
         virtual bool isSensitive() const override;
-        //returns the pathlength
+        /// Returns the pathlength in direction dir. NOTE: position is currently ignored
         virtual double pathlength(const Alg::Point3D& pos, const Alg::Vector3D& dir) const override;
-        
+
         /** Use the Surface as a ParametersBase constructor, from local parameters - charged */
         virtual const Trk::ParametersT<5, Trk::Charged, CylinderSurface>* createTrackParameters(double l1,
                                                                                                 double l2,
@@ -67,15 +67,15 @@ namespace Reco {
                                                                                                 double qop,
                                                                                                 Alg::AmgSymMatrix<5>* cov = 0) const override
         { return new Trk::ParametersT<5, Trk::Charged, CylinderSurface>(l1, l2, phi, theta, qop, *this, cov); }
-        
-        
+
+
         /** Use the Surface as a ParametersBase constructor, from global parameters - charged*/
         virtual const Trk::ParametersT<5, Trk::Charged, CylinderSurface>* createTrackParameters(const Alg::Point3D& position,
                                                                                                 const Alg::Vector3D& momentum,
                                                                                                 double charge,
                                                                                                 Alg::AmgSymMatrix<5>* cov = 0) const override
         { return new Trk::ParametersT<5, Trk::Charged, CylinderSurface>(position, momentum, charge, *this, cov); }
-        
+
         /** Use the Surface as a ParametersBase constructor, from local parameters - neutral */
         virtual const Trk::ParametersT<5, Trk::Neutral, CylinderSurface>* createNeutralParameters(double l1,
                                                                                                   double l2,
@@ -84,15 +84,15 @@ namespace Reco {
                                                                                                   double qop,
                                                                                                   Alg::AmgSymMatrix<5>* cov = 0) const
         { return new Trk::ParametersT<5, Trk::Neutral, CylinderSurface>(l1, l2, phi, theta, qop, *this, cov); }
-        
+
         /** Use the Surface as a ParametersBase constructor, from global parameters - neutral */
         virtual const Trk::ParametersT<5, Trk::Neutral, CylinderSurface>* createNeutralParameters(const Alg::Point3D& position,
                                                                                                   const Alg::Vector3D& momentum,
                                                                                                   double charge,
                                                                                                   Alg::AmgSymMatrix<5>* cov = 0) const override
         { return new Trk::ParametersT<5, Trk::Neutral, CylinderSurface>(position, momentum, charge, *this, cov); }
-        
-        
+
+
         /** Use the Surface as a ParametersBase constructor, from local parameters */
         template <int DIM, class T> const Trk::ParametersT<DIM, T, CylinderSurface>* createParameters(double l1,
                                                                                                       double l2,
@@ -101,18 +101,18 @@ namespace Reco {
                                                                                                       double qop,
                                                                                                       Alg::AmgSymMatrix<DIM>* cov = 0) const override
         { return new Trk::ParametersT<DIM, T, CylinderSurface>(l1, l2, phi, theta, qop, *this, cov); }
-        
+
         /** Use the Surface as a ParametersBase constructor, from global parameters */
         template <int DIM, class T> const Trk::ParametersT<DIM, T, CylinderSurface>* createParameters(const Alg::Point3D& position,
                                                                                                       const Alg::Vector3D& momentum,
                                                                                                       double charge,
                                                                                                       Alg::AmgSymMatrix<DIM>* cov = 0) const override
         { return new Trk::ParametersT<DIM, T, CylinderSurface>(position, momentum, charge, *this, cov); }
-        
+
         /** fast straight line intersection schema - provides closest intersection and (signed) path length
-         
+
          <b>mathematical motivation:</b>
-         
+
          The calculation will be done in the 3-dim frame of the cylinder,
          i.e. the symmetry axis of the cylinder is the z-axis, x- and y-axis are perpenticular
          to the the z-axis. In this frame the cylinder is centered around the origin.
@@ -127,11 +127,11 @@ namespace Reco {
          virtual Trk::Intersection straightLineIntersection(const Alg::Point3D& pos,
          const Alg::Vector3D& dir,
          bool forceDir = false) const override;
-        
+
     protected:
-        
+
         CylinderSurface();
-        
+
         double m_R;
         double m_halfZ;
         //halfthickness

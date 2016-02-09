@@ -1,6 +1,6 @@
 //
 //  PlotHits.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 29/04/15.
 //
@@ -37,7 +37,7 @@
 class PrintHits : public AlgTool, virtual public IPrintHits {
 
 public:
-    
+
     PrintHits(const std::string& type, const std::string& name, const IInterface* parent);
     ~PrintHits() {}
     virtual StatusCode initialize();
@@ -54,12 +54,13 @@ public:
     const Reco::Volume* nextVolume(std::weak_ptr<const Reco::BoundarySurface> surf, Alg::Point3D& glopos, const Alg::Vector3D& dir, bool& success) const;
     //intersect
     StatusCode intersect(const Reco::Volume* vol, Alg::Point3D& glopos, const Alg::Vector3D& dir) const;
-    
+
     virtual StatusCode printMaterial(std::shared_ptr<const Reco::ContainerVolume> worldVolume, const Alg::Point3D& start, size_t Nevents) override;
     virtual StatusCode printMaterial(std::shared_ptr<const Reco::ContainerVolume> worldVolume, const Alg::Point3D& start, std::vector<Alg::Vector3D> directions) override;
+    /// Print hit information. NOTE: This function does currently do nothing!
     virtual StatusCode printHits(std::vector<std::pair<double, const Alg::Vector3D>>& hits) override;
    /// StatusCode plotHits()
-    
+
 private:
     //OutPuts
     MsgStream       m_log;
@@ -75,13 +76,13 @@ private:
     TProfile*       m_tInX0Prof1;
     TProfile*       m_pathProf1;
     TProfile*       m_hitsProf;
-    
+
     mutable double  m_tInX0;
     mutable double  m_pathlength;
     mutable double  m_pathlength1;
     mutable int     m_counter;
     mutable int     m_hits;
-    
+
 };
 
 #endif //PLOTHITS_H
