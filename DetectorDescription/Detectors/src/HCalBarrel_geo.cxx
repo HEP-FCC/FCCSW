@@ -109,7 +109,7 @@ static DD4hep::Geometry::Ref_t createHCal (
         dxWedge1, dxWedge2, dzModule, dzModule, drWedge
       ), lcdd.material("Air")
   );
-  for (unsigned int idxLayer = 0; idxLayer <= numModulesR; ++idxLayer) {
+  for (unsigned int idxLayer = 0; idxLayer < numModulesR; ++idxLayer) {
     auto layerName = std::string("wedge") + DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
     double rminLayer = idxLayer * moduleDimensions.dr();
