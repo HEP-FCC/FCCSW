@@ -20,7 +20,7 @@ class IRndmGenSvc;
 
 class G4ParticleSmearSimple: public GaudiTool, virtual public IG4ParticleSmearTool {
 public:
-  G4ParticleSmearSimple(const std::string& type , const std::string& name,
+  explicit G4ParticleSmearSimple(const std::string& type , const std::string& name,
     const IInterface* parent);
   virtual ~G4ParticleSmearSimple();
 

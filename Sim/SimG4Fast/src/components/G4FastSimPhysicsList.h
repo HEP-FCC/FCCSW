@@ -18,7 +18,7 @@
 
 class G4FastSimPhysicsList: public AlgTool, virtual public IG4PhysicsList {
 public:
-  G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
+  explicit G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~G4FastSimPhysicsList();
 
   /**  Initialize.
