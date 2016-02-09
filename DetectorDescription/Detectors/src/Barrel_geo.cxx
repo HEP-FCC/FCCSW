@@ -20,11 +20,11 @@ using namespace DD4hep::Geometry;
 
 static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
 {
-    
+
     xml_det_t x_det = e;
     string det_name = x_det.nameStr();
     Material air = lcdd.air();
-    
+
     //Detector envelope of subdetector
     DetElement tracker(det_name, x_det.id());
     //get status for the RecoGeometry
@@ -43,9 +43,9 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
 //    tracker_vol.setVisAttributes(lcdd, x_det.visStr());
     //Set sensitive type tracker
     sens.setType("Geant4Tracker");
-    
+
     int layer_num = 0;
-    
+
     //Go through layers
     for (xml_coll_t j(e,_U(layer)); j; ++j )
     {
@@ -55,15 +55,15 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         double radius   = (rmax+rmin)*0.5;
         double layer_z  = x_layer.z();
         double dr       = x_layer.dr();
-        
+
         //Create Volume and DetElement for Layer
         string layer_name  = det_name + _toString(layer_num,"layer%d");
         Volume layer_vol(layer_name,Tube(rmin,rmax,layer_z), lcdd.material(x_layer.materialStr()));
         DetElement lay_det (tracker,layer_name,layer_num);
-        
+
         //Visualization
         layer_vol.setVisAttributes(lcdd.invisible());
-        
+
         //module in phi // later also loop through modules for different modules
         xml_comp_t x_module = x_layer.child(_U(module));
         int repeat = x_module.repeat();
@@ -75,7 +75,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
         //add Extension to Detlement for the RecoGeometry
         Det::DetCylinderLayer* detcylinderlayer = new Det::DetCylinderLayer();
         lay_det.addExtension<Det::IDetExtension>(detcylinderlayer);
-        
+
         int module_num = 0;
         //Place the Modules in z
         for (int k = -zrepeat; k<=zrepeat; k++)
@@ -92,20 +92,20 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                 Volume mod_vol("module", Box(x_module.length(),x_module.width(),x_module.thickness()), lcdd.material(x_module.materialStr()));
                 //Visualization
                 mod_vol.setVisAttributes(lcdd.invisible());
-                
+
                 double phi = deltaphi/dd4hep::rad * i;
                 string module_name = zname + _toString(i,"module%d");
-                
+
                 Position trans(r*cos(phi),
                                r*sin(phi),
                                k*dz);
-                
+
                 //Create module Detelement
                 DetElement mod_det(lay_det,module_name,module_num);
                 //add Extension to Detlement for the RecoGeometry
                 Det::DetModule* detmod = new Det::DetModule();
                 mod_det.addExtension<Det::IDetExtension> (detmod);
-                
+
                 int comp_num = 0;
                 //go through module components
                 for (xml_coll_t n(x_module,_U(module_component)); n; ++n) {
@@ -129,33 +129,33 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
                         comp_det.addExtension<Det::IDetExtension> (ex);
                     }
                     //place component in module
-                    Position trans (0.,0.,x_comp.z());
-                    PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,trans);
+                    Position transComp (0.,0.,x_comp.z());
+                    PlacedVolume placedcomp = mod_vol.placeVolume(comp_vol,transComp);
                     //assign the placed Volume to the DetElement
                     comp_det.setPlacement(placedcomp);
                     placedcomp.addPhysVolID("component",comp_num);
                     ++comp_num;
                 }
-                
+
                 //Place Module Box Volumes in layer
                 PlacedVolume placedmodule = layer_vol.placeVolume(mod_vol, Transform3D(RotationX(-0.5*M_PI)*RotationZ(-0.5*M_PI)*RotationX(phi-0.6*M_PI),trans));
                 placedmodule.addPhysVolID("module", module_num);
                 // assign module DetElement to the placed Module volume
                 mod_det.setPlacement(placedmodule);
-                
-                
+
+
                 ++module_num;
             }
             ++module_num;
         }
         //Place Layervolume
-        
+
         PlacedVolume placedLayer = tracker_vol.placeVolume(layer_vol);
         placedLayer.addPhysVolID("layer",layer_num);
         //Assign Layer DetElement to LayerVolume
         lay_det.setPlacement(placedLayer);
         ++layer_num;
-        
+
     }
     Volume mother_vol = lcdd.pickMotherVolume(tracker);
     //Place envelopevolume in mothervolume
@@ -163,8 +163,8 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     placed_env.addPhysVolID("system",x_det.id());
     //assign tracker DetElement to tracker volume
     tracker.setPlacement(placed_env); //fuer envelope moeglich
-    
-    
+
+
     return tracker;
 }
 
