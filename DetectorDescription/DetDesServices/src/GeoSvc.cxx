@@ -18,7 +18,7 @@ base_class(name, svc),
   m_dd4hepgeo(0),
   m_geant4geo(0),
   m_log(msgSvc(), name) {
-  declareProperty("detector", m_xmlFileName = "", "XML file with detector description");
+  declareProperty("detectors", m_xmlFileNames, "XML file with detector description");
 }
 
 GeoSvc::~GeoSvc() {
@@ -51,9 +51,10 @@ StatusCode GeoSvc::buildDD4HepGeo(){
     m_dd4hepgeo->addExtension<IGeoSvc>(this);
 
     //load geometry
-    m_log << MSG::INFO << "loading geometry from file:  '" << m_xmlFileName << "'" << endmsg;
-    char* arg = (char*) m_xmlFileName.c_str();
-    m_dd4hepgeo->apply("DD4hepXMLLoader", 1, &arg);
+    for (auto& filename : m_xmlFileNames) {
+        m_log << MSG::INFO << "loading geometry from file:  '" << filename << "'" << endmsg;
+        m_dd4hepgeo->fromCompact(filename);
+    }
     m_dd4hepgeo->volumeManager();
     m_dd4hepgeo->apply("DD4hepVolumeManager",0,0);
 
