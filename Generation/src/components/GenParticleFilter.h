@@ -1,5 +1,5 @@
-#ifndef _GENPARTICLEFILTER_H_
-#define _GENPARTICLEFILTER_H_
+#ifndef GENERATION_GENPARTICLEFILTER_H
+#define GENERATION_GENPARTICLEFILTER_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
@@ -24,4 +24,4 @@ private:
   DataHandle<fcc::MCParticleCollection> m_ogenphandle;
 };
 
-#endif
+#endif // GENERATION_GENPARTICLEFILTER_H
