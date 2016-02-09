@@ -37,8 +37,8 @@ StatusCode G4SaveSmearedParticles::finalize() {
 }
 
 StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
-  fcc::ParticleCollection* particles = new fcc::ParticleCollection();
-  fcc::ParticleMCParticleAssociationCollection* associations = new fcc::ParticleMCParticleAssociationCollection();
+  auto particles = m_particles.createAndPut();
+  auto associations = m_particlesMCparticles.createAndPut();
   for(int i=0;i<aEvent.GetNumberOfPrimaryVertex();i++) {
     for(int j=0;j<aEvent.GetPrimaryVertex(i)->GetNumberOfParticle();j++) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
@@ -61,7 +61,5 @@ StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
       core.Vertex.Z = info->vertexPosition().z()*sim::g42edm::length;
     }
   }
-  m_particles.put(particles);
-  m_particlesMCparticles.put(associations);
   return StatusCode::SUCCESS;
 }
