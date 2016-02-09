@@ -56,20 +56,3 @@ StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObjec
   }
   return DataSvc::registerObject(fullPath,pObject);
 }
-
-StatusCode  PodioDataSvc::registerObject (const std::string &, const std::string &, DataObject *) {
-  error() << "PodioDataSvc::registerObject(const std::string &, const std::string &, DataObject *) not supported" << endmsg;
-  return StatusCode::FAILURE;
-}
-StatusCode  PodioDataSvc::registerObject (const std::string &, int , DataObject *) {
-  error() << "PodioDataSvc::registerObject(const std::string &, int , DataObject *) not supported" << endmsg;
-  return StatusCode::FAILURE;
-}
-StatusCode  PodioDataSvc::registerObject (DataObject *, const std::string &, DataObject *) {
-  error() << "PodioDataSvc::registerObject(DataObject *, const std::string &, DataObject *) not supported" << endmsg;
-  return StatusCode::FAILURE;
-}
-StatusCode  PodioDataSvc::registerObject (DataObject *, int , DataObject *) {
-  error() << "PodioDataSvc::registerObject(DataObject *, int , DataObject *) not supported" << endmsg;
-  return StatusCode::FAILURE;
-}
