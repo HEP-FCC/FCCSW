@@ -1,5 +1,5 @@
-#ifndef _PYTHIA8PRODUCER_H_
-#define _PYTHIA8PRODUCER_H_
+#ifndef GENERATION_PYTHIA8PRODUCER_H
+#define GENERATION_PYTHIA8PRODUCER_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 
@@ -23,4 +23,4 @@ private:
   HepMC::IO_GenEvent* m_file;
 };
 
-#endif
+#endif // GENERATION_PYTHIA8PRODUCER_H
