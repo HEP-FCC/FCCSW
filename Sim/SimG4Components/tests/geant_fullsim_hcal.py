@@ -4,6 +4,7 @@ from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
+from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 

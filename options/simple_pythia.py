@@ -10,7 +10,7 @@ from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
 # PYTHIA algorithm
-from Configurablese import PythiaInterface
+from Configurables import PythiaInterface
 pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
 pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
 
