@@ -8,7 +8,7 @@
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
 
-// podio
+// datamodel
 namespace fcc {
 class ParticleCollection;
 class ParticleMCParticleAssociationCollection;
@@ -23,7 +23,7 @@ class ParticleMCParticleAssociationCollection;
 
 class G4SaveSmearedParticles: public AlgTool, virtual public IG4SaveOutputTool {
 public:
-  G4SaveSmearedParticles(const std::string& aType , const std::string& aName,
+  explicit G4SaveSmearedParticles(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
   virtual ~G4SaveSmearedParticles();
   /**  Initialize.

@@ -1,17 +1,17 @@
-#ifndef _HEPMCCONVERTER_H_
-#define _HEPMCCONVERTER_H_
+#ifndef GENERATION_HEPMCCONVERTER_H
+#define GENERATION_HEPMCCONVERTER_H
+
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
+#include "HepMC/Units.h"
+#include "HepMC/GenEvent.h"
 
 namespace fcc {
 class MCParticleCollection;
 class GenVertexCollection;
 }
 
-namespace HepMC {
-class GenEvent;
-}
 
 class HepMCConverter: public GaudiAlgorithm {
   friend class AlgFactory<HepMCConverter> ;

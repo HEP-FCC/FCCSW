@@ -9,7 +9,8 @@ namespace sim {
 
 G4_DECLARE_PHYSCONSTR_FACTORY(FastSimPhysics);
 
-FastSimPhysics::FastSimPhysics(): G4VPhysicsConstructor("fastsim") {}
+FastSimPhysics::FastSimPhysics():
+  G4VPhysicsConstructor("fastsim") {}
 
 FastSimPhysics::FastSimPhysics(const G4String& aName): G4VPhysicsConstructor(aName) {}
 

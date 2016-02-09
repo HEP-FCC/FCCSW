@@ -5,7 +5,7 @@
 #include "SimG4Common/ParticleInformation.h"
 #include "SimG4Interface/IG4SimSvc.h"
 
-// podio
+// datamodel
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
@@ -16,7 +16,7 @@
 DECLARE_ALGORITHM_FACTORY(G4SimAlg)
 
 G4SimAlg::G4SimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
-GaudiAlgorithm(aName, aSvcLoc) {
+  GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
   declareProperty("outputs",m_saveToolNames);
 }
@@ -32,10 +32,11 @@ StatusCode G4SimAlg::initialize() {
   }
   for(auto& toolname: m_saveToolNames) {
     m_saveTools.push_back(tool<IG4SaveOutputTool>(toolname));
-  // if (!) {
-  //   error() << "Unable to retrieve the output saving tool." << endmsg;
-  //   return StatusCode::FAILURE;
-  // }
+    // FIXME: check StatusCode once the m_saveTools is a ToolHandleArray
+    // if (!) {
+    //   error() << "Unable to retrieve the output saving tool." << endmsg;
+    //   return StatusCode::FAILURE;
+    // }
   }
   return StatusCode::SUCCESS;
 }

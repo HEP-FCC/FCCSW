@@ -29,19 +29,19 @@ void GdmlDetectorConstruction::ConstructSDandField() {
   const G4GDMLAuxMapType* auxMap = m_parser.GetAuxMap();
   for(auto& entry: *auxMap) {
     for(auto& info: entry.second) {
-    if (info.type=="SensDet") {
-      // HOW TO USE: uncomment to attach SD registered above
-      /*
-      m_log<<MSG::INFO<<"Attaching a sensitive detector: "<<info.value<<" to volume: "<<entry.first->GetName()<<endmsg;
-      G4VSensitiveDetector* mydet = SDman->FindSensitiveDetector(info.value);
-      if(mydet) {
-        entry.first->SetSensitiveDetector(mydet);
+      if (info.type=="SensDet") {
+        // HOW TO USE: uncomment to attach SD registered above
+        /*
+          m_log<<MSG::INFO<<"Attaching a sensitive detector: "<<info.value<<" to volume: "<<entry.first->GetName()<<endmsg;
+          G4VSensitiveDetector* mydet = SDman->FindSensitiveDetector(info.value);
+          if(mydet) {
+            entry.first->SetSensitiveDetector(mydet);
+          }
+          else {
+            m_log<<MSG::WARNING<<"GDML contains sensitive detector of type: "<<info.value<<" but it is not found"<<endmsg;
+          }
+        */
       }
-      else {
-        m_log<<MSG::WARNING<<"GDML contains sensitive detector of type: "<<info.value<<" but it is not found"<<endmsg;
-      }
-      */
-    }
     }
   }
 }

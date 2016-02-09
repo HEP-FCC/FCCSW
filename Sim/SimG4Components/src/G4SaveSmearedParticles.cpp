@@ -7,7 +7,7 @@
 // Geant4
 #include "G4Event.hh"
 
-// podio
+// datamodel
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
 
@@ -17,7 +17,7 @@
 DECLARE_TOOL_FACTORY(G4SaveSmearedParticles)
 
 G4SaveSmearedParticles::G4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-AlgTool(aType, aName, aParent) {
+  AlgTool(aType, aName, aParent) {
   declareInterface<IG4SaveOutputTool>(this);
   declareOutput("particles", m_particles,"particles/smearedParticles");
   declareOutput("particlesMCparticles", m_particlesMCparticles,"particles/smearedParticles");

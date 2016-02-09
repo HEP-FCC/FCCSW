@@ -1,4 +1,5 @@
 #include "HepMCDumper.h"
+
 DECLARE_COMPONENT(HepMCDumper)
 
 HepMCDumper::HepMCDumper(const std::string& name, ISvcLocator* svcLoc):

@@ -15,7 +15,7 @@
 
 class G4FtfpBert: public AlgTool, virtual public IG4PhysicsList {
 public:
-  G4FtfpBert(const std::string& aType , const std::string& aName,
+  explicit G4FtfpBert(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
   virtual ~G4FtfpBert();
   /**  Initialize.

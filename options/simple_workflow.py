@@ -5,8 +5,9 @@ from Configurables import FCCDataSvc
 podioevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
+genpileup = PoissonPileUp(name="ConstPileUp", Filename="example_MyPythia.dat", numPileUpEvents=1)
+reader = HepMCReader("Reader", Filename="example_MyPythia.dat", PileUpTool=genpileup)
 # have a look at the source code of HepMCReader, in Generation/src/HepMCReader
 # In the following line,
 #   reader.DataOutputs.YYY.Path = "XXX"
@@ -44,7 +45,8 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr(
     # all algorithms should be put here
-    TopAlg = [reader,hepmc_converter,
+    TopAlg = [reader,
+              hepmc_converter,
               genjet_clustering,
               out
     ],
@@ -53,6 +55,5 @@ ApplicationMgr(
     EvtMax   = 10,
     # all services should be put here
     ExtSvc = [podioevent],
-    # OutputLevel=DEBUG
  )
 

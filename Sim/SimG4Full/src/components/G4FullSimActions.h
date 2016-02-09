@@ -16,7 +16,7 @@
 
 class G4FullSimActions: public AlgTool, virtual public IG4ActionTool {
 public:
-   G4FullSimActions(const std::string& type , const std::string& name,
+   explicit G4FullSimActions(const std::string& type , const std::string& name,
                const IInterface* parent);
    virtual ~G4FullSimActions();
 

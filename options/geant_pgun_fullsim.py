@@ -8,7 +8,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 from Configurables import ParticleGunAlg
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool="MomentumRangeParticleGun", VertexSmearingTool="FlatSmearVertex")
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool="MomentumRangeParticleGun", VertexSmearingToolPGun="FlatSmearVertex")
 gen.DataOutputs.hepmc.Path = "hepmc"
 
 # Particle service

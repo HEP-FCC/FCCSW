@@ -9,7 +9,7 @@
 #include "SimG4Interface/IG4SaveOutputTool.h"
 class IG4SimSvc;
 
-// podio
+// datamodel
 namespace fcc {
 class MCParticleCollection;
 }
@@ -30,7 +30,7 @@ class G4Event;
 
 class G4SimAlg: public GaudiAlgorithm {
 public:
-  G4SimAlg(const std::string&, ISvcLocator*);
+  explicit G4SimAlg(const std::string&, ISvcLocator*);
   virtual ~G4SimAlg();
   /**  Initialize.
    *   @return status code

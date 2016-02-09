@@ -8,7 +8,7 @@
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
 
-// podio
+// datamodel
 namespace fcc {
 class CaloClusterCollection;
 class CaloHitCollection;
@@ -24,7 +24,7 @@ class CaloClusterHitsAssociationCollection;
 
 class G4SaveCalHits: public GaudiTool, virtual public IG4SaveOutputTool {
 public:
-  G4SaveCalHits(const std::string& aType , const std::string& aName,
+  explicit G4SaveCalHits(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
   virtual ~G4SaveCalHits();
   /**  Initialize.

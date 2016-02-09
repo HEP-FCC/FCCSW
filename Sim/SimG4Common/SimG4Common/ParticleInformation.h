@@ -1,7 +1,7 @@
 #ifndef SIMG4COMMON_PARTICLEINFORMATION_H
 #define SIMG4COMMON_PARTICLEINFORMATION_H
 
-// podio
+// datamodel
 #include "datamodel/MCParticle.h"
 #include "datamodel/Particle.h"
 
@@ -29,7 +29,7 @@ public:
   /** A constructor.
    *  @param[in] aMCpart EDM MCParticle.
    */
-  ParticleInformation(const fcc::MCParticle& aMCpart);
+  explicit ParticleInformation(const fcc::MCParticle& aMCpart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method

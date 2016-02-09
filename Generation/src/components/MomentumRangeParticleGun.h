@@ -1,12 +1,9 @@
 #ifndef GENERATION_MOMENTUMRANGEPARTICLEGUN_H
-#define GENERATION_MOMENTUMRANGEPARTICLEGUN_H 1
+#define GENERATION_MOMENTUMRANGEPARTICLEGUN_H
 
-// Include files
-// from Gaudi
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
 
-// from ParticleGuns
 #include "Generation/IParticleGunTool.h"
 
 /** @class MomentumRangeParticleGun MomentumRangeParticleGun.h "MomentumRangeParticleGun.h"
@@ -18,8 +15,8 @@
  *  @date   2008-05-18
  */
 class MomentumRangeParticleGun : public GaudiTool , virtual public IParticleGunTool {
- public:
-  
+
+public:
   /// Constructor
   MomentumRangeParticleGun( const std::string & type , const std::string& name, 
                  const IInterface * parent ) ;
@@ -37,9 +34,9 @@ class MomentumRangeParticleGun : public GaudiTool , virtual public IParticleGunT
 
   /// Print counters
   virtual void printCounters( ) { ; } ;
-                                 
- private:  
-  double m_minMom;   ///< Minimum momentum (Set by options)  
+
+private:  
+  double m_minMom;   ///< Minimum momentum (Set by options)
   double m_minTheta; ///< Minimum theta angle (Set by options)
   double m_minPhi;   ///< Minimum phi angle (Set by options)
 
@@ -64,4 +61,4 @@ class MomentumRangeParticleGun : public GaudiTool , virtual public IParticleGunT
   Rndm::Numbers m_flatGenerator ;
 };
 
-#endif
+#endif // GENERATION_MOMENTUMRANGEPARTICLEGUN_H

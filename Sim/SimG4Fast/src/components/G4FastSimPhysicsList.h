@@ -18,8 +18,7 @@
 
 class G4FastSimPhysicsList: public AlgTool, virtual public IG4PhysicsList {
 public:
-  G4FastSimPhysicsList(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~G4FastSimPhysicsList();
 
   /**  Initialize.
@@ -36,8 +35,8 @@ public:
   virtual G4VModularPhysicsList* getPhysicsList();
 
 private:
-   /// Handle for the full physics list tool
-   ToolHandle<IG4PhysicsList> m_physicsListTool;
+  /// Handle for the full physics list tool
+  ToolHandle<IG4PhysicsList> m_physicsListTool;
 
 };
 

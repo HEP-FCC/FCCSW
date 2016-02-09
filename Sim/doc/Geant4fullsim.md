@@ -253,7 +253,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
 
 In order to describe a detector, one needs an XML file and relevant C++ factory methods.
 To describe a sensitive detector consult the [short description](#sensitive-detectors) and sections 2.11 and 2.12 in [DD4hep manual].
-Further information may be also found on [DD4hep documentation webpage][DD4hep] and in DetectorDescription/doc/ (TODO add link).
+Further information may be also found on [DD4hep documentation webpage][DD4hep].
 
 Once XML file is done, it can be passed as a property **detector** to `GeoSvc` which will parse it and translate the geometry to Geant format.
 ___

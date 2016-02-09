@@ -35,12 +35,12 @@ class FastSimModelTracker : public G4VFastSimulationModel {
    *  @param aEnvelope Region where the model can take over the ordinary tracking.
    *  @param aSmearToolName Name of the implementation of IG4ParticleSmearTool to be searched for by ToolSvc.
    */
-  FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName);
+  explicit FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName);
   /** Constructor.
    *  @param aModelName Name of the fast simulation model.
    */
-  FastSimModelTracker (const std::string& aModelName);
-  ~FastSimModelTracker ();
+  explicit FastSimModelTracker (const std::string& aModelName);
+  virtual ~FastSimModelTracker ();
   /** Check if this model should be applied to this particle type.
    *  @param aParticle Particle definition (type).
    */

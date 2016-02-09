@@ -1,5 +1,5 @@
-#ifndef _PYTHIAINTERFACE_H_
-#define _PYTHIAINTERFACE_H_
+#ifndef GENERATION_PYTHIAINTERFACE_H
+#define GENERATION_PYTHIAINTERFACE_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "Pythia8/Pythia.h"
@@ -30,7 +30,6 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmchandle;
   int nAbort;
   int iAbort;
-
 };
 
-#endif
+#endif // GENERATION_PYTHIAINTERFACE_H

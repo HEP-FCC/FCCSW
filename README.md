@@ -61,4 +61,4 @@ You should see an HepMC printout.
 Documentation
 ----
 
-Please consult [doc/README.md](./doc/README.md)
+Please consult [FCCSW documentation](http://fccsw.web.cern.ch/fccsw/)

@@ -23,7 +23,7 @@ public:
   /**  Constructor.
    *   @param[in] aFileName Name of the GDML file with the detector description.
    */
-  GdmlDetectorConstruction(const std::string& aFileName);
+  explicit GdmlDetectorConstruction(const std::string& aFileName);
   virtual ~GdmlDetectorConstruction();
   /**  Create volumes using the GDML parser.
    *   @return World wolume.

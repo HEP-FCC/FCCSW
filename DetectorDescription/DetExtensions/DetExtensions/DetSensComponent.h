@@ -25,7 +25,7 @@ namespace Det {
     
     public:
         
-        DetSensComponent(const DD4hep::Geometry::Segmentation segmentation) :
+        explicit DetSensComponent(const DD4hep::Geometry::Segmentation segmentation) :
         m_segmentation(segmentation)
         {
             

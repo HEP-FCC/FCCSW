@@ -42,16 +42,16 @@ namespace Reco {
         typedef std::vector<std::shared_ptr<const BoundarySurface>> SurfaceVector;
         
         //constructor with transformation matrix for volume without layers
-        Volume(std::shared_ptr<const Alg::Transform3D> transf);
+        explicit Volume(std::shared_ptr<const Alg::Transform3D> transf);
         //constructor for volume with layers
-        Volume(LayerArray* layers);
+        explicit Volume(LayerArray* layers);
         //constructor for volume with layers and transformation matrix
         Volume(std::shared_ptr<const Alg::Transform3D> transf, LayerArray* layers);
         //constructors from TGeoGeometry for the conversion of the DD4Hep Geometry in the RecoGeoConverterTool
         //constructor with TGeoNode - transform is set automatically - for a volume with layers
         Volume(LayerArray* layers, TGeoNode* node);
         //constructor from TGeoNode for volume without layers
-        Volume(TGeoNode* node);
+        explicit Volume(TGeoNode* node);
         //copyconstructor
         Volume(const Volume& volume);
         //destructor

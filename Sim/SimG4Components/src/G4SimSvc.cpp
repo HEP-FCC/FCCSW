@@ -8,7 +8,8 @@
 
 DECLARE_SERVICE_FACTORY(G4SimSvc)
 
-G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL): base_class(aName, aSL) {
+G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
+  base_class(aName, aSL) {
   declareProperty("detector", m_detectorTool);
   declarePrivateTool(m_detectorTool);
   declareProperty("physicslist", m_physicsListTool);

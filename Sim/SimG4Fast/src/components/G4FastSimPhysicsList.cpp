@@ -10,7 +10,7 @@
 DECLARE_TOOL_FACTORY(G4FastSimPhysicsList)
 
 G4FastSimPhysicsList::G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-AlgTool(aType, aName, aParent) {
+  AlgTool(aType, aName, aParent) {
   declareInterface<IG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool);
   declarePrivateTool(m_physicsListTool);

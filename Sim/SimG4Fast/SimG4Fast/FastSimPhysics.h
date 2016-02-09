@@ -20,7 +20,7 @@ public:
   /** Constructor.
    *  @param aName Name of the physics constructor.
    */
-  FastSimPhysics(const G4String& aName);
+  explicit FastSimPhysics(const G4String& aName);
   /// Destructor.
   virtual ~FastSimPhysics();
   /* Add the process of parametrisation to every existing particle
