@@ -24,7 +24,7 @@ class TrackClusterHitsAssociationCollection;
 
 class G4SaveTrackerHits: public GaudiTool, virtual public IG4SaveOutputTool {
 public:
-  G4SaveTrackerHits(const std::string& aType , const std::string& aName,
+  explicit G4SaveTrackerHits(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
   virtual ~G4SaveTrackerHits();
   /**  Initialize.

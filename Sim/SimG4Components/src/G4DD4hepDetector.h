@@ -18,7 +18,7 @@ class IGeoSvc;
 
 class G4DD4hepDetector: public GaudiTool, virtual public IG4DetectorConstruction {
   public:
-  G4DD4hepDetector(const std::string& aType , const std::string& aName,
+  explicit G4DD4hepDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
   virtual ~G4DD4hepDetector();
   /**  Initialize.

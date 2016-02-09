@@ -26,7 +26,7 @@ public:
   /** Constructor.
    *  @param aSmearToolName Name of the implementation of IG4ParticleSmearTool to be passed to models.
    */
-  InitializeModelsRunAction(const std::string& aSmearingToolName);
+  explicit InitializeModelsRunAction(const std::string& aSmearingToolName);
   virtual ~InitializeModelsRunAction();
   /* Defines the actions at the end of processing the track.
    * It scans the world volume in search of the occurance of defined strings and attaches

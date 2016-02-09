@@ -20,7 +20,7 @@
 
 class G4GdmlDetector: public AlgTool, virtual public IG4DetectorConstruction {
 public:
-  G4GdmlDetector(const std::string& aType , const std::string& aName,
+  explicit G4GdmlDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
   virtual ~G4GdmlDetector();
   /**  Initialize.

@@ -29,7 +29,7 @@ public:
   /** A constructor.
    *  @param[in] aMCpart EDM MCParticle.
    */
-  ParticleInformation(const fcc::MCParticle& aMCpart);
+  explicit ParticleInformation(const fcc::MCParticle& aMCpart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method

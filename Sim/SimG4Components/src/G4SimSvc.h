@@ -24,7 +24,7 @@
 class G4SimSvc: public extends1<Service, IG4SimSvc> {
 public:
   /// Standard constructor
-  G4SimSvc(const std::string& aName, ISvcLocator* aSL);
+  explicit G4SimSvc(const std::string& aName, ISvcLocator* aSL);
   /// Standard destructor
   virtual ~G4SimSvc();
   /**  Initialize the Geant simulation service.
