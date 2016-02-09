@@ -38,15 +38,20 @@ geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits
-savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
+# first, create a tool that saves the tracker hits
+# Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("G4SaveTrackerHits")
+# and YY is the given name ("saveTrackerHits")
+savetrackertool = G4SaveTrackerHits("saveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-savehcaltool = G4SaveCalHits("G4SaveHCalHits", caloType = "HCal")
+# and a tool that saves the calorimeter hits with a name "G4SaveCalHits/saveHCalHits"
+savehcaltool = G4SaveCalHits("saveHCalHits", caloType = "HCal")
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
+# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 geantsim = G4SimAlg("G4SimAlg",
-                        outputs= ["G4SaveTrackerHits/G4SaveTrackerHits", "G4SaveCalHits/G4SaveHCalHits"])
+                        outputs= ["G4SaveTrackerHits/saveTrackerHits", "G4SaveCalHits/saveHCalHits"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 # PODIO algorithm
@@ -60,6 +65,7 @@ from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                ExtSvc = [podioevent, geoservice, geantservice, ppservice], # order! geo needed by geant
+                # order is important, as GeoSvc is needed by G4SimSvc
+                ExtSvc = [podioevent, geoservice, geantservice, ppservice],
                 OutputLevel=DEBUG
  )
