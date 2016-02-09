@@ -5,19 +5,17 @@
  *  @author: Z. Drasal (CERN)
  *
  */
-#ifndef INCLUDE_PARTICLE_STATUS_H_
-#define INCLUDE_PARTICLE_STATUS_H_
+#ifndef INCLUDE_PARTICLE_STATUS_H
+#define INCLUDE_PARTICLE_STATUS_H
 
-namespace ParticleStatus {
+enum class ParticleStatus : unsigned {
+  kBeam           = 0x000,
+  kStable         = 0x001,
+  kDecayed        = 0x002,
+  kMatched        = 0x003,
+  kUnmatched      = 0x004,
+  kMatchInCascade = 0x005
+}; // Enum
 
-  // Particle bits related to status
-  static const int Beam           = 0x000;
-  static const int Stable         = 0x001;
-  static const int Decayed        = 0x002;
-  static const int Matched        = 0x003;
-  static const int Unmatched      = 0x004;
-  static const int MatchInCascade = 0x005;
 
-} // Namespace
-
-#endif // INCLUDE_PARTICLE_STATUS_H_
+#endif // INCLUDE_PARTICLE_STATUS_H

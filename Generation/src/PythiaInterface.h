@@ -2,11 +2,16 @@
 #define _PYTHIAINTERFACE_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "Pythia8/Pythia.h"
-#include "Pythia8Plugins/HepMC2.h"
-
-#include "HepMC/GenEvent.h"
 #include "FWCore/DataHandle.h"
+
+// HepMC
+#include "HepMC/GenEvent.h"
+
+// Forward Pythia
+namespace Pythia8 {
+
+  class Pythia;
+}
 
 class PythiaInterface: public GaudiAlgorithm {
   friend class AlgFactory<PythiaInterface> ;

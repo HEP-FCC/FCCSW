@@ -1,10 +1,15 @@
-#include "GaudiKernel/System.h"
-#include "GaudiKernel/IIncidentSvc.h"
-#include "GaudiKernel/Incident.h"
-
 #include "PythiaInterface.h"
 
-#include "HepMC/GenEvent.h"
+// Gaudi
+#include "GaudiKernel/System.h"
+#include "GaudiKernel/Incident.h"
+#include "GaudiKernel/IIncidentSvc.h"
+
+// Pythia
+#include "Pythia8/Pythia.h"
+#include "Pythia8Plugins/HepMC2.h"
+
+using namespace std;
 
 DECLARE_COMPONENT(PythiaInterface)
 
@@ -13,6 +18,10 @@ PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
 {
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput(  "hepmc"   , m_hepmchandle);
+
+  m_nAbort = 0;
+  m_iAbort = 0;
+  m_iEvent = 0;
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -64,59 +73,74 @@ StatusCode PythiaInterface::execute() {
   // Reset the counter to count failed events in a row
   m_iAbort=0;
 
-  // Print out event
-  /*for (int i = 0; i < m_pythia->event.size(); ++i){
+  // Print debug: Pythia event info
+  if (msgLevel() <= MSG::DEBUG) {
+
+    for (int i = 0; i < m_pythia->event.size(); ++i){
+
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
-      std::cout << "PythiaInterface : id : stat : px : py : pz : e : m : " 
-                << " " << m_pythia->event[i].id()
-                << " " << m_pythia->event[i].status()
-                //<< " " << m_pythia->event[i].mother1()
-                //<< " " << m_pythia->event[i].mother2()
-                //<< " " << m_pythia->event[i].daughter1()
-                //<< " " << m_pythia->event[i].daughter2()
-                << " " << m_pythia->event[i].px()
-                << " " << m_pythia->event[i].py()
-                << " " << m_pythia->event[i].pz() 
-                << " " << m_pythia->event[i].e()
-                << " " << m_pythia->event[i].m()
+      std::cout << "PythiaInterface : "
+                << " Id: "       << setw(3) << i
+                << " PDG: "      << setw(5) << m_pythia->event[i].id()
+                << " Mothers: "  << setw(3) << m_pythia->event[i].mother1()   << " -> " << setw(3) << m_pythia->event[i].mother2()
+                << " Daughters:" << setw(3) << m_pythia->event[i].daughter1() << " -> " << setw(3) << m_pythia->event[i].daughter2()
+                << " Stat: "     << setw(2) << m_pythia->event[i].status()
+                << setprecision(2) << " Px: " << setw(9) << m_pythia->event[i].px()
+                << setprecision(2) << " Py: " << setw(9) << m_pythia->event[i].py()
+                << setprecision(2) << " Pz: " << setw(9) << m_pythia->event[i].pz()
+                << setprecision(2) << " E: "  << setw(9) << m_pythia->event[i].e()
+                << setprecision(2) << " M: "  << setw(9) << m_pythia->event[i].m()
                 << std::endl;
-  }*/
+    }
+  } // Debug
 
   // Define HepMC event and convert Pythia event into this HepMC event type
   HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
   toHepMC->fill_next_event(*m_pythia, theEvent, m_iEvent);
   //theEvent-> print();
 
-  // Print out event
-  /*for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
-       ipart!=theEvent->particles_end(); ++ipart) {
+  // Print debug: HepMC event info
+  if (msgLevel() <= MSG::DEBUG) {
 
-    int motherID                = -1;
-    int motherIDRange           = 0;
-    if ((*ipart)->production_vertex()!=nullptr) {
+    for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
+         ipart!=theEvent->particles_end(); ++ipart) {
 
-      motherID      = (*((*ipart)->production_vertex()->particles_in_const_begin()))->barcode();//(*((*ipart)->production_vertex()->particles_begin()))->barcode();
-      motherIDRange = (*ipart)->production_vertex()->particles_in_size() -1;
+      int motherID        = -1;
+      int motherIDRange   = 0;
+      if ((*ipart)->production_vertex()!=nullptr) {
+
+        motherID      = (*((*ipart)->production_vertex()->particles_in_const_begin()))->barcode();
+        motherIDRange = (*ipart)->production_vertex()->particles_in_size() -1;
+      }
+
+      int daughterID      = -1;
+      int daughterIDRange = 0;
+      if ((*ipart)->end_vertex()!=nullptr) {
+
+        daughterID      = (*((*ipart)->end_vertex()->particles_out_const_begin()))->barcode();
+        daughterIDRange = (*ipart)->end_vertex()->particles_out_size() -1;
+      }
+
+      std::cout << "Pythia HepMC: "
+                << " Id: "       << setw(3)  << (*ipart)->barcode()
+                << " Pdg: "      << setw(5)  << (*ipart)->pdg_id()
+                << " Mothers: "  << setw(3)  << motherID << " -> " << setw(3) << motherID+motherIDRange
+                << " Daughters: "<< setw(3)  << daughterID << " -> " << setw(3) << daughterID+daughterIDRange
+                << " Stat: "     << setw(2)  << (*ipart)->status()
+                << " Px: "       << setprecision(2) << setw(9) << (*ipart)->momentum().px()
+                << " Py: "       << setprecision(2) << setw(9) << (*ipart)->momentum().py()
+                << " Pz: "       << setprecision(2) << setw(9) << (*ipart)->momentum().pz()
+                << " E: "        << setprecision(2) << setw(9) << (*ipart)->momentum().e()
+                << " M: "        << setprecision(2) << setw(9) << (*ipart)->momentum().m();
+      if ((*ipart)->production_vertex()!=nullptr) {
+      std::cout << " Vx: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().x()
+                << " Vy: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().y()
+                << " Vz: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().z()
+                << " T: "        << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().t();
+      }
+      std::cout << std::endl;
     }
-
-    std::cout << "Pythia HepMC: "
-              << " Id: "       << setw(3)  << (*ipart)->barcode()
-              << " Pdg: "      << setw(5)  << (*ipart)->pdg_id()
-              << " Mothers: "  << setw(3)  << motherID << " -> " << setw(3) << motherID+motherIDRange
-              << " Stat: "     << setw(2)  << (*ipart)->status()
-              << " Px: "       << setw(10) << (*ipart)->momentum().px()
-              << " Py: "       << setw(10) << (*ipart)->momentum().py()
-              << " Pz: "       << setw(10) << (*ipart)->momentum().pz()
-              << " E: "        << setw(10) << (*ipart)->momentum().e()
-              << " M: "        << setw(10) << (*ipart)->momentum().m();
-    if ((*ipart)->production_vertex()!=nullptr) {
-    std::cout << " Vx: "       << setw(10) << (*ipart)->production_vertex()->position().x()
-              << " Vy: "       << setw(10) << (*ipart)->production_vertex()->position().y()
-              << " Vz: "       << setw(10) << (*ipart)->production_vertex()->position().z()
-              << " T: "        << setw(10) << (*ipart)->production_vertex()->position().t();
-    }
-    std::cout << std::endl;
-  }*/
+  } // Debug
 
   // Handle event via standard Gaudi mechanism
   m_hepmchandle.put(theEvent);
