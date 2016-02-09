@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, HepMCJetClustering
 from Configurables import HepMCHistograms, JetHistograms
 
-reader = HepMCReader("Reader", Filename="pythia.dat")
+reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 dumper = HepMCDumper("Dumper")
