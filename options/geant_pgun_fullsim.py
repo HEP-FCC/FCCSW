@@ -6,7 +6,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
 # reader.DataOutputs.hepmc.Path = "hepmc"
 from Configurables import ParticleGunAlg, MomentumRangeParticleGun, FlatSmearVertex#, Gaudi__ParticlePropertySvc
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool="MomentumRangeParticleGun", VertexSmearingTool="FlatSmearVertex")
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool="MomentumRangeParticleGun", VertexSmearingToolPGun="FlatSmearVertex")
 gen.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
