@@ -9,7 +9,7 @@
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
 
-/** @class sim::RunManager SimG4Common/RunManager.h RunManager.h
+/** @class RunManager SimG4Common/SimG4Common/RunManager.h RunManager.h
  *
  *  Implementation of the main class for the simulation in Geant4.
  *  It allows GAUDI to control of the event flow.
