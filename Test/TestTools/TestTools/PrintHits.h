@@ -40,8 +40,8 @@ public:
 
     PrintHits(const std::string& type, const std::string& name, const IInterface* parent);
     ~PrintHits() {}
-    virtual StatusCode initialize();
-    virtual StatusCode finalize();
+    virtual StatusCode initialize() final;
+    virtual StatusCode finalize() final;
     //flat random number generator between min and max
     double flatrand(double min, double max) const;
     //random direction

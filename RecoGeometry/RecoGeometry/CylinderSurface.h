@@ -82,7 +82,7 @@ namespace Reco {
                                                                                                   double phi,
                                                                                                   double theta,
                                                                                                   double qop,
-                                                                                                  Alg::AmgSymMatrix<5>* cov = 0) const
+                                                                                                  Alg::AmgSymMatrix<5>* cov = 0) const override
         { return new Trk::ParametersT<5, Trk::Neutral, CylinderSurface>(l1, l2, phi, theta, qop, *this, cov); }
 
         /** Use the Surface as a ParametersBase constructor, from global parameters - neutral */
@@ -99,14 +99,14 @@ namespace Reco {
                                                                                                       double phi,
                                                                                                       double theta,
                                                                                                       double qop,
-                                                                                                      Alg::AmgSymMatrix<DIM>* cov = 0) const override
+                                                                                                      Alg::AmgSymMatrix<DIM>* cov = 0) const
         { return new Trk::ParametersT<DIM, T, CylinderSurface>(l1, l2, phi, theta, qop, *this, cov); }
 
         /** Use the Surface as a ParametersBase constructor, from global parameters */
         template <int DIM, class T> const Trk::ParametersT<DIM, T, CylinderSurface>* createParameters(const Alg::Point3D& position,
                                                                                                       const Alg::Vector3D& momentum,
                                                                                                       double charge,
-                                                                                                      Alg::AmgSymMatrix<DIM>* cov = 0) const override
+                                                                                                      Alg::AmgSymMatrix<DIM>* cov = 0) const
         { return new Trk::ParametersT<DIM, T, CylinderSurface>(position, momentum, charge, *this, cov); }
 
         /** fast straight line intersection schema - provides closest intersection and (signed) path length

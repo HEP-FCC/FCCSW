@@ -28,8 +28,8 @@ class GaussDigitizer : public AlgTool, virtual public IDigitizer {
 public:
     GaussDigitizer(const std::string& type, const std::string& name, const IInterface* parent);
     ~GaussDigitizer() {}
-    virtual StatusCode initialize();
-    virtual StatusCode finalize();
+    virtual StatusCode initialize() final;
+    virtual StatusCode finalize() final;
     /// This is currently a stub!
     virtual StatusCode smear(fcc::ParticleCollection* particlecoll) override;
 
