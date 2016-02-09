@@ -19,7 +19,7 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestHCal.xml',
+geoservice = GeoSvc("GeoSvc", detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
                     OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
