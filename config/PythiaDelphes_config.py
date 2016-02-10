@@ -39,10 +39,12 @@ from Configurables import ApplicationMgr, FCCDataSvc
 ############################################################
 
 ## N-events
-nEvents=100
+nEvents=10
 
 ## Message level
-messageLevel=INFO
+messageLevelPythia =DEBUG
+messageLevelDelphes=DEBUG
+messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
 #pythiaConfFile="config/Pythia_standard.cmd"
@@ -85,7 +87,7 @@ podioEvent=FCCDataSvc("EventDataSvc")
 ## Pythia generator
 from Configurables import PythiaInterface
 
-pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=INFO)
+pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 ## Write the HepMC::GenEvent to the data service
 pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 
@@ -102,7 +104,7 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                JetsOutArray=delphesJetsOutArray,
                                METsOutArray=delphesMETsOutArray,
                                SHTsOutArray=delphesSHTsOutArray,  
-                               OutputLevel=messageLevel)
+                               OutputLevel=messageLevelDelphes)
 delphessim.DataInputs.hepmc.Path               = "hepmc"
 delphessim.DataOutputs.genParticles.Path       = "genParticles"
 delphessim.DataOutputs.genVertices.Path        = "genVertices"
@@ -123,7 +125,7 @@ delphessim.DataOutputs.recJetsToMC.Path        = "recJetsToMC"
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioWrite, PodioOutput
 
-out = PodioOutput("out",OutputLevel=messageLevel)
+out = PodioOutput("out",OutputLevel=messageLevelOut)
 out.filename       = "FCCDelphesOutput.root"
 out.outputCommands = ["drop *",
                       "keep genParticles",
@@ -152,13 +154,11 @@ if delphesHepMCInFile == "":
   ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
                   EvtSel = 'NONE',
                   EvtMax = nEvents,
-                  ExtSvc = [podioEvent],
-                  OutputLevel=messageLevel)
+                  ExtSvc = [podioEvent])
 # Run only Delphes - hepmc input file provided
 else:
  ApplicationMgr( TopAlg = [ delphessim, out ],
                   EvtSel = 'NONE',
                   EvtMax = nEvents,
-                  ExtSvc = [podioEvent],
-                  OutputLevel=messageLevel)
+                  ExtSvc = [podioEvent])
 

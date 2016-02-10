@@ -28,8 +28,6 @@
 #include "TObjArray.h"
 #include "TStopwatch.h"
 
-using namespace std;
-
 DECLARE_COMPONENT(DelphesSimulation)
 
 DelphesSimulation::DelphesSimulation(const std::string& name, ISvcLocator* svcLoc):
@@ -45,54 +43,54 @@ GaudiAlgorithm(name, svcLoc) ,
   m_outRootFileName(""),
   m_treeWriter(nullptr),
   m_branchEvent(nullptr),
-  m_confReader(nullptr)
- {
-   //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
-   declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
-   declareProperty("HepMCInputFile"   , m_inHepMCFileName          , "Name of HepMC input file; if defined, file read in / if not, data read in directly from the transient data store");
-   declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)");
-   declareProperty("MuonsOutArray"    , m_DelphesMuonsArrayName    , "Name of Delphes muons array to be written out to FCC-EDM");
-   declareProperty("ElectronsOutArray", m_DelphesElectronsArrayName, "Name of Delphes electrons array to be written out to FCC-EDM");
-   declareProperty("ChargedOutArray"  , m_DelphesChargedArrayName  , "Name of Delphes charged hadrons array to be written out to FCC-EDM");
-   declareProperty("NeutralOutArray"  , m_DelphesNeutralArrayName  , "Name of Delphes neutral hadrons array to be written out to FCC-EDM");
-   declareProperty("PhotonsOutArray"  , m_DelphesPhotonsArrayName  , "Name of Delphes photons array to be written out to FCC-EDM");
-   declareProperty("JetsOutArray"     , m_DelphesJetsArrayName     , "Name of Delphes jets array to be written out to FCC-EDM");
-   declareProperty("METsOutArray"     , m_DelphesMETsArrayName     , "Name of Delphes METs array to be written out to FCC-EDM");
-   declareProperty("SHTsOutArray"     , m_DelphesSHTsArrayName     , "Name of Delphes Scalar HTs array to be written out to FCC-EDM");
+  m_confReader(nullptr) {
 
-   declareInput("hepmc", m_hepmcHandle);
+  //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
+  declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
+  declareProperty("HepMCInputFile"   , m_inHepMCFileName          , "Name of HepMC input file; if defined, file read in / if not, data read in directly from the transient data store");
+  declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)");
+  declareProperty("MuonsOutArray"    , m_DelphesMuonsArrayName    , "Name of Delphes muons array to be written out to FCC-EDM");
+  declareProperty("ElectronsOutArray", m_DelphesElectronsArrayName, "Name of Delphes electrons array to be written out to FCC-EDM");
+  declareProperty("ChargedOutArray"  , m_DelphesChargedArrayName  , "Name of Delphes charged hadrons array to be written out to FCC-EDM");
+  declareProperty("NeutralOutArray"  , m_DelphesNeutralArrayName  , "Name of Delphes neutral hadrons array to be written out to FCC-EDM");
+  declareProperty("PhotonsOutArray"  , m_DelphesPhotonsArrayName  , "Name of Delphes photons array to be written out to FCC-EDM");
+  declareProperty("JetsOutArray"     , m_DelphesJetsArrayName     , "Name of Delphes jets array to be written out to FCC-EDM");
+  declareProperty("METsOutArray"     , m_DelphesMETsArrayName     , "Name of Delphes METs array to be written out to FCC-EDM");
+  declareProperty("SHTsOutArray"     , m_DelphesSHTsArrayName     , "Name of Delphes Scalar HTs array to be written out to FCC-EDM");
+
+  declareInput("hepmc", m_hepmcHandle);
    
-   declareOutput("genParticles"      , m_handleGenParticles);
-   declareOutput("genVertices"       , m_handleGenVertices);
-   declareOutput("recMuons"          , m_handleRecMuons);
-   declareOutput("recElectrons"      , m_handleRecElectrons);
-   declareOutput("recCharged"        , m_handleRecCharged);
-   declareOutput("recNeutral"        , m_handleRecNeutral);
-   declareOutput("recPhotons"        , m_handleRecPhotons);
-   declareOutput("recJets"           , m_handleRecJets);
-   declareOutput("recMETs"           , m_handleRecMETs);
+  declareOutput("genParticles"      , m_handleGenParticles);
+  declareOutput("genVertices"       , m_handleGenVertices);
+  declareOutput("recMuons"          , m_handleRecMuons);
+  declareOutput("recElectrons"      , m_handleRecElectrons);
+  declareOutput("recCharged"        , m_handleRecCharged);
+  declareOutput("recNeutral"        , m_handleRecNeutral);
+  declareOutput("recPhotons"        , m_handleRecPhotons);
+  declareOutput("recJets"           , m_handleRecJets);
+  declareOutput("recMETs"           , m_handleRecMETs);
 
-   declareOutput("recMuonsToMC"      , m_handleRecMuonsToMC);
-   declareOutput("recElectronsToMC"  , m_handleRecElectronsToMC);
-   declareOutput("recChargedToMC"    , m_handleRecChargedToMC);
-   declareOutput("recNeutralToMC"    , m_handleRecNeutralToMC);
-   declareOutput("recPhotonsToMC"    , m_handleRecPhotonsToMC);
-   declareOutput("recJetsToMC"       , m_handleRecJetsToMC);
+  declareOutput("recMuonsToMC"      , m_handleRecMuonsToMC);
+  declareOutput("recElectronsToMC"  , m_handleRecElectronsToMC);
+  declareOutput("recChargedToMC"    , m_handleRecChargedToMC);
+  declareOutput("recNeutralToMC"    , m_handleRecNeutralToMC);
+  declareOutput("recPhotonsToMC"    , m_handleRecPhotonsToMC);
+  declareOutput("recJetsToMC"       , m_handleRecJetsToMC);
 
+  // All variables truly initialized in the initialize() method (for pedantic C++ reasons also in a constructor)
+  m_stablePartOutArray = nullptr;
+  m_allPartOutArray    = nullptr;
+  m_partonOutArray     = nullptr;
+  m_muonOutArray       = nullptr;
+  m_electronOutArray   = nullptr;
+  m_chargedOutArray    = nullptr;
+  m_neutralOutArray    = nullptr;
+  m_photonOutArray     = nullptr;
+  m_jetOutArray        = nullptr;
+  m_metOutArray        = nullptr;
+  m_shtOutArray        = nullptr;
 
-   m_stablePartOutArray = nullptr;
-   m_allPartOutArray    = nullptr;
-   m_partonOutArray     = nullptr;
-   m_muonOutArray       = nullptr;
-   m_electronOutArray   = nullptr;
-   m_chargedOutArray    = nullptr;
-   m_neutralOutArray    = nullptr;
-   m_photonOutArray     = nullptr;
-   m_jetOutArray        = nullptr;
-   m_metOutArray        = nullptr;
-   m_shtOutArray        = nullptr;
-
-   m_eventCounter = 0;
+  m_eventCounter = 0;
 }
 
 StatusCode DelphesSimulation::initialize() {
@@ -173,7 +171,17 @@ StatusCode DelphesSimulation::initialize() {
   }
   
   // Initialize all variables
-  m_eventCounter = 0;
+  m_muonOutArray     = nullptr;
+  m_electronOutArray = nullptr;
+  m_chargedOutArray  = nullptr;
+  m_neutralOutArray  = nullptr;
+  m_photonOutArray   = nullptr;
+  m_jetOutArray      = nullptr;
+  m_metOutArray      = nullptr;
+  m_shtOutArray      = nullptr;
+
+  m_eventCounter     = 0;
+
   if (m_outRootFile!=nullptr) m_treeWriter->Clear();
   m_Delphes->Clear();
   m_HepMCReader->Clear();
@@ -212,7 +220,7 @@ StatusCode DelphesSimulation::execute() {
     // Print debug: HepMC event info
     if (msgLevel() <= MSG::DEBUG) {
 
-      for(auto ipart=hepMCEvent->particles_begin(); ipart!=hepMCEvent->particles_end(); ++ipart) {
+      for (auto ipart=hepMCEvent->particles_begin(); ipart!=hepMCEvent->particles_end(); ++ipart) {
 
         int motherID        = 0;
         int motherIDRange   = 0;
@@ -229,24 +237,25 @@ StatusCode DelphesSimulation::execute() {
           daughterIDRange = (*ipart)->end_vertex()->particles_out_size() -1;
         }
 
-        std::cout << "Delphes HepMC: "
-                  << " Id: "       << setw(3)  << (*ipart)->barcode()
-                  << " Pdg: "      << setw(5)  << (*ipart)->pdg_id()
-                  << " Mothers: "  << setw(3)  << motherID   << " -> " << setw(3) << motherID  +motherIDRange
-                  << " Daughters: "<< setw(3)  << daughterID << " -> " << setw(3) << daughterID+daughterIDRange
-                  << " Stat: "     << setw(2)  << (*ipart)->status()
-                  << " Px: "       << setprecision(2) << setw(9) << (*ipart)->momentum().px()
-                  << " Py: "       << setprecision(2) << setw(9) << (*ipart)->momentum().py()
-                  << " Pz: "       << setprecision(2) << setw(9) << (*ipart)->momentum().pz()
-                  << " E: "        << setprecision(2) << setw(9) << (*ipart)->momentum().e()
-                  << " M: "        << setprecision(2) << setw(9) << (*ipart)->momentum().m();
+        debug() << "HepMC: "
+                << " Id: "       << std::setw(3)  << (*ipart)->barcode()
+                << " Pdg: "      << std::setw(5)  << (*ipart)->pdg_id()
+                << " Mothers: "  << std::setw(4)  << motherID   << " -> " << std::setw(4) << motherID  +motherIDRange
+                << " Daughters: "<< std::setw(4)  << daughterID << " -> " << std::setw(4) << daughterID+daughterIDRange
+                << " Stat: "     << std::setw(2)  << (*ipart)->status()
+                << std::scientific
+                << " Px: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().px()
+                << " Py: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().py()
+                << " Pz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().pz()
+                << " E: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().e()
+                << " M: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().m();
         if ((*ipart)->production_vertex()!=nullptr) {
-        std::cout << " Vx: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().x()
-                  << " Vy: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().y()
-                  << " Vz: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().z()
-                  << " T: "        << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().t();
+          debug() << " Vx: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().x()
+                  << " Vy: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().y()
+                  << " Vz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().z()
+                  << " T: "        << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().t();
         }
-        std::cout << std::endl;
+        debug() << std::fixed << endmsg;
       }
     } // Debug
   }
@@ -260,22 +269,24 @@ StatusCode DelphesSimulation::execute() {
 
       Candidate *candidate = static_cast<Candidate *>(m_allPartOutArray->At(i));
 
-      std::cout << "Delphes Object: "
-                << " Id: "       << setw(3)  << i+1
-                << " Pdg: "      << setw(5)  << candidate->PID
-                << " Mothers: "  << setw(3)  << candidate->M1+1 << " -> " << setw(3) << candidate->M2+1
-                << " Daughters: "<< setw(3)  << candidate->D1+1 << " -> " << setw(3) << candidate->D2+1
-                << " Stat: "     << setw(2)  << candidate->Status
-                << " Px: "       << setprecision(2) << setw(9) << candidate->Momentum.Px()
-                << " Py: "       << setprecision(2) << setw(9) << candidate->Momentum.Py()
-                << " Pz: "       << setprecision(2) << setw(9) << candidate->Momentum.Pz()
-                << " E: "        << setprecision(2) << setw(9) << candidate->Momentum.E()
-                << " M: "        << setprecision(2) << setw(9) << candidate->Mass
-                << " Vx: "       << setprecision(2) << setw(9) << candidate->Position.X()
-                << " Vy: "       << setprecision(2) << setw(9) << candidate->Position.Y()
-                << " Vz: "       << setprecision(2) << setw(9) << candidate->Position.Z()
-                << " T: "        << setprecision(2) << setw(9) << candidate->Position.T()
-                << std::endl;
+      debug() << "DelphesMC: "
+              << " Id: "       << std::setw(3)  << i+1
+              << " Pdg: "      << std::setw(5)  << candidate->PID
+              << " Mothers: "  << std::setw(4)  << candidate->M1+1 << " -> " << std::setw(4) << candidate->M2+1
+              << " Daughters: "<< std::setw(4)  << candidate->D1+1 << " -> " << std::setw(4) << candidate->D2+1
+              << " Stat: "     << std::setw(2)  << candidate->Status
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << candidate->Momentum.Px()
+              << " Py: "       << std::setprecision(2) << std::setw(9) << candidate->Momentum.Py()
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << candidate->Momentum.Pz()
+              << " E: "        << std::setprecision(2) << std::setw(9) << candidate->Momentum.E()
+              << " M: "        << std::setprecision(2) << std::setw(9) << candidate->Mass
+              << " Vx: "       << std::setprecision(2) << std::setw(9) << candidate->Position.X()
+              << " Vy: "       << std::setprecision(2) << std::setw(9) << candidate->Position.Y()
+              << " Vz: "       << std::setprecision(2) << std::setw(9) << candidate->Position.Z()
+              << " T: "        << std::setprecision(2) << std::setw(9) << candidate->Position.T()
+              << std::fixed
+              << endmsg;
     }
   } // Debug
 
@@ -398,15 +409,15 @@ StatusCode DelphesSimulation::finalize() {
 
     m_treeWriter->Write();
     m_outRootFile->Close();
-    if (m_outRootFile){delete m_outRootFile; m_outRootFile = nullptr;}
+    if (m_outRootFile!=nullptr) {delete m_outRootFile; m_outRootFile = nullptr;}
   }
   
   info() << "Exiting Delphes..." << endmsg;
   
   // Clear memory
-  if (m_HepMCReader) {delete m_HepMCReader; m_HepMCReader = nullptr; } // Releases also the memory allocated by inHepMCFile
-  if (m_Delphes)     {delete m_Delphes;     m_Delphes     = nullptr; } // Releases also the memory allocated by treeWriter
-  if (m_confReader)  {delete m_confReader;  m_confReader  = nullptr; }
+  if (m_HepMCReader!=nullptr) {delete m_HepMCReader; m_HepMCReader = nullptr; } // Releases also the memory allocated by inHepMCFile
+  if (m_Delphes    !=nullptr) {delete m_Delphes;     m_Delphes     = nullptr; } // Releases also the memory allocated by treeWriter
+  if (m_confReader !=nullptr) {delete m_confReader;  m_confReader  = nullptr; }
   
   return GaudiAlgorithm::finalize();
 }
@@ -416,8 +427,8 @@ StatusCode DelphesSimulation::finalize() {
 //
 void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
                                            fcc::MCParticleCollection* colMCParticles,
-                                           fcc::GenVertexCollection* colGenVertices)
-{
+                                           fcc::GenVertexCollection* colGenVertices) {
+
   //MC particle vertex mapping: production & decay vertex
   std::vector<std::pair<int, int>> m_vecPartProdVtxIDDecVtxID;
 
@@ -427,31 +438,28 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     m_vecPartProdVtxIDDecVtxID[j].second = -1;
   }
 
-  Candidate* cand = nullptr;
   for(int j=0; j<Input->GetEntries(); j++) {
 
-    cand = static_cast<Candidate *>(m_allPartOutArray->At(j));
+    auto cand     = static_cast<Candidate *>(m_allPartOutArray->At(j));
+    auto particle = colMCParticles->create();
 
-    auto particle      = colMCParticles->create();
+    auto barePart     = fcc::BareParticle();
+    barePart.Type     = cand->PID;
+    barePart.Status   = cand->Status;
+    barePart.P4.Px    = cand->Momentum.Px();
+    barePart.P4.Py    = cand->Momentum.Py();
+    barePart.P4.Pz    = cand->Momentum.Pz();
+    barePart.P4.Mass  = cand->Momentum.M();
+    barePart.Charge   = cand->Charge;
+    barePart.Vertex.X = cand->Position.X();
+    barePart.Vertex.Y = cand->Position.Y();
+    barePart.Vertex.Z = cand->Position.Z();
 
-    auto barePart      = new fcc::BareParticle();
-    barePart->Type     = cand->PID;
-    barePart->Status   = cand->Status;
-    barePart->P4.Px    = cand->Momentum.Px();
-    barePart->P4.Py    = cand->Momentum.Py();
-    barePart->P4.Pz    = cand->Momentum.Pz();
-    barePart->P4.Mass  = cand->Momentum.M();
-    barePart->Charge   = cand->Charge;
-    barePart->Vertex.X = cand->Position.X();
-    barePart->Vertex.Y = cand->Position.Y();
-    barePart->Vertex.Z = cand->Position.Z();
+    if (cand->M1==-1)      barePart.Bits = static_cast<unsigned>(ParticleStatus::kBeam);
+    else if (cand->D1==-1) barePart.Bits = static_cast<unsigned>(ParticleStatus::kStable);
+    else                   barePart.Bits = static_cast<unsigned>(ParticleStatus::kDecayed);
 
-    if (cand->M1==-1)      barePart->Bits = static_cast<unsigned>(ParticleStatus::kBeam);
-    else if (cand->D1==-1) barePart->Bits = static_cast<unsigned>(ParticleStatus::kStable);
-    else                   barePart->Bits = static_cast<unsigned>(ParticleStatus::kDecayed);
-
-    particle.Core(*barePart);
-    if (barePart!=nullptr) delete barePart;
+    particle.Core(barePart);
 
     // Mapping the vertices
     int idPartStartVertex = m_vecPartProdVtxIDDecVtxID[j].first;
@@ -510,31 +518,33 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
                           particle.Core().P4.Pz*particle.Core().P4.Pz +
                           particle.Core().P4.Mass*particle.Core().P4.Mass);
 
-      std::cout << "Delphes MCParticle: "
-                << " Id: "       << setw(3)  << j+1
-                << " Pdg: "      << setw(5)  << particle.Core().Type
-                << " Stat: "     << setw(2)  << particle.Core().Status
-                << " Bits: "     << setw(2)  << particle.Core().Bits
-                << " Px: "       << setprecision(2) << setw(9) << particle.Core().P4.Px
-                << " Py: "       << setprecision(2) << setw(9) << particle.Core().P4.Py
-                << " Pz: "       << setprecision(2) << setw(9) << particle.Core().P4.Pz
-                << " E: "        << setprecision(2) << setw(9) << partE
-                << " M: "        << setprecision(2) << setw(9) << particle.Core().P4.Mass;
+      debug() << "MCParticle: "
+              << " Id: "       << std::setw(3)  << j+1
+              << " Pdg: "      << std::setw(5)  << particle.Core().Type
+              << " Stat: "     << std::setw(2)  << particle.Core().Status
+              << " Bits: "     << std::setw(2)  << particle.Core().Bits
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " E: "        << std::setprecision(2) << std::setw(9) << partE
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass;
       if (particle.StartVertex().isAvailable()) {
-      std::cout << " VSId: "     << setw(3)  << particle.StartVertex().getObjectID().index
-               //<< " Vx: "       << setprecision(2) << setw(9) << particle.StartVertex().Position().X
-               //<< " Vy: "       << setprecision(2) << setw(9) << particle.StartVertex().Position().Y
-               //<< " Vz: "       << setprecision(2) << setw(9) << particle.StartVertex().Position().Z
-               << " T: "        << setprecision(2) << setw(9) << particle.StartVertex().Ctau();
+        debug() << " VSId: "     << std::setw(3)  << particle.StartVertex().getObjectID().index
+                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().X
+                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Y
+                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Z
+                << " T: "        << std::setprecision(2) << std::setw(9) << particle.StartVertex().Ctau();
       }
       if (particle.EndVertex().isAvailable()) {
-      std::cout << " VEId: "     << setw(3)  << particle.EndVertex().getObjectID().index
-                //<< " Vx: "       << setprecision(2) << setw(9) << particle.EndVertex().Position().X
-                //<< " Vy: "       << setprecision(2) << setw(9) << particle.EndVertex().Position().Y
-                //<< " Vz: "       << setprecision(2) << setw(9) << particle.EndVertex().Position().Z
-                << " T: "        << setprecision(2) << setw(9) << particle.EndVertex().Ctau();
+        debug() << " VEId: "     << std::setw(3)  << particle.EndVertex().getObjectID().index
+                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().X
+                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Y
+                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Z
+                << " T: "        << std::setprecision(2) << std::setw(9) << particle.EndVertex().Ctau();
       }
-      std::cout << std::endl;
+      debug() << std::fixed << endmsg;
+
     } // Debug
   }
 }   
@@ -545,27 +555,25 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
 void DelphesSimulation::ConvertTracks(const TObjArray* Input,
                                       const fcc::MCParticleCollection* colMCParticles,
                                       fcc::ParticleCollection* colParticles,
-                                      fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC)
-{
-  Candidate* cand = nullptr;
+                                      fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC) {
+
   for(int j=0; j<Input->GetEntries(); j++) {
 
-    cand = static_cast<Candidate *>(Input->At(j));
-
+    auto cand     = static_cast<Candidate *>(Input->At(j));
     auto particle = colParticles->create();
     auto relation = ascColParticlesToMC->create();
 
-    auto barePart      = new fcc::BareParticle();
-    barePart->Type     = cand->PID;
-    barePart->Status   = cand->Status;
-    barePart->P4.Px    = cand->Momentum.Px();
-    barePart->P4.Py    = cand->Momentum.Py();
-    barePart->P4.Pz    = cand->Momentum.Pz();
-    barePart->P4.Mass  = cand->Momentum.M();
-    barePart->Charge   = cand->Charge;
-    barePart->Vertex.X = cand->Position.X();
-    barePart->Vertex.Y = cand->Position.Y();
-    barePart->Vertex.Z = cand->Position.Z();
+    auto barePart     = fcc::BareParticle();
+    barePart.Type     = cand->PID;
+    barePart.Status   = cand->Status;
+    barePart.P4.Px    = cand->Momentum.Px();
+    barePart.P4.Py    = cand->Momentum.Py();
+    barePart.P4.Pz    = cand->Momentum.Pz();
+    barePart.P4.Mass  = cand->Momentum.M();
+    barePart.Charge   = cand->Charge;
+    barePart.Vertex.X = cand->Position.X();
+    barePart.Vertex.Y = cand->Position.Y();
+    barePart.Vertex.Z = cand->Position.Z();
 
     // Reference to MC - Delphes holds references to all objects related to the <T> object, only one relates to MC particle
     Candidate* refCand = nullptr;
@@ -576,23 +584,22 @@ void DelphesSimulation::ConvertTracks(const TObjArray* Input,
       idRefMCPart = refCand->GetUniqueID()-1;     // Use C numbering from 0
       if (idRefMCPart<colMCParticles->size()) {
 
-        barePart->Bits = static_cast<unsigned>(ParticleStatus::kMatched);
-        particle.Core(*barePart);
+        barePart.Bits = static_cast<unsigned>(ParticleStatus::kMatched);
+        particle.Core(barePart);
         relation.Rec(particle);
         relation.Sim(colMCParticles->at(idRefMCPart));
       }
       else {
-        barePart->Bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
-        particle.Core(*barePart);
+        barePart.Bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
+        particle.Core(barePart);
         warning() << "Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
       }
     }
     else {
-      barePart->Bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
-      particle.Core(*barePart);
+      barePart.Bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
+      particle.Core(barePart);
       warning() << "Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
     }
-    if (barePart!=nullptr) delete barePart;
 
     // Debug: print FCC-EDM track info
     if (msgLevel() <= MSG::DEBUG) {
@@ -610,22 +617,24 @@ void DelphesSimulation::ConvertTracks(const TObjArray* Input,
                            relation.Sim().Core().P4.Pz*relation.Sim().Core().P4.Pz +
                            relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
 
-      std::cout << "Delphes Track: "
-                << " Id: "       << setw(3)  << j+1
-                << " Pdg: "      << setw(5)  << particle.Core().Type
-                << " Stat: "     << setw(2)  << particle.Core().Status
-                << " Bits: "     << setw(2)  << particle.Core().Bits
-                << " Px: "       << setprecision(2) << setw(9) << particle.Core().P4.Px
-                << " Py: "       << setprecision(2) << setw(9) << particle.Core().P4.Py
-                << " Pz: "       << setprecision(2) << setw(9) << particle.Core().P4.Pz
-                << " E: "        << setprecision(2) << setw(9) << energy
-                << " M: "        << setprecision(2) << setw(9) << particle.Core().P4.Mass
-                << " Vx: "       << setprecision(2) << setw(9) << particle.Core().Vertex.X
-                << " Vy: "       << setprecision(2) << setw(9) << particle.Core().Vertex.Y
-                << " Vz: "       << setprecision(2) << setw(9) << particle.Core().Vertex.Z
-                << " RefId: "    << setw(3)  << idRefMCPart+1
-                << " Rel E: "    << setprecision(2) << setw(9) << simE << " <-> " << setw(9) << recE;
-      std::cout << std::endl;
+      debug() << "Track: "
+              << " Id: "       << std::setw(3)  << j+1
+              << " Pdg: "      << std::setw(5)  << particle.Core().Type
+              << " Stat: "     << std::setw(2)  << particle.Core().Status
+              << " Bits: "     << std::setw(2)  << particle.Core().Bits
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " E: "        << std::setprecision(2) << std::setw(9) << energy
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass
+              << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.X
+              << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Y
+              << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Z
+              << " RefId: "    << std::setw(3)  << idRefMCPart+1
+              << " Rel E: "    << std::setprecision(2) << std::setw(9) << simE << " <-> " << std::setw(9) << recE
+              << std::fixed
+              << endmsg;
     } // Debug
   } // For - tracks
 }
@@ -636,27 +645,25 @@ void DelphesSimulation::ConvertTracks(const TObjArray* Input,
 void DelphesSimulation::ConvertTowers(const TObjArray* Input,
                                       const fcc::MCParticleCollection* colMCParticles,
                                       fcc::ParticleCollection* colParticles,
-                                      fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC)
-{
-  Candidate* cand = nullptr;
+                                      fcc::ParticleMCParticleAssociationCollection* ascColParticlesToMC) {
+
   for(int j=0; j<Input->GetEntries(); j++) {
 
-    cand = static_cast<Candidate *>(Input->At(j));
+    auto cand     = static_cast<Candidate *>(Input->At(j));
+    auto particle = colParticles->create();
 
-    auto particle      = colParticles->create();
-
-    auto barePart      = new fcc::BareParticle();
-    barePart->Type     = cand->PID;
-    barePart->Status   = cand->Status;
-    barePart->P4.Px    = cand->Momentum.Px();
-    barePart->P4.Py    = cand->Momentum.Py();
-    barePart->P4.Pz    = cand->Momentum.Pz();
-    barePart->P4.Mass  = cand->Momentum.M();
-    barePart->Charge   = cand->Charge;
-    barePart->Vertex.X = cand->Position.X();
-    barePart->Vertex.Y = cand->Position.Y();
-    barePart->Vertex.Z = cand->Position.Z();
-    particle.Core(*barePart);
+    auto barePart     = fcc::BareParticle();
+    barePart.Type     = cand->PID;
+    barePart.Status   = cand->Status;
+    barePart.P4.Px    = cand->Momentum.Px();
+    barePart.P4.Py    = cand->Momentum.Py();
+    barePart.P4.Pz    = cand->Momentum.Pz();
+    barePart.P4.Mass  = cand->Momentum.M();
+    barePart.Charge   = cand->Charge;
+    barePart.Vertex.X = cand->Position.X();
+    barePart.Vertex.Y = cand->Position.Y();
+    barePart.Vertex.Z = cand->Position.Z();
+    particle.Core(barePart);
 
     // Debug: print FCC-EDM tower info
     if (msgLevel() <= MSG::DEBUG) {
@@ -666,20 +673,22 @@ void DelphesSimulation::ConvertTowers(const TObjArray* Input,
                            particle.Core().P4.Pz*particle.Core().P4.Pz +
                            particle.Core().P4.Mass*particle.Core().P4.Mass);
 
-      std::cout << "Delphes Tower: "
-                << " Id: "       << setw(3) << j+1
-                << " Pdg: "      << setw(5) << particle.Core().Type
-                << " Stat: "     << setw(2) << particle.Core().Status
-                << " Bits: "     << setw(2) << particle.Core().Bits
-                << " Px: "       << setprecision(2) << setw(9) << particle.Core().P4.Px
-                << " Py: "       << setprecision(2) << setw(9) << particle.Core().P4.Py
-                << " Pz: "       << setprecision(2) << setw(9) << particle.Core().P4.Pz
-                << " E: "        << setprecision(2) << setw(9) << energy
-                << " M: "        << setprecision(2) << setw(9) << particle.Core().P4.Mass
-                << " Vx: "       << setprecision(2) << setw(9) << particle.Core().Vertex.X
-                << " Vy: "       << setprecision(2) << setw(9) << particle.Core().Vertex.Y
-                << " Vz: "       << setprecision(2) << setw(9) << particle.Core().Vertex.Z
-                << std::endl;
+      debug() << "Tower: "
+              << " Id: "       << std::setw(3) << j+1
+              << " Pdg: "      << std::setw(5) << particle.Core().Type
+              << " Stat: "     << std::setw(2) << particle.Core().Status
+              << " Bits: "     << std::setw(2) << particle.Core().Bits
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " E: "        << std::setprecision(2) << std::setw(9) << energy
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass
+              << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.X
+              << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Y
+              << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Z
+              << std::fixed
+              << std::endl;
     } // Debug
 
     // Reference to MC - Delphes holds references to all objects related to the Photon object, several relations might exist for gammas
@@ -726,22 +735,21 @@ void DelphesSimulation::ConvertTowers(const TObjArray* Input,
                              relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
 
         totSimE += simE;
-        std::cout << " RefId: " << setw(3)            << id+1
-                  << " Rel E: " << setprecision(2)
-                                << setw(9) << simE    << " "
-                                << setw(9) << totSimE << " <-> "
-                                << setw(9) << recE;
-        if      (colMCParticles->at(id).Core().Type ==22) std::cout << " Gamma";
-        else if (colMCParticles->at(id).Core().Charge==0) std::cout << " Neutral";
-        std::cout << std::endl;
+        debug() << " RefId: " << std::setw(3)            << id+1
+                << " Rel E: " << std::setprecision(2)
+                              << std::scientific
+                              << std::setw(9) << simE    << " "
+                              << std::setw(9) << totSimE << " <-> "
+                              << std::setw(9) << recE
+                              << std::fixed;
+        if      (colMCParticles->at(id).Core().Type ==22) debug() << " Gamma";
+        else if (colMCParticles->at(id).Core().Charge==0) debug() << " Neutral";
+        debug() << std::endl;
       } // Debug
     }
 
     // Debug: print end-line
-    if (msgLevel() <= MSG::DEBUG) std::cout << std::endl;
-
-    // Release memory
-    if (barePart!=nullptr) delete barePart;
+    if (msgLevel() <= MSG::DEBUG) debug() << endmsg;
   } // For - towers
 }
 
@@ -751,23 +759,21 @@ void DelphesSimulation::ConvertTowers(const TObjArray* Input,
 void DelphesSimulation::ConvertJets(const TObjArray* Input,
                                     const fcc::MCParticleCollection* colMCParticles,
                                     fcc::GenJetCollection* colJets,
-                                    fcc::GenJetParticleAssociationCollection* ascColJetsToMC)
-{
-  Candidate* cand = nullptr;
+                                    fcc::GenJetParticleAssociationCollection* ascColJetsToMC) {
+
   for(int j = 0; j < Input->GetEntries(); ++j) {
       
-    cand = static_cast<Candidate *>(Input->At(j));
-
+    auto cand     = static_cast<Candidate *>(Input->At(j));
     auto jet      = colJets->create();
     auto relation = ascColJetsToMC->create();
 
-    auto bareJet      = new fcc::BareJet();
-    bareJet->Area     = -1;
-    bareJet->P4.Px    = cand->Momentum.Px();
-    bareJet->P4.Py    = cand->Momentum.Py();
-    bareJet->P4.Pz    = cand->Momentum.Pz();
-    bareJet->P4.Mass  = cand->Mass;
-    jet.Core(*bareJet);
+    auto bareJet     = fcc::BareJet();
+    bareJet.Area     = -1;
+    bareJet.P4.Px    = cand->Momentum.Px();
+    bareJet.P4.Py    = cand->Momentum.Py();
+    bareJet.P4.Pz    = cand->Momentum.Pz();
+    bareJet.P4.Mass  = cand->Mass;
+    jet.Core(bareJet);
 
     // Debug: print FCC-EDM jets info
     if (msgLevel() <= MSG::DEBUG) {
@@ -777,13 +783,16 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
                            jet.Core().P4.Pz*jet.Core().P4.Pz +
                            jet.Core().P4.Mass*jet.Core().P4.Mass);
 
-      std::cout << "Delphes Jet: "
-                << " Id: "       << setw(3)  << j+1
-                << " Px: "       << setprecision(2) << setw(9) << jet.Core().P4.Px
-                << " Py: "       << setprecision(2) << setw(9) << jet.Core().P4.Py
-                << " Pz: "       << setprecision(2) << setw(9) << jet.Core().P4.Pz
-                << " E: "        << setprecision(2) << setw(9) << energy
-                << " M: "        << setprecision(2) << setw(9) << jet.Core().P4.Mass << std::endl;
+      debug() << "Jet: "
+              << " Id: "       << std::setw(3)  << j+1
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Pz
+              << " E: "        << std::setprecision(2) << std::setw(9) << energy
+              << " M: "        << std::setprecision(2) << std::setw(9) << jet.Core().P4.Mass
+              << std::fixed
+              << std::endl;
     }
 
     // Reference to MC - Delphes holds references to all objects related to the Jet object,
@@ -822,26 +831,27 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
                              relation.Particle().Core().P4.Pz*relation.Particle().Core().P4.Pz +
                              relation.Particle().Core().P4.Mass*relation.Particle().Core().P4.Mass);
         totSimE += simE;
-        std::cout << " RefId: " << setw(3)            << id+1
-                  << " Rel E: " << setprecision(2)
-                                << setw(9) << simE    << " "
-                                << setw(9) << totSimE << " <-> "
-                                << setw(9) << recE    << std::endl;
+        debug() << " RefId: " << std::setw(3)            << id+1
+                << " Rel E: " << std::setprecision(2)
+                              << std::scientific
+                              << std::setw(9) << simE    << " "
+                              << std::setw(9) << totSimE << " <-> "
+                              << std::setw(9) << recE
+                              << std::fixed
+                              << std::endl;
       } // Debug
     }
 
     // Debug: print end-line
-    if (msgLevel() <= MSG::DEBUG) std::cout << std::endl;
-
-    if (bareJet!=nullptr) delete bareJet;
+    if (msgLevel() <= MSG::DEBUG) debug() << endmsg;
   } // For - jets
 }   
 
 //
 // Recursive method to find id of MCParticle related to the given jet Delphes Candidate object
 //
-void DelphesSimulation::findJetPartMC(Candidate* jetPart, int rangeMCPart, std::set<int>& idRefMCPart)
-{
+void DelphesSimulation::findJetPartMC(Candidate* jetPart, int rangeMCPart, std::set<int>& idRefMCPart) {
+
   // Recursion depth - increase
   //static int depth = 0;
   //depth++;
@@ -876,10 +886,7 @@ void DelphesSimulation::findJetPartMC(Candidate* jetPart, int rangeMCPart, std::
 //
 void DelphesSimulation::ConvertMET(const TObjArray* InputMET,
                                    const TObjArray* InputSHT,
-                                   fcc::METCollection* colMET){
-
-  Candidate* candMET = nullptr;
-  Candidate* candSHT = nullptr;
+                                   fcc::METCollection* colMET) {
 
   bool saveSHT = true;
   if (InputMET->GetEntries()!=InputSHT->GetEntries()) {
@@ -889,8 +896,10 @@ void DelphesSimulation::ConvertMET(const TObjArray* InputMET,
   }
 
   for(int j = 0; j < InputMET->GetEntries(); ++j) {
-      
-    candMET = static_cast<Candidate *>(InputMET->At(j));
+
+    Candidate* candSHT = nullptr;
+
+    auto candMET = static_cast<Candidate *>(InputMET->At(j));
     if (saveSHT) candSHT = static_cast<Candidate *>(InputSHT->At(j));
 
     auto met = colMET->create();
@@ -903,11 +912,13 @@ void DelphesSimulation::ConvertMET(const TObjArray* InputMET,
     // Debug: print FCC-EDM MET info
     if (msgLevel() <= MSG::DEBUG) {
 
-      std::cout << "MET Info: "
-                << " MET: " << setprecision(2) << setw(9) << met.Magnitude()
-                << " Phi: " << setprecision(2) << setw(9) << met.Phi()
-                << " sHT: " << setprecision(2) << setw(9) << met.ScalarSum()
-                << std::endl;
+      debug() << "MET Info: "
+              << std::scientific
+              << " MET: " << std::setprecision(2) << std::setw(9) << met.Magnitude()
+              << " Phi: " << std::setprecision(2) << std::setw(9) << met.Phi()
+              << " sHT: " << std::setprecision(2) << std::setw(9) << met.ScalarSum()
+              << std::fixed
+              << endmsg;
     } // Debug
   }
 }   

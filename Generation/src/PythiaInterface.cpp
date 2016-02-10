@@ -9,16 +9,15 @@
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/HepMC2.h"
 
-using namespace std;
-
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile()
-{
+  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile() {
+
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput(  "hepmc"   , m_hepmchandle);
 
+  // All variables truly initialized in the initialize() method (for pedantic C++ reasons also in a constructor)
   m_nAbort = 0;
   m_iAbort = 0;
   m_iEvent = 0;
@@ -35,7 +34,7 @@ StatusCode PythiaInterface::initialize() {
   if (System::getEnv("PYTHIA8_XML") != "UNKNOWN") xmlpath = System::getEnv("PYTHIA8_XML") ;
 
   // Initialize pythia
-  m_pythia = new Pythia8::Pythia ( xmlpath );
+  m_pythia = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
 
   // Read Pythia configuration file
   m_pythia->readFile( m_parfile.c_str() );
@@ -79,31 +78,32 @@ StatusCode PythiaInterface::execute() {
     for (int i = 0; i < m_pythia->event.size(); ++i){
 
       //if (m_pythia->event[i].isFinal() && m_pythia->event[i].isCharged())
-      std::cout << "PythiaInterface : "
-                << " Id: "       << setw(3) << i
-                << " PDG: "      << setw(5) << m_pythia->event[i].id()
-                << " Mothers: "  << setw(3) << m_pythia->event[i].mother1()   << " -> " << setw(3) << m_pythia->event[i].mother2()
-                << " Daughters:" << setw(3) << m_pythia->event[i].daughter1() << " -> " << setw(3) << m_pythia->event[i].daughter2()
-                << " Stat: "     << setw(2) << m_pythia->event[i].status()
-                << setprecision(2) << " Px: " << setw(9) << m_pythia->event[i].px()
-                << setprecision(2) << " Py: " << setw(9) << m_pythia->event[i].py()
-                << setprecision(2) << " Pz: " << setw(9) << m_pythia->event[i].pz()
-                << setprecision(2) << " E: "  << setw(9) << m_pythia->event[i].e()
-                << setprecision(2) << " M: "  << setw(9) << m_pythia->event[i].m()
-                << std::endl;
+      debug() << "Pythia: "
+              << " Id: "        << std::setw(3) << i
+              << " PDG: "       << std::setw(5) << m_pythia->event[i].id()
+              << " Mothers: "   << std::setw(3) << m_pythia->event[i].mother1()   << " -> " << std::setw(3) << m_pythia->event[i].mother2()
+              << " Daughters: " << std::setw(3) << m_pythia->event[i].daughter1() << " -> " << std::setw(3) << m_pythia->event[i].daughter2()
+              << " Stat: "      << std::setw(2) << m_pythia->event[i].status()
+              << std::scientific
+              << std::setprecision(2) << " Px: " << std::setw(9) << m_pythia->event[i].px()
+              << std::setprecision(2) << " Py: " << std::setw(9) << m_pythia->event[i].py()
+              << std::setprecision(2) << " Pz: " << std::setw(9) << m_pythia->event[i].pz()
+              << std::setprecision(2) << " E: "  << std::setw(9) << m_pythia->event[i].e()
+              << std::setprecision(2) << " M: "  << std::setw(9) << m_pythia->event[i].m()
+              << std::fixed
+              << endmsg;
     }
   } // Debug
 
   // Define HepMC event and convert Pythia event into this HepMC event type
-  HepMC::GenEvent* theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
+  auto theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
   toHepMC->fill_next_event(*m_pythia, theEvent, m_iEvent);
   //theEvent-> print();
 
   // Print debug: HepMC event info
   if (msgLevel() <= MSG::DEBUG) {
 
-    for (HepMC::GenEvent::particle_iterator ipart = theEvent->particles_begin() ;
-         ipart!=theEvent->particles_end(); ++ipart) {
+    for (auto ipart = theEvent->particles_begin(); ipart!=theEvent->particles_end(); ++ipart) {
 
       int motherID        = -1;
       int motherIDRange   = 0;
@@ -121,24 +121,28 @@ StatusCode PythiaInterface::execute() {
         daughterIDRange = (*ipart)->end_vertex()->particles_out_size() -1;
       }
 
-      std::cout << "Pythia HepMC: "
-                << " Id: "       << setw(3)  << (*ipart)->barcode()
-                << " Pdg: "      << setw(5)  << (*ipart)->pdg_id()
-                << " Mothers: "  << setw(3)  << motherID << " -> " << setw(3) << motherID+motherIDRange
-                << " Daughters: "<< setw(3)  << daughterID << " -> " << setw(3) << daughterID+daughterIDRange
-                << " Stat: "     << setw(2)  << (*ipart)->status()
-                << " Px: "       << setprecision(2) << setw(9) << (*ipart)->momentum().px()
-                << " Py: "       << setprecision(2) << setw(9) << (*ipart)->momentum().py()
-                << " Pz: "       << setprecision(2) << setw(9) << (*ipart)->momentum().pz()
-                << " E: "        << setprecision(2) << setw(9) << (*ipart)->momentum().e()
-                << " M: "        << setprecision(2) << setw(9) << (*ipart)->momentum().m();
+      debug() << "HepMC: "
+              << " Id: "       << std::setw(3)  << (*ipart)->barcode()
+              << " Pdg: "      << std::setw(5)  << (*ipart)->pdg_id()
+              << " Mothers: "  << std::setw(3)  << motherID   << " -> " << std::setw(3) << motherID+motherIDRange
+              << " Daughters: "<< std::setw(3)  << daughterID << " -> " << std::setw(3) << daughterID+daughterIDRange
+              << " Stat: "     << std::setw(2)  << (*ipart)->status()
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().px()
+              << " Py: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().py()
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().pz()
+              << " E: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().e()
+              << " M: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().m()
+              << std::fixed;
       if ((*ipart)->production_vertex()!=nullptr) {
-      std::cout << " Vx: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().x()
-                << " Vy: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().y()
-                << " Vz: "       << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().z()
-                << " T: "        << setprecision(2) << setw(9) << (*ipart)->production_vertex()->position().t();
+      debug() << std::scientific
+              << " Vx: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().x()
+              << " Vy: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().y()
+              << " Vz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().z()
+              << " T: "        << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().t()
+              << std::fixed;
       }
-      std::cout << std::endl;
+      debug() << endmsg;
     }
   } // Debug
 
@@ -149,6 +153,7 @@ StatusCode PythiaInterface::execute() {
 }
 
 StatusCode PythiaInterface::finalize() {
-  if ( m_pythia != nullptr ) { delete m_pythia ; m_pythia = nullptr; }
+
+  m_pythia.reset(); //if ( m_pythia != nullptr ) { delete m_pythia ; m_pythia = nullptr; }
   return GaudiAlgorithm::finalize();
 }

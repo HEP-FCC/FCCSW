@@ -56,18 +56,18 @@ class DelphesSimulation: public GaudiAlgorithm {
 
 public:
 
-  // Constructor.
+  //! Constructor.
   DelphesSimulation(const std::string& name, ISvcLocator* svcLoc);
 
-  // Initialize.
+  //! Initialize.
   virtual StatusCode initialize();
 
-  // Execute. This function actually does no simulation,
-  // and simply converts the stable MCParticles in the input collection
-  // into Particles that are written to the output collection.
+  //! Execute. This function actually does no simulation,
+  //! and simply converts the stable MCParticles in the input collection
+  //! into Particles that are written to the output collection.
   virtual StatusCode execute();
 
-  // Finalize.
+  //! Finalize.
   virtual StatusCode finalize();
 
 private:
