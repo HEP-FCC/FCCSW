@@ -1,7 +1,6 @@
 List of examples
 ====
 
-
 ## BASICS examples
 
 * [example_options.py](../Examples/options/example_options.py)
@@ -12,6 +11,7 @@ List of examples
 
 * [simple_workflow.py](../Examples/options/simple_workflow.py)
   * reading events from a HepMC file
+  * adding sample pileup
   * converting `HepMC::GenEvent` to EDM
   * using sample jet clustering algorithm
   * writing the EDM output to ROOT file using PODIO
