@@ -6,8 +6,11 @@ podioevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
-genpileup = PoissonPileUp(name="ConstPileUp", Filename="example_MyPythia.dat", numPileUpEvents=1)
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat", PileUpTool=genpileup)
+genpileup = PoissonPileUp(name="ConstPileUp",
+                          Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
+                          numPileUpEvents=1)
+reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
+                     PileUpTool=genpileup)
 # have a look at the source code of HepMCReader, in Generation/src/HepMCReader
 # In the following line,
 #   reader.DataOutputs.YYY.Path = "XXX"

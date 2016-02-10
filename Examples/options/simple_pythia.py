@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 # Example of pythia configuration file to generate events
-pythiafile="options/Pythia_standard.cmd"
+pythiafile="Generation/data/Pythia_standard.cmd"
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
 

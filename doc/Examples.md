@@ -4,19 +4,19 @@ List of examples
 
 ## BASICS examples
 
-* [example_options.py](../options/example_options.py)
+* [example_options.py](../Examples/options/example_options.py)
   * reading events from a HepMC file
   * dumping `HepMC::GenEvent`
   * using dummy algorithm that creates EDM `fcc::JetCollection`
   * writing the EDM output to ROOT file using PODIO
 
-* [simple_workflow.py](../options/simple_workflow.py)
+* [simple_workflow.py](../Examples/options/simple_workflow.py)
   * reading events from a HepMC file
   * converting `HepMC::GenEvent` to EDM
   * using sample jet clustering algorithm
   * writing the EDM output to ROOT file using PODIO
 
-* [simple_pythia.py](../options/simple_pythia.py)
+* [simple_pythia.py](../Examples/options/simple_pythia.py)
   * generating PYTHIA events and saving them to HepMC
   * converting `HepMC::GenEvent` to EDM
   * filtering MC particles
@@ -46,7 +46,7 @@ List of examples
   * running Delphes simulation algorithm
   * writing the EDM output to ROOT file using PODIO
 
-* [geant_fullsim.py](../options/geant_fullsim.py)
+* [geant_fullsim.py](../Examples/options/geant_fullsim.py)
   * reading events from a HepMC file
   * converting `HepMC::GenEvent` to EDM
   * geometry parsed from XML ([TestTracker.xml](../DetectorDescription/Detectors/compact/TestTracker.xml)) by DD4hep using `GeoSvc`
@@ -57,7 +57,7 @@ List of examples
   * running Geant4 simulation algorithm (`G4SimAlg`), saving the output (tracker and HCal hits)
   * writing the EDM output to ROOT file using PODIO
 
-* [geant_pgun_fullsim.py](../options/geant_pgun_fullsim.py)
+* [geant_pgun_fullsim.py](../Examples/options/geant_pgun_fullsim.py)
   * generating single particle events from a given list of types,
     with momentum, phi and theta from a given range,
     saving to HepMC
@@ -91,7 +91,7 @@ List of examples
   * running Geant4 simulation algorithm (`G4SimAlg`)
   * writing the EDM output to ROOT file using PODIO
 
-* [geant_fastsim.py](../options/geant_fastsim.py)
+* [geant_fastsim.py](../Examples/options/geant_fastsim.py)
   * reading events from a HepMC file
   * converting `HepMC::GenEvent` to EDM
   * geometry parsed from XML ([ParametricSimTracker.xml](../DetectorDescription/Detectors/compact/ParametricSimTracker.xml) by DD4hep using `GeoSvc`
