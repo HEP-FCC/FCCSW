@@ -41,7 +41,7 @@ List of examples
 
 ## SIMULATION examples
 
-* [PythiaDelphes_config.py](../options/PythiaDelphes_config.py)
+* [PythiaDelphes_config.py](../Sim/SimDelphesInterface/options/PythiaDelphes_config.py)
   * generating PYTHIA events and saving them to HepMC
   * running Delphes simulation algorithm
   * writing the EDM output to ROOT file using PODIO
