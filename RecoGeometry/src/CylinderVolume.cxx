@@ -23,23 +23,22 @@ m_halfZ(halfZ)
     Alg::RotationMatrix3D rotation      = transf->Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     Alg::Vector3D         center        = transf->Translation().Vect();
-    std::shared_ptr<const Alg::Transform3D> rightTransform(new Alg::Transform3D(rotation,center+lz*halfZ));
+    auto rightTransform = std::make_shared<const Alg::Transform3D>(rotation,center+lz*halfZ);
     Alg::RotationMatrix3D leftrotation  = rotation*Alg::RotationY(M_PI)*Alg::RotationZ(-M_PI);
     leftrotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
-    std::shared_ptr<const Alg::Transform3D> leftTransform(new Alg::Transform3D(leftrotation,center+lz*halfZ));
-    
-    std::shared_ptr<Reco::BoundaryDiscSurface> posDisc (new Reco::BoundaryDiscSurface(rightTransform,Rmin,Rmax));
-    std::shared_ptr<Reco::BoundaryDiscSurface> negDisc (new Reco::BoundaryDiscSurface(leftTransform,Rmin,Rmax));
+    auto leftTransform = std::make_shared<const Alg::Transform3D>(leftrotation,center+lz*halfZ);
+    auto posDisc = std::make_shared<Reco::BoundaryDiscSurface>(rightTransform,Rmin,Rmax);
+    auto negDisc = std::make_shared<Reco::BoundaryDiscSurface>(leftTransform,Rmin,Rmax);
     
     //outer Cylinder
-    std::shared_ptr<Reco::BoundaryCylinderSurface> outerCylinder (new Reco::BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D>(transf),Rmax,halfZ));
+    auto outerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(transf,Rmax,halfZ);
     
     m_boundarySurfaces.push_back(negDisc);
     m_boundarySurfaces.push_back(posDisc);
     m_boundarySurfaces.push_back(outerCylinder);
     //inner Cylinder
     if (Rmin>0.) {
-        std::shared_ptr<Reco::BoundaryCylinderSurface> innerCylinder (new Reco::BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D>(transf),Rmin,halfZ));
+        auto innerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(transf,Rmin,halfZ);
         m_boundarySurfaces.push_back(innerCylinder);
     }
     //set Coordinates
@@ -64,15 +63,15 @@ m_halfZ(halfZ)
     Alg::RotationMatrix3D rotation      = transf->Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     Alg::Vector3D         center        = transf->Translation().Vect();
-    std::shared_ptr<const Alg::Transform3D> rightTransform(new Alg::Transform3D(rotation,center+lz*halfZ));
+    auto rightTransform = std::make_shared<const Alg::Transform3D>(rotation,center+lz*halfZ);
     Alg::RotationMatrix3D leftrotation  = rotation*Alg::RotationY(M_PI)*Alg::RotationZ(-M_PI);
     leftrotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
-    std::shared_ptr<const Alg::Transform3D> leftTransform(new Alg::Transform3D(leftrotation,center+lz*halfZ));
+    auto leftTransform = std::make_shared<const Alg::Transform3D>(leftrotation,center+lz*halfZ);
     
-    std::shared_ptr<Reco::BoundaryDiscSurface> posDisc (new Reco::BoundaryDiscSurface(rightTransform,Rmin,Rmax));
-    std::shared_ptr<Reco::BoundaryDiscSurface> negDisc (new Reco::BoundaryDiscSurface(leftTransform,Rmin,Rmax));
+    auto posDisc = std::make_shared<Reco::BoundaryDiscSurface>(rightTransform,Rmin,Rmax);
+    auto negDisc = std::make_shared<Reco::BoundaryDiscSurface>(leftTransform,Rmin,Rmax);
     //outer Cylinder
-    std::shared_ptr<Reco::BoundaryCylinderSurface> outerCylinder (new Reco::BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D>(transf),Rmax,halfZ));
+    auto outerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(transf,Rmax,halfZ);
     
     m_boundarySurfaces.push_back(negDisc);
     m_boundarySurfaces.push_back(posDisc);
@@ -80,7 +79,7 @@ m_halfZ(halfZ)
     
     //inner Cylinder
     if (Rmin>0.) {
-        std::shared_ptr<Reco::BoundaryCylinderSurface> innerCylinder (new Reco::BoundaryCylinderSurface(std::shared_ptr<const Alg::Transform3D>(transf),Rmin,halfZ));
+        auto innerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(transf,Rmin,halfZ);
         m_boundarySurfaces.push_back(innerCylinder);
     }
     //set Coordinates
@@ -105,21 +104,21 @@ Reco::Volume(layers,node)
     Alg::RotationMatrix3D rotation      = transform().Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     Alg::Vector3D         center        = transform().Translation().Vect();
-    std::shared_ptr<const Alg::Transform3D> rightTransform(new Alg::Transform3D(rotation,center+lz*m_halfZ));
+    auto rightTransform = std::make_shared<const Alg::Transform3D>(rotation,center+lz*m_halfZ);
     Alg::RotationMatrix3D leftrotation  = rotation*Alg::RotationY(M_PI)*Alg::RotationZ(-M_PI);
     leftrotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
-    std::shared_ptr<const Alg::Transform3D> leftTransform(new Alg::Transform3D(leftrotation,center+lz*m_halfZ));
-    std::shared_ptr<Reco::BoundaryDiscSurface> posDisc (new Reco::BoundaryDiscSurface(rightTransform,m_Rmin,m_Rmax));
-    std::shared_ptr<Reco::BoundaryDiscSurface> negDisc (new Reco::BoundaryDiscSurface(leftTransform,m_Rmin,m_Rmax));
+    auto leftTransform = std::make_shared<const Alg::Transform3D>(leftrotation,center+lz*m_halfZ);
+    auto posDisc = std::make_shared<Reco::BoundaryDiscSurface>(rightTransform,m_Rmin,m_Rmax);
+    auto negDisc = std::make_shared<Reco::BoundaryDiscSurface>(leftTransform,m_Rmin,m_Rmax);
     //outer Cylinder
-    std::shared_ptr<Reco::BoundaryCylinderSurface> outerCylinder (new Reco::BoundaryCylinderSurface(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmax,m_halfZ));
+    auto outerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmax,m_halfZ);
     
     m_boundarySurfaces.push_back(negDisc);
     m_boundarySurfaces.push_back(posDisc);
     m_boundarySurfaces.push_back(outerCylinder);
     //inner Cylinder
     if (m_Rmin>0.) {
-        std::shared_ptr<Reco::BoundaryCylinderSurface> innerCylinder (new Reco::BoundaryCylinderSurface(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmin,m_halfZ));
+        auto innerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmin,m_halfZ);
         m_boundarySurfaces.push_back(innerCylinder);
     }
     //setCoordinates
@@ -144,16 +143,16 @@ Reco::Volume(node)
     Alg::RotationMatrix3D rotation      = transform().Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     Alg::Vector3D         center        = transform().Translation().Vect();
-    std::shared_ptr<const Alg::Transform3D> rightTransform(new Alg::Transform3D(rotation,center+lz*m_halfZ));
+    auto rightTransform = std::make_shared<const Alg::Transform3D>(rotation,center+lz*m_halfZ);
     Alg::RotationMatrix3D leftrotation  = rotation*Alg::RotationY(M_PI)*Alg::RotationZ(-M_PI);
     leftrotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
-    std::shared_ptr<const Alg::Transform3D> leftTransform (new Alg::Transform3D(leftrotation,center+lz*m_halfZ));
+    auto leftTransform = std::make_shared<const Alg::Transform3D>(leftrotation,center+lz*m_halfZ);
     
-    std::shared_ptr<Reco::BoundaryDiscSurface> posDisc (new Reco::BoundaryDiscSurface(rightTransform,m_Rmin,m_Rmax));
-    std::shared_ptr<Reco::BoundaryDiscSurface> negDisc (new Reco::BoundaryDiscSurface(leftTransform,m_Rmin,m_Rmax));
+    auto posDisc = std::make_shared<Reco::BoundaryDiscSurface>(rightTransform,m_Rmin,m_Rmax);
+    auto negDisc = std::make_shared<Reco::BoundaryDiscSurface>(leftTransform,m_Rmin,m_Rmax);
 
     //outer Cylinder
-    std::shared_ptr<Reco::BoundaryCylinderSurface> outerCylinder (new Reco::BoundaryCylinderSurface(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmax,m_halfZ));
+    auto outerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmax,m_halfZ);
     
     m_boundarySurfaces.push_back(negDisc);
     m_boundarySurfaces.push_back(posDisc);
@@ -161,7 +160,7 @@ Reco::Volume(node)
     
     //inner Cylinder
     if (m_Rmin>0.) {
-        std::shared_ptr<Reco::BoundaryCylinderSurface> innerCylinder (new Reco::BoundaryCylinderSurface(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmin,m_halfZ));
+        auto innerCylinder = std::make_shared<Reco::BoundaryCylinderSurface>(std::make_shared<const Alg::Transform3D>(Alg::Transform3D(transform())),m_Rmin,m_halfZ);
         m_boundarySurfaces.push_back(innerCylinder);
     }
     //setCoordinates

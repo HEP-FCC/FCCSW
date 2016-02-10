@@ -8,10 +8,10 @@
 
 #include "RecoGeometry/ReadoutSegmentation1D1D.h"
 
-Reco::ReadoutSegmentation1D1D::ReadoutSegmentation1D1D(Trk::BinUtility* binutil, std::vector<Trk::BinUtility*>* m_binvector) :
+Reco::ReadoutSegmentation1D1D::ReadoutSegmentation1D1D(Trk::BinUtility* binutil, std::vector<Trk::BinUtility*>* binvector) :
 Reco::ReadoutSegmentation(),
 m_binutility(binutil),
-m_binvector(m_binvector)
+m_binvector(binvector)
 {
     if (m_binutility->dimension()!=1) throw GaudiException("ReadoutSegmentation1D1D", "Dimension of BinUtility has to be 1 for this Semgentationtype", StatusCode::FAILURE);
 }

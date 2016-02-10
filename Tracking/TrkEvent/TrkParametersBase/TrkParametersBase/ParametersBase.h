@@ -77,10 +77,10 @@ namespace Trk {
       friend class MaterialEffectsEngine;
         
       /** Default constructor */
-      ParametersBase(Alg::AmgSymMatrix<DIM>* covariance = 0);
+      explicit ParametersBase(Alg::AmgSymMatrix<DIM>* covariance = 0);
       
       /** Constructor with global position */
-      ParametersBase(const Alg::Point3D& pos,
+      explicit ParametersBase(const Alg::Point3D& pos,
                      Alg::AmgSymMatrix<DIM>* covariance = 0);
       
       /** Constructor with glboal arguments */

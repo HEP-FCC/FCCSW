@@ -1,49 +1,36 @@
-#ifndef SIM_IG4ACTIONTOOL_H
-#define SIM_IG4ACTIONTOOL_H 1 
+#ifndef SIMG4INTERFACE_IG4ACTIONTOOL_H
+#define SIMG4INTERFACE_IG4ACTIONTOOL_H
 
-/// Include files from the Framework
-#include  "GaudiKernel/AlgTool.h"
+// Gaudi
+#include  "GaudiKernel/IAlgTool.h"
 
-// Forward declarations from Geant4
+// Geant4
 class G4VUserActionInitialization;
 
 
-/** @class IG4ActionTool IG4ActionTool.h G4Interface/IG4ActionTool.h
+/** @class IG4ActionTool SimG4Interface/SimG4Interface/IG4ActionTool.h IG4ActionTool.h
  *
- *  abstract interface to load G4UserActionInitializations 
+ *  abstract interface to load initialization list of user actions
  *
  *  @author Benedikt HEGNER
  */
 
-class IG4ActionTool : virtual public AlgTool {
+class IG4ActionTool: virtual public IAlgTool {
 public:
-  
-  /// Retrieve interface ID
-  static const InterfaceID& interfaceID() ;
-  
-  /**  initialize 
-   *   @return status code 
-   */
-  virtual StatusCode   initialize() = 0 ;
-  
-  /**  initialize 
-   *   @return status code 
-   */
-  virtual StatusCode   finalize() = 0 ;
 
-  /** get initilization hook
+  /// Retrieve interface ID
+  DeclareInterfaceID(IG4ActionTool,1,0);
+
+  /**  initialize
+   *   @return status code
+   */
+  virtual StatusCode initialize() = 0;
+
+  /** get initilization hook for the user action
    *  @return  pointer to G4VUserActionInitialization
    */
    virtual G4VUserActionInitialization* getUserActionInitialization() = 0 ;
 
-protected:
-  
-  /// virtual destructor
-  virtual ~IG4ActionTool();
-
 };
 
-// ============================================================================
-#endif 
-// ============================================================================
-
+#endif /* SIMG4INTERFACE_IG4ACTIONTOOL_H */

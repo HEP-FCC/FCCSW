@@ -1,13 +1,10 @@
-// $Id: IVertexSmearingTool.h,v 1.3 2005-12-31 17:30:37 robbep Exp $
-#ifndef GENERATORS_IVERTEXSMEARINGTOOL_H 
-#define GENERATORS_IVERTEXSMEARINGTOOL_H 1
+#ifndef GENERATION_IVERTEXSMEARINGTOOL_H
+#define GENERATION_IVERTEXSMEARINGTOOL_H
 
-// Include files
-// from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 #include "HepMC/GenEvent.h"
 
-/** @class IVertexSmearingTool IVertexSmearingTool.h "Generators/IVertexSmearingTool.h"
+/** @class IVertexSmearingTool IVertexSmearingTool.h "Generation/IVertexSmearingTool.h"
  *  
  *  Abstract interface to vertex smearing tools. Concrete implementations 
  *  apply vertex smearing algorithms to each generated pile-up interactions.
@@ -26,4 +23,4 @@ public:
   /// Smear the vertex of the interaction (independantly of the others)
   virtual StatusCode smearVertex( HepMC::GenEvent * theEvent ) = 0 ;
 };
-#endif // GENERATORS_ISMEARINGTOOL_H
+#endif // GENERATION_ISMEARINGTOOL_H
