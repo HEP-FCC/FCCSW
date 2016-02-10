@@ -28,13 +28,13 @@ from Configurables import ApplicationMgr, FCCDataSvc
 nEvents=100
 
 ## Define either pythia configuration file to generate events
-#pythiaConfFile="options/Pythia_standard.cmd"
+#pythiaConfFile="Generation/data//Pythia_standard.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
-pythiaConfFile="options/Pythia_LHEinput.cmd"
+pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphesCard="options/FCChh_DelphesCard_WithDipole_v00.tcl"
+delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes objects (allParticles, partons and stable particles are flushed automatically)
 delphesOutCol=[]
