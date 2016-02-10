@@ -12,15 +12,10 @@
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc), m_pythia( nullptr ), m_parfile() {
+  GaudiAlgorithm(name, svcLoc), m_pythia(nullptr), m_parfile(), m_nAbort(0), m_iAbort(0), m_iEvent(0) {
 
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput(  "hepmc"   , m_hepmchandle);
-
-  // All variables truly initialized in the initialize() method (for pedantic C++ reasons also in a constructor)
-  m_nAbort = 0;
-  m_iAbort = 0;
-  m_iEvent = 0;
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -154,6 +149,6 @@ StatusCode PythiaInterface::execute() {
 
 StatusCode PythiaInterface::finalize() {
 
-  m_pythia.reset(); //if ( m_pythia != nullptr ) { delete m_pythia ; m_pythia = nullptr; }
+  m_pythia.reset();
   return GaudiAlgorithm::finalize();
 }

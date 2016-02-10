@@ -39,11 +39,23 @@ GaudiAlgorithm(name, svcLoc) ,
   m_inHepMCFile(nullptr),
   m_inHepMCFileName(""),
   m_inHepMCFileLength(0),
+  m_eventCounter(0),
   m_outRootFile(nullptr),
   m_outRootFileName(""),
   m_treeWriter(nullptr),
   m_branchEvent(nullptr),
-  m_confReader(nullptr) {
+  m_confReader(nullptr),
+  m_stablePartOutArray(nullptr),
+  m_allPartOutArray(nullptr),
+  m_partonOutArray(nullptr),
+  m_muonOutArray(nullptr),
+  m_electronOutArray(nullptr),
+  m_chargedOutArray(nullptr),
+  m_neutralOutArray(nullptr),
+  m_photonOutArray(nullptr),
+  m_jetOutArray(nullptr),
+  m_metOutArray(nullptr),
+  m_shtOutArray(nullptr) {
 
   //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
   declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
@@ -77,20 +89,6 @@ GaudiAlgorithm(name, svcLoc) ,
   declareOutput("recPhotonsToMC"    , m_handleRecPhotonsToMC);
   declareOutput("recJetsToMC"       , m_handleRecJetsToMC);
 
-  // All variables truly initialized in the initialize() method (for pedantic C++ reasons also in a constructor)
-  m_stablePartOutArray = nullptr;
-  m_allPartOutArray    = nullptr;
-  m_partonOutArray     = nullptr;
-  m_muonOutArray       = nullptr;
-  m_electronOutArray   = nullptr;
-  m_chargedOutArray    = nullptr;
-  m_neutralOutArray    = nullptr;
-  m_photonOutArray     = nullptr;
-  m_jetOutArray        = nullptr;
-  m_metOutArray        = nullptr;
-  m_shtOutArray        = nullptr;
-
-  m_eventCounter = 0;
 }
 
 StatusCode DelphesSimulation::initialize() {
@@ -862,19 +860,22 @@ void DelphesSimulation::findJetPartMC(Candidate* jetPart, int rangeMCPart, std::
     warning() << "Can't build one of the relations from Jet to MC particle!" << std::endl;
   }
   // Relation can be found
-  else for (auto itCand=jetPart->GetCandidates()->begin(); itCand!=jetPart->GetCandidates()->end(); ++itCand) {
+  else {
 
-    Candidate* refCand = static_cast<Candidate*>(*itCand);
-    int id = refCand->GetUniqueID()-1;
+    for (auto itCand=jetPart->GetCandidates()->begin(); itCand!=jetPart->GetCandidates()->end(); ++itCand) {
 
-    //std::cout << "Depth: " << depth << " " << id << std::endl;
-    // Relation found
-    if (id<rangeMCPart) {
-      //std::cout << ">>> " << id << std::endl;
-      idRefMCPart.insert(id);
+      Candidate* refCand = static_cast<Candidate*>(*itCand);
+      int id = refCand->GetUniqueID()-1;
+
+      //std::cout << "Depth: " << depth << " " << id << std::endl;
+      // Relation found
+      if (id<rangeMCPart) {
+        //std::cout << ">>> " << id << std::endl;
+        idRefMCPart.insert(id);
+      }
+      // Not found -> step one level below
+      else findJetPartMC(refCand, rangeMCPart, idRefMCPart);
     }
-    // Not found -> step one level below
-    else findJetPartMC(refCand, rangeMCPart, idRefMCPart);
   }
 
   // Recursion depth - decrease
