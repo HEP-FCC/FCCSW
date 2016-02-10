@@ -1,20 +1,23 @@
-#ifndef GEANT_FULL_ACTIONS_H
-#define GEANT_FULL_ACTIONS_H
+#ifndef SIMG4FULL_FULLSIMACTIONS_H
+#define SIMG4FULL_FULLSIMACTIONS_H
 
 #include "G4VUserActionInitialization.hh"
 
-/**
-   @brief     User action initialization.
-   @author    Anna Zaborowska
-*/
+/** @class FullSimActions SimG4Full/SimG4Full/FullSimActions.h FullSimActions.h
+ *
+ *  User action initialization for full simulation.
+ *
+ *  @author Anna Zaborowska
+ */
 
+namespace sim {
 class FullSimActions : public G4VUserActionInitialization {
 public:
    FullSimActions();
    ~FullSimActions();
-   /// A method where all  user actions are created.
+   /// Create all user actions.
    virtual void Build() const final;
 };
+}
 
-
-#endif
+#endif /* SIMG4FULL_FULLSIMACTIONS_H */

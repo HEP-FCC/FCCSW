@@ -1,20 +1,27 @@
-#ifndef GEANT_FAST_ACTIONS_H
-#define GEANT_FAST_ACTIONS_H
+#ifndef SIMG4FAST_FASTSIMACTIONS_H
+#define SIMG4FAST_FASTSIMACTIONS_H
 
+#include <string>
+
+// Geant4
 #include "G4VUserActionInitialization.hh"
 
-/**
-   @brief     User action initialization.
-   @author    Anna Zaborowska
-*/
+/** @class FastSimActions SimG4Fast/SimG4Fast/FastSimActions.h FastSimActions.h
+ *  User action initialization for fast simulation.
+ *  @author    Anna Zaborowska
+ */
 
+namespace sim {
 class FastSimActions : public G4VUserActionInitialization {
 public:
-   FastSimActions();
-   ~FastSimActions();
-   /// A method where all  user actions are created.
-   virtual void Build() const final;
+  explicit FastSimActions(const std::string& aSmearingToolName);
+  ~FastSimActions();
+  /// Create all user actions.
+  virtual void Build() const final;
+private:
+  /// Name of the smearing tool passed to InitializeModelsRunAction
+  std::string m_smearToolName;
 };
+}
 
-
-#endif
+#endif /* SIMG4FAST_FASTSIMACTIONS_H */

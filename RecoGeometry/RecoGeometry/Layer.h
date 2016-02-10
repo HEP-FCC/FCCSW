@@ -30,7 +30,7 @@ namespace Reco {
         };
         
         //constructor with a BinnedArray of surfaces which the layer contains
-        Layer (SurfaceArray* sf);
+        explicit Layer (SurfaceArray* sf);
         //copy constructor
         Layer (const Layer& layer);
         //destructor

@@ -58,3 +58,7 @@ Test
 
 You should see an HepMC printout.
 
+Documentation
+----
+
+Please consult [FCCSW documentation](http://fccsw.web.cern.ch/fccsw/)

@@ -19,7 +19,7 @@ class KeepDropSwitch {
   };
   typedef std::vector<std::string> CommandLines; 
   KeepDropSwitch() {}
-  KeepDropSwitch(const CommandLines& cmds) {m_commandlines=cmds;}
+  explicit KeepDropSwitch(const CommandLines& cmds) {m_commandlines=cmds;}
   bool isOn(const std::string& astring) const;
   
  private:

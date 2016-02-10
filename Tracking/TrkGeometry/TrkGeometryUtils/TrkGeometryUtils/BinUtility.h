@@ -85,7 +85,7 @@ namespace Trk {
         }
 	  
     /** Constructor for arbitrary */
-    BinUtility(std::vector<float>& bValues, BinningOption opt = closed, BinningValue value = binPhi) :
+    explicit BinUtility(std::vector<float>& bValues, BinningOption opt = closed, BinningValue value = binPhi) :
 	  m_binningData()
 	{
 	  m_binningData.reserve(3);

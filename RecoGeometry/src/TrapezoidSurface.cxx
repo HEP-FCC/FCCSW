@@ -35,7 +35,7 @@ Surface(node)
     Alg::RotationMatrix3D rotation = newtransf.Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     rotation.SetComponents<Alg::Vector3D>(lx,ly,-lz);
-    std::shared_ptr<const Alg::Transform3D> transform(new Alg::Transform3D(rotation,newtransf.Translation()));
+    auto transform = std::make_shared<const Alg::Transform3D>(rotation,newtransf.Translation());
     this->setTransform(transform);
     //convention: y'=Z, thicknesss = Y(X,Z)
     m_halfX1    = trapezoid->GetDx1();
@@ -54,7 +54,7 @@ Reco::Surface(transf)
     Alg::RotationMatrix3D rotation = newtransf.Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     rotation.SetComponents<Alg::Vector3D>(lx,ly,-lz);
-    std::shared_ptr<const Alg::Transform3D> transform(new Alg::Transform3D(rotation,newtransf.Translation()));
+    auto transform = std::make_shared<const Alg::Transform3D>(rotation,newtransf.Translation());
     this->setTransform(transform);
     //convention: y'=Z, thicknesss = Y(X,Z)
     m_halfX1    = trapezoid->GetDx1();
@@ -73,7 +73,7 @@ Reco::Surface(node, materialmap)
     Alg::RotationMatrix3D rotation = newtransf.Rotation();
     rotation.GetComponents<Alg::Vector3D>(lx,ly,lz);
     rotation.SetComponents<Alg::Vector3D>(lx,ly,-lz);
-    std::shared_ptr<const Alg::Transform3D> transform(new Alg::Transform3D(rotation,newtransf.Translation()));
+    auto transform = std::make_shared<const Alg::Transform3D>(rotation,newtransf.Translation());
     this->setTransform(transform);
 
     m_halfX1    = trapezoid->GetDx1();
@@ -99,7 +99,7 @@ Reco::Surface(materialmap,transf)
  //   std::cout << "rotation before: " << rotation << std::endl;
     rotation.SetComponents<Alg::Vector3D>(lx,ly,-lz);
  //   std::cout << "rotation after: " << rotation << std::endl;
-    std::shared_ptr<const Alg::Transform3D> transform(new Alg::Transform3D(rotation,newtransf.Translation()));
+    auto transform = std::make_shared<const Alg::Transform3D>(rotation,newtransf.Translation());
  //   std::cout << "after: " << *transform << std::endl;
     //convention: y'=Z, thicknesss = Y(X,Z)
     this->setTransform(transform);
