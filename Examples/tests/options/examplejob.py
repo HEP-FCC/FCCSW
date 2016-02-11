@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, FCCDataSvc, PodioWrite, PodioOutput
+from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
 podioevent   = FCCDataSvc("EventDataSvc")
 
