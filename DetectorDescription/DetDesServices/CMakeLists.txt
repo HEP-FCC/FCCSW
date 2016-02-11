@@ -10,7 +10,6 @@ find_package(DD4hep COMPONENTS DDG4)
 
 find_package(Geant4)
 
-
 gaudi_install_headers(DetDesServices)
 
 gaudi_add_module(DetDesServices
