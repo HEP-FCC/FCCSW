@@ -17,11 +17,14 @@
 // FCC EDM
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
-#include "datamodel/ParticleCollection.h"
-#include "datamodel/ParticleMCParticleAssociationCollection.h"
 #include "datamodel/GenJetCollection.h"
 #include "datamodel/GenJetParticleAssociationCollection.h"
+#include "datamodel/GenJetTagAssociationCollection.h"
+#include "datamodel/ParticleCollection.h"
+#include "datamodel/ParticleMCParticleAssociationCollection.h"
+#include "datamodel/TagCollection.h"
 #include "datamodel/METCollection.h"
+
 
 // ROOT
 #include "TFile.h"
@@ -80,6 +83,8 @@ GaudiAlgorithm(name, svcLoc) ,
   declareOutput("recNeutral"        , m_handleRecNeutral);
   declareOutput("recPhotons"        , m_handleRecPhotons);
   declareOutput("recJets"           , m_handleRecJets);
+  declareOutput("recBTags"          , m_handleRecBTags);
+  declareOutput("recTauTags"        , m_handleRecTauTags);
   declareOutput("recMETs"           , m_handleRecMETs);
 
   declareOutput("recMuonsToMC"      , m_handleRecMuonsToMC);
@@ -88,6 +93,8 @@ GaudiAlgorithm(name, svcLoc) ,
   declareOutput("recNeutralToMC"    , m_handleRecNeutralToMC);
   declareOutput("recPhotonsToMC"    , m_handleRecPhotonsToMC);
   declareOutput("recJetsToMC"       , m_handleRecJetsToMC);
+  declareOutput("recJetsToBTags"    , m_handleRecJetsToBTags);
+  declareOutput("recJetsToTauTags"  , m_handleRecJetsToTauTags);
 
 }
 
@@ -313,6 +320,8 @@ StatusCode DelphesSimulation::execute() {
   auto recNeutral       = new fcc::ParticleCollection();
   auto recPhotons       = new fcc::ParticleCollection();
   auto recJets          = new fcc::GenJetCollection();
+  auto recBTags         = new fcc::TagCollection();
+  auto recTauTags       = new fcc::TagCollection();
   auto recMETs          = new fcc::METCollection();
 
   auto recMuonsToMC     = new fcc::ParticleMCParticleAssociationCollection();
@@ -321,6 +330,8 @@ StatusCode DelphesSimulation::execute() {
   auto recNeutralToMC   = new fcc::ParticleMCParticleAssociationCollection();
   auto recPhotonsToMC   = new fcc::ParticleMCParticleAssociationCollection();
   auto recJetsToMC      = new fcc::GenJetParticleAssociationCollection();
+  auto recJetsToBTags   = new fcc::GenJetTagAssociationCollection();
+  auto recJetsToTauTags = new fcc::GenJetTagAssociationCollection();
 
   // Fill FCC collections
   m_muonOutArray     = m_Delphes->ImportArray(m_DelphesMuonsArrayName.c_str());     // "MuonMomentumSmearing/muons" / "MuonIsolation/muons"
@@ -363,7 +374,9 @@ StatusCode DelphesSimulation::execute() {
   if (m_chargedOutArray !=nullptr) DelphesSimulation::ConvertTracks(     m_chargedOutArray , genParticles  , recCharged  , recChargedToMC  );
   if (m_neutralOutArray !=nullptr) DelphesSimulation::ConvertTowers(     m_neutralOutArray , genParticles  , recNeutral  , recNeutralToMC  );
   if (m_photonOutArray  !=nullptr) DelphesSimulation::ConvertTowers(     m_photonOutArray  , genParticles  , recPhotons  , recPhotonsToMC  );
-  if (m_jetOutArray     !=nullptr) DelphesSimulation::ConvertJets(       m_jetOutArray     , genParticles  , recJets     , recJetsToMC     );
+  if (m_jetOutArray     !=nullptr) DelphesSimulation::ConvertJets(       m_jetOutArray     , genParticles  , recJets     , recJetsToMC,
+                                                                                                             recBTags    , recJetsToBTags,
+                                                                                                             recTauTags  , recJetsToTauTags);
   if (m_metOutArray     !=nullptr && m_shtOutArray!=nullptr) DelphesSimulation::ConvertMET(m_metOutArray, m_shtOutArray, recMETs);
 
   // Save FCC-EDM collections to FCCSw data store
@@ -381,6 +394,10 @@ StatusCode DelphesSimulation::execute() {
   m_handleRecPhotonsToMC.put(  recPhotonsToMC  );
   m_handleRecJets.put(         recJets         );
   m_handleRecJetsToMC.put(     recJetsToMC     );
+  m_handleRecBTags.put(        recBTags        );
+  m_handleRecJetsToBTags.put(  recJetsToBTags  );
+  m_handleRecTauTags.put(      recTauTags      );
+  m_handleRecJetsToTauTags.put(recJetsToTauTags);
   m_handleRecMETs.put(         recMETs         );
 
   // Initialize for next event reading (Will also zero Delphes arrays)
@@ -559,7 +576,6 @@ void DelphesSimulation::ConvertTracks(const TObjArray* Input,
 
     auto cand     = static_cast<Candidate *>(Input->At(j));
     auto particle = colParticles->create();
-    auto relation = ascColParticlesToMC->create();
 
     auto barePart     = fcc::BareParticle();
     barePart.Type     = cand->PID;
@@ -574,12 +590,12 @@ void DelphesSimulation::ConvertTracks(const TObjArray* Input,
     barePart.Vertex.Z = cand->Position.Z();
 
     // Reference to MC - Delphes holds references to all objects related to the <T> object, only one relates to MC particle
-    Candidate* refCand = nullptr;
-    int idRefMCPart    = -1;
+    auto relation   = ascColParticlesToMC->create();
+    int idRefMCPart = -1;
     if (cand->GetCandidates()->GetEntries()>0) {
 
-      refCand     = static_cast<Candidate*>(cand->GetCandidates()->At(0));
-      idRefMCPart = refCand->GetUniqueID()-1;     // Use C numbering from 0
+      auto refCand = static_cast<Candidate*>(cand->GetCandidates()->At(0));
+      idRefMCPart  = refCand->GetUniqueID()-1;     // Use C numbering from 0
       if (idRefMCPart<colMCParticles->size()) {
 
         barePart.Bits = static_cast<unsigned>(ParticleStatus::kMatched);
@@ -757,14 +773,18 @@ void DelphesSimulation::ConvertTowers(const TObjArray* Input,
 void DelphesSimulation::ConvertJets(const TObjArray* Input,
                                     const fcc::MCParticleCollection* colMCParticles,
                                     fcc::GenJetCollection* colJets,
-                                    fcc::GenJetParticleAssociationCollection* ascColJetsToMC) {
+                                    fcc::GenJetParticleAssociationCollection* ascColJetsToMC,
+                                    fcc::TagCollection* colBTags,
+                                    fcc::GenJetTagAssociationCollection* ascColJetsToBTags,
+                                    fcc::TagCollection* colTauTags,
+                                    fcc::GenJetTagAssociationCollection* ascColJetsToTauTags) {
 
   for(int j = 0; j < Input->GetEntries(); ++j) {
       
-    auto cand     = static_cast<Candidate *>(Input->At(j));
-    auto jet      = colJets->create();
-    auto relation = ascColJetsToMC->create();
+    auto cand = static_cast<Candidate *>(Input->At(j));
 
+    // Jet info
+    auto jet         = colJets->create();
     auto bareJet     = fcc::BareJet();
     bareJet.Area     = -1;
     bareJet.P4.Px    = cand->Momentum.Px();
@@ -772,6 +792,21 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
     bareJet.P4.Pz    = cand->Momentum.Pz();
     bareJet.P4.Mass  = cand->Mass;
     jet.Core(bareJet);
+
+    // B-tag info
+    auto bTag             = colBTags->create();
+    auto relationToBTag   = ascColJetsToBTags->create();
+    bTag.Value(cand->BTag);
+    relationToBTag.Jet(jet);
+    relationToBTag.Tag(bTag);
+
+    // Tau-tag info
+    auto tauTag           = colTauTags->create();
+    auto relationToTauTag = ascColJetsToTauTags->create();
+    tauTag.Value(cand->TauTag);
+    relationToTauTag.Jet(jet);
+    relationToTauTag.Tag(tauTag);
+
 
     // Debug: print FCC-EDM jets info
     if (msgLevel() <= MSG::DEBUG) {
@@ -783,6 +818,8 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
 
       debug() << "Jet: "
               << " Id: "       << std::setw(3)  << j+1
+              << " BTag: "     << std::setprecision(1) << std::setw(3) << relationToBTag.Tag().Value()
+              << " TauTag: "   << std::setprecision(1) << std::setw(3) << relationToTauTag.Tag().Value()
               << std::scientific
               << " Px: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Px
               << " Py: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Py
@@ -814,20 +851,20 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
 
     for (auto id : idRefMCPart) {
 
-      auto relation = ascColJetsToMC->create();
-      relation.Jet(jet);
-      relation.Particle(colMCParticles->at(id));
+      auto relationToMC = ascColJetsToMC->create();
+      relationToMC.Jet(jet);
+      relationToMC.Particle(colMCParticles->at(id));
 
       // Debug: print FCC-EDM jet relation info
       if (msgLevel() <= MSG::DEBUG) {
-        double recE   = sqrt(relation.Jet().Core().P4.Px*relation.Jet().Core().P4.Px +
-                             relation.Jet().Core().P4.Py*relation.Jet().Core().P4.Py +
-                             relation.Jet().Core().P4.Pz*relation.Jet().Core().P4.Pz +
-                             relation.Jet().Core().P4.Mass*relation.Jet().Core().P4.Mass);
-        double simE   = sqrt(relation.Particle().Core().P4.Px*relation.Particle().Core().P4.Px +
-                             relation.Particle().Core().P4.Py*relation.Particle().Core().P4.Py +
-                             relation.Particle().Core().P4.Pz*relation.Particle().Core().P4.Pz +
-                             relation.Particle().Core().P4.Mass*relation.Particle().Core().P4.Mass);
+        double recE   = sqrt(relationToMC.Jet().Core().P4.Px*relationToMC.Jet().Core().P4.Px +
+                             relationToMC.Jet().Core().P4.Py*relationToMC.Jet().Core().P4.Py +
+                             relationToMC.Jet().Core().P4.Pz*relationToMC.Jet().Core().P4.Pz +
+                             relationToMC.Jet().Core().P4.Mass*relationToMC.Jet().Core().P4.Mass);
+        double simE   = sqrt(relationToMC.Particle().Core().P4.Px*relationToMC.Particle().Core().P4.Px +
+                             relationToMC.Particle().Core().P4.Py*relationToMC.Particle().Core().P4.Py +
+                             relationToMC.Particle().Core().P4.Pz*relationToMC.Particle().Core().P4.Pz +
+                             relationToMC.Particle().Core().P4.Mass*relationToMC.Particle().Core().P4.Mass);
         totSimE += simE;
         debug() << " RefId: " << std::setw(3)            << id+1
                 << " Rel E: " << std::setprecision(2)
