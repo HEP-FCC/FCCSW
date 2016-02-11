@@ -107,8 +107,10 @@ Running tests
 All tests defined in the project can be run with
 
 	make test
-	
+
 Any commandline option for cmake can be passed through the Makefile. This allows, for example, to exclude tests or only run a sub-set of tests:
 
 	make test ARGS="-E Example" # Skip any test that contains Example in it's name
 	make test ARGS="-R Example" # Only run tests that contain Example in their names
+
+If tests fail, they do so silently by default. You can activate the output by setting the environment variable `CTEST_OUTPUT_ON_FAILURE` to 1.
