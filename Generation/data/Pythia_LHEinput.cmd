@@ -28,7 +28,7 @@ Stat:showPartonLevel = off         ! additional statistics on MPI
 PartonLevel:MPI = on
 PartonLevel:ISR = off
 PartonLevel:FSR = off
-HadronLevel:all = off
+HadronLevel:all = on
 
 ! 3b) PDF settings. Default is to use internal PDFs
 ! some pdf sets examples: cteq61.LHpdf cteq61.LHgrid MRST2004nlo.LHgrid
@@ -39,7 +39,7 @@ HadronLevel:all = off
 
 ! 4) Read-in Les Houches Event file - alternative beam and process selection.
 Beams:frameType = 4                      ! read info from a LHEF
-#Beams:LHEF = data/events_hh125-13TeV.lhe ! the LHEF to read from
+#Beams:LHEF = data/events_hh125-100TeV.lhe ! the LHEF to read from
 Beams:LHEF = Generation/data/events.lhe ! the LHEF to read from
 
 ! 5) Other settings. Can be expanded as desired.
