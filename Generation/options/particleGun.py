@@ -8,7 +8,7 @@ dumper.DataInputs.hepmc.Path="hepmc"
 
 
 particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc",
-    ParticlePropertiesFile='Generation/options/ParticleTable.txt')
+    ParticlePropertiesFile='Generation/data/ParticleTable.txt')
 guntool = MomentumRangeParticleGun(PdgCodes=[-211, 211, -11, -13,  13, 11 ])
 
 smeartool = FlatSmearVertex("smeartoolname")
