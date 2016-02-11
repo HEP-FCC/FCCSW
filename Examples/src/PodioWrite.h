@@ -1,5 +1,5 @@
-#ifndef _PODIOWRITE_H_
-#define _PODIOWRITE_H_
+#ifndef EXAMPLES_PODIOWRITE_H
+#define EXAMPLES_PODIOWRITE_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/JetCollection.h"
