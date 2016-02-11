@@ -37,6 +37,17 @@ StatusCode PodioOutput::execute() {
       std::string name( typeid(*(i.second)).name() );
       size_t  pos = name.find_first_not_of("0123456789");
       name.erase(0,pos);
+      // demangling the namespace: due to namespace additional characters were introduced:
+      // e.g. N3fcc18TrackHit
+      // remove any number+char before the namespace:
+      pos = name.find_first_of("0123456789");
+      size_t pos1 = name.find_first_not_of("0123456789", pos);
+      name.erase(0, pos1);
+      // replace any numbers between namespace and class with "::"
+      pos = name.find_first_of("0123456789");
+      pos1 = name.find_first_not_of("0123456789", pos);
+      name.replace(pos, pos1-pos, "::");
+
       pos = name.find("Collection");
       name.erase(pos,pos+10);
       std::string classname = "vector<"+name+"Data>";
