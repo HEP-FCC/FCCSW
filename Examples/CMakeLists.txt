@@ -12,3 +12,16 @@ gaudi_add_module(Examples
                  src/*.cpp
                  LINK_LIBRARIES GaudiAlgLib DataObjects FWCore ROOT)
 
+gaudi_add_test(DummyGen
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
+               FRAMEWORK tests/options/examplejob.py)
+
+gaudi_add_test(DummyGenCheck
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
+			   COMMAND python ./scripts/dummy_gen_test.py
+			   DEPENDS DummyGen)
+
+gaudi_add_test(DummyCheck
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
+			   COMMAND python ./scripts/test.py
+			   FAILS)
