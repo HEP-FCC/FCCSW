@@ -54,7 +54,7 @@ Great flexibility is given by the following options:
 - `FAILREGEX` - Specify a regexp; if matched in the output the test is failed
 - `LABELS` - list of labels to add to the test (for categorization)
 
-Defining a tests with generic applications
+Defining a test with generic applications
 --
 
 CTest also allows to run any other command as a test, e.g. python or compiled standalone macros. This allows to use assertions to ensure whether some output is according to specifications. Obviously, if for example the output of a Gaudi / FCCSW job should be checked, the test should depend on that test (declared with `DEPENDS`).
