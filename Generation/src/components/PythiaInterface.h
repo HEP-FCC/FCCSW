@@ -2,11 +2,17 @@
 #define GENERATION_PYTHIAINTERFACE_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "Pythia8/Pythia.h"
-#include "Pythia8Plugins/HepMC2.h"
-
-#include "HepMC/GenEvent.h"
 #include "FWCore/DataHandle.h"
+#include <memory>
+
+// HepMC
+#include "HepMC/GenEvent.h"
+
+// Forward Pythia
+namespace Pythia8 {
+
+  class Pythia;
+}
 
 class PythiaInterface: public GaudiAlgorithm {
   friend class AlgFactory<PythiaInterface> ;
@@ -22,14 +28,20 @@ public:
   virtual StatusCode finalize();
 
 private:
+
   // Pythia8 engine
-  Pythia8::Pythia * m_pythia;
-  /// the name of the Pythia parameter input file
-  std::string       m_parfile;
-  /// The output handle for what is being produced
+  std::unique_ptr<Pythia8::Pythia> m_pythia;
+
+  // Name of Pythia configuration input file
+  std::string       m_parfile; //!< Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
+
+  // Output handle for HepMC event
   DataHandle<HepMC::GenEvent> m_hepmchandle;
-  int nAbort;
-  int iAbort;
+
+  int m_nAbort;
+  int m_iAbort;
+  int m_iEvent;
+
 };
 
 #endif // GENERATION_PYTHIAINTERFACE_H
