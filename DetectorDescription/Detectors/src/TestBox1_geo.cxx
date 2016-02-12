@@ -14,7 +14,7 @@ using namespace std;
 using namespace DD4hep;
 using namespace DD4hep::Geometry;
 
-static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens) {
+static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector /*sens*/) {
   xml_det_t x_det = e;
  	string det_name = x_det.nameStr();
  	string det_type = x_det.typeStr();
@@ -24,7 +24,7 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens) {
   Volume motherVol = lcdd.pickMotherVolume(sdet);
 
   int m_id=0;
-  
+
   PlacedVolume pv;
 
   for(xml_coll_t mi(x_det,_U(module)); mi; ++mi, ++m_id) {
@@ -34,48 +34,48 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens) {
     double y = x_mod.y();
     double z = x_mod.z();
 
-    // a simple box 
+    // a simple box
     Box box( 10, 10, 1) ;
 
 #define debug_hole 1
-#ifdef debug_hole 
+#ifdef debug_hole
 // -------- debug code for subtraction solid -----------------
-      
-#if 0    // cut out a box 
-      
-      Box hole( 3, 3, 1.01 ) ; // not z slightly larger than original 
+
+#if 0    // cut out a box
+
+      Box hole( 3, 3, 1.01 ) ; // not z slightly larger than original
 #else
 #if franks_trap
       // This trap is ill defined. and does not work!
       // cut out a trap
-      Trap hole( 4.2, 
+      Trap hole( 4.2,
 		 0., 0.,
-		 2., 4.,  3., 
+		 2., 4.,  3.,
 		 0. , 0. ,
 		 2., 4., 3.) ;
 #else
       // Fixed version from Andrei. This works
       // cut out a trap
-      Trap hole( 4.2, 
+      Trap hole( 4.2,
 		 0., 0.,
-		 2., 4.,  3., 
+		 2., 4.,  3.,
 		 0. ,
 		 2., 4., 3., 0) ;
 #endif
 #endif
-      
+
       SubtractionSolid solid(  box, hole , Transform3D() ) ;
-      
+
       Volume m_volume(det_name+"_"+m_nam, solid , air);
 
-#else 
+#else
 // -------- end debug code for subtraction solid -----------------
-      
+
 
       Volume m_volume(det_name+"_"+m_nam, box , air);
-      
+
 #endif
-      
+
 
 
     m_volume.setVisAttributes(lcdd.visAttributes(x_mod.visStr()));
@@ -84,4 +84,4 @@ static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector sens) {
   sdet.setPlacement(pv);
   return sdet;
 }
-DECLARE_DETELEMENT(TestBox1,create_detector);
+DECLARE_DETELEMENT(TestBox1,create_detector)

@@ -1,6 +1,6 @@
 //
 //  ContainerCylinderVolume.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 27/01/15.
 //
@@ -13,11 +13,11 @@
 #include "RecoGeometry/CylinderVolume.h"
 
 namespace Reco {
-    
+
     class ContainerCylinderVolume : public ContainerVolume, public CylinderVolume {
-        
+
     public:
-        
+
         //Type for binning the Volumes in Z with the BinUtility
         enum binZType {
             nEnd      = 0,
@@ -46,9 +46,9 @@ namespace Reco {
         //assignment operator
         ContainerCylinderVolume& operator=(const ContainerCylinderVolume& containercylindervolume);
         //checks if global position glopos is inside the bounds of the volume with a tolerance tol
-        virtual bool isInside(const Alg::Point3D& glopos, double tol=0.) const;
+        virtual bool isInside(const Alg::Point3D& glopos, double tol=0.) const override;
         //checks if global position glopos is inside the bounds of the volume with a tolerance tol
-        virtual bool setBoundarySurface(size_t n, std::shared_ptr<const BoundarySurface> boundarysurface) const;
+        virtual bool setBoundarySurface(size_t n, std::shared_ptr<const BoundarySurface> boundarysurface) const override;
     };
 }
 

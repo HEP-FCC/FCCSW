@@ -1,6 +1,6 @@
 //
 //  MaterialPrimaryGeneratorAction.cxx
-//  
+//
 //
 //  Created by Julia Hrdinka on 19/05/15.
 //
@@ -22,12 +22,12 @@ MaterialPrimaryGeneratorAction* MaterialPrimaryGeneratorAction::fgInstance = 0;
 
 MaterialPrimaryGeneratorAction::MaterialPrimaryGeneratorAction(
                                                            const G4String& particleName,
-                                                           G4double energy,
-                                                           G4ThreeVector position,
-                                                           G4ThreeVector momentumDirection)
+                                                           const G4double energy,
+                                                           const G4ThreeVector& position,
+                                                           const G4ThreeVector& momentumDirection)
 : G4VUserPrimaryGeneratorAction(),
 fParticleGun(0),
-m_dir()
+m_dir(momentumDirection)
 {
     fgInstance = this;
     G4int nofParticles = 1;
@@ -53,7 +53,7 @@ MaterialPrimaryGeneratorAction::~MaterialPrimaryGeneratorAction()
 MaterialPrimaryGeneratorAction* MaterialPrimaryGeneratorAction::Instance()
 {
     // Static acces function via G4RunManager
-    
+
     return fgInstance;
 }
 
@@ -74,22 +74,22 @@ void MaterialPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4double y0 = 2.*(G4UniformRand()-0.5);
     G4double z0 = 2.*(G4UniformRand()-0.5);
 
-    
+
 /*    G4double theta = 0.4;
     G4double phi   = 0.;*/
  //   G4double theta  = (2.8133-0.3282)*G4UniformRand()+0.3282;
  //   G4double phi    = sign*M_PI*G4UniformRand();
-    
+
 //    m_dir = G4ThreeVector(cos(phi)*sin(theta),sin(phi)*sin(theta),cos(theta));
- 
+
 //    m_dir = G4ThreeVector(-0.146748,0.11085,0.982943);
-    
-    
+
+
     m_dir = G4ThreeVector(x0,y0,z0);
-    
-    
+
+
 //    m_dir = G4ThreeVector(1.,0.,0.);
-    
+
 /*    G4cout << "___________________________________" << G4endl;
     G4cout << " new direction: " << m_dir << " eta: " << m_dir.eta() << G4endl;
     G4cout << "___________________________________" << G4endl;*/
@@ -97,7 +97,7 @@ void MaterialPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
  //   fParticleGun->SetParticleMomentumDirection(G4RandomDirection());
     fParticleGun->SetParticleMomentumDirection(m_dir);
-    
+
     fParticleGun->GeneratePrimaryVertex(anEvent);
 }
 

@@ -1,6 +1,6 @@
 //
 //  MaterialEventAction.cc
-//  
+//
 //
 //  Created by Julia Hrdinka on 19/05/15.
 //
@@ -24,7 +24,7 @@ MaterialEventAction* MaterialEventAction::fgInstance = 0;
 MaterialEventAction* MaterialEventAction::Instance()
 {
     // Static acces function via G4RunManager
-    
+
     return fgInstance;
 }
 
@@ -49,7 +49,7 @@ MaterialEventAction::~MaterialEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void MaterialEventAction::BeginOfEventAction(const G4Event* event)
+void MaterialEventAction::BeginOfEventAction(const G4Event* /*event*/)
 {
     // Reset accounted energy in stepping action
     MaterialSteppingAction::Instance()->Reset();
