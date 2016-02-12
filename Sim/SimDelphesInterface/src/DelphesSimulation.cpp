@@ -444,15 +444,35 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
                                            fcc::MCParticleCollection* colMCParticles,
                                            fcc::GenVertexCollection* colGenVertices) {
 
-  //MC particle vertex mapping: production & decay vertex
-  std::vector<std::pair<int, int>> m_vecPartProdVtxIDDecVtxID;
+  //Initialize MC particle vertex mapping: production & decay vertex
+  std::vector<std::pair<int, int>> vecPartProdVtxIDDecVtxID;
 
-  m_vecPartProdVtxIDDecVtxID.resize(Input->GetEntries());
+  vecPartProdVtxIDDecVtxID.resize(Input->GetEntries());
   for(int j=0; j<Input->GetEntries(); j++) {
-    m_vecPartProdVtxIDDecVtxID[j].first  = -1;
-    m_vecPartProdVtxIDDecVtxID[j].second = -1;
+    vecPartProdVtxIDDecVtxID[j].first  = -1;
+    vecPartProdVtxIDDecVtxID[j].second = -1;
   }
 
+  // Find true daughters of the colliding particles (necessary fix for missing links
+  // between primary colliding particles and their daughters if LHE file used within Pythia)
+  std::set<int> primary1Daughters;
+  std::set<int> primary2Daughters;
+
+  for(int j=0; j<Input->GetEntries(); j++) {
+
+    auto cand = static_cast<Candidate *>(m_allPartOutArray->At(j));
+
+    // Go through all not primary particles
+    if (cand->M1!=-1) {
+      for (int iMother=cand->M1; iMother<=cand->M2; iMother++) {
+
+        if (iMother==0) primary1Daughters.insert(j);
+        if (iMother==1) primary2Daughters.insert(j);
+      }
+    }
+  } // Fix
+
+  // Save MC particles and vertices
   for(int j=0; j<Input->GetEntries(); j++) {
 
     auto cand     = static_cast<Candidate *>(m_allPartOutArray->At(j));
@@ -477,10 +497,9 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     particle.Core(barePart);
 
     // Mapping the vertices
-    int idPartStartVertex = m_vecPartProdVtxIDDecVtxID[j].first;
-    int idPartEndVertex   = m_vecPartProdVtxIDDecVtxID[j].second;
+    int& idPartStartVertex = vecPartProdVtxIDDecVtxID[j].first;
+    int& idPartEndVertex   = vecPartProdVtxIDDecVtxID[j].second;
 
-    //std::cout << "> " << j << " " << idPartStartVertex << " " << idPartEndVertex << std::endl;
     // Production vertex
     if (cand->M1!=-1) {
       if (idPartStartVertex!=-1) {
@@ -496,10 +515,11 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
         vertex.Position(point);
         vertex.Ctau(cand->Position.T());
         particle.StartVertex(vertex);
+
+        idPartStartVertex = j;
       }
       for (int iMother=cand->M1; iMother<=cand->M2; iMother++) {
-        if (m_vecPartProdVtxIDDecVtxID[iMother].second==-1) m_vecPartProdVtxIDDecVtxID[iMother].second = j;
-        //std::cout << "M> " << iMother+1 << " " << m_vecPartProdVtxIDDecVtxID[iMother].first << " " << m_vecPartProdVtxIDDecVtxID[iMother].second << std::endl;
+        if (vecPartProdVtxIDDecVtxID[iMother].second==-1) vecPartProdVtxIDDecVtxID[iMother].second = j;
       }
     }
     // Decay vertex
@@ -519,12 +539,33 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
         vertex.Position(point);
         vertex.Ctau(cand->Position.T());
         particle.EndVertex(vertex);
+
+        idPartEndVertex = cand->D1;
       }
-      for (int iDaughter=cand->D1; iDaughter<=cand->D2; iDaughter++) {
-        if (iDaughter>=0 && m_vecPartProdVtxIDDecVtxID[iDaughter].second==-1) m_vecPartProdVtxIDDecVtxID[iDaughter].first = j;
-        //std::cout << "D> " << iDaughter+1 << " " << m_vecPartProdVtxIDDecVtxID[iDaughter].first << " " << m_vecPartProdVtxIDDecVtxID[iDaughter].second << std::endl;
+
+      // Option for colliding particles -> broken daughters range -> use only D1, which is correctly set (D2 & D2-D1 is wrong!!!)
+      if (cand->M1==-1) {
+
+        // Primary particle 0 correction
+        if (j==0) for (const int& iDaughter : primary1Daughters) {
+
+          if (iDaughter>=0 && vecPartProdVtxIDDecVtxID[iDaughter].first==-1) vecPartProdVtxIDDecVtxID[iDaughter].first = j;
+        }
+        // Primary particle 1 correction
+        else if (j==1) for (const int& iDaughter : primary2Daughters) {
+
+          if (iDaughter>=0 && vecPartProdVtxIDDecVtxID[iDaughter].first==-1) vecPartProdVtxIDDecVtxID[iDaughter].first = j;
+        }
+      }
+      // Option for all other particles
+      else {
+        for (int iDaughter=cand->D1; iDaughter<=cand->D2; iDaughter++) {
+
+          if (iDaughter>=0 && vecPartProdVtxIDDecVtxID[iDaughter].first==-1) vecPartProdVtxIDDecVtxID[iDaughter].first = j;
+        }
       }
     }
+
     // Debug: print FCC-EDM MCParticle and GenVertex
     if (msgLevel() <= MSG::DEBUG) {
 
@@ -545,18 +586,18 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
               << " E: "        << std::setprecision(2) << std::setw(9) << partE
               << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass;
       if (particle.StartVertex().isAvailable()) {
-        debug() << " VSId: "     << std::setw(3)  << particle.StartVertex().getObjectID().index
+        debug() << " VSId: "     << std::setw(3)  << vecPartProdVtxIDDecVtxID[j].first+1;
                 //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().X
                 //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Y
                 //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Z
-                << " T: "        << std::setprecision(2) << std::setw(9) << particle.StartVertex().Ctau();
+                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.StartVertex().Ctau();
       }
       if (particle.EndVertex().isAvailable()) {
-        debug() << " VEId: "     << std::setw(3)  << particle.EndVertex().getObjectID().index
+        debug() << " VEId: "     << std::setw(3)  << vecPartProdVtxIDDecVtxID[j].second+1;
                 //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().X
                 //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Y
                 //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Z
-                << " T: "        << std::setprecision(2) << std::setw(9) << particle.EndVertex().Ctau();
+                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.EndVertex().Ctau();
       }
       debug() << std::fixed << endmsg;
 
