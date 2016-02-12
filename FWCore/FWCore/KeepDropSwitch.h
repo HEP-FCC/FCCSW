@@ -1,5 +1,5 @@
-#ifndef __KEEPDROPSWITCH__
-#define __KEEPDROPSWITCH__
+#ifndef EXAMPLES_KEEPDROPSWITCH_H
+#define EXAMPLES_KEEPDROPSWITCH_H
 
 #include <string>
 #include <vector>

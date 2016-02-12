@@ -1,5 +1,5 @@
-#ifndef _PODIOOUTPUT_H_
-#define _PODIOOUTPUT_H_
+#ifndef EXAMPLES_PODIOOUTPUT_H
+#define EXAMPLES_PODIOOUTPUT_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "podio/CollectionBase.h"
