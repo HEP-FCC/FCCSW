@@ -13,13 +13,8 @@ find_package(Delphes)
 gaudi_project(FCCSW HEAD
               USE Gaudi v26r4 )
 
-set(CMAKE_CXX_FLAGS
-        "-fmessage-length=0 -pipe -Wall -Wextra -Werror=return-type -pthread -pedantic -Wwrite-strings -Wpointer-arith -Woverloaded-virtual -Wno-long-long -Wno-shadow"
-    CACHE STRING "Flags used by the compiler during all build types."
-    FORCE)
-
 include_directories(
          ${DELPHES_INCLUDE_DIRS}
-                     ${DELPHES_EXTERNALS_INCLUDE_DIRS}
-                     ${FCCEDM_INCLUDE_DIRS}
+         ${DELPHES_EXTERNALS_INCLUDE_DIRS}
+         ${FCCEDM_INCLUDE_DIRS}
 )

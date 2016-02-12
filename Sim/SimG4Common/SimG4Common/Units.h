@@ -15,16 +15,19 @@
 
 namespace sim {
 namespace edmdefault {
-constexpr double length = CLHEP::cm;
-constexpr double energy = CLHEP::GeV;
+// FIXME: these should be a constexpr, but CLHEP is only const
+const double length = CLHEP::cm;
+const double energy = CLHEP::GeV;
 }
 namespace edm2g4 {
-constexpr double length = edmdefault::length/CLHEP::mm;
-constexpr double energy = edmdefault::energy/CLHEP::MeV;
+// FIXME: these should be a constexpr, but CLHEP is only const
+const double length = edmdefault::length/CLHEP::mm;
+const double energy = edmdefault::energy/CLHEP::MeV;
 }
 namespace g42edm {
-constexpr double length = CLHEP::mm/edmdefault::length;
-constexpr double energy = CLHEP::MeV/edmdefault::energy;
+// FIXME: these should be a constexpr, but CLHEP is only const
+const double length = CLHEP::mm/edmdefault::length;
+const double energy = CLHEP::MeV/edmdefault::energy;
 }
 }
 #endif /* SIMG4COMMON_UNITS_H */

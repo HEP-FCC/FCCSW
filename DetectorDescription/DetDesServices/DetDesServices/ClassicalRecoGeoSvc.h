@@ -1,6 +1,6 @@
 //
 //  ClassicalRecoGeoSvc.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 31/03/15.
 //
@@ -68,16 +68,16 @@
 class ClassicalRecoGeoSvc: public extends1<Service, IRecoGeoSvc> {
 
 public:
-    
+
     typedef std::vector<std::pair<std::shared_ptr<const Reco::Layer>, Alg::Point3D>> LayerVector;
-    
+
     ClassicalRecoGeoSvc(const std::string& name, ISvcLocator* svc);
-    
+
     virtual ~ClassicalRecoGeoSvc();
-    virtual StatusCode initialize();
-    virtual StatusCode finalize();
-    virtual StatusCode buildGeometry() override;
-    virtual const Reco::ContainerVolume* getRecoGeo() override;
+    virtual StatusCode initialize() final;
+    virtual StatusCode finalize() final;
+    virtual StatusCode buildGeometry() final;
+    virtual const Reco::ContainerVolume* getRecoGeo() final;
 
     //scans trough all detector elements
     StatusCode scanDetector(DD4hep::Geometry::DetElement detelement); //not used
@@ -110,15 +110,15 @@ public:
     //sorts the volumes by their position in z
     static bool sortZvolumes(const std::pair<std::shared_ptr<const Reco::Volume>, Alg::Point3D>& a,const std::pair<std::shared_ptr<const Reco::Volume>, Alg::Point3D>& b);
 
-    
+
    // StatusCode buildGeometry();
-    
+
 private:
     std::shared_ptr<const Reco::ContainerVolume> m_worldVolume;
     IGeoSvc*                                     m_DD4HepSvc;
     MsgStream                                    m_log;
     mutable std::ofstream                        m_file;
-    
+
 };
 
 #endif //CLASSICALRECOGEOSVC_H
