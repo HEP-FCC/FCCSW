@@ -12,6 +12,22 @@ gaudi_add_module(Examples
 
 
 include(CTest)
+
+# These are the simple examples defined for doc/AddingTestsToFCCSW.md
+gaudi_add_test(DummyGen
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
+               FRAMEWORK tests/options/examplejob.py)
+gaudi_add_test(DummyGenCheck
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
+			         COMMAND python ./scripts/dummy_gen_test.py
+			         DEPENDS DummyGen)
+gaudi_add_test(DummyCheck
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
+			         COMMAND python ./scripts/test.py
+			         FAILS)
+# End of simple examples
+
+# Tests of example configs
 gaudi_add_test(GeantFullSimTrackerHits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim.py)
