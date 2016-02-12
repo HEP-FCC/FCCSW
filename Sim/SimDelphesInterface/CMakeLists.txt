@@ -18,3 +18,7 @@ gaudi_add_module(SimDelphesInterface
                  LINK_LIBRARIES GaudiAlgLib DataObjects ROOT Delphes FCCEDM PODIO)
 
 
+include(CTest)
+gaudi_add_test(PythiaDelphes
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/PythiaDelphes_config.py)

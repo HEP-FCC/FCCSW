@@ -17,3 +17,8 @@ gaudi_add_module(Reconstruction
                  INCLUDE_DIRS FastJet ROOT FWCore HepMC FCCEDM PODIO
                  LINK_LIBRARIES Fastjet ROOT GaudiAlgLib FCCEDM PODIO DataObjects)
 
+
+include(CTest)
+gaudi_add_test(genJetClustering
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/genJetClustering.py)

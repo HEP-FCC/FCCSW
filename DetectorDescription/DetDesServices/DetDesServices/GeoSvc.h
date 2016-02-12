@@ -33,9 +33,9 @@ public:
     /// Destructor
     virtual ~GeoSvc();
     /// Initialize function
-    virtual StatusCode initialize();
+    virtual StatusCode initialize() final;
     /// Finalize function
-    virtual StatusCode finalize();
+    virtual StatusCode finalize() final;
     /// This function generates the DD4hep geometry
     StatusCode buildDD4HepGeo();
     /// This function generates the Geant4 geometry
