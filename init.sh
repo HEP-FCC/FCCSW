@@ -1,5 +1,7 @@
 #!/bin/sh -u
 source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r4p3/InstallArea/scripts/LbLogin.sh --cmtconfig x86_64-slc6-gcc49-opt
+# The LbLogin sets VERBOSE to 1 which increases the compilation output. If you want details et this to 1 by hand.
+export VERBOSE=
 
 export FCCEDM=/afs/cern.ch/exp/fcc/sw/0.6/fcc-edm/0.2/x86_64-slc6-gcc49-opt/
 export PODIO=/afs/cern.ch/exp/fcc/sw/0.6/podio/0.1/x86_64-slc6-gcc49-opt

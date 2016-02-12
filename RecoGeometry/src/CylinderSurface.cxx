@@ -1,6 +1,6 @@
 //
 //  CylinderSurface.cxx
-//  
+//
 //
 //  Created by Julia Hrdinka on 25/11/14.
 //
@@ -114,7 +114,7 @@ const Alg::Vector3D* Reco::CylinderSurface::normal(const Alg::Point2D& locpos) c
     double phi      = locpos.X()/m_R;
     Alg::Vector3D normal(m_R*cos(phi), m_R*sin(phi), locpos.Y());
     normal          = transform()*normal;
-    
+
     return (new Alg::Vector3D(normal.Unit()));
 }
 
@@ -169,25 +169,25 @@ Trk::Intersection Reco::CylinderSurface::straightLineIntersection(const Alg::Poi
     }
     else  // bail out if no solution exists
         return Trk::Intersection(pos, 0., false);
-    
+
     //alt
  /*   Alg::Point3D point1    = transform().Inverse()*pos;
     Alg::Vector3D direction = transform().Inverse()*dir;
     Alg::Point3D point2    = point1 + direction;
-    
+
     std::cout << "CylinderSurface::StraightlineIntersection::direction: " << direction << std::endl;
     std::cout << "CylinderSurface::StraightlineIntersection::point1: " << point1 << std::endl;
     std::cout << "CylinderSurface::StraightlineIntersection::point2: " << point2 << std::endl;
     double R  = getR();
     double t1 = 0.;
     double t2 = 0.;
-    
+
      if (direction.x())
      {
          // get line and circle constants
          double k = (direction.Y())/(direction.X());
          double d = (point2.X()*point1.Y() - point1.X()*point2.Y())/(point2.X()-point1.X());
-    
+
          // and solve the qaudratic equation
          Alg::RealQuadraticEquation pquad(1 + k*k, 2*k*d, d*d - R*R);
          if (pquad.solutions != Alg::none)
@@ -214,18 +214,18 @@ Trk::Intersection Reco::CylinderSurface::straightLineIntersection(const Alg::Poi
          t2 = -y-point1.y();
      }
     */
-    
+
     Alg::Point3D sol1raw(point + t1 * direction);
     Alg::Point3D sol2raw(point + t2 * direction);
  //   std::cout<< "solraw1: " << sol1raw << "solraw2 " << sol2raw << std::endl;
- 
+
     // now reorder and return
     Alg::Point3D solution(0,0,0);
     double path = 0.;
-    
+
     // first check the validity of the direction
     bool isValid = true;
-    
+
     // both solutions are of same sign, take the smaller, but flag as false if not forward
     if (t1*t2 > 0 || !forceDir)
     {
@@ -270,11 +270,11 @@ Trk::Intersection Reco::CylinderSurface::straightLineIntersection(const Alg::Poi
             path = t2;
         }
     }
-    
+
     // the solution is still in the local 3D frame, direct check
     Alg::Point2D loc;
     if (isValid) isValid = (globalToLocal(transform()*solution,dir,loc));
-    
+
     // now return
     return Trk::Intersection(transform()*solution, path, isValid );
 }
@@ -284,9 +284,9 @@ bool Reco::CylinderSurface::isSensitive() const
     return false;
 }
 
-double Reco::CylinderSurface::pathlength(const Alg::Point3D& pos, const Alg::Vector3D& dir) const
+double Reco::CylinderSurface::pathlength(const Alg::Point3D& /*pos*/, const Alg::Vector3D& dir) const
 {
     return (Reco::Surface::pathlength(dir));
-    
+
 }
 

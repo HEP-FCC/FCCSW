@@ -1,6 +1,6 @@
 //
 //  MaterialPrimaryGeneratorAction.hh
-//  
+//
 //
 //  Created by Julia Hrdinka on 19/05/15.
 //
@@ -23,14 +23,14 @@ public:
     explicit MaterialPrimaryGeneratorAction(
                                  const G4String& particleName = "geantino",
                                  G4double energy = 1.*MeV,
-                                 G4ThreeVector position= G4ThreeVector(0,0,0),
-                                 G4ThreeVector momentumDirection = G4ThreeVector(0,0,1));
+                                 const G4ThreeVector& position= G4ThreeVector(0,0,0),
+                                 const G4ThreeVector& momentumDirection = G4ThreeVector(0,0,1));
     ~MaterialPrimaryGeneratorAction();
     static MaterialPrimaryGeneratorAction* Instance();
     // methods
     virtual void GeneratePrimaries(G4Event*);
     G4ThreeVector GetDirection() {return m_dir;}
-    
+
 private:
     static MaterialPrimaryGeneratorAction* fgInstance;
     // data members

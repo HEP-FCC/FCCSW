@@ -11,7 +11,7 @@
 #include "Generation/IVertexSmearingTool.h"
 
 /** @class ParticleGunAlg ParticleGunAlg.h "ParticleGunAlg.h"
- *  
+ *
  *  Main algorithm to generate particle gun events.
  *
  *  @author Patrick Robbe
@@ -47,15 +47,13 @@ public:
   virtual StatusCode finalize  ();
 
 private:
-  int m_eventType ; ///< Event type (set by options)
-  
   /// Location where to store generator events (set by options)
-  std::string  m_hepMCEventLocation ; 
-  
+  std::string  m_hepMCEventLocation ;
+
   ToolHandle<IParticleGunTool> m_particleGunTool; ///< Particle gun tool
-  
+
   ToolHandle<IVertexSmearingTool> m_vertexSmearingTool; ///< Vertex smear tool
-  
+
   /// Name to put in the event
   std::string m_particleGunName ;
   /// The output handle for what is being produced

@@ -1,7 +1,7 @@
+#include "FWCore/PodioDataSvc.h"
 #include "GaudiKernel/ISvcLocator.h"
 #include "GaudiKernel/IConversionSvc.h"
 
-#include "FWCore/PodioDataSvc.h"
 #include "FWCore/DataWrapper.h"
 
 /// Service initialisation

@@ -27,9 +27,9 @@ class SmearingTool : public AlgTool, virtual public IDigitizer {
 public:
     SmearingTool(const std::string& type, const std::string& name, const IInterface* parent);
     ~SmearingTool() {}
-    virtual StatusCode initialize();
-    virtual StatusCode finalize();
-    virtual StatusCode smear(fcc::ParticleCollection* particlecoll) override;
+    virtual StatusCode initialize() final;
+    virtual StatusCode finalize() final;
+    virtual StatusCode smear(fcc::ParticleCollection* particlecoll) final;
 
 private:
 

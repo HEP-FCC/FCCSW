@@ -31,10 +31,11 @@ public:
   /// Standard Destructor
   virtual ~PodioDataSvc();
 
+  // Use DataSvc functionality except where we override
+  using DataSvc::registerObject;
   /// Overriding standard behaviour of evt service
-
   /// Register object with the data store.
-  virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject );
+  virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject ) final;
 
   virtual const CollRegistry& getCollections() const {return m_collections;}
   virtual podio::CollectionIDTable* getCollectionIDs() {return m_collectionIDs;}
