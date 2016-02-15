@@ -7,7 +7,7 @@
 /** Conversion between units.
  *
  *  Contains conversions between default units used by EDM and by Geant.
- *  Default units in FCC-EDM are (as initially discussed on FCCSoftware Meeting on 14/10/15) GeV and cm.
+ *  Default units in FCC-EDM are (as initially discussed on FCCSoftware Meeting on 14/10/15) GeV and mm.
  *  Geant4 default units are MeV and mm.
  *
  *  @author Anna Zaborowska
