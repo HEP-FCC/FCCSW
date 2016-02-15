@@ -63,8 +63,8 @@ delphesRootOutFile=""
 #delphesHepMCInFile="data/ZLEP_toAll.hepmc"
 #delphesRootOutFile="DelphesOutput.root"
 
-## Define Delphes outpu arrays for studied objects -> various Delphes modules
-## provide the same type of particle with different level of processing ...
+## Define Delphes output arrays to be processed as FCC-EDM ??? particles (muons, electrons, etc.) -> 
+## various Delphes modules provide the same type of particle with different level of processing ...
 ## Needed due to required output to FCC-EDM!
 delphesMuonsOutArray    ="MuonMomentumSmearing/muons"
 delphesElectronsOutArray="ElectronEnergySmearing/electrons"
