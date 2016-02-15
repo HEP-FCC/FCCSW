@@ -16,7 +16,7 @@
 namespace sim {
 namespace edmdefault {
 // FIXME: these should be a constexpr, but CLHEP is only const
-const double length = CLHEP::cm;
+const double length = CLHEP::mm;
 const double energy = CLHEP::GeV;
 }
 namespace edm2g4 {

@@ -23,8 +23,8 @@ StatusCode HepMCConverter::execute() {
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
 
-  // conversion of units to cm and GeV
-  double hepmc2edm_length = HepMC::Units::conversion_factor(event->length_unit(), HepMC::Units::CM);
+  // conversion of units to mm and GeV
+  double hepmc2edm_length = HepMC::Units::conversion_factor(event->length_unit(), HepMC::Units::MM);
   double hepmc2edm_energy = HepMC::Units::conversion_factor(event->momentum_unit(),HepMC::Units::GEV);
 
   // currently only final state particles converted (no EndVertex as they didn't decay)
