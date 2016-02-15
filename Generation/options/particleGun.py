@@ -12,7 +12,7 @@ particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc",
 guntool = MomentumRangeParticleGun(PdgCodes=[-211, 211, -11, -13,  13, 11 ])
 
 smeartool = FlatSmearVertex("smeartoolname")
-# FCCSW standard unit of length: [cm]
+# FCCSW standard unit of length: [mm]
 smeartool.xVertexMin = -10
 smeartool.xVertexMax = 10
 smeartool.yVertexMin = -10

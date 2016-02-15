@@ -49,16 +49,16 @@ StatusCode ParticleGunAlg::execute() {
   StatusCode sc = StatusCode::SUCCESS ;
   Gaudi::LorentzVector theFourMomentum ;
   Gaudi::LorentzVector origin ;
-  
+
   // prepare a new HepMC event --
   // the data service (through m_hepmchandle) will be
   // responsible for deletion of the GenEvent
-  HepMC::GenEvent * theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::CM) ;
-  
+  HepMC::GenEvent * theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM) ;
+
   // note: pgdid is set in function generateParticle
   int thePdgId ;
   m_particleGunTool->generateParticle( theFourMomentum , origin , thePdgId );
-  
+
   // create HepMC Vertex --
   // by calling add_vertex(), the hepmc event is given ownership
   //  of the vertex
@@ -75,15 +75,15 @@ StatusCode ParticleGunAlg::execute() {
 								      theFourMomentum.E()  ) ,
 						   thePdgId ,
 						   1 ) ; // hepmc status code for final state particle
-  
+
   v -> add_particle_out( p ) ;
-    
+
   theEvent -> add_vertex( v ) ;
   theEvent -> set_signal_process_id( 0 ) ;
   theEvent -> set_signal_process_vertex( v ) ;
 
   m_vertexSmearingTool->smearVertex(theEvent);
-  
+
   m_hepmchandle.put(theEvent);
   return sc;
 }
