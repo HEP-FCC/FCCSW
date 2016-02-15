@@ -39,10 +39,10 @@ General tips on how to write good code can be found [here](http://fccsw.web.cern
    * [Comments](#comments)
 
 ## Automatic Checking
-Some basic formatting checks can be done with `checkformat.sh` which calls the SAS format checker based on clang (and sets up the required LLVM suite temporarily). It will display a diff in case of mismatches between the format defined in a FCCSW format file that is automatically created for you (`.clang-format`). Note that this does not check for naming conventions at the moment but only for correct indentation, trailing whitespaces, line length, etc. Usage:
+Some basic formatting checks can be done with `checkformat.sh` which calls the SAS format checker based on clang (and sets up the required LLVM suite temporarily). It will display a diff in case of mismatches between the format defined in a FCCSW format file that is automatically created for you (`.clang-format`). Note that this does not check for naming conventions at the moment but only for correct indentation, trailing whitespaces, line length, etc. The script can be called with a list of files separated by whitespace:
 
 ~~~
-  ./checkformat.sh Examples/src/CreateSampleJet.cpp
+  ./checkformat.sh Examples/src/CreateSampleJet.cpp Examples/src/CreateSampleJet.h
 ~~~
 
 ## Naming Conventions

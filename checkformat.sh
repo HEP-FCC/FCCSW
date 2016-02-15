@@ -11,5 +11,11 @@ if ! find .clang-format ; then
 	cp /afs/cern.ch/exp/fcc/sw/0.6/SAS/0.1.4/x86_64-slc6-clang3.6-opt/config/FCCSW-clang-format.yaml .clang-format
 fi
 
-python /afs/cern.ch/exp/fcc/sw/0.6/SAS/0.1.4/x86_64-slc6-clang3.6-opt/scripts/sasFormattingChecker.py $1
+
+for fname in "$@"
+do
+	echo "Checking $fname"
+    python /afs/cern.ch/exp/fcc/sw/0.6/SAS/0.1.4/x86_64-slc6-clang3.6-opt/scripts/sasFormattingChecker.py "$fname"
+done
+
 
