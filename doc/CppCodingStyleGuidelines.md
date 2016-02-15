@@ -7,7 +7,7 @@ One particular exception is that we extended the 80 characters per line requirem
 ## Goal
 Give guidelines on naming conventions and how to structure code.
 
-General tips on how to write good code can be found in ... (add link)
+General tips on how to write good code can be found [here](http://fccsw.web.cern.ch/fccsw/FCCSW/md_doc__general_cpp_guidelines.html).
 
 ## Contents
 * [Naming Conventions](#naming-conventions)
@@ -37,6 +37,11 @@ General tips on how to write good code can be found in ... (add link)
    * [Indentation](#indentation)
    * [Curly Braces](#curly-braces)
    * [Comments](#comments)
+
+## Automatic Checking
+Some basic formatting checks can be done with `checkformat.sh` which calls the SAS format checker based on clang (and sets up the required LLVM suite temporarily). It will display a diff in case of mismatches between the format defined in a FCCSW format file that is automatically created for you (`.clang-format`). Note that this does not check for naming conventions at the moment but only for correct indentation, trailing whitespaces, line length, etc. Usage:
+
+  ./checkformat.sh Examples/src/CreateSampleJet.cpp
 
 ## Naming Conventions
 ### Variable Names
@@ -152,12 +157,15 @@ The last child package should have the folder structure:
   - options (contains all configuration files)
   - dict (contains files needed to build the lcg library)
   - doc (contains readme files documenting this specific package)
-  - test (contains files used for unit-testing)
+  - tests (contains files used for unit-testing)
+    - options (contains configuration files only used for tests)
+    - scripts (contains python scripts used for testing)
+  - data (contains input text files needed for this package)
 
 ### File Names
 Header files end with `.h`, source files end with `.cpp`, standalone executable implementations end with `.cxx`.
 
-When an additional "implementation header file" is needed (e.g. in order to not clutter the header file of a templated class) an additional file `.impl` can be included in the header file.
+When an additional "implementation header file" is needed (e.g. in order to not clutter the header file of a templated class) an additional file `.incl` can be included in the header file.
 
 ***
 
@@ -216,7 +224,7 @@ Indentations should be done with spaces, 2 spaces per indentation step.
 
 - Indent by scope with the exception of namespaces and access modifiers (`public`, `private` and `protected`).
 - Indent in case of line continuation.
-- Indent for member initialiser lists
+- Indent twice for member initialiser lists
 
 **Example**:
 ~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
@@ -234,8 +242,8 @@ private:
 Member initialiser list:
 ~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 Foo::Foo() :
-  m_bar(1),
-  m_foo(1) {
+    m_bar(1),
+    m_foo(1) {
   // ctor body
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -286,6 +294,7 @@ Keep in mind doxygen pages are created and read through the [how-to for doxygen 
 - A class description is put above the namespace region with author information and a description of the class. A date may optionally be added.
 
 **Example**
+*NOTE* this example is not rendered correctly in Doxygen, have a look at [github](https://github.com/jlingema/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md#comments).
 ~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
 #include "OtherClass.h"
 
