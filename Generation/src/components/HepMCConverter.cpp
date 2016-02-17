@@ -5,6 +5,8 @@
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
 
+#include "Generation/Units.h"
+
 DECLARE_COMPONENT(HepMCConverter)
 
 HepMCConverter::HepMCConverter(const std::string& name, ISvcLocator* svcLoc):
@@ -23,9 +25,10 @@ StatusCode HepMCConverter::execute() {
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
 
-  // conversion of units to mm and GeV
-  double hepmc2edm_length = HepMC::Units::conversion_factor(event->length_unit(), HepMC::Units::MM);
-  double hepmc2edm_energy = HepMC::Units::conversion_factor(event->momentum_unit(),HepMC::Units::GEV);
+  // conversion of units to EDM standard units:
+  // First cover the case that hepMC file is not in expected units and then convert to EDM default
+  double hepmc2EdmLength = HepMC::Units::conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
+  double hepmc2EdmEnergy = HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
 
   // currently only final state particles converted (no EndVertex as they didn't decay)
   // TODO add translation of decayed particles
@@ -35,10 +38,10 @@ StatusCode HepMCConverter::execute() {
     tmp = (*vertex_i)->position();
     auto vertex = vertices->create();
     auto& position = vertex.Position();
-    position.X = tmp.x()*hepmc2edm_length;
-    position.Y = tmp.y()*hepmc2edm_length;
-    position.Z = tmp.z()*hepmc2edm_length;
-    vertex.Ctau(tmp.t()*Gaudi::Units::c_light*hepmc2edm_length); // is ctau like this?
+    position.X = tmp.x()*hepmc2EdmLength;
+    position.Y = tmp.y()*hepmc2EdmLength;
+    position.Z = tmp.z()*hepmc2EdmLength;
+    vertex.Ctau(tmp.t()*Gaudi::Units::c_light*hepmc2EdmLength); // is ctau like this?
 
     for (auto particle_i = (*vertex_i)->particles_begin(HepMC::children);
          particle_i != (*vertex_i)->particles_end(HepMC::children);
@@ -51,10 +54,10 @@ StatusCode HepMCConverter::execute() {
       fcc::BareParticle& core = particle.Core();
       core.Type = (*particle_i)->pdg_id();
       core.Status = (*particle_i)->status();
-      core.P4.Px = tmp.px()*hepmc2edm_energy;
-      core.P4.Py = tmp.py()*hepmc2edm_energy;
-      core.P4.Pz = tmp.pz()*hepmc2edm_energy;
-      core.P4.Mass = (*particle_i)->generated_mass()*hepmc2edm_energy;
+      core.P4.Px = tmp.px()*hepmc2EdmEnergy;
+      core.P4.Py = tmp.py()*hepmc2EdmEnergy;
+      core.P4.Pz = tmp.pz()*hepmc2EdmEnergy;
+      core.P4.Mass = (*particle_i)->generated_mass()*hepmc2EdmEnergy;
       particle.StartVertex(vertex);
     }
   }

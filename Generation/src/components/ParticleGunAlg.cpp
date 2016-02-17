@@ -8,6 +8,7 @@
 
 #include "HepMC/GenEvent.h"
 
+#include "Generation/Units.h"
 //-----------------------------------------------------------------------------
 // Implementation file for class : ParticleGun
 //
@@ -53,7 +54,7 @@ StatusCode ParticleGunAlg::execute() {
   // prepare a new HepMC event --
   // the data service (through m_hepmchandle) will be
   // responsible for deletion of the GenEvent
-  HepMC::GenEvent * theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM) ;
+  HepMC::GenEvent * theEvent = new HepMC::GenEvent( gen::hepmcdefault::energy, gen::hepmcdefault::length ) ;
 
   // note: pgdid is set in function generateParticle
   int thePdgId ;

@@ -9,6 +9,9 @@
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/HepMC2.h"
 
+// FCCSW
+#include "Generation/Units.h"
+
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
@@ -91,7 +94,7 @@ StatusCode PythiaInterface::execute() {
   } // Debug
 
   // Define HepMC event and convert Pythia event into this HepMC event type
-  auto theEvent = new HepMC::GenEvent( HepMC::Units::GEV, HepMC::Units::MM);
+  auto theEvent = new HepMC::GenEvent( gen::hepmcdefault::energy, gen::hepmcdefault::length );
   toHepMC->fill_next_event(*m_pythia, theEvent, m_iEvent);
   //theEvent-> print();
 
