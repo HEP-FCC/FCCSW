@@ -19,22 +19,33 @@ class PodioOutput : public GaudiAlgorithm {
 public:
   /// Constructor.
   PodioOutput(const std::string& name, ISvcLocator* svcLoc);
-  /// Initialize.
+
+  /// Initialization of PodioOutput. Acquires the data service, creates trees and root file.
   virtual StatusCode initialize();
-  /// Execute.
+  /// Execute. For the first event creates branches for all collections known to PodioDataSvc and prepares them for
+  /// writing. For the following events it reconnects the branches with collections and prepares them for write.
   virtual StatusCode execute();
-  /// Finalize.
+  /// Finalize. Writes the meta data tree; writes file and cleans up all ROOT-pointers.
   virtual StatusCode finalize();
 
 private:
-  bool m_first;
+  /// First event or not
+  bool m_firstEvent;
+  /// Root file name the output is written to
   std::string m_filename;
+  /// Commands which output is to be kept
   std::vector<std::string> m_outputCommands;
+  /// Switch for keeping or dropping outputs
   KeepDropSwitch m_switch;
+  /// Needed for collection ID table
   PodioDataSvc* m_podioDataSvc;
-  TFile* m_file;
-  TTree* m_datatree;
-  TTree* m_metadatatree;
+  /// The actual ROOT file
+  std::unique_ptr<TFile> m_file;
+  /// The tree to be filled with collections
+  std::unique_ptr<TTree> m_datatree;
+  /// The tree to be filled with meta data
+  std::unique_ptr<TTree> m_metadatatree;
+  /// The stored collections
   std::vector<podio::CollectionBase*> m_storedCollections;
 
 };
