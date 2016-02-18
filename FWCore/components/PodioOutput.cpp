@@ -21,6 +21,7 @@ StatusCode PodioOutput::initialize() {
   if (0 == m_podioDataSvc) return StatusCode::FAILURE;
 
   m_file = std::unique_ptr<TFile>(new TFile(m_filename.c_str(),"RECREATE","data file"));
+  // Both trees are written to the ROOT file and owned by it
   m_datatree  = new TTree("events","Events tree");
   m_metadatatree = new TTree("metadata", "Metadata tree");
   m_switch = KeepDropSwitch(m_outputCommands);
