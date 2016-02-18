@@ -55,11 +55,27 @@ StatusCode PodioOutput::execute() {
       if( m_switch.isOn(i.first) ) {
         isOn = 1;
         m_datatree->Branch(i.first.c_str(), classname.c_str(), i.second->getBufferAddress());
+        auto colls = i.second->referenceCollections();
+        if (colls != nullptr){
+          int j = 0;
+          for(auto& c : (*colls)){
+            m_datatree->Branch((i.first+"#"+std::to_string(j)).c_str(), c);
+            ++j;
+          }
+        }
       }
       debug() << isOn << " Registering collection " << classname << " " << i.first.c_str() << " containing type " << name << endmsg;
     } else {
       if ( m_switch.isOn(i.first) ) {
         m_datatree->SetBranchAddress(i.first.c_str(), i.second->getBufferAddress());
+        auto colls = i.second->referenceCollections();
+        if (colls != nullptr){
+          int j = 0;
+          for(auto& c : (*colls)){
+            m_datatree->SetBranchAddress((i.first+"#"+std::to_string(j)).c_str(), &c);
+            ++j;
+          }
+        }
       }
     }
     i.second->prepareForWrite();
