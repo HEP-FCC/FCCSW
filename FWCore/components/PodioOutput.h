@@ -42,9 +42,9 @@ private:
   /// The actual ROOT file
   std::unique_ptr<TFile> m_file;
   /// The tree to be filled with collections
-  std::unique_ptr<TTree> m_datatree;
+  TTree* m_datatree;
   /// The tree to be filled with meta data
-  std::unique_ptr<TTree> m_metadatatree;
+  TTree* m_metadatatree;
   /// The stored collections
   std::vector<podio::CollectionBase*> m_storedCollections;
 
