@@ -54,7 +54,7 @@ Test
 ----
 
     cp ~hegner/public/example_MyPythia.dat .
-    ./run gaudirun.py config/example_options.py
+    ./run gaudirun.py Examples/options/example_options.py
 
 You should see an HepMC printout.
 
