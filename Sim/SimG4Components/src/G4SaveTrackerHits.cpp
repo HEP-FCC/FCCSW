@@ -47,7 +47,7 @@ StatusCode G4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
       if (collect->GetName().find("Tracker") != std::string::npos) {
         size_t n_hit = collect->GetSize();
         info() << "\t" << n_hit<< " hits are stored in a tracker collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
-        for(auto iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
+        for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
           fcc::TrackHit edmHit = edmHits->create();
           fcc::TrackCluster edmCluster = edmClusters->create();

@@ -30,7 +30,7 @@ StatusCode GaussDigitizer::finalize()
     return StatusCode::SUCCESS;
 }
 
-StatusCode GaussDigitizer::smear(fcc::ParticleCollection* particlecoll)
+StatusCode GaussDigitizer::smear(fcc::ParticleCollection* /*particlecoll*/)
 {
     // FIXME / TODO: This function needs to be re-written to create a new collection
     //      instead of modifying an existing one!
@@ -41,7 +41,6 @@ StatusCode GaussDigitizer::smear(fcc::ParticleCollection* particlecoll)
     //    throw GaudiException("Couldn't initialize gauss distribution", name(), sc);
 
     // for (auto& part : particles) {
-    //     //geht nicht, weil const zurueckgibt
     //     part.mod().Core.Vertex.X += m_gaussDist();
     //     part.mod().Core.Vertex.Y += m_gaussDist();
     // }

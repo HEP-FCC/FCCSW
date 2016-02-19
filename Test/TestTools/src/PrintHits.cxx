@@ -1,6 +1,6 @@
 //
 //  PrintHits.cxx
-//  
+//
 //
 //  Created by Julia Hrdinka on 29/04/15.
 //
@@ -28,16 +28,16 @@ StatusCode PrintHits::initialize()
 
     StatusCode sc = service("THistSvc", m_ths);
     if (sc.isFailure()) throw GaudiException("Service [THistSvc] not found", name(), sc);
-    
+
     file = new TFile("hitproperies.root", "RECREATE");
     if(!file->IsOpen()) m_log << MSG::WARNING << ("Could not open Root file") << endmsg;
-    
+
     StatusCode sc1 = service( "RndmGenSvc", m_RGS, true);
     if( sc1.isFailure() )
         throw GaudiException("Service [RndmGenSvc] not found", name(), sc1);
-    
+
     m_out.open("printhits1.dat");
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -52,7 +52,7 @@ double PrintHits::flatrand(double min, double max) const {
     std::uniform_real_distribution<double> unif(min,max);
     std::random_device rd;
     std::mt19937 gen(rd());
-    
+
     return (unif(gen));
 }
 
@@ -132,7 +132,7 @@ StatusCode PrintHits::intersect(const Reco::Volume* volume, Alg::Point3D& glopos
             }
         }//if materiallayers
     }
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -143,7 +143,6 @@ StatusCode PrintHits::intersectSurface(const Reco::Surface& surface, Alg::Point3
         const Alg::Point3D intersectPoint = intersection.position;
         Alg::Point2D locpos(0.,0.);
         if(surface.globalToLocal(intersectPoint, dir, locpos)) {
-            double t = surface.material(locpos)->tInX0();
   //          if (t < 0.) std::cout << "tinx0 negativ" << std::endl;
   //          if (surface.halfThickness() < 0.) std::cout << "halfThickness negativ" << std::endl;
             m_tInX0 += fabs((surface.material(locpos)->tInX0())*((surface.pathlength(intersectPoint,dir))/(2.*surface.halfThickness())));
@@ -193,17 +192,17 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
     if (m_ths->regHist("tInX0", m_tInX0Prof).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
-    
+
     m_pathProf = new TProfile("Pathlength", "Pathlength over Eta", 3000, -10., 10.);
     if (m_ths->regHist("Pathlength", m_pathProf).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
-    
+
     m_hitsProf = new TProfile("Hits", "Hits over Eta", 3000, -10.,10.);
     if (m_ths->regHist("Hits", m_hitsProf).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
-    
+
     for (size_t i = 0; i < Nevents; i++) {
         Alg::Point3D startpoint = start;
         m_tInX0 = 0;
@@ -228,11 +227,11 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
     point = start;
     Alg::Vector3D dir3(-0.0715089,0.347588,-0.934917);
     intersect(volume,point,dir3);*/
-    
+
     m_tInX0Prof->Write();
     m_pathProf->Write();
     m_hitsProf->Write();
-    
+
     return StatusCode::SUCCESS;
 }
 StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume> worldVolume, const Alg::Point3D& start, std::vector<Alg::Vector3D> directions)
@@ -244,24 +243,24 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
             volume = subvolume;
         }
     }
-    
+
     m_tInX0Prof1 = new TProfile("tInX01", "Thickness in x0 over Eta", 100, -4., 4.);
     if (m_ths->regHist("tInX01", m_tInX0Prof1).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
-    
+
     m_pathProf1 = new TProfile("Pathlength1", "Pathlength in Eta", 100, -4., 4.);
     if (m_ths->regHist("Pathlength1", m_pathProf1).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
-    
+
     m_hitsProf = new TProfile("Hits", "Hits over Eta", 100, -4.,4.);
     if (m_ths->regHist("Hits", m_hitsProf).isFailure()) {
         m_log << MSG::ERROR << "Couldn't register Histogram" << endmsg;
     }
-    
+
     for (auto& dir : directions) {
-        
+
         Alg::Point3D startpoint = start;
         m_tInX0 = 0;
         m_pathlength = 0.;
@@ -282,19 +281,19 @@ StatusCode PrintHits::printMaterial(std::shared_ptr<const Reco::ContainerVolume>
 /*    Alg::Point3D point (0.,0.,0.);
     Alg::Vector3D vector(0.086478,-0.205382,-0.974854);
     intersect(volume,point,vector);*/
-    
+
     std::cout << "Test8" << std::endl;
-    
+
     m_tInX0Prof1->Write();
     m_pathProf1->Write();
     m_hitsProf->Write();
-    
+
     std::cout << "Test9" << std::endl;
-    
+
     return StatusCode::SUCCESS;
 }
 
-StatusCode PrintHits::printHits(std::vector<std::pair<double, const Alg::Vector3D>>& hits)
+StatusCode PrintHits::printHits(std::vector<std::pair<double, const Alg::Vector3D>>& )
 {
-    return StatusCode::SUCCESS;
+    return StatusCode::FAILURE;
 }
