@@ -42,9 +42,9 @@ from Configurables import ApplicationMgr, FCCDataSvc
 nEvents=10
 
 ## Message level
-messageLevelPythia =DEBUG
+messageLevelPythia =INFO
 messageLevelDelphes=DEBUG
-messageLevelOut    =INFO
+messageLevelOut    =DEBUG
 
 ## Define either pythia configuration file to generate events
 #pythiaConfFile="Generation/data//Pythia_standard.cmd"
@@ -63,8 +63,8 @@ delphesRootOutFile=""
 #delphesHepMCInFile="data/ZLEP_toAll.hepmc"
 #delphesRootOutFile="DelphesOutput.root"
 
-## Define Delphes outpu arrays for studied objects -> various Delphes modules
-## provide the same type of particle with different level of processing ...
+## Define Delphes output arrays to be processed as FCC-EDM ??? particles (muons, electrons, etc.) -> 
+## various Delphes modules provide the same type of particle with different level of processing ...
 ## Needed due to required output to FCC-EDM!
 delphesMuonsOutArray    ="MuonMomentumSmearing/muons"
 delphesElectronsOutArray="ElectronEnergySmearing/electrons"
@@ -114,13 +114,17 @@ delphessim.DataOutputs.recCharged.Path         = "recCharged"
 delphessim.DataOutputs.recNeutral.Path         = "recNeutral"
 delphessim.DataOutputs.recPhotons.Path         = "recPhotons"
 delphessim.DataOutputs.recJets.Path            = "recJets"
+delphessim.DataOutputs.recBTags.Path           = "recBTags"
+delphessim.DataOutputs.recTauTags.Path         = "recTauTags"
 delphessim.DataOutputs.recMETs.Path            = "recMETs"
 delphessim.DataOutputs.recMuonsToMC.Path       = "recMuonsToMC"
 delphessim.DataOutputs.recElectronsToMC.Path   = "recElectronsToMC"
 delphessim.DataOutputs.recChargedToMC.Path     = "recChargedToMC"
 delphessim.DataOutputs.recNeutralToMC.Path     = "recNeutralToMC"
 delphessim.DataOutputs.recPhotonsToMC.Path     = "recPhotonsToMC"
-delphessim.DataOutputs.recJetsToMC.Path        = "recJetsToMC" 
+delphessim.DataOutputs.recJetsToMC.Path        = "recJetsToMC"
+delphessim.DataOutputs.recJetsToBTags.Path     = "recJetsToBTags"
+delphessim.DataOutputs.recJetsToTauTags.Path   = "recJetsToTauTags" 
 
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput
@@ -135,12 +139,16 @@ out.outputCommands = ["drop *",
                       "keep recCharged",
                       "keep recPhotons",
                       "keep recJets",
+                      "keep recBTags",
+                      "keep recTauTags",
                       "keep recMETs",
                       "keep recMuonsToMC",
                       "keep recElectronsToMC",
                       "keep recChargedToMC",
                       "keep recPhotonsToMC",
-                      "keep recJetsToMC"]
+                      "keep recJetsToMC",
+                      "keep recJetsToBTags",
+                      "keep recJetsToTauTags"]
 #out.outputCommands = ["keep *"]
 
 ############################################################
