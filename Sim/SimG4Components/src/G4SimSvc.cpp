@@ -16,6 +16,8 @@ G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
   declarePrivateTool(m_physicsListTool);
   declareProperty("actions", m_actionsTool);
   declarePrivateTool(m_actionsTool);
+  declareProperty("magneticField", m_magneticFieldTool);
+  declarePrivateTool(m_magneticFieldTool);
 }
 
 G4SimSvc::~G4SimSvc(){}
@@ -43,6 +45,10 @@ StatusCode G4SimSvc::initialize(){
     error()<<"Unable to retrieve list of user actions"<<endmsg;
     return StatusCode::FAILURE;
   }
+  if (!m_magneticFieldTool.retrieve()) {
+    error()<<"Unable to retrieve the magnetic field"<<endmsg;
+    return StatusCode::FAILURE;
+  }  
 
   // Initialize Geant run manager
   // Load physics list, deleted in ~G4RunManager()
