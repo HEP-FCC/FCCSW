@@ -80,8 +80,8 @@
   </readouts>
 
   <detectors>
-    <include ref="HCal.xml" />
-    <include ref="ECal.xml" />
+    <include ref="FCChh_HCal.xml" />
+    <include ref="FCChh_ECal.xml" />
   </detectors>
 </lccdd>
 
