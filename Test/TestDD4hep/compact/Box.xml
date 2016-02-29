@@ -1,45 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-    <includes>
-        <gdmlFile  ref="elements.xml"/>
-        <gdmlFile  ref="materials.xml"/>
-    </includes>
+  <includes>
+    <gdmlFile  ref="elements.xml"/>
+    <gdmlFile  ref="materials.xml"/>
+  </includes>
 
-    <info name="Box"
+  <info name="Box"
         title="Box"
         author="Anna"
         url="no"
         version="1"
         status="development">
     <comment>HCal layout based on ATLAS HCal</comment>
-    </info>
+  </info>
 
-    <define>
-        <constant name="world_size" value="5.*m"/>
-        <constant name="world_x" value="world_size"/>
-        <constant name="world_y" value="world_size"/>
-        <constant name="world_z" value="world_size"/>
-        <constant name="box_x" value="0.5*m"/> <!-- WARNING: half length -->
-        <constant name="box_y" value="0.5*m"/> <!-- WARNING: half length -->
-        <constant name="box_z" value="0.5*m"/> <!-- WARNING: half length -->
-    </define>
+  <define>
+    <constant name="world_size" value="5.*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+    <constant name="box_x" value="0.5*m"/> <!-- WARNING: half length -->
+    <constant name="box_y" value="0.5*m"/> <!-- WARNING: half length -->
+    <constant name="box_z" value="0.5*m"/> <!-- WARNING: half length -->
+  </define>
 
-    <display>
-        <vis name="BoxVis" r="0.5" g="0.0" b="0.5" alpha="0.6" showDaugthers="true" visible="true" drawingStyle="solid"/>
-    </display>
-    <readouts>
-        <readout name="BoxReadout">
-            <segmentation type="CartesianGridXYZ" grid_size_x="1*cm" grid_size_y="1.*cm" grid_size_z="1.*cm"/>
-            <id>system:3,x:7,y:7,z:7</id>
-        </readout>
-    </readouts>
-    <detectors>
-        <detector id="0" name="BoxECal" type="TestBox" vis="BoxVis" readout="BoxReadout">
-          <dimensions x="box_x" y="box_y" z="box_z" x0="0" y0="0" z0="1*m"/>
-          <material name="Silicon"/>
-        </detector>
-    </detectors>
+  <display>
+    <vis name="BoxVis" r="0.5" g="0.0" b="0.5" alpha="0.2" showDaugthers="true" visible="false" />
+        <vis name="comp0" r="0." g="0." b="1.0" alpha="0.6" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  </display>
+
+  <readouts>
+    <readout name="SiliconHits">
+      <segmentation type="CartesianGridXYZ" grid_size_x="1*cm" grid_size_y="1.*cm" grid_size_z="1.*cm"/>
+      <id>system:2,x:8,y:8,z:8</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="1" name="BoxECal" type="TestBox" readout="SiliconHits" sensitive="true">
+      <material name="Silicon"/>
+      <sensitive type="Geant4Calorimeter"/>
+      <dimensions x="box_x" y="box_y" z="box_z"/>
+      <position   x="0"     y="0"     z="1*m"/>
+      <rotation   x="0"     y="0"     z="0"/>
+    </detector>
+  </detectors>
+
 </lccdd>

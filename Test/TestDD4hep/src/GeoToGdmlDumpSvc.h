@@ -6,14 +6,15 @@
 // Gaudi
 #include "GaudiKernel/Service.h"
 
-class InspectGeoSvc: public extends1<Service, ITestDD4hepSvc> {
+class GeoToGdmlDumpSvc: public extends1<Service, ITestDD4hepSvc> {
 public:
    /// Constructor.
-   explicit InspectGeoSvc(const std::string& name, ISvcLocator* svcLoc);
+   explicit GeoToGdmlDumpSvc(const std::string& name, ISvcLocator* svcLoc);
    /// Initialize.
    virtual StatusCode initialize();
    /// Finalize.
    virtual StatusCode finalize();
+
 private:
    /// Name of the GDML output file
    std::string m_gdmlFileName;

@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestDD4hep/compact/Box.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:../compact/Box.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc",
@@ -10,7 +10,7 @@ geantservice = G4SimSvc("G4SimSvc",
                         actions="G4FullSimActions")
 
 from Configurables import GeoToGdmlDumpSvc
-geodumpservice = GeoToGdmlDumpSvc("GeoDump", gdml="aaaa.gdml")
+geodumpservice = GeoToGdmlDumpSvc("GeoDump", gdml="TestBox.gdml")
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [],

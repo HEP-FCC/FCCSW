@@ -5,13 +5,13 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 10, # GeV
                                 MomentumMax = 10, # GeV
-                                ThetaMin = 0., # rad
-                                ThetaMax = 0., # rad
+                                ThetaMin = 0.45, # rad
+                                ThetaMax = 0.45, # rad
                                 PhiMin = 0., # rad
                                 PhiMax = 0.) # rad
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
 gen.DataOutputs.hepmc.Path = "hepmc"
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
+ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
@@ -24,7 +24,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.DataInputs.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/TestTracker.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Test/TestDD4hep/compact/Box.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc",
@@ -36,7 +36,7 @@ from Configurables import G4SimAlg, G4SaveCalHits
 savecaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
-geantsim = G4SimAlg("G4SimAlg", outputs= [ "G4SaveCalHits/saveECalHits"])
+geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import FCCDataSvc, PodioOutput
