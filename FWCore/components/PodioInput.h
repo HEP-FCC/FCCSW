@@ -10,6 +10,7 @@
 
 #include "TTree.h"
 #include "datamodel/TrackClusterCollection.h"
+#include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackClusterHitsAssociationCollection.h"
 
 #include <vector>
@@ -31,25 +32,20 @@ public:
   /// Finalize.
   virtual StatusCode finalize();
 
+ template<typename T>
+ StatusCode collFromStoreToDataService( const std::string& collection_name, DataHandle<T>& data_handle);
+
 private:
   bool m_first;
   std::string m_filename;
   std::vector<std::string> m_inputCommands;
   KeepDropSwitch m_switch;
   PodioDataSvc* m_podioDataSvc;
-  TFile* m_file;
-  TTree* m_datatree;
-  TTree* m_metadatatree;
-  std::vector<podio::CollectionBase*> m_storedCollections;
   podio::ROOTReader m_reader;
   podio::EventStore m_store;
-  const fcc::TrackClusterHitsAssociationCollection* clusterHitsAssociations;
-  /// Handle for tracker clusters
   DataHandle<fcc::TrackClusterCollection> m_trackClusters;
-  /// Handle for tracker hits
-  //DataHandle<fcc::TrackHitCollection> m_trackHits;
-  /// Handle for tracker hits-clusters associations
-  DataHandle<fcc::TrackClusterHitsAssociationCollection> m_trackHitsClusters;
+  DataHandle<fcc::TrackHitCollection> m_trackHits;
+  DataHandle<fcc::TrackClusterHitsAssociationCollection> m_trackClusterHitsAssociations;
 
 };
 

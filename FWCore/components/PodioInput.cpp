@@ -15,8 +15,8 @@ GaudiAlgorithm(name, svcLoc),m_first(true)
   declareProperty("inputCommands", m_inputCommands=defaultCommands,
                   "A set of commands to declare which collections to keep or drop.");
   declareOutput("trackClusters", m_trackClusters,"hits/trackerClusters");
-  //declareOutput("trackHits", m_trackHits,"hits/trackerHits");
-  declareOutput("trackHitsClusters", m_trackHitsClusters,"hits/trackerAssociations");
+  declareOutput("trackHits", m_trackHits,"hits/trackerHits");
+  declareOutput("trackHitsClusters", m_trackClusterHitsAssociations,"hits/trackerAssociations");
 }
 
 StatusCode PodioInput::initialize() {
@@ -32,32 +32,31 @@ StatusCode PodioInput::initialize() {
 }
 
 StatusCode PodioInput::execute() {
-  fcc::TrackCluster cluster = 0;
-  const fcc::TrackClusterCollection* clusters = nullptr;
-  bool is_available = m_store.get("clusters",clusters);
-  debug() << "clusters available: " << is_available << endmsg;
-  if(is_available){
-    for (auto cluster = clusters->begin(); cluster != clusters->end(); ++cluster) {
-      debug() << "Cluster has an energy of " << (*cluster).Core().Energy << endmsg;
-    }
-      m_store.clear();
-      m_reader.endOfEvent();
-      debug() << "End of event" << endmsg;
-      fcc::TrackClusterCollection* new_clusters = new fcc::TrackClusterCollection;
-      *new_clusters = *clusters;
-      m_trackClusters.put(new_clusters); 
-  }
-  /*
-  is_available = m_store.get("hitClusterAssociation", clusterHitsAssociations);
-  if(is_available) {
-    m_trackHitsClusters.put(clusterHitsAssociations); 
-  }
-  */
+  collFromStoreToDataService<fcc::TrackClusterCollection>("clusters", m_trackClusters);
+  collFromStoreToDataService<fcc::TrackHitCollection>("hits", m_trackHits);
+  m_reader.endOfEvent();
   return StatusCode::SUCCESS;
 }
 
 StatusCode PodioInput::finalize() {
+  m_store.clear();
   if (GaudiAlgorithm::finalize().isFailure())
     return StatusCode::FAILURE;
   return StatusCode::SUCCESS;
 }
+
+template<typename T>
+StatusCode PodioInput::collFromStoreToDataService(const std::string& collection_name, DataHandle<T>& data_handle) {
+bool is_available;
+  const T* collection(nullptr);
+  is_available = m_store.get(collection_name, collection);
+  if (is_available) {
+    debug() << "Reading " << collection_name << " from " << m_filename << "." << endmsg;
+    // ownership given to data service
+    T* tmp_collection = new T;
+    *tmp_collection = *collection;
+    data_handle.put(tmp_collection);
+  }
+  return StatusCode::SUCCESS;
+}
+
