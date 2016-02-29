@@ -17,7 +17,7 @@ G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
   declareProperty("actions", m_actionsTool);
   declarePrivateTool(m_actionsTool);
   declareProperty("magneticField", m_magneticFieldTool);
-  declarePrivateTool(m_magneticFieldTool);
+  declarePrivateTool(m_magneticFieldTool,"ConstantMagneticFieldTool", true);
 }
 
 G4SimSvc::~G4SimSvc(){}
