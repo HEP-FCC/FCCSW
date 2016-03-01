@@ -25,10 +25,11 @@ Next:numberShowEvent = 1           ! print event record n times
 Stat:showPartonLevel = off         ! additional statistics on MPI
 
 ! 3a) Partpn, hadron-level settings -> set all to on
-PartonLevel:MPI = on
-PartonLevel:ISR = off
-PartonLevel:FSR = off
-HadronLevel:all = on
+PartonLevel:MPI   = on
+PartonLevel:ISR   = off
+PartonLevel:FSR   = off
+HadronLevel:all   = on
+#HadronLevel:Decay = off
 
 ! 3b) PDF settings. Default is to use internal PDFs
 ! some pdf sets examples: cteq61.LHpdf cteq61.LHgrid MRST2004nlo.LHgrid

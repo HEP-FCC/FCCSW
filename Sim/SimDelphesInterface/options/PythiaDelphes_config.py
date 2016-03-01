@@ -66,11 +66,12 @@ delphesRootOutFile=""
 ## Define Delphes output arrays to be processed as FCC-EDM ??? particles (muons, electrons, etc.) -> 
 ## various Delphes modules provide the same type of particle with different level of processing ...
 ## Needed due to required output to FCC-EDM!
-delphesMuonsOutArray    ="MuonMomentumSmearing/muons"
-delphesElectronsOutArray="ElectronEnergySmearing/electrons"
+delphesMuonsOutArray    ="MuonIsolation/muons"
+delphesElectronsOutArray="ElectronIsolation/electrons"
 delphesChargedOutArray  ="ChargedHadronMomentumSmearing/chargedHadrons"
 delphesNeutralOutArray  ="Hcal/eflowNeutralHadrons"
-delphesPhotonsOutArray  ="PhotonEfficiency/photons"
+delphesPhotonsOutArray  ="PhotonIsolation/photons"
+delphesGenJetsOutArray  ="GenJetFinder/jets" 
 delphesJetsOutArray     ="JetEnergyScale/jets"
 delphesMETsOutArray     ="MissingET/momentum"
 delphesSHTsOutArray     ="ScalarHT/energy"
@@ -93,63 +94,64 @@ pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
 from Configurables import DelphesSimulation
-delphessim = DelphesSimulation(DelphesCard=delphesCard,
-                               HepMCInputFile=delphesHepMCInFile,
-                               ROOTOutputFile=delphesRootOutFile,
-                               MuonsOutArray=delphesMuonsOutArray,
+delphessim = DelphesSimulation(DelphesCard      =delphesCard,
+                               HepMCInputFile   =delphesHepMCInFile,
+                               ROOTOutputFile   =delphesRootOutFile,
+                               MuonsOutArray    =delphesMuonsOutArray,
                                ElectronsOutArray=delphesElectronsOutArray,
-                               ChargedOutArray=delphesChargedOutArray,
-                               NeutralOutArray=delphesNeutralOutArray,
-                               PhotonsOutArray=delphesPhotonsOutArray,
-                               JetsOutArray=delphesJetsOutArray,
-                               METsOutArray=delphesMETsOutArray,
-                               SHTsOutArray=delphesSHTsOutArray,  
-                               OutputLevel=messageLevelDelphes)
+                               ChargedOutArray  =delphesChargedOutArray,
+                               NeutralOutArray  =delphesNeutralOutArray,
+                               PhotonsOutArray  =delphesPhotonsOutArray,
+                               GenJetsOutArray  =delphesGenJetsOutArray,
+                               JetsOutArray     =delphesJetsOutArray,
+                               METsOutArray     =delphesMETsOutArray,
+                               SHTsOutArray     =delphesSHTsOutArray,  
+                               OutputLevel      =messageLevelDelphes)
 delphessim.DataInputs.hepmc.Path               = "hepmc"
 delphessim.DataOutputs.genParticles.Path       = "genParticles"
 delphessim.DataOutputs.genVertices.Path        = "genVertices"
-delphessim.DataOutputs.recMuons.Path           = "recMuons"
-delphessim.DataOutputs.recElectrons.Path       = "recElectrons"
-delphessim.DataOutputs.recCharged.Path         = "recCharged"
-delphessim.DataOutputs.recNeutral.Path         = "recNeutral"
-delphessim.DataOutputs.recPhotons.Path         = "recPhotons"
-delphessim.DataOutputs.recJets.Path            = "recJets"
-delphessim.DataOutputs.recBTags.Path           = "recBTags"
-delphessim.DataOutputs.recTauTags.Path         = "recTauTags"
-delphessim.DataOutputs.recMETs.Path            = "recMETs"
-delphessim.DataOutputs.recMuonsToMC.Path       = "recMuonsToMC"
-delphessim.DataOutputs.recElectronsToMC.Path   = "recElectronsToMC"
-delphessim.DataOutputs.recChargedToMC.Path     = "recChargedToMC"
-delphessim.DataOutputs.recNeutralToMC.Path     = "recNeutralToMC"
-delphessim.DataOutputs.recPhotonsToMC.Path     = "recPhotonsToMC"
-delphessim.DataOutputs.recJetsToMC.Path        = "recJetsToMC"
-delphessim.DataOutputs.recJetsToBTags.Path     = "recJetsToBTags"
-delphessim.DataOutputs.recJetsToTauTags.Path   = "recJetsToTauTags" 
+delphessim.DataOutputs.genJets.Path            = "genJets"
+delphessim.DataOutputs.genJetsFlavor.Path      = "genJetsFlavor"
+delphessim.DataOutputs.muons.Path              = "muons"
+delphessim.DataOutputs.muonITags.Path          = "muonITags"
+delphessim.DataOutputs.electrons.Path          = "electrons"
+delphessim.DataOutputs.electronITags.Path      = "electronITags"
+delphessim.DataOutputs.charged.Path            = "charged"
+delphessim.DataOutputs.neutral.Path            = "neutral"
+delphessim.DataOutputs.photons.Path            = "photons"
+delphessim.DataOutputs.photonITags.Path        = "photonITags"
+delphessim.DataOutputs.jets.Path               = "jets"
+delphessim.DataOutputs.jetParts.Path           = "jetParts"
+delphessim.DataOutputs.jetsFlavor.Path         = "jetsFlavor"
+delphessim.DataOutputs.bTags.Path              = "bTags"
+delphessim.DataOutputs.tauTags.Path            = "tauTags"
+delphessim.DataOutputs.met.Path                = "met"
+delphessim.DataOutputs.genJetsToMC.Path        = "genJetsToMC"
+delphessim.DataOutputs.genJetsToFlavor.Path    = "genJetsToFlavor"
+delphessim.DataOutputs.muonsToMC.Path          = "muonsToMC"
+delphessim.DataOutputs.muonsToITags.Path       = "muonsToITags"
+delphessim.DataOutputs.electronsToMC.Path      = "electronsToMC"
+delphessim.DataOutputs.electronsToITags.Path   = "electronsToITags"
+delphessim.DataOutputs.chargedToMC.Path        = "chargedToMC"
+delphessim.DataOutputs.neutralToMC.Path        = "neutralToMC"
+delphessim.DataOutputs.photonsToMC.Path        = "photonsToMC"
+delphessim.DataOutputs.photonsToITags.Path     = "photonsToITags"
+delphessim.DataOutputs.jetsToParts.Path        = "jetsToParts"
+delphessim.DataOutputs.jetsToFlavor.Path       = "jetsToFlavor"
+delphessim.DataOutputs.jetsToBTags.Path        = "jetsToBTags"
+delphessim.DataOutputs.jetsToTauTags.Path      = "jetsToTauTags" 
 
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput
 
 out = PodioOutput("out",OutputLevel=messageLevelOut)
 out.filename       = "FCCDelphesOutput.root"
-out.outputCommands = ["drop *",
-                      "keep genParticles",
-                      "keep genVertices",
-                      "keep recMuons",
-                      "keep recElectrons",
-                      "keep recCharged",
-                      "keep recPhotons",
-                      "keep recJets",
-                      "keep recBTags",
-                      "keep recTauTags",
-                      "keep recMETs",
-                      "keep recMuonsToMC",
-                      "keep recElectronsToMC",
-                      "keep recChargedToMC",
-                      "keep recPhotonsToMC",
-                      "keep recJetsToMC",
-                      "keep recJetsToBTags",
-                      "keep recJetsToTauTags"]
-#out.outputCommands = ["keep *"]
+#out.outputCommands = ["drop *",
+#                      "keep genParticles",
+#                      "keep genVertices",
+#                      "keep genJets",
+#                      "keep genJetsToMC"]
+out.outputCommands = ["keep *"]
 
 ############################################################
 #
