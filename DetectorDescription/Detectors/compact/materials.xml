@@ -147,4 +147,9 @@
     <composite n="3" ref="O" />
   </material>
 
+  <material name="LAr">
+    <D value="1.396" unit="g/cm3" />
+    <composite n="1" ref="Ar"/>
+  </material>
+
 </materials>
