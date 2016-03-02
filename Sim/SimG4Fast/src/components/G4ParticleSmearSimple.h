@@ -6,6 +6,9 @@
 #include "GaudiKernel/RndmGenerators.h"
 class IRndmGenSvc;
 
+//ROOT
+class TFormula;
+
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 
@@ -49,6 +52,18 @@ public:
 private:
   /// Constant resolution for the smearing (set by job options)
   double m_sigma;
+  /// string defining a TFormula representing resolution energy-dependent for the smearing (set by job options)
+  std::string m_resolutionEnergyStr;
+  /// string defining a TFormula representing resolution momentum-dependent for the smearing (set by job options)
+  std::string m_resolutionMomentumStr;
+  /// string defining a TFormula representing resolution transverse-momentum-dependent for the smearing (set by job options)
+  std::string m_resolutionTransMomentumStr;
+  /// TFormula representing resolution energy-dependent for the smearing
+  std::unique_ptr<TFormula> m_resolutionEnergy;
+  /// TFormula representing resolution momentum-dependent for the smearing
+  std::unique_ptr<TFormula> m_resolutionMomentum;
+  /// TFormula representing resolution transverse-momentum-dependent for the smearing
+  std::unique_ptr<TFormula> m_resolutionTransMomentum;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
