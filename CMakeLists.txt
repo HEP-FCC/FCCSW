@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
 #---------------------------------------------------------------
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
-find_package(Delphes)
+# find_package(Delphes)
 #---------------------------------------------------------------
 
 # Declare project name and version
@@ -11,7 +11,7 @@ find_package(Delphes)
 #                  USE dep_project_1 version_1 [project_2 version_2 ...]
 #                  [DATA pkg1 [VERSION vers1] [pkg2 ...])
 gaudi_project(FCCSW HEAD
-              USE Gaudi v26r4 )
+              USE Gaudi v27r0 )
 
 include_directories(
          ${DELPHES_INCLUDE_DIRS}
