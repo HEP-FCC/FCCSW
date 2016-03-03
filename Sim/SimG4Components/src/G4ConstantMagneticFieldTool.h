@@ -20,32 +20,6 @@ class G4ConstantField;
 *  @date   2016-02-22
 */
 
-class ConstantField: public G4MagneticField
-{
-friend class G4ConstantMagneticFieldTool;
-
-private:	
-	double bX=0;
-	double bY=0;
-	double bZ=6.*tesla;
-	
-	double rMax=9*m;
-	double zMax=8*m;
-	
-public:
-	void GetFieldValue(const G4double point[4],double* bField ) const
-	{
-		if (std::sqrt(point[0]*point[0]+point[1]*point[1])<rMax &&
-		    std::abs(point[2])<zMax)
-		{
-			bField[0]=bX;
-			bField[1]=bY;
-			bField[2]=bZ;
-		}
-		else bField[0]=bField[1]=bField[2]=0;
-	}
-};
-
 class G4ConstantMagneticFieldTool : public GaudiTool, virtual public IG4MagneticFieldTool {
 public:
 /// Standard constructor
@@ -74,6 +48,7 @@ private:
 	double m_maxEps=0;
 	double m_deltaChord=0;
 	double m_deltaOneStep=0;
+	double m_maxStep=1.*m;
 	std::string m_integratorStepper="NystromRK4";
 	
 	double m_fieldComponentX=0;

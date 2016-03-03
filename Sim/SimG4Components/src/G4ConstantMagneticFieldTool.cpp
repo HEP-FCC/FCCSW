@@ -12,6 +12,7 @@
 #include "G4FieldManager.hh"
 #include "G4TransportationManager.hh"
 #include "G4ChordFinder.hh"
+#include "G4PropagatorInField.hh"
 
 
 //-----------------------------------------------------------------------------
@@ -37,6 +38,8 @@ G4ConstantMagneticFieldTool::G4ConstantMagneticFieldTool( const std::string& typ
   	declareProperty( "DeltaOneStep" , m_deltaOneStep , "Delta(one-step)" );
   	declareProperty( "MinimumEpsilon" , m_minEps , "Minimum epsilon (see G4 documentation)" );
   	declareProperty( "MaximumEpsilon" , m_maxEps , "Maximum epsilon (see G4 documentation)" );
+  	declareProperty( "MaximumStep" , m_maxStep , "Maximum step length in field (see G4 documentation)" );
+
   	declareProperty( "IntegratorStepper" , m_integratorStepper="NystromRK4","Integrator stepper name" );
 	declareProperty( "FieldComponentX",m_fieldComponentX,"Field X component");
 	declareProperty( "FieldComponentY",m_fieldComponentY,"Field Y component");
@@ -72,7 +75,9 @@ StatusCode G4ConstantMagneticFieldTool::initialize( )
 		if (m_fieldComponentY) m_field->bX=m_fieldComponentY;
 		if (m_fieldComponentZ) m_field->bX=m_fieldComponentZ;
 		
-		G4FieldManager* fieldManager=G4TransportationManager::GetTransportationManager()->GetFieldManager();
+		G4TransportationManager* transpManager=G4TransportationManager::GetTransportationManager();
+		G4FieldManager* fieldManager=transpManager->GetFieldManager();
+		G4PropagatorInField* propagator=transpManager->GetPropagatorInField();
 
 		fieldManager->SetDetectorField(m_field);
 
@@ -80,6 +85,8 @@ StatusCode G4ConstantMagneticFieldTool::initialize( )
 		G4ChordFinder* chordFinder=fieldManager->GetChordFinder();
 		chordFinder->GetIntegrationDriver()
 			->RenewStepperAndAdjust( GetStepper(m_integratorStepper,m_field) );
+
+		propagator->SetLargestAcceptableStep(m_maxStep);
 
 		if (m_deltaChord>0) fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
 		if (m_deltaOneStep>0) fieldManager->SetDeltaOneStep(m_deltaOneStep);
