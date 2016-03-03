@@ -43,7 +43,7 @@ private:
 
 	G4ConstantField* m_field;
 	
-	bool m_fieldOn=true;
+	bool m_fieldOn=false;
 	double m_minEps=0;
 	double m_maxEps=0;
 	double m_deltaChord=0;
