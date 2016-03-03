@@ -115,10 +115,10 @@
         <readout name="TrackerBigReadout">
             <id>system:3,layer:2,module:11,component:2</id>
         </readout>
-        <readout name="EndCapReadout">
+        <readout name="Tracker_EndCapReadout">
             <id>system:3,layer:2,module:6,component:2</id>
         </readout>
-        <readout name="EndCapBigReadout">
+        <readout name="Tracker_EndCapBigReadout">
             <id>system:3,layer:2,module:7,component:2</id>
         </readout>
     </readouts>
