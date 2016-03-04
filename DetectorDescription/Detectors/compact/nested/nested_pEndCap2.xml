@@ -1,5 +1,5 @@
 <!--posEndCap2-->
-<detector id="23" name="EndCap2_2" type="Trap_EndCap" readout="EndCapBigReadout">
+<detector id="23" name="EndCap2_2" type="Trap_EndCap" readout="Tracker_EndCapBigReadout">
     <status id="2"/>
     <dimensions rmin="Tracker_rmin1" rmax = "Tracker_rmax2" dz="EndCapZ" z ="positionz2_2"/>
     <layer id="0" inner_r="EndCapRmin2" outer_r="EndCapRmax2" dz="LayerDZ" z="layerpos1" repeat="pixelcounter1_3">
