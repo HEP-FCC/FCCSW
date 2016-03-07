@@ -9,12 +9,9 @@
 #  PYTHIA8_LIBRARIES (not cached)
 #  PYTHIA8_LIBRARY_DIRS (not cached)
 
-find_path(PYTHIA8_INCLUDE_DIR Pythia.h Pythia8/Pythia.h
-          HINTS $ENV{PYTHIA8_ROOT_DIR}/include ${PYTHIA8_ROOT_DIR}/include
+find_path(PYTHIA8_INCLUDE_DIR Pythia8/Pythia.h
+          HINTS $ENV{PYTHIA8_DIR}/include ${PYTHIA8_ROOT_DIR}/include
           PATH_SUFFIXES include)
-
-#find_file(PYTHIA8_XML xmldoc PATH_SUFFIXES ../share
-#          HINTS ${PYTHIA8_INCLUDE_DIR}/.. $ENV{PYTHIA8_ROOT_DIR} ${PYTHIA8_ROOT_DIR})
 
 mark_as_advanced(PYTHIA8_INCLUDE_DIR PYTHIA8_XML)
 
@@ -36,7 +33,7 @@ set(_hepmcinterface_names pythia8tohepmc)
 
 foreach(component ${Pythia8_FIND_COMPONENTS})
   find_library(PYTHIA8_${component}_LIBRARY NAMES ${component} ${_${component}_names}
-               HINTS $ENV{PYTHIA8_ROOT_DIR}/lib ${PYTHIA8_ROOT_DIR}/lib)
+               HINTS $ENV{PYTHIA8_DIR}/lib ${PYTHIA8_ROOT_DIR}/lib)
   if (PYTHIA8_${component}_LIBRARY)
     set(PYTHIA8_${component}_FOUND 1)
     list(APPEND PYTHIA8_LIBRARIES ${PYTHIA8_${component}_LIBRARY})
