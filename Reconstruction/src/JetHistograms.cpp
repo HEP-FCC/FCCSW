@@ -34,14 +34,16 @@ StatusCode JetHistograms::initialize() {
 
 StatusCode JetHistograms::execute() {
 
-	auto jets = m_jethandle.get()->getJets();
+	auto jets = m_jethandle.get();
 
 	info() << "Processing event with " << jets->size() << " jets" << endmsg;
 
 	m_n->Fill(jets->size());
 
 	for (const auto & jet : *jets) {
-		m_E->Fill(jet.E());
+		auto p4 = jet.Core().P4;
+		double energy = std::sqrt(p4.Px*p4.Px + p4.Py*p4.Py + p4.Pz*p4.Pz + p4.Mass*p4.Mass);
+		m_E->Fill(energy);
 	}
 
 	return StatusCode::SUCCESS;
