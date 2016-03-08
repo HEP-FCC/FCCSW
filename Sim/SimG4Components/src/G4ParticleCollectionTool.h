@@ -37,7 +37,7 @@ public:
 /** Implements 
                                               */
 											  
-	virtual G4VUserPrimaryGeneratorAction* getParticleGenerator() const;
+	virtual G4VUserPrimaryGeneratorAction* getParticleGenerator();
 	
 private:
 
@@ -57,10 +57,10 @@ public:
 	
 	void GeneratePrimaries(G4Event* anEvent);
 	
-	void SetPrimaryCollection(DataHandle<fcc::MCParticleCollection> );
+	void SetPrimaryCollection( DataHandle<fcc::MCParticleCollection>* );
 	
 private:
-	fcc::MCParticleCollection* m_particles;
+	DataHandle<fcc::MCParticleCollection>* m_particles;
 };
 
 

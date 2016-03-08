@@ -29,6 +29,6 @@ class IG4ParticleGeneratorTool : virtual public IAlgTool {
   /** get initilization hook for the geometry
    *  @return pointer to G4VUserPrimaryGeneratorAction
    */
-  virtual G4VUserPrimaryGeneratorAction* getParticleGenerator() const = 0 ;
+  virtual G4VUserPrimaryGeneratorAction* getParticleGenerator() = 0 ;
 };
 #endif

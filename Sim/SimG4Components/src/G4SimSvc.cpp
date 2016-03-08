@@ -18,6 +18,8 @@ G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
   declarePrivateTool(m_actionsTool);
   declareProperty("magneticField", m_magneticFieldTool);
   declarePrivateTool(m_magneticFieldTool,"G4ConstantMagneticFieldTool", true);
+  declareProperty("particleGenerator", m_particleGeneratorTool);
+  declarePrivateTool(m_particleGeneratorTool,"G4ParticleCollectionTool", true);
 }
 
 G4SimSvc::~G4SimSvc(){}
@@ -49,10 +51,16 @@ StatusCode G4SimSvc::initialize(){
     error()<<"Unable to retrieve the magnetic field"<<endmsg;
     return StatusCode::FAILURE;
   }  
+  if (!m_particleGeneratorTool.retrieve()) {
+    error()<<"Unable to retrieve the particle generator"<<endmsg;
+    return StatusCode::FAILURE;
+  }
 
   // Initialize Geant run manager
   // Load physics list, deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_physicsListTool->getPhysicsList());
+  // Load particle generator 
+  m_runManager.SetUserAction(m_particleGeneratorTool->getParticleGenerator());
   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_detectorTool->getDetectorConstruction());
   m_runManager.Initialize();

@@ -70,7 +70,7 @@ StatusCode G4SingleParticleGeneratorTool::finalize( )
 	return sc;
 }
 
-G4VUserPrimaryGeneratorAction* G4SingleParticleGeneratorTool::getParticleGenerator() const
+G4VUserPrimaryGeneratorAction* G4SingleParticleGeneratorTool::getParticleGenerator() 
 {
 	info()<<" G4SingleParticleGeneratorTool::getParticleGenerator() "<<endmsg;
 
