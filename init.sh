@@ -13,7 +13,7 @@ export VERBOSE=
 
 export FCCEDM=/afs/cern.ch/exp/fcc/sw/0.7/fcc-edm/0.3/$BINARY_TAG/
 export PODIO=/afs/cern.ch/exp/fcc/sw/0.7/podio/0.3/$BINARY_TAG
-export DELPHES_DIR=/afs/cern.ch/exp/fcc/sw/0.7/Delphes/3.3.2/x86_64-slc6-gcc49-opt
+export DELPHES_DIR=/afs/cern.ch/exp/fcc/sw/0.7/Delphes/3.3.2/$BINARY_TAG
 export PYTHIA_DIR=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/$BINARY_TAG/
 
 export CMAKE_PREFIX_PATH=$FCCEDM:$PODIO:$DELPHES_DIR:/afs/cern.ch/sw/lcg/releases/LCG_83:$CMAKE_PREFIX_PATH:$PYTHIA_DIR
