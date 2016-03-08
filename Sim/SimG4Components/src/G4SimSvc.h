@@ -65,7 +65,11 @@ private:
   /// Handle for the magnetic field initialization
   ToolHandle<IG4MagneticFieldTool> m_magneticFieldTool;
 /// Handle for the (G4 style) particle generator action initialization
-  ToolHandle<IG4ParticleGeneratorTool> m_particleGeneratorTool;  
+  ToolHandle<IG4ParticleGeneratorTool> m_particleGeneratorTool; 
+  
+  /// Geant4 commands to be executed
+  std::vector<std::string> m_g4Commands;
+   
   /// Run Manager
   sim::RunManager m_runManager;
 };

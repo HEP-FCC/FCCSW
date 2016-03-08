@@ -48,20 +48,5 @@ private:
 	
 };
 
-class G4Event;
-
-class ParticleCollectionAction: public G4VUserPrimaryGeneratorAction {
-public:
-	ParticleCollectionAction();
-	~ParticleCollectionAction() {;}
-	
-	void GeneratePrimaries(G4Event* anEvent);
-	
-	void SetPrimaryCollection( DataHandle<fcc::MCParticleCollection>* );
-	
-private:
-	DataHandle<fcc::MCParticleCollection>* m_particles;
-};
-
 
 #endif

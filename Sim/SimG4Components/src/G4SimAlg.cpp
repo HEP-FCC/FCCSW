@@ -51,7 +51,7 @@ StatusCode G4SimAlg::execute() {
   G4VUserPrimaryGeneratorAction* generator=const_cast<G4VUserPrimaryGeneratorAction*>(runManager->GetUserPrimaryGeneratorAction());
   if (generator)
   {
- 	info()<<"!!!!!!!!!!!!!!!!!!!! found the generator!!!!!!!!!!!!!!!!"<<endmsg;
+ 	debug()<<"The generator is set: run GeneratePrimaries() "<<endmsg;
         event=new G4Event();
 	generator->GeneratePrimaries(event);
   }

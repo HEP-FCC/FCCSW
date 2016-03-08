@@ -1,5 +1,5 @@
-#ifndef SingleParticleGeneratorAction_H
-#define SingleParticleGeneratorAction_H
+#ifndef SIMG4COMMON_SingleParticleGeneratorAction_H
+#define SIMG4COMMON_SingleParticleGeneratorAction_H
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"

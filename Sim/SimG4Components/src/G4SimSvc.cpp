@@ -5,6 +5,7 @@
 // Geant
 #include "G4Event.hh"
 #include "G4VModularPhysicsList.hh"
+#include "G4UImanager.hh"
 
 DECLARE_SERVICE_FACTORY(G4SimSvc)
 
@@ -20,6 +21,8 @@ G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
   declarePrivateTool(m_magneticFieldTool,"G4ConstantMagneticFieldTool", true);
   declareProperty("particleGenerator", m_particleGeneratorTool);
   declarePrivateTool(m_particleGeneratorTool,"G4ParticleCollectionTool", true);
+
+  declareProperty("G4commands",m_g4Commands);
 }
 
 G4SimSvc::~G4SimSvc(){}
@@ -63,6 +66,17 @@ StatusCode G4SimSvc::initialize(){
   m_runManager.SetUserAction(m_particleGeneratorTool->getParticleGenerator());
   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_detectorTool->getDetectorConstruction());
+
+  if (m_g4Commands.size())
+  {
+  	// Get the pointer to the User Interface manager
+  	G4UImanager* UImanager = G4UImanager::GetUIpointer();
+	for (auto command: m_g4Commands)
+	{
+		UImanager->ApplyCommand(command);
+	}
+  }
+
   m_runManager.Initialize();
   // Attach user actions
   m_runManager.SetUserInitialization(m_actionsTool->getUserActionInitialization());
