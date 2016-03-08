@@ -33,7 +33,7 @@ public:
 /** Implements 
                                               */
 											  
-	virtual G4VUserPrimaryGeneratorAction* getParticleGenerator() const;
+	virtual G4VUserPrimaryGeneratorAction* getParticleGenerator() ;
 	
 private:
 

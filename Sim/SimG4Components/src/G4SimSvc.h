@@ -8,6 +8,7 @@
 #include "SimG4Interface/IG4PhysicsList.h"
 #include "SimG4Interface/IG4ActionTool.h"
 #include "SimG4Interface/IG4MagneticFieldTool.h"
+#include "SimG4Interface/IG4ParticleGeneratorTool.h"
 
 //Gaudi
 #include "GaudiKernel/Service.h"
@@ -63,6 +64,8 @@ private:
   ToolHandle<IG4ActionTool> m_actionsTool;
   /// Handle for the magnetic field initialization
   ToolHandle<IG4MagneticFieldTool> m_magneticFieldTool;
+/// Handle for the (G4 style) particle generator action initialization
+  ToolHandle<IG4ParticleGeneratorTool> m_particleGeneratorTool;  
   /// Run Manager
   sim::RunManager m_runManager;
 };
