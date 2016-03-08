@@ -60,14 +60,7 @@ ifndef BINARY_TAG
   endif
 endif
 
-# Check if we are building against dbg libs and add flag
-$(info $(BINARY_TAG))
-DEBUG = $(findstring dbg, $(BINARY_TAG))
-
-ifeq ($(DEBUG),dbg)
-  override CMAKEFLAGS += -DCMAKE_BUILD_TYPE=Debug
-endif
-
+override CMAKEFLAGS += -DCMAKE_BUILD_TYPE=$(BUILDTYPE)
 BUILDDIR := $(CURDIR)/build.$(BINARY_TAG)
 
 
