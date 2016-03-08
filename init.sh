@@ -1,8 +1,10 @@
 #!/bin/sh -u
 if [ -z "$BUILDTYPE" ] || [ "$BUILDTYPE" == "Release" ]; then
     export BINARY_TAG=x86_64-slc6-gcc49-opt
+    export BUILDTYPE="Release"
 else
     export BINARY_TAG=x86_64-slc6-gcc49-dbg
+    export BUILDTYPE="Debug"
 fi
 
 source /afs/cern.ch/lhcb/software/releases/LBSCRIPTS/LBSCRIPTS_v8r5p7/InstallArea/scripts/LbLogin.sh --cmtconfig $BINARY_TAG
