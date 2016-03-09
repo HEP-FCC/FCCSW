@@ -98,6 +98,7 @@ GaudiAlgorithm(name, svcLoc) ,
   declareOutput("jetParts"          , m_handleRecJetParts);
   declareOutput("jetsFlavor"        , m_handleRecJetsFlavor);
   declareOutput("bTags"             , m_handleRecBTags);
+  declareOutput("cTags"             , m_handleRecCTags);
   declareOutput("tauTags"           , m_handleRecTauTags);
   declareOutput("met"               , m_handleRecMETs);
 
@@ -114,6 +115,7 @@ GaudiAlgorithm(name, svcLoc) ,
   declareOutput("jetsToParts"       , m_handleRecJetsToParts);
   declareOutput("jetsToFlavor"      , m_handleRecJetsToFlavor);
   declareOutput("jetsToBTags"       , m_handleRecJetsToBTags);
+  declareOutput("jetsToCTags"       , m_handleRecJetsToCTags);
   declareOutput("jetsToTauTags"     , m_handleRecJetsToTauTags);
 
 }
@@ -346,6 +348,7 @@ StatusCode DelphesSimulation::execute() {
   auto recJetParts        = new fcc::ParticleCollection();
   auto recJetsFlavor      = new fcc::IntTagCollection();
   auto recBTags           = new fcc::TagCollection();
+  auto recCTags           = new fcc::TagCollection();
   auto recTauTags         = new fcc::TagCollection();
   auto recMETs            = new fcc::METCollection();
 
@@ -362,6 +365,7 @@ StatusCode DelphesSimulation::execute() {
   auto recJetsToParts     = new fcc::JetParticleAssociationCollection();
   auto recJetsToFlavor    = new fcc::JetIntTagAssociationCollection();
   auto recJetsToBTags     = new fcc::JetTagAssociationCollection();
+  auto recJetsToCTags     = new fcc::JetTagAssociationCollection();
   auto recJetsToTauTags   = new fcc::JetTagAssociationCollection();
 
   // Fill FCC collections
@@ -419,6 +423,7 @@ StatusCode DelphesSimulation::execute() {
   if (m_jetOutArray     !=nullptr) DelphesSimulation::ConvertJets(       m_jetOutArray     , recJets       , recJetParts     , recJetsToParts,
                                                                                                              recJetsFlavor   , recJetsToFlavor,
                                                                                                              recBTags        , recJetsToBTags,
+                                                                                                             recCTags        , recJetsToCTags,
                                                                                                              recTauTags      , recJetsToTauTags);
   if (m_metOutArray     !=nullptr && m_shtOutArray!=nullptr) DelphesSimulation::ConvertMET(m_metOutArray, m_shtOutArray, recMETs);
 
@@ -452,6 +457,8 @@ StatusCode DelphesSimulation::execute() {
   m_handleRecJetsToFlavor.put(     recJetsToFlavor    );
   m_handleRecBTags.put(            recBTags           );
   m_handleRecJetsToBTags.put(      recJetsToBTags     );
+  m_handleRecCTags.put(            recCTags           );
+  m_handleRecJetsToCTags.put(      recJetsToCTags     );
   m_handleRecTauTags.put(          recTauTags         );
   m_handleRecJetsToTauTags.put(    recJetsToTauTags   );
   m_handleRecMETs.put(             recMETs            );
@@ -1007,7 +1014,7 @@ void DelphesSimulation::ConvertTowers(const TObjArray* Input,
 //
 // Convert internal Delphes objects: Jets to FCC EDM: Jets & Jets<->Jets constituents association
 // Add PDG of leading constituent & corresponding relation
-// Add B tagging and/or tau tagging information
+// Add b-tagging c-tagging and/or tau-tagging information
 //
 void DelphesSimulation::ConvertJets(const TObjArray* Input,
                                     fcc::JetCollection* colJets,
@@ -1017,6 +1024,8 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
                                     fcc::JetIntTagAssociationCollection* ascColJetsToFlavor,
                                     fcc::TagCollection* colBTags,
                                     fcc::JetTagAssociationCollection* ascColJetsToBTags,
+                                    fcc::TagCollection* colCTags,
+                                    fcc::JetTagAssociationCollection* ascColJetsToCTags,
                                     fcc::TagCollection* colTauTags,
                                     fcc::JetTagAssociationCollection* ascColJetsToTauTags) {
 
@@ -1047,9 +1056,16 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
     // B-tag info
     auto bTag             = colBTags->create();
     auto relationToBTag   = ascColJetsToBTags->create();
-    bTag.Value(cand->BTag);
+    bTag.Value(cand->BTag & (1 << 0)); // btagging is stored in bit 0 of BTag variable
     relationToBTag.Jet(jet);
     relationToBTag.Tag(bTag);
+
+    // C-tag info
+    auto cTag             = colCTags->create();
+    auto relationToCTag   = ascColJetsToCTags->create();
+    cTag.Value(cand->BTag & (1 << 1)); // ctagging is stored in bit 0 of BTag variable
+    relationToCTag.Jet(jet);
+    relationToCTag.Tag(cTag);
 
     // Tau-tag info
     auto tauTag           = colTauTags->create();
@@ -1072,6 +1088,7 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
               << " Id: "       << std::setw(3)  << j+1
               << " Flavor: "   << std::setw(3)  << relationToFlavor.Tag().Value()
               << " BTag: "     << std::setprecision(1) << std::setw(3) << relationToBTag.Tag().Value()
+              << " CTag: "     << std::setprecision(1) << std::setw(3) << relationToCTag.Tag().Value()
               << " TauTag: "   << std::setprecision(1) << std::setw(3) << relationToTauTag.Tag().Value()
               << std::scientific
               << " Px: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Px

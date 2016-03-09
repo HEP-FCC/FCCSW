@@ -125,6 +125,7 @@ private:
   DataHandle<fcc::ParticleCollection>   m_handleRecJetParts;     //!< Constituents of reconstructed jets
   DataHandle<fcc::IntTagCollection>     m_handleRecJetsFlavor;   //!< Flavour tag of reconstructed jets (PDG of leading constituent)
   DataHandle<fcc::TagCollection>        m_handleRecBTags;        //!< Reconstructed b tag information - used Jet to tag relation
+  DataHandle<fcc::TagCollection>        m_handleRecCTags;        //!< Reconstructed c tag information - used Jet to tag relation
   DataHandle<fcc::TagCollection>        m_handleRecTauTags;      //!< Reconstructed tau tag information - used Jet to tag relation
   DataHandle<fcc::METCollection>        m_handleRecMETs;         //!< MET
 
@@ -141,6 +142,7 @@ private:
   DataHandle<fcc::JetParticleAssociationCollection>         m_handleRecJetsToParts;     //!< Relation between jets & particle constituents
   DataHandle<fcc::JetIntTagAssociationCollection>           m_handleRecJetsToFlavor;    //!< Relation between jets & flavour tags (PDG of leading constituent)
   DataHandle<fcc::JetTagAssociationCollection>              m_handleRecJetsToBTags;     //!< Relation between jets & b tag info
+  DataHandle<fcc::JetTagAssociationCollection>              m_handleRecJetsToCTags;     //!< Relation between jets & c tag info
   DataHandle<fcc::JetTagAssociationCollection>              m_handleRecJetsToTauTags;   //!< Relation between jets & tau tag info
 
   //! Convert internal Delphes objects: MCParticles to FCC EDM: MCParticle & GenVertices
@@ -177,7 +179,7 @@ private:
 
   //! Convert internal Delphes objects: Jets to FCC EDM: Jets & Jets<->Jets constituents association
   //! Add PDG of leading constituent & corresponding relation
-  //! Add B tagging and/or tau tagging information & corresponding relations
+  //! Add b-tagging c-tagging and/or tau-tagging information
   void ConvertJets(const TObjArray* Input,
                    fcc::JetCollection* colJets,
                    fcc::ParticleCollection* colJetParts,
@@ -186,6 +188,8 @@ private:
                    fcc::JetIntTagAssociationCollection* ascColJetsToFlavor,
                    fcc::TagCollection* colBTags,
                    fcc::JetTagAssociationCollection* ascColJetsToBTags,
+                   fcc::TagCollection* colCTags,
+                   fcc::JetTagAssociationCollection* ascColJetsToCTags,
                    fcc::TagCollection* colTauTags,
                    fcc::JetTagAssociationCollection* ascColJetsToTauTags);
 
