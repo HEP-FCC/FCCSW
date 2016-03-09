@@ -29,6 +29,8 @@ namespace fcc {
   class ParticleMCParticleAssociationCollection;
   class GenJetCollection;
   class GenJetParticleAssociationCollection;
+  class TagCollection;
+  class GenJetTagAssociationCollection;
   class METCollection;
 }
 
@@ -107,6 +109,8 @@ private:
   DataHandle<fcc::ParticleCollection>   m_handleRecNeutral;      //!< Reconstructed neutral hadrons
   DataHandle<fcc::ParticleCollection>   m_handleRecPhotons;      //!< Reconstructed photons
   DataHandle<fcc::GenJetCollection>     m_handleRecJets;         //!< Reconstructed jets - used GenJet class due to needed MCParticle relation
+  DataHandle<fcc::TagCollection>        m_handleRecBTags;        //!< Reconstructed b tag information - used GenJet to tag relation
+  DataHandle<fcc::TagCollection>        m_handleRecTauTags;      //!< Reconstructed tau tag information - used GenJet to tag relation
   DataHandle<fcc::METCollection>        m_handleRecMETs;         //!< MET
 
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecMuonsToMC;     //!< Relation between muons & MC particle
@@ -115,6 +119,8 @@ private:
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecNeutralToMC;   //!< Relation between neutral hadrons & MC particle
   DataHandle<fcc::ParticleMCParticleAssociationCollection>  m_handleRecPhotonsToMC;   //!< Relation between photons & MC particle
   DataHandle<fcc::GenJetParticleAssociationCollection>      m_handleRecJetsToMC;      //!< Relation between jets & MC particle
+  DataHandle<fcc::GenJetTagAssociationCollection>           m_handleRecJetsToBTags;   //!< Relation between jets & b tag info
+  DataHandle<fcc::GenJetTagAssociationCollection>           m_handleRecJetsToTauTags; //!< Relation between jets & tau tag info
 
   //! Convert internal Delphes objects: MCParticles to FCC EDM: MCParticle & GenVertices
   void ConvertMCParticles(const TObjArray* Input,
@@ -137,7 +143,11 @@ private:
   void ConvertJets(const TObjArray* Input,
                    const fcc::MCParticleCollection* colMCParticles,
                    fcc::GenJetCollection* colJets,
-                   fcc::GenJetParticleAssociationCollection* ascColJetsToMC);
+                   fcc::GenJetParticleAssociationCollection* ascColJetsToMC,
+                   fcc::TagCollection* colBTags,
+                   fcc::GenJetTagAssociationCollection* ascColJetsToBTags,
+                   fcc::TagCollection* colTauTags,
+                   fcc::GenJetTagAssociationCollection* ascColJetsToTauTags);
 
   //! Recursive method to find id of MCParticle related to the given jet Delphes Candidate object,
   //! if MC particle found (id>=0), its index is then saved to idRefMCPart set,

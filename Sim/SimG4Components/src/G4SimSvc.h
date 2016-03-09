@@ -7,6 +7,7 @@
 #include "SimG4Interface/IG4DetectorConstruction.h"
 #include "SimG4Interface/IG4PhysicsList.h"
 #include "SimG4Interface/IG4ActionTool.h"
+#include "SimG4Interface/IG4MagneticFieldTool.h"
 
 //Gaudi
 #include "GaudiKernel/Service.h"
@@ -60,6 +61,8 @@ private:
   ToolHandle<IG4PhysicsList> m_physicsListTool;
   /// Handle for the user action initialization
   ToolHandle<IG4ActionTool> m_actionsTool;
+  /// Handle for the magnetic field initialization
+  ToolHandle<IG4MagneticFieldTool> m_magneticFieldTool;
   /// Run Manager
   sim::RunManager m_runManager;
 };
