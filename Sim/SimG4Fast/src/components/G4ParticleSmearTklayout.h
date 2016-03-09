@@ -6,6 +6,9 @@
 #include "GaudiKernel/RndmGenerators.h"
 class IRndmGenSvc;
 
+//ROOT
+#include "TGraph.h"
+
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 
@@ -13,7 +16,7 @@ class IRndmGenSvc;
  *
  *  Tklayout particle smearing tool.
  *  Smears the momentum/energy of the particle following the Gaussian distribution.
- *  The standard deviation of the Gaussian is set in the job options file ('sigma').
+ *  TODO about where resolutions come from
  *
  *  @author Anna Zaborowska
  */
@@ -46,9 +49,9 @@ public:
    *   @return status code
    */
   virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) final;
+  StatusCode readResolutions();
 private:
-  /// Filename of the resolutions for the smearing (set by job options), generated with tkLayout
-  std::string m_fileName;
+  std::map<double, TGraph> m_momentumResolutions;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
