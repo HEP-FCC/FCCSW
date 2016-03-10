@@ -13,7 +13,7 @@ Main:timesAllowErrors = 3          ! how many aborts before run stops
 ! 2) Settings related to output in init(), next() and stat() functions.
 Init:showChangedSettings = on      ! list changed settings
 Init:showChangedParticleData = off ! list changed particle data
-Next:numberCount = 10             ! print message every n events
+Next:numberCount = 10              ! print message every n events
 Next:numberShowInfo = 1            ! print event information n times
 Next:numberShowProcess = 1         ! print process record n times
 Next:numberShowEvent = 0           ! print event record n times
@@ -49,7 +49,11 @@ PhaseSpace:pTHatMin = 50.          ! minimal pT scale in process
 #HadronLevel:Hadronize = off       ! no hadronization
 #HadronLevel:Decay = off           ! no decays
 
-! 6) Other settings. Can be expanded as desired.
+! 6) Random generator
+Random:setSeed = on                ! apply user-set seed everytime the Pythia::init is called
+Random:seed    = 0                 ! -1=default seed, 0=seed based on time, >0 user seed number 
+
+! 7) Other settings. Can be expanded as desired.
 #Tune:preferLHAPDF = off           ! use internal PDFs when LHAPDF not linked
 Tune:pp = 6                        ! use Tune 4Cx
 ParticleDecays:limitTau0 = on      ! set long-lived particle stable ...
