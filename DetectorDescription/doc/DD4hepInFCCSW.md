@@ -1,7 +1,17 @@
 DD4hep Detector Description
 ==
 
-General File Structure
+Table of contents:
+
+* [Ingredients Describing a Detector](#ingredients-describing-a-detector)
+* [Constructing Detector Geometry](#constructing-detector-geometry)
+* [A Minimal Working Example](#a-minimal-working-example)
+* [Adding Sensitive Detectors](#adding-sensitive-detectors)
+* [Coordinate Conventions](#coordinate-conventions)
+* [Visualisation](#visualisation)
+* [FCCSW Folder Structure](#fccsw-folder-structure) (to be added)
+
+Ingredients Describing a Detector
 --
 To first order two files are involved to describe a detector in DD4hep.
 - The xml-based detector description that defines the dimensions and materials of the detector
@@ -15,7 +25,7 @@ Similarly to Geant4 itself, DD4hep tries to re-use detector elements without hav
 - Construct this component once and then place it several times to construct the whole detector
 - This should minimize the number of fully unique volumes you create
 
-A minimal working example
+A Minimal Working Example
 --
 Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m.
 
@@ -93,7 +103,7 @@ DECLARE_DETELEMENT(Example, detector::create_element) // factory method
 
 **Note** that the type `Example` in the xml-description corresponds to the name we put in the `DECLARE_DETELEMENT` macro, this creates the link between the factory method and the xml-description.
 
-Adding sensitive detectors
+Adding Sensitive Detectors
 --
 The above example works, but it does not yet create any sensitive detectors that are needed by Geant4 to calculate and create energy deposits. While in GDML you have to define your sensitive detectors yourself, DD4hep has a mechanism of doing this for you.
 
@@ -150,8 +160,9 @@ The above example works, but it does not yet create any sensitive detectors that
 ~~~
 
 
-Coordinate conventions
-----------------------
+
+Coordinate Conventions
+--
 - Position vector points to center of volume
 - Sizes are defined as the offset position vector
 - Local coordinates start at position vector
@@ -173,3 +184,7 @@ You can try to set the following environment variable to try and enable OpenGL:
 ```
 export LIBGL_ALWAYS_INDIRECT=1
 ```
+
+FCCSW folder structure
+--
+Currently all xml-descriptions are in `DetectorDescription/Detectors/compact` and all implementations in `DetectorDescription/Detectors/src`. This will likely change in the near future.
