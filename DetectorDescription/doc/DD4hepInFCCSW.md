@@ -1,0 +1,175 @@
+DD4hep Detector Description
+==
+
+General File Structure
+--
+To first order two files are involved to describe a detector in DD4hep.
+- The xml-based detector description that defines the dimensions and materials of the detector
+- The macro that implements the factory method to construct the detector from the xml-description
+
+Constructing Detector Geometry
+--
+Similarly to Geant4 itself, DD4hep tries to re-use detector elements without having to keep every instance in memory. I.e. many `DD4hep::Geometry::PlacedVolume` are used that refer to one `DD4hep::Geometry::Volume`. To exploit this feature as much as possible:
+- Come up with the largest component that is repeatable (e.g. a detector wedge)
+  - Usually this component is similar or equal to the components that are built when physically building the detector
+- Construct this component once and then place it several times to construct the whole detector
+- This should minimize the number of fully unique volumes you create
+
+A minimal working example
+--
+Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m.
+
+1. **Detector description**: To use this sub-detector implementation the corresponding detector description XML can refer to the defined factory method:
+~~~{.xml}
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <!-- use DD4hep elements and material definitions: -->
+  <includes>
+    <gdmlFile  ref="elements.xml"/>
+    <gdmlFile  ref="materials.xml"/>
+  </includes>
+
+  <!-- some information about your detector: -->
+  <info name="ExampleDetector"
+    title="This is just an example"
+    author="T. Test"
+    url="no"
+    status="development"
+    version="$Id:??$">
+    <comment>This is really just a test!</comment>
+  </info>
+
+    <!-- this defines the world volume: -->
+   <define>
+      <constant name="world_size" value="80*m"/>
+      <constant name="world_x" value="world_size"/>
+      <constant name="world_y" value="world_size"/>
+      <constant name="world_z" value="world_size"/>
+    </define>
+
+  <!-- this is where we actually define our detector: -->
+  <detectors>
+    <detector id="0" name="Name" type="Example">
+      <dimensions rmin="0" rmax="1*m" dz="1*m" />
+    </detector>
+  </detectors>
+</lcdd>
+~~~
+
+2. **Factory method**: The minimal part to define a factory method for a sub-detector is:
+~~~{.cpp}
+static DD4hep::Geometry::Ref_t create_element(
+  DD4hep::Geometry::LCDD& lcdd,                 // dd4hep's main detector description interface
+  xml_h xmlElement,                             // the xml-tree that describes this detector
+  DD4hep::Geometry::SensitiveDetector sensDet   // dd4hep's interface to the sensitive detector
+  ) {
+    // Get the detector description from the xml-tree
+    xml_det_t    x_det = xml_h;
+    std::string  name  = x_det.nameStr();
+    // Create the detector element
+    DD4hep::Geometry::DetElement   coneDet( name, x_det.id() );
+    // Get the world volume
+    DD4hep::Geometry::Volume experimentalHall =  lcdd.pickMotherVolume( coneDet ) ;
+    // Get the dimensions defined in the xml-tree
+    xml_comp_t  coneDim ( x_det.child( _U(dimensions) ) );
+    // Create the cone
+    DD4hep::Geometry::Cone cone( coneDim.dz(), coneDim.rmin1(), coneDim.rmax1(), coneDim.rmin2(), coneDim.rmax2());
+    // Create the volume corresponding to the cone
+    DD4hep::Geometry::Volume coneVol( x_det.nameStr()+ "_SimpleCone", cone, lcdd.material(coneDim.materialStr()) );
+    // Create the placed volume
+    DD4hep::Geometry::PlacedVolume conePhys;
+    // And place it in the world
+    conePhys = experimentalHall.placeVolume( coneVol, // the volume to be placed
+                                             DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), // any rotation to be done
+                                             DD4hep::Geometry::Position trans(0., 0., 0. ) )); // the position where to place it
+    // connect placed volume and physical volume
+    coneDet.setPlacement( conePhys );
+}
+DECLARE_DETELEMENT(Example, detector::create_element) // factory method
+~~~
+
+**Note** that the type `Example` in the xml-description corresponds to the name we put in the `DECLARE_DETELEMENT` macro, this creates the link between the factory method and the xml-description.
+
+Adding sensitive detectors
+--
+The above example works, but it does not yet create any sensitive detectors that are needed by Geant4 to calculate and create energy deposits. While in GDML you have to define your sensitive detectors yourself, DD4hep has a mechanism of doing this for you.
+
+1. Extending the xml-description:
+    We need to add the `readout` tag to the detector description, which defines the way in which a unique ID is calculated for each sensitive detector. This ID is a 64 bit integer, where we can define which bits are used to identify what. E.g., if we had 4 sub-detectors, we would need 2 bits to uniquely identify each of them (2^2 = 4). Then if the detector for which we want to add the sensitive detector had 80 modules, we need 7 bits to uniquely identify those (6 bits correspond to 64 unique IDs, 7 to 128). Then if your modules had, yet again, sub components, you'd have to think about how many bits you need for those, etc.
+
+    In addition to this unique identifier, the same mechanism of DD4hep allows to define a segmentation of your smallest component that allows you to track where a particle passed through your sensitive detector. For example we can define a grid with step sizes of 0.5 mm. DD4hep then needs also to be able to uniquely identify those within the component and the corresponding bits need to be reserved. In our example let's keep half of the 64 bit integer for this grid, so 32 bits and half of each for x coordinate and y coordinate.
+
+    So in our example of 4 sub-detectors and our new detector having 80 modules, we would write this (leaving out all the boiler plate code shown above):
+~~~{.xml}
+    <readouts>
+      <readout name="ExampleReadout">
+        <!-- add the grid and define the cell sizes -->
+        <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
+        <!-- define how the ID is calculated: 2 bits for the system ID (sub-detectors) -->
+        <!-- 7 bits for the modules and starting from bit 32, 16 bit for a signed (the "-") integer -->
+        <!-- for x and 16 bit signed integer for y. -->
+        <id>system:2,module:7,x:32:-16,y:-16</id>
+      </readout>
+    </readouts>
+
+    <detectors>
+      <detector id="0" name="Name" type="Example">
+        <dimensions rmin="0" rmax="1*m" dz="1*m" />
+      </detector>
+    </detectors>
+~~~
+
+2. Extending the factory method:
+    In the factory method all we need to do is tell DD4hep what part a sensitive detector is and which part of the readout ID is foreseen for that part of the detector:
+~~~{.cpp}
+    // imagine the rest as above
+    conePhys = experimentalHall.placeVolume( coneVol, // the volume to be placed
+                                             DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), // any rotation to be done
+                                             DD4hep::Geometry::Position trans(0., 0., 0. ) )); // the position where to place it
+
+    // Add the ID for our sub detector, using the ID number given in the xml
+    conePhys.addPhysVolID( "system", x_det.id() );
+    // connect placed volume and physical volume
+    coneDet.setPlacement( conePhys );
+    // Here you define your volume (skipping how to get dimensions, see above):
+    DD4hep::Geometry::Box module( ... );
+    DD4hep::Geometry::Volume moduleVol( ... );
+    // Now we place the module:
+    for (int iMod = 0; iMod < 80; ++iMod) {
+      // skipping rotation and position here, but placing it somewhere:
+      auto placedVol = conePhys.placeVolume(moduleVol, ...);
+      // Tell DD4hep this is a sensitive detector
+      placedVol.setSensitiveDetector(sensDet);
+      // Add the ID for the module and use the loop index as unique identification
+      placedVol.addPhysVolID("module", iMod);
+    }
+    // rest as above
+~~~
+
+
+Coordinate conventions
+----------------------
+- Position vector points to center of volume
+- Sizes are defined as the offset position vector
+- Local coordinates start at position vector
+
+
+Visualization
+--
+DD4hep comes with `geoDisplay` that can be used to display any detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory, e.g.:
+```
+./run geoDisplay DetectorDescription/Detectors/compact/TestTracker.xml
+```
+
+N.b.: When running geoDisplay through a X-Session, by default OpenGL may not be used. If you see the warning:
+```
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+```
+You can try to set the following environment variable to try and enable OpenGL:
+```
+export LIBGL_ALWAYS_INDIRECT=1
+```
