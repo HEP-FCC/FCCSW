@@ -20,7 +20,7 @@ class FCCPileupScenarioBase(object):
 class FCCPhase1Pileup(FCCPileupScenarioBase):
     def __init__(self, name):
         FCCPileupScenarioBase.__init__(self, name)
-        self.PileupToolConfig['numPileUpEvents'] = 1
+        self.PileupToolConfig['numPileUpEvents'] = 180
 
 class FCCPhase2Pileup(FCCPileupScenarioBase):
     def __init__(self, name):
