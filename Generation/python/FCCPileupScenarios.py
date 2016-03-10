@@ -1,4 +1,5 @@
 
+from GaudiKernel import SystemOfUnits as units
 
 
 class FCCPileupScenarioBase(object):
@@ -11,12 +12,12 @@ class FCCPileupScenarioBase(object):
     def __init__(self, name):
         self._name = name
         self.VertexSmearingConfig = {
-          "xVertexMin": -0.5,
-          "xVertexMax": 0.5,
-          "yVertexMin": -0.5,
-          "yVertexMax": 0.5,
-          "zVertexMin": -35,
-          "zVertexMax": 35
+          "xVertexMin": -0.5 * units.mm,
+          "xVertexMax": 0.5 * units.mm,
+          "yVertexMin": -0.5 * units.mm,
+          "yVertexMax": 0.5 * units.mm,
+          "zVertexMin": -35 * units.mm,
+          "zVertexMax": 35 * units.mm
         }
         self.PileupToolConfig = {}
 
