@@ -6,18 +6,12 @@ albersevent   = FCCDataSvc("EventDataSvc")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader, FlatSmearVertex
 
-# assuming mm
-smeartool = FlatSmearVertex(
-    xVertexMin = -0.5,
-    xVertexMax = 0.5,
-    yVertexMin = -0.5,
-    yVertexMax = 0.5,
-    zVertexMin = -35,
-    zVertexMax = 35 )
+from FCCPileupScenarios import FCCPhase1Pileup
+pileupscenario = FCCPhase1Pileup('PileupScenario')
+print pileupscenario.PileupToolConfig
+smeartool = FlatSmearVertex( **pileupscenario.VertexSmearingConfig )
+genpileup = PoissonPileUp(name="Pileup", **pileupscenario.PileupToolConfig) 
 
-genpileup = PoissonPileUp(name="Pileup", 
-    Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
-    numPileUpEvents=2)
 reader = HepMCReader("Reader", 
     Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
     PileUpTool=genpileup,
