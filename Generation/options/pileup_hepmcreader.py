@@ -1,16 +1,17 @@
 from Gaudi.Configuration import *
 
+from FCCPileupScenarios import FCCPhase1Pileup
 from Configurables import ApplicationMgr, FCCDataSvc
 
 albersevent   = FCCDataSvc("EventDataSvc")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader, FlatSmearVertex
 
-from FCCPileupScenarios import FCCPhase1Pileup
 pileupscenario = FCCPhase1Pileup('PileupScenario')
-print pileupscenario.PileupToolConfig
-smeartool = FlatSmearVertex( **pileupscenario.VertexSmearingConfig )
-genpileup = PoissonPileUp(name="Pileup", **pileupscenario.PileupToolConfig) 
+smeartool = FlatSmearVertex(
+     **pileupscenario.VertexSmearingConfig)
+genpileup = PoissonPileUp(name="Pileup", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
+    **pileupscenario.PileupToolConfig) 
 
 reader = HepMCReader("Reader", 
     Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",

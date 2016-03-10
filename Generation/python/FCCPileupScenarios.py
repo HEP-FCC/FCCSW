@@ -18,9 +18,7 @@ class FCCPileupScenarioBase(object):
           "zVertexMin": -35,
           "zVertexMax": 35
         }
-        self.PileupToolConfig = {
-            "Filename":  "/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
-          }
+        self.PileupToolConfig = {}
 
 class FCCPhase1Pileup(FCCPileupScenarioBase):
     def __init__(self, name):
