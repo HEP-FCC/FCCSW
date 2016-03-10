@@ -2,7 +2,12 @@
 
 
 class FCCPileupScenarioBase(object):
-    """Beam Parameters Common to all FCC scenarios"""
+    """Beam Parameters Common to all FCC scenarios. Taken from
+    Benedikt, Michael, Daniel Schulte, and Frank Zimmermann: 
+    "Optimizing integrated luminosity of future hadron colliders." 
+    Physical Review Special Topics-Accelerators and Beams 18.10 (2015): 101002.
+    http://dx.doi.org/10.1103/PhysRevSTAB.18.101002
+    """
     def __init__(self, name):
         self._name = name
         self.VertexSmearingConfig = {
