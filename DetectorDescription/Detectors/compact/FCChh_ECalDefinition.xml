@@ -1,4 +1,4 @@
-<detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="BarECal_Readout" vis="hcal_envelope">
+<detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="BarECal_Readout" vis="ecal_envelope">
   <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz" />
   <cryostat id="10" name="ECAL_Cryo" material="Aluminum" >
     <dimensions rmin="BarECal_rmin+10*mm" rmax="BarECal_rmax-10*mm" dz="BarECal_dz-10*mm" thickness="10*mm" />
@@ -9,3 +9,10 @@
     <passive_layers thickness="5*mm" material="Lead" />
   </calorimeter>
 </detector>
+
+  <readouts>
+    <readout name="BarECal_Readout">
+      <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
+      <id>system:5,layer:50,x:32:-16,y:-16</id>
+    </readout>
+  </readouts>
