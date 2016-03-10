@@ -18,12 +18,12 @@
   </info>
 
   <define>
-  <!--The world volume is defined in the FCChh_DectMaster.xml  
+    <!-- World volume --->
     <constant name="world_size" value="30*m"/>
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>
-  -->
+
     <!---- ECAL dimensions ----->    
     <constant name="BarECal_rmin" value="2600*mm"/>
     <constant name="BarECal_rmax" value="3500*mm"/>

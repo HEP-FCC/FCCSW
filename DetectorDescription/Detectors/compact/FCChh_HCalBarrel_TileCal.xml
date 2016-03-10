@@ -18,12 +18,11 @@
   </info>
 
   <define>
-  <!--The world volume is defined in the FCChh_DectMaster.xml  
-     <constant name="world_size" value="30*m"/>
+    <!-- World volume --->
+    <constant name="world_size" value="30*m"/>
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>
-  -->
     <!-- NOTE: All lengths (anything but radii) given below are interpreted as half-lenghts! -->
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <constant name="BarHCal_rmin" value="3600*mm"/>
