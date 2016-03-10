@@ -6,7 +6,7 @@ states = []
 #xmllist=glob.glob('DetectorDescription/Detectors/compact/*.xml')
 #print xmllist
 compactpath='DetectorDescription/Detectors/compact/'
-xmllist=['FCChh_BeamTube.xml', 'FCChh_Tracker.xml', 'FCChh_HCalBarrel.xml', 'FCChh_Solenoids.xml', 'FCChh_Dipoles.xml' ]
+xmllist=['FCChh_BeamTube.xml', 'FCChh_Tracker.xml', 'FCChh_HCalBarrel_TileCal.xml', 'FCChh_Solenoids.xml', 'FCChh_Dipoles.xml' ]
 xmllist=[compactpath+p for p in xmllist]
 root = Tk()
 

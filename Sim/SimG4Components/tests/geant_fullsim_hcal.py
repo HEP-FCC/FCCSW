@@ -24,7 +24,7 @@ geantservice = G4SimSvc("G4SimSvc", detector="G4DD4hepDetector", physicslist="G4
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/FCChh_DectMaster.xml',
-                                         'file:DetectorDescription/Detectors/compact/FCChh_HCalBarrel.xml' ],
+                                         'file:DetectorDescription/Detectors/compact/FCChh_HCalBarrel_TileCal.xml' ],
                     OutputLevel = DEBUG)
 
 # Geant4 algorithm

@@ -47,7 +47,7 @@
   </readouts>
 
   <detectors>
-    <include ref="FCChh_ECal.xml" />
+    <include ref="FCChh_ECalDefinition.xml" />
   </detectors>
 </lccdd>
 

@@ -67,7 +67,7 @@
   </readouts>
 
   <detectors>
-    <include ref="FCChh_HCal.xml" />
+    <include ref="FCChh_HCalTileDefinition.xml" />
   </detectors>
 </lccdd>
 
