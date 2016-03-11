@@ -31,4 +31,3 @@ source /afs/cern.ch/sw/lcg/contrib/gcc/4.9.3/x86_64-slc6/setup.sh
 
 # let ROOT know about the location of headers
 export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$FCCEDM/include/datamodel:$PODIO/include/datamodel
-
