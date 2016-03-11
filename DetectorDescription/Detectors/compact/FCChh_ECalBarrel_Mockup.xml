@@ -25,10 +25,12 @@
     <constant name="world_z" value="world_size"/>
 
     <!---- ECAL dimensions ----->    
+    <!--- cryostat description --->
     <constant name="BarECal_rmin" value="2600*mm"/>
     <constant name="BarECal_rmax" value="3500*mm"/>
     <constant name="BarECal_dz" value="4000*mm"/>
     
+    <!--- calorimeter volume --->
     <constant name="EMBarrel_rmin" value="2700*mm"/>
     <constant name="EMBarrel_rmax" value="3400*mm"/>
     <constant name="EMBarrel_dz" value="3900*mm"/>
