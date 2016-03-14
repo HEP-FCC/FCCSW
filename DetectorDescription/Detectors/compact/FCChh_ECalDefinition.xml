@@ -1,6 +1,6 @@
-<detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="BarECal_Readout" vis="hcal_envelope">
+<detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="BarECal_Readout" vis="ecal_envelope">
   <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz" />
-  <cryostat id="10" name="ECAL_Cryo" material="Aluminum" >
+  <cryostat id="1" name="ECAL_Cryo" material="Aluminum" >
     <dimensions rmin="BarECal_rmin+10*mm" rmax="BarECal_rmax-10*mm" dz="BarECal_dz-10*mm" thickness="10*mm" />
   </cryostat>
   <calorimeter id="1" name="EM_barrel" > 

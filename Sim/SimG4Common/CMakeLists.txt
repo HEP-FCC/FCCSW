@@ -17,5 +17,5 @@ gaudi_install_headers(SimG4Common)
 gaudi_add_library(SimG4Common
                  src/*.cpp
                  INCLUDE_DIRS FWCore Geant4 ROOT FCCEDM PODIO
-                 LINK_LIBRARIES GaudiAlgLib DataObjects Geant4 ROOT  FCCEDM PODIO
+                 LINK_LIBRARIES GaudiAlgLib Geant4 ROOT  FCCEDM PODIO
                  PUBLIC_HEADERS SimG4Common)

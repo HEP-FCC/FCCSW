@@ -7,7 +7,6 @@ gaudi_subdir(TestTools v1r0)
 
 gaudi_depends_on_subdirs(GaudiAlg
 			 GaudiKernel
-			 DataObjects
 			 Test/TestInterfaces
 			 RecoGeometry)
 
@@ -18,8 +17,8 @@ find_package(FCCEDM)
 
 gaudi_add_module(TestTools
 		 src/*.cxx
-		 INCLUDE_DIRS GaudiAlgLib GaudiKernel DataObjects TestInterfaces Algebra RecoGeometry ROOT PODIO FCCEDM
-                 LINK_LIBRARIES GaudiAlgLib DataObjects GaudiKernel RecoGeometry ROOT PODIO FCCEDM)
+		 INCLUDE_DIRS GaudiAlgLib GaudiKernel TestInterfaces Algebra RecoGeometry ROOT PODIO FCCEDM
+                 LINK_LIBRARIES GaudiAlgLib GaudiKernel RecoGeometry ROOT PODIO FCCEDM)
 
 
 

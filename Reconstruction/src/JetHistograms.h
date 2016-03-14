@@ -3,7 +3,7 @@
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ITHistSvc.h"
-#include "DataObjects/PseudoJetEntry.h"
+#include "datamodel/JetCollection.h"
 
 #include "FWCore/DataHandle.h"
 #include "TH1F.h"
@@ -23,7 +23,7 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataHandle<PseudoJetEntry> m_jethandle;
+  DataHandle<fcc::JetCollection> m_jethandle;
 
   ITHistSvc* m_ths; ///< THistogram service
 

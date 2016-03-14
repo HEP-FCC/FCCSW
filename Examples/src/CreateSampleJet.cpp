@@ -1,5 +1,4 @@
 #include "CreateSampleJet.h"
-#include "DataObjects/LorentzVector.h"
 
 DECLARE_COMPONENT(CreateSampleJet)
 
