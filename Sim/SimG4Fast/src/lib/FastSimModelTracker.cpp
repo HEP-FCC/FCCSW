@@ -9,6 +9,7 @@
 
 // Geant4
 #include "G4PathFinder.hh"
+#include "G4FieldTrackUpdator.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4SystemOfUnits.hh"
 
@@ -39,21 +40,14 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
   // Calculate the position of the particle at the end of volume
   const G4Track* track = aFastTrack.GetPrimaryTrack();
   G4ThreeVector spin = track->GetPolarization() ;
-  G4FieldTrack theFieldTrack = G4FieldTrack( track->GetPosition(),
-                                             track->GetMomentumDirection(),
-                                             0.0,
-                                             track->GetKineticEnergy(),
-                                             track->GetDynamicParticle()->GetDefinition()->GetPDGMass(),
-                                             0.0,
-                                             track->GetGlobalTime(), // Lab.
-                                             track->GetProperTime(), // Part.
-                                             &spin) ;
+  G4FieldTrack aFieldTrack('t');
+  G4FieldTrackUpdator::Update(&aFieldTrack,track);
   G4double retSafety= -1.0;
   ELimited retStepLimited;
   G4FieldTrack endTrack('a');
   G4double currentMinimumStep= 10*m; // TODO change that to sth connected to particle momentum and geometry
   G4PathFinder* fPathFinder = G4PathFinder::GetInstance();
-  fPathFinder->ComputeStep( theFieldTrack,
+  fPathFinder->ComputeStep( aFieldTrack,
                             currentMinimumStep,
                             0,
                             track->GetCurrentStepNumber(),
