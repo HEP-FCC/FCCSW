@@ -11,6 +11,7 @@
 
 //CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
+#include "CLHEP/Units/SystemOfUnits.h"
 
 DECLARE_TOOL_FACTORY(G4ParticleSmearTklayout)
 
@@ -43,7 +44,7 @@ StatusCode G4ParticleSmearTklayout::finalize() {
 }
 
 StatusCode G4ParticleSmearTklayout::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
-  double res = resolution(aMom.pseudoRapidity(), aMom.perp());
+  double res = resolution(aMom.pseudoRapidity(), aMom.mag()/CLHEP::GeV);
   if(res>0) {
     m_gauss.initialize(m_randSvc, Rndm::Gauss(1,res));
     double tmp = m_gauss.shoot();
