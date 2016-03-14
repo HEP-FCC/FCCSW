@@ -49,6 +49,16 @@ geantsim = G4SimAlg("G4SimAlg", outputs = ["G4SaveSmearedParticles/saveSmearedPa
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 
+from Configurables import G4FastSimHistograms
+hist = G4FastSimHistograms("fastHist")
+hist.DataInputs.particles.Path = "smearedParticles"
+hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
+THistSvc().Output = ["rec DATAFILE='histFormula.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().PrintAll=True
+THistSvc().AutoSave=True
+THistSvc().AutoFlush=True
+THistSvc().OutputLevel=INFO
+
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out", filename = "out_fast_formula.root")
@@ -56,7 +66,7 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by G4SimSvc
