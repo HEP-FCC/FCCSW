@@ -66,7 +66,6 @@ StatusCode G4ParticleSmearFormula::smearEnergy( double& aEn, int /*aPdg*/) {
       error()<<"Unable to smear particle's energy - no resolution given!"<<endmsg;
       return StatusCode::FAILURE;
     }
-  info()<<"resolution: "<<m_resolutionMomentum->Eval(aEn)<<endmsg;
   m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_resolutionEnergy->Eval(aEn)));
   double tmp;
   do {

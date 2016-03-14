@@ -2,6 +2,7 @@
 
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
+#include "SimG4Common/ParticleInformation.h"
 
 // Gaudi
 #include "GaudiKernel/IToolSvc.h"
@@ -60,13 +61,20 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
                             endTrack,
                             track->GetVolume() );
   aFastStep.ProposePrimaryTrackFinalPosition( endTrack.GetPosition() );
-
-  // Smear particle's momentum according to the tracker resolution (set in SimpleSmear)
+  // Smear particle's momentum according to the tracker resolution
   G4ThreeVector Psm = track->GetMomentum();
   m_smearTool->smearMomentum(Psm);
   G4ThreeVector DeltaP = track->GetMomentum() - Psm;
   G4double Ekinorg = track->GetKineticEnergy();
   aFastStep.ClearDebugFlag(); // to disable Geant checks on energy
   aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg+DeltaP.mag(), Psm.unit());
+  // Keep track of smeared momentum
+  if(track->GetParentID()==0) {
+    ParticleInformation* inf = dynamic_cast<ParticleInformation*>(track->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation());
+    inf->setSmeared(true);
+    inf->setEndStatus(1); // how it is defined ???? as in HepMC ?
+    inf->setEndMomentum(Psm);
+    inf->setVertexPosition( track->GetVertexPosition());
+  }
 }
 }

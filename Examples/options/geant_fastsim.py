@@ -19,8 +19,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml'],
-                    OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -52,8 +51,7 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+out = PodioOutput("out", filename = "out_fast_formula.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
@@ -63,5 +61,5 @@ ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
  )
