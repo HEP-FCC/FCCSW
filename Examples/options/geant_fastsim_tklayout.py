@@ -19,14 +19,13 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml'],
-                    OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import G4SimSvc, G4FastSimPhysicsList, G4FastSimActions, G4ParticleSmearTklayout
 # create particle smearing tool, used for smearing in the tracker
-smeartool = G4ParticleSmearTklayout("Smear")
+smeartool = G4ParticleSmearTklayout("Smear", filename="res.root")
 # create actions initialization tool
 actionstool = G4FastSimActions("Actions", smearing=smeartool)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
@@ -48,18 +47,27 @@ geantsim = G4SimAlg("G4SimAlg", outputs = ["G4SaveSmearedParticles/saveSmearedPa
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 
+from Configurables import G4FastSimHistograms
+hist = G4FastSimHistograms("fastHist")
+hist.DataInputs.particles.Path = "smearedParticles"
+hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
+THistSvc().Output = ["rec DATAFILE='histTklayout.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().PrintAll=True
+THistSvc().AutoSave=True
+THistSvc().AutoFlush=True
+THistSvc().OutputLevel=VERBOSE
+
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+out = PodioOutput("out", filename = "out_fast_tklayout.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
  )

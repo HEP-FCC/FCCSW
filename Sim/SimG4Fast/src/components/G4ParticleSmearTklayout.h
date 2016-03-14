@@ -35,23 +35,36 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
-
   /**  Smear the momentum of the particle
    *   @param aMom Particle momentum to be smeared.
    *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
-
   /**  Smear the energy of the particle
    *   @param aEn Particle energy to be smeared.
    *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
   virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) final;
+  /**  Read the file with the resolutions. File name is set by job options.
+   *   @return status code
+   */
   StatusCode readResolutions();
+  /**  Read the file with the resolutions. File name is set by job options.
+   *   @param[in] aEta Particle's pseudorapidity
+   *   @param[in] aMom Particle's momentum
+   *   @return Resolution
+   */
+  double resolution(double aEta, double aMom);
 private:
-  std::map<double, TGraph> m_momentumResolutions;
+  /// Map of p-dependent resolutions and the end of eta bin that it refers to
+  /// (lower end is defined by previous entry, and eta=0 for the first one)
+  std::map<double, std::unique_ptr<TGraph>> m_momentumResolutions;
+  /// Maximum eta for which resolutions are defined (filled at the end of file reading)
+  double m_maxEta;
+  /// File name with the resolutions obtained from tkLayout (set by job options)
+  std::string m_resolutionFileName;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
