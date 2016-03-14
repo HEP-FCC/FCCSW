@@ -52,7 +52,7 @@ StatusCode G4ParticleSmearTklayout::smearMomentum( CLHEP::Hep3Vector& aMom, int 
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearTklayout::smearEnergy( double& aEn, int /*aPdg*/) {
+StatusCode G4ParticleSmearTklayout::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
   warning()<<"TkLayout smearing is meant to be used with tracker only,"<<endmsg;
   warning()<<"hence smearing can be performed for the momentum only!"<<endmsg;
   return StatusCode::FAILURE;
@@ -87,7 +87,7 @@ double G4ParticleSmearTklayout::resolution(double aEta, double aMom) {
 
   for(auto& m: m_momentumResolutions) {
     if(fabs(aEta)<m.first) {
-      return m.second.get()->Eval(aPt);
+      return m.second.get()->Eval(aMom);
     }
   }
   return 0;

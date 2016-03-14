@@ -9,6 +9,7 @@
 
 // Geant4
 #include "G4PathFinder.hh"
+#include "G4PrimaryParticle.hh"
 #include "G4SystemOfUnits.hh"
 
 namespace sim {
