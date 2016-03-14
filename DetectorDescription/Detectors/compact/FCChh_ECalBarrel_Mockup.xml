@@ -44,7 +44,7 @@
   <readouts>
     <readout name="BarECal_Readout">
       <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
-      <id>system:3,layer:7,x:32:-16,y:-16</id>
+      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
     </readout>
   </readouts>
 
