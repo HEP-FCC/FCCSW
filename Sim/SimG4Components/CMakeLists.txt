@@ -22,13 +22,20 @@ gaudi_add_module(SimG4Components
 include(CTest)
 gaudi_add_test(GeantFullSimHCal
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/geant_fullsim_hcal.py)
+               FRAMEWORK tests/options/geant_fullsim_hcal.py)
 gaudi_add_test(GeantFullSimECal
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/geant_fullsim_ecal.py)
+               FRAMEWORK tests/options/geant_fullsim_ecal.py)
 gaudi_add_test(GeantFullSimGdmlDetector
                  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/geant_fullsim_gdml.py)
+               FRAMEWORK tests/options/geant_fullsim_gdml.py)
 gaudi_add_test(GeantFullSimMoreEvents
                  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/geant_fullsim_moreEvents.py)
+               FRAMEWORK tests/options/geant_fullsim_moreEvents.py)
+gaudi_add_test(GeantFastSimSimpleSmearing
+                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
+               FRAMEWORK tests/options/geant_fastsim_simple.py)
+gaudi_add_test(GeantFastSimSimpleSmearingCheckSigma
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
+               COMMAND python ./scripts/geant_fastsim_simple_checkSigma.py
+               DEPENDS GeantFastSimSimpleSmearing)

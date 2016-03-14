@@ -9,19 +9,6 @@ from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
-# from Configurables import ParticleGunAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
-# pgun = MomentumRangeParticleGun("PGun",
-#                                 PdgCodes=[11], # electron
-#                                 MomentumMin = 10, # GeV
-#                                 MomentumMax = 10, # GeV
-#                                 ThetaMin = 0.45, # rad
-#                                 ThetaMax = 0.45, # rad
-#                                 PhiMin = 0., # rad
-#                                 PhiMax = 0.) # rad
-# gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
-# gen.DataOutputs.hepmc.Path = "hepmc"
-# ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
@@ -32,7 +19,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/ParametricSimTracker.xml'])
+geoservice = GeoSvc("GeoSvc", detectors=['file:../../../DetectorDescription/Detectors/compact/ParametricSimTracker.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -79,7 +66,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax   = 1000,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=INFO

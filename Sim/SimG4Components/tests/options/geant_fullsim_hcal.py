@@ -5,7 +5,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles

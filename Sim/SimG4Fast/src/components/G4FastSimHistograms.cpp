@@ -36,7 +36,7 @@ StatusCode G4FastSimHistograms::initialize() {
   if (m_histSvc->regHist("/rec/SmP", m_p).isFailure()) {
     error() << "Couldn't register SmP histogram" << endmsg;
   }
-  m_diffP = new TH1F("DiffP", "Smeared-MC particles momentum", 100, -1, 1);
+  m_diffP = new TH1F("DiffP", "Smeared-MC particles momentum", 100, -0.5, 0.5);
   if (m_histSvc->regHist("/rec/DiffP", m_diffP).isFailure()) {
     error() << "Couldn't register DifP histogram" << endmsg;
   }
