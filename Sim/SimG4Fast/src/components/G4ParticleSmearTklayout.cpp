@@ -19,7 +19,7 @@ G4ParticleSmearTklayout::G4ParticleSmearTklayout(const std::string& type, const 
     GaudiTool(type, name, parent),
     m_maxEta(0) {
   declareInterface<IG4ParticleSmearTool>(this);
-  declareProperty("filename", m_resolutionFileName = "");
+  declareProperty("filename", m_resolutionFileName = "Sim/SimG4Fast/data/tkLayout_example_resolutions.root");
 }
 
 G4ParticleSmearTklayout::~G4ParticleSmearTklayout() {}
