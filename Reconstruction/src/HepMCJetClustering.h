@@ -2,7 +2,7 @@
 #define _HEPMCJETCLUSTERING_H_
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "DataObjects/PseudoJetEntry.h"
+#include "datamodel/JetCollection.h"
 #include "HepMC/GenEvent.h"
 #include "FWCore/DataHandle.h"
 
@@ -25,7 +25,7 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmchandle;
 
   /// Handle for PseudoJets to be produced
-  DataHandle<PseudoJetEntry> m_jets;
+  DataHandle<fcc::JetCollection> m_jets;
 
   std::string m_jetAlgorithm; ///< the jet algorithm to use
   fastjet::JetAlgorithm m_fj_jetAlgorithm;

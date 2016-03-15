@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="elements.xml"/>
+    <gdmlFile  ref="materials.xml"/>
+  </includes>
+
+  <info name="FCChh_ECalBarrel_Mockup"
+    title="ECal Barrel Calorimeter"
+    author="A.Dell'Acqua"
+    url="no"
+    status="development"
+    version="$Id:??$">
+    <comment>ECal very conceptual design</comment>
+  </info>
+
+  <define>
+    <!---- ECAL dimensions ----->    
+    <!--- cryostat description --->
+    <constant name="BarECal_rmin" value="2600*mm"/>
+    <constant name="BarECal_rmax" value="3500*mm"/>
+    <constant name="BarECal_dz" value="4000*mm"/>
+    
+    <!--- calorimeter volume --->
+    <constant name="EMBarrel_rmin" value="2700*mm"/>
+    <constant name="EMBarrel_rmax" value="3400*mm"/>
+    <constant name="EMBarrel_dz" value="3900*mm"/>
+    
+  </define>
+
+  <display>
+    <vis name="ecal_envelope" r="0.1" g="0.2" b="0.6" alpha="1" showDaughers="false" visible="true" />
+  </display>
+
+  <readouts>
+    <readout name="BarECal_Readout">
+      <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
+      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <include ref="FCChh_ECalDefinition.xml" />
+  </detectors>
+</lccdd>
+
