@@ -5,10 +5,10 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 10, # GeV
                                 MomentumMax = 10, # GeV
-                                ThetaMin = 0.45, # rad
-                                ThetaMax = 0.45, # rad
-                                PhiMin = 0., # rad
-                                PhiMax = 0.) # rad
+                                ThetaMin = -0.45, # rad
+                                ThetaMax = -0.45, # rad
+                                PhiMin = 1.6, # rad
+                                PhiMax = 1.6) # rad
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
 gen.DataOutputs.hepmc.Path = "hepmc"
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")

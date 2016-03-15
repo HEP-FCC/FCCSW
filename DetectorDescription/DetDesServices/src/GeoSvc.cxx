@@ -8,6 +8,7 @@
 
 #include "DetDesServices/GeoSvc.h"
 #include "GaudiKernel/Service.h"
+#include "GeoConstruction.h"
 
 using namespace Gaudi;
 
@@ -69,8 +70,9 @@ DD4hep::Geometry::DetElement GeoSvc::getDD4HepGeo() {
     return (lcdd()->world());
 }
 
+
 StatusCode GeoSvc::buildGeant4Geo() {
-    std::shared_ptr<G4VUserDetectorConstruction> detector(new DD4hep::Simulation::Geant4DetectorConstruction(*lcdd()));
+    std::shared_ptr<G4VUserDetectorConstruction> detector(new GeoConstruction(*lcdd()));
     m_geant4geo = detector;
     if (m_geant4geo) {
         return StatusCode::SUCCESS;

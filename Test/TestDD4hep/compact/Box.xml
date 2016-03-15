@@ -22,9 +22,9 @@
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>
-    <constant name="box_x" value="0.5*m"/> <!-- WARNING: half length -->
-    <constant name="box_y" value="0.5*m"/> <!-- WARNING: half length -->
-    <constant name="box_z" value="0.5*m"/> <!-- WARNING: half length -->
+    <constant name="box_x" value="0.2*m"/> <!-- WARNING: half length -->
+    <constant name="box_y" value="0.2*m"/> <!-- WARNING: half length -->
+    <constant name="box_z" value="0.2*m"/> <!-- WARNING: half length -->
   </define>
 
   <display>
@@ -34,17 +34,17 @@
 
   <readouts>
     <readout name="SiliconHits">
-      <segmentation type="CartesianGridXYZ" grid_size_x="1*cm" grid_size_y="1.*cm" grid_size_z="1.*cm"/>
-      <id>system:2,x:8,y:8,z:8</id>
+      <segmentation type="CartesianGridXYZ" grid_size_x="10*cm" grid_size_y="10.*cm" grid_size_z="10.*cm"/>
+      <id>z:-3,y:-3,x:-3,system:1</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="1" name="BoxECal" type="TestBox" readout="SiliconHits" sensitive="true">
+    <detector id="0" name="BoxECal" type="TestBox" readout="SiliconHits" sensitive="true">
       <material name="Silicon"/>
       <sensitive type="Geant4Calorimeter"/>
       <dimensions x="box_x" y="box_y" z="box_z"/>
-      <position   x="0"     y="0"     z="1*m"/>
+      <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>
     </detector>
   </detectors>

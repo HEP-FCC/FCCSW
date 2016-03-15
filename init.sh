@@ -23,7 +23,7 @@ export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/
 
 # add DD4hep
 export inithere=$PWD
-cd /afs/cern.ch/exp/fcc/sw/0.7/DD4hep/20152311/$BINARY_TAG
+cd /build/azaborow/FCC/FCCSW_tests/DD4hep/DD4hep_10_2/build/
 source bin/thisdd4hep.sh
 cd $inithere
 
@@ -33,5 +33,5 @@ source /afs/cern.ch/sw/lcg/external/geant4/10.2/setup_g4datasets.sh
 export CMTPROJECTPATH=/afs/cern.ch/exp/fcc/sw/0.7/
 source /afs/cern.ch/sw/lcg/contrib/gcc/4.9.3/x86_64-slc6/setup.sh
 
-# let ROOT 6 know about the location of headers
-export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$PODIO/include/datamodel:$FCCEDM/include/datamodel
+# let ROOT know about the location of headers
+export ROOT_INCLUDE_PATH=$ROOT_INCLUDE_PATH:$FCCEDM/include/datamodel:$PODIO/include/datamodel
