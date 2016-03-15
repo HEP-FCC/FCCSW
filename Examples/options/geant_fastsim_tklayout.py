@@ -23,11 +23,9 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/com
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import G4SimSvc, G4FastSimPhysicsList, G4FastSimActions, G4ParticleSmearFormula
+from Configurables import G4SimSvc, G4FastSimPhysicsList, G4FastSimActions, G4ParticleSmearTklayout
 # create particle smearing tool, used for smearing in the tracker
-smeartool = G4ParticleSmearFormula("Smear",
-                                   resolutionEnergy = "sqrt(pow(0.03/sqrt(x),2)+pow(0.12/x, 2)+pow(0.003,2))",
-                                   resolutionMomentum = "0.013")
+smeartool = G4ParticleSmearTklayout("Smear", filename="Sim/SimG4Fast/data/tkLayout_example_resolutions.root")
 # create actions initialization tool
 actionstool = G4FastSimActions("Actions", smearing=smeartool)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
@@ -53,15 +51,15 @@ from Configurables import G4FastSimHistograms
 hist = G4FastSimHistograms("fastHist")
 hist.DataInputs.particles.Path = "smearedParticles"
 hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
-THistSvc().Output = ["rec DATAFILE='histFormula.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='histTklayout.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
-THistSvc().OutputLevel=INFO
+THistSvc().OutputLevel=VERBOSE
 
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out", filename = "out_fast_formula.root")
+out = PodioOutput("out", filename = "out_fast_tklayout.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr

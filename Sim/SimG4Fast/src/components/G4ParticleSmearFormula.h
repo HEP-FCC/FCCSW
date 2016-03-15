@@ -1,5 +1,5 @@
-#ifndef SIMG4FAST_G4PARTICLESMEARSIMPLE_H
-#define SIMG4FAST_G4PARTICLESMEARSIMPLE_H
+#ifndef SIMG4FAST_G4PARTICLESMEARFORMULA_H
+#define SIMG4FAST_G4PARTICLESMEARFORMULA_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -12,20 +12,20 @@ class TFormula;
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 
-/** @class G4ParticleSmearSimple SimG4Fast/src/components/G4ParticleSmearSimple.h G4ParticleSmearSimple.h
+/** @class G4ParticleSmearFormula SimG4Fast/src/components/G4ParticleSmearFormula.h G4ParticleSmearFormula.h
  *
- *  Simple particle smearing tool.
+ *  Formula particle smearing tool.
  *  Smears the momentum/energy of the particle following the Gaussian distribution.
- *  The standard deviation of the Gaussian is set in the job options file ('sigma').
+ *  Resolutions for the smearing are defined in the configuration file.
  *
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearSimple: public GaudiTool, virtual public IG4ParticleSmearTool {
+class G4ParticleSmearFormula: public GaudiTool, virtual public IG4ParticleSmearTool {
 public:
-  explicit G4ParticleSmearSimple(const std::string& type , const std::string& name,
+  explicit G4ParticleSmearFormula(const std::string& type , const std::string& name,
     const IInterface* parent);
-  virtual ~G4ParticleSmearSimple();
+  virtual ~G4ParticleSmearFormula();
 
   /**  Initialize the tool and a random number generator.
    *   @return status code
@@ -50,8 +50,14 @@ public:
    */
   virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) final;
 private:
-  /// Constant resolution for the smearing (set by job options)
-  double m_sigma;
+  /// string defining a TFormula representing resolution energy-dependent for the smearing (set by job options)
+  std::string m_resolutionEnergyStr;
+  /// string defining a TFormula representing resolution momentum-dependent for the smearing (set by job options)
+  std::string m_resolutionMomentumStr;
+  /// TFormula representing resolution energy-dependent for the smearing
+  std::unique_ptr<TFormula> m_resolutionEnergy;
+  /// TFormula representing resolution momentum-dependent for the smearing
+  std::unique_ptr<TFormula> m_resolutionMomentum;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
