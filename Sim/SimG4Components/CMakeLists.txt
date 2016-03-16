@@ -19,9 +19,6 @@ gaudi_add_module(SimG4Components
                  LINK_LIBRARIES GaudiAlgLib Geant4 FWCore SimG4Common DD4hep ROOT)
 
 include(CTest)
-gaudi_add_test(GeantFullSimGdmlDetector
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/geant_fullsim_gdml.py)
 gaudi_add_test(GeantFullSimHCal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/geant_fullsim_hcal.py)
