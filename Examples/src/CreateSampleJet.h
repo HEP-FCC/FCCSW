@@ -1,6 +1,7 @@
 #ifndef EXAMPLES_CREATESAMPLEJET_H
 #define EXAMPLES_CREATESAMPLEJET_H
 
+
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/JetCollection.h"
 #include "FWCore/DataHandle.h"
