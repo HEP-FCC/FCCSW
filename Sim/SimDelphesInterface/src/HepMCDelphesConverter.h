@@ -29,9 +29,7 @@
  */
 
 #include <map>
-#include <vector>
 
-#include <stdio.h>
 #include <Rtypes.h>
 
 class TObjArray;
@@ -52,59 +50,22 @@ public:
   HepMCDelphesConverter();
   ~HepMCDelphesConverter();
 
-  // Zero all internal variables
-  void Clear();
-
-  // Set input HepMC file --> ReadEventFromFile() then
-  void SetInputFile(FILE *inputFile);
-
   // Read event & fill all variables
-  bool ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
-
-  // Create event branch for Delphes treeWriter
-  void MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readStopWatch, TStopwatch *procStopWatch);
+  StatusCode readEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
 
 private:
+  typedef std::map<int, std::pair <int, int>> VertexParticleMap;
   // Method setting particle(s) info into Delphes internal blocks
-  void AnalyzeParticle(DelphesFactory *factory,
+  void analyzeParticle(DelphesFactory *factory,
     TObjArray *allParticleOutputArray,
     TObjArray *stableParticleOutputArray,
     TObjArray *partonOutputArray);
 
-  void FinalizeParticles(TObjArray *allParticleOutputArray);
+  void finalizeParticles(TObjArray *allParticleOutputArray,
+                         const VertexParticleMap& daughterMap,
+                         const VertexParticleMap& motherMap);
 
-  // Variables
-  FILE     *fInputFile;
-  Long64_t fInputFileLength;
-
-  char *fBuffer;
-
-  TDatabasePDG *fPDG;
-
-  int fEventNumber, fMPI, fProcessID, fSignalCode, fVertexCounter, fBeamCode[2];
-  double fScale, fAlphaQCD, fAlphaQED;
-
-  double fMomentumCoefficient, fPositionCoefficient;
-
-  int fStateSize;
-  std::vector< int > fState;
-
-  int fWeightSize;
-  std::vector< double > fWeight;
-
-  int fID1, fID2;
-  double fX1, fX2, fScalePDF, fPDF1, fPDF2;
-
-  int fOutVertexCode, fVertexID, fInCounter, fOutCounter;
-  double fX, fY, fZ, fT;
-
-  int fParticleCode, fPID, fStatus, fInVertexCode;
-  double fPx, fPy, fPz, fE, fMass, fTheta, fPhi;
-
-  int fParticleCounter;
-
-  std::map< int, std::pair < int, int > > fMotherMap;
-  std::map< int, std::pair < int, int > > fDaughterMap;
+  const TDatabasePDG *m_pdg;
 };
 
 #endif // SIM_HEPMCDELPHESCONVERTER_H
