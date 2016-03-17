@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** \class HepMCToDelphes
+/** \class HepMCDelphesConverter
  *
  *  Reads HepMC file or HepMC event from transient data store
  *
@@ -26,7 +26,7 @@
  *    - reads either HepMC event directly from memory of from a file
  */
 
-#include "HepMCToDelphes.h"
+#include "HepMCDelphesConverter.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -61,7 +61,7 @@ static const int kBufferSize  = 1024;
 
 //---------------------------------------------------------------------------
 
-HepMCToDelphes::HepMCToDelphes() :
+HepMCDelphesConverter::HepMCDelphesConverter() :
   fPDG(0),
   fVertexCounter(-1), fInCounter(-1), fOutCounter(-1),
   fParticleCounter(0)
@@ -71,12 +71,12 @@ HepMCToDelphes::HepMCToDelphes() :
 
 //---------------------------------------------------------------------------
 
-HepMCToDelphes::~HepMCToDelphes()
+HepMCDelphesConverter::~HepMCDelphesConverter()
 {
 }
 
 //---------------------------------------------------------------------------
-void HepMCToDelphes::Clear()
+void HepMCDelphesConverter::Clear()
 {
   fStateSize = 0;
   fState.clear();
@@ -93,7 +93,7 @@ void HepMCToDelphes::Clear()
 }
 
 //---------------------------------------------------------------------------
-bool HepMCToDelphes::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
+bool HepMCDelphesConverter::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
                                                TObjArray *allParticleOutputArray,
                                                TObjArray *stableParticleOutputArray,
                                                TObjArray *partonOutputArray)
@@ -232,7 +232,7 @@ bool HepMCToDelphes::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, Delph
 
 //---------------------------------------------------------------------------
 
-void HepMCToDelphes::MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readStopWatch, TStopwatch *procStopWatch)
+void HepMCDelphesConverter::MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readStopWatch, TStopwatch *procStopWatch)
 {
   HepMCEvent *element;
 
@@ -260,7 +260,7 @@ void HepMCToDelphes::MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readS
 
 //---------------------------------------------------------------------------
 
-void HepMCToDelphes::AnalyzeParticle(DelphesFactory *factory,
+void HepMCDelphesConverter::AnalyzeParticle(DelphesFactory *factory,
   TObjArray *allParticleOutputArray,
   TObjArray *stableParticleOutputArray,
   TObjArray *partonOutputArray)
@@ -327,7 +327,7 @@ void HepMCToDelphes::AnalyzeParticle(DelphesFactory *factory,
 
 //---------------------------------------------------------------------------
 
-void HepMCToDelphes::FinalizeParticles(TObjArray *allParticleOutputArray)
+void HepMCDelphesConverter::FinalizeParticles(TObjArray *allParticleOutputArray)
 {
   Candidate *candidate;
   map< int, pair< int, int > >::iterator itMotherMap;

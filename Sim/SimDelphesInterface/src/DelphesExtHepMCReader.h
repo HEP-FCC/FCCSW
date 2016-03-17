@@ -16,10 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DelphesExtHepMCReader_h
-#define DelphesExtHepMCReader_h
+#ifndef SIM_HEPMCDELPHESCONVERTER_H
+#define SIM_HEPMCDELPHESCONVERTER_H
 
-/** @class HepMCToDelphes
+/** @class HepMCDelphesConverter
  *
  *  Reads either HepMC event directly from memory of from a file
  *
@@ -45,12 +45,12 @@ namespace HepMC
   class GenEvent;
 }
 
-class HepMCToDelphes
+class HepMCDelphesConverter
 {
 public:
 
-  HepMCToDelphes();
-  ~HepMCToDelphes();
+  HepMCDelphesConverter();
+  ~HepMCDelphesConverter();
 
   // Zero all internal variables
   void Clear();
@@ -107,6 +107,6 @@ private:
   std::map< int, std::pair < int, int > > fDaughterMap;
 };
 
-#endif // DelphesExtHepMCReader_h
+#endif // SIM_HEPMCDELPHESCONVERTER_H
 
 
