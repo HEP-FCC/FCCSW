@@ -72,7 +72,7 @@ DD4hep::Geometry::DetElement GeoSvc::getDD4HepGeo() {
 
 
 StatusCode GeoSvc::buildGeant4Geo() {
-    std::shared_ptr<G4VUserDetectorConstruction> detector(new GeoConstruction(*lcdd()));
+  std::shared_ptr<G4VUserDetectorConstruction> detector(new det::GeoConstruction(*lcdd()));
     m_geant4geo = detector;
     if (m_geant4geo) {
         return StatusCode::SUCCESS;

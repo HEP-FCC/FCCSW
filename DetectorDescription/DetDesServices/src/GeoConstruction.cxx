@@ -34,17 +34,13 @@ using namespace std;
 using namespace DD4hep;
 using namespace DD4hep::Simulation;
 
-/// Initializing constructor for other clients
+namespace det {
 GeoConstruction::GeoConstruction(Geometry::LCDD& lcdd)
-  : m_lcdd(lcdd), m_world(0)
-{
-}
+  : m_lcdd(lcdd), m_world(nullptr) {}
 
-/// Default destructor
-GeoConstruction::~GeoConstruction() {
-}
+GeoConstruction::~GeoConstruction() {}
 
-void GeoConstruction::constructSensitives()  {
+void GeoConstruction::ConstructSDandField() {
   typedef Geometry::GeoHandlerTypes::SensitiveVolumes _SV;
   typedef Geometry::GeoHandlerTypes::ConstVolumeSet VolSet;
   Geant4GeometryInfo* p = Geant4Mapping::instance().ptr();
@@ -97,6 +93,6 @@ G4VPhysicalVolume* GeoConstruction::Construct() {
   m_lcdd.apply("DD4hepVolumeManager", 0, 0);
   // Create Geant4 volume manager
   g4map.volumeManager();
-  constructSensitives();
   return m_world;
+}
 }
