@@ -1,44 +1,14 @@
-/*
- *  Delphes: a framework for fast simulation of a generic collider experiment
- *  Copyright (C) 2012-2014  Universite catholique de Louvain (UCL), Belgium
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/** \class HepMCDelphesConverter
- *
- *  Reads HepMC file or HepMC event from transient data store
- *
- *  \ Original: author P. Demin - UCL, Louvain-la-Neuve
- *  \ Adapted to FCC SW: author Z. Drasal (CERN)
- *
- *    - reads either HepMC event directly from memory of from a file
- */
-
 #include "HepMCDelphesConverter.h"
 
 #include <map>
 
 #include "TObjArray.h"
-#include "TStopwatch.h"
 #include "TDatabasePDG.h"
 #include "TParticlePDG.h"
 #include "TLorentzVector.h"
 
 #include "classes/DelphesClasses.h"
 #include "classes/DelphesFactory.h"
-#include "classes/DelphesStream.h"
 
 #include "HepMC/GenEvent.h"
 #include "HepMC/GenVertex.h"
@@ -48,21 +18,13 @@
 
 #include "ExRootAnalysis/ExRootTreeBranch.h"
 
-//---------------------------------------------------------------------------
 
 HepMCDelphesConverter::HepMCDelphesConverter() :
   m_pdg(TDatabasePDG::Instance())
 {
 }
 
-//---------------------------------------------------------------------------
-
-HepMCDelphesConverter::~HepMCDelphesConverter()
-{
-}
-
-//---------------------------------------------------------------------------
-bool HepMCDelphesConverter::readEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
+StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
                                                TObjArray *allParticleOutputArray,
                                                TObjArray *stableParticleOutputArray,
                                                TObjArray *partonOutputArray)
@@ -104,7 +66,6 @@ bool HepMCDelphesConverter::readEventFromStore(const HepMC::GenEvent *hepMCEvent
       candidate->M2 = 1;
       candidate->D2 = 1;
 
-      int numInParticles = 0;
       int outVertexCode = 0;
 
       // Production vertex info
@@ -120,12 +81,10 @@ bool HepMCDelphesConverter::readEventFromStore(const HepMC::GenEvent *hepMCEvent
         if(positionCoefficient != 1.0) {
           candidate->Position *= positionCoefficient;
         }
-      }
-      // Particle is orphan
-      else {
+      } else { // Particle is orphan
         outVertexCode = 0;
 
-        if (numInParticles <= hepMCPart->end_vertex()->particles_in_size()) {
+        if (0 <= hepMCPart->end_vertex()->particles_in_size()) {
           std::cout << "********************** THIS SHOULD NOT HAPPEN" << std::endl;
         }
         candidate->Position.SetXYZT(0, 0, 0, 0);
@@ -169,17 +128,14 @@ bool HepMCDelphesConverter::readEventFromStore(const HepMC::GenEvent *hepMCEvent
     }
 
     // Finalize
-    FinalizeParticles(allParticleOutputArray, daughterMap, motherMap);
+    setRelationIndices(allParticleOutputArray, daughterMap, motherMap);
 
     return StatusCode::SUCCESS;
-  } else {
-    return Error("HepMC event was not valid.");
   }
+  return StatusCode::FAILURE;
 }
 
-//---------------------------------------------------------------------------
-// Go through vertices, fill vertex & corresponding particles
-void HepMCDelphesConverter::finalizeParticles(TObjArray *allParticleOutputArray,
+void HepMCDelphesConverter::setRelationIndices(TObjArray *allParticleOutputArray,
                                               const VertexParticleMap& daughterMap,
                                               const VertexParticleMap& motherMap)
 {
@@ -217,4 +173,3 @@ void HepMCDelphesConverter::finalizeParticles(TObjArray *allParticleOutputArray,
   }
 }
 
-//---------------------------------------------------------------------------

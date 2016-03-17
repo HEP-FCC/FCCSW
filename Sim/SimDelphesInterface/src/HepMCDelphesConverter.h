@@ -1,27 +1,9 @@
-/*
- *  Delphes: a framework for fast simulation of a generic collider experiment
- *  Copyright (C) 2012-2014  Universite catholique de Louvain (UCL), Belgium
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #ifndef SIM_HEPMCDELPHESCONVERTER_H
 #define SIM_HEPMCDELPHESCONVERTER_H
 
 /** @class HepMCDelphesConverter
  *
- *  Reads either HepMC event directly from memory of from a file
+ *  Fills TObjArrays with particles and vertices from HepMC::GenEvent
  *
  *  @author (original): P. Demin - UCL, Louvain-la-Neuve
  *  @author (adapted to FCC SW): Z. Drasal (CERN)
@@ -30,12 +12,10 @@
 
 #include <map>
 
-#include <Rtypes.h>
+#include "GaudiKernel/StatusCode.h"
 
 class TObjArray;
-class TStopwatch;
 class TDatabasePDG;
-class ExRootTreeBranch;
 class DelphesFactory;
 
 namespace HepMC
@@ -47,24 +27,23 @@ class HepMCDelphesConverter
 {
 public:
 
+  /// Default constructor
   HepMCDelphesConverter();
-  ~HepMCDelphesConverter();
+  /// Default destructor
+  ~HepMCDelphesConverter() {};
 
-  // Read event & fill all variables
-  StatusCode readEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
+  /// Fill vertices and particles into arrays and add them through the factory
+  StatusCode hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
 
 private:
+  /// Map to store vertex to particle relations
   typedef std::map<int, std::pair <int, int>> VertexParticleMap;
-  // Method setting particle(s) info into Delphes internal blocks
-  void analyzeParticle(DelphesFactory *factory,
-    TObjArray *allParticleOutputArray,
-    TObjArray *stableParticleOutputArray,
-    TObjArray *partonOutputArray);
-
-  void finalizeParticles(TObjArray *allParticleOutputArray,
+  /// Sets relations of particles
+  void setRelationIndices(TObjArray *allParticleOutputArray,
                          const VertexParticleMap& daughterMap,
                          const VertexParticleMap& motherMap);
 
+  /// Database to get charge
   const TDatabasePDG *m_pdg;
 };
 
