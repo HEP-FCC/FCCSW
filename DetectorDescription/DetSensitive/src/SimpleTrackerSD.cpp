@@ -36,29 +36,28 @@ G4bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   G4double edep = aStep->GetTotalEnergyDeposit();
   if(edep==0.) return false;
 
-//   // as in DD4hep::Simulation::Geant4GenericSD<Tracker>
-//   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-//   CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
-//   CLHEP::Hep3Vector direction = postPos - prePos;
-//   double hit_len = direction.perp();
-//   // create a hit and add it to collection
-//   const G4Track* track = aStep->GetTrack();
-   DD4hep::Simulation::Geant4TrackerHit* hit = new  DD4hep::Simulation::Geant4TrackerHit();
-//   //hit->storePoint(aStep,aStep->GetPreStepPoint());
-// //    track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
-//   //if ( hit )  {
-//     // // // TODO implement method to get cellID
-//     // // //hit->cellID  = getCellID( step ) ;
-//     // // // TODO contrib?
-//     // auto contrib = DD4hep::Simulation::Geant4Hit::extractContribution(aStep);
-//     // //hit->energyDeposit =  contrib.deposit ;
-//     // // hit->position = DD4hep::Simulation::Position(prePos.x(), prePos.y(), prePos.z());
-//     // // hit->momentum = direction;
-//     // // hit->length   = hit_len;
-   //trackerCollection->insert(hit);
-//     return true;
-    //}
+  // as in DD4hep::Simulation::Geant4GenericSD<Tracker>
+  CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
+  CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
+  CLHEP::Hep3Vector direction = postPos - prePos;
+  double hit_len = direction.perp();
+  // create a hit and add it to collection
+  const G4Track* track = aStep->GetTrack();
+  DD4hep::Simulation::Geant4TrackerHit* hit = new  DD4hep::Simulation::Geant4TrackerHit(
+    track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
+  if ( hit )  {
+    // TODO implement method to get cellID
+    //hit->cellID  = getCellID( step ) ;
+    // TODO contrib?
+    auto contrib = DD4hep::Simulation::Geant4Hit::extractContribution(aStep);
+    hit->energyDeposit =  contrib.deposit ;
+    hit->position = DD4hep::Simulation::Position(prePos.x(), prePos.y(), prePos.z());
+    hit->momentum = direction;
+    hit->length   = hit_len;
+    trackerCollection->insert(hit);
     return true;
+  }
+  return true;
 }
 
 void SimpleTrackerSD::EndOfEvent(G4HCofThisEvent*) {}
