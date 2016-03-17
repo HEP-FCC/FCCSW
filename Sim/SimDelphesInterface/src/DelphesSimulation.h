@@ -103,11 +103,6 @@ private:
   // Handle for the HepMC to be read in from the data store
   DataHandle<HepMC::GenEvent> m_hepmcHandle;
 
-  // Or read a HepMC file
-  FILE*        m_inHepMCFile ;
-  std::string  m_inHepMCFileName;   //!< Name of HepMC input file, if defined file read in / if not data read in directly from the transient data store
-  long long    m_inHepMCFileLength;
-
   // Handle for the generated or reconstructed objects to be written out
   DataHandle<fcc::MCParticleCollection> m_handleGenParticles;    //!< Generated particles handle
   DataHandle<fcc::GenVertexCollection>  m_handleGenVertices;     //!< Handle to vertices of generated particles

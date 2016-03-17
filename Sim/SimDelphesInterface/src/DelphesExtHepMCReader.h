@@ -19,7 +19,7 @@
 #ifndef DelphesExtHepMCReader_h
 #define DelphesExtHepMCReader_h
 
-/** @class DelphesExtHepMCReader
+/** @class HepMCToDelphes
  *
  *  Reads either HepMC event directly from memory of from a file
  *
@@ -45,12 +45,12 @@ namespace HepMC
   class GenEvent;
 }
 
-class DelphesExtHepMCReader
+class HepMCToDelphes
 {
 public:
 
-  DelphesExtHepMCReader();
-  ~DelphesExtHepMCReader();
+  HepMCToDelphes();
+  ~HepMCToDelphes();
 
   // Zero all internal variables
   void Clear();
@@ -59,23 +59,12 @@ public:
   void SetInputFile(FILE *inputFile);
 
   // Read event & fill all variables
-  bool ReadEventFromFile(DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
   bool ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
 
   // Create event branch for Delphes treeWriter
   void MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readStopWatch, TStopwatch *procStopWatch);
 
 private:
-
-  // Is event correctly read-in
-  bool EventReady();
-
-  // Method reading blocks from input-file untill all variables correctly set
-  bool ReadBlock(DelphesFactory *factory,
-    TObjArray *allParticleOutputArray,
-    TObjArray *stableParticleOutputArray,
-    TObjArray *partonOutputArray);
-
   // Method setting particle(s) info into Delphes internal blocks
   void AnalyzeParticle(DelphesFactory *factory,
     TObjArray *allParticleOutputArray,

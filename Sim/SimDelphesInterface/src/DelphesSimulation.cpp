@@ -44,9 +44,6 @@ GaudiAlgorithm(name, svcLoc) ,
   m_DelphesCard(),
   m_Delphes(nullptr),
   m_HepMCReader(nullptr),
-  m_inHepMCFile(nullptr),
-  m_inHepMCFileName(""),
-  m_inHepMCFileLength(0),
   m_eventCounter(0),
   m_outRootFile(nullptr),
   m_outRootFileName(""),
@@ -68,7 +65,6 @@ GaudiAlgorithm(name, svcLoc) ,
 
   //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
   declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
-  declareProperty("HepMCInputFile"   , m_inHepMCFileName          , "Name of HepMC input file; if defined, file read in / if not, data read in directly from the transient data store");
   declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)");
   declareProperty("MuonsOutArray"    , m_DelphesMuonsArrayName    , "Name of Delphes muons array to be written out to FCC-EDM");
   declareProperty("ElectronsOutArray", m_DelphesElectronsArrayName, "Name of Delphes electrons array to be written out to FCC-EDM");
@@ -81,70 +77,45 @@ GaudiAlgorithm(name, svcLoc) ,
   declareProperty("SHTsOutArray"     , m_DelphesSHTsArrayName     , "Name of Delphes Scalar HTs array to be written out to FCC-EDM");
 
   declareInput("hepmc", m_hepmcHandle);
-   
-  declareOutput("genParticles"      , m_handleGenParticles);
-  declareOutput("genVertices"       , m_handleGenVertices);
-  declareOutput("genJets"           , m_handleGenJets);
-  declareOutput("genJetsFlavor"     , m_handleGenJetsFlavor);
-  declareOutput("muons"             , m_handleRecMuons);
-  declareOutput("muonITags"         , m_handleRecITagMuons);
-  declareOutput("electrons"         , m_handleRecElectrons);
-  declareOutput("electronITags"     , m_handleRecITagElectrons);
-  declareOutput("charged"           , m_handleRecCharged);
-  declareOutput("neutral"           , m_handleRecNeutral);
-  declareOutput("photons"           , m_handleRecPhotons);
-  declareOutput("photonITags"       , m_handleRecITagPhotons);
-  declareOutput("jets"              , m_handleRecJets);
-  declareOutput("jetParts"          , m_handleRecJetParts);
-  declareOutput("jetsFlavor"        , m_handleRecJetsFlavor);
-  declareOutput("bTags"             , m_handleRecBTags);
-  declareOutput("cTags"             , m_handleRecCTags);
-  declareOutput("tauTags"           , m_handleRecTauTags);
-  declareOutput("met"               , m_handleRecMETs);
 
-  declareOutput("genJetsToMC"       , m_handleGenJetsToMC);
-  declareOutput("genJetsToFlavor"   , m_handleGenJetsToFlavor);
-  declareOutput("muonsToMC"         , m_handleRecMuonsToMC);
-  declareOutput("muonsToITags"      , m_handleRecMuonsToITags);
-  declareOutput("electronsToMC"     , m_handleRecElectronsToMC);
-  declareOutput("electronsToITags"  , m_handleRecElectronsToITags);
-  declareOutput("chargedToMC"       , m_handleRecChargedToMC);
-  declareOutput("neutralToMC"       , m_handleRecNeutralToMC);
-  declareOutput("photonsToMC"       , m_handleRecPhotonsToMC);
-  declareOutput("photonsToITags"    , m_handleRecPhotonsToITags);
-  declareOutput("jetsToParts"       , m_handleRecJetsToParts);
-  declareOutput("jetsToFlavor"      , m_handleRecJetsToFlavor);
-  declareOutput("jetsToBTags"       , m_handleRecJetsToBTags);
-  declareOutput("jetsToCTags"       , m_handleRecJetsToCTags);
-  declareOutput("jetsToTauTags"     , m_handleRecJetsToTauTags);
+  declareOutput("genParticles"      , m_handleGenParticles, "genParticles");
+  declareOutput("genVertices"       , m_handleGenVertices, "genVertices");
+  declareOutput("genJets"           , m_handleGenJets, "genJets");
+  declareOutput("genJetsFlavor"     , m_handleGenJetsFlavor, "genJetsFlavor");
+  declareOutput("muons"             , m_handleRecMuons, "muons");
+  declareOutput("muonITags"         , m_handleRecITagMuons, "muonITags");
+  declareOutput("electrons"         , m_handleRecElectrons, "electrons");
+  declareOutput("electronITags"     , m_handleRecITagElectrons, "electronITags");
+  declareOutput("charged"           , m_handleRecCharged, "charged");
+  declareOutput("neutral"           , m_handleRecNeutral, "neutral");
+  declareOutput("photons"           , m_handleRecPhotons, "photons");
+  declareOutput("photonITags"       , m_handleRecITagPhotons, "photonITags");
+  declareOutput("jets"              , m_handleRecJets, "jets");
+  declareOutput("jetParts"          , m_handleRecJetParts, "jetParts");
+  declareOutput("jetsFlavor"        , m_handleRecJetsFlavor, "jetsFlavor");
+  declareOutput("bTags"             , m_handleRecBTags, "bTags");
+  declareOutput("cTags"             , m_handleRecCTags, "cTags");
+  declareOutput("tauTags"           , m_handleRecTauTags, "tauTags");
+  declareOutput("met"               , m_handleRecMETs, "met");
+  declareOutput("genJetsToMC"       , m_handleGenJetsToMC, "genJetsToMC");
+  declareOutput("genJetsToFlavor"   , m_handleGenJetsToFlavor, "genJetsToFlavor");
+  declareOutput("muonsToMC"         , m_handleRecMuonsToMC, "muonsToMC");
+  declareOutput("muonsToITags"      , m_handleRecMuonsToITags, "muonsToITags");
+  declareOutput("electronsToMC"     , m_handleRecElectronsToMC, "electronsToMC");
+  declareOutput("electronsToITags"  , m_handleRecElectronsToITags, "electronsToITags");
+  declareOutput("chargedToMC"       , m_handleRecChargedToMC, "chargedToMC");
+  declareOutput("neutralToMC"       , m_handleRecNeutralToMC, "neutralToMC");
+  declareOutput("photonsToMC"       , m_handleRecPhotonsToMC, "photonsToMC");
+  declareOutput("photonsToITags"    , m_handleRecPhotonsToITags, "photonsToITags");
+  declareOutput("jetsToParts"       , m_handleRecJetsToParts, "jetsToParts");
+  declareOutput("jetsToFlavor"      , m_handleRecJetsToFlavor, "jetsToFlavor");
+  declareOutput("jetsToBTags"       , m_handleRecJetsToBTags, "jetsToBTags");
+  declareOutput("jetsToCTags"       , m_handleRecJetsToCTags, "jetsToCTags");
+  declareOutput("jetsToTauTags"     , m_handleRecJetsToTauTags, "jetsToTauTags");
 
 }
 
 StatusCode DelphesSimulation::initialize() {
-
-  // Open HepMC file if defined
-  if (m_inHepMCFileName!="") {
-
-    info()  << "Reading in HepMC file: " << m_inHepMCFileName << endmsg;
-    m_inHepMCFile = fopen(m_inHepMCFileName.c_str(), "r");
-
-    if (m_inHepMCFile==nullptr) {
-
-      error() << "Can't open " << m_inHepMCFileName << endmsg;
-      return Error ("ERROR, can't open defined HepMC input file.");
-    }
-  
-    fseek(m_inHepMCFile, 0L, SEEK_END);
-    m_inHepMCFileLength = ftello(m_inHepMCFile);
-    fseek(m_inHepMCFile, 0L, SEEK_SET);
-    info() << "Length of HepMC input file: " << m_inHepMCFileLength << endmsg;
-    if (m_inHepMCFileLength<=0) {
-  
-      fclose(m_inHepMCFile);
-      return Error ("ERROR, zero length HepMC input file.");
-    }
-  }
-  
   // If required, export output directly to root file
   if (m_outRootFileName!="") {
 
@@ -160,7 +131,7 @@ StatusCode DelphesSimulation::initialize() {
   // Read Delphes configuration card (deleted by finalize())
   m_confReader = std::unique_ptr<ExRootConfReader>(new ExRootConfReader);
   m_confReader->ReadFile(m_DelphesCard.c_str());
-   
+
   // Instance of Delphes (deleted by finalize())
   m_Delphes = std::unique_ptr<Delphes>(new Delphes("Delphes"));
   m_Delphes->SetConfReader(m_confReader.get());
@@ -174,8 +145,7 @@ StatusCode DelphesSimulation::initialize() {
   //
   //  HepMC reader --> reads either from a file or directly from data store (deleted by finalize())
   m_HepMCReader = std::unique_ptr<DelphesExtHepMCReader>(new DelphesExtHepMCReader);
-  if (m_inHepMCFile) m_HepMCReader->SetInputFile(m_inHepMCFile);
-  
+
   // Create following arrays of Delphes objects --> starting objects
   m_allPartOutArray    = m_Delphes->ExportArray("allParticles");
   m_stablePartOutArray = m_Delphes->ExportArray("stableParticles");
@@ -193,7 +163,7 @@ StatusCode DelphesSimulation::initialize() {
     TString name = param[k].GetString();
     info()  << "-- Module: " <<  name << endmsg;
   }
-  
+
   // Initialize all variables
   m_genJetOutArray   = nullptr;
   m_muonOutArray     = nullptr;
@@ -210,7 +180,7 @@ StatusCode DelphesSimulation::initialize() {
   if (m_outRootFile!=nullptr) m_treeWriter->Clear();
   m_Delphes->Clear();
   m_HepMCReader->Clear();
- 
+
   return StatusCode::SUCCESS;
 }
 
@@ -224,66 +194,51 @@ StatusCode DelphesSimulation::execute() {
 
   bool isEventReady = false;
 
-  if (m_inHepMCFile) {
+  // Read event
+  const HepMC::GenEvent *hepMCEvent = m_hepmcHandle.get();
+  isEventReady = m_HepMCReader->ReadEventFromStore(hepMCEvent, m_Delphes->GetFactory(), m_allPartOutArray, m_stablePartOutArray, m_partonOutArray);
 
-    // Test end-of-file
-    if ( ftello(m_inHepMCFile) == m_inHepMCFileLength) {
+  // Print debug: HepMC event info
+  if (msgLevel() <= MSG::DEBUG) {
 
-      info() << "End of file reached at lenght " << m_inHepMCFileLength << endmsg;
-      return StatusCode::SUCCESS;
-    }
+    for (auto ipart=hepMCEvent->particles_begin(); ipart!=hepMCEvent->particles_end(); ++ipart) {
 
-    // Read event - read line-by-line until event complete
-    isEventReady = m_HepMCReader->ReadEventFromFile(m_Delphes->GetFactory(), m_allPartOutArray, m_stablePartOutArray, m_partonOutArray);
-  }
-  else {
+      int motherID        = 0;
+      int motherIDRange   = 0;
+      int daughterID      = 0;
+      int daughterIDRange = 0;
+      if ((*ipart)->production_vertex()!=nullptr) {
 
-    // Read event
-    const HepMC::GenEvent *hepMCEvent = m_hepmcHandle.get();
-    isEventReady = m_HepMCReader->ReadEventFromStore(hepMCEvent, m_Delphes->GetFactory(), m_allPartOutArray, m_stablePartOutArray, m_partonOutArray);
-
-    // Print debug: HepMC event info
-    if (msgLevel() <= MSG::DEBUG) {
-
-      for (auto ipart=hepMCEvent->particles_begin(); ipart!=hepMCEvent->particles_end(); ++ipart) {
-
-        int motherID        = 0;
-        int motherIDRange   = 0;
-        int daughterID      = 0;
-        int daughterIDRange = 0;
-        if ((*ipart)->production_vertex()!=nullptr) {
-
-          motherID      = (*((*ipart)->production_vertex()->particles_in_const_begin()))->barcode();
-          motherIDRange = (*ipart)->production_vertex()->particles_in_size() -1;
-        }
-        if ((*ipart)->end_vertex()!=nullptr) {
-
-          daughterID      = (*((*ipart)->end_vertex()->particles_out_const_begin()))->barcode();
-          daughterIDRange = (*ipart)->end_vertex()->particles_out_size() -1;
-        }
-
-        debug() << "HepMC: "
-                << " Id: "       << std::setw(3)  << (*ipart)->barcode()
-                << " Pdg: "      << std::setw(5)  << (*ipart)->pdg_id()
-                << " Mothers: "  << std::setw(4)  << motherID   << " -> " << std::setw(4) << motherID  +motherIDRange
-                << " Daughters: "<< std::setw(4)  << daughterID << " -> " << std::setw(4) << daughterID+daughterIDRange
-                << " Stat: "     << std::setw(2)  << (*ipart)->status()
-                << std::scientific
-                << " Px: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().px()
-                << " Py: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().py()
-                << " Pz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().pz()
-                << " E: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().e()
-                << " M: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().m();
-        if ((*ipart)->production_vertex()!=nullptr) {
-          debug() << " Vx: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().x()
-                  << " Vy: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().y()
-                  << " Vz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().z()
-                  << " T: "        << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().t();
-        }
-        debug() << std::fixed << endmsg;
+        motherID      = (*((*ipart)->production_vertex()->particles_in_const_begin()))->barcode();
+        motherIDRange = (*ipart)->production_vertex()->particles_in_size() -1;
       }
-    } // Debug
-  }
+      if ((*ipart)->end_vertex()!=nullptr) {
+
+        daughterID      = (*((*ipart)->end_vertex()->particles_out_const_begin()))->barcode();
+        daughterIDRange = (*ipart)->end_vertex()->particles_out_size() -1;
+      }
+
+      debug() << "HepMC: "
+              << " Id: "       << std::setw(3)  << (*ipart)->barcode()
+              << " Pdg: "      << std::setw(5)  << (*ipart)->pdg_id()
+              << " Mothers: "  << std::setw(4)  << motherID   << " -> " << std::setw(4) << motherID  +motherIDRange
+              << " Daughters: "<< std::setw(4)  << daughterID << " -> " << std::setw(4) << daughterID+daughterIDRange
+              << " Stat: "     << std::setw(2)  << (*ipart)->status()
+              << std::scientific
+              << " Px: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().px()
+              << " Py: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().py()
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().pz()
+              << " E: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().e()
+              << " M: "        << std::setprecision(2) << std::setw(9) << (*ipart)->momentum().m();
+      if ((*ipart)->production_vertex()!=nullptr) {
+        debug() << " Vx: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().x()
+                << " Vy: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().y()
+                << " Vz: "       << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().z()
+                << " T: "        << std::setprecision(2) << std::setw(9) << (*ipart)->production_vertex()->position().t();
+      }
+      debug() << std::fixed << endmsg;
+    }
+  } // Debug
 
   if (!isEventReady) return StatusCode::FAILURE;
 
@@ -332,41 +287,41 @@ StatusCode DelphesSimulation::execute() {
   if (m_outRootFile!=nullptr) m_treeWriter->Fill();
 
   // FCC EDM (event-data model) based output
-  auto genParticles       = new fcc::MCParticleCollection();
-  auto genVertices        = new fcc::GenVertexCollection();
-  auto genJets            = new fcc::GenJetCollection();
-  auto genJetsFlavor      = new fcc::IntTagCollection();
-  auto recMuons           = new fcc::ParticleCollection();
-  auto recITagMuons       = new fcc::TagCollection();
-  auto recElectrons       = new fcc::ParticleCollection();
-  auto recITagElectrons   = new fcc::TagCollection();
-  auto recCharged         = new fcc::ParticleCollection();
-  auto recNeutral         = new fcc::ParticleCollection();
-  auto recPhotons         = new fcc::ParticleCollection();
-  auto recITagPhotons     = new fcc::TagCollection();
-  auto recJets            = new fcc::JetCollection();
-  auto recJetParts        = new fcc::ParticleCollection();
-  auto recJetsFlavor      = new fcc::IntTagCollection();
-  auto recBTags           = new fcc::TagCollection();
-  auto recCTags           = new fcc::TagCollection();
-  auto recTauTags         = new fcc::TagCollection();
-  auto recMETs            = new fcc::METCollection();
+  auto genParticles       = m_handleGenParticles.createAndPut();
+  auto genVertices        = m_handleGenVertices.createAndPut();
+  auto genJets            = m_handleGenJets.createAndPut();
+  auto genJetsFlavor      = m_handleGenJetsFlavor.createAndPut();
+  auto recMuons           = m_handleRecMuons.createAndPut();
+  auto recITagMuons       = m_handleRecITagMuons.createAndPut();
+  auto recElectrons       = m_handleRecElectrons.createAndPut();
+  auto recITagElectrons   = m_handleRecITagElectrons.createAndPut();
+  auto recCharged         = m_handleRecCharged.createAndPut();
+  auto recNeutral         = m_handleRecNeutral.createAndPut();
+  auto recPhotons         = m_handleRecPhotons.createAndPut();
+  auto recITagPhotons     = m_handleRecITagPhotons.createAndPut();
+  auto recJets            = m_handleRecJets.createAndPut();
+  auto recJetParts        = m_handleRecJetParts.createAndPut();
+  auto recJetsFlavor      = m_handleRecJetsFlavor.createAndPut();
+  auto recBTags           = m_handleRecBTags.createAndPut();
+  auto recCTags           = m_handleRecCTags.createAndPut();
+  auto recTauTags         = m_handleRecTauTags.createAndPut();
+  auto recMETs            = m_handleRecMETs.createAndPut();
 
-  auto genJetsToMC        = new fcc::GenJetParticleAssociationCollection();
-  auto genJetsToFlavor    = new fcc::GenJetIntTagAssociationCollection();
-  auto recMuonsToMC       = new fcc::ParticleMCParticleAssociationCollection();
-  auto recMuonsToITags    = new fcc::ParticleTagAssociationCollection();
-  auto recElectronsToMC   = new fcc::ParticleMCParticleAssociationCollection();
-  auto recElectronsToITags= new fcc::ParticleTagAssociationCollection();
-  auto recChargedToMC     = new fcc::ParticleMCParticleAssociationCollection();
-  auto recNeutralToMC     = new fcc::ParticleMCParticleAssociationCollection();
-  auto recPhotonsToMC     = new fcc::ParticleMCParticleAssociationCollection();
-  auto recPhotonsToITags  = new fcc::ParticleTagAssociationCollection();
-  auto recJetsToParts     = new fcc::JetParticleAssociationCollection();
-  auto recJetsToFlavor    = new fcc::JetIntTagAssociationCollection();
-  auto recJetsToBTags     = new fcc::JetTagAssociationCollection();
-  auto recJetsToCTags     = new fcc::JetTagAssociationCollection();
-  auto recJetsToTauTags   = new fcc::JetTagAssociationCollection();
+  auto genJetsToMC        = m_handleGenJetsToMC.createAndPut();
+  auto genJetsToFlavor    = m_handleGenJetsToFlavor.createAndPut();
+  auto recMuonsToMC       = m_handleRecMuonsToMC.createAndPut();
+  auto recMuonsToITags    = m_handleRecMuonsToITags.createAndPut();
+  auto recElectronsToMC   = m_handleRecElectronsToMC.createAndPut();
+  auto recElectronsToITags= m_handleRecElectronsToITags.createAndPut();
+  auto recChargedToMC     = m_handleRecChargedToMC.createAndPut();
+  auto recNeutralToMC     = m_handleRecNeutralToMC.createAndPut();
+  auto recPhotonsToMC     = m_handleRecPhotonsToMC.createAndPut();
+  auto recPhotonsToITags  = m_handleRecPhotonsToITags.createAndPut();
+  auto recJetsToParts     = m_handleRecJetsToParts.createAndPut();
+  auto recJetsToFlavor    = m_handleRecJetsToFlavor.createAndPut();
+  auto recJetsToBTags     = m_handleRecJetsToBTags.createAndPut();
+  auto recJetsToCTags     = m_handleRecJetsToCTags.createAndPut();
+  auto recJetsToTauTags   = m_handleRecJetsToTauTags.createAndPut();
 
   // Fill FCC collections
   m_genJetOutArray   = m_Delphes->ImportArray(m_DelphesGenJetsArrayName.c_str());   // "GenJetFinder/jets"
@@ -427,42 +382,6 @@ StatusCode DelphesSimulation::execute() {
                                                                                                              recTauTags      , recJetsToTauTags);
   if (m_metOutArray     !=nullptr && m_shtOutArray!=nullptr) DelphesSimulation::ConvertMET(m_metOutArray, m_shtOutArray, recMETs);
 
-  // Save FCC-EDM collections to FCCSw data store
-  m_handleGenParticles.put(        genParticles       );
-  m_handleGenVertices.put(         genVertices        );
-  m_handleGenJets.put(             genJets            );
-  m_handleGenJetsToMC.put(         genJetsToMC        );
-  m_handleGenJetsFlavor.put(       genJetsFlavor      );
-  m_handleGenJetsToFlavor.put(     genJetsToFlavor    );
-  m_handleRecMuons.put(            recMuons           );
-  m_handleRecITagMuons.put(        recITagMuons       );
-  m_handleRecMuonsToMC.put(        recMuonsToMC       );
-  m_handleRecMuonsToITags.put(     recMuonsToITags    );
-  m_handleRecElectrons.put(        recElectrons       );
-  m_handleRecITagElectrons.put(    recITagElectrons   );
-  m_handleRecElectronsToMC.put(    recElectronsToMC   );
-  m_handleRecElectronsToITags.put( recElectronsToITags);
-  m_handleRecCharged.put(          recCharged         );
-  m_handleRecChargedToMC.put(      recChargedToMC     );
-  m_handleRecNeutral.put(          recNeutral         );
-  m_handleRecNeutralToMC.put(      recNeutralToMC     );
-  m_handleRecPhotons.put(          recPhotons         );
-  m_handleRecITagPhotons.put(      recITagPhotons     );
-  m_handleRecPhotonsToMC.put(      recPhotonsToMC     );
-  m_handleRecPhotonsToITags.put(   recPhotonsToITags  );
-  m_handleRecJets.put(             recJets            );
-  m_handleRecJetParts.put(         recJetParts        );
-  m_handleRecJetsToParts.put(      recJetsToParts     );
-  m_handleRecJetsFlavor.put(       recJetsFlavor      );
-  m_handleRecJetsToFlavor.put(     recJetsToFlavor    );
-  m_handleRecBTags.put(            recBTags           );
-  m_handleRecJetsToBTags.put(      recJetsToBTags     );
-  m_handleRecCTags.put(            recCTags           );
-  m_handleRecJetsToCTags.put(      recJetsToCTags     );
-  m_handleRecTauTags.put(          recTauTags         );
-  m_handleRecJetsToTauTags.put(    recJetsToTauTags   );
-  m_handleRecMETs.put(             recMETs            );
-
   // Initialize for next event reading (Will also zero Delphes arrays)
   if (m_outRootFile!=nullptr) m_treeWriter->Clear();
   m_Delphes->Clear();
@@ -476,11 +395,6 @@ StatusCode DelphesSimulation::finalize() {
   // Finish Delphes task
   m_Delphes->FinishTask();
 
-  // Close HepMC input file if defined
-  if (m_inHepMCFile!=nullptr) {
-
-    fclose(m_inHepMCFile);
-  }
 
   // Write output to Root file
   if (m_outRootFile!=nullptr) {
@@ -490,14 +404,14 @@ StatusCode DelphesSimulation::finalize() {
 
     if (m_outRootFile!=nullptr) {delete m_outRootFile; m_outRootFile=nullptr;}
   }
-  
+
   info() << "Exiting Delphes..." << endmsg;
-  
+
   // Clear memory
   if (m_HepMCReader.get()!=nullptr) m_HepMCReader.reset(); // Releases also the memory allocated by inHepMCFile
   if (m_Delphes.get()    !=nullptr) m_Delphes.reset();     // Releases also the memory allocated by treeWriter
   if (m_confReader.get() !=nullptr) m_confReader.reset();
-  
+
   return GaudiAlgorithm::finalize();
 }
 
@@ -667,7 +581,7 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
 
     } // Debug
   }
-}   
+}
 
 // Convert internal Delphes objects: GenJets to FCC EDM: GenJets & GenJets<->MCParticles association & GenJets<->PDG of leading constituent
 void DelphesSimulation::ConvertGenJets(const TObjArray* Input,
@@ -1033,7 +947,7 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
   std::map<int,int> refIDDelphIDFCC; // ID Delphes, ID FCC EDM
 
   for(int j = 0; j < Input->GetEntries(); ++j) {
-      
+
     auto cand = static_cast<Candidate *>(Input->At(j));
 
     // Jet info
@@ -1174,7 +1088,7 @@ void DelphesSimulation::ConvertJets(const TObjArray* Input,
     if (msgLevel() <= MSG::DEBUG) debug() << endmsg;
 
   } // For - jets
-}   
+}
 
 //
 // Recursive method to find an id of MCParticle related to the given Delphes Candidate object,
@@ -1255,4 +1169,4 @@ void DelphesSimulation::ConvertMET(const TObjArray* InputMET,
               << endmsg;
     } // Debug
   }
-}   
+}

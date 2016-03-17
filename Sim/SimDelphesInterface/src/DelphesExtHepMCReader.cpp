@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** \class DelphesExtHepMCReader
+/** \class HepMCToDelphes
  *
  *  Reads HepMC file or HepMC event from transient data store
  *
@@ -26,7 +26,7 @@
  *    - reads either HepMC event directly from memory of from a file
  */
 
-#include "DelphesExtHepMCReader.h"
+#include "HepMCToDelphes.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -61,34 +61,22 @@ static const int kBufferSize  = 1024;
 
 //---------------------------------------------------------------------------
 
-DelphesExtHepMCReader::DelphesExtHepMCReader() :
-  fInputFile(0), fBuffer(0), fPDG(0),
+HepMCToDelphes::HepMCToDelphes() :
+  fPDG(0),
   fVertexCounter(-1), fInCounter(-1), fOutCounter(-1),
   fParticleCounter(0)
 {
-  fBuffer = new char[kBufferSize];
-
   fPDG = TDatabasePDG::Instance();
 }
 
 //---------------------------------------------------------------------------
 
-DelphesExtHepMCReader::~DelphesExtHepMCReader()
+HepMCToDelphes::~HepMCToDelphes()
 {
-  if(fBuffer) delete[] fBuffer;
 }
 
 //---------------------------------------------------------------------------
-
-void DelphesExtHepMCReader::SetInputFile(FILE *inputFile)
-{
-  fInputFile       = inputFile;
-  fInputFileLength = ftello(fInputFile);
-}
-
-//---------------------------------------------------------------------------
-
-void DelphesExtHepMCReader::Clear()
+void HepMCToDelphes::Clear()
 {
   fStateSize = 0;
   fState.clear();
@@ -105,24 +93,7 @@ void DelphesExtHepMCReader::Clear()
 }
 
 //---------------------------------------------------------------------------
-
-bool DelphesExtHepMCReader::ReadEventFromFile(DelphesFactory *factory,
-                                              TObjArray *allParticleOutputArray,
-                                              TObjArray *stableParticleOutputArray,
-                                              TObjArray *partonOutputArray)
-{
-  // Read line-by-line until event complete
-  while(true) {
-
-    ReadBlock(factory, allParticleOutputArray, stableParticleOutputArray, partonOutputArray);
-    if (EventReady() || (ftello(fInputFile)==fInputFileLength)) break;
-  }
-  if (EventReady()) return true;
-  else              return false;
-}
-
-//---------------------------------------------------------------------------
-bool DelphesExtHepMCReader::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
+bool HepMCToDelphes::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
                                                TObjArray *allParticleOutputArray,
                                                TObjArray *stableParticleOutputArray,
                                                TObjArray *partonOutputArray)
@@ -261,212 +232,7 @@ bool DelphesExtHepMCReader::ReadEventFromStore(const HepMC::GenEvent *hepMCEvent
 
 //---------------------------------------------------------------------------
 
-bool DelphesExtHepMCReader::EventReady()
-{
-  return (fVertexCounter == 0) && (fInCounter == 0) && (fOutCounter == 0);
-}
-
-//---------------------------------------------------------------------------
-
-bool DelphesExtHepMCReader::ReadBlock(DelphesFactory *factory,
-  TObjArray *allParticleOutputArray,
-  TObjArray *stableParticleOutputArray,
-  TObjArray *partonOutputArray)
-{
-  map< int, pair< int, int > >::iterator itMotherMap;
-  map< int, pair< int, int > >::iterator itDaughterMap;
-  char key, momentumUnit[4], positionUnit[3];
-  int i, rc, state;
-  double weight;
-
-  if(!fgets(fBuffer, kBufferSize, fInputFile)) return kFALSE;
-
-  DelphesStream bufferStream(fBuffer + 1);
-
-  key = fBuffer[0];
-
-  if(key == 'E')
-  {
-    Clear();
-
-    rc = bufferStream.ReadInt(fEventNumber)
-      && bufferStream.ReadInt(fMPI)
-      && bufferStream.ReadDbl(fScale)
-      && bufferStream.ReadDbl(fAlphaQCD)
-      && bufferStream.ReadDbl(fAlphaQED)
-      && bufferStream.ReadInt(fProcessID)
-      && bufferStream.ReadInt(fSignalCode)
-      && bufferStream.ReadInt(fVertexCounter)
-      && bufferStream.ReadInt(fBeamCode[0])
-      && bufferStream.ReadInt(fBeamCode[1])
-      && bufferStream.ReadInt(fStateSize);
-
-    if(!rc)
-    {
-      cerr << "** ERROR: " << "invalid event format" << endl;
-      return kFALSE;
-    }
-
-    for(i = 0; i < fStateSize; ++i)
-    {
-      rc = rc && bufferStream.ReadInt(state);
-      fState.push_back(state);
-    }
-
-    rc = rc && bufferStream.ReadInt(fWeightSize);
-
-    if(!rc)
-    {
-      cerr << "** ERROR: " << "invalid event format" << endl;
-      return kFALSE;
-    }
-
-    for(i = 0; i < fWeightSize; ++i)
-    {
-      rc = rc && bufferStream.ReadDbl(weight);
-      fWeight.push_back(weight);
-    }
-
-    if(!rc)
-    {
-      cerr << "** ERROR: " << "invalid event format" << endl;
-      return kFALSE;
-    }
-  }
-  else if(key == 'U')
-  {
-    rc = sscanf(fBuffer + 1, "%3s %2s", momentumUnit, positionUnit);
-
-    if(rc != 2)
-    {
-      cerr << "** ERROR: " << "invalid units format" << endl;
-      return kFALSE;
-    }
-
-    if(strncmp(momentumUnit, "GEV", 3) == 0)
-    {
-      fMomentumCoefficient = 1.0;
-    }
-    else if(strncmp(momentumUnit, "MEV", 3) == 0)
-    {
-      fMomentumCoefficient = 0.001;
-    }
-    
-    if(strncmp(positionUnit, "MM", 3) == 0)
-    {
-      fPositionCoefficient = 1.0;
-    }
-    else if(strncmp(positionUnit, "CM", 3) == 0)
-    {
-      fPositionCoefficient = 10.0;
-    }
-  }
-  else if(key == 'F')
-  {
-    rc = bufferStream.ReadInt(fID1)
-      && bufferStream.ReadInt(fID2)
-      && bufferStream.ReadDbl(fX1)
-      && bufferStream.ReadDbl(fX2)
-      && bufferStream.ReadDbl(fScalePDF)
-      && bufferStream.ReadDbl(fPDF1)
-      && bufferStream.ReadDbl(fPDF2);
-
-    if(!rc)
-    {
-      cerr << "** ERROR: " << "invalid PDF format" << endl;
-      return kFALSE;
-    }
-  }
-  else if(key == 'V' && fVertexCounter > 0)
-  {
-    rc = bufferStream.ReadInt(fOutVertexCode)
-      && bufferStream.ReadInt(fVertexID)
-      && bufferStream.ReadDbl(fX)
-      && bufferStream.ReadDbl(fY)
-      && bufferStream.ReadDbl(fZ)
-      && bufferStream.ReadDbl(fT)
-      && bufferStream.ReadInt(fInCounter)
-      && bufferStream.ReadInt(fOutCounter);
-
-    if(!rc)
-    {
-      cerr << "** ERROR: " << "invalid vertex format" << endl;
-      return kFALSE;
-    }
-    --fVertexCounter;
-  }
-  else if(key == 'P' && fOutCounter > 0)
-  {
-    rc = bufferStream.ReadInt(fParticleCode)
-      && bufferStream.ReadInt(fPID)
-      && bufferStream.ReadDbl(fPx)
-      && bufferStream.ReadDbl(fPy)
-      && bufferStream.ReadDbl(fPz)
-      && bufferStream.ReadDbl(fE)
-      && bufferStream.ReadDbl(fMass)
-      && bufferStream.ReadInt(fStatus)
-      && bufferStream.ReadDbl(fTheta)
-      && bufferStream.ReadDbl(fPhi)
-      && bufferStream.ReadInt(fInVertexCode);
-
-    if(!rc)
-    {
-      cerr << "** ERROR: " << "invalid particle format" << endl;
-      return kFALSE;
-    }
-
-    if(fInVertexCode < 0)
-    {
-      itMotherMap = fMotherMap.find(fInVertexCode);
-      if(itMotherMap == fMotherMap.end())
-      {
-        fMotherMap[fInVertexCode] = make_pair(fParticleCounter, -1);
-      }
-      else
-      {
-        itMotherMap->second.second = fParticleCounter;
-      }
-    }
-
-    if(fInCounter <= 0)
-    {
-      itDaughterMap = fDaughterMap.find(fOutVertexCode);
-      if(itDaughterMap == fDaughterMap.end())
-      {
-        fDaughterMap[fOutVertexCode] = make_pair(fParticleCounter, fParticleCounter);
-      }
-      else
-      {
-        itDaughterMap->second.second = fParticleCounter;
-      }
-    }
-
-    AnalyzeParticle(factory, allParticleOutputArray,
-      stableParticleOutputArray, partonOutputArray);
-
-    if(fInCounter > 0)
-    {
-      --fInCounter;
-    }
-    else
-    {
-      --fOutCounter;
-    }
-
-    ++fParticleCounter;
-  }
-
-  if(EventReady())
-  {
-    FinalizeParticles(allParticleOutputArray);
-  }
-
-  return kTRUE;
-}
-
-//---------------------------------------------------------------------------
-
-void DelphesExtHepMCReader::MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readStopWatch, TStopwatch *procStopWatch)
+void HepMCToDelphes::MakeEventBranch(ExRootTreeBranch *branch, TStopwatch *readStopWatch, TStopwatch *procStopWatch)
 {
   HepMCEvent *element;
 
@@ -494,7 +260,7 @@ void DelphesExtHepMCReader::MakeEventBranch(ExRootTreeBranch *branch, TStopwatch
 
 //---------------------------------------------------------------------------
 
-void DelphesExtHepMCReader::AnalyzeParticle(DelphesFactory *factory,
+void HepMCToDelphes::AnalyzeParticle(DelphesFactory *factory,
   TObjArray *allParticleOutputArray,
   TObjArray *stableParticleOutputArray,
   TObjArray *partonOutputArray)
@@ -561,7 +327,7 @@ void DelphesExtHepMCReader::AnalyzeParticle(DelphesFactory *factory,
 
 //---------------------------------------------------------------------------
 
-void DelphesExtHepMCReader::FinalizeParticles(TObjArray *allParticleOutputArray)
+void HepMCToDelphes::FinalizeParticles(TObjArray *allParticleOutputArray)
 {
   Candidate *candidate;
   map< int, pair< int, int > >::iterator itMotherMap;
