@@ -42,7 +42,7 @@
   <detectors>
     <detector id="0" name="BoxECal" type="TestBox" readout="SiliconHits" sensitive="true">
       <material name="Silicon"/>
-      <sensitive type="Geant4Calorimeter"/>
+      <sensitive type="SimpleTrackerSD"/><!--Geant4Calorimeter"/>-->
       <dimensions x="box_x" y="box_y" z="box_z"/>
       <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>
