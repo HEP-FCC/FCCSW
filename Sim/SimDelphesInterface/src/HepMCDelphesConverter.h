@@ -33,7 +33,7 @@ public:
   ~HepMCDelphesConverter() {};
 
   /// Fill vertices and particles into arrays and add them through the factory
-  StatusCode hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray);
+  StatusCode hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray) const;
 
 private:
   /// Map to store vertex to particle relations
@@ -41,7 +41,7 @@ private:
   /// Sets relations of particles
   void setRelationIndices(TObjArray *allParticleOutputArray,
                          const VertexParticleMap& daughterMap,
-                         const VertexParticleMap& motherMap);
+                         const VertexParticleMap& motherMap) const;
 
   /// Database to get charge
   const TDatabasePDG *m_pdg;

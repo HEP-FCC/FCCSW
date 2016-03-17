@@ -27,7 +27,7 @@ HepMCDelphesConverter::HepMCDelphesConverter() :
 StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
                                                TObjArray *allParticleOutputArray,
                                                TObjArray *stableParticleOutputArray,
-                                               TObjArray *partonOutputArray)
+                                               TObjArray *partonOutputArray) const
 {
   if (hepMCEvent->is_valid()) {
     // Vertex ID -> first mother particle, last mother particle
@@ -137,7 +137,7 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
 
 void HepMCDelphesConverter::setRelationIndices(TObjArray *allParticleOutputArray,
                                               const VertexParticleMap& daughterMap,
-                                              const VertexParticleMap& motherMap)
+                                              const VertexParticleMap& motherMap) const
 {
   for(int i = 0; i < allParticleOutputArray->GetEntriesFast(); ++i)
   {
