@@ -9,7 +9,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 ThetaMax = -0.45, # rad
                                 PhiMin = 1.6, # rad
                                 PhiMax = 1.6) # rad
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun)
 gen.DataOutputs.hepmc.Path = "hepmc"
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
@@ -36,7 +36,8 @@ from Configurables import G4SimAlg, G4SaveCalHits
 savecaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
-geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits"])
+geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits",
+                                          "InspectHitsCollectionsTool"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import FCCDataSvc, PodioOutput
