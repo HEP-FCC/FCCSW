@@ -6,7 +6,7 @@
 #include "HepMC/GenEvent.h"
 
 /** @class IHepMCMergeTool IHepMCMergeTool.h "Generation/IHepMCMergeTool.h"
- * 
+ *
  *  Abstract interface to merge HepMC Events
  *
  */
@@ -17,8 +17,8 @@ class IHepMCMergeTool : virtual public IAlgTool {
 public:
   static const InterfaceID& interfaceID() { return IID_IHepMCMergeTool ; }
 
-  /// Turn a vector of signal event and subsequent pileup events into a merged event.
-  virtual HepMC::GenEvent* merge(const std::vector<HepMC::GenEvent>& eventVector) = 0;
+  /// Turn a signal event and a vector of pileup events into a merged event.
+  virtual StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) = 0;
 
 };
 

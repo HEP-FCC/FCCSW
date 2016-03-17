@@ -43,17 +43,16 @@ StatusCode HepMCReader::initialize() {
 }
 
 StatusCode HepMCReader::execute() {
-  auto tmpEvent = m_hepmchandle.createAndPut();
+  auto theEvent = m_hepmchandle.createAndPut();
   const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();
   std::vector<HepMC::GenEvent> eventVector;
   eventVector.reserve(numPileUp+1);
 
-  StatusCode sc = m_signalFileReader->readNextEvent(*tmpEvent);
+  StatusCode sc = m_signalFileReader->readNextEvent(*theEvent);
   if (StatusCode::SUCCESS != sc) {
     return sc;
   }
-  m_vertexSmearingTool->smearVertex(*tmpEvent);
-  eventVector.push_back(*tmpEvent);
+  m_vertexSmearingTool->smearVertex(*theEvent);
   for (unsigned int i_pileup=0; i_pileup < numPileUp; ++i_pileup) {
     auto puEvt = HepMC::GenEvent();
     sc = m_pileupFileReader->readNextEvent(puEvt);
@@ -63,8 +62,7 @@ StatusCode HepMCReader::execute() {
     m_vertexSmearingTool->smearVertex(puEvt);
     eventVector.push_back(std::move(puEvt));
   }
-  tmpEvent = m_HepMCMergeTool->merge(eventVector);
-  return StatusCode::SUCCESS;
+  return m_HepMCMergeTool->merge(*theEvent, eventVector);
 }
 
 
