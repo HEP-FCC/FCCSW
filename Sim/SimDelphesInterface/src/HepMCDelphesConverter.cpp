@@ -24,10 +24,10 @@ HepMCDelphesConverter::HepMCDelphesConverter() :
 {
 }
 
-StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory,
-                                               TObjArray *allParticleOutputArray,
-                                               TObjArray *stableParticleOutputArray,
-                                               TObjArray *partonOutputArray) const
+StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent* hepMCEvent, DelphesFactory& factory,
+                                               TObjArray& allParticleOutputArray,
+                                               TObjArray& stableParticleOutputArray,
+                                               TObjArray& partonOutputArray) const
 {
   if (hepMCEvent->is_valid()) {
     // Vertex ID -> first mother particle, last mother particle
@@ -49,17 +49,17 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
     std::map< int, std::pair< int, int > >::iterator itDaughterMap;
 
     for (auto ipart = hepMCEvent->particles_begin(); ipart != hepMCEvent->particles_end(); ++ipart) {
-      auto candidate = factory->NewCandidate();
+      auto candidate = factory.NewCandidate();
       // Particle info
-      const HepMC::GenParticle *hepMCPart = *ipart;
+      const HepMC::GenParticle& hepMCPart = **ipart;
 
-      candidate->PID          = hepMCPart->pdg_id();
-      candidate->Status       = hepMCPart->status();
-      candidate->Mass         = hepMCPart->generatedMass();
-      candidate->Momentum.SetPxPyPzE(hepMCPart->momentum().px(),
-                                     hepMCPart->momentum().py(),
-                                     hepMCPart->momentum().pz(),
-                                     hepMCPart->momentum().e());
+      candidate->PID          = hepMCPart.pdg_id();
+      candidate->Status       = hepMCPart.status();
+      candidate->Mass         = hepMCPart.generatedMass();
+      candidate->Momentum.SetPxPyPzE(hepMCPart.momentum().px(),
+                                     hepMCPart.momentum().py(),
+                                     hepMCPart.momentum().pz(),
+                                     hepMCPart.momentum().e());
       if(momentumCoefficient != 1.0) {
         candidate->Momentum *= momentumCoefficient;
       }
@@ -69,22 +69,22 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
       int outVertexCode = 0;
 
       // Production vertex info
-      if (hepMCPart->production_vertex()) {
-        const HepMC::GenVertex *hepMCVertex = hepMCPart->production_vertex();
-        outVertexCode = hepMCVertex->barcode();
+      if (hepMCPart.production_vertex()) {
+        const HepMC::GenVertex& hepMCVertex = *hepMCPart.production_vertex();
+        outVertexCode = hepMCVertex.barcode();
 
         candidate->M1 = outVertexCode;
-        candidate->Position.SetXYZT(hepMCVertex->position().x(),
-                                    hepMCVertex->position().y(),
-                                    hepMCVertex->position().z(),
-                                    hepMCVertex->position().t());
+        candidate->Position.SetXYZT(hepMCVertex.position().x(),
+                                    hepMCVertex.position().y(),
+                                    hepMCVertex.position().z(),
+                                    hepMCVertex.position().t());
         if(positionCoefficient != 1.0) {
           candidate->Position *= positionCoefficient;
         }
       } else { // Particle is orphan
         outVertexCode = 0;
 
-        if (0 <= hepMCPart->end_vertex()->particles_in_size()) {
+        if (0 <= hepMCPart.end_vertex()->particles_in_size()) {
           std::cout << "********************** THIS SHOULD NOT HAPPEN" << std::endl;
         }
         candidate->Position.SetXYZT(0, 0, 0, 0);
@@ -93,13 +93,13 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
 
       // Stable particle? => Create std::map
       int inVertexCode = 0;
-      if (hepMCPart->end_vertex()) {
-        inVertexCode = hepMCPart->end_vertex()->barcode();
+      if (hepMCPart.end_vertex()) {
+        inVertexCode = hepMCPart.end_vertex()->barcode();
       }
       if (inVertexCode < 0) {
         candidate->D1 = inVertexCode;
-        int motherID      = (*(hepMCPart->end_vertex()->particles_in_const_begin()))->barcode()-1;
-        int motherIDRange = hepMCPart->end_vertex()->particles_in_size()-1;
+        int motherID      = (*(hepMCPart.end_vertex()->particles_in_const_begin()))->barcode()-1;
+        int motherIDRange = hepMCPart.end_vertex()->particles_in_size()-1;
         itMotherMap = motherMap.find(inVertexCode);
         if (itMotherMap == motherMap.end()) motherMap[inVertexCode] = std::make_pair(motherID,motherID+motherIDRange);
       } else {
@@ -107,8 +107,8 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
       }
 
       if (outVertexCode < 0) {
-        int daughterID      = (*(hepMCPart->production_vertex()->particles_out_const_begin()))->barcode()-1;
-        int daughterIDRange = hepMCPart->production_vertex()->particles_out_size()-1;
+        int daughterID      = (*(hepMCPart.production_vertex()->particles_out_const_begin()))->barcode()-1;
+        int daughterIDRange = hepMCPart.production_vertex()->particles_out_size()-1;
         itDaughterMap = daughterMap.find(outVertexCode);
         if(itDaughterMap == daughterMap.end()) daughterMap[outVertexCode] = std::make_pair(daughterID,daughterID+daughterIDRange);
       }
@@ -116,13 +116,13 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
       auto pdgParticle = m_pdg->GetParticle(candidate->PID);
       candidate->Charge = pdgParticle ? int(pdgParticle->Charge() / 3.0) : -999;
 
-      allParticleOutputArray->Add(candidate);
+      allParticleOutputArray.Add(candidate);
       if(pdgParticle) {
         int pdgCode = TMath::Abs(candidate->PID);
         if(candidate->Status == 1 && pdgParticle->Stable()) {
-          stableParticleOutputArray->Add(candidate);
+          stableParticleOutputArray.Add(candidate);
         } else if(pdgCode <= 5 || pdgCode == 21 || pdgCode == 15) {
-          partonOutputArray->Add(candidate);
+          partonOutputArray.Add(candidate);
         }
       }
     }
@@ -135,13 +135,13 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent *hepM
   return StatusCode::FAILURE;
 }
 
-void HepMCDelphesConverter::setRelationIndices(TObjArray *allParticleOutputArray,
+void HepMCDelphesConverter::setRelationIndices(TObjArray& allParticleOutputArray,
                                               const VertexParticleMap& daughterMap,
                                               const VertexParticleMap& motherMap) const
 {
-  for(int i = 0; i < allParticleOutputArray->GetEntriesFast(); ++i)
+  for(int i = 0; i < allParticleOutputArray.GetEntriesFast(); ++i)
   {
-    auto candidate = static_cast<Candidate *>(allParticleOutputArray->At(i));
+    auto candidate = static_cast<Candidate *>(allParticleOutputArray.At(i));
 
     if(candidate->M1 > 0) {
       candidate->M1 = -1;

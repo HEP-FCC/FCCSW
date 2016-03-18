@@ -33,13 +33,13 @@ public:
   ~HepMCDelphesConverter() {};
 
   /// Fill vertices and particles into arrays and add them through the factory
-  StatusCode hepMCEventToArrays(const HepMC::GenEvent *hepMCEvent, DelphesFactory *factory, TObjArray *allParticleOutputArray, TObjArray *stableParticleOutputArray, TObjArray *partonOutputArray) const;
+  StatusCode hepMCEventToArrays(const HepMC::GenEvent* hepMCEvent, DelphesFactory& factory, TObjArray& allParticleOutputArray, TObjArray& stableParticleOutputArray, TObjArray& partonOutputArray) const;
 
 private:
   /// Map to store vertex to particle relations
   typedef std::map<int, std::pair <int, int>> VertexParticleMap;
   /// Sets relations of particles
-  void setRelationIndices(TObjArray *allParticleOutputArray,
+  void setRelationIndices(TObjArray& allParticleOutputArray,
                          const VertexParticleMap& daughterMap,
                          const VertexParticleMap& motherMap) const;
 
