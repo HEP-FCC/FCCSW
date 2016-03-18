@@ -42,8 +42,8 @@
   <detectors>
     <detector id="0" name="BoxECal" type="TestBox" readout="TrackerSiliconHits" sensitive="true">
       <material name="Silicon"/>
-      <sensitive type="Geant4Tracker"/>
-      <!-- <sensitive type="SimpleTrackerSD"/> -->
+      <!-- <sensitive type="Geant4Tracker"/> -->
+      <sensitive type="SimpleTrackerSD"/>
       <dimensions x="box_x" y="box_y" z="box_z"/>
       <position   x="0"     y="0"     z="box_z"/>
       <rotation   x="0"     y="0"     z="0"/>

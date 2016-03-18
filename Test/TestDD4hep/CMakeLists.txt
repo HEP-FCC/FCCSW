@@ -24,12 +24,23 @@ dd4hep_generate_rootmap(TestDD4hep)
 
 include(CTest)
 gaudi_add_test(TestDD4hepDumpGDML
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
                FRAMEWORK tests/options/dumpGeo.py)
-gaudi_add_test(TestDD4hepSimPGunCheckECalHits
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests
-               FRAMEWORK tests/options/sim.py)
-gaudi_add_test(TestDD4hepCheckECalHits
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests
-               COMMAND python ./scripts/readDD4hepCaloHits.py
-               DEPENDS TestDD4hepSimulatePGunECalHits)
+# gaudi_add_test(TestDD4hepSimPGunCheckECalHits
+#                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+#                FRAMEWORK tests/options/sim.py)
+# gaudi_add_test(TestDD4hepCheckECalHits
+#                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+#                COMMAND python ./scripts/readDD4hepCaloHits.py
+#                DEPENDS TestDD4hepSimulatePGunECalHits)
+gaudi_add_test(TestDD4hepInternalTrackerSD
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               FRAMEWORK tests/options/testInternalTrackerSD.py)
+gaudi_add_test(TestDD4hepExternalTrackerSD
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               FRAMEWORK tests/options/testExternalTrackerSD.py)
+gaudi_add_test(TestDD4hepCmpTrackerSDNoHits
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               COMMAND python ./scripts/cmpTrackerSdNoHits.py
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               DEPENDS TestDD4hepInternalTrackerSD TestDD4hepExternalTrackerSD)
