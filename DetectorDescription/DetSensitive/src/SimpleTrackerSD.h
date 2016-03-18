@@ -8,12 +8,14 @@
 class G4Step;
 class G4HCofThisEvent;
 class G4TouchableHistory;
+#include "DDSegmentation/Segmentation.h"
+
 namespace det {
 class SimpleTrackerSD : public G4VSensitiveDetector
 {
 
   public:
-      SimpleTrackerSD(std::string aDetectorName, std::string aReadoutName);
+  SimpleTrackerSD(std::string aDetectorName, std::string aReadoutName, DD4hep::Geometry::Segmentation aSeg);
       ~SimpleTrackerSD();
 
       void Initialize(G4HCofThisEvent*HCE);
@@ -22,11 +24,11 @@ class SimpleTrackerSD : public G4VSensitiveDetector
       void clear();
       void DrawAll();
       void PrintAll();
+      uint64_t getCellID(G4Step* s);
 
   private:
       G4THitsCollection<DD4hep::Simulation::Geant4Hit> *trackerCollection;
-
-  public:
+      DD4hep::Geometry::Segmentation m_seg;
 };
 }
 

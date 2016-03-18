@@ -14,7 +14,9 @@ static G4VSensitiveDetector* create_example_tracker_sd(
   auto det = aLcdd.volumeManager().detector().children().at(aDetectorName);
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   std::cout<<"readout name: "<<readoutName<<std::endl;
-  return new det::SimpleTrackerSD(aDetectorName, readoutName);
+  return new det::SimpleTrackerSD(aDetectorName,
+    readoutName,
+    aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 }
 }
