@@ -1,6 +1,6 @@
 bitfieldsize = 6
 cellNo = 51
-width = 102
+width = 1020
 cellSize = width/cellNo
 signed = True
 
@@ -26,7 +26,7 @@ def pos2cell(pos):
     return int(floor((pos+0.5*cellSize)/cellSize))
 
 def z2cell(z):
-    return int(floor((z-width/2.)/cellSize))
+    return int(floor((z-width/2.+0.5*cellSize)/cellSize))
 
 from ROOT import gSystem, gROOT, TCanvas, TH2D, gStyle
 from EventStore import EventStore
