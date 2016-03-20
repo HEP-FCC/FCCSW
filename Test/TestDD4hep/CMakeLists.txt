@@ -23,24 +23,43 @@ message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
 dd4hep_generate_rootmap(TestDD4hep)
 
 include(CTest)
-gaudi_add_test(TestDD4hepDumpGDML
+gaudi_add_test(DumpGDML
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
                FRAMEWORK tests/options/dumpGeo.py)
-# gaudi_add_test(TestDD4hepSimPGunCheckECalHits
-#                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
-#                FRAMEWORK tests/options/sim.py)
-# gaudi_add_test(TestDD4hepCheckECalHits
-#                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
-#                COMMAND python ./scripts/readDD4hepCaloHits.py
-#                DEPENDS TestDD4hepSimulatePGunECalHits)
-gaudi_add_test(TestDD4hepInternalTrackerSD
+gaudi_add_test(InternalTrackerSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
-               FRAMEWORK tests/options/testInternalTrackerSD.py)
-gaudi_add_test(TestDD4hepExternalTrackerSD
+               FRAMEWORK tests/options/testDd4hepTrackerSD.py)
+gaudi_add_test(ExternalTrackerSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
-               FRAMEWORK tests/options/testExternalTrackerSD.py)
-gaudi_add_test(TestDD4hepCmpTrackerSDNoHits
+               FRAMEWORK tests/options/testSimpleTrackerSD.py)
+gaudi_add_test(CmpTrackerSDNoHits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
                COMMAND python ./scripts/cmpTrackerSdNoHits.py
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS TestDD4hepInternalTrackerSD TestDD4hepExternalTrackerSD)
+               DEPENDS InternalTrackerSD ExternalTrackerSD)
+gaudi_add_test(CmpTrackerSDDetailed
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               COMMAND python ./scripts/cmpTrackerSdDetailed.py
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               DEPENDS InternalTrackerSD ExternalTrackerSD)
+gaudi_add_test(CmpTrackerSDHitsAndClusters
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               COMMAND python ./scripts/cmpTrackerSdHitsAndClusters.py
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               DEPENDS InternalTrackerSD ExternalTrackerSD)
+gaudi_add_test(InternalCaloSD
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               FRAMEWORK tests/options/testDd4hepCaloSD.py)
+gaudi_add_test(ExternalCaloSD
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               FRAMEWORK tests/options/testSimpleCaloSD.py)
+gaudi_add_test(CmpCaloSDNoHits
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               COMMAND python ./scripts/cmpCaloSdNoHits.py
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               DEPENDS InternalCaloSD ExternalCaloSD)
+gaudi_add_test(CmpCaloSDDetailed
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
+               COMMAND python ./scripts/cmpCaloSdDetailed.py
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               DEPENDS InternalCaloSD ExternalCaloSD)

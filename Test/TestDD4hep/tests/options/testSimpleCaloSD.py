@@ -24,7 +24,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.DataInputs.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../compact/Box_ownSD.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:../compact/Box_simpleCaloSD.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc",
@@ -43,7 +43,7 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", OutputLevel=DEBUG, filename="out_externalSD_8cm.root")
+out = PodioOutput("out", OutputLevel=DEBUG, filename="out_simpleCaloSD_2cm.root")
 out.outputCommands = ["keep *"]
 
 
