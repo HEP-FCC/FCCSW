@@ -32,12 +32,11 @@ geantservice = G4SimSvc("G4SimSvc",
                         physicslist="G4FtfpBert",
                         actions="G4FullSimActions")
 
-from Configurables import G4SimAlg, G4SaveTrackerHits
-savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
-savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveTrackerHits/G4SaveTrackerHits",
+from Configurables import G4SimAlg, G4SaveCalHits
+savehcaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
+savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savehcaltool.DataOutputs.caloHits.Path = "caloHits"
+geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits",
                                           "InspectHitsCollectionsTool"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 

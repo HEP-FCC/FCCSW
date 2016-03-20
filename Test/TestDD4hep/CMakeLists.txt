@@ -47,19 +47,9 @@ gaudi_add_test(CmpTrackerSDHitsAndClusters
                COMMAND python ./scripts/cmpTrackerSdHitsAndClusters.py
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                DEPENDS InternalTrackerSD ExternalTrackerSD)
-gaudi_add_test(InternalCaloSD
+gaudi_add_test(InternalCalorimeterSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
                FRAMEWORK tests/options/testDd4hepCaloSD.py)
-gaudi_add_test(ExternalCaloSD
+gaudi_add_test(ExternalCalorimeterSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
                FRAMEWORK tests/options/testSimpleCaloSD.py)
-gaudi_add_test(CmpCaloSDNoHits
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
-               COMMAND python ./scripts/cmpCaloSdNoHits.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS InternalCaloSD ExternalCaloSD)
-gaudi_add_test(CmpCaloSDDetailed
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
-               COMMAND python ./scripts/cmpCaloSdDetailed.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS InternalCaloSD ExternalCaloSD)

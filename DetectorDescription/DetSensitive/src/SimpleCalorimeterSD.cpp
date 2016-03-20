@@ -28,7 +28,6 @@ void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   // create a collection of hits and add it to G4HCofThisEvent
   // get id for collection
-  // TODO why we create new collection without checking it exists?
   static int HCID = -1;
   calorimeterCollection = new G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName,collectionName[0]);
   if(HCID<0)
@@ -46,30 +45,26 @@ G4bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
   CLHEP::Hep3Vector midPos = 0.5*(postPos + prePos);
-  DD4hep::Simulation::Position pos(midPos.x(),
-                                   midPos.y(),
-                                   midPos.z());
+  DD4hep::Simulation::Position pos(midPos.x(), midPos.y(), midPos.z());
   CLHEP::Hep3Vector direction = postPos - prePos;
   double hit_len = direction.perp();
   // create a hit and add it to collection
   const G4Track* track = aStep->GetTrack();
   uint64_t id = getCellID(aStep);
-  DD4hep::Simulation::Geant4CalorimeterHit* hit;
+  DD4hep::Simulation::Geant4CalorimeterHit* hit, *hitMatch = nullptr;
   for(int i=0; i<calorimeterCollection->entries(); i++) {
     hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(calorimeterCollection->GetHit(i));
     if(hit->cellID == id) {
-      std::cout<<hit->cellID<<"\t=\t"<<id<<std::endl;
+      hitMatch = hit;
       continue;
     }
   }
-  if ( !hit )  {
-    hit = new  DD4hep::Simulation::Geant4CalorimeterHit(pos);
-    hit->cellID  = id;
-    calorimeterCollection->insert(hit);
+  if ( !hitMatch )  {
+    hitMatch = new  DD4hep::Simulation::Geant4CalorimeterHit(pos);
+    hitMatch->cellID  = id;
+    calorimeterCollection->insert(hitMatch);
   }
-  DD4hep::Simulation::Geant4Hit::Contribution contrib = DD4hep::Simulation::Geant4Hit::extractContribution(aStep);
-  hit->truth.push_back(contrib);
-  hit->energyDeposit += contrib.deposit;
+  hitMatch->energyDeposit += edep;
   return true;
 }
 
