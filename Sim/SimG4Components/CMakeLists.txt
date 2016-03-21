@@ -44,5 +44,6 @@ gaudi_add_test(GeantFastSimSimpleSmearingCheckSigma
                DEPENDS GeantFastSimSimpleSmearing)
 gaudi_add_test(GeantFastSimSimpleSmearingCheckNoParticles
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                COMMAND python ./scripts/geant_fastsim_checkNoParticles.py
                DEPENDS GeantFastSimSimpleSmearing)
