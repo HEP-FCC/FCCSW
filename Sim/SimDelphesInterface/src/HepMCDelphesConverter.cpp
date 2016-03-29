@@ -83,10 +83,6 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent* hepM
         }
       } else { // Particle is orphan
         outVertexCode = 0;
-
-        if (0 <= hepMCPart.end_vertex()->particles_in_size()) {
-          std::cout << "********************** THIS SHOULD NOT HAPPEN" << std::endl;
-        }
         candidate->Position.SetXYZT(0, 0, 0, 0);
         candidate->M1 = 1;
       }

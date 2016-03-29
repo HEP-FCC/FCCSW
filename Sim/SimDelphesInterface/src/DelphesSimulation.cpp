@@ -22,6 +22,7 @@
 #include "TFile.h"
 #include "TObjArray.h"
 #include "TStopwatch.h"
+#include "TRandom.h"
 
 DECLARE_COMPONENT(DelphesSimulation)
 
@@ -52,6 +53,7 @@ GaudiAlgorithm(name, svcLoc) ,
 }
 
 StatusCode DelphesSimulation::initialize() {
+  gRandom->SetSeed(1234);
   // If required, export output directly to root file
   if (m_outRootFileName!="") {
 
@@ -125,12 +127,14 @@ StatusCode DelphesSimulation::execute() {
   TStopwatch readStopWatch;
   readStopWatch.Start();
 
-  bool isEventReady = false;
+  StatusCode sc;
 
   // Read event
   const HepMC::GenEvent *hepMCEvent = m_hepmcHandle.get();
-  isEventReady = m_hepMCConverter->hepMCEventToArrays(hepMCEvent, *m_Delphes->GetFactory(), *m_allParticles, *m_stableParticles, *m_partons);
-
+  sc = m_hepMCConverter->hepMCEventToArrays(hepMCEvent, *m_Delphes->GetFactory(), *m_allParticles, *m_stableParticles, *m_partons);
+  if (!sc.isSuccess()) {
+    return sc;
+  }
   // Print debug: HepMC event info
   if (msgLevel() <= MSG::DEBUG) {
 
@@ -172,8 +176,6 @@ StatusCode DelphesSimulation::execute() {
       debug() << std::fixed << endmsg;
     }
   } // Debug
-
-  if (!isEventReady) return StatusCode::FAILURE;
 
   // Print debug: Delphes event info
   if (msgLevel() <= MSG::DEBUG) {
