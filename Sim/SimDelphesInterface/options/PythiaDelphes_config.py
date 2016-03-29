@@ -59,9 +59,10 @@ delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
-delphesRootOutFile=""
+# delphesRootOutFile="delphesOutput.root"
 #delphesRootOutFile="DelphesOutput.root"
 
+# Define all output tools that convert the Delphes collections to FCC-EDM:
 muonSaveTool = DelphesSaveChargedParticles("muons", delphesArrayName="MuonIsolation/muons")
 muonSaveTool.DataOutputs.particles.Path = "muons"
 muonSaveTool.DataOutputs.mcAssociations.Path = "muonsToMC"
@@ -74,17 +75,13 @@ eleSaveTool.DataOutputs.mcAssociations.Path = "electronsToMC"
 eleSaveTool.DataOutputs.isolationTags.Path = "electronITags"
 eleSaveTool.DataOutputs.isolationAssociations.Path = "electronsToITags"
 
-chhadSaveTool = DelphesSaveChargedParticles("charged", delphesArrayName="ChargedHadronMomentumSmearing/chargedHadrons")
+chhadSaveTool = DelphesSaveChargedParticles("charged", delphesArrayName="ChargedHadronMomentumSmearing/chargedHadrons", saveIsolation=False)
 chhadSaveTool.DataOutputs.particles.Path = "charged"
 chhadSaveTool.DataOutputs.mcAssociations.Path = "chargedToMC"
-chhadSaveTool.DataOutputs.isolationTags.Path = "chargedITags"
-chhadSaveTool.DataOutputs.isolationAssociations.Path = "chargedToITags"
 
-neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="Hcal/eflowNeutralHadrons")
+neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="Hcal/eflowNeutralHadrons", saveIsolation=False)
 neuthadSaveTool.DataOutputs.particles.Path = "neutral"
 neuthadSaveTool.DataOutputs.mcAssociations.Path = "neutralToMC"
-neuthadSaveTool.DataOutputs.isolationTags.Path = "neutralITags"
-neuthadSaveTool.DataOutputs.isolationAssociations.Path = "neutralToITags"
 
 photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonIsolation/photons")
 photonsSaveTool.DataOutputs.particles.Path = "photons"
