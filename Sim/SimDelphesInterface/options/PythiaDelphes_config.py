@@ -60,7 +60,7 @@ delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
 # delphesRootOutFile="delphesOutput.root"
-#delphesRootOutFile="DelphesOutput.root"
+delphesRootOutFile=""
 
 # Define all output tools that convert the Delphes collections to FCC-EDM:
 muonSaveTool = DelphesSaveChargedParticles("muons", delphesArrayName="MuonIsolation/muons")
