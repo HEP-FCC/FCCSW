@@ -24,6 +24,7 @@ DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aTyp
   declareOutput("isolationTags", m_isolationTags);
   declareOutput("isolationAssociations", m_isoAssociations);
   declareProperty("delphesArrayName", m_delphesArrayName);
+  declareProperty("saveIsolation", m_saveIso=true);
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
   declareProperty("DataOutputs", outputDataObjects());
@@ -42,9 +43,14 @@ StatusCode DelphesSaveChargedParticles::finalize() {
 StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) {
   // Create the collections
   auto colParticles = m_particles.createAndPut();
-  auto colITags = m_isolationTags.createAndPut();
-  auto ascColParticlesToITags = m_isoAssociations.createAndPut();
   auto ascColParticlesToMC = m_mcAssociations.createAndPut();
+
+  fcc::TagCollection* colITags(nullptr);
+  fcc::ParticleTagAssociationCollection* ascColParticlesToITags(nullptr);
+  if (m_saveIso) {
+    colITags = m_isolationTags.createAndPut();
+    ascColParticlesToITags = m_isoAssociations.createAndPut();
+  }
 
   const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
   if (delphesColl == nullptr) {

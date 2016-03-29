@@ -38,7 +38,7 @@ public:
   virtual StatusCode finalize();
   /**  Save Delphes collection to EDM.
    *   Converts neutral particles to fcc::Particle and creates associations to fcc::MCParticle
-   *   If isolation tags are defined, they are also translated and associations are created.
+   *   If isolation switch is true, isolation tags are also translated and associations are created.
    *   @param[in] delphes: reference to Delphes module
    *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some point)
    *   @return status code
@@ -56,6 +56,8 @@ private:
   DataHandle<fcc::ParticleTagAssociationCollection> m_isoAssociations;
   /// Name of the Delphes array that should be converted
   std::string m_delphesArrayName;
+  /// Switch whether to save tag information
+  bool m_saveIso;
 
 };
 

@@ -56,7 +56,8 @@ private:
   DataHandle<fcc::ParticleTagAssociationCollection> m_isoAssociations;
   /// Name of the Delphes array that should be converted
   std::string m_delphesArrayName;
-
+  /// Switch whether to save tag information
+  bool m_saveIso;
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVECHARGEDPARTICLES */
