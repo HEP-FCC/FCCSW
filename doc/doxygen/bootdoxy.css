@@ -92,6 +92,9 @@ div.line.glow {
     box-shadow: 0 0 10px cyan;
 }
 
+table .table{
+  table-layout: fixed;
+}
 
 span.lineno {
     padding-right: 4px;
