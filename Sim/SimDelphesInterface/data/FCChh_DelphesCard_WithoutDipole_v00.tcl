@@ -3,62 +3,67 @@
 #
 #  Main authors: Heather Gray (CERN)
 #                Filip Moortgat (CERN)
+#                Michele Selvaggi (UCL)
 #
-#  Released on: Sep 15th, 2015
+#  Released on: Mar 04th, 2016
 #
-#  Version: v00
+#  Version: v01
 #
-#  Configuration: FCC-hh generic detector without dipole region, no pile-up
+#  Configuration: FCC-hh generic detector with dipole region, no pile-up
 #
-
+#
 #######################################
 # Order of execution of various modules
 #######################################
 
 set ExecutionPath {
-ParticlePropagator
+  ParticlePropagator
 
-ChargedHadronTrackingEfficiency
+  ChargedHadronTrackingEfficiency
+  ElectronTrackingEfficiency
+  MuonTrackingEfficiency
 
-ElectronEfficiency
-MuonEfficiency
+  ChargedHadronMomentumSmearing
+  ElectronMomentumSmearing
+  MuonMomentumSmearing
 
-ChargedHadronMomentumSmearing
-ElectronEnergySmearing
-MuonMomentumSmearing
-
-TrackMerger
-ImpactParameterSmearing
+  TrackMerger
   
-Ecal
-Hcal
-  
-TowerMerger
-EFlowMerger
+  ECal
+  HCal
 
-PhotonEfficiency
-PhotonEnergySmearing
+  TowerMerger
+  EFlowMerger
 
-MuonIsolation
-ElectronIsolation
-PhotonIsolation
+  PhotonEfficiency
+  PhotonIsolation
 
-MissingET
+  ElectronFilter
+  ElectronIsolation
 
-GenJetFinder
-FastJetFinder
+  MuonIsolation
 
-JetEnergyScale
-  
-TauTagging
-BTagging
-CTagging
+  NeutrinoFilter
 
-UniqueObjectFinder
+  MissingET
+  GenMissingET
 
-ScalarHT
+  GenJetFinder
+  FastJetFinder
 
-TreeWriter
+  JetEnergyScale
+
+  JetFlavorAssociation
+
+  BTagging
+  CTagging
+  TauTagging
+
+  ScalarHT
+
+  UniqueObjectFinder
+
+  TreeWriter
 }
 
 #################################
@@ -66,20 +71,20 @@ TreeWriter
 #################################
 
 module ParticlePropagator ParticlePropagator {
-set InputArray Delphes/stableParticles
+  set InputArray Delphes/stableParticles
 
-set OutputArray stableParticles
-set ChargedHadronOutputArray chargedHadrons
-set ElectronOutputArray electrons
-set MuonOutputArray muons
+  set OutputArray stableParticles
+  set ChargedHadronOutputArray chargedHadrons
+  set ElectronOutputArray electrons
+  set MuonOutputArray muons
 
-# radius of the magnetic field coverage, in m
-set Radius 6.00
-# half-length of the magnetic field coverage, in m
-set HalfLength 11.5
+  # radius of the magnetic field coverage, in m
+  set Radius 6.00
+  # half-length of the magnetic field coverage, in m
+  set HalfLength 11.5
 
-# magnetic field
-set Bz 6.0
+  # magnetic field
+  set Bz 6.0
 }
 
 ####################################
@@ -87,13 +92,11 @@ set Bz 6.0
 ####################################
 
 module Efficiency ChargedHadronTrackingEfficiency {
-set InputArray ParticlePropagator/chargedHadrons
-set OutputArray chargedHadrons
+  set InputArray ParticlePropagator/chargedHadrons
+  set OutputArray chargedHadrons
 
-# add EfficiencyFormula {efficiency formula as a function of eta and pt}
-
-# tracking efficiency formula for charged hadrons
-set EfficiencyFormula { (pt <= 0.5) * (0.00) + \
+ # tracking efficiency formula for charged hadrons
+  set EfficiencyFormula { (pt <= 0.5) * (0.00) + \
 (abs(eta) <= 1.5) * (pt > 0.5 && pt <= 1) * (0.90) + \
 (abs(eta) <= 1.5) * (pt > 1) * (0.95) + \
 (abs(eta) > 1.5 && abs(eta) <= 4) * (pt > 0.5 && pt <= 1) * (0.85) + \
@@ -101,19 +104,17 @@ set EfficiencyFormula { (pt <= 0.5) * (0.00) + \
 (abs(eta) > 4 && abs(eta) <= 6) * (pt > 0.5 && pt <= 1) * (0.80) + \
 (abs(eta) > 4 && abs(eta) <= 6) * (pt > 1.0) * (0.85) + \
 (abs(eta) > 6.0) * (0.00)}
-}
+
+}  
 
 ##############################
 # Electron tracking efficiency
 ##############################
 
-module Efficiency ElectronEfficiency {
-set InputArray ParticlePropagator/electrons
-set OutputArray electrons
+module Efficiency ElectronTrackingEfficiency {
+  set InputArray ParticlePropagator/electrons
+  set OutputArray electrons
 
-# set EfficiencyFormula {efficiency formula as a function of eta and pt}
-
-# tracking efficiency formula for electrons
 # tracking efficiency formula for electrons
 set EfficiencyFormula { (pt <= 10) * (0.00) + \
 (abs(eta) <= 1.5) * (pt > 10 && pt <= 50) * (0.80) + \
@@ -123,22 +124,20 @@ set EfficiencyFormula { (pt <= 10) * (0.00) + \
 (abs(eta) > 4 && abs(eta) <= 6) * (pt > 10 && pt <= 50) * (0.70) + \
 (abs(eta) > 4 && abs(eta) <= 6) * (pt > 50) * (0.80) + \
 (abs(eta) > 6) * (0.00)}
-}
 
+}
 ##########################
 # Muon tracking efficiency
 ##########################
 
-module Efficiency MuonEfficiency {
-set InputArray ParticlePropagator/muons
-set OutputArray muons
+module Efficiency MuonTrackingEfficiency {
+  set InputArray ParticlePropagator/muons
+  set OutputArray muons
 
-# set EfficiencyFormula {efficiency formula as a function of eta and pt}
-
-# tracking efficiency formula for muons
-set EfficiencyFormula { (pt <= 5) * (0.00) + \
-(abs(eta) <= 1.5) * (pt > 5 ) * (0.99) + \
-(abs(eta) <= 4 & abs(eta) > 1.5) * (pt > 5 ) * (0.99) + \
+ # tracking efficiency formula for muons
+set EfficiencyFormula { (pt <= 10) * (0.00) + \
+(abs(eta) <= 1.5) * (pt > 10 ) * (0.99) + \
+(abs(eta) <= 4 & abs(eta) > 1.5) * (pt > 10 ) * (0.99) + \
 (abs(eta) > 4) * (0.00)}
 }
 
@@ -147,8 +146,8 @@ set EfficiencyFormula { (pt <= 5) * (0.00) + \
 ########################################
 
 module MomentumSmearing ChargedHadronMomentumSmearing {
-set InputArray ChargedHadronTrackingEfficiency/chargedHadrons
-set OutputArray chargedHadrons
+  set InputArray ChargedHadronTrackingEfficiency/chargedHadrons
+  set OutputArray chargedHadrons
 
 # set ResolutionFormula {resolution formula as a function of eta and pt}
 
@@ -156,7 +155,7 @@ set OutputArray chargedHadrons
 #
 # Automatically generated tracker resolution formula for layout: FCChh_Option2 (by Z. Drasal, CERN)
 #
-# Central only (no Dipole)
+# Central and Dipole
 #
 set ResolutionFormula {    (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00193570) + \
    (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.001936 + (pt-5.000000)* 0.000006) + \
@@ -195,44 +194,62 @@ set ResolutionFormula {    (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 0.
    (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (132.755771 + (pt-1000.000000)* 0.132756) + \
    (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 10000.0000) * (1327.556880*pt/10000.000000)
 }
-}
-#################################
-# Energy resolution for electrons
-#################################
 
-module EnergySmearing ElectronEnergySmearing {
-set InputArray ElectronEfficiency/electrons
-set OutputArray electrons
-
-# set ResolutionFormula {resolution formula as a function of eta and energy}
-
-# check compared to compare to tracket resolution for low			
-# resolution formula for electrons
-set ResolutionFormula { 
-(abs(eta) <= 1.5) * sqrt(energy^2*0.01^2 + energy*0.10^2) + \
-(abs(eta) > 1.5 && abs(eta) <= 2.5) * sqrt(energy^2*0.01^2 + energy*0.10^2) + \
-(abs(eta) > 2.5 && abs(eta) <= 4.0) * sqrt(energy^2*0.01^2 + energy*0.10^2) + \
-(abs(eta) > 4.0 && abs(eta) <= 6.0) *  sqrt(energy^2*0.01^2  + energy*0.10^2)}
 }
 
 
-#################################
-# Energy resolution for photons
-#################################
+###################################
+# Momentum resolution for electrons
+###################################
 
-module EnergySmearing PhotonEnergySmearing {
-set InputArray PhotonEfficiency/photons
-set OutputArray photons
+module MomentumSmearing ElectronMomentumSmearing {
+  set InputArray ElectronTrackingEfficiency/electrons
+  set OutputArray electrons
 
-# set ResolutionFormula {resolution formula as a function of eta and energy}
+ # set ResolutionFormula {resolution formula as a function of eta and pt}
 
-# check compared to compare to track resolution for low			
-# resolution formula for photons
-set ResolutionFormula { 
-(abs(eta) <= 1.5) * sqrt(energy^2*0.01^2 + energy*0.10^2) + \
-(abs(eta) > 1.5 && abs(eta) <= 2.5) * sqrt(energy^2*0.01^2 + energy*0.10^2) + \
-(abs(eta) > 2.5 && abs(eta) <= 4.0) * sqrt(energy^2*0.01^2 + energy*0.10^2) + \
-(abs(eta) > 4.0 && abs(eta) <= 6.0) *  sqrt(energy^2*0.01^2  + energy*0.10^2)}
+# resolution formula for muons
+# Automatically generated tracker resolution formula for layout: FCChh_Option2 (by Z. Drasal, CERN)
+# Central and Dipole
+#
+set ResolutionFormula {    (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00193570) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.001936 + (pt-5.000000)* 0.000006) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.001968 + (pt-10.000000)* 0.000007) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.002563 + (pt-100.000000)* 0.000014) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.014796 + (pt-1000.000000)* 0.000015) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 10000.0000) * (0.146425*pt/10000.000000) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00237136) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.002371 + (pt-5.000000)* 0.000012) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.002433 + (pt-10.000000)* 0.000008) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.003169 + (pt-100.000000)* 0.000015) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.016485 + (pt-1000.000000)* 0.000016) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 10000.0000) * (0.162501*pt/10000.000000) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00434869) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.004349 + (pt-5.000000)* 0.000033) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.004512 + (pt-10.000000)* 0.000030) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.007232 + (pt-100.000000)* 0.000050) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.052675 + (pt-1000.000000)* 0.000052) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 10000.0000) * (0.524273*pt/10000.000000) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.01258448) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.012584 + (pt-5.000000)* 0.000222) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.013697 + (pt-10.000000)* 0.000395) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.049225 + (pt-100.000000)* 0.000470) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.471921 + (pt-1000.000000)* 0.000472) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 10000.0000) * (4.717097*pt/10000.000000) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.04369468) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.043695 + (pt-5.000000)* 0.003229) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.059837 + (pt-10.000000)* 0.004451) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.460469 + (pt-100.000000)* 0.004586) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (4.587598 + (pt-1000.000000)* 0.004587) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 10000.0000) * (45.874268*pt/10000.000000) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.67948461) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.679485 + (pt-5.000000)* 0.131259) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 10.0000 && pt < 100.0000) * (1.335781 + (pt-10.000000)* 0.132674) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 100.0000 && pt < 1000.0000) * (13.276407 + (pt-100.000000)* 0.132755) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (132.755771 + (pt-1000.000000)* 0.132756) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 10000.0000) * (1327.556880*pt/10000.000000)
+}
+
 }
 
 
@@ -241,93 +258,53 @@ set ResolutionFormula {
 ###############################
 
 module MomentumSmearing MuonMomentumSmearing {
-set InputArray MuonEfficiency/muons
-set OutputArray muons
+  set InputArray MuonTrackingEfficiency/muons
+  set OutputArray muons
 
 # set ResolutionFormula {resolution formula as a function of eta and pt}
 
 # resolution formula for muons
-set ResolutionFormula { (abs(eta) <= 1.5) * (pt > 5.0 && pt <= 1.0e2) * (0.015) + \
-(abs(eta) <= 1.5) * (pt > 1.0e2 && pt <= 2.0e2) * (0.03) + \
-(abs(eta) <= 1.5) * (pt > 2.0e2) * (0.05 + pt*1.e-4) + \
-(abs(eta) > 1.5 && abs(eta) <= 2.5) * (pt > 5.0 && pt <= 1.0e2) * (0.02) + \
-(abs(eta) > 1.5 && abs(eta) <= 2.5) * (pt > 1.0e2 && pt <= 2.0e2) * (0.04) + \
-(abs(eta) > 1.5 && abs(eta) <= 2.5) * (pt > 2.0e2) * (0.05 + pt*1.e-4) + \
-(abs(eta) > 2.5 && abs(eta) <= 4.0) * (pt > 5.0 && pt <= 1.0e2) * (0.02) + \
-(abs(eta) > 2.5 && abs(eta) <= 4.0) * (pt > 1.0e2 && pt <= 2.0e2) * (0.04) + \
-(abs(eta) > 2.5 && abs(eta) <= 4.0) * (pt > 2.0e2) * (0.05 + pt*1.e-4) + \
-(abs(eta) > 4.0 && abs(eta) <= 6.0) * (pt > 5.0 && pt <= 1.0e2) * (0.035) + \
-(abs(eta) > 4.0 && abs(eta) <= 6.0) * (pt > 1.0e2 && pt <= 2.0e2) * (0.05) + \
-(abs(eta) > 4.0 && abs(eta) <= 6.0) * (pt > 2.0e2) * (0.05 + pt*1.e-4)}
+# Automatically generated tracker resolution formula for layout: FCChh_Option2 (by Z. Drasal, CERN)
+# Central and Dipole
+#
+set ResolutionFormula {    (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00193570) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.001936 + (pt-5.000000)* 0.000006) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.001968 + (pt-10.000000)* 0.000007) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.002563 + (pt-100.000000)* 0.000014) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.014796 + (pt-1000.000000)* 0.000015) + \
+   (abs(eta) >= 0.0000 && abs(eta) < 1.0000) * (pt >= 10000.0000) * (0.146425*pt/10000.000000) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00237136) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.002371 + (pt-5.000000)* 0.000012) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.002433 + (pt-10.000000)* 0.000008) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.003169 + (pt-100.000000)* 0.000015) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.016485 + (pt-1000.000000)* 0.000016) + \
+   (abs(eta) >= 1.0000 && abs(eta) < 2.0000) * (pt >= 10000.0000) * (0.162501*pt/10000.000000) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.00434869) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.004349 + (pt-5.000000)* 0.000033) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.004512 + (pt-10.000000)* 0.000030) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.007232 + (pt-100.000000)* 0.000050) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.052675 + (pt-1000.000000)* 0.000052) + \
+   (abs(eta) >= 2.0000 && abs(eta) < 3.0000) * (pt >= 10000.0000) * (0.524273*pt/10000.000000) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.01258448) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.012584 + (pt-5.000000)* 0.000222) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.013697 + (pt-10.000000)* 0.000395) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.049225 + (pt-100.000000)* 0.000470) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (0.471921 + (pt-1000.000000)* 0.000472) + \
+   (abs(eta) >= 3.0000 && abs(eta) < 4.0000) * (pt >= 10000.0000) * (4.717097*pt/10000.000000) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.04369468) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.043695 + (pt-5.000000)* 0.003229) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 10.0000 && pt < 100.0000) * (0.059837 + (pt-10.000000)* 0.004451) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 100.0000 && pt < 1000.0000) * (0.460469 + (pt-100.000000)* 0.004586) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (4.587598 + (pt-1000.000000)* 0.004587) + \
+   (abs(eta) >= 4.0000 && abs(eta) < 5.0000) * (pt >= 10000.0000) * (45.874268*pt/10000.000000) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 0.0000 && pt < 5.0000) * (0.67948461) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 5.0000 && pt < 10.0000) * (0.679485 + (pt-5.000000)* 0.131259) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 10.0000 && pt < 100.0000) * (1.335781 + (pt-10.000000)* 0.132674) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 100.0000 && pt < 1000.0000) * (13.276407 + (pt-100.000000)* 0.132755) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 1000.0000 && pt < 10000.0000) * (132.755771 + (pt-1000.000000)* 0.132756) + \
+   (abs(eta) >= 5.0000 && abs(eta) < 6.0000) * (pt >= 10000.0000) * (1327.556880*pt/10000.000000)
 }
 
-####################
-# Electron isolation
-####################
-
-module Isolation ElectronIsolation {
-set CandidateInputArray ElectronEfficiency/electrons
-set IsolationInputArray EFlowMerger/eflow
-
-set OutputArray electrons
-
-set DeltaRMax 0.3
-
-set PTMin 0.5
-
-set PTRatioMax 0.1
-}
-
-################
-# Muon isolation
-################
-
-module Isolation MuonIsolation {
-set CandidateInputArray MuonEfficiency/muons
-set IsolationInputArray EFlowMerger/eflow
-
-set OutputArray muons
-
-set DeltaRMax 0.3
-
-set PTMin 0.5
-
-set PTRatioMax 0.1
-}
-
-###################
-# Photon efficiency
-###################
-
-module Efficiency PhotonEfficiency {
-set InputArray Ecal/eflowPhotons
-set OutputArray photons
-
-# set EfficiencyFormula {efficiency formula as a function of eta and pt}
-# efficiency formula for photons
-set EfficiencyFormula {                                      
-(pt <= 10.0) * (0.00) + \
-(abs(eta) <= 1.5) * (pt > 10.0)  * (0.95) + \
-(abs(eta) > 1.5 && abs(eta) <= 4.0) * (pt > 10.0)  * (0.90) + \
-(abs(eta) > 4.0 && abs(eta) <= 6.0) * (pt > 10.0)  * (0.80) + \
-(abs(eta) > 6.0) * (0.00)}
-}
-
-##################
-# Photon isolation
-##################
-
-module Isolation PhotonIsolation {
-set CandidateInputArray Ecal/eflowPhotons
-set IsolationInputArray EFlowMerger/eflow
-
-set OutputArray photons
-
-set DeltaRMax 0.3
-
-set PTMin 0.5
-
-set PTRatioMax 0.1
 }
 
 ##############
@@ -336,45 +313,39 @@ set PTRatioMax 0.1
 
 module Merger TrackMerger {
 # add InputArray InputArray
-add InputArray ChargedHadronMomentumSmearing/chargedHadrons
-add InputArray ElectronEnergySmearing/electrons
-add InputArray MuonMomentumSmearing/muons
-set OutputArray tracks
-}
-
-################################
-# Track impact parameter smearing
-################################
-
-module ImpactParameterSmearing ImpactParameterSmearing {
-set InputArray TrackMerger/tracks
-set OutputArray tracks
-
-
-# absolute impact parameter smearing formula (in mm) as a function of pt and eta
-set ResolutionFormula {(pt > 0.1  && pt <= 5.0)   * (0.010) + \
-(pt > 5.0)                 * (0.005)}
-
+  add InputArray ChargedHadronMomentumSmearing/chargedHadrons
+  add InputArray ElectronMomentumSmearing/electrons
+  add InputArray MuonMomentumSmearing/muons
+  set OutputArray tracks
 }
 
 #############
 #   ECAL
 #############
 
-module SimpleCalorimeter Ecal {
+module SimpleCalorimeter ECal {
   set ParticleInputArray ParticlePropagator/stableParticles
-  set TrackInputArray ImpactParameterSmearing/tracks
+  set TrackInputArray TrackMerger/tracks
 
   set TowerOutputArray ecalTowers
+  set EFlowTrackOutputArray eflowTracks
   set EFlowTowerOutputArray eflowPhotons
-  
+
+  set IsEcal true 
+ 
+  set EnergyMin 0.5
+  set EnergySignificanceMin 1.0
+
+  set SmearTowerCenter true
+
   set pi [expr {acos(-1)}]
 
   # lists of the edges of each tower in eta and phi
   # each list starts with the lower edge of the first tower
   # the list ends with the higher edged of the last tower
-  # 0.0125 x 0.0125 for eta between 0 and 2.5   
-  set PhiBins {}
+
+  # 0.5 degree towers (5x5 mm^2)
+   set PhiBins {}
   for {set i -256} {$i <= 256} {incr i} {
     add PhiBins [expr {$i * $pi/256.0}]
   }
@@ -426,25 +397,33 @@ module SimpleCalorimeter Ecal {
  
 }
 
-
 #############
 #   HCAL
 #############
 
-module SimpleCalorimeter Hcal {
+module SimpleCalorimeter HCal {
   set ParticleInputArray ParticlePropagator/stableParticles
-  set TrackInputArray ImpactParameterSmearing/tracks
+  set TrackInputArray ECal/eflowTracks
 
   set TowerOutputArray hcalTowers
+  set EFlowTrackOutputArray eflowTracks
   set EFlowTowerOutputArray eflowNeutralHadrons
-  
+
+  set IsEcal false 
+ 
+  set EnergyMin 1.0
+  set EnergySignificanceMin 1.0
+
+  set SmearTowerCenter true
+
   set pi [expr {acos(-1)}]
 
   # lists of the edges of each tower in eta and phi
   # each list starts with the lower edge of the first tower
   # the list ends with the higher edged of the last tower
 
- # 0.05 x 0.05 between eta 0 and 2.5
+
+  # 6 degree towers
   set PhiBins {}
   for {set i -128} {$i <= 128} {incr i} {
     add PhiBins [expr {$i * $pi/128.0}]
@@ -496,18 +475,27 @@ module SimpleCalorimeter Hcal {
                             (abs(eta) > 4.0 && abs(eta) <= 6.0) * sqrt(energy^2*0.05^2 + energy*1.00^2)}
 }
 
+#################
+# Electron filter
+#################
 
+module PdgCodeFilter ElectronFilter {
+  set InputArray HCal/eflowTracks
+  set OutputArray electrons
+  set Invert true
+  add PdgCode {11}
+  add PdgCode {-11}
+}
 
-
-####################
+###################################################
 # Tower Merger (in case not using e-flow algorithm)
-####################
+###################################################
 
 module Merger TowerMerger {
 # add InputArray InputArray
-add InputArray Ecal/ecalTowers
-add InputArray Hcal/hcalTowers
-set OutputArray towers
+  add InputArray ECal/ecalTowers
+  add InputArray HCal/hcalTowers
+  set OutputArray towers
 }
 
 ####################
@@ -516,10 +504,10 @@ set OutputArray towers
 
 module Merger EFlowMerger {
 # add InputArray InputArray
-add InputArray ImpactParameterSmearing/tracks
-add InputArray Ecal/eflowPhotons
-add InputArray Hcal/eflowNeutralHadrons
-set OutputArray eflow
+  add InputArray HCal/eflowTracks
+  add InputArray ECal/eflowPhotons
+  add InputArray HCal/eflowNeutralHadrons
+  set OutputArray eflow
 }
 
 
@@ -529,10 +517,11 @@ set OutputArray eflow
 
 module Merger MissingET {
 # add InputArray InputArray
-add InputArray EFlowMerger/eflow
-set MomentumOutputArray momentum
+  add InputArray EFlowMerger/eflow
+  set MomentumOutputArray momentum
 }
-                    
+
+
 
 ##################
 # Scalar HT merger
@@ -540,41 +529,76 @@ set MomentumOutputArray momentum
 
 module Merger ScalarHT {
 # add InputArray InputArray
-add InputArray EFlowMerger/eflow
-set EnergyOutputArray energy
+  add InputArray EFlowMerger/eflow
+  set EnergyOutputArray energy
 }
+
+#################
+# Neutrino Filter
+#################
+
+module PdgCodeFilter NeutrinoFilter {
+
+  set InputArray Delphes/stableParticles
+  set OutputArray filteredParticles
+
+  set PTMin 0.0
+
+  add PdgCode {12}
+  add PdgCode {14}
+  add PdgCode {16}
+  add PdgCode {-12}
+  add PdgCode {-14}
+  add PdgCode {-16}
+
+}
+
 
 #####################
 # MC truth jet finder
 #####################
 
 module FastJetFinder GenJetFinder {
-set InputArray Delphes/stableParticles
+#  set InputArray NeutrinoFilter/filteredParticles
+  set InputArray Delphes/stableParticles
 
-set OutputArray jets
+  set OutputArray jets
 
-# algorithm: 1 CDFJetClu, 2 MidPoint, 3 SIScone, 4 kt, 5 Cambridge/Aachen, 6 antikt 7 antikt wta algorithm
-set JetAlgorithm 7
-set ParameterR 0.4
+  # algorithm: 1 CDFJetClu, 2 MidPoint, 3 SIScone, 4 kt, 5 Cambridge/Aachen, 6 antikt
+  set JetAlgorithm 7
+  set ParameterR 0.4
 
-set JetPTMin 5.0
+  set JetPTMin 5.0
 }
+
+#########################
+# Gen Missing ET merger
+########################
+
+module Merger GenMissingET {
+
+# add InputArray InputArray
+  add InputArray NeutrinoFilter/filteredParticles
+  set MomentumOutputArray momentum
+}
+
+
 
 ############
 # Jet finder
 ############
 
 module FastJetFinder FastJetFinder {
-#  set InputArray Calorimeter/towers
-set InputArray EFlowMerger/eflow
+#  set InputArray TowerMerger/towers
+  set InputArray EFlowMerger/eflow
 
-set OutputArray jets
+  set OutputArray jets
 
-# algorithm: 1 CDFJetClu, 2 MidPoint, 3 SIScone, 4 kt, 5 Cambridge/Aachen, 6 antikt, 7 antikt wta algorithm 
-set JetAlgorithm 7
-set ParameterR 0.4
+  # algorithm: 1 CDFJetClu, 2 MidPoint, 3 SIScone, 4 kt, 5 Cambridge/Aachen, 6 antikt
+  set JetAlgorithm 7
+  set ParameterR 0.4
 
-set JetPTMin 30.0
+  set JetPTMin 30.0
 }
 
 ##################
@@ -582,71 +606,157 @@ set JetPTMin 30.0
 ##################
 
 module EnergyScale JetEnergyScale {
-set InputArray FastJetFinder/jets
-set OutputArray jets
+  set InputArray FastJetFinder/jets
+  set OutputArray jets
 
-# scale formula for jets
-set ScaleFormula {1.00}
+ # scale formula for jets
+  set ScaleFormula {1.00}
 }
 
-##########################
+
+########################
+# Jet Flavor Association
+########################
+
+module JetFlavorAssociation JetFlavorAssociation {
+
+  set PartonInputArray Delphes/partons
+  set ParticleInputArray Delphes/allParticles
+  set ParticleLHEFInputArray Delphes/allParticlesLHEF
+  set JetInputArray JetEnergyScale/jets
+
+  set DeltaR 0.5
+  set PartonPTMin 5.0
+  set PartonEtaMax 6.0
+
+}
+
+###################
+# Photon efficiency
+###################
+
+module Efficiency PhotonEfficiency {
+  set InputArray ECal/eflowPhotons
+  set OutputArray photons
+
+  # set EfficiencyFormula {efficiency formula as a function of eta and pt}
+
+  set EfficiencyFormula {                                      
+  (pt <= 10.0) * (0.00) + \
+  (abs(eta) <= 1.5) * (pt > 10.0)  * (0.95) + \
+  (abs(eta) > 1.5 && abs(eta) <= 4.0) * (pt > 10.0)  * (0.90) + \
+  (abs(eta) > 4.0 && abs(eta) <= 6.0) * (pt > 10.0)  * (0.80) + \
+  (abs(eta) > 6.0) * (0.00)}
+
+}
+
+##################
+# Photon isolation
+##################
+
+module Isolation PhotonIsolation {
+  set CandidateInputArray PhotonEfficiency/photons
+  set IsolationInputArray EFlowMerger/eflow
+
+  set OutputArray photons
+
+  set DeltaRMax 0.3
+
+  set PTMin 0.5
+
+  set PTRatioMax 0.1
+}
+
+
+####################
+# Electron isolation
+####################
+
+module Isolation ElectronIsolation {
+  set CandidateInputArray ElectronFilter/electrons
+  set IsolationInputArray EFlowMerger/eflow
+
+  set OutputArray electrons
+
+  set DeltaRMax 0.3
+
+  set PTMin 0.5
+
+  set PTRatioMax 0.1
+}
+
+
+################
+# Muon isolation
+################
+
+module Isolation MuonIsolation {
+  set CandidateInputArray MuonMomentumSmearing/muons
+  set IsolationInputArray EFlowMerger/eflow
+
+  set OutputArray muons
+
+  set DeltaRMax 0.3
+
+  set PTMin 0.5
+
+  set PTRatioMax 0.2
+}
+
+
+###########
+# b-tagging
+###########
+
+module BTagging BTagging {
+  set JetInputArray JetEnergyScale/jets
+
+  set BitNumber 0
+
+  add EfficiencyFormula {0} {0.001} 
+  add EfficiencyFormula {4} {0.04} 
+  add EfficiencyFormula {5} {0.75}
+
+}
+
+###########
+# c-tagging
+###########
+
+module BTagging CTagging {
+  set JetInputArray JetEnergyScale/jets
+
+  set BitNumber 1
+
+  add EfficiencyFormula {0} {0.01} 
+  add EfficiencyFormula {4} {0.10} 
+  add EfficiencyFormula {5} {0.25}
+
+}
+
+
+#############
 # tau-tagging
-##########################
+#############
 
 
 module TauTagging TauTagging {
-set ParticleInputArray Delphes/allParticles
-set PartonInputArray Delphes/partons
-set JetInputArray JetEnergyScale/jets
-set DeltaR 0.4
-set TauPTMin 15.0
-set TauEtaMax 6
-# add EfficiencyFormula {abs(PDG code)} {efficiency formula as a function of eta and pt}
-add EfficiencyFormula {0} {0.01} 
-add EfficiencyFormula {11} {0.005} 
-add EfficiencyFormula {15} {0.6} 
-}
+  set ParticleInputArray Delphes/allParticles
+  set PartonInputArray Delphes/partons
+  set JetInputArray JetEnergyScale/jets
 
+  set DeltaR 0.5
 
-##########################
-# b-tagging
-##########################
+  set TauPTMin 1.0
 
-module BTagging BTagging { # need to check that this module exists or write it
-set ParticleInputArray Delphes/allParticles
-set PartonInputArray Delphes/partons
-set JetInputArray JetEnergyScale/jets
+  set TauEtaMax 4.0
 
-set DeltaR 0.4
-set BPTMin 30.0
-set BEtaMax 6.0 
+  # add EfficiencyFormula {abs(PDG code)} {efficiency formula as a function of eta and pt}
 
-# add EfficiencyFormula {abs(PDG code)} {efficiency formula as a function of eta and pt}
+  add EfficiencyFormula {0} {0.01} 
+  add EfficiencyFormula {11} {0.005} 
+  add EfficiencyFormula {15} {0.6} 
 
-# default efficiency formula (misidentification rate)
-add EfficiencyFormula {0} {0.001} 
-add EfficiencyFormula {4} {0.04} 
-add EfficiencyFormula {5} {0.75}
-}
-
-##########################
-# c-tagging
-##########################
-
-
-module BTagging CTagging {
-set ParticleInputArray Delphes/allParticles
-set PartonInputArray Delphes/partons
-set JetInputArray JetEnergyScale/jets
-
-set DeltaR 0.4
-set BPTMin 30.0 
-set BEtaMax 6.0
-
-# add EfficiencyFormula {abs(PDG code)} {efficiency formula as a function of eta and pt}
-add EfficiencyFormula {0} {0.01} 
-add EfficiencyFormula {5} {0.10} 
-add EfficiencyFormula {4} {0.25} 
 }
 
 #####################################################
@@ -656,11 +766,12 @@ add EfficiencyFormula {4} {0.25}
 module UniqueObjectFinder UniqueObjectFinder {
 # earlier arrays take precedence over later ones
 # add InputArray InputArray OutputArray
-add InputArray PhotonIsolation/photons photons
-add InputArray ElectronIsolation/electrons electrons
-add InputArray MuonIsolation/muons muons
-add InputArray FastJetFinder/jets jets
+  add InputArray PhotonIsolation/photons photons
+  add InputArray ElectronIsolation/electrons electrons
+  add InputArray MuonIsolation/muons muons
+  add InputArray JetEnergyScale/jets jets
 }
+
 
 ##################
 # ROOT tree writer
@@ -668,19 +779,21 @@ add InputArray FastJetFinder/jets jets
 
 module TreeWriter TreeWriter {
 # add Branch InputArray BranchName BranchClass
-add Branch Delphes/allParticles Particle GenParticle
-add Branch GenJetFinder/jets GenJet Jet
+  add Branch Delphes/allParticles Particle GenParticle
   
-add Branch ChargedHadronMomentumSmearing/chargedHadrons ChargedHadron Track
-add Branch Hcal/eflowNeutralHadrons NeutralHadron Tower
-add Branch Ecal/eflowPhotons Photon Photon
+  add Branch GenJetFinder/jets GenJet Jet
+  add Branch GenMissingET/momentum GenMissingET MissingET
 
-add Branch ElectronEnergySmearing/electrons Electron Electron
-add Branch MuonMomentumSmearing/muons Muon Muon
-add Branch JetEnergyScale/jets Jet Jet
-add Branch MissingET/momentum MissingET MissingET
-add Branch ScalarHT/energy ScalarHT ScalarHT
+  add Branch HCal/eflowTracks EFlowTrack Track
+  add Branch ECal/eflowPhotons EFlowPhoton Tower
+  add Branch HCal/eflowNeutralHadrons EFlowNeutralHadron Tower
+  
+  add Branch UniqueObjectFinder/photons Photon Photon
+  add Branch UniqueObjectFinder/electrons Electron Electron
+  add Branch UniqueObjectFinder/muons Muon Muon
+  add Branch UniqueObjectFinder/jets Jet Jet
+  
+  add Branch MissingET/momentum MissingET MissingET
+  add Branch ScalarHT/energy ScalarHT ScalarHT
 }
-
-
 
