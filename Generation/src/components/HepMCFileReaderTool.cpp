@@ -31,7 +31,7 @@ StatusCode HepMCFileReader::open(const std::string& filename) {
     return StatusCode::FAILURE;
   }
   // open file using HepMC routines
-  m_file = std::unique_ptr<HepMC::IO_GenEvent>( new HepMC::IO_GenEvent ( filename.c_str(), std::ios::in ));
+  m_file = std::make_unique<HepMC::IO_GenEvent>(filename.c_str(), std::ios::in );
   // check that readable
   if ( ( nullptr == m_file ) || ( m_file->rdstate() == std::ios::failbit ) ) {
     error()   <<  "Failure to read the file '"+filename+"'" << endmsg;
