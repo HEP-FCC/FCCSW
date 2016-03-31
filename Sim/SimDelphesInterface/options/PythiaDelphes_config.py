@@ -7,7 +7,7 @@
 ##  - GAUDI run in a mode: Pythia + Delphes or Delphes only (if delphesHepMCInFile defined)
 ##  - define variables & delphes sim outputs
 ##
-##  - inputs: 
+##  - inputs:
 ##    * Define pythiaConfFile -> configure Pythia parameters & input (simulate or read LHE file)
 ##    * Define delphesCard -> describe detector response & configure Delphes - process modules, detector parameters etc.
 ##    * Define delphesHepMCInFile -> read Delphes input from hepMC file (if Pythia not used)
@@ -17,8 +17,8 @@
 ##    * Define delphesRootOutFile -> write output using Delphes I/O library (Delphes objects)
 ##    * Undefine ("") delphesRootOutFile -> no output using Delphes I/O library
 ##    * Define out module to write output using FCC-EDM lib (standard FCC output)
-##   
-##  - run: 
+##
+##  - run:
 ##    * ./run gaudirun.py config/PythiaDelphes_config.py
 ##
 
@@ -78,7 +78,7 @@ chhadSaveTool = DelphesSaveChargedParticles("charged", delphesArrayName="Charged
 chhadSaveTool.DataOutputs.particles.Path = "charged"
 chhadSaveTool.DataOutputs.mcAssociations.Path = "chargedToMC"
 
-neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="Hcal/eflowNeutralHadrons", saveIsolation=False)
+neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
 neuthadSaveTool.DataOutputs.particles.Path = "neutral"
 neuthadSaveTool.DataOutputs.mcAssociations.Path = "neutralToMC"
 
