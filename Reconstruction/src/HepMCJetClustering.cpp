@@ -84,7 +84,7 @@ StatusCode HepMCJetClustering::execute() {
         auto theEvent = m_hepmchandle.get();
 
     //setup input for fastjet
-    std::vector<PseudoJet> input;
+    std::vector<fastjet::PseudoJet> input;
     for (auto it = theEvent->particles_begin(); it != theEvent->particles_end(); ++it) {
          auto p = *it;
          //TODO apply some filtering if required
@@ -99,14 +99,21 @@ StatusCode HepMCJetClustering::execute() {
 
     ClusterSequence cs(input, def);
 
-    PseudoJetEntry * output = new PseudoJetEntry();
-    output->setJets(sorted_by_pt( m_inclusiveJets ? cs.inclusive_jets(m_ptMin)
+    auto sortedOutput = sorted_by_pt( m_inclusiveJets ? cs.inclusive_jets(m_ptMin)
                                   //use exclusive jets
-                                 : m_njets != -1 ? cs.exclusive_jets(m_njets) : cs.exclusive_jets(m_dcut) ));
-
-
-    m_jets.put(output);
-
+                                 : m_njets != -1 ? cs.exclusive_jets(m_njets) : cs.exclusive_jets(m_dcut) );
+    auto outJets = m_jets.createAndPut();
+    for (auto& jet : sortedOutput) {
+       auto outJet = outJets->create();
+       double px = jet.px();
+       double py = jet.py();
+       double pz = jet.pz();
+       double e = jet.e();
+       outJet.Core().P4.Px = px;
+       outJet.Core().P4.Py = py;
+       outJet.Core().P4.Pz = pz;
+       outJet.Core().P4.Mass = std::sqrt(- px*px - py*py - pz*pz + e*e);
+    }
     return StatusCode::SUCCESS;
 }
 
