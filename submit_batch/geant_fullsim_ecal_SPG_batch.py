@@ -28,7 +28,7 @@ from Configurables import G4SimSvc, G4SingleParticleGeneratorTool
 # Configures the Geant simulation: geometry, physics list and user actions
 geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert",
 particleGenerator=G4SingleParticleGeneratorTool("G4SingleParticleGeneratorTool",
-                ParticleName="e-",eMin=ENE,eMax=ENE),
+                ParticleName="e-",eMin=ENE,eMax=ENE,etaMin=0.25,etaMax=0.25),
                 actions="G4FullSimActions") 
 
 
