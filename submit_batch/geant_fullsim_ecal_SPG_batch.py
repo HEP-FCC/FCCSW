@@ -1,4 +1,4 @@
-#JANA: variables ENE (energy in GeV), BFIELD (0,1), EVTMAX (number of events) to be defined before running
+#JANA: variables ENE (energy in MeV!!!), BFIELD (0,1), EVTMAX (number of events) to be defined before running
 
 from Gaudi.Configuration import *
 
@@ -20,7 +20,7 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/FCChh_DectMaster.xml',
                                          'file:DetectorDescription/Detectors/compact/FCChh_ECalBarrel_Mockup.xml'
                                         ],
-                    OutputLevel = DEBUG)
+                    OutputLevel = INFO)
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -35,23 +35,19 @@ particleGenerator=G4SingleParticleGeneratorTool("G4SingleParticleGeneratorTool",
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 from Configurables import G4SimAlg, G4SaveCalHits
-# and a tool that saves the calorimeter hits with a name "G4SaveCalHits/saveHCalHits"
-savehcaltool = G4SaveCalHits("saveHCalHits", caloType = "HCal")
-savehcaltool.DataOutputs.caloClusters.Path = "HCalClusters"
-savehcaltool.DataOutputs.caloHits.Path = "HCalHits"
-
+# and a tool that saves the calorimeter hits with a name "G4SaveCalHits/saveECalHits"
 saveecaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
 saveecaltool.DataOutputs.caloClusters.Path = "ECalClusters"
 saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 geantsim = G4SimAlg("G4SimAlg",
-                        outputs= ["G4SaveCalHits/saveHCalHits","G4SaveCalHits/saveECalHits"])
+                        outputs= ["G4SaveCalHits/saveECalHits"])
 
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+                   OutputLevel=INFO)
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
@@ -61,5 +57,5 @@ ApplicationMgr( TopAlg = [geantsim, out],
                 EvtMax   = EVTMAX,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
 )
