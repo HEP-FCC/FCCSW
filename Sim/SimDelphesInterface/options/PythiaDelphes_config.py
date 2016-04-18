@@ -1,27 +1,26 @@
-###########################################################
-#
-# FCCSw Pythia-->Delphes simulation options file
-#
-#  author: Z. Drasal (CERN)
-#
-#  - GAUDI run in a mode: Pythia + Delphes or Delphes only (if delphesHepMCInFile defined)
-#  - define variables & delphes sim outputs
-#
-#  - inputs: 
-#    * Define pythiaConfFile -> configure Pythia parameters & input (simulate or read LHE file)
-#    * Define delphesCard -> describe detector response & configure Delphes - process modules, detector parameters etc.
-#    * Define delphesHepMCInFile -> read Delphes input from hepMC file (if Pythia not used)
-#    * Undefine ("") delphesHepMCInFile -> read Delphes input from GAUDI data store
-#
-#  - outputs:
-#    * Define delphesRootOutFile -> write output using Delphes I/O library (Delphes objects)
-#    * Undefine ("") delphesRootOutFile -> no output using Delphes I/O library
-#    * Define out module to write output using FCC-EDM lib (standard FCC output)
-#   
-#  - run: 
-#    * ./run gaudirun.py config/PythiaDelphes_config.py
-#
-###########################################################
+## \file
+## \ingroup SimulationExamples
+## \author Z. Drasal (CERN)
+## \brief FCCSw Pythia-->Delphes simulation options file
+##
+##
+##  - GAUDI run in a mode: Pythia + Delphes or Delphes only (if delphesHepMCInFile defined)
+##  - define variables & delphes sim outputs
+##
+##  - inputs: 
+##    * Define pythiaConfFile -> configure Pythia parameters & input (simulate or read LHE file)
+##    * Define delphesCard -> describe detector response & configure Delphes - process modules, detector parameters etc.
+##    * Define delphesHepMCInFile -> read Delphes input from hepMC file (if Pythia not used)
+##    * Undefine ("") delphesHepMCInFile -> read Delphes input from GAUDI data store
+##
+##  - outputs:
+##    * Define delphesRootOutFile -> write output using Delphes I/O library (Delphes objects)
+##    * Undefine ("") delphesRootOutFile -> no output using Delphes I/O library
+##    * Define out module to write output using FCC-EDM lib (standard FCC output)
+##   
+##  - run: 
+##    * ./run gaudirun.py config/PythiaDelphes_config.py
+##
 
 """
 To run Pythia together with Delphes
@@ -69,7 +68,7 @@ delphesRootOutFile=""
 delphesMuonsOutArray    ="MuonIsolation/muons"
 delphesElectronsOutArray="ElectronIsolation/electrons"
 delphesChargedOutArray  ="ChargedHadronMomentumSmearing/chargedHadrons"
-delphesNeutralOutArray  ="Hcal/eflowNeutralHadrons"
+delphesNeutralOutArray  ="HCal/eflowNeutralHadrons"
 delphesPhotonsOutArray  ="PhotonIsolation/photons"
 delphesGenJetsOutArray  ="GenJetFinder/jets" 
 delphesJetsOutArray     ="JetEnergyScale/jets"
