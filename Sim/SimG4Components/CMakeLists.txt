@@ -36,7 +36,3 @@ gaudi_add_test(GeantFullSimMoreEventsCheckNoEvents
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
                COMMAND python ./scripts/geant_fullsim_moreEvents_checkNoEvents.py
                DEPENDS GeantFullSimMoreEvents)
-gaudi_add_test(GeantFullSimCheckNoParticles
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
-               COMMAND python ./scripts/geant_fullsim_moreEvents_checkNoEvents.py
-               DEPENDS GeantFullSimMoreEvents)
