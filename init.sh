@@ -23,10 +23,9 @@ export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/
 
 # add DD4hep
 export inithere=$PWD
-cd /build/azaborow/FCC/FCCSW_tests/DD4hep/DD4hep_10_2/build/
+cd /afs/cern.ch/exp/fcc/sw/0.7/DD4hep/20161003/x86_64-slc6-gcc49-opt
 source bin/thisdd4hep.sh
 cd $inithere
-
 
 # add Geant4 data files
 source /afs/cern.ch/sw/lcg/external/geant4/10.2/setup_g4datasets.sh
