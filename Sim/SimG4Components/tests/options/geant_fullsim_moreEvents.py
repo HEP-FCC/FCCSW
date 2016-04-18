@@ -41,7 +41,8 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+                  filename = "out_full_moreEvents.root",
+                  OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
 ApplicationMgr( TopAlg=[reader, hepmc_converter, geantsim, out],

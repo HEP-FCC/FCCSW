@@ -24,12 +24,19 @@ gaudi_add_test(GeantFullSimHCal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/geant_fullsim_hcal.py)
 gaudi_add_test(GeantFullSimECal
-                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/geant_fullsim_ecal.py)
+gaudi_add_test(GeantFullSimGdml
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/geant_fullsim_gdml.py)
 gaudi_add_test(GeantFullSimMoreEvents
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
                FRAMEWORK tests/options/geant_fullsim_moreEvents.py)
 gaudi_add_test(GeantFullSimMoreEventsCheckNoEvents
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
-               COMMAND python ./scripts/geant_fullsim_moreEvents_noevents.py
+               COMMAND python ./scripts/geant_fullsim_moreEvents_checkNoEvents.py
+               DEPENDS GeantFullSimMoreEvents)
+gaudi_add_test(GeantFullSimCheckNoParticles
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
+               COMMAND python ./scripts/geant_fullsim_moreEvents_checkNoEvents.py
                DEPENDS GeantFullSimMoreEvents)
