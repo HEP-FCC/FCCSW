@@ -2,7 +2,7 @@
 #define SIMG4COMPONENTS_G4SAVESMEAREDPARTICLES_H
 
 // Gaudi
-#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/AlgTool.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
@@ -21,7 +21,7 @@ class ParticleMCParticleAssociationCollection;
  *  @author Anna Zaborowska
  */
 
-class G4SaveSmearedParticles: public GaudiTool, virtual public IG4SaveOutputTool {
+class G4SaveSmearedParticles: public AlgTool, virtual public IG4SaveOutputTool {
 public:
   explicit G4SaveSmearedParticles(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

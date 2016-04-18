@@ -13,7 +13,7 @@ G4FastSimPhysicsList::G4FastSimPhysicsList(const std::string& aType, const std::
   AlgTool(aType, aName, aParent) {
   declareInterface<IG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool);
-  declarePrivateTool(m_physicsListTool, "G4FtfpBert", true);
+  declarePrivateTool(m_physicsListTool);
 }
 
 G4FastSimPhysicsList::~G4FastSimPhysicsList() {}

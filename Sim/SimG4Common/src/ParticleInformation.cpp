@@ -2,7 +2,7 @@
 
 namespace sim {
 ParticleInformation::ParticleInformation(const fcc::MCParticle& aMCpart):
-  m_mcParticle(aMCpart), m_smeared(false) {}
+  m_mcParticle(aMCpart) {}
 
 ParticleInformation::~ParticleInformation() {}
 
@@ -28,11 +28,5 @@ void ParticleInformation::setEndStatus(int aStat) {
 }
 int ParticleInformation::endStatus() const {
   return m_endStatus;
-}
-void ParticleInformation::setSmeared(bool aFlag) {
-  m_smeared = aFlag;
-}
-bool ParticleInformation::smeared() const {
-  return m_smeared;
 }
 }
