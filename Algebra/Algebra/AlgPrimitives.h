@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef _AlgPrimitives_h
-#define _AlgPrimitives_h
+#ifndef ALGEBRA_ALGPRIMITIVES_H
+#define ALGEBRA_ALGPRIMITIVES_H
 
 #include "Math/GenVector/Transform3D.h"
 #include "Math/GenVector/Rotation3D.h"

@@ -1,3 +1,11 @@
+
+### \file
+### \ingroup SimulationExamples
+### | **input (alg)**               | other algorithms                 |                                                         |                        |                                  | **output (alg)**                              |
+### |-------------------------------|----------------------------------|---------------------------------------------------------|------------------------|----------------------------------|-----------------------------------------------|
+### | read events from a HepMC file | convert `HepMC::GenEvent` to EDM | geometry taken from GDML file (no sensitive detectors!) | FTFP_BERT physics list | empty action initialisation list | write the EDM output to ROOT file using PODIO |
+
+
 from Gaudi.Configuration import *
 
 # Data service

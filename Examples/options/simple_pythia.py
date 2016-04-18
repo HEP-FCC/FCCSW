@@ -1,28 +1,35 @@
+
+### \file
+### \ingroup BasicExamples
+### | **input (alg)**                                      | other algorithms                   |                       |                                       | **output (alg)**                                |
+### | ---------------------------------------------------- | ---------------------------------- | --------------------- | ------------------------------------- | ----------------------------------------------- |
+### | generate Pythia events and save them to HepMC file   | convert `HepMC::GenEvent` to EDM   | filter MC Particles   | use sample jet clustering algorithm   | write the EDM output to ROOT file using PODIO   |
+
 from Gaudi.Configuration import *
 
-# Example of pythia configuration file to generate events
+### Example of pythia configuration file to generate events
 pythiafile="Generation/data/Pythia_standard.cmd"
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
 
-# Data service
 from Configurables import FCCDataSvc
+#### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-# PYTHIA algorithm
 from Configurables import PythiaInterface
+### PYTHIA algorithm
 pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
 pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
 
-# Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
+### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCConverter("Converter")
 hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
 hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
 hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 
-# Filters generated particles
 from Configurables import GenParticleFilter
+### Filters generated particles
 genfilter = GenParticleFilter("StableParticles")
 genfilter.DataInputs.genparticles.Path = "all_genparticles"
 genfilter.DataOutputs.genparticles.Path = "genparticles"
@@ -33,17 +40,16 @@ genjet_clustering.DataInputs.particles.Path='genparticles'
 genjet_clustering.DataOutputs.jets.Path='genjets'
 genjet_clustering.DataOutputs.constituents.Path='genjets_particles'
 
-# PODIO algorithm
 from Configurables import PodioOutput
+### PODIO algorithm
 out = PodioOutput("out",OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-# ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [ pythia8gen, hepmc_converter, genfilter, genjet_clustering, out ],
-                EvtSel = 'NONE',
-                EvtMax = 100,
-                ExtSvc = [podioevent],
+ApplicationMgr( TopAlg=[ pythia8gen, hepmc_converter, genfilter, genjet_clustering, out ],
+                EvtSel='NONE',
+                EvtMax=100,
+                ExtSvc=[podioevent],
                 OutputLevel=DEBUG
 )
 

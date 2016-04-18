@@ -23,6 +23,9 @@ include(CTest)
 gaudi_add_test(GeantFullSimHCal
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/geant_fullsim_hcal.py)
+gaudi_add_test(GeantFullSimECal
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/geant_fullsim_ecal.py)
 gaudi_add_test(GeantFullSimGdmlDetector
                  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/geant_fullsim_gdml.py)

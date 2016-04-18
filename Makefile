@@ -1,7 +1,7 @@
 ################################################################################
 #
 # Generic Makefile to simplify the use of CMake projects
-# ------------------------------------------------------ 
+# ------------------------------------------------------
 #
 # This simple Makefile is meant to provide a simplified entry point for the
 # configuration and build of CMake-based projects that use a default toolchain
@@ -14,7 +14,7 @@
 #
 #     all
 #         (default) build everything
-#  
+#
 #     test [*]_
 #         run the declared tests
 #
@@ -39,11 +39,12 @@
 #
 # :Author: Marco Clemencic
 #
-# .. [*] Targets defined by this Makefile. 
+# .. [*] Targets defined by this Makefile.
 #
 ################################################################################
 
 # settings
+
 CMAKE = cmake
 ifneq ($(wildcard $(CURDIR)/toolchain.cmake),)
   override CMAKEFLAGS += -DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/toolchain.cmake
@@ -52,13 +53,14 @@ endif
 ifndef BINARY_TAG
   ifdef CMAKECONFIG
     BINARY_TAG=${CMAKECONFIG}
-  else 
+  else
     ifdef CMTCONFIG
       BINARY_TAG=${CMTCONFIG}
     endif
   endif
 endif
 
+override CMAKEFLAGS += -DCMAKE_BUILD_TYPE=$(BUILDTYPE)
 BUILDDIR := $(CURDIR)/build.$(BINARY_TAG)
 
 
@@ -86,7 +88,7 @@ endif
 	@ # do not delegate further
 
 # This wrapping around the test target is used to ensure the generation of
-# the XML output from ctest. 
+# the XML output from ctest.
 test: $(BUILDDIR)/Makefile
 	$(MAKE) -C build.$(BINARY_TAG) ARGS="-T test $(ARGS)" $@
 
