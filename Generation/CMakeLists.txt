@@ -12,6 +12,7 @@ find_package(FCCEDM)
 find_package(PODIO)
 
 gaudi_install_headers(Generation)
+gaudi_install_python_modules()
 
 gaudi_add_module(Generation
                  src/components/*.cpp

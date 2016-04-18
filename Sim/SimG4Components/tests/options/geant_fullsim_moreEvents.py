@@ -1,3 +1,14 @@
+
+
+### \file
+### \ingroup SimulationTests
+### | **input (alg)**                 | other algorithms                   |                                     |                          |                                    | **output (alg)**                                |
+### | ------------------------------- | ---------------------------------- | ----------------------------------- | ------------------------ | ---------------------------------- | ----------------------------------------------- |
+### | read events from a HepMC file   | convert `HepMC::GenEvent` to EDM   | geometry taken from TestTracker.xml | FTFP_BERT physics list   | save Tracker and HCAL hits         | write the EDM output to ROOT file using PODIO   |
+
+
+
+
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
@@ -34,9 +45,9 @@ out = PodioOutput("out",
                   filename = "out_full_moreEvents.root")
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
-                EvtSel = 'NONE',
-                EvtMax   = 100,
-                ExtSvc = [podioevent, geoservice, geantservice], # order! geo needed by geant
-                OutputLevel=DEBUG
- )
+ApplicationMgr( TopAlg=[reader, hepmc_converter, geantsim, out],
+                EvtSel='NONE',
+                EvtMax=5,
+                ## order! geo needed by geant
+                ExtSvc=[podioevent, geoservice, geantservice],
+                OutputLevel=DEBUG)
