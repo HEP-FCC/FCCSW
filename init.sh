@@ -23,7 +23,7 @@ export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_80/MCGenerators/pythia8/212/
 
 # add DD4hep
 export inithere=$PWD
-cd /afs/cern.ch/exp/fcc/sw/0.7/DD4hep/20161003/x86_64-slc6-gcc49-opt
+cd /afs/cern.ch/exp/fcc/sw/0.7/DD4hep/20161003/$BINARY_TAG/
 source bin/thisdd4hep.sh
 cd $inithere
 
