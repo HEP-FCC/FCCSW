@@ -7,27 +7,25 @@
 // Geant4
 #include "G4VUserDetectorConstruction.hh"
 
-/// Namespace for the AIDA detector description toolkit
 namespace DD4hep {
-  // Forward declarations
   namespace Geometry {
     class LCDD;
   }
 }
-/// Class to create Geant4 detector geometry from TGeo representation
-/**
+/** @class GeoConstruction DetectorDescription/DetDesServices/src/GeoConstruction.h GeoConstruction.h
+ *
+ *  Class to create Geant4 detector geometry from TGeo representation
  *  On demand (ie. when calling "Construct") the DD4hep geometry is converted
  *  to Geant4 with all volumes, assemblies, shapes, materials etc.
- *  The actual work is performed by the Geant4Converter class called by this method.
  *
- *  \author  M.Frank
- *  \version 1.0
- *  \ingroup DD4HEP_SIMULATION
+ *  @author Markus Frank
+ *  @author Anna Zaborowska
  */
+
 namespace det {
 class GeoConstruction : public G4VUserDetectorConstruction {
 public:
-  /// Initializing constructor for other clients
+  /// Constructor
   GeoConstruction(DD4hep::Geometry::LCDD& lcdd);
   /// Default destructor
   virtual ~GeoConstruction();
@@ -42,4 +40,4 @@ private:
   G4VPhysicalVolume* m_world;
 };
 }
-#endif
+#endif /* DETDESSERVICES_GEOCONSTRUCTION_H */
