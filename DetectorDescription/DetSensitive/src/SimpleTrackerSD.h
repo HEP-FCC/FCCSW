@@ -1,9 +1,11 @@
 #ifndef DETSENSITIVE_SIMPLETRACKERSD_H
 #define DETSENSITIVE_SIMPLETRACKERSD_H
 
+// FCCSW
+#include "BaseSD.h"
+
 // DD4hep
 #include "DDG4/Geant4Hits.h"
-#include "DDSegmentation/Segmentation.h"
 
 // Geant
 #include "G4VSensitiveDetector.hh"
@@ -19,9 +21,8 @@
  *  @author    Anna Zaborowska
  */
 namespace det {
-class SimpleTrackerSD : public G4VSensitiveDetector
+  class SimpleTrackerSD : public G4VSensitiveDetector, public BaseSD
 {
-
   public:
   /** Constructor.
    *  @param aDetectorName Name of the detector
@@ -45,17 +46,11 @@ class SimpleTrackerSD : public G4VSensitiveDetector
    *  New hit is created for each energy deposit (to save information about time)
    *  @param aStep Step in which particle deposited the energy.
    */
-  virtual G4bool ProcessHits(G4Step*aStep, G4TouchableHistory*) final;
-  /** Retrieves the cellID based on the position and the detector segmentation.
-   *  @param aStep Step in which particle deposited the energy.
-   */
-  uint64_t getCellID(G4Step* s);
+  virtual bool ProcessHits(G4Step*aStep, G4TouchableHistory*) final;
 
 private:
   /// Collection of tracker hits
   G4THitsCollection<DD4hep::Simulation::Geant4Hit> *trackerCollection;
-  /// Segmentation of the detector used to retrieve the cell Ids
-  DD4hep::Geometry::Segmentation m_seg;
 };
 }
 

@@ -1,6 +1,9 @@
 #ifndef DETSENSITIVE_SIMPLECALORIMETERSD_H
 #define DETSENSITIVE_SIMPLECALORIMETERSD_H
 
+// FCCSW
+#include "BaseSD.h"
+
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 #include "DDSegmentation/Segmentation.h"
@@ -21,7 +24,7 @@
  */
 
 namespace det {
-class SimpleCalorimeterSD : public G4VSensitiveDetector
+class SimpleCalorimeterSD : public G4VSensitiveDetector, public BaseSD
 {
   public:
   /** Constructor.
@@ -47,17 +50,11 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
    *  Otherwise new hit is created.
    *  @param aStep Step in which particle deposited the energy.
    */
-  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
-  /** Retrieves the cellID based on the position and the detector segmentation.
-   *  @param aStep Step in which particle deposited the energy.
-   */
-  uint64_t getCellID(G4Step* aStep);
+  virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 
 private:
   /// Collection of calorimeter hits
   G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit> *calorimeterCollection;
-  /// Segmentation of the detector used to retrieve the cell Ids
-  DD4hep::Geometry::Segmentation m_seg;
 };
 }
 

@@ -11,7 +11,7 @@ namespace det {
 SimpleCalorimeterSD::SimpleCalorimeterSD(std::string aDetectorName,
   std::string aReadoutName,
   DD4hep::Geometry::Segmentation aSeg)
-  :G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
+  :G4VSensitiveDetector(aDetectorName), BaseSD(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
   std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
@@ -31,7 +31,7 @@ void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
   aHitsCollections->AddHitsCollection(HCID,calorimeterCollection);
 }
 
-G4bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
+bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
@@ -65,23 +65,5 @@ G4bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
     return true;
   }
   return false;
-}
-
-uint64_t SimpleCalorimeterSD::getCellID(G4Step* aStep) {
-  DD4hep::Simulation::Geant4VolumeManager volMgr =
-    DD4hep::Simulation::Geant4Mapping::instance().volumeManager();
-  DD4hep::Geometry::VolumeManager::VolumeID volID =
-    volMgr.volumeID(aStep->GetPreStepPoint()->GetTouchable());
-  if (m_seg.isValid() )  {
-    G4ThreeVector global = 0.5 * (  aStep->GetPreStepPoint()->GetPosition()+
-      aStep->GetPostStepPoint()->GetPosition());
-    G4ThreeVector local  = aStep->GetPreStepPoint()->GetTouchable()->
-      GetHistory()->GetTopTransform().TransformPoint(global);
-    DD4hep::Simulation::Position loc(local.x()*MM_2_CM, local.y()*MM_2_CM, local.z()*MM_2_CM);
-    DD4hep::Simulation::Position glob(global.x()*MM_2_CM, global.y()*MM_2_CM, global.z()*MM_2_CM);
-    DD4hep::Geometry::VolumeManager::VolumeID cID = m_seg.cellID(loc,glob,volID);
-    return cID;
-  }
-  return 0;
 }
 }
