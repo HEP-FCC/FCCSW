@@ -1,5 +1,5 @@
-#ifndef DETSENSITIVE_BASESD_H
-#define DETSENSITIVE_BASESD_H
+#ifndef DETSENSITIVE_SEGMENTEDVOLUME_H
+#define DETSENSITIVE_SEGMENTEDVOLUME_H
 
 // DD4hep
 #include "DDSegmentation/Segmentation.h"
@@ -10,7 +10,7 @@
 class G4Step;
 class G4TouchableHistory;
 
-/** BaseSD DetectorDescription/DetSensitive/src/BaseSD.h BaseSD.h
+/** SegmentedVolume DetectorDescription/DetSensitive/src/SegmentedVolume.h SegmentedVolume.h
  *
  *  Basic interface for the sensitive detector.
  *
@@ -18,15 +18,15 @@ class G4TouchableHistory;
  */
 
 namespace det {
-class BaseSD
+class SegmentedVolume
 {
   public:
   /** Constructor.
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  BaseSD(DD4hep::Geometry::Segmentation aSeg);
+  SegmentedVolume(DD4hep::Geometry::Segmentation aSeg);
   /// Destructor
-  ~BaseSD();
+  ~SegmentedVolume();
   /** Retrieves the cellID based on the position and the detector segmentation.
    *  @param aStep Step in which particle deposited the energy.
    */
@@ -38,4 +38,4 @@ private:
 };
 }
 
-#endif /* DETSENSITIVE_BASESD_H */
+#endif /* DETSENSITIVE_SEGMENTEDVOLUME_H */

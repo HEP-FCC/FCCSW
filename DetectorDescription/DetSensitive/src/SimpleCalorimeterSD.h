@@ -2,7 +2,7 @@
 #define DETSENSITIVE_SIMPLECALORIMETERSD_H
 
 // FCCSW
-#include "BaseSD.h"
+#include "SegmentedVolume.h"
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -24,7 +24,7 @@
  */
 
 namespace det {
-class SimpleCalorimeterSD : public G4VSensitiveDetector, public BaseSD
+class SimpleCalorimeterSD : public G4VSensitiveDetector, public SegmentedVolume
 {
   public:
   /** Constructor.

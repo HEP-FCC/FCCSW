@@ -11,7 +11,7 @@ namespace det {
 SimpleTrackerSD::SimpleTrackerSD(std::string aDetectorName,
   std::string aReadoutName,
   DD4hep::Geometry::Segmentation aSeg)
-  :G4VSensitiveDetector(aDetectorName), BaseSD(aSeg) {
+  :G4VSensitiveDetector(aDetectorName), SegmentedVolume(aSeg) {
   // add a name of the collection of hits
   collectionName.insert(aReadoutName);
   std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;

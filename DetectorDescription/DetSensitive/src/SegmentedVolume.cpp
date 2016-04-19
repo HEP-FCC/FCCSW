@@ -1,4 +1,4 @@
-#include "BaseSD.h"
+#include "SegmentedVolume.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -12,12 +12,12 @@
 #include "CLHEP/Vector/ThreeVector.h"
 
 namespace det {
-BaseSD::BaseSD(DD4hep::Geometry::Segmentation aSeg)
+SegmentedVolume::SegmentedVolume(DD4hep::Geometry::Segmentation aSeg)
   : m_seg(aSeg) {}
 
-BaseSD::~BaseSD(){}
+SegmentedVolume::~SegmentedVolume(){}
 
-uint64_t BaseSD::getCellID(G4Step* aStep) {
+uint64_t SegmentedVolume::getCellID(G4Step* aStep) {
   DD4hep::Simulation::Geant4VolumeManager volMgr =
     DD4hep::Simulation::Geant4Mapping::instance().volumeManager();
   DD4hep::Geometry::VolumeManager::VolumeID volID =

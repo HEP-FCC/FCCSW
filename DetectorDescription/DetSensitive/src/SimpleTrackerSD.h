@@ -2,7 +2,7 @@
 #define DETSENSITIVE_SIMPLETRACKERSD_H
 
 // FCCSW
-#include "BaseSD.h"
+#include "SegmentedVolume.h"
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -21,7 +21,7 @@
  *  @author    Anna Zaborowska
  */
 namespace det {
-  class SimpleTrackerSD : public G4VSensitiveDetector, public BaseSD
+  class SimpleTrackerSD : public G4VSensitiveDetector, public SegmentedVolume
 {
   public:
   /** Constructor.

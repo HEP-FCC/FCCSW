@@ -11,7 +11,7 @@ namespace det {
 SimpleCalorimeterSD::SimpleCalorimeterSD(std::string aDetectorName,
   std::string aReadoutName,
   DD4hep::Geometry::Segmentation aSeg)
-  :G4VSensitiveDetector(aDetectorName), BaseSD(aSeg) {
+  :G4VSensitiveDetector(aDetectorName), SegmentedVolume(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
   std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
