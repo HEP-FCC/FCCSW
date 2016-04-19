@@ -4,8 +4,8 @@
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
   <includes>
-    <gdmlFile  ref="elements.xml"/>
-    <gdmlFile  ref="materials.xml"/>
+    <gdmlFile  ref="../../../DetectorDescription/Detectors/compact/elements.xml"/>
+    <gdmlFile  ref="../../../DetectorDescription/Detectors/compact/materials.xml"/>
   </includes>
 
   <info name="Box"
