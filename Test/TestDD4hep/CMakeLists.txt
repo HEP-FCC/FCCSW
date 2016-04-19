@@ -24,7 +24,6 @@ dd4hep_generate_rootmap(TestDD4hep)
 
 include(CTest)
 gaudi_add_test(DumpGDML
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/
                FRAMEWORK tests/options/dumpGeo.py)
 gaudi_add_test(InternalTrackerSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestDD4hep/tests/

@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../compact/Box_simpleTrackerSD.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:../Test/TestDD4hep/compact/Box_simpleTrackerSD.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc",
