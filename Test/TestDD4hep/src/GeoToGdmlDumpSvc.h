@@ -6,6 +6,13 @@
 // Gaudi
 #include "GaudiKernel/Service.h"
 
+/** @class GeoToGdmlDumpSvc TestDD4hep/TestDD4hep/GeoToGdmlDumpSvc.h GeoToGdmlDumpSvc.h
+ *
+ *  Service that dumps the geometry retrieved from the DD4hep GeoSvc to GDML file.
+ *
+ *  @author Anna Zaborowska
+ */
+
 class GeoToGdmlDumpSvc: public extends1<Service, ITestDD4hepSvc> {
 public:
    /// Constructor.

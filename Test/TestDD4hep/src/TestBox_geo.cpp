@@ -6,7 +6,6 @@ static DD4hep::Geometry::Ref_t createTestBox(DD4hep::Geometry::LCDD& aLcdd,
   DD4hep::Geometry::SensitiveDetector aSensDet) {
   DD4hep::XML::DetElement x_det = aXmlElement;
   std::string name = x_det.nameStr();
-  // DD4hep::XML::DetElement  box    (x_det.child(_U(box)));
   DD4hep::XML::Dimension   dim    (x_det.dimensions());
   DD4hep::XML::Dimension   pos    (x_det.position());
   DD4hep::XML::Dimension   rot    (x_det.rotation());

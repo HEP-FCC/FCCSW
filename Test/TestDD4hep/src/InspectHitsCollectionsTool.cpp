@@ -37,11 +37,11 @@ StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
       collect = collections->GetHC(iter_coll);
       info() << "\tcollection #: "<<iter_coll<<"\tname: "<<collect->GetName()
              <<"\tsize: "<<collect->GetSize()<<endmsg;
-        size_t n_hit = collect->GetSize();
+      size_t n_hit = collect->GetSize();
       for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-          hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-          // if(hit->energyDeposit)
-          //   debug()<<"hit Edep: "<<hit->energyDeposit<<"\tcellID: "<<hit->cellID<<endmsg;
+        hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
+        if(hit->energyDeposit)
+          debug()<<"hit Edep: "<<hit->energyDeposit<<"\tcellID: "<<hit->cellID<<endmsg;
       }
     }
   }

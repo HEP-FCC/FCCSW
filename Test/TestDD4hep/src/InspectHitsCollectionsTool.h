@@ -7,6 +7,14 @@
 //FCCSW
 #include "SimG4Interface/IG4SaveOutputTool.h"
 
+/** @class InspectHitsCollectionsTool TestDD4hep/TestDD4hep/InspectHitsCollectionsTool.h InspectHitsCollectionsTool.h
+ *
+ *  Tool used to inspect the hits collection.
+ *  No output in EDM is produced.
+ *
+ *  @author Anna Zaborowska
+ */
+
 class InspectHitsCollectionsTool: public GaudiTool, virtual public IG4SaveOutputTool {
 public:
   /// Constructor.

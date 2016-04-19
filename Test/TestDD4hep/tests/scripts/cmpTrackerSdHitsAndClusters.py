@@ -52,7 +52,3 @@ for iev, event in enumerate(store):
         assert(hyy == cyy)
         assert(hzz == czz)
         assert(hE == cE)
-#        if(not(hxx == cxx and hyy == cyy and hzz == czz)):
-#            print('x',clu.Core().position.X,hxx,cxx)
-#            print('y',clu.Core().position.Y,hyy,cyy)
-#            print('z',clu.Core().position.Z,hzz,czz)
