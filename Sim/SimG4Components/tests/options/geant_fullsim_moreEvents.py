@@ -14,7 +14,7 @@ from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
 podioevent = FCCDataSvc("EventDataSvc")
 
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
+reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
