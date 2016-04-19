@@ -30,7 +30,8 @@ StatusCode InspectHitsCollectionsTool::finalize() {
 StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  DD4hep::Simulation::Geant4TrackerHit* hit;
+  DD4hep::Simulation::Geant4TrackerHit* hitT;
+  DD4hep::Simulation::Geant4CalorimeterHit* hitC;
   info() <<"Obtaining hits collections that are stored in this event:"<<endmsg;
   if(collections != nullptr) {
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
@@ -39,9 +40,14 @@ StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
              <<"\tsize: "<<collect->GetSize()<<endmsg;
       size_t n_hit = collect->GetSize();
       for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-        hit = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
-        if(hit->energyDeposit)
-          debug()<<"hit Edep: "<<hit->energyDeposit<<"\tcellID: "<<hit->cellID<<endmsg;
+        hitT = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
+        if(hitT)
+          debug()<<"hit Edep: "<<hitT->energyDeposit<<"\tcellID: "<<hitT->cellID<<endmsg;
+        else {
+          hitC = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
+          if(hitC)
+            debug()<<"hit Edep: "<<hitC->energyDeposit<<"\tcellID: "<<hitC->cellID<<endmsg;
+        }
       }
     }
   }
