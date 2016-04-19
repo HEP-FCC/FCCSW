@@ -18,17 +18,17 @@
   </info>
 
   <define>
-    <!---- ECAL dimensions ---->
-    <!--- cryostat description --->
+    <!-- ECAL dimensions -->
+    <!-- cryostat description -->
     <constant name="BarECal_rmin" value="2600*mm"/>
     <constant name="BarECal_rmax" value="3500*mm"/>
     <constant name="BarECal_dz" value="4000*mm"/>
-    
-    <!--- calorimeter volume --->
+
+    <!-- calorimeter volume -->
     <constant name="EMBarrel_rmin" value="2700*mm"/>
     <constant name="EMBarrel_rmax" value="3400*mm"/>
     <constant name="EMBarrel_dz" value="3900*mm"/>
-    
+
   </define>
 
   <display>
@@ -37,8 +37,8 @@
 
   <readouts>
     <readout name="BarECal_Readout">
-      <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
-      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:-18,y:-18</id>
+      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
+      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
     </readout>
   </readouts>
 
