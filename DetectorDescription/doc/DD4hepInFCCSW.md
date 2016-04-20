@@ -285,14 +285,23 @@ Note that for segmentation, the integers used for cell IDs need to be signed (in
 
 Figure below presents the cells and their identification for *cellSize = 1*
 
-![](fig/segmentation.png)
-
+<pre>
+   +-----------------------------+
+   | -2  | -1  |  0  |  1  |  2  |
+|-----|-----|-----|-----|-----|-----|---> x
+-3   -2    -1     0     1     2     3
+</pre>
 
 **Caveat:** due to the middle cell centred at *x=0*, for some detectors the outermost cells may be of different size than the rest.
 
 Let's consider a detector of total width *detSize=4* and the the cell width *cellSize=1*. The segmentation that is usually introduced in Geant is to divide the detector into *detSize/cellSize = 4* cells which start from the detector boundary. It is depicted below:
 
-![](fig/segmentationAligned.png)
+<pre>
+ +-----------------------+
+ |  0  |  1  |  2  |  3  |
+-|-----|-----|-----|-----|---> x
+-2    -1     0     1     2
+</pre>
 
 However, DD4hep segmentation of the volume is done automatically (for any detector shape), with a simple formula used to calculate the cell ID, without any knowledge of the detector size, boundaries etc.
 
@@ -301,8 +310,12 @@ However, DD4hep segmentation of the volume is done automatically (for any detect
 The centre position of the volume becomes the centre of the middle cell. As a consequence, in the example below, two outermost cells have the width of *0.5*\**cellSize*.
 
 
-
-![](fig/segmentationNotAligned.png)
+<pre>
+ +-----------------------+
+ |-2| -1  |  0  |  1  | 2|
+-|-----|-----|-----|-----|---> x
+-2    -1     0     1     2
+</pre>
 
 **Moreover**, the total number of cells is *5* (even though ideally just 4 cells could be fitted inside detector volume).
 So, instead of using *log_2(detSize/cellSize) = log_2(4) = 2* bits to decode the cellID, actually an additional bit needs to be used. Please remember about that while designing the segmentation part of the readout structure.
