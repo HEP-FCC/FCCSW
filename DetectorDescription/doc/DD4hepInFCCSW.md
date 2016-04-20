@@ -71,6 +71,7 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
 
 2. **Factory method**: The minimal part to define a factory method for a sub-detector is:
 ~~~{.cpp}
+namespace detector {
 static DD4hep::Geometry::Ref_t create_element(
   DD4hep::Geometry::LCDD& lcdd,                 // dd4hep's main detector description interface
   xml_h xmlElement,                             // the xml-tree that describes this detector
@@ -97,6 +98,7 @@ static DD4hep::Geometry::Ref_t create_element(
                                              DD4hep::Geometry::Position trans(0., 0., 0. ) )); // the position where to place it
     // connect placed volume and physical volume
     coneDet.setPlacement( conePhys );
+}
 }
 DECLARE_DETELEMENT(Example, detector::create_element) // factory method
 ~~~
