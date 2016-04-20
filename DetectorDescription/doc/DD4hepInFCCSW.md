@@ -6,7 +6,7 @@ Table of contents:
 * [Ingredients Describing a Detector](#ingredients-describing-a-detector)
 * [Constructing Detector Geometry](#constructing-detector-geometry)
 * [A Minimal Working Example](#a-minimal-working-example)
-* [Adding Sensitive Detectors](#adding-sensitive-detectors)
+* [Sensitive Detectors](#sensitive-detectors)
 * [Coordinate Conventions](#coordinate-conventions)
 * [Visualisation](#visualisation)
 * [FCCSW Folder Structure](#fccsw-folder-structure) (to be added)
@@ -23,7 +23,7 @@ Similarly to Geant4 itself, DD4hep tries to re-use detector elements without hav
 - Come up with the largest component that is repeatable (e.g. a detector wedge)
   - Usually this component is similar or equal to the components that are built when physically building the detector
 - Construct this component once and then place it several times to construct the whole detector
-- This should minimize the number of fully unique volumes you create
+- This should minimise the number of fully unique volumes you create
 
 A Minimal Working Example
 --
@@ -71,6 +71,7 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
 
 2. **Factory method**: The minimal part to define a factory method for a sub-detector is:
 ~~~{.cpp}
+namespace detector {
 static DD4hep::Geometry::Ref_t create_element(
   DD4hep::Geometry::LCDD& lcdd,                 // dd4hep's main detector description interface
   xml_h xmlElement,                             // the xml-tree that describes this detector
@@ -98,19 +99,133 @@ static DD4hep::Geometry::Ref_t create_element(
     // connect placed volume and physical volume
     coneDet.setPlacement( conePhys );
 }
+}
 DECLARE_DETELEMENT(Example, detector::create_element) // factory method
 ~~~
 
 **Note** that the type `Example` in the xml-description corresponds to the name we put in the `DECLARE_DETELEMENT` macro, this creates the link between the factory method and the xml-description.
 
-Adding Sensitive Detectors
+Sensitive Detectors
 --
 The above example works, but it does not yet create any sensitive detectors that are needed by Geant4 to calculate and create energy deposits. While in GDML you have to define your sensitive detectors yourself, DD4hep has a mechanism of doing this for you.
+
+Attaching the sensitive volume to the detector consists of two steps:
+ + Defining what kind of the detector it is (how the hits should be processed).
+ + Creating the readout structure (to uniquely identify the parts of the detector where the deposits are made).
+
+Both of them involve changes in the XML description and in the factory method.
+
+### Type of the sensitive detector
+
+The **type** of the sensitive detector corresponds to the DD4hep definition of the sensitive detector.
+There are two intrinsic sensitive detector types:
+* [**Geant4Tracker**](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/legacy/Geant4TrackerSD.cpp?revision=2131&view=markup&pathrev=2132)
+* [**Geant4Calorimeter**](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/legacy/Geant4CalorimeterSD.cpp?revision=2131&view=markup&pathrev=2132).
+
+1. In XML description, the sensitive (active) module should be indicated:
+
+~~~{.xml}
+<detector id="0" ... sensitive="true">
+  <sensitive type="Geant4Calorimeter"/>
+</detector>
+~~~
+
+or
+
+~~~{.xml}
+<module_component ... sensitive="true"/>
+~~~
+
+2. The factory method should contain:
+
+~~~{.cpp}
+DD4hep::Geometry::SensitiveDetector sd = aSensDet;
+DD4hep::XML::Dimension sd_typ = x_det.child(_U(sensitive));
+det_vol.setSensitiveDetector(aSensDet);
+if ( x_det.isSensitive() ) {
+  sd.setType(sd_typ.typeStr());
+}
+~~~
+
+or
+
+~~~{.cpp}
+DD4hep::Geometry::SensitiveDetector aSensDet
+aSensDet.setType("Geant4Calorimeter");
+if (xComp.isSensitive()) {
+  modCompVol.setSensitiveDetector(aSensDet);
+}
+~~~
+
+#### User-defined sensitive detector
+
+User may also define own sensitive detector.
+
+What is needed to specify the behaviour of the active elements (how and what should be saved in hits collections):
+
+1. Implementation of G4VSensitiveDetector (in example below: `DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.(h/cpp)`)
+2. Factory method (of SD) for DD4hep
+
+In order to use the common methods to store the output (hits at the end of simulation) it is highly advised to use the DD4hep hits class:
+* [*DD4hep::Simulation::Geant4TrackerHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
+* [*DD4hep::Simulation::Geant4CalorimeterHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
+
+If those classes are not sufficient, user needs to create the hit class implementation and also the according tools to translate hits collections to EDM.
+
+
+#### Example of own SD
+
+1. Implementation of G4VSensitiveDetector class, e.g. `det::SimpleCalorimeterSD`.
+  *  `::Initialize(..)` - create the hit collection
+  *  `::ProcessHits(..)` - add entries to the hit collection with position, cellId, energy deposit, time, ... Hit base class used in the collection is already implemented in DD4hep `DD4hep::Simulation::Geant4CalorimeterHit`.
+
+ Additional base class `det::SegmentedVolume` implements the method to retrieve the cell identification based on the DD4hep segmentation (`SegmentedVolume::GetCellID(G4Step*)`).
+
+ ~~~{.cpp}
+ namespace det {
+ class SimpleCalorimeterSD : public G4VSensitiveDetector, public SegmentedVolume {
+ public:
+   SimpleCalorimeterSD(std::string aDetectorName, std::string aReadoutName, DD4hep::Geometry::Segmentation aSeg);
+   /// Destructor
+   ~SimpleCalorimeterSD();
+   virtual void Initialize(G4HCofThisEvent* aHitsCollections) final;
+   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
+ private:
+   /// Collection of calorimeter hits
+   G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* calorimeterCollection;
+ };
+ }
+ ~~~
+
+2. Factory method for DD4hep is created in `DetectorDescription/DetSensitive/src/SDWrapper.cpp`.
+ Any other sensitive detector may be added in the same way.
+
+ ~~~{.cpp}
+ namespace DD4hep {
+ namespace Simulation {
+ // Factory method to create an instance of SimpleCalorimeterSD
+ static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDetectorName,
+                                                           DD4hep::Geometry::LCDD& aLcdd) {
+   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
+   return new det::SimpleCalorimeterSD(aDetectorName,
+                                       readoutName,
+                                       aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
+ }
+ }
+ }
+ DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,DD4hep::Simulation::create_simple_calorimeter_sd)
+ ~~~
+
+**Note** that the name we put in the `DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR` macro corresponds to the type `SimpleCalorimeterSD` in the xml-description, this creates the link between the factory method and the xml-description.
+
+### Readout
+
+In order to recognise where the energy was deposited, the sensitive volume has **readout** attached which allows to uniquely identify the volume element.
 
 1. Extending the xml-description:
     We need to add the `readout` tag to the detector description, which defines the way in which a unique ID is calculated for each sensitive detector. This ID is a 64 bit integer, where we can define which bits are used to identify what. E.g., if we had 4 sub-detectors, we would need 2 bits to uniquely identify each of them (2^2 = 4). Then if the detector for which we want to add the sensitive detector had 80 modules, we need 7 bits to uniquely identify those (6 bits correspond to 64 unique IDs, 7 to 128). Then if your modules had, yet again, sub components, you'd have to think about how many bits you need for those, etc.
 
-    In addition to this unique identifier, the same mechanism of DD4hep allows to define a segmentation of your smallest component that allows you to track where a particle passed through your sensitive detector. For example we can define a grid with step sizes of 0.5 mm. DD4hep then needs also to be able to uniquely identify those within the component and the corresponding bits need to be reserved. In our example let's keep half of the 64 bit integer for this grid, so 32 bits and half of each for x coordinate and y coordinate.
+    In addition to this unique identifier, the same mechanism of DD4hep allows to define a segmentation of your smallest component that allows you to track where a particle passed through your sensitive detector. For example we can define a grid with step sizes of 0.5 mm. DD4hep then needs also to be able to uniquely identify those within the component and the corresponding bits need to be reserved. In our example let's keep half of the 64 bit integer for this grid, so 32 bits and half of each for x coordinate and y coordinate. Segmentation is described in more detail further.
 
     So in our example of 4 sub-detectors and our new detector having 80 modules, we would write this (leaving out all the boiler plate code shown above):
 ~~~{.xml}
@@ -133,7 +248,7 @@ The above example works, but it does not yet create any sensitive detectors that
 ~~~
 
 2. Extending the factory method:
-    In the factory method all we need to do is tell DD4hep what part a sensitive detector is and which part of the readout ID is foreseen for that part of the detector:
+    In the factory method all we need to do is tell DD4hep what part a sensitive detector is and which part of the readout ID is foreseen for that part of the detector. Please note that segmentation is done automatically, hence it does not need any implementation in the factory method.
 ~~~{.cpp}
     // imagine the rest as above
     conePhys = experimentalHall.placeVolume( coneVol, // the volume to be placed
@@ -159,16 +274,64 @@ The above example works, but it does not yet create any sensitive detectors that
     // rest as above
 ~~~
 
+### Segmentation
+
+
+Possible grids (Cartesian 2d, Cartesian 3d, polar) can be found in [DDSegmentation](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDSegmentation/src/?pathrev=2132).
+
+#### Cartesian segmentation
+The centre of the Cartesian grid is in the centre of the detector.
+
+The middle cell has the centre at **x=0** and the boundaries are at **(+/-)0.5*cellSize**.
+Note that for segmentation, the integers used for cell IDs need to be signed (indicated by '-' in the readout `<id>` tag in XML)
+
+Figure below presents the cells and their identification for *cellSize = 1*
+
+<pre>
+   +-----------------------------+
+   | -2  | -1  |  0  |  1  |  2  |
+|-----|-----|-----|-----|-----|-----|---> x
+-3   -2    -1     0     1     2     3
+</pre>
+
+**Caveat:** due to the middle cell centred at *x=0*, for some detectors the outermost cells may be of different size than the rest.
+
+Let's consider a detector of total width *detSize=4* and the the cell width *cellSize=1*. The segmentation that is usually introduced in Geant is to divide the detector into *detSize/cellSize = 4* cells which start from the detector boundary. It is depicted below:
+
+<pre>
+ +-----------------------+
+ |  0  |  1  |  2  |  3  |
+-|-----|-----|-----|-----|---> x
+-2    -1     0     1     2
+</pre>
+
+However, DD4hep segmentation of the volume is done automatically (for any detector shape), with a simple formula used to calculate the cell ID, without any knowledge of the detector size, boundaries etc.
+
+*int( floor( (position + 0.5 *\** cellSize ) / cellSize) )*
+
+The centre position of the volume becomes the centre of the middle cell. As a consequence, in the example below, two outermost cells have the width of *0.5*\**cellSize*.
+
+
+<pre>
+ +-----------------------+
+ |-2| -1  |  0  |  1  | 2|
+-|-----|-----|-----|-----|---> x
+-2    -1     0     1     2
+</pre>
+
+**Moreover**, the total number of cells is *5* (even though ideally just 4 cells could be fitted inside detector volume).
+So, instead of using *log_2(detSize/cellSize) = log_2(4) = 2* bits to decode the cellID, actually an additional bit needs to be used. Please remember about that while designing the segmentation part of the readout structure.
+
 
 
 Coordinate Conventions
 --
-- Position vector points to center of volume
+- Position vector points to centre of volume
 - Sizes are defined as the offset position vector
 - Local coordinates start at position vector
 
 
-Visualization
+Visualisation
 --
 DD4hep comes with `geoDisplay` that can be used to display any detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory, e.g.:
 ```
