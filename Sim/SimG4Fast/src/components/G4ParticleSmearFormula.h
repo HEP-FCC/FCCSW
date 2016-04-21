@@ -5,6 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
 class IRndmGenSvc;
+class IRndmGen;
 
 //ROOT
 class TFormula;
@@ -62,7 +63,7 @@ private:
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
-  Rndm::Numbers m_gauss;
+  IRndmGen* m_gauss;
 };
 
 #endif /* SIMG4FAST_G4PARTICLESMEARSIMPLE_H */

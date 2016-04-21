@@ -3,6 +3,7 @@
 // Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
+#include "GaudiKernel/IRndmGen.h"
 
 //ROOT
 #include "TFile.h"
@@ -46,11 +47,10 @@ StatusCode G4ParticleSmearRootFile::finalize() {
 StatusCode G4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   double res = resolution(aMom.pseudoRapidity(), aMom.mag()/CLHEP::GeV);
   if(res>0) {
-    m_gauss.initialize(m_randSvc, Rndm::Gauss(1,res));
-    double tmp = m_gauss.shoot();
+    m_randSvc->generator(Rndm::Gauss(1,res), m_gauss);
+    double tmp = m_gauss->shoot();
     aMom *= tmp;
   }
-  m_gauss.finalize();
   return StatusCode::SUCCESS;
 }
 

@@ -3,6 +3,7 @@
 // Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
+#include "GaudiKernel/IRndmGen.h"
 
 //ROOT
 #include "TFormula.h"
@@ -52,24 +53,24 @@ StatusCode G4ParticleSmearFormula::finalize() {
 
 StatusCode G4ParticleSmearFormula::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   if(!m_resolutionMomentum->IsValid()) {
-      error()<<"Unable to smear particle's momentum - no resolution given!"<<endmsg;
-      return StatusCode::FAILURE;
-    }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_resolutionMomentum->Eval(aMom.mag())));
-  double tmp = m_gauss.shoot();
+    error()<<"Unable to smear particle's momentum - no resolution given!"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  m_randSvc->generator(Rndm::Gauss(1,m_resolutionMomentum->Eval(aMom.mag())), m_gauss);
+  double tmp = m_gauss->shoot();
   aMom *= tmp;
   return StatusCode::SUCCESS;
 }
 
 StatusCode G4ParticleSmearFormula::smearEnergy( double& aEn, int /*aPdg*/) {
   if(!m_resolutionEnergy->IsValid()) {
-      error()<<"Unable to smear particle's energy - no resolution given!"<<endmsg;
-      return StatusCode::FAILURE;
-    }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_resolutionEnergy->Eval(aEn)));
+    error()<<"Unable to smear particle's energy - no resolution given!"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  m_randSvc->generator(Rndm::Gauss(1,m_resolutionEnergy->Eval(aEn)), m_gauss);
   double tmp;
   do {
-    tmp = m_gauss.shoot();
+    tmp = m_gauss->shoot();
     aEn *= tmp;
   }
   while(aEn<0);

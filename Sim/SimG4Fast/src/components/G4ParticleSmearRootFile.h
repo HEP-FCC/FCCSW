@@ -1,10 +1,11 @@
-#ifndef SIMG4FAST_G4PARTICLESMEARTKLAYOUT_H
-#define SIMG4FAST_G4PARTICLESMEARTKLAYOUT_H
+#ifndef SIMG4FAST_G4PARTICLESMEARROOTFILE_H
+#define SIMG4FAST_G4PARTICLESMEARROOTFILE_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
 class IRndmGenSvc;
+class IRndmGen;
 
 //ROOT
 #include "TGraph.h"
@@ -14,9 +15,14 @@ class IRndmGenSvc;
 
 /** @class G4ParticleSmearRootFile SimG4Fast/src/components/G4ParticleSmearRootFile.h G4ParticleSmearRootFile.h
  *
- *  RootFile particle smearing tool.
- *  Smears the momentum/energy of the particle following the Gaussian distribution.
- *  TODO about where resolutions come from
+ *  Root file particle smearing tool.
+ *  Momentum/energy dependent smearing.
+ *  The resolution dependence is read from the ROOT file, which path is given in configuration.
+ *  Root file should contain (for each pseudorapidity bin) TGraph with p-dependent resolution.
+ *  The name of the TGraph should follow the convention: "etafromX_etatoY", where X and Y are
+ *  lower and upper boundaries of eta bin.
+ *  Momentum/energy of the particle is smeared following a Gaussian distribution,
+ *  using the evaluated resolution as the mean.
  *
  *  @author Anna Zaborowska
  */
@@ -63,12 +69,12 @@ private:
   std::map<double, std::unique_ptr<TGraph>> m_momentumResolutions;
   /// Maximum eta for which resolutions are defined (filled at the end of file reading)
   double m_maxEta;
-  /// File name with the resolutions obtained from tkLayout (set by job options)
+  /// File name with the resolutions obtained from root file (set by job options)
   std::string m_resolutionFileName;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
-  Rndm::Numbers m_gauss;
+  IRndmGen* m_gauss;
 };
 
-#endif /* SIMG4FAST_G4PARTICLESMEARSIMPLE_H */
+#endif /* SIMG4FAST_G4PARTICLESMEARROOTFILE_H */
