@@ -50,11 +50,12 @@ StatusCode G4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, int 
     double tmp = m_gauss.shoot();
     aMom *= tmp;
   }
+  m_gauss.finalize();
   return StatusCode::SUCCESS;
 }
 
 StatusCode G4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
-  warning()<<"TkLayout smearing is meant to be used with tracker only,"<<endmsg;
+  warning()<<"Root file smearing is meant to be used with tracker only,"<<endmsg;
   warning()<<"hence smearing can be performed for the momentum only!"<<endmsg;
   return StatusCode::FAILURE;
 }

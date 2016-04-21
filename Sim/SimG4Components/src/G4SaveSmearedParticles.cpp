@@ -43,9 +43,9 @@ StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
   for(int i=0;i<aEvent.GetNumberOfPrimaryVertex();i++) {
     for(int j=0;j<aEvent.GetPrimaryVertex(i)->GetNumberOfParticle();j++) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
-      sim::ParticleInformation* inf = dynamic_cast<sim::ParticleInformation*>(g4particle->GetUserInformation());
-      if(inf->smeared()) {
-        const fcc::MCParticle& MCparticle = inf->mcParticle();
+      sim::ParticleInformation* info = dynamic_cast<sim::ParticleInformation*>(g4particle->GetUserInformation());
+      if(info->smeared()) {
+        const fcc::MCParticle& MCparticle = info->mcParticle();
         fcc::Particle particle = particles->create();
         fcc::ParticleMCParticleAssociation association = associations->create();
         association.Rec(particle);
@@ -54,13 +54,13 @@ StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
         core.Type = g4particle->GetPDGcode();
         core.Status = 1; // how it is defined ???? as in HepMC ?
         core.Charge = g4particle->GetCharge();
-        core.P4.Px = inf->endMomentum().x()*sim::g42edm::energy;
-        core.P4.Py = inf->endMomentum().y()*sim::g42edm::energy;
-        core.P4.Pz = inf->endMomentum().z()*sim::g42edm::energy;
+        core.P4.Px = info->endMomentum().x()*sim::g42edm::energy;
+        core.P4.Py = info->endMomentum().y()*sim::g42edm::energy;
+        core.P4.Pz = info->endMomentum().z()*sim::g42edm::energy;
         core.P4.Mass = g4particle->GetMass()*sim::g42edm::energy;
-        core.Vertex.X = inf->vertexPosition().x()*sim::g42edm::length;
-        core.Vertex.Y = inf->vertexPosition().y()*sim::g42edm::length;
-        core.Vertex.Z = inf->vertexPosition().z()*sim::g42edm::length;
+        core.Vertex.X = info->vertexPosition().x()*sim::g42edm::length;
+        core.Vertex.Y = info->vertexPosition().y()*sim::g42edm::length;
+        core.Vertex.Z = info->vertexPosition().z()*sim::g42edm::length;
         n_part++;
       }
     }

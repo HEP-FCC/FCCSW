@@ -15,8 +15,9 @@ class TFormula;
 /** @class G4ParticleSmearFormula SimG4Fast/src/components/G4ParticleSmearFormula.h G4ParticleSmearFormula.h
  *
  *  Formula particle smearing tool.
- *  Smears the momentum/energy of the particle following the Gaussian distribution.
- *  Resolutions for the smearing are defined in the configuration file.
+ *  Momentum/energy dependent smearing.
+ *  The resolution dependence can be expressed by an arbitrary formula in the configuration.
+ *  Smears momentum/energy of the particle following a Gaussian distribution, using the evaluated formula as the mean.
  *
  *  @author Anna Zaborowska
  */
