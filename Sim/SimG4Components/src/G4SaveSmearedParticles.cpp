@@ -65,6 +65,6 @@ StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
       }
     }
   }
-  info() << "\t" << n_part<< " particles are stored in smeared particles collection"<<endmsg;
+  debug() << "\t" << n_part<< " particles are stored in smeared particles collection"<<endmsg;
   return StatusCode::SUCCESS;
 }
