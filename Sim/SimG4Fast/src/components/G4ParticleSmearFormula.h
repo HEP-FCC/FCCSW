@@ -61,7 +61,7 @@ private:
   /// TFormula representing resolution momentum-dependent for the smearing
   std::unique_ptr<TFormula> m_resolutionMomentum;
   /// Random Number Service
-  IRndmGenSvc* m_randSvc;
+  SmartIF<IRndmGenSvc> m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   IRndmGen* m_gauss;
 };

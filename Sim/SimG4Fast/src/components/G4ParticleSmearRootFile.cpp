@@ -29,7 +29,8 @@ StatusCode G4ParticleSmearRootFile::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  if(service( "RndmGenSvc" , m_randSvc ).isFailure()) {
+  m_randSvc = service("RndmGenSvc");
+  if(!m_randSvc) {
     error() << "Couldn't get RndmGenSvc" << endmsg;
     return StatusCode::FAILURE;
   }
