@@ -1,4 +1,4 @@
-#include "G4ParticleSmearTklayout.h"
+#include "G4ParticleSmearRootFile.h"
 
 // Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
@@ -13,18 +13,18 @@
 #include "CLHEP/Vector/ThreeVector.h"
 #include "CLHEP/Units/SystemOfUnits.h"
 
-DECLARE_TOOL_FACTORY(G4ParticleSmearTklayout)
+DECLARE_TOOL_FACTORY(G4ParticleSmearRootFile)
 
-G4ParticleSmearTklayout::G4ParticleSmearTklayout(const std::string& type, const std::string& name, const IInterface* parent):
+G4ParticleSmearRootFile::G4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent):
     GaudiTool(type, name, parent),
     m_maxEta(0) {
   declareInterface<IG4ParticleSmearTool>(this);
   declareProperty("filename", m_resolutionFileName = "Sim/SimG4Fast/data/tkLayout_example_resolutions.root");
 }
 
-G4ParticleSmearTklayout::~G4ParticleSmearTklayout() {}
+G4ParticleSmearRootFile::~G4ParticleSmearRootFile() {}
 
-StatusCode G4ParticleSmearTklayout::initialize() {
+StatusCode G4ParticleSmearRootFile::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -39,11 +39,11 @@ StatusCode G4ParticleSmearTklayout::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearTklayout::finalize() {
+StatusCode G4ParticleSmearRootFile::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4ParticleSmearTklayout::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
+StatusCode G4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   double res = resolution(aMom.pseudoRapidity(), aMom.mag()/CLHEP::GeV);
   if(res>0) {
     m_gauss.initialize(m_randSvc, Rndm::Gauss(1,res));
@@ -53,13 +53,13 @@ StatusCode G4ParticleSmearTklayout::smearMomentum( CLHEP::Hep3Vector& aMom, int 
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearTklayout::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
+StatusCode G4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
   warning()<<"TkLayout smearing is meant to be used with tracker only,"<<endmsg;
   warning()<<"hence smearing can be performed for the momentum only!"<<endmsg;
   return StatusCode::FAILURE;
 }
 
-StatusCode G4ParticleSmearTklayout::readResolutions() {
+StatusCode G4ParticleSmearRootFile::readResolutions() {
   TFile f(m_resolutionFileName.c_str(),"READ");
   if (f.IsZombie()) {
     error() << "Couldn't open the resolution file" << endmsg;
@@ -76,12 +76,13 @@ StatusCode G4ParticleSmearTklayout::readResolutions() {
   }
   m_maxEta = (--m_momentumResolutions.end())->first;
   debug()<<"maximum pseudorapidity value of the read resolutions: "<<m_maxEta<<endmsg;
+  f.Close();
   // TODO here sort map in eta to make sure it is increasing
   // (it is now because of the way it is produced, but one never knows...)
   return StatusCode::SUCCESS;
 }
 
-double G4ParticleSmearTklayout::resolution(double aEta, double aMom) {
+double G4ParticleSmearRootFile::resolution(double aEta, double aMom) {
   // smear particles only in the pseudorapidity region where resolutions are defined
   if(fabs(aEta)>m_maxEta)
     return 0;

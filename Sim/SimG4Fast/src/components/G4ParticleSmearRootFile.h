@@ -12,20 +12,20 @@ class IRndmGenSvc;
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 
-/** @class G4ParticleSmearTklayout SimG4Fast/src/components/G4ParticleSmearTklayout.h G4ParticleSmearTklayout.h
+/** @class G4ParticleSmearRootFile SimG4Fast/src/components/G4ParticleSmearRootFile.h G4ParticleSmearRootFile.h
  *
- *  Tklayout particle smearing tool.
+ *  RootFile particle smearing tool.
  *  Smears the momentum/energy of the particle following the Gaussian distribution.
  *  TODO about where resolutions come from
  *
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearTklayout: public GaudiTool, virtual public IG4ParticleSmearTool {
+class G4ParticleSmearRootFile: public GaudiTool, virtual public IG4ParticleSmearTool {
 public:
-  explicit G4ParticleSmearTklayout(const std::string& type , const std::string& name,
+  explicit G4ParticleSmearRootFile(const std::string& type , const std::string& name,
     const IInterface* parent);
-  virtual ~G4ParticleSmearTklayout();
+  virtual ~G4ParticleSmearRootFile();
 
   /**  Initialize the tool and a random number generator.
    *   @return status code
