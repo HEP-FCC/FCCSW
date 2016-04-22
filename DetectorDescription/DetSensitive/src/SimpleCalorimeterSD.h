@@ -32,9 +32,9 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector, public SegmentedVolume
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleCalorimeterSD(std::string aDetectorName,
-    std::string aReadoutName,
-    DD4hep::Geometry::Segmentation aSeg);
+  SimpleCalorimeterSD(const std::string& aDetectorName,
+    const std::string& aReadoutName,
+    const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
   ~SimpleCalorimeterSD();
   /** Initialization.

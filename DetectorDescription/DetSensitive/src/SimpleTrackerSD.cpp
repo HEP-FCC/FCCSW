@@ -8,16 +8,16 @@
 #include "CLHEP/Vector/ThreeVector.h"
 
 namespace det {
-SimpleTrackerSD::SimpleTrackerSD(std::string aDetectorName,
-  std::string aReadoutName,
-  DD4hep::Geometry::Segmentation aSeg)
-  :G4VSensitiveDetector(aDetectorName), SegmentedVolume(aSeg) {
+SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,
+  const std::string& aReadoutName,
+  const DD4hep::Geometry::Segmentation& aSeg)
+  : G4VSensitiveDetector(aDetectorName), SegmentedVolume(aSeg) {
   // add a name of the collection of hits
   collectionName.insert(aReadoutName);
   std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
 }
 
-SimpleTrackerSD::~SimpleTrackerSD(){;}
+SimpleTrackerSD::~SimpleTrackerSD(){}
 
 void SimpleTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {

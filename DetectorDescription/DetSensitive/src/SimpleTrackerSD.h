@@ -29,9 +29,9 @@ namespace det {
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleTrackerSD(std::string aDetectorName,
-    std::string aReadoutName,
-    DD4hep::Geometry::Segmentation aSeg);
+  SimpleTrackerSD(const std::string& aDetectorName,
+    const std::string& aReadoutName,
+    const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
   ~SimpleTrackerSD();
   /** Initialization.
@@ -50,7 +50,7 @@ namespace det {
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<DD4hep::Simulation::Geant4Hit> *trackerCollection;
+  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* trackerCollection;
 };
 }
 
