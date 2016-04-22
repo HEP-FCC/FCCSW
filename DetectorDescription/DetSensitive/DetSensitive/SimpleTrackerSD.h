@@ -1,30 +1,24 @@
-#ifndef DETSENSITIVE_SIMPLECALORIMETERSD_H
-#define DETSENSITIVE_SIMPLECALORIMETERSD_H
-
-// FCCSW
-#include "SegmentedVolume.h"
+#ifndef DETSENSITIVE_SIMPLETRACKERSD_H
+#define DETSENSITIVE_SIMPLETRACKERSD_H
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
-#include "DDSegmentation/Segmentation.h"
 
 // Geant
 #include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
 
-/** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
+/** SimpleTrackerSD DetectorDescription/DetSensitive/src/SimpleTrackerSD.h SimpleTrackerSD.h
  *
- *  Simple sensitive detector for calorimeter (accumulates energy deposits).
- *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
+ *  Simple sensitive detector for tracker.
+ *  It is based on DD4hep::Simulation::Geant4GenericSD<Tracker> (and is meant to be identical).
  *  In particular, the position of the hit is set to middle step between
  *  G4Step::GetPreStepPoint() and G4Step::GetPostStepPoint()
- *  No timing information is saved (energy deposits aggregated in the cells)
  *
  *  @author    Anna Zaborowska
  */
-
 namespace det {
-class SimpleCalorimeterSD : public G4VSensitiveDetector, public SegmentedVolume
+  class SimpleTrackerSD : public G4VSensitiveDetector
 {
   public:
   /** Constructor.
@@ -32,11 +26,11 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector, public SegmentedVolume
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleCalorimeterSD(const std::string& aDetectorName,
+  SimpleTrackerSD(const std::string& aDetectorName,
     const std::string& aReadoutName,
     const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  ~SimpleCalorimeterSD();
+  ~SimpleTrackerSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.
@@ -46,16 +40,17 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector, public SegmentedVolume
   /** Process hit once the particle hit the sensitive volume.
    *  Checks if the energy deposit is larger than 0, calculates the position and cellID,
    *  saves that into the hit collection.
-   *  If there is already entry in the same cell, the energy is accumulated.
-   *  Otherwise new hit is created.
+   *  New hit is created for each energy deposit (to save information about time)
    *  @param aStep Step in which particle deposited the energy.
    */
-  virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
+  virtual bool ProcessHits(G4Step*aStep, G4TouchableHistory*) final;
 
 private:
-  /// Collection of calorimeter hits
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit> *calorimeterCollection;
+  /// Collection of tracker hits
+  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* trackerCollection;
+  /// Segmentation of the detector used to retrieve the cell Ids
+  DD4hep::Geometry::Segmentation m_seg;
 };
 }
 
-#endif /* DETSENSITIVE_SIMPLECALORIMETERSD_H */
+#endif /* DETSENSITIVE_SIMPLETRACKERSD_H */

@@ -1,8 +1,8 @@
 #include "DDG4/Factories.h"
 #include "DD4hep/LCDD.h"
 
-#include "SimpleTrackerSD.h"
-#include "SimpleCalorimeterSD.h"
+#include "DetSensitive/SimpleTrackerSD.h"
+#include "DetSensitive/SimpleCalorimeterSD.h"
 
 namespace DD4hep {
 namespace Simulation {

@@ -1,4 +1,7 @@
-#include "SimpleCalorimeterSD.h"
+#include "DetSensitive/SimpleCalorimeterSD.h"
+
+// FCCSW
+#include "DetSensitive/SegmentationHelper.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -11,13 +14,13 @@ namespace det {
 SimpleCalorimeterSD::SimpleCalorimeterSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
-  : G4VSensitiveDetector(aDetectorName), SegmentedVolume(aSeg) {
+  : G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
   std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
 }
 
-SimpleCalorimeterSD::~SimpleCalorimeterSD(){;}
+SimpleCalorimeterSD::~SimpleCalorimeterSD(){}
 
 void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
@@ -44,7 +47,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   CLHEP::Hep3Vector midPos = 0.5*(postPos + prePos);
   DD4hep::Simulation::Position pos(midPos.x(), midPos.y(), midPos.z());
   // check the cell ID
-  uint64_t id = getCellID(aStep);
+  uint64_t id = segmentation::getCellID(m_seg, *aStep);
   DD4hep::Simulation::Geant4CalorimeterHit* hit, *hitMatch = nullptr;
   // Check if there is already some energy deposit in that cell
   for(int i=0; i<calorimeterCollection->entries(); i++) {

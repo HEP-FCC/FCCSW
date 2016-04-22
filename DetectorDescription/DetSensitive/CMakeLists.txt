@@ -12,12 +12,13 @@ include(DD4hep)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
+gaudi_install_headers(DetSensitive)
+
 gaudi_add_library(DetSensitive
 		  src/*.cpp
 		  INCLUDE_DIRS Geant4 DD4hep ROOT
 		  LINK_LIBRARIES GaudiKernel Geant4 DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
-        NO_PUBLIC_HEADERS)
-
+        PUBLIC_HEADERS SimG4Common)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 dd4hep_generate_rootmap(DetSensitive)

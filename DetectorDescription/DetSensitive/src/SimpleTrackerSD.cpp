@@ -1,4 +1,7 @@
-#include "SimpleTrackerSD.h"
+#include "DetSensitive/SimpleTrackerSD.h"
+
+// FCCSW
+#include "DetSensitive/SegmentationHelper.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -11,7 +14,7 @@ namespace det {
 SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
-  : G4VSensitiveDetector(aDetectorName), SegmentedVolume(aSeg) {
+  : G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
   // add a name of the collection of hits
   collectionName.insert(aReadoutName);
   std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
@@ -49,7 +52,7 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   DD4hep::Simulation::Geant4TrackerHit* hit = new  DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   if ( hit )  {
-    hit->cellID  = getCellID(aStep);
+    hit->cellID  = segmentation::getCellID(m_seg, *aStep);
     hit->energyDeposit = edep;
     hit->position = position;
     hit->momentum = direction;
