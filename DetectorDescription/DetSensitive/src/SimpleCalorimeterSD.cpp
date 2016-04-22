@@ -47,7 +47,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   CLHEP::Hep3Vector midPos = 0.5*(postPos + prePos);
   DD4hep::Simulation::Position pos(midPos.x(), midPos.y(), midPos.z());
   // check the cell ID
-  uint64_t id = segmentation::getCellID(m_seg, *aStep);
+  uint64_t id = segmentation::cellID(m_seg, *aStep);
   DD4hep::Simulation::Geant4CalorimeterHit* hit, *hitMatch = nullptr;
   // Check if there is already some energy deposit in that cell
   for(int i=0; i<calorimeterCollection->entries(); i++) {

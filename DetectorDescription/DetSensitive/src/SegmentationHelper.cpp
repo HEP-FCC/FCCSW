@@ -12,7 +12,7 @@
 
 namespace det {
 namespace segmentation {
-uint64_t getCellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep) {
+uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep) {
   DD4hep::Simulation::Geant4VolumeManager volMgr =
     DD4hep::Simulation::Geant4Mapping::instance().volumeManager();
   DD4hep::Geometry::VolumeManager::VolumeID volID =

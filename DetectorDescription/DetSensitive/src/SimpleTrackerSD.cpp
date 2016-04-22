@@ -52,7 +52,7 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   DD4hep::Simulation::Geant4TrackerHit* hit = new  DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   if ( hit )  {
-    hit->cellID  = segmentation::getCellID(m_seg, *aStep);
+    hit->cellID  = segmentation::cellID(m_seg, *aStep);
     hit->energyDeposit = edep;
     hit->position = position;
     hit->momentum = direction;
