@@ -1,12 +1,12 @@
-#ifndef TEST_GEOTOGDMLDUMPSVC_H
-#define TEST_GEOTOGDMLDUMPSVC_H
+#ifndef EXAMPLES_GEOTOGDMLDUMPSVC_H
+#define EXAMPLES_GEOTOGDMLDUMPSVC_H
 
-#include "TestDD4hep/ITestDD4hepSvc.h"
+#include "ITestDD4hepSvc.h"
 
 // Gaudi
 #include "GaudiKernel/Service.h"
 
-/** @class GeoToGdmlDumpSvc TestDD4hep/TestDD4hep/GeoToGdmlDumpSvc.h GeoToGdmlDumpSvc.h
+/** @class GeoToGdmlDumpSvc Examples/src/GeoToGdmlDumpSvc.h GeoToGdmlDumpSvc.h
  *
  *  Service that dumps the geometry retrieved from the DD4hep GeoSvc to GDML file.
  *
@@ -27,4 +27,4 @@ private:
    std::string m_gdmlFileName;
 };
 
-#endif
+#endif /* EXAMPLES_GEOTOGDMLDUMPSVC_H */

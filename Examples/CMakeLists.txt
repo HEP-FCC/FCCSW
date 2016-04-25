@@ -4,11 +4,17 @@
 gaudi_subdir(Examples v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore)
+gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Interface  DetectorDescription/DetDesInterfaces)
+
+find_package(ROOT COMPONENTS MathCore GenVector Geom)
+find_package(DD4hep COMPONENTS DDG4)
+include(DD4hep)
+find_package(Geant4)
 
 gaudi_add_module(Examples
                  src/*.cpp
-                 LINK_LIBRARIES GaudiAlgLib FWCore)
+		           INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetDesInterfaces
+                 LINK_LIBRARIES GaudiAlgLib FWCore ROOT GaudiKernel DD4hep Geant4)
 
 
 include(CTest)
@@ -46,3 +52,5 @@ gaudi_add_test(SimpleWorkflow
 gaudi_add_test(ExampleOptions
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/example_options.py)
+gaudi_add_test(DumpGDML
+               FRAMEWORK options/dumpGeo.py)
