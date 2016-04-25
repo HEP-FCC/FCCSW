@@ -24,11 +24,12 @@ SimpleTrackerSD::~SimpleTrackerSD(){}
 
 void SimpleTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
-  // create a collection of hits and add it to G4HCofThisEvent
-  // get id for collection
   static int HCID = -1;
+  // create a collection of hits and add it to G4HCofThisEvent
+  // deleted in ~G4Event
   trackerCollection = new G4THitsCollection
     <DD4hep::Simulation::Geant4Hit>(SensitiveDetectorName,collectionName[0]);
+  // get id for collection
   if(HCID<0)
     HCID = GetCollectionID(0);
   aHitsCollections->AddHitsCollection(HCID,trackerCollection);
@@ -49,7 +50,8 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   CLHEP::Hep3Vector direction = postPos - prePos;
   // create a hit and add it to collection
   const G4Track* track = aStep->GetTrack();
-  DD4hep::Simulation::Geant4TrackerHit* hit = new  DD4hep::Simulation::Geant4TrackerHit(
+  // deleted in ~G4Event
+  DD4hep::Simulation::Geant4TrackerHit* hit = new DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   if ( hit )  {
     hit->cellID  = segmentation::cellID(m_seg, *aStep);

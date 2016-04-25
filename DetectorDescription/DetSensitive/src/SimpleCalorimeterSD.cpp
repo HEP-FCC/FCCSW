@@ -24,11 +24,12 @@ SimpleCalorimeterSD::~SimpleCalorimeterSD(){}
 
 void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
-  // create a collection of hits and add it to G4HCofThisEvent
-  // get id for collection
   static int HCID = -1;
+  // create a collection of hits and add it to G4HCofThisEvent
+  // deleted in ~G4Event
   calorimeterCollection = new G4THitsCollection
     <DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName,collectionName[0]);
+  // get id for collection
   if(HCID<0)
     HCID = GetCollectionID(0);
   aHitsCollections->AddHitsCollection(HCID,calorimeterCollection);
@@ -61,6 +62,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   }
   // if not, create a new hit
   if ( !hitMatch )  {
+    // deleted in ~G4Event
     hitMatch = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
     hitMatch->cellID  = id;
     hitMatch->energyDeposit = edep;

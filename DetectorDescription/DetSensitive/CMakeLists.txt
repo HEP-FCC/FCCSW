@@ -18,7 +18,7 @@ gaudi_add_library(DetSensitive
 		  src/*.cpp
 		  INCLUDE_DIRS Geant4 DD4hep ROOT
 		  LINK_LIBRARIES GaudiKernel Geant4 DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
-        PUBLIC_HEADERS SimG4Common)
+        PUBLIC_HEADERS DetSensitive)
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 
