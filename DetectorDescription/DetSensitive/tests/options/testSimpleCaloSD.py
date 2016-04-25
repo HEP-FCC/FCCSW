@@ -3,8 +3,8 @@ from Gaudi.Configuration import *
 from Configurables import ParticleGunAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
-                                MomentumMin = 10, # GeV
-                                MomentumMax = 10, # GeV
+                                MomentumMin = 1, # GeV
+                                MomentumMax = 1, # GeV
                                 ThetaMin = -0.45, # rad
                                 ThetaMax = -0.45, # rad
                                 PhiMin = 1.6, # rad
@@ -24,7 +24,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.DataInputs.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:..//compact/Box_dd4hepCaloSD.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:compact/Box_simpleCaloSD.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc",
@@ -42,7 +42,7 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", OutputLevel=DEBUG, filename="out_dd4hepCaloSD_2cm.root")
+out = PodioOutput("out", OutputLevel=DEBUG, filename="out_simpleCaloSD_2cm.root")
 out.outputCommands = ["keep *"]
 
 

@@ -24,7 +24,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.DataInputs.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Test/TestDD4hep/compact/Box.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:compact/Box_dd4hepCaloSD.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc",
@@ -33,16 +33,16 @@ geantservice = G4SimSvc("G4SimSvc",
                         actions="G4FullSimActions")
 
 from Configurables import G4SimAlg, G4SaveCalHits
-savecaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
-savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
-savecaltool.DataOutputs.caloHits.Path = "caloHits"
+savehcaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
+savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits",
                                           "InspectHitsCollectionsTool"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", OutputLevel=DEBUG)
+out = PodioOutput("out", OutputLevel=DEBUG, filename="out_dd4hepCaloSD_2cm.root")
 out.outputCommands = ["keep *"]
 
 

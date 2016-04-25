@@ -4,8 +4,8 @@
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
   <includes>
-    <gdmlFile  ref="../../../DetectorDescription/Detectors/compact/elements.xml"/>
-    <gdmlFile  ref="../../../DetectorDescription/Detectors/compact/materials.xml"/>
+    <gdmlFile  ref="../../../Detectors/compact/elements.xml"/>
+    <gdmlFile  ref="../../../Detectors/compact/materials.xml"/>
   </includes>
 
   <info name="Box"
@@ -33,16 +33,16 @@
   </display>
 
   <readouts>
-    <readout name="ECalHits">
-      <segmentation type="CartesianGridXYZ" grid_size_x="2*cm" grid_size_y="2.*cm" grid_size_z="2.*cm"/>
+    <readout name="TrackerSiliconHits">
+      <segmentation type="CartesianGridXYZ" grid_size_x="2.*cm" grid_size_y="2.*cm" grid_size_z="2.*cm"/>
       <id>z:-6,y:-6,x:-6,system:1</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="0" name="BoxECal" type="SimpleBox" readout="ECalHits" sensitive="true">
-      <material name="AluminumOxide"/>
-      <sensitive type="Geant4Calorimeter"/>
+    <detector id="0" name="BoxTracker" type="SimpleBox" readout="TrackerSiliconHits" sensitive="true">
+      <material name="Silicon"/>
+      <sensitive type="Geant4Tracker"/>
       <dimensions x="box_x" y="box_y" z="box_z"/>
       <position   x="0"     y="0"     z="box_z"/>
       <rotation   x="0"     y="0"     z="0"/>

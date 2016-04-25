@@ -49,5 +49,4 @@ for iev, event in enumerate(store2):
 for ix in range(cellNo):
     for iy in range(cellNo):
         for iz in range(cellNo):
-            assert(hist1.GetBinContent(array('i',(ix,iy,iz)))
-                   == hist2.GetBinContent(array('i',(ix,iy,iz))))
+            assert(hist1.GetBinContent(array('i',(ix,iy,iz))) == hist2.GetBinContent(array('i',(ix,iy,iz))))
