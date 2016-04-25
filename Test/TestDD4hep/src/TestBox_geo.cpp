@@ -1,7 +1,7 @@
 #include "DD4hep/DetFactoryHelper.h"
 
-namespace test {
-static DD4hep::Geometry::Ref_t createTestBox(DD4hep::Geometry::LCDD& aLcdd,
+namespace det {
+static DD4hep::Geometry::Ref_t createSimpleBox(DD4hep::Geometry::LCDD& aLcdd,
   DD4hep::XML::Handle_t aXmlElement,
   DD4hep::Geometry::SensitiveDetector aSensDet) {
   DD4hep::XML::DetElement x_det = aXmlElement;
@@ -35,15 +35,4 @@ static DD4hep::Geometry::Ref_t createTestBox(DD4hep::Geometry::LCDD& aLcdd,
 }
 }
 // first argument is the type from the xml file
-DECLARE_DETELEMENT(TestBox, test::createTestBox)
-
-
-
-
-
-
-
-
-
-
-
+DECLARE_DETELEMENT(SimpleBox, det::createSimpleBox)

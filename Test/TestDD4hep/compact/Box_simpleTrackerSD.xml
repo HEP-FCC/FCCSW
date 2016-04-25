@@ -40,7 +40,7 @@
   </readouts>
 
   <detectors>
-    <detector id="0" name="BoxTracker" type="TestBox" readout="TrackerSiliconHits" sensitive="true">
+    <detector id="0" name="BoxTracker" type="SimpleBox" readout="TrackerSiliconHits" sensitive="true">
       <material name="Silicon"/>
       <sensitive type="SimpleTrackerSD"/>
       <dimensions x="box_x" y="box_y" z="box_z"/>

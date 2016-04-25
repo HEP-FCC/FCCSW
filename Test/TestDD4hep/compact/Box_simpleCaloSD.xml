@@ -40,7 +40,7 @@
   </readouts>
 
   <detectors>
-    <detector id="0" name="BoxECal" type="TestBox" readout="ECalHits" sensitive="true">
+    <detector id="0" name="BoxECal" type="SimpleBox" readout="ECalHits" sensitive="true">
       <material name="AluminumOxide"/>
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions x="box_x" y="box_y" z="box_z"/>
