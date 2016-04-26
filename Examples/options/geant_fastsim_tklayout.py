@@ -25,7 +25,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/com
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import G4SimSvc, G4FastSimPhysicsList, G4FastSimActions, G4ParticleSmearRootFile
 # create particle smearing tool, used for smearing in the tracker
-smeartool = G4ParticleSmearRootFile("Smear", filename="Sim/SimG4Fast/data/tkLayout_example_resolutions.root")
+smeartool = G4ParticleSmearRootFile("Smear", filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root")
 # create actions initialization tool
 actionstool = G4FastSimActions("Actions", smearing=smeartool)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process

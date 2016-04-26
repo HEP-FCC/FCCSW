@@ -20,7 +20,7 @@ G4ParticleSmearRootFile::G4ParticleSmearRootFile(const std::string& type, const 
     GaudiTool(type, name, parent),
     m_maxEta(0) {
   declareInterface<IG4ParticleSmearTool>(this);
-  declareProperty("filename", m_resolutionFileName = "Sim/SimG4Fast/data/tkLayout_example_resolutions.root");
+  declareProperty("filename", m_resolutionFileName);
 }
 
 G4ParticleSmearRootFile::~G4ParticleSmearRootFile() {}
@@ -62,6 +62,10 @@ StatusCode G4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) 
 }
 
 StatusCode G4ParticleSmearRootFile::readResolutions() {
+  if (m_resolutionFileName.empty()) {
+    error() << "Name of the resolution file not set" << endmsg;
+    return StatusCode::FAILURE;
+  }
   TFile f(m_resolutionFileName.c_str(),"READ");
   if (f.IsZombie()) {
     error() << "Couldn't open the resolution file" << endmsg;
