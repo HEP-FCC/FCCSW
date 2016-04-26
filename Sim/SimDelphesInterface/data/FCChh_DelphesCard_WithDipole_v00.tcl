@@ -9,7 +9,7 @@
 #
 #  Version: v01
 #
-#  Configuration: FCC-hh generic detector with dipole region, no pile-up
+#  Configuration: FCC-hh generic detector with dipole in the forward region, no pile-up
 #
 #
 #######################################
@@ -591,6 +591,7 @@ module FastJetFinder FastJetFinder {
   set OutputArray jets
 
   # algorithm: 1 CDFJetClu, 2 MidPoint, 3 SIScone, 4 kt, 5 Cambridge/Aachen, 6 antikt
+  # 7: anti-kt with winner-take-all axis (for N-subjettiness), 8 N-jettiness
   set JetAlgorithm 7
   set ParameterR 0.4
 
