@@ -30,6 +30,7 @@ void GeoConstruction::ConstructSDandField() {
   for(_SV::const_iterator iv=vols.begin(); iv != vols.end(); ++iv)  {
     DD4hep::Geometry::SensitiveDetector sd = (*iv).first;
     std::string typ = sd.type(), nam = sd.name();
+    // Sensitive detectors are deleted in ~G4SDManager
     G4VSensitiveDetector* g4sd =
       DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
     if (g4sd == nullptr) {
@@ -70,6 +71,7 @@ G4VPhysicalVolume* GeoConstruction::Construct() {
   DD4hep::Simulation::Geant4Converter conv(m_lcdd, DD4hep::INFO);
   DD4hep::Simulation::Geant4GeometryInfo* geo_info = conv.create(world).detach();
   g4map.attach(geo_info);
+  // All volumes are deleted in ~G4PhysicalVolumeStore()
   G4VPhysicalVolume* m_world = geo_info->world();
   m_lcdd.apply("DD4hepVolumeManager", 0, 0);
   // Create Geant4 volume manager

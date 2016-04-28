@@ -30,6 +30,7 @@ public:
   /// Default destructor
   virtual ~GeoConstruction();
   /// Geometry construction callback: Invoke the conversion to Geant4
+  /// All volumes (including world) are deleted in ~G4PhysicalVolumeStore()
   virtual G4VPhysicalVolume* Construct() final;
   /// Construct SD
   virtual void ConstructSDandField() final;
