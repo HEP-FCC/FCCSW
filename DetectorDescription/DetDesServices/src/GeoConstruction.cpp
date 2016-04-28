@@ -15,7 +15,7 @@
 
 namespace det {
 GeoConstruction::GeoConstruction(DD4hep::Geometry::LCDD& lcdd)
-  : m_lcdd(lcdd), m_world(nullptr) {}
+  : m_lcdd(lcdd) {}
 
 GeoConstruction::~GeoConstruction() {}
 
@@ -30,17 +30,17 @@ void GeoConstruction::ConstructSDandField() {
   for(_SV::const_iterator iv=vols.begin(); iv != vols.end(); ++iv)  {
     DD4hep::Geometry::SensitiveDetector sd = (*iv).first;
     std::string typ = sd.type(), nam = sd.name();
-    G4VSensitiveDetector* g4sd = 
+    G4VSensitiveDetector* g4sd =
       DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
-    if (!g4sd) {
+    if (g4sd == nullptr) {
       std::string tmp = typ;
       tmp[0] = ::toupper(tmp[0]);
       typ = "Geant4" + tmp;
       g4sd = DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
-      if ( !g4sd ) {
+      if (g4sd == nullptr) {
         DD4hep::PluginDebug dbg;
         g4sd = DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
-        if ( !g4sd )  {
+        if (g4sd == nullptr)  {
           throw std::runtime_error("ConstructSDandField: FATAL Failed to "
                               "create Geant4 sensitive detector " + nam + 
                               " of type " + typ + ".");
@@ -53,7 +53,7 @@ void GeoConstruction::ConstructSDandField() {
     for(VolSet::const_iterator i=sens_vols.begin(); i!= sens_vols.end(); ++i)   {
       const TGeoVolume* vol = *i;
       G4LogicalVolume* g4v = p->g4Volumes[vol];
-      if ( !g4v )  {
+      if (g4v == nullptr)  {
         throw std::runtime_error("ConstructSDandField: Failed to access G4LogicalVolume for SD "+
                             nam + " of type " + typ + ".");
       }
@@ -70,7 +70,7 @@ G4VPhysicalVolume* GeoConstruction::Construct() {
   DD4hep::Simulation::Geant4Converter conv(m_lcdd, DD4hep::INFO);
   DD4hep::Simulation::Geant4GeometryInfo* geo_info = conv.create(world).detach();
   g4map.attach(geo_info);
-  m_world = geo_info->world();
+  G4VPhysicalVolume* m_world = geo_info->world();
   m_lcdd.apply("DD4hepVolumeManager", 0, 0);
   // Create Geant4 volume manager
   g4map.volumeManager();

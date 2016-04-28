@@ -15,9 +15,8 @@ SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
   : G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
-  // add a name of the collection of hits
+  // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
-  std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
 }
 
 SimpleTrackerSD::~SimpleTrackerSD(){}
@@ -53,14 +52,13 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // deleted in ~G4Event
   DD4hep::Simulation::Geant4TrackerHit* hit = new DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
-  if ( hit )  {
-    hit->cellID  = segmentation::cellID(m_seg, *aStep);
-    hit->energyDeposit = edep;
-    hit->position = position;
-    hit->momentum = direction;
-    trackerCollection->insert(hit);
-    return true;
-  }
-  return false;
+  // hit is expected to be created, otherwise abort job
+  assert(hit != nullptr);
+  hit->cellID  = segmentation::cellID(m_seg, *aStep);
+  hit->energyDeposit = edep;
+  hit->position = position;
+  hit->momentum = direction;
+  trackerCollection->insert(hit);
+  return true;
 }
 }

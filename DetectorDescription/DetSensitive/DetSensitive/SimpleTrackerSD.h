@@ -43,7 +43,7 @@ namespace det {
    *  New hit is created for each energy deposit (to save information about time)
    *  @param aStep Step in which particle deposited the energy.
    */
-  virtual bool ProcessHits(G4Step*aStep, G4TouchableHistory*) final;
+  virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 
 private:
   /// Collection of tracker hits

@@ -17,7 +17,6 @@ SimpleCalorimeterSD::SimpleCalorimeterSD(const std::string& aDetectorName,
   : G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
-  std::cout<<" Adding a collection with the name: "<<aReadoutName<<std::endl;
 }
 
 SimpleCalorimeterSD::~SimpleCalorimeterSD(){}
@@ -61,14 +60,13 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
     }
   }
   // if not, create a new hit
-  if ( !hitMatch )  {
-    // deleted in ~G4Event
-    hitMatch = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
-    hitMatch->cellID  = id;
-    hitMatch->energyDeposit = edep;
-    calorimeterCollection->insert(hitMatch);
-    return true;
-  }
-  return false;
+  // deleted in ~G4Event
+  hitMatch = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
+  // hit is expected to be created, otherwise abort job
+  assert(hitMatch != nullptr);
+  hitMatch->cellID  = id;
+  hitMatch->energyDeposit = edep;
+  calorimeterCollection->insert(hitMatch);
+  return true;
 }
 }

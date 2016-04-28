@@ -36,8 +36,6 @@ public:
 private:
   /// Reference to geometry object
   DD4hep::Geometry::LCDD& m_lcdd;
-  /// Reference to the world after construction
-  G4VPhysicalVolume* m_world;
 };
 }
 #endif /* DETDESSERVICES_GEOCONSTRUCTION_H */
