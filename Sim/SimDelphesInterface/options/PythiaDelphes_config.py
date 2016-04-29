@@ -34,6 +34,11 @@ from Configurables import ApplicationMgr, FCCDataSvc
 from Configurables import DelphesSaveGenJets, DelphesSaveJets, DelphesSaveMet
 from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticles
 
+def apply_paths(obj, names):
+  """ Applies the collection names to the Paths of DataOutputs """
+  for attr, name in names.iteritems():
+    getattr(obj.DataOutputs, attr).Path = name
+
 ############################################################
 #
 # User: Configure variables
@@ -104,7 +109,7 @@ chhadSaveTool = DelphesSaveChargedParticles("charged", delphesArrayName="Charged
 apply_paths(chhadSaveTool, out_names["charged"])
 
 neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
-apply_paths(chhadSaveTool, out_names["neutral"])
+apply_paths(neuthadSaveTool, out_names["neutral"])
 
 photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonIsolation/photons")
 apply_paths(photonsSaveTool, out_names["photons"])
@@ -164,7 +169,3 @@ ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
                 EvtSel = 'NONE',
                 EvtMax = nEvents,
                 ExtSvc = [podioEvent])
-
-def apply_paths(obj, names):
-    for attr, name in names.iteritems():
-        getattr(obj.DataOutputs, attr).Path = name
