@@ -104,7 +104,7 @@ StatusCode DelphesSimulation::initialize() {
 
   m_eventCounter     = 0;
 
-  if (m_outRootFile!=nullptr) m_treeWriter->Clear();
+  m_treeWriter->Clear();
   m_Delphes->Clear();
 
   for(auto& toolname: m_saveToolNames) {
@@ -232,7 +232,7 @@ StatusCode DelphesSimulation::execute() {
   }
 
   // Initialize for next event reading (Will also zero Delphes arrays)
-  if (m_outRootFile!=nullptr) m_treeWriter->Clear();
+  m_treeWriter->Clear();
   m_Delphes->Clear();
 
   return StatusCode::SUCCESS;
