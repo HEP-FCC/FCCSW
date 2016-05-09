@@ -11,6 +11,11 @@
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 
+
+/** 
+ * Implementation partly due to pilemc https://pilemc.hepforge.org/
+ */
+
 class HepMCFullMerge: public GaudiTool, virtual public IHepMCMergeTool {
 public:
   HepMCFullMerge( const std::string& type, 
