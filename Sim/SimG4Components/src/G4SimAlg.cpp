@@ -12,6 +12,8 @@
 // Geant
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4RunManager.hh"
 
 DECLARE_ALGORITHM_FACTORY(G4SimAlg)
 
@@ -43,7 +45,17 @@ StatusCode G4SimAlg::initialize() {
 
 StatusCode G4SimAlg::execute() {
   // first translate the event
-  G4Event* event = EDM2G4();
+  G4Event* event = nullptr;
+  
+  G4RunManager* runManager=G4RunManager::GetRunManager();
+  G4VUserPrimaryGeneratorAction* generator=const_cast<G4VUserPrimaryGeneratorAction*>(runManager->GetUserPrimaryGeneratorAction());
+  if (generator)
+  {
+ 	debug()<<"The generator is set: run GeneratePrimaries() "<<endmsg;
+        event=new G4Event();
+	generator->GeneratePrimaries(event);
+  }
+  
   if ( !event ) {
     error() << "Unable to translate EDM MC data to G4Event" << endmsg;
     return StatusCode::FAILURE;
@@ -60,24 +72,4 @@ StatusCode G4SimAlg::execute() {
 
 StatusCode G4SimAlg::finalize() {
   return GaudiAlgorithm::finalize();
-}
-
-G4Event* G4SimAlg::EDM2G4() {
-  // Event will be passed to G4RunManager and be deleted in G4RunManager::RunTermination()
-  G4Event* g4_event = new G4Event();
-  // Creating EDM collections
-  const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
-  // Adding one particle per one vertex => vertices repeated
-  for(const auto& mcparticle : *mcparticles) {
-    const fcc::ConstGenVertex& v = mcparticle.StartVertex();
-    G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
-      (v.Position().X*sim::edm2g4::length, v.Position().Y*sim::edm2g4::length, v.Position().Z*sim::edm2g4::length, v.Ctau()*sim::edm2g4::length);
-    const fcc::BareParticle& mccore = mcparticle.Core();
-    G4PrimaryParticle* g4_particle = new G4PrimaryParticle
-      (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
-    g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle));
-    g4_vertex->SetPrimary(g4_particle);
-    g4_event->AddPrimaryVertex(g4_vertex);
-  }
-  return g4_event;
 }
