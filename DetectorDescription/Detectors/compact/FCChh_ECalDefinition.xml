@@ -5,7 +5,10 @@
   </cryostat>
   <calorimeter id="1" name="EM_barrel" > 
     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
-    <active_layers thickness="5*mm" material="LAr" nSamplings="50" />
-    <passive_layers thickness="5*mm" material="Lead" />
+    <active_layers thickness="4.24*mm" material="LAr" />
+    <!--- v1 ntuples (1 April) --->
+    <passive_layers thickness="2.44*mm" material="Lead" /> 
+    <!--- v2 ntuples (11 April), ATLAS ECAL value --->
+    <!---  <passive_layers thickness="1.5*mm" material="Lead" /> --->
   </calorimeter>
 </detector>

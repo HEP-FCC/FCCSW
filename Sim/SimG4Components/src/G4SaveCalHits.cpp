@@ -54,7 +54,7 @@ StatusCode G4SaveCalHits::saveOutput(const G4Event& aEvent) {
       collect = collections->GetHC(iter_coll);
       if (collect->GetName().find(m_calType) != std::string::npos) {
         size_t n_hit = collect->GetSize();
-        info() << "\t" << n_hit<< " hits are stored in a HCal collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
+        info() << "\t" << n_hit<< " hits are stored in a CalHits collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
         for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
           debug() << hit->cellID << " ";

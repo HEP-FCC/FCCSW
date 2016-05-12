@@ -92,8 +92,17 @@ StatusCode G4ConstantMagneticFieldTool::initialize( )
 		if (m_deltaOneStep>0) fieldManager->SetDeltaOneStep(m_deltaOneStep);
 		if (m_minEps>0) fieldManager->SetMinimumEpsilonStep(m_minEps);
 		if (m_maxEps>0) fieldManager->SetMaximumEpsilonStep(m_maxEps);
+
+		info() << " DeltaIntersection " << fieldManager->GetDeltaIntersection()
+		       << ", DeltaOneStep " << fieldManager->GetDeltaOneStep()
+		       << " and DeltaChord " << fieldManager->GetChordFinder()->GetDeltaChord()
+		       << " minEps " <<  fieldManager->GetMinimumEpsilonStep()
+		       << " maxEps " <<  fieldManager->GetMaximumEpsilonStep() << endmsg;
+  
+
 	}
 	info()<<" done!!! G4ConstantMagneticFieldTool::initialize( ) "<<endmsg;
+
 	return sc;
 }
 

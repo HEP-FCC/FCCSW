@@ -37,7 +37,10 @@
 
   <readouts>
     <readout name="BarECal_Readout">
-      <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
+      <!-- Cell definition via segmentation: CartisianGrid or PolarGrid -->
+      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
+      <!-- <segmentation type="PolarGridRPhi" grid_size_r="5.0*mm" grid_size_phi="0.1*rad"/> -->
+      <!-- Volume identifier: first 32 bits for volume ID + 32 bits for cell ID -->
       <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
     </readout>
   </readouts>

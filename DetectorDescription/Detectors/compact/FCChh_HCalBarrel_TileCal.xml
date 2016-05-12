@@ -18,11 +18,6 @@
   </info>
 
   <define>
-    <!-- World volume --->
-    <constant name="world_size" value="30*m"/>
-    <constant name="world_x" value="world_size"/>
-    <constant name="world_y" value="world_size"/>
-    <constant name="world_z" value="world_size"/>
     <!-- NOTE: All lengths (anything but radii) given below are interpreted as half-lenghts! -->
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <constant name="BarHCal_rmin" value="3600*mm"/>
@@ -37,10 +32,10 @@
     <constant name="BarHCal_module_drho" value="100*mm"/>
     <constant name="BarHCAL_module_spacing_phi" value="0.001*mm"/>
     <!-- component dimensions -->
-    <constant name="BarHCal_master_plate_thickness" value="5*mm" />
-    <constant name="BarHCal_spacer_plate_thickness" value="4*mm" />
+    <constant name="BarHCal_master_plate_thickness" value="5.0*mm" />
+    <constant name="BarHCal_spacer_plate_thickness" value="4.0*mm" />
     <constant name="BarHCal_air_space_thickness" value="0.5*mm" />
-    <constant name="BarHCal_scintillator_thickness" value="3*mm" />
+    <constant name="BarHCal_scintillator_thickness" value="3.0*mm" />
     <!-- face and end-plate dimensions -->
     <constant name="BarHCal_end_plate_thickness" value="5*mm" />
     <constant name="BarHCal_face_plate_thickness" value="10*mm" />    
@@ -60,8 +55,8 @@
 
   <readouts>
     <readout name="BarHCal_Readout">
-      <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
-      <id>system:3,layer:6,wedge:7,sub_module:2,row:9,x:32:-16,y:-16</id>
+      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
+      <id>system:3,facePlate:1,endPlatePos:1,endPlateNeg:1,layer:6,wedge:7,sub_module:2,row:11,x:32:-16,y:-16</id>
     </readout>
   </readouts>
 

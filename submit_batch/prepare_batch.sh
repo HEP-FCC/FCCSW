@@ -19,7 +19,7 @@ mkdir FCCSW
 cd FCCSW
 cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/Algebra .
 cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/DetectorDescription .
-cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/DataObjects .
+#cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/DataObjects .
 cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/FWCore .
 cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/Generation .
 cp -r /afs/cern.ch/work/n/novaj/HEP-FCC/FCCSW/RecoGeometry .
@@ -59,10 +59,13 @@ make -j 8
 # Run the job
 ./run gaudirun.py ${JOB} | tee myjob.log
 
+export EOS_MGM_URL="root://eospublic.cern.ch"
+source /afs/cern.ch/project/eos/installation/client/etc/setup.sh
+
 # Copy out the results if exist
 if [ -e output.root ] ; then
-xrdcp output.root root://eosatlas//eos/atlas/user/n/novaj/FCC/April1/hits_fccsw_ecal_bfield${BFIELD}_e${ENEGEV}GeV_v1.root
-xrdcp myjob.log root://eosatlas//eos/atlas/user/n/novaj/FCC/April1/myjob_ecal_bfield${BFIELD}_e${ENEGEV}GeV_v1.log
+xrdcp output.root root://eospublic//eos/fcc/users/n/novaj/April22/hits_fccsw_ecal_bfield${BFIELD}_e${ENEGEV}GeV_eta025_primvertexX0Y2599Z0.root
+xrdcp myjob.log root://eospublic//eos/fcc/users/n/novaj/April22/myjob_ecal_bfield${BFIELD}_e${ENEGEV}GeV_eta025_primvertexX0Y2599Z0.log
 fi
  
 # Clean workspace before exit

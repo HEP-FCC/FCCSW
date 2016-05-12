@@ -90,7 +90,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   	double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);
   	DetElement caloLayer(active_mat+"_sensitive", i+1);
   	DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_dims.dz());
-	std::cout << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << std::endl;
+	//std::cout << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << std::endl;
   	Volume layerVol(active_mat, layerShape, lcdd.material(active_mat));
   	PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
 	placedLayer.addPhysVolID("layer", i+1);
@@ -98,11 +98,13 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	layerVol.setSensitiveDetector(sensDet);
   }
 
+ 
   //Place envelope (or barrel) volume
   Volume motherVol = lcdd.pickMotherVolume(eCal);
   PlacedVolume placedECal = motherVol.placeVolume(envelopeVolume);
   placedECal.addPhysVolID("system", eCal.id());
   eCal.setPlacement(placedECal);
+ 
   return eCal;
 
 }
