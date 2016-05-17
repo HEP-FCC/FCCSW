@@ -6,6 +6,9 @@
 #include "GaudiKernel/RndmGenerators.h"
 class IRndmGenSvc;
 
+//ROOT
+class TFormula;
+
 // FCCSW
 #include "SimG4Interface/IG4ParticleSmearTool.h"
 

@@ -14,7 +14,7 @@ from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
 
 podioevent = FCCDataSvc("EventDataSvc")
 
-reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
@@ -24,7 +24,7 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/TestTracker.xml'],
+geoservice = GeoSvc("GeoSvc", detectors=['file:../../../DetectorDescription/Detectors/compact/TestTracker.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
@@ -41,12 +41,13 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+                   OutputLevel=DEBUG,
+                  filename = "out_full_moreEvents.root")
 out.outputCommands = ["keep *"]
 
 ApplicationMgr( TopAlg=[reader, hepmc_converter, geantsim, out],
                 EvtSel='NONE',
-                EvtMax=5,
+                EvtMax=10,
                 ## order! geo needed by geant
                 ExtSvc=[podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG)

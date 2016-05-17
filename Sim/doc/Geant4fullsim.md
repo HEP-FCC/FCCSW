@@ -78,15 +78,15 @@ Simulation package contains following directories:
 ## 2. Example
 
 ~~~{.sh}
-./run gaudirun.py options/geant_fullsim.py
+./run gaudirun.py Examples/options/geant_fullsim.py
 ~~~
 
-The configuration file (`options/geant_fullsim.py`) contains:
+The configuration file (`Examples/options/geant_fullsim.py`) contains:
   * reading an event from a HepMC file
 
     ~~~{.py}
     from Configurables import HepMCReader
-    reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+    reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
     reader.DataOutputs.hepmc.Path = "hepmc"
     ~~~
 
@@ -96,24 +96,25 @@ The configuration file (`options/geant_fullsim.py`) contains:
     from Configurables import HepMCConverter
     hepmc_converter = HepMCConverter("Converter")
     hepmc_converter.DataInputs.hepmc.Path="hepmc"
-    hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
-    hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
+    hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
+    hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
     ~~~
 
   * construction of the geometry using DD4hep
-    - `detector` - path to the XML file with geometry
+    - `detectors` - list of paths to the XML files with geometry
 
     ~~~{.py}
     from Configurables import GeoSvc
     geoservice = GeoSvc("GeoSvc",
-                         detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
-                         OutputLevel = VERBOSE)
+                         detectors=['file:DetectorDescription/Detectors/compact/TestTracker.xml'],
+                         OutputLevel = DEBUG)
     ~~~
 
   * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-g4simsvc))
     - **detector** - tool providing the [geometry](#31-geometry-construction), possible: G4DD4hepDetector and [G4GdmlDetector](#gdml-example)
     - **physicslist** - tool providing the [physics list](#32-physics-list), possible: [G4FtfpBert](#)
     - **actions** - tool providing the [user actions initialisation list](#33-user-actions), possible: G4FullSimActions
+    - **magneticField** - tool providing the magnetic field, possible: G4ConstantMagneticField (switched off by default)
     ~~~{.py}
     from Configurables import G4SimSvc
     geantservice = G4SimSvc("G4SimSvc",
@@ -167,14 +168,14 @@ The configuration file (`options/geant_fullsim.py`) contains:
 Another example: user can create a hadronic calorimeter using DD4hep and save the hits:
 
 ~~~{.sh}
-./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_hcal.py
+./run gaudirun.py Sim/SimG4Components/tests/options/geant_fullsim_hcal.py
 ~~~
 
 #### GDML example
 or create a detector using GDML. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `DD4hep::Simulation::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
 
 ~~~{.sh}
-./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_gdml.py
+./run gaudirun.py Sim/SimG4Components/tests/options/geant_fullsim_gdml.py
 ~~~
 
 
@@ -212,7 +213,7 @@ DetectorDescription/Detectors/compact
 
 Main service responsible for handling the DD4hep setup is `GeoSvc`. It has a property **detector** that takes a string with a path to the detector description XML file.
 
-DD4hep is able to parse automatically the geometry and convert it to Geant4 format. It can be retrieved and passed to the Geant configuration service via tool `G4DD4hepDetector`. User needs to set the geometry tool in `G4SimSvc` (property **detector**) to `G4DD4hepDetector` (TODO: set it as a default case).
+DD4hep is able to parse automatically the geometry and convert it to Geant4 format. It can be retrieved and passed to the Geant configuration service via tool `G4DD4hepDetector`. User does not have to set the geometry tool in `G4SimSvc` (property **detector**) to `G4DD4hepDetector` as this is the default tool.
 
 In FCCSW there is an alternative way to create the geometry, via GDML description (and tool `G4GdmlDetector` with property **gdml** taking a path to the GDML file). It is meant only for the test purposes as it does not support sensitive detectors. User would need to create them on his own.
 
@@ -223,7 +224,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
 ##### DD4hep (see more in sec. 2.11 and 2.12 of [DD4hep manual])
 * XML file should contain:
   * readout structure, a structure of a sensitive volume `<readout>`
-  * information on how each sensitive element is segmented `<segmentation>`
+  * information on how each sensitive element is further segmented `<segmentation>`
   * unique identification of the location of each response `<id>`
 
   ~~~{.xml}
@@ -263,7 +264,7 @@ ___
 
 Physics list describes all the particles and physics processes used in the simulation.
 
-Physics list tool needs to be set as **physicslist** property of `G4SimSvc`.
+Physics list tool needs to be set as **physicslist** property of `G4SimSvc` (by default set to `G4FtfpBert`).
 
 The currently used physics list is FTFP_BERT, which is recommended by Geant4 for HEP. The tool creating this list is called `G4FtfpBert`. It simply creates `G4VModularPhysicsList`.
 
@@ -278,7 +279,7 @@ ___
 
 ### 3.3. User Actions
 
-User actions tool needs to be added as a property **actions** to `G4SimSvc`.
+User actions tool needs to be added as a property **actions** to `G4SimSvc` (default: `G4FullSimActions`).
 
 Geant allows users to specify what should be performed at any stage of simulation.
 User actions are created in the implementation of `GVUserActionInitialization` class, e.g. `FullSimActions::Build()`.
