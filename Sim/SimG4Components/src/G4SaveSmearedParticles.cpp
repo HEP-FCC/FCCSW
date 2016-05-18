@@ -17,7 +17,7 @@
 DECLARE_TOOL_FACTORY(G4SaveSmearedParticles)
 
 G4SaveSmearedParticles::G4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  AlgTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IG4SaveOutputTool>(this);
   declareOutput("particles", m_particles,"particles/smearedParticles");
   declareOutput("particlesMCparticles", m_particlesMCparticles,"particles/smearedParticles");
@@ -29,16 +29,17 @@ G4SaveSmearedParticles::G4SaveSmearedParticles(const std::string& aType, const s
 G4SaveSmearedParticles::~G4SaveSmearedParticles() {}
 
 StatusCode G4SaveSmearedParticles::initialize() {
-  return AlgTool::initialize();
+  return GaudiTool::initialize();
 }
 
 StatusCode G4SaveSmearedParticles::finalize() {
-  return AlgTool::finalize();
+  return GaudiTool::finalize();
 }
 
 StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
   auto particles = m_particles.createAndPut();
   auto associations = m_particlesMCparticles.createAndPut();
+  int n_part=0;
   for(int i=0;i<aEvent.GetNumberOfPrimaryVertex();i++) {
     for(int j=0;j<aEvent.GetPrimaryVertex(i)->GetNumberOfParticle();j++) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
