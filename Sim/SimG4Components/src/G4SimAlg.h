@@ -49,12 +49,6 @@ public:
    */
   virtual StatusCode finalize() final;
   private:
-  /**  Converter from EDM to G4Event.
-   *   Handles to EDM MCParticle is stored inside G4Event (using G4VUserPrimaryParticleInformation).
-   *   @return translated event
-   */
-  G4Event* EDM2G4();
-  /// Handle for the EDM MC particles to be read
   DataHandle<fcc::MCParticleCollection> m_genParticles;
   /// Pointer to the interface of Geant simulation service
   SmartIF<IG4SimSvc> m_geantSvc;

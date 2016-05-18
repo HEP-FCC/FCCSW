@@ -53,9 +53,9 @@ private:
 	
 	double m_fieldComponentX=0;
 	double m_fieldComponentY=0;
-	double m_fieldComponentZ=0;
-	double m_fieldRadMax=0;
-	double m_fieldZMax=0;
+	double m_fieldComponentZ=-6.*tesla;
+	double m_fieldRadMax=6*m;
+	double m_fieldZMax=6.*m;
 	
 };
 
