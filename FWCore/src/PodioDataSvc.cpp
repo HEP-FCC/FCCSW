@@ -28,6 +28,11 @@ StatusCode PodioDataSvc::finalize()    {
 }
 
 StatusCode PodioDataSvc::clearStore()    {
+  for (auto& collNamePair : m_collections) {
+    if (collNamePair.second != nullptr) {
+      collNamePair.second->clear();
+    }
+  }
   DataSvc::clearStore().ignore();
   m_collections.clear();
   return StatusCode::SUCCESS ;
