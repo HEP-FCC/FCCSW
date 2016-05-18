@@ -35,6 +35,7 @@ HepMC::GenEvent* HepMCFullMerge::merge(const std::vector<HepMC::GenEvent>& event
     for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v ) {
         HepMC::GenVertex* outvertex = new HepMC::GenVertex((*v)->position());
         inputToMergedVertexMap[*v] = outvertex;
+        pileEvent->add_vertex(outvertex);
       }
     for (auto p = (*it).particles_begin(); p != (*it).particles_end(); ++p ) {
       HepMC::GenParticle* oldparticle = *p;
