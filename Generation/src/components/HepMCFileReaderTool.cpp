@@ -46,10 +46,6 @@ StatusCode HepMCFileReader::readNextEvent(HepMC::GenEvent& event) {
         error() << "Error reading HepMC file" << endmsg;
         return StatusCode::FAILURE;
     }
-    // Reached the end of the file: Stop the run
-    IEventProcessor* eventProcessor;
-    service("ApplicationMgr",eventProcessor);
-    eventProcessor->stopRun();
     error() << "Premature end of file: Please set the number of events according to hepMC file." << endmsg;
     return Error("Reached end of file before finished processing");
   }
