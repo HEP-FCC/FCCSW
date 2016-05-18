@@ -15,13 +15,9 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/com
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import G4SimSvc
 # giving the names of tools will initialize the tools of that type
-geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", 
-                particleGenerator="G4SingleParticleGeneratorTool",actions="G4FullSimActions")
+geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions")
 
 geantservice.G4commands += ["/tracking/verbose 1"]
-
-generator= G4SingleParticleGeneratorTool("G4SingleParticleGeneratorTool",
-                ParticleName="geantino",etaMin=0.,etaMax=0.01)
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -35,8 +31,11 @@ savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 geantsim = G4SimAlg("G4SimAlg",
-                     outputs= ["G4SaveTrackerHits/saveTrackerHits" ])
+                     outputs= ["G4SaveTrackerHits/saveTrackerHits" ],
+                     eventGenerator="G4SingleParticleGeneratorTool")
 
+generator= G4SingleParticleGeneratorTool("G4SingleParticleGeneratorTool",
+                ParticleName="geantino", EtaMin=0., EtaMax=0.01, OutputLevel=DEBUG)
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
