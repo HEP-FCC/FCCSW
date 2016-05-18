@@ -30,7 +30,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:../../../DetectorDescription/Dete
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions", )
 
-from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits
+from Configurables import G4SimAlg, G4SaveTrackerHits
 savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
@@ -41,8 +41,8 @@ geantsim.DataInputs.genParticles.Path="allGenParticles"
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
-                   OutputLevel=DEBUG,
-                  filename = "out_full_moreEvents.root")
+                  filename = "out_full_moreEvents.root",
+                  OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
 ApplicationMgr( TopAlg=[reader, hepmc_converter, geantsim, out],

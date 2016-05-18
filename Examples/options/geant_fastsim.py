@@ -53,7 +53,6 @@ saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAss
 geantsim = G4SimAlg("G4SimAlg", outputs = ["G4SaveSmearedParticles/saveSmearedParticles"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
-
 from Configurables import G4FastSimHistograms
 hist = G4FastSimHistograms("fastHist")
 hist.DataInputs.particles.Path = "smearedParticles"

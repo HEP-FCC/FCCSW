@@ -4,9 +4,6 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 
-//ROOT
-#include "TFormula.h"
-
 //CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
@@ -30,7 +27,6 @@ StatusCode G4ParticleSmearSimple::initialize() {
   }
   m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_sigma));
   info() << "Tool used for smearing particles initialized with constant sigma = "<<m_sigma << endmsg;
-
   return StatusCode::SUCCESS;
 }
 

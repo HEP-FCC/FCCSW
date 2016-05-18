@@ -56,6 +56,7 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
                             endTrack,
                             track->GetVolume() );
   aFastStep.ProposePrimaryTrackFinalPosition( endTrack.GetPosition() );
+
   // Smear particle's momentum according to the tracker resolution
   G4ThreeVector Psm = track->GetMomentum();
   m_smearTool->smearMomentum(Psm);
@@ -65,11 +66,11 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,
   aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg+DeltaP.mag(), Psm.unit());
   // Keep track of smeared momentum
   if(track->GetParentID()==0) {
-    ParticleInformation* inf = dynamic_cast<ParticleInformation*>(track->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation());
-    inf->setSmeared(true);
-    inf->setEndStatus(1); // how it is defined ???? as in HepMC ?
-    inf->setEndMomentum(Psm);
-    inf->setVertexPosition( track->GetVertexPosition());
+    ParticleInformation* info = dynamic_cast<ParticleInformation*>(track->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation());
+    info->setSmeared(true);
+    info->setEndStatus(1); // how it is defined ???? as in HepMC ?
+    info->setEndMomentum(Psm);
+    info->setVertexPosition( track->GetVertexPosition());
   }
 }
 }
