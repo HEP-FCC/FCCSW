@@ -21,7 +21,7 @@
 
 //Geant4
 #include "G4RunManager.hh"
-#include "DDG4/Geant4DetectorConstruction.h"
+#include "G4VUserDetectorConstruction.hh"
 
 class GeoSvc: public extends1<Service, IGeoSvc> {
 

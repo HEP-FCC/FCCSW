@@ -38,7 +38,7 @@ Therefore for many tasks, especially in the early stage of detector design, the 
 
 Generated particles are transported inside the detector and their 4-momentum and/or position are smeared taking into account the resolutions and efficiency. Those smeared particles may be analysed and treated as the reconstructed particles, even though no hits were produced and no reconstruction was performed. All the detector effects (both physics processes that may encounter and detector resolutions) come from the smearing process (or rather the resolutions that were used for smearing).
 
-The resolutions used in the smearing may come arbitrary from our knowledge of the detectors. In that case one applies a Gaussian smearing with a given standard deviation. That approach may be also used by the physicists to test how the detector resolution affects the results. That smearing is currently implemented in FCCSW.
+The resolutions used in the smearing may come arbitrary from our knowledge of the detectors. In that case one applies a Gaussian smearing with a given standard deviation. That approach may be also used by the physicists to test how the detector resolution affects the results.  The resolutions used for the smearing may also come from external tools (for instance those used in the tracker performance studies) and be read in FCCSW from ROOT file. One of such tools is [tkLayout], which provides the momentum and pseudorapidity dependent resolutions. tkLayout is already in use by the FCC community, [see presentation](https://indico.cern.ch/event/446599/contribution/5/attachments/1202368/1750485/OccupancyStudies_ZDrasal.pdf). Tools for those smearing methods are implemented in FCCSW.
 
 More complex approach involves the construction of the tables with the detector resolutions (pseudorapidity/momentum/particle dependent). They are calculated from a small (relatively) sample of full simulations of single-particle events. Single-particle events simplify the reconstruction process (they don't involve the pattern recognition etc.). Such resolutions are unique for tested detectors hence they may be used for smearing the particles with a better accuracy. Implementation of this approach is still in progress.
 
@@ -133,7 +133,17 @@ In the fast simulation user wants a specific behaviour in certain geometry volum
 
 Smearing is performed using the GAUDI tool derived from `ISmearingTool`.
 
-Currently only smearing for tracker is supported. Simple smearing tool, `G4ParticleSmearSimple`, smears particles (its momenta) with a non-particle and non-momentum dependent resolution. The momentum is smeared by multiplying Gaussian distribution with the mean $\mu=1$ and the standard deviation $\sigma$ (resolution). It can be set as a parameter **sigma** in a job configuration file (default: 0.01= 1%).
+Currently only smearing for tracker is supported. There are currently three tools that may be used for this purpose.
+
+The main concept of smearing for all tools is the same. The momentum/energy is smeared by multiplying it by the randomly generated number from a Gaussian distribution with the mean $\mu=1$ and the standard deviation $\sigma$ (resolution). The difference comes from the way the resolutions are obtained.
+
+The simple smearing tool, `G4ParticleSmearSimple`, smears particles (its momenta) with a non-particle and non-momentum dependent constant resolution. It can be set as a parameter **sigma** in a job configuration file (default: 0.01= 1%).
+
+A default smearing tool, `G4ParticleSmearFormula`, uses [TFormula](https://root.cern.ch/doc/master/classTFormula.html) to parse the resolutions that are momentum and energy dependent and are given as parameters **resolutionMomentum** and **resolutionEnergy** in a job configuration file (as strings). They are used in the tracker and calorimeter smearing, respectively. In particular, the resolution of e.g. tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, `G4ParticleSmearSimple` may be a more suitable tool.
+
+The third available tool uses the momentum and pseudoprapidity dependent resolutions read from ROOT file. Such a file may be obtained with the [tkLayout]. The tool `G4ParticleSmearRootFile` reades ROOT file defined in a property **filename** in a job configuration file (in the example `/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root'). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
+The momentum-dependent resolutions are defined for each pseudorapidity bin and saved in `TGraph`. To specify eta bin, `TGraph` needs to be named following the convention: *'etafromX_etatoY'*, where X and Y are respectively lower and upper boundaries of pseudorapidity bin.
+
 
 [WIP] Ongoing work involves implementation of a tool that would smear according to the resolutions read from a ROOT file. Those resolutions can be particle, momentum an pseudorapidity dependent.
 For instance, user would be able to generate resolution files with a simplistic geometry layout using [TkLayout](https://indico.cern.ch/event/446599/contribution/5/attachments/1202368/1750485/OccupancyStudies_ZDrasal.pdf).
