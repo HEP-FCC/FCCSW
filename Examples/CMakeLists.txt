@@ -43,6 +43,9 @@ gaudi_add_test(GeantFullSimParticleGun
 gaudi_add_test(GeantFastSimTracker
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fastsim.py)
+gaudi_add_test(GeantFastSimTrackerTkLayout
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fastsim_tklayout.py)
 gaudi_add_test(SimplePythia
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/simple_pythia.py)
