@@ -7,13 +7,17 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
+#include "SimG4Interface/IG4EventGeneratorTool.h"
+
+
+// Forward declarations:
+// Interfaces
 class IG4SimSvc;
 
-// datamodel
+// Datamodel
 namespace fcc {
 class MCParticleCollection;
 }
-
 // Geant
 class G4Event;
 
@@ -58,5 +62,7 @@ public:
   /// Names for the saving tools
   /// to be deleted once the ToolHandleArray<IG4SaveOutputTool> m_saveTools is in place
   std::vector<std::string> m_saveToolNames;
+  /// Handle for tool that generates the G4Event
+  ToolHandle<IG4EventGeneratorTool> m_eventGenTool;
 };
 #endif /* SIMG4COMPONENTS_G4SIMALG_H */

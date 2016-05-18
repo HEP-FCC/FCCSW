@@ -1,0 +1,56 @@
+// Include files
+// local
+#include "G4PrimariesFromEdmTool.h"
+
+#include "SimG4Common/Units.h"
+#include "SimG4Common/ParticleInformation.h"
+
+// datamodel
+#include "datamodel/GenVertexCollection.h"
+#include "datamodel/MCParticleCollection.h"
+
+// Geant4
+#include "G4Event.hh"
+
+// Declaration of the Tool
+DECLARE_COMPONENT( G4PrimariesFromEdmTool )
+
+G4PrimariesFromEdmTool::G4PrimariesFromEdmTool(const std::string& type,
+                                               const std::string& nam,
+                                               const IInterface* parent)
+  : GaudiTool ( type, nam , parent )
+{
+  declareInput("genParticles", m_genParticles, "allGenParticles");
+}
+
+G4PrimariesFromEdmTool::~G4PrimariesFromEdmTool()
+{
+}
+
+StatusCode G4PrimariesFromEdmTool::initialize( )
+{
+  debug() << " G4PrimariesFromEdmTool::initialize( ) " << endmsg;
+  StatusCode sc = GaudiTool::initialize( ) ;
+  if ( sc.isFailure() ) return sc ;
+  debug() << " Done: G4PrimariesFromEdmTool::initialize( ) " << endmsg;
+  return sc;
+}
+
+G4Event* G4PrimariesFromEdmTool::getG4Event()
+{
+  debug() << " G4PrimariesFromEdmTool::getG4Event() " << endmsg;
+  auto theEvent = new G4Event();
+  const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
+  for(const auto& mcparticle : *mcparticles) {
+    const fcc::ConstGenVertex& v = mcparticle.StartVertex();
+    G4PrimaryVertex* g4_vertex = new G4PrimaryVertex
+        (v.Position().X*sim::edm2g4::length, v.Position().Y*sim::edm2g4::length, v.Position().Z*sim::edm2g4::length, v.Ctau()*sim::edm2g4::length);
+    const fcc::BareParticle& mccore = mcparticle.Core();
+    G4PrimaryParticle* g4_particle = new G4PrimaryParticle
+        (mccore.Type, mccore.P4.Px*sim::edm2g4::energy, mccore.P4.Py*sim::edm2g4::energy, mccore.P4.Pz*sim::edm2g4::energy);
+    g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle));
+    g4_vertex->SetPrimary(g4_particle);
+    theEvent->AddPrimaryVertex(g4_vertex);
+  }
+  return theEvent;
+}

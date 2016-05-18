@@ -1,4 +1,5 @@
 #include "G4SimSvc.h"
+
 // Gaudi
 #include "GaudiKernel/IToolSvc.h"
 
@@ -19,8 +20,6 @@ G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
   declarePrivateTool(m_actionsTool, "G4FullSimActions", true);
   declareProperty("magneticField", m_magneticFieldTool);
   declarePrivateTool(m_magneticFieldTool,"G4ConstantMagneticFieldTool", true);
-  declareProperty("particleGenerator", m_particleGeneratorTool);
-  declarePrivateTool(m_particleGeneratorTool,"G4ParticleCollectionTool", true);
 
   declareProperty("G4commands",m_g4Commands);
 }
@@ -53,17 +52,11 @@ StatusCode G4SimSvc::initialize(){
   if (!m_magneticFieldTool.retrieve()) {
     error()<<"Unable to retrieve the magnetic field"<<endmsg;
     return StatusCode::FAILURE;
-  }  
-  if (!m_particleGeneratorTool.retrieve()) {
-    error()<<"Unable to retrieve the particle generator"<<endmsg;
-    return StatusCode::FAILURE;
   }
 
   // Initialize Geant run manager
   // Load physics list, deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_physicsListTool->getPhysicsList());
-  // Load particle generator 
-  m_runManager.SetUserAction(m_particleGeneratorTool->getParticleGenerator());
   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_detectorTool->getDetectorConstruction());
 
@@ -87,6 +80,7 @@ StatusCode G4SimSvc::initialize(){
   }
   return StatusCode::SUCCESS;
 }
+
 StatusCode G4SimSvc::processEvent(G4Event& aEvent) {
   bool status = m_runManager.processEvent( aEvent );
   if ( !status ) {
@@ -95,6 +89,7 @@ StatusCode G4SimSvc::processEvent(G4Event& aEvent) {
   }
   return StatusCode::SUCCESS;
 }
+
 StatusCode G4SimSvc::retrieveEvent(G4Event*& aEvent) {
   return m_runManager.retrieveEvent(aEvent);
 }
