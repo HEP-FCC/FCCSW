@@ -1,12 +1,12 @@
-#ifndef SIMG4INTERFACE_IG4EVENTGENERATORTOOL_H
-#define SIMG4INTERFACE_IG4EVENTGENERATORTOOL_H
+#ifndef SIMG4INTERFACE_IG4EVENTPROVIDERTOOL_H
+#define SIMG4INTERFACE_IG4EVENTPROVIDERTOOL_H
 
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
 class G4Event;
 
-/** @class IG4EventGeneratorTool IG4EventGeneratorTool.h "SimG4Interface/IG4EventGeneratorTool.h"
+/** @class IG4EventProviderTool IG4EventProviderTool.h "SimG4Interface/IG4EventProviderTool.h"
  *
  *  Abstract interface to Geant4 Primary Generator classes
  *
@@ -15,9 +15,9 @@ class G4Event;
  */
 
 
-class IG4EventGeneratorTool : virtual public IAlgTool {
+class IG4EventProviderTool : virtual public IAlgTool {
  public:
-  DeclareInterfaceID(IG4EventGeneratorTool,1,0);
+  DeclareInterfaceID(IG4EventProviderTool,1,0);
 
   /**  initialize
    *   @return status code

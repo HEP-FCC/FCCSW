@@ -35,7 +35,7 @@ StatusCode G4SimAlg::initialize() {
     // }
   }
   if (!m_eventGenTool.retrieve()) {
-    error()<<"Unable to retrieve the particle generator"<<endmsg;
+    error()<<"Unable to retrieve the G4Event generator " << m_eventGenTool <<endmsg;
     return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
@@ -46,7 +46,7 @@ StatusCode G4SimAlg::execute() {
   G4Event* event = m_eventGenTool->g4Event();
 
   if ( !event ) {
-    error() << "Unable to translate EDM MC data to G4Event" << endmsg;
+    error() << "Unable to retrieve G4Event from " << m_eventGenTool << endmsg;
     return StatusCode::FAILURE;
   }
   m_geantSvc->processEvent(*event);

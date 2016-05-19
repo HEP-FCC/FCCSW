@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4EventGeneratorTool.h"
+#include "SimG4Interface/IG4EventProviderTool.h"
 
 // Forward declarations
 class G4Event;
@@ -18,7 +18,7 @@ class G4Event;
 *  @date   2014-10-01
 */
 
-class G4SingleParticleGeneratorTool : public GaudiTool, virtual public IG4EventGeneratorTool {
+class G4SingleParticleGeneratorTool : public GaudiTool, virtual public IG4EvenProviderTool {
 public:
   /// Standard constructor
   G4SingleParticleGeneratorTool( const std::string& type , const std::string& name,
