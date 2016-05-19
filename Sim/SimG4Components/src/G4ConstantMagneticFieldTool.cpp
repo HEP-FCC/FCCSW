@@ -63,6 +63,7 @@ G4ConstantMagneticFieldTool::G4ConstantMagneticFieldTool( const std::string& typ
 
 G4ConstantMagneticFieldTool::~G4ConstantMagneticFieldTool()
 {
+  delete m_field;
 }
 
 StatusCode G4ConstantMagneticFieldTool::initialize( )
