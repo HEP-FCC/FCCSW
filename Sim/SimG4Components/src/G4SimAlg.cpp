@@ -45,7 +45,7 @@ StatusCode G4SimAlg::initialize() {
 
 StatusCode G4SimAlg::execute() {
   // first translate the event
-  G4Event* event = m_eventGenTool->getG4Event();
+  G4Event* event = m_eventGenTool->g4Event();
 
   if ( !event ) {
     error() << "Unable to translate EDM MC data to G4Event" << endmsg;

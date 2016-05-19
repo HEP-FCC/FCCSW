@@ -18,27 +18,20 @@ DECLARE_COMPONENT( G4PrimariesFromEdmTool )
 G4PrimariesFromEdmTool::G4PrimariesFromEdmTool(const std::string& type,
                                                const std::string& nam,
                                                const IInterface* parent)
-  : GaudiTool ( type, nam , parent )
-{
+  : GaudiTool ( type, nam , parent ) {
   declareInput("genParticles", m_genParticles, "allGenParticles");
 }
 
-G4PrimariesFromEdmTool::~G4PrimariesFromEdmTool()
-{
+G4PrimariesFromEdmTool::~G4PrimariesFromEdmTool() {
 }
 
-StatusCode G4PrimariesFromEdmTool::initialize( )
-{
-  debug() << " G4PrimariesFromEdmTool::initialize( ) " << endmsg;
+StatusCode G4PrimariesFromEdmTool::initialize( ) {
   StatusCode sc = GaudiTool::initialize( ) ;
   if ( sc.isFailure() ) return sc ;
-  debug() << " Done: G4PrimariesFromEdmTool::initialize( ) " << endmsg;
   return sc;
 }
 
-G4Event* G4PrimariesFromEdmTool::getG4Event()
-{
-  debug() << " G4PrimariesFromEdmTool::getG4Event() " << endmsg;
+G4Event* G4PrimariesFromEdmTool::g4Event() {
   auto theEvent = new G4Event();
   const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
   for(const auto& mcparticle : *mcparticles) {

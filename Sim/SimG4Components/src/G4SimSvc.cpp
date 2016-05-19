@@ -62,12 +62,11 @@ StatusCode G4SimSvc::initialize(){
 
   if (m_g4Commands.size())
   {
-  	// Get the pointer to the User Interface manager
-  	G4UImanager* UImanager = G4UImanager::GetUIpointer();
-	for (auto command: m_g4Commands)
-	{
-		UImanager->ApplyCommand(command);
-	}
+    // Get the pointer to the User Interface manager
+    G4UImanager* UImanager = G4UImanager::GetUIpointer();
+    for (auto command: m_g4Commands) {
+      UImanager->ApplyCommand(command);
+    }
   }
 
   m_runManager.Initialize();

@@ -26,17 +26,17 @@ class MCParticleCollection;
 class G4PrimariesFromEdmTool : public GaudiTool, virtual public IG4EventGeneratorTool {
 public:
   /// Standard constructor
-  G4PrimariesFromEdmTool( const std::string& type , const std::string& name,
-             const IInterface* parent ) ;
+  G4PrimariesFromEdmTool(const std::string& type , const std::string& name,
+                         const IInterface* parent);
 
-  virtual ~G4PrimariesFromEdmTool( );
+  virtual ~G4PrimariesFromEdmTool();
 
   /// Initialize method
-  virtual StatusCode initialize( ) final;
+  virtual StatusCode initialize() final;
 
   /// Translates the input (fcc::MCParticleCollection) into a G4Event
   /// @returns G4Event with primaries generated from MCParticleCollection (ownership is transferred to the caller)
-  virtual G4Event* getG4Event() final;
+  virtual G4Event* g4Event() final;
 
 private:
   /// Handle for the EDM MC particles to be read

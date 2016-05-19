@@ -28,6 +28,6 @@ class IG4EventGeneratorTool : virtual public IAlgTool {
   /** get initilization hook for the geometry
    *  @return pointer to the G4Event containing primary particles
    */
-  virtual G4Event* getG4Event() = 0 ;
+  virtual G4Event* g4Event() = 0 ;
 };
 #endif

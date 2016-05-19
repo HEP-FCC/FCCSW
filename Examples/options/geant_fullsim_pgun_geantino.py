@@ -35,7 +35,7 @@ geantsim = G4SimAlg("G4SimAlg",
                      eventGenerator="G4SingleParticleGeneratorTool")
 
 generator= G4SingleParticleGeneratorTool("G4SingleParticleGeneratorTool",
-                ParticleName="geantino", EtaMin=0., EtaMax=0.01, OutputLevel=DEBUG)
+                particleName="geantino", etaMin=0., etaMax=0.01, OutputLevel=DEBUG)
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",

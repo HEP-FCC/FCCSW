@@ -19,19 +19,19 @@ DECLARE_COMPONENT( G4SingleParticleGeneratorTool )
 G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool( const std::string& type,
                                                               const std::string& nam,
                                                               const IInterface* parent )
-  : GaudiTool ( type, nam ,parent )
+  : GaudiTool ( type, nam, parent )
 {
   declareInterface< IG4EventGeneratorTool >( this ) ;
-  declareProperty("ParticleName", m_particleName="geantino", "Name of the generated particles");
-  declareProperty("EnergyMin", m_energyMin=1*CLHEP::GeV, "Minimum energy of generated particles");
-  declareProperty("EnergyMax", m_energyMax=1*CLHEP::TeV, "Maximum energy of generated particles");
-  declareProperty("EtaMin", m_etaMin=-5., "Minimum eta of generated particles");
-  declareProperty("EtaMax", m_etaMax=5, "Maximum eta of generated particles");
-  declareProperty("PhiMin", m_phiMin=0., "Minimum phi of generated particles");
-  declareProperty("PhiMax", m_phiMax=2*M_PI, "Maximum phi of generated particles");
-  declareProperty("VertexX", m_vertexX=0);
-  declareProperty("VertexY", m_vertexY=0);
-  declareProperty("VertexZ", m_vertexZ=0);
+  declareProperty("particleName", m_particleName = "geantino", "Name of the generated particles");
+  declareProperty("energyMin", m_energyMin = 1 * CLHEP::GeV, "Minimum energy of generated particles");
+  declareProperty("energyMax", m_energyMax = 1 * CLHEP::TeV, "Maximum energy of generated particles");
+  declareProperty("etaMin", m_etaMin = -5., "Minimum eta of generated particles");
+  declareProperty("etaMax", m_etaMax = 5, "Maximum eta of generated particles");
+  declareProperty("phiMin", m_phiMin = 0., "Minimum phi of generated particles");
+  declareProperty("phiMax", m_phiMax = 2*M_PI, "Maximum phi of generated particles");
+  declareProperty("vertexX", m_vertexX = 0);
+  declareProperty("vertexY", m_vertexY = 0);
+  declareProperty("vertexZ", m_vertexZ = 0);
 }
 
 G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool()
@@ -40,28 +40,23 @@ G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool()
 
 StatusCode G4SingleParticleGeneratorTool::initialize( )
 {
-  info() << " G4SingleParticleGeneratorTool::initialize( ) " << endmsg;
-  info() << " Particle name = "  << m_particleName << endmsg;
   StatusCode sc = GaudiTool::initialize( ) ;
   if ( sc.isFailure() ) return sc ;
-  info() << " Done: G4SingleParticleGeneratorTool::initialize( ) " << endmsg;
   return sc;
 }
 
 
 StatusCode G4SingleParticleGeneratorTool::finalize( )
 {
-  info() << " G4SingleParticleGeneratorTool::finalize( ) " << endmsg;
   return StatusCode::SUCCESS;
 }
 
-G4Event* G4SingleParticleGeneratorTool::getG4Event()
+G4Event* G4SingleParticleGeneratorTool::g4Event()
 {
-  info() << " G4SingleParticleGeneratorTool::getParticleGenerator() " << endmsg;
   auto theEvent = new G4Event();
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particleDef = particleTable->FindParticle(m_particleName);
-  debug() << " particle definition " << particleDef << "+++" << m_particleName << endmsg;
+  debug() << " particle definition " << particleDef << " +++ " << m_particleName << endmsg;
   G4double mass = 0;
   if (m_particleName != "geantino") {
     mass = particleDef->GetPDGMass();
