@@ -31,7 +31,7 @@ public:
 
   /// Generates primaries using the parameters set via options file, uses CLHEP:RandFlat random number generator
   /// @returns G4Event with primaries generated through G4ParticleGun (ownership is transferred to the caller)
-  virtual G4Event* g4Event();
+  virtual G4Event* g4Event() final;
 
 private:
   double m_energyMin;         ///< Minimum energy of the particles generated, set with energyMin
