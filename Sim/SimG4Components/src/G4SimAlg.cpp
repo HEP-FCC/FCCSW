@@ -2,7 +2,6 @@
 
 // FCCSW
 #include "SimG4Interface/IG4SimSvc.h"
-#include "SimG4Interface/IG4EventGeneratorTool.h"
 
 // Geant
 #include "G4Event.hh"

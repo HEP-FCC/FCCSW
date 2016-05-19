@@ -7,7 +7,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/IG4SaveOutputTool.h"
-#include "SimG4Interface/IG4EventGeneratorTool.h"
+#include "SimG4Interface/IG4EventProviderTool.h"
 
 
 // Forward declarations:

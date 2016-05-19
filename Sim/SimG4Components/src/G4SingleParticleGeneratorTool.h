@@ -18,7 +18,7 @@ class G4Event;
 *  @date   2014-10-01
 */
 
-class G4SingleParticleGeneratorTool : public GaudiTool, virtual public IG4EvenProviderTool {
+class G4SingleParticleGeneratorTool : public GaudiTool, virtual public IG4EventProviderTool {
 public:
   /// Standard constructor
   G4SingleParticleGeneratorTool( const std::string& type , const std::string& name,
