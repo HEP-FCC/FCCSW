@@ -1,7 +1,6 @@
 #ifndef SIMG4COMPONENTS_G4PRIMARIESFROMEDMTOOL_H
 #define SIMG4COMPONENTS_G4PRIMARIESFROMEDMTOOL_H
 
-// Include files
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
 #include "FWCore/DataHandle.h"
@@ -31,8 +30,7 @@ public:
 
   virtual ~G4PrimariesFromEdmTool();
 
-  /// Initialize method
-  virtual StatusCode initialize() final;
+  StatusCode initialize() final;
 
   /// Translates the input (fcc::MCParticleCollection) into a G4Event
   /// @returns G4Event with primaries generated from MCParticleCollection (ownership is transferred to the caller)

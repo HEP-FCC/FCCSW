@@ -1,6 +1,3 @@
-
-// Include files
-
 // local
 #include "G4SingleParticleGeneratorTool.h"
 
@@ -38,17 +35,8 @@ G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool()
 {
 }
 
-StatusCode G4SingleParticleGeneratorTool::initialize( )
-{
-  StatusCode sc = GaudiTool::initialize( ) ;
-  if ( sc.isFailure() ) return sc ;
-  return sc;
-}
-
-
-StatusCode G4SingleParticleGeneratorTool::finalize( )
-{
-  return StatusCode::SUCCESS;
+StatusCode G4SingleParticleGeneratorTool::initialize() {
+  return GaudiTool::initialize();
 }
 
 G4Event* G4SingleParticleGeneratorTool::g4Event()
@@ -56,21 +44,18 @@ G4Event* G4SingleParticleGeneratorTool::g4Event()
   auto theEvent = new G4Event();
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particleDef = particleTable->FindParticle(m_particleName);
-  debug() << " particle definition " << particleDef << " +++ " << m_particleName << endmsg;
-  G4double mass = 0;
-  if (m_particleName != "geantino") {
-    mass = particleDef->GetPDGMass();
-  }
-  debug() << "   particle mass = " << mass << endmsg;
+  debug() << "particle definition " << particleDef << " +++ " << m_particleName << endmsg;
+  G4double mass = particleDef->GetPDGMass();
+  debug() << "particle mass = " << mass << endmsg;
 
   double particleEnergy = CLHEP::RandFlat::shoot(m_energyMin, m_energyMax);
 
-  debug() << "    particle energy = " << particleEnergy << endmsg;
+  debug() << "particle energy = " << particleEnergy << endmsg;
 
   double eta = CLHEP::RandFlat::shoot(m_etaMin, m_etaMax);
   double phi = CLHEP::RandFlat::shoot(m_phiMin, m_phiMax);
 
-  debug() << "    particle eta, phi  = " << eta << " " << phi << endmsg;
+  debug() << "particle eta, phi  = " << eta << " " << phi << endmsg;
 
   double theta = std::atan(std::exp(-eta)) * 2.;
   double randomX = std::sin(theta) * std::cos(phi);

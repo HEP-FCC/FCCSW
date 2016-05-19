@@ -1,10 +1,10 @@
 #ifndef SIMG4COMPONENTS_G4SINGLEPARTICLEGENERATORTOOL_H
 #define SIMG4COMPONENTS_G4SINGLEPARTICLEGENERATORTOOL_H
 
-// Include files
-// from Gaudi
+// Gaudi
 #include "GaudiAlg/GaudiTool.h"
 
+// FCCSW
 #include "SimG4Interface/IG4EventGeneratorTool.h"
 
 // Forward declarations
@@ -24,14 +24,10 @@ public:
   G4SingleParticleGeneratorTool( const std::string& type , const std::string& name,
              const IInterface* parent ) ;
 
+  virtual StatusCode initialize() final;
+
   /// Destructor
   virtual ~G4SingleParticleGeneratorTool();
-
-  /// Initialize method
-  virtual StatusCode initialize();
-
-  /// Finalize method
-  virtual StatusCode finalize();
 
   /// Generates primaries using the parameters set via options file, uses CLHEP:RandFlat random number generator
   /// @returns G4Event with primaries generated through G4ParticleGun (ownership is transferred to the caller)

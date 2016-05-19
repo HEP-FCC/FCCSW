@@ -1,7 +1,6 @@
-#ifndef Sim_IG4MagneticFieldTool_H
-#define Sim_IG4MagneticFieldTool_H
+#ifndef SIMINTERFACE_IG4MAGNETICFIELDTOOL_H
+#define SIMINTERFACE_IG4MAGNETICFIELDTOOL_H
 
-// Include files
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 

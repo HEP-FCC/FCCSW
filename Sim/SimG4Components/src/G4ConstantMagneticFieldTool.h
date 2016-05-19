@@ -1,14 +1,19 @@
-#ifndef SIMG4COMPONENTS_G4ConstantMagneticFieldTool_H
-#define SIMG4COMPONENTS_G4ConstantMagneticFieldTool_H
+#ifndef SIMG4COMPONENTS_G4CONSTANTMAGNETICFIELDTOOL_H
+#define SIMG4COMPONENTS_G4CONSTANTMAGNETICFIELDTOOL_H
 
-// Include files
-// from Gaudi
+// Gaudi
 #include "GaudiAlg/GaudiTool.h"
 
+// FCCSW
 #include "SimG4Interface/IG4MagneticFieldTool.h"
 
+// Forward declarations:
+// Geant 4 classes
 class G4MagIntegratorStepper;
+// FCCSW
+namespace sim {
 class G4ConstantField;
+}
 
 /** @class G4ConstantMagneticFieldTool G4ConstantMagneticFieldTool.h "G4ConstantMagneticFieldTool.h"
 *
@@ -40,7 +45,7 @@ public:
 
 private:
   /// Pointer to the actual Geant 4 magnetic field
-  G4ConstantField* m_field;
+  sim::G4ConstantField* m_field;
   /// Switch to turn field on or off (default is off). Set with property FieldOn
   bool m_fieldOn;
   /// Minimum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property MinimumEpsilon

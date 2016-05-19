@@ -1,7 +1,6 @@
 #ifndef SIMG4INTERFACE_IG4EVENTGENERATORTOOL_H
 #define SIMG4INTERFACE_IG4EVENTGENERATORTOOL_H
 
-// Include files
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 

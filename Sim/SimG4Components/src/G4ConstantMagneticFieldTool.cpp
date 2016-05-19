@@ -1,11 +1,10 @@
-
-// Include files
-
 // local
 #include "G4ConstantMagneticFieldTool.h"
 
+// FCCSW
 #include "SimG4Common/G4ConstantField.h"
 
+// Geant 4
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4RunManager.hh"
 #include "G4MagneticField.hh"
@@ -23,21 +22,13 @@
 #include "G4ClassicalRK4.hh"
 
 #include "G4SystemOfUnits.hh"
-//-----------------------------------------------------------------------------
-// Implementation file for class : G4ConstantMagneticFieldTool
-//
-// 2014-10-01 : Andrea Dell'Acqua
-//-----------------------------------------------------------------------------
 
 // Declaration of the Tool
 DECLARE_COMPONENT( G4ConstantMagneticFieldTool )
 
-//=============================================================================
-// Standard constructor, initializes variables
-//=============================================================================
 G4ConstantMagneticFieldTool::G4ConstantMagneticFieldTool( const std::string& type,
-                                    const std::string& nam,const IInterface* parent )
-  : GaudiTool ( type, nam , parent ),
+                                    const std::string& name,const IInterface* parent )
+  : GaudiTool ( type, name, parent ),
     m_field(nullptr),
     m_fieldOn(false),
     m_minEps(0),
@@ -81,7 +72,7 @@ StatusCode G4ConstantMagneticFieldTool::initialize( )
 
   if (m_fieldOn)
   {
-    m_field = new G4ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
+    m_field = new sim::G4ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
 
     G4TransportationManager* transpManager=G4TransportationManager::GetTransportationManager();
     G4FieldManager* fieldManager=transpManager->GetFieldManager();

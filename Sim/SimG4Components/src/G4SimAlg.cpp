@@ -5,9 +5,7 @@
 #include "SimG4Interface/IG4EventGeneratorTool.h"
 
 // Geant
-#include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
-#include "G4RunManager.hh"
 
 DECLARE_ALGORITHM_FACTORY(G4SimAlg)
 

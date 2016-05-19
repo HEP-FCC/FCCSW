@@ -1,7 +1,7 @@
-// Include files
 // local
 #include "G4PrimariesFromEdmTool.h"
 
+// FCCSW
 #include "SimG4Common/Units.h"
 #include "SimG4Common/ParticleInformation.h"
 
@@ -16,19 +16,17 @@
 DECLARE_COMPONENT( G4PrimariesFromEdmTool )
 
 G4PrimariesFromEdmTool::G4PrimariesFromEdmTool(const std::string& type,
-                                               const std::string& nam,
+                                               const std::string& name,
                                                const IInterface* parent)
-  : GaudiTool ( type, nam , parent ) {
+  : GaudiTool ( type, name , parent ) {
   declareInput("genParticles", m_genParticles, "allGenParticles");
 }
 
 G4PrimariesFromEdmTool::~G4PrimariesFromEdmTool() {
 }
 
-StatusCode G4PrimariesFromEdmTool::initialize( ) {
-  StatusCode sc = GaudiTool::initialize( ) ;
-  if ( sc.isFailure() ) return sc ;
-  return sc;
+StatusCode G4PrimariesFromEdmTool::initialize() {
+  return GaudiTool::initialize();
 }
 
 G4Event* G4PrimariesFromEdmTool::g4Event() {

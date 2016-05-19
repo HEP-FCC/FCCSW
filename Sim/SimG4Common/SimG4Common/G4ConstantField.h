@@ -1,30 +1,22 @@
-#ifndef SIMG4COMMON_G4ConstantField_H
-#define SIMG4COMMON_G4ConstantField_H
+#ifndef SIMG4COMMON_G4CONSTANTFIELD_H
+#define SIMG4COMMON_G4CONSTANTFIELD_H
 
+// Geant 4
 #include "G4MagneticField.hh"
-#include "G4SystemOfUnits.hh"
 
+namespace sim {
 class G4ConstantField: public G4MagneticField
 {
 public:
   /// Default constructor
-  G4ConstantField() : m_bX(0), m_bY(0), m_bZ(0), m_rMax(9*m), m_zMax(8*m) {}
+  G4ConstantField();
   /// Constructor setting parameters
-  G4ConstantField(double bX, double bY, double bZ, double rMax, double zMax)
-    : m_bX(bX), m_bY(bY), m_bZ(bZ), m_rMax(rMax), m_zMax(zMax) {}
+  explicit G4ConstantField(double bX, double bY, double bZ, double rMax, double zMax);
 
   /// Get the value of the magnetic field value at position
   /// @param[in] point the position where the field is to be returned
   /// @param[out] bField the return value
-  virtual void GetFieldValue(const G4double point[4], double* bField) const final {
-    if (std::sqrt(point[0]*point[0]+point[1]*point[1]) < m_rMax &&
-        std::abs(point[2]) < m_zMax) {
-      bField[0] = m_bX;
-      bField[1] = m_bY;
-      bField[2] = m_bZ;
-    }
-    else bField[0] = bField[1] = bField[2] = 0;
-  }
+  virtual void GetFieldValue(const G4double point[4], double* bField) const final;
 
   /// Set the x component of the field
   void setBx(double value) {m_bX = value;}
@@ -50,5 +42,5 @@ private:
   /// Extend of the field in longitudinal direction
   double m_zMax;
 };
-
+}
 #endif

@@ -14,7 +14,7 @@
 // Interfaces
 class IG4SimSvc;
 
-// Datamodel
+// datamodel
 namespace fcc {
 class MCParticleCollection;
 }
