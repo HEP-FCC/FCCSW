@@ -21,8 +21,7 @@ class G4Event;
 class G4SingleParticleGeneratorTool : public GaudiTool, virtual public IG4EventProviderTool {
 public:
   /// Standard constructor
-  G4SingleParticleGeneratorTool( const std::string& type , const std::string& name,
-             const IInterface* parent ) ;
+  G4SingleParticleGeneratorTool(const std::string& type, const std::string& name, const IInterface* parent);
 
   virtual StatusCode initialize() final;
 
@@ -34,17 +33,16 @@ public:
   virtual G4Event* g4Event() final;
 
 private:
-  double m_energyMin;         ///< Minimum energy of the particles generated, set with energyMin
-  double m_energyMax;         ///< Maximum energy of the particles generated, set with energyMax
-  double m_etaMin;            ///< Minimum eta of the particles generated, set with etaMin
-  double m_etaMax;            ///< Maximum eta of the particles generated, set with etaMax
-  double m_phiMin;            ///< Minimum phi of the particles generated, set with phiMin
-  double m_phiMax;            ///< Maximum phi of the particles generated, set with phiMax
-  double m_vertexX;           ///< x position of the vertex associated with the particles generated, set with vertexX
-  double m_vertexY;           ///< y position of the vertex associated with the particles generated, set with vertexY
-  double m_vertexZ;           ///< z position of the vertex associated with the particles generated, set with vertexZ
-  std::string m_particleName; ///< Name of the generated particle, set with particleName
-
+  double m_energyMin;          ///< Minimum energy of the particles generated, set with energyMin
+  double m_energyMax;          ///< Maximum energy of the particles generated, set with energyMax
+  double m_etaMin;             ///< Minimum eta of the particles generated, set with etaMin
+  double m_etaMax;             ///< Maximum eta of the particles generated, set with etaMax
+  double m_phiMin;             ///< Minimum phi of the particles generated, set with phiMin
+  double m_phiMax;             ///< Maximum phi of the particles generated, set with phiMax
+  double m_vertexX;            ///< x position of the vertex associated with the particles generated, set with vertexX
+  double m_vertexY;            ///< y position of the vertex associated with the particles generated, set with vertexY
+  double m_vertexZ;            ///< z position of the vertex associated with the particles generated, set with vertexZ
+  std::string m_particleName;  ///< Name of the generated particle, set with particleName
 };
 
 #endif

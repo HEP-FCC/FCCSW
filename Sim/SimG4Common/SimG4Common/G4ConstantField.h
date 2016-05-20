@@ -5,8 +5,7 @@
 #include "G4MagneticField.hh"
 
 namespace sim {
-class G4ConstantField: public G4MagneticField
-{
+class G4ConstantField : public G4MagneticField {
 public:
   /// Default constructor
   G4ConstantField();
@@ -19,16 +18,17 @@ public:
   virtual void GetFieldValue(const G4double point[4], double* bField) const final;
 
   /// Set the x component of the field
-  void setBx(double value) {m_bX = value;}
+  void setBx(double value) { m_bX = value; }
   /// Set the y component of the field
-  void setBy(double value) {m_bY = value;}
+  void setBy(double value) { m_bY = value; }
   /// Set the z component of the field
-  void setBz(double value) {m_bZ = value;}
+  void setBz(double value) { m_bZ = value; }
 
   /// Set the extend of the field in radial direction
-  void setMaxR(double value) {m_rMax = value;}
+  void setMaxR(double value) { m_rMax = value; }
   /// Set the extend of the field in longitudinal direction
-  void setMaxZ(double value) {m_zMax = value;}
+  void setMaxZ(double value) { m_zMax = value; }
+
 private:
   /// Field component in x
   double m_bX;

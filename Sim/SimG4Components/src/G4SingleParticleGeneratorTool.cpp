@@ -11,36 +11,30 @@
 #include "G4ParticleDefinition.hh"
 
 // Declaration of the Tool
-DECLARE_COMPONENT( G4SingleParticleGeneratorTool )
+DECLARE_COMPONENT(G4SingleParticleGeneratorTool)
 
-G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool( const std::string& type,
-                                                              const std::string& nam,
-                                                              const IInterface* parent )
-  : GaudiTool ( type, nam, parent )
-{
-  declareInterface< IG4EventProviderTool >( this ) ;
+G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool(const std::string& type,
+                                                             const std::string& nam,
+                                                             const IInterface* parent)
+    : GaudiTool(type, nam, parent) {
+  declareInterface<IG4EventProviderTool>(this);
   declareProperty("particleName", m_particleName = "geantino", "Name of the generated particles");
   declareProperty("energyMin", m_energyMin = 1 * CLHEP::GeV, "Minimum energy of generated particles");
   declareProperty("energyMax", m_energyMax = 1 * CLHEP::TeV, "Maximum energy of generated particles");
   declareProperty("etaMin", m_etaMin = -5., "Minimum eta of generated particles");
   declareProperty("etaMax", m_etaMax = 5, "Maximum eta of generated particles");
   declareProperty("phiMin", m_phiMin = 0., "Minimum phi of generated particles");
-  declareProperty("phiMax", m_phiMax = 2*M_PI, "Maximum phi of generated particles");
+  declareProperty("phiMax", m_phiMax = 2 * M_PI, "Maximum phi of generated particles");
   declareProperty("vertexX", m_vertexX = 0);
   declareProperty("vertexY", m_vertexY = 0);
   declareProperty("vertexZ", m_vertexZ = 0);
 }
 
-G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool()
-{
-}
+G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool() {}
 
-StatusCode G4SingleParticleGeneratorTool::initialize() {
-  return GaudiTool::initialize();
-}
+StatusCode G4SingleParticleGeneratorTool::initialize() { return GaudiTool::initialize(); }
 
-G4Event* G4SingleParticleGeneratorTool::g4Event()
-{
+G4Event* G4SingleParticleGeneratorTool::g4Event() {
   auto theEvent = new G4Event();
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particleDef = particleTable->FindParticle(m_particleName);

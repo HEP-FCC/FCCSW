@@ -14,19 +14,18 @@ class G4Event;
  *  @date   2014-10-02
  */
 
-
 class IG4EventProviderTool : virtual public IAlgTool {
- public:
-  DeclareInterfaceID(IG4EventProviderTool,1,0);
+public:
+  DeclareInterfaceID(IG4EventProviderTool, 1, 0);
 
   /**  initialize
    *   @return status code
    */
-  virtual StatusCode   initialize() = 0 ;
+  virtual StatusCode initialize() = 0;
 
   /** get initilization hook for the geometry
    *  @return pointer to the G4Event containing primary particles
    */
-  virtual G4Event* g4Event() = 0 ;
+  virtual G4Event* g4Event() = 0;
 };
 #endif

@@ -26,31 +26,32 @@ class G4ConstantField;
 class G4ConstantMagneticFieldTool : public GaudiTool, virtual public IG4MagneticFieldTool {
 public:
   /// Standard constructor
-  G4ConstantMagneticFieldTool( const std::string& type , const std::string& name,
-             const IInterface* parent ) ;
+  G4ConstantMagneticFieldTool(const std::string& type, const std::string& name, const IInterface* parent);
 
   /// Destructor
-  virtual ~G4ConstantMagneticFieldTool( );
+  virtual ~G4ConstantMagneticFieldTool();
 
   /// Initialize method
-  virtual StatusCode initialize( ) final;
+  virtual StatusCode initialize() final;
 
   /// Finalize method
-  virtual StatusCode finalize( ) final;
+  virtual StatusCode finalize() final;
 
   /// Get the actual G4MagneticField
   virtual const G4MagneticField* field() const final;
   /// Get the stepper, ownership is transferred to the caller
-  G4MagIntegratorStepper* stepper(std::string, G4MagneticField* ) const;
+  G4MagIntegratorStepper* stepper(std::string, G4MagneticField*) const;
 
 private:
   /// Pointer to the actual Geant 4 magnetic field
   sim::G4ConstantField* m_field;
   /// Switch to turn field on or off (default is off). Set with property FieldOn
   bool m_fieldOn;
-  /// Minimum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property MinimumEpsilon
+  /// Minimum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property
+  /// MinimumEpsilon
   double m_minEps;
-  /// Maximum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property MaximumEpsilon
+  /// Maximum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property
+  /// MaximumEpsilon
   double m_maxEps;
   /// This parameter governs accuracy of volume intersection, see G4 doc for more details. Set with property DeltaChord
   double m_deltaChord;

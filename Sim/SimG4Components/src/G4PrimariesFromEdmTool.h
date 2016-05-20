@@ -25,8 +25,7 @@ class MCParticleCollection;
 class G4PrimariesFromEdmTool : public GaudiTool, virtual public IG4EventProviderTool {
 public:
   /// Standard constructor
-  G4PrimariesFromEdmTool(const std::string& type , const std::string& name,
-                         const IInterface* parent);
+  G4PrimariesFromEdmTool(const std::string& type, const std::string& name, const IInterface* parent);
 
   virtual ~G4PrimariesFromEdmTool();
 
