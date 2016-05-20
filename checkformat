@@ -14,6 +14,7 @@ def parse_args():
     parser = argparse.ArgumentParser("checkformat", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('filenames', metavar='filename', type=str, nargs="+", help='The files or folders you want to check')
     parser.add_argument('--inplace', '-i', action='store_true',  help='Do editing in place', default=False)
+    parser.add_argument('--force', '-f', action='store_true',  help='Do not ask when editing in place', default=False)
     return parser.parse_args()
 
 
@@ -48,8 +49,8 @@ def confirmed_by_user(fnames):
             print("Please respond with 'yes' or 'no' (or 'y' or 'n').")
 
 
-def replace(fnames):
-    if confirmed_by_user(fnames):
+def replace(fnames, force):
+    if force or confirmed_by_user(fnames):
         for fname in fnames:
             try:
                 subprocess.check_call(["clang-format", "-i", fname])
@@ -78,4 +79,4 @@ if __name__ == "__main__":
     if not args.inplace:  # run sas format checker
         run_sas(fnames)
     else:                 # replace files using clang-format
-        replace(fnames)
+        replace(fnames, args.force)

@@ -68,3 +68,6 @@ gaudi_add_test(FormatCheckerSeveralFiles
 gaudi_add_test(FormatCheckerDirectory
      WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
      COMMAND ./checkformat ./Examples/src/)
+gaudi_add_test(FormatCheckerInPlace
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat -if ./Examples/src/CreateSampleJet.cpp)
