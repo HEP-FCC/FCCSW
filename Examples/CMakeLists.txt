@@ -57,3 +57,14 @@ gaudi_add_test(ExampleOptions
                FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
+
+# Test of the format-checker:
+gaudi_add_test(FormatCheckerOneFile
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat ./Examples/src/CreateSampleJet.cpp)
+gaudi_add_test(FormatCheckerSeveralFiles
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat ./Examples/src/CreateSampleJet.cpp ./Examples/src/CreateSampleJet.h)
+gaudi_add_test(FormatCheckerDirectory
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat ./Examples/src/)
