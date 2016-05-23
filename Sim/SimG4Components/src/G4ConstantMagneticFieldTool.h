@@ -40,7 +40,7 @@ public:
   /// Get the actual G4MagneticField
   virtual const G4MagneticField* field() const final;
   /// Get the stepper, ownership is transferred to the caller
-  G4MagIntegratorStepper* stepper(std::string, G4MagneticField*) const;
+  G4MagIntegratorStepper* stepper(const std::string&, G4MagneticField*) const;
 
 private:
   /// Pointer to the actual Geant 4 magnetic field

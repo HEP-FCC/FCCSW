@@ -68,13 +68,13 @@ StatusCode G4ConstantMagneticFieldTool::initialize() {
   if (sc.isFailure()) return sc;
 
   if (m_fieldOn) {
-    m_field =
-        new sim::G4ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
-
     G4TransportationManager* transpManager = G4TransportationManager::GetTransportationManager();
     G4FieldManager* fieldManager = transpManager->GetFieldManager();
     G4PropagatorInField* propagator = transpManager->GetPropagatorInField();
 
+    // The field manager keeps an observing pointer to the field, ownership stays with this tool. (Cleaned up in dtor)
+    m_field =
+        new sim::G4ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
     fieldManager->SetDetectorField(m_field);
 
     fieldManager->CreateChordFinder(m_field);
@@ -98,7 +98,7 @@ StatusCode G4ConstantMagneticFieldTool::finalize() {
 
 const G4MagneticField* G4ConstantMagneticFieldTool::field() const { return m_field; }
 
-G4MagIntegratorStepper* G4ConstantMagneticFieldTool::stepper(std::string name, G4MagneticField* field) const {
+G4MagIntegratorStepper* G4ConstantMagneticFieldTool::stepper(const std::string& name, G4MagneticField* field) const {
   G4Mag_UsualEqRhs* fEquation = new G4Mag_UsualEqRhs(field);
   if (name == "HelixImplicitEuler")
     return new G4HelixImplicitEuler(fEquation);
