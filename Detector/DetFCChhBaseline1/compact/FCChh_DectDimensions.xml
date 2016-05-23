@@ -3,27 +3,17 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <includes>
-    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
-    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
-  </includes>
-
-  <info name="FCCDectMaster"
+  <info name="FCCDectDimensions"
     title="master file with includes and world dimension"
-    author="C. Helsens"
+    author="C. Helsens and J. Lingemann"
     url="no"
     status="development"
     version="$Id:??$">
-    <comment>master file with includes and world dimension</comment>
+    <comment>Dimensions for FCChhBaseline1</comment>
   </info>
 
 
-   <define>
-    <constant name="world_size" value="80*m"/>
-    <constant name="world_x" value="world_size"/>
-    <constant name="world_y" value="world_size"/>
-    <constant name="world_z" value="world_size"/>
-
+  <define>
     <!-- BEAM PIPE -->
     <constant name="CentralBeamTubeZ" value="800.0*cm"/>
     <constant name="CentralBeamTubeRmax" value="2.1*cm"/>
@@ -127,20 +117,6 @@
     <constant name="FwdMuon_dz" value="2000*mm"/>
     <constant name="FwdMuon_zOffset" value="27.5*m + FwdMuon_dz"/>
 
-    </define>
+  </define>
 
-    <!-- Including the sub-detectors / volume definitions -->
-    <include ref="./FCChh_BeamTube.xml" />
-    <include ref="./FCChh_Solenoids.xml" />
-    <include ref="./FCChh_Dipoles.xml" />
-    <include ref="../../DetFCChhTrackerSimple/compact/FCChh_Tracker.xml" />
-    <include ref="../../DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml" />
-    <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
-    <!--
-      These can be used as replacement if you want to use only a sub-set of detectors:
-      <include ref="../../DetCommon/compact/TrackerAir.xml" />
-      <include ref="../../DetCommon/compact/EcalAir.xml" />
-      <include ref="../../DetCommon/compact/HcalAir.xml" />
-    -->
-    <include ref="../../DetCommon/compact/MuonSystemAir.xml" />
 </lccdd>

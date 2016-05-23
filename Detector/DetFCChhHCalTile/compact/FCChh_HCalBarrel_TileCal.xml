@@ -16,7 +16,6 @@
     <!-- Note that this is just a guideline to the factory method: It will actually do a HCal of length
       static_cast<int>(BarHCal_dz / Module_thickness) +
     -->
-
     <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax-200*mm"/>
     <!-- NOTE: All lengths (anything but radii) given below are interpreted as half-lenghts! -->
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
@@ -49,7 +48,7 @@
   <readouts>
     <readout name="BarHCal_Readout">
       <segmentation type="CartesianGridXY" grid_size_x="0.05*mm" grid_size_y="0.05*mm"/>
-      <id>system:3,layer:6,wedge:7,sub_module:2,row:9,x:32:-16,y:-16</id>
+      <id>system:3,layer:6,wedge:7,sub_module:2,row:10,x:32:-16,y:-16</id>
     </readout>
   </readouts>
 
