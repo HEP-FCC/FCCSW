@@ -14,7 +14,8 @@ void G4ConstantField::GetFieldValue(const G4double point[4], double* bField) con
     bField[0] = m_bX;
     bField[1] = m_bY;
     bField[2] = m_bZ;
+  } else {
+    bField[0] = bField[1] = bField[2] = 0;
   }
-  bField[0] = bField[1] = bField[2] = 0;
 }
 }
