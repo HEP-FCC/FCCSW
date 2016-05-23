@@ -12,7 +12,7 @@ using DD4hep::Geometry::PlacedVolume;
 namespace det {
 
 static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xmlElement,
-				DD4hep::Geometry::SensitiveDetector sensDet) 
+				DD4hep::Geometry::SensitiveDetector sensDet)
 {
   xml_det_t xmlDet = xmlElement;
   std::string detName = xmlDet.nameStr();
@@ -24,31 +24,30 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
   Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   // Invisibility seems to be broken in visualisation tags, have to hardcode that
-  // envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
-  envelopeVolume.setVisAttributes(lcdd.invisible());
-  
+  envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
+
   xml_comp_t cryostat = xmlElement.child("cryostat");
   Dimension cryo_dims(cryostat.dimensions());
   double cryo_thickness=cryo_dims.thickness();
-  
+
   xml_comp_t calo = xmlElement.child("calorimeter");
   Dimension calo_dims(calo.dimensions());
   std::string calo_name=calo.nameStr();
   double calo_id=calo.id();
-  
+
   xml_comp_t active = calo.child("active_layers");
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
   //int active_samples=active.nSamplings();
   //int active_samples=active.attr<int>("nSamplings");
   //std::cout<<"++++++++++++++++++++++++++ nSamplings "<<active_samples<<std::endl;
-  
+
   xml_comp_t passive = calo.child("passive_layers");
   std::string passive_mat=passive.materialStr();
-  double passive_tck=passive.thickness();  
+  double passive_tck=passive.thickness();
 
   // Step 1 : cryostat
-  
+
   DetElement cryo(cryostat.nameStr(), 0);
   DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
   std::cout << "ECAL Building cryostat from " << cryo_dims.rmin() << " to " << cryo_dims.rmax() << std::endl;
@@ -66,11 +65,10 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
   placedBath.addPhysVolID("active", 0);
   calo_bath.setPlacement(placedBath);
-  
+
   // Step 3 : create the actual calorimeter
 
   int active_samples= (calo_dims.rmax()-  calo_dims.rmin() - passive_tck)/(passive_tck+active_tck);
-  std::cout<<"++++++++++++++++++++++++++ nSamplings "<<active_samples<<std::endl;
   double calo_tck=active_samples*(active_tck+passive_tck)+passive_tck;
   DetElement caloDet(calo_name, calo_id);
   DD4hep::Geometry::Tube caloShape(calo_dims.rmin() , calo_dims.rmin()+calo_tck, calo_dims.dz());
@@ -79,12 +77,12 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   PlacedVolume placedCalo = bathVol.placeVolume(caloVol);
   placedCalo.addPhysVolID("EM_barrel", calo_id);
   caloDet.setPlacement(placedCalo);
-  
+
   // set the sensitive detector type to the DD4hep calorimeter
   sensDet.setType("Geant4Calorimeter");
 
   // loop on the sensitive layers
-  
+
   for (int i=0;i<active_samples;i++)
   {
   	double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);

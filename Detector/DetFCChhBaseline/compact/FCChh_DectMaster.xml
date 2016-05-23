@@ -4,8 +4,8 @@
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
   <includes>
-    <gdmlFile  ref="elements.xml"/>
-    <gdmlFile  ref="materials.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
   </includes>
 
   <info name="FCCDectMaster"
@@ -19,23 +19,98 @@
 
 
    <define>
-        <constant name="world_size" value="80*m"/>
-        <constant name="world_x" value="world_size"/>
-        <constant name="world_y" value="world_size"/>
-        <constant name="world_z" value="world_size"/>
+    <constant name="world_size" value="80*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
 
-        <!-- BEAM PIPE -->
-        <constant name="CentralBeamTubeZ" value="800.0*cm"/>
-        <constant name="CentralBeamTubeRmax" value="2.1*cm"/>
-        <constant name="CentralBeamTubeRmin" value="2.*cm"/>
+    <!-- BEAM PIPE -->
+    <constant name="CentralBeamTubeZ" value="800.0*cm"/>
+    <constant name="CentralBeamTubeRmax" value="2.1*cm"/>
+    <constant name="CentralBeamTubeRmin" value="2.*cm"/>
 
-        <constant name="ForwardBeamTubeRmin1" value="2.*cm"/>
-        <constant name="ForwardBeamTubeRmax1" value="2.1*cm"/>
-        <constant name="ForwardBeamTubeRmin2" value="7.8*cm"/>
-        <constant name="ForwardBeamTubeRmax2" value="7.9*cm"/>
-        <constant name="ForwardBeamTubeZ" value="15600*cm"/>
-        <constant name="ForwardBeamTubeZoffset" value="800*cm"/>
+    <constant name="ForwardBeamTubeRmin1" value="2.*cm"/>
+    <constant name="ForwardBeamTubeRmax1" value="2.1*cm"/>
+    <constant name="ForwardBeamTubeRmin2" value="7.8*cm"/>
+    <constant name="ForwardBeamTubeRmax2" value="7.9*cm"/>
+    <constant name="ForwardBeamTubeZ" value="15600*cm"/>
+    <constant name="ForwardBeamTubeZoffset" value="800*cm"/>
+
+    <!-- MAGNET SYSTEM -->
+    <!-- Central Solenoids -->
+    <constant name="InnerSolenoidZ" value="1010*cm"/>
+    <constant name="InnerSolenoidRmin" value="625*cm"/>
+    <constant name="InnerSolenoidRmax" value="782.5*cm"/>
+
+    <constant name="OuterSolenoidZ" value="760*cm"/>
+    <constant name="OuterSolenoidRmin" value="1300*cm"/>
+    <constant name="OuterSolenoidRmax" value="1347.5*cm"/>
+    <!-- Forward Dipoles -->
+    <constant name="ForwardDipolesZ" value="309*cm"/>
+    <constant name="ForwardDipolesRmin1" value="255*cm"/>
+    <constant name="ForwardDipolesRmax1" value="312*cm"/>
+    <constant name="ForwardDipolesRmin2" value="368*cm"/>
+    <constant name="ForwardDipolesRmax2" value="425*cm"/>
+    <constant name="ForwardDipolesZoffset" value="1480*cm+ForwardDipolesZ"/>
+
+    <constant name="ForwardDipolesx0" value="312*cm"/>
+    <constant name="ForwardDipolesy0" value="127.5*cm"/>
+
+    <constant name="ForwardDipolesx1" value="425*cm"/>
+    <constant name="ForwardDipolesy1" value="127.5*cm"/>
+
+    <constant name="ForwardDipolesdx" value="298*cm"/>
+    <constant name="ForwardDipolesdy" value="200*cm"/>
+    <constant name="ForwardDipolesdz" value="309*cm"/>
+
+    <!-- TRACKER DIMENSIONS -->
+    <!-- Tracker Barrel -->
+    <constant name="BarTracker_rmin" value="30*mm"/>
+    <constant name="BarTracker_rmax" value="111*mm"/>
+    <constant name="BarTracker_length" value="580.8*mm"/>
+    <!-- Tracker End-caps -->
+    <constant name="EndCapTracker_rmin" value="30*mm"/>
+    <constant name="EndCapTracker_rmax" value="111*mm"/>
+    <constant name="EndCapTracker_dz"   value="50*mm"/>
+    <constant name="nEndCapTracker_zpos" value="-630.8*mm"/>
+    <constant name="pEndCapTracker_zpos" value="630.8*mm"/>
+
+    <!-- ECAL DIMENSIONS -->
+    <!-- ECal Barrel -->
+    <constant name="BarECal_rmin" value="2600*mm"/>
+    <constant name="BarECal_rmax" value="3500*mm"/>
+    <constant name="BarECal_dz" value="4000*mm"/>
+
+    <!-- ECal End-caps -->
+
+    <!-- HCAL DIMENSIONS -->
+    <!-- HCal Barrel -->
+    <constant name="BarHCal_rmin" value="3600*mm"/>
+    <constant name="BarHCal_rmax" value="5800*mm"/>
+    <!-- Note that this is just a guideline to the factory method: It will actually do a HCal of length
+      static_cast<int>(BarHCal_dz / Module_thickness) +
+    -->
+    <constant name="BarHCal_dz" value="4500*mm"/>
+    <!-- HCal End-Cap -->
+
+    <!-- MUON SYSTEM DIMENSIONS -->
+    <!-- Muon system barrel -->
+    <!-- Muon system end-caps -->
+
     </define>
 
+    <!-- Including the sub-detectors / volume definitions -->
     <include ref="./FCChh_BeamTube.xml" />
+    <include ref="./FCChh_Solenoids.xml" />
+    <include ref="./FCChh_Dipoles.xml" />
+    <<include ref="../../DetFCChhTrackerSimple/compact/FCChh_Tracker.xml" />
+    <include ref="../../DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml" />
+    <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
+    <!--
+      These can be used as replacement if you want to use only a sub-set of detectors:
+      <include ref="../../DetCommon/compact/TrackerAir.xml" />
+      <include ref="../../DetCommon/compact/EcalAir.xml" />
+      <include ref="../../DetCommon/compact/HcalAir.xml" />
+    -->
+
 </lccdd>

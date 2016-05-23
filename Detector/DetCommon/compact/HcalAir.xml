@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace the Hcal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>HCal Place-Holder</comment>
+  </info>
+  <display>
+    <vis name="HCalEnvelopeVis" r="0.3" g="0.7" b="0.3" showDaughters="false" visible="true"/>
+  </display>
+
+  <detectors>
+    <detector name="HCalEnvelope" type="SimpleCylinder"  vis="HCalEnvelopeVis">
+      <status id="0"/>
+      <comment>Envelope for ECal</comment>
+      <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmax" dz="BarHCal_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

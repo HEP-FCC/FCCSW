@@ -3,11 +3,6 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <includes>
-    <gdmlFile  ref="elements.xml"/>
-    <gdmlFile  ref="materials.xml"/>
-  </includes>
-
   <info name="FCChh_ECalBarrel_Mockup"
     title="ECal Barrel Calorimeter"
     author="A.Dell'Acqua"
@@ -18,17 +13,11 @@
   </info>
 
   <define>
-    <!-- ECAL dimensions -->
-    <!-- cryostat description -->
-    <constant name="BarECal_rmin" value="2600*mm"/>
-    <constant name="BarECal_rmax" value="3500*mm"/>
-    <constant name="BarECal_dz" value="4000*mm"/>
-
+    <constant name="BarECalCryoThickness" value="100*mm">
     <!-- calorimeter volume -->
-    <constant name="EMBarrel_rmin" value="2700*mm"/>
-    <constant name="EMBarrel_rmax" value="3400*mm"/>
-    <constant name="EMBarrel_dz" value="3900*mm"/>
-
+    <constant name="EMBarrel_rmin" value="BarECal_rmin-BarECalCryoThickness"/>
+    <constant name="EMBarrel_rmax" value="BarECal_rmax-BarECalCryoThickness"/>
+    <constant name="EMBarrel_dz" value="BarECal_dz-BarECalCryoThickness"/>
   </define>
 
   <display>
