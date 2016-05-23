@@ -13,10 +13,15 @@
   </info>
 
   <define>
-    <constant name="BarECalCryoThickness" value="100*mm">
+    <constant name="BarECalOuterSpacer" value="100*mm"/>
+    <constant name="BarECalCryoThickness" value="100*mm"/>
     <!-- calorimeter volume -->
-    <constant name="EMBarrel_rmin" value="BarECal_rmin-BarECalCryoThickness"/>
-    <constant name="EMBarrel_rmax" value="BarECal_rmax-BarECalCryoThickness"/>
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin+BarECalOuterSpacer">
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax-BarECalOuterSpacer">
+    <constant name="BarCryoECal_dz" value="BarECal_dz">
+
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+BarECalCryoThickness"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-BarECalCryoThickness"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-BarECalCryoThickness"/>
   </define>
 

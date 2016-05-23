@@ -13,6 +13,9 @@
     </info>
 
     <define>
+        <constant name="BarInnerTracker_rmin" value="30*mm"/>
+        <constant name="BarInnerTracker_rmax" value="111*mm"/>
+        <constant name="BarInnerTracker_dz" value="580.8*mm"/>
         <constant name="BarTracker_modulesInZ" value="14"/>
             <!--Layer0-->
         <constant name="BarTracker_L0_rmin" value="33*mm"/>
@@ -57,6 +60,12 @@
         <constant name="B_Al_pos" value="0.1125*mm"/>
         <!-------------------------------------------->
         <!--Dimensions of Endcaps-->
+        <constant name="EndCapInnerTracker_rmin" value="30*mm"/>
+        <constant name="EndCapInnerTracker_rmax" value="111*mm"/>
+        <constant name="EndCapInnerTracker_dz"   value="50*mm"/>
+        <constant name="nEndCapInnerTracker_zpos" value="-630.8*mm"/>
+        <constant name="pEndCapInnerTracker_zpos" value="630.8*mm"/>
+
         <constant name="EndCapTracker_L_dz" value="10*mm"/>
         <constant name="EndCapTracker_L_modulesInPhi" value="32"/>
 
@@ -129,8 +138,8 @@
         <!--Barrel0-->
         <detector id="1" name="Barrel0" type="Barrel" readout="BarTracker_Readout" vis="red">
             <status id="1"/>
-            <dimensions rmin="BarTracker_rmin" rmax="BarTracker_rmax" z="BarTracker_length" material="Air"/>
-            <layer id="0"  inner_r="BarTracker_L0_rmin" outer_r="BarTracker_L0_rmax" dr="2.*B_mod_thick" z="BarTracker_length" material="Air">
+            <dimensions rmin="BarInnerTracker_rmin" rmax="BarInnerTracker_rmax" z="BarInnerTracker_dz" material="Air"/>
+            <layer id="0"  inner_r="BarTracker_L0_rmin" outer_r="BarTracker_L0_rmax" dr="2.*B_mod_thick" z="BarInnerTracker_dz" material="Air">
                 <slice z="B_mod_zpos" repeat="BarTracker_modulesInZ"/>
                 <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="BarTracker_L0_modulesInPhi" material="Air">
                     <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
@@ -138,7 +147,7 @@
                     <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="1"  inner_r="BarTracker_L1_rmin" outer_r="BarTracker_L1_rmax" dr="2.*B_mod_thick" z="BarTracker_length" material="Air">
+            <layer id="1"  inner_r="BarTracker_L1_rmin" outer_r="BarTracker_L1_rmax" dr="2.*B_mod_thick" z="BarInnerTracker_dz" material="Air">
                 <slice z="B_mod_zpos" repeat="BarTracker_modulesInZ"/>
                 <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="BarTracker_L1_modulesInPhi" material="Air">
                     <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
@@ -146,7 +155,7 @@
                     <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="2"  inner_r="BarTracker_L2_rmin" outer_r="BarTracker_L2_rmax" dr="2.*B_mod_thick" z="BarTracker_length" material="Air">
+            <layer id="2"  inner_r="BarTracker_L2_rmin" outer_r="BarTracker_L2_rmax" dr="2.*B_mod_thick" z="BarInnerTracker_dz" material="Air">
                 <slice z="B_mod_zpos" repeat="BarTracker_modulesInZ"/>
                 <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="BarTracker_L2_modulesInPhi" material="Air">
                     <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
@@ -154,7 +163,7 @@
                     <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="3"  inner_r="BarTracker_L3_rmin" outer_r="BarTracker_L3_rmax" dr="2.*B_mod_thick" z="BarTracker_length" material="Air">
+            <layer id="3"  inner_r="BarTracker_L3_rmin" outer_r="BarTracker_L3_rmax" dr="2.*B_mod_thick" z="BarInnerTracker_dz" material="Air">
                 <slice z="B_mod_zpos" repeat="BarTracker_modulesInZ"/>
                 <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="BarTracker_L3_modulesInPhi" material="Air">
                     <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
@@ -162,7 +171,7 @@
                     <module_component width="B_Al_width" length="B_Al_length" thickness="B_Al_thick" z = "B_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="4"  inner_r="BarTracker_L4_rmin" outer_r="BarTracker_L4_rmax" dr="2.*B_mod_thick" z="BarTracker_length" material="Air">
+            <layer id="4"  inner_r="BarTracker_L4_rmin" outer_r="BarTracker_L4_rmax" dr="2.*B_mod_thick" z="BarInnerTracker_dz" material="Air">
                 <slice z="B_mod_zpos" repeat="BarTracker_modulesInZ"/>
                 <module name ="Mod0" width="B_mod_width" length="B_mod_length" thickness="B_mod_thick" repeat="BarTracker_L4_modulesInPhi" material="Air">
                     <module_component width="B_Si_width" length="B_Si_length" thickness="B_Si_thick" z ="B_Si_pos" material="Silicon" sensitive="true" vis="red"/>
@@ -174,8 +183,8 @@
         <!--negEndCap0-->
         <detector id="2" name="nEndCap0" type="Trap_EndCap" readout="EndCapTracker_Readout" vis="lightblue">
             <status id="1"/>
-            <dimensions rmin="EndCapTracker_rmin" rmax = "EndCapTracker_rmax" dz="EndCapTracker_dz" z ="nEndCapTracker_zpos"/>
-            <layer id="0" inner_r="EndCapTracker_rmin" outer_r="EndCapTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L0_pos" repeat="EndCapTracker_L_modulesInPhi">
+            <dimensions rmin="EndCapInnerTracker_rmin" rmax = "EndCapInnerTracker_rmax" dz="EndCapInnerTracker_dz" z ="nEndCapInnerTracker_zpos"/>
+            <layer id="0" inner_r="EndCapInnerTracker_rmin" outer_r="EndCapInnerTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L0_pos" repeat="EndCapTracker_L_modulesInPhi">
                 <module name ="TrMod0" radius="EndCapTracker_L0_mod0_r" dz="EndCapTracker_L0_mod0_pos" x1="EndCapTracker_L0_mod_X1" x2="EndCapTracker_L0_mod_X2" length="EndCapTracker_L0_mod_length" thickness="EndCapTracker_L0_mod_thick">
                     <module_component x1="EndCapTracker_L0_Si_X1" x2="EndCapTracker_L0_Si_X2" length="EndCapTracker_L0_Si_length" thickness="EndCapTracker_L0_Si_thick" z ="EndCapTracker_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="EndCapTracker_L0_C_X1" x2="EndCapTracker_L0_C_X2" length="EndCapTracker_L0_C_length" thickness="EndCapTracker_L0_C_thick" z ="EndCapTracker_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
@@ -187,7 +196,7 @@
                     <module_component x1="EndCapTracker_L0_Al1_X1" x2="EndCapTracker_L0_Al1_X2" length="EndCapTracker_L0_Al_length" thickness="EndCapTracker_L0_Al_thick" z ="EndCapTracker_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="0" inner_r="EndCapTracker_rmin" outer_r="EndCapTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L1_pos" repeat="EndCapTracker_L_modulesInPhi">
+            <layer id="0" inner_r="EndCapInnerTracker_rmin" outer_r="EndCapInnerTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L1_pos" repeat="EndCapTracker_L_modulesInPhi">
                 <module name ="TrMod0" radius="EndCapTracker_L0_mod0_r" dz="EndCapTracker_L0_mod0_pos" x1="EndCapTracker_L0_mod_X1" x2="EndCapTracker_L0_mod_X2" length="EndCapTracker_L0_mod_length" thickness="EndCapTracker_L0_mod_thick">
                     <module_component x1="EndCapTracker_L0_Si_X1" x2="EndCapTracker_L0_Si_X2" length="EndCapTracker_L0_Si_length" thickness="EndCapTracker_L0_Si_thick" z ="EndCapTracker_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="EndCapTracker_L0_C_X1" x2="EndCapTracker_L0_C_X2" length="EndCapTracker_L0_C_length" thickness="EndCapTracker_L0_C_thick" z ="EndCapTracker_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
@@ -199,7 +208,7 @@
                     <module_component x1="EndCapTracker_L0_Al1_X1" x2="EndCapTracker_L0_Al1_X2" length="EndCapTracker_L0_Al_length" thickness="EndCapTracker_L0_Al_thick" z ="EndCapTracker_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="0" inner_r="EndCapTracker_rmin" outer_r="EndCapTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L2_pos" repeat="EndCapTracker_L_modulesInPhi">
+            <layer id="0" inner_r="EndCapInnerTracker_rmin" outer_r="EndCapInnerTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L2_pos" repeat="EndCapTracker_L_modulesInPhi">
                 <module name ="TrMod0" radius="EndCapTracker_L0_mod0_r" dz="EndCapTracker_L0_mod0_pos" x1="EndCapTracker_L0_mod_X1" x2="EndCapTracker_L0_mod_X2" length="EndCapTracker_L0_mod_length" thickness="EndCapTracker_L0_mod_thick">
                     <module_component x1="EndCapTracker_L0_Si_X1" x2="EndCapTracker_L0_Si_X2" length="EndCapTracker_L0_Si_length" thickness="EndCapTracker_L0_Si_thick" z ="EndCapTracker_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="EndCapTracker_L0_C_X1" x2="EndCapTracker_L0_C_X2" length="EndCapTracker_L0_C_length" thickness="EndCapTracker_L0_C_thick" z ="EndCapTracker_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
@@ -215,8 +224,8 @@
         <!--posEndCap0-->
         <detector id="3" name="pEndCap0" type="Trap_EndCap" readout="EndCapTracker_Readout" vis="lightblue">
             <status id="1"/>
-            <dimensions rmin="EndCapTracker_rmin" rmax = "EndCapTracker_rmax" dz="EndCapTracker_dz" z ="pEndCapTracker_zpos"/>
-            <layer id="0" inner_r="EndCapTracker_rmin" outer_r="EndCapTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L0_pos" repeat="EndCapTracker_L_modulesInPhi">
+            <dimensions rmin="EndCapInnerTracker_rmin" rmax = "EndCapInnerTracker_rmax" dz="EndCapInnerTracker_dz" z ="pEndCapInnerTracker_zpos"/>
+            <layer id="0" inner_r="EndCapInnerTracker_rmin" outer_r="EndCapInnerTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L0_pos" repeat="EndCapTracker_L_modulesInPhi">
                 <module name ="TrMod0" radius="EndCapTracker_L0_mod0_r" dz="EndCapTracker_L0_mod0_pos" x1="EndCapTracker_L0_mod_X1" x2="EndCapTracker_L0_mod_X2" length="EndCapTracker_L0_mod_length" thickness="EndCapTracker_L0_mod_thick">
                     <module_component x1="EndCapTracker_L0_Si_X1" x2="EndCapTracker_L0_Si_X2" length="EndCapTracker_L0_Si_length" thickness="EndCapTracker_L0_Si_thick" z ="EndCapTracker_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="EndCapTracker_L0_C_X1" x2="EndCapTracker_L0_C_X2" length="EndCapTracker_L0_C_length" thickness="EndCapTracker_L0_C_thick" z ="EndCapTracker_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
@@ -228,7 +237,7 @@
                     <module_component x1="EndCapTracker_L0_Al1_X1" x2="EndCapTracker_L0_Al1_X2" length="EndCapTracker_L0_Al_length" thickness="EndCapTracker_L0_Al_thick" z ="EndCapTracker_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="0" inner_r="EndCapTracker_rmin" outer_r="EndCapTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L1_pos" repeat="EndCapTracker_L_modulesInPhi">
+            <layer id="0" inner_r="EndCapInnerTracker_rmin" outer_r="EndCapInnerTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L1_pos" repeat="EndCapTracker_L_modulesInPhi">
                 <module name ="TrMod0" radius="EndCapTracker_L0_mod0_r" dz="EndCapTracker_L0_mod0_pos" x1="EndCapTracker_L0_mod_X1" x2="EndCapTracker_L0_mod_X2" length="EndCapTracker_L0_mod_length" thickness="EndCapTracker_L0_mod_thick">
                     <module_component x1="EndCapTracker_L0_Si_X1" x2="EndCapTracker_L0_Si_X2" length="EndCapTracker_L0_Si_length" thickness="EndCapTracker_L0_Si_thick" z ="EndCapTracker_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="EndCapTracker_L0_C_X1" x2="EndCapTracker_L0_C_X2" length="EndCapTracker_L0_C_length" thickness="EndCapTracker_L0_C_thick" z ="EndCapTracker_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>
@@ -240,7 +249,7 @@
                     <module_component x1="EndCapTracker_L0_Al1_X1" x2="EndCapTracker_L0_Al1_X2" length="EndCapTracker_L0_Al_length" thickness="EndCapTracker_L0_Al_thick" z ="EndCapTracker_L0_Al_pos" material="AluminumOxide" sensitive="false" vis="violet"/>
                 </module>
             </layer>
-            <layer id="0" inner_r="EndCapTracker_rmin" outer_r="EndCapTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L2_pos" repeat="EndCapTracker_L_modulesInPhi">
+            <layer id="0" inner_r="EndCapInnerTracker_rmin" outer_r="EndCapInnerTracker_rmax" dz="EndCapTracker_L_dz" z="EndCapTracker_L2_pos" repeat="EndCapTracker_L_modulesInPhi">
                 <module name ="TrMod0" radius="EndCapTracker_L0_mod0_r" dz="EndCapTracker_L0_mod0_pos" x1="EndCapTracker_L0_mod_X1" x2="EndCapTracker_L0_mod_X2" length="EndCapTracker_L0_mod_length" thickness="EndCapTracker_L0_mod_thick">
                     <module_component x1="EndCapTracker_L0_Si_X1" x2="EndCapTracker_L0_Si_X2" length="EndCapTracker_L0_Si_length" thickness="EndCapTracker_L0_Si_thick" z ="EndCapTracker_L0_Si_pos" material="Silicon" sensitive="true" vis="red"/>
                     <module_component x1="EndCapTracker_L0_C_X1" x2="EndCapTracker_L0_C_X2" length="EndCapTracker_L0_C_length" thickness="EndCapTracker_L0_C_thick" z ="EndCapTracker_L0_C_pos" material="Carbon" sensitive="false" vis="orange"/>

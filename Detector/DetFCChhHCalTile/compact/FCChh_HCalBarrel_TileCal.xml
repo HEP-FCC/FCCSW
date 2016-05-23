@@ -13,6 +13,11 @@
   </info>
 
   <define>
+    <!-- Note that this is just a guideline to the factory method: It will actually do a HCal of length
+      static_cast<int>(BarHCal_dz / Module_thickness) +
+    -->
+
+    <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax-200*mm"/>
     <!-- NOTE: All lengths (anything but radii) given below are interpreted as half-lenghts! -->
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
