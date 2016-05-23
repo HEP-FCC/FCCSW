@@ -10,7 +10,7 @@
 #define GEOSVC_H
 
 //Interface
-#include "DetDesInterfaces/IGeoSvc.h"
+#include "DetInterface/IGeoSvc.h"
 
 //Gaudi
 #include "GaudiKernel/Service.h"

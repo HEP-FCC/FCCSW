@@ -1,8 +1,8 @@
 ################################################################################
-# Package: DetDesInterfaces
+# Package: DetInterface
 ################################################################################
-gaudi_subdir(DetDesInterfaces v1r0)
+gaudi_subdir(DetInterface v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel)
 
-gaudi_install_headers(DetDesInterfaces)
+gaudi_install_headers(DetInterface)

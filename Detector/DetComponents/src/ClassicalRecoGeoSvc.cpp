@@ -1,12 +1,12 @@
 //
 //  ClassicalRecoGeoSvc.cxx
-//  
+//
 //
 //  Created by Julia Hrdinka on 31/03/15.
 //
 //
 
-#include "DetDesServices/ClassicalRecoGeoSvc.h"
+#include "ClassicalRecoGeoSvc.h"
 
 using namespace Gaudi;
 
@@ -55,7 +55,7 @@ StatusCode ClassicalRecoGeoSvc::buildGeometry() {
 }
 
 StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement detelement){
-    
+
     //multimap of the volumes, ordered by their hierarchy
     std::multimap<int, std::shared_ptr<const Reco::Volume>> volumes;
     std::vector<std::shared_ptr<const Reco::Volume>> previousvol(4,0);
@@ -98,13 +98,13 @@ StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement d
             std::shared_ptr<const Reco::Volume> volume_ptr(itvol->second);
             currentvol.at(itvol->second->getTranslationType()) = itvol->second;
         } //for volumevectors fill
-        
+
         //now group the volumes together in containers
         if (itkeys.first==0) {
             beamtube = currentvol.at(Reco::Volume::barrel);
             previousvol = currentvol;
         }
-        
+
         else if (itkeys.first==1) {
             //falls ich mehr volumes mache, unterscheidung in volume type
             //set Volumes for BoundarySurfaces between the volumes
@@ -172,7 +172,7 @@ StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement d
                 contvol->setTranslationType(Reco::Volume::container);
                 currentvol.at(Reco::Volume::container) = contvol;
             }
-            
+
             //hand worldvolume over to the RecoGeoSvc if hierarchy is not higher
             if (itkeys.first==last_key) {
                 std::cout << "set WorldVolume!!!!" << std::endl;
@@ -195,7 +195,7 @@ StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement d
                 std::shared_ptr<const Reco::ContainerCylinderVolume> world = std::make_shared<const Reco::ContainerCylinderVolume>(containerbin5, transform , 0., Rmax, halfZ);
                 m_worldVolume = world;
             }
-            
+
             previousvol = currentvol;
             //add containervolume in the end
         } //if status==1
@@ -214,7 +214,7 @@ StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement d
             //EndCaps
             previousvol.at(Reco::Volume::nEndCap)->getBoundarySurface(Reco::CylinderVolume::posDisc)->setNextVolume(currentvol.at(Reco::Volume::nEndCap));
             previousvol.at(Reco::Volume::pEndCap)->getBoundarySurface(Reco::CylinderVolume::posDisc)->setNextVolume(currentvol.at(Reco::Volume::pEndCap));
-            
+
             //current volumes
             //barrel
             currentvol.at(Reco::Volume::barrel)->getBoundarySurface(Reco::CylinderVolume::innerCylinder)->setPreviousVolumes(previousvol.at(Reco::Volume::container)->getBoundarySurface(Reco::CylinderVolume::outerCylinder)->getPreviousVolumes());
@@ -332,7 +332,7 @@ StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement d
             contvol2->setTranslationType(Reco::Volume::container);
             currentvol.at(Reco::Volume::container) = contvol2;
             previousvol = currentvol;
-            
+
             //hand worldvolume over to the RecoGeoSvc
             if (itkeys.first==last_key) {
                 std::cout << "set WorldVolume!!!!" << std::endl;
@@ -356,11 +356,11 @@ StatusCode ClassicalRecoGeoSvc::translateDetector(DD4hep::Geometry::DetElement d
                 m_worldVolume = world;
             }
         }
-        
-        
+
+
         //   currentvol.clear();
     } //for keys
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -369,12 +369,12 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
 {
     const DD4hep::Geometry::DetElement::Children& children = det.children();
     for (DD4hep::Geometry::DetElement::Children::const_iterator i=children.begin(); i!=children.end(); ++i) {
-        
+
         DD4hep::Geometry::DetElement detelement = (*i).second;
         Det::IDetExtension* ext = detelement.extension<Det::IDetExtension>();
         Det::DetCylinderVolume* detcylindervolume = dynamic_cast<Det::DetCylinderVolume*>(ext);
         Det::DetDiscVolume* detdiscvolume = dynamic_cast<Det::DetDiscVolume*>(ext);
-        
+
         if (detcylindervolume) {
             //l m_out << "detcylindervolume" << std::endl;
             int status = detcylindervolume->status();
@@ -388,7 +388,7 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
                                                                                         rotation[0], rotation[1], rotation[2], translation[0],
                                                                                         rotation[3], rotation[4], rotation[5], translation[1],
                                                                                         rotation[6], rotation[7], rotation[8], translation[2]));
-                
+
                 if(geoshape && geoshape->IsA() == TGeoConeSeg::Class()){
                     TGeoConeSeg* tube = dynamic_cast<TGeoConeSeg*>(geoshape);
                     if(tube){
@@ -426,7 +426,7 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
                                         if (cylindervolume->NumberOfSurfaces()==4) {
                                             cylindervolume->getBoundarySurface(Reco::CylinderVolume::innerCylinder)->setNextVolume(cylindervolume);
                                         }
-                                        
+
                                         cylindervolume->setTranslationType(Reco::Volume::barrel);
                                         //l m_out << "status" << status << std::endl;
                                         volumes.emplace(status,cylindervolume);
@@ -457,9 +457,9 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
                     }//if tube
                 }//if geoshape
             } //if geonode
-            
+
         } //if detcylindervolume
-        
+
         if (detdiscvolume) {
             //l m_out << "detdiscvolume" << std::endl;
             int status = detdiscvolume->status();
@@ -504,7 +504,7 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
                                         //l m_out << "center: " << cylindervolume->center();
                                         //l m_out << cylindervolume->transform() << std::endl;
                                         //l m_out << "halfZ: " << cylindervolume->getHalfZ() << "Rmin: " << cylindervolume->getRmin() << "Rmax: " << cylindervolume->getRmax() << std::endl;
-                                        
+
                                         cylindervolume->getBoundarySurface(Reco::CylinderVolume::posDisc)->setPreviousVolume(cylindervolume);
                                         cylindervolume->getBoundarySurface(Reco::CylinderVolume::negDisc)->setNextVolume(cylindervolume);
                                         cylindervolume->getBoundarySurface(Reco::CylinderVolume::outerCylinder)->setPreviousVolume(cylindervolume);
@@ -517,7 +517,7 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
                                                 cylindervolume->setTranslationType(Reco::Volume::pEndCap);
                                             }
                                         }
-                                        
+
                                         //l m_out << "status" << status << std::endl;
                                         volumes.emplace(status,cylindervolume);
                                     } //if cylindervolume
@@ -528,9 +528,9 @@ StatusCode ClassicalRecoGeoSvc::translateVolume(DD4hep::Geometry::DetElement det
                     }//if tube
                 }//if geoshape
             } //if geonode
-            
+
         } //if detdiscvolume
-        
+
         //  else volumes.clear();
     }
     return StatusCode::SUCCESS;
@@ -564,14 +564,14 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                     TGeoConeSeg* tube = dynamic_cast<TGeoConeSeg*>(geoshape);
                     if (tube) {
                         double dz = tube->GetDz();
-                        
+
                         int binsPhi     = 0;
                         double minPhi   = 0;
                         double maxPhi   = 0;
                         int binsZ       = 0;
-                        
+
                         std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>> surfaces;
-                        
+
                         //translateModule
                         translateModule(detelement,surfaces,transf);
                         if (!surfaces.empty()) {
@@ -586,7 +586,7 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                              [](const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& a,
                                                 const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& b)
                                              {return (a.second.Z()<b.second.Z());});
-                            
+
                             //put surfaces with same z in a vector
                             std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>> sameZ;
                             std::vector<std::pair<std::shared_ptr<const std::vector<std::shared_ptr<const Reco::Surface>>>,Alg::Point3D>> ordered;
@@ -603,7 +603,7 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                             binsZ = keys_dedupZ.size();
                             //       std::cout << "binsZ: " << binsZ << " keys size: " << keys_dedupZ.size() << std::endl;
                             //m                        std::cout << "keys size(): " << keys_dedupZ.size() << std::endl;
-                            
+
                             //make vector<vector>
                             for (const auto& itkeysZ : keys_dedupZ)
                             {
@@ -613,12 +613,12 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                            [](const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& a,
                                                               const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& b){
                                                                return (a.second.Z()<b.second.Z());});
-                                
+
                                 for (std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>>::iterator sameZit=boundsZ.first; sameZit!=(boundsZ.second); ++sameZit)
                                 {
                                     sameZ.push_back(*sameZit);
                                 }
-                                
+
                                 //now sort in Phi
                                 std::stable_sort(sameZ.begin(),sameZ.end(),
                                                  [](const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& a,
@@ -636,7 +636,7 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                  {return (a.second.Phi()==b.second.Phi());}
                                                  );
                                 //m                          std::cout << "keys size(): " << keys_dedupP.size() << std::endl;
-                                
+
                                 for (const auto& itkeysP : keys_dedupP) {
                                     std::pair<std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>>::iterator,
                                     std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>>::iterator> boundsP;
@@ -644,36 +644,36 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                                [](const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& a,
                                                                   const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D>& b){
                                                                    return (a.second.Phi()<b.second.Phi());});
-                                    
+
                                     for (std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>>::iterator samePit=boundsP.first; samePit!=(boundsP.second); ++samePit)
                                     {
                                         same.push_back(samePit->first);
                                     }
-                                    
+
                                     ordered.push_back(std::make_pair(std::make_shared<std::vector<std::shared_ptr<const Reco::Surface>>>(same),itkeysP.second));
                                     same.clear();
                                 }
-                                
+
                                 sameZ.clear();
                             }
-                            
+
                             minPhi = keys_dedupP.front().second.Phi();
                             maxPhi = keys_dedupP.back().second.Phi();
                             binsPhi= keys_dedupP.size();
-                            
+
                             //create BinUtlity for Layer
           //                  minPhi = detcylinderlayer->min();
           //                  maxPhi = detcylinderlayer->max();
-                            
+
                             double step = (maxPhi-minPhi)/binsPhi;
                             double minPhiCorrected = minPhi-0.5*step;
                             double maxPhiCorrected = maxPhi+0.5*step;
-                            
+
                             if (minPhiCorrected < -M_PI) {
                                 minPhiCorrected += step;
                                 maxPhiCorrected += step;
                             }
-                            
+
                             Trk::BinUtility* currentBinUtility = new Trk::BinUtility(binsPhi,minPhiCorrected,maxPhiCorrected,Trk::closed,Trk::binPhi);
                             (*currentBinUtility) += Trk::BinUtility(binsZ,-dz,dz,Trk::open,Trk::binZ);
                             //now create BinnedArray with BinUtility for a CylinderLayer with the Surfaces, for the Layer
@@ -688,15 +688,15 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                 layers.push_back(layer);
                             } //if cyllayer
                         } //if surfaces filled
-                        
+
                     } //if tube
-                    
+
                 } //if shape
                 //           transform = 0;
             } //if node
             //           ++m_counter;
         } //if detcyinderlayer
-        
+
 //        Det::DetDiscLayer* detdisclayer = dynamic_cast<Det::DetDiscLayer*>(ext);
         //DiscLayer
         if (detelement.isValid() && ext->type()==Det::ExtensionType::DiscLayer) {
@@ -719,7 +719,7 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                         double minPhi   = 0;//detdisclayer->min();
                         double maxPhi   = 0;//detdisclayer->max();
                         int binsPhi     = 0;//detdisclayer->modulesPhi();
-                        
+
                         std::vector<std::pair<std::shared_ptr<const Reco::Surface>, Alg::Point3D>> surfaces;
                         //translateModule
                         //                m_file << "transf layer before: " << *transf << std::endl;
@@ -750,7 +750,7 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                 const std::pair<std::shared_ptr<const Reco::Surface>,float>& b)
                                              {return (a.second==b.second);}
                                              );
-                            
+
                             //////getting rValues/////
                             std::vector<std::pair<float,float>> RValues;
                             for (std::vector<std::pair<std::shared_ptr<const Reco::Surface>, float>>::iterator it = keys_dedupR.begin(); it!=keys_dedupR.end(); it++) {
@@ -758,8 +758,8 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                 RValues.push_back(std::make_pair((it->second)-(trapezoidsurf->getHalfY()),(it->second)+(trapezoidsurf->getHalfY())));
                             };
                             std::vector<float> newRValues = orderRValues(RValues);
-                            
-                            
+
+
                             //make vector<vector>
                             for (const auto& itkeysR : keys_dedupR)
                             {
@@ -769,24 +769,24 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                            [](const std::pair<std::shared_ptr<const Reco::Surface>,float>& a,
                                                               const std::pair<std::shared_ptr<const Reco::Surface>,float>& b){
                                                                return (a.second<b.second);});
-                                
+
                                 for (std::vector<std::pair<std::shared_ptr<const Reco::Surface>, float>>::iterator sameRit=boundsR.first; sameRit!=(boundsR.second); ++sameRit)
                                 {
                                     sameR.push_back(std::make_pair(sameRit->first,sameRit->first->center()));
                                 }
-                                
+
                                 std::vector<std::pair<std::shared_ptr<const Reco::Surface>, float>> newsameR;
                                 for(auto& it : sameR) newsameR.push_back(std::make_pair(it.first,it.second.Phi()));
-                                
+
                                 //now sort in Phi
                                 std::stable_sort(newsameR.begin(),newsameR.end(),
                                                  [](const std::pair<std::shared_ptr<const Reco::Surface>,float>& a,
                                                     const std::pair<std::shared_ptr<const Reco::Surface>,float>& b)
                                                  {return (a.second<b.second);});
-                                
+
                                 //put surfaces with same phi in vector
                                 std::vector<std::shared_ptr<const Reco::Surface>> same;
-                                
+
                                 keys_dedupP.clear();
                                 std::unique_copy(begin(newsameR),
                                                  end(newsameR),
@@ -795,8 +795,8 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                     const std::pair<std::shared_ptr<const Reco::Surface>,float>& b)
                                                  {return (a.second==b.second);}
                                                  );
-                                
-                                
+
+
                                 for (const auto& itkeysP : keys_dedupP) {
                                     std::pair<std::vector<std::pair<std::shared_ptr<const Reco::Surface>, float>>::iterator,
                                     std::vector<std::pair<std::shared_ptr<const Reco::Surface>, float>>::iterator> boundsP;
@@ -804,25 +804,25 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                                                [](const std::pair<std::shared_ptr<const Reco::Surface>,float>& a,
                                                                   const std::pair<std::shared_ptr<const Reco::Surface>,float>& b){
                                                                    return (a.second<b.second);});
-                                    
+
                                     for (std::vector<std::pair<std::shared_ptr<const Reco::Surface>, float>>::iterator samePit=boundsP.first; samePit!=(boundsP.second); ++samePit)
                                     {
                                         same.push_back(samePit->first);
                                     }
-                                    
+
                                     ordered.push_back(std::make_pair(std::make_shared<std::vector<std::shared_ptr<const Reco::Surface>>>(same),itkeysP.first->center()));
                                     same.clear();
                                 }
-                                
+
                                 sameR.clear();
                             }
-                            
+
                             minPhi = keys_dedupP.front().second;
                             maxPhi = keys_dedupP.back().second;
                             binsPhi= keys_dedupP.size();
-                            
+
                             //             for(auto& it : newrValues) std::cout << "r: " << it << std::endl;
-                            
+
                             double step     = (maxPhi-minPhi)/binsPhi;
                             double minPhiCorrected = minPhi-0.5*step;
                             double maxPhiCorrected = maxPhi+0.5*step;
@@ -830,7 +830,7 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                                 minPhiCorrected += step;
                                 maxPhiCorrected += step;
                             }
-                            
+
                             //now create BinnedArray with BinUtility for a Cylinder and Surfaces, for the Layer
                             Trk::BinUtility* currentBinUtility = new Trk::BinUtility(newRValues,Trk::open,Trk::binR);
                             (*currentBinUtility) += Trk::BinUtility(binsPhi,minPhiCorrected,maxPhiCorrected,Trk::closed,Trk::binPhi);
@@ -845,13 +845,13 @@ StatusCode ClassicalRecoGeoSvc::translateLayer(DD4hep::Geometry::DetElement det,
                             }//if disclayer
                         }
                     } //if disc
-                    
+
                 } //if shape
                 //           transform = 0;
             } //if node
             //           ++m_counter;
         } //if detdisclayer
-        
+
            }//for children
     return StatusCode::SUCCESS;
 }
@@ -886,9 +886,9 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                                                                rotation[0], rotation[1], rotation[2], translation[0],
                                                                                rotation[3], rotation[4], rotation[5], translation[1],
                                                                                rotation[6], rotation[7], rotation[8], translation[2]));
-                
+
                 *transf = (*transform)*(*transf);
-                
+
                 if(shape && shape->IsA() == TGeoBBox::Class())
                 {
                     TGeoBBox* box = dynamic_cast<TGeoBBox*>(shape);
@@ -906,18 +906,18 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                         double newy = 0.;
                         //segmentation
                         std::shared_ptr<const DD4hep::Geometry::Segmentation> seg;
-                        
+
                         for (size_t m=0; m<binsX; m++)
                         {
                             newx = binutility->bincenter(m,0);
-                            
+
                             for (size_t n=0; n<binsY; n++)
                             {
                                 //capacity of all module components
                                 double capacity = 0;
                                 //senitive percentage
                                 double sensper = 0;
-                                
+
                                 newy = binutility->bincenter(n,1);
                                 double z            = 1.;
                                 double master[3]    ={newx, newy, z};
@@ -931,7 +931,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                 double sumdens      = 0;
                                 double t            = 0.;
                                 int comp_num        = 0;
-                                
+
                                 const  DD4hep::Geometry::DetElement::Children& children = detelement.children();
                                 for (DD4hep::Geometry::DetElement::Children::const_iterator j=children.begin(); j != children.end(); ++j)
                                 {
@@ -948,12 +948,12 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                             seg = std::make_shared<const DD4hep::Geometry::Segmentation>(sens->segmentation());
                                         }
                                     }
-                                    
+
                                     TGeoNode* childnode = (*j).second.placement().ptr();
                                     if (childnode) {
                                         childnode->MasterToLocal(master,local);
                                         TGeoShape* childshape = childnode->GetVolume()->GetShape();
-                                        
+
                                         if (childshape && childshape->IsA()==TGeoBBox::Class()) {
                                             TGeoBBox* childbox = dynamic_cast<TGeoBBox*>(childshape);
                                             if ((fabs(local[0])<=(childbox->GetDX())) && (fabs(local[1])<=(childbox->GetDY()))) {
@@ -968,7 +968,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                             //    std::cout << "A: " << mat.A() << " Z: " << mat.Z() << " lambda: " << mat.intLength() << " RL: " << mat.radLength() << std::endl;
                                             }
                                         }
-                                        
+
                                         if (childshape && childshape->IsA()==TGeoTrd2::Class()) {
                                             TGeoTrd2* childtrapezoid = dynamic_cast<TGeoTrd2*>(childshape);
                                             if (isInsideTrapezoid(local,childtrapezoid->GetDx1(),childtrapezoid->GetDx2(),childtrapezoid->GetDz())) {
@@ -982,14 +982,14 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                                 sumdens   += mat.density();
                                             }
                                         }
-                                        
-                                        
+
+
                                     }
-                                    
+
                                     if (m==0 && n==0) //l m_out << " component" << comp_num << " t: " << t << "sumt: " << sumt << std::endl;
                                         ++comp_num;
                                 } //for components
-                                
+
                                 sensper = sensper/capacity;
                                 density = density/sumt;
                                 A       = A/sumdens;
@@ -1000,7 +1000,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                         } //for binsX
                         //create MaterialMap
                         Reco::MaterialMap2D* materialmap = new Reco::MaterialMap2D(map, binutility);
-                        
+
                         if (seg) {
                             std::shared_ptr<const Reco::SensitivePlaneSurface> plane = std::make_shared<const Reco::SensitivePlaneSurface>(box,materialmap,transf, volumeID, seg);
                             if(plane) {
@@ -1013,7 +1013,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                             }
 
                         }
-                    
+
                         else {
                             std::shared_ptr<const Reco::PlaneSurface> plane = std::make_shared<const Reco::PlaneSurface>(box,materialmap,transf);
                             if (plane) {
@@ -1022,12 +1022,12 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                 surfaces.push_back(surface);
                             }
                         }
-                        
-                        
+
+
                     } //if box
-                    
+
                 } //ifshape && isA Box
-                
+
                 if(shape && shape->IsA() == TGeoTrd2::Class())
                 {
    //                 m_file << "transf: " << *transf << std::endl;
@@ -1059,7 +1059,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                         double newy = 0.;
                         //segmentation
                         std::shared_ptr<const DD4hep::Geometry::Segmentation> seg;
-                        
+
                         for (size_t m=0; m<binsY; m++)
                         {
                             newy = binutility->bincenter(m,0);
@@ -1098,11 +1098,11 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                             seg = std::make_shared<const DD4hep::Geometry::Segmentation>(sens->segmentation());
                                         }
                                     }
-                                    
+
                                     TGeoNode* childnode = (*j).second.placement().ptr();
                                     if (childnode) {
                                         childnode->MasterToLocal(master,local);
-                                        
+
                                         TGeoShape* childshape = childnode->GetVolume()->GetShape();
                                         if (childshape && childshape->IsA()==TGeoTrd2::Class()) {
                                             TGeoTrd2* childtrapezoid = dynamic_cast<TGeoTrd2*>(childshape);
@@ -1117,7 +1117,7 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                                 sumdens   += mat.density();
                                             }
                                         }
-                                        
+
                                         if (childshape && childshape->IsA()==TGeoBBox::Class()) {
                                             TGeoBBox* childbox = dynamic_cast<TGeoBBox*>(childshape);
                                             if ((fabs(local[0])<=(childbox->GetDX())) && (fabs(local[1])<=(childbox->GetDY()))) {
@@ -1131,11 +1131,11 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                                 sumdens   += mat.density();
                                             }
                                         }
-                                        
+
                                     }
                                     ++comp_num;
                                 } //for components
-                                
+
                                 sensper = sensper/capacity;
                                 density = density/sumt;
                                 A       = A/sumdens;
@@ -1143,12 +1143,12 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                 if (t_x0<0.) std::cout << "Negativ!!" << std::endl;
                                 //fill map with material for each bin
                                 map->emplace(std::make_pair(m,n), new Reco::Material(A, Z, density, t_x0, t_lambda0,sensper));
-                                
+
                             } // for binsY
                         } //for binsX
                         //create MaterialMap
                         Reco::MaterialMap1D1D* materialmap = new Reco::MaterialMap1D1D(map, binutility, binXvector);
-                        
+
                         if (seg) {
                             std::shared_ptr<const Reco::SensitiveTrapezoidSurface> trapez = std::make_shared<const Reco::SensitiveTrapezoidSurface>(trapezoid,materialmap,transf, volumeID, seg);
                             if(trapez) {
@@ -1159,9 +1159,9 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
                                 m_file << "CellID center: " << trapez->cellID(Alg::Point2D(0.,0.)) << std::endl;
                                 m_file << "CellID 2     : " << trapez->cellID(Alg::Point2D(0.,1.)) << std::endl;
                             }
-                            
+
                         }
-                        
+
                         else {
                             std::shared_ptr<const Reco::TrapezoidSurface> trapez = std::make_shared<const Reco::TrapezoidSurface>(trapezoid,materialmap,transf);
                             if (trapez) {
@@ -1173,16 +1173,16 @@ StatusCode ClassicalRecoGeoSvc::translateModule(DD4hep::Geometry::DetElement det
 
                     } //if trapezoid
                 } //ifshape && isA Trapezoid
-                
+
             } //ifnode
-            
+
             //Histograms
-            
-            
+
+
         } //if detector module
-        
+
     } //for layer children
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -1197,7 +1197,7 @@ StatusCode ClassicalRecoGeoSvc::binCylinderLayers(LayerVector& layers, LayerVect
         if (current) {
             double currentRmin = current->getRmin();
             double currentRmax = current->getRmax();
-            
+
             if (currentRmin==0. && currentRmax==Rmax) {
                 bValues.push_back(currentRmin);
                 bValues.push_back(currentRmax);
@@ -1239,7 +1239,7 @@ StatusCode ClassicalRecoGeoSvc::binCylinderLayers(LayerVector& layers, LayerVect
                 std::shared_ptr<const Reco::NavigationLayer> navilayer1(new const Reco::NavigationLayer);
                 Alg::Point3D navicenter1(0.5*(currentRmin),0.,0.);
                 std::pair<std::shared_ptr<const Reco::Layer>, Alg::Point3D> navilayer1_pair (navilayer1,navicenter1);
-                
+
                 std::shared_ptr<const Reco::NavigationLayer> navilayer2(new const Reco::NavigationLayer);
                 Alg::Point3D navicenter2(0.5*(Rmax+currentRmax),0.,0.);
                 std::pair<std::shared_ptr<const Reco::Layer>, Alg::Point3D> navilayer2_pair (navilayer2,navicenter2);
@@ -1250,7 +1250,7 @@ StatusCode ClassicalRecoGeoSvc::binCylinderLayers(LayerVector& layers, LayerVect
                 fulllayers.push_back(currentpair);
                 fulllayers.push_back(navilayer2_pair);
             }
-            
+
         }
     }
     else {
@@ -1269,7 +1269,7 @@ StatusCode ClassicalRecoGeoSvc::binCylinderLayers(LayerVector& layers, LayerVect
                 double currentRmax  = current->getRmax();
                 double nextRmin     = next->getRmin();
                 double nextRmax     = next->getRmax();
-                
+
                 //begin
                 if (i==0 && currentRmin>0.) {
                     bValues.push_back(0.);
@@ -1330,7 +1330,7 @@ StatusCode ClassicalRecoGeoSvc::binCylinderLayers(LayerVector& layers, LayerVect
                         fulllayers.push_back(nextpair);
                     }
                 }
-                
+
             }
         }
     }
@@ -1499,11 +1499,11 @@ StatusCode ClassicalRecoGeoSvc::binDiscLayers(LayerVector& layers, LayerVector& 
                         fulllayers.push_back(nextpair);
                     }
                 }
-                
+
             }
         }
     }
-    
+
     return StatusCode::SUCCESS;
 }
 
@@ -1523,7 +1523,7 @@ bool ClassicalRecoGeoSvc::isInsideTrapezoid(double locpos[3], double trapX1, dou
     if (fabs(locpos[1])>trapY) return false;
     if (fabs(locpos[0])<xmin) return true;
     if (trapX1==trapX2) return true;
-    
+
     double k = (2.*trapY)/(trapX2-trapX1);
     double d = k*(trapX2+trapX1)*0.5;
     double x = (locpos[1]-d)/k;
@@ -1552,7 +1552,7 @@ std::vector<float> ClassicalRecoGeoSvc::orderRValues(std::vector<std::pair<float
         }
         if (it==(old.end()-2)) newrValues.push_back(next.second);
     }
-    
+
     return(newrValues);
 }
 
@@ -1580,7 +1580,7 @@ bool ClassicalRecoGeoSvc::sortZvolumes(const std::pair<std::shared_ptr<const Rec
 
 bool ClassicalRecoGeoSvc::compareSurfacePhiZ(const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D> a, const std::pair<std::shared_ptr<const Reco::Surface>,Alg::Point3D> b)
 {
-    
+
     if (a.second.Phi()==b.second.Phi()) return (a.second.Z()<b.second.Z());
     else if (a.second.Z()==b.second.Z()) return (a.second.Phi()<b.second.Phi());
     else return (a.second.Z()<b.second.Z() && a.second.Phi()<b.second.Phi());

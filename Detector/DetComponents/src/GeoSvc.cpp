@@ -6,7 +6,7 @@
 //
 //
 
-#include "DetDesServices/GeoSvc.h"
+#include "GeoSvc.h"
 #include "GaudiKernel/Service.h"
 #include "GeoConstruction.h"
 

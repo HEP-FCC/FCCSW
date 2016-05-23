@@ -22,7 +22,20 @@
         <constant name="world_size" value="80*m"/>
         <constant name="world_x" value="world_size"/>
         <constant name="world_y" value="world_size"/>
-        <constant name="world_z" value="world_size"/>  
+        <constant name="world_z" value="world_size"/>
+
+        <!-- BEAM PIPE -->
+        <constant name="CentralBeamTubeZ" value="800.0*cm"/>
+        <constant name="CentralBeamTubeRmax" value="2.1*cm"/>
+        <constant name="CentralBeamTubeRmin" value="2.*cm"/>
+
+        <constant name="ForwardBeamTubeRmin1" value="2.*cm"/>
+        <constant name="ForwardBeamTubeRmax1" value="2.1*cm"/>
+        <constant name="ForwardBeamTubeRmin2" value="7.8*cm"/>
+        <constant name="ForwardBeamTubeRmax2" value="7.9*cm"/>
+        <constant name="ForwardBeamTubeZ" value="15600*cm"/>
+        <constant name="ForwardBeamTubeZoffset" value="800*cm"/>
     </define>
 
+    <include ref="./FCChh_BeamTube.xml" />
 </lccdd>

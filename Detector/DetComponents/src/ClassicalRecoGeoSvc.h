@@ -10,8 +10,8 @@
 #define CLASSICALRECOGEOSVC_H
 
 //Interfaces
-#include "DetDesInterfaces/IRecoGeoSvc.h"
-#include "DetDesInterfaces/IGeoSvc.h"
+#include "DetInterface/IRecoGeoSvc.h"
+#include "DetInterface/IGeoSvc.h"
 //Gaudi
 #include "GaudiKernel/Service.h"
 #include "GaudiKernel/MsgStream.h"
