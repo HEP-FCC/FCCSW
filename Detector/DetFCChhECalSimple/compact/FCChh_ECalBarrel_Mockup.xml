@@ -16,9 +16,9 @@
     <constant name="BarECalOuterSpacer" value="100*mm"/>
     <constant name="BarECalCryoThickness" value="100*mm"/>
     <!-- calorimeter volume -->
-    <constant name="BarCryoECal_rmin" value="BarECal_rmin+BarECalOuterSpacer">
-    <constant name="BarCryoECal_rmax" value="BarECal_rmax-BarECalOuterSpacer">
-    <constant name="BarCryoECal_dz" value="BarECal_dz">
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin+BarECalOuterSpacer"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax-BarECalOuterSpacer"/>
+    <constant name="BarCryoECal_dz" value="BarECal_dz"/>
 
     <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+BarECalCryoThickness"/>
     <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-BarECalCryoThickness"/>
