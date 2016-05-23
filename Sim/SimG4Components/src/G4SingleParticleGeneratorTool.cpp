@@ -1,6 +1,12 @@
 // local
 #include "G4SingleParticleGeneratorTool.h"
 
+// FCCSW
+#include "SimG4Common/Units.h"
+
+// Gaudi
+#include "GaudiKernel/PhysicalConstants.h"
+
 // CLHEP
 #include <CLHEP/Random/RandFlat.h>
 
@@ -9,6 +15,10 @@
 #include "G4SystemOfUnits.hh"
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
+
+// datamodel
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertexCollection.h"
 
 // Declaration of the Tool
 DECLARE_COMPONENT(G4SingleParticleGeneratorTool)
@@ -28,6 +38,9 @@ G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool(const std::string& 
   declareProperty("vertexX", m_vertexX = 0);
   declareProperty("vertexY", m_vertexY = 0);
   declareProperty("vertexZ", m_vertexZ = 0);
+  declareProperty("saveEdm", m_saveEdm = false);
+  declareOutput("genParticles", m_genParticlesHandle, "GenParticles");
+  declareOutput("genVertices", m_genVerticesHandle, "GenVertices");
 }
 
 G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool() {}
@@ -69,6 +82,35 @@ G4Event* G4SingleParticleGeneratorTool::g4Event() {
 
   vertex->SetPrimary(part);
   theEvent->AddPrimaryVertex(vertex);
-
+  if (m_saveEdm) {
+    saveToEdm(vertex, part);
+  }
   return theEvent;
+}
+
+
+StatusCode G4SingleParticleGeneratorTool::saveToEdm(const G4PrimaryVertex* aVertex,
+                                                    const G4PrimaryParticle* aParticle) {
+  fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
+  fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
+  auto vertex = vertices->create();
+  auto& position = vertex.Position();
+  position.X = aVertex->GetX0()*sim::g42edm::length;
+  position.Y = aVertex->GetY0()*sim::g42edm::length;
+  position.Z = aVertex->GetZ0()*sim::g42edm::length;
+  vertex.Ctau(aVertex->GetT0()*Gaudi::Units::c_light*sim::g42edm::length);
+
+  fcc::MCParticle particle = particles->create();
+  fcc::BareParticle& core = particle.Core();
+  core.Type = aParticle->GetPDGcode();
+  core.Status = 1;
+  core.P4.Px = aParticle->GetPx()*sim::g42edm::energy;
+  core.P4.Py = aParticle->GetPy()*sim::g42edm::energy;
+  core.P4.Pz = aParticle->GetPz()*sim::g42edm::energy;
+  core.P4.Mass = aParticle->GetMass()*sim::g42edm::energy;
+  particle.StartVertex(vertex);
+
+  m_genParticlesHandle.put(particles);
+  m_genVerticesHandle.put(vertices);
+  return StatusCode::SUCCESS;
 }

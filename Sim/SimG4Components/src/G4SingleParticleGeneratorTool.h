@@ -6,9 +6,18 @@
 
 // FCCSW
 #include "SimG4Interface/IG4EventProviderTool.h"
+#include "FWCore/DataHandle.h"
 
 // Forward declarations
+// Geant4
 class G4Event;
+class G4PrimaryVertex;
+class G4PrimaryParticle;
+//datamodel
+namespace fcc {
+class MCParticleCollection;
+class GenVertexCollection;
+}
 
 /** @class G4SingleParticleGeneratorTool G4SingleParticleGeneratorTool.h "G4SingleParticleGeneratorTool.h"
 *
@@ -33,6 +42,8 @@ public:
   virtual G4Event* g4Event() final;
 
 private:
+  /// Saves primary vertex and particle to FCC EDM (called if property saveEDM is set to true)
+  StatusCode saveToEdm(const G4PrimaryVertex*, const G4PrimaryParticle*);
   double m_energyMin;          ///< Minimum energy of the particles generated, set with energyMin
   double m_energyMax;          ///< Maximum energy of the particles generated, set with energyMax
   double m_etaMin;             ///< Minimum eta of the particles generated, set with etaMin
@@ -43,6 +54,11 @@ private:
   double m_vertexY;            ///< y position of the vertex associated with the particles generated, set with vertexY
   double m_vertexZ;            ///< z position of the vertex associated with the particles generated, set with vertexZ
   std::string m_particleName;  ///< Name of the generated particle, set with particleName
+  bool m_saveEdm;              ///< Flag whether to save primary particle to EDM, set with saveEdm
+  /// Handle for the genparticles to be written
+  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle;
+  /// Handle for the genvertices to be written
+  DataHandle<fcc::GenVertexCollection> m_genVerticesHandle;
 };
 
 #endif
