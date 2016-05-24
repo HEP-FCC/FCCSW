@@ -359,7 +359,7 @@ export LIBGL_ALWAYS_INDIRECT=1
 
 FCCSW folder structure
 --
-The detector description can be found in the Detector package. Alongside the descriptions the FCCSW components that provide the geometry to the remaining packages can be found in:
+The detector descriptions can be found in the Detector package. Alongside the descriptions the FCCSW components that provide the geometry to the remaining packages can be found in:
 - DetInterface (virtual interface classes)
 - DetComponents (actual implementations of the services / tools)
 
