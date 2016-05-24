@@ -12,7 +12,9 @@ DD4hep Detector Description
   * [User-defined Sensitive Detectors](#user-defined-sensitive-detectors)
 * [Coordinate Conventions](#coordinate-conventions)
 * [Visualisation](#visualisation)
-* [FCCSW Folder Structure](#fccsw-folder-structure) (to be added)
+* [FCCSW Folder Structure](#fccsw-folder-structure)
+  * [The master XMLs](#the-master-xmls)
+  * [Sub-detector descriptions](#sub-detector-descriptions) (please read if you plan to contribute)
 
 Ingredients Describing a Detector
 --
@@ -357,4 +359,29 @@ export LIBGL_ALWAYS_INDIRECT=1
 
 FCCSW folder structure
 --
-Currently all xml-descriptions are in `DetectorDescription/Detectors/compact` and all implementations in `DetectorDescription/Detectors/src`. This will likely change in the near future.
+The detector description can be found in the Detector package. Alongside the descriptions the FCCSW components that provide the geometry to the remaining packages can be found in:
+- DetInterface (virtual interface classes)
+- DetComponents (actual implementations of the services / tools)
+
+Extensions of the DD4hep description are found in
+- DetExtensions (for reconstruction)
+- DetSensitive (custom sensitive volumes)
+
+### The master XMLs
+The descriptions are placed in sub-folders of the Detector package. We plan to have the possibility of having several baseline detectors for the different accelerators. For each such baseline we will have a sub-directory `DetFCCee(eh,hh)BaselineX` where X will be an increasing index and the ee, eh and hh are selected to describe the accelerator the baseline is meant for. In the baseline we expect to have a `compact` directory with:
+- A dimensions xml that defines the sub-detector envelopes, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectDimensions.xml)
+- A master xml that includes the baseline sub-detectors, e.g. [here](../DetFCChhhhBaseline1/compact/FCChh_DectMaster.xml)
+- A master xml that does only include the dimensions, e.g. [here](../DetFCChhhhBaseline1/compact/FCChh_DectEmptyMaster.xml)
+
+The latter allows to have the possibility to use the `GeoSvc` with a sub-set of sub-detectors using the official dimensions (e.g. [here](../../Sim/SimG4Components/tests/options/geant_fullsim_hcal.py))
+
+### Sub-detector descriptions
+Sub-detector directories follow the naming convention `DetFCC + Flavour + SubDetectorName + DetectorCharacteristic`, where `Flavour = ee, eh, hh`, `SubDetectorName = ECal, HCal, Tracker, Muon` and finally the `DetectorCharacteristic` specifies the concrete description (e.g. Parametric (for a description to be used with FastSim) or Tile (for an ATLAS-like TileCal)).
+
+Sub-detector directories should in most cases have both `compact` and `src` directories. The description in compact **should not** have a world volume defined in order to be able to include it in a master xml. If a description for standalone tests (with dimensions deviating from the baseline dimensions) is needed, it may be placed alongside the detector description with a postfix `Standalone` (and this one should define the world volume). However, please note that for standalone tests that use the baseline dimensions something like this should rather be put in the corresponding options file:
+~~~{.py}
+geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
+                                         'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml' ]
+~~~
+
+To facilitate this mix-and-match functionality, the sub-detectors should use the variables that describe the envelope volume which are defined in the master dimensions. For all sub-detectors variables `rmin`, `rmax` and `dz` are defined with the naming convention `DetectorPart + SubDetector + '_' + variable` where `DetectorPart` can be `Bar`, `EndCap` or `Fwd`, `SubDetector` can be `Tracker`, `ECal`, `HCal` or `Muon` and variable can be `rmin`, `rmax`, `dz` or `zOffset` (only for forward and end-cap detectors). Examples: `BarHCal_rmin` or `FwdHCal_zOffset`.
