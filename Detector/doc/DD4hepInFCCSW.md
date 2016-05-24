@@ -15,6 +15,7 @@ DD4hep Detector Description
 * [FCCSW Folder Structure](#fccsw-folder-structure)
   * [The master XMLs](#the-master-xmls)
   * [Sub-detector descriptions](#sub-detector-descriptions) (please read if you plan to contribute)
+  * [Common descriptions](#common-descriptions)
 
 Ingredients Describing a Detector
 --
@@ -385,3 +386,6 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 ~~~
 
 To facilitate this mix-and-match functionality, the sub-detectors should use the variables that describe the envelope volume which are defined in the master dimensions. For all sub-detectors variables `rmin`, `rmax` and `dz` are defined with the naming convention `DetectorPart + SubDetector + '_' + variable` where `DetectorPart` can be `Bar`, `EndCap` or `Fwd`, `SubDetector` can be `Tracker`, `ECal`, `HCal` or `Muon` and variable can be `rmin`, `rmax`, `dz` or `zOffset` (only for forward and end-cap detectors). Examples: `BarHCal_rmin` or `FwdHCal_zOffset`.
+
+### Common descriptions
+The final sub-directory `DetCommon` includes descriptions and macros that should be independently usable by all baselines / sub-detectors. This includes primitive shapes (cones, cylinders, boxes, etc.), material & element descriptions. Additionally place-holders can be found that place air-filled cylinders using the dimensions defined in a master-dimension file. These are meant for debugging the dimensions file.
