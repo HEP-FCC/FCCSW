@@ -9,7 +9,10 @@
     url="no"
     status="development"
     version="$Id:??$">
-    <comment>Dimensions for FCChhBaseline1</comment>
+    <comment>
+        Dimensions for FCChhBaseline1: Design with Twin Solenoid, 6 T, 12 m bore, 10 Tm dipole
+        Source: FCC hadron detector meeting 11 May 2016: http://cern.ch/go/Xz8X
+    </comment>
   </info>
 
 
@@ -61,7 +64,7 @@
     <!-- Tracker End-caps -->
     <!-- not explicitly defined, up to tracker design -->
     <!-- Tracker Forward -->
-    <constant name="FwdTracker_rmin" value="21*mm"/>
+    <constant name="FwdTracker_rmin" value="40*mm"/>
     <constant name="FwdTracker_rmax" value="3500*mm"/>
     <constant name="FwdTracker_dz" value="1500*mm"/>
     <constant name="FwdTracker_zOffset" value="21*m+FwdTracker_dz"/>
@@ -78,7 +81,7 @@
     <!-- ECal endcap has outer radius as barrel outer radius and is behind the barrel -->
     <constant name="EndCapECal_zOffset" value="BarECal_dz + EndCapECal_dz"/>
     <!-- ECal forward -->
-    <constant name="FwdECal_rmin" value="30*mm"/>
+    <constant name="FwdECal_rmin" value="40*mm"/>
     <constant name="FwdECal_rmax" value="4000*mm"/>
     <constant name="FwdECal_dz" value="550*mm"/>
     <constant name="FwdECal_zOffset" value="24*m+FwdECal_dz"/>
@@ -96,7 +99,7 @@
     <!-- ECal endcap has outer radius as barrel inner radius and is inside the barrel -->
     <constant name="EndCapHCal_zOffset" value="BarHCal_dz-EndCapHCal_dz"/>
     <!-- HCal forward -->
-    <constant name="FwdHCal_rmin" value="30*mm"/>
+    <constant name="FwdHCal_rmin" value="40*mm"/>
     <constant name="FwdHCal_rmax" value="4500*mm"/>
     <constant name="FwdHCal_dz" value="1200*mm"/>
     <constant name="FwdHCal_zOffset" value="25.1*m + FwdHCal_dz"/>
@@ -110,9 +113,10 @@
     <constant name="EndCapMuon_rmin" value="4500*mm"/>
     <constant name="EndCapMuon_rmax" value="13000*mm"/>
     <constant name="EndCapMuon_dz" value="1650*mm"/>
+    <!-- Muon endcap has outer radius as barrel outer radius and is behind the barrel -->
     <constant name="EndCapMuon_zOffset" value="BarMuon_dz + EndCapMuon_dz"/>
     <!-- Muon system forward -->
-    <constant name="FwdMuon_rmin" value="30*mm"/>
+    <constant name="FwdMuon_rmin" value="40*mm"/>
     <constant name="FwdMuon_rmax" value="5500*mm"/>
     <constant name="FwdMuon_dz" value="2000*mm"/>
     <constant name="FwdMuon_zOffset" value="27.5*m + FwdMuon_dz"/>
