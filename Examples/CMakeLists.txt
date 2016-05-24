@@ -37,6 +37,12 @@ gaudi_add_test(DummyCheck
 gaudi_add_test(GeantFullSimTrackerHits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim.py)
+gaudi_add_test(GeantFullSimTrackerHitsWithField
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_field.py)
+gaudi_add_test(GeantFullSimWithGeantino
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_pgun_geantino.py)
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_pgun_fullsim.py)
