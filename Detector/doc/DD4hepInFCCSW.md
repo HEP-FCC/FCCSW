@@ -359,24 +359,24 @@ export LIBGL_ALWAYS_INDIRECT=1
 
 FCCSW folder structure
 --
-The detector descriptions can be found in the Detector package. Alongside the descriptions the FCCSW components that provide the geometry to the remaining packages can be found in:
+The detector descriptions and geometry services / tools can be found in the `Detector` package. The FCCSW components that provide the geometry to the remaining packages can be found in:
 - DetInterface (virtual interface classes)
 - DetComponents (actual implementations of the services / tools)
 
-Extensions of the DD4hep description are found in
+Extensions of the DD4hep description are found in:
 - DetExtensions (for reconstruction)
 - DetSensitive (custom sensitive volumes)
 
 ### The master XMLs
-The descriptions are placed in sub-folders of the Detector package. We plan to have the possibility of having several baseline detectors for the different accelerators. For each such baseline we will have a sub-directory `DetFCCee(eh,hh)BaselineX` where X will be an increasing index and the `ee`, `eh` and `hh` are selected to describe the accelerator the baseline is meant for. In the baseline we expect to have a `compact` directory with:
-- A dimensions xml that defines the sub-detector envelopes, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectDimensions.xml)
-- A master xml that includes the baseline sub-detectors, e.g. [here](../DetFCChhhhBaseline1/compact/FCChh_DectMaster.xml)
-- A master xml that does only include the dimensions, e.g. [here](../DetFCChhhhBaseline1/compact/FCChh_DectEmptyMaster.xml)
+The descriptions are placed in sub-folders of the Detector package. We plan to have the possibility of having several baseline detectors for the different accelerators. For each such baseline we will have a sub-directory `"DetFCC" + Flavour + "Baseline" + X` where X will be an increasing index and `Flavour = ee, eh, hh`, selected to describe the accelerator the baseline is meant for (for example `DetFCChhBaseline1`). In each baseline description we expect to have a `compact` directory with:
+- A dimensions XML that defines the sub-detector envelopes, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectDimensions.xml)
+- A master XML that includes the baseline sub-detectors, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectMaster.xml)
+- A master XML that does only include the dimensions (meant to be used with individual sub-detector XMLs) , e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml)
 
-The latter allows to have the possibility to use the `GeoSvc` with a sub-set of sub-detectors using the official dimensions (e.g. [here](../../Sim/SimG4Components/tests/options/geant_fullsim_hcal.py)).
+More specifically, the latter allows to have the possibility to use the `GeoSvc` with a sub-set of sub-detectors using the official dimensions (e.g. [here](../../Sim/SimG4Components/tests/options/geant_fullsim_hcal.py)).
 
 ### Sub-detector descriptions
-Sub-detector directories follow the naming convention `DetFCC + Flavour + SubDetectorName + DetectorCharacteristic`, where `Flavour = ee, eh, hh`, `SubDetectorName = ECal, HCal, Tracker, Muon` and finally the `DetectorCharacteristic` specifies the concrete description (e.g. Parametric (for a description to be used with FastSim) or Tile (for an ATLAS-like TileCal)). Examples: `DetFCChhHCalTile` or `DetFCChhECalSimple`.
+Sub-detector directories follow the naming convention `"DetFCC" + Flavour + SubDetectorName + DetectorCharacteristic`, where `Flavour = ee, eh, hh`, `SubDetectorName = ECal, HCal, Tracker, Muon` and finally the `DetectorCharacteristic` specifies the concrete description (e.g. Parametric (for a description to be used with FastSim) or Tile (for an ATLAS-like TileCal)). Examples: `DetFCChhHCalTile` or `DetFCChhECalSimple`.
 
 Sub-detector directories should in most cases have both `compact` and `src` directories. The description in compact **should not** have a world volume defined in order to be able to include it in a master xml. If a description for standalone tests (with dimensions deviating from the baseline) is needed, it may be placed alongside the detector description with a postfix `Standalone` (and this one should define the world volume), e.g. [here](../DetFCChhTrackerSimple/compact/FCChh_TrackerStandalone.xml). However, please note that for standalone tests that use the baseline dimensions something like this should rather be put in the corresponding options file:
 ~~~{.py}
