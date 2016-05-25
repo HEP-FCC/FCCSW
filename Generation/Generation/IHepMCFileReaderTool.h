@@ -8,17 +8,14 @@ namespace HepMC {
 }
 
 /** @class IHepMCFileReaderTool IHepMCFileReaderTool.h "Generation/IHepMCFileReaderTool.h"
- * 
+ *
  *  Abstract interface to  read files.
  *
  */
 
-
-static const InterfaceID IID_IHepMCFileReaderTool( "IHepMCFileReaderTool" , 3 , 0 ) ;
-
 class IHepMCFileReaderTool : virtual public IAlgTool {
 public:
-  static const InterfaceID& interfaceID() { return IID_IHepMCFileReaderTool ; }
+  DeclareInterfaceID(IHepMCFileReaderTool, 3, 0);
 
   virtual HepMC::GenEvent* readNextEvent() = 0;
 

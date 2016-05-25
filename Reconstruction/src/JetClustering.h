@@ -1,5 +1,5 @@
-#ifndef _JETCLUSTERING_H_
-#define _JETCLUSTERING_H_
+#ifndef RECO_JETCLUSTERING_H
+#define RECO_JETCLUSTERING_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 
@@ -25,6 +25,7 @@ class JetClustering: public GaudiAlgorithm {
 public:
 
   JetClustering(const std::string& name, ISvcLocator* svcLoc);
+  virtual ~JetClustering() {}
   virtual StatusCode initialize();
   virtual StatusCode execute();
   virtual StatusCode finalize();

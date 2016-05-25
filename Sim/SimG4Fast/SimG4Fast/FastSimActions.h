@@ -15,7 +15,7 @@ namespace sim {
 class FastSimActions : public G4VUserActionInitialization {
 public:
   explicit FastSimActions(const std::string& aSmearingToolName);
-  ~FastSimActions();
+  virtual ~FastSimActions();
   /// Create all user actions.
   virtual void Build() const final;
 private:

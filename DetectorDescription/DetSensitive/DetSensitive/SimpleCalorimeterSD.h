@@ -33,7 +33,7 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
     const std::string& aReadoutName,
     const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  ~SimpleCalorimeterSD();
+  virtual ~SimpleCalorimeterSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.
