@@ -1,8 +1,10 @@
-// DD4hep includes
+// DD4hep
 #include "DD4hep/DetFactoryHelper.h"
 
-// FCCSW includes
-// #include "DetExtensions/DetCylinderVolume.h"
+// Gaudi
+#include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
 
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
@@ -16,6 +18,10 @@ static DD4hep::Geometry::Ref_t createHCal (
   xml_h xmlElement,
   DD4hep::Geometry::SensitiveDetector sensDet
   ) {
+  // Get the Gaudi message service and message stream:
+  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "HCalConstruction");
+  MsgStream lLog(&(*msgSvc), "HCalConstruction");
+
   xml_det_t xmlDet = xmlElement;
   std::string detName = xmlDet.nameStr();
   //Make DetElement
@@ -83,14 +89,14 @@ static DD4hep::Geometry::Ref_t createHCal (
   unsigned int numModulesPhi = moduleDimensions.phiBins();
   unsigned int numModulesZ = static_cast<unsigned>(dimensions.dz() / dzModule);
   unsigned int numModulesR = static_cast<unsigned>((dimensions.rmax() - dimensions.rmin()) / moduleDimensions.dr());
-  std::cout << "constructing " << numModulesPhi << " modules per ring in phi, " << std::endl;
-  std::cout << "             " << numModulesZ << " rings in Z, " << std::endl;
-  std::cout << "             " << numModulesR << " rings (layers) in Rho" << std::endl;
-  std::cout << "             => " << numModulesR*numModulesZ*numModulesPhi << " modules" << std::endl;
+  lLog << MSG::DEBUG << "constructing " << numModulesPhi << " modules per ring in phi, "
+                     << numModulesZ << " rings in Z, "
+                     << numModulesR << " rings (layers) in Rho"
+                     << numModulesR*numModulesZ*numModulesPhi << " modules" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
   double dzDetector = numModulesZ * dzModule + dZEndPlate;
-  std::cout << "correction of dz:" << dimensions.dz() - dzDetector << std::endl;
+  lLog << MSG::INFO << "correction of dz:" << dimensions.dz() - dzDetector << endmsg;
 
   // calculate the dimensions of one module:
   double dphi = 2 * dd4hep::pi / static_cast<double>(numModulesPhi);
