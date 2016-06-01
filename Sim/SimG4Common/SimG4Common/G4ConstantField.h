@@ -11,6 +11,8 @@ public:
   G4ConstantField();
   /// Constructor setting parameters
   explicit G4ConstantField(double bX, double bY, double bZ, double rMax, double zMax);
+  // Destructor
+  virtual ~G4ConstantField() {}
 
   /// Get the value of the magnetic field value at position
   /// @param[in] point the position where the field is to be returned

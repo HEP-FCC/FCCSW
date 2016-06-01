@@ -21,6 +21,8 @@ public:
    virtual StatusCode initialize();
    /// Finalize.
    virtual StatusCode finalize();
+   /// Destructor
+   virtual ~GeoToGdmlDumpSvc() {}
 
 private:
    /// Name of the GDML output file

@@ -1,5 +1,5 @@
-#ifndef _HEPMCJETCLUSTERING_H_
-#define _HEPMCJETCLUSTERING_H_
+#ifndef RECO_HEPMCJETCLUSTERING_H
+#define RECO_HEPMCJETCLUSTERING_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/JetCollection.h"
