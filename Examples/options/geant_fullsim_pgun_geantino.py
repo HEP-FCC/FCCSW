@@ -30,12 +30,13 @@ savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
+pgun = G4SingleParticleGeneratorTool("GeantinoGun", etaMin=0, etaMax=0.01, particleName="geantino")
 geantsim = G4SimAlg("G4SimAlg",
                      outputs= ["G4SaveTrackerHits/saveTrackerHits" ],
-                     eventGenerator="G4SingleParticleGeneratorTool")
+                    eventGenerator=pgun)
 
-generator= G4SingleParticleGeneratorTool("G4SingleParticleGeneratorTool",
-                particleName="geantino", etaMin=0., etaMax=0.01, OutputLevel=DEBUG)
+
+
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
