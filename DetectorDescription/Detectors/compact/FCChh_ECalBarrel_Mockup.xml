@@ -18,17 +18,17 @@
   </info>
 
   <define>
-    <!---- ECAL dimensions ----->    
-    <!--- cryostat description --->
+    <!-- ECAL dimensions -->
+    <!-- cryostat description -->
     <constant name="BarECal_rmin" value="2600*mm"/>
     <constant name="BarECal_rmax" value="3500*mm"/>
     <constant name="BarECal_dz" value="4000*mm"/>
-    
-    <!--- calorimeter volume --->
+
+    <!-- calorimeter volume -->
     <constant name="EMBarrel_rmin" value="2700*mm"/>
     <constant name="EMBarrel_rmax" value="3400*mm"/>
     <constant name="EMBarrel_dz" value="3900*mm"/>
-    
+
   </define>
 
   <display>
@@ -37,10 +37,14 @@
 
   <readouts>
     <readout name="BarECal_Readout">
+<<<<<<< HEAD
       <!-- Cell definition via segmentation: CartisianGrid or PolarGrid -->
       <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
       <!-- <segmentation type="PolarGridRPhi" grid_size_r="5.0*mm" grid_size_phi="0.1*rad"/> -->
       <!-- Volume identifier: first 32 bits for volume ID + 32 bits for cell ID -->
+=======
+      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
+>>>>>>> upstream/master
       <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
     </readout>
   </readouts>

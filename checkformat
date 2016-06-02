@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+from __future__ import print_function
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+sys.path.append('/afs/cern.ch/exp/fcc/sw/0.6/SAS/0.1.4/x86_64-slc6-clang3.6-opt/scripts')
+import common
+import pprint
+
+
+def parse_args():
+    parser = argparse.ArgumentParser("checkformat", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('filenames', metavar='filename', type=str, nargs="+", help='The files or folders you want to check')
+    parser.add_argument('--inplace', '-i', action='store_true',  help='Do editing in place', default=False)
+    parser.add_argument('--force', '-f', action='store_true',  help='Do not ask when editing in place', default=False)
+    return parser.parse_args()
+
+
+def set_env():
+    llvm = "/afs/cern.ch/sw/lcg/external/llvm/3.6/x86_64-slc6/"
+    os.environ["LD_LIBRARY_PATH"] = llvm+"lib64:"+os.environ["LD_LIBRARY_PATH"]
+    os.environ["PATH"] = llvm+"bin:"+os.environ["PATH"]
+    if not os.path.isfile(".clang-format"):
+        shutil.copy("/afs/cern.ch/exp/fcc/sw/0.6/SAS/0.1.4/x86_64-slc6-clang3.6-opt/config/FCCSW-clang-format.yaml", ".clang-format")
+
+
+def run_sas(fnames):
+    for fname in fnames:
+        common.CheckFormattingRules(fname)
+
+
+def confirmed_by_user(fnames):
+    valid = {"yes": True, "y": True, "ye": True,
+             "no": False, "n": False}
+    default = "no"
+    while True:
+        print("Please make sure you committed your changes and later amend the changes done by clang format.")
+        print("Files to be changed:")
+        pprint.pprint(fnames)
+        print("Override your files? [y/N]")
+        choice = raw_input().lower()
+        if default is not None and choice == '':
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            print("Please respond with 'yes' or 'no' (or 'y' or 'n').")
+
+
+def replace(fnames, force):
+    if force or confirmed_by_user(fnames):
+        for fname in fnames:
+            try:
+                subprocess.check_call(["clang-format", "-i", fname])
+                pass
+            except subprocess.CalledProcessError:
+                print("Problem calling clang-format.")
+
+
+def scan_dirs(directories):
+    fnames = []
+    for dirname in directories:
+        if os.path.isfile(dirname):
+            fnames.append(dirname)
+        elif os.path.isdir(dirname):
+            for root, dirs, files in os.walk(dirname):
+                fnames += [os.path.join(root, f) for f in files]
+        else:
+            raise ValueError("File / directory does not exist: " + dirname)
+    return fnames
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    fnames = scan_dirs(args.filenames)
+    set_env()
+    if not args.inplace:  # run sas format checker
+        run_sas(fnames)
+    else:                 # replace files using clang-format
+        replace(fnames, args.force)

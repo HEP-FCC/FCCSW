@@ -62,6 +62,14 @@ public:
    *  @returns Particle status.
    */
   int endStatus() const;
+  /** Setter of the flag indicating if particle was smeared in the tracker (used for fast simulation).
+   *  @param[in] aFlag If particle was smeared in the tracker.
+   */
+  void setSmeared(bool aFlag);
+  /** Getter of the flag indicating if particle was smeared in the tracker (used for fast simulation).
+   *  @returns Flag indicating if particle was smeared in the tracker.
+   */
+  bool smeared() const;
 private:
   /// EDM MC particle
   const fcc::MCParticle m_mcParticle;
@@ -71,6 +79,8 @@ private:
   CLHEP::Hep3Vector m_vertexPosition;
   /// Particle status at the end of tracking (filled for fast-sim)
   int m_endStatus;
+  /// Flag indicating if particle was smeared in the tracker (filled for fast-sim)
+  bool m_smeared;
 };
 }
 

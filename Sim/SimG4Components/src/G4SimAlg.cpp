@@ -1,19 +1,10 @@
 #include "G4SimAlg.h"
 
 // FCCSW
-#include "SimG4Common/Units.h"
-#include "SimG4Common/ParticleInformation.h"
 #include "SimG4Interface/IG4SimSvc.h"
 
-// datamodel
-#include "datamodel/GenVertexCollection.h"
-#include "datamodel/MCParticleCollection.h"
-
 // Geant
-#include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
-#include "G4VUserPrimaryGeneratorAction.hh"
-#include "G4RunManager.hh"
 
 DECLARE_ALGORITHM_FACTORY(G4SimAlg)
 
@@ -21,6 +12,8 @@ G4SimAlg::G4SimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
   GaudiAlgorithm(aName, aSvcLoc) {
   declareInput("genParticles", m_genParticles);
   declareProperty("outputs",m_saveToolNames);
+  declareProperty("eventGenerator", m_eventGenTool);
+  declarePrivateTool(m_eventGenTool, "G4PrimariesFromEdmTool", true);
 }
 G4SimAlg::~G4SimAlg() {}
 
@@ -40,24 +33,19 @@ StatusCode G4SimAlg::initialize() {
     //   return StatusCode::FAILURE;
     // }
   }
+  if (!m_eventGenTool.retrieve()) {
+    error()<<"Unable to retrieve the G4Event generator " << m_eventGenTool <<endmsg;
+    return StatusCode::FAILURE;
+  }
   return StatusCode::SUCCESS;
 }
 
 StatusCode G4SimAlg::execute() {
   // first translate the event
-  G4Event* event = nullptr;
-  
-  G4RunManager* runManager=G4RunManager::GetRunManager();
-  G4VUserPrimaryGeneratorAction* generator=const_cast<G4VUserPrimaryGeneratorAction*>(runManager->GetUserPrimaryGeneratorAction());
-  if (generator)
-  {
- 	debug()<<"The generator is set: run GeneratePrimaries() "<<endmsg;
-        event=new G4Event();
-	generator->GeneratePrimaries(event);
-  }
-  
+  G4Event* event = m_eventGenTool->g4Event();
+
   if ( !event ) {
-    error() << "Unable to translate EDM MC data to G4Event" << endmsg;
+    error() << "Unable to retrieve G4Event from " << m_eventGenTool << endmsg;
     return StatusCode::FAILURE;
   }
   m_geantSvc->processEvent(*event);

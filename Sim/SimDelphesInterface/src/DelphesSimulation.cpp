@@ -207,7 +207,7 @@ StatusCode DelphesSimulation::initialize() {
 
   m_eventCounter     = 0;
 
-  if (m_outRootFile!=nullptr) m_treeWriter->Clear();
+  m_treeWriter->Clear();
   m_Delphes->Clear();
   m_HepMCReader->Clear();
  
@@ -464,7 +464,7 @@ StatusCode DelphesSimulation::execute() {
   m_handleRecMETs.put(             recMETs            );
 
   // Initialize for next event reading (Will also zero Delphes arrays)
-  if (m_outRootFile!=nullptr) m_treeWriter->Clear();
+  m_treeWriter->Clear();
   m_Delphes->Clear();
   m_HepMCReader->Clear();
 

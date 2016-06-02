@@ -1,8 +1,8 @@
+#include "FCCDataSvc.h"
+
 #include "GaudiKernel/SvcFactory.h"
 #include "GaudiKernel/ISvcLocator.h"
 #include "GaudiKernel/IConversionSvc.h"
-
-#include "FCCDataSvc.h"
 
 // Instantiation of a static factory class used by clients to create
 // instances of this service
