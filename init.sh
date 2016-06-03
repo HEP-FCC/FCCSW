@@ -1,5 +1,5 @@
 #!/bin/sh -u
-if [ -z "$BUILDTYPE" ] || [ "$BUILDTYPE" == "Release" ]; then
+if [ -z "$BUILDTYPE" ] || [[ "$BUILDTYPE" == "Release" ]]; then
     export BINARY_TAG=x86_64-slc6-gcc49-opt
     export BUILDTYPE="Release"
 else
