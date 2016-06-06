@@ -18,11 +18,9 @@ class G4MagneticField;
 
 // FIXME this tool should rather be a MagneticFieldSvc since it deals with G4 singletons
 
-static const InterfaceID IID_IG4MagneticFieldTool("IG4MagneticFieldTool", 1, 0);
-
 class IG4MagneticFieldTool : virtual public IAlgTool {
 public:
-  static const InterfaceID& interfaceID() { return IID_IG4MagneticFieldTool; }
+  DeclareInterfaceID(IG4MagneticFieldTool, 1, 0);
 
   /** get initialization hook for the magnetic field
    *  @return pointer to G4MagneticField

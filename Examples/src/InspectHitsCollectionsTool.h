@@ -19,7 +19,7 @@ class InspectHitsCollectionsTool: public GaudiTool, virtual public IG4SaveOutput
 public:
   /// Constructor.
   explicit InspectHitsCollectionsTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~InspectHitsCollectionsTool();
+  virtual ~InspectHitsCollectionsTool();
   /// Initialize.
   virtual StatusCode initialize() final;
   /// Finalize.

@@ -1,5 +1,5 @@
-#ifndef _JETHISTOGRAMS_H_
-#define _JETHISTOGRAMS_H_
+#ifndef RECO_JETHISTOGRAMS_H
+#define RECO_JETHISTOGRAMS_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ITHistSvc.h"
