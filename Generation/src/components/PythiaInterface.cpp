@@ -19,6 +19,9 @@ PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
 
   declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
   declareOutput(  "hepmc"   , m_hepmchandle);
+
+  declareProperty("PileUpTool", m_pileUpTool);
+  declarePrivateTool(m_pileUpTool, "ConstPileUp/PileUpTool");
 }
 
 StatusCode PythiaInterface::initialize() {

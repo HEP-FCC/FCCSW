@@ -16,10 +16,16 @@ from Configurables import FCCDataSvc
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
+from Configurables import ConstPileUp
+
+pileuptool = ConstPileUp(numPileUpEvents=25, Filename="Generation/data/Pythia_minBias.cmd")
+
 from Configurables import PythiaInterface
 ### PYTHIA algorithm
 pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen.PileUpTool = pileuptool
 pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
+
 
 from Configurables import HepMCConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
