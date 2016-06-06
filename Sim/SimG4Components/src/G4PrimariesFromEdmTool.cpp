@@ -20,6 +20,8 @@ G4PrimariesFromEdmTool::G4PrimariesFromEdmTool(const std::string& type,
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInput("genParticles", m_genParticles, "allGenParticles");
+  declareProperty("DataInputs", inputDataObjects());
+  declareProperty("DataOutputs", outputDataObjects());
 }
 
 G4PrimariesFromEdmTool::~G4PrimariesFromEdmTool() {}
