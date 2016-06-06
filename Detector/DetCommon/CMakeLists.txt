@@ -15,9 +15,9 @@ include( DD4hep )
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_add_module(DetCommon
-		  src/*.cpp
-		  INCLUDE_DIRS DD4hep ROOT Geant4
-		  LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4)
+                 src/*.cpp
+                 INCLUDE_DIRS DD4hep ROOT Geant4
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
