@@ -365,6 +365,23 @@ export LIBGL_ALWAYS_INDIRECT=1
 
 FCCSW folder structure
 --
+The folder structure should look something like this (only including one baseline and one sub-detector), details may be found below:
+```
++ Detector              # the base directory
+|- DetInterface         # contains virtual interface classes
+|- DetComponents        # implementations of services / tools
+|- DetExtensions        # for reconstruction extensions
+|- DetSensitive         # custom sensitive detectors
+|+ DetCommon            # basic shapes / elements / materials
+ |- compact             # contains XMLs defining elements, materials, air volumes
+ |- src                 # factories for basic shapes
+|+ DetFCChhBaseline1    # the first FCC-hh baseline description
+ |- compact             # master XMLs defining dimensions and world volumes
+|+ DetFCChhHCalTile     # a sub-detector directory
+ |- compact             # contains XMLs defining the detector, optionally an XML for standalone tests
+ |- src                 # factories specific for this sub-detector
+```
+
 The detector descriptions and geometry services / tools can be found in the `Detector` package. The FCCSW components that provide the geometry to the remaining packages can be found in:
 - DetInterface (virtual interface classes)
 - DetComponents (actual implementations of the services / tools)
