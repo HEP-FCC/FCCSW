@@ -1,3 +1,4 @@
+import os
 from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
@@ -9,8 +10,13 @@ geantservice = G4SimSvc("G4SimSvc",
                         physicslist="G4FtfpBert",
                         actions="G4FullSimActions")
 
+export_fname = "TestBox.gdml"
+# check if file exists and delete it:
+if os.path.isfile(export_fname):
+    os.remove(export_fname)
+
 from Configurables import GeoToGdmlDumpSvc
-geodumpservice = GeoToGdmlDumpSvc("GeoDump", gdml="TestBox.gdml")
+geodumpservice = GeoToGdmlDumpSvc("GeoDump", gdml=export_fname)
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [],

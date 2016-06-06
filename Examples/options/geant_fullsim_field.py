@@ -33,7 +33,7 @@ field = G4ConstantMagneticFieldTool("G4ConstantMagneticFieldTool", FieldOn=True,
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
-from Configurables import G4SimAlg, G4SaveTrackerHits
+from Configurables import G4SimAlg, G4SaveTrackerHits, G4PrimariesFromEdmTool
 # first, create a tool that saves the tracker hits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("G4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
@@ -42,9 +42,11 @@ savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
+particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = G4SimAlg("G4SimAlg",
-                     outputs= ["G4SaveTrackerHits/saveTrackerHits" ])
-geantsim.DataInputs.genParticles.Path="allGenParticles"
+                    outputs = ["G4SaveTrackerHits/saveTrackerHits"],
+                    eventGenerator=particle_converter)
 
 # PODIO algorithm
 from Configurables import PodioOutput

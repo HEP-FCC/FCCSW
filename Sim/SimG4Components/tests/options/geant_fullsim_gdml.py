@@ -32,11 +32,13 @@ from Configurables import G4SimSvc, G4GdmlDetector
 det = G4GdmlDetector("G4GdmlDetector", gdml = "Sim/SimG4Common/gdml/example.xml")
 geantservice = G4SimSvc("G4SimSvc", detector=det, physicslist="G4FtfpBert", actions="G4FullSimActions")
 
-from Configurables import G4SimAlg
+from Configurables import G4SimAlg, G4PrimariesFromEdmTool
 ## Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4
-geantsim = G4SimAlg("G4SimAlg")
-geantsim.DataInputs.genParticles.Path="allGenParticles"
+particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+geantsim = G4SimAlg("G4SimAlg",
+                    eventGenerator=particle_converter)
 
 from Configurables import PodioOutput
 out = PodioOutput("out",

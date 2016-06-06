@@ -36,7 +36,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml' ],
                     OutputLevel = DEBUG)
 
-from Configurables import G4SimAlg, G4SaveCalHits
+from Configurables import G4SimAlg, G4SaveCalHits, G4PrimariesFromEdmTool
 ## Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # first, create a tool that saves the calorimeter hits (of type "hcal")
@@ -46,9 +46,11 @@ savehcaltool = G4SaveCalHits("saveHCalHits", caloType = "HCal")
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
+particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = G4SimAlg("G4SimAlg",
-                        outputs = ["G4SaveCalHits/saveHCalHits"] )
-geantsim.DataInputs.genParticles.Path="allGenParticles"
+                    outputs = ["G4SaveCalHits/saveHCalHits"],
+                    eventGenerator=particle_converter)
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
