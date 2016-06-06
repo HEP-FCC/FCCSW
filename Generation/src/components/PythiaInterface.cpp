@@ -33,9 +33,17 @@ StatusCode PythiaInterface::initialize() {
 
   // Initialize pythia
   m_pythiaSignal = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
+  m_pythiaPileup = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
 
-  // Read Pythia configuration file
+  // Read Pythia configuration files
   m_pythiaSignal->readFile( m_parfile.c_str() );
+  // do not bother with pileup configuration if no pileup
+  if (0. < m_pileUpTool->getMeanPileUp()) {
+    if (m_pileUpTool->getFilename().empty()) {
+     return Error ( "Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!" );  
+    }
+    m_pythiaSignal->readFile(m_pileUpTool->getFilename().c_str());
+  }
 
   // Initialize variables from configuration file
   m_nAbort = m_pythiaSignal->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
@@ -52,6 +60,7 @@ StatusCode PythiaInterface::execute() {
 
   // Interface for conversion from Pythia8::Event to HepMC event.
   HepMC::Pythia8ToHepMC *toHepMC = new HepMC::Pythia8ToHepMC();
+  Pythia8::Event sumEvent;
 
   // Generate events. Quit if many failures in a row
   while ( !m_pythiaSignal->next() ) {
@@ -92,6 +101,13 @@ StatusCode PythiaInterface::execute() {
               << endmsg;
     }
   } // Debug
+
+  // Generate a number of pileup events.
+  for (unsigned int iPileup = 0; iPileup < m_pileUpTool->numberOfPileUp(); ++iPileup) {
+    m_pythiaPileup->next();
+    // add pileup to signal
+    m_pythiaSignal->event += m_pythiaPileup->event;
+  }
 
   // Define HepMC event and convert Pythia event into this HepMC event type
   auto theEvent = new HepMC::GenEvent( gen::hepmcdefault::energy, gen::hepmcdefault::length );

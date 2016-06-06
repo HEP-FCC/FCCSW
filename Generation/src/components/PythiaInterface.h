@@ -34,6 +34,8 @@ private:
 
   // Pythia8 engine
   std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
+  // Pythia8 engine for pileup events
+  std::unique_ptr<Pythia8::Pythia> m_pythiaPileup;
   // Name of Pythia configuration input file
   std::string       m_parfile; //!< Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
   // Pileup Interface Tool
