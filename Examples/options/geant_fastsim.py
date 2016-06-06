@@ -42,7 +42,7 @@ geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist=phy
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
-from Configurables import G4SimAlg, G4SaveSmearedParticles
+from Configurables import G4SimAlg, G4SaveSmearedParticles, G4PrimariesFromEdmTool
 # first, create a tool that saves the smeared particles
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("G4SaveSmearedParticles")
 # and YY is the given name ("saveSmearedParticles")
@@ -50,8 +50,11 @@ saveparticlestool = G4SaveSmearedParticles("saveSmearedParticles")
 saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-geantsim = G4SimAlg("G4SimAlg", outputs = ["G4SaveSmearedParticles/saveSmearedParticles"])
-geantsim.DataInputs.genParticles.Path="allGenParticles"
+particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+geantsim = G4SimAlg("G4SimAlg",
+                    outputs = ["G4SaveSmearedParticles/saveSmearedParticles"],
+                    eventGenerator=particle_converter)
 
 from Configurables import G4FastSimHistograms
 hist = G4FastSimHistograms("fastHist")

@@ -32,14 +32,18 @@ geantservice = G4SimSvc("G4SimSvc",
                         physicslist="G4FtfpBert",
                         actions="G4FullSimActions")
 
-from Configurables import G4SimAlg, G4SaveTrackerHits
+from Configurables import G4SimAlg, G4SaveTrackerHits, G4PrimariesFromEdmTool
 savetrackertool = G4SaveTrackerHits("G4SaveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveTrackerHits/G4SaveTrackerHits",
-                                          "InspectHitsCollectionsTool"])
-geantsim.DataInputs.genParticles.Path="allGenParticles"
+
+particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+geantsim = G4SimAlg("G4SimAlg",
+                    outputs=["G4SaveTrackerHits/G4SaveTrackerHits",
+                             "InspectHitsCollectionsTool"],
+                    eventGenerator=particle_converter)
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
