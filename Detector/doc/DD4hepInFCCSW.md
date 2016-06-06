@@ -227,7 +227,7 @@ In order to recognise where the energy was deposited, the sensitive volume has *
 
 As mentioned above, you may also define your own sensitive detector. What is needed to specify the behaviour of the active elements (how and what should be saved in the hits collections):
 
-1. Implementation of G4VSensitiveDetector (in example below: `DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.(h/cpp)`)
+1. Implementation of G4VSensitiveDetector (in example below: `Detector/DetSensitive/src/SimpleCalorimeterSD.(h/cpp)`)
 2. Factory method (of SD) for DD4hep
 
 In order to use the common methods to store your information in the EDM output (at the end of simulation), we advise to use the DD4hep hits classes:
@@ -261,7 +261,7 @@ If those classes are not sufficient, you'll need to create your own hit class im
    }
    ~~~
 
-2. Factory method for DD4hep is created in `DetectorDescription/DetSensitive/src/SDWrapper.cpp`.
+2. Factory method for DD4hep is created in `Detector/DetSensitive/src/SDWrapper.cpp`.
   Any other sensitive detector may be added in the same way.
 
    ~~~{.cpp}
@@ -343,9 +343,14 @@ Coordinate Conventions
 
 Visualisation
 --
-DD4hep comes with `geoDisplay` that can be used to display any detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory, e.g.:
+DD4hep comes with `geoDisplay` that can be used to display the detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory (after compilation), e.g.:
 ```
-./run geoDisplay DetectorDescription/Detectors/compact/TestTracker.xml
+./run geoDisplay -compact DetFCChhTrackerSimpleile/compact/FCChh_TrackerStandalone.xml
+```
+You can also combine several description files (e.g. to check if components overlap, of if you want to use the [detector master files](#the-master-xmls)):
+```
+./run geoDisplay -compact Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml \
+                          Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml
 ```
 
 N.b.: When running geoDisplay through a X-Session, by default OpenGL may not be used. If you see the warning:
