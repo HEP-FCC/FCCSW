@@ -1,7 +1,7 @@
 <detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="BarECal_Readout">
   <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
   <cryostat id="1" name="ECAL_Cryo" material="Aluminum" >
-    <dimensions rmin="BarCryoECal_rmin+10*mm" rmax="BarCryoECal_rmax-10*mm" dz="BarCryoECal_dz-10*mm" thickness="10*mm" />
+    <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="10*mm" />
   </cryostat>
   <calorimeter id="1" name="EM_barrel" >
     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
