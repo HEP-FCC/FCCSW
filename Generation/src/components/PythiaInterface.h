@@ -2,6 +2,9 @@
 #define GENERATION_PYTHIAINTERFACE_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
+#include "Generation/IPileUpTool.h"
+#include "Generation/IVertexSmearingTool.h"
+#include "Generation/IHepMCMergeTool.h"
 #include "FWCore/DataHandle.h"
 #include <memory>
 
@@ -30,11 +33,15 @@ public:
 private:
 
   // Pythia8 engine
-  std::unique_ptr<Pythia8::Pythia> m_pythia;
-
+  std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
   // Name of Pythia configuration input file
   std::string       m_parfile; //!< Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
-
+  // Pileup Interface Tool
+  ToolHandle<IPileUpTool> m_pileUpTool;
+  /// Tool to merge HepMC events
+  ToolHandle<IHepMCMergeTool> m_HepMCMergeTool;
+  // Tool to smear vertices
+  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
   // Output handle for HepMC event
   DataHandle<HepMC::GenEvent> m_hepmchandle;
 
