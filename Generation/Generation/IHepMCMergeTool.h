@@ -11,11 +11,10 @@
  *
  */
 
-static const InterfaceID IID_IHepMCMergeTool( "IHepMCMergeTool" , 3 , 0 ) ;
 
 class IHepMCMergeTool : virtual public IAlgTool {
 public:
-  static const InterfaceID& interfaceID() { return IID_IHepMCMergeTool ; }
+  DeclareInterfaceID(IHepMCMergeTool, 1, 0);
 
   /// Turn a signal event and a vector of pileup events into a merged event.
   virtual StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) = 0;

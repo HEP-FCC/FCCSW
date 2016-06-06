@@ -30,7 +30,7 @@ namespace det {
     const std::string& aReadoutName,
     const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  ~SimpleTrackerSD();
+  virtual ~SimpleTrackerSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.

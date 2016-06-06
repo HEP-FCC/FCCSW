@@ -53,7 +53,7 @@ public:
    */
   StatusCode terminateEvent();
 private:
-   /// Pointer to the tool service
+  /// Pointer to the tool service
   SmartIF<IToolSvc> m_toolSvc;
   /// Handle for the detector construction tool
   ToolHandle<IG4DetectorConstruction> m_detectorTool;
@@ -63,6 +63,9 @@ private:
   ToolHandle<IG4ActionTool> m_actionsTool;
   /// Handle for the magnetic field initialization
   ToolHandle<IG4MagneticFieldTool> m_magneticFieldTool;
+  /// Geant4 commands to be executed
+  std::vector<std::string> m_g4Commands;
+
   /// Run Manager
   sim::RunManager m_runManager;
 };

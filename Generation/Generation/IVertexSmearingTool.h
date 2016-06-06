@@ -14,11 +14,9 @@
  *  @date   2005-08-17
  */
 
-static const InterfaceID IID_IVertexSmearingTool( "IVertexSmearingTool" , 1 ,  0 ) ;
-
 class IVertexSmearingTool : virtual public IAlgTool {
 public:
-  static const InterfaceID& interfaceID() { return IID_IVertexSmearingTool ; }
+  DeclareInterfaceID(IVertexSmearingTool, 1, 0);
 
   /// Smear the vertex of the interaction (independantly of the others)
   virtual StatusCode smearVertex( HepMC::GenEvent& theEvent ) = 0 ;

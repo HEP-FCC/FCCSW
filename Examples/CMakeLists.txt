@@ -37,6 +37,12 @@ gaudi_add_test(DummyCheck
 gaudi_add_test(GeantFullSimTrackerHits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim.py)
+gaudi_add_test(GeantFullSimTrackerHitsWithField
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_field.py)
+gaudi_add_test(GeantFullSimWithGeantino
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_pgun_geantino.py)
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_pgun_fullsim.py)
@@ -57,3 +63,17 @@ gaudi_add_test(ExampleOptions
                FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
+
+# Test of the format-checker:
+gaudi_add_test(FormatCheckerOneFile
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat ./Examples/src/CreateSampleJet.cpp)
+gaudi_add_test(FormatCheckerSeveralFiles
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat ./Examples/src/CreateSampleJet.cpp ./Examples/src/CreateSampleJet.h)
+gaudi_add_test(FormatCheckerDirectory
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat ./Examples/src/)
+gaudi_add_test(FormatCheckerInPlace
+     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+     COMMAND ./checkformat -if ./Examples/src/CreateSampleJet.cpp)

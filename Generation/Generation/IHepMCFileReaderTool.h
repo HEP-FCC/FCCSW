@@ -13,12 +13,9 @@ namespace HepMC {
  *
  */
 
-
-static const InterfaceID IID_IHepMCFileReaderTool( "IHepMCFileReaderTool" , 3 , 0 ) ;
-
 class IHepMCFileReaderTool : virtual public IAlgTool {
 public:
-  static const InterfaceID& interfaceID() { return IID_IHepMCFileReaderTool ; }
+  DeclareInterfaceID(IHepMCFileReaderTool, 3, 0);
 
   virtual StatusCode readNextEvent(HepMC::GenEvent&) = 0;
 
