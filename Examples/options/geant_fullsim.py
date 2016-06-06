@@ -27,7 +27,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:DetectorDescription/Detectors/compact/TestTracker.xml'],
+geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhTrackerSimple/compact/FCChh_TrackerStandalone.xml'],
                     OutputLevel = DEBUG)
 
 # Geant4 service
