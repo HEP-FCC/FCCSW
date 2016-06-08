@@ -396,7 +396,7 @@ The descriptions are placed in sub-folders of the Detector package. We plan to h
 - A master XML that includes the baseline sub-detectors, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectMaster.xml)
 - A master XML that does only include the dimensions (meant to be used with individual sub-detector XMLs) , e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml)
 
-More specifically, the latter allows to have the possibility to use the `GeoSvc` with a sub-set of sub-detectors using the official dimensions (e.g. [here](../../Sim/SimG4Components/tests/options/geant_fullsim_hcal.py)).
+More specifically, the latter allows to have the possibility to use the `GeoSvc` with a sub-set of sub-detectors using the official dimensions (e.g. [here](../../Simulation/SimG4Components/tests/options/geant_fullsim_hcal.py)).
 
 ### Sub-detector descriptions
 Sub-detector directories follow the naming convention `"DetFCC" + Flavour + SubDetectorName + DetectorCharacteristic`, where `Flavour = ee, eh, hh`, `SubDetectorName = ECal, HCal, Tracker, Muon` and finally the `DetectorCharacteristic` specifies the concrete description (e.g. Parametric (for a description to be used with FastSim) or Tile (for an ATLAS-like TileCal)). Examples: `DetFCChhHCalTile` or `DetFCChhECalSimple`.

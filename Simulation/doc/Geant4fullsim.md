@@ -66,7 +66,7 @@ Simulation package contains following directories:
   * interfaces to tools, algorithms and services;
 * *SimG4Components*
   * all main components (e.g. `SimG4Svc`, `G4DD4hepDetector`)
-  * tests, further examples (e.g. `Sim/SimG4Components/tests/geant_fullsim_hcal.py`)
+  * tests, further examples (e.g. `Simulation/SimG4Components/tests/geant_fullsim_hcal.py`)
 * *SimG4Common*
   * Geant classes' implementations, common for both the full and fast simuliation (e.g. `sim::RunManager`)
 * *SimG4Full*
@@ -167,14 +167,14 @@ The configuration file (`options/geant_fullsim.py`) contains:
 Another example: user can create a hadronic calorimeter using DD4hep and save the hits:
 
 ~~~{.sh}
-./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_hcal.py
+./run gaudirun.py Simulation/SimG4Components/tests/geant_fullsim_hcal.py
 ~~~
 
 #### GDML example
 or create a detector using GDML. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `DD4hep::Simulation::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
 
 ~~~{.sh}
-./run gaudirun.py Sim/SimG4Components/tests/geant_fullsim_gdml.py
+./run gaudirun.py Simulation/SimG4Components/tests/geant_fullsim_gdml.py
 ~~~
 
 
@@ -297,7 +297,7 @@ User actions may derive from the following G4 interfaces:
 
 ### How to add user action
 
-Any user action that derives from Geant4 interface can be implemented in Sim/SimG4Full.
+Any user action that derives from Geant4 interface can be implemented in Simulation/SimG4Full.
 
 In order to invoke this action in the simulation, it should be created in the `FullSimActions::Build()` method.
 
