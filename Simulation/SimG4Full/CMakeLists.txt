@@ -4,7 +4,7 @@
 gaudi_subdir(SimG4Full v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Components Sim/SimG4Interface Sim/SimG4Common)
+gaudi_depends_on_subdirs(GaudiAlg Simulation/SimG4Components Simulation/SimG4Interface Simulation/SimG4Common)
 
 find_package(Geant4)
 include(${Geant4_USE_FILE})

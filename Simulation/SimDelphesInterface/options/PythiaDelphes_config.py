@@ -52,7 +52,7 @@ messageLevelOut    =DEBUG
 pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
+delphesCard="Simulation/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if hepMC file not defined --> data read-in from Gaudi data store (Inputs)

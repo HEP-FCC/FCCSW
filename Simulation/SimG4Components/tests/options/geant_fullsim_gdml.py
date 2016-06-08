@@ -29,7 +29,7 @@ from Configurables import G4SimSvc, G4GdmlDetector
 ## Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 # first create tool that builds geometry from GDML
-det = G4GdmlDetector("G4GdmlDetector", gdml = "Sim/SimG4Common/gdml/example.xml")
+det = G4GdmlDetector("G4GdmlDetector", gdml = "Simulation/SimG4Common/gdml/example.xml")
 geantservice = G4SimSvc("G4SimSvc", detector=det, physicslist="G4FtfpBert", actions="G4FullSimActions")
 
 from Configurables import G4SimAlg, G4PrimariesFromEdmTool
