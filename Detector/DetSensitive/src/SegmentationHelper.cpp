@@ -18,8 +18,7 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep)
   DD4hep::Geometry::VolumeManager::VolumeID volID =
     volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
   if (aSeg.isValid() )  {
-    G4ThreeVector global = 0.5 * (  aStep.GetPreStepPoint()->GetPosition()+
-      aStep.GetPostStepPoint()->GetPosition());
+    G4ThreeVector global = aStep.GetPreStepPoint()->GetPosition();
     G4ThreeVector local  = aStep.GetPreStepPoint()->GetTouchable()->
       GetHistory()->GetTopTransform().TransformPoint(global);
     DD4hep::Geometry::Position loc(local.x()*MM_2_CM, local.y()*MM_2_CM, local.z()*MM_2_CM);
@@ -27,7 +26,7 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep)
     DD4hep::Geometry::VolumeManager::VolumeID cID = aSeg.cellID(loc,glob,volID);
     return cID;
   }
-  return 0;
+  return volID;
 }
 }
 }
