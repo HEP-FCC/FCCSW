@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="../data/testHepMCrandom.dat")
+reader = HepMCReader("Reader", Filename="../data/testHepMCborders.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
@@ -15,7 +15,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.DataInputs.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../data/TestBoxCaloSD_volumes.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:../data/TestBoxCaloSD_segmentation.xml'], OutputLevel = DEBUG)
 
 from Configurables import G4SimSvc
 geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist='G4TestPhysicsList', actions='G4FullSimActions')
@@ -28,14 +28,14 @@ geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits","InspectH
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="testCellId_dd4hep_volumes.root")
+out = PodioOutput("out", filename="testCellId_dd4hep.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [reader, hepmc_converter, hepmc_dump, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 100,
+                EvtMax   = 32,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podiosvc, geoservice, geantservice],
                 OutputLevel=INFO

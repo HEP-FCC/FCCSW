@@ -1,48 +1,31 @@
 cellNo = 201
 cellSize = 5
 bitfieldsize = 8
-signed = True
 
-def retrieve(no, mask, offset):
+def retrieve(sign, no, mask, offset):
     id = (no & mask)
     id = id >> offset
-    if(signed):
+    if(sign):
         id = id - 2**bitfieldsize if id >= 2**(bitfieldsize-1) else id
     return id
 
-def z(cellId):
-    return retrieve(cellId, 0b000000000000000011111111,0)
+def z(cellId, sign):
+    return retrieve(sign, cellId, 0b000000000000000011111111,0)
 
-def y(cellId):
-    return retrieve(cellId, 0b000000001111111100000000,1*bitfieldsize)
+def y(cellId, sign):
+    return retrieve(sign, cellId, 0b000000001111111100000000,1*bitfieldsize)
 
-def x(cellId):
-    return retrieve(cellId, 0b111111110000000000000000,2*bitfieldsize)
+def x(cellId, sign):
+    return retrieve(sign, cellId, 0b111111110000000000000000,2*bitfieldsize)
 
-def cellIdDd4hep(cellId):
-    return array('d',(x(cellId),y(cellId),z(cellId)))
+def cellPosDd4hep(cellId, sign):
+    if(sign):
+        return array('d',(x(cellId, sign)*cellSize,y(cellId, sign)*cellSize,(cellNo/2.+z(cellId, sign))*cellSize))
+    return array('d',((x(cellId, sign)-cellNo/2)*cellSize,
+                      (y(cellId, sign)-cellNo/2)*cellSize,
+                      (1./2.+z(cellId, sign))*cellSize))
 
-def cellPosDd4hep(cellId):
-    return array('d',(x(cellId)*cellSize,y(cellId)*cellSize,(cellNo/2.+z(cellId))*cellSize))
-
-def cellIdGdml(cellId):
-    z = cellId%cellNo
-    x = cellId/(cellNo*cellNo)
-    y = cellId/cellNo%cellNo
-    return array('d',(x,y,z))
-
-def cellPosGdml(cellId):
-    z = (cellId%cellNo+0.5)*cellSize
-    x = ((cellId/(cellNo*cellNo))-cellNo/2)*cellSize
-    y = ((cellId/cellNo%cellNo)-cellNo/2)*cellSize
-    return array('d',(x,y,z))
-
-def cmpId(cellIdGdml, cellIdDd4hep):
-    IdGdml = cellIdGdml(cellIdGdml)
-    IdDd4hep = cellIdDd4hep(cellIdDd4hep)
-    return bool(IdGdml == IdDd4hep)
-
-# from ROOT import gSystem, THnSparseD, TCanvas
+from ROOT import gSystem
 from EventStore import EventStore
 from array import array
 import os
@@ -80,9 +63,9 @@ for iev, event in enumerate(storeSeg):
     for hit in hits:
         cellId = hit.Core().Cellid
         # histGdml.Fill(cellPosGdml(cellId))
-        segPos.append(cellPosDd4hep(cellId,true))
+        segPos.append(cellPosDd4hep(cellId,True))
         print(" event ",iev)
-        print("======GDML : id: ",cellIdDd4hep(cellId,true)," -> pos: ",cellPosDd4hep(cellId,true))
+        print("======DD4hep segmentation:  pos: ",cellPosDd4hep(cellId,True))
 print(segPos)
 print("======DD4hep===========")
 volPos = []
@@ -91,12 +74,17 @@ for iev, event in enumerate(storeVol):
     for hit in hits:
         cellId = hit.Core().Cellid
         # histDd4hep.Fill(cellPosDd4hep(cellId))
-        volPos.append(cellPosDd4hep(cellId,false))
+        volPos.append(cellPosDd4hep(cellId,False))
         print(" event ",iev)
-        print("======DD4hep : id: ",cellIdDd4hep(cellId,false)," -> pos: ",cellPosDd4hep(cellId,false))
+        print("======DD4hep volumes : pos: ",cellPosDd4hep(cellId,False))
 print(volPos)
-assert(segPos == volPos)
 print("=======================")
+for i, val in enumerate(segPos):
+    if (segPos[i] != volPos[i]):
+        print(segPos[i]," != ", volPos[i])
+    else:
+        print("=")
+assert(segPos == volPos)
 # tmp printing
 # hXYGdml = histGdml.Projection(1,0)
 # hZYGdml = histGdml.Projection(1,2)

@@ -51,7 +51,7 @@ from math import sqrt, pow
 gSystem.Load("libdatamodelDict")
 en = 1
 storeGdml = EventStore(["testCellId_gdml.root"])
-storeDD4hep = EventStore(["testCellId_dd4hep_segmentation.root"])
+storeDD4hep = EventStore(["testCellId_dd4hep.root"])
 
 # bins = array('i',(cellNo, cellNo, cellNo))
 # axisMin = array('d',(-cellNo*cellSize/2., -cellNo*cellSize/2., 0))

@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="../data/testHepMC.dat")
+reader = HepMCReader("Reader", Filename="../data/testHepMCrandom.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
@@ -35,7 +35,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [reader, hepmc_converter, hepmc_dump, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 32,
+                EvtMax   = 100,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podiosvc, geoservice, geantservice],
                 OutputLevel=INFO

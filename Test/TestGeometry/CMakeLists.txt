@@ -25,21 +25,24 @@ gaudi_add_module(TestGeometryPlugins
                  LINK_LIBRARIES GaudiKernel FWCore Geant4 TestGeometry)
 
 include(CTest)
-gaudi_add_test(TestCellIDFromGdml
+gaudi_add_test(TestBorderCellIDFromGdml
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                FRAMEWORK tests/options/geant_testcellid_gdml.py)
-gaudi_add_test(TestCellIDFromDd4hepSegmentation
+gaudi_add_test(TestBorderCellIDFromDd4hep
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
-               FRAMEWORK tests/options/geant_testcellid_dd4hep_segmentation.py)
-gaudi_add_test(TestCellIDFromDd4hepVolumes
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
-               FRAMEWORK tests/options/geant_testcellid_dd4hep_volumes.py)
-gaudi_add_test(CmpCellIDGdmlDd4hep
+               FRAMEWORK tests/options/geant_testcellid_dd4hep.py)
+gaudi_add_test(CmpBorderCellIDGdmlwithDd4hep
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                COMMAND python ./scripts/cmpCellId.py
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS TestCellIDFromDd4hepSegmentation TestCellIDFromGdml)
-gaudi_add_test(CmpCellIDDd4hepSegmentationVolumes
+               DEPENDS TestCellIDFromDd4hep TestCellIDFromGdml)
+gaudi_add_test(TestRandomCellIDFromDd4hepSegmentation
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
+               FRAMEWORK tests/options/geant_testcellid_dd4hep_segmentation.py)
+gaudi_add_test(TestRandomCellIDFromDd4hepVolumes
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
+               FRAMEWORK tests/options/geant_testcellid_dd4hep_volumes.py)
+gaudi_add_test(CmpRandomCellIDDd4hepSegmentationwithVolumes
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                COMMAND python ./scripts/cmpCellIdDd4hep.py
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python

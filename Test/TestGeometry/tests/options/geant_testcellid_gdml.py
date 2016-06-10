@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="../data/testHepMC.dat")
+reader = HepMCReader("Reader", Filename="../data/testHepMCborders.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
