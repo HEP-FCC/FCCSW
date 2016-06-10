@@ -36,71 +36,16 @@ en = 1
 storeSeg = EventStore(["testCellId_dd4hep_segmentation.root"])
 storeVol = EventStore(["testCellId_dd4hep_volumes.root"])
 
-# bins = array('i',(cellNo, cellNo, cellNo))
-# axisMin = array('d',(-cellNo*cellSize/2., -cellNo*cellSize/2., 0))
-# axisMax = array('d',(cellNo*cellSize/2., cellNo*cellSize/2., cellNo*cellSize))
-# print ("bins no = ",bins)
-# print ("axes min = ",axisMin)
-# print ("axes max = ",axisMax)
-# histGdml = THnSparseD('histGdml','histGdml', 3, bins, axisMin, axisMax)
-# histDd4hep = THnSparseD('histDd4hep','histDd4hep', 3, bins, axisMin, axisMax)
-
-# print("======test gdml formulas============")
-# testcellId = cellNo*cellNo*0+cellNo*0+0
-# print("0,0,0 -> id ",cellIdGdml(testcellId), " -> pos: ",cellPosGdml(testcellId))
-# testcellId = cellNo*cellNo*200+cellNo*200+200
-# print("200,200,200 -> id ",cellIdGdml(testcellId), " -> pos: ",cellPosGdml(testcellId))
-# testcellId = cellNo*cellNo*100+cellNo*100+100
-# print("100,100,100 -> id ",cellIdGdml(testcellId), " -> pos: ",cellPosGdml(testcellId))
-
-# print("======test dd4hep formulas============")
-# print("=======================")
-
-print("======GDML============")
 segPos = []
 for iev, event in enumerate(storeSeg):
     hits = event.get('caloHits')
     for hit in hits:
         cellId = hit.Core().Cellid
-        # histGdml.Fill(cellPosGdml(cellId))
         segPos.append(cellPosDd4hep(cellId,True))
-        print(" event ",iev)
-        print("======DD4hep segmentation:  pos: ",cellPosDd4hep(cellId,True))
-print(segPos)
-print("======DD4hep===========")
 volPos = []
 for iev, event in enumerate(storeVol):
     hits = event.get('caloHits')
     for hit in hits:
         cellId = hit.Core().Cellid
-        # histDd4hep.Fill(cellPosDd4hep(cellId))
         volPos.append(cellPosDd4hep(cellId,False))
-        print(" event ",iev)
-        print("======DD4hep volumes : pos: ",cellPosDd4hep(cellId,False))
-print(volPos)
-print("=======================")
-for i, val in enumerate(segPos):
-    if (segPos[i] != volPos[i]):
-        print(segPos[i]," != ", volPos[i])
-    else:
-        print("=")
 assert(segPos == volPos)
-# tmp printing
-# hXYGdml = histGdml.Projection(1,0)
-# hZYGdml = histGdml.Projection(1,2)
-# hXYDd4hep = histDd4hep.Projection(1,0)
-# hZYDd4hep = histDd4hep.Projection(1,2)
-# c = TCanvas( "testCellId", "testCellId", 0, 0, 1920, 1050 )
-# c.Divide(2,2)
-# c.cd(1)
-# hXYGdml.Draw("colz")
-# c.cd(2)
-# hZYGdml.Draw("colz")
-# c.cd(3)
-# hXYDd4hep.Draw("colz")
-# c.cd(4)
-# hZYDd4hep.Draw("colz")
-# c.Print("cmp_cellId.png")
-
-# histGdml.Add(histDd4hep,-1.)
-# assert(histGdml.GetEntries()==0)
