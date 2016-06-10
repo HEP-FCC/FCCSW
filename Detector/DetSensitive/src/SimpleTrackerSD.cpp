@@ -54,7 +54,7 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   // hit is expected to be created, otherwise abort job
   assert(hit != nullptr);
-  hit->cellID  = segmentation::cellID(m_seg, *aStep);
+  hit->cellID  = segmentation::cellID(m_seg, *aStep, false);
   hit->energyDeposit = edep;
   hit->position = position;
   hit->momentum = direction;

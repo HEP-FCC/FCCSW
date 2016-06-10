@@ -12,13 +12,17 @@
 
 namespace det {
 namespace segmentation {
-uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep) {
+uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint) {
   DD4hep::Simulation::Geant4VolumeManager volMgr =
     DD4hep::Simulation::Geant4Mapping::instance().volumeManager();
   DD4hep::Geometry::VolumeManager::VolumeID volID =
     volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
   if (aSeg.isValid() )  {
-    G4ThreeVector global = aStep.GetPreStepPoint()->GetPosition();
+    G4ThreeVector global;
+    if (aPreStepPoint)
+      global = aStep.GetPreStepPoint()->GetPosition();
+    else
+      global = 0.5*(aStep.GetPreStepPoint()->GetPosition()+aStep.GetPostStepPoint()->GetPosition());
     G4ThreeVector local  = aStep.GetPreStepPoint()->GetTouchable()->
       GetHistory()->GetTopTransform().TransformPoint(global);
     DD4hep::Geometry::Position loc(local.x()*MM_2_CM, local.y()*MM_2_CM, local.z()*MM_2_CM);
