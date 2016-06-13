@@ -21,11 +21,6 @@ public:
   /// Retrieve interface ID
   DeclareInterfaceID(IG4ActionTool,1,0);
 
-  /**  initialize
-   *   @return status code
-   */
-  virtual StatusCode initialize() = 0;
-
   /** get initilization hook for the user action
    *  @return  pointer to G4VUserActionInitialization
    */

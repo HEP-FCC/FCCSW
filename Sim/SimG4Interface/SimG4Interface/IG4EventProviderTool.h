@@ -18,11 +18,6 @@ class IG4EventProviderTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(IG4EventProviderTool, 1, 0);
 
-  /**  initialize
-   *   @return status code
-   */
-  virtual StatusCode initialize() = 0;
-
   /** get initilization hook for the geometry
    *  @return pointer to the G4Event containing primary particles
    */
