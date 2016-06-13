@@ -12,10 +12,10 @@
 class G4MagIntegratorStepper;
 // FCCSW
 namespace sim {
-class G4ConstantField;
+class ConstantField;
 }
 
-/** @class SimG4ConstantMagneticFieldTool SimG4ConstantMagneticFieldTool.h "SimG4ConstantMagneticFieldTool.h"
+/** @class SimG4ConstantMagneticFieldTool SimG4Components/src/SimG4ConstantMagneticFieldTool.h SimG4ConstantMagneticFieldTool.h
 *
 *  Implementation of ISimG4MagneticFieldTool that generates a constant field
 *
@@ -44,7 +44,7 @@ public:
 
 private:
   /// Pointer to the actual Geant 4 magnetic field
-  sim::G4ConstantField* m_field;
+  sim::ConstantField* m_field;
   /// Switch to turn field on or off (default is off). Set with property FieldOn
   bool m_fieldOn;
   /// Minimum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property

@@ -2,7 +2,7 @@
 #include "SimG4ConstantMagneticFieldTool.h"
 
 // FCCSW
-#include "SimG4Common/G4ConstantField.h"
+#include "SimG4Common/ConstantField.h"
 
 // Geant 4
 #include "G4VUserPrimaryGeneratorAction.hh"
@@ -74,7 +74,7 @@ StatusCode SimG4ConstantMagneticFieldTool::initialize() {
 
     // The field manager keeps an observing pointer to the field, ownership stays with this tool. (Cleaned up in dtor)
     m_field =
-        new sim::G4ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
+        new sim::ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
     fieldManager->SetDetectorField(m_field);
 
     fieldManager->CreateChordFinder(m_field);

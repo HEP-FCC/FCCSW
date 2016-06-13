@@ -1,18 +1,25 @@
-#ifndef SIMG4COMMON_G4CONSTANTFIELD_H
-#define SIMG4COMMON_G4CONSTANTFIELD_H
+#ifndef SIMG4COMMON_CONSTANTFIELD_H
+#define SIMG4COMMON_CONSTANTFIELD_H
 
 // Geant 4
 #include "G4MagneticField.hh"
 
+/** @class sim::ConstantField SimG4Common/SimG4Common/ConstantField.h ConstantField.h
+*
+*  Constant magnetic field inside the cylinder.
+*
+*  @author Andrea Dell'Acqua
+*/
+
 namespace sim {
-class G4ConstantField : public G4MagneticField {
+class ConstantField : public G4MagneticField {
 public:
   /// Default constructor
-  G4ConstantField();
+  ConstantField();
   /// Constructor setting parameters
-  explicit G4ConstantField(double bX, double bY, double bZ, double rMax, double zMax);
+  explicit ConstantField(double bX, double bY, double bZ, double rMax, double zMax);
   // Destructor
-  virtual ~G4ConstantField() {}
+  virtual ~ConstantField() {}
 
   /// Get the value of the magnetic field value at position
   /// @param[in] point the position where the field is to be returned
@@ -45,4 +52,4 @@ private:
   double m_zMax;
 };
 }
-#endif
+#endif /* SIMG4COMMON_CONSTANTFIELD_H */
