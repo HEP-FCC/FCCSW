@@ -42,7 +42,7 @@ G4ConstantMagneticFieldTool::G4ConstantMagneticFieldTool(const std::string& type
       m_fieldComponentZ(-6. * tesla),
       m_fieldRadMax(6 * m),
       m_fieldZMax(6. * m) {
-  declareInterface<IG4MagneticFieldTool>(this);
+  declareInterface<ISimG4MagneticFieldTool>(this);
 
   declareProperty("FieldOn", m_fieldOn, "Switch to turn field off");
   declareProperty("DeltaChord", m_deltaChord, "Missing distance for the chord finder");

@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4MagneticFieldTool.h"
+#include "SimG4Interface/ISimG4MagneticFieldTool.h"
 
 // Forward declarations:
 // Geant 4 classes
@@ -17,13 +17,13 @@ class G4ConstantField;
 
 /** @class G4ConstantMagneticFieldTool G4ConstantMagneticFieldTool.h "G4ConstantMagneticFieldTool.h"
 *
-*  Implementation of IG4MagneticFieldTool that generates a constant field
+*  Implementation of ISimG4MagneticFieldTool that generates a constant field
 *
 *  @author Andrea Dell'Acqua
 *  @date   2016-02-22
 */
 
-class G4ConstantMagneticFieldTool : public GaudiTool, virtual public IG4MagneticFieldTool {
+class G4ConstantMagneticFieldTool : public GaudiTool, virtual public ISimG4MagneticFieldTool {
 public:
   /// Standard constructor
   G4ConstantMagneticFieldTool(const std::string& type, const std::string& name, const IInterface* parent);

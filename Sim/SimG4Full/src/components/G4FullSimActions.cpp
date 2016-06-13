@@ -7,7 +7,7 @@ DECLARE_COMPONENT(G4FullSimActions)
 
 G4FullSimActions::G4FullSimActions(const std::string& type, const std::string& name, const IInterface* parent) :
   AlgTool(type, name, parent) {
-   declareInterface<IG4ActionTool>(this);
+   declareInterface<ISimG4ActionTool>(this);
 }
 
 G4FullSimActions::~G4FullSimActions() {}

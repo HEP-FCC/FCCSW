@@ -2,7 +2,7 @@
 
 // FCCSW
 #include "SimG4Fast/FastSimPhysics.h"
-#include "SimG4Interface/IG4PhysicsList.h"
+#include "SimG4Interface/ISimG4PhysicsList.h"
 
 // Geant4
 #include "G4VModularPhysicsList.hh"
@@ -11,7 +11,7 @@ DECLARE_TOOL_FACTORY(G4FastSimPhysicsList)
 
 G4FastSimPhysicsList::G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   AlgTool(aType, aName, aParent) {
-  declareInterface<IG4PhysicsList>(this);
+  declareInterface<ISimG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool);
   declarePrivateTool(m_physicsListTool, "G4FtfpBert", true);
 }

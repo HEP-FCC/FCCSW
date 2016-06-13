@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4EventProviderTool.h"
+#include "SimG4Interface/ISimG4EventProviderTool.h"
 #include "FWCore/DataHandle.h"
 
 // Forward declarations
@@ -27,7 +27,7 @@ class GenVertexCollection;
 *  @date   2014-10-01
 */
 
-class G4SingleParticleGeneratorTool : public GaudiTool, virtual public IG4EventProviderTool {
+class G4SingleParticleGeneratorTool : public GaudiTool, virtual public ISimG4EventProviderTool {
 public:
   /// Standard constructor
   G4SingleParticleGeneratorTool(const std::string& type, const std::string& name, const IInterface* parent);

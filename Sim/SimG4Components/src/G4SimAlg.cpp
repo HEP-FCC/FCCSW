@@ -1,7 +1,7 @@
 #include "G4SimAlg.h"
 
 // FCCSW
-#include "SimG4Interface/IG4SimSvc.h"
+#include "SimG4Interface/ISimG4Svc.h"
 
 // Geant
 #include "G4Event.hh"
@@ -25,7 +25,7 @@ StatusCode G4SimAlg::initialize() {
     return StatusCode::FAILURE;
   }
   for(auto& toolname: m_saveToolNames) {
-    m_saveTools.push_back(tool<IG4SaveOutputTool>(toolname));
+    m_saveTools.push_back(tool<ISimG4SaveOutputTool>(toolname));
     // FIXME: check StatusCode once the m_saveTools is a ToolHandleArray
     // if (!) {
     //   error() << "Unable to retrieve the output saving tool." << endmsg;

@@ -11,7 +11,7 @@ class IRndmGen;
 class TFormula;
 
 // FCCSW
-#include "SimG4Interface/IG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 /** @class G4ParticleSmearFormula SimG4Fast/src/components/G4ParticleSmearFormula.h G4ParticleSmearFormula.h
  *
@@ -23,7 +23,7 @@ class TFormula;
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearFormula: public GaudiTool, virtual public IG4ParticleSmearTool {
+class G4ParticleSmearFormula: public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
   explicit G4ParticleSmearFormula(const std::string& type , const std::string& name,
     const IInterface* parent);

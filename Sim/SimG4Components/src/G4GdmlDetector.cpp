@@ -10,7 +10,7 @@ DECLARE_TOOL_FACTORY(G4GdmlDetector)
 
 G4GdmlDetector::G4GdmlDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   AlgTool(aType, aName, aParent) {
-  declareInterface<IG4DetectorConstruction>(this);
+  declareInterface<ISimG4DetectorConstruction>(this);
   declareProperty("gdml", m_gdmlFile);
 }
 

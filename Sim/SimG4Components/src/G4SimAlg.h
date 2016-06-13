@@ -6,13 +6,13 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimG4Interface/IG4SaveOutputTool.h"
-#include "SimG4Interface/IG4EventProviderTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
+#include "SimG4Interface/ISimG4EventProviderTool.h"
 
 
 // Forward declarations:
 // Interfaces
-class IG4SimSvc;
+class ISimG4Svc;
 
 // datamodel
 namespace fcc {
@@ -55,14 +55,14 @@ public:
   private:
   DataHandle<fcc::MCParticleCollection> m_genParticles;
   /// Pointer to the interface of Geant simulation service
-  SmartIF<IG4SimSvc> m_geantSvc;
+  SmartIF<ISimG4Svc> m_geantSvc;
   /// Handle to the tools saving the output
-  /// to be replaced with the ToolHandleArray<IG4SaveOutputTool> m_saveTools
-  std::vector<IG4SaveOutputTool*> m_saveTools;
+  /// to be replaced with the ToolHandleArray<ISimG4SaveOutputTool> m_saveTools
+  std::vector<ISimG4SaveOutputTool*> m_saveTools;
   /// Names for the saving tools
-  /// to be deleted once the ToolHandleArray<IG4SaveOutputTool> m_saveTools is in place
+  /// to be deleted once the ToolHandleArray<ISimG4SaveOutputTool> m_saveTools is in place
   std::vector<std::string> m_saveToolNames;
   /// Handle for tool that creates the G4Event
-  ToolHandle<IG4EventProviderTool> m_eventGenTool;
+  ToolHandle<ISimG4EventProviderTool> m_eventGenTool;
 };
 #endif /* SIMG4COMPONENTS_G4SIMALG_H */

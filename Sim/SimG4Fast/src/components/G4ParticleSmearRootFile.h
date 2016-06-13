@@ -11,7 +11,7 @@ class IRndmGen;
 #include "TGraph.h"
 
 // FCCSW
-#include "SimG4Interface/IG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 /** @class G4ParticleSmearRootFile SimG4Fast/src/components/G4ParticleSmearRootFile.h G4ParticleSmearRootFile.h
  *
@@ -27,7 +27,7 @@ class IRndmGen;
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearRootFile: public GaudiTool, virtual public IG4ParticleSmearTool {
+class G4ParticleSmearRootFile: public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
   explicit G4ParticleSmearRootFile(const std::string& type , const std::string& name,
     const IInterface* parent);

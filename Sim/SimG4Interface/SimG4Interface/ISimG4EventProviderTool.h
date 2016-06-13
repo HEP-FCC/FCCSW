@@ -1,12 +1,12 @@
-#ifndef SIMG4INTERFACE_IG4EVENTPROVIDERTOOL_H
-#define SIMG4INTERFACE_IG4EVENTPROVIDERTOOL_H
+#ifndef SIMG4INTERFACE_ISIMG4EVENTPROVIDERTOOL_H
+#define SIMG4INTERFACE_ISIMG4EVENTPROVIDERTOOL_H
 
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
 class G4Event;
 
-/** @class IG4EventProviderTool IG4EventProviderTool.h "SimG4Interface/IG4EventProviderTool.h"
+/** @class ISimG4EventProviderTool SimG4Interface/ISimG4EventProviderTool.h ISimG4EventProviderTool.h
  *
  *  Abstract interface to Geant4 Primary Generator classes
  *
@@ -14,13 +14,14 @@ class G4Event;
  *  @date   2014-10-02
  */
 
-class IG4EventProviderTool : virtual public IAlgTool {
+class ISimG4EventProviderTool : virtual public IAlgTool {
 public:
-  DeclareInterfaceID(IG4EventProviderTool, 1, 0);
+  DeclareInterfaceID(ISimG4EventProviderTool, 1, 0);
 
   /** get initilization hook for the geometry
    *  @return pointer to the G4Event containing primary particles
    */
   virtual G4Event* g4Event() = 0;
 };
-#endif
+
+#endif /* SIMG4INTERFACE_ISIMG4EVENTPROVIDERTOOL_H */

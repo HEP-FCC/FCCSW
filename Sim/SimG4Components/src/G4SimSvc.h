@@ -3,11 +3,11 @@
 
 // FCCSW
 #include "SimG4Common/RunManager.h"
-#include "SimG4Interface/IG4SimSvc.h"
-#include "SimG4Interface/IG4DetectorConstruction.h"
-#include "SimG4Interface/IG4PhysicsList.h"
-#include "SimG4Interface/IG4ActionTool.h"
-#include "SimG4Interface/IG4MagneticFieldTool.h"
+#include "SimG4Interface/ISimG4Svc.h"
+#include "SimG4Interface/ISimG4DetectorConstruction.h"
+#include "SimG4Interface/ISimG4PhysicsList.h"
+#include "SimG4Interface/ISimG4ActionTool.h"
+#include "SimG4Interface/ISimG4MagneticFieldTool.h"
 
 //Gaudi
 #include "GaudiKernel/Service.h"
@@ -22,7 +22,7 @@
  */
 
 
-class G4SimSvc: public extends1<Service, IG4SimSvc> {
+class G4SimSvc: public extends1<Service, ISimG4Svc> {
 public:
   /// Standard constructor
   explicit G4SimSvc(const std::string& aName, ISvcLocator* aSL);
@@ -56,13 +56,13 @@ private:
   /// Pointer to the tool service
   SmartIF<IToolSvc> m_toolSvc;
   /// Handle for the detector construction tool
-  ToolHandle<IG4DetectorConstruction> m_detectorTool;
+  ToolHandle<ISimG4DetectorConstruction> m_detectorTool;
   /// Handle for the Geant physics list tool
-  ToolHandle<IG4PhysicsList> m_physicsListTool;
+  ToolHandle<ISimG4PhysicsList> m_physicsListTool;
   /// Handle for the user action initialization
-  ToolHandle<IG4ActionTool> m_actionsTool;
+  ToolHandle<ISimG4ActionTool> m_actionsTool;
   /// Handle for the magnetic field initialization
-  ToolHandle<IG4MagneticFieldTool> m_magneticFieldTool;
+  ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool;
   /// Geant4 commands to be executed
   std::vector<std::string> m_g4Commands;
 

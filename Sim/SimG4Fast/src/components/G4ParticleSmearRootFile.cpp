@@ -19,7 +19,7 @@ DECLARE_TOOL_FACTORY(G4ParticleSmearRootFile)
 G4ParticleSmearRootFile::G4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent):
     GaudiTool(type, name, parent),
     m_maxEta(0) {
-  declareInterface<IG4ParticleSmearTool>(this);
+  declareInterface<ISimG4ParticleSmearTool>(this);
   declareProperty("filename", m_resolutionFileName);
 }
 

@@ -7,7 +7,7 @@ DECLARE_TOOL_FACTORY(G4FastSimActions)
 
 G4FastSimActions::G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent) :
   AlgTool(type, name, parent) {
-  declareInterface<IG4ActionTool>(this);
+  declareInterface<ISimG4ActionTool>(this);
   declareProperty("smearing", m_smearTool);
   declarePublicTool(m_smearTool);
 }

@@ -7,7 +7,7 @@
 class IRndmGenSvc;
 
 // FCCSW
-#include "SimG4Interface/IG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 /** @class G4ParticleSmearSimple SimG4Fast/src/components/G4ParticleSmearSimple.h G4ParticleSmearSimple.h
  *
@@ -18,7 +18,7 @@ class IRndmGenSvc;
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearSimple: public GaudiTool, virtual public IG4ParticleSmearTool {
+class G4ParticleSmearSimple: public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
   explicit G4ParticleSmearSimple(const std::string& type , const std::string& name,
     const IInterface* parent);

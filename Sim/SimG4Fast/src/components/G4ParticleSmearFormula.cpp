@@ -17,7 +17,7 @@ G4ParticleSmearFormula::G4ParticleSmearFormula(const std::string& type, const st
     GaudiTool(type, name, parent),
     m_resolutionEnergy(nullptr),
     m_resolutionMomentum(nullptr) {
-  declareInterface<IG4ParticleSmearTool>(this);
+  declareInterface<ISimG4ParticleSmearTool>(this);
   declareProperty("resolutionEnergy", m_resolutionEnergyStr = "");
   declareProperty("resolutionMomentum", m_resolutionMomentumStr = "");
 }

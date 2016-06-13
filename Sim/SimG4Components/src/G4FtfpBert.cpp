@@ -8,7 +8,7 @@ DECLARE_TOOL_FACTORY(G4FtfpBert)
 
 G4FtfpBert::G4FtfpBert(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   AlgTool(aType, aName, aParent) {
-  declareInterface<IG4PhysicsList>(this);
+  declareInterface<ISimG4PhysicsList>(this);
 }
 
 G4FtfpBert::~G4FtfpBert() {}

@@ -4,7 +4,7 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4PhysicsList.h"
+#include "SimG4Interface/ISimG4PhysicsList.h"
 
 /** @class G4FtfpBert SimG4Components/src/G4FtfpBert.h G4FtfpBert.h
  *
@@ -13,7 +13,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4FtfpBert: public AlgTool, virtual public IG4PhysicsList {
+class G4FtfpBert: public AlgTool, virtual public ISimG4PhysicsList {
 public:
   explicit G4FtfpBert(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

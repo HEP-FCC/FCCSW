@@ -5,7 +5,7 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4ActionTool.h"
+#include "SimG4Interface/ISimG4ActionTool.h"
 
 /** @class G4FullSimActions SimG4Full/src/components/G4FullSimActions.h G4FullSimActions.h
  *
@@ -14,7 +14,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4FullSimActions: public AlgTool, virtual public IG4ActionTool {
+class G4FullSimActions: public AlgTool, virtual public ISimG4ActionTool {
 public:
    explicit G4FullSimActions(const std::string& type , const std::string& name,
                const IInterface* parent);

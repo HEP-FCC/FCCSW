@@ -5,7 +5,7 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4DetectorConstruction.h"
+#include "SimG4Interface/ISimG4DetectorConstruction.h"
 
 // Geant4
 #include "G4GDMLParser.hh"
@@ -18,7 +18,7 @@
  *  @author Anna Zaborowska
  */
 
-class G4GdmlDetector: public AlgTool, virtual public IG4DetectorConstruction {
+class G4GdmlDetector: public AlgTool, virtual public ISimG4DetectorConstruction {
 public:
   explicit G4GdmlDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

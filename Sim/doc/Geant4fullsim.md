@@ -43,9 +43,9 @@ Geant main manager class is `G4RunManager`. It has own implementation in FCCSW `
 The main simulation service `G4SimSvc` owns `sim::RunManager` and controls the communication between GAUDI and Geant (`sim::RunManager`).
 
 Necessary information about the simulation that needs to be given:
-* detector geometry (`IG4DetectorConstruction` tool)
-* physics list describing all the particles that can be created in the simulation and all the processes they may encounter (`IG4PhysicsList` tool)
-* additional requirements (so-called user actions) (`IG4ActionTool`)
+* detector geometry (`ISimG4DetectorConstruction` tool)
+* physics list describing all the particles that can be created in the simulation and all the processes they may encounter (`ISimG4PhysicsList` tool)
+* additional requirements (so-called user actions) (`ISimG4ActionTool`)
 
 This service is also passing events (`G4Event`) to and from Geant.
 
@@ -54,7 +54,7 @@ This service is also passing events (`G4Event`) to and from Geant.
 The main simulation algorithm communicates with `G4SimSvc` in each event loop execution.
 It is responsible for the translation of the EDM event (`MCParticleCollection`) to `G4Event`, passing it to be simulated and retrieving it afterwards.
 
-Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and [various information](#4-simulation-in-gaudi-algorithm-g4simalg). To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `IG4SaveOutputTool`.
+Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and [various information](#4-simulation-in-gaudi-algorithm-g4simalg). To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `ISimG4SaveOutputTool`.
 A property **outputs** of `G4SimAlg` takes a list of strings with those tool names.
 Those tools should declare the output that is supposed to be further stored by the algorithm `PodioOutput`.
 
@@ -235,7 +235,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
   </readouts>
   ~~~
   > #### Note:
-  > Names of the readouts structures are used further in the implementations if IG4SaveOutputTool, hence they should contain the name of the detector type they represent: "Tracker", "ECal" (or "EMCal"), "HCal".
+  > Names of the readouts structures are used further in the implementations if ISimG4SaveOutputTool, hence they should contain the name of the detector type they represent: "Tracker", "ECal" (or "EMCal"), "HCal".
 
 * C++ factory method should:
   * actually construct all the modules of the detector (extracting detail information e.g. on number of modules in z direction or in phi, their material, etc. from the XML file)
@@ -323,9 +323,9 @@ A translated `G4Event` is passed to `G4SimSvc` and after the simulation is done,
 
 ### 4.2. Output
 
-Saving the output from a simulated `G4Event` is performed by tools deriving from an interface `IG4SaveOutputTool`.
+Saving the output from a simulated `G4Event` is performed by tools deriving from an interface `ISimG4SaveOutputTool`.
 Tools may have the data outputs specified.
-A method `IG4SaveOutputTool::SaveOutput(const G4Event &aEvent)` is meant to retrieve any useful information and save it to EDM.
+A method `ISimG4SaveOutputTool::SaveOutput(const G4Event &aEvent)` is meant to retrieve any useful information and save it to EDM.
 Useful information means e.g. hits collections (`G4HCofThisEvent`) or anything stored in an implementation of `G4VUserEventInformation`, `G4VUserEventInformation`, `G4VUserTrackInformation`, `G4VUserPrimaryParticleInformation` etc.
 
 Existing tools store hits collections from the tracker detectors (`G4SaveTrackerHits`) or calorimeters (`G4SaveCalHits`).

@@ -6,8 +6,8 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "SimG4Interface/IG4ActionTool.h"
-#include "SimG4Interface/IG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4ActionTool.h"
+#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 
 /** @class G4FastSimActions SimG4Fast/src/components/G4FastSimActions.h G4FastSimActions.h
@@ -17,7 +17,7 @@
  *  @author Anna Zaborowska
 */
 
-class G4FastSimActions: public AlgTool, virtual public IG4ActionTool {
+class G4FastSimActions: public AlgTool, virtual public ISimG4ActionTool {
 public:
   explicit G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~G4FastSimActions();
@@ -36,7 +36,7 @@ public:
 
 private:
   /// Pointer to the smearing tool
-  ToolHandle<IG4ParticleSmearTool> m_smearTool;
+  ToolHandle<ISimG4ParticleSmearTool> m_smearTool;
 
 };
 

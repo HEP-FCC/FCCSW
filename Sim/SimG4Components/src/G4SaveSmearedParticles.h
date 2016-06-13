@@ -6,7 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimG4Interface/IG4SaveOutputTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 
 // datamodel
 namespace fcc {
@@ -21,7 +21,7 @@ class ParticleMCParticleAssociationCollection;
  *  @author Anna Zaborowska
  */
 
-class G4SaveSmearedParticles: public GaudiTool, virtual public IG4SaveOutputTool {
+class G4SaveSmearedParticles: public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
   explicit G4SaveSmearedParticles(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);

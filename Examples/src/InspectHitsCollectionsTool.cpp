@@ -10,7 +10,7 @@ DECLARE_TOOL_FACTORY(InspectHitsCollectionsTool)
 
 InspectHitsCollectionsTool::InspectHitsCollectionsTool(const std::string& aType, const std::string& aName, const IInterface* aParent):
 GaudiTool(aType, aName, aParent) {
-  declareInterface<IG4SaveOutputTool>(this);
+  declareInterface<ISimG4SaveOutputTool>(this);
 }
 
 InspectHitsCollectionsTool::~InspectHitsCollectionsTool() {}

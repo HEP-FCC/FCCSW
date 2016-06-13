@@ -27,7 +27,7 @@ G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool(const std::string& 
                                                              const std::string& nam,
                                                              const IInterface* parent)
     : GaudiTool(type, nam, parent) {
-  declareInterface<IG4EventProviderTool>(this);
+  declareInterface<ISimG4EventProviderTool>(this);
   declareProperty("particleName", m_particleName = "geantino", "Name of the generated particles");
   declareProperty("energyMin", m_energyMin = 1 * CLHEP::GeV, "Minimum energy of generated particles");
   declareProperty("energyMax", m_energyMax = 1 * CLHEP::TeV, "Maximum energy of generated particles");
