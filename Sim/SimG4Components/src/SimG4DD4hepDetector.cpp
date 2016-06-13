@@ -1,4 +1,4 @@
-#include "G4DD4hepDetector.h"
+#include "SimG4DD4hepDetector.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -6,16 +6,16 @@
 // Geant4
 #include "G4VUserDetectorConstruction.hh"
 
-DECLARE_TOOL_FACTORY(G4DD4hepDetector)
+DECLARE_TOOL_FACTORY(SimG4DD4hepDetector)
 
-G4DD4hepDetector::G4DD4hepDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
+SimG4DD4hepDetector::SimG4DD4hepDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4DetectorConstruction>(this);
 }
 
-G4DD4hepDetector::~G4DD4hepDetector() {}
+SimG4DD4hepDetector::~SimG4DD4hepDetector() {}
 
-StatusCode G4DD4hepDetector::initialize() {
+StatusCode SimG4DD4hepDetector::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -28,10 +28,10 @@ StatusCode G4DD4hepDetector::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4DD4hepDetector::finalize() {
+StatusCode SimG4DD4hepDetector::finalize() {
   return GaudiTool::finalize();
 }
 
-G4VUserDetectorConstruction* G4DD4hepDetector::getDetectorConstruction() {
+G4VUserDetectorConstruction* SimG4DD4hepDetector::getDetectorConstruction() {
   return m_geoSvc->getGeant4Geo();
 }

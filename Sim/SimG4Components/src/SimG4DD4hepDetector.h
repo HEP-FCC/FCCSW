@@ -8,7 +8,7 @@
 #include "SimG4Interface/ISimG4DetectorConstruction.h"
 class IGeoSvc;
 
-/** @class G4DD4hepDetector SimG4Components/src/G4DD4hepDetector.h G4DD4hepDetector.h
+/** @class SimG4DD4hepDetector SimG4Components/src/SimG4DD4hepDetector.h SimG4DD4hepDetector.h
  *
  *  Detector construction tool using the DD4hep.
  *  Retrieves the geometry build by the implementation of IGeoSvc.
@@ -16,11 +16,11 @@ class IGeoSvc;
  *  @author Anna Zaborowska
  */
 
-class G4DD4hepDetector: public GaudiTool, virtual public ISimG4DetectorConstruction {
+class SimG4DD4hepDetector: public GaudiTool, virtual public ISimG4DetectorConstruction {
   public:
-  explicit G4DD4hepDetector(const std::string& aType , const std::string& aName,
+  explicit SimG4DD4hepDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4DD4hepDetector();
+  virtual ~SimG4DD4hepDetector();
   /**  Initialize.
    *   @return status code
    */

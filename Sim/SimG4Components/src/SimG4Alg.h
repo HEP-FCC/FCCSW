@@ -21,10 +21,10 @@ class MCParticleCollection;
 // Geant
 class G4Event;
 
-/** @class G4SimAlg SimG4Components/src/G4SimAlg.h G4SimAlg.h
+/** @class SimG4Alg SimG4Components/src/SimG4Alg.h SimG4Alg.h
  *
  *  Geant simulation algorithm.
- *  Controls the event flow: translates the EDM event to G4Event, passes it to G4SimSvc,
+ *  Controls the event flow: translates the EDM event to G4Event, passes it to SimG4Svc,
  *  retrieves it after the finished simulation, and stores the output as specified in tools.
  *  It takes MCParticleCollection (\b'genParticles') as the input
  *  as well as a list of names of tools that define the EDM output (\b'outputs').
@@ -32,17 +32,17 @@ class G4Event;
  *  @author Anna Zaborowska
  */
 
-class G4SimAlg: public GaudiAlgorithm {
+class SimG4Alg: public GaudiAlgorithm {
 public:
-  explicit G4SimAlg(const std::string&, ISvcLocator*);
-  virtual ~G4SimAlg();
+  explicit SimG4Alg(const std::string&, ISvcLocator*);
+  virtual ~SimG4Alg();
   /**  Initialize.
    *   @return status code
    */
   virtual StatusCode initialize() final;
   /**  Execute the simulation.
    *   Translation of MCParticleCollection to G4Event is done using EDM2G4() method.
-   *   Then, G4Event is passed to G4SimSvc for the simulation and retrieved afterwards.
+   *   Then, G4Event is passed to SimG4Svc for the simulation and retrieved afterwards.
    *   The tools m_saveTools are used to save the output from the retrieved events.
    *   Finally, the event is terminated.
    *   @return status code

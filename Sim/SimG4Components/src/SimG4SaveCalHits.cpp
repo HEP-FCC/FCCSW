@@ -1,4 +1,4 @@
-#include "G4SaveCalHits.h"
+#include "SimG4SaveCalHits.h"
 
 // Geant4
 #include "G4Event.hh"
@@ -10,9 +10,9 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_TOOL_FACTORY(G4SaveCalHits)
+DECLARE_TOOL_FACTORY(SimG4SaveCalHits)
 
-G4SaveCalHits::G4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
+SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("caloType", m_calType);
@@ -23,9 +23,9 @@ G4SaveCalHits::G4SaveCalHits(const std::string& aType, const std::string& aName,
   declareProperty("DataOutputs", outputDataObjects());
 }
 
-G4SaveCalHits::~G4SaveCalHits() {}
+SimG4SaveCalHits::~SimG4SaveCalHits() {}
 
-StatusCode G4SaveCalHits::initialize() {
+StatusCode SimG4SaveCalHits::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -38,11 +38,11 @@ StatusCode G4SaveCalHits::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SaveCalHits::finalize() {
+StatusCode SimG4SaveCalHits::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4SaveCalHits::saveOutput(const G4Event& aEvent) {
+StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;

@@ -13,7 +13,7 @@ class IRndmGen;
 // FCCSW
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
-/** @class G4ParticleSmearRootFile SimG4Fast/src/components/G4ParticleSmearRootFile.h G4ParticleSmearRootFile.h
+/** @class SimG4ParticleSmearRootFile SimG4Fast/src/components/SimG4ParticleSmearRootFile.h SimG4ParticleSmearRootFile.h
  *
  *  Root file particle smearing tool.
  *  Momentum/energy dependent smearing.
@@ -27,11 +27,11 @@ class IRndmGen;
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearRootFile: public GaudiTool, virtual public ISimG4ParticleSmearTool {
+class SimG4ParticleSmearRootFile: public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
-  explicit G4ParticleSmearRootFile(const std::string& type , const std::string& name,
+  explicit SimG4ParticleSmearRootFile(const std::string& type , const std::string& name,
     const IInterface* parent);
-  virtual ~G4ParticleSmearRootFile();
+  virtual ~SimG4ParticleSmearRootFile();
 
   /**  Initialize the tool and a random number generator.
    *   @return status code

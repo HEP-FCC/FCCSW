@@ -19,7 +19,7 @@ class MCParticleCollection;
 class GenVertexCollection;
 }
 
-/** @class G4SingleParticleGeneratorTool G4SingleParticleGeneratorTool.h "G4SingleParticleGeneratorTool.h"
+/** @class SimG4SingleParticleGeneratorTool SimG4SingleParticleGeneratorTool.h "SimG4SingleParticleGeneratorTool.h"
 *
 *  Tool that generates single particles with parameters set via options file.
 *
@@ -27,15 +27,15 @@ class GenVertexCollection;
 *  @date   2014-10-01
 */
 
-class G4SingleParticleGeneratorTool : public GaudiTool, virtual public ISimG4EventProviderTool {
+class SimG4SingleParticleGeneratorTool : public GaudiTool, virtual public ISimG4EventProviderTool {
 public:
   /// Standard constructor
-  G4SingleParticleGeneratorTool(const std::string& type, const std::string& name, const IInterface* parent);
+  SimG4SingleParticleGeneratorTool(const std::string& type, const std::string& name, const IInterface* parent);
 
   virtual StatusCode initialize() final;
 
   /// Destructor
-  virtual ~G4SingleParticleGeneratorTool();
+  virtual ~SimG4SingleParticleGeneratorTool();
 
   /// Generates primaries using the parameters set via options file, uses CLHEP:RandFlat random number generator
   /// @returns G4Event with primaries generated through G4ParticleGun (ownership is transferred to the caller)

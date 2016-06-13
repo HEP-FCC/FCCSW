@@ -16,7 +16,7 @@ class ParticleMCParticleAssociationCollection;
 
 class TH1F;
 
-/** @class G4FastSimHistograms SimG4Components/src/G4FastSimHistograms.h G4FastSimHistograms.h
+/** @class SimG4FastSimHistograms SimG4Components/src/SimG4FastSimHistograms.h SimG4FastSimHistograms.h
  *
  *  Fast simulation histograms algorithm.
  *  Fills validation histograms.
@@ -25,10 +25,10 @@ class TH1F;
  *  @author Anna Zaborowska
  */
 
-class G4FastSimHistograms: public GaudiAlgorithm {
+class SimG4FastSimHistograms: public GaudiAlgorithm {
 public:
-  explicit G4FastSimHistograms(const std::string&, ISvcLocator*);
-  virtual ~G4FastSimHistograms();
+  explicit SimG4FastSimHistograms(const std::string&, ISvcLocator*);
+  virtual ~SimG4FastSimHistograms();
   /**  Initialize.
    *   @return status code
    */

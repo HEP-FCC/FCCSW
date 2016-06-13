@@ -11,11 +11,11 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
 * [Overview](#1-overview)
   * [Fast simulation](#11-fast-simulation)
 * [Example of fast sim configuration](#2-example)
-* [Geant configuration via GAUDI service `G4SimSvc`](#3-geant-configuration-via-gaudi-service-g4simsvc)
+* [Geant configuration via GAUDI service `SimG4Svc`](#3-geant-configuration-via-gaudi-service-simg4svc)
   * [Geometry construction](#31-geometry-construction)
   * [Physics list](#32-physics-list)
   * [User actions](#33-user-actions)
-* [Simulation in GAUDI algorithm `G4SimAlg`](#4-simulation-in-gaudi-algorithm-g4simalg)
+* [Simulation in GAUDI algorithm `SimG4Alg`](#4-simulation-in-gaudi-algorithm-simg4alg)
   * [Events](#41-event-processing)
   * [Output](#42-output)
 
@@ -57,57 +57,57 @@ To run the fast simulation:
 
 The differences between the configuration file of the fast simulation (options/geant_fastsim.py) with respect to the full simulation:
 
-  * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-g4simsvc))
+  * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-simg4svc))
     - **physicslist** - tool providing the [physics list](#32-physics-list),
 
-      [`G4FastSimPhysicsList`](#) adds fast sim process on top of the standard  ('full') physics list, eg. `G4FtfpBert`, included by a property **fullphysics**
+      [`SimG4FastSimPhysicsList`](#) adds fast sim process on top of the standard  ('full') physics list, eg. `SimG4FtfpBert`, included by a property **fullphysics**
 
     ~~~{.py}
-    from Configurables import G4FastSimPhysicsList
-    physicslisttool = G4FastSimPhysicsList("Physics", fullphysics="G4FtfpBert")
+    from Configurables import SimG4FastSimPhysicsList
+    physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
     ~~~
 
     - **actions** - tool providing the [user actions initialisation list](#33-user-actions)
 
-      `G4FastSimActions` includes in particular `sim::InitializeModelsRunAction` essential for the fast sim models registration to the geometry.
-      Also a simple smearing tool `G4ParticleSmearSimple` is created (**smearing** defined in a property **fullphysics**).
+      `SimG4FastSimActions` includes in particular `sim::InitializeModelsRunAction` essential for the fast sim models registration to the geometry.
+      Also a simple smearing tool `SimG4ParticleSmearSimple` is created (**smearing** defined in a property **fullphysics**).
 
     ~~~{.py}
-    from Configurables import G4FastSimActions, G4ParticleSmearSimple
-    smeartool = G4ParticleSmearSimple("Smear", sigma = 0.02)
-    actionstool = G4FastSimActions("Actions", smearing=smeartool)
+    from Configurables import SimG4FastSimActions, SimG4ParticleSmearSimple
+    smeartool = SimG4ParticleSmearSimple("Smear", sigma = 0.02)
+    actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
     ~~~
 
-    - `G4SimSvc` configuration:
+    - `SimG4Svc` configuration:
 
     ~~~{.py}
-    from Configurables import G4SimSvc
-    geantservice = G4SimSvc("G4SimSvc",
-                             detector='G4DD4hepDetector',
+    from Configurables import SimG4Svc
+    geantservice = SimG4Svc("SimG4Svc",
+                             detector='SimG4DD4hepDetector',
                              physicslist=physicslisttool,
                              actions=actionstool)
     ~~~
 
 
-  * simulation ([see more](#4-simulation-in-gaudi-algorithm-g4simalg))
-    - as for the full simulation, but using different tools to store the output of the simulation (`G4SaveSmearedParticles`)
+  * simulation ([see more](#4-simulation-in-gaudi-algorithm-simg4alg))
+    - as for the full simulation, but using different tools to store the output of the simulation (`SimG4SaveSmearedParticles`)
 
     ~~~{.py}
-    from Configurables import G4SimAlg,G4SaveSmearedParticles
-    saveparticlestool = G4SaveSmearedParticles("G4SaveSmearedParticles")
+    from Configurables import SimG4Alg,SimG4SaveSmearedParticles
+    saveparticlestool = SimG4SaveSmearedParticles("SimG4SaveSmearedParticles")
     saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
     saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
-    geantsim = G4SimAlg("G4SimAlg",
-                         outputs = ["G4SaveSmearedParticles/G4SaveSmearedParticles"])
+    geantsim = SimG4Alg("SimG4Alg",
+                         outputs = ["SimG4SaveSmearedParticles/SimG4SaveSmearedParticles"])
     geantsim.DataInputs.genParticles.Path="allGenParticles"
     ~~~
 
 
 
-3. Geant configuration: via GAUDI service G4SimSvc
+3. Geant configuration: via GAUDI service SimG4Svc
 ----
 
-Described in details in the [instruction on Geant4 simulation in FCCSW](Geant4fullsim.md#3-geant-configuration-via-gaudi-service-g4simsvc)
+Described in details in the [instruction on Geant4 simulation in FCCSW](Geant4fullsim.md#3-geant-configuration-via-gaudi-service-simg4svc)
 
 
 ### 3.1. Geometry construction
@@ -137,11 +137,11 @@ Currently only smearing for tracker is supported. There are currently three tool
 
 The main concept of smearing for all tools is the same. The momentum/energy is smeared by multiplying it by the randomly generated number from a Gaussian distribution with the mean $\mu=1$ and the standard deviation $\sigma$ (resolution). The difference comes from the way the resolutions are obtained.
 
-The simple smearing tool, `G4ParticleSmearSimple`, smears particles (its momenta) with a non-particle and non-momentum dependent constant resolution. It can be set as a parameter **sigma** in a job configuration file (default: 0.01= 1%).
+The simple smearing tool, `SimG4ParticleSmearSimple`, smears particles (its momenta) with a non-particle and non-momentum dependent constant resolution. It can be set as a parameter **sigma** in a job configuration file (default: 0.01= 1%).
 
-A default smearing tool, `G4ParticleSmearFormula`, uses [TFormula](https://root.cern.ch/doc/master/classTFormula.html) to parse the resolutions that are momentum and energy dependent and are given as parameters **resolutionMomentum** and **resolutionEnergy** in a job configuration file (as strings). They are used in the tracker and calorimeter smearing, respectively. In particular, the resolution of e.g. tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, `G4ParticleSmearSimple` may be a more suitable tool.
+A default smearing tool, `SimG4ParticleSmearFormula`, uses [TFormula](https://root.cern.ch/doc/master/classTFormula.html) to parse the resolutions that are momentum and energy dependent and are given as parameters **resolutionMomentum** and **resolutionEnergy** in a job configuration file (as strings). They are used in the tracker and calorimeter smearing, respectively. In particular, the resolution of e.g. tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, `SimG4ParticleSmearSimple` may be a more suitable tool.
 
-The third available tool uses the momentum and pseudoprapidity dependent resolutions read from ROOT file. Such a file may be obtained with the [tkLayout]. The tool `G4ParticleSmearRootFile` reades ROOT file defined in a property **filename** in a job configuration file (in the example `/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root'). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
+The third available tool uses the momentum and pseudoprapidity dependent resolutions read from ROOT file. Such a file may be obtained with the [tkLayout]. The tool `SimG4ParticleSmearRootFile` reades ROOT file defined in a property **filename** in a job configuration file (in the example `/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root'). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
 The momentum-dependent resolutions are defined for each pseudorapidity bin and saved in `TGraph`. To specify eta bin, `TGraph` needs to be named following the convention: *'etafromX_etatoY'*, where X and Y are respectively lower and upper boundaries of pseudorapidity bin.
 
 
@@ -156,7 +156,7 @@ ___
 
 Geant simulation requires the description of all the particles and processes, the so-called physics list. An example of such a list is a predefined `FTFP_BERT` physics list.
 
-Fast simulation requires some additions to the standard physics list, hence there is an overlay, created by `G4FastSimPhysicsList` tool. It takes, as a property **fullphysics**, the name of the tool containing the particles' and standard processes' definitions (in case of FTFP_BERT list it is `G4FtfpBert` tool).
+Fast simulation requires some additions to the standard physics list, hence there is an overlay, created by `SimG4FastSimPhysicsList` tool. It takes, as a property **fullphysics**, the name of the tool containing the particles' and standard processes' definitions (in case of FTFP_BERT list it is `SimG4FtfpBert` tool).
 
 Additionally:
 * "Coupled Transportation" is used to allow invoking `G4PathFinder` that propagates the particle in the magnetic field.
@@ -172,16 +172,16 @@ Additionally:
 For the fast simulation purposes a run user action `sim::InitializeModelsRunAction` is created. It checks the names of the logical volume in the world volume for the key-words: 'Tracker', 'ECal', 'EMCal' and 'HCal'. Currently only 'Tracker' name is valid (other detectors do not have yet the parametrisation).
 
 First, for any name containing 'Tracker', `G4Region`is created. That region becomes an envelope for the `sim::FastSimModelTracker`.
-Each model will use the smearing tool for the momentum/energy smearing, so the name of the smearing tool needs to be passed to the `sim::InitializeModelsRunAction` through the property of `G4FastSimActions` (**smearing**).
+Each model will use the smearing tool for the momentum/energy smearing, so the name of the smearing tool needs to be passed to the `sim::InitializeModelsRunAction` through the property of `SimG4FastSimActions` (**smearing**).
 
 Furthermore, there is a tracking user action `SaveParticlesUserAction` that sets information about the momentum, vertex position and status of each particle at the end of tracking. The information `sim::ParticleInformation` is associated with any `G4PrimaryParticle` and can be retrieved after the simulation from an event ([see](#42-output)).
 
 
-## 4. Simulation in GAUDI algorithm G4SimAlg
+## 4. Simulation in GAUDI algorithm SimG4Alg
 
 There is one, common algorithm handling fast and full simulation in Geant4. Indeed, full simulation is performed for all the particles and all the detectors that do not have fast simulation models attached (in `sim::InitializeModelsRunAction`, [see](#31-geometry-construction)).
 
-However, in order to be able to save the smeared particles, user need to create `G4SaveSmearedParticles` tool.
+However, in order to be able to save the smeared particles, user need to create `SimG4SaveSmearedParticles` tool.
 
 ### 4.1. Event Processing
 
@@ -189,7 +189,7 @@ As for [full simulation](#Geant4fullsim.md#41-event-processing).
 
 ### 4.2. Output
 
-`G4SaveSmearedParticles` tool stores all the particles (EDM `ParticleCollection`) and particlesMCparticles (EDM `ParticleMCParticleAssociationCollection`). They can be treated as 'reconstructed' particles as the detector effects (both resolution and reconstruction efficiency) are imitated by the smearing and the resulting changes to the momentum are taken into account.
+`SimG4SaveSmearedParticles` tool stores all the particles (EDM `ParticleCollection`) and particlesMCparticles (EDM `ParticleMCParticleAssociationCollection`). They can be treated as 'reconstructed' particles as the detector effects (both resolution and reconstruction efficiency) are imitated by the smearing and the resulting changes to the momentum are taken into account.
 
 At the end of tracking (`SaveParticlesUserAction::PostUserTrackingAction()`), information about the particles momenta, status and vertex position is stored in `sim::ParticleInformation`. Particle information contains also the reference to the EDM `MCParticle`. Therefore, for each particle in the event, based on `sim::ParticleInformation`, an EDM output is created (including the association between `MCParticle` and `Particle`).
 

@@ -15,18 +15,18 @@ class CaloHitCollection;
 class CaloClusterHitsAssociationCollection;
 }
 
-/** @class G4SaveCalHits SimG4Components/src/G4SaveCalHits.h G4SaveCalHits.h
+/** @class SimG4SaveCalHits SimG4Components/src/SimG4SaveCalHits.h SimG4SaveCalHits.h
  *
  *  Save tracker hits tool.
  *
  *  @author Anna Zaborowska
  */
 
-class G4SaveCalHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveCalHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit G4SaveCalHits(const std::string& aType , const std::string& aName,
+  explicit SimG4SaveCalHits(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4SaveCalHits();
+  virtual ~SimG4SaveCalHits();
   /**  Initialize.
    *   @return status code
    */

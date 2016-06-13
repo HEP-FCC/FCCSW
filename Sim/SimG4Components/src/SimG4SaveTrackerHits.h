@@ -15,18 +15,18 @@ class TrackHitCollection;
 class TrackClusterHitsAssociationCollection;
 }
 
-/** @class G4SaveTrackerHits SimG4Components/src/G4SaveTrackerHits.h G4SaveTrackerHits.h
+/** @class SimG4SaveTrackerHits SimG4Components/src/SimG4SaveTrackerHits.h SimG4SaveTrackerHits.h
  *
  *  Save tracker hits tool.
  *
  *  @author Anna Zaborowska
  */
 
-class G4SaveTrackerHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveTrackerHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit G4SaveTrackerHits(const std::string& aType , const std::string& aName,
+  explicit SimG4SaveTrackerHits(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4SaveTrackerHits();
+  virtual ~SimG4SaveTrackerHits();
   /**  Initialize.
    *   @return status code
    */

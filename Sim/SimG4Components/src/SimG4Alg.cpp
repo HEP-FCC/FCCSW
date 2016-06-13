@@ -1,4 +1,4 @@
-#include "G4SimAlg.h"
+#include "SimG4Alg.h"
 
 // FCCSW
 #include "SimG4Interface/ISimG4Svc.h"
@@ -6,20 +6,20 @@
 // Geant
 #include "G4Event.hh"
 
-DECLARE_ALGORITHM_FACTORY(G4SimAlg)
+DECLARE_ALGORITHM_FACTORY(SimG4Alg)
 
-G4SimAlg::G4SimAlg(const std::string& aName, ISvcLocator* aSvcLoc):
+SimG4Alg::SimG4Alg(const std::string& aName, ISvcLocator* aSvcLoc):
   GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("outputs",m_saveToolNames);
-  declarePrivateTool(m_eventGenTool, "G4PrimariesFromEdmTool", true);
+  declarePrivateTool(m_eventGenTool, "SimG4PrimariesFromEdmTool", true);
   declareProperty("eventGenerator", m_eventGenTool);
 }
-G4SimAlg::~G4SimAlg() {}
+SimG4Alg::~SimG4Alg() {}
 
-StatusCode G4SimAlg::initialize() {
+StatusCode SimG4Alg::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
-  m_geantSvc = service("G4SimSvc");
+  m_geantSvc = service("SimG4Svc");
   if (! m_geantSvc) {
     error() << "Unable to locate Geant Simulation Service" << endmsg;
     return StatusCode::FAILURE;
@@ -39,7 +39,7 @@ StatusCode G4SimAlg::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SimAlg::execute() {
+StatusCode SimG4Alg::execute() {
   // first translate the event
   G4Event* event = m_eventGenTool->g4Event();
 
@@ -57,6 +57,6 @@ StatusCode G4SimAlg::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SimAlg::finalize() {
+StatusCode SimG4Alg::finalize() {
   return GaudiAlgorithm::finalize();
 }

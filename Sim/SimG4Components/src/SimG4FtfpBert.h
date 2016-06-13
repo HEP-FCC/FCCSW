@@ -6,18 +6,18 @@
 // FCCSW
 #include "SimG4Interface/ISimG4PhysicsList.h"
 
-/** @class G4FtfpBert SimG4Components/src/G4FtfpBert.h G4FtfpBert.h
+/** @class SimG4FtfpBert SimG4Components/src/SimG4FtfpBert.h SimG4FtfpBert.h
  *
  *  FTFP_BERT physics list tool.
  *
  *  @author Anna Zaborowska
  */
 
-class G4FtfpBert: public AlgTool, virtual public ISimG4PhysicsList {
+class SimG4FtfpBert: public AlgTool, virtual public ISimG4PhysicsList {
 public:
-  explicit G4FtfpBert(const std::string& aType , const std::string& aName,
+  explicit SimG4FtfpBert(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4FtfpBert();
+  virtual ~SimG4FtfpBert();
   /**  Initialize.
    *   @return status code
    */

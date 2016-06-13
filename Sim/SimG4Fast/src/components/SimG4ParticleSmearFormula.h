@@ -13,7 +13,7 @@ class TFormula;
 // FCCSW
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
-/** @class G4ParticleSmearFormula SimG4Fast/src/components/G4ParticleSmearFormula.h G4ParticleSmearFormula.h
+/** @class SimG4ParticleSmearFormula SimG4Fast/src/components/SimG4ParticleSmearFormula.h SimG4ParticleSmearFormula.h
  *
  *  Formula particle smearing tool.
  *  Momentum/energy dependent smearing.
@@ -23,11 +23,11 @@ class TFormula;
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearFormula: public GaudiTool, virtual public ISimG4ParticleSmearTool {
+class SimG4ParticleSmearFormula: public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
-  explicit G4ParticleSmearFormula(const std::string& type , const std::string& name,
+  explicit SimG4ParticleSmearFormula(const std::string& type , const std::string& name,
     const IInterface* parent);
-  virtual ~G4ParticleSmearFormula();
+  virtual ~SimG4ParticleSmearFormula();
 
   /**  Initialize the tool and a random number generator.
    *   @return status code

@@ -7,18 +7,18 @@
 // FCCSW
 #include "SimG4Interface/ISimG4ActionTool.h"
 
-/** @class G4FullSimActions SimG4Full/src/components/G4FullSimActions.h G4FullSimActions.h
+/** @class SimG4FullSimActions SimG4Full/src/components/SimG4FullSimActions.h SimG4FullSimActions.h
  *
  *  Tool for loading full simulation user action initialization (list of user actions)
  *
  *  @author Anna Zaborowska
  */
 
-class G4FullSimActions: public AlgTool, virtual public ISimG4ActionTool {
+class SimG4FullSimActions: public AlgTool, virtual public ISimG4ActionTool {
 public:
-   explicit G4FullSimActions(const std::string& type , const std::string& name,
+   explicit SimG4FullSimActions(const std::string& type , const std::string& name,
                const IInterface* parent);
-   virtual ~G4FullSimActions();
+   virtual ~SimG4FullSimActions();
 
   /**  Initialize.
    *   @return status code

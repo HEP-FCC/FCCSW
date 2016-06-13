@@ -1,4 +1,4 @@
-#include "G4SimSvc.h"
+#include "SimG4Svc.h"
 
 // Gaudi
 #include "GaudiKernel/IToolSvc.h"
@@ -8,24 +8,24 @@
 #include "G4VModularPhysicsList.hh"
 #include "G4UImanager.hh"
 
-DECLARE_SERVICE_FACTORY(G4SimSvc)
+DECLARE_SERVICE_FACTORY(SimG4Svc)
 
-G4SimSvc::G4SimSvc(const std::string& aName, ISvcLocator* aSL):
+SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL):
   base_class(aName, aSL) {
   declareProperty("detector", m_detectorTool);
-  declarePrivateTool(m_detectorTool, "G4DD4hepDetector", true);
+  declarePrivateTool(m_detectorTool, "SimG4DD4hepDetector", true);
   declareProperty("physicslist", m_physicsListTool);
   declarePrivateTool(m_physicsListTool, "G4FTFP_BERT", true);
   declareProperty("actions", m_actionsTool);
-  declarePrivateTool(m_actionsTool, "G4FullSimActions", true);
+  declarePrivateTool(m_actionsTool, "SimG4FullSimActions", true);
   declareProperty("magneticField", m_magneticFieldTool);
-  declarePrivateTool(m_magneticFieldTool,"G4ConstantMagneticFieldTool", true);
+  declarePrivateTool(m_magneticFieldTool,"SimG4ConstantMagneticFieldTool", true);
   declareProperty("G4commands",m_g4Commands);
 }
 
-G4SimSvc::~G4SimSvc(){}
+SimG4Svc::~SimG4Svc(){}
 
-StatusCode G4SimSvc::initialize(){
+StatusCode SimG4Svc::initialize(){
   // Initialize necessary Gaudi components
   if (Service::initialize().isFailure()){
     error()<<"Unable to initialize Service()"<<endmsg;
@@ -79,7 +79,7 @@ StatusCode G4SimSvc::initialize(){
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SimSvc::processEvent(G4Event& aEvent) {
+StatusCode SimG4Svc::processEvent(G4Event& aEvent) {
   bool status = m_runManager.processEvent( aEvent );
   if ( !status ) {
      error() << "Unable to process event in Geant" << endmsg;
@@ -88,16 +88,16 @@ StatusCode G4SimSvc::processEvent(G4Event& aEvent) {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SimSvc::retrieveEvent(G4Event*& aEvent) {
+StatusCode SimG4Svc::retrieveEvent(G4Event*& aEvent) {
   return m_runManager.retrieveEvent(aEvent);
 }
 
-StatusCode G4SimSvc::terminateEvent() {
+StatusCode SimG4Svc::terminateEvent() {
   m_runManager.terminateEvent();
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SimSvc::finalize() {
+StatusCode SimG4Svc::finalize() {
   m_runManager.finalize();
   return Service::finalize();
 }

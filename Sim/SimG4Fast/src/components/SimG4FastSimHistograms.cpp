@@ -1,4 +1,4 @@
-#include "G4FastSimHistograms.h"
+#include "SimG4FastSimHistograms.h"
 
 // FCCSW
 #include "GaudiKernel/ITHistSvc.h"
@@ -12,9 +12,9 @@
 #include "CLHEP/Vector/ThreeVector.h"
 
 
-DECLARE_ALGORITHM_FACTORY(G4FastSimHistograms)
+DECLARE_ALGORITHM_FACTORY(SimG4FastSimHistograms)
 
-G4FastSimHistograms::G4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc):
+SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc),
   m_p(nullptr),
   m_diffP(nullptr),
@@ -22,9 +22,9 @@ GaudiAlgorithm(aName, aSvcLoc),
   declareInput("particles", m_smParticles);
   declareInput("particlesMCparticles", m_particlesMCparticles);
 }
-G4FastSimHistograms::~G4FastSimHistograms() {}
+SimG4FastSimHistograms::~SimG4FastSimHistograms() {}
 
-StatusCode G4FastSimHistograms::initialize() {
+StatusCode SimG4FastSimHistograms::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   m_histSvc = service("THistSvc");
@@ -51,7 +51,7 @@ StatusCode G4FastSimHistograms::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4FastSimHistograms::execute() {
+StatusCode SimG4FastSimHistograms::execute() {
   const auto particles = m_smParticles.get();
   const auto associations = m_particlesMCparticles.get();
   for(const auto& part: *particles) {
@@ -82,6 +82,6 @@ StatusCode G4FastSimHistograms::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4FastSimHistograms::finalize() {
+StatusCode SimG4FastSimHistograms::finalize() {
   return GaudiAlgorithm::finalize();
 }

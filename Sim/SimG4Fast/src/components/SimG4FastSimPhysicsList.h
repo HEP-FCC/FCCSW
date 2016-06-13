@@ -8,7 +8,7 @@
 // FCCSW
 #include "SimG4Interface/ISimG4PhysicsList.h"
 
-/** @class G4FastSimPhysicsList SimG4Fast/src/components/G4FastSimPhysicsList.h G4FastSimPhysicsList.h
+/** @class SimG4FastSimPhysicsList SimG4Fast/src/components/SimG4FastSimPhysicsList.h SimG4FastSimPhysicsList.h
  *
  *  Fast simulation physics list tool.
  *  Attaches parametrisation process to the full simulation physics list.
@@ -16,10 +16,10 @@
  *  @author Anna Zaborowska
  */
 
-class G4FastSimPhysicsList: public AlgTool, virtual public ISimG4PhysicsList {
+class SimG4FastSimPhysicsList: public AlgTool, virtual public ISimG4PhysicsList {
 public:
-  explicit G4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
-  virtual ~G4FastSimPhysicsList();
+  explicit SimG4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
+  virtual ~SimG4FastSimPhysicsList();
 
   /**  Initialize.
    *   @return status code

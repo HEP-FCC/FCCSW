@@ -1,5 +1,5 @@
 // local
-#include "G4SingleParticleGeneratorTool.h"
+#include "SimG4SingleParticleGeneratorTool.h"
 
 // FCCSW
 #include "SimG4Common/Units.h"
@@ -21,9 +21,9 @@
 #include "datamodel/GenVertexCollection.h"
 
 // Declaration of the Tool
-DECLARE_COMPONENT(G4SingleParticleGeneratorTool)
+DECLARE_COMPONENT(SimG4SingleParticleGeneratorTool)
 
-G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool(const std::string& type,
+SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::string& type,
                                                              const std::string& nam,
                                                              const IInterface* parent)
     : GaudiTool(type, nam, parent) {
@@ -43,11 +43,11 @@ G4SingleParticleGeneratorTool::G4SingleParticleGeneratorTool(const std::string& 
   declareOutput("genVertices", m_genVerticesHandle, "GenVertices");
 }
 
-G4SingleParticleGeneratorTool::~G4SingleParticleGeneratorTool() {}
+SimG4SingleParticleGeneratorTool::~SimG4SingleParticleGeneratorTool() {}
 
-StatusCode G4SingleParticleGeneratorTool::initialize() { return GaudiTool::initialize(); }
+StatusCode SimG4SingleParticleGeneratorTool::initialize() { return GaudiTool::initialize(); }
 
-G4Event* G4SingleParticleGeneratorTool::g4Event() {
+G4Event* SimG4SingleParticleGeneratorTool::g4Event() {
   auto theEvent = new G4Event();
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particleDef = particleTable->FindParticle(m_particleName);
@@ -89,7 +89,7 @@ G4Event* G4SingleParticleGeneratorTool::g4Event() {
 }
 
 
-StatusCode G4SingleParticleGeneratorTool::saveToEdm(const G4PrimaryVertex* aVertex,
+StatusCode SimG4SingleParticleGeneratorTool::saveToEdm(const G4PrimaryVertex* aVertex,
                                                     const G4PrimaryParticle* aParticle) {
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();

@@ -10,17 +10,17 @@
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 
-/** @class G4FastSimActions SimG4Fast/src/components/G4FastSimActions.h G4FastSimActions.h
+/** @class SimG4FastSimActions SimG4Fast/src/components/SimG4FastSimActions.h SimG4FastSimActions.h
  *
  *  Tool for loading fast simulation user action initialization (list of user actions)
  *
  *  @author Anna Zaborowska
 */
 
-class G4FastSimActions: public AlgTool, virtual public ISimG4ActionTool {
+class SimG4FastSimActions: public AlgTool, virtual public ISimG4ActionTool {
 public:
-  explicit G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent);
-  virtual ~G4FastSimActions();
+  explicit SimG4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~SimG4FastSimActions();
   /**  Initialize.
    *   @return status code
    */

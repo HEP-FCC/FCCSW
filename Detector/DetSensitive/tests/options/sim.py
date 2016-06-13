@@ -26,17 +26,17 @@ hepmc_dump.DataInputs.hepmc.Path="hepmc"
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:compact/Box.xml'], OutputLevel = DEBUG)
 
-from Configurables import G4SimSvc
-geantservice = G4SimSvc("G4SimSvc",
-                        detector='G4DD4hepDetector',
-                        physicslist="G4FtfpBert",
-                        actions="G4FullSimActions")
+from Configurables import SimG4Svc
+geantservice = SimG4Svc("SimG4Svc",
+                        detector='SimG4DD4hepDetector',
+                        physicslist="SimG4FtfpBert",
+                        actions="SimG4FullSimActions")
 
-from Configurables import G4SimAlg, G4SaveCalHits
-savecaltool = G4SaveCalHits("saveECalHits", caloType = "ECal")
+from Configurables import SimG4Alg, SimG4SaveCalHits
+savecaltool = SimG4SaveCalHits("saveECalHits", caloType = "ECal")
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
-geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveCalHits/saveECalHits",
+geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits",
                                           "InspectHitsCollectionsTool"])
 geantsim.DataInputs.genParticles.Path="allGenParticles"
 
@@ -51,7 +51,7 @@ from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [gen, hepmc_converter, hepmc_dump, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                # order is important, as GeoSvc is needed by G4SimSvc
+                # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podiosvc, ppservice, geoservice, geantservice],
                 OutputLevel=DEBUG
  )

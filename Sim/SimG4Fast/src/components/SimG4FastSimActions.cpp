@@ -1,20 +1,20 @@
-#include "G4FastSimActions.h"
+#include "SimG4FastSimActions.h"
 
 // FCCSW
 #include "SimG4Fast/FastSimActions.h"
 
-DECLARE_TOOL_FACTORY(G4FastSimActions)
+DECLARE_TOOL_FACTORY(SimG4FastSimActions)
 
-G4FastSimActions::G4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent) :
+SimG4FastSimActions::SimG4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent) :
   AlgTool(type, name, parent) {
   declareInterface<ISimG4ActionTool>(this);
   declareProperty("smearing", m_smearTool);
   declarePublicTool(m_smearTool);
 }
 
-G4FastSimActions::~G4FastSimActions() {}
+SimG4FastSimActions::~SimG4FastSimActions() {}
 
-StatusCode G4FastSimActions::initialize() {
+StatusCode SimG4FastSimActions::initialize() {
   if(AlgTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -22,10 +22,10 @@ StatusCode G4FastSimActions::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4FastSimActions::finalize() {
+StatusCode SimG4FastSimActions::finalize() {
   return AlgTool::finalize();
 }
 
-G4VUserActionInitialization* G4FastSimActions::getUserActionInitialization() {
+G4VUserActionInitialization* SimG4FastSimActions::getUserActionInitialization() {
   return new sim::FastSimActions(m_smearTool.name());
 }

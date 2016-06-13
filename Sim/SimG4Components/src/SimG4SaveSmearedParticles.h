@@ -14,18 +14,18 @@ class ParticleCollection;
 class ParticleMCParticleAssociationCollection;
 }
 
-/** @class G4SaveSmearedParticles SimG4Components/src/G4SaveSmearedParticles.h G4SaveSmearedParticles.h
+/** @class SimG4SaveSmearedParticles SimG4Components/src/SimG4SaveSmearedParticles.h SimG4SaveSmearedParticles.h
  *
  *  Save 'reconstructed' (smeared) particles.
  *
  *  @author Anna Zaborowska
  */
 
-class G4SaveSmearedParticles: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveSmearedParticles: public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit G4SaveSmearedParticles(const std::string& aType , const std::string& aName,
+  explicit SimG4SaveSmearedParticles(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4SaveSmearedParticles();
+  virtual ~SimG4SaveSmearedParticles();
   /**  Initialize.
    *   @return status code
    */

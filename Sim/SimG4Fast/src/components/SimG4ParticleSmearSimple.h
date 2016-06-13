@@ -9,7 +9,7 @@ class IRndmGenSvc;
 // FCCSW
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
-/** @class G4ParticleSmearSimple SimG4Fast/src/components/G4ParticleSmearSimple.h G4ParticleSmearSimple.h
+/** @class SimG4ParticleSmearSimple SimG4Fast/src/components/SimG4ParticleSmearSimple.h SimG4ParticleSmearSimple.h
  *
  *  Simple particle smearing tool.
  *  Smears the momentum/energy of the particle following the Gaussian distribution.
@@ -18,11 +18,11 @@ class IRndmGenSvc;
  *  @author Anna Zaborowska
  */
 
-class G4ParticleSmearSimple: public GaudiTool, virtual public ISimG4ParticleSmearTool {
+class SimG4ParticleSmearSimple: public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
-  explicit G4ParticleSmearSimple(const std::string& type , const std::string& name,
+  explicit SimG4ParticleSmearSimple(const std::string& type , const std::string& name,
     const IInterface* parent);
-  virtual ~G4ParticleSmearSimple();
+  virtual ~SimG4ParticleSmearSimple();
 
   /**  Initialize the tool and a random number generator.
    *   @return status code

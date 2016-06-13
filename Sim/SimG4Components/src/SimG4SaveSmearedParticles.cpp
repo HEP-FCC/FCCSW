@@ -1,4 +1,4 @@
-#include "G4SaveSmearedParticles.h"
+#include "SimG4SaveSmearedParticles.h"
 
 // FCCSW
 #include "SimG4Common/Units.h"
@@ -14,9 +14,9 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_TOOL_FACTORY(G4SaveSmearedParticles)
+DECLARE_TOOL_FACTORY(SimG4SaveSmearedParticles)
 
-G4SaveSmearedParticles::G4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
+SimG4SaveSmearedParticles::SimG4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareOutput("particles", m_particles,"particles/smearedParticles");
@@ -26,17 +26,17 @@ G4SaveSmearedParticles::G4SaveSmearedParticles(const std::string& aType, const s
   declareProperty("DataOutputs", outputDataObjects());
 }
 
-G4SaveSmearedParticles::~G4SaveSmearedParticles() {}
+SimG4SaveSmearedParticles::~SimG4SaveSmearedParticles() {}
 
-StatusCode G4SaveSmearedParticles::initialize() {
+StatusCode SimG4SaveSmearedParticles::initialize() {
   return GaudiTool::initialize();
 }
 
-StatusCode G4SaveSmearedParticles::finalize() {
+StatusCode SimG4SaveSmearedParticles::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
+StatusCode SimG4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
   auto particles = m_particles.createAndPut();
   auto associations = m_particlesMCparticles.createAndPut();
   int n_part=0;

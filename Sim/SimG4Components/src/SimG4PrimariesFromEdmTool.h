@@ -15,19 +15,19 @@ namespace fcc {
 class MCParticleCollection;
 }
 
-/** @class G4PrimariesFromEdmTool G4PrimariesFromEdmTool.h "G4PrimariesFromEdmTool.h"
+/** @class SimG4PrimariesFromEdmTool SimG4PrimariesFromEdmTool.h "SimG4PrimariesFromEdmTool.h"
 *
 *  Tool to translate an EDM MCParticleCollection into a G4Event
 *
 *  @author A. Zaborowska, J. Lingemann, A. Dell'Acqua
 *  @date   2016-01-11
 */
-class G4PrimariesFromEdmTool : public GaudiTool, virtual public ISimG4EventProviderTool {
+class SimG4PrimariesFromEdmTool : public GaudiTool, virtual public ISimG4EventProviderTool {
 public:
   /// Standard constructor
-  G4PrimariesFromEdmTool(const std::string& type, const std::string& name, const IInterface* parent);
+  SimG4PrimariesFromEdmTool(const std::string& type, const std::string& name, const IInterface* parent);
 
-  virtual ~G4PrimariesFromEdmTool();
+  virtual ~SimG4PrimariesFromEdmTool();
 
   StatusCode initialize() final;
 

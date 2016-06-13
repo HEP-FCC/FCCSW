@@ -10,7 +10,7 @@
 // Geant4
 #include "G4GDMLParser.hh"
 
-/** @class G4GdmlDetector SimG4Components/src/G4GdmlDetector.h G4GdmlDetector.h
+/** @class SimG4GdmlDetector SimG4Components/src/SimG4GdmlDetector.h SimG4GdmlDetector.h
  *
  *  Detector construction tool using the GDML file.
  *  GDML file name needs to be specified in job options file (\b'gdml').
@@ -18,11 +18,11 @@
  *  @author Anna Zaborowska
  */
 
-class G4GdmlDetector: public AlgTool, virtual public ISimG4DetectorConstruction {
+class SimG4GdmlDetector: public AlgTool, virtual public ISimG4DetectorConstruction {
 public:
-  explicit G4GdmlDetector(const std::string& aType , const std::string& aName,
+  explicit SimG4GdmlDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4GdmlDetector();
+  virtual ~SimG4GdmlDetector();
   /**  Initialize.
    *   @return status code
    */

@@ -15,7 +15,7 @@ namespace sim {
 class G4ConstantField;
 }
 
-/** @class G4ConstantMagneticFieldTool G4ConstantMagneticFieldTool.h "G4ConstantMagneticFieldTool.h"
+/** @class SimG4ConstantMagneticFieldTool SimG4ConstantMagneticFieldTool.h "SimG4ConstantMagneticFieldTool.h"
 *
 *  Implementation of ISimG4MagneticFieldTool that generates a constant field
 *
@@ -23,13 +23,13 @@ class G4ConstantField;
 *  @date   2016-02-22
 */
 
-class G4ConstantMagneticFieldTool : public GaudiTool, virtual public ISimG4MagneticFieldTool {
+class SimG4ConstantMagneticFieldTool : public GaudiTool, virtual public ISimG4MagneticFieldTool {
 public:
   /// Standard constructor
-  G4ConstantMagneticFieldTool(const std::string& type, const std::string& name, const IInterface* parent);
+  SimG4ConstantMagneticFieldTool(const std::string& type, const std::string& name, const IInterface* parent);
 
   /// Destructor
-  virtual ~G4ConstantMagneticFieldTool();
+  virtual ~SimG4ConstantMagneticFieldTool();
 
   /// Initialize method
   virtual StatusCode initialize() final;

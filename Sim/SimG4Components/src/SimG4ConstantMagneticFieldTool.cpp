@@ -1,5 +1,5 @@
 // local
-#include "G4ConstantMagneticFieldTool.h"
+#include "SimG4ConstantMagneticFieldTool.h"
 
 // FCCSW
 #include "SimG4Common/G4ConstantField.h"
@@ -24,9 +24,9 @@
 #include "G4SystemOfUnits.hh"
 
 // Declaration of the Tool
-DECLARE_COMPONENT(G4ConstantMagneticFieldTool)
+DECLARE_COMPONENT(SimG4ConstantMagneticFieldTool)
 
-G4ConstantMagneticFieldTool::G4ConstantMagneticFieldTool(const std::string& type, const std::string& name,
+SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string& type, const std::string& name,
                                                          const IInterface* parent)
     : GaudiTool(type, name, parent),
       m_field(nullptr),
@@ -59,11 +59,11 @@ G4ConstantMagneticFieldTool::G4ConstantMagneticFieldTool(const std::string& type
   declareProperty("FieldZMax", m_fieldZMax, "field max Z");
 }
 
-G4ConstantMagneticFieldTool::~G4ConstantMagneticFieldTool() {
+SimG4ConstantMagneticFieldTool::~SimG4ConstantMagneticFieldTool() {
   if (nullptr != m_field) delete m_field;
 }
 
-StatusCode G4ConstantMagneticFieldTool::initialize() {
+StatusCode SimG4ConstantMagneticFieldTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
 
@@ -91,14 +91,14 @@ StatusCode G4ConstantMagneticFieldTool::initialize() {
   return sc;
 }
 
-StatusCode G4ConstantMagneticFieldTool::finalize() {
+StatusCode SimG4ConstantMagneticFieldTool::finalize() {
   StatusCode sc = GaudiTool::finalize();
   return sc;
 }
 
-const G4MagneticField* G4ConstantMagneticFieldTool::field() const { return m_field; }
+const G4MagneticField* SimG4ConstantMagneticFieldTool::field() const { return m_field; }
 
-G4MagIntegratorStepper* G4ConstantMagneticFieldTool::stepper(const std::string& name, G4MagneticField* field) const {
+G4MagIntegratorStepper* SimG4ConstantMagneticFieldTool::stepper(const std::string& name, G4MagneticField* field) const {
   G4Mag_UsualEqRhs* fEquation = new G4Mag_UsualEqRhs(field);
   if (name == "HelixImplicitEuler")
     return new G4HelixImplicitEuler(fEquation);

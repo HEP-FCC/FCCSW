@@ -1,4 +1,4 @@
-#include "G4ParticleSmearRootFile.h"
+#include "SimG4ParticleSmearRootFile.h"
 
 // Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
@@ -14,18 +14,18 @@
 #include "CLHEP/Vector/ThreeVector.h"
 #include "CLHEP/Units/SystemOfUnits.h"
 
-DECLARE_TOOL_FACTORY(G4ParticleSmearRootFile)
+DECLARE_TOOL_FACTORY(SimG4ParticleSmearRootFile)
 
-G4ParticleSmearRootFile::G4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent):
+SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent):
     GaudiTool(type, name, parent),
     m_maxEta(0) {
   declareInterface<ISimG4ParticleSmearTool>(this);
   declareProperty("filename", m_resolutionFileName);
 }
 
-G4ParticleSmearRootFile::~G4ParticleSmearRootFile() {}
+SimG4ParticleSmearRootFile::~SimG4ParticleSmearRootFile() {}
 
-StatusCode G4ParticleSmearRootFile::initialize() {
+StatusCode SimG4ParticleSmearRootFile::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -41,11 +41,11 @@ StatusCode G4ParticleSmearRootFile::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearRootFile::finalize() {
+StatusCode SimG4ParticleSmearRootFile::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
+StatusCode SimG4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   double res = resolution(aMom.pseudoRapidity(), aMom.mag()/CLHEP::GeV);
   if(res>0) {
     m_randSvc->generator(Rndm::Gauss(1,res), m_gauss);
@@ -55,13 +55,13 @@ StatusCode G4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, int 
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
+StatusCode SimG4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
   warning()<<"Root file smearing is meant to be used with tracker only,"<<endmsg;
   warning()<<"hence smearing can be performed for the momentum only!"<<endmsg;
   return StatusCode::FAILURE;
 }
 
-StatusCode G4ParticleSmearRootFile::readResolutions() {
+StatusCode SimG4ParticleSmearRootFile::readResolutions() {
   if (m_resolutionFileName.empty()) {
     error() << "Name of the resolution file not set" << endmsg;
     return StatusCode::FAILURE;
@@ -88,7 +88,7 @@ StatusCode G4ParticleSmearRootFile::readResolutions() {
   return StatusCode::SUCCESS;
 }
 
-double G4ParticleSmearRootFile::resolution(double aEta, double aMom) {
+double SimG4ParticleSmearRootFile::resolution(double aEta, double aMom) {
   // smear particles only in the pseudorapidity region where resolutions are defined
   if(fabs(aEta)>m_maxEta)
     return 0;

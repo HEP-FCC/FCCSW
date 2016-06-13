@@ -1,5 +1,5 @@
 // local
-#include "G4PrimariesFromEdmTool.h"
+#include "SimG4PrimariesFromEdmTool.h"
 
 // FCCSW
 #include "SimG4Common/Units.h"
@@ -13,9 +13,9 @@
 #include "G4Event.hh"
 
 // Declaration of the Tool
-DECLARE_COMPONENT(G4PrimariesFromEdmTool)
+DECLARE_COMPONENT(SimG4PrimariesFromEdmTool)
 
-G4PrimariesFromEdmTool::G4PrimariesFromEdmTool(const std::string& type,
+SimG4PrimariesFromEdmTool::SimG4PrimariesFromEdmTool(const std::string& type,
                                                const std::string& name,
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
@@ -24,11 +24,11 @@ G4PrimariesFromEdmTool::G4PrimariesFromEdmTool(const std::string& type,
   declareProperty("DataOutputs", outputDataObjects());
 }
 
-G4PrimariesFromEdmTool::~G4PrimariesFromEdmTool() {}
+SimG4PrimariesFromEdmTool::~SimG4PrimariesFromEdmTool() {}
 
-StatusCode G4PrimariesFromEdmTool::initialize() { return GaudiTool::initialize(); }
+StatusCode SimG4PrimariesFromEdmTool::initialize() { return GaudiTool::initialize(); }
 
-G4Event* G4PrimariesFromEdmTool::g4Event() {
+G4Event* SimG4PrimariesFromEdmTool::g4Event() {
   auto theEvent = new G4Event();
   const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
   for (const auto& mcparticle : *mcparticles) {

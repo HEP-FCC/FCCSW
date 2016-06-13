@@ -13,7 +13,7 @@
 #include "GaudiKernel/Service.h"
 #include "GaudiKernel/ToolHandle.h"
 
-/** @class G4SimSvc SimG4Components/SimG4Components/G4SimSvc.h G4SimSvc.h
+/** @class SimG4Svc SimG4Components/SimG4Components/SimG4Svc.h SimG4Svc.h
  *
  *  Main Geant simulation service.
  *  It handles Geant initialization (via tools) and communication with the G4RunManager.
@@ -22,12 +22,12 @@
  */
 
 
-class G4SimSvc: public extends1<Service, ISimG4Svc> {
+class SimG4Svc: public extends1<Service, ISimG4Svc> {
 public:
   /// Standard constructor
-  explicit G4SimSvc(const std::string& aName, ISvcLocator* aSL);
+  explicit SimG4Svc(const std::string& aName, ISvcLocator* aSL);
   /// Standard destructor
-  virtual ~G4SimSvc();
+  virtual ~SimG4Svc();
   /**  Initialize the Geant simulation service.
    *   Tools set in the configuration file need to specify the detector construction,
    *   physics list and user action initialization to initialize G4RunManager.

@@ -1,4 +1,4 @@
-#include "G4ParticleSmearFormula.h"
+#include "SimG4ParticleSmearFormula.h"
 
 // Gaudi
 #include "GaudiKernel/DeclareFactoryEntries.h"
@@ -11,9 +11,9 @@
 //CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
-DECLARE_TOOL_FACTORY(G4ParticleSmearFormula)
+DECLARE_TOOL_FACTORY(SimG4ParticleSmearFormula)
 
-G4ParticleSmearFormula::G4ParticleSmearFormula(const std::string& type, const std::string& name, const IInterface* parent):
+SimG4ParticleSmearFormula::SimG4ParticleSmearFormula(const std::string& type, const std::string& name, const IInterface* parent):
     GaudiTool(type, name, parent),
     m_resolutionEnergy(nullptr),
     m_resolutionMomentum(nullptr) {
@@ -22,9 +22,9 @@ G4ParticleSmearFormula::G4ParticleSmearFormula(const std::string& type, const st
   declareProperty("resolutionMomentum", m_resolutionMomentumStr = "");
 }
 
-G4ParticleSmearFormula::~G4ParticleSmearFormula() {}
+SimG4ParticleSmearFormula::~SimG4ParticleSmearFormula() {}
 
-StatusCode G4ParticleSmearFormula::initialize() {
+StatusCode SimG4ParticleSmearFormula::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -48,11 +48,11 @@ StatusCode G4ParticleSmearFormula::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearFormula::finalize() {
+StatusCode SimG4ParticleSmearFormula::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4ParticleSmearFormula::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
+StatusCode SimG4ParticleSmearFormula::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   if(!m_resolutionMomentum->IsValid()) {
     error()<<"Unable to smear particle's momentum - no resolution given!"<<endmsg;
     return StatusCode::FAILURE;
@@ -63,7 +63,7 @@ StatusCode G4ParticleSmearFormula::smearMomentum( CLHEP::Hep3Vector& aMom, int /
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4ParticleSmearFormula::smearEnergy( double& aEn, int /*aPdg*/) {
+StatusCode SimG4ParticleSmearFormula::smearEnergy( double& aEn, int /*aPdg*/) {
   if(!m_resolutionEnergy->IsValid()) {
     error()<<"Unable to smear particle's energy - no resolution given!"<<endmsg;
     return StatusCode::FAILURE;
