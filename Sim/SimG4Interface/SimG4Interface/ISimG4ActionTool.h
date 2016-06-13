@@ -7,7 +7,6 @@
 // Geant4
 class G4VUserActionInitialization;
 
-
 /** @class ISimG4ActionTool SimG4Interface/SimG4Interface/ISimG4ActionTool.h ISimG4ActionTool.h
  *
  *  abstract interface to load initialization list of user actions
