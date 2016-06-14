@@ -6,7 +6,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimG4Interface/IG4SaveOutputTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 
 // datamodel
 namespace fcc {
@@ -15,18 +15,18 @@ class CaloHitCollection;
 class CaloClusterHitsAssociationCollection;
 }
 
-/** @class G4SaveTestCalHits SimG4Components/src/G4SaveTestCalHits.h G4SaveTestCalHits.h
+/** @class SimG4SaveTestCalHits SimG4Components/src/SimG4SaveTestCalHits.h SimG4SaveTestCalHits.h
  *
  *  Save tracker hits tool.
  *
  *  @author Anna Zaborowska
  */
 
-class G4SaveTestCalHits: public GaudiTool, virtual public IG4SaveOutputTool {
+class SimG4SaveTestCalHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit G4SaveTestCalHits(const std::string& aType , const std::string& aName,
+  explicit SimG4SaveTestCalHits(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4SaveTestCalHits();
+  virtual ~SimG4SaveTestCalHits();
   /**  Initialize.
    *   @return status code
    */

@@ -14,15 +14,15 @@ from Configurables import HepMCDumper
 hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.DataInputs.hepmc.Path="hepmc"
 
-from Configurables import G4SimSvc, G4GdmlTestDetector
-det = G4GdmlTestDetector("G4GdmlTestDetector", gdml = "../data/TestBoxCaloSD.gdml")
-geantservice = G4SimSvc("G4SimSvc", detector=det, physicslist='G4TestPhysicsList', actions='G4FullSimActions')
+from Configurables import SimG4Svc, SimG4GdmlTestDetector
+det = SimG4GdmlTestDetector("SimG4GdmlTestDetector", gdml = "../data/TestBoxCaloSD.gdml")
+geantservice = SimG4Svc("SimG4Svc", detector=det, physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
 
-from Configurables import G4SimAlg, G4SaveTestCalHits
-savecaltool = G4SaveTestCalHits("saveECalHits", caloType = "ECal", OutputLevel = DEBUG)
+from Configurables import SimG4Alg, SimG4SaveTestCalHits
+savecaltool = SimG4SaveTestCalHits("saveECalHits", caloType = "ECal", OutputLevel = DEBUG)
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
-geantsim = G4SimAlg("G4SimAlg", outputs= ["G4SaveTestCalHits/saveECalHits","InspectHitsCollectionsTool"])
+geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveTestCalHits/saveECalHits","InspectHitsCollectionsTool"])
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")

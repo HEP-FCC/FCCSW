@@ -5,12 +5,12 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "SimG4Interface/IG4DetectorConstruction.h"
+#include "SimG4Interface/ISimG4DetectorConstruction.h"
 
 // Geant4
 #include "G4GDMLParser.hh"
 
-/** @class G4GdmlTestDetector SimG4Components/src/G4GdmlTestDetector.h G4GdmlTestDetector.h
+/** @class SimG4GdmlTestDetector SimG4Components/src/SimG4GdmlTestDetector.h SimG4GdmlTestDetector.h
  *
  *  Detector construction tool using the GDML file.
  *  GDML file name needs to be specified in job options file (\b'gdml').
@@ -18,11 +18,11 @@
  *  @author Anna Zaborowska
  */
 
-class G4GdmlTestDetector: public AlgTool, virtual public IG4DetectorConstruction {
+class SimG4GdmlTestDetector: public AlgTool, virtual public ISimG4DetectorConstruction {
 public:
-  explicit G4GdmlTestDetector(const std::string& aType , const std::string& aName,
+  explicit SimG4GdmlTestDetector(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~G4GdmlTestDetector();
+  virtual ~SimG4GdmlTestDetector();
   /**  Initialize.
    *   @return status code
    */
@@ -34,7 +34,7 @@ public:
   /** Get the initilization of the geometry.
    *  @return pointer to G4VUserDetectorConstruction
    */
-  virtual G4VUserDetectorConstruction* getDetectorConstruction();
+  virtual G4VUserDetectorConstruction* detectorConstruction();
 private:
   /// name of the GDML file
   std::string m_gdmlFile;

@@ -1,4 +1,4 @@
-#include "G4SaveTestCalHits.h"
+#include "SimG4SaveTestCalHits.h"
 
 // FCCSW
 #include "SimG4Common/Units.h"
@@ -11,11 +11,11 @@
 #include "datamodel/CaloClusterCollection.h"
 #include "datamodel/CaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(G4SaveTestCalHits)
+DECLARE_TOOL_FACTORY(SimG4SaveTestCalHits)
 
-G4SaveTestCalHits::G4SaveTestCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
+SimG4SaveTestCalHits::SimG4SaveTestCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
-  declareInterface<IG4SaveOutputTool>(this);
+  declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("caloType", m_calType);
   declareOutput("caloClusters", m_caloClusters,"hits/caloClusters");
   declareOutput("caloHits", m_caloHits,"hits/caloHits");
@@ -24,9 +24,9 @@ G4SaveTestCalHits::G4SaveTestCalHits(const std::string& aType, const std::string
   declareProperty("DataOutputs", outputDataObjects());
 }
 
-G4SaveTestCalHits::~G4SaveTestCalHits() {}
+SimG4SaveTestCalHits::~SimG4SaveTestCalHits() {}
 
-StatusCode G4SaveTestCalHits::initialize() {
+StatusCode SimG4SaveTestCalHits::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -39,11 +39,11 @@ StatusCode G4SaveTestCalHits::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode G4SaveTestCalHits::finalize() {
+StatusCode SimG4SaveTestCalHits::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode G4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
+StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   test::CalorimeterHit* hit;
