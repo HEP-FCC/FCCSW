@@ -29,7 +29,7 @@ public:
    */
   virtual StatusCode finalize();
   /** Get the user action initialization.
-   *  @return pointer to G4VUserActionInitialization
+   *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
    virtual G4VUserActionInitialization* userActionInitialization() final;
 };

@@ -37,9 +37,12 @@ public:
   /// Finalize method
   virtual StatusCode finalize() final;
 
-  /// Get the actual G4MagneticField
+  /// Get the magnetic field
+  /// @returns pointer to G4MagneticField
   virtual const G4MagneticField* field() const final;
-  /// Get the stepper, ownership is transferred to the caller
+
+  /// Get the stepper
+  /// @returns pointer to G4MagIntegratorStepper (ownership is transferred to the caller)
   G4MagIntegratorStepper* stepper(const std::string&, G4MagneticField*) const;
 
 private:

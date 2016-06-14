@@ -32,7 +32,7 @@ public:
    */
   virtual StatusCode finalize();
   /** Get the initilization of the geometry.
-   *  @return pointer to G4VUserDetectorConstruction
+   *  @return pointer to G4VUserDetectorConstruction (ownership is transferred to the caller)
    */
   virtual G4VUserDetectorConstruction* detectorConstruction();
 private:

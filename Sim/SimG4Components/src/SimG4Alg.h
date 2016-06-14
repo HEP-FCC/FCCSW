@@ -53,7 +53,6 @@ public:
    */
   virtual StatusCode finalize() final;
   private:
-  DataHandle<fcc::MCParticleCollection> m_genParticles;
   /// Pointer to the interface of Geant simulation service
   SmartIF<ISimG4Svc> m_geantSvc;
   /// Handle to the tools saving the output
