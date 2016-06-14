@@ -33,7 +33,7 @@ savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=0, etaMax=0.01, particleName="geantino")
 geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveTrackerHits/saveTrackerHits" ],
-                    eventGenerator=pgun)
+                    eventProvider=pgun)
 
 
 

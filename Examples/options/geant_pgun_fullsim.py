@@ -64,7 +64,7 @@ particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveTrackerHits/saveTrackerHits",
                                "SimG4SaveCalHits/saveHCalHits"],
-                    eventGenerator=particle_converter)
+                    eventProvider=particle_converter)
 
 from Configurables import PodioOutput
 out = PodioOutput("out",

@@ -11,8 +11,8 @@ DECLARE_ALGORITHM_FACTORY(SimG4Alg)
 SimG4Alg::SimG4Alg(const std::string& aName, ISvcLocator* aSvcLoc):
   GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("outputs",m_saveToolNames);
-  declarePrivateTool(m_eventGenTool, "SimG4PrimariesFromEdmTool", true);
-  declareProperty("eventGenerator", m_eventGenTool);
+  declarePrivateTool(m_eventTool, "SimG4PrimariesFromEdmTool", true);
+  declareProperty("eventProvider", m_eventTool);
 }
 SimG4Alg::~SimG4Alg() {}
 
@@ -32,8 +32,8 @@ StatusCode SimG4Alg::initialize() {
     //   return StatusCode::FAILURE;
     // }
   }
-  if (!m_eventGenTool.retrieve()) {
-    error()<<"Unable to retrieve the G4Event generator " << m_eventGenTool <<endmsg;
+  if (!m_eventTool.retrieve()) {
+    error()<<"Unable to retrieve the G4Event provider " << m_eventTool <<endmsg;
     return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
@@ -41,10 +41,10 @@ StatusCode SimG4Alg::initialize() {
 
 StatusCode SimG4Alg::execute() {
   // first translate the event
-  G4Event* event = m_eventGenTool->g4Event();
+  G4Event* event = m_eventTool->g4Event();
 
   if ( !event ) {
-    error() << "Unable to retrieve G4Event from " << m_eventGenTool << endmsg;
+    error() << "Unable to retrieve G4Event from " << m_eventTool << endmsg;
     return StatusCode::FAILURE;
   }
   m_geantSvc->processEvent(*event);

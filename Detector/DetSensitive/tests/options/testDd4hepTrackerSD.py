@@ -43,7 +43,7 @@ particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/SimG4SaveTrackerHits",
                              "InspectHitsCollectionsTool"],
-                    eventGenerator=particle_converter)
+                    eventProvider=particle_converter)
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")

@@ -47,7 +47,7 @@ particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveSmearedParticles/saveSmearedParticles"],
-                    eventGenerator=particle_converter)
+                    eventProvider=particle_converter)
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")

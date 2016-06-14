@@ -63,6 +63,6 @@ public:
   /// to be deleted once the ToolHandleArray<ISimG4SaveOutputTool> m_saveTools is in place
   std::vector<std::string> m_saveToolNames;
   /// Handle for tool that creates the G4Event
-  ToolHandle<ISimG4EventProviderTool> m_eventGenTool;
+  ToolHandle<ISimG4EventProviderTool> m_eventTool;
 };
 #endif /* SIMG4COMPONENTS_G4SIMALG_H */

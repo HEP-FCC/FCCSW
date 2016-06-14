@@ -48,7 +48,7 @@ particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveCalHits/saveECalHits"],
-                    eventGenerator=particle_converter)
+                    eventProvider=particle_converter)
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
