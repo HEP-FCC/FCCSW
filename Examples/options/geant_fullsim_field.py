@@ -24,29 +24,29 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhTrackerSimple/co
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import G4SimSvc
+from Configurables import SimG4Svc
 # giving the names of tools will initialize the tools of that type
-geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert", actions="G4FullSimActions")
+geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
-from Configurables import G4ConstantMagneticFieldTool
-field = G4ConstantMagneticFieldTool("G4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
+from Configurables import SimG4ConstantMagneticFieldTool
+field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
-from Configurables import G4SimAlg, G4SaveTrackerHits, G4PrimariesFromEdmTool
+from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
 # first, create a tool that saves the tracker hits
-# Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("G4SaveTrackerHits")
+# Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savetrackertool = G4SaveTrackerHits("saveTrackerHits")
+savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
-geantsim = G4SimAlg("G4SimAlg",
-                    outputs = ["G4SaveTrackerHits/saveTrackerHits"],
-                    eventGenerator=particle_converter)
+geantsim = SimG4Alg("SimG4Alg",
+                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits"],
+                    eventProvider=particle_converter)
 
 # PODIO algorithm
 from Configurables import PodioOutput
@@ -59,7 +59,7 @@ from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
-                # order is important, as GeoSvc is needed by G4SimSvc
+                # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG
  )

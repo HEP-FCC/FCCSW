@@ -2,7 +2,7 @@
 #define SIMG4FAST_FASTSIMMODELTRACKER_H
 
 //FCCSW
-class IG4ParticleSmearTool;
+class ISimG4ParticleSmearTool;
 
 // Geant
 #include "G4VFastSimulationModel.hh"
@@ -33,7 +33,7 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   /** Constructor.
    *  @param aModelName Name of the fast simulation model.
    *  @param aEnvelope Region where the model can take over the ordinary tracking.
-   *  @param aSmearToolName Name of the implementation of IG4ParticleSmearTool to be searched for by ToolSvc.
+   *  @param aSmearToolName Name of the implementation of ISimG4ParticleSmearTool to be searched for by ToolSvc.
    */
   explicit FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName);
   /** Constructor.
@@ -61,7 +61,7 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   /// Tool Service
   ServiceHandle<IToolSvc> m_toolSvc;
   /// Pointer to a smearing tool
-  IG4ParticleSmearTool* m_smearTool;
+  ISimG4ParticleSmearTool* m_smearTool;
 };
 }
 

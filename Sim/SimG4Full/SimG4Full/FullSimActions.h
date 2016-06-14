@@ -14,7 +14,7 @@ namespace sim {
 class FullSimActions : public G4VUserActionInitialization {
 public:
    FullSimActions();
-   ~FullSimActions();
+   virtual ~FullSimActions();
    /// Create all user actions.
    virtual void Build() const final;
 };
