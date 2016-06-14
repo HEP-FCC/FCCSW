@@ -31,7 +31,7 @@ public:
   /** Get the user action initialization.
    *  @return pointer to G4VUserActionInitialization
    */
-   virtual G4VUserActionInitialization* getUserActionInitialization() final;
+   virtual G4VUserActionInitialization* userActionInitialization() final;
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

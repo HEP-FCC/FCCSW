@@ -23,7 +23,7 @@ public:
   /** get initilization hook for the physics list
    *  @return  pointer to G4VModularPhysicsList
    */
-   virtual G4VModularPhysicsList* getPhysicsList() = 0;
+   virtual G4VModularPhysicsList* physicsList() = 0;
 
 };
 

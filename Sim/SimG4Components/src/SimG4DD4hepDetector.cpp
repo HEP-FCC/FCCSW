@@ -32,6 +32,6 @@ StatusCode SimG4DD4hepDetector::finalize() {
   return GaudiTool::finalize();
 }
 
-G4VUserDetectorConstruction* SimG4DD4hepDetector::getDetectorConstruction() {
+G4VUserDetectorConstruction* SimG4DD4hepDetector::detectorConstruction() {
   return m_geoSvc->getGeant4Geo();
 }

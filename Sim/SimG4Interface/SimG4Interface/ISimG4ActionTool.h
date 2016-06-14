@@ -23,7 +23,7 @@ public:
   /** get initilization hook for the user action
    *  @return  pointer to G4VUserActionInitialization
    */
-   virtual G4VUserActionInitialization* getUserActionInitialization() = 0 ;
+   virtual G4VUserActionInitialization* userActionInitialization() = 0 ;
 
 };
 

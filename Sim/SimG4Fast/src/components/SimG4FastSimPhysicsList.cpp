@@ -30,9 +30,9 @@ StatusCode SimG4FastSimPhysicsList::finalize() {
   return AlgTool::finalize();
 }
 
-G4VModularPhysicsList* SimG4FastSimPhysicsList::getPhysicsList() {
+G4VModularPhysicsList* SimG4FastSimPhysicsList::physicsList() {
   // ownership passed to SimG4Svc which will register it in G4RunManager. To be deleted in ~G4RunManager()
-  G4VModularPhysicsList* physicsList = m_physicsListTool->getPhysicsList();
+  G4VModularPhysicsList* physicsList = m_physicsListTool->physicsList();
   // Coupled transportation enables calculation of particle trajectory in envelopes with fast sim models attached
   G4PhysicsListHelper::GetPhysicsListHelper()->UseCoupledTransportation();
   // Attach Fast Simulation Process (will take over normal transportation if FastSimModel triggered

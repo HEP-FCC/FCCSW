@@ -23,7 +23,7 @@ StatusCode SimG4GdmlDetector::finalize() {
   return AlgTool::finalize();
 }
 
-G4VUserDetectorConstruction* SimG4GdmlDetector::getDetectorConstruction() {
+G4VUserDetectorConstruction* SimG4GdmlDetector::detectorConstruction() {
   return new sim::GdmlDetectorConstruction(m_gdmlFile);
 }
 

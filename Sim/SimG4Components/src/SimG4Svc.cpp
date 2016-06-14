@@ -55,9 +55,9 @@ StatusCode SimG4Svc::initialize(){
 
   // Initialize Geant run manager
   // Load physics list, deleted in ~G4RunManager()
-  m_runManager.SetUserInitialization(m_physicsListTool->getPhysicsList());
+  m_runManager.SetUserInitialization(m_physicsListTool->physicsList());
   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
-  m_runManager.SetUserInitialization(m_detectorTool->getDetectorConstruction());
+  m_runManager.SetUserInitialization(m_detectorTool->detectorConstruction());
 
   if (m_g4Commands.size())
   {
@@ -70,7 +70,7 @@ StatusCode SimG4Svc::initialize(){
 
   m_runManager.Initialize();
   // Attach user actions
-  m_runManager.SetUserInitialization(m_actionsTool->getUserActionInitialization());
+  m_runManager.SetUserInitialization(m_actionsTool->userActionInitialization());
 
   if( !m_runManager.start()) {
     error() << "Unable to initialize GEANT correctly." << endmsg;

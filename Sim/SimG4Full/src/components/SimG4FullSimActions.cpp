@@ -23,6 +23,6 @@ StatusCode SimG4FullSimActions::finalize() {
   return AlgTool::finalize();
 }
 
-G4VUserActionInitialization* SimG4FullSimActions::getUserActionInitialization() {
+G4VUserActionInitialization* SimG4FullSimActions::userActionInitialization() {
   return new sim::FullSimActions;
 }

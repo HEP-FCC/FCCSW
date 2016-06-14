@@ -26,6 +26,6 @@ StatusCode SimG4FastSimActions::finalize() {
   return AlgTool::finalize();
 }
 
-G4VUserActionInitialization* SimG4FastSimActions::getUserActionInitialization() {
+G4VUserActionInitialization* SimG4FastSimActions::userActionInitialization() {
   return new sim::FastSimActions(m_smearTool.name());
 }

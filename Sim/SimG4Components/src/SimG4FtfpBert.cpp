@@ -21,7 +21,7 @@ StatusCode SimG4FtfpBert::finalize() {
   return AlgTool::finalize();
 }
 
-G4VModularPhysicsList* SimG4FtfpBert::getPhysicsList() {
+G4VModularPhysicsList* SimG4FtfpBert::physicsList() {
    // ownership passed to SimG4Svc which will register it in G4RunManager. To be deleted in ~G4RunManager()
   return new FTFP_BERT;
 }

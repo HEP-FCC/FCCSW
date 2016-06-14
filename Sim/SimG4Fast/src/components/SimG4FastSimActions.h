@@ -32,7 +32,7 @@ public:
   /** Get the user action initialization.
    *  @return pointer to G4VUserActionInitialization
    */
-  virtual G4VUserActionInitialization* getUserActionInitialization() final;
+  virtual G4VUserActionInitialization* userActionInitialization() final;
 
 private:
   /// Pointer to the smearing tool

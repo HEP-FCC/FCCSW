@@ -34,7 +34,7 @@ public:
   /** Get the initilization of the geometry.
    *  @return pointer to G4VUserDetectorConstruction
    */
-  virtual G4VUserDetectorConstruction* getDetectorConstruction();
+  virtual G4VUserDetectorConstruction* detectorConstruction();
 private:
   /// name of the GDML file
   std::string m_gdmlFile;

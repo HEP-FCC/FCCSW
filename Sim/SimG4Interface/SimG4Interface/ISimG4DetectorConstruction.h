@@ -23,7 +23,7 @@ public:
   /** get initilization hook for the geometry
    *  @return pointer to G4VUserDetectorConstruction
    */
-   virtual G4VUserDetectorConstruction* getDetectorConstruction() = 0;
+   virtual G4VUserDetectorConstruction* detectorConstruction() = 0;
 
 };
 

@@ -32,7 +32,7 @@ class SimG4DD4hepDetector: public GaudiTool, virtual public ISimG4DetectorConstr
   /** Get the initilization of the geometry.
    *  @return pointer to G4VUserDetectorConstruction
    */
-  virtual G4VUserDetectorConstruction* getDetectorConstruction();
+  virtual G4VUserDetectorConstruction* detectorConstruction();
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

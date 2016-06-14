@@ -29,7 +29,7 @@ public:
   /** Get the physics list.
    *  @return pointer to G4VModularPhysicsList
    */
-  virtual G4VModularPhysicsList* getPhysicsList();
+  virtual G4VModularPhysicsList* physicsList();
 
 };
 
