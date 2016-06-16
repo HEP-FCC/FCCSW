@@ -166,7 +166,7 @@
       <solidref ref="worldBox0x15bcb40"/>
       <physvol name="ECalorimeterPhysical0x15c83c0">
         <volumeref ref="ECalorimeterLogical0x15c82b0"/>
-        <position name="ECalorimeterPhysical0x15c83c0_pos" unit="mm" x="0" y="0" z="502.5"/>
+        <position name="ECalorimeterPhysical0x15c83c0_pos" unit="mm" x="0" y="0" z="0"/>
       </physvol>
     </volume>
   </structure>

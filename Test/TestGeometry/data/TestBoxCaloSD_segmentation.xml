@@ -44,7 +44,7 @@
       <material name="PbWO4"/>
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions x="box_x" y="box_y" z="box_z"/>
-      <position   x="0"     y="0"     z="box_z"/>
+      <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>
     </detector>
   </detectors>
