@@ -84,7 +84,8 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   caloDet.setPlacement(placedCalo);
 
   // set the sensitive detector type to the DD4hep calorimeter
-  sensDet.setType("Geant4Calorimeter");
+  DD4hep::XML::Dimension sdTyp = xmlDet.child(_U(sensitive));
+  sensDet.setType(sdTyp.typeStr());
 
   // loop on the sensitive layers
 
