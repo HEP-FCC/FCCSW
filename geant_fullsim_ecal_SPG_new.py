@@ -1,5 +1,5 @@
 #JANA: variables ENE (energy in MeV!!!!), BFIELD (0,1), EVTMAX (number of events) to be defined before running
-ENE = 150000
+ENE = 50000
 BFIELD = 0
 EVTMAX = 10
 
@@ -62,7 +62,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=INFO)
 out.outputCommands = ["keep *"]
-out.filename = "output_b1.root"
+out.filename = "output.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor

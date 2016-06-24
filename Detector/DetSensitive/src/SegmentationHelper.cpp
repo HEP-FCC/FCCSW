@@ -27,7 +27,7 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep)
     DD4hep::Geometry::VolumeManager::VolumeID cID = aSeg.cellID(loc,glob,volID);
     return cID;
   }
-  return 0;
+  return volID;
 }
 }
 }

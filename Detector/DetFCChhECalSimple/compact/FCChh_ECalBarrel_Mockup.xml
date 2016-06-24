@@ -26,13 +26,17 @@
   </define>
 
   <display>
-    <vis name="ecal_envelope" r="0.1" g="0.2" b="0.6" alpha="1" showDaughers="false" visible="true" />
+    <vis name="ecal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="false" />
+    <vis name="ecal_active_vis" r="1.0" g="0.0" b="0.0" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
+    <vis name="ecal_passive_vis" r="0.0" g="1.0" b="0.0" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
+    <vis name="ecal_caloZmodule_vis" r="0.0" g="0.0" b="1.0" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
   </display>
 
   <readouts>
     <readout name="BarECal_Readout">
-      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
-      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
+      <!--   <segmentation type="CartesianGridXY" grid_size_x="3500*mm" grid_size_y="3500*mm"/>   -->
+      <!--   <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>  -->
+      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,r_layer:10,z_layer:10,x:32:-16,y:-16</id>
     </readout>
   </readouts>
 
