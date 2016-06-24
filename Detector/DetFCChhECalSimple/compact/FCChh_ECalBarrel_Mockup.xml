@@ -13,6 +13,7 @@
   </info>
 
   <define>
+
     <constant name="BarECalOuterSpacer" value="100*mm"/>
     <constant name="BarECalCryoThickness" value="100*mm"/>
     <!-- calorimeter volume -->
@@ -36,7 +37,7 @@
     <readout name="BarECal_Readout">
       <!--   <segmentation type="CartesianGridXY" grid_size_x="3500*mm" grid_size_y="3500*mm"/>   -->
       <!--   <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>  -->
-      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,r_layer:10,z_layer:10,x:32:-16,y:-16</id>
+      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,r_layer:10,z_layer:10,phi_layer:10</id>
     </readout>
   </readouts>
 

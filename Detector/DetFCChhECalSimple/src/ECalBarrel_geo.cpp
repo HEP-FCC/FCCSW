@@ -56,6 +56,9 @@ namespace det {
     xml_comp_t caloZmodule = calo.child("caloZmodule");
     double halfz_cell = caloZmodule.thickness();
 
+
+
+
     if (halfz_cell>calo_dims.dz()) {
       lLog << MSG::WARNING <<"Overlay in ECal construction!!!!! Redefining the boundaries" << endmsg;
       lLog << MSG::WARNING <<" Problem in Z segmentation: calorimeter half_z "<< calo_dims.dz() << ", required calorimeter half_z " << caloZmodule.thickness() <<endmsg;
@@ -85,11 +88,14 @@ namespace det {
     // Step 3 : create the actual calorimeter
 
     int n_samples_r= (calo_dims.rmax()-  calo_dims.rmin() - passive_tck)/(passive_tck+active_tck);
-    lLog << MSG::INFO <<"++++++++++++++++++++++++++ nSamplings in r "<<n_samples_r<<endmsg;
+    lLog << MSG::INFO <<"++++++++++++++++++++++++++ nSamplings in r "<<n_samples_r<<" passive thickness " << passive_tck << " active thickness " << active_tck << endmsg;
 
     int n_samples_z = calo_dims.dz()/halfz_cell;
-    lLog << MSG::INFO << "Cell size in z " << 2*halfz_cell << endmsg;
-    lLog << MSG::INFO <<"++++++++++++++++++++++++++ nSamplings in z "<<n_samples_z<<endmsg;
+    lLog << MSG::INFO <<"++++++++++++++++++++++++++ nSamplings in z "<<n_samples_z<< " cell size in z " <<  2*halfz_cell << endmsg;
+
+    int n_samples_phi = calo_dims.nphi();
+    double delta_phi=2*dd4hep::pi/n_samples_phi;
+    lLog << MSG::INFO <<"++++++++++++++++++++++++++ nSamplings in phi "<<n_samples_phi << " deltaphi " << delta_phi <<endmsg;
 
     //Real dimensions defined by the size of the cells/layers  
     double calo_tck=n_samples_r*(active_tck+passive_tck)+passive_tck;
@@ -108,13 +114,19 @@ namespace det {
       rmax_calo = cryo_dims.rmax()-cryo_thickness;
     }
 
+  
     DetElement caloDet(calo_name, calo_id);
     DD4hep::Geometry::Tube caloShape(rmin_calo, rmax_calo, halfz_cell);
     lLog << MSG::INFO << "ECAL: Building the actual calorimeter from " << rmin_calo << " to " << rmax_calo << endmsg;
     Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));
-    PlacedVolume placedCalo = bathVol.placeVolume(caloVol);
-    placedCalo.addPhysVolID("EM_barrel", calo_id);
-    caloDet.setPlacement(placedCalo);
+    // PlacedVolume placedCalo = bathVol.placeVolume(caloVol);
+    // placedCalo.addPhysVolID("EM_barrel", calo_id);
+    // caloDet.setPlacement(placedCalo);
+
+    //Prepare one segmentation part in phi   
+    double start_phi = 0.0;
+    DD4hep::Geometry::Tube caloPhiShape(rmin_calo, rmax_calo, halfz_cell, start_phi, delta_phi);
+    Volume caloPhiVol(passive_mat, caloShape, lcdd.material(passive_mat));
 
     //xml_comp_t xcaloVol = calo.child("caloVol");
     //caloVol.setVisAttributes(lcdd,xcaloVol.visStr());
@@ -124,15 +136,14 @@ namespace det {
     sensDet.setType(sdTyp.typeStr());
 
     // loop on the sensitive layers
-  
     for (int i=0;i<n_samples_r;i++)
       {
 	double layer_r=rmin_calo+passive_tck+i*(passive_tck+active_tck);
 	DetElement caloLayer(active_mat+"_sensitive", i+1);
-	DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_halfz);
+	DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_halfz, start_phi, delta_phi);
 	// lLog << MSG::DEBUG << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << endmsg;
 	Volume layerVol(active_mat, layerShape, lcdd.material(active_mat));
-	PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
+	PlacedVolume placedLayer = caloPhiVol.placeVolume(layerVol);
 	placedLayer.addPhysVolID("r_layer", i+1);
 	caloLayer.setPlacement(placedLayer);
 	layerVol.setSensitiveDetector(sensDet);
@@ -140,6 +151,23 @@ namespace det {
 	caloLayer.setVisAttributes(lcdd,active.visStr(),layerVol); 
       }
   
+    
+    //set along Modules in phi
+    // n_samples_phi = 2;
+    for (int i=0;i<n_samples_phi;i++)
+      {
+	double phi = +delta_phi/2.-i*delta_phi;
+	lLog << MSG::INFO << "i  #" << i << " deltaphi " << delta_phi << " phi " << phi << endmsg;
+	DD4hep::Geometry::Position offset_phi(0, 0, 0);
+	DD4hep::Geometry::Transform3D trans( DD4hep::Geometry::RotationZ(phi), 
+					     offset_phi );
+	DetElement caloPhiMod("calo_mod_phi", i+1);
+	PlacedVolume placedCaloPhiVolume = caloVol.placeVolume(caloPhiVol, trans);
+	placedCaloPhiVolume.addPhysVolID("phi_layer", i+1);
+	caloPhiMod.setPlacement(placedCaloPhiVolume);
+      }
+    
+
     // n_samples_z = 1;
     for (int i=0;i<n_samples_z;i++)
       {
