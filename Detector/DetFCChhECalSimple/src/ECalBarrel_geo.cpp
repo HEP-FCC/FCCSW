@@ -58,7 +58,6 @@ namespace det {
 
 
 
-
     if (halfz_cell>calo_dims.dz()) {
       lLog << MSG::WARNING <<"Overlay in ECal construction!!!!! Redefining the boundaries" << endmsg;
       lLog << MSG::WARNING <<" Problem in Z segmentation: calorimeter half_z "<< calo_dims.dz() << ", required calorimeter half_z " << caloZmodule.thickness() <<endmsg;
@@ -114,8 +113,7 @@ namespace det {
       rmax_calo = cryo_dims.rmax()-cryo_thickness;
     }
 
-  
-    DetElement caloDet(calo_name, calo_id);
+    //Prepare one segment in z (halfz_cell size) - filled with passive material
     DD4hep::Geometry::Tube caloShape(rmin_calo, rmax_calo, halfz_cell);
     lLog << MSG::INFO << "ECAL: Building the actual calorimeter from " << rmin_calo << " to " << rmax_calo << endmsg;
     Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));
@@ -123,7 +121,7 @@ namespace det {
     // placedCalo.addPhysVolID("EM_barrel", calo_id);
     // caloDet.setPlacement(placedCalo);
 
-    //Prepare one segmentation part in phi   
+    //Prepare one segmentation part in phi - tube shape (start_phi and delta_phi)
     double start_phi = 0.0;
     DD4hep::Geometry::Tube caloPhiShape(rmin_calo, rmax_calo, halfz_cell, start_phi, delta_phi);
     Volume caloPhiVol(passive_mat, caloShape, lcdd.material(passive_mat));
@@ -165,6 +163,7 @@ namespace det {
 	PlacedVolume placedCaloPhiVolume = caloVol.placeVolume(caloPhiVol, trans);
 	placedCaloPhiVolume.addPhysVolID("phi_layer", i+1);
 	caloPhiMod.setPlacement(placedCaloPhiVolume);
+	caloPhiMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloVol);  
       }
     
 
@@ -178,7 +177,7 @@ namespace det {
 	PlacedVolume placedCaloZVolume = bathVol.placeVolume(caloVol, offset);
 	placedCaloZVolume.addPhysVolID("z_layer", i+1);
 	caloZMod.setPlacement(placedCaloZVolume);
-	caloZMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloVol);  
+	//	caloZMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloVol);  
       }
   
  
