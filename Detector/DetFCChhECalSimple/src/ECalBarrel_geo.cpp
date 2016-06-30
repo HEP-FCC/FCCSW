@@ -114,21 +114,18 @@ namespace det {
     }
 
     //Prepare one segment in z (halfz_cell size) - filled with passive material
-    DD4hep::Geometry::Tube caloShape(rmin_calo, rmax_calo, halfz_cell);
+    DD4hep::Geometry::Tube caloZShape(rmin_calo, rmax_calo, halfz_cell);
     lLog << MSG::INFO << "ECAL: Building the actual calorimeter from " << rmin_calo << " to " << rmax_calo << endmsg;
-    Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));
+    Volume caloZVol(passive_mat, caloZShape, lcdd.material(passive_mat));
     // PlacedVolume placedCalo = bathVol.placeVolume(caloVol);
     // placedCalo.addPhysVolID("EM_barrel", calo_id);
     // caloDet.setPlacement(placedCalo);
 
-    //Prepare one segmentation part in phi - tube shape (start_phi and delta_phi)
+    //Prepare one module in phi - tube shape (start_phi and delta_phi, z - cell size )
     double start_phi = 0.0;
     DD4hep::Geometry::Tube caloPhiShape(rmin_calo, rmax_calo, halfz_cell, start_phi, delta_phi);
-    Volume caloPhiVol(passive_mat, caloShape, lcdd.material(passive_mat));
-
-    //xml_comp_t xcaloVol = calo.child("caloVol");
-    //caloVol.setVisAttributes(lcdd,xcaloVol.visStr());
-
+    Volume caloPhiVol(passive_mat, caloPhiShape, lcdd.material(passive_mat));
+  
     // set the sensitive detector type to the DD4hep calorimeter
     DD4hep::XML::Dimension sdTyp = xmlDet.child(_U(sensitive));
     sensDet.setType(sdTyp.typeStr());
@@ -146,42 +143,40 @@ namespace det {
 	caloLayer.setPlacement(placedLayer);
 	layerVol.setSensitiveDetector(sensDet);
 	//layerVol.setVisAttributes(lcdd,active.visStr());
-	caloLayer.setVisAttributes(lcdd,active.visStr(),layerVol); 
+	//caloLayer.setVisAttributes(lcdd,active.visStr(),layerVol); 
       }
   
     
-    //set along Modules in phi
-    // n_samples_phi = 2;
+    // place caloPhiVol in phi
     for (int i=0;i<n_samples_phi;i++)
       {
-	double phi = +delta_phi/2.-i*delta_phi;
-	lLog << MSG::INFO << "i  #" << i << " deltaphi " << delta_phi << " phi " << phi << endmsg;
+	double phi = -delta_phi/2.+i*delta_phi;
+	lLog << MSG::DEBUG << "i  #" << i << " deltaphi " << delta_phi << " phi " << phi << endmsg;
 	DD4hep::Geometry::Position offset_phi(0, 0, 0);
 	DD4hep::Geometry::Transform3D trans( DD4hep::Geometry::RotationZ(phi), 
 					     offset_phi );
 	DetElement caloPhiMod("calo_mod_phi", i+1);
-	PlacedVolume placedCaloPhiVolume = caloVol.placeVolume(caloPhiVol, trans);
+	PlacedVolume placedCaloPhiVolume = caloZVol.placeVolume(caloPhiVol, trans);
 	placedCaloPhiVolume.addPhysVolID("phi_layer", i+1);
 	caloPhiMod.setPlacement(placedCaloPhiVolume);
-	caloPhiMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloVol);  
+	caloPhiMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloPhiVol);  
       }
     
 
-    // n_samples_z = 1;
+    // place caloZVol along z axis
     for (int i=0;i<n_samples_z;i++)
       {
 	double zOffset = -calo_halfz+(2*i+1)*halfz_cell;
-	//lLog << MSG::DEBUG <<"=== zOffset " << zOffset << endmsg;
 	DD4hep::Geometry::Position offset(0, 0, zOffset);
 	DetElement caloZMod("calo_cells_inz", i+1);
-	PlacedVolume placedCaloZVolume = bathVol.placeVolume(caloVol, offset);
+	PlacedVolume placedCaloZVolume = bathVol.placeVolume(caloZVol, offset);
 	placedCaloZVolume.addPhysVolID("z_layer", i+1);
 	caloZMod.setPlacement(placedCaloZVolume);
-	//	caloZMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloVol);  
+	//caloZMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloZVol);  
       }
   
  
-    //Place envelope (or barrel) volume
+    // place envelope (or barrel) volume
     Volume motherVol = lcdd.pickMotherVolume(eCal);
     PlacedVolume placedECal = motherVol.placeVolume(envelopeVolume);
     placedECal.addPhysVolID("system", eCal.id());

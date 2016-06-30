@@ -28,7 +28,6 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep)
     return cID;
   }
   return volID;
-  //return 0;
 }
 }
 }
