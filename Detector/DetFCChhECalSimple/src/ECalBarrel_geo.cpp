@@ -28,7 +28,7 @@ namespace det {
     DetElement eCal(detName, xmlDet.id());
 
     // Make volume that envelopes the whole barrel; set material to air
-    Dimension dimensions(xmlDet.dimensions());
+    DD4hep::XML::Dimension dimensions(xmlDet.dimensions());
     DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
     Volume envelopeVolume(detName, envelopeShape, lcdd.air());
     // Invisibility seems to be broken in visualisation tags, have to hardcode that
@@ -36,11 +36,11 @@ namespace det {
     envelopeVolume.setVisAttributes(lcdd.invisible());
 
     xml_comp_t cryostat = xmlElement.child("cryostat");
-    Dimension cryo_dims(cryostat.dimensions());
+    DD4hep::XML::Dimension cryo_dims(cryostat.dimensions());
     double cryo_thickness=cryo_dims.thickness();
   
     xml_comp_t calo = xmlElement.child("calorimeter");
-    Dimension calo_dims(calo.dimensions());
+    DD4hep::XML::Dimension calo_dims(calo.dimensions());
     std::string calo_name=calo.nameStr();
     double calo_id=calo.id();
   
@@ -54,7 +54,7 @@ namespace det {
 
     //segmentation in Z direction
     xml_comp_t caloZmodule = calo.child("caloZmodule");
-    double halfz_cell = caloZmodule.thickness();
+    double halfz_cell = caloZmodule.dz();
 
     // set the sensitive detector type to the DD4hep calorimeter
     DD4hep::XML::Dimension sdTyp = xmlDet.child(_U(sensitive));
@@ -75,7 +75,7 @@ namespace det {
 
     if (halfz_cell>calo_dims.dz()) {
       lLog << MSG::WARNING <<"Overlay in ECal construction!!!!! Redefining the boundaries" << endmsg;
-      lLog << MSG::WARNING <<" Problem in Z segmentation: calorimeter half_z "<< calo_dims.dz() << " cm, required calorimeter half_z " << caloZmodule.thickness()<<" cm" <<endmsg;
+      lLog << MSG::WARNING <<" Problem in Z segmentation: calorimeter half_z "<< calo_dims.dz() << " cm, required calorimeter half_z " << caloZmodule.dz()<<" cm" <<endmsg;
       halfz_cell = calo_dims.dz();
     }
 

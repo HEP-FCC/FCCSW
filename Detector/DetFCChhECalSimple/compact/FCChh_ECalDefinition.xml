@@ -9,6 +9,6 @@
     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" nphi="31" />
     <active_layers thickness="4.0*mm" material="LAr" sensitive="true" vis="ecal_active_vis" />
     <passive_layers thickness="2.0*mm" material="Lead" sensitive="false" vis="ecal_passive_vis" />
-    <caloZmodule thickness="50*mm" vis="ecal_caloZmodule_vis" />
+    <caloZmodule dz="50*mm" vis="ecal_caloZmodule_vis" />
   </calorimeter>
 </detector>
