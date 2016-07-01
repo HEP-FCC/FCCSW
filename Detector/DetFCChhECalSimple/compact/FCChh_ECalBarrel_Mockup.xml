@@ -38,7 +38,7 @@
       <!--   <segmentation type="CartesianGridXY" grid_size_x="3500*mm" grid_size_y="3500*mm"/>   -->
       <!--   <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>  -->
       <!-- 2^10 = 1024 -->
-      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,r_layer:10,z_layer:10,phi_layer:10</id>
+      <id>system:3,cryo:1,bath:1,r_layer_active:10,r_layer_passive:10,z_layer:10,phi_layer:10</id>
     </readout>
   </readouts>
 

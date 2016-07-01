@@ -49,7 +49,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // check the cell ID
   uint64_t id = segmentation::cellID(m_seg, *aStep);
   DD4hep::Simulation::Geant4CalorimeterHit* hit, *hitMatch = nullptr;
-  /*
+  
   // Check if there is already some energy deposit in that cell
   for(int i=0; i<calorimeterCollection->entries(); i++) {
     hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>
@@ -60,7 +60,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
       return true;
     }
   }
-  */
+ 
   // if not, create a new hit
   // deleted in ~G4Event
   hitMatch = new DD4hep::Simulation::Geant4CalorimeterHit(pos);

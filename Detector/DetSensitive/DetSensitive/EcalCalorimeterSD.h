@@ -15,7 +15,7 @@
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
  *  No timing information is saved (energy deposits aggregated in the cells)
  *
- *  @author    Anna Zaborowska
+ *  @author    Jana Faltova
  */
 
 namespace det {
