@@ -1,5 +1,5 @@
-#ifndef DETSENSITIVE_SIMPLECALORIMETERSD_H
-#define DETSENSITIVE_SIMPLECALORIMETERSD_H
+#ifndef DETSENSITIVE_AGGREGATECALORIMETERSD_H
+#define DETSENSITIVE_AGGREGATECALORIMETERSD_H
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -9,19 +9,18 @@
 #include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
 
-/** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
+/** AggregateCalorimeterSD DetectorDescription/DetSensitive/src/AggregateCalorimeterSD.h AggregateCalorimeterSD.h
  *
- *  Simple sensitive detector for calorimeter (accumulates energy deposits).
+ *  Sensitive detector for calorimeter (aggregates energy deposits within each cell).
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
- *  In particular, the position of the hit is set to middle step between
- *  G4Step::GetPreStepPoint() and G4Step::GetPostStepPoint()
- *  No timing information is saved (energy deposits aggregated in the cells)
+ *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() poisition.
+ *  No timing information is saved (energy deposits are aggregated in the cells)
  *
  *  @author    Anna Zaborowska
  */
 
 namespace det {
-class SimpleCalorimeterSD : public G4VSensitiveDetector
+class AggregateCalorimeterSD : public G4VSensitiveDetector
 {
   public:
   /** Constructor.
@@ -29,11 +28,11 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleCalorimeterSD(const std::string& aDetectorName,
+  AggregateCalorimeterSD(const std::string& aDetectorName,
     const std::string& aReadoutName,
     const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  virtual ~SimpleCalorimeterSD();
+  virtual ~AggregateCalorimeterSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.
@@ -57,4 +56,4 @@ private:
 };
 }
 
-#endif /* DETSENSITIVE_SIMPLECALORIMETERSD_H */
+#endif /* DETSENSITIVE_AGGREGATECALORIMETERSD_H */

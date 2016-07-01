@@ -1,4 +1,4 @@
-#include "DetSensitive/SimpleCalorimeterSD.h"
+#include "DetSensitive/AggregateCalorimeterSD.h"
 
 // FCCSW
 #include "DetSensitive/SegmentationHelper.h"
@@ -11,7 +11,7 @@
 #include "CLHEP/Vector/ThreeVector.h"
 
 namespace det {
-SimpleCalorimeterSD::SimpleCalorimeterSD(const std::string& aDetectorName,
+AggregateCalorimeterSD::AggregateCalorimeterSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
   : G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
@@ -19,9 +19,9 @@ SimpleCalorimeterSD::SimpleCalorimeterSD(const std::string& aDetectorName,
   collectionName.insert(aReadoutName);
 }
 
-SimpleCalorimeterSD::~SimpleCalorimeterSD(){}
+AggregateCalorimeterSD::~AggregateCalorimeterSD(){}
 
-void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
+void AggregateCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   static int HCID = -1;
   // create a collection of hits and add it to G4HCofThisEvent
@@ -34,7 +34,7 @@ void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
   aHitsCollections->AddHitsCollection(HCID,calorimeterCollection);
 }
 
-bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
+bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
