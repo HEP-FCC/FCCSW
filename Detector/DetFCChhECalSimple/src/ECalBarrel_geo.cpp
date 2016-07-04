@@ -95,7 +95,7 @@ namespace det {
     DetElement calo_bath(active_mat, 0);
     DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
     lLog << MSG::INFO << "ECAL: Filling cryostat with active medium from " << cryo_dims.rmin()+cryo_thickness << " cm to " << cryo_dims.rmax()-cryo_thickness << " cm" << endmsg;
-    Volume bathVol(active_mat, bathShape, lcdd.material(active_mat));
+    Volume bathVol("bathVol_"+active_mat, bathShape, lcdd.material(active_mat));
     if (do_calibHits) bathVol.setSensitiveDetector(sensDet);
     PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
     placedBath.addPhysVolID("bath", 1);
@@ -133,12 +133,12 @@ namespace det {
     //Prepare one segment in z (halfz_cell size)
     DD4hep::Geometry::Tube caloZShape(rmin_calo, rmax_calo, halfz_cell);
     lLog << MSG::INFO << "ECAL: Building the actual calorimeter from " << rmin_calo << " cm to " << rmax_calo << " cm" << endmsg;
-    Volume caloZVol(passive_mat, caloZShape, lcdd.air());
+    Volume caloZVol("calo_segment_z_air", caloZShape, lcdd.air());
     
     //Prepare one module in phi - tube shape (start_phi and delta_phi, z - cell size )
     double start_phi = 0.0;
     DD4hep::Geometry::Tube caloPhiShape(rmin_calo, rmax_calo, halfz_cell, start_phi, delta_phi);
-    Volume caloPhiVol(passive_mat, caloPhiShape, lcdd.air());
+    Volume caloPhiVol("calo_module_phi_air", caloPhiShape, lcdd.air());
   
     double layer_r_passive=rmin_calo;
     double layer_r_active=rmin_calo+passive_tck;

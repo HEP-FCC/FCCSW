@@ -1,7 +1,7 @@
 #JANA: variables ENE (energy in MeV!!!!), BFIELD (0,1), EVTMAX (number of events) to be defined before running
 ENE = 50000
 BFIELD = 0
-EVTMAX = 10
+EVTMAX = 5
 
 from Gaudi.Configuration import *
 
@@ -50,9 +50,12 @@ saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
-pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",
+pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                 particleName="e-",energyMin=ENE,energyMax=ENE,etaMin=0.25,etaMax=0.25,
                 OutputLevel =INFO)
+#Following lines do not work, no idea why:
+#pgun.DataOutputs.genParticles.Path = "genParticles"
+#pgun.DataOutputs.genVertices.Path="genVertices"
 geantsim = SimG4Alg("SimG4Alg",
                        outputs= ["SimG4SaveCalHits/saveECalHits"],
                        eventProvider=pgun)

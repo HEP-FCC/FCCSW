@@ -104,6 +104,7 @@ StatusCode SimG4SingleParticleGeneratorTool::saveToEdm(const G4PrimaryVertex* aV
   fcc::BareParticle& core = particle.Core();
   core.Type = aParticle->GetPDGcode();
   core.Status = 1;
+  core.Charge = aParticle->GetCharge();
   core.P4.Px = aParticle->GetPx()*sim::g42edm::energy;
   core.P4.Py = aParticle->GetPy()*sim::g42edm::energy;
   core.P4.Pz = aParticle->GetPz()*sim::g42edm::energy;
