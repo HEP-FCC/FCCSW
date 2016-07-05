@@ -67,6 +67,9 @@ namespace det {
     //  lLog << MSG::INFO <<"Running simulations with calibration hits" << endmsg;
     //}
 
+    bool build_cryo=true;
+    lLog << MSG::INFO <<"Simulation with a cryostat? " << build_cryo << endmsg;
+
     bool do_calibHits=false;
     if (do_calibHits)  {
       lLog << MSG::INFO <<"Running simulations with calibration hits" << endmsg;
@@ -79,28 +82,33 @@ namespace det {
       halfz_cell = calo_dims.dz();
     }
 
-    // Step 1 : cryostat
-  
-    DetElement cryo(cryostat.nameStr(), 0);
-    DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
-    lLog << MSG::INFO << "ECAL Building cryostat from " << cryo_dims.rmin() << " cm to " << cryo_dims.rmax() << " cm"<< endmsg;
-    Volume cryoVol(cryostat.nameStr(), cryoShape, lcdd.material(cryostat.materialStr()));
-    if (do_calibHits) cryoVol.setSensitiveDetector(sensDet);
-    PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
-    placedCryo.addPhysVolID("cryo", cryostat.id());
-    cryo.setPlacement(placedCryo);
+    
 
-    // Step 2 : fill cryostat with active medium
+    Volume cryoVol;
+    Volume bathVol;
+    if (build_cryo) {
+      // Step 1 : cryostat            
+      DetElement cryo(cryostat.nameStr(), 0);
+      DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
+      lLog << MSG::INFO << "ECAL Building cryostat from " << cryo_dims.rmin() << " cm to " << cryo_dims.rmax() << " cm"<< endmsg;
+      cryoVol=Volume(cryostat.nameStr(), cryoShape, lcdd.material(cryostat.materialStr()));
+      if (do_calibHits) cryoVol.setSensitiveDetector(sensDet);
+      PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
+      placedCryo.addPhysVolID("cryo", cryostat.id());
+      cryo.setPlacement(placedCryo);
 
-    DetElement calo_bath(active_mat, 0);
-    DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
-    lLog << MSG::INFO << "ECAL: Filling cryostat with active medium from " << cryo_dims.rmin()+cryo_thickness << " cm to " << cryo_dims.rmax()-cryo_thickness << " cm" << endmsg;
-    Volume bathVol("bathVol_"+active_mat, bathShape, lcdd.material(active_mat));
-    if (do_calibHits) bathVol.setSensitiveDetector(sensDet);
-    PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
-    placedBath.addPhysVolID("bath", 1);
-    calo_bath.setPlacement(placedBath);
-  
+      // Step 2 : fill cryostat with active medium
+
+      DetElement calo_bath(active_mat, 0);
+      DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
+      lLog << MSG::INFO << "ECAL: Filling cryostat with active medium from " << cryo_dims.rmin()+cryo_thickness << " cm to " << cryo_dims.rmax()-cryo_thickness << " cm" << endmsg;
+      bathVol=Volume("bathVol_"+active_mat, bathShape, lcdd.material(active_mat));
+      if (do_calibHits) bathVol.setSensitiveDetector(sensDet);
+      PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
+      placedBath.addPhysVolID("bath", 1);
+      calo_bath.setPlacement(placedBath);
+    }
+
     // Step 3 : create the actual calorimeter
 
     int n_samples_r= (calo_dims.rmax()-  calo_dims.rmin() - passive_tck)/(passive_tck+active_tck);
@@ -195,13 +203,19 @@ namespace det {
       }
     
 
+    PlacedVolume placedCaloZVolume;
     // place caloZVol along z axis
     for (int i=0;i<n_samples_z;i++)
       {
 	double zOffset = -calo_halfz+(2*i+1)*halfz_cell;
 	DD4hep::Geometry::Position offset(0, 0, zOffset);
 	DetElement caloZMod("calo_cells_inz", i+1);
-	PlacedVolume placedCaloZVolume = bathVol.placeVolume(caloZVol, offset);
+	if (build_cryo) {
+	  placedCaloZVolume = bathVol.placeVolume(caloZVol, offset);
+	}
+	else {
+	  placedCaloZVolume = envelopeVolume.placeVolume(caloZVol, offset);
+	}
 	placedCaloZVolume.addPhysVolID("z_layer", i+1);
 	caloZMod.setPlacement(placedCaloZVolume);
 	//caloZMod.setVisAttributes(lcdd,caloZmodule.visStr(),caloZVol);  
