@@ -60,21 +60,20 @@ namespace det {
     DD4hep::XML::Dimension sdTyp = xmlDet.child(_U(sensitive));
     sensDet.setType(sdTyp.typeStr());
 
-    //calibration hits?
-    //xml_comp_t calibHits = xmlElement.child("calibration_hits");
-    //std::string do_calibHits=calibHits.labelStr();
-    //if (do_calibHits=="true")  {
-    //  lLog << MSG::INFO <<"Running simulations with calibration hits" << endmsg;
-    //}
-
-    bool build_cryo=true;
-    lLog << MSG::INFO <<"Simulation with a cryostat? " << build_cryo << endmsg;
-
+    //Run with calibration hits?
+    std::string xml_do_calibHits=xmlDet.attr<std::string>("doCalibHits");
     bool do_calibHits=false;
-    if (do_calibHits)  {
+    if (xml_do_calibHits=="true")  {
       lLog << MSG::INFO <<"Running simulations with calibration hits" << endmsg;
+      do_calibHits=true;
     }
 
+    std::string xml_buildCryo=xmlDet.attr<std::string>("buildCryostat");
+    bool buildCryo=true;
+    if (xml_buildCryo=="false")  {
+      buildCryo=false;
+    }
+    lLog << MSG::INFO <<"Simulation with a cryostat? " << xml_buildCryo << endmsg;
 
     if (halfz_cell>calo_dims.dz()) {
       lLog << MSG::WARNING <<"Overlay in ECal construction!!!!! Redefining the boundaries" << endmsg;
@@ -86,7 +85,7 @@ namespace det {
 
     Volume cryoVol;
     Volume bathVol;
-    if (build_cryo) {
+    if (buildCryo) {
       // Step 1 : cryostat            
       DetElement cryo(cryostat.nameStr(), 0);
       DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
@@ -111,7 +110,15 @@ namespace det {
 
     // Step 3 : create the actual calorimeter
 
-    int n_samples_r= (calo_dims.rmax()-  calo_dims.rmin() - passive_tck)/(passive_tck+active_tck);
+    double rmin_calo = calo_dims.rmin();
+    double rmax_calo = calo_dims.rmax();
+    //Start from cryo dimensions if not building Cryostat
+    if (!buildCryo) {
+      rmin_calo = cryo_dims.rmin();
+      rmax_calo = cryo_dims.rmax();
+    }
+
+    int n_samples_r= (rmax_calo - rmin_calo - passive_tck)/(passive_tck+active_tck);
     lLog << MSG::INFO <<"++++++++++++++++++++++++++ nSamplings in r: "<<n_samples_r<<" , passive thickness " << passive_tck << " cm, active thickness " << active_tck << " cm" << endmsg;
 
     int n_samples_z = calo_dims.dz()/halfz_cell;
@@ -124,18 +131,18 @@ namespace det {
     //Real dimensions defined by the size of the cells/layers  
     double calo_tck=n_samples_r*(active_tck+passive_tck)+passive_tck;
     double calo_halfz=n_samples_z*halfz_cell;
-
-    double rmin_calo = calo_dims.rmin();
-    double rmax_calo = calo_dims.rmin()+calo_tck;
+    rmax_calo = rmin_calo+calo_tck;
 
     //Check the calorimeter dimensions
-    if ( (rmin_calo<(cryo_dims.rmin()+cryo_thickness)) || 
-	 (rmax_calo>(cryo_dims.rmax()-cryo_thickness)) ) {
-      lLog << MSG::WARNING <<"Overlay in ECal construction!!!!! Redefining the boundaries" << endmsg;
-      lLog << MSG::WARNING <<" Cryo boundaries "<< cryo_dims.rmin()+cryo_thickness << " cm , " << cryo_dims.rmax()-cryo_thickness <<" cm"<<endmsg;
-      lLog << MSG::WARNING <<" Calo volume required from " << rmin_calo << " cm to " << rmax_calo << " cm" <<endmsg;
-      rmin_calo = cryo_dims.rmin()+cryo_thickness;
-      rmax_calo = cryo_dims.rmax()-cryo_thickness;
+    if (buildCryo) {
+      if ( (rmin_calo<(cryo_dims.rmin()+cryo_thickness)) || 
+	   (rmax_calo>(cryo_dims.rmax()-cryo_thickness)) ) {
+	lLog << MSG::WARNING <<"Overlay in ECal construction!!!!! Redefining the boundaries" << endmsg;
+	lLog << MSG::WARNING <<" Cryo boundaries "<< cryo_dims.rmin()+cryo_thickness << " cm , " << cryo_dims.rmax()-cryo_thickness <<" cm"<<endmsg;
+	lLog << MSG::WARNING <<" Calo volume required from " << rmin_calo << " cm to " << rmax_calo << " cm" <<endmsg;
+	rmin_calo = cryo_dims.rmin()+cryo_thickness;
+	rmax_calo = cryo_dims.rmax()-cryo_thickness;
+      }
     }
 
     //Prepare one segment in z (halfz_cell size)
@@ -210,7 +217,7 @@ namespace det {
 	double zOffset = -calo_halfz+(2*i+1)*halfz_cell;
 	DD4hep::Geometry::Position offset(0, 0, zOffset);
 	DetElement caloZMod("calo_cells_inz", i+1);
-	if (build_cryo) {
+	if (buildCryo) {
 	  placedCaloZVolume = bathVol.placeVolume(caloZVol, offset);
 	}
 	else {
