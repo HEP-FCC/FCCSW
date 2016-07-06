@@ -51,7 +51,7 @@ saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName="e-",energyMin=ENE,energyMax=ENE,etaMin=0.25,etaMax=0.25,
+                particleName="e-",energyMin=ENE,energyMax=ENE,etaMin=-0.01,etaMax=0.01,
                 OutputLevel =INFO)
 #Following lines do not work, no idea why:
 #pgun.DataOutputs.genParticles.Path = "genParticles"
