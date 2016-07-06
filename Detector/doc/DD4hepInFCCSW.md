@@ -33,9 +33,9 @@ Similarly to Geant4 itself, DD4hep tries to re-use detector elements without hav
 
 A Minimal Working Example
 --
-Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m. Also see [Coordinate Conventions](#coordinate-conventions) for some explanations on lengths and coordinates in DD4hep. And note that all numbers are accompanied with units to explicitly state what you mean.
+Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m. Also see [Coordinate Conventions](#coordinate-conventions) for some explanations on lengths and coordinates in DD4hep and Geant4. Note that in the following all numbers are accompanied with units to explicitly state what you mean.
 
-1. **Detector description**: To use this sub-detector implementation the corresponding detector description XML can refer to the defined factory method:
+1. **Detector description**: First we describe the world (or a box around the sub-detector) and sub-detector in an XML:
   ~~~{.xml}
   <?xml version="1.0" encoding="UTF-8"?>
   <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
@@ -68,14 +68,14 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
 
     <!-- this is where we actually define our detector: -->
     <detectors>
-      <detector id="0" name="Name" type="Example">
+      <detector id="0" name="Name" type="Example"> <!-- note that the type is important, see below -->
         <dimensions rmin1="0" rmax1="1*m" rmin2="0" rmax2="2*m" dz="1*m" material="Aluminum" />
       </detector>
     </detectors>
   </lcdd>
   ~~~
 
-2. **Factory method**: The minimal part to define a factory method for a sub-detector is:
+2. **Factory method**: Now we define a method that actually creates the geometry of the sub-detector, the `type` given in the xml tells DD4hep which factory method to call for a detector (see the very end of this snippet):
   ~~~{.cpp}
   namespace detector {
   static DD4hep::Geometry::Ref_t createElement(
@@ -109,26 +109,24 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
   DECLARE_DETELEMENT(Example, detector::createElement) // factory method
   ~~~
 
-**Note** that the type `Example` in the xml-description corresponds to the name we put in the `DECLARE_DETELEMENT` macro, this creates the link between the factory method and the xml-description.
+Again, the type `Example` in the xml-description corresponds to the name we put in the `DECLARE_DETELEMENT` macro, this creates the link between the factory method and the xml-description.
 
 Sensitive Detectors
 --
-The above example works, but it does not yet create any sensitive detectors that are needed by Geant4 to calculate and create energy deposits. While in GDML you have to define your sensitive detectors yourself, DD4hep has a mechanism of doing this for you.
+The above example works, but it does not yet create any sensitive detectors that are needed by Geant4 to calculate and create energy deposits. While in GDML you have to define your sensitive detectors yourself, DD4hep has a mechanism of doing some of this for you.
 
-Attaching the sensitive volume to the detector consists of two steps:
- + Defining what kind of the detector it is (how the hits should be processed).
+Attaching the sensitive volume to the detector consists of:
+ + Writing a sensitive detector that processes the hits and telling DD4hep to use it for a given detector
  + Creating the readout structure (to uniquely identify the parts of the detector where the deposits are made).
 
 Both of them involve changes in the XML description and in the factory method.
 
-### Sensitive Detector Definition
+### Using Sensitive an Existing Detector Definition
 
-The **type** of the sensitive detector corresponds to the DD4hep definition of the sensitive detector.
+The **type** of the sensitive detector corresponds to the name of a sensitive detector.
 There are two predefined sensitive detector types:
-* [**Geant4Tracker**](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/legacy/Geant4TrackerSD.cpp?revision=2131&view=markup&pathrev=2132)
-* [**Geant4Calorimeter**](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/legacy/Geant4CalorimeterSD.cpp?revision=2131&view=markup&pathrev=2132).
 
-But you can create your own custom SDs, see [User-defined Sensitive Detectors](#user-defined-sensitive-detectors)
+You will have to create your own custom SDs, see [User-defined Sensitive Detectors](#user-defined-sensitive-detectors) (or maybe re-use one of the existing FCC implementations). For illustration on how to use a sensitive detector in general, we are using an example SD from DD4hep `Geant4Calorimeter`, however, this should not be used in an actual detector description.
 
 1. In the XML description, the sensitive (active) module should be indicated for the corresponding detector:
 
@@ -225,7 +223,7 @@ In order to recognise where the energy was deposited, the sensitive volume has *
 
 ### User-defined Sensitive Detectors
 
-As mentioned above, you may also define your own sensitive detector. What is needed to specify the behaviour of the active elements (how and what should be saved in the hits collections):
+As mentioned above, you want to define your own sensitive detector. For specifying the behaviour of the active elements (how and what should be saved in the hits collections), you need:
 
 1. Implementation of G4VSensitiveDetector (in example below: `Detector/DetSensitive/src/SimpleCalorimeterSD.(h/cpp)`)
 2. Factory method (of SD) for DD4hep
