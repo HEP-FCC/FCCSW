@@ -24,7 +24,7 @@ namespace sim {
 class InitializeModelsRunAction : public G4UserRunAction {
 public:
   /** Constructor.
-   *  @param aSmearToolName Name of the implementation of IG4ParticleSmearTool to be passed to models.
+   *  @param aSmearToolName Name of the implementation of ISimG4ParticleSmearTool to be passed to models.
    */
   explicit InitializeModelsRunAction(const std::string& aSmearingToolName);
   virtual ~InitializeModelsRunAction();
@@ -46,7 +46,7 @@ private:
   std::vector<G4Region*> m_g4regions;
   /// Fast simulation (parametrisation) models
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
-  /// Name of the used implementation of the IG4ParticleSmearTool
+  /// Name of the used implementation of the ISimG4ParticleSmearTool
   std::string m_smearToolName;
 };
 }

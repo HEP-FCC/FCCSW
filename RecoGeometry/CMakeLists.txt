@@ -6,7 +6,7 @@ gaudi_subdir(RecoGeometry v1r0)
 gaudi_depends_on_subdirs(Algebra
 			 Tracking/TrkEvent/TrkParametersBase
 			 Tracking/TrkGeometry/TrkGeometryUtils
-			 DetectorDescription/DetExtensions
+			 Detector/DetExtensions
 			 GaudiKernel)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)

@@ -1,7 +1,7 @@
 #include "SimG4Fast/FastSimModelTracker.h"
 
 // FCCSW
-#include "SimG4Interface/IG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 #include "SimG4Common/ParticleInformation.h"
 
 // Gaudi

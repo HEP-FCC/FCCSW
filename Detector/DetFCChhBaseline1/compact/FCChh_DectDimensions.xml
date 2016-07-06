@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCCDectDimensions"
+    title="master file with includes and world dimension"
+    author="C. Helsens and J. Lingemann"
+    url="no"
+    status="development"
+    version="$Id:??$">
+    <comment>
+        Dimensions for FCChhBaseline1: Design with Twin Solenoid, 6 T, 12 m bore, 10 Tm dipole
+        Source: FCC hadron detector meeting 11 May 2016: http://cern.ch/go/Xz8X
+    </comment>
+  </info>
+
+
+  <define>
+    <!-- BEAM PIPE -->
+    <constant name="CentralBeamTubeZ" value="800.0*cm"/>
+    <constant name="CentralBeamTubeRmax" value="2.1*cm"/>
+    <constant name="CentralBeamTubeRmin" value="2.*cm"/>
+
+    <constant name="ForwardBeamTubeRmin1" value="2.*cm"/>
+    <constant name="ForwardBeamTubeRmax1" value="2.1*cm"/>
+    <constant name="ForwardBeamTubeRmin2" value="7.8*cm"/>
+    <constant name="ForwardBeamTubeRmax2" value="7.9*cm"/>
+    <constant name="ForwardBeamTubeZ" value="15600*cm"/>
+    <constant name="ForwardBeamTubeZoffset" value="800*cm"/>
+
+    <!-- MAGNET SYSTEM -->
+    <!-- Central Solenoids -->
+    <constant name="InnerSolenoidZ" value="1010*cm"/>
+    <constant name="InnerSolenoidRmin" value="625*cm"/>
+    <constant name="InnerSolenoidRmax" value="782.5*cm"/>
+
+    <constant name="OuterSolenoidZ" value="7600*mm"/>
+    <constant name="OuterSolenoidRmin" value="13000*mm"/>
+    <constant name="OuterSolenoidRmax" value="13475*mm"/>
+    <!-- Forward Dipoles -->
+    <constant name="ForwardDipolesZ" value="309*cm"/>
+    <constant name="ForwardDipolesRmin1" value="255*cm"/>
+    <constant name="ForwardDipolesRmax1" value="312*cm"/>
+    <constant name="ForwardDipolesRmin2" value="368*cm"/>
+    <constant name="ForwardDipolesRmax2" value="425*cm"/>
+    <constant name="ForwardDipolesZoffset" value="1480*cm+ForwardDipolesZ"/>
+
+    <constant name="ForwardDipolesx0" value="312*cm"/>
+    <constant name="ForwardDipolesy0" value="127.5*cm"/>
+
+    <constant name="ForwardDipolesx1" value="425*cm"/>
+    <constant name="ForwardDipolesy1" value="127.5*cm"/>
+
+    <constant name="ForwardDipolesdx" value="298*cm"/>
+    <constant name="ForwardDipolesdy" value="200*cm"/>
+    <constant name="ForwardDipolesdz" value="309*cm"/>
+
+    <!-- TRACKER DIMENSIONS -->
+    <constant name="Tracker_rmin" value="21*mm"/>
+    <constant name="Tracker_rmax" value="2500*mm"/>
+    <constant name="Tracker_dz" value="8000*mm"/>
+    <!-- Tracker Barrel -->
+    <!-- Tracker End-caps -->
+    <!-- not explicitly defined, up to tracker design -->
+    <!-- Tracker Forward -->
+    <constant name="FwdTracker_rmin" value="40*mm"/>
+    <constant name="FwdTracker_rmax" value="3500*mm"/>
+    <constant name="FwdTracker_dz" value="1500*mm"/>
+    <constant name="FwdTracker_zOffset" value="21*m+FwdTracker_dz"/>
+
+    <!-- ECAL DIMENSIONS -->
+    <!-- ECal Barrel -->
+    <constant name="BarECal_rmin" value="2500*mm"/>
+    <constant name="BarECal_rmax" value="3600*mm"/>
+    <constant name="BarECal_dz" value="8000*mm"/>
+    <!-- ECal End-caps -->
+    <constant name="EndCapECal_rmin" value="1500*mm"/>
+    <constant name="EndCapECal_rmax" value="3600*mm"/>
+    <constant name="EndCapECal_dz" value="550*mm"/>
+    <!-- ECal endcap has outer radius as barrel outer radius and is behind the barrel -->
+    <constant name="EndCapECal_zOffset" value="BarECal_dz + EndCapECal_dz"/>
+    <!-- ECal forward -->
+    <constant name="FwdECal_rmin" value="40*mm"/>
+    <constant name="FwdECal_rmax" value="4000*mm"/>
+    <constant name="FwdECal_dz" value="550*mm"/>
+    <constant name="FwdECal_zOffset" value="24*m+FwdECal_dz"/>
+
+
+    <!-- HCAL DIMENSIONS -->
+    <!-- HCal Barrel -->
+    <constant name="BarHCal_rmin" value="3600*mm"/>
+    <constant name="BarHCal_rmax" value="6000*mm"/>
+    <constant name="BarHCal_dz" value="11500*mm"/>
+    <!-- HCal End-Cap -->
+    <constant name="EndCapHCal_rmin" value="1500*mm"/>
+    <constant name="EndCapHCal_rmax" value="3600*mm"/>
+    <constant name="EndCapHCal_dz" value="1200*mm"/>
+    <!-- ECal endcap has outer radius as barrel inner radius and is inside the barrel -->
+    <constant name="EndCapHCal_zOffset" value="BarHCal_dz-EndCapHCal_dz"/>
+    <!-- HCal forward -->
+    <constant name="FwdHCal_rmin" value="40*mm"/>
+    <constant name="FwdHCal_rmax" value="4500*mm"/>
+    <constant name="FwdHCal_dz" value="1200*mm"/>
+    <constant name="FwdHCal_zOffset" value="25.1*m + FwdHCal_dz"/>
+
+    <!-- MUON SYSTEM DIMENSIONS -->
+    <!-- Muon system barrel -->
+    <constant name="BarMuon_rmin" value="7825*mm"/>
+    <constant name="BarMuon_rmax" value="13000*mm"/>
+    <constant name="BarMuon_dz" value="11500*mm"/>
+    <!-- Muon system end-caps -->
+    <constant name="EndCapMuon_rmin" value="4500*mm"/>
+    <constant name="EndCapMuon_rmax" value="13000*mm"/>
+    <constant name="EndCapMuon_dz" value="1650*mm"/>
+    <!-- Muon endcap has outer radius as barrel outer radius and is behind the barrel -->
+    <constant name="EndCapMuon_zOffset" value="BarMuon_dz + EndCapMuon_dz"/>
+    <!-- Muon system forward -->
+    <constant name="FwdMuon_rmin" value="40*mm"/>
+    <constant name="FwdMuon_rmax" value="5500*mm"/>
+    <constant name="FwdMuon_dz" value="2000*mm"/>
+    <constant name="FwdMuon_zOffset" value="27.5*m + FwdMuon_dz"/>
+
+  </define>
+
+</lccdd>
