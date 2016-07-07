@@ -49,7 +49,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     endcap_vol.setVisAttributes(lcdd.invisible());
  //   endcap_vol.setVisAttributes(lcdd, x_det.visStr());
     //Set sensitive Type
-    sens.setType("Geant4Tracker");
+    sens.setType("SimpleTrackerSD");
 
     int layer_num = 0;
     for (xml_coll_t j(e,_U(layer)); j; j++) {

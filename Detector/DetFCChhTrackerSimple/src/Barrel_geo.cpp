@@ -42,7 +42,7 @@ static Ref_t create_element(LCDD& lcdd, xml_h e, SensitiveDetector sens)
     tracker_vol.setVisAttributes(lcdd.invisible());
 //    tracker_vol.setVisAttributes(lcdd, x_det.visStr());
     //Set sensitive type tracker
-    sens.setType("Geant4Tracker");
+    sens.setType("SimpleTrackerSD");
 
     int layer_num = 0;
 
