@@ -218,7 +218,7 @@ In FCCSW there is an alternative way to create the geometry, via GDML descriptio
 
 ### Sensitive detectors
 
-Sensitive detectors are responsible for creating the hits whenever a particle traverses the active material. The segmentation of each detector can be described in DD4hep. If a user builds a detector containing only tracker(s) or calorimeter(s), a proper description of the detector in DD4hep is sufficient and there is no need to specify any sensitive detector in Geant4.
+Sensitive detectors are responsible for creating the hits whenever a particle traverses the active material. The readout of each detector can be described in DD4hep.
 
 ##### DD4hep (see more in sec. 2.11 and 2.12 of [DD4hep manual])
 * XML file should contain:
@@ -239,11 +239,11 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
 
 * C++ factory method should:
   * actually construct all the modules of the detector (extracting detail information e.g. on number of modules in z direction or in phi, their material, etc. from the XML file)
-  * set the sensitive detector type to either **Geant4Tracker** or **Geant4Calorimeter**.
+  * set the sensitive detector type.
     This way hits can be stored in either `DD4hep::Simulation::Geant4TrackerHit` or `DD4hep::Simulation::Geant4CalorimeterHit`
 
     ~~~{.cpp}
-    DD4hep::Geometry::SensitiveDetector::setType("Geant4Calorimeter");
+    DD4hep::Geometry::SensitiveDetector::setType("SimpleCalorimeterSD");
     ~~~
 
     Furthermore, that will automatically create the hits collections that are stored in `G4HCofThisEvent` and can be accessed from `G4Event` after the simulation is done (how to access the event is described [further](#42-output)). Names of the collections are determined by the name of readout, set in XML file.
@@ -252,7 +252,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
 ### How to use different geometry
 
 In order to describe a detector, one needs an XML file and relevant C++ factory methods.
-To describe a sensitive detector consult the [short description](#sensitive-detectors) and sections 2.11 and 2.12 in [DD4hep manual].
+To describe a sensitive detector consult the [short description](#sensitive-detectors), [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md) and sections 2.11 and 2.12 in [DD4hep manual].
 Further information may be also found on [DD4hep documentation webpage][DD4hep].
 
 Once XML file is done, it can be passed as a property **detector** to `GeoSvc` which will parse it and translate the geometry to Geant format.

@@ -7,9 +7,10 @@ DD4hep Detector Description
 * [Constructing Detector Geometry](#constructing-detector-geometry)
 * [A Minimal Working Example](#a-minimal-working-example)
 * [Sensitive Detectors](#sensitive-detectors)
-  * [Sensitive Detector Definition](#sensitive-detector-definition)
+  * [Using an Existing Sensitive Detector Definition](#using-an-existing-sensitive-detector-definition)
   * [Readout Definition](#readout-definition)
   * [User-defined Sensitive Detectors](#user-defined-sensitive-detectors)
+  * [Segmentation](#segmentation)
 * [Coordinate Conventions](#coordinate-conventions)
 * [Visualisation](#visualisation)
 * [FCCSW Folder Structure](#fccsw-folder-structure)
@@ -121,18 +122,24 @@ Attaching the sensitive volume to the detector consists of:
 
 Both of them involve changes in the XML description and in the factory method.
 
-### Using Sensitive an Existing Detector Definition
+### Using an Existing Sensitive Detector Definition
 
 The **type** of the sensitive detector corresponds to the name of a sensitive detector.
-There are two predefined sensitive detector types:
+There are few implementations of the sensitive detectors in FCCSW:
 
-You will have to create your own custom SDs, see [User-defined Sensitive Detectors](#user-defined-sensitive-detectors) (or maybe re-use one of the existing FCC implementations). For illustration on how to use a sensitive detector in general, we are using an example SD from DD4hep `Geant4Calorimeter`, however, this should not be used in an actual detector description.
+ - `SimpleTrackerSD`
+ - `SimpleCalorimeterSD`
+ - `AggregateCalorimeterSD`
+
+`SimpleTrackerSD` and `SimpleCalorimeterSD` create hits for each energy deposit. `AggregateCalorimeterSD` accumulates the energy deposits in cells and loops over the whole collection of hits, increasing the simulation time.
+
+If you need to create your own custom SDs, see [User-defined Sensitive Detectors](#user-defined-sensitive-detectors).
 
 1. In the XML description, the sensitive (active) module should be indicated for the corresponding detector:
 
   ~~~{.xml}
   <detector id="0" ... sensitive="true">
-    <sensitive type="Geant4Calorimeter"/>
+    <sensitive type="SimpleTrackerSD"/>
   </detector>
   ~~~
 
@@ -157,7 +164,7 @@ You will have to create your own custom SDs, see [User-defined Sensitive Detecto
 
   ~~~{.cpp}
   DD4hep::Geometry::SensitiveDetector aSensDet
-  aSensDet.setType("Geant4Calorimeter");       // this could also be retrieved from xml like above
+  aSensDet.setType("SimpleTrackerSD");       // this could also be retrieved from xml like above
   if (xComp.isSensitive()) {
     modCompVol.setSensitiveDetector(aSensDet); // only set for certain components
   }
@@ -223,7 +230,7 @@ In order to recognise where the energy was deposited, the sensitive volume has *
 
 ### User-defined Sensitive Detectors
 
-As mentioned above, you want to define your own sensitive detector. For specifying the behaviour of the active elements (how and what should be saved in the hits collections), you need:
+As mentioned above, you may want to define your own sensitive detector. For specifying the behaviour of the active elements (how and what should be saved in the hits collections), you need:
 
 1. Implementation of G4VSensitiveDetector (in example below: `Detector/DetSensitive/src/SimpleCalorimeterSD.(h/cpp)`)
 2. Factory method (of SD) for DD4hep
