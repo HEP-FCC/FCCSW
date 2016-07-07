@@ -18,6 +18,7 @@ void PhysicsList::ConstructParticle() {
 
 void PhysicsList::ConstructProcess() {
   G4VUserPhysicsList::AddTransportation();
+  // process added for electrons only
   G4ParticleDefinition* particle = G4Electron::ElectronDefinition();
   G4ProcessManager* process_manager = particle->GetProcessManager();
   process_manager->AddDiscreteProcess(&m_process);

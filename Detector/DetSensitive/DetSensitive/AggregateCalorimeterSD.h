@@ -13,7 +13,7 @@
  *
  *  Sensitive detector for calorimeter (aggregates energy deposits within each cell).
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
- *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() poisition.
+ *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
  *  No timing information is saved (energy deposits are aggregated in the cells)
  *
  *  @author    Anna Zaborowska

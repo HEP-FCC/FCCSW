@@ -6,7 +6,7 @@
 
 /** @class KillProcess TestGeometry/TestGeometry/KillProcess.h KillProcess.h
  *
- *  Deposit all the energy and kill the particle
+ *  Deposit all the energy and kill the particle at the origin.
  *
  *  @author Anna Zaborowska
  */

@@ -53,7 +53,6 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
   if(collections != nullptr) {
     fcc::CaloClusterCollection* edmClusters = new fcc::CaloClusterCollection();
     fcc::CaloHitCollection* edmHits = new fcc::CaloHitCollection();
-    // CaloClusterHitsAssociationCollection* edmAssociations = new CaloClusterHitsAssociationCollection();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (collect->GetName().find(m_calType) != std::string::npos) {
@@ -79,9 +78,6 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
             debug() <<"position of hit: " << hit->GetPos()<< "mm "<<endmsg;
             edmClusterCore.Energy = hit->GetEdep()*sim::g42edm::energy;
             energyTotal += edmClusterCore.Energy;
-            // CaloClusterHitsAssociationHandle edmAssociation = edmAssociations->create();
-            // edmAssociation.mod().Cluster = edmCluster;
-            // edmAssociation.mod().Hit = edmHit;
           }
         }
         debug() << "\t" << hitNo<< " hits are non-zero in collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;

@@ -1,5 +1,5 @@
-#ifndef SIMG4COMPONENTS_G4GDMLTESTDETECTOR_H
-#define SIMG4COMPONENTS_G4GDMLTESTDETECTOR_H
+#ifndef TESTGEOMETRY_G4GDMLTESTDETECTOR_H
+#define TESTGEOMETRY_G4GDMLTESTDETECTOR_H
 
 // Gaudi
 #include "GaudiKernel/AlgTool.h"
@@ -10,9 +10,9 @@
 // Geant4
 #include "G4GDMLParser.hh"
 
-/** @class SimG4GdmlTestDetector SimG4Components/src/SimG4GdmlTestDetector.h SimG4GdmlTestDetector.h
+/** @class SimG4GdmlTestDetector TestGeometry/src/components/SimG4GdmlTestDetector.h SimG4GdmlTestDetector.h
  *
- *  Detector construction tool using the GDML file.
+ *  Detector construction tool using the GDML file. It creates the detector as defined in test::GdmlDetectorConstruction.
  *  GDML file name needs to be specified in job options file (\b'gdml').
  *
  *  @author Anna Zaborowska
@@ -40,4 +40,4 @@ private:
   std::string m_gdmlFile;
 };
 
-#endif /* SIMG4COMPONENTS_G4GDMLTESTDETECTOR_H */
+#endif /* TESTGEOMETRY_G4GDMLTESTDETECTOR_H */

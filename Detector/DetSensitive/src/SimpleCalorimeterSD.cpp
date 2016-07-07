@@ -47,7 +47,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   DD4hep::Simulation::Geant4CalorimeterHit* hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
   // hit is expected to be created, otherwise abort job
   assert(hit != nullptr);
-  hit->cellID  = segmentation::cellID(m_seg, *aStep, false);
+  hit->cellID  = segmentation::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
   calorimeterCollection->insert(hit);
   return true;

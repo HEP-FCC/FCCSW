@@ -1,3 +1,8 @@
+from ROOT import gSystem
+from EventStore import EventStore
+from array import array
+from math import sqrt, pow
+
 cellNo = 201
 cellSize = 5
 bitfieldsize = 8
@@ -42,27 +47,21 @@ def cmpId(cellIdGdml, cellIdDd4hep):
     IdDd4hep = cellIdDd4hep(cellIdDd4hep)
     return bool(IdGdml == IdDd4hep)
 
-from ROOT import gSystem
-from EventStore import EventStore
-from array import array
-import os
-from math import sqrt, pow
+if __name__ == "__main__":
+    gSystem.Load("libdatamodelDict")
+    storeGdml = EventStore(["testCellId_gdml.root"])
+    storeDD4hep = EventStore(["testCellId_dd4hep.root"])
 
-gSystem.Load("libdatamodelDict")
-en = 1
-storeGdml = EventStore(["testCellId_gdml.root"])
-storeDD4hep = EventStore(["testCellId_dd4hep.root"])
-
-gdmlPos = []
-for iev, event in enumerate(storeGdml):
-    hits = event.get('caloHits')
-    for hit in hits:
-        cellId = hit.Core().Cellid
-        gdmlPos.append(cellPosGdml(cellId))
-dd4hepPos = []
-for iev, event in enumerate(storeDD4hep):
-    hits = event.get('caloHits')
-    for hit in hits:
-        cellId = hit.Core().Cellid
-        dd4hepPos.append(cellPosDd4hep(cellId))
-assert(gdmlPos == dd4hepPos)
+    gdmlPos = []
+    for iev, event in enumerate(storeGdml):
+        hits = event.get('caloHits')
+        for hit in hits:
+            cellId = hit.Core().Cellid
+            gdmlPos.append(cellPosGdml(cellId))
+    dd4hepPos = []
+    for iev, event in enumerate(storeDD4hep):
+        hits = event.get('caloHits')
+        for hit in hits:
+            cellId = hit.Core().Cellid
+            dd4hepPos.append(cellPosDd4hep(cellId))
+    assert(gdmlPos == dd4hepPos)

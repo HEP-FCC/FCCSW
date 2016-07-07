@@ -8,8 +8,8 @@
 
 /** @class PhysicsList TestGeometry/TestGeometry/PhysicsList.h PhysicsList.h
  *
- *  Physics list containing only transportation and a custom process, test::PhysicsProcess
- *  that deposits all the energy in the particle origin.
+ *  Physics list containing only transportation and a custom process, test::KillProcess
+ *  that deposits all the energy in the electron origin (process added for electrons only).
  *
  *  @author Anna Zaborowska
  */

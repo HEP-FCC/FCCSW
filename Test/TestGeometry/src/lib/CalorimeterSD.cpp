@@ -9,36 +9,36 @@
 #include "G4SDManager.hh"
 
 namespace test {
-CalorimeterSD::CalorimeterSD(G4String name): G4VSensitiveDetector(name),
-                                             fHitsCollection(0),
-                                             fHCID(-1),
-                                             fCellNo(1) {
+CalorimeterSD::CalorimeterSD(std::string name): G4VSensitiveDetector(name),
+                                             m_HitsCollection(0),
+                                             m_HCID(-1),
+                                             m_CellNo(1) {
   collectionName.insert("ECalorimeterColl");
 }
 
-CalorimeterSD::CalorimeterSD(G4String name, G4int aCellNoInAxis): G4VSensitiveDetector(name),
-                                                                  fHitsCollection(0),
-                                                                  fHCID(-1),
-                                                                  fCellNo(aCellNoInAxis) {
+CalorimeterSD::CalorimeterSD(std::string name, G4int aCellNoInAxis): G4VSensitiveDetector(name),
+                                                                  m_HitsCollection(0),
+                                                                  m_HCID(-1),
+                                                                  m_CellNo(aCellNoInAxis) {
   collectionName.insert("ECalorimeterColl");
 }
 
 CalorimeterSD::~CalorimeterSD() {}
 
 void CalorimeterSD::Initialize(G4HCofThisEvent* hce) {
-  fHitsCollection = new CalorimeterHitsCollection(SensitiveDetectorName,collectionName[0]);
-  if (fHCID<0) {
-    fHCID = G4SDManager::GetSDMpointer()->GetCollectionID(fHitsCollection);
+  m_HitsCollection = new CalorimeterHitsCollection(SensitiveDetectorName,collectionName[0]);
+  if (m_HCID<0) {
+    m_HCID = G4SDManager::GetSDMpointer()->GetCollectionID(m_HitsCollection);
   }
-  hce->AddHitsCollection(fHCID,fHitsCollection);
+  hce->AddHitsCollection(m_HCID,m_HitsCollection);
 
   // fill calorimeter hits with zero energy deposition
-  for (G4int ix=0;ix<fCellNo;ix++)
-    for (G4int iy=0;iy<fCellNo;iy++)
-      for (G4int iz=0;iz<fCellNo;iz++)
+  for (G4int ix=0;ix<m_CellNo;ix++)
+    for (G4int iy=0;iy<m_CellNo;iy++)
+      for (G4int iz=0;iz<m_CellNo;iz++)
       {
         CalorimeterHit* hit = new CalorimeterHit();
-        fHitsCollection->insert(hit);
+        m_HitsCollection->insert(hit);
       }
 }
 
@@ -53,8 +53,8 @@ G4bool CalorimeterSD::ProcessHits(G4Step* step, G4TouchableHistory*)
   G4int xNo = touchable->GetCopyNumber(2);
   G4int zNo = touchable->GetCopyNumber(0);
 
-  G4int hitID = fCellNo*fCellNo*xNo+fCellNo*yNo+zNo;
-  CalorimeterHit* hit = (*fHitsCollection)[hitID];
+  G4int hitID = m_CellNo*m_CellNo*xNo+m_CellNo*yNo+zNo;
+  CalorimeterHit* hit = (*m_HitsCollection)[hitID];
 
   if(hit->GetXid()<0)
   {

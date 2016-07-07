@@ -10,7 +10,8 @@ class G4TouchableHistory;
 
 /** @class CalorimeterHit.h TestGeometry/TestGeometry/CalorimeterHit.h CalorimeterHit.h
  *
- *  Implementation of the hit for the calorimeter.
+ *  Implementation of the sensitive detector for the calorimeter with XYZ Carthesian cell grid.
+ *  The cell id is computed as N*N*id_x+N*id_y+id_z, where N is the number of cells (identical in each direction).
  *  Based on B5HadCalorimeterSD from examples/basic/B5.
  *
  *  @author Anna Zaborowska
@@ -19,15 +20,15 @@ namespace test {
 class CalorimeterSD : public G4VSensitiveDetector
 {
 public:
-  CalorimeterSD(G4String name);
-  CalorimeterSD(G4String name,G4int aCellNoInAxis);
+  CalorimeterSD(std::string name);
+  CalorimeterSD(std::string name, int aCellNoInAxis);
   virtual ~CalorimeterSD();
   virtual void Initialize(G4HCofThisEvent*HCE);
-  virtual G4bool ProcessHits(G4Step*aStep,G4TouchableHistory*ROhist);
+  virtual G4bool ProcessHits(G4Step*aStep, G4TouchableHistory*ROhist);
 private:
-  CalorimeterHitsCollection* fHitsCollection;
-  G4int fHCID;
-  G4int fCellNo;
+  CalorimeterHitsCollection* m_HitsCollection;
+  int m_HCID;
+  int m_CellNo;
 };
 }
 

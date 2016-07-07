@@ -15,9 +15,10 @@ class CaloHitCollection;
 class CaloClusterHitsAssociationCollection;
 }
 
-/** @class SimG4SaveTestCalHits SimG4Components/src/SimG4SaveTestCalHits.h SimG4SaveTestCalHits.h
+/** @class SimG4SaveTestCalHits TestGeometry/src/components/SimG4SaveTestCalHits.h SimG4SaveTestCalHits.h
  *
- *  Save tracker hits tool.
+ *  Save calorimeter hits tool.
+ *  It checks for the calorimeter hits collections that contain hits of type test::CalorimeterHit.
  *
  *  @author Anna Zaborowska
  */
@@ -36,7 +37,7 @@ public:
    */
   virtual StatusCode finalize();
   /**  Save the data output.
-   *   Saves the tracker hits and clusters from every hits collection associated with the event
+   *   Saves the calorimeter hits and clusters from every hits collection associated with the event
    *   that has m_calType in its name.
    *   @param[in] aEvent Event with data to save.
    *   @return status code

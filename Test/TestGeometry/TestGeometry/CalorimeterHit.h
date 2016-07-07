@@ -12,18 +12,14 @@
 class G4AttDef;
 class G4AttValue;
 
-/// Hadron Calorimeter hit
-///
-/// It records:
-/// - the cell x ID and y ID and z ID
-/// - the energy deposit 
-/// - the cell position and rotation
-
-
 /** @class CalorimeterHit.h TestGeometry/TestGeometry/CalorimeterHit.h CalorimeterHit.h
  *
- *  Implementation of the hit for the calorimeter.
- *  Based on B5HadCalorimeterHit from examples/basic/B5.
+ *  Implementation of the hit for the calorimeter with XYZ Carthesian cell grid.
+ *  It records:
+ *  - the cell x ID, y ID and z ID
+ *  - the energy deposit
+ *  - the cell position and rotation.
+ *  Based on B5HadCalorimeterHit from Geant4 examples/basic/B5.
  *
  *  @author Anna Zaborowska
  */
@@ -31,48 +27,43 @@ class G4AttValue;
 namespace test {
 class CalorimeterHit : public G4VHit {
 public:
-    CalorimeterHit();
-    CalorimeterHit(G4int iX,G4int iY,G4int iZ);
-    CalorimeterHit(const CalorimeterHit &right);
-    virtual ~CalorimeterHit();
+  CalorimeterHit();
+  CalorimeterHit(int iX, int iY, int iZ);
+  CalorimeterHit(const CalorimeterHit &right);
+  virtual ~CalorimeterHit();
 
-    const CalorimeterHit& operator=(const CalorimeterHit &right);
-    int operator==(const CalorimeterHit &right) const;
+  const CalorimeterHit& operator=(const CalorimeterHit &right);
+  int operator==(const CalorimeterHit &right) const;
 
-    inline void *operator new(size_t);
-    inline void operator delete(void *aHit);
+  inline void *operator new(size_t);
+  inline void operator delete(void *aHit);
 
-    virtual void Draw();
-    virtual const std::map<G4String,G4AttDef>* GetAttDefs() const;
-    virtual std::vector<G4AttValue>* CreateAttValues() const;
-    virtual void Print();
+  void SetXid(int z) { m_xID = z; }
+  int GetXid() const { return m_xID; }
 
-    void SetXid(G4int z) { fxID = z; }
-    G4int GetXid() const { return fxID; }
+  void SetYid(int z) { m_yID = z; }
+  int GetYid() const { return m_yID; }
 
-    void SetYid(G4int z) { fyID = z; }
-    G4int GetYid() const { return fyID; }
+  void SetZid(int z) { m_zID = z; }
+  int GetZid() const { return m_zID; }
 
-    void SetZid(G4int z) { fzID = z; }
-    G4int GetZid() const { return fzID; }
+  void SetEdep(double de) { m_Edep = de; }
+  void AddEdep(double de) { m_Edep += de; }
+  double GetEdep() const { return m_Edep; }
 
-    void SetEdep(G4double de) { fEdep = de; }
-    void AddEdep(G4double de) { fEdep += de; }
-    G4double GetEdep() const { return fEdep; }
+  void SetPos(G4ThreeVector xyz) { m_Pos = xyz; }
+  G4ThreeVector GetPos() const { return m_Pos; }
 
-    void SetPos(G4ThreeVector xyz) { fPos = xyz; }
-    G4ThreeVector GetPos() const { return fPos; }
-
-    void SetRot(G4RotationMatrix rmat) { fRot = rmat; }
-    G4RotationMatrix GetRot() const { return fRot; }
+  void SetRot(G4RotationMatrix rmat) { m_Rot = rmat; }
+  G4RotationMatrix GetRot() const { return m_Rot; }
 
 private:
-    G4int fxID;
-    G4int fyID;
-    G4int fzID;
-    G4double fEdep;
-    G4ThreeVector fPos;
-    G4RotationMatrix fRot;
+  int m_xID;
+  int m_yID;
+  int m_zID;
+  double m_Edep;
+  G4ThreeVector m_Pos;
+  G4RotationMatrix m_Rot;
 };
 
 typedef G4THitsCollection<CalorimeterHit> CalorimeterHitsCollection;
@@ -81,14 +72,14 @@ extern G4ThreadLocal G4Allocator<CalorimeterHit>* CalorimeterHitAllocator;
 
 inline void* CalorimeterHit::operator new(size_t)
 {
-    if (!CalorimeterHitAllocator)
-        CalorimeterHitAllocator = new G4Allocator<CalorimeterHit>;
-    return (void*)CalorimeterHitAllocator->MallocSingle();
+  if (!CalorimeterHitAllocator)
+    CalorimeterHitAllocator = new G4Allocator<CalorimeterHit>;
+  return (void*)CalorimeterHitAllocator->MallocSingle();
 }
 
 inline void CalorimeterHit::operator delete(void* aHit)
 {
-    CalorimeterHitAllocator->FreeSingle((CalorimeterHit*) aHit);
+  CalorimeterHitAllocator->FreeSingle((CalorimeterHit*)aHit);
 }
 }
 

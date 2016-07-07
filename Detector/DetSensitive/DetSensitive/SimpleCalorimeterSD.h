@@ -14,6 +14,7 @@
  *  Simple sensitive detector for calorimeter.
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
  *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
+ *  New hit is created for each energy deposit.
  *  No timing information is saved.
  *
  *  @author    Anna Zaborowska
