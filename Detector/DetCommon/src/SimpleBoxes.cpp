@@ -12,7 +12,7 @@ static DD4hep::Geometry::Ref_t createSimpleBoxes(DD4hep::Geometry::LCDD& aLcdd,
   DD4hep::Geometry::DetElement   det    (name,x_det.id());
   DD4hep::Geometry::Material air = aLcdd.air();
   DD4hep::Geometry::Volume      det_vol(name+"_vol",
-    DD4hep::Geometry::Box(dim.x(),dim.y(),dim.z()), air);
+    DD4hep::Geometry::Box(dim.x(),dim.y(),dim.z()), aLcdd.material(x_det.materialStr()));
   DD4hep::Geometry::Volume      mother = aLcdd.pickMotherVolume(det);
   DD4hep::Geometry::Transform3D transform(DD4hep::Geometry::Rotation3D(
       DD4hep::Geometry::RotationZYX(rot.z(),rot.y(),rot.x())), DD4hep::Geometry::Position(pos.x(),pos.y(),pos.z()));
