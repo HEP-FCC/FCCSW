@@ -10,6 +10,9 @@
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
+// Geant4
+#include "G4SDManager.hh"
+
 namespace det {
 MiddleStepTrackerSD::MiddleStepTrackerSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
@@ -23,15 +26,11 @@ MiddleStepTrackerSD::~MiddleStepTrackerSD(){}
 
 void MiddleStepTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
-  static int HCID = -1;
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   trackerCollection = new G4THitsCollection
     <DD4hep::Simulation::Geant4Hit>(SensitiveDetectorName,collectionName[0]);
-  // get id for collection
-  if(HCID<0)
-    HCID = GetCollectionID(0);
-  aHitsCollections->AddHitsCollection(HCID,trackerCollection);
+  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(trackerCollection),trackerCollection);
 }
 
 bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)

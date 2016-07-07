@@ -10,6 +10,9 @@
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
+// Geant4
+#include "G4SDManager.hh"
+
 namespace det {
 SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
@@ -23,15 +26,10 @@ SimpleTrackerSD::~SimpleTrackerSD(){}
 
 void SimpleTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
-  static int HCID = -1;
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
-  trackerCollection = new G4THitsCollection
-    <DD4hep::Simulation::Geant4Hit>(SensitiveDetectorName,collectionName[0]);
-  // get id for collection
-  if(HCID<0)
-    HCID = GetCollectionID(0);
-  aHitsCollections->AddHitsCollection(HCID,trackerCollection);
+  trackerCollection = new G4THitsCollection<DD4hep::Simulation::Geant4Hit>(SensitiveDetectorName,collectionName[0]);
+  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(trackerCollection),trackerCollection);
 }
 
 bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)

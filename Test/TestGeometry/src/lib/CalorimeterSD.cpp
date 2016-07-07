@@ -11,14 +11,12 @@
 namespace test {
 CalorimeterSD::CalorimeterSD(std::string name): G4VSensitiveDetector(name),
                                              m_HitsCollection(0),
-                                             m_HCID(-1),
                                              m_CellNo(1) {
   collectionName.insert("ECalorimeterColl");
 }
 
 CalorimeterSD::CalorimeterSD(std::string name, G4int aCellNoInAxis): G4VSensitiveDetector(name),
                                                                   m_HitsCollection(0),
-                                                                  m_HCID(-1),
                                                                   m_CellNo(aCellNoInAxis) {
   collectionName.insert("ECalorimeterColl");
 }
@@ -27,10 +25,7 @@ CalorimeterSD::~CalorimeterSD() {}
 
 void CalorimeterSD::Initialize(G4HCofThisEvent* hce) {
   m_HitsCollection = new CalorimeterHitsCollection(SensitiveDetectorName,collectionName[0]);
-  if (m_HCID<0) {
-    m_HCID = G4SDManager::GetSDMpointer()->GetCollectionID(m_HitsCollection);
-  }
-  hce->AddHitsCollection(m_HCID,m_HitsCollection);
+  hce->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_HitsCollection), m_HitsCollection);
 
   // fill calorimeter hits with zero energy deposition
   for (G4int ix=0;ix<m_CellNo;ix++)

@@ -27,7 +27,6 @@ public:
   virtual G4bool ProcessHits(G4Step*aStep, G4TouchableHistory*ROhist);
 private:
   CalorimeterHitsCollection* m_HitsCollection;
-  int m_HCID;
   int m_CellNo;
 };
 }
