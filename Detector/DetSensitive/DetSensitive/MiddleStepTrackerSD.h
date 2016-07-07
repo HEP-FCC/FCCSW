@@ -1,5 +1,5 @@
-#ifndef DETSENSITIVE_SIMPLETRACKERSD_H
-#define DETSENSITIVE_SIMPLETRACKERSD_H
+#ifndef DETSENSITIVE_MIDDLESTEPTRACKERSD_H
+#define DETSENSITIVE_MIDDLESTEPTRACKERSD_H
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -8,15 +8,16 @@
 #include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
 
-/** SimpleTrackerSD DetectorDescription/DetSensitive/src/SimpleTrackerSD.h SimpleTrackerSD.h
+/** MiddleStepTrackerSD DetectorDescription/DetSensitive/src/MiddleStepTrackerSD.h MiddleStepTrackerSD.h
  *
- *  Simple sensitive detector for tracker.
- *  The position of the hit is set to the position from G4Step::GetPreStepPoint().
+ *  Sensitive detector for tracker. It takes middle position between G4Step::GetPreStepPoint()
+ *  and G4Step::GetPostStepPoint() to calculate the cell ID (from segmentation) and to store in cluster.
+ *  It is based on DD4hep::Simulation::Geant4GenericSD<Tracker> (and is meant to be identical).
  *
  *  @author    Anna Zaborowska
  */
 namespace det {
-  class SimpleTrackerSD : public G4VSensitiveDetector
+  class MiddleStepTrackerSD : public G4VSensitiveDetector
 {
   public:
   /** Constructor.
@@ -24,11 +25,11 @@ namespace det {
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleTrackerSD(const std::string& aDetectorName,
+  MiddleStepTrackerSD(const std::string& aDetectorName,
     const std::string& aReadoutName,
     const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  virtual ~SimpleTrackerSD();
+  virtual ~MiddleStepTrackerSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.
@@ -51,4 +52,4 @@ private:
 };
 }
 
-#endif /* DETSENSITIVE_SIMPLETRACKERSD_H */
+#endif /* DETSENSITIVE_MIDDLESTEPTRACKERSD_H */

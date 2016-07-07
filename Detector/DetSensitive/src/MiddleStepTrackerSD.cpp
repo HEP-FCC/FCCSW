@@ -1,4 +1,4 @@
-#include "DetSensitive/SimpleTrackerSD.h"
+#include "DetSensitive/MiddleStepTrackerSD.h"
 
 // FCCSW
 #include "DetSensitive/SegmentationHelper.h"
@@ -11,7 +11,7 @@
 #include "CLHEP/Vector/ThreeVector.h"
 
 namespace det {
-SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,
+MiddleStepTrackerSD::MiddleStepTrackerSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
   : G4VSensitiveDetector(aDetectorName), m_seg(aSeg) {
@@ -19,9 +19,9 @@ SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,
   collectionName.insert(aReadoutName);
 }
 
-SimpleTrackerSD::~SimpleTrackerSD(){}
+MiddleStepTrackerSD::~MiddleStepTrackerSD(){}
 
-void SimpleTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
+void MiddleStepTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   static int HCID = -1;
   // create a collection of hits and add it to G4HCofThisEvent
@@ -34,7 +34,7 @@ void SimpleTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
   aHitsCollections->AddHitsCollection(HCID,trackerCollection);
 }
 
-bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
+bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
@@ -44,8 +44,8 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // as in DD4hep::Simulation::Geant4GenericSD<Tracker>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
-  // DD4hep::Simulation::Position position(prePos.x(), prePos.y(), prePos.z());
   CLHEP::Hep3Vector medPos = 0.5*(prePos+postPos);
+  // middle position between prestep and poststep is saved to cluster
   DD4hep::Simulation::Position position(medPos.x(), medPos.y(), medPos.z());
   CLHEP::Hep3Vector direction = postPos - prePos;
   // create a hit and add it to collection
@@ -55,8 +55,7 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   // hit is expected to be created, otherwise abort job
   assert(hit != nullptr);
-  // take mid position between prestep and poststep to calculate the position in segmentation,
-  // to compare output hits with DD4hep Geant4Tracker
+  // take mid position between prestep and poststep to calculate the position in segmentation
   hit->cellID  = segmentation::cellID(m_seg, *aStep, false);
   hit->energyDeposit = edep;
   hit->position = position;
