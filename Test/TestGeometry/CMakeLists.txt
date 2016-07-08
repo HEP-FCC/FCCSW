@@ -7,22 +7,25 @@ gaudi_depends_on_subdirs(GaudiKernel FWCore Sim/SimG4Interface Sim/SimG4Common)
 
 find_package(Geant4)
 include(${Geant4_USE_FILE})
-find_package(ROOT)
-
+find_package(DD4hep)
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_install_headers(TestGeometry)
 
 gaudi_add_library(TestGeometry
 		  src/lib/*.cpp
-		  INCLUDE_DIRS Geant4 ROOT TestGeometry
-		  LINK_LIBRARIES GaudiKernel Geant4 ROOT
+		  INCLUDE_DIRS Geant4 ROOT TestGeometry DD4hep
+		  LINK_LIBRARIES GaudiKernel Geant4 ROOT DD4hep
         PUBLIC_HEADERS TestGeometry)
 
 gaudi_add_module(TestGeometryPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common TestGeometry
                  LINK_LIBRARIES GaudiKernel FWCore Geant4 TestGeometry)
+
+# set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
+set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+dd4hep_generate_rootmap(TestGeometry)
 
 include(CTest)
 gaudi_add_test(TestBorderCellIDFromGdml
