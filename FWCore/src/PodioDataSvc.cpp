@@ -28,6 +28,7 @@ StatusCode PodioDataSvc::finalize()    {
 }
 
 StatusCode PodioDataSvc::clearStore()    {
+  info() << "PodioDataSvc::clearStore" << endmsg;
   for (auto& collNamePair : m_collections) {
     if (collNamePair.second != nullptr) {
       collNamePair.second->clear();
@@ -35,7 +36,15 @@ StatusCode PodioDataSvc::clearStore()    {
   }
   DataSvc::clearStore().ignore();
   m_collections.clear();
+  m_collProvider.clear();
   return StatusCode::SUCCESS ;
+}
+
+void PodioDataSvc::setCollectionIDs(podio::CollectionIDTable* collectionIds) {
+  if (m_collectionIDs != nullptr) {
+    delete m_collectionIDs;
+  }
+  m_collectionIDs = collectionIds;
 }
 
 /// Standard Constructor
@@ -49,9 +58,9 @@ PodioDataSvc::~PodioDataSvc() {
 
 StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
-  if (wrapper){
+  if (wrapper != nullptr) {
     podio::CollectionBase* coll = wrapper->collectionBase();
-    if (coll!=0){
+    if (coll != nullptr) {
       size_t pos = fullPath.find_last_of("/");
       std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
       int id = m_collectionIDs->add(shortPath);
@@ -61,3 +70,21 @@ StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObjec
   }
   return DataSvc::registerObject(fullPath,pObject);
 }
+
+StatusCode PodioDataSvc::registerReadObject(  const std::string& fullPath, DataObject* pObject ) {
+  DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
+  if (wrapper != nullptr) {
+    podio::CollectionBase* coll = wrapper->collectionBase();
+    if (coll != nullptr) {
+      size_t pos = fullPath.find_last_of("/");
+      std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
+      auto id = m_collectionIDs->collectionID(shortPath);
+      coll->setID(id);
+      m_collections.emplace_back(std::make_pair(shortPath,coll));
+      m_collProvider.addCollection(id, coll);
+    }
+  }
+  return DataSvc::registerObject(fullPath,pObject);
+}
+
+
