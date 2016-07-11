@@ -14,7 +14,8 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-gaudi_add_module(DetCommon
+gaudi_install_headers(DetCommon)
+gaudi_add_library(DetCommon
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4
                  LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4)
