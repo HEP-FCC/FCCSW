@@ -47,8 +47,7 @@ As in dd4hep, geometric values are half-lengths.
   <detector id="10" name="GenericTrackerBarrelInner" type="GenericTrackerBarrel" readout="TrackerBarrelReadout" sensitive="true" >
   <sensitive type="SimpleTrackerSD"/>
   <dimensions rmin="Tracker_rmin" rmax="0.24*Tracker_rmax" dz="0.125*Tracker_dz"/>
-  <layers module="GenericTrackerModule" rmin="1.1*Tracker_rmin" rmax="0.24*Tracker_rmax" dz="0.125*Tracker_dz" repeat="9"/>
-  <module name="GenericTrackerModule" width="Tracker_module_width" length="Tracker_module_length" thickness="Tracker_module_thickness" vis="greenish"/>
+  <layers module="GenericTrackerModule_small" rmin="1.1*Tracker_rmin" rmax="0.24*Tracker_rmax" dz="0.125*Tracker_dz" repeat="9"/>
   <module name="GenericTrackerModule_small" width="0.2*Tracker_module_width" length="Tracker_module_length" thickness="Tracker_module_thickness" vis="greenish"/>
   <module_components name="GenericModuleComponents">
     <module_component thickness="0.5 * Tracker_module_thickness" material="Silicon" sensitive="true" vis="invisible" />
