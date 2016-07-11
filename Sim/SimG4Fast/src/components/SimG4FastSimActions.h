@@ -37,6 +37,8 @@ public:
 private:
   /// Pointer to the smearing tool
   ToolHandle<ISimG4ParticleSmearTool> m_smearTool;
+  /// Name of the parametrised tracker.
+  std::string m_trackerName;
 
 };
 

@@ -25,14 +25,12 @@ class InitializeModelsRunAction : public G4UserRunAction {
 public:
   /** Constructor.
    *  @param aSmearToolName Name of the implementation of ISimG4ParticleSmearTool to be passed to models.
+   *  @param aTrackerName Name of the parametrised tracker.
    */
-  explicit InitializeModelsRunAction(const std::string& aSmearingToolName);
+  explicit InitializeModelsRunAction(const std::string& aSmearingToolName, const std::string& aTrackerName);
   virtual ~InitializeModelsRunAction();
   /* Defines the actions at the end of processing the track.
-   * It scans the world volume in search of the occurance of defined strings and attaches
-   * parametrisation models accordingly:
-   * \b"Tracker" to attach FastSimModelTracker
-   * to be implemented: "ECal" and "HCal"
+   * It scans the world volume and attaches FastSimModelTracker to the detector with a name m_trackerName.
    */
   virtual void  BeginOfRunAction(const G4Run*) final;
 
@@ -48,6 +46,8 @@ private:
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
   /// Name of the used implementation of the ISimG4ParticleSmearTool
   std::string m_smearToolName;
+  /// Name of the tracker to be parametrised
+  std::string m_trackerName;
 };
 }
 

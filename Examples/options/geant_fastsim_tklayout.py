@@ -28,7 +28,7 @@ from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimActions
 # create particle smearing tool, used for smearing in the tracker
 smeartool = SimG4ParticleSmearRootFile("Smear", filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root")
 # create actions initialization tool
-actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
+actionstool = SimG4FastSimActions("Actions", smearing=smeartool, tracker="TrackerEnvelopeBarrel" )
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service

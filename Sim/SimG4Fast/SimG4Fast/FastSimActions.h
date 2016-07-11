@@ -14,13 +14,15 @@
 namespace sim {
 class FastSimActions : public G4VUserActionInitialization {
 public:
-  explicit FastSimActions(const std::string& aSmearingToolName);
+  explicit FastSimActions(const std::string& aSmearingToolName, const std::string& aTrackerName);
   virtual ~FastSimActions();
   /// Create all user actions.
   virtual void Build() const final;
 private:
   /// Name of the smearing tool passed to InitializeModelsRunAction
   std::string m_smearToolName;
+  /// Name of the parametrised tracker name passed to InitializeModelsRunAction
+  std::string m_trackerName;
 };
 }
 
