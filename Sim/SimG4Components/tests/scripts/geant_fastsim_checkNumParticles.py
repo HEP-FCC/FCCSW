@@ -4,7 +4,7 @@ from EventStore import EventStore
 gSystem.Load("libdatamodelDict")
 store = EventStore(["./out_fast_simple.root"])
 
-entries = [82, 190, 276, 29, 24, 62, 115, 69, 2, 262]
+entries = [110, 258, 387, 41, 41, 85, 152, 98, 10, 345]
 
 for iev, event in enumerate(store):
     if(iev<10):
