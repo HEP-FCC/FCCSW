@@ -44,12 +44,17 @@ public:
   */
   T* createAndPut();
 
+private:
+  /// FIXME: not needed in Gaudi v27r1+ anymore, remove once we migrate.
+  // DetaObjectHandle has this as a protected member and gets it from fatherAlg / fatherTool
+  ServiceHandle<IDataProviderSvc> m_eds;
+
 };
 
 //---------------------------------------------------------------------------
 template<typename T>
-DataHandle<T>::DataHandle() {}
-
+DataHandle<T>::DataHandle() : m_eds("EventDataSvc", "DataHandle") {
+}
 //---------------------------------------------------------------------------
 
 /**
@@ -61,7 +66,23 @@ DataHandle<T>::DataHandle() {}
  */
 template<typename T>
 const T* DataHandle<T>::get() {
-  return DataObjectHandle<DataWrapper<T> >::get()->getData();
+  // return DataObjectHandle<DataWrapper<T> >::get()->getData();
+  DataObject* dataObjectp = nullptr;
+  DataHandle<T>::m_eds->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), dataObjectp);
+  // once we migrate to Gaudi v27r1+ replace with this:
+  // DataObjectHandle<DataWrapper<T>>::m_EDS->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), 
+  //    dataObjectp);
+
+  // The reader does not know the specific type of the collection. So we need a reinterpret_cast if the handle was 
+  // created by the reader.
+  bool goodType = (nullptr != dynamic_cast<DataWrapper<T>*> (dataObjectp));
+  if (goodType) {
+    return DataObjectHandle<DataWrapper<T> >::get()->getData();
+  } else {
+    DataWrapper<podio::CollectionBase>* tmp = static_cast<DataWrapper<podio::CollectionBase>*>(dataObjectp);
+    DataObjectHandle<DataWrapper<T> >::setRead();
+    return reinterpret_cast<const T*>(tmp->collectionBase());
+  }
 }
 
 //---------------------------------------------------------------------------
