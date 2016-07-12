@@ -1,7 +1,10 @@
 #include "PodioInput.h"
+
 #include "TFile.h"
 #include "TROOT.h"
+
 #include "FWCore/PodioDataSvc.h"
+#include "FWCore/DataWrapper.h"
 
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertex.h"
@@ -24,12 +27,17 @@ StatusCode PodioInput::initialize() {
   if (0 == m_podioDataSvc) return StatusCode::FAILURE;
 
   m_reader.openFile(m_filename);
+  m_eventMax = m_reader.getEntries();
   auto idTable = m_reader.getCollectionIDTable();
   m_podioDataSvc->setCollectionIDs(idTable);
   m_provider.setReader(&m_reader);
   for (auto& name : m_collectionNames) {
-    m_collectionIDs.push_back(idTable->collectionID(name));
     debug() << "Registering collection " << name << endmsg;
+    if (!idTable->present(name)) {
+      error() << "Requested product " << name << "not found in input file " << m_filename << endmsg;
+      return StatusCode::FAILURE;
+    }
+    m_collectionIDs.push_back(idTable->collectionID(name));
   }
   return StatusCode::SUCCESS;
 }
@@ -47,6 +55,12 @@ StatusCode PodioInput::execute() {
   }
   m_provider.clearCaches();
   m_reader.endOfEvent();
+  if(m_eventNum++ > m_eventMax) {
+    info() << "Reached end of file with event " << m_eventMax << endmsg;
+    IEventProcessor* eventProcessor;
+    service("ApplicationMgr",eventProcessor);
+    eventProcessor->stopRun();
+  }
   return StatusCode::SUCCESS;
 }
 

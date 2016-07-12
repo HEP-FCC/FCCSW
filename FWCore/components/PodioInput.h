@@ -2,6 +2,7 @@
 #define FWCORE_PODIOINPUT_H
 // Gaaudi
 #include "GaudiAlg/GaudiAlgorithm.h"
+#include "GaudiKernel/IEventProcessor.h"
 // PODIO
 #include "podio/EventStore.h"
 #include "podio/ROOTReader.h"
@@ -40,7 +41,6 @@ private:
   podio::ROOTReader m_reader;
   /// PODIO EventStore, used to initialise collections
   podio::EventStore m_provider;
-
   /// ROOT file name the input is read from. Set by option filename
   std::string m_filename;
   /// Name of collections to read. Set by option collections (this is temporary)
@@ -51,6 +51,8 @@ private:
   PodioDataSvc* m_podioDataSvc;
   /// Counter of the event number
   int m_eventNum;
+  /// Number of events in the file / to process
+  int m_eventMax;
 };
 
 #endif
