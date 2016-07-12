@@ -47,7 +47,7 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
   test::CalorimeterHit* hit;
-  double fCellNo = 201.;
+  double fCellNo = 11.;
   double energyTotal;
   int hitNo;
   if(collections != nullptr) {

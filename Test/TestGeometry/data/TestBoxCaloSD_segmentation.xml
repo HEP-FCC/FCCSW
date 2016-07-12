@@ -18,13 +18,13 @@
   </info>
 
   <define>
-    <constant name="world_size" value="2.*m"/>
+    <constant name="world_size" value="1.*m"/>
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>
-    <constant name="box_x" value="502.5*mm"/> <!-- WARNING: half length -->
-    <constant name="box_y" value="502.5*mm"/> <!-- WARNING: half length -->
-    <constant name="box_z" value="502.5*mm"/> <!-- WARNING: half length -->
+    <constant name="box_x" value="27.5*mm"/> <!-- WARNING: half length -->
+    <constant name="box_y" value="27.5*mm"/> <!-- WARNING: half length -->
+    <constant name="box_z" value="27.5*mm"/> <!-- WARNING: half length -->
   </define>
 
   <display>
@@ -35,7 +35,7 @@
   <readouts>
     <readout name="ECalHits">
       <segmentation type="CartesianGridXYZ" grid_size_x="5*mm" grid_size_y="5*mm" grid_size_z="5.*mm"/>
-      <id>z:-8,y:-8,x:-8,system:1</id>
+      <id>z:-4,y:-4,x:-4,system:1</id>
     </readout>
   </readouts>
 

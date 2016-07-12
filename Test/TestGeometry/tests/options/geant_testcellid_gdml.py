@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples//testHepMCborders.dat")
+reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/testHepMCborders.dat")
 reader.DataOutputs.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
@@ -19,10 +19,10 @@ det = SimG4GdmlTestDetector("SimG4GdmlTestDetector", gdml = "../data/TestBoxCalo
 geantservice = SimG4Svc("SimG4Svc", detector=det, physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
 
 from Configurables import SimG4Alg, SimG4SaveTestCalHits
-savecaltool = SimG4SaveTestCalHits("saveECalHits", caloType = "ECal", OutputLevel = DEBUG)
+savecaltool = SimG4SaveTestCalHits("saveECalHits", caloType = "ECal")
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
-geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveTestCalHits/saveECalHits","InspectHitsCollectionsTool"])
+geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveTestCalHits/saveECalHits"])
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")

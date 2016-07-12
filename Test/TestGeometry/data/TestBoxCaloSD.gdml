@@ -113,10 +113,10 @@
 
   <solids>
     <box lunit="mm" name="ECalLayerBox0x15c9150" x="5" y="5" z="5"/>
-    <box lunit="mm" name="ECalCellBox0x15c8ee0" x="5" y="5" z="1005"/>
-    <box lunit="mm" name="ECalColumnBox0x15c8430" x="5" y="1005" z="1005"/>
-    <box lunit="mm" name="ECalorimeterBox0x15c8250" x="1005" y="1005" z="1005"/>
-    <box lunit="mm" name="worldBox0x15bcb40" x="2010" y="2010" z="2010"/>
+    <box lunit="mm" name="ECalCellBox0x15c8ee0" x="5" y="5" z="55"/>
+    <box lunit="mm" name="ECalColumnBox0x15c8430" x="5" y="55" z="55"/>
+    <box lunit="mm" name="ECalorimeterBox0x15c8250" x="55" y="55" z="55"/>
+    <box lunit="mm" name="worldBox0x15bcb40" x="1000" y="1000" z="1000"/>
   </solids>
 
   <structure>
@@ -128,7 +128,7 @@
     <volume name="ECalCellLogical0x15c8f80">
       <materialref ref="G4_PbWO40x15bc340"/>
       <solidref ref="ECalCellBox0x15c8ee0"/>
-      <replicavol number="201">
+      <replicavol number="11">
         <volumeref ref="ECalLayerLogical0x15c91f0"/>
         <replicate_along_axis>
           <direction z="1"/>
@@ -140,7 +140,7 @@
     <volume name="ECalColumnLogical0x15c8500">
       <materialref ref="G4_PbWO40x15bc340"/>
       <solidref ref="ECalColumnBox0x15c8430"/>
-      <replicavol number="201">
+      <replicavol number="11">
         <volumeref ref="ECalCellLogical0x15c8f80"/>
         <replicate_along_axis>
           <direction y="1"/>
@@ -152,7 +152,7 @@
     <volume name="ECalorimeterLogical0x15c82b0">
       <materialref ref="G4_PbWO40x15bc340"/>
       <solidref ref="ECalorimeterBox0x15c8250"/>
-      <replicavol number="201">
+      <replicavol number="11">
         <volumeref ref="ECalColumnLogical0x15c8500"/>
         <replicate_along_axis>
           <direction x="1"/>

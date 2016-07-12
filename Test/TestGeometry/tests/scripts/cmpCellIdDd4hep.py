@@ -3,9 +3,9 @@ from EventStore import EventStore
 from array import array
 from math import sqrt, pow
 
-cellNo = 201
+cellNo = 11
 cellSize = 5
-bitfieldsize = 8
+bitfieldsize = 4
 
 def retrieve(sign, no, mask, offset):
     id = (no & mask)
@@ -15,20 +15,20 @@ def retrieve(sign, no, mask, offset):
     return id
 
 def z(cellId, sign):
-    return retrieve(sign, cellId, 0b000000000000000011111111,0)
+    return retrieve(sign, cellId, 0b000000001111,0)
 
 def y(cellId, sign):
-    return retrieve(sign, cellId, 0b000000001111111100000000,1*bitfieldsize)
+    return retrieve(sign, cellId, 0b000011110000,1*bitfieldsize)
 
 def x(cellId, sign):
-    return retrieve(sign, cellId, 0b111111110000000000000000,2*bitfieldsize)
+    return retrieve(sign, cellId, 0b111100000000,2*bitfieldsize)
 
 def cellPosDd4hep(cellId, sign):
     if(sign):
-        return array('d',(x(cellId, sign)*cellSize,y(cellId, sign)*cellSize,(cellNo/2.+z(cellId, sign))*cellSize))
+        return array('d',(x(cellId, sign)*cellSize,y(cellId, sign)*cellSize,z(cellId, sign)*cellSize))
     return array('d',((x(cellId, sign)-cellNo/2)*cellSize,
                       (y(cellId, sign)-cellNo/2)*cellSize,
-                      (1./2.+z(cellId, sign))*cellSize))
+                      (z(cellId, sign)-cellNo/2)*cellSize))
 
 
 if __name__ == "__main__":

@@ -3,9 +3,9 @@ from EventStore import EventStore
 from array import array
 from math import sqrt, pow
 
-cellNo = 201
+cellNo = 11
 cellSize = 5
-bitfieldsize = 8
+bitfieldsize = 4
 signed = True
 
 def retrieve(no, mask, offset):
@@ -16,19 +16,19 @@ def retrieve(no, mask, offset):
     return id
 
 def z(cellId):
-    return retrieve(cellId, 0b000000000000000011111111,0)
+    return retrieve(cellId, 0b000000001111,0)
 
 def y(cellId):
-    return retrieve(cellId, 0b000000001111111100000000,1*bitfieldsize)
+    return retrieve(cellId, 0b000011110000,1*bitfieldsize)
 
 def x(cellId):
-    return retrieve(cellId, 0b111111110000000000000000,2*bitfieldsize)
+    return retrieve(cellId, 0b111100000000,2*bitfieldsize)
 
 def cellIdDd4hep(cellId):
     return array('d',(x(cellId),y(cellId),z(cellId)))
 
 def cellPosDd4hep(cellId):
-    return array('d',(x(cellId)*cellSize,y(cellId)*cellSize,(cellNo/2.+z(cellId))*cellSize))
+    return array('d',(x(cellId)*cellSize,y(cellId)*cellSize,z(cellId)*cellSize))
 
 def cellIdGdml(cellId):
     z = cellId%cellNo
@@ -37,7 +37,7 @@ def cellIdGdml(cellId):
     return array('d',(x,y,z))
 
 def cellPosGdml(cellId):
-    z = (cellId%cellNo+0.5)*cellSize
+    z = (cellId%cellNo-cellNo/2)*cellSize
     x = ((cellId/(cellNo*cellNo))-cellNo/2)*cellSize
     y = ((cellId/cellNo%cellNo)-cellNo/2)*cellSize
     return array('d',(x,y,z))
