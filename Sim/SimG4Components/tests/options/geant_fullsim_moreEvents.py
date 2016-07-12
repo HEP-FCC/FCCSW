@@ -25,7 +25,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:../../../Detector/DetFCChhTrackerSimple/compact/FCChh_GenericTracker.xml'],
+  'file:../../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
