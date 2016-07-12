@@ -3,7 +3,6 @@
 
 #include "GaudiKernel/DataSvc.h"
 #include "GaudiKernel/IConversionSvc.h"
-#include "FWCore/PodioCollectionProvider.h"
 #include "podio/CollectionBase.h"
 #include "podio/CollectionIDTable.h"
 #include <utility>
@@ -37,14 +36,12 @@ public:
   /// Overriding standard behaviour of evt service
   /// Register object with the data store.
   virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject ) final;
-  StatusCode registerReadObject(  const std::string& fullPath, DataObject* pObject );
-
-  // virtual StatusCode retrieveObject (const std::string& fullPath, DataObject* pObject) final;
 
   virtual const CollRegistry& getCollections() const {return m_collections;}
   virtual podio::CollectionIDTable* getCollectionIDs() {return m_collectionIDs;}
+
+  /// Set the collection IDs (if reading a file)
   void setCollectionIDs(podio::CollectionIDTable* collectionIds);
-  void setReferences() { m_collProvider.setReferences(); }
 
 private:
   SmartIF<IConversionSvc> m_cnvSvc;
@@ -52,6 +49,5 @@ private:
   // special members for podio handling
   std::vector<std::pair<std::string, podio::CollectionBase*>> m_collections;
   podio::CollectionIDTable* m_collectionIDs;
-  fwcore::PodioCollectionProvider m_collProvider;
 };
 #endif // CORE_PODIODATASVC_H
