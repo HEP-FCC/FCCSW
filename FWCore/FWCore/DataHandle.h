@@ -48,14 +48,28 @@ private:
   /// FIXME: not needed in Gaudi v27r1+ anymore, remove once we migrate.
   // DetaObjectHandle has this as a protected member and gets it from fatherAlg / fatherTool
   ServiceHandle<IDataProviderSvc> m_eds;
+  /// FIXME: This is also temporary (see m_eds)
+  bool m_isGoodType;
 
 };
 
+// FIXME: These won't be needed once we have migrated either:
 //---------------------------------------------------------------------------
 template<typename T>
 DataHandle<T>::DataHandle() : m_eds("EventDataSvc", "DataHandle") {
 }
 //---------------------------------------------------------------------------
+template<typename T>
+DataHandle<T>::DataHandle(DataObjectDescriptor & descriptor, IAlgorithm* fatherAlg) :
+    DataObjectHandle<DataWrapper<T>>(descriptor, fatherAlg),
+    m_eds("EventDataSvc", "DataHandle") {
+}
+template<typename T>
+DataHandle<T>::DataHandle(DataObjectDescriptor & descriptor, IAlgTool* fatherTool) :
+    DataObjectHandle<DataWrapper<T>>(descriptor, fatherTool),
+    m_eds("EventDataSvc", "DataHandle") {
+}
+
 
 /**
  * Try to retrieve from the transient store. If the retrieval succeded and
@@ -66,24 +80,39 @@ DataHandle<T>::DataHandle() : m_eds("EventDataSvc", "DataHandle") {
  */
 template<typename T>
 const T* DataHandle<T>::get() {
-  // return DataObjectHandle<DataWrapper<T> >::get()->getData();
   DataObject* dataObjectp = nullptr;
-  DataHandle<T>::m_eds->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), dataObjectp);
   // once we migrate to Gaudi v27r1+ replace with this:
   // DataObjectHandle<DataWrapper<T>>::m_EDS->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), 
   //    dataObjectp);
-
-  // The reader does not know the specific type of the collection. So we need a reinterpret_cast if the handle was 
-  // created by the reader.
-  bool goodType = (nullptr != dynamic_cast<DataWrapper<T>*> (dataObjectp));
-  if (goodType) {
-    return DataObjectHandle<DataWrapper<T> >::get()->getData();
-  } else {
-    DataWrapper<podio::CollectionBase>* tmp = static_cast<DataWrapper<podio::CollectionBase>*>(dataObjectp);
-    DataObjectHandle<DataWrapper<T> >::setRead();
-    return reinterpret_cast<const T*>(tmp->collectionBase());
+  auto sc = DataHandle<T>::m_eds->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), dataObjectp);
+  if (sc.isFailure() && !DataObjectHandle<DataWrapper<T>>::m_descriptor->alternativeAddresses().empty()) {
+    for(uint i = 0; i < DataObjectHandle<DataWrapper<T>>::m_descriptor->alternativeAddresses().size() && sc.isFailure(); ++i){
+      sc = m_eds->retrieveObject(DataObjectHandle<DataWrapper<T>>::m_descriptor->alternativeAddresses()[i], dataObjectp);
+    }
   }
+
+  if (LIKELY(sc.isSuccess())) {
+    if (UNLIKELY(!m_isGoodType)) {
+      // done once for write objects, each time if created by reader
+      m_isGoodType = nullptr != dynamic_cast<DataWrapper<T>*> (dataObjectp);
+    }
+    if (LIKELY(m_isGoodType)) {
+      DataObjectHandle<DataWrapper<T> >::setRead();
+      std::cout << "returning static cast" << std::endl;
+      return static_cast<DataWrapper<T>*>(dataObjectp)->getData();
+    } else {
+      // The reader does not know the specific type of the collection. So we need a reinterpret_cast if the handle was
+      // created by the reader.
+      DataWrapper<podio::CollectionBase>* tmp = static_cast<DataWrapper<podio::CollectionBase>*>(dataObjectp);
+      DataObjectHandle<DataWrapper<T> >::setRead();
+      return reinterpret_cast<const T*>(tmp->collectionBase());
+    }
+  }
+  std::string msg("Could not retrieve product " + DataObjectHandle<DataWrapper<T>>::dataProductName());
+  throw GaudiException(msg, "wrong product name", StatusCode::FAILURE);
 }
+
+
 
 //---------------------------------------------------------------------------
 template<typename T>
