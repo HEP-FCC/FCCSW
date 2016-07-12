@@ -7,17 +7,17 @@
 #include "datamodel/GenVertex.h"
 
 
-class CheckCollectionSizes : public GaudiAlgorithm {
+class CheckCollection : public GaudiAlgorithm {
 
 public:
-  CheckCollectionSizes(const std::string& name, ISvcLocator* svcLoc) :
+  CheckCollection(const std::string& name, ISvcLocator* svcLoc) :
     GaudiAlgorithm(name, svcLoc)
   {
     declareInput("genParticles", m_genParticles, "allGenParticles");
     declareInput("hits", m_trkHits, "hits");
   }
 
-  ~CheckCollectionSizes() {};
+  ~CheckCollection() {};
 
   StatusCode initialize() {
     return GaudiAlgorithm::initialize();
@@ -48,4 +48,4 @@ private:
   DataHandle<fcc::MCParticleCollection> m_genParticles;
   DataHandle<fcc::TrackHitCollection> m_trkHits;
 };
-DECLARE_COMPONENT(CheckCollectionSizes)
+DECLARE_COMPONENT(CheckCollection)
