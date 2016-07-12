@@ -69,7 +69,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
-                EvtMax   = 100,
+                EvtMax   = 10,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=INFO
