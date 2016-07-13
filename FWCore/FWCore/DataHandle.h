@@ -50,7 +50,7 @@ private:
   ServiceHandle<IDataProviderSvc> m_eds;
   /// FIXME: This is also temporary (see m_eds)
   bool m_isGoodType;
-  bool m_isCollBase;
+  bool m_isCollection;
 
 };
 
@@ -93,17 +93,20 @@ const T* DataHandle<T>::get() {
   }
 
   if (LIKELY(sc.isSuccess())) {
-    if (UNLIKELY(!m_isGoodType && !m_isCollBase)) {
+    if (UNLIKELY(!m_isGoodType && !m_isCollection)) {
       // only do this once (if both are false after this, we throw exception)
       m_isGoodType = nullptr != dynamic_cast<DataWrapper<T>*> (dataObjectp);
       if (!m_isGoodType) {
-        m_isCollBase = nullptr != dynamic_cast<DataWrapper<podio::CollectionBase>*> (dataObjectp);        
+        auto tmp = dynamic_cast<DataWrapper<podio::CollectionBase>*> (dataObjectp);
+        if (tmp != nullptr) {
+          m_isCollection = nullptr != dynamic_cast<T*>(tmp->collectionBase());
+        }
       }
     }
     if (LIKELY(m_isGoodType)) {
       DataObjectHandle<DataWrapper<T> >::setRead();
       return static_cast<DataWrapper<T>*>(dataObjectp)->getData();
-    } else if (m_isCollBase) {
+    } else if (m_isCollection) {
       // The reader does not know the specific type of the collection. So we need a reinterpret_cast if the handle was
       // created by the reader.
       DataWrapper<podio::CollectionBase>* tmp = static_cast<DataWrapper<podio::CollectionBase>*>(dataObjectp);
