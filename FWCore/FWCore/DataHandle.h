@@ -50,6 +50,7 @@ private:
   ServiceHandle<IDataProviderSvc> m_eds;
   /// FIXME: This is also temporary (see m_eds)
   bool m_isGoodType;
+  bool m_isCollBase;
 
 };
 
@@ -92,20 +93,27 @@ const T* DataHandle<T>::get() {
   }
 
   if (LIKELY(sc.isSuccess())) {
-    if (UNLIKELY(!m_isGoodType)) {
-      // done once for write objects, each time if created by reader
+    if (UNLIKELY(!m_isGoodType && !m_isCollBase)) {
+      // only do this once (if both are false after this, we throw exception)
       m_isGoodType = nullptr != dynamic_cast<DataWrapper<T>*> (dataObjectp);
+      if (!m_isGoodType) {
+        m_isCollBase = nullptr != dynamic_cast<DataWrapper<podio::CollectionBase>*> (dataObjectp);        
+      }
     }
     if (LIKELY(m_isGoodType)) {
       DataObjectHandle<DataWrapper<T> >::setRead();
       std::cout << "returning static cast" << std::endl;
       return static_cast<DataWrapper<T>*>(dataObjectp)->getData();
-    } else {
+    } else if (m_isCollBase) {
       // The reader does not know the specific type of the collection. So we need a reinterpret_cast if the handle was
       // created by the reader.
       DataWrapper<podio::CollectionBase>* tmp = static_cast<DataWrapper<podio::CollectionBase>*>(dataObjectp);
       DataObjectHandle<DataWrapper<T> >::setRead();
       return reinterpret_cast<const T*>(tmp->collectionBase());
+    } else {
+      std::string errorMsg("The type provided for "+ DataObjectHandle<DataWrapper<T> >::dataProductName()
+                     + " is different from the one of the object in the store.");
+      throw GaudiException(errorMsg, "wrong product type", StatusCode::FAILURE);
     }
   }
   std::string msg("Could not retrieve product " + DataObjectHandle<DataWrapper<T>>::dataProductName());
