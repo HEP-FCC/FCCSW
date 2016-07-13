@@ -7,17 +7,17 @@
 #include "datamodel/GenVertex.h"
 
 
-class CheckCollection : public GaudiAlgorithm {
+class ReadTestConsumer : public GaudiAlgorithm {
 
 public:
-  CheckCollection(const std::string& name, ISvcLocator* svcLoc) :
+  ReadTestConsumer(const std::string& name, ISvcLocator* svcLoc) :
     GaudiAlgorithm(name, svcLoc)
   {
     declareInput("genParticles", m_genParticles, "allGenParticles");
     declareInput("hits", m_trkHits, "hits");
   }
 
-  ~CheckCollection() {};
+  ~ReadTestConsumer() {};
 
   StatusCode initialize() {
     return GaudiAlgorithm::initialize();
@@ -48,4 +48,4 @@ private:
   DataHandle<fcc::MCParticleCollection> m_genParticles;
   DataHandle<fcc::TrackHitCollection> m_trkHits;
 };
-DECLARE_COMPONENT(CheckCollection)
+DECLARE_COMPONENT(ReadTestConsumer)
