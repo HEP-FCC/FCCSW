@@ -15,7 +15,7 @@ find_package(HepMC)
 gaudi_add_module(Reconstruction
                  src/*.cpp
                  INCLUDE_DIRS FastJet ROOT FWCore HepMC FCCEDM PODIO
-                 LINK_LIBRARIES Fastjet ROOT GaudiAlgLib FCCEDM PODIO)
+                 LINK_LIBRARIES Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC)
 
 
 include(CTest)
