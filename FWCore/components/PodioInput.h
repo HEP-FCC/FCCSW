@@ -18,7 +18,6 @@ class PodioDataSvc;
 /** @class PodioInput FWCore/components/PodioInput.h PodioInput.h
  *
  *  Class that allows to read ROOT files written with PodioOutput
- *  TODO: Automatically load needed libraries (needs changes to scheduler), check nEvents and stop run if EOF is reached
  *
  *  @author J. Lingemann
  */
