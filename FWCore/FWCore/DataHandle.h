@@ -102,7 +102,6 @@ const T* DataHandle<T>::get() {
     }
     if (LIKELY(m_isGoodType)) {
       DataObjectHandle<DataWrapper<T> >::setRead();
-      std::cout << "returning static cast" << std::endl;
       return static_cast<DataWrapper<T>*>(dataObjectp)->getData();
     } else if (m_isCollBase) {
       // The reader does not know the specific type of the collection. So we need a reinterpret_cast if the handle was
