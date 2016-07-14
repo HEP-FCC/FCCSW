@@ -32,11 +32,13 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
 
   // envelope volume with the max dimensions of tracker for visualization etc.
   // contains both endcaps, in forward and in backwards direction
-
-  DD4hep::Geometry::Tube posnegEnvelopeShape_plus(dimensions.rmin(), dimensions.rmax(), (dimensions.z2()));
-  DD4hep::Geometry::Box posnegEnvelopeShape_minus(
+  // the part between -z1 and z1 is subtracted from the envelope
+  DD4hep::Geometry::Tube posnegEnvelopeShape_add(dimensions.rmin(), dimensions.rmax(), (dimensions.z2()));
+  // make the negative shape slighly larger in the radial direction 
+  // to be sure that everything is subtracted between -z1 and z1
+  DD4hep::Geometry::Box posnegEnvelopeShape_subtract(
       dimensions.rmax() * 1.001, dimensions.rmax() * 1.001, dimensions.z1());
-  DD4hep::Geometry::SubtractionSolid posnegEnvelopeShape(posnegEnvelopeShape_plus, posnegEnvelopeShape_minus);
+  DD4hep::Geometry::SubtractionSolid posnegEnvelopeShape(posnegEnvelopeShape_add, posnegEnvelopeShape_subtract);
   Volume posnegEnvelopeVolume(detName, posnegEnvelopeShape, lcdd.air());
   posnegEnvelopeVolume.setVisAttributes(lcdd.invisible());
 
