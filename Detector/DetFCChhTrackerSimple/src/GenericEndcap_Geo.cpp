@@ -67,19 +67,13 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
     petalVolume.setVisAttributes(lcdd, xLayer.visStr());
     petalVolume.setSensitiveDetector(sensDet);
 
-    // handle repeat tag in xml
+    // handle repeat attribute in xml
     double layerThickness;
     unsigned int numLayers;
     double current_z;
-    if (xLayer.hasAttr("repeat")) {
-      // "repeat" layers  equidistant between rmin and rmax
-      numLayers = xLayer.repeat();
-      layerThickness = (xLayer.z2() - xLayer.z1()) / numLayers;
-    } else {
-      // just one layer per xml element ( at position r )
-      numLayers = 1;
-      layerThickness = 10;  // dummy value so layer volume will show up in display
-    }
+    // "repeat" layers  equidistant between rmin and rmax
+    numLayers = xLayer.repeat();
+    layerThickness = (xLayer.z2() - xLayer.z1()) / numLayers;
     // create layers.
     for (unsigned int repeatIndex = 0; repeatIndex < numLayers; ++repeatIndex, ++idxLay) {
       DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax(), 0.5 * layerThickness);
