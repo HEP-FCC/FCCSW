@@ -140,7 +140,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
     }
     // placement of modules within rods
     unsigned int zRepeat = static_cast<int>(xLayer.dz() / (xModule.length() - stereo_module_overlap));
-    // TODO: clean up stereo overlap
+    // stereo overlap
     for (unsigned int zIndex = 0; zIndex < zRepeat; ++zIndex) {
       stereo_offset *= -1.;
       DD4hep::Geometry::Position moduleOffset(0, stereo_offset,

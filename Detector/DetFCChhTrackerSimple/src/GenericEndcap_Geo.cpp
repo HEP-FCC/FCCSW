@@ -11,7 +11,6 @@ namespace det {
 /**
 Factory for a configurable, generic tracker endcap.
 @author: Valentin Volkl
-@todo: Fix half-length definitions / factors of two
 */
 static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD& lcdd,
                                                           DD4hep::XML::Handle_t xmlElement,
@@ -52,8 +51,6 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
   for (DD4hep::XML::Collection_t xLayerColl(xmlElement, _U(layers)); nullptr != xLayerColl; ++xLayerColl) {
     DD4hep::XML::Component xLayer = static_cast<DD4hep::XML::Component>(xLayerColl);
 
-    // TODO: define modules
-    // xml_comp_t xModule = det::getNodeByStrAttr(xmlElement, "module", "name", xLayer.attr<std::string>("module"));
 
     // create petals
     unsigned int nPhi = static_cast<unsigned int>(det::getDoubleWithDefault(xLayer, "nPhi", 16));
@@ -68,7 +65,6 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
             0.5 * xLayer.rmin() * tn, 0.5 * xLayer.rmax() * tn, xLayer.thickness(), xLayer.thickness(), 0.5 * dr),
         lcdd.material("Silicon"));
     petalVolume.setVisAttributes(lcdd, xLayer.visStr());
-    // TODO: set modules sensitive instead of petals as soon as there are modules
     petalVolume.setSensitiveDetector(sensDet);
 
     // handle repeat tag in xml
