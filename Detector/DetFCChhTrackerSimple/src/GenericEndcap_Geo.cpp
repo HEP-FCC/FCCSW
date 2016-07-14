@@ -47,7 +47,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
   // loop over 'layer' nodes in xml
-  unsigned int idxLay = 0;
+  unsigned int layerIndex = 0;
   for (DD4hep::XML::Collection_t xLayerColl(xmlElement, _U(layers)); nullptr != xLayerColl; ++xLayerColl) {
     DD4hep::XML::Component xLayer = static_cast<DD4hep::XML::Component>(xLayerColl);
 
@@ -75,16 +75,17 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
     numLayers = xLayer.repeat();
     layerThickness = (xLayer.z2() - xLayer.z1()) / numLayers;
     // create layers.
-    for (unsigned int repeatIndex = 0; repeatIndex < numLayers; ++repeatIndex, ++idxLay) {
+    for (unsigned int repeatIndex = 0; repeatIndex < numLayers; ++repeatIndex) {
       DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax(), 0.5 * layerThickness);
-      Volume layerVolume("layer" + std::to_string(idxLay), layerShape, lcdd.air());
+      Volume layerVolume("layer" + std::to_string(layerIndex), layerShape, lcdd.air());
       layerVolume.setVisAttributes(lcdd.invisible());
+      ++layerIndex;
       // place layers not at center, but at z1 value of containing envelope
       // subtract half of the envelope length
       current_z = repeatIndex * layerThickness + xLayer.z1() - dimensions.z1();
       PlacedVolume placedLayerVolume = envelopeVolume.placeVolume(
           layerVolume, DD4hep::Geometry::Position(0, 0, current_z - 0.5 * (dimensions.z2() - dimensions.z1())));
-      placedLayerVolume.addPhysVolID("layer", idxLay);
+      placedLayerVolume.addPhysVolID("layer", layerIndex);
 
       double phi;
       double r = xLayer.rmin();
