@@ -4,17 +4,20 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
 
-# reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+## Particle Gun using MomentumRangeParticleGun tool and FlatSmearVertex
+# MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
+# FlatSmearVertex smears the vertex with uniform distribution
+
+pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13])
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun_tool, VertexSmearingToolPGun="FlatSmearVertex")
+gen.DataOutputs.hepmc.Path = "hepmc"
+
+from Configurables import Gaudi__ParticlePropertySvc
+## Particle service
+# list of possible particles is defined in ParticlePropertiesFile
+ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
 
 # DD4hep geometry service
 # Parses the given xml file
@@ -22,6 +25,13 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
   'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
+
+from Configurables import HepMCConverter
+## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
+hepmc_converter = HepMCConverter("Converter")
+hepmc_converter.DataInputs.hepmc.Path="hepmc"
+hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
+hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -57,10 +67,10 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 3,
+                EvtMax   = 2,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podioevent, geoservice, geantservice],
+                ExtSvc = [ppservice, podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG
  )
