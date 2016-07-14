@@ -121,7 +121,8 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
       placedLayerVolume.addPhysVolID("layer", idxLay);
       // approximation of tklayout values
-      nPhi = static_cast<unsigned int>(2 * M_PI * r / (0.9 * 2 * xModule.width())) + 1;
+      double phiOverlapFactor = det::getDoubleWithDefault(xLayer, "phi_overlap_factor", 1.15);
+      nPhi = static_cast<unsigned int>( phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
         phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
         DD4hep::Geometry::Translation3D lTranslation(r * cos(phi), r * sin(phi), 0);

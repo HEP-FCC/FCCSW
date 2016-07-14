@@ -55,6 +55,7 @@ As in dd4hep, geometric values are half-lengths.
   * 'stereo_offset': length by which neighboring modules are displaced in the radial direction (alternatingly positive and negative)
   * 'stereo_module_overlap': length by which neighboring volumes overlap in z-direction
   * 'module_twist_angle': angle by which rods are rotated with respect to the layers normal, to allow overlaps in phi.
+  * 'phi_overlap_factor': increases number of modules in phi, see factory for details.
 
   The GenericTrackerEndcap looks similar:
   - collection of disk-like layers differing only in their z-position
