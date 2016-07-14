@@ -11,7 +11,7 @@ DD4hep::XML::Component det::getNodeByStrAttr(const DD4hep::XML::Handle_t& mother
   return DD4hep::XML::Component(nullptr);
 }
 
-double det::getDoubleWithDefault(const DD4hep::XML::Component& node, const std::string& attrName, const double& defaultValue) {
+double det::getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::string& attrName, const double& defaultValue) {
   if (node.hasAttr(attrName.c_str())) {
     return node.attr<double>(attrName.c_str());
   } else {

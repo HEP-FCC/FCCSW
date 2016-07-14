@@ -41,9 +41,9 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
         det::getNodeByStrAttr(xmlElement, "module", "name", xLayer.attr<std::string>("module"));
 
     // optional parameters
-    double stereo_offset = det::getDoubleWithDefault(xLayer, "stereo_offset", 0.0);
-    double module_twist_angle = det::getDoubleWithDefault(xLayer, "module_twist_angle", 0.1 * M_PI);
-    double stereo_module_overlap = det::getDoubleWithDefault(xLayer, "stereo_module_overlap", 0.0);
+    double stereo_offset = getAttrValueWithFallback(xLayer, "stereo_offset", 0.0);
+    double module_twist_angle = getAttrValueWithFallback(xLayer, "module_twist_angle", 0.1 * M_PI);
+    double stereo_module_overlap = getAttrValueWithFallback(xLayer, "stereo_module_overlap", 0.0);
 
     // get total thickness of module
     unsigned int idxSubMod = 0;
@@ -118,7 +118,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
       placedLayerVolume.addPhysVolID("layer", idxLay);
       // approximation of tklayout values
-      double phiOverlapFactor = det::getDoubleWithDefault(xLayer, "phi_overlap_factor", 1.15);
+      double phiOverlapFactor = getAttrValueWithFallback(xLayer, "phi_overlap_factor", 1.15);
       nPhi = static_cast<unsigned int>( phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
         phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
