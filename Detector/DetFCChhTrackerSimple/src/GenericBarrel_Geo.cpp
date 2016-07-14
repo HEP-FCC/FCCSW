@@ -99,14 +99,11 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       placedModuleComponentVolume.addPhysVolID("module_component", idxSubMod);
     }
 
-    double layerThickness;
-    unsigned int numRepeat;
-    double layer_rmin;
     // handle repeat attribute in xml
     // "repeat" layers  equidistant between rmin and rmax
-    numRepeat = xLayer.repeat();
-    layerThickness = (xLayer.rmax() - xLayer.rmin()) / numRepeat;
-    layer_rmin = xLayer.rmin();
+    double numRepeat = xLayer.repeat();
+    double layerThickness = (xLayer.rmax() - xLayer.rmin()) / numRepeat;
+    double layer_rmin = xLayer.rmin();
     unsigned int nPhi = 0;
     double r = 0;
     double phi = 0;
