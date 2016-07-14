@@ -24,11 +24,11 @@ As in dd4hep, geometric values are half-lengths.
 
 
 <display>
-        <vis name="greenish" r="0.55" g="0.82" b="0.77" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
-        <vis name="reddish" r="0.1" g="0.7" b="0.2" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
-        <vis name="yellowish" r="0.7" g="1." b="0.7" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
-        <vis name="brownish" r="0.74" g="0.72" b="0.85" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
-        <vis name="orange" r="0.98" g="0.5" b="0.44" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  <vis name="greenish" r="0.55" g="0.82" b="0.77" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  <vis name="reddish" r="0.1" g="0.7" b="0.2" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  <vis name="yellowish" r="0.7" g="1." b="0.7" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  <vis name="brownish" r="0.74" g="0.72" b="0.85" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  <vis name="orange" r="0.98" g="0.5" b="0.44" alpha="0.5" showDaugthers="true" visible="true" drawingStyle="solid"/>
 </display>
 
 <readouts>
@@ -43,7 +43,27 @@ As in dd4hep, geometric values are half-lengths.
 </readouts>
 
 <detectors>
+  <comment>
+  The detector factory GenericTrackerBarrel creates a geometry hierarchy
+  - collection of identical layers that differ only by radius ( one created for each 'layers' element ) 
+   - cylindrical layer (created automatically)
+    - rods with width and thickness of tracking modules, but length (z) of layer (created automatically)
+     - modules (created automatically, dimensions are taken from the 'module' element specified by name in the 'layers' elemnt)
+      - module substructure (specified by name in the 'module' element) (currently just layered sheets of different materials) 
+        additional materials can be added by adding more 'module_component' children to the 'module_components' element
+  Some parameters are optional and the default values in the factory can be overridden from the xml by adding the following attributes to 'layers':
+  * 'stereo_offset': length by which neighboring modules are displaced in the radial direction (alternatingly positive and negative)
+  * 'stereo_module_overlap': length by which neighboring volumes overlap in z-direction
+  * 'module_twist_angle': angle by which rods are rotated with respect to the layers normal, to allow overlaps in phi.
 
+  The GenericTrackerEndcap looks similar:
+  - collection of disk-like layers differing only in their z-position
+   - disk-like layer
+    - petal-shaped rod placed nPhi times at equally spaced azimuthal angles
+  Optional attributes to 'layers' element:
+  * 'module_twist_angle': angle by which petals are rotated around the radial direction, to allow overlaps in phi.
+
+  </comment>
   <detector id="10" name="GenericTrackerBarrelInner" type="GenericTrackerBarrel" readout="TrackerBarrelReadout" sensitive="true" >
   <sensitive type="SimpleTrackerSD"/>
   <dimensions rmin="Tracker_rmin" rmax="0.24*Tracker_rmax" dz="0.125*Tracker_dz"/>
