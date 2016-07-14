@@ -31,7 +31,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
   topVolume.setVisAttributes(lcdd.invisible());
 
   // counts all layers - incremented in the inner loop over repeat - tags
-  unsigned int layerIndex = 0;
+  unsigned int layerCounter = 0;
   // loop over 'layer' nodes in xml
   for (DD4hep::XML::Collection_t xLayerColl(xmlElement, _U(layers)); nullptr != xLayerColl; ++xLayerColl) {
     DD4hep::XML::Component xLayer = static_cast<DD4hep::XML::Component>(xLayerColl);
@@ -60,7 +60,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
     for (DD4hep::XML::Collection_t xCompColl(xModuleComponents, _U(module_component)); nullptr != xCompColl;
          ++xCompColl, ++idxSubMod) {
       DD4hep::XML::Component xComp = static_cast<DD4hep::XML::Component>(xCompColl);
-      std::string moduleComponentName = "layer" + std::to_string(layerIndex) + "_rod_module_component" +
+      std::string moduleComponentName = "layer" + std::to_string(layerCounter) + "_rod_module_component" +
           std::to_string(idxSubMod) + "_" + xComp.materialStr();
       Volume moduleComponentVolume(moduleComponentName,
                                    DD4hep::Geometry::Box(xModule.width(), xComp.thickness(), xModule.length()),
@@ -79,7 +79,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
     moduleVolume.setVisAttributes(lcdd, xModule.visStr());
 
     // definition of rod volume (longitudinal arrangement of modules)
-    Volume rodVolume("GenericTrackerBarrel_layer" + std::to_string(layerIndex) + "_rod",
+    Volume rodVolume("GenericTrackerBarrel_layer" + std::to_string(layerCounter) + "_rod",
                      DD4hep::Geometry::Box(xModule.width(), xModule.thickness(), xLayer.dz()),
                      lcdd.material("Air"));
     rodVolume.setVisAttributes(lcdd.invisible());
@@ -109,15 +109,15 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
     double phi = 0;
     // loop over repeated layers defined by one layer tag
     for (unsigned int repeatIndex = 0; repeatIndex < numRepeat; ++repeatIndex) {
-      ++layerIndex;
+      ++layerCounter;
       r = layer_rmin + repeatIndex * layerThickness;
       // definition of layer volumes
       DD4hep::Geometry::Tube layerShape(r, r + layerThickness, xLayer.dz());
-      std::string layerName = "layer" + std::to_string(layerIndex);
+      std::string layerName = "layer" + std::to_string(layerCounter);
       Volume layerVolume(layerName, layerShape, lcdd.material("Silicon"));
       layerVolume.setVisAttributes(lcdd.invisible());
       PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
-      placedLayerVolume.addPhysVolID("layer", layerIndex);
+      placedLayerVolume.addPhysVolID("layer", layerCounter);
       // approximation of tklayout values
       double phiOverlapFactor = getAttrValueWithFallback(xLayer, "phi_overlap_factor", 1.15);
       nPhi = static_cast<unsigned int>( phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
