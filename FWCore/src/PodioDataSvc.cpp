@@ -38,6 +38,13 @@ StatusCode PodioDataSvc::clearStore()    {
   return StatusCode::SUCCESS ;
 }
 
+void PodioDataSvc::setCollectionIDs(podio::CollectionIDTable* collectionIds) {
+  if (m_collectionIDs != nullptr) {
+    delete m_collectionIDs;
+  }
+  m_collectionIDs = collectionIds;
+}
+
 /// Standard Constructor
 PodioDataSvc::PodioDataSvc(const std::string& name,ISvcLocator* svc):
   DataSvc(name,svc), m_collectionIDs(new podio::CollectionIDTable()) {
@@ -49,9 +56,9 @@ PodioDataSvc::~PodioDataSvc() {
 
 StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
-  if (wrapper){
+  if (wrapper != nullptr) {
     podio::CollectionBase* coll = wrapper->collectionBase();
-    if (coll!=0){
+    if (coll != nullptr) {
       size_t pos = fullPath.find_last_of("/");
       std::string shortPath(fullPath.substr(pos+1,fullPath.length()));
       int id = m_collectionIDs->add(shortPath);
@@ -61,3 +68,4 @@ StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObjec
   }
   return DataSvc::registerObject(fullPath,pObject);
 }
+
