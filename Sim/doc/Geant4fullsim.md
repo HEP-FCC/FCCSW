@@ -106,7 +106,7 @@ The configuration file (`options/geant_fullsim.py`) contains:
     ~~~{.py}
     from Configurables import GeoSvc
     geoservice = GeoSvc("GeoSvc",
-                         detector='file:DetectorDescription/Detectors/compact/TestTracker.xml',
+                         detector='file:Detector/DetFCChhBaseline1/compact/FCChh_DectMaster.xml',
                          OutputLevel = VERBOSE)
     ~~~
 
