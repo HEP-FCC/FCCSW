@@ -1,4 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+set(CMAKE_CXX_STANDARD 14)
 #---------------------------------------------------------------
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
