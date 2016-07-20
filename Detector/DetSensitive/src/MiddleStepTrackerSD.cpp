@@ -52,8 +52,6 @@ bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // deleted in ~G4Event
   auto hit = new DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
-  // hit is expected to be created, otherwise abort job
-  assert(hit != nullptr);
   // take mid position between prestep and poststep to calculate the position in segmentation
   hit->cellID  = segmentation::cellID(m_seg, *aStep, false);
   hit->energyDeposit = edep;

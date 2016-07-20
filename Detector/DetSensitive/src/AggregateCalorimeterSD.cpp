@@ -61,8 +61,6 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // if not, create a new hit
   // deleted in ~G4Event
   hitMatch = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
-  // hit is expected to be created, otherwise abort job
-  assert(hitMatch != nullptr);
   hitMatch->cellID  = id;
   hitMatch->energyDeposit = edep;
   m_calorimeterCollection->insert(hitMatch);
