@@ -54,10 +54,10 @@ messageLevelDelphes=INFO
 messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
-#pythiaConfFile="Generation/data//Pythia_standard.cmd"
+pythiaConfFile="Generation/data//Pythia_ttbar.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
-pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
+#pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
 delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
