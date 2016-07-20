@@ -12,8 +12,9 @@
 class G4AttDef;
 class G4AttValue;
 
-/** @class CalorimeterHit.h TestGeometry/TestGeometry/CalorimeterHit.h CalorimeterHit.h
+/** @class TestCalorimeterHit.h TestGeometry/TestGeometry/TestCalorimeterHit.h TestCalorimeterHit.h
  *
+ *  WARNING: Used only for tests!
  *  Implementation of the hit for the calorimeter with XYZ Carthesian cell grid.
  *  It records:
  *  - the cell x ID, y ID and z ID
@@ -25,15 +26,15 @@ class G4AttValue;
  */
 
 namespace test {
-class CalorimeterHit : public G4VHit {
+class TestCalorimeterHit : public G4VHit {
 public:
-  CalorimeterHit();
-  CalorimeterHit(int iX, int iY, int iZ);
-  CalorimeterHit(const CalorimeterHit &right);
-  virtual ~CalorimeterHit();
+  TestCalorimeterHit();
+  TestCalorimeterHit(int iX, int iY, int iZ);
+  TestCalorimeterHit(const TestCalorimeterHit &right);
+  virtual ~TestCalorimeterHit();
 
-  const CalorimeterHit& operator=(const CalorimeterHit &right);
-  int operator==(const CalorimeterHit &right) const;
+  const TestCalorimeterHit& operator=(const TestCalorimeterHit &right);
+  int operator==(const TestCalorimeterHit &right) const;
 
   inline void *operator new(size_t);
   inline void operator delete(void *aHit);
@@ -66,20 +67,20 @@ private:
   G4RotationMatrix m_Rot;
 };
 
-typedef G4THitsCollection<CalorimeterHit> CalorimeterHitsCollection;
+typedef G4THitsCollection<TestCalorimeterHit> TestCalorimeterHitsCollection;
 
-extern G4ThreadLocal G4Allocator<CalorimeterHit>* CalorimeterHitAllocator;
+extern G4ThreadLocal G4Allocator<TestCalorimeterHit>* TestCalorimeterHitAllocator;
 
-inline void* CalorimeterHit::operator new(size_t)
+inline void* TestCalorimeterHit::operator new(size_t)
 {
-  if (!CalorimeterHitAllocator)
-    CalorimeterHitAllocator = new G4Allocator<CalorimeterHit>;
-  return (void*)CalorimeterHitAllocator->MallocSingle();
+  if (!TestCalorimeterHitAllocator)
+    TestCalorimeterHitAllocator = new G4Allocator<TestCalorimeterHit>;
+  return (void*)TestCalorimeterHitAllocator->MallocSingle();
 }
 
-inline void CalorimeterHit::operator delete(void* aHit)
+inline void TestCalorimeterHit::operator delete(void* aHit)
 {
-  CalorimeterHitAllocator->FreeSingle((CalorimeterHit*)aHit);
+  TestCalorimeterHitAllocator->FreeSingle((TestCalorimeterHit*)aHit);
 }
 }
 

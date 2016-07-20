@@ -1,5 +1,5 @@
 #include "SimG4TestPhysicsList.h"
-#include "TestGeometry/PhysicsList.h"
+#include "TestGeometry/TestPhysicsList.h"
 
 // Geant4
 #include "G4VModularPhysicsList.hh"
@@ -23,6 +23,6 @@ StatusCode SimG4TestPhysicsList::finalize() {
 
 G4VModularPhysicsList* SimG4TestPhysicsList::physicsList() {
    // ownership passed to SimG4Svc which will register it in G4RunManager. To be deleted in ~G4RunManager()
-  return new test::PhysicsList;
+  return new test::TestPhysicsList;
 }
 

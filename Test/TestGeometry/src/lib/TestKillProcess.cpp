@@ -1,11 +1,11 @@
-#include "TestGeometry/KillProcess.h"
+#include "TestGeometry/TestKillProcess.h"
 
 namespace test {
 
-KillProcess::KillProcess(const std::string& aName, G4ProcessType aType):
+TestKillProcess::TestKillProcess(const std::string& aName, G4ProcessType aType):
   G4VProcess(aName,aType) {}
 
-G4VParticleChange* KillProcess::PostStepDoIt(const G4Track& aTrack, const G4Step&) {
+G4VParticleChange* TestKillProcess::PostStepDoIt(const G4Track& aTrack, const G4Step&) {
   G4VParticleChange* finalState = new G4VParticleChange();
   finalState->Initialize(aTrack);
   finalState->ClearDebugFlag();

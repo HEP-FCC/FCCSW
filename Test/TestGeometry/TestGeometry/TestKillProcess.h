@@ -4,7 +4,7 @@
 // Geant
 #include "G4VProcess.hh"
 
-/** @class KillProcess TestGeometry/TestGeometry/KillProcess.h KillProcess.h
+/** @class TestKillProcess TestGeometry/TestGeometry/TestKillProcess.h TestKillProcess.h
  *
  *  Deposit all the energy and kill the particle at the origin.
  *
@@ -12,12 +12,12 @@
  */
 
 namespace test {
-class KillProcess: public G4VProcess {
+class TestKillProcess: public G4VProcess {
 public:
   /// Constructor.
-  KillProcess(const std::string& aName = "G4KillProcess", G4ProcessType aType = fUserDefined);
+  TestKillProcess(const std::string& aName = "G4TestKillProcess", G4ProcessType aType = fUserDefined);
   /// Destructor.
-  virtual ~KillProcess(){};
+  virtual ~TestKillProcess(){};
   /// Add the custom process that deposits all energy in the vertex.
   virtual G4VParticleChange* AtRestDoIt(const G4Track&, const G4Step&) final {return nullptr;};
   virtual G4double AtRestGetPhysicalInteractionLength(const G4Track&, G4ForceCondition*) final {return -1;};

@@ -2,7 +2,7 @@
 
 // FCCSW
 #include "SimG4Common/Units.h"
-#include "TestGeometry/CalorimeterHit.h"
+#include "TestGeometry/TestCalorimeterHit.h"
 
 // Geant4
 #include "G4Event.hh"
@@ -46,7 +46,7 @@ StatusCode SimG4SaveTestCalHits::finalize() {
 StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  test::CalorimeterHit* hit;
+  test::TestCalorimeterHit* hit;
   double fCellNo = 11.;
   double energyTotal;
   int hitNo;
@@ -61,7 +61,7 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
         hitNo = 0;
         info() << "\t" << n_hit<< " hits are stored in a calorimeter collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
         for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
-          hit = dynamic_cast<test::CalorimeterHit*>(collect->GetHit(iter_hit));
+          hit = dynamic_cast<test::TestCalorimeterHit*>(collect->GetHit(iter_hit));
           if(hit->GetXid() != -1 && hit->GetYid() != -1 && hit->GetZid() != -1) {
             fcc::CaloHit edmHit = edmHits->create();
             fcc::CaloCluster edmCluster = edmClusters->create();

@@ -1,7 +1,7 @@
 #include "TestGeometry/GdmlDetectorConstruction.h"
 
 // FCCSW
-#include "TestGeometry/CalorimeterSD.h"
+#include "TestGeometry/TestCalorimeterSD.h"
 
 // Geant4
 #include "G4SDManager.hh"
@@ -24,7 +24,7 @@ void GdmlDetectorConstruction::ConstructSDandField() {
   // Example from Geant4 examples/extended/persistency/gdml/G04
   // First create and register sensitive detectors:
   std::string caloSDname = "ECal";
-  CalorimeterSD* caloSD = new CalorimeterSD(caloSDname,11);
+  TestCalorimeterSD* caloSD = new TestCalorimeterSD(caloSDname,11);
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
   SDman->AddNewDetector( caloSD );
   const G4GDMLAuxMapType* auxMap = m_parser.GetAuxMap();

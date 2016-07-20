@@ -1,4 +1,4 @@
-#include "TestGeometry/CalorimeterHit.h"
+#include "TestGeometry/TestCalorimeterHit.h"
 
 #include "G4VVisManager.hh"
 #include "G4VisAttributes.hh"
@@ -13,17 +13,17 @@
 #include "G4ios.hh"
 
 namespace test {
-G4ThreadLocal G4Allocator<CalorimeterHit>* CalorimeterHitAllocator;
+G4ThreadLocal G4Allocator<TestCalorimeterHit>* TestCalorimeterHitAllocator;
 
-CalorimeterHit::CalorimeterHit()
+TestCalorimeterHit::TestCalorimeterHit()
 : G4VHit(), m_xID(-1), m_yID(-1), m_zID(-1), m_Edep(0.), m_Pos(0) {}
 
-CalorimeterHit::CalorimeterHit(G4int iX,G4int iY,G4int iZ)
+TestCalorimeterHit::TestCalorimeterHit(G4int iX,G4int iY,G4int iZ)
 : G4VHit(), m_xID(iX), m_yID(iY), m_zID(iZ), m_Edep(0.), m_Pos(0) {}
 
-CalorimeterHit::~CalorimeterHit() {}
+TestCalorimeterHit::~TestCalorimeterHit() {}
 
-CalorimeterHit::CalorimeterHit(const CalorimeterHit &right) : G4VHit() {
+TestCalorimeterHit::TestCalorimeterHit(const TestCalorimeterHit &right) : G4VHit() {
     m_xID = right.m_xID;
     m_yID = right.m_yID;
     m_zID = right.m_zID;
@@ -32,7 +32,7 @@ CalorimeterHit::CalorimeterHit(const CalorimeterHit &right) : G4VHit() {
     m_Rot = right.m_Rot;
 }
 
-const CalorimeterHit& CalorimeterHit::operator=(const CalorimeterHit &right) {
+const TestCalorimeterHit& TestCalorimeterHit::operator=(const TestCalorimeterHit &right) {
     m_xID = right.m_xID;
     m_yID = right.m_yID;
     m_zID = right.m_zID;
@@ -42,7 +42,7 @@ const CalorimeterHit& CalorimeterHit::operator=(const CalorimeterHit &right) {
     return *this;
 }
 
-int CalorimeterHit::operator==(const CalorimeterHit &right) const {
+int TestCalorimeterHit::operator==(const TestCalorimeterHit &right) const {
     return (m_xID==right.m_xID&&m_yID==right.m_yID&&m_zID==right.m_zID);
 }
 

@@ -8,7 +8,7 @@
 
 /** @class SimG4TestPhysicsList TestGeometry/src/components/SimG4TestPhysicsList.h SimG4TestPhysicsList.h
  *
- *  Physics list tool. Creates test::PhysicsList.
+ *  Physics list tool. Creates test::TestPhysicsList.
  *
  *  @author Anna Zaborowska
  */

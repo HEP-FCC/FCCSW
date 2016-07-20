@@ -1,4 +1,4 @@
-#include "TestGeometry/PhysicsList.h"
+#include "TestGeometry/TestPhysicsList.h"
 
 //Geant4
 #include "G4LeptonConstructor.hh"
@@ -7,16 +7,16 @@
 
 namespace test {
 
-PhysicsList::PhysicsList(): G4VModularPhysicsList(), m_process() {}
+TestPhysicsList::TestPhysicsList(): G4VModularPhysicsList(), m_process() {}
 
-PhysicsList::~PhysicsList() {}
+TestPhysicsList::~TestPhysicsList() {}
 
-void PhysicsList::ConstructParticle() {
+void TestPhysicsList::ConstructParticle() {
   G4LeptonConstructor pConstructor;
   pConstructor.ConstructParticle();
 }
 
-void PhysicsList::ConstructProcess() {
+void TestPhysicsList::ConstructProcess() {
   G4VUserPhysicsList::AddTransportation();
   // process added for electrons only
   G4ParticleDefinition* particle = G4Electron::ElectronDefinition();

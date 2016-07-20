@@ -18,7 +18,7 @@ class CaloClusterHitsAssociationCollection;
 /** @class SimG4SaveTestCalHits TestGeometry/src/components/SimG4SaveTestCalHits.h SimG4SaveTestCalHits.h
  *
  *  Save calorimeter hits tool.
- *  It checks for the calorimeter hits collections that contain hits of type test::CalorimeterHit.
+ *  It checks for the calorimeter hits collections that contain hits of type test::TestCalorimeterHit.
  *
  *  @author Anna Zaborowska
  */
