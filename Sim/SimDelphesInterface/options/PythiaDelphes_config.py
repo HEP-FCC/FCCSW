@@ -46,7 +46,7 @@ def apply_paths(obj, names):
 ############################################################
 
 ## N-events
-nEvents=10
+nEvents=1000
 
 ## Message level
 messageLevelPythia =INFO
