@@ -5,12 +5,7 @@
 #include "G4THitsCollection.hh"
 #include "G4Allocator.hh"
 #include "G4ThreeVector.hh"
-#include "G4LogicalVolume.hh"
-#include "G4Transform3D.hh"
 #include "G4RotationMatrix.hh"
-
-class G4AttDef;
-class G4AttValue;
 
 /** @class TestCalorimeterHit.h TestGeometry/TestGeometry/TestCalorimeterHit.h TestCalorimeterHit.h
  *
