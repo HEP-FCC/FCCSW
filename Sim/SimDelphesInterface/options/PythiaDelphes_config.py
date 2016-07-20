@@ -50,8 +50,8 @@ nEvents=10
 
 ## Message level
 messageLevelPythia =INFO
-messageLevelDelphes=DEBUG
-messageLevelOut    =DEBUG
+messageLevelDelphes=INFO
+messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
 #pythiaConfFile="Generation/data//Pythia_standard.cmd"
