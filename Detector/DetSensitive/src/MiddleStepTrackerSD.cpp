@@ -50,7 +50,7 @@ bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // create a hit and add it to collection
   const G4Track* track = aStep->GetTrack();
   // deleted in ~G4Event
-  DD4hep::Simulation::Geant4TrackerHit* hit = new DD4hep::Simulation::Geant4TrackerHit(
+  auto hit = new DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   // hit is expected to be created, otherwise abort job
   assert(hit != nullptr);

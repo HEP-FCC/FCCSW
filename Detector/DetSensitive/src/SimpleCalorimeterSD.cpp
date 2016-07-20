@@ -43,7 +43,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   DD4hep::Simulation::Position pos(prePos.x(), prePos.y(), prePos.z());
-  DD4hep::Simulation::Geant4CalorimeterHit* hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
+  auto hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
   // hit is expected to be created, otherwise abort job
   assert(hit != nullptr);
   hit->cellID  = segmentation::cellID(m_seg, *aStep);
