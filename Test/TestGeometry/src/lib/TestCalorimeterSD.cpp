@@ -10,14 +10,14 @@
 
 namespace test {
 TestCalorimeterSD::TestCalorimeterSD(std::string name): G4VSensitiveDetector(name),
-                                             m_HitsCollection(0),
-                                             m_CellNo(1) {
+                                                        m_HitsCollection(0),
+                                                        m_CellNo(1) {
   collectionName.insert("ECalorimeterColl");
 }
 
 TestCalorimeterSD::TestCalorimeterSD(std::string name, G4int aCellNoInAxis): G4VSensitiveDetector(name),
-                                                                  m_HitsCollection(0),
-                                                                  m_CellNo(aCellNoInAxis) {
+                                                                             m_HitsCollection(0),
+                                                                             m_CellNo(aCellNoInAxis) {
   collectionName.insert("ECalorimeterColl");
 }
 
