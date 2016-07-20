@@ -23,3 +23,8 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
 dd4hep_generate_rootmap(DetCommon)
 
+include(CTest)
+gaudi_add_test(DumpSimpleBox
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/dumpSimpleBox.py)
+

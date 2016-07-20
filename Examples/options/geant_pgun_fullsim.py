@@ -38,33 +38,33 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhTrackerSimple/compact/FCChh_TrackerStandalone.xml'],
                     OutputLevel = DEBUG)
 
-from Configurables import G4SimSvc
+from Configurables import SimG4Svc
 ## Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-geantservice = G4SimSvc("G4SimSvc", detector='G4DD4hepDetector', physicslist="G4FtfpBert",
-                        actions="G4FullSimActions")
+geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert",
+                        actions="SimG4FullSimActions")
 
-from Configurables import G4SimAlg, G4SaveTrackerHits, G4SaveCalHits, G4PrimariesFromEdmTool
+from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 ## Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # first, create a tool that saves the tracker hits
-# Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("G4SaveTrackerHits")
+# Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savetrackertool = G4SaveTrackerHits("saveTrackerHits")
+savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-# and a tool that saves the calorimeter hits with a name "G4SaveCalHits/saveHCalHits"
-savehcaltool = G4SaveCalHits("saveHCalHits", caloType = "HCal")
+# and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveHCalHits"
+savehcaltool = SimG4SaveCalHits("saveHCalHits", caloType = "HCal")
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-particle_converter = G4PrimariesFromEdmTool("EdmConverter")
+particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
-geantsim = G4SimAlg("G4SimAlg",
-                    outputs = ["G4SaveTrackerHits/saveTrackerHits",
-                               "G4SaveCalHits/saveHCalHits"],
-                    eventGenerator=particle_converter)
+geantsim = SimG4Alg("SimG4Alg",
+                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits",
+                               "SimG4SaveCalHits/saveHCalHits"],
+                    eventProvider=particle_converter)
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
@@ -75,7 +75,7 @@ from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],
                 EvtSel='NONE',
                 EvtMax=1,
-                ## order is important, as GeoSvc is needed by G4SimSvc
+                ## order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc=[podioevent, geoservice, geantservice, ppservice],
                 OutputLevel=DEBUG
  )

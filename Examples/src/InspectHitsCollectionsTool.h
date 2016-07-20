@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 //FCCSW
-#include "SimG4Interface/IG4SaveOutputTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 
 /** @class InspectHitsCollectionsTool TestDD4hep/TestDD4hep/InspectHitsCollectionsTool.h InspectHitsCollectionsTool.h
  *
@@ -15,7 +15,7 @@
  *  @author Anna Zaborowska
  */
 
-class InspectHitsCollectionsTool: public GaudiTool, virtual public IG4SaveOutputTool {
+class InspectHitsCollectionsTool: public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
   /// Constructor.
   explicit InspectHitsCollectionsTool(const std::string& type, const std::string& name, const IInterface* parent);
