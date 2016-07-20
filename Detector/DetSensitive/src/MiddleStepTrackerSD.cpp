@@ -28,9 +28,9 @@ void MiddleStepTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
-  trackerCollection = new G4THitsCollection
+  m_trackerCollection = new G4THitsCollection
     <DD4hep::Simulation::Geant4Hit>(SensitiveDetectorName,collectionName[0]);
-  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(trackerCollection),trackerCollection);
+  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_trackerCollection),m_trackerCollection);
 }
 
 bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
@@ -59,7 +59,7 @@ bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   hit->energyDeposit = edep;
   hit->position = position;
   hit->momentum = direction;
-  trackerCollection->insert(hit);
+  m_trackerCollection->insert(hit);
   return true;
 }
 }

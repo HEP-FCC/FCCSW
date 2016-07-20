@@ -28,9 +28,9 @@ void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
-  calorimeterCollection = new G4THitsCollection
+  m_calorimeterCollection = new G4THitsCollection
     <DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName,collectionName[0]);
-  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(calorimeterCollection), calorimeterCollection);
+  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection), m_calorimeterCollection);
 }
 
 bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
@@ -48,7 +48,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   assert(hit != nullptr);
   hit->cellID  = segmentation::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
-  calorimeterCollection->insert(hit);
+  m_calorimeterCollection->insert(hit);
   return true;
 }
 }

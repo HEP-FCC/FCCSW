@@ -46,7 +46,7 @@ namespace det {
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* trackerCollection;
+  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* m_trackerCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
 };

@@ -28,9 +28,9 @@ void AggregateCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
-  calorimeterCollection = new G4THitsCollection
+  m_calorimeterCollection = new G4THitsCollection
     <DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName,collectionName[0]);
-  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(calorimeterCollection),calorimeterCollection);
+  aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection),m_calorimeterCollection);
 }
 
 bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
@@ -49,9 +49,9 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   uint64_t id = segmentation::cellID(m_seg, *aStep);
   DD4hep::Simulation::Geant4CalorimeterHit* hit, *hitMatch = nullptr;
   // Check if there is already some energy deposit in that cell
-  for(int i=0; i<calorimeterCollection->entries(); i++) {
+  for(int i=0; i<m_calorimeterCollection->entries(); i++) {
     hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>
-      (calorimeterCollection->GetHit(i));
+      (m_calorimeterCollection->GetHit(i));
     if(hit->cellID == id) {
       hitMatch = hit;
       hitMatch->energyDeposit += edep;
@@ -65,7 +65,7 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   assert(hitMatch != nullptr);
   hitMatch->cellID  = id;
   hitMatch->energyDeposit = edep;
-  calorimeterCollection->insert(hitMatch);
+  m_calorimeterCollection->insert(hitMatch);
   return true;
 }
 }

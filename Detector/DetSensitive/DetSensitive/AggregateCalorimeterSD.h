@@ -50,7 +50,7 @@ class AggregateCalorimeterSD : public G4VSensitiveDetector
 
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* calorimeterCollection;
+  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
 };
