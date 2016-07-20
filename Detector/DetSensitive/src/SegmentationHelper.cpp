@@ -19,10 +19,11 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep,
     volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
   if (aSeg.isValid() )  {
     G4ThreeVector global;
-    if (aPreStepPoint)
+    if (aPreStepPoint) {
       global = aStep.GetPreStepPoint()->GetPosition();
-    else
+    } else {
       global = 0.5*(aStep.GetPreStepPoint()->GetPosition()+aStep.GetPostStepPoint()->GetPosition());
+    }
     G4ThreeVector local  = aStep.GetPreStepPoint()->GetTouchable()->
       GetHistory()->GetTopTransform().TransformPoint(global);
     DD4hep::Geometry::Position loc(local.x()*MM_2_CM, local.y()*MM_2_CM, local.z()*MM_2_CM);
