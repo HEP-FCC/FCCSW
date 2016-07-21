@@ -45,7 +45,7 @@ StatusCode PythiaInterface::initialize() {
     if (m_pileUpTool->getFilename().empty()) {
      return Error ( "Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!" );  
     }
-    m_pythiaSignal->readFile(m_pileUpTool->getFilename().c_str());
+    m_pythiaPileup->readFile(m_pileUpTool->getFilename().c_str());
   }
 
   // Initialize variables from configuration file
