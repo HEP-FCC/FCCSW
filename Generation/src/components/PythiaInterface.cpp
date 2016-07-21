@@ -87,7 +87,6 @@ StatusCode PythiaInterface::execute() {
 
     for (int i = 0; i < m_pythiaSignal->event.size(); ++i){
 
-      //if (m_pythiaSignal->event[i].isFinal() && m_pythiaSignal->event[i].isCharged())
       debug() << "Pythia: "
               << " Id: "        << std::setw(3) << i
               << " PDG: "       << std::setw(5) << m_pythiaSignal->event[i].id()
