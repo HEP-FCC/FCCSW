@@ -13,6 +13,8 @@
 
 
 /** 
+ * Merge several HepMC events into one. Keeps all particles of all events,
+ * not just final state ones, in contrast to HepMCSimpleMerge
  * Implementation partly due to pilemc https://pilemc.hepforge.org/
  */
 
@@ -28,6 +30,8 @@ public:
   virtual StatusCode finalize() final;
 
   /** Merge the events in the container.
+   *  ownership of the created event is assumed to be given to the data service
+   *  after calling this method.
    */
   virtual HepMC::GenEvent* merge(const std::vector<HepMC::GenEvent>& eventVector) final;
 

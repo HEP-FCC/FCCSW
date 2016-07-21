@@ -24,6 +24,7 @@ public:
 
   /** Merge the events in the container. The first event is copied in full.
    * For all other events, new vertices are created to which the final-state particles are attached.
+   * Ownership of the created event is given to data service after method call.
    */
   virtual HepMC::GenEvent* merge(const std::vector<HepMC::GenEvent>& eventVector) final;
 
