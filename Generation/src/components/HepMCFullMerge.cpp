@@ -31,7 +31,7 @@ HepMC::GenEvent* HepMCFullMerge::merge(const std::vector<HepMC::GenEvent>& event
   HepMC::GenEvent* pileEvent = new HepMC::GenEvent(eventVector[0]);
   for (auto it=eventVector.cbegin()+1, end = eventVector.cend(); it != end; ++it) {
     // keep track of which vertex in full event corresponds to which vertex in merged event
-    std::map<const HepMC::GenVertex*, HepMC::GenVertex*> inputToMergedVertexMap;
+    std::unordered_map<const HepMC::GenVertex*, HepMC::GenVertex*> inputToMergedVertexMap;
     for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v ) {
         HepMC::GenVertex* outvertex = new HepMC::GenVertex((*v)->position());
         inputToMergedVertexMap[*v] = outvertex;
