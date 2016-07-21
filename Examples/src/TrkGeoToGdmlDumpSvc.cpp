@@ -43,7 +43,6 @@ void TrkGeoToGdmlDumpSvc::dumpTrackingLayer(const Acts::Layer* layer, TGeoVolume
   // temporary TGeoVolume that represents one module
   /// @todo: get dimensions from surface
   int module_counter = 0;
-  TGeoMaterial* mat = new TGeoMaterial("Vacuum", 0, 0, 0);
   TGeoMaterial* matAl = new TGeoMaterial("Aluminium", 26, 13, 3);
   TGeoMedium* Al = new TGeoMedium("Aluminium", 2, matAl);
   TGeoVolume* module = gGeoManager->MakeBox("module", Al, 1, 1, 1);
@@ -73,7 +72,6 @@ StatusCode TrkGeoToGdmlDumpSvc::initialize() {
   info() << "Dumping TrackingVolume" << highestVol->volumeName() << endmsg;
   // temporary TGeoVolume that represents one module
   /// @todo: get dimensions from surface
-  TGeoMaterial* mat = new TGeoMaterial("Vacuum", 0, 0, 0);
   TGeoMaterial* matAl = new TGeoMaterial("Aluminium", 26, 13, 3);
   TGeoMedium* Al = new TGeoMedium("Aluminium", 2, matAl);
   TGeoVolume* top = gGeoManager->MakeBox("top", Al, 10, 10, 10);
