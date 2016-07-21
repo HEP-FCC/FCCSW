@@ -18,7 +18,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import ConstPileUp
 
-pileuptool = ConstPileUp(numPileUpEvents=25, Filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
+pileuptool = ConstPileUp(numPileUpEvents=2, Filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
 
 from Configurables import PythiaInterface
 ### PYTHIA algorithm
@@ -54,7 +54,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg=[ pythia8gen, hepmc_converter, genfilter, genjet_clustering, out ],
                 EvtSel='NONE',
-                EvtMax=100,
+                EvtMax=2,
                 ExtSvc=[podioevent],
                 OutputLevel=DEBUG
 )
