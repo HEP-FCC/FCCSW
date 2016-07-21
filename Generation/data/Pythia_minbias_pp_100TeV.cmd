@@ -1,5 +1,5 @@
 !
-! File: Pythia_standard.cmd
+! File: Pythia_minBias.cmd
 !
 ! This file contains commands to be read in for a Pythia8 run.
 ! Lines not beginning with a letter or digit are comments.
