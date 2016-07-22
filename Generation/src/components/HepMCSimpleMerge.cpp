@@ -26,10 +26,8 @@ StatusCode HepMCSimpleMerge::initialize() {
   return sc;
 }
 
-HepMC::GenEvent* HepMCSimpleMerge::merge(const std::vector<HepMC::GenEvent>& eventVector) {
-  // initial event is assumed to be signal event -- copied in full
-  HepMC::GenEvent* pileEvent = new HepMC::GenEvent(eventVector[0]);
-  // iterate over vertices and add them to pileEvent
+StatusCode HepMCSimpleMerge::merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) {
+  // iterate over vertices and add them to signalEvent
   for (auto it=eventVector.cbegin()+1, end = eventVector.cend(); it != end; ++it) {
     std::unordered_map<const HepMC::GenVertex*, HepMC::GenVertex*> inputToMergedVertexMap;
     for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v ) {
@@ -49,13 +47,11 @@ HepMC::GenEvent* HepMCSimpleMerge::merge(const std::vector<HepMC::GenEvent>& eve
           // ownership of the vertex (newVertex) is given to the event (newEvent)
           HepMC::GenVertex* newVertex = inputToMergedVertexMap[(*p)->production_vertex()];
           newVertex->add_particle_out(newParticle);
-          if (newVertex->parent_event() != pileEvent) {
-            pileEvent->add_vertex(newVertex);
-          }
+          signalEvent.add_vertex(newVertex);
         }
     }
   }
-  return pileEvent;
+  return StatusCode::SUCCESS;
 }
 
 

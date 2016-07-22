@@ -29,11 +29,12 @@ public:
 
   virtual StatusCode finalize() final;
 
-  /** Merge the events in the container.
-   *  ownership of the created event is assumed to be given to the data service
-   *  after calling this method.
+  /** Merge the events in the container into the signalEvent
+   * For events in the vector, new vertices in signalEvent are created to which all pile-up particles are attached.
+   *  @param[in/out] signalEvent is the signal event that will be enriched with puEvents from eventVector
+   *  @param[in] eventVector is the vector of pile-up GenEvents
    */
-  virtual HepMC::GenEvent* merge(const std::vector<HepMC::GenEvent>& eventVector) final;
+  virtual StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) final;
 
 };
 

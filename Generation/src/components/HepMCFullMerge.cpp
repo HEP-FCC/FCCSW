@@ -26,16 +26,14 @@ StatusCode HepMCFullMerge::initialize() {
   return sc;
 }
 
-HepMC::GenEvent* HepMCFullMerge::merge(const std::vector<HepMC::GenEvent>& eventVector) {
-  // initial event is assumed to be signal event -- copied in full
-  HepMC::GenEvent* pileEvent = new HepMC::GenEvent(eventVector[0]);
+StatusCode HepMCFullMerge::merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) {
   for (auto it=eventVector.cbegin()+1, end = eventVector.cend(); it != end; ++it) {
     // keep track of which vertex in full event corresponds to which vertex in merged event
     std::unordered_map<const HepMC::GenVertex*, HepMC::GenVertex*> inputToMergedVertexMap;
     for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v ) {
         HepMC::GenVertex* outvertex = new HepMC::GenVertex((*v)->position());
         inputToMergedVertexMap[*v] = outvertex;
-        pileEvent->add_vertex(outvertex);
+        signalEvent.add_vertex(outvertex);
       }
     for (auto p = (*it).particles_begin(); p != (*it).particles_end(); ++p ) {
       HepMC::GenParticle* oldparticle = *p;
@@ -50,7 +48,7 @@ HepMC::GenEvent* HepMCFullMerge::merge(const std::vector<HepMC::GenEvent>& event
       }
     }
   }
-  return pileEvent;
+  return StatusCode::SUCCESS;
 }
 
 

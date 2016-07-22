@@ -12,21 +12,21 @@ HepMCReader::HepMCReader(const std::string& name, ISvcLocator* svcLoc):
   m_filename() {
   declareProperty("Filename", m_filename="",
                   "Name of the HepMC file to read");
-  
+
   declareProperty("PileUpTool", m_pileUpTool);
   declarePublicTool(m_pileUpTool, "ConstPileUp/PileUpTool");
-  
+
   declareProperty("VertexSmearingTool", m_vertexSmearingTool);
   declarePublicTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
-  
+
   declareProperty("HepMCMergeTool", m_HepMCMergeTool);
   declarePublicTool(m_HepMCMergeTool, "HepMCSimpleMerge/HepMCMergeTool");
-  
+
   declareProperty("FileReaderSignal", m_signalFileReader);
   declarePrivateTool(m_signalFileReader, "HepMCFileReader/FileReaderSignal");
   declareProperty("FileReaderPileUp", m_pileupFileReader);
   declarePrivateTool(m_pileupFileReader, "HepMCFileReader/FileReaderPileup");
-  
+
   declareOutput("hepmc", m_hepmchandle);
 }
 
@@ -43,25 +43,28 @@ StatusCode HepMCReader::initialize() {
 }
 
 StatusCode HepMCReader::execute() {
-  HepMC::GenEvent* tmpEvent;
-  tmpEvent = m_signalFileReader->readNextEvent();
-  m_vertexSmearingTool->smearVertex(tmpEvent);
-  std::vector<HepMC::GenEvent> eventVector;
-  eventVector.push_back(*tmpEvent);
-  
+  auto theEvent = m_hepmchandle.createAndPut();
   const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();
-  for (unsigned int i_pileup=0;
-      i_pileup < numPileUp;
-      ++i_pileup) {
-    tmpEvent = m_pileupFileReader->readNextEvent();
-    m_vertexSmearingTool->smearVertex(tmpEvent);
-    eventVector.push_back(*tmpEvent);
+  std::vector<HepMC::GenEvent> eventVector;
+  eventVector.reserve(numPileUp+1);
+
+  StatusCode sc = m_signalFileReader->readNextEvent(*theEvent);
+  if (StatusCode::SUCCESS != sc) {
+    return sc;
   }
-  tmpEvent = m_HepMCMergeTool->merge(eventVector);
-  m_hepmchandle.put(tmpEvent);
-  return StatusCode::SUCCESS;
+  m_vertexSmearingTool->smearVertex(*theEvent);
+  for (unsigned int i_pileup=0; i_pileup < numPileUp; ++i_pileup) {
+    auto puEvt = HepMC::GenEvent();
+    sc = m_pileupFileReader->readNextEvent(puEvt);
+    if (StatusCode::SUCCESS != sc) {
+      return sc;
+    }
+    m_vertexSmearingTool->smearVertex(puEvt);
+    eventVector.push_back(std::move(puEvt));
+  }
+  return m_HepMCMergeTool->merge(*theEvent, eventVector);
 }
-  
+
 
 StatusCode HepMCReader::finalize() {
   return GaudiAlgorithm::finalize();
