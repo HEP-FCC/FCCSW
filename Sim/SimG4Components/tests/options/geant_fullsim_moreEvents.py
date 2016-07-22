@@ -32,7 +32,7 @@ from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions", )
 
 from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
-savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits")
+savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readouts=["TrackerBarrelReadout", "TrackerEndcapReadout"])
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"

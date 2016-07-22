@@ -21,7 +21,7 @@ from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
 
 from Configurables import SimG4Alg, SimG4SaveCalHits
-savecaltool = SimG4SaveCalHits("saveECalHits", caloType = "ECal")
+savecaltool = SimG4SaveCalHits("saveECalHits", readouts = ["ECalHits"])
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits"])

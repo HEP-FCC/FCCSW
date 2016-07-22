@@ -7,17 +7,21 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
+class IGeoSvc;
 
 // datamodel
 namespace fcc {
 class CaloClusterCollection;
 class CaloHitCollection;
-class CaloClusterHitsAssociationCollection;
 }
 
 /** @class SimG4SaveCalHits SimG4Components/src/SimG4SaveCalHits.h SimG4SaveCalHits.h
  *
- *  Save tracker hits tool.
+ *  Save calorimeter hits tool.
+ *  All collections passed in the job options will be saved (\b'readouts').
+ *  Readout name is defined in DD4hep XML file as the attribute 'readout' of 'detector' tag.
+ *  If (\b'readouts') contain no elements or names that do not correspond to any hit collection,
+ *  tool will fail at initialization.
  *
  *  @author Anna Zaborowska
  */
@@ -36,19 +40,20 @@ public:
    */
   virtual StatusCode finalize();
   /**  Save the data output.
-   *   Saves the tracker hits and clusters from every hits collection associated with the event
-   *   that has m_calType in its name.
+   *   Saves the calorimeter hits from the collections as specified in the job options in \b'readouts'.
    *   @param[in] aEvent Event with data to save.
    *   @return status code
    */
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
 private:
+  /// Pointer to the geometry service
+  SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for calo clusters
   DataHandle<fcc::CaloClusterCollection> m_caloClusters;
   /// Handle for calo hits
   DataHandle<fcc::CaloHitCollection> m_caloHits;
-  /// Name of the calorimeter type (ECal/HCal)
-  std::string m_calType;
+  /// Name of the readouts (hits collections) to save
+  std::vector<std::string> m_readoutNames;
 
 };
 

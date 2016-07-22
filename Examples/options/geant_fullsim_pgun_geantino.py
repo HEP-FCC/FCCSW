@@ -26,7 +26,7 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits
 # first, create a tool that saves the tracker hits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
+savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readouts = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
@@ -35,8 +35,6 @@ pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=0, etaMax=0.01, pa
 geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveTrackerHits/saveTrackerHits" ],
                     eventProvider=pgun)
-
-
 
 # PODIO algorithm
 from Configurables import PodioOutput

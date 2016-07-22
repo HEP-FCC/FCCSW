@@ -86,7 +86,7 @@ The configuration file (`options/geant_fullsim.py`) contains:
 
     ~~~{.py}
     from Configurables import HepMCReader
-    reader = HepMCReader("Reader", Filename="example_MyPythia.dat")
+    reader = HepMCReader("Reader", Filename="FCC_minbias_100TeV.dat")
     reader.DataOutputs.hepmc.Path = "hepmc"
     ~~~
 
@@ -106,8 +106,8 @@ The configuration file (`options/geant_fullsim.py`) contains:
     ~~~{.py}
     from Configurables import GeoSvc
     geoservice = GeoSvc("GeoSvc",
-                         detector='file:Detector/DetFCChhBaseline1/compact/FCChh_DectMaster.xml',
-                         OutputLevel = VERBOSE)
+                         detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
+  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'])
     ~~~
 
   * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-simg4svc))
@@ -125,20 +125,24 @@ The configuration file (`options/geant_fullsim.py`) contains:
 
   * simulation ([see more](#4-simulation-in-gaudi-algorithm-simg4alg))
     - `outputs` - names of the tools saving the [output](#4-2-output) from a simulated event,
-      possible: SimG4SaveTrackerHits, SimG4SaveCalHits
+      possible: `SimG4SaveTrackerHits`, `SimG4SaveCalHits`
+    - `eventProvider` - tool that provides `G4Event` to the simulation, possible `SimG4PrimariesFromEdmTool`, `SimG4SingleParticleGeneratorTool`
 
     ~~~{.py}
     from Configurables import SimG4Alg, SimG4SaveTrackerHits
-    savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits")
+    savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readouts = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
     savetrackertool.DataOutputs.trackClusters.Path = "clusters"
     savetrackertool.DataOutputs.trackHits.Path = "hits"
     savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
+    particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
+    particle_converter.DataInputs.genParticles.Path = "allGenParticles"
     geantsim = SimG4Alg("SimG4Alg",
-                         outputs= ["SimG4SaveTrackerHits/SimG4SaveTrackerHits"])
-    geantsim.DataInputs.genParticles.Path="allGenParticles"
+                         outputs= ["SimG4SaveTrackerHits/SimG4SaveTrackerHits"],
+                         eventProvider=particle_converter)
     ~~~
 
   * saving the output to ROOT file
+    - `reaodouts` property of saving tool (in the example above `SimG4SaveTrackerHits`) defines for which readouts the hits collections should be translated to EDM. Readout name is defined in DD4hep XML file as the attribute `readout` of `detector` tag.
 
     ~~~{.py}
     from Configurables import PodioOutput
@@ -220,7 +224,7 @@ In FCCSW there is an alternative way to create the geometry, via GDML descriptio
 
 Sensitive detectors are responsible for creating the hits whenever a particle traverses the active material. The readout of each detector can be described in DD4hep.
 
-##### DD4hep (see more in sec. 2.11 and 2.12 of [DD4hep manual])
+##### DD4hep (see more in [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md))
 * XML file should contain:
   * readout structure, a structure of a sensitive volume `<readout>`
   * information on how each sensitive element is segmented `<segmentation>`
@@ -235,7 +239,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
   </readouts>
   ~~~
   > #### Note:
-  > Names of the readouts structures are used further in the implementations if ISimG4SaveOutputTool, hence they should contain the name of the detector type they represent: "Tracker", "ECal" (or "EMCal"), "HCal".
+  > Names of the readouts are used further in the implementations if `ISimG4SaveOutputTool`.
 
 * C++ factory method should:
   * actually construct all the modules of the detector (extracting detail information e.g. on number of modules in z direction or in phi, their material, etc. from the XML file)
@@ -255,7 +259,7 @@ In order to describe a detector, one needs an XML file and relevant C++ factory 
 To describe a sensitive detector consult the [short description](#sensitive-detectors), [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md) and sections 2.11 and 2.12 in [DD4hep manual].
 Further information may be also found on [DD4hep documentation webpage][DD4hep].
 
-Once XML file is done, it can be passed as a property **detector** to `GeoSvc` which will parse it and translate the geometry to Geant format.
+Once XML file is done, it can be passed as a property **detectors** to `GeoSvc` which will parse it and translate the geometry to Geant format.
 ___
 
 
@@ -281,10 +285,10 @@ ___
 User actions tool needs to be added as a property **actions** to `SimG4Svc`.
 
 Geant allows users to specify what should be performed at any stage of simulation.
-User actions are created in the implementation of `GVUserActionInitialization` class, e.g. `FullSimActions::Build()`.
-Any implementation of action initialisation list should have a relevant GAUDI component (tool) that creates it. Tool creating `FullSimActions` is called `SimG4FullSimActions`.
+User actions are created in the implementation of `GVUserActionInitialization` class, e.g. `sim::FullSimActions::Build()`.
+Any implementation of action initialisation list should have a relevant GAUDI component (tool) that creates it. Tool creating `sim::FullSimActions` is called `SimG4FullSimActions`.
 
-Currently `FullSimActions` is empty and no user actions are created.
+Currently `sim::FullSimActions` is empty and no user actions are created.
 
 User actions may derive from the following G4 interfaces:
 * G4UserRunAction.hh
@@ -299,26 +303,24 @@ User actions may derive from the following G4 interfaces:
 
 Any user action that derives from Geant4 interface can be implemented in Sim/SimG4Full.
 
-In order to invoke this action in the simulation, it should be created in the `FullSimActions::Build()` method.
+In order to invoke this action in the simulation, it should be created in the `sim::FullSimActions::Build()` method.
 
-However, if one uses interchangeably different 'sets' of user actions and do not want to recompile FCCSW with every change (addition/deletion) of user action in `FullSimActions`, it is possible to create another implementation(s) of `G4VUserActionInitialization`.
-In that case, a relevant GAUDI tool should be created, basing on `SimG4FullSimActions`. Its name should follow the convention of adding a prefix "G4" to the name of the class (implementation of `G4VUserActionInitialization` that it creates.
+However, if one uses interchangeably different 'sets' of user actions and do not want to recompile FCCSW with every change (addition/deletion) of user action in `sim::FullSimActions`, it is possible to create another implementation(s) of `G4VUserActionInitialization`.
+In that case, a relevant GAUDI tool should be created, basing on `SimG4FullSimActions`. Its name should follow the convention of adding a prefix "G4" to the name of the class (implementation of `G4VUserActionInitialization` that it creates).
 ___
 
 ## 4. Simulation in GAUDI algorithm SimG4Alg
 
 Simulation algorithm handles all the communication between other algorithms and `SimG4Svc`.
 
-It takes as input **genParticles** the EDM `MCParticleCollection`.
+It takes as input **eventProvider** tool that passes `G4Event`, either translated from EDM and `MCParticleCollection` (`SimG4PrimariesFromEdmTool`), or from Geant4 particle gun (`SimG4SingleParticleGeneratorTool`).
 
 Also, a list of names to the output-saving tools can be specified in **outputs**.
 
 
 ### 4.1. Event Processing
 
-For each execution of the algorithm an EDM `MCParticleCollection` is translated into `G4Event` using the method `SimG4Alg::EDM2G4()`. At the translation time, for each `G4PrimaryParticle` `sim::ParticleInformation` is created with a reference to the EDM's `MCParticle`. This can be used further e.g. in the saving output tool.
-
-A translated `G4Event` is passed to `SimG4Svc` and after the simulation is done, it is retrieved. Here all (if any) saving tools are called. Finally, an event is terminated.
+For each execution of the algorithm an event `G4Event` is retrieved from the **eventProvider** tool. `G4Event` is passed to `SimG4Svc` and after the simulation is done, it is retrieved. Here all (if any) saving tools are called. Finally, an event is terminated.
 
 
 ### 4.2. Output
@@ -328,9 +330,7 @@ Tools may have the data outputs specified.
 A method `ISimG4SaveOutputTool::SaveOutput(const G4Event &aEvent)` is meant to retrieve any useful information and save it to EDM.
 Useful information means e.g. hits collections (`G4HCofThisEvent`) or anything stored in an implementation of `G4VUserEventInformation`, `G4VUserEventInformation`, `G4VUserTrackInformation`, `G4VUserPrimaryParticleInformation` etc.
 
-Existing tools store hits collections from the tracker detectors (`SimG4SaveTrackerHits`) or calorimeters (`SimG4SaveCalHits`).
-
-`SimG4SaveTrackerHits` stores **trackClusters** (EDM `TrackClusterCollection`), **trackHits** (EDM `TrackHitCollection`) and **trackHitsClusters** (EDM `TrackClusterHitsAssociationCollection`) for any hit collection with "Tracker" in its name. Collection name is specified by the readout name at the XML file. For instance, the collection below contains hits in the tracker ("CentralTracker_Readout") ([see more](#sensitive-detectors)):
+Existing tools store hits collections from the tracker detectors (`SimG4SaveTrackerHits`) or calorimeters (`SimG4SaveCalHits`). The names of the hits collections are passed to the saving tool in property **readouts**. The name of the readout is defined in DD4hep XML file as the attribute `readout` of `<detector>` tag and also under the `<readout>` tag. For instance, the collection below contains hits in the tracker ("CentralTracker_Readout") ([see more](#sensitive-detectors)). If vector **readouts** contains no elements or any name that does not correspond to the hit collection, the tool will fail at initialization.
 
 ~~~{.xml}
 <readouts>
@@ -340,7 +340,8 @@ Existing tools store hits collections from the tracker detectors (`SimG4SaveTrac
 </readouts>
 ~~~
 
-`SimG4SaveCalHits` tool is more general in a sense that it should describe both hits collections in the electromagetic and hadronic calorimeters. Hence, it takes a property **caloType** that can be either "ECal" (or "EMCal") or "HCal". It stores **caloClusters** (EDM `CaloClusterCollection`) and **caloHits** (EDM `CaloHitCollection`) for any hit collection with name that contains the string defined in **caloType** property.
+`SimG4SaveTrackerHits` stores **trackClusters** (EDM `TrackClusterCollection`), **trackHits** (EDM `TrackHitCollection`) and **trackHitsClusters** (EDM `TrackClusterHitsAssociationCollection`).
+`SimG4SaveCalHits` tool can be used for the hit collections from both the electromagetic and hadronic calorimeters. It stores **caloClusters** (EDM `CaloClusterCollection`) and **caloHits** (EDM `CaloHitCollection`).
 
 5. Units
 -----

@@ -33,7 +33,7 @@ from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 # first, create a tool that saves the calorimeter hits (of type "hcal")
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savehcaltool = SimG4SaveCalHits("saveHCalHits", caloType = "HCal")
+savehcaltool = SimG4SaveCalHits("saveHCalHits", readouts = ["BarHCal_Readout"])
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")

@@ -22,10 +22,6 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
 [DD4hep]: http://aidasoft.web.cern.ch/DD4hep "DD4hep user manuals"
 [GFlash]: http://inspirehep.net/record/352388 "GFlash"
 
-## How to
-
-
-
 ## 1. Overview
 
 For details on GAUDI and Geant read [full simulation overview](#Geant4fullsim.md#overview)
@@ -167,7 +163,7 @@ Additionally:
    Details may be found at [Geant4 user guide](http://geant4.web.cern.ch/geant4/UserDocumentation/UsersGuides/ForApplicationDeveloper/html/ch05s02.html#sect.PhysProc.Param)
 
 
-### 3.4. User Actions
+### 3.3. User Actions
 
 For the fast simulation purposes a run user action `sim::InitializeModelsRunAction` is created. It checks the names of the logical volume in the world volume for the key-words: 'Tracker', 'ECal', 'EMCal' and 'HCal'. Currently only 'Tracker' name is valid (other detectors do not have yet the parametrisation).
 

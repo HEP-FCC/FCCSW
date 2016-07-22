@@ -19,7 +19,7 @@ det = SimG4GdmlTestDetector("SimG4GdmlTestDetector", gdml = "../data/TestBoxCalo
 geantservice = SimG4Svc("SimG4Svc", detector=det, physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
 
 from Configurables import SimG4Alg, SimG4SaveTestCalHits
-savecaltool = SimG4SaveTestCalHits("saveECalHits", caloType = "ECal")
+savecaltool = SimG4SaveTestCalHits("saveECalHits")
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveTestCalHits/saveECalHits"])
