@@ -14,6 +14,7 @@
 #include "G4SystemOfUnits.hh"
 
 namespace sim {
+
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName):
   G4VFastSimulationModel(aModelName, aEnvelope),
   m_toolSvc("ToolSvc","ToolSvc") {
@@ -31,8 +32,17 @@ G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleTy
   return aParticleType.GetPDGCharge() != 0;
 }
 
-G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& /*aFastTrack*/) {
-  return true;
+G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& aFastTrack) {
+  // double momentum = aFastTrack.GetPrimaryTrackLocalMomentum().mag();
+  // // if no trigger threshold defined for the model
+  // if(m_minTriggerMomentum == m_maxTriggerMomentum) {
+  //   return true;
+  // }
+  // // check the threshold
+  // if(momentum>m_minTriggerMomentum && momentum<m_maxTriggerMomentum) {
+  //   return true;
+  // }
+  return false;
 }
 
 void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,

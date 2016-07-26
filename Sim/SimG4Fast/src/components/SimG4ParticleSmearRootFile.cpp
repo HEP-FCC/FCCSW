@@ -4,6 +4,7 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/IRndmGen.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 //ROOT
 #include "TFile.h"
@@ -21,6 +22,9 @@ SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, 
     m_maxEta(0) {
   declareInterface<ISimG4ParticleSmearTool>(this);
   declareProperty("filename", m_resolutionFileName);
+  declareProperty("minP", m_minP = 0);
+  declareProperty("maxP", m_maxP = 0);
+  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4ParticleSmearRootFile::~SimG4ParticleSmearRootFile() {}
@@ -53,12 +57,6 @@ StatusCode SimG4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, i
     aMom *= tmp;
   }
   return StatusCode::SUCCESS;
-}
-
-StatusCode SimG4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
-  warning()<<"Root file smearing is meant to be used with tracker only,"<<endmsg;
-  warning()<<"hence smearing can be performed for the momentum only!"<<endmsg;
-  return StatusCode::FAILURE;
 }
 
 StatusCode SimG4ParticleSmearRootFile::readResolutions() {
@@ -97,9 +95,27 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
   double maxEta = readEta->At(binsEta-1);
   info()<<"Reading from resolutions file: "<<f.GetName()<<endmsg;
   info()<<"\tMaximum pseudorapidity: "<<maxEta<<endmsg;
-  info()<<"\tMinimum momentum: "<<minP<<endmsg;
-  info()<<"\tMaximum momentum: "<<maxP<<endmsg;
+  info()<<"\tMinimum momentum: "<<minP<<" GeV"<<endmsg;
+  info()<<"\tMaximum momentum: "<<maxP<<" GeV"<<endmsg;
 
+  // check if thresholds for fast sim are not broader than values for which resolutions are defined
+  if(m_minP > 0 && m_minP/Gaudi::Units::GeV < minP) {
+    error()<<"Minimum trigger momentum defined in tool properties ("<<m_minP/Gaudi::Units::GeV<<" GeV)"
+           <<" is smaller then the minimal momentum from ROOT file("<<minP<<" GeV)"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_maxP > 0 && m_maxP/Gaudi::Units::GeV > maxP) {
+    error()<<"Maximum trigger momentum defined in tool properties ("<<m_maxP/Gaudi::Units::GeV<<" GeV)"
+           <<" is larger then the maximal momentum from ROOT file("<<maxP<<" GeV)"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_maxEta > 0 && m_maxEta > maxEta) {
+    error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<m_maxEta<<")"
+           <<" is larger then the maximal eta from ROOT file("<<maxEta<<")"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+
+  // retrieve the resolutions in bins of eta and for momentum values
   TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
   // check the proper tree structure
   if(! (resolutionTree->GetListOfBranches()->Contains("resolution"))) {

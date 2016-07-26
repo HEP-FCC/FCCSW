@@ -27,12 +27,17 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) = 0;
-
-  /**  Smear the energy of the particle
-   *   @param aEn Particle energy to be smeared.
-   *   @param[in] aPdg Particle PDG code.
-   *   @return status code
+  /**  Get the minimum momentum that triggers fast simulation
+   *   @return minimum p
    */
-  virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) = 0;
+  virtual double minP() const = 0;
+  /**  Get the maximum momentum that triggers fast simulation
+   *   @return maximum p
+   */
+  virtual double maxP() const = 0;
+  /**  Get the maximum pseudorapidity that triggers fast simulation
+   *   @return maximum eta
+   */
+  virtual double maxEta() const = 0;
 };
 #endif /* SIMG4INTERFACE_ISIMG4PARTICLESMEARTOOL_H */

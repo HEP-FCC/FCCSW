@@ -13,6 +13,9 @@ SimG4ParticleSmearSimple::SimG4ParticleSmearSimple(const std::string& type, cons
     GaudiTool(type, name, parent) {
   declareInterface<ISimG4ParticleSmearTool>(this);
   declareProperty("sigma", m_sigma = 0.01);
+  declareProperty("minP", m_minP = 0);
+  declareProperty("maxP", m_maxP = 0);
+  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4ParticleSmearSimple::~SimG4ParticleSmearSimple() {}
@@ -37,15 +40,5 @@ StatusCode SimG4ParticleSmearSimple::finalize() {
 StatusCode SimG4ParticleSmearSimple::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   double tmp = m_gauss.shoot();
   aMom *= tmp;
-  return StatusCode::SUCCESS;
-}
-
-StatusCode SimG4ParticleSmearSimple::smearEnergy( double& aEn, int /*aPdg*/) {
-  double tmp;
-  do {
-    tmp = m_gauss.shoot();
-    aEn *= tmp;
-  }
-  while(aEn<0);
   return StatusCode::SUCCESS;
 }

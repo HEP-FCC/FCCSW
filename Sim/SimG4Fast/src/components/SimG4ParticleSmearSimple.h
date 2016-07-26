@@ -12,8 +12,10 @@ class IRndmGenSvc;
 /** @class SimG4ParticleSmearSimple SimG4Fast/src/components/SimG4ParticleSmearSimple.h SimG4ParticleSmearSimple.h
  *
  *  Simple particle smearing tool.
- *  Smears the momentum/energy of the particle following the Gaussian distribution.
+ *  Smears the momentum of the particle following the Gaussian distribution.
  *  The standard deviation of the Gaussian is set in the job options file ('sigma').
+ *  User may define in job options the momentum range (\b'minP', \b'maxP') and the maximum pseudorapidity (\b'maxEta')
+ *  for which the fast simulation is triggered (for other particles full simulation is performed).
  *
  *  @author Anna Zaborowska
  */
@@ -39,13 +41,19 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
-
-  /**  Smear the energy of the particle
-   *   @param aEn Particle energy to be smeared.
-   *   @param[in] aPdg Particle PDG code.
-   *   @return status code
+  /**  Get the minimum momentum that triggers fast simulation
+   *   @return maximum p
    */
-  virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) final;
+  inline virtual double minP() const final {return m_minP;};
+  /**  Get the maximum momentum that triggers fast simulation
+   *   @return maximum p
+   */
+  inline virtual double maxP() const final {return m_maxP;};
+  /**  Get the maximum pseudorapidity that triggers fast simulation
+   *   @return maximum p
+   */
+  inline virtual double maxEta() const final {return m_maxEta;};
+
 private:
   /// Constant resolution for the smearing (set by job options)
   double m_sigma;
@@ -53,6 +61,12 @@ private:
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   Rndm::Numbers m_gauss;
+  /// minimum P that can be smeared
+  double m_minP;
+  /// maximum P that can be smeared
+  double m_maxP;
+  /// maximum eta that can be smeared
+  double m_maxEta;
 };
 
 #endif /* SIMG4FAST_G4PARTICLESMEARSIMPLE_H */
