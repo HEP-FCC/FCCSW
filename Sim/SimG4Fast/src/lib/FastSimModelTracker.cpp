@@ -6,12 +6,14 @@
 
 // Gaudi
 #include "GaudiKernel/IToolSvc.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 // Geant4
 #include "G4PathFinder.hh"
 #include "G4FieldTrackUpdator.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4UnitsTable.hh"
 
 namespace sim {
 
@@ -21,6 +23,8 @@ FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region
   if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
     throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                          "FastSimModelTracker", StatusCode::FAILURE);
+  m_minTriggerMomentum = m_smearTool->minP()/Gaudi::Units::MeV;
+  m_maxTriggerMomentum = m_smearTool->maxP()/Gaudi::Units::MeV;
 }
 
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName)
@@ -33,15 +37,15 @@ G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleTy
 }
 
 G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& aFastTrack) {
-  // double momentum = aFastTrack.GetPrimaryTrackLocalMomentum().mag();
-  // // if no trigger threshold defined for the model
-  // if(m_minTriggerMomentum == m_maxTriggerMomentum) {
-  //   return true;
-  // }
-  // // check the threshold
-  // if(momentum>m_minTriggerMomentum && momentum<m_maxTriggerMomentum) {
-  //   return true;
-  // }
+  double momentum = aFastTrack.GetPrimaryTrackLocalMomentum().mag();
+  // if no trigger threshold defined for the model
+  if(m_minTriggerMomentum == m_maxTriggerMomentum) {
+    return true;
+  }
+  // check the threshold
+  if(momentum>m_minTriggerMomentum && momentum<m_maxTriggerMomentum) {
+    return true;
+  }
   return false;
 }
 

@@ -21,6 +21,7 @@ SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, 
     GaudiTool(type, name, parent),
     m_maxEta(0) {
   declareInterface<ISimG4ParticleSmearTool>(this);
+  declareProperty("detectorNames", m_volumeNames);
   declareProperty("filename", m_resolutionFileName);
   declareProperty("minP", m_minP = 0);
   declareProperty("maxP", m_maxP = 0);
@@ -31,6 +32,10 @@ SimG4ParticleSmearRootFile::~SimG4ParticleSmearRootFile() {}
 
 StatusCode SimG4ParticleSmearRootFile::initialize() {
   if(GaudiTool::initialize().isFailure()) {
+    return StatusCode::FAILURE;
+  }
+  if(m_volumeNames.size() == 0) {
+    error() << "No detector name is specified for the parametrisation" << endmsg;
     return StatusCode::FAILURE;
   }
   m_randSvc = service("RndmGenSvc");

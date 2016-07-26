@@ -62,6 +62,10 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   ServiceHandle<IToolSvc> m_toolSvc;
   /// Pointer to a smearing tool
   ISimG4ParticleSmearTool* m_smearTool;
+  /// minimum P that triggers model
+  double m_minTriggerMomentum;
+  /// maximum P that trigger model
+  double m_maxTriggerMomentum;
 };
 }
 

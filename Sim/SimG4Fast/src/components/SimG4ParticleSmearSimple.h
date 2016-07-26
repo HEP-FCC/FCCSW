@@ -12,6 +12,7 @@ class IRndmGenSvc;
 /** @class SimG4ParticleSmearSimple SimG4Fast/src/components/SimG4ParticleSmearSimple.h SimG4ParticleSmearSimple.h
  *
  *  Simple particle smearing tool.
+ *  Smearing is performed in the volumes as specified in the job options (\b'detectorNames').
  *  Smears the momentum of the particle following the Gaussian distribution.
  *  The standard deviation of the Gaussian is set in the job options file ('sigma').
  *  User may define in job options the momentum range (\b'minP', \b'maxP') and the maximum pseudorapidity (\b'maxEta')
@@ -41,6 +42,10 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
+  /**  Get the names of the volumes where fast simulation should be performed.
+   *   @return vector of volume names
+   */
+  inline virtual const std::vector<std::string>* volumeNames() const final {return &m_volumeNames;};
   /**  Get the minimum momentum that triggers fast simulation
    *   @return maximum p
    */
@@ -55,17 +60,19 @@ public:
   inline virtual double maxEta() const final {return m_maxEta;};
 
 private:
-  /// Constant resolution for the smearing (set by job options)
-  double m_sigma;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   Rndm::Numbers m_gauss;
-  /// minimum P that can be smeared
+  /// Names of the parametrised volumes (set by job options)
+  std::vector<std::string> m_volumeNames;
+  /// Constant resolution for the smearing (set by job options)
+  double m_sigma;
+  /// minimum P that can be smeared (set by job options)
   double m_minP;
-  /// maximum P that can be smeared
+  /// maximum P that can be smeared (set by job options)
   double m_maxP;
-  /// maximum eta that can be smeared
+  /// maximum eta that can be smeared (set by job options)
   double m_maxEta;
 };
 

@@ -16,7 +16,7 @@ class IRndmGen;
 /** @class SimG4ParticleSmearRootFile SimG4Fast/src/components/SimG4ParticleSmearRootFile.h SimG4ParticleSmearRootFile.h
  *
  *  Root file particle smearing tool.
- *  Momentum dependent smearing.
+ *  Momentum dependent smearing performed in the volumes as specified in the job options (\b'detectorNames').
  *  The resolution dependence is read from the ROOT file, which path is given in configuration.
  *  Root file contains trees 'info' and 'resolutions'.
  *  'info' has two arrays of type TArrayD containing edges of eta bins ('eta') and momentum values ('p').
@@ -50,6 +50,10 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
+  /**  Get the names of the volumes where fast simulation should be performed.
+   *   @return vector of volume names
+   */
+  inline virtual const std::vector<std::string>* volumeNames() const final {return &m_volumeNames;};
   /**  Get the minimum momentum that triggers fast simulation
    *   @return maximum p
    */
@@ -74,20 +78,22 @@ public:
   double resolution(double aEta, double aMom);
 
 private:
-  /// Map of p-dependent resolutions and the end of eta bin that it refers to
-  /// (lower end is defined by previous entry, and eta=0 for the first one)
-  std::map<double, TGraph> m_momentumResolutions;
-  /// File name with the resolutions obtained from root file (set by job options)
-  std::string m_resolutionFileName;
   /// Random Number Service
   SmartIF<IRndmGenSvc> m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   IRndmGen* m_gauss;
-  /// minimum P that can be smeared
+  /// Map of p-dependent resolutions and the end of eta bin that it refers to
+  /// (lower end is defined by previous entry, and eta=0 for the first one)
+  std::map<double, TGraph> m_momentumResolutions;
+  /// Names of the parametrised volumes (set by job options)
+  std::vector<std::string> m_volumeNames;
+  /// File name with the resolutions obtained from root file (set by job options)
+  std::string m_resolutionFileName;
+  /// minimum P that can be smeared (set by job options)
   double m_minP;
-  /// maximum P that can be smeared
+  /// maximum P that can be smeared (set by job options)
   double m_maxP;
-  /// maximum eta that can be smeared
+  /// maximum eta that can be smeared (set by job options)
   double m_maxEta;
 };
 

@@ -4,14 +4,13 @@
 #include "SimG4Fast/InitializeModelsRunAction.h"
 
 namespace sim{
-FastSimActions::FastSimActions(const std::string& aSmearingToolName, const std::string& aTrackerName):
+FastSimActions::FastSimActions(const std::string& aSmearingToolName):
   G4VUserActionInitialization(),
-  m_smearToolName(aSmearingToolName),
-  m_trackerName(aTrackerName) {}
+  m_smearToolName(aSmearingToolName) {}
 
 FastSimActions::~FastSimActions() {}
 
 void FastSimActions::Build() const {
-  SetUserAction(new InitializeModelsRunAction(m_smearToolName, m_trackerName));
+  SetUserAction(new InitializeModelsRunAction(m_smearToolName));
 }
 }

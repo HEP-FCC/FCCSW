@@ -16,7 +16,7 @@ class IRndmGen;
 /** @class SimG4ParticleSmearFormula SimG4Fast/src/components/SimG4ParticleSmearFormula.h SimG4ParticleSmearFormula.h
  *
  *  Formula particle smearing tool.
- *  Momentum dependent smearing.
+ *  Momentum dependent smearing performed in the volumes as specified in the job options (\b'detectorNames').
  *  The resolution dependence can be expressed by an arbitrary formula in the configuration.
  *  Smears momentum of the particle following a Gaussian distribution, using the evaluated formula as the mean.
  *  User may define in job options the momentum range (\b'minP', \b'maxP') and the maximum pseudorapidity (\b'maxEta')
@@ -46,6 +46,10 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
+  /**  Get the names of the volumes where fast simulation should be performed.
+   *   @return vector of volume names
+   */
+  inline virtual const std::vector<std::string>* volumeNames() const final {return &m_volumeNames;};
   /**  Get the minimum momentum that triggers fast simulation
    *   @return maximum p
    */
@@ -60,19 +64,21 @@ public:
   inline virtual double maxEta() const final {return m_maxEta;};
 
 private:
-  /// string defining a TFormula representing resolution momentum-dependent for the smearing (set by job options)
-  std::string m_resolutionMomentumStr;
   /// TFormula representing resolution momentum-dependent for the smearing
   TFormula m_resolutionMomentum;
   /// Random Number Service
   SmartIF<IRndmGenSvc> m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   IRndmGen* m_gauss;
-  /// minimum P that can be smeared
+  /// Names of the parametrised volumes (set by job options)
+  std::vector<std::string> m_volumeNames;
+  /// string defining a TFormula representing resolution momentum-dependent for the smearing (set by job options)
+  std::string m_resolutionMomentumStr;
+  /// minimum P that can be smeared (set by job options)
   double m_minP;
-  /// maximum P that can be smeared
+  /// maximum P that can be smeared (set by job options)
   double m_maxP;
-  /// maximum eta that can be smeared
+  /// maximum eta that can be smeared (set by job options)
   double m_maxEta;
 };
 

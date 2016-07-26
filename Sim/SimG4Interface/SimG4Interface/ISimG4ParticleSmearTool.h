@@ -27,6 +27,10 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) = 0;
+  /**  Get the names of the volumes where fast simulation should be performed.
+   *   @return vector of volume names
+   */
+  virtual const std::vector<std::string>* volumeNames() const = 0;
   /**  Get the minimum momentum that triggers fast simulation
    *   @return minimum p
    */
