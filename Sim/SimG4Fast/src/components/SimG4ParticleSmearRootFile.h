@@ -66,9 +66,7 @@ public:
 private:
   /// Map of p-dependent resolutions and the end of eta bin that it refers to
   /// (lower end is defined by previous entry, and eta=0 for the first one)
-  std::map<double, std::unique_ptr<TGraph>> m_momentumResolutions;
-  /// Maximum eta for which resolutions are defined (filled at the end of file reading)
-  double m_maxEta;
+  std::map<double, TGraph> m_momentumResolutions;
   /// File name with the resolutions obtained from root file (set by job options)
   std::string m_resolutionFileName;
   /// Random Number Service

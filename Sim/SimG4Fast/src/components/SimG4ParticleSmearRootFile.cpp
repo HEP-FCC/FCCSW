@@ -7,8 +7,8 @@
 
 //ROOT
 #include "TFile.h"
-#include "TList.h"
-#include "TGraph.h"
+#include "TTree.h"
+#include "TArray.h"
 
 //CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
@@ -62,6 +62,7 @@ StatusCode SimG4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*
 }
 
 StatusCode SimG4ParticleSmearRootFile::readResolutions() {
+  // check if file exists
   if (m_resolutionFileName.empty()) {
     error() << "Name of the resolution file not set" << endmsg;
     return StatusCode::FAILURE;
@@ -71,20 +72,55 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
     error() << "Couldn't open the resolution file" << endmsg;
     return StatusCode::FAILURE;
   }
-  TObjLink *lnk = f.GetListOfKeys()->FirstLink();
-  double lowEta=0, highEta=0;
-  debug()<<"Reading from resolutions file: "<<f.GetName()<<endmsg;
-  while(lnk) {
-    if(sscanf(lnk->GetObject()->GetName(), "etafrom%lf_etato%lf", &lowEta, &highEta)==2) {
-      m_momentumResolutions[highEta] = std::unique_ptr<TGraph>((TGraph*)f.Get(lnk->GetObject()->GetName())->Clone());
-    }
-    lnk=lnk->Next();
+  // check the proper file structure
+  if(! (f.GetListOfKeys()->Contains("info") && f.GetListOfKeys()->Contains("resolutions") )) {
+    error()<<"Resolution file "<<m_resolutionFileName<<" does not contain trees <<info>> and <<resolutions>>"<<endmsg;
+    return StatusCode::FAILURE;
   }
-  m_maxEta = (--m_momentumResolutions.end())->first;
-  debug()<<"maximum pseudorapidity value of the read resolutions: "<<m_maxEta<<endmsg;
+  // retrieve the pseudorapidity and momentum values for which the resolutions are defined
+  TTree* infoTree = dynamic_cast<TTree*>(f.Get("info"));
+  // check the proper tree structure
+  if(! (infoTree->GetListOfBranches()->Contains("eta") && infoTree->GetListOfBranches()->Contains("p") )) {
+    error()<<"Resolution file "<<m_resolutionFileName<<" does not contain tree <<info>>"
+           <<" with branches <<eta>> and <<p>>"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  TArrayD* readEta = nullptr;
+  TArrayD* readP = nullptr;
+  infoTree->SetBranchAddress("eta",&readEta);
+  infoTree->SetBranchAddress("p",&readP);
+  infoTree->GetEntry(0);
+  int binsEta = readEta->GetSize();
+  int binsP = readP->GetSize();
+  double minP = readP->At(0);
+  double maxP = readP->At(binsP-1);
+  double maxEta = readEta->At(binsEta-1);
+  info()<<"Reading from resolutions file: "<<f.GetName()<<endmsg;
+  info()<<"\tMaximum pseudorapidity: "<<maxEta<<endmsg;
+  info()<<"\tMinimum momentum: "<<minP<<endmsg;
+  info()<<"\tMaximum momentum: "<<maxP<<endmsg;
+
+  TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
+  // check the proper tree structure
+  if(! (resolutionTree->GetListOfBranches()->Contains("resolution"))) {
+    error()<<"Resolution file "<<m_resolutionFileName<<" does not contain tree <<resolutions>>"
+           <<" with branch <<resolution>>"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  TArrayD* readRes = nullptr;
+  resolutionTree->SetBranchAddress("resolution",&readRes);
+  for(int itEta=0; itEta<binsEta; itEta++) {
+    resolutionTree->GetEntry(itEta);
+    m_momentumResolutions[readEta->At(itEta)] = TGraph(binsP, readP->GetArray(), readRes->GetArray());
+    if(msgLevel(MSG::DEBUG)) {
+      debug()<<"resolutions for eta ("<<(itEta==0?0:readEta->At(itEta-1))<<", "<<readEta->At(itEta)<<"): \n";
+      for (int iP=0; iP<binsP; ++iP) {
+        debug()<<"(p = "<<readP->At(iP)<<" GeV) -> "<<readRes->At(iP)<<" %\t";
+      }
+      debug()<<endmsg;
+    }
+  }
   f.Close();
-  // TODO here sort map in eta to make sure it is increasing
-  // (it is now because of the way it is produced, but one never knows...)
   return StatusCode::SUCCESS;
 }
 
@@ -95,7 +131,7 @@ double SimG4ParticleSmearRootFile::resolution(double aEta, double aMom) {
 
   for(auto& m: m_momentumResolutions) {
     if(fabs(aEta)<m.first) {
-      return m.second.get()->Eval(aMom);
+      return m.second.Eval(aMom);
     }
   }
   return 0;

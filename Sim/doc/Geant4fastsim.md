@@ -138,13 +138,9 @@ The simple smearing tool, `SimG4ParticleSmearSimple`, smears particles (its mome
 A default smearing tool, `SimG4ParticleSmearFormula`, uses [TFormula](https://root.cern.ch/doc/master/classTFormula.html) to parse the resolutions that are momentum and energy dependent and are given as parameters **resolutionMomentum** and **resolutionEnergy** in a job configuration file (as strings). They are used in the tracker and calorimeter smearing, respectively. In particular, the resolution of e.g. tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, `SimG4ParticleSmearSimple` may be a more suitable tool.
 
 The third available tool uses the momentum and pseudoprapidity dependent resolutions read from ROOT file. Such a file may be obtained with the [tkLayout]. The tool `SimG4ParticleSmearRootFile` reades ROOT file defined in a property **filename** in a job configuration file (in the example `/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root'). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
-The momentum-dependent resolutions are defined for each pseudorapidity bin and saved in `TGraph`. To specify eta bin, `TGraph` needs to be named following the convention: *'etafromX_etatoY'*, where X and Y are respectively lower and upper boundaries of pseudorapidity bin.
+File has a following structure. It contains two trees: 'info' and 'resolutions'. Tree 'info' contains two branches, each with `TArrayD`: 'eta' and 'p'. Array 'eta' contains upper edge of the pseudorapidity bin (lower edge of first bin is 0). Array 'p' informes for which momenta the resolutions were created. The minimum and maximum momentum (and pseudorapidity) of a particle that can be smeared is described by the minimal and maximal values in those arrays. Tree 'resolutions' contains `TArrayD` of resolutions for each momentum (and there are as many arrays as eta bins).
 
-
-[WIP] Ongoing work involves implementation of a tool that would smear according to the resolutions read from a ROOT file. Those resolutions can be particle, momentum an pseudorapidity dependent.
-For instance, user would be able to generate resolution files with a simplistic geometry layout using [TkLayout](https://indico.cern.ch/event/446599/contribution/5/attachments/1202368/1750485/OccupancyStudies_ZDrasal.pdf).
-
-[WIP] Regarding the calorimeter parametrisation, there is an ongoing work on the implementation of the frozen showers approach. It is based on the [GFlash library][GFlash], already existing in Geant4.
+[WIP] Regarding the calorimeter parametrisation, there is an ongoing work on the implementation of the parametrised showers approach. It is based on the [GFlash library][GFlash], already existing in Geant4.
 ___
 
 
