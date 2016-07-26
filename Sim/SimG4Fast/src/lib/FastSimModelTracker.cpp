@@ -19,16 +19,32 @@ namespace sim {
 
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName):
   G4VFastSimulationModel(aModelName, aEnvelope),
+  m_msgSvc("MessageSvc","FastSimModelTracker"),
+  m_log(&(*m_msgSvc),"FastSimModelTracker"),
   m_toolSvc("ToolSvc","ToolSvc") {
   if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
     throw GaudiException("Smearing tool "+aSmearToolName+" not found",
                          "FastSimModelTracker", StatusCode::FAILURE);
   m_minTriggerMomentum = m_smearTool->minP()/Gaudi::Units::MeV;
   m_maxTriggerMomentum = m_smearTool->maxP()/Gaudi::Units::MeV;
+  if(m_minTriggerMomentum > m_maxTriggerMomentum) {
+    throw GaudiException("Momentum range is not defined properly in smearing tool",
+                         "FastSimModelTracker", StatusCode::FAILURE);
+  }
+  m_maxTriggerEta = m_smearTool->maxEta();
+  m_log<<MSG::INFO<<"Tracker smearing configuration:\n"
+       <<"\tEnvelope name:\t"<<aEnvelope->GetName()<<"\n"
+       <<"\tMomentum range:\t"<<G4BestUnit(m_minTriggerMomentum, "Energy")
+       <<" - "<<G4BestUnit(m_maxTriggerMomentum, "Energy")<<"\n"
+       <<"\tMaximum pseudorapidity:\t"<<m_maxTriggerEta<<"\n"
+       <<endmsg;
 }
 
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName)
-  : G4VFastSimulationModel(aModelName), m_toolSvc("ToolSvc","ToolSvc") {}
+  : G4VFastSimulationModel(aModelName),
+    m_msgSvc("MessageSvc","FastSimModelTracker"),
+    m_log(&(*m_msgSvc),"FastSimModelTracker"),
+    m_toolSvc("ToolSvc","ToolSvc") {}
 
 FastSimModelTracker::~FastSimModelTracker() {}
 
@@ -38,12 +54,21 @@ G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleTy
 
 G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& aFastTrack) {
   double momentum = aFastTrack.GetPrimaryTrackLocalMomentum().mag();
-  // if no trigger threshold defined for the model
+  double eta = aFastTrack.GetPrimaryTrackLocalDirection().eta();
+  // first check pseudorapidity
+  if(m_maxTriggerEta > 0) {
+    if(eta > m_maxTriggerEta) {
+      // do not trigger if eta is larger than threshold (if defined)
+      return false;
+    }
+  }
+  // next check momentum
   if(m_minTriggerMomentum == m_maxTriggerMomentum) {
+    // if no trigger threshold defined for the model
     return true;
   }
   // check the threshold
-  if(momentum>m_minTriggerMomentum && momentum<m_maxTriggerMomentum) {
+  if(momentum >= m_minTriggerMomentum && momentum <= m_maxTriggerMomentum) {
     return true;
   }
   return false;

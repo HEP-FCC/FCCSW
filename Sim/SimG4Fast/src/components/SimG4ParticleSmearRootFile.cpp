@@ -98,18 +98,21 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
   double minP = readP->At(0);
   double maxP = readP->At(binsP-1);
   double maxEta = readEta->At(binsEta-1);
-  info()<<"Reading from resolutions file: "<<f.GetName()<<endmsg;
-  info()<<"\tMaximum pseudorapidity: "<<maxEta<<endmsg;
-  info()<<"\tMinimum momentum: "<<minP<<" GeV"<<endmsg;
-  info()<<"\tMaximum momentum: "<<maxP<<" GeV"<<endmsg;
+  info()<<"Reading the resolutions from file: "<<f.GetName()<<endmsg;
+  info()<<"\tMinimum momentum with resolutions defined: "<<minP<<" GeV"<<endmsg;
+  info()<<"\tMaximum momentum with resolutions defined: "<<maxP<<" GeV"<<endmsg;
+  info()<<"\tMaximum pseudorapidity with resolutions defined: "<<maxEta<<endmsg;
 
   // check if thresholds for fast sim are not broader than values for which resolutions are defined
-  if(m_minP > 0 && m_minP/Gaudi::Units::GeV < minP) {
+  if(m_minP/Gaudi::Units::GeV < minP) {
     error()<<"Minimum trigger momentum defined in tool properties ("<<m_minP/Gaudi::Units::GeV<<" GeV)"
            <<" is smaller then the minimal momentum from ROOT file("<<minP<<" GeV)"<<endmsg;
     return StatusCode::FAILURE;
   }
-  if(m_maxP > 0 && m_maxP/Gaudi::Units::GeV > maxP) {
+  if(m_maxP == 0)  {
+    error()<<"Maximum trigger momentum not defined in tool properties."<<endmsg;
+    return StatusCode::FAILURE;
+  } else if (m_maxP/Gaudi::Units::GeV > maxP) {
     error()<<"Maximum trigger momentum defined in tool properties ("<<m_maxP/Gaudi::Units::GeV<<" GeV)"
            <<" is larger then the maximal momentum from ROOT file("<<maxP<<" GeV)"<<endmsg;
     return StatusCode::FAILURE;
@@ -118,11 +121,14 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
     error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<m_maxEta<<")"
            <<" is larger then the maximal eta from ROOT file("<<maxEta<<")"<<endmsg;
     return StatusCode::FAILURE;
+  } else {
+    m_maxEta = maxEta;
+    info()<<"No maximum pseudorapidity defined. Using the maximum pseudorapidity defined in the file: "<<maxEta<<endmsg;
   }
 
-  // retrieve the resolutions in bins of eta and for momentum values
+// retrieve the resolutions in bins of eta and for momentum values
   TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
-  // check the proper tree structure
+// check the proper tree structure
   if(! (resolutionTree->GetListOfBranches()->Contains("resolution"))) {
     error()<<"Resolution file "<<m_resolutionFileName<<" does not contain tree <<resolutions>>"
            <<" with branch <<resolution>>"<<endmsg;

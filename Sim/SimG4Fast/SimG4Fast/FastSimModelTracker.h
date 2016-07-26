@@ -9,6 +9,8 @@ class ISimG4ParticleSmearTool;
 
 // Gaudi
 #include "GaudiKernel/ServiceHandle.h"
+#include "GaudiKernel/IMessageSvc.h"
+#include "GaudiKernel/MsgStream.h"
 class IToolSvc;
 
 
@@ -17,7 +19,9 @@ class IToolSvc;
  *  Fast simulation model describes what should be done instead of a normal tracking
  *  for the certain particle in the certain volumes.
  *  Particles need to have the parametrisation process attached (FastSimPhysics)
- *  and fulfill conditions of FastSimModelTracker::IsApplicable() and FastSimModelTracker::ModelTrigger().
+ *  and fulfill conditions of a) FastSimModelTracker::IsApplicable() and b) FastSimModelTracker::ModelTrigger().
+ *  a) all charged particles are parametrised.
+ *  b) if minimum and/or maximum momentum is defined, particle within that range are parametrised. Maximum eta can also be set.
  *  Volumes are represented by G4Region given to the constructor of FastSimModelTracker.
  *  For those volumes, if the model is triggered, instead of the ordinary tracking,
  *  a particle is moved to the exit of the tracker (as it would be transported with initial momentum and no
@@ -58,14 +62,20 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep) final;
 
   private:
+  /// Message Service
+  ServiceHandle<IMessageSvc> m_msgSvc;
+  /// Message Stream
+  MsgStream m_log;
   /// Tool Service
   ServiceHandle<IToolSvc> m_toolSvc;
   /// Pointer to a smearing tool
   ISimG4ParticleSmearTool* m_smearTool;
   /// minimum P that triggers model
   double m_minTriggerMomentum;
-  /// maximum P that trigger model
+  /// maximum P that triggers model
   double m_maxTriggerMomentum;
+  /// maximum eta that triggers model
+  double m_maxTriggerEta;
 };
 }
 
