@@ -4,10 +4,22 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+pgun = MomentumRangeParticleGun("PGun",
+                                PdgCodes=[11], # electron
+                                MomentumMin = 10, # GeV
+                                MomentumMax = 10, # GeV
+                                ThetaMin = 1.57, # rad
+                                ThetaMax = 1.57, # rad
+                                PhiMin = 0, # rad
+                                PhiMax = 3.14) # rad
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
+gen.DataOutputs.hepmc.Path = "hepmc"
+
+from Configurables import Gaudi__ParticlePropertySvc
+## Particle service
+# list of possible particles is defined in ParticlePropertiesFile
+ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
@@ -67,10 +79,10 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax   = 1000,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podioevent, geoservice, geantservice],
+                ExtSvc = [ppservice, podioevent, geoservice, geantservice],
                 OutputLevel=INFO
  )
