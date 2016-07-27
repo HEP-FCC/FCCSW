@@ -110,9 +110,10 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
     // loop over repeated layers defined by one layer tag
     for (unsigned int repeatIndex = 0; repeatIndex < numRepeat; ++repeatIndex) {
       ++layerCounter;
-      r = layer_rmin + repeatIndex * layerThickness;
+      // let r be the middle between two equidistant layer boundaries
+      r = layer_rmin + (0.5 + repeatIndex) * layerThickness;
       // definition of layer volumes
-      DD4hep::Geometry::Tube layerShape(r, r + layerThickness, xLayer.dz());
+      DD4hep::Geometry::Tube layerShape(r - 0.5*layerThickness, r + 0.5*layerThickness, xLayer.dz());
       std::string layerName = "layer" + std::to_string(layerCounter);
       Volume layerVolume(layerName, layerShape, lcdd.material("Silicon"));
       layerVolume.setVisAttributes(lcdd.invisible());
