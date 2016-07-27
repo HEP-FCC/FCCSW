@@ -33,7 +33,6 @@ static DD4hep::Geometry::Ref_t createHCal (
   // Let's skip this for now...
   // Det::DetCylinderVolume* detVolume = new Det::DetCylinderVolume(status);
   // hCal.addExtension<Det::IDetExtension>(detVolume);
-
   // Make volume that envelopes the whole barrel; set material to air
   Dimension dimensions(xmlDet.dimensions());
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
@@ -42,6 +41,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   // envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
+
   // set the sensitive detector type to the DD4hep calorimeter
   sensDet.setType("Geant4Calorimeter");
 
@@ -49,7 +49,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   xml_comp_t xFacePlate = xmlElement.child("face_plate");
   double dRhoFacePlate = xFacePlate.thickness();
   DetElement facePlate("facePlate", 0);
-  DD4hep::Geometry::Tube facePlateShape(dimensions.rmin() - dRhoFacePlate, dimensions.rmin(), dimensions.dz());
+  DD4hep::Geometry::Tube facePlateShape(dimensions.rmin() , dimensions.rmin(), dimensions.dz());
   Volume facePlateVol("facePlate", facePlateShape, lcdd.material(xFacePlate.materialStr()));
   facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
   PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
@@ -66,13 +66,13 @@ static DD4hep::Geometry::Ref_t createHCal (
   endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
 
   DetElement endPlatePos("endPlate", 0);
-  DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz());
+  DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz() -  dZEndPlate);
   PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
   placedEndPlatePos.addPhysVolID("endPlatePos", endPlatePos.id());
   endPlatePos.setPlacement(placedEndPlatePos);
 
   DetElement endPlateNeg("endPlate", 1);
-  DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz());
+  DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz() +  dZEndPlate);
   PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
   placedEndPlateNeg.addPhysVolID("endPlateNeg", endPlateNeg.id());
   endPlateNeg.setPlacement(placedEndPlateNeg);
@@ -105,10 +105,10 @@ static DD4hep::Geometry::Ref_t createHCal (
   double dy0 = moduleDimensions.dz();
   double dz0 = moduleDimensions.dr() / 2.;
 
-  double drWedge = (dimensions.rmax() - dimensions.rmin()) * 0.5;
+  double drWedge = cos(dphi / 2.) * (dimensions.rmax() - dimensions.rmin()) * 0.5;
 
   double dxWedge1 = tn * dimensions.rmin() - spacing;
-  double dxWedge2 = tn * dimensions.rmax() - spacing;
+  double dxWedge2 = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;
 
   // First we construct one wedge with width of one module:
   Volume subWedgeVolume("subWedge", DD4hep::Geometry::Trapezoid(
@@ -119,9 +119,9 @@ static DD4hep::Geometry::Ref_t createHCal (
     auto layerName = std::string("wedge") + DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
     double rminLayer = idxLayer * moduleDimensions.dr();
-    double rmaxLayer = (idxLayer + 1) * moduleDimensions.dr();
+    double rmaxLayer = (idxLayer + 1) * cos(dphi / 2.) * moduleDimensions.dr();
     double dx1 = tn * (rminLayer + barrelRmin) - spacing;
-    double dx2 = tn * (rmaxLayer + barrelRmin) - spacing;
+    double dx2 = tn * cos(dphi / 2.) * (rmaxLayer + barrelRmin) - spacing;
     // -drWedge to place it in the middle of the wedge-volume
     double rMiddle = rminLayer + 0.5 * moduleDimensions.dr() - drWedge;
     Volume moduleVolume(layerName, DD4hep::Geometry::Trapezoid(
