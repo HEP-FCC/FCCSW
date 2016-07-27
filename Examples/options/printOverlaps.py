@@ -2,7 +2,11 @@ import os
 from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectMaster.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
+  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml',
+  'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml',
+  'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+                    OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc",
