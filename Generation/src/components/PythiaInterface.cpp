@@ -47,6 +47,7 @@ StatusCode PythiaInterface::initialize() {
     }
     m_pythiaPileup->readFile(m_pileUpTool->getFilename().c_str());
   }
+  m_pythiaPileup->init();
 
   // Initialize variables from configuration file
   m_nAbort = m_pythiaSignal->settings.mode("Main:timesAllowErrors"); // how many aborts before run stops
