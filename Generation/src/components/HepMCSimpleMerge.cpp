@@ -28,7 +28,7 @@ StatusCode HepMCSimpleMerge::initialize() {
 
 StatusCode HepMCSimpleMerge::merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) {
   // iterate over vertices and add them to signalEvent
-  for (auto it=eventVector.cbegin()+1, end = eventVector.cend(); it != end; ++it) {
+  for (auto it=eventVector.cbegin(), end = eventVector.cend(); it != end; ++it) {
     std::unordered_map<const HepMC::GenVertex*, HepMC::GenVertex*> inputToMergedVertexMap;
     for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v ) {
         HepMC::GenVertex* newVertex = new HepMC::GenVertex((*v)->position());
