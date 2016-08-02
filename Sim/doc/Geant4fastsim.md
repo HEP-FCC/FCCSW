@@ -22,10 +22,6 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
 [DD4hep]: http://aidasoft.web.cern.ch/DD4hep "DD4hep user manuals"
 [GFlash]: http://inspirehep.net/record/352388 "GFlash"
 
-## How to
-
-
-
 ## 1. Overview
 
 For details on GAUDI and Geant read [full simulation overview](#Geant4fullsim.md#overview)
@@ -60,7 +56,7 @@ The differences between the configuration file of the fast simulation (options/g
   * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-simg4svc))
     - **physicslist** - tool providing the [physics list](#32-physics-list),
 
-      [`SimG4FastSimPhysicsList`](#) adds fast sim process on top of the standard  ('full') physics list, eg. `SimG4FtfpBert`, included by a property **fullphysics**
+      [`SimG4FastSimPhysicsList`](#) adds fast sim process on top of the standard  ('full') physics list, e.g. `SimG4FtfpBert`, included by a property **fullphysics**
 
     ~~~{.py}
     from Configurables import SimG4FastSimPhysicsList
@@ -69,12 +65,12 @@ The differences between the configuration file of the fast simulation (options/g
 
     - **actions** - tool providing the [user actions initialisation list](#33-user-actions)
 
-      `SimG4FastSimActions` includes in particular `sim::InitializeModelsRunAction` essential for the fast sim models registration to the geometry.
-      Also a simple smearing tool `SimG4ParticleSmearSimple` is created (**smearing** defined in a property **fullphysics**).
+      `SimG4FastSimActions` includes in particular `sim::InitializeModelsRunAction` essential to create the fast sim models.
+      Also a simple smearing tool `SimG4ParticleSmearSimple` is created with the configuration of the model for the tracker parametrisation (property **smearing**).
 
     ~~~{.py}
-    from Configurables import SimG4FastSimActions, SimG4ParticleSmearSimple
-    smeartool = SimG4ParticleSmearSimple("Smear", sigma = 0.02)
+    from Configurables import SimG4FastSimActions, SimG4ParticleSmearFormula
+    smeartool = SimG4ParticleSmearFormula("Smear", detectorNames=["TrackerEnvelopeBarrel"], resolutionMomentum = "0.013")
     actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
     ~~~
 
@@ -116,15 +112,11 @@ Geometry is provided by DD4hep via GAUDI's service `GeoSvc`.
 
 In the fast simulation user wants a specific behaviour in certain geometry volumes. That specific behaviour is described in classes derived from `G4VFastSimulationModel`. Geant will not perform normal transportation inside volumes with fast simulation models attached (providing that particle triggers that model).
 
-  The fast simulation model needs to be attached to a `G4Region` object. That `G4Region` can contain one or many logical volumes (parts of the detector). Logical volumes are created by DD4hep. `G4Region` object is created automatically in `sim::InitializeModelsRunAction` for any detector that has in its name 'Tracker', 'ECal', 'EMCal' or 'HCal'. Name of the detector is specified in DD4hep xml file (see more in [short description](#Geant4fullsim.md#31-geometry-construction) or [DD4hep user guides][DD4hep]):
+  The fast simulation model needs to be attached to a `G4Region` object. That `G4Region` can contain one or many logical volumes (parts of the detector). Logical volumes are created by DD4hep. `G4Region` object is created in `sim::InitializeModelsRunAction` for the detectors with names as passed in property **detectorNames** of a smearing tool. Name of the detector is specified in DD4hep xml file (see more in [short description](#Geant4fullsim.md#31-geometry-construction) or [DD4hep user guides][DD4hep]):
 
     ~~~{.xml}
     <detector name ="CentralTracker">
     ~~~
-
-  Currently a fast simulation model `sim::FastSimModelTracker` will be created and attached automatically for every `G4LogicalVolume` that contains name 'tracker'.  Attaching the models is also done in `sim::InitializeModelsRunAction`.
-<!--- and can be controlled (switched on/off for tracker/ECal/HCal detectors) using flags set in a constructor of `sim::InitializeModelsRunAction::InitializeModelsRunAction(` (all set to true by default).
--->
 
   There is also an ongoing work on the implementation of the GFlash parametrisation that could be attached to the calorimeters.
 
@@ -133,22 +125,18 @@ In the fast simulation user wants a specific behaviour in certain geometry volum
 
 Smearing is performed using the GAUDI tool derived from `ISmearingTool`.
 
-Currently only smearing for tracker is supported. There are currently three tools that may be used for this purpose.
+Currently only smearing for tracker is supported. There are three tools that may be used for this purpose.
 
-The main concept of smearing for all tools is the same. The momentum/energy is smeared by multiplying it by the randomly generated number from a Gaussian distribution with the mean $\mu=1$ and the standard deviation $\sigma$ (resolution). The difference comes from the way the resolutions are obtained.
+The main concept of smearing for all tools is the same. The momentum is smeared by multiplying it by the randomly generated number from a Gaussian distribution with the mean $\mu=1$ and the standard deviation $\sigma$ (resolution). The difference comes from the way the resolutions are obtained.
 
 The simple smearing tool, `SimG4ParticleSmearSimple`, smears particles (its momenta) with a non-particle and non-momentum dependent constant resolution. It can be set as a parameter **sigma** in a job configuration file (default: 0.01= 1%).
 
-A default smearing tool, `SimG4ParticleSmearFormula`, uses [TFormula](https://root.cern.ch/doc/master/classTFormula.html) to parse the resolutions that are momentum and energy dependent and are given as parameters **resolutionMomentum** and **resolutionEnergy** in a job configuration file (as strings). They are used in the tracker and calorimeter smearing, respectively. In particular, the resolution of e.g. tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, `SimG4ParticleSmearSimple` may be a more suitable tool.
+A default smearing tool, `SimG4ParticleSmearFormula`, uses [TFormula](https://root.cern.ch/doc/master/classTFormula.html) to parse the resolution formula that is momentum dependent and is given as parameter **resolutionMomentum** in a job configuration file (as string). This string must be a valid formula expression, e.g. `"sin(x)/x"` or `"0.01*x^2"`, where `x` refers to the momentum. All parameters should be defined directly in the expression. For more information please check [TFormula documentation](https://root.cern.ch/doc/master/classTFormula.html). The resolution of tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, `SimG4ParticleSmearSimple` may be a more suitable tool.
 
-The third available tool uses the momentum and pseudoprapidity dependent resolutions read from ROOT file. Such a file may be obtained with the [tkLayout]. The tool `SimG4ParticleSmearRootFile` reades ROOT file defined in a property **filename** in a job configuration file (in the example `/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root'). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
-The momentum-dependent resolutions are defined for each pseudorapidity bin and saved in `TGraph`. To specify eta bin, `TGraph` needs to be named following the convention: *'etafromX_etatoY'*, where X and Y are respectively lower and upper boundaries of pseudorapidity bin.
+The third available tool uses the momentum and pseudorapidity dependent resolutions read from ROOT file. Such a file may be obtained with the [tkLayout]. The tool `SimG4ParticleSmearRootFile` reads ROOT file defined in a property **filename** in a job configuration file (in the example `/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root`). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
+File has a following structure. It contains two trees: 'info' and 'resolutions'. Tree 'info' contains two branches, each with `TArrayD`: 'eta' and 'p'. Array 'eta' contains upper edge of the pseudorapidity bin (lower edge of first bin is 0). Array 'p' informs for which momenta the resolutions were created. The minimum and maximum momentum (and pseudorapidity) of a particle that can be smeared is described by the minimal and maximal values in those arrays. Tree 'resolutions' contains `TArrayD` of resolutions for each momentum (and there are as many arrays as eta bins).
 
-
-[WIP] Ongoing work involves implementation of a tool that would smear according to the resolutions read from a ROOT file. Those resolutions can be particle, momentum an pseudorapidity dependent.
-For instance, user would be able to generate resolution files with a simplistic geometry layout using [TkLayout](https://indico.cern.ch/event/446599/contribution/5/attachments/1202368/1750485/OccupancyStudies_ZDrasal.pdf).
-
-[WIP] Regarding the calorimeter parametrisation, there is an ongoing work on the implementation of the frozen showers approach. It is based on the [GFlash library][GFlash], already existing in Geant4.
+[WIP] Regarding the calorimeter parametrisation, there is an ongoing work on the implementation of the parametrised showers approach. It is based on the [GFlash library][GFlash], already existing in Geant4.
 ___
 
 
@@ -167,12 +155,11 @@ Additionally:
    Details may be found at [Geant4 user guide](http://geant4.web.cern.ch/geant4/UserDocumentation/UsersGuides/ForApplicationDeveloper/html/ch05s02.html#sect.PhysProc.Param)
 
 
-### 3.4. User Actions
+### 3.3. User Actions
 
-For the fast simulation purposes a run user action `sim::InitializeModelsRunAction` is created. It checks the names of the logical volume in the world volume for the key-words: 'Tracker', 'ECal', 'EMCal' and 'HCal'. Currently only 'Tracker' name is valid (other detectors do not have yet the parametrisation).
+For the fast simulation purposes a run user action `sim::InitializeModelsRunAction` is created. It is responsible for creation of the fast simulation models. Currently only tracker parametrisation is supported.
 
-First, for any name containing 'Tracker', `G4Region`is created. That region becomes an envelope for the `sim::FastSimModelTracker`.
-Each model will use the smearing tool for the momentum/energy smearing, so the name of the smearing tool needs to be passed to the `sim::InitializeModelsRunAction` through the property of `SimG4FastSimActions` (**smearing**).
+Tracker model requires the name of the particle smearing tool that handles the configuration of the tracker parametrisation. The name of the smearing tool needs to be passed to the `sim::InitializeModelsRunAction` through the property of `SimG4FastSimActions` (**smearing**). Smearing tool takes a vector of the names for the volumes where the fast simulation should be performed (**detectorNames**). For those logical volumes `G4Region`is created, in `sim::InitializeModelsRunAction`. That region becomes an envelope for the `sim::FastSimModelTracker`. User may also specify the momentum range and maximum pseudorapidity for which the fast simulation will be performed (**minP**, **maxP** and **maxEta**). There is also ongoing work to implement the PDG of the particle that triggers the model. In principle, user may want to create also various smearing tools for different particles (or for different momentum/eta ranges).
 
 Furthermore, there is a tracking user action `SaveParticlesUserAction` that sets information about the momentum, vertex position and status of each particle at the end of tracking. The information `sim::ParticleInformation` is associated with any `G4PrimaryParticle` and can be retrieved after the simulation from an event ([see](#42-output)).
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <materials>
 
-  <!--
-       Air by weight from
+  <material name="PbWO4">
+    <D type="density" unit="g/cm3" value="8.280"/>
+    <composite n="1" ref="Pb"/>
+    <composite n="1" ref="W"/>
+    <composite n="4" ref="O"/>
+  </material>
 
-       http://www.engineeringtoolbox.com/air-composition-24_212.html
-  -->
   <material name="FR4">
     <D type="density" unit="g/cm3" value="1.7"/>
     <fraction n="0.1808" ref="Si"/>
@@ -15,18 +17,23 @@
     <fraction n="0.0671" ref="Br"/>
   </material>
 
+  <!--
+       Air by weight from
+
+       http://www.engineeringtoolbox.com/air-composition-24_212.html
+  -->
+
   <material name="Air">
     <D type="density" unit="g/cm3" value="0.0012"/>
     <fraction n="0.754" ref="N"/>
     <fraction n="0.234" ref="O"/>
     <fraction n="0.012" ref="Ar"/>
   </material>
-  
+
   <material name="Vacuum">
     <D type="density" unit="g/cm3" value="0.00000001" />
     <fraction n="1" ref="H" />
   </material>
-
 
   <material name="Epoxy">
     <D type="density" value="1.3" unit="g/cm3"/>

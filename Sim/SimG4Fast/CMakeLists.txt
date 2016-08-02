@@ -8,7 +8,7 @@ gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Components Sim/SimG4Interface Sim/Sim
 
 find_package(Geant4)
 include(${Geant4_USE_FILE})
-find_package(ROOT)
+find_package(ROOT COMPONENTS Tree)
 
 gaudi_install_headers(SimG4Fast)
 

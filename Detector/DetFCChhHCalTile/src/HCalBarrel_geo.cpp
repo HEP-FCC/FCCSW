@@ -43,7 +43,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
   // set the sensitive detector type to the DD4hep calorimeter
-  sensDet.setType("Geant4Calorimeter");
+  sensDet.setType("SimpleCalorimeterSD");
 
   // Add structural support made of steel inside of HCal
   xml_comp_t xFacePlate = xmlElement.child("face_plate");

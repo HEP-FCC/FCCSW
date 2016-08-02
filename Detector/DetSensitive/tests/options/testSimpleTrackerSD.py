@@ -33,7 +33,7 @@ geantservice = SimG4Svc("SimG4Svc",
                         actions="SimG4FullSimActions")
 
 from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
-savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits")
+savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerSiliconHits"])
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"

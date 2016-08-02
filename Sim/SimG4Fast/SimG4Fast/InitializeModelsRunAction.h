@@ -1,10 +1,14 @@
 #ifndef SIMG4FAST_INITIALIZEMODELSRUNACTION_H
 #define SIMG4FAST_INITIALIZEMODELSRUNACTION_H
 
+//FCCSW
+class ISimG4ParticleSmearTool;
+
 // Gaudi
 #include "GaudiKernel/ServiceHandle.h"
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
+class IToolSvc;
 
 // Geant
 #include "G4UserRunAction.hh"
@@ -29,10 +33,7 @@ public:
   explicit InitializeModelsRunAction(const std::string& aSmearingToolName);
   virtual ~InitializeModelsRunAction();
   /* Defines the actions at the end of processing the track.
-   * It scans the world volume in search of the occurance of defined strings and attaches
-   * parametrisation models accordingly:
-   * \b"Tracker" to attach FastSimModelTracker
-   * to be implemented: "ECal" and "HCal"
+   * It scans the world volume and attaches FastSimModelTracker to the detector with a name m_trackerName.
    */
   virtual void  BeginOfRunAction(const G4Run*) final;
 
@@ -41,6 +42,10 @@ private:
   ServiceHandle<IMessageSvc> m_msgSvc;
   /// Message Stream
   MsgStream m_log;
+  /// Tool Service
+  ServiceHandle<IToolSvc> m_toolSvc;
+  /// Pointer to a smearing tool, to retrieve tracker configuration (names of volumes)
+  ISimG4ParticleSmearTool* m_smearTool;
   /// Envelopes that are used in a parametric simulation
   /// deleted by the G4RegionStore
   std::vector<G4Region*> m_g4regions;
