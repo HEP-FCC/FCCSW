@@ -17,6 +17,7 @@ class IRndmGenSvc;
  *  The standard deviation of the Gaussian is set in the job options file ('sigma').
  *  User may define in job options the momentum range (\b'minP', \b'maxP') and the maximum pseudorapidity (\b'maxEta')
  *  for which the fast simulation is triggered (for other particles full simulation is performed).
+ *  [For more information please see](@ref md_sim_doc_geant4fastsim).
  *
  *  @author Anna Zaborowska
  */

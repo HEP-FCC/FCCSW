@@ -17,6 +17,7 @@
  *
  *  Main Geant simulation service.
  *  It handles Geant initialization (via tools) and communication with the G4RunManager.
+ *  [For more information please see](@ref md_sim_doc_geant4fullsim).
  *
  *  @author Anna Zaborowska
  */

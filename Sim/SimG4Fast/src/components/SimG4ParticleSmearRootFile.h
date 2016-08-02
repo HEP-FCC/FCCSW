@@ -26,6 +26,7 @@ class IRndmGen;
  *  User may define in job options the momentum range (\b'minP', \b'maxP') and the maximum pseudorapidity (\b'maxEta')
  *  for which the fast simulation is triggered (for other particles full simulation is performed).
  *  The defined values cannot be broader than eta and p values for which the resolutions were computed.
+ *  [For more information please see](@ref md_sim_doc_geant4fastsim).
  *
  *  @author Anna Zaborowska
  */

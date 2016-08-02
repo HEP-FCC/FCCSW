@@ -22,6 +22,7 @@ class CaloHitCollection;
  *  Readout name is defined in DD4hep XML file as the attribute 'readout' of 'detector' tag.
  *  If (\b'readoutNames') contain no elements or names that do not correspond to any hit collection,
  *  tool will fail at initialization.
+ *  [For more information please see](@ref md_sim_doc_geant4fullsim).
  *
  *  @author Anna Zaborowska
  */
