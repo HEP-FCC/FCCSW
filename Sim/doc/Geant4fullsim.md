@@ -68,7 +68,7 @@ Simulation package contains following directories:
   * all main components (e.g. `SimG4Svc`, `SimG4DD4hepDetector`)
   * tests, further examples (e.g. `Sim/SimG4Components/tests/geant_fullsim_hcal.py`)
 * *SimG4Common*
-  * Geant classes' implementations, common for both the full and fast simuliation (e.g. `sim::RunManager`)
+  * Geant classes' implementations, common for both the full and fast simulation (e.g. `sim::RunManager`)
 * *SimG4Full*
   * components and Geant classes' implementations used in the full simulation (e.g. `SimG4FullSimActions`)
 * *SimG4Fast*
@@ -216,7 +216,7 @@ DetectorDescription/Detectors/compact
 
 Main service responsible for handling the DD4hep setup is `GeoSvc`. It has a property **detector** that takes a string with a path to the detector description XML file.
 
-DD4hep is able to parse automatically the geometry and convert it to Geant4 format. It can be retrieved and passed to the Geant configuration service via tool `SimG4DD4hepDetector`. User needs to set the geometry tool in `SimG4Svc` (property **detector**) to `SimG4DD4hepDetector` (TODO: set it as a default case).
+DD4hep is able to parse automatically the geometry and convert it to Geant4 format. It can be retrieved and passed to the Geant configuration service via tool `SimG4DD4hepDetector`. User needs to set the geometry tool in `SimG4Svc` (property **detector**) to `SimG4DD4hepDetector`.
 
 In FCCSW there is an alternative way to create the geometry, via GDML description (and tool `SimG4GdmlDetector` with property **gdml** taking a path to the GDML file). It is meant only for the test purposes as it does not support sensitive detectors. User would need to create them on his own.
 
@@ -291,12 +291,12 @@ Any implementation of action initialisation list should have a relevant GAUDI co
 Currently `sim::FullSimActions` is empty and no user actions are created.
 
 User actions may derive from the following G4 interfaces:
-* G4UserRunAction.hh
-* G4UserEventAction.hh
-* G4UserStackingAction.hh
-* G4UserTrackingAction.hh
-* G4UserSteppingAction.hh
-* G4UserTimeStepAction.hh
+* G4UserRunAction
+* G4UserEventAction
+* G4UserStackingAction
+* G4UserTrackingAction
+* G4UserSteppingAction
+* G4UserTimeStepAction
 
 
 ### How to add user action
