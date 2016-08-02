@@ -45,7 +45,7 @@ public:
   /**  Get the names of the volumes where fast simulation should be performed.
    *   @return vector of volume names
    */
-  inline virtual const std::vector<std::string>* volumeNames() const final {return &m_volumeNames;};
+  inline virtual const std::vector<std::string>& volumeNames() const final {return m_volumeNames;};
   /**  Get the minimum momentum that triggers fast simulation
    *   @return maximum p
    */

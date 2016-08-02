@@ -26,9 +26,9 @@ InitializeModelsRunAction::InitializeModelsRunAction(const std::string& aSmearin
 InitializeModelsRunAction::~InitializeModelsRunAction() {}
 
 void InitializeModelsRunAction::BeginOfRunAction(const G4Run* /*aRun*/) {
-  const std::vector<std::string>* trackerNames = m_smearTool->volumeNames();
+  const std::vector<std::string> trackerNames = m_smearTool->volumeNames();
   G4LogicalVolume* world = (*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume();
-  for(const auto& trackerName: *trackerNames) {
+  for(const auto& trackerName: trackerNames) {
     for(int iter_region = 0; iter_region<world->GetNoDaughters(); ++iter_region) {
       if(world->GetDaughter(iter_region)->GetName().find(trackerName) != std::string::npos) {
         /// all G4Region objects are deleted by the G4RegionStore
