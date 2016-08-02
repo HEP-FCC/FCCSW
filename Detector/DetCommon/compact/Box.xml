@@ -33,13 +33,13 @@
     <display>
         <vis name="BoxVis" r="0.9" g="1.0" b="0.0" alpha="1" showDaugthers="true" visible="true" drawingStyle="solid"/>
     </display>
-    
     <detectors>
-        
-        <detector id="0" name="Box0" type="Box">
-            <box width="box_width" thickness="box_thick" length="box_length" vis="BoxVis" material="Silicon"/>
-        </detector>
- 
+        <detector id="0" name="Box0" type="SimpleBox">
+            <dimensions x="1*mm" y="2*mm" z="3*mm"/>
+            <position x="3*mm" y="2*mm" z="3*mm"/>
+            <rotation x="0.1*rad" y="0.1*rad" z="0.1*rad"/>
+            <material name="Silicon" />
+            <box width="box_width" thickness="box_thick" length="box_length" vis="BoxVis" />
         </detector>
     </detectors>
     

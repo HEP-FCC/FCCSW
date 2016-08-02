@@ -32,7 +32,7 @@ StatusCode HepMCFileReader::open(const std::string& filename) {
   }
   // open file using HepMC routines
   m_file = std::make_unique<HepMC::IO_GenEvent>(filename.c_str(), std::ios::in );
-  // check that readable 
+  // check that readable
   if ( ( nullptr == m_file ) || ( m_file->rdstate() == std::ios::failbit ) ) {
     error()   <<  "Failure to read the file '"+filename+"'" << endmsg;
     return StatusCode::FAILURE;
@@ -40,13 +40,16 @@ StatusCode HepMCFileReader::open(const std::string& filename) {
   return StatusCode::SUCCESS;
 }
 
-HepMC::GenEvent* HepMCFileReader::readNextEvent() {
-  Assert(nullptr != m_file, "Invalid input file!");
-  // this function is to be used in conjunction with
-  // the data service or some other memory manager
-  HepMC::GenEvent* tmpEvent = new HepMC::GenEvent();
-  m_file->fill_next_event(tmpEvent);
-  return tmpEvent;
+StatusCode HepMCFileReader::readNextEvent(HepMC::GenEvent& event) {
+  if(!m_file->fill_next_event(&event)) {
+    if (m_file->rdstate() == std::ios::eofbit) {
+        error() << "Error reading HepMC file" << endmsg;
+        return StatusCode::FAILURE;
+    }
+    error() << "Premature end of file: Please set the number of events according to hepMC file." << endmsg;
+    return Error("Reached end of file before finished processing");
+  }
+  return StatusCode::SUCCESS;
 }
 
 
