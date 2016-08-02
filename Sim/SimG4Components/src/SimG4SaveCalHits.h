@@ -18,9 +18,9 @@ class CaloHitCollection;
 /** @class SimG4SaveCalHits SimG4Components/src/SimG4SaveCalHits.h SimG4SaveCalHits.h
  *
  *  Save calorimeter hits tool.
- *  All collections passed in the job options will be saved (\b'readouts').
+ *  All collections passed in the job options will be saved (\b'readoutNames').
  *  Readout name is defined in DD4hep XML file as the attribute 'readout' of 'detector' tag.
- *  If (\b'readouts') contain no elements or names that do not correspond to any hit collection,
+ *  If (\b'readoutNames') contain no elements or names that do not correspond to any hit collection,
  *  tool will fail at initialization.
  *
  *  @author Anna Zaborowska
@@ -40,7 +40,7 @@ public:
    */
   virtual StatusCode finalize();
   /**  Save the data output.
-   *   Saves the calorimeter hits from the collections as specified in the job options in \b'readouts'.
+   *   Saves the calorimeter hits from the collections as specified in the job options in \b'readoutNames'.
    *   @param[in] aEvent Event with data to save.
    *   @return status code
    */

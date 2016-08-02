@@ -48,7 +48,7 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmT
 # first, create a tool that saves the tracker hits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readouts = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
+savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"

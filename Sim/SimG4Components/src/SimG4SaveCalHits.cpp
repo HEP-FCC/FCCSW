@@ -18,7 +18,7 @@ DECLARE_TOOL_FACTORY(SimG4SaveCalHits)
 SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("readouts", m_readoutNames);
+  declareProperty("readoutNames", m_readoutNames);
   declareOutput("caloClusters", m_caloClusters,"hits/caloClusters");
   declareOutput("caloHits", m_caloHits,"hits/caloHits");
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor

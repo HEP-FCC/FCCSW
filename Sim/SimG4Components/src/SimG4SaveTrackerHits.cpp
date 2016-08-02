@@ -19,7 +19,7 @@ DECLARE_TOOL_FACTORY(SimG4SaveTrackerHits)
 SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("readouts", m_readoutNames);
+  declareProperty("readoutNames", m_readoutNames);
   declareOutput("trackClusters", m_trackClusters,"hits/trackerClusters");
   declareOutput("trackHits", m_trackHits,"hits/trackerHits");
   declareOutput("trackHitsClusters", m_trackHitsClusters,"hits/trackerAssociations");

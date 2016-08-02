@@ -33,7 +33,7 @@ geantservice = SimG4Svc("SimG4Svc",
                         actions="SimG4FullSimActions")
 
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
-savehcaltool = SimG4SaveCalHits("saveECalHits", readouts = ["ECalHits"])
+savehcaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"])
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 

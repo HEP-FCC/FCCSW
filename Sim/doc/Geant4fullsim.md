@@ -130,7 +130,7 @@ The configuration file (`options/geant_fullsim.py`) contains:
 
     ~~~{.py}
     from Configurables import SimG4Alg, SimG4SaveTrackerHits
-    savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readouts = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
+    savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
     savetrackertool.DataOutputs.trackClusters.Path = "clusters"
     savetrackertool.DataOutputs.trackHits.Path = "hits"
     savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
@@ -142,7 +142,7 @@ The configuration file (`options/geant_fullsim.py`) contains:
     ~~~
 
   * saving the output to ROOT file
-    - `reaodouts` property of saving tool (in the example above `SimG4SaveTrackerHits`) defines for which readouts the hits collections should be translated to EDM. Readout name is defined in DD4hep XML file as the attribute `readout` of `detector` tag.
+    - `reaodouts` property of saving tool (in the example above `SimG4SaveTrackerHits`) defines for which readoutNames the hits collections should be translated to EDM. Readout name is defined in DD4hep XML file as the attribute `readout` of `detector` tag.
 
     ~~~{.py}
     from Configurables import PodioOutput
@@ -330,7 +330,7 @@ Tools may have the data outputs specified.
 A method `ISimG4SaveOutputTool::SaveOutput(const G4Event &aEvent)` is meant to retrieve any useful information and save it to EDM.
 Useful information means e.g. hits collections (`G4HCofThisEvent`) or anything stored in an implementation of `G4VUserEventInformation`, `G4VUserEventInformation`, `G4VUserTrackInformation`, `G4VUserPrimaryParticleInformation` etc.
 
-Existing tools store hits collections from the tracker detectors (`SimG4SaveTrackerHits`) or calorimeters (`SimG4SaveCalHits`). The names of the hits collections are passed to the saving tool in property **readouts**. The name of the readout is defined in DD4hep XML file as the attribute `readout` of `<detector>` tag and also under the `<readout>` tag. For instance, the collection below contains hits in the tracker ("CentralTracker_Readout") ([see more](#sensitive-detectors)). If vector **readouts** contains no elements or any name that does not correspond to the hit collection, the tool will fail at initialization.
+Existing tools store hits collections from the tracker detectors (`SimG4SaveTrackerHits`) or calorimeters (`SimG4SaveCalHits`). The names of the hits collections are passed to the saving tool in property **readoutNames**. The name of the readout is defined in DD4hep XML file as the attribute `readout` of `<detector>` tag and also under the `<readout>` tag. For instance, the collection below contains hits in the tracker ("CentralTracker_Readout") ([see more](#sensitive-detectors)). If vector **readoutNames** contains no elements or any name that does not correspond to the hit collection, the tool will fail at initialization.
 
 ~~~{.xml}
 <readouts>
