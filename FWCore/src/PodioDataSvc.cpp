@@ -43,8 +43,14 @@ StatusCode PodioDataSvc::clearStore()    {
       collNamePair.second->clear();
     }
   }
+  for (auto& collNamePair : m_readCollections) {
+    if (collNamePair.second != nullptr) {
+      collNamePair.second->clear();
+    }
+  }
   DataSvc::clearStore().ignore();
   m_collections.clear();
+  m_readCollections.clear();
   return StatusCode::SUCCESS ;
 }
 
@@ -82,8 +88,11 @@ StatusCode PodioDataSvc::readCollection(const std::string& collName, int collect
   podio::CollectionBase* collection(nullptr);
   m_provider.get(collectionID, collection);
   auto wrapper = new DataWrapper<podio::CollectionBase>;
+  int id = m_collectionIDs->add(collName);
+  collection->setID(id);
   wrapper->setData(collection);
-  return registerObject(collName, wrapper);
+  m_readCollections.emplace_back(std::make_pair(collName, collection));
+  return DataSvc::registerObject(collName, wrapper);
 }
 
 StatusCode PodioDataSvc::registerObject(  const std::string& fullPath, DataObject* pObject ) {
