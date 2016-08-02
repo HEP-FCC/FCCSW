@@ -82,7 +82,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
       ++layerCounter;
       // place layers not at center, but at z1 value of containing envelope
       // subtract half of the envelope length
-      current_z = repeatIndex * layerThickness + xLayer.z1() - dimensions.z1();
+      current_z = (repeatIndex + 0.5) * layerThickness + xLayer.z1() - dimensions.z1();
       PlacedVolume placedLayerVolume = envelopeVolume.placeVolume(
           layerVolume, DD4hep::Geometry::Position(0, 0, current_z - 0.5 * (dimensions.z2() - dimensions.z1())));
       placedLayerVolume.addPhysVolID("layer", layerCounter);
