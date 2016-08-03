@@ -1,6 +1,7 @@
 #include "PodioOutput.h"
 #include "TFile.h"
 #include "FWCore/PodioDataSvc.h"
+#include "GaudiKernel/IJobOptionsSvc.h"
 
 DECLARE_COMPONENT(PodioOutput)
 
@@ -25,6 +26,7 @@ StatusCode PodioOutput::initialize() {
   m_datatree  = new TTree("events","Events tree");
   m_metadatatree = new TTree("metadata", "Metadata tree");
   m_switch = KeepDropSwitch(m_outputCommands);
+
   return StatusCode::SUCCESS;
 }
 
@@ -92,6 +94,22 @@ StatusCode PodioOutput::execute() {
 StatusCode PodioOutput::finalize() {
   if (GaudiAlgorithm::finalize().isFailure())
     return StatusCode::FAILURE;
+
+  // retrieve the configuration of the job
+  // and write it to file as vector of strings
+  std::vector<std::string> config_data;
+  auto jobOptionsSvc = service<IJobOptionsSvc>("JobOptionsSvc");
+  auto configured_components = jobOptionsSvc->getClients();
+  for (const auto& name : configured_components) {
+    auto properties = jobOptionsSvc->getProperties(name);
+    std::stringstream config_stream;
+    for (const auto& property : *properties) {
+      config_stream << name << " : " << property->name() << " = " << property->toString() << std::endl;
+    }
+    config_data.push_back(config_stream.str());
+  }
+  m_metadatatree->Branch("gaudiConfigOptions", &config_data);
+
   m_metadatatree->Branch("CollectionIDs", m_podioDataSvc->getCollectionIDs());
   m_metadatatree->Fill();
   m_file->Write();
