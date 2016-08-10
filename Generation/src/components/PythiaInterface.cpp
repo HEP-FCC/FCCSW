@@ -171,5 +171,6 @@ StatusCode PythiaInterface::execute() {
 StatusCode PythiaInterface::finalize() {
 
   m_pythiaSignal.reset();
+  m_pythiaPileup.reset();
   return GaudiAlgorithm::finalize();
 }
