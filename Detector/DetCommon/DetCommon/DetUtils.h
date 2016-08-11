@@ -4,6 +4,7 @@
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
 #include "DD4hep/Segmentations.h"
+#include "DDSegmentation/BitField64.h"
 
 // Geant
 #include "G4Step.hh"
@@ -28,6 +29,22 @@ double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::s
  */
 
 uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
+
+/**  Get neighbours in many dimensions.
+ *   @param[in] aDecoder Handle to the bitfield decoder.
+ *   @param[in] aDimensionNames Names of the identifiers for which neighbours are found.
+ *   @param[in] aCellId ID of cell.
+ *   return Vector of neighbours.
+ */
+std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
+  const std::vector<std::string>& aDimensionNames,
+  uint64_t aCellId);
+
+/** Get minimal and maximal values that can be decoded in the fields of the bitfield.
+ *   @param[in] aDecoder Handle to the bitfield decoder.
+ *   return Vector of pairs (min,max)
+ */
+std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */
