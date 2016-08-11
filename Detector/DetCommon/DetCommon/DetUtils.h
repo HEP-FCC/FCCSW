@@ -3,6 +3,10 @@
 
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
+#include "DD4hep/Segmentations.h"
+
+// Geant
+#include "G4Step.hh"
 
 /** Given a XML element with several daughters with the same name, e.g.
  <detector> <layer name="1" /> <layer name="2"> </detector>
@@ -15,6 +19,15 @@ DD4hep::XML::Component getNodeByStrAttr(const DD4hep::XML::Handle_t& mother, con
 
 /// try to get attribute with double value, return defaultValue if attribute not found
 double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::string& attrName, const double& defaultValue);
+
+/** Retrieves the cellID based on the position of the step and the detector segmentation.
+ *  @param aSeg Handle to the segmentation of the volume.
+ *  @param aStep Step in which particle deposited the energy.
+ *  @param aPreStepPoint Flag indicating if the position of the deposit is the beginning of the step (default)
+ *         or the middle of the step.
+ */
+
+uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */
