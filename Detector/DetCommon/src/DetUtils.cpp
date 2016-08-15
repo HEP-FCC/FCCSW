@@ -7,8 +7,8 @@
 // Geant
 #include "G4NavigationHistory.hh"
 
-// CLHEP
-#include "CLHEP/Vector/ThreeVector.h"
+// ROOT
+#include "TGeoBBox.h"
 
 namespace det {
 namespace utils {
@@ -88,6 +88,30 @@ std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitFiel
     }
   }
   return std::move(extremes);
+}
+
+CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg) {
+  DD4hep::Geometry::VolumeManager volMgr =
+    DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  std::cout << "\t looking for id " << aVolumeId <<std::endl;
+  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  auto vol = pvol.volume();
+  auto solid = vol.solid();
+  // get the envelope of the shape
+  TGeoBBox* box = (dynamic_cast<TGeoBBox*>(solid.ptr()));
+  // get half-widths
+  double xMaxVolumeHalfSize = box->GetDX();
+  double yMaxVolumeHalfSize = box->GetDY();
+  double zMaxVolumeHalfSize = box->GetDZ();
+  // get segmentation cell widths
+  double xCellSize = aSeg.gridSizeX();
+  double yCellSize = aSeg.gridSizeY();
+  double zCellSize = aSeg.gridSizeZ();
+  // calculate number of cells, the middle cell is centred at 0 (no offset)
+  int cellsX = ceil((xMaxVolumeHalfSize-xCellSize/2.)/xCellSize)*2+1;
+  int cellsY = ceil((yMaxVolumeHalfSize-yCellSize/2.)/yCellSize)*2+1;
+  int cellsZ = ceil((zMaxVolumeHalfSize-zCellSize/2.)/zCellSize)*2+1;
+  return CLHEP::Hep3Vector(cellsX, cellsY, cellsZ);
 }
 }
 }

@@ -8,6 +8,7 @@ gaudi_depends_on_subdirs(GaudiKernel
                          FWCore
                          Detector/DetInterface
                          Detector/DetSegmentation
+                         Detector/DetCommon
                          Detector/DetExtensions)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
@@ -18,5 +19,5 @@ find_package(Geant4)
 
 gaudi_add_module(DetComponents
                  src/*.cpp
-                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 RecoGeometry FWCore DetInterface DetExtensions DetSegmentation
-                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation Geant4 RecoGeometry FWCore)
+                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 RecoGeometry FWCore DetInterface DetExtensions DetSegmentation DetCommon
+                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 RecoGeometry FWCore)

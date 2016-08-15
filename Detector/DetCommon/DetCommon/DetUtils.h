@@ -5,9 +5,13 @@
 #include "DD4hep/DetFactoryHelper.h"
 #include "DD4hep/Segmentations.h"
 #include "DDSegmentation/BitField64.h"
+#include "DDSegmentation/CartesianGridXYZ.h"
 
 // Geant
 #include "G4Step.hh"
+
+// CLHEP
+#include "CLHEP/Vector/ThreeVector.h"
 
 /** Given a XML element with several daughters with the same name, e.g.
  <detector> <layer name="1" /> <layer name="2"> </detector>
@@ -45,6 +49,8 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
  *   return Vector of pairs (min,max)
  */
 std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder);
+
+CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */
