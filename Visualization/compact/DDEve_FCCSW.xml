@@ -1,0 +1,35 @@
+<ddeve>
+  <display visLevel="7" loadLevel="4"/>
+  <calodata name="trackerdata" hits="clusters" towerH="50" emax="200"
+	    n_eta="200" eta_min="-5" eta_max="5" 
+	    n_phi="200" phi_min="-pi" phi_max="pi" 
+	    alpha="0.5" rmin="40*mm" dz="500*mm" color="kCyan"/>
+  <collection name="clusters" hits="PointSet" color="kMagenta" size="1.3" type="20"/>
+  <calodata name="calohits" hits="calolusters" towerH="50" emax="200"
+	    n_eta="200" eta_min="-5" eta_max="5" 
+	    n_phi="200" phi_min="-pi" phi_max="pi" 
+	    alpha="0.5" rmin="40*mm" dz="500*mm" color="kRed"/>
+  <collection name="clusters" hits="PointSet" color="kMagenta" size="1.3" type="20"/>
+  <collection name="caloClusters" hits="PointSet" color="kRed" size="0.7" type="20"/>
+  <view name="3D Trackers" type="View3D">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+  </view>
+  <view name="RhoPhiProjection" type="RhoPhiProjection">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+  </view>
+  <view name="RhoZProjection" type="RhoZProjection">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+    <calodata name="calohits" />
+  </view>
+  <view name="MultiView" type="MultiView">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+    <calodata name="calohits" />
+  </view>
+  <include ref="../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
+  <include ref="../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
+  <include ref="../../Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml"/>
+</ddeve>
