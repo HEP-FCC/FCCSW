@@ -163,5 +163,18 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   uint cellsPhi = ceil(2*M_PI/phiCellSize);
   return {cellsR,cellsPhi};
 }
+
+unsigned int countPlacedVolumes(TGeoVolume* highestVolume, std::string matchName) {
+  int numberOfPlacedVolumes = 0;
+  TGeoNode* node;
+  TGeoIterator next(highestVolume);
+    while ((node=next())) {
+      std::string currentNodeName = node->GetName();
+      if (currentNodeName.find(matchName) != std::string::npos) {
+        ++numberOfPlacedVolumes;
+      }
+   }
+   return numberOfPlacedVolumes;
+}
 }
 }

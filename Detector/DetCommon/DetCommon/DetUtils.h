@@ -18,6 +18,9 @@
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
+#include "TGeoManager.h"
+
+
 /** Given a XML element with several daughters with the same name, e.g.
  <detector> <layer name="1" /> <layer name="2"> </detector>
  this method returns the first daughter of type nodeName whose attribute has a given value
@@ -102,6 +105,8 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentati
  *   return Array of the number of cells in (r, phi).
  */
 std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg);
+
+unsigned int countPlacedVolumes(TGeoVolume* highestVolume, std::string matchName);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */

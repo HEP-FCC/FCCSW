@@ -9,10 +9,12 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/Barrel_tes
 from Configurables import TestCellCounting
 cells = TestCellCounting("cells", readoutName="ECalHits",
                          fieldNames=["system"],
-                         fieldValues=[0], OutputLevel = DEBUG)
+                         fieldValues=[0],
+                         volumeMatchName="BoxECal",
+                         OutputLevel = DEBUG)
 
 ApplicationMgr(EvtSel='NONE',
                EvtMax=1,
                TopAlg=[cells],
-               ExtSvc = [geoservice],
+               ExtSvc=[geoservice],
                OutputLevel=DEBUG)

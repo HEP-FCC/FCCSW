@@ -8,10 +8,11 @@ from Configurables import TestCellCounting
 cells = TestCellCounting("cells", readoutName="ECalHits",
                          fieldNames=["system"],
                          fieldValues=[0],
+                         volumeMatchName="BoxECal",
                          OutputLevel = DEBUG)
 # ApplicationMgr
 ApplicationMgr(EvtSel='NONE',
-               EvtMax=5,
+               EvtMax=1,
                TopAlg=[cells],
-               ExtSvc = [geoservice],
+               ExtSvc=[geoservice],
                OutputLevel=DEBUG)
