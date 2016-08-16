@@ -13,6 +13,9 @@
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
+#include "TGeoManager.h"
+
+
 /** Given a XML element with several daughters with the same name, e.g.
  <detector> <layer name="1" /> <layer name="2"> </detector>
  this method returns the first daughter of type nodeName whose attribute has a given value
@@ -51,6 +54,8 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
 std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder);
 
 CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
+
+unsigned int countPlacedVolumes(TGeoVolume* highestVolume, std::string matchName);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */

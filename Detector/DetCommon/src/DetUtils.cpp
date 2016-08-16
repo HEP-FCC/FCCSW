@@ -93,7 +93,6 @@ std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitFiel
 CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg) {
   DD4hep::Geometry::VolumeManager volMgr =
     DD4hep::Geometry::LCDD::getInstance().volumeManager();
-  std::cout << "\t looking for id " << aVolumeId <<std::endl;
   auto pvol = volMgr.lookupPlacement(aVolumeId);
   auto vol = pvol.volume();
   auto solid = vol.solid();
@@ -113,5 +112,24 @@ CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeId, const DD4hep::DDS
   int cellsZ = ceil((zMaxVolumeHalfSize-zCellSize/2.)/zCellSize)*2+1;
   return CLHEP::Hep3Vector(cellsX, cellsY, cellsZ);
 }
+
+
+unsigned int countPlacedVolumes(TGeoVolume* highestVolume, std::string matchName) { 
+  int numberOfPlacedVolumes = 0;
+  TGeoNode* node;
+  TGeoIterator next(highestVolume);
+    while ((node=next())) {
+      std::string currentNodeName = node->GetName();
+      if (currentNodeName.find(matchName) != std::string::npos) {
+        ++numberOfPlacedVolumes;
+      }
+   }
+   return numberOfPlacedVolumes;
+}
+
 }
 }
+
+
+
+

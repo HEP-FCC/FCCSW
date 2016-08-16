@@ -21,6 +21,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[# 'file:Detector/DetFCChhBaseline1/comp
 from Configurables import TestCellCounting
 cells = TestCellCounting("cells", readoutName="ECalHits", # BarECal_Readout",
                          fieldNames=["system"], #,"active","EM_barrel","layer"],
+                         volumeMatchName="BoxECal",
                          fieldValues=[0 # 5,1,1,0
                          ], OutputLevel = DEBUG)
 
