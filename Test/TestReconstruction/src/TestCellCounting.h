@@ -40,6 +40,7 @@ private:
   std::vector<std::string> m_fieldNames;
   /// Name of the detector readout
   std::vector<int> m_fieldValues;
+  std::string m_volumeMatchName;
   // Volume ID of the volume with cells to calculate
   uint64_t m_volumeId;
 };
