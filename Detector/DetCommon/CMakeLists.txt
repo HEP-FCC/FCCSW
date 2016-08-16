@@ -3,7 +3,7 @@
 ################################################################################
 gaudi_subdir(DetCommon v1r0)
 
-gaudi_depends_on_subdirs(GaudiKernel)
+gaudi_depends_on_subdirs(GaudiKernel Detector/DetSegmentation)
 
 find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
 find_package(Geant4)
@@ -17,8 +17,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 gaudi_install_headers(DetCommon)
 gaudi_add_library(DetCommon
                  src/*.cpp
-                 INCLUDE_DIRS DD4hep ROOT Geant4
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 ${DD4hep_COMPONENT_LIBRARIES}
+                 INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetSegmentation ${DD4hep_COMPONENT_LIBRARIES}
                  PUBLIC_HEADERS DetCommon)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})

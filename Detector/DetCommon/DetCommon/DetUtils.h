@@ -1,11 +1,16 @@
 #ifndef DETCOMMON_DETUTILS_H
 #define DETCOMMON_DETUTILS_H
 
+// FCCSW
+#include "DetSegmentation/PhiEtaGrid.h"
+
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
 #include "DD4hep/Segmentations.h"
 #include "DDSegmentation/BitField64.h"
 #include "DDSegmentation/CartesianGridXYZ.h"
+#include "DDSegmentation/CartesianGridXY.h"
+#include "DDSegmentation/PolarGridRPhi.h"
 
 // Geant
 #include "G4Step.hh"
@@ -50,7 +55,53 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
  */
 std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder);
 
-CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
+/** Get the half widths of the box envelope (TGeoBBox).
+ *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   return Half-widths of the volume (in x,y,z).
+ */
+CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId);
+
+/** Get the dimensions of a tube (TGeoTube).
+ *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   return Dimensions of the tube (rmin, rmax, z(half-length)).
+ */
+CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId);
+
+/** Get the number of cells for the volume and a given Cartesian XY segmentation.
+ *   @warning No offset in segmentation is currently taken into account.
+ *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aSeg Handle to the segmentation of the volume.
+ *   return Array of the number of cells in (X, Y).
+ */
+std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXY& aSeg);
+
+/** Get the number of cells for the volume and a given Cartesian XYZ segmentation.
+ *   @warning No offset in segmentation is currently taken into account.
+ *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aSeg Handle to the segmentation of the volume.
+ *   return Array of the number of cells in (X, Y, Z).
+ */
+std::array<uint, 3> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
+
+/** Get the number of cells for the volume and a given Phi-Eta segmentation.
+ *   It is assumed that the volume has a cylindrical shape (full azimuthal coverage)
+ *   and that it is centred at (0,0,0).
+ *   @warning No offset in segmentation is currently taken into account.
+ *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aSeg Handle to the segmentation of the volume.
+ *   return Array of the number of cells in (phi, eta).
+ */
+std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::PhiEtaGrid& aSeg);
+
+/** Get the number of cells for the volume and a given R-phi segmentation.
+ *   It is assumed that the volume has a cylindrical shape - TGeoTube (full azimuthal coverage)
+ *   and that it is centred at (0,0,0).
+ *   @warning No offset in segmentation is currently taken into account.
+ *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aSeg Handle to the segmentation of the volume.
+ *   return Array of the number of cells in (r, phi).
+ */
+std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */

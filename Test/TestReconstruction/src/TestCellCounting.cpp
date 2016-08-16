@@ -3,6 +3,7 @@
 // FCCSW
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
+#include "DetSegmentation/PhiEtaGrid.h"
 
 // datamodel
 #include "datamodel/CaloHitCollection.h"
@@ -10,6 +11,7 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 #include "DDSegmentation/BitField64.h"
+#include "DDSegmentation/CartesianGridXY.h"
 #include "DDSegmentation/CartesianGridXYZ.h"
 
 DECLARE_ALGORITHM_FACTORY(TestCellCounting)
@@ -42,11 +44,30 @@ StatusCode TestCellCounting::initialize() {
     (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
   }
   m_volumeId = decoder->getValue();
-  auto segmentation = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXYZ*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
-  if(segmentation == nullptr) {
-    info()<<"There is no segmentation."<<endmsg;
+  info()<<"Counting cells for volume "<<decoder->valueString()<<" -> volume ID: "<<m_volumeId<<endmsg;
+  auto segmentationXY = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXY*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if(segmentationXY == nullptr) {
+    info()<<"There is no Cartesian XY segmentation."<<endmsg;
   } else {
-    info()<<"Number of segmentation cells in (x,y,z): "<<det::utils::numberOfCellsInCartesian(m_volumeId, *segmentation)<<endmsg;
+    info()<<"Number of segmentation cells in (x,y): "<<det::utils::numberOfCells(m_volumeId, *segmentationXY)<<endmsg;
+  }
+  auto segmentationXYZ = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXYZ*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if(segmentationXYZ == nullptr) {
+    info()<<"There is no Cartesian XYZ segmentation."<<endmsg;
+  } else {
+    info()<<"Number of segmentation cells in (x,y,z): "<<det::utils::numberOfCells(m_volumeId, *segmentationXYZ)<<endmsg;
+  }
+  auto segmentationRPhi = dynamic_cast<DD4hep::DDSegmentation::PolarGridRPhi*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if(segmentationRPhi == nullptr) {
+    info()<<"There is no R-phi segmentation."<<endmsg;
+  } else {
+    info()<<"Number of segmentation cells in (r,phi): "<<det::utils::numberOfCells(m_volumeId, *segmentationRPhi)<<endmsg;
+  }
+  auto segmentationPhiEta = dynamic_cast<DD4hep::DDSegmentation::PhiEtaGrid*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if(segmentationPhiEta == nullptr) {
+    info()<<"There is no phi-eta segmentation."<<endmsg;
+  } else {
+    info()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(m_volumeId, *segmentationPhiEta)<<endmsg;
   }
   return StatusCode::SUCCESS;
 }

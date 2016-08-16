@@ -90,28 +90,78 @@ std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitFiel
   return std::move(extremes);
 }
 
-CLHEP::Hep3Vector numberOfCellsInCartesian(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg) {
-  DD4hep::Geometry::VolumeManager volMgr =
-    DD4hep::Geometry::LCDD::getInstance().volumeManager();
-  std::cout << "\t looking for id " << aVolumeId <<std::endl;
+CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId) {
+  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
   auto pvol = volMgr.lookupPlacement(aVolumeId);
-  auto vol = pvol.volume();
-  auto solid = vol.solid();
+  auto solid = pvol.volume().solid();
   // get the envelope of the shape
   TGeoBBox* box = (dynamic_cast<TGeoBBox*>(solid.ptr()));
   // get half-widths
-  double xMaxVolumeHalfSize = box->GetDX();
-  double yMaxVolumeHalfSize = box->GetDY();
-  double zMaxVolumeHalfSize = box->GetDZ();
+  return CLHEP::Hep3Vector(box->GetDX(), box->GetDY(), box->GetDZ());
+}
+
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXY& aSeg) {
+  // // get half-widths
+  auto halfSizes = envelopeDimensions(aVolumeId);
+  // get segmentation cell widths
+  double xCellSize = aSeg.gridSizeX();
+  double yCellSize = aSeg.gridSizeY();
+  // calculate number of cells, the middle cell is centred at 0 (no offset)
+  uint cellsX = ceil((halfSizes.x()-xCellSize/2.)/xCellSize)*2+1;
+  uint cellsY = ceil((halfSizes.y()-yCellSize/2.)/yCellSize)*2+1;
+  return {cellsX, cellsY};
+}
+
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg) {
+  // // get half-widths
+  auto halfSizes = envelopeDimensions(aVolumeId);
   // get segmentation cell widths
   double xCellSize = aSeg.gridSizeX();
   double yCellSize = aSeg.gridSizeY();
   double zCellSize = aSeg.gridSizeZ();
   // calculate number of cells, the middle cell is centred at 0 (no offset)
-  int cellsX = ceil((xMaxVolumeHalfSize-xCellSize/2.)/xCellSize)*2+1;
-  int cellsY = ceil((yMaxVolumeHalfSize-yCellSize/2.)/yCellSize)*2+1;
-  int cellsZ = ceil((zMaxVolumeHalfSize-zCellSize/2.)/zCellSize)*2+1;
-  return CLHEP::Hep3Vector(cellsX, cellsY, cellsZ);
+  uint cellsX = ceil((halfSizes.x()-xCellSize/2.)/xCellSize)*2+1;
+  uint cellsY = ceil((halfSizes.y()-yCellSize/2.)/yCellSize)*2+1;
+  uint cellsZ = ceil((halfSizes.z()-zCellSize/2.)/zCellSize)*2+1;
+  return {cellsX, cellsY, cellsZ};
+}
+
+CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
+  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  auto solid = pvol.volume().solid();
+  // get the envelope of the shape
+  TGeoConeSeg* tube = (dynamic_cast<TGeoConeSeg*>(solid.ptr()));
+  if(tube == nullptr) {
+    return CLHEP::Hep3Vector(0,0,0);
+  }
+  // get half-widths
+  return CLHEP::Hep3Vector(tube->GetRmin1(), tube->GetRmax1(), tube->GetDZ());
+}
+
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PhiEtaGrid& aSeg) {
+  // get half-widths,
+  auto tubeSizes = tubeDimensions(aVolumeId);
+  // get segmentation cell width in eta
+  double etaCellSize = aSeg.gridSizeEta();
+  // get segmentation number of bins in phi
+  uint phiCellNumber = aSeg.phiBins();
+  // eta segmentation calculate maximum eta from the inner radius
+  uint cellsEta = ceil((tubeSizes.x()-etaCellSize/2.)/etaCellSize)*2+1;
+  return {cellsEta,phiCellNumber};
+}
+
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg) {
+  // get half-widths,
+  auto tubeSizes = tubeDimensions(aVolumeId);
+  // get segmentation cell width
+  double rCellSize = aSeg.gridSizeR();
+  double phiCellSize = aSeg.gridSizePhi();
+  uint cellsRout = ceil(tubeSizes.y()/rCellSize);
+  uint cellsRin = floor(tubeSizes.x()/rCellSize);
+  uint cellsR = cellsRout - cellsRin;
+  uint cellsPhi = ceil(2*M_PI/phiCellSize);
+  return {cellsR,cellsPhi};
 }
 }
 }
