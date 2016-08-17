@@ -27,10 +27,15 @@ geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","Inspe
 
 from Configurables import MergeField
 merge = MergeField("mergeField",
-                              readout ="ECalHits",
-                              identifier = "x",
-                              merge = 3,
-                              OutputLevel = DEBUG)
+                   # take the bitfield description from the geometry service
+                   readout ="ECalHits",
+                   # cells in which field should be merged
+                   identifier = "x",
+                   # how many cells to merge
+                   # for signed fields (segmentation cells) this needs to be odd to keep middle cell centred in 0
+                   # for unsigned field (volumes) this may be any number
+                   merge = 3,
+                   OutputLevel = DEBUG)
 merge.DataInputs.inhits.Path = "caloHits"
 merge.DataOutputs.outhits.Path = "newCaloHits"
 

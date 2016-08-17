@@ -28,16 +28,26 @@ geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","Inspe
 from Configurables import RedoSegmentation, CartesianGridXYZTool
 from GaudiKernel.SystemOfUnits import mm
 newgrid = CartesianGridXYZTool("newSegm",
-                               bitfield = "z:0:-4,y:4:-4,x:8:-4,system:12:1",
+                               # new bitfield includes also detector fields
+                               # (it will be checked if they agree with detector fields from the old readout - but not the size!)
+                               bitfield = "system:0:1,z:1:-4,y:5:-4,x:9:-4",
+                               # cell sizes of the new segmentation
+                               # in this example the cells do not change, but bitfield is reschuffled
                                cellSizeX = 5*mm,
                                cellSizeY = 5*mm,
                                cellSizeZ = 5*mm)
 resegment = RedoSegmentation("ReSegmentation",
+                             # take the old bitfield from the geometry service...
                              readoutName = "ECalHits",
+                             # ... but instead the bitfield can be defined as string (if old geometry not available)
+                             # only one of two can be specified: either readoutName or oldBitfield
                              # oldBitfield ="z:0:-4,y:4:-4,x:8:-4,system:12:1",
+                             # specify which fields are going to be deleted
                              oldSegmentationIds = ["x","y","z"],
+                             # the new segmentation tool
                              newSegmentation = newgrid,
                              OutputLevel = DEBUG)
+# clusters are needed, with deposit position and cellID in bits
 resegment.DataInputs.inclusters.Path = "caloClusters"
 resegment.DataOutputs.outhits.Path = "newCaloHits"
 
