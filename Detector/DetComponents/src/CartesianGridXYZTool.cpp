@@ -31,24 +31,16 @@ StatusCode CartesianGridXYZTool::initialize() {
   std::vector<DD4hep::DDSegmentation::SegmentationParameter*> params = m_segmentation->parameters();
   auto itParam = std::find_if(params.begin(), params.end(),
     [](DD4hep::DDSegmentation::SegmentationParameter* par){return bool(par->name()=="grid_size_x");});
-  // double to string
-  std::ostringstream s;
-  s << m_cellSizeX/Gaudi::Units::cm;
-  (*itParam)->setValue(s.str());
-  info()<<s.str()<<endmsg;
+  (*itParam)->setValue(std::to_string(m_cellSizeX/Gaudi::Units::cm));
   itParam = std::find_if(params.begin(), params.end(),
     [](DD4hep::DDSegmentation::SegmentationParameter* par){return bool(par->name()=="grid_size_y");});
-  s.str("");
-  s << m_cellSizeY/Gaudi::Units::cm;
-  (*itParam)->setValue(s.str());
+  (*itParam)->setValue(std::to_string(m_cellSizeY/Gaudi::Units::cm));
   itParam = std::find_if(params.begin(), params.end(),
     [](DD4hep::DDSegmentation::SegmentationParameter* par){return bool(par->name()=="grid_size_z");});
-  s.str("");
-  s << m_cellSizeZ/Gaudi::Units::cm;
-  (*itParam)->setValue(s.str());
+  (*itParam)->setValue(std::to_string(m_cellSizeZ/Gaudi::Units::cm));
   m_segmentation->setParameters(params);
   // print control info
-  info()<<endmsg<<"Segmentation "<<m_segmentation->type()<<endmsg;
+  info()<<"Segmentation "<<m_segmentation->type()<<endmsg;
   info()<<"cell size (X,Y,Z):  ("<<m_cellSizeX/Gaudi::Units::cm<<",\t"
         <<m_cellSizeY/Gaudi::Units::cm<<",\t"
         <<m_cellSizeZ/Gaudi::Units::cm<<") cm"<<endmsg;

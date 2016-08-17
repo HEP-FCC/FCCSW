@@ -42,13 +42,13 @@
   </readouts>
 
   <detectors>
-    <detector id="0" name="BoxECal" type="SimpleBarrels" sensitive="true" readout="ECalHits">
+    <detector id="0" name="BarrelECal" type="SimpleBarrels" sensitive="true" readout="ECalHits">
       <material name="PbWO4"/>
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz"/>
       <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>
-      <module name="sliceBoxECal" >
+      <module name="slice" >
         <material name="PbWO4" sensitive="true"/>
         <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="dz"/>
       </module>

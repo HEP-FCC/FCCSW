@@ -10,7 +10,7 @@ from Configurables import TestCellCounting
 cells = TestCellCounting("cells", readoutName="ECalHits",
                          fieldNames=["system"],
                          fieldValues=[0],
-                         volumeMatchName="BoxECal",
+                         volumeMatchName="BarrelECal",
                          OutputLevel = DEBUG)
 
 ApplicationMgr(EvtSel='NONE',

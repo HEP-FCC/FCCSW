@@ -41,7 +41,7 @@
   </readouts>
 
   <detectors>
-    <detector id="0" name="BoxECal" type="SimpleBarrel" sensitive="true" readout="ECalHits">
+    <detector id="0" name="BarrelECal" type="SimpleBarrel" sensitive="true" readout="ECalHits">
       <material name="PbWO4"/>
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz"/>

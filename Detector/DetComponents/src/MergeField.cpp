@@ -67,7 +67,7 @@ StatusCode MergeField::initialize() {
            <<"(to ensure that middle cell is centred at 0)."<<endmsg;
     return StatusCode::FAILURE;
   }
-  info()<<endmsg<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
+  info()<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
   info()<<"Merging cells for identifier: "<<m_idToMerge<<endmsg;
   info()<<"Number of adjacent cells to be merged: "<<m_numToMerge<<"\n"<<endmsg;
   return StatusCode::SUCCESS;

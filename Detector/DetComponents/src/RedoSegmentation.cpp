@@ -91,7 +91,7 @@ StatusCode RedoSegmentation::initialize() {
          return StatusCode::FAILURE;
        }
   }
-  info()<<endmsg<<"Redoing the segmentation."<<endmsg;
+  info()<<"Redoing the segmentation."<<endmsg;
   info()<<"Old bitfield:\t"<<m_oldDecoder->fieldDescription()<<endmsg;
   info()<<"New bitfield:\t"<<m_segmentation->decoder()->fieldDescription()<<endmsg;
   info()<<"New segmentation is of type:\t"<<m_segmentation->type()<<endmsg;
