@@ -164,13 +164,13 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   return {cellsR,cellsPhi};
 }
 
-unsigned int countPlacedVolumes(TGeoVolume* highestVolume, std::string matchName) {
+unsigned int countPlacedVolumes(TGeoVolume* aHighestVolume, std::string aMatchName) {
   int numberOfPlacedVolumes = 0;
   TGeoNode* node;
-  TGeoIterator next(highestVolume);
+  TGeoIterator next(aHighestVolume);
     while ((node=next())) {
       std::string currentNodeName = node->GetName();
-      if (currentNodeName.find(matchName) != std::string::npos) {
+      if (currentNodeName.find(aMatchName) != std::string::npos) {
         ++numberOfPlacedVolumes;
       }
    }

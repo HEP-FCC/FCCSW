@@ -1,5 +1,5 @@
-#ifndef DETCOMMON_PHIETAGRIDTOOL_H
-#define DETCOMMON_PHIETAGRIDTOOL_H
+#ifndef DETCOMPONENTS_PHIETAGRIDTOOL_H
+#define DETCOMPONENTS_PHIETAGRIDTOOL_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -7,10 +7,12 @@
 // FCCSW
 #include "DetInterface/ISegmentationTool.h"
 
-/** @class PhiEtaGridTool DetCommon/src/PhiEtaGridTool.h PhiEtaGridTool.h
+/** @class PhiEtaGridTool DetComponents/src/PhiEtaGridTool.h PhiEtaGridTool.h
  *
  *  Construction of the segmentation phi-eta.
  *  It is used to study a different segmentation than the one specified in the geometry description.
+ *
+ *  For an example see Detector/DetComponents/tests/options/redoSegmentationRPhi.py.
  *
  *  @author Anna Zaborowska
  */
@@ -44,4 +46,4 @@ private:
   double m_cellNumPhi;
 };
 
-#endif /* DETCOMMON_PHIETAGRIDTOOL_H */
+#endif /* DETCOMPONENTS_PHIETAGRIDTOOL_H */

@@ -20,7 +20,7 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class TestNeighbours TestGeometry/src/components/TestNeighbours.h TestNeighbours.h
+/** @class TestNeighbours TestReconstruction/src/TestNeighbours.h TestNeighbours.h
  *
  *  Algorithm testing lookup of neighbours
  *
@@ -51,6 +51,6 @@ private:
   /// Name of the detector readout
   std::string m_readoutName;
   /// Pointer to the bitfield decoder
-  DD4hep::DDSegmentation::BitField64* m_decoder;
+  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
 };
 #endif /* TESTRECONSTRUCTION_TESTNEIGHBOURS_H */

@@ -59,54 +59,64 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
 std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder);
 
 /** Get the half widths of the box envelope (TGeoBBox).
- *   @param[in] aVolumeID The volume for which the cells are counted.
- *   return Half-widths of the volume (in x,y,z).
+ *   @param[in] aVolumeId The volume ID.
+ *   return Half-widths of the volume (x,y,z).
  */
 CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId);
 
 /** Get the dimensions of a tube (TGeoTube).
- *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aVolumeId The volume ID.
  *   return Dimensions of the tube (rmin, rmax, z(half-length)).
  */
 CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId);
 
 /** Get the number of cells for the volume and a given Cartesian XY segmentation.
+ *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.
  *   @warning No offset in segmentation is currently taken into account.
- *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aVolumeId The volume for which the cells are counted.
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (X, Y).
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXY& aSeg);
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXY& aSeg);
 
 /** Get the number of cells for the volume and a given Cartesian XYZ segmentation.
+ *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.
  *   @warning No offset in segmentation is currently taken into account.
- *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aVolumeId The volume for which the cells are counted.
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (X, Y, Z).
  */
-std::array<uint, 3> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
 
 /** Get the number of cells for the volume and a given Phi-Eta segmentation.
- *   It is assumed that the volume has a cylindrical shape (full azimuthal coverage)
+ *   It is assumed that the volume has a cylindrical shape (and full azimuthal coverage)
  *   and that it is centred at (0,0,0).
+ *   For an example see: Test/TestReconstruction/tests/options/testcellcountingPhiEta.py.
  *   @warning No offset in segmentation is currently taken into account.
- *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aVolumeId The volume for which the cells are counted.
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (phi, eta).
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::PhiEtaGrid& aSeg);
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PhiEtaGrid& aSeg);
 
 /** Get the number of cells for the volume and a given R-phi segmentation.
- *   It is assumed that the volume has a cylindrical shape - TGeoTube (full azimuthal coverage)
+ *   It is assumed that the volume has a cylindrical shape - TGeoTube (and full azimuthal coverage)
  *   and that it is centred at (0,0,0).
+ *   For an example see: Test/TestReconstruction/tests/options/testcellcountingRPhi.py.
  *   @warning No offset in segmentation is currently taken into account.
- *   @param[in] aVolumeID The volume for which the cells are counted.
+ *   @param[in] aVolumeId The volume for which the cells are counted.
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (r, phi).
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeID, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg);
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg);
 
-unsigned int countPlacedVolumes(TGeoVolume* highestVolume, std::string matchName);
+/** Get the number of the volumes containing a given name.
+ *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.
+ *   @param[in] aHighestVolume The top volume in the geometry.
+ *   @param[in] aMatchName Name (or its part) of the volume.
+ *   return Number of the volumes.
+ */
+unsigned int countPlacedVolumes(TGeoVolume* aHighestVolume, std::string aMatchName);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */

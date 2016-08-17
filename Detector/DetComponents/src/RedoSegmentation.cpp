@@ -47,9 +47,8 @@ StatusCode RedoSegmentation::initialize() {
     m_oldDecoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(
       new DD4hep::DDSegmentation::BitField64(
         m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder()->fieldDescription()));
-    //m_oldDecoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   } else {
-    // Option 2: Define old bitfield
+    // Option 2: Define old bitfield (geometry service is not required)
     if(m_oldDecoderString.empty()) {
       error()<<"Please specify either the readout name and take the bitfield from GeoSvc"
              <<" or define the (old) bitfield yourself"<<endmsg;
@@ -111,7 +110,7 @@ StatusCode RedoSegmentation::execute() {
     m_oldDecoder->setValue(cluster.Core().Bits);
     debug()<<"OLD: "<<m_oldDecoder->valueString()<<endmsg;
     DD4hep::DDSegmentation::Vector3D position(cluster.Core().position.X/10, cluster.Core().position.Y/10, cluster.Core().position.Z/10); // mm to cm
-    // first calc proper segmentation fields
+    // first calculate proper segmentation fields
     uint64_t newcellId = m_segmentation->cellID(position,position,volumeID(cluster.Core().Bits));
     m_segmentation->decoder()->setValue(newcellId);
     // now rewrite all other fields (detector ID)

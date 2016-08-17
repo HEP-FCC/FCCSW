@@ -30,7 +30,7 @@ StatusCode TestNeighbours::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder();
+  m_decoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
   info() << "Bitfield: "<<m_decoder->fieldDescription() << endmsg;
   auto extremes = det::utils::bitfieldExtremes(*m_decoder);
   info()<<"Bitfield range for system = "<<extremes[m_decoder->index("system")]<<endmsg;
@@ -46,6 +46,9 @@ StatusCode TestNeighbours::execute() {
     debug() << "cell ID =" << hit.Core().Cellid << endmsg;
     debug() << "energy  =" << hit.Core().Energy << endmsg;
     for(auto& id: det::utils::neighbours(*m_decoder, {"x", "y", "z"}, hit.Core().Cellid)) {
+      // warning: returned neigbour does not need to exist!
+      // it is possible to decode such a cellID, but maybe it is already outside the detector
+      // proper use should include the check on the number of cells, see TestCellCounting
       debug() << "neighbour: ID = " << id << endmsg;
     }
   }

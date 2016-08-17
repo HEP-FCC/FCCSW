@@ -6,9 +6,6 @@
 // DD4hep
 #include "DDSegmentation/Segmentation.h"
 
-// Gaudi
-#include "GaudiKernel/SystemOfUnits.h"
-
 DECLARE_TOOL_FACTORY(PhiEtaGridTool)
 
 PhiEtaGridTool::PhiEtaGridTool(const std::string& aType, const std::string& aName, const IInterface* aParent) :
@@ -29,19 +26,13 @@ StatusCode PhiEtaGridTool::initialize() {
   // create segmentation
   m_segmentation = std::unique_ptr<DD4hep::DDSegmentation::Segmentation>(
     new DD4hep::DDSegmentation::PhiEtaGrid(m_decoderString));
-  // TODO handle properly units!
   std::vector<DD4hep::DDSegmentation::SegmentationParameter*> params = m_segmentation->parameters();
   auto itParam = std::find_if(params.begin(), params.end(),
     [](DD4hep::DDSegmentation::SegmentationParameter* par){return bool(par->name()=="grid_size_eta");});
-  std::ostringstream s;
-  s << m_cellSizeEta;
-  (*itParam)->setValue(s.str());
-  info()<<s.str()<<endmsg;
+  (*itParam)->setValue(std::to_string(m_cellSizeEta));
   itParam = std::find_if(params.begin(), params.end(),
     [](DD4hep::DDSegmentation::SegmentationParameter* par){return bool(par->name()=="phi_bins");});
-  s.str("");
-  s << m_cellNumPhi;
-  (*itParam)->setValue(s.str());
+  (*itParam)->setValue(std::to_string(m_cellNumPhi));
   m_segmentation->setParameters(params);
 
   info()<<endmsg<<"Segmentation "<<m_segmentation->type()<<endmsg;

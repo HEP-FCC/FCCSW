@@ -40,9 +40,11 @@ StatusCode TestCellCounting::initialize() {
     return StatusCode::FAILURE;
   }
 
+  // get the total number of volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
   info() << "Number of modules whose name matches " << m_volumeMatchName << ": \t" <<det::utils::countPlacedVolumes(highestVol, m_volumeMatchName) <<endmsg;
 
+  // get the ID of the volume for which the cells are counted
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   if(m_fieldNames.size() != m_fieldValues.size()) {
     error() << "Size of names and values is not the same" << endmsg;
@@ -52,6 +54,8 @@ StatusCode TestCellCounting::initialize() {
     (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
   }
   m_volumeId = decoder->getValue();
+
+  // count the segmentation cells for the volume
   info()<<"Counting cells for volume "<<decoder->valueString()<<" -> volume ID: "<<m_volumeId<<endmsg;
   auto segmentationXY = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXY*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if(segmentationXY == nullptr) {

@@ -1,5 +1,5 @@
-#ifndef DETCOMMON_CARTESIANGRIDXYZTOOL_H
-#define DETCOMMON_CARTESIANGRIDXYZTOOL_H
+#ifndef DETCOMPONENTS_CARTESIANGRIDXYZTOOL_H
+#define DETCOMPONENTS_CARTESIANGRIDXYZTOOL_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -7,10 +7,12 @@
 // FCCSW
 #include "DetInterface/ISegmentationTool.h"
 
-/** @class CartesianGridXYZTool DetCommon/src/CartesianGridXYZTool.h CartesianGridXYZTool.h
+/** @class CartesianGridXYZTool DetComponents/src/CartesianGridXYZTool.h CartesianGridXYZTool.h
  *
  *  Construction of the segmentation x-y-z.
  *  It is used to study a different segmentation than the one specified in the geometry description.
+ *
+ *  For an example see Detector/DetComponents/tests/options/redoSegmentationXYZ.py.
  *
  *  @author Anna Zaborowska
  */
@@ -45,4 +47,4 @@ private:
   double m_cellSizeZ;
 };
 
-#endif /* DETCOMMON_CARTESIANGRIDXYZTOOL_H */
+#endif /* DETCOMPONENTS_CARTESIANGRIDXYZTOOL_H */

@@ -82,8 +82,6 @@ StatusCode MergeField::execute() {
   uint64_t cellId = 0;
   int value = 0;
 
-  // from inhits figure out the ID of detector/layer we want to resegment (loop over association and check hit.CellID)
-  // not implementing as we'll move to relations soon
   for(const auto& hit: *inHits) {
     fcc::CaloHit newHit = outHits->create();
     newHit.Core().Energy = hit.Core().Energy;

@@ -1,5 +1,5 @@
-#ifndef RECONSTRUCTION_MERGEIDENTIFIER_H
-#define RECONSTRUCTION_MERGEIDENTIFIER_H
+#ifndef DETCOMPONENTS_MERGEFIELD_H
+#define DETCOMPONENTS_MERGEFIELD_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -15,15 +15,15 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class MergeField Reconstruction/src/MergeField.h MergeField.h
+/** @class MergeField Detector/DetComponents/src/MergeField.h MergeField.h
  *
- *  Merge cells in one dimension.
+ *  Merge cells for one field.
  *  GeoSvc is required (to access the detector readout).
- *  Name of the dimension to be merged is defined be property '\b identifier'.
- *  Property '\b numberOfCells' desccribes how many adjacent cells should be merged.
- *  If the identifier is described by an unsigned field, the number of cells to be merged can be any number.
- *  If the identifier is described by a signed field, however, the number of cells to be merged need to be an odd number (to keep the centre of the central bin in 0).
- *  [For more information please see](@ref md_rec_doc_commonUtils).
+ *  Name of the field to be merged is defined be property '\b identifier'.
+ *  Property '\b merge' desccribes how many adjacent cells should be merged.
+ *  If the identifier describes an unsigned field, the number of cells to be merged can be any number.
+ *  If the identifier describes a signed field, however, the number of cells to be merged need to be an odd number (to keep the centre of the central bin in 0).
+ *  For an example see Detector/DetComponents/tests/options/mergeField.py
  *
  *  @author Anna Zaborowska
  */
@@ -61,4 +61,4 @@ private:
   /// Number of adjacent cells to be merged
   uint m_numToMerge;
 };
-#endif /* RECONSTRUCTION_MERGEIDENTIFIER_H */
+#endif /* DETCOMPONENTS_MERGEFIELD_H */
