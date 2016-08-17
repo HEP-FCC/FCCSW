@@ -36,7 +36,7 @@
   <readouts>
     <readout name="ECalHits">
       <segmentation type="PhiEtaGrid" grid_size_eta="deta" phi_bins="phiBins"/>
-      <id>eta:9,phi:-17,system:1</id>
+      <id>eta:-9,phi:-17,system:1</id>
     </readout>
   </readouts>
 

@@ -17,3 +17,8 @@ gaudi_add_library(DetSegmentation
                   INCLUDE_DIRS DD4hep ROOT
                   LINK_LIBRARIES GaudiKernel DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
                   PUBLIC_HEADERS DetSegmentation)
+
+include(CTest)
+gaudi_add_test(TestSegmentationPhiEta
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/phiEtaSegmentation.py)
