@@ -21,3 +21,14 @@ gaudi_add_module(DetComponents
                  src/*.cpp
                  INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 RecoGeometry FWCore DetInterface DetExtensions DetSegmentation DetCommon
                  LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 RecoGeometry FWCore)
+
+include(CTest)
+gaudi_add_test(RedoSegmentationXYZ
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/redoSegmentationXYZ.py)
+gaudi_add_test(RedoSegmentationPhiEta
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/redoSegmentationPhiEta.py)
+gaudi_add_test(MergeField
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/mergeField.py)

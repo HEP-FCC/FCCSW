@@ -29,4 +29,3 @@ include(CTest)
 gaudi_add_test(DumpSimpleBox
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/dumpSimpleBox.py)
-
