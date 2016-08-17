@@ -16,11 +16,12 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/Barrel_tes
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc")
 
-from Configurables import SimG4Alg, SimG4SaveCalHits
+from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
+inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHits"], OutputLevel = DEBUG)
 savecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"], OutputLevel = DEBUG)
 savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
-geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool"])
+geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool/inspect"])
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")

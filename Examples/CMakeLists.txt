@@ -7,14 +7,14 @@ gaudi_subdir(Examples v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Interface Detector/DetInterface)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
-find_package(DD4hep COMPONENTS DDG4)
+find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
 include(DD4hep)
 find_package(Geant4)
 
 gaudi_add_module(Examples
                  src/*.cpp
 		           INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface
-                 LINK_LIBRARIES GaudiAlgLib FWCore ROOT GaudiKernel DD4hep Geant4)
+                 LINK_LIBRARIES GaudiAlgLib FWCore ROOT GaudiKernel DD4hep ${DD4hep_COMPONENT_LIBRARIES} Geant4)
 
 
 include(CTest)
