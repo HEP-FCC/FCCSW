@@ -1,4 +1,4 @@
-#include "MergeField.h"
+#include "MergeCells.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -9,9 +9,9 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 
-DECLARE_ALGORITHM_FACTORY(MergeField)
+DECLARE_ALGORITHM_FACTORY(MergeCells)
 
-MergeField::MergeField(const std::string& aName, ISvcLocator* aSvcLoc):
+MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc){
   declareInput("inhits", m_inHits,"hits/caloInHits");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
@@ -20,9 +20,9 @@ GaudiAlgorithm(aName, aSvcLoc){
   declareProperty("merge", m_numToMerge = 2);
 }
 
-MergeField::~MergeField() {}
+MergeCells::~MergeCells() {}
 
-StatusCode MergeField::initialize() {
+StatusCode MergeCells::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   if(m_idToMerge.empty()) {
@@ -73,7 +73,7 @@ StatusCode MergeField::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeField::execute() {
+StatusCode MergeCells::execute() {
   const fcc::CaloHitCollection* inHits = m_inHits.get();
   fcc::CaloHitCollection* outHits = new fcc::CaloHitCollection();
 
@@ -106,6 +106,6 @@ StatusCode MergeField::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeField::finalize() {
+StatusCode MergeCells::finalize() {
   return GaudiAlgorithm::finalize();
 }

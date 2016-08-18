@@ -29,6 +29,6 @@ gaudi_add_test(RedoSegmentationXYZ
 gaudi_add_test(RedoSegmentationPhiEta
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/redoSegmentationPhiEta.py)
-gaudi_add_test(MergeField
+gaudi_add_test(MergeCells
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/options/mergeField.py)
+               FRAMEWORK tests/options/mergeCells.py)

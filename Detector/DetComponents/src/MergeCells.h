@@ -1,5 +1,5 @@
-#ifndef DETCOMPONENTS_MERGEFIELD_H
-#define DETCOMPONENTS_MERGEFIELD_H
+#ifndef DETCOMPONENTS_MERGECELLS_H
+#define DETCOMPONENTS_MERGECELLS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -15,7 +15,7 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class MergeField Detector/DetComponents/src/MergeField.h MergeField.h
+/** @class MergeCells Detector/DetComponents/src/MergeCells.h MergeCells.h
  *
  *  Merge cells for one field.
  *  GeoSvc is required (to access the detector readout).
@@ -23,15 +23,15 @@ class CaloHitCollection;
  *  Property '\b merge' desccribes how many adjacent cells should be merged.
  *  If the identifier describes an unsigned field, the number of cells to be merged can be any number.
  *  If the identifier describes a signed field, however, the number of cells to be merged need to be an odd number (to keep the centre of the central bin in 0).
- *  For an example see Detector/DetComponents/tests/options/mergeField.py
+ *  For an example see Detector/DetComponents/tests/options/mergeCells.py
  *
  *  @author Anna Zaborowska
  */
 
-class MergeField: public GaudiAlgorithm {
+class MergeCells: public GaudiAlgorithm {
 public:
-  explicit MergeField(const std::string&, ISvcLocator*);
-  virtual ~MergeField();
+  explicit MergeCells(const std::string&, ISvcLocator*);
+  virtual ~MergeCells();
   /**  Initialize.
    *   @return status code
    */
@@ -61,4 +61,4 @@ private:
   /// Number of adjacent cells to be merged
   uint m_numToMerge;
 };
-#endif /* DETCOMPONENTS_MERGEFIELD_H */
+#endif /* DETCOMPONENTS_MERGECELLS_H */

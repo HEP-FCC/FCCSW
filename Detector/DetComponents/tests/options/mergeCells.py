@@ -25,8 +25,8 @@ savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool"])
 
-from Configurables import MergeField
-merge = MergeField("mergeField",
+from Configurables import MergeCells
+merge = MergeCells("mergeCells",
                    # take the bitfield description from the geometry service
                    readout ="ECalHits",
                    # cells in which field should be merged
@@ -41,7 +41,7 @@ merge.DataOutputs.outhits.Path = "newCaloHits"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="testMergeField.root")
+out = PodioOutput("out", filename="testMergeCells.root")
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(EvtSel='NONE',
