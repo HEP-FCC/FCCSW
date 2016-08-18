@@ -1,5 +1,5 @@
-#ifndef DETSEGMENTATION_PHIETAGRID_H
-#define DETSEGMENTATION_PHIETAGRID_H
+#ifndef DETSEGMENTATION_GRIDPHIETA_H
+#define DETSEGMENTATION_GRIDPHIETA_H
 
 #include "DDSegmentation/Segmentation.h"
 
@@ -7,7 +7,7 @@
 #include "TVector3.h"
 #include <cmath>
 
-/** PhiEtaGrid Detector/DetSegmentation/DetSegmentation/PhiEtaGrid.h PhiEtaGrid.h
+/** GridPhiEta Detector/DetSegmentation/DetSegmentation/GridPhiEta.h GridPhiEta.h
  *
  *  Segmentation in eta and phi.
  *  Based on DD4hep::DDSegmentation::ProjectiveCylinder.
@@ -17,12 +17,12 @@
 
 namespace DD4hep {
 namespace DDSegmentation {
-class PhiEtaGrid: public Segmentation {
+class GridPhiEta: public Segmentation {
 public:
   /// default constructor using an arbitrary type
-  PhiEtaGrid(const std::string& aCellEncoding);
+  GridPhiEta(const std::string& aCellEncoding);
   /// destructor
-  virtual ~PhiEtaGrid();
+  virtual ~GridPhiEta();
 
   /**  Determine the global position based on the cell ID.
    *   @param[in] aCellId ID of a cell.
@@ -161,4 +161,4 @@ private:
 };
 }
 }
-#endif /* DETSEGMENTATION_PHIETAGRID_H */
+#endif /* DETSEGMENTATION_GRIDPHIETA_H */

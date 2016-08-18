@@ -141,7 +141,7 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   return CLHEP::Hep3Vector(tube->GetRmin1(), tube->GetRmax1(), tube->GetDZ());
 }
 
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PhiEtaGrid& aSeg) {
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
   // get half-widths,
   auto tubeSizes = tubeDimensions(aVolumeId);
   // get segmentation cell width in eta

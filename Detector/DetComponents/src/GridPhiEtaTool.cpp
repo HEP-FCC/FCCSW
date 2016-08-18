@@ -1,14 +1,14 @@
-#include "PhiEtaGridTool.h"
+#include "GridPhiEtaTool.h"
 
 // FCCSW
-#include "DetSegmentation/PhiEtaGrid.h"
+#include "DetSegmentation/GridPhiEta.h"
 
 // DD4hep
 #include "DDSegmentation/Segmentation.h"
 
-DECLARE_TOOL_FACTORY(PhiEtaGridTool)
+DECLARE_TOOL_FACTORY(GridPhiEtaTool)
 
-PhiEtaGridTool::PhiEtaGridTool(const std::string& aType, const std::string& aName, const IInterface* aParent) :
+GridPhiEtaTool::GridPhiEtaTool(const std::string& aType, const std::string& aName, const IInterface* aParent) :
 GaudiTool(aType, aName, aParent),
   m_segmentation(nullptr) {
   declareInterface<ISegmentationTool>(this);
@@ -17,15 +17,15 @@ GaudiTool(aType, aName, aParent),
   declareProperty("cellNumPhi", m_cellNumPhi = 100);
 }
 
-PhiEtaGridTool::~PhiEtaGridTool() {}
+GridPhiEtaTool::~GridPhiEtaTool() {}
 
-StatusCode PhiEtaGridTool::initialize() {
+StatusCode GridPhiEtaTool::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
   // create segmentation
   m_segmentation = std::unique_ptr<DD4hep::DDSegmentation::Segmentation>(
-    new DD4hep::DDSegmentation::PhiEtaGrid(m_decoderString));
+    new DD4hep::DDSegmentation::GridPhiEta(m_decoderString));
   std::vector<DD4hep::DDSegmentation::SegmentationParameter*> params = m_segmentation->parameters();
   auto itParam = std::find_if(params.begin(), params.end(),
     [](DD4hep::DDSegmentation::SegmentationParameter* par){return bool(par->name()=="grid_size_eta");});
@@ -41,10 +41,10 @@ StatusCode PhiEtaGridTool::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PhiEtaGridTool::finalize() {
+StatusCode GridPhiEtaTool::finalize() {
   return GaudiTool::finalize();
 }
 
-std::unique_ptr<DD4hep::DDSegmentation::Segmentation> PhiEtaGridTool::segmentation() {
+std::unique_ptr<DD4hep::DDSegmentation::Segmentation> GridPhiEtaTool::segmentation() {
   return std::move(m_segmentation);
 }

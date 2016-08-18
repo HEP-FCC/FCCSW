@@ -2,7 +2,7 @@
 #define DETCOMMON_DETUTILS_H
 
 // FCCSW
-#include "DetSegmentation/PhiEtaGrid.h"
+#include "DetSegmentation/GridPhiEta.h"
 
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
@@ -101,7 +101,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (phi, eta).
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PhiEtaGrid& aSeg);
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg);
 
 /** Get the number of cells for the volume and a given R-phi segmentation.
  *   It is assumed that the volume has a cylindrical shape - TGeoTube (and full azimuthal coverage)

@@ -25,9 +25,9 @@ savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool"])
 
-from Configurables import RedoSegmentation, PhiEtaGridTool
+from Configurables import RedoSegmentation, GridPhiEtaTool
 from GaudiKernel.SystemOfUnits import mm
-newgrid = PhiEtaGridTool("newSegm",
+newgrid = GridPhiEtaTool("newSegm",
                                # new bitfield includes also detector fields
                                # (it will be checked if they agree with detector fields from the old readout - but not the size!)
                                bitfield = "phi:-8,eta:-8,system:1",

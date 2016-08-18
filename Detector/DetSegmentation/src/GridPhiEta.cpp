@@ -1,13 +1,13 @@
-#include "DetSegmentation/PhiEtaGrid.h"
+#include "DetSegmentation/GridPhiEta.h"
 
 namespace DD4hep {
 namespace DDSegmentation {
 
 /// default constructor using an encoding string
-PhiEtaGrid::PhiEtaGrid(const std::string& cellEncoding) :
+GridPhiEta::GridPhiEta(const std::string& cellEncoding) :
   Segmentation(cellEncoding) {
   // define type and description
-  _type = "PhiEtaGrid";
+  _type = "GridPhiEta";
   _description = "Projective segmentation in the global coordinates";
 
   // register all necessary parameters
@@ -20,18 +20,18 @@ PhiEtaGrid::PhiEtaGrid(const std::string& cellEncoding) :
 }
 
 /// destructor
-PhiEtaGrid::~PhiEtaGrid() {
+GridPhiEta::~GridPhiEta() {
 
 }
 
 /// determine the local based on the cell ID
-Vector3D PhiEtaGrid::position(const CellID& cID) const {
+Vector3D GridPhiEta::position(const CellID& cID) const {
   _decoder->setValue(cID);
   return positionFromREtaPhi(1.0, eta(), phi());
 }
 
 /// determine the cell ID based on the position
-CellID PhiEtaGrid::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition, const VolumeID& vID) const {
+CellID GridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition, const VolumeID& vID) const {
   _decoder->setValue(vID);
   double lEta = etaFromXYZ(globalPosition);
   double lPhi = phiFromXYZ(globalPosition);
@@ -41,29 +41,29 @@ CellID PhiEtaGrid::cellID(const Vector3D& /* localPosition */, const Vector3D& g
 }
 
 /// determine the pseudorapidity based on the current cell ID
-double PhiEtaGrid::eta() const {
+double GridPhiEta::eta() const {
   CellID etaValue = (*_decoder)[m_etaID].value();
   return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
 }
 /// determine the azimuthal angle phi based on the current cell ID
-double PhiEtaGrid::phi() const {
+double GridPhiEta::phi() const {
   CellID phiIndex = (*_decoder)[m_phiID].value();
   return 2. * M_PI * ((double) phiIndex + 0.5) / (double) m_phiBins;
 }
 
 /// determine the polar angle theta based on the cell ID
-double PhiEtaGrid::eta(const CellID& cID) const {
+double GridPhiEta::eta(const CellID& cID) const {
   _decoder->setValue(cID);
   CellID etaValue = (*_decoder)[m_etaID].value();
   return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
 }
 /// determine the azimuthal angle phi based on the cell ID
-double PhiEtaGrid::phi(const CellID& cID) const {
+double GridPhiEta::phi(const CellID& cID) const {
   _decoder->setValue(cID);
   CellID phiIndex = (*_decoder)[m_phiID].value();
   return 2. * M_PI * ((double) phiIndex + 0.5) / (double) m_phiBins;
 }
-REGISTER_SEGMENTATION(PhiEtaGrid)
+REGISTER_SEGMENTATION(GridPhiEta)
 }
 }
 

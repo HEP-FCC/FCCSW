@@ -1,5 +1,5 @@
-#ifndef DETCOMPONENTS_PHIETAGRIDTOOL_H
-#define DETCOMPONENTS_PHIETAGRIDTOOL_H
+#ifndef DETCOMPONENTS_GRIDPHIETATOOL_H
+#define DETCOMPONENTS_GRIDPHIETATOOL_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -7,7 +7,7 @@
 // FCCSW
 #include "DetInterface/ISegmentationTool.h"
 
-/** @class PhiEtaGridTool DetComponents/src/PhiEtaGridTool.h PhiEtaGridTool.h
+/** @class GridPhiEtaTool DetComponents/src/GridPhiEtaTool.h GridPhiEtaTool.h
  *
  *  Construction of the segmentation phi-eta.
  *  It is used to study a different segmentation than the one specified in the geometry description.
@@ -17,11 +17,11 @@
  *  @author Anna Zaborowska
  */
 
-class PhiEtaGridTool: public GaudiTool, virtual public ISegmentationTool {
+class GridPhiEtaTool: public GaudiTool, virtual public ISegmentationTool {
 public:
-  explicit PhiEtaGridTool(const std::string& aType , const std::string& aName,
+  explicit GridPhiEtaTool(const std::string& aType , const std::string& aName,
                   const IInterface* aParent);
-  virtual ~PhiEtaGridTool();
+  virtual ~GridPhiEtaTool();
   /**  Initialize.
    *   @return status code
    */
@@ -46,4 +46,4 @@ private:
   double m_cellNumPhi;
 };
 
-#endif /* DETCOMPONENTS_PHIETAGRIDTOOL_H */
+#endif /* DETCOMPONENTS_GRIDPHIETATOOL_H */
