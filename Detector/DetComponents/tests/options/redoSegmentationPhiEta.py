@@ -25,25 +25,14 @@ savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool"])
 
-from Configurables import RedoSegmentation, GridPhiEtaTool
-from GaudiKernel.SystemOfUnits import mm
-newgrid = GridPhiEtaTool("newSegm",
-                               # new bitfield includes also detector fields
-                               # (it will be checked if they agree with detector fields from the old readout - but not the size!)
-                               bitfield = "phi:-8,eta:-8,system:1",
-                               # cell sizes of the new segmentation
-                               cellSizeEta = 0.1,
-                               cellNumPhi = 100)
+from Configurables import RedoSegmentation
 resegment = RedoSegmentation("ReSegmentation",
-                             # specify the bitfield (e.g. if old geometry not available) ...
-                             oldBitfield ="z:0:-4,y:4:-4,x:8:-4,system:12:1",
-                             # ... but it is easier to take the old bitfield from the geometry service
-                             # only one of two can be specified: either readoutName or oldBitfield
-                             # readoutName = "ECalHits",
+                             # old bitfield (readout)
+                             oldReadoutName = "ECalHits",
                              # specify which fields are going to be deleted
                              oldSegmentationIds = ["x","y","z"],
-                             # the new segmentation tool
-                             newSegmentation = newgrid,
+                             # new bitfield (readout), with new segmentation
+                             newReadoutName = "ECalHitsPhiEta",
                              OutputLevel = DEBUG)
 # clusters are needed, with deposit position and cellID in bits
 resegment.DataInputs.inclusters.Path = "caloClusters"

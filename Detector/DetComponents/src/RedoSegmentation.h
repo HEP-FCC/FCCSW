@@ -7,7 +7,6 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "DetInterface/ISegmentationTool.h"
 class IGeoSvc;
 
 // DD4hep
@@ -29,12 +28,10 @@ class CaloHitCollection;
  *  Redo the segmentation after the simulation has ended.
  *  True positions of the deposits are required!
  *  Positions of the energy deposits are saved in clusters. Cell ID is taken from bits in cluster.
- *  In order to make a proper rewritting of volume ID, either the readout name '\b readoutName' is needed,
- *  or if the geometry service is not present, old bitfield needs to be passed as string '\b oldBitfield'.
- *  (Only one of those two can be set in options).
+ *  New readout (with new segmentation) has to be added to <readouts> tag in the detector description xml.
+ *  Cell IDs are goign to be rewritten from the old readout (`\b oldReadoutName`) to the new readout (`\b newReadoutName`).
  *  Names of the old segmentation fields need to be passed as a vector '\b oldSegmentationIds'.
  *  Those fields are going to be replaced by the new segmentation.
- *  New segmentation is taken from tool '\b newSegmentation'.
  *  For an example see Detector/DetComponents/tests/options/redoSegmentationXYZ.py
  *  and Detector/DetComponents/tests/options/redoSegmentationRPhi.py.
  *
@@ -65,18 +62,16 @@ private:
   uint64_t volumeID(uint64_t aCellId) const;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle to the tool that creates new segmentation
-  ToolHandle<ISegmentationTool> m_segmentationTool;
   /// Handle for the EDM clusters to be read
   DataHandle<fcc::CaloClusterCollection> m_inClusters;
   /// Handle for the EDM hits to be written
   DataHandle<fcc::CaloHitCollection> m_outHits;
   /// New segmentation
-  std::unique_ptr<DD4hep::DDSegmentation::Segmentation> m_segmentation;
-  /// Name of the detector readout used in simulation (to extract the bitfield)
-  std::string m_readoutName;
-  /// Detector bitfield used in simulation
-  std::string m_oldDecoderString;
+  DD4hep::DDSegmentation::Segmentation* m_segmentation;
+  /// Name of the detector readout used in simulation
+  std::string m_oldReadoutName;
+  /// Name of the new detector readout
+  std::string m_newReadoutName;
   /// Old bitfield decoder
   std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation

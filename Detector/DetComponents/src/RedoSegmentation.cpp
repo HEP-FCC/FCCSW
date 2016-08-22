@@ -19,11 +19,9 @@ GaudiAlgorithm(aName, aSvcLoc)
 {
   declareInput("inclusters", m_inClusters,"hits/caloInClusters");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
-  declareProperty("newSegmentation", m_segmentationTool);
-  declarePrivateTool(m_segmentationTool, "CartesianGridXYZTool", true);
-  declareProperty("readoutName", m_readoutName = "");
-  declareProperty("oldBitfield", m_oldDecoderString = "");
+  declareProperty("oldReadoutName", m_oldReadoutName = "");
   declareProperty("oldSegmentationIds", m_oldIdentifiers);
+  declareProperty("newReadoutName", m_newReadoutName = "");
 }
 
 RedoSegmentation::~RedoSegmentation() {}
@@ -31,32 +29,25 @@ RedoSegmentation::~RedoSegmentation() {}
 StatusCode RedoSegmentation::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
-  // Option 1: Take readout, bitfield from GeoSvc
-  if(!m_readoutName.empty()) {
-    if(!m_oldDecoderString.empty()) {
-      error()<<"You may either specify the readout name and take the bitfield from GeoSvc"
-             <<" or define the (old) bitfield yourself"<<endmsg;
-      return StatusCode::FAILURE;
-    }
-    m_geoSvc = service ("GeoSvc");
-    if (!m_geoSvc) {
-      error() << "Unable to locate Geometry Service. "
-              << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
-      return StatusCode::FAILURE;
-    }
-    m_oldDecoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(
-      new DD4hep::DDSegmentation::BitField64(
-        m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder()->fieldDescription()));
-  } else {
-    // Option 2: Define old bitfield (geometry service is not required)
-    if(m_oldDecoderString.empty()) {
-      error()<<"Please specify either the readout name and take the bitfield from GeoSvc"
-             <<" or define the (old) bitfield yourself"<<endmsg;
-      return StatusCode::FAILURE;
-    }
-    m_oldDecoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(
-      new DD4hep::DDSegmentation::BitField64(m_oldDecoderString));
+  m_geoSvc = service ("GeoSvc");
+  if (!m_geoSvc) {
+    error() << "Unable to locate Geometry Service. "
+            << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
+    return StatusCode::FAILURE;
   }
+  // check if readouts exist
+  if(m_geoSvc->lcdd()->readouts().find(m_oldReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
+    error()<<"Readout <<"<<m_oldReadoutName<<">> does not exist."<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_geoSvc->lcdd()->readouts().find(m_newReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
+    error()<<"Readout <<"<<m_newReadoutName<<">> does not exist."<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  // Take readout, bitfield from GeoSvc
+  m_oldDecoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(
+    new DD4hep::DDSegmentation::BitField64(
+      m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder()->fieldDescription()));
   // segmentation identifiers to be overwritten
   if(m_oldIdentifiers.size()==0) {
     // it is not an error, maybe no segmentation was used previously
@@ -72,28 +63,25 @@ StatusCode RedoSegmentation::initialize() {
       m_detectorIdentifiers.push_back(field);
     }
   }
-  // Take new segmentation from the tool
-  if (!m_segmentationTool.retrieve()) {
-    error()<<"Unable to retrieve new segmentation tool"<<endmsg;
-    return StatusCode::FAILURE;
-  }
-  m_segmentation = m_segmentationTool->segmentation();
+  // Take new segmentation from geometry service
+  m_segmentation = m_geoSvc->lcdd()->readout(m_newReadoutName).segmentation().segmentation();
   // check if detector identifiers (old and new) agree
   std::vector<std::string> newFields;
   for(uint itField = 0; itField < m_segmentation->decoder()->size(); itField++) {
     newFields.push_back((*m_segmentation->decoder())[itField].name());
   }
   for(const auto& detectorField: m_detectorIdentifiers) {
-       auto iter = std::find( newFields.begin(), newFields.end(), detectorField );
-       if( iter == newFields.end() ) {
-         error()<<"New readout does not contain field <<"<<detectorField<<">> that describes the detector ID."<<endmsg;
-         return StatusCode::FAILURE;
+    auto iter = std::find( newFields.begin(), newFields.end(), detectorField );
+    if( iter == newFields.end() ) {
+      error()<<"New readout does not contain field <<"<<detectorField<<">> that describes the detector ID."<<endmsg;
+      return StatusCode::FAILURE;
        }
   }
   info()<<"Redoing the segmentation."<<endmsg;
   info()<<"Old bitfield:\t"<<m_oldDecoder->fieldDescription()<<endmsg;
   info()<<"New bitfield:\t"<<m_segmentation->decoder()->fieldDescription()<<endmsg;
   info()<<"New segmentation is of type:\t"<<m_segmentation->type()<<endmsg;
+
   return StatusCode::SUCCESS;
 }
 

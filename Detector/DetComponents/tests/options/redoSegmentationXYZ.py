@@ -25,27 +25,14 @@ savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool"])
 
-from Configurables import RedoSegmentation, CartesianGridXYZTool
-from GaudiKernel.SystemOfUnits import mm
-newgrid = CartesianGridXYZTool("newSegm",
-                               # new bitfield includes also detector fields
-                               # (it will be checked if they agree with detector fields from the old readout - but not the size!)
-                               bitfield = "system:0:1,z:1:-4,y:5:-4,x:9:-4",
-                               # cell sizes of the new segmentation
-                               # in this example the cells do not change, but bitfield is reschuffled
-                               cellSizeX = 5*mm,
-                               cellSizeY = 5*mm,
-                               cellSizeZ = 5*mm)
+from Configurables import RedoSegmentation
 resegment = RedoSegmentation("ReSegmentation",
-                             # take the old bitfield from the geometry service...
-                             readoutName = "ECalHits",
-                             # ... but instead the bitfield can be defined as string (if old geometry not available)
-                             # only one of two can be specified: either readoutName or oldBitfield
-                             # oldBitfield ="z:0:-4,y:4:-4,x:8:-4,system:12:1",
+                             # old bitfield (readout)
+                             oldReadoutName = "ECalHits",
                              # specify which fields are going to be deleted
                              oldSegmentationIds = ["x","y","z"],
-                             # the new segmentation tool
-                             newSegmentation = newgrid,
+                             # new bitfield (readout), with new segmentation
+                             newReadoutName="ECalHitsReverseOrder",
                              OutputLevel = DEBUG)
 # clusters are needed, with deposit position and cellID in bits
 resegment.DataInputs.inclusters.Path = "caloClusters"
