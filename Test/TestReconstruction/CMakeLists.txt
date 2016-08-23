@@ -27,4 +27,5 @@ gaudi_add_test(CountCellsRPhi
 
 gaudi_add_test(CountCellsPhiEta
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/testcellcountingPhiEta.py)
