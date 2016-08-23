@@ -120,7 +120,7 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
  *   @param[in] aMatchName Name (or its part) of the volume.
  *   return Number of the volumes.
  */
-unsigned int countPlacedVolumes(TGeoVolume* aHighestVolume, std::string aMatchName);
+unsigned int countPlacedVolumes(TGeoVolume* aHighestVolume, const std::string& aMatchName);
 }
 }
 #endif /* DETCOMMON_DETUTILS_H */

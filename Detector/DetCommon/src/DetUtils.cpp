@@ -82,11 +82,9 @@ std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitFiel
   for(const auto& field: aFieldNames) {
     width = aDecoder[field].width();
     if( aDecoder[field].isSigned() ){
-      extremes.emplace_back(std::make_pair( ( 1LL << ( width - 1 ) ) - ( 1LL << width ),
-          ( 1LL << ( width - 1 ) ) - 1));
+      extremes.emplace_back(std::make_pair( -(1 << (width - 1)), (1 << (width - 1) ) - 1));
     } else {
-      extremes.emplace_back(std::make_pair( 0,
-         (0x0001 << width) - 1 ));
+      extremes.emplace_back(std::make_pair( 0, (1 << width) - 1));
     }
   }
   return std::move(extremes);
@@ -166,7 +164,7 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   return {cellsR,cellsPhi};
 }
 
-unsigned int countPlacedVolumes(TGeoVolume* aHighestVolume, std::string aMatchName) {
+unsigned int countPlacedVolumes(TGeoVolume* aHighestVolume, const std::string& aMatchName) {
   int numberOfPlacedVolumes = 0;
   TGeoNode* node;
   TGeoIterator next(aHighestVolume);
