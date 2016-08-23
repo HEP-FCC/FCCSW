@@ -21,4 +21,5 @@ gaudi_add_library(DetSegmentation
 include(CTest)
 gaudi_add_test(TestSegmentationPhiEta
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/phiEtaSegmentation.py)

@@ -14,7 +14,7 @@ dumper = HepMCDumper("Dumper")
 dumper.DataInputs.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/TestBoxCaloSD_segmentation.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/TestBoxCaloSD_3readouts.xml'], OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", physicslist='SimG4TestPhysicsList')
