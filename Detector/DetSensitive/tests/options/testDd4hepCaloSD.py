@@ -32,7 +32,9 @@ geantservice = SimG4Svc("SimG4Svc",
                         physicslist="SimG4FtfpBert",
                         actions="SimG4FullSimActions")
 
-from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
+from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool, InspectHitsCollectionsTool
+inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHits"], OutputLevel = DEBUG)
+
 savehcaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"])
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
@@ -41,7 +43,7 @@ particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveCalHits/saveECalHits",
-                             "InspectHitsCollectionsTool"],
+                             "InspectHitsCollectionsTool/inspect"],
                     eventProvider=particle_converter)
 
 from Configurables import FCCDataSvc, PodioOutput
