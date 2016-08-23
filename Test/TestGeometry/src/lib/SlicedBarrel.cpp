@@ -1,7 +1,7 @@
 #include "DD4hep/DetFactoryHelper.h"
 
 namespace det {
-static DD4hep::Geometry::Ref_t createSimpleBarrels(DD4hep::Geometry::LCDD& aLcdd,
+static DD4hep::Geometry::Ref_t createSlicedBarrel(DD4hep::Geometry::LCDD& aLcdd,
   DD4hep::XML::Handle_t aXmlElement,
   DD4hep::Geometry::SensitiveDetector aSensDet) {
   DD4hep::XML::DetElement x_det = aXmlElement;
@@ -20,19 +20,16 @@ static DD4hep::Geometry::Ref_t createSimpleBarrels(DD4hep::Geometry::LCDD& aLcdd
   // here add cells :
   DD4hep::XML::DetElement cell_det = aXmlElement.child("module");
   DD4hep::XML::Dimension  slice_dim(cell_det.dimensions());
-  std::cout << "slice size: "<<slice_dim.rmin()<<"\t"<<slice_dim.rmax()<<"\t"<<slice_dim.dz()<<std::endl;
   DD4hep::Geometry::Material cell_mat (aLcdd.material(cell_det.materialStr()));
 // we assume no segmentation in R/phi direction
   unsigned int numSlices = dim.dz()/slice_dim.dz();
   double offset = -1.*dim.dz() + slice_dim.dz();
-  std::cout << "number of slices: "<<numSlices<<std::endl;
-  std::cout<<"offset: "<<offset<<std::endl;
   DD4hep::Geometry::Volume slice_vol("slice_vol",DD4hep::Geometry::Tube(slice_dim.rmin(),slice_dim.rmax(),slice_dim.dz()), cell_mat);
 
-    DD4hep::Geometry::SensitiveDetector sd = aSensDet;
-    DD4hep::XML::Dimension sd_typ = x_det.child(_U(sensitive));
-    sd.setType(sd_typ.typeStr());
-    slice_vol.setSensitiveDetector(aSensDet);
+  DD4hep::Geometry::SensitiveDetector sd = aSensDet;
+  DD4hep::XML::Dimension sd_typ = x_det.child(_U(sensitive));
+  sd.setType(sd_typ.typeStr());
+  slice_vol.setSensitiveDetector(aSensDet);
   for(uint iz=0;iz<numSlices; iz++) {
     auto sliceName = std::string("slice" ) + DD4hep::XML::_toString(iz, "z%d");
     DD4hep::Geometry::Transform3D transformcell(DD4hep::Geometry::Rotation3D(
@@ -46,10 +43,9 @@ static DD4hep::Geometry::Ref_t createSimpleBarrels(DD4hep::Geometry::LCDD& aLcdd
   det_vol.setLimitSet(aLcdd, x_det.limitsStr());
   det_vol.setRegion(aLcdd , x_det.regionStr());
   phv.addPhysVolID("system",x_det.id());
-  std::cout<<"system: "<<x_det.id()<<std::endl;
   det.setPlacement(phv);
   return det;
 }
 }
 // first argument is the type from the xml file
-DECLARE_DETELEMENT(SimpleBarrels, det::createSimpleBarrels)
+DECLARE_DETELEMENT(SlicedBarrel, det::createSlicedBarrel)
