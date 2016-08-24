@@ -22,7 +22,6 @@
 #include "FCCEventHandler.h"
 
 using namespace DD4hep;
-using namespace DD4hep::Geometry;
 
 static void* _create(const char*) {
   FCCEventHandler* h = new FCCEventHandler();
@@ -63,7 +62,6 @@ EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& 
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitActor& actor) {
   /// TODO: avoid code duplication
   const podio::CollectionBase* collBase(nullptr);
-  const fcc::TrackClusterCollection* clustercoll(nullptr);
   bool clusterPresent = m_podioStore.get(collection, collBase);
   if (clusterPresent) {
     const fcc::TrackClusterCollection* clustercoll = dynamic_cast<const fcc::TrackClusterCollection*>(collBase);
@@ -116,10 +114,10 @@ bool FCCEventHandler::NextEvent() {
   }
   m_hasEvent = true;
   m_data.clear();
-  // TODOL set
-  m_data["clusters"].push_back(std::make_pair("clusters", 200));
-  m_data["caloClusters"].push_back(std::make_pair("caloClusters", 200));
-  m_data["allGenParticles"].push_back(std::make_pair("allGenParticles", 200));
+  // TODO: set collection size in collectionloop
+  m_data["clusters"].push_back(std::make_pair("clusters", 1));
+  m_data["caloClusters"].push_back(std::make_pair("caloClusters", 1));
+  m_data["allGenParticles"].push_back(std::make_pair("allGenParticles", 1));
   return 1;
 }
 
