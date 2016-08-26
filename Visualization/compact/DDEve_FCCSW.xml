@@ -1,5 +1,5 @@
 <ddeve>
-  <display visLevel="7" loadLevel="4"/>
+  <display visLevel="7" loadLevel="4" eventHandler="FCC"/>
   <calodata name="trackerdata" hits="clusters" towerH="50" emax="200"
 	    n_eta="200" eta_min="-5" eta_max="5" 
 	    n_phi="200" phi_min="-pi" phi_max="pi" 
@@ -29,7 +29,7 @@
     <calodata name="trackerdata" />
     <calodata name="calohits" />
   </view>
-  <include ref="../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
-  <include ref="../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
-  <include ref="../../Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml"/>
+  <include ref="/home/vavolkl/FCC/FCCSW/Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
+  <include ref="/home/vavolkl/FCC/FCCSW/Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
+  <!--<include ref="../../Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml"/> -->
 </ddeve>
