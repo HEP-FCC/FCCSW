@@ -1,7 +1,7 @@
 #include "DetSensitive/MiddleStepTrackerSD.h"
 
 // FCCSW
-#include "DetSensitive/SegmentationHelper.h"
+#include "DetCommon/DetUtils.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -53,7 +53,7 @@ bool MiddleStepTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   auto hit = new DD4hep::Simulation::Geant4TrackerHit(
     track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(),edep, track->GetGlobalTime());
   // take mid position between prestep and poststep to calculate the position in segmentation
-  hit->cellID  = segmentation::cellID(m_seg, *aStep, false);
+  hit->cellID  = utils::cellID(m_seg, *aStep, false);
   hit->energyDeposit = edep;
   hit->position = position;
   hit->momentum = direction;

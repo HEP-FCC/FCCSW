@@ -37,6 +37,14 @@
       <segmentation type="CartesianGridXYZ" grid_size_x="5*mm" grid_size_y="5*mm" grid_size_z="5.*mm"/>
       <id>z:-4,y:-4,x:-4,system:1</id>
     </readout>
+    <readout name="ECalHitsReverseOrder">
+      <segmentation type="CartesianGridXYZ" grid_size_x="5*mm" grid_size_y="5*mm" grid_size_z="5.*mm"/>
+      <id>system:1,x:-4,y:-4,z:-4</id>
+    </readout>
+    <readout name="ECalHitsPhiEta">
+      <segmentation type="GridPhiEta" grid_size_eta="0.1" phi_bins="100"/>
+      <id>phi:-8,eta:-8,system:1</id>
+    </readout>
   </readouts>
 
   <detectors>

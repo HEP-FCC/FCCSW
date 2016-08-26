@@ -8,23 +8,24 @@
     <gdmlFile  ref="../../../Detector/DetCommon/compact/materials.xml"/>
   </includes>
 
-  <info name="Box"
-        title="Box"
+  <info name="BarrelPhiEta"
+        title="BarrelPhiEta"
         author="Anna"
         url="no"
         version="1"
         status="development">
-    <comment>Simple box to test dd4hep geometry (and segmentation)</comment>
+    <comment>Simple barrel, to test dd4hep geometry (and segmentation in eta-phi)</comment>
   </info>
 
   <define>
-    <constant name="world_size" value="1.*m"/>
-    <constant name="world_x" value="world_size"/>
-    <constant name="world_y" value="world_size"/>
-    <constant name="world_z" value="world_size"/>
-    <constant name="box_x" value="27.5*mm"/> <!-- WARNING: half length -->
-    <constant name="box_y" value="27.5*mm"/> <!-- WARNING: half length -->
-    <constant name="box_z" value="27.5*mm"/> <!-- WARNING: half length -->
+    <constant name="world_x" value="3*m"/>
+    <constant name="world_y" value="3*m"/>
+    <constant name="world_z" value="10*m"/>
+    <constant name="BarECal_rmin" value="2500*mm"/>
+    <constant name="BarECal_rmax" value="3600*mm"/>
+    <constant name="BarECal_dz" value="1000*mm"/> <!--shortened to  decrease build time-->
+    <constant name="phiBins" value="125664"/>
+    <constant name="deta" value="0.1"/>
   </define>
 
   <display>
@@ -34,16 +35,16 @@
 
   <readouts>
     <readout name="ECalHits">
-      <segmentation type="CartesianGridXYZ" grid_size_x="5*mm" grid_size_y="5*mm" grid_size_z="5.*mm"/>
-      <id>z:-4,y:-4,x:-4,system:1</id>
+      <segmentation type="GridPhiEta" grid_size_eta="deta" phi_bins="phiBins"/>
+      <id>eta:-9,phi:-17,system:1</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="0" name="BoxECal" type="SimpleBox" readout="ECalHits" sensitive="true">
+    <detector id="0" name="BarrelECal" type="SimpleBarrel" sensitive="true" readout="ECalHits">
       <material name="PbWO4"/>
       <sensitive type="SimpleCalorimeterSD"/>
-      <dimensions x="box_x" y="box_y" z="box_z"/>
+      <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz"/>
       <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>
     </detector>
