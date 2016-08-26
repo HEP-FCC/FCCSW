@@ -27,6 +27,6 @@
     <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
     <calodata name="trackerdata" />
   </view>
-  <include ref="/home/vavolkl/FCC/FCCSW/Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
-  <include ref="/home/vavolkl/FCC/FCCSW/Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
+  <include ref="../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
+  <include ref="../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
 </ddeve>
