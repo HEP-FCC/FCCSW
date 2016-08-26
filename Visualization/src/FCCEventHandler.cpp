@@ -21,14 +21,19 @@
 
 #include "FCCEventHandler.h"
 
-using namespace DD4hep;
+using DD4hep::DDEveParticleActor;
+using DD4hep::DDEveHitActor;
+using DD4hep::DDEveHit;
 
-static void* _create(const char*) {
-  FCCEventHandler* h = new FCCEventHandler();
+
+static void* _createFCCEventHandler(const char*) {
+  vis::FCCEventHandler* h = new vis::FCCEventHandler();
   return h;
 }
 
-DECLARE_CONSTRUCTOR(DDEve_FCCEventHandler, _create)
+DECLARE_CONSTRUCTOR(DD4hep_FCCEventHandler, _createFCCEventHandler)
+
+namespace vis {
 
 /// Standard constructor
 FCCEventHandler::FCCEventHandler() : EventHandler() {}
@@ -45,7 +50,7 @@ long FCCEventHandler::numEvents() const {
 }
 
 /// Access to the collection type by name
-EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& cl) const {
+DD4hep::EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& cl) const {
   if (cl == "caloClusters")
     return CALO_HIT_COLLECTION;
   else if (cl == "clusters")
@@ -56,36 +61,41 @@ EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& 
     return NO_COLLECTION;
 }
 
+template<typename T>
+void clusterEveConversion(T& clustercoll, DDEveHitActor& actor) {
+  int collsize = clustercoll->size();
+  actor.setSize(collsize);
+  for (const auto& cluster : *clustercoll) {
+    fcc::BareCluster core = cluster.Core();
+    // hardcoded first argument is an unused pdgid
+    DDEveHit* hit = new DDEveHit(11, core.position.X, core.position.Y, core.position.Z, core.Energy);
+    actor(*hit);
+  }
+}
 
 
 /// Call functor on hit collection
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitActor& actor) {
   /// TODO: avoid code duplication
   const podio::CollectionBase* collBase(nullptr);
+  const fcc::TrackClusterCollection* clustercoll(nullptr);
   bool clusterPresent = m_podioStore.get(collection, collBase);
   if (clusterPresent) {
     const fcc::TrackClusterCollection* clustercoll = dynamic_cast<const fcc::TrackClusterCollection*>(collBase);
+    std::cout<<"cluster collection pointer " << clustercoll << std::endl;
     if (nullptr != clustercoll) {
       int collsize = clustercoll->size();
-      actor.setSize(collsize);
-      for (const auto& cluster : *clustercoll) {
-        fcc::BareCluster core = cluster.Core();
-        DDEveHit* hit = new DDEveHit(11, core.position.X, core.position.Y, core.position.Z, core.Energy);
-        actor(*hit);
-      }
+      m_data[collection].back().second = collsize; 
+      clusterEveConversion(clustercoll, actor);
       return collsize;
-    }
-     const fcc::CaloClusterCollection* caloclustercoll = dynamic_cast<const fcc::CaloClusterCollection*>(collBase);
+    } 
+    const fcc::CaloClusterCollection* caloclustercoll = dynamic_cast<const fcc::CaloClusterCollection*>(collBase);
     if (nullptr != caloclustercoll) {
-      int collsize = clustercoll->size();
-      actor.setSize(collsize);
-      for (const auto& cluster : *clustercoll) {
-        fcc::BareCluster core = cluster.Core();
-        DDEveHit* hit = new DDEveHit(11, core.position.X, core.position.Y, core.position.Z, core.Energy);
-        actor(*hit);
-      }
+      int collsize = caloclustercoll->size();
+      m_data[collection].back().second = collsize; 
+      clusterEveConversion(caloclustercoll, actor);
       return collsize;
-    }
+    } 
   }
   return 0;
 }
@@ -114,10 +124,9 @@ bool FCCEventHandler::NextEvent() {
   }
   m_hasEvent = true;
   m_data.clear();
-  // TODO: set collection size in collectionloop
+  /// TODO: move to configuration
   m_data["clusters"].push_back(std::make_pair("clusters", 1));
   m_data["caloClusters"].push_back(std::make_pair("caloClusters", 1));
-  m_data["allGenParticles"].push_back(std::make_pair("allGenParticles", 1));
   return 1;
 }
 
@@ -131,4 +140,6 @@ bool FCCEventHandler::PreviousEvent() {
 bool FCCEventHandler::GotoEvent(long /* event_number */) {
   throw std::runtime_error("+++ This version of the reader can only access files sequentially!\n"
                            "+++ Random access is not supported.");
+}
+
 }
