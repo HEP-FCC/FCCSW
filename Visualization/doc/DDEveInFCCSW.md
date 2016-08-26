@@ -10,14 +10,16 @@ Many visualization settings, such as visibility, color, ... can be set in the xm
 Eve also provides functionalities that enhance the view and help with visual debugging [2].
 
 There is currently some limited support for the event data display capabilities of DDEve (currently only display of Tracker and Calorimeter Clusters as points).
-For this, the FCCSW output currently needs to be converted into DDG4 format using a program such as <https://github.com/vvolkl/fcc2dd4vis>.
-This is temporary -- in the future, there will be a tighter integration with FCCSW.
-
-DDEve can be started using the macro `$DD4hepINSTALL/examples/DDEve/DDEve.C` in your DD4hep installation (the environment variable `DD4hepINSTALL` is required by the macro).
-The macro will ask for an xml configuration file describing the detector and event data used for display. An example can be found in this subfolder `Visualization/compact/DDEve_FCCSW.xml`.
-
 All the capabilities and limitations of DDEve can be seen in the CliC example distributed with DD4hep (`DD4hep/examples/CLICSiD/eve` in the DD4hep source directory). 
 DDEve is still under development, and the integration in FCCSW is very rudimentary, so feedback regarding needed features and bugs is highly appreciated by the FCCSW- and DD4hep developers.
+
+The viewer can be started using the `eventDisplay.py` script, e.g. `./run python Visualization/python/eventDisplay.py`.
+Information about command line options is displayed  when the last command is invoked with the `-h` flag.
+A configuration xml file for DDEve, like the default one provided in the visualization package under `Visualization/compact/DDEve_FCCSW.xml`, can be specified on the command line (it defaults to the one just mentioned).
+The root file containing the event data can also be specified on the command line (defaults to the FCCSW default `output.root`).
+
+
+
 
 
 
