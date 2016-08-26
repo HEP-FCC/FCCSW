@@ -76,13 +76,11 @@ void clusterEveConversion(T& clustercoll, DDEveHitActor& actor) {
 
 /// Call functor on hit collection
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitActor& actor) {
-  /// TODO: avoid code duplication
   const podio::CollectionBase* collBase(nullptr);
   const fcc::TrackClusterCollection* clustercoll(nullptr);
   bool clusterPresent = m_podioStore.get(collection, collBase);
   if (clusterPresent) {
     const fcc::TrackClusterCollection* clustercoll = dynamic_cast<const fcc::TrackClusterCollection*>(collBase);
-    std::cout<<"cluster collection pointer " << clustercoll << std::endl;
     if (nullptr != clustercoll) {
       int collsize = clustercoll->size();
       m_data[collection].back().second = collsize; 
