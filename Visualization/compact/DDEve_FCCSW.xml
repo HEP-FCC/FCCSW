@@ -1,29 +1,29 @@
 <ddeve>
   <display visLevel="7" loadLevel="4" eventHandler="DD4hep_FCCEventHandler"/>
-  <calodata name="trackerdata" hits="clusters" towerH="50" emax="200"
-	    n_eta="200" eta_min="-5" eta_max="5" 
-	    n_phi="200" phi_min="-pi" phi_max="pi" 
-	    alpha="0.5" rmin="5000000*mm" dz="500*mm" color="kCyan"/>
+  <calodata name="trackerdata"  hits="clusters"  towerH="50" emax="200"
+	    n_eta="200" eta_min="-5" eta_max="5"
+	    n_phi="200" phi_min="-pi" phi_max="pi"
+	    alpha="0.5" rmin="500*mm" dz="500*mm" color="kCyan"/> -->
   <collection name="clusters" hits="PointSet" color="kMagenta" size="0.3" type="20"/>
   <calodata name="calohits" hits="calolusters" towerH="50" emax="200"
-	    n_eta="200" eta_min="-5" eta_max="5" 
-	    n_phi="200" phi_min="-pi" phi_max="pi" 
+	    n_eta="200" eta_min="-5" eta_max="5"
+	    n_phi="200" phi_min="-pi" phi_max="pi"
 	    alpha="0.5" rmin="40*mm" dz="500*mm" color="kRed"/>
   <collection name="caloClusters" hits="PointSet" color="kRed" size="0.7" type="20"/>
   <view name="3D Trackers" type="View3D">
     <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
     <calodata name="trackerdata" />
   </view>
-  <view name="test" type="RhoPhiProjection">
+  <view name="RhoPhiProjection" type="RhoPhiProjection">
     <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
     <calodata name="trackerdata" />
   </view>
-  <view name="test" type="RhoZProjection">
+  <view name="RhoZProjection" type="RhoZProjection">
     <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
     <calodata name="trackerdata" />
     <calodata name="calohits" />
   </view>
-  <view name="test_multiview" type="MultiView">
+  <view name="Multiview" type="MultiView">
     <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
     <calodata name="trackerdata" />
   </view>
