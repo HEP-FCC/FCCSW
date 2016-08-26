@@ -6,14 +6,19 @@ gaudi_subdir(Visualization v1r0)
 # this declaration will not be needed in the future
 gaudi_depends_on_subdirs(GaudiAlg FWCore)
 
-find_package(FCCEDM)
+find_package(ROOT COMPONENTS Geom MathCore RIO Eve GenVector Gui REQUIRED)
+
+
 find_package(DD4hep COMPONENTS DDCore DDG4 DDEve REQUIRED)
+
+
+find_package(FCCEDM)
 find_package(PODIO)
 
-gaudi_install_python_modules()
 
-gaudi_add_library(Visualization NO_PUBLIC_HEADERS
-                 src/*.cpp
-                 INCLUDE_DIRS Visualization FWCore FCCEDM PODIO DD4hep 
-                 LINK_LIBRARIES  GaudiAlgLib FCCEDM PODIO DD4hep ${DD4hep_LIBRARIES}  ${DD4hep_DDG4_LIBRARY} ${DD4hep_DDEVE_LIBRARY} )
+gaudi_add_library(Visualization   NO_PUBLIC_HEADERS          src/*.cpp
+                 INCLUDE_DIRS DD4hep ROOT Geant4 PODIO FCCEDM ROOT 
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT PODIO FCCEDM ${DD4hep_DDEVE_LIBRARY} 
+                 )
+
 
