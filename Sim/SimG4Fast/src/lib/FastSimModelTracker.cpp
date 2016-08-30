@@ -17,13 +17,17 @@
 
 namespace sim {
 
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName):
+FastSimModelTracker::FastSimModelTracker(
+  const std::string& aModelName,
+  G4Region* aEnvelope,
+  const std::string& aSmearToolType,
+  const std::string& aSmearToolName):
   G4VFastSimulationModel(aModelName, aEnvelope),
   m_msgSvc("MessageSvc","FastSimModelTracker"),
   m_log(&(*m_msgSvc),"FastSimModelTracker"),
   m_toolSvc("ToolSvc","ToolSvc") {
-  if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
-    throw GaudiException("Smearing tool "+aSmearToolName+" not found",
+  if( m_toolSvc->retrieveTool(aSmearToolType, aSmearToolName, m_smearTool).isFailure())
+    throw GaudiException("Smearing tool "+aSmearToolType+" not found",
                          "FastSimModelTracker", StatusCode::FAILURE);
   m_minTriggerMomentum = m_smearTool->minP()/Gaudi::Units::MeV;
   m_maxTriggerMomentum = m_smearTool->maxP()/Gaudi::Units::MeV;
