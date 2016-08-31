@@ -24,16 +24,16 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimActions, SimG4ParticleSmearRootFile
+from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearRootFile, SimG4FastSimRegionTracker
 from GaudiKernel.SystemOfUnits import GeV
 # create particle smearing tool, used for smearing in the tracker
 smeartool = SimG4ParticleSmearRootFile("Smear", detectorNames=["TrackerEnvelopeBarrel"], filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root", minP = 5*GeV, maxP = 1000*GeV, maxEta=6)
-# create actions initialization tool
-actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
+## create region and a parametrisation model, pass smearing tool
+regiontool = SimG4FastSimRegionTracker("model", smearing=smeartool, OutputLevel=DEBUG)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=physicslisttool, actions=actionstool)
+geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimRegionTracker/model"])
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
