@@ -59,6 +59,14 @@ public:
    */
   double resolution(double aEta, double aMom);
 
+  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the model.
+   *   @param[in] aMinMomentum Minimum momentum.
+   *   @param[in] aMaxMomentum Maximum momentum.
+   *   @param[in] aMaxEta Maximum pseudorapidity.
+   *   @return status code
+   */
+  virtual StatusCode checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const final;
+
 private:
   /// Random Number Service
   SmartIF<IRndmGenSvc> m_randSvc;
@@ -69,6 +77,12 @@ private:
   std::map<double, TGraph> m_momentumResolutions;
   /// File name with the resolutions obtained from root file (set by job options)
   std::string m_resolutionFileName;
+  /// minimum momentum defined in the resolution file
+  double m_minMomentum;
+  /// maximum momentum defined in the resolution file
+  double m_maxMomentum;
+  /// maximum pseudorapidity defined in the resolution file
+  double m_maxEta;
 };
 
 #endif /* SIMG4FAST_G4PARTICLESMEARROOTFILE_H */

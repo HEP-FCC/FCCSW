@@ -77,7 +77,7 @@ StatusCode SimG4Svc::initialize(){
     ISimG4RegionTool* tool = nullptr;
     if(m_toolSvc->retrieveTool(toolname, tool).isFailure()) {
       error()<<"Unable to retrieve region tool "<<toolname<<endmsg;
-      return StatusCode::SUCCESS;
+      return StatusCode::FAILURE;
     }
     m_regionTools.push_back(tool);
   }

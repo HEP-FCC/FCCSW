@@ -25,12 +25,12 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearRootFile, SimG4FastSimRegionTracker
-from GaudiKernel.SystemOfUnits import GeV
+from GaudiKernel.SystemOfUnits import GeV, TeV
 # create particle smearing tool, used for smearing in the tracker
 smeartool = SimG4ParticleSmearRootFile("Smear", filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root")
 ## create region and a parametrisation model, pass smearing tool
 regiontool = SimG4FastSimRegionTracker("model", volumeNames=["TrackerEnvelopeBarrel"],
-                                       minP = 5*GeV, maxP = 1000*GeV, maxEta=6, smearing=smeartool)
+                                       minMomentum = 5*GeV, maxMomentum = 10*TeV, maxEta=6, smearing=smeartool)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service
@@ -61,7 +61,6 @@ THistSvc().Output = ["rec DATAFILE='histTklayout.root' TYP='ROOT' OPT='RECREATE'
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
-THistSvc().OutputLevel=VERBOSE
 
 # PODIO algorithm
 from Configurables import PodioOutput

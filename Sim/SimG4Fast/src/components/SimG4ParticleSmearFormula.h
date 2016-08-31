@@ -44,9 +44,14 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
-  /**  Get the names of the volumes where fast simulation should be performed.
-   *   @return vector of volume names
+
+  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the model.
+   *   @param[in] aMinMomentum Minimum momentum.
+   *   @param[in] aMaxMomentum Maximum momentum.
+   *   @param[in] aMaxEta Maximum pseudorapidity.
+   *   @return status code
    */
+  inline virtual StatusCode checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const final {return StatusCode::SUCCESS;}
 
 private:
   /// TFormula representing resolution momentum-dependent for the smearing

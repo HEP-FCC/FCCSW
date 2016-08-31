@@ -46,15 +46,15 @@ public:
    */
   inline virtual const std::vector<std::string>& volumeNames() const final {return m_volumeNames;};
   /**  Get the minimum momentum that triggers fast simulation
-   *   @return maximum p
+   *   @return minimum momentum
    */
-  inline virtual double minP() const final {return m_minP;};
+  inline virtual double minMom() const final {return m_minMomentum;};
   /**  Get the maximum momentum that triggers fast simulation
-   *   @return maximum p
+   *   @return maximum momentum
    */
-  inline virtual double maxP() const final {return m_maxP;};
+  inline virtual double maxP() const final {return m_maxMomentum;};
   /**  Get the maximum pseudorapidity that triggers fast simulation
-   *   @return maximum p
+   *   @return maximum eta
    */
   inline virtual double maxEta() const final {return m_maxEta;};
 
@@ -68,11 +68,11 @@ private:
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
   /// Names of the parametrised volumes (set by job options)
   std::vector<std::string> m_volumeNames;
-  /// minimum P that can be smeared (set by job options)
-  double m_minP;
-  /// maximum P that can be smeared (set by job options)
-  double m_maxP;
-  /// maximum eta that can be smeared (set by job options)
+  /// minimum momentum that triggers the fast sim model (set by job options)
+  double m_minMomentum;
+  /// maximum momentum that triggers the fast sim model (set by job options)
+  double m_maxMomentum;
+  /// maximum pseudorapidity (set by job options)
   double m_maxEta;
 
 };

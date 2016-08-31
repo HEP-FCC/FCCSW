@@ -16,8 +16,8 @@ GaudiTool(type, name, parent) {
   declareProperty("smearing", m_smearTool);
   declarePrivateTool(m_smearTool, "SimG4ParticleSmearSimple", true);
   declareProperty("volumeNames", m_volumeNames);
-  declareProperty("minP", m_minP = 0);
-  declareProperty("maxP", m_maxP = 0);
+  declareProperty("minMomentum", m_minMomentum = 0);
+  declareProperty("maxMomentum", m_maxMomentum = 0);
   declareProperty("maxEta", m_maxEta = 0);
 }
 
@@ -31,8 +31,16 @@ StatusCode SimG4FastSimRegionTracker::initialize() {
     error() << "No detector name is specified for the parametrisation" << endmsg;
     return StatusCode::FAILURE;
   }
+  if(m_minMomentum > m_maxMomentum) {
+    error()<<"Momentum range is not defined properly"<<endmsg;
+    return StatusCode::FAILURE;
+  }
   if(!m_smearTool.retrieve()) {
     error()<<"Smearing tool cannot be retieved"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(! m_smearTool->checkConditions(m_minMomentum, m_maxMomentum, m_maxEta)) {
+    error()<<"Wrong parameters for this smearing tool"<<endmsg;
     return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
@@ -52,7 +60,7 @@ StatusCode SimG4FastSimRegionTracker::create() {
         m_g4regions.back()->AddRootLogicalVolume(world->GetDaughter(iter_region)->GetLogicalVolume());
         m_models.emplace_back(new sim::FastSimModelTracker(
             m_g4regions.back()->GetName(), m_g4regions.back(),
-            m_smearTool, m_minP, m_maxP, m_maxEta));
+            m_smearTool, m_minMomentum, m_maxMomentum, m_maxEta));
         info()<<"Attaching a Tracker fast simulation model to the region "<<m_g4regions.back()->GetName()<<endmsg;
       }
     }

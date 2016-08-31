@@ -31,10 +31,6 @@ FastSimModelTracker::FastSimModelTracker(
   m_minTriggerMomentum(aMinMomentum/Gaudi::Units::MeV),
   m_maxTriggerMomentum(aMaxMomentum/Gaudi::Units::MeV),
   m_maxTriggerEta(aMaxEta) {
-  if(m_minTriggerMomentum > m_maxTriggerMomentum) {
-    throw GaudiException("Momentum range is not defined properly in smearing tool",
-                         "FastSimModelTracker", StatusCode::FAILURE);
-  }
   m_log<<MSG::INFO<<"Tracker smearing configuration:\n"
        <<"\tEnvelope name:\t"<<aEnvelope->GetName()<<"\n"
        <<"\tMomentum range:\t"<<G4BestUnit(m_minTriggerMomentum, "Energy")

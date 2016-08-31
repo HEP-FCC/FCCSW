@@ -86,37 +86,13 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
   infoTree->GetEntry(0);
   int binsEta = readEta->GetSize();
   int binsP = readP->GetSize();
-  double minP = readP->At(0);
-  double maxP = readP->At(binsP-1);
-  double maxEta = readEta->At(binsEta-1);
+  m_minMomentum = readP->At(0);
+  m_maxMomentum = readP->At(binsP-1);
+  m_maxEta = readEta->At(binsEta-1);
   info()<<"Reading the resolutions from file: "<<f.GetName()<<endmsg;
-  info()<<"\tMinimum momentum with resolutions defined: "<<minP<<" GeV"<<endmsg;
-  info()<<"\tMaximum momentum with resolutions defined: "<<maxP<<" GeV"<<endmsg;
-  info()<<"\tMaximum pseudorapidity with resolutions defined: "<<maxEta<<endmsg;
-
-  // TODO move
-  // // check if thresholds for fast sim are not broader than values for which resolutions are defined
-  // if(m_minP/Gaudi::Units::GeV < minP) {
-  //   error()<<"Minimum trigger momentum defined in tool properties ("<<m_minP/Gaudi::Units::GeV<<" GeV)"
-  //          <<" is smaller then the minimal momentum from ROOT file("<<minP<<" GeV)"<<endmsg;
-  //   return StatusCode::FAILURE;
-  // }
-  // if(m_maxP == 0)  {
-  //   error()<<"Maximum trigger momentum not defined in tool properties."<<endmsg;
-  //   return StatusCode::FAILURE;
-  // } else if (m_maxP/Gaudi::Units::GeV > maxP) {
-  //   error()<<"Maximum trigger momentum defined in tool properties ("<<m_maxP/Gaudi::Units::GeV<<" GeV)"
-  //          <<" is larger then the maximal momentum from ROOT file("<<maxP<<" GeV)"<<endmsg;
-  //   return StatusCode::FAILURE;
-  // }
-  // if(m_maxEta > 0 && m_maxEta > maxEta) {
-  //   error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<m_maxEta<<")"
-  //          <<" is larger then the maximal eta from ROOT file("<<maxEta<<")"<<endmsg;
-  //   return StatusCode::FAILURE;
-  // } else {
-  //   m_maxEta = maxEta;
-  //   info()<<"No maximum pseudorapidity defined. Using the maximum pseudorapidity defined in the file: "<<maxEta<<endmsg;
-  // }
+  info()<<"\tMinimum momentum with resolutions defined: "<<m_minMomentum<<" GeV"<<endmsg;
+  info()<<"\tMaximum momentum with resolutions defined: "<<m_maxMomentum<<" GeV"<<endmsg;
+  info()<<"\tMaximum pseudorapidity with resolutions defined: "<<m_maxEta<<endmsg;
 
   // retrieve the resolutions in bins of eta and for momentum values
   TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
@@ -145,14 +121,37 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
 
 double SimG4ParticleSmearRootFile::resolution(double aEta, double aMom) {
   // smear particles only in the pseudorapidity region where resolutions are defined
-  // TODO move check on eta
-  // if(fabs(aEta)>m_maxEta)
-  //   return 0;
-
+  if(fabs(aEta)>m_maxEta)
+    return 0;
   for(auto& m: m_momentumResolutions) {
     if(fabs(aEta)<m.first) {
       return m.second.Eval(aMom);
     }
   }
   return 0;
+}
+
+StatusCode SimG4ParticleSmearRootFile::checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const {
+  // check if thresholds for fast sim are not broader than values for which resolutions are defined
+  if(aMinMomentum/Gaudi::Units::GeV < m_minMomentum) {
+    error()<<"Minimum trigger momentum defined in region tool properties ("<<aMinMomentum/Gaudi::Units::GeV<<" GeV)"
+           <<" is smaller then the minimal momentum from ROOT file("<<m_minMomentum<<" GeV)"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(aMaxMomentum == 0)  {
+    error()<<"Maximum trigger momentum is not defined in tool properties."<<endmsg;
+    return StatusCode::FAILURE;
+  } else if (aMaxMomentum/Gaudi::Units::GeV > m_maxMomentum) {
+    error()<<"Maximum trigger momentum defined in region tool properties ("<<aMaxMomentum/Gaudi::Units::GeV<<" GeV)"
+           <<" is larger then the maximal momentum from ROOT file("<<m_maxMomentum<<" GeV)"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(aMaxEta > 0 && aMaxEta > m_maxEta) {
+    error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<aMaxEta<<")"
+           <<" is larger then the maximal eta from ROOT file("<<m_maxEta<<")"<<endmsg;
+    return StatusCode::FAILURE;
+  } else {
+    info()<<"No maximum pseudorapidity defined. Using the maximum pseudorapidity defined in the file: "<<m_maxEta<<endmsg;
+  }
+  return StatusCode::SUCCESS;
 }
