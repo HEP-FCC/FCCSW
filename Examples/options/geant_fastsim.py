@@ -33,9 +33,9 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearFormula, SimG4FastSimRegionTracker
 # ## create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearFormula("smear", detectorNames=["TrackerEnvelopeBarrel"], resolutionMomentum = "0.013")
+smeartool = SimG4ParticleSmearFormula("smear", resolutionMomentum = "0.013")
 ## create region and a parametrisation model, pass smearing tool
-regiontool = SimG4FastSimRegionTracker("model", smearing=smeartool)
+regiontool = SimG4FastSimRegionTracker("model", volumeNames=["TrackerEnvelopeBarrel"], smearing=smeartool)
 ## create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 ## attach those tools to the G4 service

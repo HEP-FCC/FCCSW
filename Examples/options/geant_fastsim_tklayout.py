@@ -27,9 +27,10 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearRootFile, SimG4FastSimRegionTracker
 from GaudiKernel.SystemOfUnits import GeV
 # create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearRootFile("Smear", detectorNames=["TrackerEnvelopeBarrel"], filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root", minP = 5*GeV, maxP = 1000*GeV, maxEta=6)
+smeartool = SimG4ParticleSmearRootFile("Smear", filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/tkLayout_example_resolutions.root")
 ## create region and a parametrisation model, pass smearing tool
-regiontool = SimG4FastSimRegionTracker("model", smearing=smeartool, OutputLevel=DEBUG)
+regiontool = SimG4FastSimRegionTracker("model", volumeNames=["TrackerEnvelopeBarrel"],
+                                       minP = 5*GeV, maxP = 1000*GeV, maxEta=6, smearing=smeartool)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service

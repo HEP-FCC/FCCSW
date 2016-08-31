@@ -17,21 +17,13 @@ SimG4ParticleSmearFormula::SimG4ParticleSmearFormula(const std::string& type, co
     GaudiTool(type, name, parent),
     m_resolutionMomentum() {
   declareInterface<ISimG4ParticleSmearTool>(this);
-  declareProperty("detectorNames", m_volumeNames);
   declareProperty("resolutionMomentum", m_resolutionMomentumStr = "");
-  declareProperty("minP", m_minP = 0);
-  declareProperty("maxP", m_maxP = 0);
-  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4ParticleSmearFormula::~SimG4ParticleSmearFormula() {}
 
 StatusCode SimG4ParticleSmearFormula::initialize() {
   if(GaudiTool::initialize().isFailure()) {
-    return StatusCode::FAILURE;
-  }
-  if(m_volumeNames.size() == 0) {
-    error() << "No detector name is specified for the parametrisation" << endmsg;
     return StatusCode::FAILURE;
   }
   m_randSvc = service("RndmGenSvc");

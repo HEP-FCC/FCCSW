@@ -18,24 +18,15 @@
 DECLARE_TOOL_FACTORY(SimG4ParticleSmearRootFile)
 
 SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent):
-    GaudiTool(type, name, parent),
-    m_maxEta(0) {
+    GaudiTool(type, name, parent) {
   declareInterface<ISimG4ParticleSmearTool>(this);
-  declareProperty("detectorNames", m_volumeNames);
   declareProperty("filename", m_resolutionFileName);
-  declareProperty("minP", m_minP = 0);
-  declareProperty("maxP", m_maxP = 0);
-  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4ParticleSmearRootFile::~SimG4ParticleSmearRootFile() {}
 
 StatusCode SimG4ParticleSmearRootFile::initialize() {
   if(GaudiTool::initialize().isFailure()) {
-    return StatusCode::FAILURE;
-  }
-  if(m_volumeNames.size() == 0) {
-    error() << "No detector name is specified for the parametrisation" << endmsg;
     return StatusCode::FAILURE;
   }
   m_randSvc = service("RndmGenSvc");
@@ -103,32 +94,33 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
   info()<<"\tMaximum momentum with resolutions defined: "<<maxP<<" GeV"<<endmsg;
   info()<<"\tMaximum pseudorapidity with resolutions defined: "<<maxEta<<endmsg;
 
-  // check if thresholds for fast sim are not broader than values for which resolutions are defined
-  if(m_minP/Gaudi::Units::GeV < minP) {
-    error()<<"Minimum trigger momentum defined in tool properties ("<<m_minP/Gaudi::Units::GeV<<" GeV)"
-           <<" is smaller then the minimal momentum from ROOT file("<<minP<<" GeV)"<<endmsg;
-    return StatusCode::FAILURE;
-  }
-  if(m_maxP == 0)  {
-    error()<<"Maximum trigger momentum not defined in tool properties."<<endmsg;
-    return StatusCode::FAILURE;
-  } else if (m_maxP/Gaudi::Units::GeV > maxP) {
-    error()<<"Maximum trigger momentum defined in tool properties ("<<m_maxP/Gaudi::Units::GeV<<" GeV)"
-           <<" is larger then the maximal momentum from ROOT file("<<maxP<<" GeV)"<<endmsg;
-    return StatusCode::FAILURE;
-  }
-  if(m_maxEta > 0 && m_maxEta > maxEta) {
-    error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<m_maxEta<<")"
-           <<" is larger then the maximal eta from ROOT file("<<maxEta<<")"<<endmsg;
-    return StatusCode::FAILURE;
-  } else {
-    m_maxEta = maxEta;
-    info()<<"No maximum pseudorapidity defined. Using the maximum pseudorapidity defined in the file: "<<maxEta<<endmsg;
-  }
+  // TODO move
+  // // check if thresholds for fast sim are not broader than values for which resolutions are defined
+  // if(m_minP/Gaudi::Units::GeV < minP) {
+  //   error()<<"Minimum trigger momentum defined in tool properties ("<<m_minP/Gaudi::Units::GeV<<" GeV)"
+  //          <<" is smaller then the minimal momentum from ROOT file("<<minP<<" GeV)"<<endmsg;
+  //   return StatusCode::FAILURE;
+  // }
+  // if(m_maxP == 0)  {
+  //   error()<<"Maximum trigger momentum not defined in tool properties."<<endmsg;
+  //   return StatusCode::FAILURE;
+  // } else if (m_maxP/Gaudi::Units::GeV > maxP) {
+  //   error()<<"Maximum trigger momentum defined in tool properties ("<<m_maxP/Gaudi::Units::GeV<<" GeV)"
+  //          <<" is larger then the maximal momentum from ROOT file("<<maxP<<" GeV)"<<endmsg;
+  //   return StatusCode::FAILURE;
+  // }
+  // if(m_maxEta > 0 && m_maxEta > maxEta) {
+  //   error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<m_maxEta<<")"
+  //          <<" is larger then the maximal eta from ROOT file("<<maxEta<<")"<<endmsg;
+  //   return StatusCode::FAILURE;
+  // } else {
+  //   m_maxEta = maxEta;
+  //   info()<<"No maximum pseudorapidity defined. Using the maximum pseudorapidity defined in the file: "<<maxEta<<endmsg;
+  // }
 
-// retrieve the resolutions in bins of eta and for momentum values
+  // retrieve the resolutions in bins of eta and for momentum values
   TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
-// check the proper tree structure
+  // check the proper tree structure
   if(! (resolutionTree->GetListOfBranches()->Contains("resolution"))) {
     error()<<"Resolution file "<<m_resolutionFileName<<" does not contain tree <<resolutions>>"
            <<" with branch <<resolution>>"<<endmsg;
@@ -153,8 +145,9 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
 
 double SimG4ParticleSmearRootFile::resolution(double aEta, double aMom) {
   // smear particles only in the pseudorapidity region where resolutions are defined
-  if(fabs(aEta)>m_maxEta)
-    return 0;
+  // TODO move check on eta
+  // if(fabs(aEta)>m_maxEta)
+  //   return 0;
 
   for(auto& m: m_momentumResolutions) {
     if(fabs(aEta)<m.first) {
