@@ -10,7 +10,7 @@
 /** GridPhiEta Detector/DetSegmentation/DetSegmentation/GridPhiEta.h GridPhiEta.h
  *
  *  Segmentation in eta and phi.
- *  Based on DD4hep::DDSegmentation::ProjectiveCylinder.
+ *  It requires 'export LD_PRELOAD_PATH=$LD_PRELOAD_PATH:build.$BINARY_TAG/lib/libDetSegmentation.so'
  *
  *  @author    Anna Zaborowska
  */
