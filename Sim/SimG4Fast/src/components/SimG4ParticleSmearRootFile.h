@@ -22,7 +22,7 @@ class IRndmGen;
  *  'resolutions' tree has TArrayD with resolutions computed for momentum values. An array is defined for every eta bin.
  *  Momentum of the particle is smeared following a Gaussian distribution,
  *  using the evaluated resolution as the mean.
- *  User needs to specify the min/max momentum nad max eta for fast sim in the `SimG4FastSimRegionTracker` tool.
+ *  User needs to specify the min/max momentum nad max eta for fast sim in the `SimG4FastSimTrackerRegion` tool.
  *  The defined values cannot be broader than eta and p values for which the resolutions were computed.
  *
  *  @author Anna Zaborowska

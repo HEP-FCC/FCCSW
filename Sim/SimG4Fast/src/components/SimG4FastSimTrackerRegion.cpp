@@ -1,4 +1,4 @@
-#include "SimG4FastSimRegionTracker.h"
+#include "SimG4FastSimTrackerRegion.h"
 
 // FCCSW
 #include "SimG4Fast/FastSimModelTracker.h"
@@ -8,9 +8,9 @@
 #include "G4VFastSimulationModel.hh"
 #include "G4TransportationManager.hh"
 
-DECLARE_TOOL_FACTORY(SimG4FastSimRegionTracker)
+DECLARE_TOOL_FACTORY(SimG4FastSimTrackerRegion)
 
-SimG4FastSimRegionTracker::SimG4FastSimRegionTracker(const std::string& type, const std::string& name, const IInterface* parent) :
+SimG4FastSimTrackerRegion::SimG4FastSimTrackerRegion(const std::string& type, const std::string& name, const IInterface* parent) :
 GaudiTool(type, name, parent) {
   declareInterface<ISimG4RegionTool>(this);
   declareProperty("smearing", m_smearTool);
@@ -21,9 +21,9 @@ GaudiTool(type, name, parent) {
   declareProperty("maxEta", m_maxEta = 0);
 }
 
-SimG4FastSimRegionTracker::~SimG4FastSimRegionTracker() {}
+SimG4FastSimTrackerRegion::~SimG4FastSimTrackerRegion() {}
 
-StatusCode SimG4FastSimRegionTracker::initialize() {
+StatusCode SimG4FastSimTrackerRegion::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -46,11 +46,11 @@ StatusCode SimG4FastSimRegionTracker::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SimG4FastSimRegionTracker::finalize() {
+StatusCode SimG4FastSimTrackerRegion::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode SimG4FastSimRegionTracker::create() {
+StatusCode SimG4FastSimTrackerRegion::create() {
   G4LogicalVolume* world = (*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume();
   for(const auto& trackerName: m_volumeNames) {
     for(int iter_region = 0; iter_region<world->GetNoDaughters(); ++iter_region) {

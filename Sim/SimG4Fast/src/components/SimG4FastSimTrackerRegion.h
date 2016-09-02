@@ -1,5 +1,5 @@
-#ifndef SIMG4FAST_G4FASTSIMREGIONTRACKER_H
-#define SIMG4FAST_G4FASTSIMREGIONTRACKER_H
+#ifndef SIMG4FAST_SIMG4FASTSIMTRACKERREGION_H
+#define SIMG4FAST_SIMG4FASTSIMTRACKERREGION_H
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -14,7 +14,7 @@ class G4VFastSimulationModel;
 class G4Region;
 
 
-/** @class SimG4FastSimRegionTracker SimG4Fast/src/components/SimG4FastSimRegionTracker.h SimG4FastSimRegionTracker.h
+/** @class SimG4FastSimTrackerRegion SimG4Fast/src/components/SimG4FastSimTrackerRegion.h SimG4FastSimTrackerRegion.h
  *
  *  Tool for creating regions for fast simulation, attaching sim::FastSimModelTracker to them.
  *  Regions are created for volumes specified in the job options (\b'volumeNames').
@@ -25,10 +25,10 @@ class G4Region;
  *  @author Anna Zaborowska
 */
 
-class SimG4FastSimRegionTracker: public GaudiTool, virtual public ISimG4RegionTool {
+class SimG4FastSimTrackerRegion: public GaudiTool, virtual public ISimG4RegionTool {
 public:
-  explicit SimG4FastSimRegionTracker(const std::string& type, const std::string& name, const IInterface* parent);
-  virtual ~SimG4FastSimRegionTracker();
+  explicit SimG4FastSimTrackerRegion(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~SimG4FastSimTrackerRegion();
   /**  Initialize.
    *   @return status code
    */
@@ -77,4 +77,4 @@ private:
 
 };
 
-#endif /* SIMG4FAST_G4FASTSIMREGIONTRACKER_H */
+#endif /* SIMG4FAST_SIMG4FASTSIMTRACKERREGION_H */
