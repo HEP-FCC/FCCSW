@@ -45,7 +45,28 @@ SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::st
 
 SimG4SingleParticleGeneratorTool::~SimG4SingleParticleGeneratorTool() {}
 
-StatusCode SimG4SingleParticleGeneratorTool::initialize() { return GaudiTool::initialize(); }
+StatusCode SimG4SingleParticleGeneratorTool::initialize() {
+  if(GaudiTool::initialize().isFailure()) {
+    return StatusCode::FAILURE;
+  }
+  if(!G4ParticleTable::GetParticleTable()->contains(m_particleName)) {
+    error()<<"Particle "<<m_particleName<<" cannot be found in G4ParticleTable"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_energyMin > m_energyMax) {
+    error()<<"Maximum energy cannot be lower than the minumum energy"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_etaMin > m_etaMax) {
+    error()<<"Maximum psudorapidity cannot be lower than the minumum psudorapidity"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_phiMin > m_phiMax) {
+    error()<<"Maximum azimuthal angle cannot be lower than the minumum angle"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  return StatusCode::SUCCESS;
+}
 
 G4Event* SimG4SingleParticleGeneratorTool::g4Event() {
   auto theEvent = new G4Event();
