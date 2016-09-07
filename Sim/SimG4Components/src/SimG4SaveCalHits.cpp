@@ -78,6 +78,7 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
           edmClusterCore.position.X = hit->position.x();
           edmClusterCore.position.Y = hit->position.y();
           edmClusterCore.position.Z = hit->position.z();
+          edmClusterCore.Bits = hit->cellID;
           edmClusterCore.Energy = hit->energyDeposit;
         }
       }
