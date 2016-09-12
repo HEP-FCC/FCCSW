@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os
 import ROOT
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 import argparse
@@ -15,6 +16,7 @@ args = parser.parse_args()
 print("Starting DDEve Viewer...")
 print("using DDEve Configuration XML file:  ", args.config)
 print("using Event Data file:  ", args.eventdata)
-dc = DD4hep.DisplayConfiguration # ??
+assert os.path.isfile(args.eventdata), "File " + args.eventdata + " does not exist!"
+dc = DD4hep.DisplayConfiguration # ?? EveDisplay can only be accessed in python if some other DD4hep variable is accessed first
 DD4hep.EveDisplay(args.config, args.eventdata)
 ROOT.gApplication.Run(1)
