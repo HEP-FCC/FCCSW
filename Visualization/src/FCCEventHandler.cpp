@@ -31,7 +31,7 @@ static void* _createFCCEventHandler(const char*) {
   return h;
 }
 
-DECLARE_CONSTRUCTOR(DD4hep_FCCEventHandler, _createFCCEventHandler)
+DECLARE_CONSTRUCTOR(DDEve_FCCEventHandler, _createFCCEventHandler)
 
 namespace vis {
 
