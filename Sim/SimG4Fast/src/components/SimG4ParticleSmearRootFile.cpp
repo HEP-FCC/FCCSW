@@ -4,11 +4,12 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/IRndmGen.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 //ROOT
 #include "TFile.h"
-#include "TList.h"
-#include "TGraph.h"
+#include "TTree.h"
+#include "TArray.h"
 
 //CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
@@ -20,13 +21,21 @@ SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, 
     GaudiTool(type, name, parent),
     m_maxEta(0) {
   declareInterface<ISimG4ParticleSmearTool>(this);
+  declareProperty("detectorNames", m_volumeNames);
   declareProperty("filename", m_resolutionFileName);
+  declareProperty("minP", m_minP = 0);
+  declareProperty("maxP", m_maxP = 0);
+  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4ParticleSmearRootFile::~SimG4ParticleSmearRootFile() {}
 
 StatusCode SimG4ParticleSmearRootFile::initialize() {
   if(GaudiTool::initialize().isFailure()) {
+    return StatusCode::FAILURE;
+  }
+  if(m_volumeNames.size() == 0) {
+    error() << "No detector name is specified for the parametrisation" << endmsg;
     return StatusCode::FAILURE;
   }
   m_randSvc = service("RndmGenSvc");
@@ -55,13 +64,8 @@ StatusCode SimG4ParticleSmearRootFile::smearMomentum( CLHEP::Hep3Vector& aMom, i
   return StatusCode::SUCCESS;
 }
 
-StatusCode SimG4ParticleSmearRootFile::smearEnergy( double& /*aEn*/, int /*aPdg*/) {
-  warning()<<"Root file smearing is meant to be used with tracker only,"<<endmsg;
-  warning()<<"hence smearing can be performed for the momentum only!"<<endmsg;
-  return StatusCode::FAILURE;
-}
-
 StatusCode SimG4ParticleSmearRootFile::readResolutions() {
+  // check if file exists
   if (m_resolutionFileName.empty()) {
     error() << "Name of the resolution file not set" << endmsg;
     return StatusCode::FAILURE;
@@ -71,20 +75,79 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
     error() << "Couldn't open the resolution file" << endmsg;
     return StatusCode::FAILURE;
   }
-  TObjLink *lnk = f.GetListOfKeys()->FirstLink();
-  double lowEta=0, highEta=0;
-  debug()<<"Reading from resolutions file: "<<f.GetName()<<endmsg;
-  while(lnk) {
-    if(sscanf(lnk->GetObject()->GetName(), "etafrom%lf_etato%lf", &lowEta, &highEta)==2) {
-      m_momentumResolutions[highEta] = std::unique_ptr<TGraph>((TGraph*)f.Get(lnk->GetObject()->GetName())->Clone());
-    }
-    lnk=lnk->Next();
+  // check the proper file structure
+  if(! (f.GetListOfKeys()->Contains("info") && f.GetListOfKeys()->Contains("resolutions") )) {
+    error()<<"Resolution file "<<m_resolutionFileName<<" does not contain trees <<info>> and <<resolutions>>"<<endmsg;
+    return StatusCode::FAILURE;
   }
-  m_maxEta = (--m_momentumResolutions.end())->first;
-  debug()<<"maximum pseudorapidity value of the read resolutions: "<<m_maxEta<<endmsg;
+  // retrieve the pseudorapidity and momentum values for which the resolutions are defined
+  TTree* infoTree = dynamic_cast<TTree*>(f.Get("info"));
+  // check the proper tree structure
+  if(! (infoTree->GetListOfBranches()->Contains("eta") && infoTree->GetListOfBranches()->Contains("p") )) {
+    error()<<"Resolution file "<<m_resolutionFileName<<" does not contain tree <<info>>"
+           <<" with branches <<eta>> and <<p>>"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  TArrayD* readEta = nullptr;
+  TArrayD* readP = nullptr;
+  infoTree->SetBranchAddress("eta",&readEta);
+  infoTree->SetBranchAddress("p",&readP);
+  infoTree->GetEntry(0);
+  int binsEta = readEta->GetSize();
+  int binsP = readP->GetSize();
+  double minP = readP->At(0);
+  double maxP = readP->At(binsP-1);
+  double maxEta = readEta->At(binsEta-1);
+  info()<<"Reading the resolutions from file: "<<f.GetName()<<endmsg;
+  info()<<"\tMinimum momentum with resolutions defined: "<<minP<<" GeV"<<endmsg;
+  info()<<"\tMaximum momentum with resolutions defined: "<<maxP<<" GeV"<<endmsg;
+  info()<<"\tMaximum pseudorapidity with resolutions defined: "<<maxEta<<endmsg;
+
+  // check if thresholds for fast sim are not broader than values for which resolutions are defined
+  if(m_minP/Gaudi::Units::GeV < minP) {
+    error()<<"Minimum trigger momentum defined in tool properties ("<<m_minP/Gaudi::Units::GeV<<" GeV)"
+           <<" is smaller then the minimal momentum from ROOT file("<<minP<<" GeV)"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_maxP == 0)  {
+    error()<<"Maximum trigger momentum not defined in tool properties."<<endmsg;
+    return StatusCode::FAILURE;
+  } else if (m_maxP/Gaudi::Units::GeV > maxP) {
+    error()<<"Maximum trigger momentum defined in tool properties ("<<m_maxP/Gaudi::Units::GeV<<" GeV)"
+           <<" is larger then the maximal momentum from ROOT file("<<maxP<<" GeV)"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  if(m_maxEta > 0 && m_maxEta > maxEta) {
+    error()<<"Maximum trigger pseudorapidity defined in tool properties ("<<m_maxEta<<")"
+           <<" is larger then the maximal eta from ROOT file("<<maxEta<<")"<<endmsg;
+    return StatusCode::FAILURE;
+  } else {
+    m_maxEta = maxEta;
+    info()<<"No maximum pseudorapidity defined. Using the maximum pseudorapidity defined in the file: "<<maxEta<<endmsg;
+  }
+
+// retrieve the resolutions in bins of eta and for momentum values
+  TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
+// check the proper tree structure
+  if(! (resolutionTree->GetListOfBranches()->Contains("resolution"))) {
+    error()<<"Resolution file "<<m_resolutionFileName<<" does not contain tree <<resolutions>>"
+           <<" with branch <<resolution>>"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  TArrayD* readRes = nullptr;
+  resolutionTree->SetBranchAddress("resolution",&readRes);
+  for(int itEta=0; itEta<binsEta; itEta++) {
+    resolutionTree->GetEntry(itEta);
+    m_momentumResolutions[readEta->At(itEta)] = TGraph(binsP, readP->GetArray(), readRes->GetArray());
+    if(msgLevel(MSG::DEBUG)) {
+      debug()<<"resolutions for eta ("<<(itEta==0?0:readEta->At(itEta-1))<<", "<<readEta->At(itEta)<<"): \n";
+      for (int iP=0; iP<binsP; ++iP) {
+        debug()<<"(p = "<<readP->At(iP)<<" GeV) -> "<<readRes->At(iP)<<" %\t";
+      }
+      debug()<<endmsg;
+    }
+  }
   f.Close();
-  // TODO here sort map in eta to make sure it is increasing
-  // (it is now because of the way it is produced, but one never knows...)
   return StatusCode::SUCCESS;
 }
 
@@ -95,7 +158,7 @@ double SimG4ParticleSmearRootFile::resolution(double aEta, double aMom) {
 
   for(auto& m: m_momentumResolutions) {
     if(fabs(aEta)<m.first) {
-      return m.second.get()->Eval(aMom);
+      return m.second.Eval(aMom);
     }
   }
   return 0;

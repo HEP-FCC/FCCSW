@@ -15,7 +15,7 @@ SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL):
   declareProperty("detector", m_detectorTool);
   declarePrivateTool(m_detectorTool, "SimG4DD4hepDetector", true);
   declareProperty("physicslist", m_physicsListTool);
-  declarePrivateTool(m_physicsListTool, "G4FTFP_BERT", true);
+  declarePrivateTool(m_physicsListTool, "SimG4FtfpBert", true);
   declareProperty("actions", m_actionsTool);
   declarePrivateTool(m_actionsTool, "SimG4FullSimActions", true);
   declareProperty("magneticField", m_magneticFieldTool);

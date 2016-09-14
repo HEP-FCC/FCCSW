@@ -28,6 +28,7 @@ class G4Event;
  *  retrieves it after the finished simulation, and stores the output as specified in tools.
  *  It takes MCParticleCollection (\b'genParticles') as the input
  *  as well as a list of names of tools that define the EDM output (\b'outputs').
+ *  [For more information please see](@ref md_sim_doc_geant4fullsim).
  *
  *  @author Anna Zaborowska
  */

@@ -26,13 +26,14 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 from Configurables import GeoSvc
 ## parse the given xml file
-geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhTrackerParametric/compact/ParametricSimTrackerStandalone.xml'])
+geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
+                                         'file:Detector/DetCommon/compact/TrackerAir.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimActions, SimG4ParticleSmearFormula
 ## create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearFormula("Smear", resolutionMomentum = "0.013")
+smeartool = SimG4ParticleSmearFormula("Smear", detectorNames=["TrackerEnvelopeBarrel"], resolutionMomentum = "0.013")
 ## create actions initialization tool
 actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
 ## create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process

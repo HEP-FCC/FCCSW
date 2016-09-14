@@ -7,7 +7,7 @@ gaudi_subdir(Examples v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Interface Detector/DetInterface)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
-find_package(DD4hep COMPONENTS DDG4)
+find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
 include(DD4hep)
 find_package(Geant4)
 find_package(ACTS COMPONENTS Core Examples)
@@ -15,7 +15,7 @@ find_package(ACTS COMPONENTS Core Examples)
 gaudi_add_module(Examples
                  src/*.cpp
 		           INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface ACTS::ACTSCore ACTS::ACTSExamples
-                 LINK_LIBRARIES GaudiAlgLib FWCore ROOT GaudiKernel DD4hep Geant4 ACTS::ACTSCore ACTS::ACTSExamples)
+                 LINK_LIBRARIES GaudiAlgLib FWCore ROOT GaudiKernel DD4hep ${DD4hep_COMPONENT_LIBRARIES} Geant4 ACTS::ACTSCore ACTS::ACTSExamples)
 
 
 include(CTest)
@@ -67,6 +67,10 @@ gaudi_add_test(ExampleOptions
                FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
+gaudi_add_test(PrintOverlaps
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/printOverlaps.py
+               PASSREGEX "Number of illegal overlaps/extrusions : 0" )
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile

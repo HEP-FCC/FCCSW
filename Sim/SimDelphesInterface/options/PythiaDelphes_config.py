@@ -7,7 +7,7 @@
 ##  - GAUDI run in a mode: Pythia + Delphes or Delphes only (if delphesHepMCInFile defined)
 ##  - define variables & delphes sim outputs
 ##
-##  - inputs: 
+##  - inputs:
 ##    * Define pythiaConfFile -> configure Pythia parameters & input (simulate or read LHE file)
 ##    * Define delphesCard -> describe detector response & configure Delphes - process modules, detector parameters etc.
 ##    * Define delphesHepMCInFile -> read Delphes input from hepMC file (if Pythia not used)
@@ -17,8 +17,8 @@
 ##    * Define delphesRootOutFile -> write output using Delphes I/O library (Delphes objects)
 ##    * Undefine ("") delphesRootOutFile -> no output using Delphes I/O library
 ##    * Define out module to write output using FCC-EDM lib (standard FCC output)
-##   
-##  - run: 
+##
+##  - run:
 ##    * ./run gaudirun.py config/PythiaDelphes_config.py
 ##
 
@@ -27,9 +27,17 @@ To run Pythia together with Delphes
 > export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
 > ./run gaudirun.py PythiaDelphes_config.py
 """
+import sys
 from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc
+from Configurables import DelphesSaveGenJets, DelphesSaveJets, DelphesSaveMet
+from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticles
+
+def apply_paths(obj, names):
+  """ Applies the collection names to the Paths of DataOutputs """
+  for attr, name in names.iteritems():
+    getattr(obj.DataOutputs, attr).Path = name
 
 ############################################################
 #
@@ -38,42 +46,49 @@ from Configurables import ApplicationMgr, FCCDataSvc
 ############################################################
 
 ## N-events
-nEvents=10
+nEvents=1000
 
 ## Message level
 messageLevelPythia =INFO
-messageLevelDelphes=DEBUG
-messageLevelOut    =DEBUG
+messageLevelDelphes=INFO
+messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
-#pythiaConfFile="Generation/data//Pythia_standard.cmd"
+pythiaConfFile="Generation/data//Pythia_ttbar.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
-pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
+#pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
 delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
-##  - if hepMC file not defined --> data read-in from Gaudi data store (Inputs)
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
-delphesHepMCInFile=""
+# delphesRootOutFile="delphesOutput.root"
 delphesRootOutFile=""
-#delphesHepMCInFile="data/ZLEP_toAll.hepmc"
-#delphesRootOutFile="DelphesOutput.root"
 
-## Define Delphes output arrays to be processed as FCC-EDM ??? particles (muons, electrons, etc.) -> 
-## various Delphes modules provide the same type of particle with different level of processing ...
-## Needed due to required output to FCC-EDM!
-delphesMuonsOutArray    ="MuonIsolation/muons"
-delphesElectronsOutArray="ElectronIsolation/electrons"
-delphesChargedOutArray  ="ChargedHadronMomentumSmearing/chargedHadrons"
-delphesNeutralOutArray  ="HCal/eflowNeutralHadrons"
-delphesPhotonsOutArray  ="PhotonIsolation/photons"
-delphesGenJetsOutArray  ="GenJetFinder/jets" 
-delphesJetsOutArray     ="JetEnergyScale/jets"
-delphesMETsOutArray     ="MissingET/momentum"
-delphesSHTsOutArray     ="ScalarHT/energy"
+## This map defines the names of the output collections. The key of the top level dict corresponds to the output tool name
+# The second level key - value corresponds to output-type - collection-name. NOTE: Do only change the values, not the keys.
+out_names = {
+    # Muon output tool
+    "muons": {"particles": "muons", "mcAssociations": "muonsToMC", "isolationTags": "muonITags", "isolationAssociations": "muonsToITags"},
+    # Electron output tool
+    "electrons": {"particles": "electrons", "mcAssociations": "electronsToMC", "isolationTags": "electronITags", "isolationAssociations": "electronsToITags"},
+    # Charged hadron output tool
+    "charged": {"particles": "charged", "mcAssociations": "chargedToMC"},
+    # Neutral hadron output tool
+    "neutral": {"particles": "neutral", "mcAssociations": "neutralToMC"},
+    # Photons output tool
+    "photons": {"particles": "photons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags", "isolationAssociations": "photonsToITags"},
+    # GenJets output tool
+    "genJets": {"genJets": "genJets", "mcAssociations": "genJetsToMC", "jetFlavorTags": "genJetsFlavor", "jetFlavorAssociations": "genJetsToFlavor"},
+    # Jets output tool
+    "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetConstituentAssociations": "jetsToParts", "jetFlavorTags": "jetsFlavor",
+             "jetFlavorTagAssociations": "jetsToFlavor", "bTags": "bTags", "cTags": "cTags", "tauTags": "tauTags",
+             "jetBTagAssociations": "jetsToBTags", "jetCTagAssociations": "jetsToCTags", "jetTauTagAssociations": "jetsToTauTags"},
+    # Missing transverse energy output tool
+    "met": {"missingEt": "met"}
+    }
 
 ## Data event model based on Podio
 podioEvent=FCCDataSvc("EventDataSvc")
@@ -83,6 +98,30 @@ podioEvent=FCCDataSvc("EventDataSvc")
 # Expert: Configure individual modules (algorithms)
 #
 ############################################################
+# Define all output tools that convert the Delphes collections to FCC-EDM:
+muonSaveTool = DelphesSaveChargedParticles("muons", delphesArrayName="MuonIsolation/muons")
+apply_paths(muonSaveTool, out_names["muons"])
+
+eleSaveTool = DelphesSaveChargedParticles("electrons", delphesArrayName="ElectronIsolation/electrons")
+apply_paths(eleSaveTool, out_names["electrons"])
+
+chhadSaveTool = DelphesSaveChargedParticles("charged", delphesArrayName="ChargedHadronMomentumSmearing/chargedHadrons", saveIsolation=False)
+apply_paths(chhadSaveTool, out_names["charged"])
+
+neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
+apply_paths(neuthadSaveTool, out_names["neutral"])
+
+photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonIsolation/photons")
+apply_paths(photonsSaveTool, out_names["photons"])
+
+genJetSaveTool = DelphesSaveGenJets("genJets", delphesArrayName="GenJetFinder/jets")
+apply_paths(genJetSaveTool, out_names["genJets"])
+
+jetSaveTool = DelphesSaveJets("jets", delphesArrayName="JetEnergyScale/jets")
+apply_paths(jetSaveTool, out_names["jets"])
+
+metSaveTool = DelphesSaveMet("met", delphesMETArrayName="MissingET/momentum", delphesSHTArrayName="ScalarHT/energy")
+apply_paths(metSaveTool, out_names["met"])
 
 ## Pythia generator
 from Configurables import PythiaInterface
@@ -93,55 +132,20 @@ pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
 from Configurables import DelphesSimulation
-delphessim = DelphesSimulation(DelphesCard      =delphesCard,
-                               HepMCInputFile   =delphesHepMCInFile,
-                               ROOTOutputFile   =delphesRootOutFile,
-                               MuonsOutArray    =delphesMuonsOutArray,
-                               ElectronsOutArray=delphesElectronsOutArray,
-                               ChargedOutArray  =delphesChargedOutArray,
-                               NeutralOutArray  =delphesNeutralOutArray,
-                               PhotonsOutArray  =delphesPhotonsOutArray,
-                               GenJetsOutArray  =delphesGenJetsOutArray,
-                               JetsOutArray     =delphesJetsOutArray,
-                               METsOutArray     =delphesMETsOutArray,
-                               SHTsOutArray     =delphesSHTsOutArray,  
-                               OutputLevel      =messageLevelDelphes)
+delphessim = DelphesSimulation(DelphesCard=delphesCard,
+                               ROOTOutputFile=delphesRootOutFile,
+                               OutputLevel=messageLevelDelphes,
+                               outputs=["DelphesSaveChargedParticles/muons",
+                                        "DelphesSaveChargedParticles/electrons",
+                                        "DelphesSaveChargedParticles/charged",
+                                        "DelphesSaveNeutralParticles/photons",
+                                        "DelphesSaveNeutralParticles/neutral",
+                                        "DelphesSaveGenJets/genJets",
+                                        "DelphesSaveJets/jets",
+                                        "DelphesSaveMet/met"])
 delphessim.DataInputs.hepmc.Path               = "hepmc"
 delphessim.DataOutputs.genParticles.Path       = "genParticles"
 delphessim.DataOutputs.genVertices.Path        = "genVertices"
-delphessim.DataOutputs.genJets.Path            = "genJets"
-delphessim.DataOutputs.genJetsFlavor.Path      = "genJetsFlavor"
-delphessim.DataOutputs.muons.Path              = "muons"
-delphessim.DataOutputs.muonITags.Path          = "muonITags"
-delphessim.DataOutputs.electrons.Path          = "electrons"
-delphessim.DataOutputs.electronITags.Path      = "electronITags"
-delphessim.DataOutputs.charged.Path            = "charged"
-delphessim.DataOutputs.neutral.Path            = "neutral"
-delphessim.DataOutputs.photons.Path            = "photons"
-delphessim.DataOutputs.photonITags.Path        = "photonITags"
-delphessim.DataOutputs.jets.Path               = "jets"
-delphessim.DataOutputs.jetParts.Path           = "jetParts"
-delphessim.DataOutputs.jetsFlavor.Path         = "jetsFlavor"
-delphessim.DataOutputs.bTags.Path              = "bTags"
-delphessim.DataOutputs.cTags.Path              = "cTags"
-delphessim.DataOutputs.tauTags.Path            = "tauTags"
-delphessim.DataOutputs.met.Path                = "met"
-delphessim.DataOutputs.genJetsToMC.Path        = "genJetsToMC"
-delphessim.DataOutputs.genJetsToFlavor.Path    = "genJetsToFlavor"
-delphessim.DataOutputs.muonsToMC.Path          = "muonsToMC"
-delphessim.DataOutputs.muonsToITags.Path       = "muonsToITags"
-delphessim.DataOutputs.electronsToMC.Path      = "electronsToMC"
-delphessim.DataOutputs.electronsToITags.Path   = "electronsToITags"
-delphessim.DataOutputs.chargedToMC.Path        = "chargedToMC"
-delphessim.DataOutputs.neutralToMC.Path        = "neutralToMC"
-delphessim.DataOutputs.photonsToMC.Path        = "photonsToMC"
-delphessim.DataOutputs.photonsToITags.Path     = "photonsToITags"
-delphessim.DataOutputs.jetsToParts.Path        = "jetsToParts"
-delphessim.DataOutputs.jetsToFlavor.Path       = "jetsToFlavor"
-delphessim.DataOutputs.jetsToBTags.Path        = "jetsToBTags"
-delphessim.DataOutputs.jetsToCTags.Path        = "jetsToCTags"
-delphessim.DataOutputs.jetsToTauTags.Path      = "jetsToTauTags" 
-
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput
 
@@ -161,15 +165,7 @@ out.outputCommands = ["keep *"]
 ############################################################
 
 # Run Pythia + Delphes
-if delphesHepMCInFile == "":
-  ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
-                  EvtSel = 'NONE',
-                  EvtMax = nEvents,
-                  ExtSvc = [podioEvent])
-# Run only Delphes - hepmc input file provided
-else:
- ApplicationMgr( TopAlg = [ delphessim, out ],
-                  EvtSel = 'NONE',
-                  EvtMax = nEvents,
-                  ExtSvc = [podioEvent])
-
+ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
+                EvtSel = 'NONE',
+                EvtMax = nEvents,
+                ExtSvc = [podioEvent])

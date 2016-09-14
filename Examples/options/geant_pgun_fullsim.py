@@ -36,7 +36,9 @@ from Configurables import GeoSvc
 ## DD4hep geometry service
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
+                                         'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml',
+                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml',
+                                         'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
@@ -51,20 +53,19 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4SaveCalHits, SimG
 # first, create a tool that saves the tracker hits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
+savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
 savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
-# and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveHCalHits"
-savehcaltool = SimG4SaveCalHits("saveHCalHits", caloType = "HCal")
+# and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
+savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["BarECal_Readout","BarHCal_Readout"])
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits",
-                               "SimG4SaveCalHits/saveHCalHits"],
+                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveCalHits"],
                     eventProvider=particle_converter)
 
 from Configurables import PodioOutput

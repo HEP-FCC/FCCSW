@@ -19,6 +19,6 @@ public:
   DeclareInterfaceID(IVertexSmearingTool, 1, 0);
 
   /// Smear the vertex of the interaction (independantly of the others)
-  virtual StatusCode smearVertex( HepMC::GenEvent * theEvent ) = 0 ;
+  virtual StatusCode smearVertex( HepMC::GenEvent& theEvent ) = 0 ;
 };
 #endif // GENERATION_ISMEARINGTOOL_H
