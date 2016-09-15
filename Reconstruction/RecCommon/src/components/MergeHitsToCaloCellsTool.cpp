@@ -33,7 +33,7 @@ StatusCode MergeHitsToCaloCellsTool::initialize() {
   if (sc.isFailure()) return sc;
   info() << "MergeHitsToCaloCellsTool initialized" << endmsg;
 
-  m_readoutName = "ECalHitsNew";
+  m_readoutName = "ECalHitsPhiEta";
   m_geoSvc = service ("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
@@ -80,7 +80,8 @@ void MergeHitsToCaloCellsTool::DoMerge(const fcc::CaloHitCollection& aHits, std:
       aCells.at(it->second)->Core().Bits = ehit.Core().Bits;
     }
     else {
-	info() << "CellID not foundl!!!! " << cellID << " " << m_decoder->valueString() << endmsg;    
+      m_decoder->setValue(cellID);
+      info() << "CellID not foundl!!!! " << cellID << " " << m_decoder->valueString() << endmsg;    
     }
   }
 

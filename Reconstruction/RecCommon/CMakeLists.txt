@@ -11,7 +11,7 @@ find_package(ROOT COMPONENTS Physics)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(HepMC)
-find_package(DD4hep COMPONENTS DDSegmentation DDRec)
+find_package(DD4hep COMPONENTS DDSegmentation)
 find_package(Geant4)
 
 gaudi_add_library(RecCommon

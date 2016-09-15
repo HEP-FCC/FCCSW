@@ -19,8 +19,8 @@ DECLARE_TOOL_FACTORY(PrepareEmptyCaloCellsTool)
 PrepareEmptyCaloCellsTool::PrepareEmptyCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
   : GaudiTool(type, name, parent)
 {
-  declareProperty("readoutName", m_readoutName, "ECalHitsNew");
-  declareProperty("fieldName", m_fieldName,"r_layer_active");
+  declareProperty("readoutName", m_readoutName, "ECalHitsPhiEta");
+  declareProperty("fieldName", m_fieldName,"active_layer");
   declareInterface<IPrepareEmptyCaloCellsTool>(this);
 }
 
@@ -59,23 +59,22 @@ StatusCode PrepareEmptyCaloCellsTool::initialize() {
 
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  //info() << "Number of modules whose name matches " << m_volumeMatchName << ": \t" <<det::utils::countPlacedVolumes(highestVol, m_volumeMatchName) << endmsg;
+  info() << "Number of modules whose name matches " << m_volumeMatchName << ": \t" <<det::utils::countPlacedVolumes(highestVol, m_volumeMatchName) << endmsg;
   //ECAL specific: substract bath volume
   unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_volumeMatchName)-1;
 
   //VolumeID
   for (unsigned int ilayer = 0; ilayer<numLayers; ilayer++) {
-    (*m_decoder)["system"] = 0;
-    (*m_decoder)["cryo"] = 1;
+    (*m_decoder)["system"] = 5;
+    (*m_decoder)["ECAL_Cryo"] = 1;
     (*m_decoder)["bath"] = 1;
     (*m_decoder)["EM_barrel"] = 1;
-    (*m_decoder)["r_layer_passive"] = 0;
-    (*m_decoder)["r_layer_active"] = ilayer+1;
+    (*m_decoder)["active_layer"] = ilayer+1;
     m_volumeId = m_decoder->getValue();
-    //info()<<"volumeID <<"<<m_volumeId<<endmsg;
+    info()<<"volumeID <<"<<m_volumeId<<endmsg;
  
     if(m_segmentation != nullptr) {
-      //info()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(m_volumeId, *m_segmentation)<<endmsg;
+      info()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(m_volumeId, *m_segmentation)<<endmsg;
     
       auto numCells = det::utils::numberOfCells(m_volumeId, *m_segmentation);
       //info()<<"numCells: eta " << numCells[0] << " phi " << numCells[1]<<endmsg;

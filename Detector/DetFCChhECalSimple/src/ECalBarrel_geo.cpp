@@ -63,7 +63,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   lLog << MSG::DEBUG << "ECAL: Filling cryostat with active medium from " << cryo_dims.rmin()+cryo_thickness << " to " << cryo_dims.rmax()-cryo_thickness << endmsg;
   Volume bathVol(active_mat, bathShape, lcdd.material(active_mat));
   PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
-  placedBath.addPhysVolID("bath", 0);
+  placedBath.addPhysVolID("bath", 1);
   calo_bath.setPlacement(placedBath);
 
   // Step 3 : create the actual calorimeter
