@@ -1,5 +1,5 @@
-#ifndef RECONSTRUCTION_NOISECALOCELLSTOOL_H
-#define RECONSTRUCTION_NOISECALOCELLSTOOL_H
+#ifndef RECCALORIMETER_NOISECALOCELLSTOOL_H
+#define RECCALORIMETER_NOISECALOCELLSTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -12,13 +12,14 @@ class IRndmGenSvc;
 /** @class NoiseCaloCellsTool
  *
  *  Tool for calorimeter noise: Adds gaussian noise to each cell
- *  Noise defined by a single value - rms of the noise, same for each cell
+ *  Noise defined by a single value - sigma of the noise, same for each cell
  *  TODO: 
- *     - noise dependence on the size of the cell
+ *     - noise dependence on the size of the cell, position in eta & r
  *     - read noise from DB when available
  *
  *  @author Jana Faltova
- *  @date   2016-08
+ *  @date   2016-09
+ *
  */
 
 class NoiseCaloCellsTool : public GaudiTool, virtual public INoiseCaloCellsTool 
@@ -33,7 +34,7 @@ public:
   virtual void AddNoise(std::vector<fcc::CaloHit*>& aCells) final; 
 
 private:
-  //Value of cell noise (to be read from DB)
+  /// Sigma of noise
   double m_cellNoise;
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
@@ -41,4 +42,4 @@ private:
   Rndm::Numbers m_gauss;
 };
 
-#endif /* RECONSTRUCTION_NOISECALOCELLSTOOL_H */
+#endif /* RECCALORIMETER_NOISECALOCELLSTOOL_H */

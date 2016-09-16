@@ -1,5 +1,5 @@
-#ifndef RECONSTRUCTION_MERGEHITSTOCALOCELLSTOOL_H
-#define RECONSTRUCTION_MERGEHITSTOCALOCELLSTOOL_H
+#ifndef RECCALORIMETER_MERGEHITSTOCALOCELLSTOOL_H
+#define RECCALORIMETER_MERGEHITSTOCALOCELLSTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -23,12 +23,10 @@ namespace DDSegmentation {
 
 /** @class MergeHitsToCaloCellsTool
  *
- *  Tool for merging Geant4 hits with the same cellID to a given cell
- *  TODO: 
- *     - use map instead of the second for-loop
- *       (std::unordered_map<int, fcc::CaloHit> cellIdMap;)
+ *  Tool for merging Geant4 hits with the same cellID to a cell
  *  @author Jana Faltova
- *  @date   2016-08
+ *  @date   2016-09
+ *
  */
 
 
@@ -39,7 +37,7 @@ public:
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
-  //Merge Geant4 energy deposits (calohits) into cells (m_vectorCells)
+  /// Merge Geant4 energy deposits (aHits) into cells (aCells)
   virtual void DoMerge(const fcc::CaloHitCollection& aHits, std::vector<fcc::CaloHit*>& aCells) final;
 private:
   /// Name of the detector readout
@@ -48,8 +46,9 @@ private:
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
+  /// BitField decoder
   std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
 
 };
 
-#endif /* RECONSTRUCTION_MERGEHITSTOCALOCELLSTOOL_H */
+#endif /* RECCALORIMETER_MERGEHITSTOCALOCELLSTOOL_H */

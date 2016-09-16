@@ -17,13 +17,12 @@ CalibrateCaloCellsTool::~CalibrateCaloCellsTool()
 StatusCode CalibrateCaloCellsTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  info() << "CalibrateCaloCellsTool initialized" << endmsg;
-  info() << "1/sampling fraction: " << m_sf << endmsg;
+  info() << "Calibration constant: 1/sampling fraction=" << m_sf << endmsg;
   return sc;
 }
 
 void CalibrateCaloCellsTool::Calibrate(std::vector<fcc::CaloHit*>& aCells) {
-  //info() << "Energy " << cellEnergy << " sf " << m_sf << endmsg; 
+  //Loop through cells with Geant4 energy deposits, multiply energy to get cell energy at EM scale
   for (auto& ecells : aCells) {
     ecells->Core().Energy *= m_sf;
   }
@@ -31,6 +30,5 @@ void CalibrateCaloCellsTool::Calibrate(std::vector<fcc::CaloHit*>& aCells) {
 
 StatusCode CalibrateCaloCellsTool::finalize() {
   StatusCode sc = GaudiTool::finalize();
-  info() << "CalibrateCaloCellsTool finalized" << endmsg;
   return sc;
 }

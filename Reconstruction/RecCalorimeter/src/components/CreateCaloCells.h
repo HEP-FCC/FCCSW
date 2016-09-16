@@ -1,5 +1,5 @@
-#ifndef RECONSTRUCTION_CREATECALOCELLS_H
-#define RECONSTRUCTION_CREATECALOCELLS_H
+#ifndef RECCALORIMETER_CREATECALOCELLS_H
+#define RECCALORIMETER_CREATECALOCELLS_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
@@ -11,10 +11,19 @@
 #include "RecInterface/ICalibrateCaloCellsTool.h"
 #include "RecInterface/INoiseCaloCellsTool.h"
 
-// our EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloHit.h"
-
+/** @class CreateCaloCells
+ *
+ *  Algorithm for creating calorimeter cells from Geant4 hits. 
+ *  Calls these tools:
+ *    - PrepareEmptyCaloCellsTool (prepares a vector of all calorimeter cells with their cellID)
+ *    - MergeHitsToCaloCellsTool (merges Geant4 hits into calorimeter cells with same cellID)
+ *    - CalibrateCaloCellsTool (calibrate Geant4 energy to EM scale, switch available for this tool)
+ *    - NoiseCaloCellsTool (adds noise to calorimeter cells)
+ *
+ *  @author Jana Faltova
+ *  @date   2016-09
+ *
+ */
 
 class CreateCaloCells : public GaudiAlgorithm 
 {
@@ -30,16 +39,18 @@ public:
   StatusCode finalize();
 
 private:
-  //Tool for preparing empty calo cells
+  /// Handle for preparing empty calo cells tool
   ToolHandle<IPrepareEmptyCaloCellsTool> m_prepareTool;
-  //Tool for merging Geant4 hits to cells
+  /// Handle for merging Geant4 hits to cells tool
   ToolHandle<IMergeHitsToCaloCellsTool> m_mergeTool;
-  //Handle for calibration Geant4 energy to EM scale tool
+  /// Handle for calibration Geant4 energy to EM scale tool
   ToolHandle<ICalibrateCaloCellsTool> m_calibTool;
   /// Handle for the calorimeter cells noise tool
   ToolHandle<INoiseCaloCellsTool> m_noiseTool;
 
+  /// Calibrate to EM scale?
   bool m_doCellCalibration;
+  /// Add noise to cells?
   bool m_addCellNoise;
   /// Handle for calo hits (input collection)
   DataHandle<fcc::CaloHitCollection> m_caloHits;
@@ -47,4 +58,4 @@ private:
   DataHandle<fcc::CaloHitCollection> m_caloCells;
 };
 
-#endif /* RECONSTRUCTION_CREATECALOCELLS_H */
+#endif /* RECCALORIMETER_CREATECALOCELLS_H */

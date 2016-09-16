@@ -2,24 +2,16 @@
 
 //FCCSW
 #include "DetInterface/IGeoSvc.h"
-#include "DetCommon/DetUtils.h"
-
-// our EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloHit.h"
-
-#include <vector>
-#include <unordered_map>
 
 // DD4hep
 #include "DD4hep/LCDD.h"
-#include "DDSegmentation/Segmentation.h"
 
 DECLARE_TOOL_FACTORY(MergeHitsToCaloCellsTool)
 
 MergeHitsToCaloCellsTool::MergeHitsToCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
   : GaudiTool(type, name, parent)
 {
+  declareProperty("readoutName", m_readoutName, "ECalHitsPhiEta");
   declareInterface<IMergeHitsToCaloCellsTool>(this);
 
 }
@@ -31,9 +23,7 @@ MergeHitsToCaloCellsTool::~MergeHitsToCaloCellsTool()
 StatusCode MergeHitsToCaloCellsTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  info() << "MergeHitsToCaloCellsTool initialized" << endmsg;
 
-  m_readoutName = "ECalHitsPhiEta";
   m_geoSvc = service ("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
@@ -59,20 +49,20 @@ StatusCode MergeHitsToCaloCellsTool::initialize() {
 
 void MergeHitsToCaloCellsTool::DoMerge(const fcc::CaloHitCollection& aHits, std::vector<fcc::CaloHit*>& aCells) {
 
-  //map: cellID, index in the vector of cells
+  //Prepare a map: cellID, index in the vector of cells
   std::unordered_map<uint64_t, unsigned> cellIdMap;
-
   unsigned index = 0;
-  //Prepare a map
   for (const auto& acells : aCells) {
     int cellID = acells->Core().Cellid;
     cellIdMap[cellID] = index;
-    //info() << "index " << index << " " << acells-aCells.at(0) << endmsg;
     index += 1;
   }
 
+  //Loop through all hits (aHits) and merge the energy in the prepared cells (aCells)
+  //Time and Bits: not used, a copy of the last entry at the moment
+  //If cellID is not found in the vector, write a message with all bitfields
   for (const auto& ehit : aHits) {
-    int cellID = ehit.Core().Cellid;
+    uint64_t cellID = ehit.Core().Cellid;
     auto it = cellIdMap.find(cellID);
     if (it != end(cellIdMap)) {
       aCells.at(it->second)->Core().Energy += ehit.Core().Energy;
@@ -81,7 +71,7 @@ void MergeHitsToCaloCellsTool::DoMerge(const fcc::CaloHitCollection& aHits, std:
     }
     else {
       m_decoder->setValue(cellID);
-      info() << "CellID not foundl!!!! " << cellID << " " << m_decoder->valueString() << endmsg;    
+      info() << "CellID not found!!!! " << cellID << " " << m_decoder->valueString() << endmsg;    
     }
   }
 
@@ -89,6 +79,5 @@ void MergeHitsToCaloCellsTool::DoMerge(const fcc::CaloHitCollection& aHits, std:
 
 StatusCode MergeHitsToCaloCellsTool::finalize() {
   StatusCode sc = GaudiTool::finalize();
-  info() << "MergeHitsToCaloCellsTool finalized" << endmsg;
   return sc;
 }

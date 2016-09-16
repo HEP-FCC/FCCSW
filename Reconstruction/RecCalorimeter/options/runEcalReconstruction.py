@@ -58,7 +58,6 @@ saveclusters.numVolumesRemove="1"
 
 out = PodioOutput("out", filename="output_ecalReco_test.root",
                    OutputLevel=INFO)
-#out.outputCommands = ["keep *", "drop ECalHits", "drop ECalClusters"]
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(

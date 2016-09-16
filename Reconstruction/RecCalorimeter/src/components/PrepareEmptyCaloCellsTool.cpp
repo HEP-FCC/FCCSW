@@ -3,16 +3,9 @@
 //FCCSW
 #include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
-#include "DetSegmentation/GridPhiEta.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
-#include "DDSegmentation/Segmentation.h"
-
-// our EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloHit.h"
-
 
 DECLARE_TOOL_FACTORY(PrepareEmptyCaloCellsTool)
 
@@ -20,7 +13,11 @@ PrepareEmptyCaloCellsTool::PrepareEmptyCaloCellsTool(const std::string& type,con
   : GaudiTool(type, name, parent)
 {
   declareProperty("readoutName", m_readoutName, "ECalHitsPhiEta");
-  declareProperty("fieldName", m_fieldName,"active_layer");
+  declareProperty("activeVolumeName", m_activeVolumeName,"LAr");
+  declareProperty("numVolumesRemove",m_numVolumesRemove,"0");
+  declareProperty("activeFieldName", m_activeFieldName,"active_layer");
+  declareProperty("fieldNames", m_fieldNames);
+  declareProperty("fieldValues", m_fieldValues);
   declareInterface<IPrepareEmptyCaloCellsTool>(this);
 }
 
@@ -32,8 +29,8 @@ StatusCode PrepareEmptyCaloCellsTool::initialize() {
 
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  info() << "PrepareEmptyCaloCellsTool initialized" << endmsg;
 
+  // Get GeoSvc
   m_geoSvc = service ("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
@@ -41,13 +38,14 @@ StatusCode PrepareEmptyCaloCellsTool::initialize() {
     return StatusCode::FAILURE;
   }
  
-  info()<<"Readout: "<<m_readoutName<< " fieldName " << m_fieldName << endmsg;
-  // check if readouts exist
+  // Check if readouts exist
+  info()<<"Readout: "<<m_readoutName<< endmsg;
   if(m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
     error()<<"Readout <<"<<m_readoutName<<">> does not exist."<<endmsg;
     return StatusCode::FAILURE;
   }
 
+  //Get PhiEta segmentation
   m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if(m_segmentation == nullptr) {
     info()<<"There is no phi-eta segmentation."<<endmsg;
@@ -55,44 +53,47 @@ StatusCode PrepareEmptyCaloCellsTool::initialize() {
   // Take readout, bitfield from GeoSvc
   m_decoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(new DD4hep::DDSegmentation::BitField64(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder()->fieldDescription()));
 
-  std::string m_volumeMatchName="LAr";
-
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  info() << "Number of modules whose name matches " << m_volumeMatchName << ": \t" <<det::utils::countPlacedVolumes(highestVol, m_volumeMatchName) << endmsg;
-  //ECAL specific: substract bath volume
-  unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_volumeMatchName)-1;
+  // Substract volumes with same name as the active layers (e.g. ECAL: bath volume)
+  unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName)-m_numVolumesRemove;
+  info() << "Number of active layers " << numLayers << endmsg;
 
-  //VolumeID
+  // Check if size of names and values of readout fields agree
+  if(m_fieldNames.size() != m_fieldValues.size()) {
+      error() << "Size of names and values is not the same" << endmsg;
+    return StatusCode::FAILURE;
+  }
+
+  // Loop over all cells in the calorimeter, create CaloHits objects with cellID(all other properties set to 0)
+  // Loop over active layers
   for (unsigned int ilayer = 0; ilayer<numLayers; ilayer++) {
-    (*m_decoder)["system"] = 5;
-    (*m_decoder)["ECAL_Cryo"] = 1;
-    (*m_decoder)["bath"] = 1;
-    (*m_decoder)["EM_barrel"] = 1;
-    (*m_decoder)["active_layer"] = ilayer+1;
+    //Get VolumeID
+    for(uint it=0; it<m_fieldNames.size(); it++) {
+      (*m_decoder)[m_fieldNames[it]] = m_fieldValues[it];
+    }
+    (*m_decoder)[m_activeFieldName] = ilayer+1;
     m_volumeId = m_decoder->getValue();
-    info()<<"volumeID <<"<<m_volumeId<<endmsg;
- 
-    if(m_segmentation != nullptr) {
-      info()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(m_volumeId, *m_segmentation)<<endmsg;
     
+    if(m_segmentation != nullptr) {
+      debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(m_volumeId, *m_segmentation)<<endmsg;
+      //Number of cells in the volume
       auto numCells = det::utils::numberOfCells(m_volumeId, *m_segmentation);
-      //info()<<"numCells: eta " << numCells[0] << " phi " << numCells[1]<<endmsg;
-      
+      debug()<<"numCells: eta " << numCells[0] << " phi " << numCells[1]<<endmsg;
+      //Loop over segmenation
       for (int ieta = -floor(numCells[0]*0.5); ieta<numCells[0]*0.5; ieta++) {
 	for (int iphi = -floor(numCells[1]*0.5); iphi<numCells[1]*0.5; iphi++) {
 	  (*m_decoder)["eta"] = ieta;
 	  (*m_decoder)["phi"] = iphi;
 	  m_cellId = m_decoder->getValue();
-	  //info()<<"cellID <<"<<m_cellId<<endmsg;
-
+	 
 	  fcc::CaloHit *newCell = new fcc::CaloHit();
 	  newCell->Core().Cellid = m_cellId;
 	  newCell->Core().Energy = 0;     
 	  newCell->Core().Time = 0;
 	  newCell->Core().Bits = 0;
 	  m_caloCellsCollection.push_back(newCell);
-	  //info() << "ieta " << ieta << " iphi " << iphi << " decoder " << m_decoder->valueString() << " cellID " << m_cellId << " celID " << newCell->Core().Cellid << endmsg; 
+	  debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << m_decoder->valueString() << " cellID " << m_cellId << endmsg; 
 	}
       }
       
@@ -114,15 +115,13 @@ std::vector<fcc::CaloHit*> PrepareEmptyCaloCellsTool::PrepareEmptyCells() {
     ecell->Core().Time = 0;
     ecell->Core().Bits = 0;
     caloCellsCollection.push_back(ecell);
-    //info() << " cellID " <<ecell->Core().Cellid << " energy " << ecell->Core().Energy << endmsg; 
   }
-  // info()<<"CaloCells size: "<<caloCellsCollection.size()<<endmsg;
+  debug()<<"CaloCells size: "<<caloCellsCollection.size()<<endmsg;
 
   return caloCellsCollection;
 }
 
 StatusCode PrepareEmptyCaloCellsTool::finalize() {
   StatusCode sc = GaudiTool::finalize();
-  info() << "PrepareEmptyCaloCellsTool finalized" << endmsg;
   return sc;
 }

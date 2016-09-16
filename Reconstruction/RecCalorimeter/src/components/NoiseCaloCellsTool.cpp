@@ -18,19 +18,18 @@ StatusCode NoiseCaloCellsTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
 
+  //Initialize random service
   if(service( "RndmGenSvc" , m_randSvc ).isFailure()) {
     error() << "Couldn't get RndmGenSvc" << endmsg;
     return StatusCode::FAILURE;
   }
   m_gauss.initialize(m_randSvc, Rndm::Gauss(0,m_cellNoise));
 
-  info() << "NoiseCaloCellsTool initialized" << endmsg;
-  info() << "Cell noise " <<  m_cellNoise << endmsg;
+  info() << "Sigma of the cell noise: " <<  m_cellNoise << " MeV "<<endmsg;
   return sc;
 }
 
 void NoiseCaloCellsTool::AddNoise(std::vector<fcc::CaloHit*>& aCells) {
-  //First implementation: same noise to all cells
   double randomNoise = 0;
   for (auto& ecells : aCells) {
     randomNoise = m_gauss.shoot();
@@ -41,6 +40,5 @@ void NoiseCaloCellsTool::AddNoise(std::vector<fcc::CaloHit*>& aCells) {
 
 StatusCode NoiseCaloCellsTool::finalize() {
   StatusCode sc = GaudiTool::finalize();
-  info() << "NoiseCaloCellsTool finalized" << endmsg;
   return sc;
 }

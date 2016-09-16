@@ -1,5 +1,5 @@
-#ifndef RECONSTRUCTION_PREPAREEMPTYCALOCELLSTOOL_H
-#define RECONSTRUCTION_PREPAREEMPTYCALOCELLSTOOL_H
+#ifndef RECCALORIMETER_PREPAREEMPTYCALOCELLSTOOL_H
+#define RECCALORIMETER_PREPAREEMPTYCALOCELLSTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -24,7 +24,8 @@ namespace DDSegmentation {
  *    - get the total number of cells in the calorimeter
  *    - create a new cell - set its cellID, everything else set to 0
  *  @author Jana Faltova
- *  @date   2016-08
+ *  @date   2016-09
+ *
  */
 
 class PrepareEmptyCaloCellsTool : public GaudiTool, virtual public IPrepareEmptyCaloCellsTool 
@@ -40,18 +41,30 @@ public:
 private:
     /// Name of the detector readout
   std::string m_readoutName;
-  std::string m_fieldName;
+  /// Name of active volumes (material name)
+  std::string m_activeVolumeName;
+  /// Number of volumes with same name as active layer (not to be counted as a layer, e.g. ECAL: bath)
+  unsigned m_numVolumesRemove;
+  /// Name of active layers for sampling calorimeter
+  std::string m_activeFieldName;
+  /// Name of the fields describing the segmented volume
+  std::vector<std::string> m_fieldNames;
+  /// Values of the fields describing the segmented volume
+  std::vector<int> m_fieldValues;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
+  /// PhiEta segmentation
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  /// Bitfield decoder
   std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
-  /// Volume ID of the volume with cells to calculate
+  /// Volume ID
   uint64_t m_volumeId;
+  /// Cell ID
   uint64_t m_cellId;
 
   std::vector<fcc::CaloHit*> m_caloCellsCollection;
 
 };
 
-#endif /* RECONSTRUCTION_PREPAREEMPTYCALOCELLSTOOL_H */
+#endif /* RECCALORIMETER_PREPAREEMPTYCALOCELLSTOOL_H */

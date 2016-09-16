@@ -1,5 +1,5 @@
-#ifndef RECONSTRUCTION_CALIBRATECALOCELLSTOOL_H
-#define RECONSTRUCTION_CALIBRATECALOCELLSTOOL_H
+#ifndef RECCALORIMETER_CALIBRATECALOCELLSTOOL_H
+#define RECCALORIMETER_CALIBRATECALOCELLSTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -13,12 +13,12 @@
  *
  *  Tool for calorimeter cells calibration to EM scale
  *  1/sampling fraction (Ebeam/Etotal_hit_energy) used for the calibration, same factor for each cell used
- *    - depends on geometry (e.g. thickness of active/passive material)
+ *    - depends on geometry (thickness of active/passive material, materials)
  *  TODO: 
- *     - read SF from DB when available
+ *     - read 1/sampling fraction from DB when available
  *
  *  @author Jana Faltova
- *  @date   2016-08
+ *  @date   2016-09
  */
 
 class CalibrateCaloCellsTool : public GaudiTool, virtual public ICalibrateCaloCellsTool  {
@@ -28,13 +28,13 @@ public:
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
-  //Calibrate Geant4 hit energy (cellEnergy) to EM scale
+  /// Calibrate Geant4 hit energy to EM scale
   virtual void Calibrate(std::vector<fcc::CaloHit*>& aCells) final;
 
 private:
-  //Value of 1/sampling fraction
+  ///Value of 1/sampling fraction
   double m_sf;
   
 };
 
-#endif /* RECONSTRUCTION_CALIBRATECALOCELLSTOOL_H */
+#endif /* RECCALORIMETER_CALIBRATECALOCELLSTOOL_H */
