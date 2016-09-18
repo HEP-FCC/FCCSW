@@ -40,11 +40,9 @@ StatusCode TrackingGeoSvc::initialize() {
     return StatusCode::FAILURE;
   }
   // hand over LayerArrayCreator
-  Acts::LayerArrayCreator::Config lacConfig;
-  auto layerArrayCreator = std::make_shared<Acts::LayerArrayCreator>(lacConfig);
+  auto layerArrayCreator = std::make_shared<Acts::LayerArrayCreator>();
   // tracking volume array creator
-  Acts::TrackingVolumeArrayCreator::Config tvacConfig;
-  auto trackingVolumeArrayCreator = std::make_shared<Acts::TrackingVolumeArrayCreator>(tvacConfig);
+  auto trackingVolumeArrayCreator = std::make_shared<Acts::TrackingVolumeArrayCreator>();
   // configure the cylinder volume helper
   Acts::CylinderVolumeHelper::Config cvhConfig;
   cvhConfig.layerArrayCreator = layerArrayCreator;

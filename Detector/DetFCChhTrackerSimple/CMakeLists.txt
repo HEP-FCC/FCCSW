@@ -10,13 +10,14 @@ find_package(DD4hep)
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 
+find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 find_package(ACTS COMPONENTS Core TGeoPlugin DD4hepPlugin)
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 include( DD4hep )
 
-find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
+link_directories(${ROOT_INCLUDE_DIR}/../lib)
 
 gaudi_add_module(DetFCChhTrackerSimple
                  src/*.cpp
