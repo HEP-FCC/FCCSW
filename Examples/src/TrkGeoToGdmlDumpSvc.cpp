@@ -1,4 +1,4 @@
-#include "TrkGeoToGdmlDumpSvc.h"
+#include "DummyTrkGeoToGdmlDumpSvc.h"
 
 #include "TGeoManager.h"
 
@@ -67,7 +67,7 @@ StatusCode TrkGeoToGdmlDumpSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  std::shared_ptr<Acts::TrackingGeometry> tgeo = m_geoSvc->trackingGeometry();
+  std::shared_ptr<const Acts::TrackingGeometry> tgeo = m_geoSvc->trackingGeometry();
   auto highestVol = tgeo->highestTrackingVolume();
   info() << "Dumping TrackingVolume" << highestVol->volumeName() << endmsg;
   // temporary TGeoVolume that represents one module
