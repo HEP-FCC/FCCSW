@@ -146,7 +146,7 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   uint phiCellNumber = aSeg.phiBins();
   // get segmentation cell width in eta
   double etaCellSize = aSeg.gridSizeEta();
-  // eta segmentation calculate maximum eta from the inner radius
+  // eta segmentation calculate maximum eta from the inner radius (no offset is taken into account)
   double maxEta = CLHEP::Hep3Vector(tubeSizes.x(), 0 , tubeSizes.z()).eta();
   uint cellsEta = ceil((maxEta-etaCellSize/2.)/etaCellSize)*2+1;
   return {phiCellNumber,cellsEta};
