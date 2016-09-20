@@ -1,4 +1,4 @@
-#include "SavePhiEtaRCaloCellsToClusters.h"
+#include "SaveLArPhiEtaRCaloCellsToClusters.h"
 
 //FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -7,25 +7,25 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 
-DECLARE_ALGORITHM_FACTORY(SavePhiEtaRCaloCellsToClusters)
+DECLARE_ALGORITHM_FACTORY(SaveLArPhiEtaRCaloCellsToClusters)
 
-SavePhiEtaRCaloCellsToClusters::SavePhiEtaRCaloCellsToClusters(const std::string& name, ISvcLocator* svcLoc)
+SaveLArPhiEtaRCaloCellsToClusters::SaveLArPhiEtaRCaloCellsToClusters(const std::string& name, ISvcLocator* svcLoc)
   : GaudiAlgorithm(name, svcLoc)
 {
-  declareInput("caloCells", m_caloCells, "caloCells");
-  declareOutput("caloClusters", m_caloClusters, "caloClusters");
-  declareProperty("readoutName", m_readoutName, "ECalHitsNew");
-  declareProperty("activeFieldName", m_activeFieldName,"active_layer");
-  declareProperty("activeVolumeName", m_activeVolumeName,"LAr");
-  //ECAL: bath volume same active mat. as layer volume, have to be removed
-  declareProperty("numVolumesRemove",m_numVolumesRemove,"0");
+  declareInput("caloCells", m_caloCells,"caloCells");
+  declareOutput("caloClusters", m_caloClusters,"caloClusters");
+  declareProperty("readoutName", m_readoutName="ECalHitsNew");
+  declareProperty("activeFieldName", m_activeFieldName="active_layer");
+  declareProperty("activeVolumeName", m_activeVolumeName="LAr");
+  //ECAL LAr specific: LAr bath in cryostat same material as active layer volume
+  declareProperty("numVolumesRemove",m_numVolumesRemove=1);
 }
 
-SavePhiEtaRCaloCellsToClusters::~SavePhiEtaRCaloCellsToClusters()
+SaveLArPhiEtaRCaloCellsToClusters::~SaveLArPhiEtaRCaloCellsToClusters()
 {
 }
 
-StatusCode SavePhiEtaRCaloCellsToClusters::initialize() {
+StatusCode SaveLArPhiEtaRCaloCellsToClusters::initialize() {
 
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
@@ -53,12 +53,12 @@ StatusCode SavePhiEtaRCaloCellsToClusters::initialize() {
   auto highestVol = gGeoManager->GetTopVolume();
   //Substract volumes with same name as the active layers (e.g. ECAL: bath volume)  
   m_numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName)-m_numVolumesRemove;
-  info() << "Number of active layers " << m_numLayers << endmsg;
+  debug() << "Number of active layers " << m_numLayers << endmsg;
 
   return sc;
 }
 
-StatusCode SavePhiEtaRCaloCellsToClusters::execute() {
+StatusCode SaveLArPhiEtaRCaloCellsToClusters::execute() {
    
   //Get the input caloHits collection
   const fcc::CaloHitCollection* calocells = m_caloCells.get();
@@ -115,7 +115,7 @@ StatusCode SavePhiEtaRCaloCellsToClusters::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SavePhiEtaRCaloCellsToClusters::finalize() {  
+StatusCode SaveLArPhiEtaRCaloCellsToClusters::finalize() {  
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }

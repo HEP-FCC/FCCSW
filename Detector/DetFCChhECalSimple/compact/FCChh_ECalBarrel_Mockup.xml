@@ -31,7 +31,7 @@
 
   <readouts>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="20.0" phi_bins="5"/>
+      <segmentation type="GridPhiEta" grid_size_eta="0.5" phi_bins="5"/>
       <id>system:3,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-6,phi:-4</id>
     </readout>
 

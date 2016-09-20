@@ -11,7 +11,7 @@ DECLARE_TOOL_FACTORY(MergeHitsToCaloCellsTool)
 MergeHitsToCaloCellsTool::MergeHitsToCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
   : GaudiTool(type, name, parent)
 {
-  declareProperty("readoutName", m_readoutName, "ECalHitsPhiEta");
+  declareProperty("readoutName", m_readoutName="ECalHitsPhiEta");
   declareInterface<IMergeHitsToCaloCellsTool>(this);
 
 }

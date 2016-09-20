@@ -3,11 +3,10 @@
 DECLARE_TOOL_FACTORY(CalibrateCaloCellsTool)
 
 CalibrateCaloCellsTool::CalibrateCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
-  : GaudiTool(type, name, parent),
-  m_invSamplingFraction(1.0)
+  : GaudiTool(type, name, parent)
 {
   declareInterface<ICalibrateCaloCellsTool>(this);
-  declareProperty("invSamplingFraction", m_invSamplingFraction);
+  declareProperty("invSamplingFraction", m_invSamplingFraction=1.0);
 }
 
 CalibrateCaloCellsTool::~CalibrateCaloCellsTool()

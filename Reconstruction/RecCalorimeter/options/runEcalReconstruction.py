@@ -16,11 +16,9 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = INFO)
 
 #Configure tools for calo reconstruction
-from Configurables import PrepareEmptyPhiEtaRCaloCellsTool, MergeHitsToCaloCellsTool, CalibrateCaloCellsTool
-emptycells = PrepareEmptyPhiEtaRCaloCellsTool("PrepareEmptyPhiEtaRCaloCellsTool",readoutName="ECalHitsPhiEta", activeFieldName="active_layer",
-                                       activeVolumeName="LAr", numVolumesRemove="1",
+from Configurables import PrepareEmptyLArPhiEtaRCaloCellsTool, MergeHitsToCaloCellsTool, CalibrateCaloCellsTool
+emptycells = PrepareEmptyLArPhiEtaRCaloCellsTool("PrepareEmptyPhiEtaRCaloCellsTool",
                                        fieldNames=["system","ECAL_Cryo","bath","EM_barrel"], fieldValues=[5,1,1,1])
-mergehits = MergeHitsToCaloCellsTool("MergeHitsToCaloCellsTool",readoutName="ECalHitsPhiEta")
 calibcells = CalibrateCaloCellsTool("CalibrateCaloCellsTool",invSamplingFraction="5.4")
 
 from Configurables import CreateCaloCells
@@ -28,14 +26,13 @@ createcells = CreateCaloCells()
 createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
 createcells.prepareCellsTool=emptycells
-createcells.mergeTool=mergehits
 createcells.calibTool=calibcells
 createcells.doCellCalibration=True
-createcells.addCellNoise=False
+createcells.addCellNoise=True
 createcells.OutputLevel=INFO
 
-from Configurables import SavePhiEtaRCaloCellsToClusters
-saveclusters = SavePhiEtaRCaloCellsToClusters()
+from Configurables import SaveLArPhiEtaRCaloCellsToClusters
+saveclusters = SaveLArPhiEtaRCaloCellsToClusters()
 saveclusters.DataInputs.caloCells.Path="caloCells"
 saveclusters.DataOutputs.caloClusters.Path="caloCellsClusters"
 saveclusters.readoutName = "ECalHitsPhiEta"

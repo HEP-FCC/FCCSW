@@ -1,4 +1,4 @@
-#include "PrepareEmptyPhiEtaRCaloCellsTool.h"
+#include "PrepareEmptyLArPhiEtaRCaloCellsTool.h"
 
 //FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -7,25 +7,26 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 
-DECLARE_TOOL_FACTORY(PrepareEmptyPhiEtaRCaloCellsTool)
+DECLARE_TOOL_FACTORY(PrepareEmptyLArPhiEtaRCaloCellsTool)
 
-PrepareEmptyPhiEtaRCaloCellsTool::PrepareEmptyPhiEtaRCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
+PrepareEmptyLArPhiEtaRCaloCellsTool::PrepareEmptyLArPhiEtaRCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
   : GaudiTool(type, name, parent)
 {
-  declareProperty("readoutName", m_readoutName, "ECalHitsPhiEta");
-  declareProperty("activeVolumeName", m_activeVolumeName,"LAr");
-  declareProperty("numVolumesRemove",m_numVolumesRemove,"0");
-  declareProperty("activeFieldName", m_activeFieldName,"active_layer");
+  declareProperty("readoutName", m_readoutName="ECalHitsPhiEta");
+  declareProperty("activeVolumeName", m_activeVolumeName="LAr");
+  //ECAL LAr specific: LAr bath in cryostat same material as active layer volume
+  declareProperty("numVolumesRemove",m_numVolumesRemove=1);
+  declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("fieldNames", m_fieldNames);
   declareProperty("fieldValues", m_fieldValues);
   declareInterface<IPrepareEmptyCaloCellsTool>(this);
 }
 
-PrepareEmptyPhiEtaRCaloCellsTool::~PrepareEmptyPhiEtaRCaloCellsTool()
+PrepareEmptyLArPhiEtaRCaloCellsTool::~PrepareEmptyLArPhiEtaRCaloCellsTool()
 {
 }
 
-StatusCode PrepareEmptyPhiEtaRCaloCellsTool::initialize() {
+StatusCode PrepareEmptyLArPhiEtaRCaloCellsTool::initialize() {
 
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
@@ -79,12 +80,11 @@ StatusCode PrepareEmptyPhiEtaRCaloCellsTool::initialize() {
     debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(volumeId, *m_segmentation)<<endmsg;
     //Number of cells in the volume
     auto numCells = det::utils::numberOfCells(volumeId, *m_segmentation);
-    debug()<<"numCells: eta " << numCells[0] << " phi " << numCells[1]<<endmsg;
     //Loop over segmenation
-    for (int ieta = -floor(numCells[0]*0.5); ieta<numCells[0]*0.5; ieta++) {
-      for (int iphi = -floor(numCells[1]*0.5); iphi<numCells[1]*0.5; iphi++) {
-	(*decoder)["eta"] = ieta;
+    for (int iphi = -floor(numCells[0]*0.5); iphi<numCells[0]*0.5; iphi++) {
+      for (int ieta = -floor(numCells[1]*0.5); ieta<numCells[1]*0.5; ieta++) {
 	(*decoder)["phi"] = iphi;
+	(*decoder)["eta"] = ieta;
 	uint64_t cellId = decoder->getValue();
 	
 	fcc::CaloHit *newCell = new fcc::CaloHit();
@@ -102,10 +102,11 @@ StatusCode PrepareEmptyPhiEtaRCaloCellsTool::initialize() {
   return sc;
 }
 
-std::vector<fcc::CaloHit*> PrepareEmptyPhiEtaRCaloCellsTool::PrepareEmptyCells() {
+std::vector<fcc::CaloHit*> PrepareEmptyLArPhiEtaRCaloCellsTool::PrepareEmptyCells() {
 
   std::vector<fcc::CaloHit*> caloCellsCollection;
 
+  //zero all values except cellID before hits from the next event are summed
   for (auto ecell : m_caloCellsCollection) {
     ecell->Core().Energy = 0;     
     ecell->Core().Time = 0;
@@ -117,7 +118,7 @@ std::vector<fcc::CaloHit*> PrepareEmptyPhiEtaRCaloCellsTool::PrepareEmptyCells()
   return caloCellsCollection;
 }
 
-StatusCode PrepareEmptyPhiEtaRCaloCellsTool::finalize() {
+StatusCode PrepareEmptyLArPhiEtaRCaloCellsTool::finalize() {
   //Deleting the pointers to the cells
   for (auto ecell : m_caloCellsCollection) {
     delete ecell;

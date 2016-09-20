@@ -3,11 +3,10 @@
 DECLARE_TOOL_FACTORY(NoiseCaloCellsTool)
 
 NoiseCaloCellsTool::NoiseCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
-  : GaudiTool(type, name, parent),
-  m_cellNoise(1.)
+  : GaudiTool(type, name, parent)
 {
   declareInterface<INoiseCaloCellsTool>(this);
-  declareProperty("cellNoise", m_cellNoise);
+  declareProperty("cellNoise", m_cellNoise=1.0);
 }
 
 NoiseCaloCellsTool::~NoiseCaloCellsTool()
