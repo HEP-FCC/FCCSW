@@ -32,7 +32,6 @@ void NoiseCaloCellsTool::AddNoise(std::vector<fcc::CaloHit*>& aCells) {
   double randomNoise = 0;
   for (auto& ecells : aCells) {
     randomNoise = m_gauss.shoot();
-    debug() << "random noise " << randomNoise << endmsg;
     ecells->Core().Energy += randomNoise;
   }
 }
