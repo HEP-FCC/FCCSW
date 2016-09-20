@@ -7,7 +7,6 @@
 
 // FCCSW
 #include "SimG4Interface/ISimG4ActionTool.h"
-#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 
 /** @class SimG4FastSimActions SimG4Fast/src/components/SimG4FastSimActions.h SimG4FastSimActions.h
@@ -33,10 +32,6 @@ public:
    *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
   virtual G4VUserActionInitialization* userActionInitialization() final;
-
-private:
-  /// Pointer to the smearing tool
-  ToolHandle<ISimG4ParticleSmearTool> m_smearTool;
 
 };
 
