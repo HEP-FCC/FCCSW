@@ -1,4 +1,4 @@
-#include "PrepareEmptyCaloCellsTool.h"
+#include "PrepareEmptyPhiEtaRCaloCellsTool.h"
 
 //FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -7,9 +7,9 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 
-DECLARE_TOOL_FACTORY(PrepareEmptyCaloCellsTool)
+DECLARE_TOOL_FACTORY(PrepareEmptyPhiEtaRCaloCellsTool)
 
-PrepareEmptyCaloCellsTool::PrepareEmptyCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
+PrepareEmptyPhiEtaRCaloCellsTool::PrepareEmptyPhiEtaRCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent) 
   : GaudiTool(type, name, parent)
 {
   declareProperty("readoutName", m_readoutName, "ECalHitsPhiEta");
@@ -21,11 +21,11 @@ PrepareEmptyCaloCellsTool::PrepareEmptyCaloCellsTool(const std::string& type,con
   declareInterface<IPrepareEmptyCaloCellsTool>(this);
 }
 
-PrepareEmptyCaloCellsTool::~PrepareEmptyCaloCellsTool()
+PrepareEmptyPhiEtaRCaloCellsTool::~PrepareEmptyPhiEtaRCaloCellsTool()
 {
 }
 
-StatusCode PrepareEmptyCaloCellsTool::initialize() {
+StatusCode PrepareEmptyPhiEtaRCaloCellsTool::initialize() {
 
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
@@ -48,11 +48,9 @@ StatusCode PrepareEmptyCaloCellsTool::initialize() {
   //Get PhiEta segmentation
   m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if(m_segmentation == nullptr) {
-    info()<<"There is no phi-eta segmentation."<<endmsg;
+    error()<<"There is no phi-eta segmentation."<<endmsg;
+    return StatusCode::FAILURE;
   }
-  // Take readout, bitfield from GeoSvc
-  m_decoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(new DD4hep::DDSegmentation::BitField64(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder()->fieldDescription()));
-
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
   // Substract volumes with same name as the active layers (e.g. ECAL: bath volume)
@@ -61,52 +59,50 @@ StatusCode PrepareEmptyCaloCellsTool::initialize() {
 
   // Check if size of names and values of readout fields agree
   if(m_fieldNames.size() != m_fieldValues.size()) {
-      error() << "Size of names and values is not the same" << endmsg;
+    error() << "Size of names and values is not the same" << endmsg;
     return StatusCode::FAILURE;
   }
 
   // Loop over all cells in the calorimeter, create CaloHits objects with cellID(all other properties set to 0)
   // Loop over active layers
+  // Take readout, bitfield from GeoSvc
+  auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+
   for (unsigned int ilayer = 0; ilayer<numLayers; ilayer++) {
     //Get VolumeID
     for(uint it=0; it<m_fieldNames.size(); it++) {
-      (*m_decoder)[m_fieldNames[it]] = m_fieldValues[it];
+      (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
     }
-    (*m_decoder)[m_activeFieldName] = ilayer+1;
-    m_volumeId = m_decoder->getValue();
+    (*decoder)[m_activeFieldName] = ilayer+1;
+    uint64_t volumeId = decoder->getValue();
     
-    if(m_segmentation != nullptr) {
-      debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(m_volumeId, *m_segmentation)<<endmsg;
-      //Number of cells in the volume
-      auto numCells = det::utils::numberOfCells(m_volumeId, *m_segmentation);
-      debug()<<"numCells: eta " << numCells[0] << " phi " << numCells[1]<<endmsg;
-      //Loop over segmenation
-      for (int ieta = -floor(numCells[0]*0.5); ieta<numCells[0]*0.5; ieta++) {
-	for (int iphi = -floor(numCells[1]*0.5); iphi<numCells[1]*0.5; iphi++) {
-	  (*m_decoder)["eta"] = ieta;
-	  (*m_decoder)["phi"] = iphi;
-	  m_cellId = m_decoder->getValue();
-	 
-	  fcc::CaloHit *newCell = new fcc::CaloHit();
-	  newCell->Core().Cellid = m_cellId;
-	  newCell->Core().Energy = 0;     
-	  newCell->Core().Time = 0;
-	  newCell->Core().Bits = 0;
-	  m_caloCellsCollection.push_back(newCell);
-	  debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << m_decoder->valueString() << " cellID " << m_cellId << endmsg; 
-	}
+    debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(volumeId, *m_segmentation)<<endmsg;
+    //Number of cells in the volume
+    auto numCells = det::utils::numberOfCells(volumeId, *m_segmentation);
+    debug()<<"numCells: eta " << numCells[0] << " phi " << numCells[1]<<endmsg;
+    //Loop over segmenation
+    for (int ieta = -floor(numCells[0]*0.5); ieta<numCells[0]*0.5; ieta++) {
+      for (int iphi = -floor(numCells[1]*0.5); iphi<numCells[1]*0.5; iphi++) {
+	(*decoder)["eta"] = ieta;
+	(*decoder)["phi"] = iphi;
+	uint64_t cellId = decoder->getValue();
+	
+	fcc::CaloHit *newCell = new fcc::CaloHit();
+	newCell->Core().Cellid = cellId;
+	newCell->Core().Energy = 0;     
+	newCell->Core().Time = 0;
+	newCell->Core().Bits = 0;
+	m_caloCellsCollection.push_back(newCell);
+	debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg; 
       }
-      
     }
-    else {
-    }
-
+     
   }
 
   return sc;
 }
 
-std::vector<fcc::CaloHit*> PrepareEmptyCaloCellsTool::PrepareEmptyCells() {
+std::vector<fcc::CaloHit*> PrepareEmptyPhiEtaRCaloCellsTool::PrepareEmptyCells() {
 
   std::vector<fcc::CaloHit*> caloCellsCollection;
 
@@ -121,7 +117,11 @@ std::vector<fcc::CaloHit*> PrepareEmptyCaloCellsTool::PrepareEmptyCells() {
   return caloCellsCollection;
 }
 
-StatusCode PrepareEmptyCaloCellsTool::finalize() {
+StatusCode PrepareEmptyPhiEtaRCaloCellsTool::finalize() {
+  //Deleting the pointers to the cells
+  for (auto ecell : m_caloCellsCollection) {
+    delete ecell;
+  }
   StatusCode sc = GaudiTool::finalize();
   return sc;
 }

@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_SAVECALOCELLSTOCLUSTERS_H
-#define RECCALORIMETER_SAVECALOCELLSTOCLUSTERS_H
+#ifndef RECCALORIMETER_SAVEPHIETARCALOCELLSTOCLUSTERS_H
+#define RECCALORIMETER_SAVEPHIETARCALOCELLSTOCLUSTERS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -23,7 +23,7 @@ namespace DDSegmentation {
 }
 }
 
-/** @class SaveCaloCellsToClusters
+/** @class SavePhiEtaRCaloCellsToClusters
  *
  *  Loops through caloHits (energy, cellID) and saves information in caloClusters (energy, global position)
  *  Only for Tube shapes with PhiEta segmentation! (OK for calorimeter)
@@ -34,12 +34,12 @@ namespace DDSegmentation {
  */
 
 
-class SaveCaloCellsToClusters : public GaudiAlgorithm 
+class SavePhiEtaRCaloCellsToClusters : public GaudiAlgorithm 
 {
 public:
-  SaveCaloCellsToClusters(const std::string& name, ISvcLocator* svcLoc);
+  SavePhiEtaRCaloCellsToClusters(const std::string& name, ISvcLocator* svcLoc);
  
-  ~SaveCaloCellsToClusters();
+  ~SavePhiEtaRCaloCellsToClusters();
 
   StatusCode initialize();
 
@@ -65,10 +65,8 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
-  /// Bitfield decoder
-  std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
   /// Number of active layers
   unsigned int m_numLayers;
 };
 
-#endif /* RECCALORIMETER_SAVECALOCELLSTOCLUSTERS_H */
+#endif /* RECCALORIMETER_SAVEPHIETARCALOCELLSTOCLUSTERS_H */

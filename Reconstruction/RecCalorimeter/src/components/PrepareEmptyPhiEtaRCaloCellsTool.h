@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_PREPAREEMPTYCALOCELLSTOOL_H
-#define RECCALORIMETER_PREPAREEMPTYCALOCELLSTOOL_H
+#ifndef RECCALORIMETER_PREPAREEMPTYPHIETARCALOCELLSTOOL_H
+#define RECCALORIMETER_PREPAREEMPTYPHIETARCALOCELLSTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -17,22 +17,22 @@ namespace DDSegmentation {
 }
 }
 
-/** @class PrepareEmptyCaloCellsTool
+/** @class PrepareEmptyPhiEtaRCaloCellsTool
  *
  *  Tool for preparing a collection of all calorimeter cells with their cellID
- *  TODO: 
- *    - get the total number of cells in the calorimeter
- *    - create a new cell - set its cellID, everything else set to 0
+ *  Loops through all cells in the calorimeter with PhiEta segmentation and
+ *  create a vector of cells (caloHits) with cellID, everything else set to 0
+ *  Only for Tube shapes with PhiEta segmentation! (OK for calorimeter) 
  *  @author Jana Faltova
  *  @date   2016-09
  *
  */
 
-class PrepareEmptyCaloCellsTool : public GaudiTool, virtual public IPrepareEmptyCaloCellsTool 
+class PrepareEmptyPhiEtaRCaloCellsTool : public GaudiTool, virtual public IPrepareEmptyCaloCellsTool 
 {
 public:
-  PrepareEmptyCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent);
-  ~PrepareEmptyCaloCellsTool();
+  PrepareEmptyPhiEtaRCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent);
+  ~PrepareEmptyPhiEtaRCaloCellsTool();
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
@@ -56,13 +56,7 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
-  /// Bitfield decoder
-  std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
-  /// Volume ID
-  uint64_t m_volumeId;
-  /// Cell ID
-  uint64_t m_cellId;
-
+ 
   std::vector<fcc::CaloHit*> m_caloCellsCollection;
 
 };

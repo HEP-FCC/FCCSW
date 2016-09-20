@@ -36,11 +36,6 @@ StatusCode MergeHitsToCaloCellsTool::initialize() {
     return StatusCode::FAILURE;
   }
   info()<<"Readout <<"<<m_readoutName<<">>"<<endmsg;
-  // Take readout, bitfield from GeoSvc
-  m_decoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(new DD4hep::DDSegmentation::BitField64(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder()->fieldDescription()));
-  if (m_decoder==nullptr) {
-    info() << "Decoder is a nullptr!!!!" << endmsg; 
-  }
 
   return sc;
 
@@ -70,8 +65,9 @@ void MergeHitsToCaloCellsTool::DoMerge(const fcc::CaloHitCollection& aHits, std:
       aCells.at(it->second)->Core().Bits = ehit.Core().Bits;
     }
     else {
-      m_decoder->setValue(cellID);
-      info() << "CellID not found!!!! " << cellID << " " << m_decoder->valueString() << endmsg;    
+      auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+      decoder->setValue(cellID);
+      info() << "CellID not found!!!! " << cellID << " " << decoder->valueString() << endmsg;
     }
   }
 

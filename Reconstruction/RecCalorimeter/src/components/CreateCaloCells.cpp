@@ -14,16 +14,16 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
 {
   declareProperty("doCellCalibration",m_doCellCalibration=true);
   declareProperty("addCellNoise",m_addCellNoise=true);
-  declareProperty("prepareTool",m_prepareTool);
-  declarePrivateTool(m_prepareTool,"PrepareEmptyCaloCellsTool", true);
+  declareProperty("prepareCellsTool",m_prepareCellsTool);
+  declarePrivateTool(m_prepareCellsTool,"PrepareEmptyPhiEtaRCaloCellsTool", true);
   declareProperty("mergeTool",m_mergeTool);
   declarePrivateTool(m_mergeTool,"MergeHitsToCaloCellsTool", true);
   declareProperty("calibTool",m_calibTool);
   declarePrivateTool(m_calibTool,"CalibrateCaloCellsTool", true);
   declareProperty("noiseTool",m_noiseTool);
   declarePrivateTool(m_noiseTool,"NoiseCaloCellsTool", true);
-  declareInput("hits", m_caloHits, "hits");
-  declareOutput("caloCells", m_caloCells,"caloCells");
+  declareInput("hits", m_hits, "hits");
+  declareOutput("cells", m_cells,"cells");
 }
 
 CreateCaloCells::~CreateCaloCells()
@@ -41,7 +41,7 @@ StatusCode CreateCaloCells::initialize() {
 
   //Initialization of various tools
   //Prepare CaloHits for each cell
-  if (!m_prepareTool.retrieve()) {
+  if (!m_prepareCellsTool.retrieve()) {
     error()<<"Unable to retrieve the prepare empty cells tool!!!"<<endmsg;
     return StatusCode::FAILURE;
   }
@@ -53,15 +53,19 @@ StatusCode CreateCaloCells::initialize() {
   }
 
   //Calibrate Geant4 energy to EM scale tool
-  if (!m_calibTool.retrieve()) {
-    error()<<"Unable to retrieve the calo cells calibration tool!!!"<<endmsg;
-    return StatusCode::FAILURE;
+  if (m_doCellCalibration) {
+    if (!m_calibTool.retrieve()) {
+      error()<<"Unable to retrieve the calo cells calibration tool!!!"<<endmsg;
+      return StatusCode::FAILURE;
+    }
   }
 
   //Cell noise tool
-  if (!m_noiseTool.retrieve()) {
-    error()<<"Unable to retrieve the calo cells noise tool!!!"<<endmsg;
-    return StatusCode::FAILURE;
+  if (m_addCellNoise) {
+    if (!m_noiseTool.retrieve()) {
+      error()<<"Unable to retrieve the calo cells noise tool!!!"<<endmsg;
+      return StatusCode::FAILURE;
+    }
   }
     
   return sc;
@@ -70,15 +74,14 @@ StatusCode CreateCaloCells::initialize() {
 StatusCode CreateCaloCells::execute() {
    
   //Get the input collection with Geant4 hits
-  const fcc::CaloHitCollection* calohits = m_caloHits.get();
-  debug() << "Input Hit collection size: " << calohits->size() << endmsg;
+  const fcc::CaloHitCollection* hits = m_hits.get();
+  debug() << "Input Hit collection size: " << hits->size() << endmsg;
     
   //CaloHitCollection for the final cells information (stored in event store)
   //Create a new CaloHitCollection (vector of CaloHit at the moment - problem with changing information in CaloHitCollection - read only)
-  //TODO: Create empty cells with correct cellID
-  std::vector<fcc::CaloHit*> edmCellsVector = m_prepareTool->PrepareEmptyCells();
+  std::vector<fcc::CaloHit*> edmCellsVector = m_prepareCellsTool->PrepareEmptyCells();
   //Merge the hits into the cells
-  m_mergeTool->DoMerge(*calohits, edmCellsVector);
+  m_mergeTool->DoMerge(*hits, edmCellsVector);
 
   //Calibrate Geant4 energy to EM scale tool
   if (m_doCellCalibration) {
@@ -101,7 +104,7 @@ StatusCode CreateCaloCells::execute() {
   }
   debug() << "Output Cell collection size: " << edmCellsCollection->size() << endmsg;
   //Push the CaloHitCollection to event store
-  m_caloCells.put(edmCellsCollection);
+  m_cells.put(edmCellsCollection);
  
   return StatusCode::SUCCESS;
 }

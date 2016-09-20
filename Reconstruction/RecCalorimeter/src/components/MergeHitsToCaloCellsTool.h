@@ -24,6 +24,9 @@ namespace DDSegmentation {
 /** @class MergeHitsToCaloCellsTool
  *
  *  Tool for merging Geant4 hits with the same cellID to a cell
+ *  Geant4 energy deposits are added
+ *  TODO
+ *    - how do we want to calculate time? Average?
  *  @author Jana Faltova
  *  @date   2016-09
  *
@@ -46,8 +49,6 @@ private:
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// BitField decoder
-  std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
 
 };
 

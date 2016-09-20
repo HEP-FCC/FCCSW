@@ -40,7 +40,7 @@ public:
 
 private:
   /// Handle for preparing empty calo cells tool
-  ToolHandle<IPrepareEmptyCaloCellsTool> m_prepareTool;
+  ToolHandle<IPrepareEmptyCaloCellsTool> m_prepareCellsTool;
   /// Handle for merging Geant4 hits to cells tool
   ToolHandle<IMergeHitsToCaloCellsTool> m_mergeTool;
   /// Handle for calibration Geant4 energy to EM scale tool
@@ -53,9 +53,9 @@ private:
   /// Add noise to cells?
   bool m_addCellNoise;
   /// Handle for calo hits (input collection)
-  DataHandle<fcc::CaloHitCollection> m_caloHits;
+  DataHandle<fcc::CaloHitCollection> m_hits;
   /// Handle for calo cells (output collection)
-  DataHandle<fcc::CaloHitCollection> m_caloCells;
+  DataHandle<fcc::CaloHitCollection> m_cells;
 };
 
 #endif /* RECCALORIMETER_CREATECALOCELLS_H */

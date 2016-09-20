@@ -33,7 +33,7 @@ public:
 
 private:
   ///Value of 1/sampling fraction
-  double m_sf;
+  double m_invSamplingFraction;
   
 };
 
