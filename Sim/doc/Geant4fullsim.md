@@ -78,10 +78,10 @@ Simulation package contains following directories:
 ## 2. Example
 
 ~~~{.sh}
-./run gaudirun.py options/geant_fullsim.py
+./run gaudirun.py Examples/options/geant_fullsim.py
 ~~~
 
-The configuration file (`options/geant_fullsim.py`) contains:
+The configuration file (`Examples/options/geant_fullsim.py`) contains:
   * reading an event from a HepMC file
 
     ~~~{.py}
@@ -96,8 +96,8 @@ The configuration file (`options/geant_fullsim.py`) contains:
     from Configurables import HepMCConverter
     hepmc_converter = HepMCConverter("Converter")
     hepmc_converter.DataInputs.hepmc.Path="hepmc"
-    hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
-    hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
+    hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
+    hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
     ~~~
 
   * construction of the geometry using DD4hep
@@ -129,7 +129,7 @@ The configuration file (`options/geant_fullsim.py`) contains:
     - `eventProvider` - tool that provides `G4Event` to the simulation, possible `SimG4PrimariesFromEdmTool`, `SimG4SingleParticleGeneratorTool`
 
     ~~~{.py}
-    from Configurables import SimG4Alg, SimG4SaveTrackerHits
+    from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
     savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
     savetrackertool.DataOutputs.trackClusters.Path = "clusters"
     savetrackertool.DataOutputs.trackHits.Path = "hits"
