@@ -51,7 +51,6 @@ static G4VSensitiveDetector* create_aggregate_calorimeter_sd(
 static G4VSensitiveDetector* create_gflash_calorimeter_sd(
     const std::string& aDetectorName,
     DD4hep::Geometry::LCDD& aLcdd)  {
-  auto det = aLcdd.volumeManager().detector().children().at(aDetectorName);
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::GFlashCalorimeterSD(aDetectorName,
     readoutName,

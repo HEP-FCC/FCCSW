@@ -59,7 +59,7 @@ public:
   uint64_t cellID(const G4GFlashSpot& aSpot);
 private:
   /// Collection of calorimeter hits that get registered in G4Event and deleted in ~G4Event
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* calorimeterCollection;
+  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
 };
