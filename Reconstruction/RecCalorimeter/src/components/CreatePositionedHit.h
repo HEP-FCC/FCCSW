@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_SAVELARPHIETARCALOCELLSTOCLUSTERS_H
-#define RECCALORIMETER_SAVELARPHIETARCALOCELLSTOCLUSTERS_H
+#ifndef RECCALORIMETER_CREATEPOSITIONEDHIT_H
+#define RECCALORIMETER_CREATEPOSITIONEDHIT_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -23,10 +23,10 @@ namespace DDSegmentation {
 }
 }
 
-/** @class SaveLArPhiEtaRCaloCellsToClusters
+/** @class CreatePositionedHit
  *
  *  Loops through caloHits (energy, cellID) and saves information in caloClusters (energy, global position)
- *  Only for Tube shapes with PhiEta segmentation! (OK for calorimeter)
+ *  Only for Tube shapes with PhiEta segmentation!
  *
  *  @author Jana Faltova
  *  @date   2016-09
@@ -34,12 +34,12 @@ namespace DDSegmentation {
  */
 
 
-class SaveLArPhiEtaRCaloCellsToClusters : public GaudiAlgorithm 
+class CreatePositionedHit : public GaudiAlgorithm 
 {
 public:
-  SaveLArPhiEtaRCaloCellsToClusters(const std::string& name, ISvcLocator* svcLoc);
+  CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc);
  
-  ~SaveLArPhiEtaRCaloCellsToClusters();
+  ~CreatePositionedHit();
 
   StatusCode initialize();
 
@@ -69,4 +69,4 @@ private:
   unsigned int m_numLayers;
 };
 
-#endif /* RECCALORIMETER_SAVELARPHIETARCALOCELLSTOCLUSTERS_H */
+#endif /* RECCALORIMETER_CREATEPOSITIONEDHIT_H */

@@ -1,4 +1,4 @@
-#include "SaveLArPhiEtaRCaloCellsToClusters.h"
+#include "CreatePositionedHit.h"
 
 //FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -7,9 +7,9 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 
-DECLARE_ALGORITHM_FACTORY(SaveLArPhiEtaRCaloCellsToClusters)
+DECLARE_ALGORITHM_FACTORY(CreatePositionedHit)
 
-SaveLArPhiEtaRCaloCellsToClusters::SaveLArPhiEtaRCaloCellsToClusters(const std::string& name, ISvcLocator* svcLoc)
+CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc)
   : GaudiAlgorithm(name, svcLoc)
 {
   declareInput("caloCells", m_caloCells,"caloCells");
@@ -21,11 +21,11 @@ SaveLArPhiEtaRCaloCellsToClusters::SaveLArPhiEtaRCaloCellsToClusters(const std::
   declareProperty("numVolumesRemove",m_numVolumesRemove=1);
 }
 
-SaveLArPhiEtaRCaloCellsToClusters::~SaveLArPhiEtaRCaloCellsToClusters()
+CreatePositionedHit::~CreatePositionedHit()
 {
 }
 
-StatusCode SaveLArPhiEtaRCaloCellsToClusters::initialize() {
+StatusCode CreatePositionedHit::initialize() {
 
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
@@ -58,7 +58,7 @@ StatusCode SaveLArPhiEtaRCaloCellsToClusters::initialize() {
   return sc;
 }
 
-StatusCode SaveLArPhiEtaRCaloCellsToClusters::execute() {
+StatusCode CreatePositionedHit::execute() {
    
   //Get the input caloHits collection
   const fcc::CaloHitCollection* calocells = m_caloCells.get();
@@ -115,7 +115,7 @@ StatusCode SaveLArPhiEtaRCaloCellsToClusters::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SaveLArPhiEtaRCaloCellsToClusters::finalize() {  
+StatusCode CreatePositionedHit::finalize() {  
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }
