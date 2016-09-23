@@ -49,115 +49,86 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     DD4hep::XML::Component xModulePropertiesOdd = xRodOdd.child("moduleProperties");
     DD4hep::XML::Component xModulesOdd = xRodOdd.child("modules");
     // definition of rod volume (longitudinal arrangement of modules)
-    Volume rodVolumeOdd("rod",
-                     DD4hep::Geometry::Box(
-                       xModulePropertiesOdd.attr<double>("modWidth"), 
-                       xModulePropertiesOdd.attr<double>("modThickness"),
-                       (dimensions.zmax() - dimensions.zmin()) * 0.5),
-                     lcdd.material("Air"));
-    rodVolumeOdd.setVisAttributes(lcdd.invisible());
+    /// @todo: add this once acts supports it
+    //Volume rodVolume("rod",
+    //                 DD4hep::Geometry::Box(
+    //                   xModulePropertiesOdd.attr<double>("modWidth"), 
+    //                   xModulePropertiesOdd.attr<double>("modThickness"),
+    //                   (dimensions.zmax() - dimensions.zmin()) * 0.5),
+    //                 lcdd.material("Air"));
+    //rodVolumeOdd.setVisAttributes(lcdd.invisible());
 
-    Volume rodVolumeEven("rod",
-                     DD4hep::Geometry::Box(
-                       xModulePropertiesEven.attr<double>("modWidth"), 
-                       xModulePropertiesEven.attr<double>("modThickness"),
-                       (dimensions.zmax() - dimensions.zmin()) * 0.5),
-                     lcdd.material("Air"));
-    rodVolumeEven.setVisAttributes(lcdd.invisible());
 
-    Volume moduleVolumeOdd(
+    Volume moduleVolume(
       "module", 
       DD4hep::Geometry::Box(
-        xModulePropertiesOdd.attr<double>("modWidth"), 
-        xModulePropertiesOdd.attr<double>("modThickness"),
-        xModulePropertiesOdd.attr<double>("modLength")), 
+        0.5 * xModulePropertiesOdd.attr<double>("modWidth"), 
+        0.5 * xModulePropertiesOdd.attr<double>("modThickness"),
+        0.5 * xModulePropertiesOdd.attr<double>("modLength")), 
       lcdd.material("Air"));
-    //moduleVolumeOdd.setVisAttributes(lcdd, xModulePropertiesOdd.visStr());
+    //moduleVolume.setVisAttributes(lcdd, xModulePropertiesOdd.visStr());
     DD4hep::XML::Component xModuleComponentsOdd = xModulePropertiesOdd.child("components");
     integratedModuleComponentThickness = 0;
     moduleComponentCounter = 0;
     for (DD4hep::XML::Collection_t xModuleComponentOddColl(xModuleComponentsOdd, _U(component)); nullptr != xModuleComponentOddColl; ++xModuleComponentOddColl) {
       DD4hep::XML::Component xModuleComponentOdd = static_cast<DD4hep::XML::Component>(xModuleComponentOddColl);
       Volume moduleComponentVolume(xModuleComponentOdd.nameStr(),
-                                   DD4hep::Geometry::Box(xModulePropertiesOdd.attr<double>("modWidth"), 
-                                     xModuleComponentOdd.thickness(),
-                                     xModulePropertiesOdd.attr<double>("modLength")),
+                                   DD4hep::Geometry::Box( 0.5 * xModulePropertiesOdd.attr<double>("modWidth"), 
+                                   0.5 *  xModuleComponentOdd.thickness(),
+                                   0.5 *  xModulePropertiesOdd.attr<double>("modLength")),
                                    lcdd.material(xModuleComponentOdd.materialStr()));
     DD4hep::Geometry::Position offset(0, integratedModuleComponentThickness, 0);
     integratedModuleComponentThickness += xModuleComponentOdd.thickness();
-    PlacedVolume placedModuleComponentVolume = moduleVolumeOdd.placeVolume(moduleComponentVolume, offset);
+    PlacedVolume placedModuleComponentVolume = moduleVolume.placeVolume(moduleComponentVolume, offset);
     placedModuleComponentVolume.addPhysVolID("component", moduleComponentCounter);
     ++moduleComponentCounter;
     }
 
 
     // place modules in rods
-    unsigned int moduleCounter = 0;
-    for (DD4hep::XML::Collection_t xModuleOddColl(xModulesOdd, _U(module)); nullptr != xModuleOddColl; ++xModuleOddColl) {
-      DD4hep::XML::Component xModuleOdd = static_cast<DD4hep::XML::Component>(xModuleOddColl);
-      //DD4hep::Geometry::Position moduleOffset(xModuleOdd.X(), xModuleOdd.Y(), xModuleOdd.Z()); 
-      DD4hep::Geometry::Position moduleOffset(0, 0, xModuleOdd.Z()); 
-      PlacedVolume placedModuleVolume = rodVolumeOdd.placeVolume(moduleVolumeOdd, moduleOffset);
-      placedModuleVolume.addPhysVolID("module", moduleCounter);
-      ++moduleCounter;
-    }
+    //unsigned int moduleCounter = 0;
+    //for (DD4hep::XML::Collection_t xModuleOddColl(xModulesOdd, _U(module)); nullptr != xModuleOddColl; ++xModuleOddColl) {
+    //  DD4hep::XML::Component xModuleOdd = static_cast<DD4hep::XML::Component>(xModuleOddColl);
+    //  //dd4hep::geometry::position moduleoffset(xmoduleodd.x(), xmoduleodd.y(), xmoduleodd.z()); 
+    //  DD4hep::Geometry::Position moduleOffset(0, 0, xModuleOdd.Z()); 
+    //  PlacedVolume placedModuleVolume = rodVolume.placeVolume(moduleVolume, moduleOffset);
+    //  placedModuleVolume.addPhysVolID("module", moduleCounter);
+    //  ++moduleCounter;
+    //}
 
-    Volume moduleVolumeEven(
-      "module", 
-      DD4hep::Geometry::Box(
-        xModulePropertiesEven.attr<double>("modWidth"), 
-        xModulePropertiesEven.attr<double>("modThickness"),
-        xModulePropertiesEven.attr<double>("modLength")), 
-      lcdd.material("Air"));
-    //moduleVolumeEven.setVisAttributes(lcdd, xModule.visStr());
-    DD4hep::XML::Component xModuleComponentsEven = xModulePropertiesEven.child("components");
-    integratedModuleComponentThickness = 0;
-    moduleComponentCounter = 0;
-    for (DD4hep::XML::Collection_t xModuleComponentEvenColl(xModuleComponentsEven, _U(component)); nullptr != xModuleComponentEvenColl; ++xModuleComponentEvenColl) {
-      DD4hep::XML::Component xModuleComponentEven = static_cast<DD4hep::XML::Component>(xModuleComponentEvenColl);
-      Volume moduleComponentVolume(xModuleComponentEven.nameStr(),
-                                   DD4hep::Geometry::Box(xModulePropertiesEven.attr<double>("modWidth"), 
-                                     xModuleComponentEven.thickness(),
-                                     xModulePropertiesEven.attr<double>("modLength")),
-                                   lcdd.material(xModuleComponentEven.materialStr()));
-    DD4hep::Geometry::Position offset(0, integratedModuleComponentThickness, 0);
-    integratedModuleComponentThickness += xModuleComponentEven.thickness();
-    PlacedVolume placedModuleComponentVolume = moduleVolumeEven.placeVolume(moduleComponentVolume, offset);
-    placedModuleComponentVolume.addPhysVolID("component", moduleComponentCounter);
-    ++moduleComponentCounter;
-    }
-
-    // place modules in rods
-    moduleCounter = 0;
-    for (DD4hep::XML::Collection_t xModuleEvenColl(xModulesEven, _U(module)); nullptr != xModuleEvenColl; ++xModuleEvenColl) {
-      DD4hep::XML::Component xModuleEven = static_cast<DD4hep::XML::Component>(xModuleEvenColl);
-      //DD4hep::Geometry::Position moduleOffset(xModuleEven.X(), xModuleEven.Y(), xModuleEven.Z()); 
-      DD4hep::Geometry::Position moduleOffset(0, 0, xModuleEven.Z()); 
-      PlacedVolume placedModuleVolume = rodVolumeEven.placeVolume(moduleVolumeEven, moduleOffset);
-      placedModuleVolume.addPhysVolID("module", moduleCounter);
-      ++moduleCounter;
-    }
 
       // definition of layer volumes
       double r = xLayer.radius();
       double layerThickness = (dimensions.rmax() - dimensions.rmin()) / xLayers.repeat();
+      double lX, lY, lZ;
       DD4hep::Geometry::Tube layerShape(r - 0.5*layerThickness, r + 0.5*layerThickness, dimensions.zmax());
       Volume layerVolume("layer", layerShape, lcdd.material("Air"));
       layerVolume.setVisAttributes(lcdd.invisible());
       PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
       placedLayerVolume.addPhysVolID("layer", layerCounter);
       nPhi = xRods.repeat();
+      int moduleCounter = 0;
+      DD4hep::XML::Handle_t currentComp;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
-        phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);// + xLayer.attr<double>("phi0");
-        DD4hep::Geometry::Translation3D lTranslation(r * cos(phi), r * sin(phi), 0);
-        DD4hep::Geometry::RotationZ lRotation(phi + 0.5 * M_PI);
         if (0 == phiIndex % 2) {
-          PlacedVolume placedRodVolume = layerVolume.placeVolume(rodVolumeEven, lTranslation * lRotation);
-          placedRodVolume.addPhysVolID("rod", phiIndex);
+          phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);// + xLayer.attr<double>("phi0");
+          currentComp = xModulesEven;
         } else {
-          PlacedVolume placedRodVolume = layerVolume.placeVolume(rodVolumeOdd, lTranslation * lRotation);
-          placedRodVolume.addPhysVolID("rod", phiIndex);
+          currentComp = xModulesOdd;
         }
+          for (DD4hep::XML::Collection_t xModuleColl(currentComp, _U(module)); nullptr != xModuleColl; ++xModuleColl) {
+            DD4hep::XML::Component xModule = static_cast<DD4hep::XML::Component>(xModuleColl);
+            lX = xModule.X();
+            lY = xModule.Y();
+            lZ = xModule.Z();
+            DD4hep::Geometry::Translation3D moduleOffset(lX, lY, lZ); 
+            DD4hep::Geometry::Transform3D lTrafo(DD4hep::Geometry::RotationZ(atan(lY / lX) + 0.5 * M_PI), moduleOffset);
+            DD4hep::Geometry::RotationZ lRotation(phi);
+            PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo);
+            placedModuleVolume.addPhysVolID("module", moduleCounter);
+            ++moduleCounter;
+      }
+
       }
   ++layerCounter;
   }

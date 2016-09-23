@@ -20,11 +20,11 @@
 <readouts>
   <readout name="TkLayoutBrlTrackerReadout">
     <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
-    <id>system:4,layer:10,rod:10,module:10,module_component:4,x:40:-12,y:-12</id>
+    <id>system:4,layer:10,rod:10,module:10,component:4,x:40:-12,y:-12</id>
   </readout>
   <readout name="TkLayoutEndcapTrackerReadout">
     <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
-    <id>system:4,posneg:1,disc:10,module:10,x:40:-12,y:-12</id>
+    <id>system:4,posneg:1,disc:10,module:10,component:4,x:40:-12,y:-8</id>
   </readout>
 </readouts>
     <detectors>
@@ -492,6 +492,7 @@
                 </layer>
             </layers>
         </detector>
+        <!--
         <detector id="13" name="OuterBRL" type="TkLayoutBrlTracker" sensitive="true" readout="TkLayoutBrlTrackerReadout">
             <sensitive type="SimpleTrackerSD" />
             <dimensions rmin="600.000*mm" rmax="1549.996*mm" zmin="-2250.000*mm" zmax="2250.000*mm"/>
@@ -1953,5 +1954,6 @@
             </discZPls>
         </discs>
     </detector>
+    -->
     </detectors>
 </lccdd>

@@ -61,6 +61,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
     Component xModuleOdd = xRingModules.child("moduleOdd");
     Component xModuleEven = xRingModules.child("moduleEven");
     Component xModuleProperties = xRing.child("moduleProperties");
+    Component xModulePropertiesComp = xModuleProperties.child("components");
     Component xSensorProperties = xRing.child("sensorProperties");
     Volume moduleVolume(
       "module", 
@@ -71,27 +72,64 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
       0.5 * xModuleProperties.attr<double>("modThickness"),
       0.5 * xSensorProperties.attr<double>("sensorLength")), /// @todo: to be fixed in xml
       lcdd.material("Air"));
+
+    // place components in module
+    double integratedCompThickness = 0;
+    int componentCounter = 0;
+    for (DD4hep::XML::Collection_t xCompColl(xModulePropertiesComp, _U(component)); nullptr != xCompColl; ++xCompColl) {
+      Component xComp = static_cast<Component>(xCompColl);
+      Volume componentVolume(
+        "component", 
+        DD4hep::Geometry::Trapezoid(
+        0.5 * xModuleProperties.attr<double>("modWidthMin"),
+        0.5 * xModuleProperties.attr<double>("modWidthMax"),
+        0.5 * xComp.thickness(),
+        0.5 * xComp.thickness(),
+        0.5 * xSensorProperties.attr<double>("sensorLength")), /// @todo: to be fixed in xml
+        lcdd.material(xComp.materialStr()));
+      PlacedVolume placedComponentVolume = moduleVolume.placeVolume(componentVolume, DD4hep::Geometry::Position(0,integratedCompThickness, 0));
+      placedComponentVolume.addPhysVolID("component", componentCounter);
+      integratedCompThickness += xComp.thickness();
+      ++componentCounter;
+        
+    }
+
+
+
     unsigned int nPhi = xRing.attr<int>("nModules");
     double lX, lY, lZ;
     double phi = 0;
+    double phiTilt, thetaTilt;
     for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
-      DD4hep::Geometry::RotationX lRotation_Positioning(M_PI * 0.5);
-      DD4hep::Geometry::RotationY lRotation_Positioning2(M_PI * 0.5);
       if (0 == phiIndex % 2) {
+        // the rotation for the odd module is already taken care
+        // of by the position in tklayout xml
         phi = 2 * dd4hep::pi * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
         lX = xModuleEven.X();
         lY = xModuleEven.Y();
         lZ = xModuleEven.Z() - dimensions.zmin();
+        phiTilt = xModuleEven.attr<double>("phiTilt");
+        thetaTilt = xModuleEven.attr<double>("thetaTilt");
       } else {
         lX = xModuleOdd.X();
         lY = xModuleOdd.Y();
         lZ = xModuleOdd.Z() - dimensions.zmin();
+        phiTilt = xModuleOdd.attr<double>("phiTilt");
+        thetaTilt = xModuleOdd.attr<double>("thetaTilt");
       }
+      // position module in the x-y plane, smaller end inward
+      // and incorporate phi tilt if any
+      DD4hep::Geometry::RotationY lRotation1(M_PI * 0.5);
+      DD4hep::Geometry::RotationX lRotation2(M_PI * 0.5 + phiTilt);
+      // align radially
+      DD4hep::Geometry::RotationZ lRotation3(atan(lY / lX));
+      // theta tilt, if any -- note the different convention between
+      // tklayout and here, thus the subtraction of pi / 2
+      DD4hep::Geometry::RotationY lRotation4(thetaTilt - M_PI * 0.5);
       DD4hep::Geometry::RotationZ lRotation_PhiPos(phi);
-      double phi0 = atan(lY / lX);
-      DD4hep::Geometry::RotationZ lRotation_Positioning3(phi0);
+      // position in  disk
       DD4hep::Geometry::Translation3D lTranslation(lX, lY, lZ);
-      DD4hep::Geometry::Transform3D myTrafo(lRotation_Positioning3 * lRotation_Positioning * lRotation_Positioning2, lTranslation );
+      DD4hep::Geometry::Transform3D myTrafo(lRotation4 * lRotation3 * lRotation2 * lRotation1, lTranslation );
       PlacedVolume placedModuleVolume = discVolume.placeVolume(moduleVolume, lRotation_PhiPos *  myTrafo);
       placedModuleVolume.addPhysVolID("module", moduleCounter);
       ++moduleCounter;
@@ -107,7 +145,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
         discVolume, DD4hep::Geometry::Position(0, 0, currentZ));
     placedDiscVolume.addPhysVolID("disc", discCounter);
     ++discCounter;
-
   }
 
   // top of the hierarchy
@@ -120,10 +157,10 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
       0, 0, - dimensions.zmin() - 0.5 * (dimensions.zmax() - dimensions.zmin()));
   PlacedVolume placedGenericTrackerEndcap_pos = posnegEnvelopeVolume.placeVolume(
       envelopeVolume, DD4hep::Geometry::Position(0, 0, dimensions.zmin() + 0.5 * (dimensions.zmax() - dimensions.zmin())));
-  //PlacedVolume placedGenericTrackerEndcap_neg = posnegEnvelopeVolume.placeVolume(
-  //    envelopeVolume, lTranslation_posEnvelope * DD4hep::Geometry::RotationX(dd4hep::pi));
+  PlacedVolume placedGenericTrackerEndcap_neg = posnegEnvelopeVolume.placeVolume(
+      envelopeVolume, lTranslation_posEnvelope * DD4hep::Geometry::RotationX(dd4hep::pi));
   placedGenericTrackerEndcap_pos.addPhysVolID("posneg", 0);
-  //placedGenericTrackerEndcap_neg.addPhysVolID("posneg", 1);
+  placedGenericTrackerEndcap_neg.addPhysVolID("posneg", 1);
   GenericTrackerEndcapWorld.setPlacement(placedEnvelopeVolume);
   return GenericTrackerEndcapWorld;
 }
