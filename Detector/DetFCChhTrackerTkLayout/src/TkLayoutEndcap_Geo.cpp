@@ -87,8 +87,10 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
         0.5 * xComp.thickness(),
         0.5 * xSensorProperties.attr<double>("sensorLength")), /// @todo: to be fixed in xml
         lcdd.material(xComp.materialStr()));
-      PlacedVolume placedComponentVolume = moduleVolume.placeVolume(componentVolume, DD4hep::Geometry::Position(0,integratedCompThickness, 0));
+      PlacedVolume placedComponentVolume = moduleVolume.placeVolume(componentVolume, DD4hep::Geometry::Position(0,integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness"), 0));
       placedComponentVolume.addPhysVolID("component", componentCounter);
+
+      componentVolume.setSensitiveDetector(sensDet);
       integratedCompThickness += xComp.thickness();
       ++componentCounter;
         
