@@ -81,7 +81,7 @@ StatusCode CreateCaloCells::initialize() {
       return StatusCode::FAILURE;
     }
     //Prepare a vector of all cells in calorimeter with their cellID
-    StatusCode sc_prepareCells = PrepareEmptyCells(m_edmCellsVector);
+    StatusCode sc_prepareCells = prepareEmptyCells(m_edmHitsNoiseVector);
     if (sc_prepareCells.isFailure()) {
       error()<<"Unable to create empty cells!!! Check the input for readout"<<endmsg;
       return StatusCode::FAILURE;
@@ -101,11 +101,11 @@ StatusCode CreateCaloCells::execute() {
   std::vector<fcc::CaloHit*> edmFinalCellsVector;
 
   //Merge hits with the same cellID
-  std::vector<fcc::CaloHit*> edmMergedHitsVector = m_mergeTool->MergeOneCollection(*hits);
+  std::vector<fcc::CaloHit*> edmMergedHitsVector = m_mergeTool->mergeOneCollection(*hits);
 
   //Calibrate Geant4 energy to EM scale tool
   if (m_doCellCalibration) {
-    m_calibTool->Calibrate(edmMergedHitsVector);
+    m_calibTool->calibrate(edmMergedHitsVector);
   }
   
  
@@ -114,10 +114,10 @@ StatusCode CreateCaloCells::execute() {
   }
   //Create random noise hits for each cell, merge noise hits with signal hits, apply filter on cell energy if required
   else {
-    m_noiseTool->CreateRandomCellNoise(m_edmCellsVector);
-    edmFinalCellsVector = m_mergeTool->MergeTwoVectors(edmMergedHitsVector, m_edmCellsVector);
+    m_noiseTool->createRandomCellNoise(m_edmHitsNoiseVector);
+    edmFinalCellsVector = m_mergeTool->mergeTwoVectors(edmMergedHitsVector, m_edmHitsNoiseVector);
     if (m_filterCellNoise) {
-      m_noiseTool->FilterCellNoise(edmFinalCellsVector);
+      m_noiseTool->filterCellNoise(edmFinalCellsVector);
     }
   }
 
@@ -132,6 +132,17 @@ StatusCode CreateCaloCells::execute() {
   }
   debug() << "Output Cell collection size: " << edmCellsCollection->size() << endmsg;
 
+  //Cleaning the vectors of CaloHits*
+  for (auto ecells : edmFinalCellsVector) {
+    delete ecells;
+  }
+  if (m_addCellNoise) {
+    for (auto ecells : edmMergedHitsVector) {
+      delete ecells;
+    }
+  }
+
+
   //Push the CaloHitCollection to event store
   m_cells.put(edmCellsCollection);
  
@@ -139,11 +150,15 @@ StatusCode CreateCaloCells::execute() {
 }
 
 StatusCode CreateCaloCells::finalize() {  
+  //Cleaning of the vector of CaloHits*
+  for (auto ehit: m_edmHitsNoiseVector) {
+    delete ehit;
+  }
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }
 
-StatusCode CreateCaloCells::PrepareEmptyCells(std::vector<fcc::CaloHit*>& caloCellsVector) {
+StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCellsVector) {
 
   // Get GeoSvc
   m_geoSvc = service ("GeoSvc");

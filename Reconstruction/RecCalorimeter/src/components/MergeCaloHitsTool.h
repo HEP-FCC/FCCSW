@@ -39,14 +39,16 @@ public:
   virtual StatusCode finalize() final;
 
   /// Merge Geant4 energy deposits (aHits) into cells (aCells)
-  virtual std::vector<fcc::CaloHit*> MergeOneCollection(const fcc::CaloHitCollection& aHits) final;
-  virtual std::vector<fcc::CaloHit*> MergeTwoVectors( const std::vector<fcc::CaloHit*>& aHits1, const std::vector<fcc::CaloHit*>& aHits2) final;
+  virtual std::vector<fcc::CaloHit*> mergeOneCollection(const fcc::CaloHitCollection& aHits) final;
+  virtual std::vector<fcc::CaloHit*> mergeTwoVectors( const std::vector<fcc::CaloHit*>& aHits1, const std::vector<fcc::CaloHit*>& aHits2) final;
 
 private:
-  /// Prepare a vector of CaloHits and a map with cellID,position in the vector
-  std::vector<fcc::CaloHit*> PrepareMergedVectorAndMap(const std::vector<fcc::CaloHit*>& aHits, std::unordered_map<uint64_t, unsigned>& cellIdMap);
+  /// Merge CaloHits in mergedHits vector, prepare a map with cellID,pointer to a CaloHit
+  void mergeHits(const std::vector<fcc::CaloHit*>& aHits, std::unordered_map<uint64_t, fcc::CaloHit*>& cellIdMap, std::vector<fcc::CaloHit*>& mergedHitsVector);
+  /// Same as before, but for CaloHitCollection instead of vector
+  void mergeHits(const fcc::CaloHitCollection& aHits, std::unordered_map<uint64_t, fcc::CaloHit*>& cellIdMap, std::vector<fcc::CaloHit*>& mergedHitsVector);
   /// Add a new CaloHit to the vector of mergedHits and cellID+position in the vector to the map
-  void AddHitToVectorAndMap(const fcc::CaloHit& ehit, std::unordered_map<uint64_t, unsigned>& cellIdMap,std::vector<fcc::CaloHit*>& mergedHits);
+  void addHitToVectorAndMap(const fcc::CaloHit& ehit, std::unordered_map<uint64_t, fcc::CaloHit*>& cellIdMap,std::vector<fcc::CaloHit*>& mergedHitsVector);
   
 };
 

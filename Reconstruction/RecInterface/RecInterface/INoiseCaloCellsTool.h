@@ -22,8 +22,8 @@ class INoiseCaloCellsTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(INoiseCaloCellsTool, 1, 0);
 
-  virtual void CreateRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) = 0;
-  virtual void FilterCellNoise(std::vector<fcc::CaloHit*>& aCells) = 0;
+  virtual void createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) = 0;
+  virtual void filterCellNoise(std::vector<fcc::CaloHit*>& aCells) = 0;
 };
 
 #endif /* RECINTERFACE_INOISECALOCELLSTOOL_H */

@@ -20,7 +20,7 @@ StatusCode CalibrateCaloHitsTool::initialize() {
   return sc;
 }
 
-void CalibrateCaloHitsTool::Calibrate(std::vector<fcc::CaloHit*>& aHits) {
+void CalibrateCaloHitsTool::calibrate(std::vector<fcc::CaloHit*>& aHits) {
   //Loop through vector with Geant4 energy deposits, multiply energy to get cell energy at electromagnetic scale
   for (auto& ecells : aHits) {
     ecells->Core().Energy *= m_invSamplingFraction;

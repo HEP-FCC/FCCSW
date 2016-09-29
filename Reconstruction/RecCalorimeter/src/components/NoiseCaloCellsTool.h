@@ -34,9 +34,9 @@ public:
   virtual StatusCode finalize() final;
 
   /// Create random caloHits 
-  virtual void CreateRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) final; 
+  virtual void createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) final; 
   /// Remove cells with energy bellow threshold
-  virtual void FilterCellNoise(std::vector<fcc::CaloHit*>& aCells) final; 
+  virtual void filterCellNoise(std::vector<fcc::CaloHit*>& aCells) final; 
 
 private:
   /// Sigma of noise

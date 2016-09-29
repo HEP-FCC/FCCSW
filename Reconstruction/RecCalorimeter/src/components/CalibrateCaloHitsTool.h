@@ -31,7 +31,7 @@ public:
   virtual StatusCode finalize() final;
 
   /// Calibrate Geant4 hit energy to EM scale
-  virtual void Calibrate(std::vector<fcc::CaloHit*>& aHits) final;
+  virtual void calibrate(std::vector<fcc::CaloHit*>& aHits) final;
 
 private:
   ///Value of 1/sampling fraction

@@ -31,7 +31,7 @@ StatusCode NoiseCaloCellsTool::initialize() {
   return sc;
 }
 
-void NoiseCaloCellsTool::CreateRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) {
+void NoiseCaloCellsTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   double randomNoise = 0;
   for (auto& ecell : aCells) {
     randomNoise = m_gauss.shoot();
@@ -41,7 +41,7 @@ void NoiseCaloCellsTool::CreateRandomCellNoise(std::vector<fcc::CaloHit*>& aCell
   }
 }
 
-void NoiseCaloCellsTool::FilterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
+void NoiseCaloCellsTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   //Erase a cell if it has energy bellow a threshold from the vector
   for (auto ecell = aCells.begin(); ecell!=aCells.end();) {
     if ( (*ecell)->Core().Energy<m_filterThreshold*m_cellNoise ) {

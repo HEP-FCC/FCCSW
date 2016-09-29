@@ -21,8 +21,8 @@ class IMergeCaloHitsTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(IMergeCaloHitsTool, 1, 0);
 
-  virtual std::vector<fcc::CaloHit*> MergeOneCollection(const fcc::CaloHitCollection& aHits) = 0;
-  virtual std::vector<fcc::CaloHit*> MergeTwoVectors( const std::vector<fcc::CaloHit*>& aHits1, const std::vector<fcc::CaloHit*>& aHits2) = 0;
+  virtual std::vector<fcc::CaloHit*> mergeOneCollection(const fcc::CaloHitCollection& aHits) = 0;
+  virtual std::vector<fcc::CaloHit*> mergeTwoVectors( const std::vector<fcc::CaloHit*>& aHits1, const std::vector<fcc::CaloHit*>& aHits2) = 0;
  
 };
 
