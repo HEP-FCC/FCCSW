@@ -11,9 +11,7 @@
 // datamodel
 namespace fcc {
 class GenJetCollection;
-class GenJetParticleAssociationCollection;
-class IntTagCollection;
-class GenJetIntTagAssociationCollection;
+class TaggedGenJetCollection;
 }
 
 class Candidate;
@@ -54,14 +52,10 @@ private:
   //! if relation doesn't exist (id<0), warning is given on output and search for other relations continues
   void findJetPartMC(Candidate* cand, int rangeMCPart, std::set<int>& idRefMCPart);
 
-  /// Handle the particles to be saved
+  /// Handle to the jets to be saved
   DataHandle<fcc::GenJetCollection> m_genJets;
-  /// Handle to associate particles with MCParticles
-  DataHandle<fcc::GenJetParticleAssociationCollection> m_mcAssociations;
-  /// Handle for isolation tags
-  DataHandle<fcc::IntTagCollection> m_jetFlavorTags;
-  /// Handle to associate particles with isolation tags
-  DataHandle<fcc::GenJetIntTagAssociationCollection> m_jetFlavorAssociations;
+  /// Handle to the jets including additional flavour tag information
+  DataHandle<fcc::TaggedGenJetCollection> m_taggedGenJets;
   /// Name of the Delphes array that should be converted
   std::string m_delphesArrayName;
 

@@ -26,16 +26,16 @@ public:
   StatusCode execute() {
     const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
     const fcc::TrackHitCollection* trkhits = m_trkHits.get();
-    info() << mcparticles << endmsg;
+    debug() << mcparticles << endmsg;
 
-    info() << "MCParticle size: " << mcparticles->size() << endmsg;
+    debug() << "MCParticle size: " << mcparticles->size() << endmsg;
     int cntr = 0;
     for (const auto& mcpart : *mcparticles) {
       if (10 < cntr++) {
-        info() << "vertex x: " << mcpart.StartVertex().Position().X << endmsg;
+        debug() << "vertex x: " << mcpart.startVertex().position().x << endmsg;
       }
     }
-    info() << "hits size: " << trkhits->size() << endmsg;
+    debug() << "hits size: " << trkhits->size() << endmsg;
 
     return StatusCode::SUCCESS;
   }

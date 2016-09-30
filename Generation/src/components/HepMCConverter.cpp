@@ -37,11 +37,11 @@ StatusCode HepMCConverter::execute() {
       vertex_i != event->vertices_end(); ++vertex_i ) {
     tmp = (*vertex_i)->position();
     auto vertex = vertices->create();
-    auto& position = vertex.Position();
-    position.X = tmp.x()*hepmc2EdmLength;
-    position.Y = tmp.y()*hepmc2EdmLength;
-    position.Z = tmp.z()*hepmc2EdmLength;
-    vertex.Ctau(tmp.t()*Gaudi::Units::c_light*hepmc2EdmLength); // is ctau like this?
+    auto& position = vertex.position();
+    position.x = tmp.x()*hepmc2EdmLength;
+    position.y = tmp.y()*hepmc2EdmLength;
+    position.z = tmp.z()*hepmc2EdmLength;
+    vertex.ctau(tmp.t()*Gaudi::Units::c_light*hepmc2EdmLength); // is ctau like this?
 
     for (auto particle_i = (*vertex_i)->particles_begin(HepMC::children);
          particle_i != (*vertex_i)->particles_end(HepMC::children);
@@ -51,14 +51,14 @@ StatusCode HepMCConverter::execute() {
 
       tmp = (*particle_i)->momentum();
       fcc::MCParticle particle = particles->create();
-      fcc::BareParticle& core = particle.Core();
-      core.Type = (*particle_i)->pdg_id();
-      core.Status = (*particle_i)->status();
-      core.P4.Px = tmp.px()*hepmc2EdmEnergy;
-      core.P4.Py = tmp.py()*hepmc2EdmEnergy;
-      core.P4.Pz = tmp.pz()*hepmc2EdmEnergy;
-      core.P4.Mass = (*particle_i)->generated_mass()*hepmc2EdmEnergy;
-      particle.StartVertex(vertex);
+      particle.pdgId((*particle_i)->pdg_id());
+      particle.status((*particle_i)->status());
+      auto& p4 = particle.p4();
+      p4.px = tmp.px()*hepmc2EdmEnergy;
+      p4.py = tmp.py()*hepmc2EdmEnergy;
+      p4.pz = tmp.pz()*hepmc2EdmEnergy;
+      p4.mass = (*particle_i)->generated_mass()*hepmc2EdmEnergy;
+      particle.startVertex(vertex);
     }
   }
 

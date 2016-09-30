@@ -11,7 +11,7 @@ class IGeoSvc;
 
 // datamodel
 namespace fcc {
-class CaloClusterCollection;
+class PositionedCaloHitCollection;
 class CaloHitCollection;
 }
 
@@ -49,8 +49,8 @@ public:
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for calo clusters
-  DataHandle<fcc::CaloClusterCollection> m_caloClusters;
+  /// Handle for calo hits with additional position information
+  DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits;
   /// Handle for calo hits
   DataHandle<fcc::CaloHitCollection> m_caloHits;
   /// Name of the readouts (hits collections) to save
