@@ -27,8 +27,10 @@ StatusCode HepMCConverter::execute() {
 
   // conversion of units to EDM standard units:
   // First cover the case that hepMC file is not in expected units and then convert to EDM default
-  double hepmc2EdmLength = HepMC::Units::conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
-  double hepmc2EdmEnergy = HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
+  double hepmc2EdmLength = HepMC::Units::conversion_factor(event->length_unit(),
+                                                           gen::hepmcdefault::length) * gen::hepmc2edm::length;
+  double hepmc2EdmEnergy = HepMC::Units::conversion_factor(event->momentum_unit(),
+                                                           gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
 
   // currently only final state particles converted (no EndVertex as they didn't decay)
   // TODO add translation of decayed particles
