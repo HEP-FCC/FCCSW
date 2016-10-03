@@ -8,7 +8,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # Parses the given xml file
 from Configurables import GeoSvc, SimG4SingleParticleGeneratorTool
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
+  'file:Detector/DetFCChhTrackerTkLayout/compact/FCChh_Option3.xml'],
                     OutputLevel = DEBUG)
 
 
@@ -18,7 +18,7 @@ from Configurables import SimG4Svc
 # giving the names of tools will initialize the tools of that type
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
-geantservice.G4commands += ["/tracking/verbose 1"]
+#geantservice.G4commands += ["/tracking/verbose 1"]
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -31,7 +31,7 @@ savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=0, etaMax=0.01, particleName="geantino")
+pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=-5, etaMax=5, particleName="geantino")
 geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveTrackerHits/saveTrackerHits" ],
                     eventProvider=pgun)
@@ -46,7 +46,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax   = 10000,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG
