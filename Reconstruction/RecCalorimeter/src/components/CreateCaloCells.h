@@ -21,7 +21,8 @@ class IGeoSvc;
  *  1/ Merge Geant4 hits with same cellID
  *  2/ Calibrate to electromagnetic scale (if calibration switched on)
  *  3/ Prepare random noise hits for each cell (if noise switched on)
- *  4/ Filter cell energy and accept only cells with energy above threshold (if noise + filtering switched on)
+ *  4/ Merge signal with noise hits (if noise switched on)
+ *  5/ Filter cell energy and accept only cells with energy above threshold (if noise + filtering switched on)
  * 
  *  Tools caled:
  *    - MergeCaloHitsTool

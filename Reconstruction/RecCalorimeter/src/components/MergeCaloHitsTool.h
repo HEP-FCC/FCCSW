@@ -6,25 +6,17 @@
 
 // FCCSW
 #include "RecInterface/IMergeCaloHitsTool.h"
-class IGeoSvc;
-
-// DD4hep
-#include "DD4hep/Readout.h"
-namespace DD4hep {
-namespace DDSegmentation {
-  class Segmentation;
-}
-}
 
 
 /** @class MergeCaloHitsTool
  *
  *  Tool for merging calo hits with same cellID. 
- *  MergeOneCollection - only one input collection.
- *  MergeTwoVectors - two vectors of hits to be merged. The second vector is expected to have unique cellIDs (no merging done inside this vector)!
+ *  mergeOneCollection - only one input collection.
+ *  mergeTwoVectors - two vectors of hits to be merged. The second vector is expected to have unique cellIDs (no merging done inside this vector)!
  *  
  *  TODO
  *    - how do we want to calculate time? Average?
+ *
  *  @author Jana Faltova
  *  @date   2016-09
  *

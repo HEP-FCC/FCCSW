@@ -1,5 +1,3 @@
-EVTMAX=100
-
 from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
@@ -8,7 +6,7 @@ podioevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", filename="/afs/cern.ch/user/n/novaj/public/FCCSW_tests/output_ecal.root", collections=["ECalHits", "ECalClusters", "GenParticles", "GenVertices"], OutputLevel=DEBUG)
+podioinput = PodioInput("PodioReader", filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/output_ecalSim_e50GeV_eta0_10events.root", collections=["ECalHits", "ECalClusters"], OutputLevel=DEBUG)
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -20,31 +18,21 @@ from Configurables import CalibrateCaloHitsTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool",invSamplingFraction="5.4")
 
 from Configurables import CreateCaloCells
-createcells = CreateCaloCells()
+createcells = CreateCaloCells("CreateCaloCells", 
+                              calibTool=calibcells, doCellCalibration=True,
+                              addCellNoise=True,filterCellNoise=False,
+                              readoutName="ECalHitsPhiEta",numVolumesRemove=1,fieldNames=["system","ECAL_Cryo","bath","EM_barrel"],fieldValues=[5,1,1,1],
+                              OutputLevel=INFO)
 createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
-createcells.calibTool=calibcells
-createcells.doCellCalibration=True
-createcells.addCellNoise=True
-createcells.filterCellNoise=False
-#Readout details needed for adding noise to all calo cells
-createcells.readoutName="ECalHitsPhiEta"
-createcells.numVolumesRemove=1
-createcells.fieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
-createcells.fieldValues=[5,1,1,1]
-createcells.OutputLevel=INFO
 
 from Configurables import CreatePositionedHit
-positionhit = CreatePositionedHit()
+positionhit = CreatePositionedHit("CreatePositionedHit", readoutName = "ECalHitsPhiEta",activeFieldName = "active_layer",activeVolumeName="LAr",numVolumesRemove="1")
 positionhit.DataInputs.caloCells.Path="caloCells"
 positionhit.DataOutputs.caloClusters.Path="caloCellsClusters"
-positionhit.readoutName = "ECalHitsPhiEta"
-positionhit.activeFieldName = "active_layer"
-positionhit.activeVolumeName="LAr"
-positionhit.numVolumesRemove="1"
 
 out = PodioOutput("out", filename="output_ecalReco_test.root",
-                   OutputLevel=INFO)
+                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(
@@ -54,7 +42,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = EVTMAX,
+    EvtMax   = 10,
     ExtSvc = [podioevent, geoservice],
  )
 

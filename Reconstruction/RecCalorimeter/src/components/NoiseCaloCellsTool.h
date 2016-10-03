@@ -13,8 +13,8 @@ class IRndmGenSvc;
  *
  *  Tool for calorimeter noise
  *  Energy units are MeV (calibrated to EM scale) --> cannot be merged directly with Geant4 energy deposits for sampling calorimeters!!!
- *  CreateRandomCellNoise: Create random CaloHits (gaussian distribution) for the vector of cells
- *  FilterCellNoise: remove cells with energy bellow threshold*sigma from the vector of cells
+ *  createRandomCellNoise: Create random CaloHits (gaussian distribution) for the vector of cells
+ *  filterCellNoise: remove cells with energy bellow threshold*sigma from the vector of cells
  *  Noise defined by a single value - sigma of the noise, same for each cell
  *  TODO: 
  *     - noise dependence on the size of the cell, position in eta & r
