@@ -30,8 +30,14 @@ public:
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
-  /// Merge Geant4 energy deposits (aHits) into cells (aCells)
+  /** @brief Merge Geant4 energy deposits (aHits) with same cellID
+  * Currently only energy of the hits are merged. Time not considered at the moment.
+*/
   virtual std::vector<fcc::CaloHit*> mergeOneCollection(const fcc::CaloHitCollection& aHits) final;
+  /** @brief Merge Geant4 energy deposits (aHits1 and aHits2) with the same cellID
+   * two vectors of hits to be merged. The second vector is expected to have unique cellIDs (no merging done inside this vector)! 
+   * Currently only energy of the hits are merged. Time not considered at the moment.
+   */
   virtual std::vector<fcc::CaloHit*> mergeTwoVectors( const std::vector<fcc::CaloHit*>& aHits1, const std::vector<fcc::CaloHit*>& aHits2) final;
 
 private:

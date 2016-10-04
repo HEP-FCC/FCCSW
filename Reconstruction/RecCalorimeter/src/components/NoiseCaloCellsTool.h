@@ -33,9 +33,12 @@ public:
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
-  /// Create random caloHits 
+  /** @brief Create random CaloHits (gaussian distribution) for the vector of cells (aCells).
+   * Vector of cells must contain all cells in the calorimeter with their cellIDs.
+   */
   virtual void createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) final; 
-  /// Remove cells with energy bellow threshold
+  /** @brief Remove cells with energy bellow threshold*sigma from the vector of cells
+   */
   virtual void filterCellNoise(std::vector<fcc::CaloHit*>& aCells) final; 
 
 private:

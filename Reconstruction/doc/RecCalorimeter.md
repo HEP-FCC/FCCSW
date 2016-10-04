@@ -8,22 +8,22 @@ ECAL calorimeter description in Detector/DetFCChhECalSimple:
 * Using phi-eta segmentation
 * Calorimeter cells defined by a layer in R + phi-eta segment
 
-# CreateCaloCells algorithm
+# CreateCaloCells
 
-Cell energy reconstruction from Geant4 energy deposits
+Cell energy reconstruction from Geant4 energy deposits.
 
 Input: Geant4 hits (EDM: CaloHitCollection)
 
 Output: Calorimeter cells (EDM: CaloHitCollection)
 
-Following steps are done
-* Merge Geant4 energy deposits with same cellID (MergeCaloHitsTool)
-* Calibrate Geant4 energy to electromagnetic (EM) scale (CalibrateCaloHitsTool)
-* Prepare random noise hits for each cell (NoiseCaloCellsTool)
+**Tools used:**
+* MergeCaloHitsTool: Merge Geant4 energy deposits with same cellID
+* CalibrateCaloHitsTool: Calibrate Geant4 energy to electromagnetic (EM) scale
+* NoiseCaloCellsTool: Prepare random noise hits for each cell
 
-A list of all cellIDs are needed for the noise tool (we want to simulate noise in all cells, not only in thouse with signal). This is done in the initialize method of the algorithm. This is the only part which is geometry dependent (asuming tube geometry and phi-eta segmentation).
-* Merge signal with noise hits (MergeCaloHitsTool)
-* Filter cell energy and accept only cells with energy above threshold (NoiseCaloCellsTool)
+  A list of all cellIDs are needed for the noise tool (we want to simulate noise in all cells, not only in thouse with signal). This is done in the initialize method of the  algorithm. This is the only part which is geometry dependent (assuming tube geometry and phi-eta segmentation).
+* MergeCaloHitsTool: Merge signal with noise hits
+* NoiseCaloCellsTool: Filter cell energy and accept only cells with energy above threshold
 
 **Configurables:**
 * hits (input data)
@@ -38,47 +38,11 @@ A list of all cellIDs are needed for the noise tool (we want to simulate noise i
 * fieldNames (vector of string, name of the fields describing the segmented volume)
 * fieldValues (vector of int, values of the fields describing the segmented volume);
 
+More details can be found in [Doxygen documentation] (http://fccsw.web.cern.ch/fccsw/).
 
-# MergeCaloHitsTool
+# Example
 
-Tool for merging calo hits (energy) with same cellID. Creates a vector of merged hits and a map (cellID, pointer to CaloHit in the vector of merged hits).
-
-**Methods:**
-* std::vector\<fcc::CaloHit*\> mergeOneCollection(const fcc::CaloHitCollection& aHits) - merge collection aHits
-* std::vector\<fcc::CaloHit*\> mergeTwoVectors(const std::vector\<fcc::CaloHit*\>& aHits1, const std::vector\<fcc::CaloHit*\>& aHits2) - two vectors of hits to be merged. The second vector is expected to have unique cellIDs (no merging done inside this vector)!
-Currently only energy of the hits are merged. Time not considered at the moment.
-
-# CalibrateCaloHitsTool
-
-Tool for energy calibration to electromagnetic scale.
-1/sampling fraction (Ebeam/Etotal_hit_energy) used for the calibration, same factor for each cell used. The factor depends on geometry (thickness of active/passive material, materials)
-
-**Method:**
-* void calibrate(std::vector\<fcc::CaloHit*\>& aHits)
-
-**Configurable:**
-* invSamplingFraction (double, 1/sampling fraction)
-
-# NoiseCaloCellsTool
-
-Tool for calorimeter noise. Energy units are MeV (calibrated to EM scale) -> cannot be merged directly with Geant4 energy deposits for sampling calorimeters!!! Noise defined by a single value - sigma of the noise, same for each cell.
-
-**Methods:**
-* void createRandomCellNoise(std::vector\<fcc::CaloHit*\>& aCells): create random CaloHits (gaussian distribution) for the vector of cells. Vector of cells must contain all cells in the calorimeter with their cellIDs.
-* void filterCellNoise(std::vector\<fcc::CaloHit*\>& aCells): remove cells with energy bellow threshold*sigma from the vector of cells
-
-**Configurables:**
-* cellNoise (double, sigma of the cell noise)
-* filterThreshold (double, energy threshold, cells with energy bellow filterThreshold*cellNoise removed)
-
-
-# CreatePositionedHit algorithm
-
-Translate cellID into position. Geometry dependent, same input variables describing geometry as CreateCaloCells.
-
-# Example macro 
-
-Example macro which runs ECAL cell reconstruction is [here] (https://github.com/HEP-FCC/FCCSW/blame/master/Reconstruction/RecCalorimeter/options/runEcalReconstruction.py)
+Example script which runs ECAL cell reconstruction is [here] (https://github.com/HEP-FCC/FCCSW/blame/master/Reconstruction/RecCalorimeter/options/runEcalReconstruction.py).
 * Read input file with Geant4 hits
 * Produce calo cells (CreateCaloCells)
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)

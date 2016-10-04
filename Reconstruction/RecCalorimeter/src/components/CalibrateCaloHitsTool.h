@@ -30,7 +30,8 @@ public:
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
-  /// Calibrate Geant4 hit energy to EM scale
+  /** @brief  Calibrate Geant4 hit energy to EM scale
+   */
   virtual void calibrate(std::vector<fcc::CaloHit*>& aHits) final;
 
 private:
