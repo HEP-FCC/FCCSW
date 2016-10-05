@@ -42,7 +42,7 @@ More details can be found in [Doxygen documentation] (http://fccsw.web.cern.ch/f
 
 # Example
 
-Example script which runs ECAL cell reconstruction is [here] (https://github.com/HEP-FCC/FCCSW/blame/master/Reconstruction/RecCalorimeter/options/runEcalReconstruction.py).
+Example script which runs ECAL cell reconstruction is [here] (https://github.com/HEP-FCC/FCCSW/blob/master/Reconstruction/RecCalorimeter/options/runEcalReconstruction.py).
 * Read input file with Geant4 hits
 * Produce calo cells (CreateCaloCells)
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
