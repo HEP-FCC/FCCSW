@@ -8,7 +8,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # Parses the given xml file
 from Configurables import GeoSvc, SimG4SingleParticleGeneratorTool
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/FCChh_Option3.xml'],
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
 
