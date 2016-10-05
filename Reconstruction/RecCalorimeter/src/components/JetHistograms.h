@@ -1,5 +1,5 @@
-#ifndef RECO_JETHISTOGRAMS_H
-#define RECO_JETHISTOGRAMS_H
+#ifndef RECCALORIMETER_JETHISTOGRAMS_H
+#define RECCALORIMETER_JETHISTOGRAMS_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ITHistSvc.h"
