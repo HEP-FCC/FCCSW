@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_HEPMCJETCLUSTERING_H
-#define RECCALORIMETER_HEPMCJETCLUSTERING_H
+#ifndef RECO_HEPMCJETCLUSTERING_H
+#define RECO_HEPMCJETCLUSTERING_H
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "datamodel/JetCollection.h"

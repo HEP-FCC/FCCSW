@@ -125,10 +125,10 @@ StatusCode CreateCaloCells::execute() {
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (auto ecells : edmFinalCellsVector) {
     fcc::CaloHit newCell = edmCellsCollection->create();
-      newCell.Core().Energy = ecells->Core().Energy;     
-      newCell.Core().Time = ecells->Core().Time;
-      newCell.Core().Bits = ecells->Core().Bits;
-      newCell.Core().Cellid = ecells->Core().Cellid;
+      newCell.core().energy = ecells->core().energy;     
+      newCell.core().time = ecells->core().time;
+      newCell.core().bits = ecells->core().bits;
+      newCell.core().cellId = ecells->core().cellId;
   }
   debug() << "Output Cell collection size: " << edmCellsCollection->size() << endmsg;
 
@@ -217,10 +217,10 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
 	uint64_t cellId = decoder->getValue();
 	
 	fcc::CaloHit *newCell = new fcc::CaloHit();
-	newCell->Core().Cellid = cellId;
-	newCell->Core().Energy = 0;     
-	newCell->Core().Time = 0;
-	newCell->Core().Bits = 0;
+	newCell->core().cellId = cellId;
+	newCell->core().energy = 0;     
+	newCell->core().time = 0;
+	newCell->core().bits = 0;
 	caloCellsVector.push_back(newCell);
 	debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg; 
       }

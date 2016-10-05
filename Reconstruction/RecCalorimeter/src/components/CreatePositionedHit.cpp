@@ -74,16 +74,16 @@ StatusCode CreatePositionedHit::execute() {
   //Loop though CaloHits, calculate position from cellID, create and fill information in a CaloCluster 
   for (const auto& ecells : *calocells) {
     fcc::CaloCluster newCluster = edmClusterCollection->create();
-    newCluster.Core().Energy = ecells.Core().Energy;     
-    newCluster.Core().Time = ecells.Core().Time;
-    newCluster.Core().Bits = ecells.Core().Cellid;
+    newCluster.core().energy = ecells.core().energy;     
+    newCluster.core().time = ecells.core().time;
+    newCluster.core().bits = ecells.core().cellId;
     
     //Current active layer r-minimum r
     //Volume dimensions of Tube - det::utils::tubeDimensions(volumeID) - ThreeVector rmin, rmax, dz (half-length)
-    double rmin_layer = det::utils::tubeDimensions(ecells.Core().Cellid).x();
+    double rmin_layer = det::utils::tubeDimensions(ecells.core().cellId).x();
     //Next active layer [ needed for r_cell = middle of the cell (active + passive) ]
     //If half size of cell in r not known, calculate it from the next layer r-min
-    decoder->setValue(ecells.Core().Cellid);
+    decoder->setValue(ecells.core().cellId);
     if (r_cell_size_half<0) {
       if ((*decoder)[m_activeFieldName]<m_numLayers) {
 	(*decoder)[m_activeFieldName]=(*decoder)[m_activeFieldName]+1;
@@ -99,13 +99,13 @@ StatusCode CreatePositionedHit::execute() {
     double r_cell = rmin_layer+r_cell_size_half;
    
     //Global position of the cell
-    auto position =  m_segmentation->positionFromREtaPhi( r_cell, m_segmentation->eta(ecells.Core().Cellid), m_segmentation->phi(ecells.Core().Cellid) );
-    newCluster.Core().position.X = position.x()*10.;
-    newCluster.Core().position.Y = position.y()*10.;
-    newCluster.Core().position.Z = position.z()*10.;
+    auto position =  m_segmentation->positionFromREtaPhi( r_cell, m_segmentation->eta(ecells.core().cellId), m_segmentation->phi(ecells.core().cellId) );
+    newCluster.core().position.x = position.x()*10.;
+    newCluster.core().position.y = position.y()*10.;
+    newCluster.core().position.z = position.z()*10.;
       
     //Debug information about cells
-    debug() << "cellID " << ecells.Core().Cellid <<" energy " << ecells.Core().Energy << " decoder: all fields " << decoder->valueString() << " r " << r_cell << " eta " <<  m_segmentation->eta(ecells.Core().Cellid) << " phi " <<  m_segmentation->phi(ecells.Core().Cellid)<< endmsg;
+    debug() << "cellID " << ecells.core().cellId <<" energy " << ecells.core().energy << " decoder: all fields " << decoder->valueString() << " r " << r_cell << " eta " <<  m_segmentation->eta(ecells.core().cellId) << " phi " <<  m_segmentation->phi(ecells.core().cellId)<< endmsg;
   }
   debug() << "Output CaloCluster collection size: " << edmClusterCollection->size() << endmsg;
 
