@@ -46,3 +46,8 @@ Example script which runs ECAL cell reconstruction is [here] (https://github.com
 * Read input file with Geant4 hits
 * Produce calo cells (CreateCaloCells)
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
+
+How to run the script (loading of libDetSegmentation.so necessary because of the phi-eta segmenation usage):
+~~~{.sh}
+LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so ./run gaudirun.py Reconstruction/RecCalorimeter/options/runEcalReconstruction.py
+~~~
