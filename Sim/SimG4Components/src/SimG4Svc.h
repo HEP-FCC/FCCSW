@@ -8,6 +8,7 @@
 #include "SimG4Interface/ISimG4PhysicsList.h"
 #include "SimG4Interface/ISimG4ActionTool.h"
 #include "SimG4Interface/ISimG4MagneticFieldTool.h"
+#include "SimG4Interface/ISimG4RegionTool.h"
 
 //Gaudi
 #include "GaudiKernel/Service.h"
@@ -17,6 +18,7 @@
  *
  *  Main Geant simulation service.
  *  It handles Geant initialization (via tools) and communication with the G4RunManager.
+ *  [For more information please see](@ref md_sim_doc_geant4fullsim).
  *
  *  @author Anna Zaborowska
  */
@@ -65,6 +67,12 @@ private:
   ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool;
   /// Geant4 commands to be executed
   std::vector<std::string> m_g4Commands;
+  /// Handles to the tools creating regions and fast simulation models
+  /// to be replaced with the ToolHandleArray<ISimG4RegionTool> m_regionTools
+  std::vector<ISimG4RegionTool*> m_regionTools;
+  /// Names of the tools that create regions and fast simulation models
+  /// to be deleted once the ToolHandleArray<ISimG4RegionTool> m_regionTools is in place
+  std::vector<std::string> m_regionToolNames;
 
   /// Run Manager
   sim::RunManager m_runManager;

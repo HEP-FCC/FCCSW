@@ -28,7 +28,7 @@
   <include ref="./FCChh_BeamTube.xml" />
   <include ref="./FCChh_Solenoids.xml" />
   <include ref="./FCChh_Dipoles.xml" />
-  <include ref="../../DetFCChhTrackerSimple/compact/FCChh_Tracker.xml" />
+  <include ref="../../DetFCChhTrackerSimple/compact/Tracker.xml" />
   <include ref="../../DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
   <!--

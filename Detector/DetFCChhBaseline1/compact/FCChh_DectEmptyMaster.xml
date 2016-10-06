@@ -17,10 +17,10 @@
     <comment>Use this one if you want to use official dimensions but only place one detector inside</comment>
   </info>
   <define>
-    <constant name="world_size" value="8.1*m"/>
-    <constant name="world_x" value="3.7*m"/>
-    <constant name="world_y" value="3.7*m"/>
-    <constant name="world_z" value="8.1*m"/>
+    <constant name="world_size" value="30*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
   </define>
   <include ref="./FCChh_DectDimensions.xml" />
 </lccdd>

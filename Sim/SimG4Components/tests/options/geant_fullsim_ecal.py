@@ -10,17 +10,8 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCReader
-## reads HepMC text file and write the HepMC::GenEvent to the data service
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
-
-from Configurables import HepMCConverter
-## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+# Get lists of algorithms and services that provide input to the simulation
+from common_config import mc_particle_algs, mc_particle_svcs
 
 from Configurables import SimG4Svc
 ## Geant4 service
@@ -40,7 +31,7 @@ from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 # first, create a tool that saves the calorimeter hits (of type "ecal")
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-saveecaltool = SimG4SaveCalHits("saveECalHits", caloType = "ECal")
+saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHitsPhiEta"])
 saveecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 saveecaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
@@ -56,9 +47,9 @@ out = PodioOutput("out",
 out.outputCommands = ["keep *"]
 
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg=[reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg=mc_particle_algs + [geantsim, out],
                 EvtSel='NONE',
                 EvtMax=1,
                 ## order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc=[podioevent, geoservice, geantservice],
+                ExtSvc=mc_particle_svcs + [podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG)

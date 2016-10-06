@@ -1,13 +1,11 @@
-<detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="BarECal_Readout" doCalibHits="false" buildCryostat="true">
-  <sensitive type="EcalCalorimeterSD"/> 
+<detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
   <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
   <cryostat id="1" name="ECAL_Cryo" material="Aluminum" >
-    <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="50*mm" />
+    <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="100*mm" />
   </cryostat>
   <calorimeter id="1" name="EM_barrel" >
-    <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" nphi="62" />
-    <active_layers thickness="4.0*mm" material="LAr" sensitive="true" vis="ecal_active_vis" />
-    <passive_layers thickness="2.0*mm" material="Lead" sensitive="false" vis="ecal_passive_vis" />
-    <caloZmodule dz="50*mm" vis="ecal_caloZmodule_vis" />
+    <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
+    <active_layers thickness="4*mm" material="LAr" />
+    <passive_layers thickness="2*mm" material="Lead" />
   </calorimeter>
 </detector>

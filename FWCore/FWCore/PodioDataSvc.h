@@ -40,6 +40,9 @@ public:
   virtual const CollRegistry& getCollections() const {return m_collections;}
   virtual podio::CollectionIDTable* getCollectionIDs() {return m_collectionIDs;}
 
+  /// Set the collection IDs (if reading a file)
+  void setCollectionIDs(podio::CollectionIDTable* collectionIds);
+
 private:
   SmartIF<IConversionSvc> m_cnvSvc;
 

@@ -17,7 +17,7 @@ class IHepMCFileReaderTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(IHepMCFileReaderTool, 3, 0);
 
-  virtual HepMC::GenEvent* readNextEvent() = 0;
+  virtual StatusCode readNextEvent(HepMC::GenEvent&) = 0;
 
   virtual StatusCode open(const std::string& filename) = 0;
 

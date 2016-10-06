@@ -6,6 +6,7 @@
 
 //FCCSW
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
+class IGeoSvc;
 
 /** @class InspectHitsCollectionsTool TestDD4hep/TestDD4hep/InspectHitsCollectionsTool.h InspectHitsCollectionsTool.h
  *
@@ -26,6 +27,11 @@ public:
   virtual StatusCode finalize() final;
   /// inspect output
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+private:
+  /// Pointer to the geometry service
+  SmartIF<IGeoSvc> m_geoSvc;
+  /// Name of the readouts (hits collections)
+  std::vector<std::string> m_readoutNames;
 };
 
 #endif /* TESTDD4HEP_INSPECTHITSCOLLECTIONSTOOL_H */

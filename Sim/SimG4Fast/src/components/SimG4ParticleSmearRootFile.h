@@ -16,13 +16,14 @@ class IRndmGen;
 /** @class SimG4ParticleSmearRootFile SimG4Fast/src/components/SimG4ParticleSmearRootFile.h SimG4ParticleSmearRootFile.h
  *
  *  Root file particle smearing tool.
- *  Momentum/energy dependent smearing.
  *  The resolution dependence is read from the ROOT file, which path is given in configuration.
- *  Root file should contain (for each pseudorapidity bin) TGraph with p-dependent resolution.
- *  The name of the TGraph should follow the convention: "etafromX_etatoY", where X and Y are
- *  lower and upper boundaries of eta bin.
- *  Momentum/energy of the particle is smeared following a Gaussian distribution,
+ *  Root file contains trees 'info' and 'resolutions'.
+ *  'info' has two arrays of type TArrayD containing edges of eta bins ('eta') and momentum values ('p').
+ *  'resolutions' tree has TArrayD with resolutions computed for momentum values. An array is defined for every eta bin.
+ *  Momentum of the particle is smeared following a Gaussian distribution,
  *  using the evaluated resolution as the mean.
+ *  User needs to specify the min/max momentum nad max eta for fast sim in the `SimG4FastSimTrackerRegion` tool.
+ *  The defined values cannot be broader than eta and p values for which the resolutions were computed.
  *
  *  @author Anna Zaborowska
  */
@@ -47,12 +48,6 @@ public:
    *   @return status code
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
-  /**  Smear the energy of the particle
-   *   @param aEn Particle energy to be smeared.
-   *   @param[in] aPdg Particle PDG code.
-   *   @return status code
-   */
-  virtual StatusCode smearEnergy(double& aEn, int aPdg = 0) final;
   /**  Read the file with the resolutions. File name is set by job options.
    *   @return status code
    */
@@ -63,18 +58,31 @@ public:
    *   @return Resolution
    */
   double resolution(double aEta, double aMom);
+
+  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the model.
+   *   @param[in] aMinMomentum Minimum momentum.
+   *   @param[in] aMaxMomentum Maximum momentum.
+   *   @param[in] aMaxEta Maximum pseudorapidity.
+   *   @return status code
+   */
+  virtual StatusCode checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const final;
+
 private:
-  /// Map of p-dependent resolutions and the end of eta bin that it refers to
-  /// (lower end is defined by previous entry, and eta=0 for the first one)
-  std::map<double, std::unique_ptr<TGraph>> m_momentumResolutions;
-  /// Maximum eta for which resolutions are defined (filled at the end of file reading)
-  double m_maxEta;
-  /// File name with the resolutions obtained from root file (set by job options)
-  std::string m_resolutionFileName;
   /// Random Number Service
   SmartIF<IRndmGenSvc> m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   IRndmGen* m_gauss;
+  /// Map of p-dependent resolutions and the end of eta bin that it refers to
+  /// (lower end is defined by previous entry, and eta=0 for the first one)
+  std::map<double, TGraph> m_momentumResolutions;
+  /// File name with the resolutions obtained from root file (set by job options)
+  std::string m_resolutionFileName;
+  /// minimum momentum defined in the resolution file
+  double m_minMomentum;
+  /// maximum momentum defined in the resolution file
+  double m_maxMomentum;
+  /// maximum pseudorapidity defined in the resolution file
+  double m_maxEta;
 };
 
 #endif /* SIMG4FAST_G4PARTICLESMEARROOTFILE_H */

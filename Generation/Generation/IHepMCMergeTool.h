@@ -16,8 +16,8 @@ class IHepMCMergeTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(IHepMCMergeTool, 1, 0);
 
-  /// Turn a vector of signal event and subsequent pileup events into a merged event.
-  virtual HepMC::GenEvent* merge(const std::vector<HepMC::GenEvent>& eventVector) = 0;
+  /// Turn a signal event and a vector of pileup events into a merged event.
+  virtual StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) = 0;
 
 };
 

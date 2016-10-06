@@ -11,7 +11,7 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr
 from FCCPileupScenarios import FCCPhase1PileupConf as pileupconf
 
-from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader, FlatSmearVertex
+from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader, FlatSmearVertex, HepMCFullMerge
 
 from Configurables import FCCDataSvc
 albersevent   = FCCDataSvc("EventDataSvc")
@@ -24,13 +24,16 @@ smeartool = FlatSmearVertex(
      zVertexMin=pileupconf['zVertexMin'],
      zVertexMax=pileupconf['zVertexMax'])
 
-genpileup = PoissonPileUp(name="Pileup", 
-    Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
-    numPileUpEvents=pileupconf['numPileUpEvents']) 
+genpileup = PoissonPileUp(name="Pileup",
+    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
+    numPileUpEvents=pileupconf['numPileUpEvents'])
+
+mergetool = HepMCFullMerge()
 
 reader = HepMCReader("Reader", 
-    Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
+    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
     PileUpTool=genpileup,
+    HepMCMergeTool=mergetool,
     VertexSmearingTool = smeartool)
 reader.DataOutputs.hepmc.Path = "hepmc"
 
