@@ -36,7 +36,7 @@ Output: Calorimeter cells (EDM: CaloHitCollection)
 * numVolumesRemove (unsigned, number of volumes with active material which are not readout - e.g. ECAL: LAr bath in cryostat)
 * activeFieldName (string, name of active layers for sampling calorimeter)
 * fieldNames (vector of string, name of the fields describing the segmented volume)
-* fieldValues (vector of int, values of the fields describing the segmented volume);
+* fieldValues (vector of int, values of the fields describing the segmented volume)
 
 More details can be found in [Doxygen documentation] (http://fccsw.web.cern.ch/fccsw/).
 
