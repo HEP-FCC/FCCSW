@@ -12,9 +12,9 @@
     <comment>Muon System Place-Holder</comment>
   </info>
   <display>
-    <vis name="MuonEnvelopeVis" r="0.87" g="0.5" b="0.0" a="0.4" showDaughters="false" visible="true"/>
-    <vis name="MuonEnvelopeEndcapVis" r="0.91" g="0.64" b="0.29" showDaughters="false" visible="true"/>
-    <vis name="MuonEnvelopeFwdVis" r="0.90" g="0.72" b="0.48" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeVis" r="0.87" g="0.5" b="0.0" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeEndcapVis" r="0.91" g="0.64" b="0.29" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeFwdVis" r="0.90" g="0.72" b="0.48" a="0.2" showDaughters="false" visible="true"/>
   </display>
   <define>
     <constant name="MuonSpacer" value="100*mm" />

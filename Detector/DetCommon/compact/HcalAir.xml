@@ -12,9 +12,9 @@
     <comment>HCal Place-Holder</comment>
   </info>
   <display>
-    <vis name="HCalEnvelopeVis" r="0.25" g="0.91" b="0.29" showDaughters="false" visible="true"/>
-    <vis name="HCalEnvelopeEndcapVis" r="0.49" g="0.91" b="0.51" showDaughters="false" visible="true"/>
-    <vis name="HCalEnvelopeFwdVis" r="0.65" g="0.87" b="0.67" showDaughters="false" visible="true"/>
+    <vis name="HCalEnvelopeVis" r="0.25" g="0.91" b="0.29" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="HCalEnvelopeEndcapVis" r="0.49" g="0.91" b="0.51" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="HCalEnvelopeFwdVis" r="0.65" g="0.87" b="0.67" a="0.2" showDaughters="false" visible="true"/>
   </display>
   <define>
     <constant name="HcalSpacer" value="100*mm" />

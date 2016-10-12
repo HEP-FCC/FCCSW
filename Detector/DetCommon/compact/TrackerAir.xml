@@ -12,8 +12,8 @@
     <comment>Tracker Place-Holder</comment>
   </info>
   <display>
-    <vis name="TrackerEnvelopeVis" r="0.87" g="0.27" b="0.15" showDaughters="false" visible="true"/>
-    <vis name="TrackerEnvelopeFwdVis" r="0.87" g="0.11" b="0.01" showDaughters="false" visible="true"/>
+    <vis name="TrackerEnvelopeVis" r="0.87" g="0.27" b="0.15" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="TrackerEnvelopeFwdVis" r="0.87" g="0.11" b="0.01" a="0.2" showDaughters="false" visible="true"/>
   </display>
 
   <detectors>
