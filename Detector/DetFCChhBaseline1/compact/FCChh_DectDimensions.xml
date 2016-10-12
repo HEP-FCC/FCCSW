@@ -50,10 +50,13 @@
     <!-- Tracker End-caps -->
     <!-- not explicitly defined, up to tracker design -->
     <!-- Tracker Forward -->
-    <constant name="FwdTracker_rmin" value="30*mm"/>
-    <constant name="FwdTracker_rmax" value="2000*mm"/>
-    <constant name="FwdTracker_dz" value="2000*mm"/>
-    <constant name="FwdTracker_zOffset" value="12000*mm+FwdTracker_dz"/>
+    <constant name="FwdTracker_rmin1" value="30*mm"/>
+    <constant name="FwdTracker_rmax1" value="3500*mm"/>
+    <constant name="FwdTracker_z1" value="2500*mm"/>
+    <constant name="FwdTracker_rmin2" value="2000*mm"/>
+    <constant name="FwdTracker_rmax2" value="3505*mm"/>
+    <constant name="FwdTracker_z2" value="2000*mm"/>
+    <constant name="FwdTracker_zOffset" value="14000*mm"/>
 
     <!-- E(M)CAL DIMENSIONS -->
     <!-- E(M)Cal Barrel -->
@@ -90,21 +93,20 @@
 
     <!-- MUON SYSTEM DIMENSIONS -->
     <!-- Muon system barrel -->
-    <constant name="BarMuon_rmin" value="6500*mm"/>
-    <constant name="BarMuon_rmax" value="9000*mm"/>
-    <constant name="BarMuon_dz" value="10500*mm"/>
+    <constant name="BarMuon_rmin1" value="5250*mm"/>
+    <constant name="BarMuon_rmax1" value="9000*mm"/>
+    <constant name="BarMuon_z1" value="13000*mm"/>
+    <constant name="BarMuon_rmin2" value="5245*mm"/>
+    <constant name="BarMuon_rmax2" value="6500*mm"/>
+    <constant name="BarMuon_z2" value="10500*mm"/>
     <!-- Muon system end-caps -->
-    <constant name="EndCapInnerMuon_rmin1" value="2458.67*mm"/>
-    <constant name="EndCapInnerMuon_rmax1" value="4750*mm"/>
-    <constant name="EndCapInnerMuon_rmin2" value="2724.47*mm"/>
-    <constant name="EndCapInnerMuon_rmax2" value="4750*mm"/>
-    <constant name="EndCapInnerMuon_dz" value="500*mm"/>
-    <constant name="EndCapInnerMuon_zOffset" value="9750*mm"/>
+    <constant name="EndCapMuon_rmin1" value="2458.67*mm"/>
+    <constant name="EndCapMuon_rmax1" value="4750*mm"/>
+    <constant name="EndCapMuon_rmin2" value="2724.47*mm"/>
+    <constant name="EndCapMuon_rmax2" value="4750*mm"/>
+    <constant name="EndCapMuon_dz" value="500*mm"/>
+    <constant name="EndCapMuon_zOffset" value="9750*mm"/>
 
-    <constant name="EndCapMuon_rmin" value="5250*mm"/>
-    <constant name="EndCapMuon_rmax" value="9000*mm"/>
-    <constant name="EndCapMuon_dz" value="1250*mm"/>
-    <constant name="EndCapMuon_zOffset" value="BarMuon_dz + EndCapMuon_dz"/>
     <!-- Muon system forward -->
     <constant name="FwdBarMuon_rmin" value="5250*mm"/>
     <constant name="FwdBarMuon_rmax" value="7000*mm"/>
