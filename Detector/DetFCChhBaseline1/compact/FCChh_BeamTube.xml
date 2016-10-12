@@ -32,7 +32,7 @@
     <detector name="ForwardBeamTube2" type="SimpleCone"  vis="BeamPipeVis">
       <status id="2"/>
       <comment>Forward Be Beampipe negative z</comment>
-      <dimensions rmin1="ForwardBeamTubeRmin1" rmax1="ForwardBeamTubeRmax1" rmin2="ForwardBeamTubeRmin2" rmax2="ForwardBeamTubeRmax2" dz="-ForwardBeamTubeZ" z_offset="-ForwardBeamTubeZoffset-ForwardBeamTubeZ" material="Beryllium"/>
+      <dimensions rmin1="ForwardBeamTubeRmin1" rmax1="ForwardBeamTubeRmax1" rmin2="ForwardBeamTubeRmin2" rmax2="ForwardBeamTubeRmax2" dz="ForwardBeamTubeZ" z_offset="-ForwardBeamTubeZoffset-ForwardBeamTubeZ" material="Beryllium"/>
     </detector>
   </detectors>
 
