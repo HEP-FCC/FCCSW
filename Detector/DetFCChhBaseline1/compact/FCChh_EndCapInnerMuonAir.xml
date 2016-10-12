@@ -21,7 +21,7 @@
     </detector>
     <detector name="MuonEnvelopeEndcapInnerNeg" type="SimpleCone"  vis="MuonEnvelopeEndCapInnerVis">
       <comment>Envelope for Muon inner end-cap</comment>
-      <dimensions rmin1="EndCapInnerMuon_rmin1" rmax1="EndCapInnerMuon_rmax1" rmin2="EndCapInnerMuon_rmin2" rmax2="EndCapInnerMuon_rmax2" dz="EndCapInnerMuon_dz" z_offset="-EndCapInnerMuon_zOffset" material="Air"/>
+      <dimensions rmin2="EndCapInnerMuon_rmin1" rmax2="EndCapInnerMuon_rmax1" rmin1="EndCapInnerMuon_rmin2" rmax1="EndCapInnerMuon_rmax2" dz="EndCapInnerMuon_dz" z_offset="-EndCapInnerMuon_zOffset" material="Air"/>
     </detector>
   </detectors>
 </lccdd>
