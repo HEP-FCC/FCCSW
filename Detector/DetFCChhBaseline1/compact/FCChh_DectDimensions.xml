@@ -33,13 +33,13 @@
     <!-- MAGNET SYSTEM -->
     <!-- Central Solenoid -->
     <constant name="BarSolenoid_dz" value="1000*cm"/>
-    <constant name="BarSolenoid_rmin" value="550*cm"/>
-    <constant name="BarSolenoid_rmax" value="650*cm"/>
+    <constant name="BarSolenoid_rmin" value="510*cm"/>
+    <constant name="BarSolenoid_rmax" value="610*cm"/>
 
     <!-- Forward Solenoids -->
     <constant name="FwdSolenoid_dz" value="200*cm"/>
-    <constant name="FwdSolenoid_rmin" value="250*cm"/>
-    <constant name="FwdSolenoid_rmax" value="350*cm"/>
+    <constant name="FwdSolenoid_rmin" value="265*cm"/>
+    <constant name="FwdSolenoid_rmax" value="365*cm"/>
     <constant name="FwdSolenoid_zOffset" value="1200*cm+FwdSolenoid_dz"/>
 
     <!-- TRACKER DIMENSIONS -->
