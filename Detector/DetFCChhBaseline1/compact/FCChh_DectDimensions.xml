@@ -43,8 +43,8 @@
     <constant name="FwdSolenoid_zOffset" value="1200*cm+FwdSolenoid_dz"/>
 
     <!-- TRACKER DIMENSIONS -->
-    <constant name="Tracker_rmin" value="21*mm"/>
-    <constant name="Tracker_rmax" value="1537*mm"/>
+    <constant name="Tracker_rmin" value="24*mm"/>
+    <constant name="Tracker_rmax" value="1700*mm"/>
     <constant name="Tracker_dz" value="5000*mm"/>
     <!-- Tracker Barrel -->
     <!-- Tracker End-caps -->
@@ -64,10 +64,12 @@
     <constant name="BarECal_rmax" value="2750*mm"/>
     <constant name="BarECal_dz" value="5000*mm"/>
     <!-- E(M)Cal End-caps -->
-    <constant name="EndCapECal_rmin" value="750*mm"/>
-    <constant name="EndCapECal_rmax" value="2800*mm"/>
-    <constant name="EndCapECal_dz" value="1875*mm"/>
-    <constant name="EndCapECal_zOffset" value="5250*mm + EndCapECal_dz"/>
+    <constant name="EndCapECal_rmin1" value="864.278*mm"/>
+    <constant name="EndCapECal_rmax1" value="2800*mm"/>
+    <constant name="EndCapECal_rmin2" value="1467.641*mm"/>
+    <constant name="EndCapECal_rmax2" value="2800*mm"/>
+    <constant name="EndCapECal_dz" value="1850*mm"/>
+    <constant name="EndCapECal_zOffset" value="5300*mm + EndCapECal_dz"/>
     <!-- E(M)Cal forward -->
     <constant name="FwdECal_rmin" value="30*mm"/>
     <constant name="FwdECal_rmax" value="3500*mm"/>
@@ -79,12 +81,12 @@
     <!-- HCal Barrel -->
     <constant name="BarHCal_rmin" value="2850*mm"/>
     <constant name="BarHCal_rmax" value="4850*mm"/>
-    <constant name="BarHCal_dz" value="4500*mm"/>
+    <constant name="BarHCal_dz" value="4600*mm"/>
     <!-- HCal End-Cap -->
     <constant name="EndCapHCal_rmin" value="2850*mm"/>
-    <constant name="EndCapHCal_rmax" value="4750*mm"/>
-    <constant name="EndCapHCal_dz" value="1875*mm"/>
-    <constant name="EndCapHCal_zOffset" value="5250*mm + EndCapHCal_dz"/>
+    <constant name="EndCapHCal_rmax" value="4550*mm"/>
+    <constant name="EndCapHCal_dz" value="2000*mm"/>
+    <constant name="EndCapHCal_zOffset" value="5000*mm + EndCapHCal_dz"/>
     <!-- HCal forward -->
     <constant name="FwdHCal_rmin" value="30*mm"/>
     <constant name="FwdHCal_rmax" value="3500*mm"/>
