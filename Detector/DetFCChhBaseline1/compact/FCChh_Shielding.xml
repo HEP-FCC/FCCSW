@@ -12,7 +12,7 @@
     <comment>Approximate shielding for forward detectors</comment>
   </info>
   <display>
-    <vis name="ShieldingVis" r="0.7" g="0.7" b="0.7" showDaughters="false" visible="true"/>
+    <vis name="ShieldingVis" r="0.7" g="0.7" b="0.7" alpha="0.8" showDaughters="false" visible="true"/>
   </display>
   <detectors>
     <!-- End-caps -->

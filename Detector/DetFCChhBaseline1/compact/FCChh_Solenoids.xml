@@ -13,7 +13,7 @@
   </info>
 
   <display>
-    <vis name="SolenoidVis" r="0.3" g="0.3" b="0.3" a="1.0" showDaughters="true" visible="true" />
+    <vis name="SolenoidVis" r="0.3" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" />
   </display>
 
  <detectors>
