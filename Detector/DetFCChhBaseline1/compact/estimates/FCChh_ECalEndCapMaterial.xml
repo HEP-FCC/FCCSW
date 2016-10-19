@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the EMCal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>ECAL end cap material approximation</comment>
+  </info>
+
+  <detectors>
+    <!-- E N D C A P S -->
+    <detector name="ECalEndcapPos" type="SimpleCone" vis="ECalVis">
+      <dimensions rmin1="EndCapECal_rmin1" rmax1="EndCapECal_rmax1" rmin2="EndCapECal_rmin2" rmax2="EndCapECal_rmax2" dz="EndCapECal_dz" z_offset="EndCapECal_zOffset" material="EM"/>
+    </detector>
+    <detector name="ECalEndcapNeg" type="SimpleCone" vis="ECalVis">
+      <dimensions rmin2="EndCapECal_rmin1" rmax2="EndCapECal_rmax1" rmin1="EndCapECal_rmin2" rmax1="EndCapECal_rmax2" dz="EndCapECal_dz" z_offset="-EndCapECal_zOffset" material="EM"/>
+    </detector>
+  </detectors>
+</lccdd>
