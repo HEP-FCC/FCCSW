@@ -13,6 +13,11 @@
         version="$Id:??$">
     <comment>HCal material end cap approximation</comment>
   </info>
+  <define>
+    <constant name="EndCapHCalActual_dz" value="EndCapHCal_dz - 650*mm"/>
+    <constant name="EndCapHCalActual_zOffset" value="EndCapHCal_zOffset - EndCapHCal_dz + EndCapHCalActual_dz + 300*mm"/>
+
+  </define>
   <detectors>
     <!-- E N D C A P S -->
     <detector name="HCalPreShowerPos" type="SimpleLayeredCylinder" vis="HCalEnvVis">
@@ -21,9 +26,9 @@
       <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
     <detector name="HCalEndCapPos" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCal_dz-150*mm" z_offset="EndCapHCal_zOffset+150*mm" material="Air"/>
-      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCal_dz-150*mm" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCal_dz-150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="EndCapHCalActual_zOffset" material="Air"/>
+      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCalActual_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
 
     <detector name="HCalPreShowerNeg" type="SimpleLayeredCylinder" vis="HCalEnvVis">
@@ -32,9 +37,9 @@
       <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
     <detector name="HCalEndCapNeg" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCal_dz-150*mm" z_offset="-EndCapHCal_zOffset-150*mm" material="Air"/>
-      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCal_dz-150*mm" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCal_dz-150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="-EndCapHCalActual_zOffset" material="Air"/>
+      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCalActual_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
   </detectors>
 </lccdd>
