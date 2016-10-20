@@ -12,4 +12,4 @@ errmean = params.Error(1)
 errsigma = params.Error(2)
 
 assert(-10e-3 < mean-errmean < 10e-3)
-assert(0.01 < sigma-errsigma < 0.016)
+assert(0.007 < sigma-errsigma < 0.013)

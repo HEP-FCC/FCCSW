@@ -30,10 +30,11 @@
   </display>
 
   <readouts>
-    <readout name="BarECal_Readout">
-      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
-      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
+    <readout name="ECalHitsPhiEta">
+      <segmentation type="GridPhiEta" grid_size_eta="0.5" phi_bins="5"/>
+      <id>system:3,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-6,phi:-4</id>
     </readout>
+
   </readouts>
 
   <detectors>
