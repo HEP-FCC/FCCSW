@@ -6,11 +6,11 @@
     <readouts>
         <readout name="TrackerBarrelReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:4,layer:5,rod:8,module:16,component:4,x:40:-8,y:-8</id>
+            <id>system:4,layer:5,module:16,component:4,x:-15,z:-15</id>
         </readout>
         <readout name="TrackerEndcapReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:4,posneg:1,disc:5,ring:8,module:16,component:4,x:40:-8,y:-8</id>
+            <id>system:4,posneg:1,disc:5,module:16,component:4,x:-15,z:-15</id>
         </readout>
     </readouts>
     <detectors>
