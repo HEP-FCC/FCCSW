@@ -77,7 +77,6 @@ void clusterEveConversion(T& clustercoll, DDEveHitActor& actor) {
 /// Call functor on hit collection
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitActor& actor) {
   const podio::CollectionBase* collBase(nullptr);
-  const fcc::TrackClusterCollection* clustercoll(nullptr);
   bool clusterPresent = m_podioStore.get(collection, collBase);
   if (clusterPresent) {
     const fcc::TrackClusterCollection* clustercoll = dynamic_cast<const fcc::TrackClusterCollection*>(collBase);
@@ -99,7 +98,7 @@ size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitAc
 }
 
 /// Loop over collection and extract particle data
-size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveParticleActor& actor) {
+size_t FCCEventHandler::collectionLoop(const std::string&, DDEveParticleActor&) {
   ///TODO: implement (reconstructed particles not available in FCCSW yet) 
   return 0;
 }
