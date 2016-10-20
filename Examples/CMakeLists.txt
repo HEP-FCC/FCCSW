@@ -48,6 +48,7 @@ gaudi_add_test(GeantFullSimWithGeantino
                FRAMEWORK options/geant_fullsim_pgun_geantino.py)
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK options/geant_pgun_fullsim.py)
 gaudi_add_test(GeantFastSimTracker
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -68,6 +69,7 @@ gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
 gaudi_add_test(PrintOverlaps
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so 
                FRAMEWORK options/printOverlaps.py
                PASSREGEX "Number of illegal overlaps/extrusions : 0" )
 

@@ -11,6 +11,8 @@ class ISimG4ParticleSmearTool;
 #include "GaudiKernel/ServiceHandle.h"
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/ToolHandle.h"
+
 class IToolSvc;
 
 
@@ -37,13 +39,20 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   /** Constructor.
    *  @param aModelName Name of the fast simulation model.
    *  @param aEnvelope Region where the model can take over the ordinary tracking.
+   *  @param aSmearToolType Type of the implementation of ISimG4ParticleSmearTool (conrete class name) to be searched for by ToolSvc.
    *  @param aSmearToolName Name of the implementation of ISimG4ParticleSmearTool to be searched for by ToolSvc.
+   *  @param aMinMomentum Minimum particle momentum that triggers that model
+   *  @param aMinMomentum Maximum particle momentum that triggers that model
+   *  @param aMinMomentum Maximum pseudorapidity that triggers that model
    */
-  explicit FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName);
+  explicit FastSimModelTracker (const std::string& aModelName, G4Region* aEnvelope,
+    ToolHandle<ISimG4ParticleSmearTool>& aSmearTool,
+    double aMinMomentum, double aMaxMomentum, double aMaxEta);
   /** Constructor.
    *  @param aModelName Name of the fast simulation model.
    */
-  explicit FastSimModelTracker (const std::string& aModelName);
+  explicit FastSimModelTracker (const std::string& aModelName,
+    ToolHandle<ISimG4ParticleSmearTool>& aSmearTool);
   virtual ~FastSimModelTracker ();
   /** Check if this model should be applied to this particle type.
    *  @param aParticle Particle definition (type).
@@ -66,10 +75,8 @@ class FastSimModelTracker : public G4VFastSimulationModel {
   ServiceHandle<IMessageSvc> m_msgSvc;
   /// Message Stream
   MsgStream m_log;
-  /// Tool Service
-  ServiceHandle<IToolSvc> m_toolSvc;
   /// Pointer to a smearing tool
-  ISimG4ParticleSmearTool* m_smearTool;
+  ToolHandle<ISimG4ParticleSmearTool>& m_smearTool;
   /// minimum P that triggers model
   double m_minTriggerMomentum;
   /// maximum P that triggers model

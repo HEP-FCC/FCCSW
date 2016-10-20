@@ -73,7 +73,7 @@ private:
   /// Name of the new detector readout
   std::string m_newReadoutName;
   /// Old bitfield decoder
-  std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
+  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
   std::vector<std::string> m_oldIdentifiers;
   /// Detector fields that are going to be rewritten

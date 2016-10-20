@@ -45,9 +45,8 @@ StatusCode RedoSegmentation::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout, bitfield from GeoSvc
-  m_oldDecoder = std::unique_ptr<DD4hep::DDSegmentation::BitField64>(
-    new DD4hep::DDSegmentation::BitField64(
-      m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder()->fieldDescription()));
+  m_oldDecoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
+    m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder());
   // segmentation identifiers to be overwritten
   if(m_oldIdentifiers.size()==0) {
     // it is not an error, maybe no segmentation was used previously

@@ -58,7 +58,7 @@ savetrackertool.DataOutputs.trackClusters.Path = "clusters"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
-savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["BarECal_Readout","BarHCal_Readout"])
+savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
 savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
