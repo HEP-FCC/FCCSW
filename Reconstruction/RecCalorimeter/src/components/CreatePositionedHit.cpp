@@ -4,6 +4,10 @@
 #include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
 
+// our EDM
+#include "datamodel/CaloHitCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
+
 // DD4hep
 #include "DD4hep/LCDD.h"
 
@@ -13,7 +17,7 @@ CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* s
   : GaudiAlgorithm(name, svcLoc)
 {
   declareInput("caloCells", m_caloCells,"caloCells");
-  declareOutput("caloClusters", m_caloClusters,"caloClusters");
+  declareOutput("caloPositionedHits", m_caloPositionedHits,"caloPositionedHits");
   declareProperty("readoutName", m_readoutName="ECalHitsNew");
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("activeVolumeName", m_activeVolumeName="LAr");
@@ -51,7 +55,7 @@ StatusCode CreatePositionedHit::initialize() {
 
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  //Substract volumes with same name as the active layers (e.g. ECAL: bath volume)  
+  //Substract volumes with same name as the active layers (e.g. ECAL: bath volume)
   m_numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName)-m_numVolumesRemove;
   debug() << "Number of active layers " << m_numLayers << endmsg;
 
@@ -59,25 +63,25 @@ StatusCode CreatePositionedHit::initialize() {
 }
 
 StatusCode CreatePositionedHit::execute() {
-   
+
   //Get the input caloHits collection
   const fcc::CaloHitCollection* calocells = m_caloCells.get();
   debug() << "Input caloCells collection size: " << calocells->size() << endmsg;
-    
+
   //Initialize output CaloClusterCollection
-  fcc::CaloClusterCollection* edmClusterCollection = new fcc::CaloClusterCollection();
-  
+  auto edmPositionedHitCollection = m_caloPositionedHits.createAndPut();
+
   //Intialize value of the half size in r
   double r_cell_size_half = -1.;
 
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
-  //Loop though CaloHits, calculate position from cellID, create and fill information in a CaloCluster 
+  //Loop though CaloHits, calculate position from cellID, create and fill information in a CaloCluster
   for (const auto& ecells : *calocells) {
-    fcc::CaloCluster newCluster = edmClusterCollection->create();
-    newCluster.core().energy = ecells.core().energy;     
-    newCluster.core().time = ecells.core().time;
-    newCluster.core().bits = ecells.core().cellId;
-    
+    auto positionedHit = edmPositionedHitCollection->create();
+    positionedHit.core().energy = ecells.core().energy;
+    positionedHit.core().time = ecells.core().time;
+    positionedHit.core().bits = ecells.core().cellId;
+
     //Current active layer r-minimum r
     //Volume dimensions of Tube - det::utils::tubeDimensions(volumeID) - ThreeVector rmin, rmax, dz (half-length)
     double rmin_layer = det::utils::tubeDimensions(ecells.core().cellId).x();
@@ -86,36 +90,36 @@ StatusCode CreatePositionedHit::execute() {
     decoder->setValue(ecells.core().cellId);
     if (r_cell_size_half<0) {
       if ((*decoder)[m_activeFieldName]<m_numLayers) {
-	(*decoder)[m_activeFieldName]=(*decoder)[m_activeFieldName]+1;
-	uint64_t cellID_next = decoder->getValue();
-	double rmin_layer_next = det::utils::tubeDimensions(cellID_next).x();
-	r_cell_size_half = (rmin_layer_next - rmin_layer)*0.5;
+        (*decoder)[m_activeFieldName]=(*decoder)[m_activeFieldName]+1;
+        uint64_t cellID_next = decoder->getValue();
+        double rmin_layer_next = det::utils::tubeDimensions(cellID_next).x();
+        r_cell_size_half = (rmin_layer_next - rmin_layer)*0.5;
       }
       else {
-	info() << "Cell size in r not defined!!!! " << endmsg;
+        info() << "Cell size in r not defined!!!! " << endmsg;
       }
     }
     //r_cell: middle of the cell (active + passive)
     double r_cell = rmin_layer+r_cell_size_half;
-   
+
     //Global position of the cell
     auto position =  m_segmentation->positionFromREtaPhi( r_cell, m_segmentation->eta(ecells.core().cellId), m_segmentation->phi(ecells.core().cellId) );
-    newCluster.core().position.x = position.x()*10.;
-    newCluster.core().position.y = position.y()*10.;
-    newCluster.core().position.z = position.z()*10.;
-      
-    //Debug information about cells
-    debug() << "cellID " << ecells.core().cellId <<" energy " << ecells.core().energy << " decoder: all fields " << decoder->valueString() << " r " << r_cell << " eta " <<  m_segmentation->eta(ecells.core().cellId) << " phi " <<  m_segmentation->phi(ecells.core().cellId)<< endmsg;
-  }
-  debug() << "Output CaloCluster collection size: " << edmClusterCollection->size() << endmsg;
+    positionedHit.position().x = position.x()*10.;
+    positionedHit.position().y = position.y()*10.;
+    positionedHit.position().z = position.z()*10.;
 
-  //Push the CaloClusterCollection to event store
-  m_caloClusters.put(edmClusterCollection);
- 
+    //Debug information about cells
+    debug() << "cellID " << ecells.core().cellId <<" energy " << ecells.core().energy << " decoder: all fields "
+            << decoder->valueString() << " r " << r_cell << " eta " <<  m_segmentation->eta(ecells.core().cellId)
+            << " phi " <<  m_segmentation->phi(ecells.core().cellId)<< endmsg;
+  }
+  debug() << "Output CaloCluster collection size: " << edmPositionedHitCollection->size() << endmsg;
+
+
   return StatusCode::SUCCESS;
 }
 
-StatusCode CreatePositionedHit::finalize() {  
+StatusCode CreatePositionedHit::finalize() {
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }

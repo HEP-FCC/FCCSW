@@ -57,7 +57,7 @@ savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["Track
 savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
 # and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
-savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"]))
+savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
 savehcaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
 
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"

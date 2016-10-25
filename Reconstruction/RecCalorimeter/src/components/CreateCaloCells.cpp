@@ -125,10 +125,10 @@ StatusCode CreateCaloCells::execute() {
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (auto ecells : edmFinalCellsVector) {
     fcc::CaloHit newCell = edmCellsCollection->create();
-      newCell.core().energy = ecells->core().energy;     
-      newCell.core().time = ecells->core().time;
-      newCell.core().bits = ecells->core().bits;
-      newCell.core().cellId = ecells->core().cellId;
+    newCell.core().energy = ecells->core().energy;     
+    newCell.core().time = ecells->core().time;
+    newCell.core().bits = ecells->core().bits;
+    newCell.core().cellId = ecells->core().cellId;
   }
   debug() << "Output Cell collection size: " << edmCellsCollection->size() << endmsg;
 
