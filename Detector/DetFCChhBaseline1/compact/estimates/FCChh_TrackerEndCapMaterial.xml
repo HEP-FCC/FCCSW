@@ -33,7 +33,7 @@
       <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="TrackerInnerDisc_zOffset_ring+224.7*mm" material="TR" vis="TrackerVis"/>
       <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="TrackerInnerDisc_zOffset_ring+500*mm" material="TR" vis="TrackerVis"/>
       <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="TrackerInnerDisc_zOffset_ring+837.1*mm" material="TR" vis="TrackerVis"/>
-      <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="TrackerInnerDisc_zOffset_ring+2250.0*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="TrackerInnerDisc_zOffset_ring+1250.0*mm" material="TR" vis="TrackerVis"/>
     </detector>
 
     <detector name="InnerTrackerEndCapNeg" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
@@ -42,7 +42,7 @@
       <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="-TrackerInnerDisc_zOffset_ring-224.7*mm" material="TR" vis="TrackerVis"/>
       <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="-TrackerInnerDisc_zOffset_ring-500*mm" material="TR" vis="TrackerVis"/>
       <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="-TrackerInnerDisc_zOffset_ring-837.1*mm" material="TR" vis="TrackerVis"/>
-      <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="-TrackerInnerDisc_zOffset_ring-2250.0*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerInnerDisc_rmax" dz="TrackerInnerDisc_dz_ring" z_offset="-TrackerInnerDisc_zOffset_ring-1250.0*mm" material="TR" vis="TrackerVis"/>
     </detector>
 
     <!-- OUTER DETECTOR ENDCAP -->

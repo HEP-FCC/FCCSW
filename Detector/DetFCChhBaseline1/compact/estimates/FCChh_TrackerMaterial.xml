@@ -11,14 +11,13 @@
         version="$Id:??$">
     <comment>Tracker Place-Holder</comment>
   </info>
-
   <define>
     <constant name="TrackerInner_rmax" value="500*mm"/>
   </define>
 
   <detectors>
     <!-- B A R R E L S -->
-    <detector name="TrackerBarrel" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
+    <detector name="TrackerBarrelInner" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
       <dimensions rmin="Tracker_rmin" rmax="TrackerInner_rmax" dz="830*mm" z_offset="0*cm" material="Air"/>
       <!-- INNER -->
       <layer rmin="46.94*mm" rmax="51.3*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
@@ -26,6 +25,9 @@
       <layer rmin="248.94*mm" rmax="267.32*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
       <layer rmin="346.93*mm" rmax="364.98*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
       <layer rmin="440.65*mm" rmax="458.51*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+    </detector>
+    <detector name="TrackerBarrelOuter" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="TrackerInner_rmax" rmax="Tracker_rmax" dz="2250*mm" z_offset="0*cm" material="Air"/>
       <!-- OUTER -->
       <layer rmin="597.95*mm" rmax="619.37*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
       <layer rmin="797.71*mm" rmax="818.61*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
