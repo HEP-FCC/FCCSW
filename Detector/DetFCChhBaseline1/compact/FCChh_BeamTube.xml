@@ -13,7 +13,7 @@
   </info>
 
   <display>
-    <vis name="BeamPipeVis" r="0.2" g="0.7" b="0.3" showDaughters="false" visible="true"/>
+    <vis name="BeamPipeVis" r="0.2" g="0.7" b="0.3" a="1" showDaughters="false" visible="true"/>
   </display>
 
   <detectors>
