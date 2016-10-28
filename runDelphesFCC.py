@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 #
-# Simple script that allows to specify key parameters such as input file, 
-# output file and number of events via command line.
-# Executes "./run gaudirun.py PythiaDelphes_config.py" with updated parameters.
+# Script that executes "./run gaudirun.py PythiaDelphes_config.py"
+# and allows to specify input file, output file and number of events 
+# via the command line.
 #  
 # Usage: 
 #
-# runPy8DelphesFCC.py [-h] [-i INPUT] [-o OUTPUT] [-n NEVENTS]
+# ./runPy8DelphesFCC.py [-h] [-i INPUT] [-o OUTPUT] [-n NEVENTS]
 #
 # Optional arguments:
 #
@@ -14,6 +14,11 @@
 #   -i , --input           input file Pythia8 cmd file
 #   -o , --output          output ROOT file
 #   -n , --nevents         number of events to process
+#
+#  TODO: generalize to various input file formats (HepMC, Delphes ROOT tree, ...)
+#
+
+
 
 import os, argparse
 
@@ -62,7 +67,7 @@ def main(parser):
         new_file.write(new_line)
       
   os.system('./run gaudirun.py '+tmpConfigFile)
-  os.system('rm tmp.py')
+#  os.system('rm tmp.py')
   
 
 if __name__ == '__main__':
