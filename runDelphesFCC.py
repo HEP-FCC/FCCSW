@@ -67,7 +67,7 @@ def main(parser):
         new_file.write(new_line)
       
   os.system('./run gaudirun.py '+tmpConfigFile)
-#  os.system('rm tmp.py')
+  os.system('rm tmp.py')
   
 
 if __name__ == '__main__':
