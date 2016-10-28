@@ -6,7 +6,7 @@
 #  
 # Usage: 
 #
-# runPy8DelphesFCC.py [-h] [-cfg CONFIGURATION] [-i INPUT] [-o OUTPUT] [-n NEVENTS]
+# runPy8DelphesFCC.py [-h] [-i INPUT] [-o OUTPUT] [-n NEVENTS]
 #
 # Optional arguments:
 #
