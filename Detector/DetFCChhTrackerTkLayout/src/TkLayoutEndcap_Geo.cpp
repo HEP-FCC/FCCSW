@@ -18,9 +18,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
 
   // get sensitive detector type from xml
   DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");  // retrieve the type
-  if (xmlDet.isSensitive()) {
-    sensDet.setType(sdTyp.typeStr());  // set for the whole detector
-  }
+  sensDet.setType(sdTyp.typeStr());  // set for the whole detector
 
   // definition of top volume
   std::string detName = xmlDet.nameStr();

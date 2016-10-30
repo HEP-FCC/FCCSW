@@ -18,10 +18,8 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   Dimension dimensions(xmlDet.dimensions());
   // get sensitive detector type from xml
   DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");
-  if (xmlDet.isSensitive()) {
-    // sensitive detector used for all sensitive parts of this detector
-    sensDet.setType(sdTyp.typeStr());
-  }
+  // sensitive detector used for all sensitive parts of this detector
+  sensDet.setType(sdTyp.typeStr());
   // definition of top volume
   // has min/max dimensions of tracker for visualization etc.
   std::string detectorName = xmlDet.nameStr();
