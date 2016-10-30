@@ -152,7 +152,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   // place everything twice -- forward / backward
   DD4hep::Geometry::Translation3D lTranslation_posEnvelope(
       0, 0, -dimensions.zmin() - 0.5 * (dimensions.zmax() - dimensions.zmin()));
-  PlacedVolume placedGenericTrackerEndcap_pos = motherVol.placeVolume(
+  PlacedVolume placedGenericTrackerEndcap_pos = posnegEnvelopeVolume.placeVolume(
       envelopeVolume,
       DD4hep::Geometry::Position(0, 0, dimensions.zmin() + 0.5 * (dimensions.zmax() - dimensions.zmin())));
   PlacedVolume placedGenericTrackerEndcap_neg = posnegEnvelopeVolume.placeVolume(
