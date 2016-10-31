@@ -51,7 +51,7 @@ public:
    *   @param[in] aMaxEta Maximum pseudorapidity.
    *   @return status code
    */
-  inline virtual StatusCode checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const final {return StatusCode::SUCCESS;}
+  inline virtual StatusCode checkConditions(double, double, double) const final {return StatusCode::SUCCESS;}
 
 private:
   /// TFormula representing resolution momentum-dependent for the smearing

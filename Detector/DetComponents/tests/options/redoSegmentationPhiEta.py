@@ -22,7 +22,7 @@ geantservice = SimG4Svc("SimG4Svc", physicslist='SimG4TestPhysicsList')
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
 inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHits"], OutputLevel = DEBUG)
 savecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"], OutputLevel = DEBUG)
-savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool/inspect"])
 
@@ -36,7 +36,7 @@ resegment = RedoSegmentation("ReSegmentation",
                              newReadoutName = "ECalHitsPhiEta",
                              OutputLevel = DEBUG)
 # clusters are needed, with deposit position and cellID in bits
-resegment.DataInputs.inclusters.Path = "caloClusters"
+resegment.DataInputs.inhits.Path = "positionedCaloHits"
 resegment.DataOutputs.outhits.Path = "newCaloHits"
 
 from Configurables import FCCDataSvc, PodioOutput

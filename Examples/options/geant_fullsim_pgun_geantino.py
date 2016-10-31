@@ -27,9 +27,8 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
+savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=0, etaMax=0.01, particleName="geantino")
 geantsim = SimG4Alg("SimG4Alg",

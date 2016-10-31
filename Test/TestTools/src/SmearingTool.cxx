@@ -32,7 +32,7 @@ StatusCode SmearingTool::smear(fcc::ParticleCollection* particlecoll)
 {
 	// FIXME / TODO: This function should be renamed or re-written, as I would expect something else from the name...
     for (const auto& part : *particlecoll) {
-        m_points << part.Core().Vertex.X << " " << part.Core().Vertex.Y << " " << part.Core().Vertex.Z << std::endl;
+        m_points << part.vertex().x << " " << part.vertex().y << " " << part.vertex().z << std::endl;
     }
 
     return StatusCode::SUCCESS;

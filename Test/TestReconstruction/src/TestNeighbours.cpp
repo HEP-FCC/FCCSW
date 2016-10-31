@@ -44,9 +44,9 @@ StatusCode TestNeighbours::initialize() {
 StatusCode TestNeighbours::execute() {
   const fcc::CaloHitCollection* inHits = m_inHits.get();
   for(const auto& hit: *inHits) {
-    debug() << "cell ID = " << hit.Core().Cellid << endmsg;
-    debug() << "energy  = " << hit.Core().Energy << endmsg;
-    for(auto& id: det::utils::neighbours(*m_decoder, m_fieldNames, m_fieldExtremes, hit.Core().Cellid)) {
+    debug() << "cell ID = " << hit.cellId() << endmsg;
+    debug() << "energy  = " << hit.energy() << endmsg;
+    for(auto& id: det::utils::neighbours(*m_decoder, m_fieldNames, m_fieldExtremes, hit.cellId())) {
       // warning: returned neigbour may not exist!
       // it is possible to decode such a cellID, but maybe it is already outside the detector
       // proper use should include the check on the number of cells, see TestCellCounting

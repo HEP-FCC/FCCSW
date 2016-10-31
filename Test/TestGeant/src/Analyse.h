@@ -7,11 +7,13 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 
-// albers
-#include "datamodel/ParticleCollection.h"
-#include "datamodel/MCParticleCollection.h"
-#include "datamodel/GenVertexCollection.h"
-#include "datamodel/ParticleMCParticleAssociationCollection.h"
+// forward declarations
+namespace fcc {
+class MCParticleCollection;
+class GenVertexCollection;
+class ParticleCollection;
+class ParticleMCParticleAssociationCollection;
+}
 
 
 class Analyse: public GaudiAlgorithm {

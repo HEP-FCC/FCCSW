@@ -56,12 +56,12 @@ if __name__ == "__main__":
     for iev, event in enumerate(storeGdml):
         hits = event.get('caloHits')
         for hit in hits:
-            cellId = hit.Core().Cellid
+            cellId = hit.cellId()
             gdmlPos.append(cellPosGdml(cellId))
     dd4hepPos = []
     for iev, event in enumerate(storeDD4hep):
         hits = event.get('caloHits')
         for hit in hits:
-            cellId = hit.Core().Cellid
+            cellId = hit.cellId()
             dd4hepPos.append(cellPosDd4hep(cellId))
     assert(gdmlPos == dd4hepPos)
