@@ -3,7 +3,7 @@ from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/FCChh_Option3.xml'],
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
