@@ -1,5 +1,5 @@
-#ifndef DETCOMPONENTS_MERGECELLS_H
-#define DETCOMPONENTS_MERGECELLS_H
+#ifndef DETCOMPONENTS_MERGESEGMENTATIONCELLS_H
+#define DETCOMPONENTS_MERGESEGMENTATIONCELLS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -15,12 +15,12 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class MergeCells Detector/DetComponents/src/MergeCells.h MergeCells.h
+/** @class MergeSegmentationCells Detector/DetComponents/src/MergeSegmentationCells.h MergeSegmentationCells.h
  *
- *  Merge cells for one field.
+ *  Merge cells for one field of the segmentation.
  *  GeoSvc is required (to access the detector readout).
  *  Name of the field to be merged is defined be property '\b identifier'.
- *  Property '\b merge' desccribes how many adjacent cells should be merged.
+ *  Property '\b merge' describes how many adjacent cells should be merged.
  *  If the identifier describes an unsigned field, the number of cells to be merged can be any number.
  *  If the identifier describes a signed field, however, the number of cells to be merged need to be an odd number (to keep the centre of the central bin in 0).
  *  For an example see Detector/DetComponents/tests/options/mergeCells.py
@@ -28,10 +28,10 @@ class CaloHitCollection;
  *  @author Anna Zaborowska
  */
 
-class MergeCells: public GaudiAlgorithm {
+class MergeSegmentationCells: public GaudiAlgorithm {
 public:
-  explicit MergeCells(const std::string&, ISvcLocator*);
-  virtual ~MergeCells();
+  explicit MergeSegmentationCells(const std::string&, ISvcLocator*);
+  virtual ~MergeSegmentationCells();
   /**  Initialize.
    *   @return status code
    */
@@ -60,9 +60,5 @@ private:
   std::string m_idToMerge;
   /// Number of adjacent cells to be merged
   uint m_numToMerge;
-  /// List with number of adjacent cells to be merged
-  std::vector<uint> m_listToMerge;
-  /// Name (or its part) for the volume counting
-  std::string m_volumeMatchName;
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

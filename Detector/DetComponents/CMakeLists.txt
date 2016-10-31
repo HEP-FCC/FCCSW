@@ -31,7 +31,11 @@ gaudi_add_test(RedoSegmentationPhiEta
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/redoSegmentationPhiEta.py)
-gaudi_add_test(MergeCells
+gaudi_add_test(MergeSegmentationCells
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
-               FRAMEWORK tests/options/mergeCells.py)
+               FRAMEWORK tests/options/mergeSegmentationCells.py)
+gaudi_add_test(MergeVolumeCells
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               FRAMEWORK tests/options/mergeVolumeCells.py)

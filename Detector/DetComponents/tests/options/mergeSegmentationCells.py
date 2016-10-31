@@ -26,8 +26,8 @@ savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool/inspect"])
 
-from Configurables import MergeCells
-merge = MergeCells("mergeCells",
+from Configurables import MergeSegmentationCells
+merge = MergeSegmentationCells("mergeSegmentationCells",
                    # take the bitfield description from the geometry service
                    readout ="ECalHits",
                    # cells in which field should be merged
