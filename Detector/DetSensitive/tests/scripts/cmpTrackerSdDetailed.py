@@ -37,14 +37,14 @@ if __name__ == "__main__":
     for iev, event in enumerate(store1):
         hits = event.get('hits')
         for hit in hits:
-            cellId = hit.Core().Cellid
-            hE = hit.Core().Energy
+            cellId = hit.cellId()
+            hE = hit.energy()
             hist1.Fill(cell(cellId),hE)
     for iev, event in enumerate(store2):
         hits = event.get('hits')
         for hit in hits:
-            cellId = hit.Core().Cellid
-            hE = hit.Core().Energy
+            cellId = hit.cellId()
+            hE = hit.energy()
             hist2.Fill(cell(cellId),hE)
     for ix in range(cellNo):
         for iy in range(cellNo):

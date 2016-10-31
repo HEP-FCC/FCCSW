@@ -41,8 +41,8 @@ StatusCode JetHistograms::execute() {
 	m_n->Fill(jets->size());
 
 	for (const auto & jet : *jets) {
-		auto p4 = jet.Core().P4;
-		double energy = std::sqrt(p4.Px*p4.Px + p4.Py*p4.Py + p4.Pz*p4.Pz + p4.Mass*p4.Mass);
+		auto p4 = jet.core().p4;
+		double energy = std::sqrt(p4.px*p4.px + p4.py*p4.py + p4.pz*p4.pz + p4.mass*p4.mass);
 		m_E->Fill(energy);
 	}
 

@@ -51,7 +51,6 @@ from Configurables import SimG4Alg, SimG4SaveSmearedParticles, SimG4PrimariesFro
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveSmearedParticles")
 # and YY is the given name ("saveSmearedParticles")
 saveparticlestool = SimG4SaveSmearedParticles("saveSmearedParticles")
-saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
@@ -62,7 +61,6 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
-hist.DataInputs.particles.Path = "smearedParticles"
 hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 THistSvc().Output = ["rec DATAFILE='histSimple.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

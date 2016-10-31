@@ -35,16 +35,16 @@ void NoiseCaloCellsTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCell
   double randomNoise = 0;
   for (auto& ecell : aCells) {
     randomNoise = m_gauss.shoot();
-    ecell->Core().Energy = randomNoise;
-    ecell->Core().Time = 0;
-    ecell->Core().Bits = 0;
+    ecell->core().energy = randomNoise;
+    ecell->core().time = 0;
+    ecell->core().bits = 0;
   }
 }
 
 void NoiseCaloCellsTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   //Erase a cell if it has energy bellow a threshold from the vector
   for (auto ecell = aCells.begin(); ecell!=aCells.end();) {
-    if ( (*ecell)->Core().Energy<m_filterThreshold*m_cellNoise ) {
+    if ( (*ecell)->core().energy<m_filterThreshold*m_cellNoise ) {
       aCells.erase(ecell);
     }
     else {

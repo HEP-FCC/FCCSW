@@ -5,7 +5,8 @@
 
 // datamodel
 #include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloClusterCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
+#include "datamodel/Point.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
@@ -17,7 +18,7 @@ DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
 RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc)
 {
-  declareInput("inclusters", m_inClusters,"hits/caloInClusters");
+  declareInput("inhits", m_inHits,"hits/positionedCaloHits");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
   declareProperty("oldReadoutName", m_oldReadoutName = "");
   declareProperty("oldSegmentationIds", m_oldIdentifiers);
@@ -85,30 +86,32 @@ StatusCode RedoSegmentation::initialize() {
 }
 
 StatusCode RedoSegmentation::execute() {
-  const fcc::CaloClusterCollection* inClusters = m_inClusters.get();
-  fcc::CaloHitCollection* outHits = new fcc::CaloHitCollection();
+  const auto inHits = m_inHits.get();
+  auto outHits = m_outHits.createAndPut();
   // loop over clusters to get the energy deposits: position and cellID
   // cellID contains the volumeID that needs to be rewritten
   int oldid;
-  for(const auto& cluster: *inClusters) {
+  for(const auto& cluster: *inHits) {
     fcc::CaloHit newHit = outHits->create();
-    newHit.Core().Energy = cluster.Core().Energy;
-    newHit.Core().Time = cluster.Core().Time;
-    m_oldDecoder->setValue(cluster.Core().Bits);
-    debug()<<"OLD: "<<m_oldDecoder->valueString()<<endmsg;
-    DD4hep::DDSegmentation::Vector3D position(cluster.Core().position.X/10, cluster.Core().position.Y/10, cluster.Core().position.Z/10); // mm to cm
+    newHit.energy(cluster.energy());
+    newHit.time(cluster.time());
+    m_oldDecoder->setValue(cluster.bits());
+    debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
+    // factor 10 to convert mm to cm
+    DD4hep::DDSegmentation::Vector3D position(cluster.position().x / 10,
+                                              cluster.position().y / 10,
+                                              cluster.position().z / 10);
     // first calculate proper segmentation fields
-    uint64_t newcellId = m_segmentation->cellID(position,position,volumeID(cluster.Core().Bits));
+    uint64_t newcellId = m_segmentation->cellID(position, position, volumeID(cluster.bits()));
     m_segmentation->decoder()->setValue(newcellId);
     // now rewrite all other fields (detector ID)
     for(const auto& detectorField: m_detectorIdentifiers) {
       oldid = (*m_oldDecoder)[detectorField];
       (*m_segmentation->decoder())[detectorField] = oldid;
     }
-    newHit.Core().Cellid =  m_segmentation->decoder()->getValue();
-    debug()<<"NEW: "<<m_segmentation->decoder()->valueString()<<endmsg;
+    newHit.cellId(m_segmentation->decoder()->getValue());
+    debug() << "NEW: " << m_segmentation->decoder()->valueString() << endmsg;
   }
-  m_outHits.put(outHits);
 
   return StatusCode::SUCCESS;
 }

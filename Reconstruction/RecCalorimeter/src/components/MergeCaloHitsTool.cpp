@@ -59,12 +59,12 @@ void MergeCaloHitsTool::mergeHits(const std::vector<fcc::CaloHit*>& aHits, std::
   //Loop through hits in the vector and merge
   //Time and Bits: not used, a copy of the last entry at the moment
   for (const auto& ehit : aHits) {
-    uint64_t cellID = ehit->Core().Cellid;
+    uint64_t cellID = ehit->core().cellId;
     auto cell = cellIdMap[cellID];
     if (cell != nullptr) {
-      cell->Core().Energy += ehit->Core().Energy;
-      cell->Core().Time = ehit->Core().Time;
-      cell->Core().Bits = ehit->Core().Bits;
+      cell->core().energy += ehit->core().energy;
+      cell->core().time = ehit->core().time;
+      cell->core().bits = ehit->core().bits;
     }
     else {
       addHitToVectorAndMap(*ehit, cellIdMap, mergedHitsVector);
@@ -79,12 +79,12 @@ void MergeCaloHitsTool::mergeHits(const fcc::CaloHitCollection& aHits, std::unor
   //Loop through hits in the vector and merge
   //Time and Bits: not used, a copy of the last entry at the moment
   for (const auto& ehit : aHits) {
-    uint64_t cellID = ehit.Core().Cellid;
+    uint64_t cellID = ehit.core().cellId;
     auto cell = cellIdMap[cellID];
     if (cell != nullptr) {
-      cell->Core().Energy += ehit.Core().Energy;
-      cell->Core().Time = ehit.Core().Time;
-      cell->Core().Bits = ehit.Core().Bits;
+      cell->core().energy += ehit.core().energy;
+      cell->core().time = ehit.core().time;
+      cell->core().bits = ehit.core().bits;
     }
     else {
       addHitToVectorAndMap(ehit, cellIdMap, mergedHitsVector);
@@ -96,12 +96,12 @@ void MergeCaloHitsTool::mergeHits(const fcc::CaloHitCollection& aHits, std::unor
 void MergeCaloHitsTool::addHitToVectorAndMap(const fcc::CaloHit& ehit, std::unordered_map<uint64_t, fcc::CaloHit*>& cellIdMap,std::vector<fcc::CaloHit*>& mergedHitsVector) {
 
   fcc::CaloHit *newHit = new fcc::CaloHit();
-  newHit->Core().Energy = ehit.Core().Energy;
-  newHit->Core().Time = ehit.Core().Time;
-  newHit->Core().Bits = ehit.Core().Bits;
-  newHit->Core().Cellid = ehit.Core().Cellid;
+  newHit->core().energy = ehit.core().energy;
+  newHit->core().time = ehit.core().time;
+  newHit->core().bits = ehit.core().bits;
+  newHit->core().cellId = ehit.core().cellId;
   mergedHitsVector.push_back(newHit);
-  cellIdMap[ehit.Core().Cellid] = newHit;  
+  cellIdMap[ehit.core().cellId] = newHit;  
 
 }
 

@@ -19,7 +19,7 @@ namespace DDSegmentation {
 
 // datamodel
 namespace fcc {
-class CaloClusterCollection;
+class PositionedCaloHitCollection;
 class CaloHitCollection;
 }
 
@@ -62,8 +62,8 @@ private:
   uint64_t volumeID(uint64_t aCellId) const;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for the EDM clusters to be read
-  DataHandle<fcc::CaloClusterCollection> m_inClusters;
+  /// Handle for the EDM positioned hits to be read
+  DataHandle<fcc::PositionedCaloHitCollection> m_inHits;
   /// Handle for the EDM hits to be written
   DataHandle<fcc::CaloHitCollection> m_outHits;
   /// New segmentation

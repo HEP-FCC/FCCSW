@@ -48,19 +48,19 @@ StatusCode SimG4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
         const fcc::MCParticle& MCparticle = info->mcParticle();
         fcc::Particle particle = particles->create();
         fcc::ParticleMCParticleAssociation association = associations->create();
-        association.Rec(particle);
-        association.Sim(MCparticle);
-        fcc::BareParticle& core = particle.Core();
-        core.Type = g4particle->GetPDGcode();
-        core.Status = 1; // how it is defined ???? as in HepMC ?
-        core.Charge = g4particle->GetCharge();
-        core.P4.Px = info->endMomentum().x()*sim::g42edm::energy;
-        core.P4.Py = info->endMomentum().y()*sim::g42edm::energy;
-        core.P4.Pz = info->endMomentum().z()*sim::g42edm::energy;
-        core.P4.Mass = g4particle->GetMass()*sim::g42edm::energy;
-        core.Vertex.X = info->vertexPosition().x()*sim::g42edm::length;
-        core.Vertex.Y = info->vertexPosition().y()*sim::g42edm::length;
-        core.Vertex.Z = info->vertexPosition().z()*sim::g42edm::length;
+        association.rec(particle);
+        association.sim(MCparticle);
+        fcc::BareParticle& core = particle.core();
+        core.pdgId = g4particle->GetPDGcode();
+        core.status = 1; // how it is defined ???? as in HepMC ?
+        core.charge = g4particle->GetCharge();
+        core.p4.px = info->endMomentum().x()*sim::g42edm::energy;
+        core.p4.py = info->endMomentum().y()*sim::g42edm::energy;
+        core.p4.pz = info->endMomentum().z()*sim::g42edm::energy;
+        core.p4.mass = g4particle->GetMass()*sim::g42edm::energy;
+        core.vertex.x = info->vertexPosition().x()*sim::g42edm::length;
+        core.vertex.y = info->vertexPosition().y()*sim::g42edm::length;
+        core.vertex.z = info->vertexPosition().z()*sim::g42edm::length;
         n_part++;
       }
     }
