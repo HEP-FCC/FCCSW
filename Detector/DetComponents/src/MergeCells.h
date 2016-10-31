@@ -60,5 +60,9 @@ private:
   std::string m_idToMerge;
   /// Number of adjacent cells to be merged
   uint m_numToMerge;
+  /// List with number of adjacent cells to be merged
+  std::vector<uint> m_listToMerge;
+  /// Name (or its part) for the volume counting
+  std::string m_volumeMatchName;
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

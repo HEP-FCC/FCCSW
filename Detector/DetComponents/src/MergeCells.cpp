@@ -2,12 +2,16 @@
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
+#include "DetCommon/DetUtils.h"
 
 // datamodel
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
+
+// ROOT
+#include "TGeoManager.h"
 
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
@@ -17,7 +21,9 @@ GaudiAlgorithm(aName, aSvcLoc){
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
   declareProperty("readout", m_readoutName);
   declareProperty("identifier", m_idToMerge);
-  declareProperty("merge", m_numToMerge = 2);
+  declareProperty("merge", m_numToMerge = 0);
+  declareProperty("mergeList", m_listToMerge);
+  declareProperty("volumeMatchName", m_volumeMatchName = "");
 }
 
 MergeCells::~MergeCells() {}
@@ -52,24 +58,52 @@ StatusCode MergeCells::initialize() {
     error()<<"Identifier <<"<<m_idToMerge<<">> does not exist in the readout <<"<<m_readoutName<<">>"<<endmsg;
     return StatusCode::FAILURE;
   }
-  // check if proper number of cells to be merged was given (>1 and odd for signed fields)
-  // it'd be nice to get max num of cells and warn user if it's not multipicity
-  if(m_numToMerge > std::pow(2,(*itIdentifier).second->width())) {
-    error()<<"It is not possible to merge more cells than the maximum number of cells."<<endmsg;
+  // check if only one field: either merge or mergeList is specified
+  if(m_numToMerge > 0 && m_listToMerge.size() > 0) {
+    error()<<"Specify either how many consequitive cells to merge (e.g. merge = 2)\n"
+           <<"or the vector of number of cells to merge (e.g. mergeList = [2,2,3])."<<endmsg;
     return StatusCode::FAILURE;
   }
-  if(m_numToMerge < 2) {
-    error()<<"Number of cells to me merged must be larger than 1."<<endmsg;
-    return StatusCode::FAILURE;
+  if(m_numToMerge > 0) {
+    // check if proper number of cells to be merged was given (>1 and odd for signed fields)
+    // it'd be nice to get max num of cells and warn user if it's not multipicity
+    if(m_numToMerge > std::pow(2,(*itIdentifier).second->width())) {
+      error()<<"It is not possible to merge more cells than the maximum number of cells."<<endmsg;
+      return StatusCode::FAILURE;
+    }
+    if(m_numToMerge < 2) {
+      error()<<"Number of cells to me merged must be larger than 1."<<endmsg;
+      return StatusCode::FAILURE;
+    }
+    if((*itIdentifier).second->isSigned() && (m_numToMerge%2 == 0)) {
+      error()<<"If field is signed, merge can only be done for an odd number of cells"
+             <<"(to ensure that middle cell is centred at 0)."<<endmsg;
+      return StatusCode::FAILURE;
+    }
+    info()<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
+    info()<<"Merging cells for identifier: "<<m_idToMerge<<endmsg;
+    info()<<"Number of adjacent cells to be merged: "<<m_numToMerge<<"\n"<<endmsg;
+  } else if(m_listToMerge.size() > 0) {
+    uint sumCells = std::accumulate(m_listToMerge.begin(), m_listToMerge.end(), 0);
+    // optional (and recommended) checks
+    // check list of cells to be merged - it must sum to the total number of cells
+    if(!m_volumeMatchName.empty()) {
+      // get the total number of volumes in the geometry
+      auto highestVol = gGeoManager->GetTopVolume();
+      auto numPlacedVol = det::utils::countPlacedVolumes(highestVol, m_volumeMatchName);
+      if(numPlacedVol != sumCells) {
+        error()<<"Total number of cells named "<<m_volumeMatchName<<" ("<<numPlacedVol<<") "
+               <<"is not equal to the sum of cells from the list given in py config ("<<sumCells<<")"<<endmsg;
+        return StatusCode::FAILURE;
+      }
+    } else {
+      warning()<<"Assuming the total number of cells is "<<sumCells<<".\n"
+               <<"If there are any cells beyond that, they will be attached to the last merged cell"<<endmsg;
+    }
+    info()<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
+    info()<<"Merging cells for identifier: "<<m_idToMerge<<endmsg;
+    info()<<"List of number of cells to be merged: "<<m_listToMerge<<"\n"<<endmsg;
   }
-  if((*itIdentifier).second->isSigned() && (m_numToMerge%2 == 0)) {
-    error()<<"If field is signed, merge can only be done for an odd number of cells"
-           <<"(to ensure that middle cell is centred at 0)."<<endmsg;
-    return StatusCode::FAILURE;
-  }
-  info()<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
-  info()<<"Merging cells for identifier: "<<m_idToMerge<<endmsg;
-  info()<<"Number of adjacent cells to be merged: "<<m_numToMerge<<"\n"<<endmsg;
   return StatusCode::SUCCESS;
 }
 
