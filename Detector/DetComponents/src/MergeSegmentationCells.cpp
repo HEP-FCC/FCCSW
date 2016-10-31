@@ -88,11 +88,12 @@ StatusCode MergeSegmentationCells::execute() {
     decoder->setValue(cellId);
     value = (*decoder)[field_id].value();
     debug() << "old ID = " << value << endmsg;
-    if((*decoder)[field_id].isSigned()) {
-      if(value<0)
+    if ((*decoder)[field_id].isSigned()) {
+      if (value<0) {
         value -= m_numToMerge/2;
-      else
+      } else {
         value += m_numToMerge/2;
+      }
     }
     value /= int(m_numToMerge);
     debug() << "new ID = " << value << endmsg;
