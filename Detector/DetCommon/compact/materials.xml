@@ -139,6 +139,12 @@
     <fraction n="1.0" ref="Polystyrene"/>
   </material>
 
+  <material name="PE">
+    <D type="density" value="0.95" unit="g/cm3"/>
+    <fraction n="4" ref="H"/>
+    <fraction n="2" ref="C"/>
+  </material>
+
   <material name="Kapton">
     <D value="1.43" unit="g/cm3" />
     <composite n="22" ref="C"/>
