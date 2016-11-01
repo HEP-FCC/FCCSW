@@ -19,7 +19,6 @@ MergeVolumes::MergeVolumes(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc){
   declareInput("inhits", m_inHits,"hits/caloInHits");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
-  declareOutput("newVolumesNumber", m_newNumVolumes);
   declareProperty("readout", m_readoutName);
   declareProperty("identifier", m_idToMerge);
   declareProperty("volumeName", m_volumeName = "");

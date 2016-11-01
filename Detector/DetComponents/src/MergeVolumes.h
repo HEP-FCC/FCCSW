@@ -27,7 +27,6 @@ class CaloHitCollection;
  *  E.g. '\b merge = [2,3,2]' means that first 2 volumes are merged into new cell (id=0), next 3 volumes become new cell (id=1),
  *  and finally last 2 layers are merged into last cell (id=2).
  *  The sum of all sizes from the list should correspond to the total number of volumes named as indicated in '\b volumeName'.
- *  The new total number of volumes is returned as property '\b newVolumesNumber'.
  *  For an example see Detector/DetComponents/tests/options/mergeVolumes.py
  *
  *  @author Anna Zaborowska
@@ -67,8 +66,6 @@ private:
   std::string m_volumeName;
   /// List with number of adjacent cells to be merged
   std::vector<uint> m_listToMerge;
-  /// Total number of volumes after merging (number from geometry not valid any more)
-  uint m_newNumVolumes;
   /// Limit of debug printing
   uint m_debugPrint;
 };
