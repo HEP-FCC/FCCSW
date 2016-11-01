@@ -15,6 +15,6 @@ for iev in range(nevts):
     assert(len(particles_before) == len(particles_after))
 
     for before, after in zip(particles_before, particles_after):
-        assert(before.Core().P4.Px == after.Core().P4.Px)
-        assert(before.Core().P4.Py == after.Core().P4.Py)
-        assert(before.Core().P4.Pz == after.Core().P4.Pz)
+        assert(before.core().p4.px == after.core().p4.px)
+        assert(before.core().p4.py == after.core().p4.py)
+        assert(before.core().p4.pz == after.core().p4.pz)
