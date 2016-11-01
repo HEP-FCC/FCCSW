@@ -17,7 +17,7 @@
 
 #include <iostream>
 
-template<class P, class J, class A>
+template<class P, class J>
 class JetClustering: public GaudiAlgorithm {
   // Colin: the following doesn't seem to be necessary
   // friend class AlgFactory< JetClustering<P, J> > ;
@@ -36,9 +36,6 @@ private:
 
   /// Handle for PseudoJets to be produced
   DataHandle<J> m_jets;
-
-  /// Handle for particle-jet associations to be produced
-  DataHandle<A> m_assocs;
 
   /// Name for the jet algorithm to be used
   std::string m_jetAlgorithm;
@@ -78,8 +75,8 @@ private:
 };
 
 
-template<class P, class J, class A>
-  JetClustering<P, J, A>::JetClustering(const std::string& name, ISvcLocator* svcLoc):
+template<class P, class J>
+  JetClustering<P, J>::JetClustering(const std::string& name, ISvcLocator* svcLoc):
 GaudiAlgorithm(name, svcLoc)
   , m_fj_jetAlgorithm(fastjet::JetAlgorithm::undefined_jet_algorithm)
   , m_fj_recombinationScheme(fastjet::RecombinationScheme::E_scheme)
@@ -87,7 +84,6 @@ GaudiAlgorithm(name, svcLoc)
 {
   declareInput("particles", m_genphandle);
   declareOutput("jets", m_jets);
-  declareOutput("constituents", m_assocs);
 
   declareProperty("jetAlgorithm", m_jetAlgorithm = "antikt", "the Jet Algorithm to use [kt, antikt, cambridge]");
   declareProperty("coneRadius", m_R = 0.5, "cone radius");
@@ -100,8 +96,8 @@ GaudiAlgorithm(name, svcLoc)
   declareProperty("areaType", m_areaTypeName = "none", "Area type [none, active, passive]");
 }
 
-template<class P, class J, class A>
-  StatusCode JetClustering<P, J, A>::initialize() {
+template<class P, class J>
+  StatusCode JetClustering<P, J>::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
 
@@ -165,8 +161,8 @@ template<class P, class J, class A>
   return StatusCode::SUCCESS;
 }
 
-template< class P, class J, class A>
-  StatusCode JetClustering<P, J, A>::execute() {
+template< class P, class J>
+  StatusCode JetClustering<P, J>::execute() {
 
   //setup input for fastjet
   const P* particles = m_genphandle.get();
@@ -174,10 +170,10 @@ template< class P, class J, class A>
   unsigned index = 0;
   for (auto it = particles->begin(); it != particles->end(); ++it) {
     auto ptchandle = *it;
-    auto& ptc = ptchandle.Core();
+    auto& ptc = ptchandle.core();
     TLorentzVector p4;
-    p4.SetXYZM(ptc.P4.Px, ptc.P4.Py,
-                    ptc.P4.Pz, ptc.P4.Mass);
+    p4.SetXYZM(ptc.p4.px, ptc.p4.py,
+                    ptc.p4.pz, ptc.p4.mass);
     //TODO apply some filtering if required
     input.emplace_back(p4.Px(), p4.Py(), p4.Pz(), p4.E());
     input.back().set_user_index(index);
@@ -204,40 +200,36 @@ template< class P, class J, class A>
   std::vector<fastjet::PseudoJet> pjets = fastjet::sorted_by_pt(cs->inclusive_jets(m_ptMin));
 
   J* jets = new J();
-  A* assocs  = new A();
   if(m_verbose)
     std::cout<<"njets = "<<pjets.size()<<std::endl;
   for(const auto& pjet : pjets) {
     if(m_verbose)
       std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
     auto jet = jets->create();
-    auto& core = jet.Core();
-    core.P4.Px = pjet.px();
-    core.P4.Py = pjet.py();
-    core.P4.Pz = pjet.pz();
-    core.P4.Mass = pjet.m();
+    auto& core = jet.core();
+    core.p4.px = pjet.px();
+    core.p4.py = pjet.py();
+    core.p4.pz = pjet.pz();
+    core.p4.mass = pjet.m();
     if(pjet.has_area())
-      core.Area = pjet.area();
+      core.area = pjet.area();
     else
-      core.Area = -1;
+      core.area = -1;
     const std::vector<fastjet::PseudoJet>& constituents = pjet.constituents();
     for(const auto& constit : constituents) {
       if(m_verbose)
-	std::cout<<"\t"<<constit.user_index()<<std::endl;
-      auto assoc = assocs->create();
-      assoc.Jet(jet);
-      assoc.Particle(particles->at(constit.user_index()));
+        std::cout<<"\t"<<constit.user_index()<<std::endl;
+      jet.addparticles(particles->at(constit.user_index()));
     }
   }
   m_jets.put(jets);
-  m_assocs.put(assocs);
 
   delete cs;
   return StatusCode::SUCCESS;
 }
 
-template<class P, class J, class A>
-  StatusCode JetClustering<P, J, A>::finalize() {
+template<class P, class J>
+  StatusCode JetClustering<P, J>::finalize() {
   return GaudiAlgorithm::finalize();
 }
 

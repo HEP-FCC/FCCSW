@@ -23,8 +23,8 @@ class ExRootTreeWriter;
 
 // Forward FCC EDM
 namespace fcc {
-  class MCParticleCollection;
-  class GenVertexCollection;
+class MCParticleCollection;
+class GenVertexCollection;
 }
 
 // Forward ROOT

@@ -1,20 +1,19 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+
+option(SAS "Whether to run static code analysis with SAS." OFF)
+if (SAS)
+    find_package(sas)
+    enable_sas(
+        FORMAT
+        COMPARISON_REPORT_DIR "${CMAKE_BINARY_DIR}/sas_report"
+        IGNORE_DIRS ${CMAKE_SOURCE_DIR}/build ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_SOURCE_DIR}/doc
+        )
+endif(SAS)
+
 #---------------------------------------------------------------
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
-# find_package(Delphes)
 #---------------------------------------------------------------
 
-# Declare project name and version
-# Syntax:
-#    gaudi_project(this_project this_version
-#                  USE dep_project_1 version_1 [project_2 version_2 ...]
-#                  [DATA pkg1 [VERSION vers1] [pkg2 ...])
 gaudi_project(FCCSW HEAD
               USE Gaudi v27r0 )
-
-include_directories(
-         ${DELPHES_INCLUDE_DIRS}
-         ${DELPHES_EXTERNALS_INCLUDE_DIRS}
-         ${FCCEDM_INCLUDE_DIRS}
-)

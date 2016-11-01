@@ -17,6 +17,7 @@ DD4hep Detector Description
   * [The master XMLs](#the-master-xmls)
   * [Sub-detector descriptions](#sub-detector-descriptions) (please read if you plan to contribute)
   * [Common descriptions](#common-descriptions)
+* [Troubleshooting](#troubleshooting)
 
 Ingredients Describing a Detector
 --
@@ -416,3 +417,11 @@ To facilitate this mix-and-match functionality, the sub-detectors should use the
 
 ### Common descriptions
 The final sub-directory `DetCommon` includes descriptions and macros that should be independently usable by all baselines / sub-detectors. This includes primitive shapes (cones, cylinders, boxes, etc.), material & element descriptions. Additionally place-holders can be found that place air-filled cylinders using the dimensions defined in a master-dimension file. These are meant for debugging the dimensions file.
+
+
+Troubleshooting
+---
+
+* Overlapping volumes may lead to some hard-to-detect errors. If a daughter volume is completely outside the parent volume, an error is reported during the conversion to Geant4 geometry description (`PANIC! - Overlapping daughter with mother volume.`). But sometimes overlaps errors are silent, yet result in sensitive detectors not registering any hits. The test suite therefore includes a check on overlaps, which should be fixed. To manually run the check, do `./run gaudirun.py Examples/options/printOverlaps.py` or use the `checkOverlaps.py` script from DD4hep.
+* It is an error to declare a volume as well as one of its daughters sensitive. This is reported somewhat confusingly as `populate: Severe error: Duplicated Volume entry: 1A [THIS SHOULD NEVER HAPPEN]` but is in fact an issue with the sensitive detector.
+

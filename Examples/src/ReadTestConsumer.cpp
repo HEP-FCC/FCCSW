@@ -24,13 +24,14 @@ public:
 
   StatusCode execute() {
     const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
-    info() << mcparticles << endmsg;
 
-    info() << "MCParticle size: " << mcparticles->size() << endmsg;
+    debug() << mcparticles << endmsg;
+
+    debug() << "MCParticle size: " << mcparticles->size() << endmsg;
     int cntr = 0;
     for (const auto& mcpart : *mcparticles) {
-      if (10 > cntr++) {
-        info() << "vertex x: " << mcpart.StartVertex().Position().X << endmsg;
+      if (10 < cntr++) {
+        debug() << "vertex x: " << mcpart.startVertex().position().x << endmsg;
       }
     }
 

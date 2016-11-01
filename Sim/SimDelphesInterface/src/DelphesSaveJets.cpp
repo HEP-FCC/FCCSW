@@ -7,11 +7,7 @@
 // datamodel
 #include "datamodel/JetCollection.h"
 #include "datamodel/ParticleCollection.h"
-#include "datamodel/JetParticleAssociationCollection.h"
-#include "datamodel/JetIntTagAssociationCollection.h"
-#include "datamodel/TagCollection.h"
-#include "datamodel/IntTagCollection.h"
-#include "datamodel/JetTagAssociationCollection.h"
+#include "datamodel/TaggedJetCollection.h"
 #include "datamodel/MCParticleCollection.h"
 // ROOT
 #include "TObjArray.h"
@@ -24,15 +20,10 @@ DelphesSaveJets::DelphesSaveJets(const std::string& aType, const std::string& aN
 
   declareOutput("jets", m_jets);
   declareOutput("jetConstituents", m_jetParticles);
-  declareOutput("jetConstituentAssociations", m_jetParticleAssociations);
-  declareOutput("jetFlavorTags", m_jetFlavorTags);
-  declareOutput("jetFlavorTagAssociations", m_jetFlavorAssociations);
-  declareOutput("bTags", m_bTags);
-  declareOutput("jetBTagAssociations", m_jetBTagAssociations);
-  declareOutput("cTags", m_cTags);
-  declareOutput("jetCTagAssociations", m_jetCTagAssociations);
-  declareOutput("tauTags", m_tauTags);
-  declareOutput("jetTauTagAssociations", m_jetTauTagAssociations);
+  declareOutput("jetsFlavorTagged", m_jetsFlavorTagged);
+  declareOutput("jetsBTagged", m_jetsBTagged);
+  declareOutput("jetsCTagged", m_jetsCTagged);
+  declareOutput("jetsTauTagged", m_jetsTauTagged);
   declareProperty("delphesArrayName", m_delphesArrayName);
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
@@ -52,16 +43,11 @@ StatusCode DelphesSaveJets::finalize() {
 StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& /*mcParticles*/) {
   // Create the collections
   auto colJets = m_jets.createAndPut();
-  auto colJetsFlavor = m_jetFlavorTags.createAndPut();
-  auto ascColJetsToFlavor = m_jetFlavorAssociations.createAndPut();
-  auto colBTags = m_bTags.createAndPut();
-  auto ascColJetsToBTags = m_jetBTagAssociations.createAndPut();
-  auto colCTags = m_cTags.createAndPut();
-  auto ascColJetsToCTags = m_jetCTagAssociations.createAndPut();
-  auto colTauTags = m_tauTags.createAndPut();
-  auto ascColJetsToTauTags = m_jetTauTagAssociations.createAndPut();
+  auto colJetsFlavor = m_jetsFlavorTagged.createAndPut();
+  auto colBTags = m_jetsBTagged.createAndPut();
+  auto colCTags = m_jetsCTagged.createAndPut();
+  auto colTauTags = m_jetsTauTagged.createAndPut();
   auto colJetParts = m_jetParticles.createAndPut();
-  auto ascColJetsToPart = m_jetParticleAssociations.createAndPut();
 
 
   const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
@@ -80,63 +66,55 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
     // Jet info
     auto jet         = colJets->create();
     auto bareJet     = fcc::BareJet();
-    bareJet.Area     = -1;
-    bareJet.P4.Px    = cand->Momentum.Px();
-    bareJet.P4.Py    = cand->Momentum.Py();
-    bareJet.P4.Pz    = cand->Momentum.Pz();
-    bareJet.P4.Mass  = cand->Mass;
-    jet.Core(bareJet);
+    bareJet.area     = -1;
+    bareJet.p4.px    = cand->Momentum.Px();
+    bareJet.p4.py    = cand->Momentum.Py();
+    bareJet.p4.pz    = cand->Momentum.Pz();
+    bareJet.p4.mass  = cand->Mass;
+    jet.core(bareJet);
 
     // Flavor-tag info
     auto flavorTag        = colJetsFlavor->create();
-    auto relationToFlavor = ascColJetsToFlavor->create();
-    flavorTag.Value(cand->Flavor);
-    relationToFlavor.Jet(jet);
-    relationToFlavor.Tag(flavorTag);
+    flavorTag.tag(cand->Flavor);
+    flavorTag.jet(jet);
 
     // B-tag info
     auto bTag             = colBTags->create();
-    auto relationToBTag   = ascColJetsToBTags->create();
-    bTag.Value(cand->BTag & (1 << 0)); // btagging is stored in bit 0 of BTag variable
-    relationToBTag.Jet(jet);
-    relationToBTag.Tag(bTag);
+    bTag.tag(cand->BTag & (1 << 0)); // btagging is stored in bit 0 of BTag variable
+    bTag.jet(jet);
 
     // C-tag info
     auto cTag             = colCTags->create();
-    auto relationToCTag   = ascColJetsToCTags->create();
-    cTag.Value(cand->BTag & (1 << 1)); // ctagging is stored in bit 0 of BTag variable
-    relationToCTag.Jet(jet);
-    relationToCTag.Tag(cTag);
+    cTag.tag(cand->BTag & (1 << 1)); // ctagging is stored in bit 0 of BTag variable
+    cTag.jet(jet);
 
     // Tau-tag info
     auto tauTag           = colTauTags->create();
-    auto relationToTauTag = ascColJetsToTauTags->create();
-    tauTag.Value(cand->TauTag);
-    relationToTauTag.Jet(jet);
-    relationToTauTag.Tag(tauTag);
+    tauTag.tag(cand->TauTag);
+    tauTag.jet(jet);
 
     // Flavour-tag info
 
     // Debug: print FCC-EDM jets info
     if (msgLevel() <= MSG::DEBUG) {
 
-      double energy = sqrt(jet.Core().P4.Px*jet.Core().P4.Px +
-                           jet.Core().P4.Py*jet.Core().P4.Py +
-                           jet.Core().P4.Pz*jet.Core().P4.Pz +
-                           jet.Core().P4.Mass*jet.Core().P4.Mass);
+      double energy = sqrt(jet.p4().px*jet.p4().px +
+                           jet.p4().py*jet.p4().py +
+                           jet.p4().pz*jet.p4().pz +
+                           jet.p4().mass*jet.p4().mass);
 
       debug() << "Jet: "
               << " Id: "       << std::setw(3)  << j+1
-              << " Flavor: "   << std::setw(3)  << relationToFlavor.Tag().Value()
-              << " BTag: "     << std::setprecision(1) << std::setw(3) << relationToBTag.Tag().Value()
-              << " CTag: "     << std::setprecision(1) << std::setw(3) << relationToCTag.Tag().Value()
-              << " TauTag: "   << std::setprecision(1) << std::setw(3) << relationToTauTag.Tag().Value()
+              << " Flavor: "   << std::setw(3)  << flavorTag.tag()
+              << " BTag: "     << std::setprecision(1) << std::setw(3) << bTag.tag()
+              << " CTag: "     << std::setprecision(1) << std::setw(3) << cTag.tag()
+              << " TauTag: "   << std::setprecision(1) << std::setw(3) << tauTag.tag()
               << std::scientific
-              << " Px: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Px
-              << " Py: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Py
-              << " Pz: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Pz
+              << " Px: "       << std::setprecision(2) << std::setw(9) << jet.p4().px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << jet.p4().py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << jet.p4().pz
               << " E: "        << std::setprecision(2) << std::setw(9) << energy
-              << " M: "        << std::setprecision(2) << std::setw(9) << jet.Core().P4.Mass
+              << " M: "        << std::setprecision(2) << std::setw(9) << jet.p4().mass
               << std::fixed
               << std::endl;
     }
@@ -156,17 +134,15 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
 
         if (index>=0) {
           auto jetPart        = colJetParts->at(index);
-          auto relationToPart = ascColJetsToPart->create();
-          relationToPart.Jet(jet);
-          relationToPart.Particle(jetPart);
+          jet.addparticles(jetPart);
 
           debug() << "  Constituent Old - idxid: "  << candJetPart->GetUniqueID() << " " << jetPart.getObjectID().index
                   << std::setprecision(2)
                   << std::scientific
-                  << " Px: " << std::setw(9) << jetPart.Core().P4.Px
-                  << " Py: " << std::setw(9) << jetPart.Core().P4.Py
-                  << " Pz: " << std::setw(9) << jetPart.Core().P4.Pz
-                  << " M: "  << std::setw(9) << jetPart.Core().P4.Mass
+                  << " Px: " << std::setw(9) << jetPart.p4().px
+                  << " Py: " << std::setw(9) << jetPart.p4().py
+                  << " Pz: " << std::setw(9) << jetPart.p4().pz
+                  << " M: "  << std::setw(9) << jetPart.p4().mass
                   << std::fixed
                   << std::endl;
         }
@@ -179,21 +155,19 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
 
         auto jetPart      = colJetParts->create();
         auto barePart     = fcc::BareParticle();
-        barePart.Type     = 0;
-        barePart.Status   = 0;
-        barePart.P4.Px    = candJetPart->Momentum.Px();
-        barePart.P4.Py    = candJetPart->Momentum.Py();
-        barePart.P4.Pz    = candJetPart->Momentum.Pz();
-        barePart.P4.Mass  = candJetPart->Momentum.M();
-        barePart.Charge   = candJetPart->Charge;
-        barePart.Vertex.X = 0;
-        barePart.Vertex.Y = 0;
-        barePart.Vertex.Z = 0;
-        jetPart.Core(barePart);
+        barePart.pdgId    = 0;
+        barePart.status   = 0;
+        barePart.p4.px    = candJetPart->Momentum.Px();
+        barePart.p4.py    = candJetPart->Momentum.Py();
+        barePart.p4.pz    = candJetPart->Momentum.Pz();
+        barePart.p4.mass  = candJetPart->Momentum.M();
+        barePart.charge   = candJetPart->Charge;
+        barePart.vertex.x = 0;
+        barePart.vertex.y = 0;
+        barePart.vertex.z = 0;
+        jetPart.core(barePart);
 
-        auto relationToPart = ascColJetsToPart->create();
-        relationToPart.Jet(jet);
-        relationToPart.Particle(jetPart);
+        jet.addparticles(jetPart);
 
         // Assign fcc constituent id to delphes constituent id
         refIDDelphIDFCC[candJetPart->GetUniqueID()] = jetPart.getObjectID().index;
@@ -201,10 +175,10 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
         debug() << "  Constituent New - idxid: "  << candJetPart->GetUniqueID() << " " << jetPart.getObjectID().index
                 << std::setprecision(2)
                 << std::scientific
-                << " Px: " << std::setw(9) << jetPart.Core().P4.Px
-                << " Py: " << std::setw(9) << jetPart.Core().P4.Py
-                << " Pz: " << std::setw(9) << jetPart.Core().P4.Pz
-                << " M: "  << std::setw(9) << jetPart.Core().P4.Mass
+                << " Px: " << std::setw(9) << jetPart.p4().px
+                << " Py: " << std::setw(9) << jetPart.p4().py
+                << " Pz: " << std::setw(9) << jetPart.p4().pz
+                << " M: "  << std::setw(9) << jetPart.p4().mass
                 << std::fixed
                 << std::endl;
       }

@@ -15,12 +15,13 @@ SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL):
   declareProperty("detector", m_detectorTool);
   declarePrivateTool(m_detectorTool, "SimG4DD4hepDetector", true);
   declareProperty("physicslist", m_physicsListTool);
-  declarePrivateTool(m_physicsListTool, "G4FTFP_BERT", true);
+  declarePrivateTool(m_physicsListTool, "SimG4FtfpBert", true);
   declareProperty("actions", m_actionsTool);
   declarePrivateTool(m_actionsTool, "SimG4FullSimActions", true);
   declareProperty("magneticField", m_magneticFieldTool);
   declarePrivateTool(m_magneticFieldTool,"SimG4ConstantMagneticFieldTool", true);
   declareProperty("G4commands",m_g4Commands);
+  declareProperty("regions",m_regionToolNames);
 }
 
 SimG4Svc::~SimG4Svc(){}
@@ -71,6 +72,18 @@ StatusCode SimG4Svc::initialize(){
   m_runManager.Initialize();
   // Attach user actions
   m_runManager.SetUserInitialization(m_actionsTool->userActionInitialization());
+  // Create regions
+  for(auto& toolname: m_regionToolNames) {
+    ISimG4RegionTool* tool = nullptr;
+    if(m_toolSvc->retrieveTool(toolname, tool).isFailure()) {
+      error()<<"Unable to retrieve region tool "<<toolname<<endmsg;
+      return StatusCode::FAILURE;
+    }
+    m_regionTools.push_back(tool);
+  }
+  for(auto& tool: m_regionTools) {
+    tool->create();
+  }
 
   if( !m_runManager.start()) {
     error() << "Unable to initialize GEANT correctly." << endmsg;

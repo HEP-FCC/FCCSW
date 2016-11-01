@@ -1,7 +1,7 @@
 #include "DetSensitive/SimpleCalorimeterSD.h"
 
 // FCCSW
-#include "DetSensitive/SegmentationHelper.h"
+#include "DetCommon/DetUtils.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -17,7 +17,7 @@ namespace det {
 SimpleCalorimeterSD::SimpleCalorimeterSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
-  : G4VSensitiveDetector(aDetectorName), m_seg(aSeg), m_calorimeterCollection(nullptr) {
+  : G4VSensitiveDetector(aDetectorName), m_calorimeterCollection(nullptr), m_seg(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
 }
@@ -44,7 +44,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   DD4hep::Simulation::Position pos(prePos.x(), prePos.y(), prePos.z());
   auto hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
-  hit->cellID  = segmentation::cellID(m_seg, *aStep);
+  hit->cellID  = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
   m_calorimeterCollection->insert(hit);
   return true;

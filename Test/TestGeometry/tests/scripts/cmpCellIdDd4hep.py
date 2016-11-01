@@ -40,12 +40,12 @@ if __name__ == "__main__":
     for iev, event in enumerate(storeSeg):
         hits = event.get('caloHits')
         for hit in hits:
-            cellId = hit.Core().Cellid
+            cellId = hit.cellId()
             segPos.append(cellPosDd4hep(cellId,True))
     volPos = []
     for iev, event in enumerate(storeVol):
         hits = event.get('caloHits')
         for hit in hits:
-            cellId = hit.Core().Cellid
+            cellId = hit.cellId()
             volPos.append(cellPosDd4hep(cellId,False))
     assert(segPos == volPos)
