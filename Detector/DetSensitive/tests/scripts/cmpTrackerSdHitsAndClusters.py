@@ -36,20 +36,18 @@ if __name__ == "__main__":
     gSystem.Load("libdatamodelDict")
     store = EventStore(["./out_simpleTrackerSD_2cm.root"])
     for iev, event in enumerate(store):
-        hitsClus = event.get('hitClusterAssociation')
-        print(len(hitsClus))
-        for assoc in hitsClus:
-            hit = assoc.Hit()
-            clu = assoc.Cluster()
-            cellId = hit.Core().Cellid
+        posHits = event.get('positionedHits')
+        print(len(posHits))
+        for hit in posHits:
+            cellId = hit.cellId()
             hxx = x(cellId)
             hyy = y(cellId)
             hzz = z(cellId)
-            hE = hit.Core().Energy
-            cxx = pos2cell(clu.Core().position.X)
-            cyy = pos2cell(clu.Core().position.Y)
-            czz = z2cell(clu.Core().position.Z)
-            cE = clu.Core().Energy
+            hE = hit.energy()
+            cxx = pos2cell(hit.position().x)
+            cyy = pos2cell(hit.position().y)
+            czz = z2cell(hit.position().z)
+            cE = hit.energy()
             assert(hxx == cxx)
             assert(hyy == cyy)
             assert(hzz == czz)

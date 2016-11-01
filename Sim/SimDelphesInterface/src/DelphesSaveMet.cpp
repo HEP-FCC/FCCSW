@@ -33,7 +33,7 @@ StatusCode DelphesSaveMet::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode DelphesSaveMet::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) {
+StatusCode DelphesSaveMet::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& /*mcParticles*/) {
   // Create the collections
   auto colMET = m_mets.createAndPut();
   const TObjArray* delphesMETColl = delphes.ImportArray(m_delphesMETArrayName.c_str());
@@ -58,19 +58,19 @@ StatusCode DelphesSaveMet::saveOutput(Delphes& delphes, const fcc::MCParticleCol
 
     auto met = colMET->create();
 
-    met.Magnitude(candMET->Momentum.Pt());
-    met.Phi((-(candMET->Momentum)).Phi());
-    if (saveSHT) met.ScalarSum(candSHT->Momentum.Pt());
-    else         met.ScalarSum(-1);
+    met.magnitude(candMET->Momentum.Pt());
+    met.phi((-(candMET->Momentum)).Phi());
+    if (saveSHT) met.scalarSum(candSHT->Momentum.Pt());
+    else         met.scalarSum(-1);
 
     // Debug: print FCC-EDM MET info
     if (msgLevel() <= MSG::DEBUG) {
 
       debug() << "MET Info: "
               << std::scientific
-              << " MET: " << std::setprecision(2) << std::setw(9) << met.Magnitude()
-              << " Phi: " << std::setprecision(2) << std::setw(9) << met.Phi()
-              << " sHT: " << std::setprecision(2) << std::setw(9) << met.ScalarSum()
+              << " MET: " << std::setprecision(2) << std::setw(9) << met.magnitude()
+              << " Phi: " << std::setprecision(2) << std::setw(9) << met.phi()
+              << " sHT: " << std::setprecision(2) << std::setw(9) << met.scalarSum()
               << std::fixed
               << endmsg;
     } // Debug

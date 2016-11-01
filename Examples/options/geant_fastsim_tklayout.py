@@ -55,7 +55,6 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
-hist.DataInputs.particles.Path = "smearedParticles"
 hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 THistSvc().Output = ["rec DATAFILE='histTklayout.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

@@ -10,10 +10,10 @@
 #include "DetSegmentation/GridPhiEta.h"
 class IGeoSvc;
 
-// our EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloClusterCollection.h"
-
+namespace fcc {
+class CaloHitCollection;
+class PositionedCaloHitCollection;
+}
 
 // DD4hep
 #include "DD4hep/Readout.h"
@@ -34,11 +34,11 @@ namespace DDSegmentation {
  */
 
 
-class CreatePositionedHit : public GaudiAlgorithm 
+class CreatePositionedHit : public GaudiAlgorithm
 {
 public:
   CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc);
- 
+
   ~CreatePositionedHit();
 
   StatusCode initialize();
@@ -50,8 +50,8 @@ public:
 private:
   /// Handle for calo cells (input collection with cellID)
   DataHandle<fcc::CaloHitCollection> m_caloCells;
-  /// Handle for calo clusters (output collection)
-  DataHandle<fcc::CaloClusterCollection> m_caloClusters;
+  /// Handle for positioned hits (output collection)
+  DataHandle<fcc::PositionedCaloHitCollection> m_caloPositionedHits;
   /// Name of the detector readout
   std::string m_readoutName;
   /// Name of active layers for sampling calorimeter

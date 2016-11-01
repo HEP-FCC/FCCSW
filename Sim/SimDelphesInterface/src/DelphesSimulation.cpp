@@ -304,23 +304,21 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     auto cand     = static_cast<Candidate *>(m_allParticles->At(j));
     auto particle = colMCParticles->create();
 
-    auto barePart     = fcc::BareParticle();
-    barePart.Type     = cand->PID;
-    barePart.Status   = cand->Status;
-    barePart.P4.Px    = cand->Momentum.Px();
-    barePart.P4.Py    = cand->Momentum.Py();
-    barePart.P4.Pz    = cand->Momentum.Pz();
-    barePart.P4.Mass  = cand->Momentum.M();
-    barePart.Charge   = cand->Charge;
-    barePart.Vertex.X = cand->Position.X();
-    barePart.Vertex.Y = cand->Position.Y();
-    barePart.Vertex.Z = cand->Position.Z();
+    auto& barePart    = particle.core();
+    barePart.pdgId     = cand->PID;
+    barePart.status   = cand->Status;
+    barePart.p4.px    = cand->Momentum.Px();
+    barePart.p4.py    = cand->Momentum.Py();
+    barePart.p4.pz    = cand->Momentum.Pz();
+    barePart.p4.mass  = cand->Momentum.M();
+    barePart.charge   = cand->Charge;
+    barePart.vertex.x = cand->Position.X();
+    barePart.vertex.y = cand->Position.Y();
+    barePart.vertex.z = cand->Position.Z();
 
-    if (cand->M1==-1)      barePart.Bits = static_cast<unsigned>(ParticleStatus::kBeam);
-    else if (cand->D1==-1) barePart.Bits = static_cast<unsigned>(ParticleStatus::kStable);
-    else                   barePart.Bits = static_cast<unsigned>(ParticleStatus::kDecayed);
-
-    particle.Core(barePart);
+    if (cand->M1==-1)      barePart.bits = static_cast<unsigned>(ParticleStatus::kBeam);
+    else if (cand->D1==-1) barePart.bits = static_cast<unsigned>(ParticleStatus::kStable);
+    else                   barePart.bits = static_cast<unsigned>(ParticleStatus::kDecayed);
 
     // Mapping the vertices
     int& idPartStartVertex = vecPartProdVtxIDDecVtxID[j].first;
@@ -329,18 +327,18 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     // Production vertex
     if (cand->M1!=-1) {
       if (idPartStartVertex!=-1) {
-        particle.StartVertex(colMCParticles->at(idPartStartVertex).EndVertex());
+        particle.startVertex(colMCParticles->at(idPartStartVertex).endVertex());
       }
       else {
         fcc::Point point;
-        point.X = cand->Position.X();
-        point.Y = cand->Position.Y();
-        point.Z = cand->Position.Z();
+        point.x = cand->Position.X();
+        point.y = cand->Position.Y();
+        point.z = cand->Position.Z();
 
         auto vertex = colGenVertices->create();
-        vertex.Position(point);
-        vertex.Ctau(cand->Position.T());
-        particle.StartVertex(vertex);
+        vertex.position(point);
+        vertex.ctau(cand->Position.T());
+        particle.startVertex(vertex);
 
         idPartStartVertex = j;
       }
@@ -353,18 +351,18 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
       Candidate* daughter  = static_cast<Candidate *>(Input->At(cand->D1));
 
       if (idPartEndVertex!=-1) {
-        particle.EndVertex(colMCParticles->at(idPartEndVertex).StartVertex());
+        particle.endVertex(colMCParticles->at(idPartEndVertex).startVertex());
       }
       else {
         fcc::Point point;
-        point.X  = daughter->Position.X();
-        point.Y  = daughter->Position.Y();
-        point.Z  = daughter->Position.Z();
+        point.x  = daughter->Position.X();
+        point.y  = daughter->Position.Y();
+        point.z  = daughter->Position.Z();
 
         auto vertex = colGenVertices->create();
-        vertex.Position(point);
-        vertex.Ctau(cand->Position.T());
-        particle.EndVertex(vertex);
+        vertex.position(point);
+        vertex.ctau(cand->Position.T());
+        particle.endVertex(vertex);
 
         idPartEndVertex = cand->D1;
       }
@@ -395,35 +393,35 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     // Debug: print FCC-EDM MCParticle and GenVertex
     if (msgLevel() <= MSG::DEBUG) {
 
-      double partE = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
-                          particle.Core().P4.Py*particle.Core().P4.Py +
-                          particle.Core().P4.Pz*particle.Core().P4.Pz +
-                          particle.Core().P4.Mass*particle.Core().P4.Mass);
+      double partE = sqrt(particle.p4().px*particle.p4().px +
+                          particle.p4().py*particle.p4().py +
+                          particle.p4().pz*particle.p4().pz +
+                          particle.p4().mass*particle.p4().mass);
 
       debug() << "MCParticle: "
               << " Id: "       << std::setw(3)  << j+1
-              << " Pdg: "      << std::setw(5)  << particle.Core().Type
-              << " Stat: "     << std::setw(2)  << particle.Core().Status
-              << " Bits: "     << std::setw(2)  << particle.Core().Bits
+              << " Pdg: "      << std::setw(5)  << particle.pdgId()
+              << " Stat: "     << std::setw(2)  << particle.status()
+              << " Bits: "     << std::setw(2)  << particle.bits()
               << std::scientific
-              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
-              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
-              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.p4().px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.p4().py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.p4().pz
               << " E: "        << std::setprecision(2) << std::setw(9) << partE
-              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass;
-      if (particle.StartVertex().isAvailable()) {
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.p4().mass;
+      if (particle.startVertex().isAvailable()) {
         debug() << " VSId: "     << std::setw(3)  << vecPartProdVtxIDDecVtxID[j].first+1;
-                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().X
-                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Y
-                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Z
-                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.StartVertex().Ctau();
+                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.startVertex().Position().X
+                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.startVertex().Position().Y
+                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.startVertex().Position().Z
+                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.startVertex().Ctau();
       }
-      if (particle.EndVertex().isAvailable()) {
+      if (particle.endVertex().isAvailable()) {
         debug() << " VEId: "     << std::setw(3)  << vecPartProdVtxIDDecVtxID[j].second+1;
-                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().X
-                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Y
-                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Z
-                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.EndVertex().Ctau();
+                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.endVertex().Position().X
+                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.endVertex().Position().Y
+                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.endVertex().Position().Z
+                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.endVertex().Ctau();
       }
       debug() << std::fixed << endmsg;
 

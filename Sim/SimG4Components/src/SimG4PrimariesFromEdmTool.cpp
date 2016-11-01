@@ -32,19 +32,19 @@ G4Event* SimG4PrimariesFromEdmTool::g4Event() {
   auto theEvent = new G4Event();
   const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
   for (const auto& mcparticle : *mcparticles) {
-    const fcc::ConstGenVertex& v = mcparticle.StartVertex();
-    G4PrimaryVertex* g4_vertex = new G4PrimaryVertex(v.Position().X * sim::edm2g4::length,
-                                                     v.Position().Y * sim::edm2g4::length,
-                                                     v.Position().Z * sim::edm2g4::length,
-                                                     v.Ctau() * sim::edm2g4::length);
-    const fcc::BareParticle& mccore = mcparticle.Core();
-    G4PrimaryParticle* g4_particle = new G4PrimaryParticle(mccore.Type,
-                                                           mccore.P4.Px * sim::edm2g4::energy,
-                                                           mccore.P4.Py * sim::edm2g4::energy,
-                                                           mccore.P4.Pz * sim::edm2g4::energy);
-    g4_particle->SetUserInformation(new sim::ParticleInformation(mcparticle));
-    g4_vertex->SetPrimary(g4_particle);
-    theEvent->AddPrimaryVertex(g4_vertex);
+    const fcc::ConstGenVertex& v = mcparticle.startVertex();
+    G4PrimaryVertex* g4Vertex = new G4PrimaryVertex(v.x() * sim::edm2g4::length,
+                                                    v.y() * sim::edm2g4::length,
+                                                    v.z() * sim::edm2g4::length,
+                                                    v.ctau() * sim::edm2g4::length);
+    const fcc::BareParticle& mccore = mcparticle.core();
+    G4PrimaryParticle* g4Particle = new G4PrimaryParticle(mccore.pdgId,
+                                                          mccore.p4.px * sim::edm2g4::energy,
+                                                          mccore.p4.py * sim::edm2g4::energy,
+                                                          mccore.p4.pz * sim::edm2g4::energy);
+    g4Particle->SetUserInformation(new sim::ParticleInformation(mcparticle));
+    g4Vertex->SetPrimary(g4Particle);
+    theEvent->AddPrimaryVertex(g4Vertex);
   }
   return theEvent;
 }

@@ -1,5 +1,7 @@
 #include "HepMCJetClustering.h"
 
+#include "datamodel/JetCollection.h"
+
 #include "fastjet/PseudoJet.hh"
 #include "fastjet/ClusterSequence.hh"
 #include "fastjet/JetDefinition.hh"
@@ -109,10 +111,11 @@ StatusCode HepMCJetClustering::execute() {
        double py = jet.py();
        double pz = jet.pz();
        double e = jet.e();
-       outJet.Core().P4.Px = px;
-       outJet.Core().P4.Py = py;
-       outJet.Core().P4.Pz = pz;
-       outJet.Core().P4.Mass = std::sqrt(- px*px - py*py - pz*pz + e*e);
+       auto& p4 = outJet.p4();
+       p4.px = px;
+       p4.py = py;
+       p4.pz = pz;
+       p4.mass = std::sqrt(- px*px - py*py - pz*pz + e*e);
     }
     return StatusCode::SUCCESS;
 }
