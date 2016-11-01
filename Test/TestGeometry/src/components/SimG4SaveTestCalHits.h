@@ -10,9 +10,8 @@
 
 // datamodel
 namespace fcc {
-class CaloClusterCollection;
+class PositionedCaloHitCollection;
 class CaloHitCollection;
-class CaloClusterHitsAssociationCollection;
 }
 
 /** @class SimG4SaveTestCalHits TestGeometry/src/components/SimG4SaveTestCalHits.h SimG4SaveTestCalHits.h
@@ -45,7 +44,7 @@ public:
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
 private:
   /// Handle for calo clusters
-  DataHandle<fcc::CaloClusterCollection> m_caloClusters;
+  DataHandle<fcc::PositionedCaloHitCollection> m_caloHitsPositioned;
   /// Handle for calo hits
   DataHandle<fcc::CaloHitCollection> m_caloHits;
   /// Name of the calorimeter type (ECal/HCal)

@@ -17,7 +17,7 @@ namespace det {
 AggregateCalorimeterSD::AggregateCalorimeterSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
-  : G4VSensitiveDetector(aDetectorName), m_seg(aSeg), m_calorimeterCollection(nullptr) {
+  : G4VSensitiveDetector(aDetectorName), m_calorimeterCollection(nullptr), m_seg(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
 }

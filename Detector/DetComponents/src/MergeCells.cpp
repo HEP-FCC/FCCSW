@@ -74,32 +74,31 @@ StatusCode MergeCells::initialize() {
 }
 
 StatusCode MergeCells::execute() {
-  const fcc::CaloHitCollection* inHits = m_inHits.get();
-  fcc::CaloHitCollection* outHits = new fcc::CaloHitCollection();
+  const auto inHits = m_inHits.get();
+  auto outHits = new fcc::CaloHitCollection();
 
   uint field_id = m_descriptor.fieldID(m_idToMerge);
   auto decoder = m_descriptor.decoder();
   uint64_t cellId = 0;
   int value = 0;
 
-  for(const auto& hit: *inHits) {
-    fcc::CaloHit newHit = outHits->create();
-    newHit.Core().Energy = hit.Core().Energy;
-    newHit.Core().Time = hit.Core().Time;
-    cellId = hit.Core().Cellid;
+  for (const auto& hit: *inHits) {
+    fcc::CaloHit newHit = outHits->create(hit.core());
+    cellId = hit.cellId();
     decoder->setValue(cellId);
-    int value = (*decoder)[field_id].value();
-    debug()<<"old ID = "<<value<<endmsg;
-    if((*decoder)[field_id].isSigned()) {
-      if(value<0)
+    value = (*decoder)[field_id].value();
+    debug() << "old ID = " << value << endmsg;
+    if ((*decoder)[field_id].isSigned()) {
+      if (value<0) {
         value -= m_numToMerge/2;
-      else
+      } else {
         value += m_numToMerge/2;
+      }
     }
     value /= int(m_numToMerge);
-    debug()<<"new ID = "<<value<<endmsg;
+    debug() << "new ID = " << value << endmsg;
     (*decoder)[field_id] = value;
-    newHit.Core().Cellid = decoder->getValue();
+    newHit.cellId(decoder->getValue());
   }
   m_outHits.put(outHits);
 

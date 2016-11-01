@@ -3,7 +3,6 @@
 
 // datamodel
 #include "datamodel/MCParticle.h"
-#include "datamodel/Particle.h"
 
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"

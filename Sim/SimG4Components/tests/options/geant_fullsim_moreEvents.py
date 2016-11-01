@@ -33,9 +33,8 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 
 from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
 savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames=["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
+savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
