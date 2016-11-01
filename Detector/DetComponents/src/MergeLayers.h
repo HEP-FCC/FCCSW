@@ -1,5 +1,5 @@
-#ifndef DETCOMPONENTS_MERGEVOLUMES_H
-#define DETCOMPONENTS_MERGEVOLUMES_H
+#ifndef DETCOMPONENTS_MERGELAYERS_H
+#define DETCOMPONENTS_MERGELAYERS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -15,9 +15,9 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class MergeVolumes Detector/DetComponents/src/MergeVolumes.h MergeVolumes.h
+/** @class MergeLayers Detector/DetComponents/src/MergeLayers.h MergeLayers.h
  *
- *  Merge volumes (e.g. layers).
+ *  Merge layers (volume ids).
  *  Merging is performed on a collection of hits and as a result only the cellID of hit is changed
  *  (in particular, the part of the volume ID). There is no real change of the geometry.
  *  GeoSvc is required (to access the detector readout).
@@ -27,15 +27,15 @@ class CaloHitCollection;
  *  E.g. '\b merge = [2,3,2]' means that first 2 volumes are merged into new cell (id=0), next 3 volumes become new cell (id=1),
  *  and finally last 2 layers are merged into last cell (id=2).
  *  The sum of all sizes from the list should correspond to the total number of volumes named as indicated in '\b volumeName'.
- *  For an example see Detector/DetComponents/tests/options/mergeVolumes.py
+ *  For an example see Detector/DetComponents/tests/options/mergeLayers.py
  *
  *  @author Anna Zaborowska
  */
 
-class MergeVolumes: public GaudiAlgorithm {
+class MergeLayers: public GaudiAlgorithm {
 public:
-  explicit MergeVolumes(const std::string&, ISvcLocator*);
-  virtual ~MergeVolumes();
+  explicit MergeLayers(const std::string&, ISvcLocator*);
+  virtual ~MergeLayers();
   /**  Initialize.
    *   @return status code
    */

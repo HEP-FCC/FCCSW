@@ -1,4 +1,4 @@
-#include "MergeVolumes.h"
+#include "MergeLayers.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -13,9 +13,9 @@
 // ROOT
 #include "TGeoManager.h"
 
-DECLARE_ALGORITHM_FACTORY(MergeVolumes)
+DECLARE_ALGORITHM_FACTORY(MergeLayers)
 
-MergeVolumes::MergeVolumes(const std::string& aName, ISvcLocator* aSvcLoc):
+MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc){
   declareInput("inhits", m_inHits,"hits/caloInHits");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
@@ -26,9 +26,9 @@ GaudiAlgorithm(aName, aSvcLoc){
   declareProperty("debugPrint", m_debugPrint = 10);
 }
 
-MergeVolumes::~MergeVolumes() {}
+MergeLayers::~MergeLayers() {}
 
-StatusCode MergeVolumes::initialize() {
+StatusCode MergeLayers::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   if (m_idToMerge.empty()) {
@@ -75,7 +75,7 @@ StatusCode MergeVolumes::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeVolumes::execute() {
+StatusCode MergeLayers::execute() {
   const auto inHits = m_inHits.get();
   auto outHits = new fcc::CaloHitCollection();
 
@@ -119,6 +119,6 @@ StatusCode MergeVolumes::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeVolumes::finalize() {
+StatusCode MergeLayers::finalize() {
   return GaudiAlgorithm::finalize();
 }

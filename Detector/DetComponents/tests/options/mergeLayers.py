@@ -39,8 +39,8 @@ savecaltool.DataOutputs.caloHits.Path = "caloHits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool/inspect"], eventProvider=particle_converter)
 
-from Configurables import MergeVolumes
-merge = MergeVolumes("mergeVolumes",
+from Configurables import MergeLayers
+merge = MergeLayers("mergeLayers",
                     # common part of the name of the group of volumes to merge
                     volumeName = "slice",
                     # corresponding identifier in the readout for the volumes that should be merged
@@ -57,7 +57,7 @@ merge.DataOutputs.outhits.Path = "newCaloHits"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="testMergeVolumes.root")
+out = PodioOutput("out", filename="testMergeLayers.root")
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(EvtSel='NONE',
