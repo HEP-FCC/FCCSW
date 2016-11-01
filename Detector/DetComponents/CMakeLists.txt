@@ -35,3 +35,7 @@ gaudi_add_test(MergeCells
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/mergeCells.py)
+gaudi_add_test(MergeLayers
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               FRAMEWORK tests/options/mergeLayers.py)

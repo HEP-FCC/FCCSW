@@ -17,10 +17,11 @@ class CaloHitCollection;
 
 /** @class MergeCells Detector/DetComponents/src/MergeCells.h MergeCells.h
  *
- *  Merge cells for one field.
+ *  Merge cells for one field of the segmentation.
+ *  Merging is performed on a collection of hits and as a result the cellID is changed.
  *  GeoSvc is required (to access the detector readout).
  *  Name of the field to be merged is defined be property '\b identifier'.
- *  Property '\b merge' desccribes how many adjacent cells should be merged.
+ *  Property '\b merge' describes how many adjacent cells should be merged.
  *  If the identifier describes an unsigned field, the number of cells to be merged can be any number.
  *  If the identifier describes a signed field, however, the number of cells to be merged need to be an odd number (to keep the centre of the central bin in 0).
  *  For an example see Detector/DetComponents/tests/options/mergeCells.py
@@ -60,5 +61,7 @@ private:
   std::string m_idToMerge;
   /// Number of adjacent cells to be merged
   uint m_numToMerge;
+  /// Limit of debug printing
+  uint m_debugPrint;
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */
