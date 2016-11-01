@@ -13,7 +13,6 @@
   </info>
   <detectors>
     <detector name="TrackerEnvelopeBarrel" type="SimpleCylinder"  vis="TrackerVis">
-      <status id="0"/>
       <comment>Envelope for Tracker</comment>
       <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" dz="Tracker_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
     </detector>
