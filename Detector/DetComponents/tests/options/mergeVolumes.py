@@ -6,8 +6,8 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 20, # GeV
                                 MomentumMax = 20, # GeV
-                                ThetaMin = 90., # rad
-                                ThetaMax = 90., # rad
+                                ThetaMin = 1.58, # rad
+                                ThetaMax = 1.58, # rad
                                 PhiMin = 0, # rad
                                 PhiMax = 0) # rad
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
@@ -25,38 +25,39 @@ hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
 hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc",  detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                          'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml' ],
+geoservice = GeoSvc("GeoSvc",  detectors=['file:Test/TestGeometry/data/Barrel_testCaloSD_rphiz.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc")
 
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool, SimG4PrimariesFromEdmTool
-inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHitsPhiEta"], OutputLevel = INFO)
-savecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHitsPhiEta"], OutputLevel = DEBUG)
-savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
+inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHits"], OutputLevel = INFO)
+savecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"], OutputLevel = DEBUG)
+savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool/inspect"], eventProvider=particle_converter)
 
-from Configurables import MergeVolumeCells
-merge = MergeVolumeCells("mergeVolumeCells",
-                   # take the bitfield description from the geometry service
-                   readout ="ECalHitsPhiEta",
-                   # cells in which field should be merged
-                   identifier = "active_layer",
-                   # how many cells to merge
-                   # merge first 20 into new cell (id=0), next 50 into second cell (id=1), ...
-                   merge = [20,50,47],
-                   volumeName = "LAr",
-                   OutputLevel = DEBUG)
+from Configurables import MergeVolumes
+merge = MergeVolumes("mergeVolumes",
+                    # common part of the name of the group of volumes to merge
+                    volumeName = "slice",
+                    # corresponding identifier in the readout for the volumes that should be merged
+                    identifier = "z",
+                    # readout - bitfield description from the geometry service
+                    readout ="ECalHits",
+                    # specify how many volumes to merge
+                    # if it is a constant number (e.g. merge every second volume with previous one), 'MergeCells' can be used
+                    # below: merge first 3k volumes into new one (id=0), next 10k into second one (id=1) and last 3k into third volume (id=2)
+                    merge = [3000,10001,3000],
+                    OutputLevel = DEBUG)
 merge.DataInputs.inhits.Path = "caloHits"
 merge.DataOutputs.outhits.Path = "newCaloHits"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="testMergeCells.root")
+out = PodioOutput("out", filename="testMergeVolumes.root")
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(EvtSel='NONE',

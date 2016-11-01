@@ -1,5 +1,5 @@
-#ifndef DETCOMPONENTS_MERGESEGMENTATIONCELLS_H
-#define DETCOMPONENTS_MERGESEGMENTATIONCELLS_H
+#ifndef DETCOMPONENTS_MERGECELLS_H
+#define DETCOMPONENTS_MERGECELLS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -15,9 +15,10 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class MergeSegmentationCells Detector/DetComponents/src/MergeSegmentationCells.h MergeSegmentationCells.h
+/** @class MergeCells Detector/DetComponents/src/MergeCells.h MergeCells.h
  *
  *  Merge cells for one field of the segmentation.
+ *  Merging is performed on a collection of hits and as a result the cellID is changed.
  *  GeoSvc is required (to access the detector readout).
  *  Name of the field to be merged is defined be property '\b identifier'.
  *  Property '\b merge' describes how many adjacent cells should be merged.
@@ -28,10 +29,10 @@ class CaloHitCollection;
  *  @author Anna Zaborowska
  */
 
-class MergeSegmentationCells: public GaudiAlgorithm {
+class MergeCells: public GaudiAlgorithm {
 public:
-  explicit MergeSegmentationCells(const std::string&, ISvcLocator*);
-  virtual ~MergeSegmentationCells();
+  explicit MergeCells(const std::string&, ISvcLocator*);
+  virtual ~MergeCells();
   /**  Initialize.
    *   @return status code
    */
@@ -60,5 +61,7 @@ private:
   std::string m_idToMerge;
   /// Number of adjacent cells to be merged
   uint m_numToMerge;
+  /// Limit of debug printing
+  uint m_debugPrint;
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

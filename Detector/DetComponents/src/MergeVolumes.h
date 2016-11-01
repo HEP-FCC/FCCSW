@@ -1,5 +1,5 @@
-#ifndef DETCOMPONENTS_MERGEVOLUMECELLS_H
-#define DETCOMPONENTS_MERGEVOLUMECELLS_H
+#ifndef DETCOMPONENTS_MERGEVOLUMES_H
+#define DETCOMPONENTS_MERGEVOLUMES_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -15,25 +15,28 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-/** @class MergeVolumeCells Detector/DetComponents/src/MergeVolumeCells.h MergeVolumeCells.h
+/** @class MergeVolumes Detector/DetComponents/src/MergeVolumes.h MergeVolumes.h
  *
- *  Merge cells represented by some volume (e.g. merge cylindrical layers).
+ *  Merge volumes (e.g. layers).
+ *  Merging is performed on a collection of hits and as a result only the cellID of hit is changed
+ *  (in particular, the part of the volume ID). There is no real change of the geometry.
  *  GeoSvc is required (to access the detector readout).
- *  Name of the field to be merged is defined be property '\b identifier'.
- *  Name of the volume that corresponds to the merged volumes is defined be property '\b volumeName'.
- *  Property '\b merge' describes how many adjacent cells should be merged, as a list of new cell sizes.
- *  E.g. '\b merge = [2,3,2]' means that first 2 cells are merged into new cell (id=0), next 3 cells become new cell (id=1),
- *  and finally last 2 layers are erged into new cell (id=2).
+ *  Common part of the name of the volumes to be merged is defined be property '\b volumeName'.
+ *  Name of the field in the readout that corresponds to the volume is defined be property '\b identifier'.
+ *  Property '\b merge' describes how many adjacent volumes should be merged.
+ *  E.g. '\b merge = [2,3,2]' means that first 2 volumes are merged into new cell (id=0), next 3 volumes become new cell (id=1),
+ *  and finally last 2 layers are merged into last cell (id=2).
  *  The sum of all sizes from the list should correspond to the total number of volumes named as indicated in '\b volumeName'.
- *  For an example see Detector/DetComponents/tests/options/mergeCells.py
+ *  The new total number of volumes is returned as property '\b newVolumesNumber'.
+ *  For an example see Detector/DetComponents/tests/options/mergeVolumes.py
  *
  *  @author Anna Zaborowska
  */
 
-class MergeVolumeCells: public GaudiAlgorithm {
+class MergeVolumes: public GaudiAlgorithm {
 public:
-  explicit MergeVolumeCells(const std::string&, ISvcLocator*);
-  virtual ~MergeVolumeCells();
+  explicit MergeVolumes(const std::string&, ISvcLocator*);
+  virtual ~MergeVolumes();
   /**  Initialize.
    *   @return status code
    */
@@ -64,5 +67,9 @@ private:
   std::string m_volumeName;
   /// List with number of adjacent cells to be merged
   std::vector<uint> m_listToMerge;
+  /// Total number of volumes after merging (number from geometry not valid any more)
+  uint m_newNumVolumes;
+  /// Limit of debug printing
+  uint m_debugPrint;
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

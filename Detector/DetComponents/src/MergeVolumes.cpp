@@ -1,4 +1,4 @@
-#include "MergeVolumeCells.h"
+#include "MergeVolumes.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -13,21 +13,23 @@
 // ROOT
 #include "TGeoManager.h"
 
-DECLARE_ALGORITHM_FACTORY(MergeVolumeCells)
+DECLARE_ALGORITHM_FACTORY(MergeVolumes)
 
-MergeVolumeCells::MergeVolumeCells(const std::string& aName, ISvcLocator* aSvcLoc):
+MergeVolumes::MergeVolumes(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc){
   declareInput("inhits", m_inHits,"hits/caloInHits");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
+  declareOutput("newVolumesNumber", m_newNumVolumes);
   declareProperty("readout", m_readoutName);
   declareProperty("identifier", m_idToMerge);
   declareProperty("volumeName", m_volumeName = "");
   declareProperty("merge", m_listToMerge);
+  declareProperty("debugPrint", m_debugPrint = 10);
 }
 
-MergeVolumeCells::~MergeVolumeCells() {}
+MergeVolumes::~MergeVolumes() {}
 
-StatusCode MergeVolumeCells::initialize() {
+StatusCode MergeVolumes::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   if (m_idToMerge.empty()) {
@@ -57,50 +59,59 @@ StatusCode MergeVolumeCells::initialize() {
     error()<<"Identifier <<"<<m_idToMerge<<">> does not exist in the readout <<"<<m_readoutName<<">>"<<endmsg;
     return StatusCode::FAILURE;
   }
+  // check sizes of new volumes in the list - it must sum to the total number of volumes
   uint sumCells = std::accumulate(m_listToMerge.begin(), m_listToMerge.end(), 0);
-  // check list of cells to be merged - it must sum to the total number of cells
-  // get the total number of volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
   auto numPlacedVol = det::utils::countPlacedVolumes(highestVol, m_volumeName);
   if (numPlacedVol != sumCells) {
-    error()<<"Total number of cells named "<<m_volumeName<<" ("<<numPlacedVol<<") "
-           <<"is not equal to the sum of cells from the list given in py config ("<<sumCells<<")"<<endmsg;
+    error()<<"Total number of volumes named "<<m_volumeName<<" ("<<numPlacedVol<<") "
+           <<"is not equal to the sum of volumes from the list 'merge' given in job options ("
+           <<sumCells<<")"<<endmsg;
     return StatusCode::FAILURE;
   }
   info()<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
-  info()<<"Merging cells for identifier: "<<m_idToMerge<<endmsg;
-  info()<<"List of number of cells to be merged: "<<m_listToMerge<<"\n"<<endmsg;
+  info()<<"Merging volumes named: "<<m_volumeName<<endmsg;
+  info()<<"Merging volumes for identifier: "<<m_idToMerge<<endmsg;
+  info()<<"List of number of volumes to be merged: "<<m_listToMerge<<"\n"<<endmsg;
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeVolumeCells::execute() {
+StatusCode MergeVolumes::execute() {
   const auto inHits = m_inHits.get();
   auto outHits = new fcc::CaloHitCollection();
 
+  // rewriting list of cell sizes to list of top boundaries to facilitate the loop over hits
   std::vector<uint> listToMergeBoundary(m_listToMerge.size());
   uint sumCells = 0;
   for (uint i=0; i<m_listToMerge.size(); i++) {
     sumCells += m_listToMerge[i];
     listToMergeBoundary[i] = sumCells;
   }
+
   uint field_id = m_descriptor.fieldID(m_idToMerge);
   auto decoder = m_descriptor.decoder();
   uint64_t cellId = 0;
   int value = 0;
+  uint debugIter = 0;
 
   for (const auto& hit: *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
     cellId = hit.cellId();
     decoder->setValue(cellId);
     value = (*decoder)[field_id].value();
-    debug() << "old ID = " << value << endmsg;
+    if (debugIter < m_debugPrint) {
+      debug() << "old ID = " << value << endmsg;
+    }
     for (uint i=0; i<listToMergeBoundary.size(); i++) {
       if (value < listToMergeBoundary[i]) {
         value = i;
         break;
       }
     }
-    debug() << "new ID = " << value << endmsg;
+    if (debugIter < m_debugPrint) {
+      debug() << "new ID = " << value << endmsg;
+      debugIter++;
+    }
     (*decoder)[field_id] = value;
     newHit.cellId(decoder->getValue());
   }
@@ -109,6 +120,6 @@ StatusCode MergeVolumeCells::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeVolumeCells::finalize() {
+StatusCode MergeVolumes::finalize() {
   return GaudiAlgorithm::finalize();
 }

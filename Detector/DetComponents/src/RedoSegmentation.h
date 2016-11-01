@@ -78,5 +78,7 @@ private:
   std::vector<std::string> m_oldIdentifiers;
   /// Detector fields that are going to be rewritten
   std::vector<std::string> m_detectorIdentifiers;
+  /// Limit of debug printing
+  uint m_debugPrint;
 };
 #endif /* DETCOMPONENTS_REDOSEGMENTATION_H */

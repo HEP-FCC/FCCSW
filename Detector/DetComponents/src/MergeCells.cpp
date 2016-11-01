@@ -1,4 +1,4 @@
-#include "MergeSegmentationCells.h"
+#include "MergeCells.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -9,20 +9,21 @@
 // DD4hep
 #include "DD4hep/LCDD.h"
 
-DECLARE_ALGORITHM_FACTORY(MergeSegmentationCells)
+DECLARE_ALGORITHM_FACTORY(MergeCells)
 
-MergeSegmentationCells::MergeSegmentationCells(const std::string& aName, ISvcLocator* aSvcLoc):
+MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc){
   declareInput("inhits", m_inHits,"hits/caloInHits");
   declareOutput("outhits", m_outHits,"hits/caloOutHits");
   declareProperty("readout", m_readoutName);
   declareProperty("identifier", m_idToMerge);
   declareProperty("merge", m_numToMerge = 0);
+  declareProperty("debugPrint", m_debugPrint = 10);
 }
 
-MergeSegmentationCells::~MergeSegmentationCells() {}
+MergeCells::~MergeCells() {}
 
-StatusCode MergeSegmentationCells::initialize() {
+StatusCode MergeCells::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   if (m_idToMerge.empty()) {
@@ -73,7 +74,7 @@ StatusCode MergeSegmentationCells::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeSegmentationCells::execute() {
+StatusCode MergeCells::execute() {
   const auto inHits = m_inHits.get();
   auto outHits = new fcc::CaloHitCollection();
 
@@ -81,13 +82,16 @@ StatusCode MergeSegmentationCells::execute() {
   auto decoder = m_descriptor.decoder();
   uint64_t cellId = 0;
   int value = 0;
+  uint debugIter = 0;
 
   for (const auto& hit: *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
     cellId = hit.cellId();
     decoder->setValue(cellId);
     value = (*decoder)[field_id].value();
-    debug() << "old ID = " << value << endmsg;
+    if (debugIter < m_debugPrint) {
+      debug() << "old ID = " << value << endmsg;
+    }
     if ((*decoder)[field_id].isSigned()) {
       if (value<0) {
         value -= m_numToMerge/2;
@@ -96,7 +100,10 @@ StatusCode MergeSegmentationCells::execute() {
       }
     }
     value /= int(m_numToMerge);
-    debug() << "new ID = " << value << endmsg;
+    if (debugIter < m_debugPrint) {
+      debug() << "new ID = " << value << endmsg;
+      debugIter++;
+    }
     (*decoder)[field_id] = value;
     newHit.cellId(decoder->getValue());
   }
@@ -105,6 +112,6 @@ StatusCode MergeSegmentationCells::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeSegmentationCells::finalize() {
+StatusCode MergeCells::finalize() {
   return GaudiAlgorithm::finalize();
 }
