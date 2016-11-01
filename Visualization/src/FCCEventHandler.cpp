@@ -6,9 +6,9 @@
 #include "podio/EventStore.h"
 #include "podio/ROOTReader.h"
 
-#include "datamodel/TrackClusterCollection.h"
+#include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
-#include "datamodel/CaloClusterCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
@@ -51,9 +51,9 @@ long FCCEventHandler::numEvents() const {
 
 /// Access to the collection type by name
 DD4hep::EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& cl) const {
-  if (cl == "caloClusters")
+  if (cl == "caloPositionedHits")
     return CALO_HIT_COLLECTION;
-  else if (cl == "clusters")
+  else if (cl == "positionedHits")
     return TRACKER_HIT_COLLECTION;
   else if (cl == "allGenParticles")
     return PARTICLE_COLLECTION;
@@ -62,13 +62,13 @@ DD4hep::EventHandler::CollectionType FCCEventHandler::collectionType(const std::
 }
 
 template<typename T>
-void clusterEveConversion(T& clustercoll, DDEveHitActor& actor) {
-  int collsize = clustercoll->size();
+void clusterEveConversion(T& hitcoll, DDEveHitActor& actor) {
+  int collsize = hitcoll->size();
   actor.setSize(collsize);
-  for (const auto& cluster : *clustercoll) {
-    fcc::BareCluster core = cluster.Core();
+  for (const auto& fcchit : *hitcoll) {
+    fcc::Point pos = fcchit.position();
     // hardcoded first argument is an unused pdgid
-    DDEveHit* hit = new DDEveHit(11, core.position.X, core.position.Y, core.position.Z, core.Energy);
+    DDEveHit* hit = new DDEveHit(11, pos.x, pos.y, pos.z, fcchit.energy());
     actor(*hit);
   }
 }
@@ -77,30 +77,29 @@ void clusterEveConversion(T& clustercoll, DDEveHitActor& actor) {
 /// Call functor on hit collection
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitActor& actor) {
   const podio::CollectionBase* collBase(nullptr);
-  const fcc::TrackClusterCollection* clustercoll(nullptr);
   bool clusterPresent = m_podioStore.get(collection, collBase);
   if (clusterPresent) {
-    const fcc::TrackClusterCollection* clustercoll = dynamic_cast<const fcc::TrackClusterCollection*>(collBase);
-    if (nullptr != clustercoll) {
-      int collsize = clustercoll->size();
-      m_data[collection].back().second = collsize; 
-      clusterEveConversion(clustercoll, actor);
+    const fcc::PositionedTrackHitCollection* trackHitColl = dynamic_cast<const fcc::PositionedTrackHitCollection*>(collBase);
+    if (nullptr != trackHitColl) {
+      int collsize = trackHitColl->size();
+      m_data[collection].back().second = collsize;
+      clusterEveConversion(trackHitColl, actor);
       return collsize;
-    } 
-    const fcc::CaloClusterCollection* caloclustercoll = dynamic_cast<const fcc::CaloClusterCollection*>(collBase);
-    if (nullptr != caloclustercoll) {
-      int collsize = caloclustercoll->size();
-      m_data[collection].back().second = collsize; 
-      clusterEveConversion(caloclustercoll, actor);
+    }
+    const fcc::PositionedCaloHitCollection* caloHitColl = dynamic_cast<const fcc::PositionedCaloHitCollection*>(collBase);
+    if (nullptr != caloHitColl) {
+      int collsize = caloHitColl->size();
+      m_data[collection].back().second = collsize;
+      clusterEveConversion(caloHitColl, actor);
       return collsize;
-    } 
+    }
   }
   return 0;
 }
 
 /// Loop over collection and extract particle data
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveParticleActor& actor) {
-  ///TODO: implement (reconstructed particles not available in FCCSW yet) 
+  ///TODO: implement (reconstructed particles not available in FCCSW yet)
   return 0;
 }
 
