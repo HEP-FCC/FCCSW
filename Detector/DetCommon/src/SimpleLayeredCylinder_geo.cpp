@@ -30,7 +30,6 @@ static DD4hep::Geometry::Ref_t createSimpleLayeredCylinder(DD4hep::Geometry::LCD
   // Joschka: Although this is awkward, it was the only way to loop through children I could find
   DD4hep::XML::Handle_t layer(layers.reset());
   for(unsigned layerIdx = 0; layerIdx < numLayers; ++layerIdx) {
-    std::cout << layerIdx << std::endl;
     DD4hep::XML::DetElement layerDet = static_cast<DD4hep::XML::DetElement>(layer);
     DD4hep::Geometry::Tube layerShape(layerDet.rmin(), layerDet.rmax(), layerDet.dz());
     std::string layerName = DD4hep::XML::_toString(layerIdx, "layer%d");
