@@ -2,7 +2,7 @@
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
-    
+
 
 <info name="GenericTracker"
   title="GenericTracker"
@@ -45,11 +45,11 @@ As in dd4hep, geometric values are half-lengths.
 <detectors>
   <comment>
   The detector factory GenericTrackerBarrel creates a geometry hierarchy
-  - collection of identical layers that differ only by radius ( one created for each 'layers' element ) 
+  - collection of identical layers that differ only by radius ( one created for each 'layers' element )
    - cylindrical layer (created automatically)
     - rods with width and thickness of tracking modules, but length (z) of layer (created automatically)
      - modules (created automatically, dimensions are taken from the 'module' element specified by name in the 'layers' elemnt)
-      - module substructure (specified by name in the 'module' element) (currently just layered sheets of different materials) 
+      - module substructure (specified by name in the 'module' element) (currently just layered sheets of different materials)
         additional materials can be added by adding more 'module_component' children to the 'module_components' element
   Some parameters are optional and the default values in the factory can be overridden from the xml by adding the following attributes to 'layers':
   * 'stereo_offset': length by which neighboring modules are displaced in the radial direction (alternatingly positive and negative)
@@ -65,7 +65,7 @@ As in dd4hep, geometric values are half-lengths.
   * 'module_twist_angle': angle by which petals are rotated around the radial direction, to allow overlaps in phi.
 
   </comment>
-  <detector id="10" name="GenericTrackerBarrelInner" type="GenericTrackerBarrel" readout="TrackerBarrelReadout" sensitive="true" >
+  <detector id="BarTrackerInner_id" name="GenericTrackerBarrelInner" type="GenericTrackerBarrel" readout="TrackerBarrelReadout" sensitive="true" >
   <sensitive type="SimpleTrackerSD"/>
   <dimensions rmin="Tracker_rmin" rmax="0.24*Tracker_rmax" dz="0.125*Tracker_dz"/>
   <layers module="GenericTrackerModule_small" rmin="1.1*Tracker_rmin" rmax="0.24*Tracker_rmax" dz="0.125*Tracker_dz" repeat="9"/>
@@ -75,12 +75,12 @@ As in dd4hep, geometric values are half-lengths.
     <module_component thickness="0.5 * Tracker_module_thickness" material="Carbon" sensitive="false" vis="invisible" />
   </module_components>
 </detector>
-  <detector id="11" name="GenericTrackerEndcapInner" type="GenericTrackerEndcap" readout="TrackerEndcapReadout" sensitive="true" >
+  <detector id="EndCapTrackerInner_id" name="GenericTrackerEndcapInner" type="GenericTrackerEndcap" readout="TrackerEndcapReadout" sensitive="true" >
   <sensitive type="SimpleTrackerSD"/>
   <dimensions rmin="Tracker_rmin" rmax="0.24*Tracker_rmax" z1="0.16*Tracker_dz" z2="0.375*Tracker_dz"/>
   <layers rmin="Tracker_rmin" rmax="0.24*Tracker_rmax" z1="0.16*Tracker_dz" z2="0.375*Tracker_dz" repeat="8" nPhi="14." vis="brownish" thickness="Tracker_module_thickness"/>
 </detector>
-  <detector id="12" name="GenericTrackerBarrelOuter" type="GenericTrackerBarrel" readout="TrackerBarrelReadout" sensitive="true" >
+  <detector id="BarTrackerOuter_id" name="GenericTrackerBarrelOuter" type="GenericTrackerBarrel" readout="TrackerBarrelReadout" sensitive="true" >
   <sensitive type="SimpleTrackerSD"/>
   <dimensions rmin="0.32*Tracker_rmax" rmax="Tracker_rmax" dz="0.375*Tracker_dz"/>
   <layers module="GenericTrackerModule_big" rmin="0.32*Tracker_rmax" rmax="Tracker_rmax" dz="0.375*Tracker_dz" repeat="8"/>
@@ -90,7 +90,7 @@ As in dd4hep, geometric values are half-lengths.
     <module_component thickness="0.5 * Tracker_module_thickness" material="Carbon" sensitive="false" vis="invisible" />
   </module_components>
 </detector>
-  <detector id="13" name="GenericTrackerEndcapOuter" type="GenericTrackerEndcap" readout="TrackerEndcapReadout" sensitive="true" >
+  <detector id="EndCapTrackerOuter_id" name="GenericTrackerEndcapOuter" type="GenericTrackerEndcap" readout="TrackerEndcapReadout" sensitive="true" >
   <sensitive type="SimpleTrackerSD"/>
   <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" z1="0.4357*Tracker_dz" z2="Tracker_dz"/>
   <layers module="GenericTrackerModule" rmin="Tracker_rmin" rmax="Tracker_rmax" z1="0.4357*Tracker_dz" z2="Tracker_dz" repeat="10" nPhi="12" vis="brownish" thickness="Tracker_module_thickness"/>

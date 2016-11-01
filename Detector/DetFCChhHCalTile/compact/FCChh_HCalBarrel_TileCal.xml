@@ -48,7 +48,7 @@
   <readouts>
     <readout name="BarHCal_Readout">
       <segmentation type="CartesianGridXY" grid_size_x="1*cm" grid_size_y="1*cm"/>
-      <id>system:3,layer:6,wedge:7,sub_module:2,row:10,x:32:-16,y:-16</id>
+      <id>system:4,layer:6,wedge:7,sub_module:2,row:10,x:32:-16,y:-16</id>
     </readout>
   </readouts>
 
