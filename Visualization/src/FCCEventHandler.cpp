@@ -98,7 +98,7 @@ size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitAc
 }
 
 /// Loop over collection and extract particle data
-size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveParticleActor& actor) {
+size_t FCCEventHandler::collectionLoop(const std::string&, DDEveParticleActor&) {
   ///TODO: implement (reconstructed particles not available in FCCSW yet)
   return 0;
 }
