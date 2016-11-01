@@ -18,9 +18,11 @@ find_package(FCCEDM)
 find_package(PODIO)
 
 
-gaudi_add_library(Visualization   NO_PUBLIC_HEADERS          src/*.cpp
-                 INCLUDE_DIRS DD4hep ROOT Geant4 PODIO FCCEDM ROOT 
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT PODIO FCCEDM ${DD4hep_DDEVE_LIBRARY} 
+gaudi_add_library(Visualization
+                 NO_PUBLIC_HEADERS
+                 src/*.cpp
+                 INCLUDE_DIRS DD4hep ROOT Geant4 PODIO FCCEDM ROOT
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT PODIO FCCEDM ${DD4hep_DDEVE_LIBRARY}
                  )
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
