@@ -24,7 +24,13 @@ gaudi_add_test(genJetClustering
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/genJetClustering.py)
 
+gaudi_add_test(simulateECalForReconstruction
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               FRAMEWORK options/geant_fullsim_ecal_singleparticles.py)
+
 gaudi_add_test(runEcalReconstruction
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so	
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               DEPENDS simulateECalForReconstruction
                FRAMEWORK options/runEcalReconstruction.py)

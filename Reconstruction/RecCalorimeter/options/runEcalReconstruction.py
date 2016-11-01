@@ -6,7 +6,7 @@ podioevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", filename="/afs/cern.ch/exp/fcc/sw/0.8pre/testsamples/output_ecalSim_e50GeV_eta0_10events.root", collections=["ECalHits", "ECalPositionedHits"], OutputLevel=DEBUG)
+podioinput = PodioInput("PodioReader", filename="output_ecalSim_e50GeV_eta0_10events.root", collections=["ECalHits", "ECalPositionedHits"], OutputLevel=DEBUG)
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
