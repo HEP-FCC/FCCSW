@@ -8,7 +8,7 @@ For this purpose, FCCSW includes infrastructure to add pileup at generator level
 
 
 By default, the particle sources in the Generator package of FCCSW can handle pileup, but are set to a default of no pileup.
-The standard way of adding pileup is to add a `Pileup` tool, which has a and configure the number of pileup. There are different implemenations of this tool in FCCSW, depending on the desired distribution (Constant or Poisson-distributed number of pileup events mixed in each event)
+The standard way of adding pileup is to add a `Pileup` tool, which mainly configures the number of pileup events. There are different implemenations of this tool in FCCSW, depending on the desired distribution (Constant or Poisson-distributed number of pileup events mixed in each event)
 
 
 ## Pileup parameters
