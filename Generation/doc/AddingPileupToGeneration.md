@@ -29,5 +29,8 @@ Example usage can be seen in `Examples/options/simple_pythia.py`. The vertices a
 
 ## Adding Pileup from HepMC file
 
-Pileup particles can also be pre-generated and read from disc in HepMC format. The `HepMCReader`-algorithm can again be configured with a `PileupTool`, taking the average number of pileup events to be read and the name of the HepMC file as parameters. An example can be found in `Generation/options/pileup_hepmcreader.py`
+Pileup particles can also be pre-generated and read from disc in HepMC format. The `HepMCReader`-algorithm can again be configured with a `PileupTool`, taking the average number of pileup events to be read and the name of the HepMC file as parameters. An example can be found in `Generation/options/pileup_hepmcreader.py`. 
+
+To prepare Minimum Bias HepMC files, any suitable generator may be used. For Pythia8, consult example [main42](http://home.thep.lu.se/~torbjorn/pythia81html/SampleMainPrograms.html) how to do this. The fcc-physics repository contains also contains an example how to use Pythia8 together with the FCC event data model.
+
 
