@@ -13,7 +13,7 @@ The standard way of adding pileup is to add a `Pileup` tool, which mainly config
 
 ## Pileup parameters
 
-As a convenient access to FCC-hh pileup parameters, FCCSW includes some small Python dictionaries with the relevant values in `Generation/python/FCCPileupScenarios.py` which can be used in configuration files by, p.ex.,
+To access FCC-hh pileup parameters, FCCSW includes some small Python dictionaries with the relevant values in `Generation/python/FCCPileupScenarios.py` which can be used in configuration files by, p.ex.,
 
 ```python
 from FCCPileupScenarios import FCCPhase1PileupConf
