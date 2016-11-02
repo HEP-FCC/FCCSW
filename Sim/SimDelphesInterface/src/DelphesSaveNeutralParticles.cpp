@@ -64,9 +64,9 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     barePart.p4.pz    = cand->Momentum.Pz();
     barePart.p4.mass  = cand->Momentum.M();
     barePart.charge   = cand->Charge;
-    barePart.vertex.x = cand->Position.X();
-    barePart.vertex.y = cand->Position.Y();
-    barePart.vertex.z = cand->Position.Z();
+    barePart.vertex.x = cand->InitialPosition.X();
+    barePart.vertex.y = cand->InitialPosition.Y();
+    barePart.vertex.z = cand->InitialPosition.Z();
     particle.core(barePart);
 
     // Isolation-tag info
