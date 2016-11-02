@@ -361,11 +361,7 @@ Visualisation
 > For the event visualisation in the detector please see [visualisation package documentation](../../Visualization/doc/DDEveInFCCSW.md)
 
 
-DD4hep comes with `geoDisplay` that can be used to display the detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory (after compilation), e.g.:
-
-~~~{.sh}
-./run geoDisplay -compact DetFCChhTrackerSimpleile/compact/FCChh_TrackerStandalone.xml
-~~~
+DD4hep comes with `geoDisplay` that can be used to display the detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory (after compilation).
 
 You can also combine several description files (e.g. to check if components overlap, of if you want to use the [detector master files](#the-master-xmls)):
 
@@ -429,7 +425,7 @@ More specifically, the latter allows to have the possibility to use the `GeoSvc`
 
 Sub-detector directories follow the naming convention `"DetFCC" + Flavour + SubDetectorName + DetectorCharacteristic`, where `Flavour = ee, eh, hh`, `SubDetectorName = ECal, HCal, Tracker, Muon` and finally the `DetectorCharacteristic` specifies the concrete description (e.g. Parametric (for a description to be used with FastSim) or Tile (for an ATLAS-like TileCal)). Examples: `DetFCChhHCalTile` or `DetFCChhECalSimple`.
 
-Sub-detector directories should in most cases have both `compact` and `src` directories. The description in compact **should not** have a world volume defined in order to be able to include it in a master xml. If a description for standalone tests (with dimensions deviating from the baseline) is needed, it may be placed alongside the detector description with a postfix `Standalone` (and this one should define the world volume), e.g. [here](../DetFCChhTrackerSimple/compact/FCChh_TrackerStandalone.xml). However, please note that for standalone tests that use the baseline dimensions something like this should rather be put in the corresponding options file:
+Sub-detector directories should in most cases have both `compact` and `src` directories. The description in compact **should not** have a world volume defined in order to be able to include it in a master xml. If a description for standalone tests (with dimensions deviating from the baseline) is needed, it may be placed alongside the detector description with a postfix `Standalone` (and this one should define the world volume). However, please note that for standalone tests that use the baseline dimensions something like this should rather be put in the corresponding options file:
 
 ~~~{.py}
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',

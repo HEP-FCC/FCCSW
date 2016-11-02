@@ -17,10 +17,8 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
   * [Geometry construction](#31-geometry-construction)
     * [Regions](#regions)
   * [Physics list](#32-physics-list)
-  * [User actions](#33-user-actions)
 * [Simulation in GAUDI algorithm `SimG4Alg`](#4-simulation-in-gaudi-algorithm-simg4alg)
-  * [Events](#41-event-processing)
-  * [Output](#42-output)
+  * [Output](#41-output)
 
 [DD4hep]: http://aidasoft.web.cern.ch/DD4hep "DD4hep user manuals"
 [GFlash]: http://inspirehep.net/record/352388 "GFlash"
@@ -124,7 +122,7 @@ Geometry is provided by DD4hep via GAUDI's service `GeoSvc`.
 
 In the fast simulation user wants to set a specific behaviour in certain geometry volumes. Those regions are created by tools deriving from `ISimG4RegionTool`. Each implementation not only creates a region, but also attaches a fast simulation model that describes what happens to the parametrised particle. Any trigger conditions that are set by user should be also passed via region tool to the model. Geant will not perform normal transportation inside volumes with fast simulation models attached (providing that particle triggers that model).
 
-`G4Region` can contain one or many logical volumes (parts of the detector). Regions are created for all the volumes which names as passed in property **volumeNames** of the region tool.  Logical volumes are created by DD4hep. Name of the detector is specified in DD4hep xml file (see more in [short description](#Geant4fullsim.md#31-geometry-construction) or [DD4hep user guides][DD4hep]):
+`G4Region` can contain one or many logical volumes (parts of the detector). Regions are created for all the volumes which names as passed in property **volumeNames** of the region tool.  Logical volumes are created by DD4hep. Name of the detector is specified in DD4hep xml file (see more in [short description](Geant4fullsim.md#31-geometry-construction) or [DD4hep user guides][DD4hep]):
 
 ~~~{.xml}
 <detector name ="CentralTracker">
@@ -171,7 +169,7 @@ There is one, common algorithm handling fast and full simulation in Geant4. In p
 
 However, in order to be able to save the smeared particles in the tracker (that may be treated as 'reconstructed' tracks), user need to create `SimG4SaveSmearedParticles` tool.
 
-### 4.2. Output
+### 4.1. Output
 
 `SimG4SaveSmearedParticles` tool stores all the particles (EDM `ParticleCollection`) and particlesMCparticles (EDM `ParticleMCParticleAssociationCollection`). They can be treated as 'reconstructed' particles as the detector effects (both resolution and reconstruction efficiency) are imitated by the smearing and the resulting changes to the momentum are taken into account.
 In the current implementation only the primary particles may be saved as they contain the particle information created in the translation of the event. This needs to be reimplemented so that the information is attached to the track rather then to the particle.

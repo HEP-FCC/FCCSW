@@ -21,7 +21,7 @@ For the full explanation of the example [see](Geant4fullsim.md#2-example)
 # How to ...
 
 * [change event generator](#event-generators)
-* [understand the geometry](../../Detector/doc/DD4hepInFCCSW.md)
+* [change the geometry](../../Detector/doc/DD4hepInFCCSW.md)
 * change simulation configuration:
   - [change the physics list](Geant4fullsim.md#how-to-use-different-physics-list)
   - [add user action](Geant4fullsim.md#how-to-add-a-user-action)
