@@ -34,10 +34,14 @@ from Configurables import ApplicationMgr, FCCDataSvc
 from Configurables import DelphesSaveGenJets, DelphesSaveJets, DelphesSaveMet
 from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticles
 
+
 def apply_paths(obj, names):
   """ Applies the collection names to the Paths of DataOutputs """
   for attr, name in names.iteritems():
     getattr(obj.DataOutputs, attr).Path = name
+
+from FWCore.joboptions import parse_standard_job_options
+args = parse_standard_job_options()
 
 ############################################################
 #
@@ -47,6 +51,8 @@ def apply_paths(obj, names):
 
 ## N-events
 nEvents=100
+if args.nevents is not None:
+    nEvents = args.nevents
 
 ## Message level
 messageLevelPythia =INFO
@@ -55,6 +61,8 @@ messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
 pythiaConfFile="Generation/data//Pythia_ttbar.cmd"
+if args.inputfile != '':
+    pythiaConfFile = args.inputfile
 
 ## or pythia configuration file to read in LHE file & generate events
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
@@ -150,6 +158,9 @@ from Configurables import PodioOutput
 
 out = PodioOutput("out",OutputLevel=messageLevelOut)
 out.filename       = "FCCDelphesOutput.root"
+if args.outputfile != '':
+    out.filename = args.outputfile
+
 #out.outputCommands = ["drop *",
 #                      "keep genParticles",
 #                      "keep genVertices",
@@ -162,7 +173,6 @@ out.outputCommands = ["keep *"]
 # Run modules
 #
 ############################################################
-
 # Run Pythia + Delphes
 ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
                 EvtSel = 'NONE',
