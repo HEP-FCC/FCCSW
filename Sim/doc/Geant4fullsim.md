@@ -1,5 +1,5 @@
 Full Simulation with Geant4 in FCCSW
-====
+==
 
 Instruction how to use Geant4 within FCCSW (GAUDI framework).
 
