@@ -26,7 +26,7 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
 
 ## 1. Overview
 
-For details on GAUDI and Geant read [full simulation overview](#Geant4fullsim.md#overview)
+For details on GAUDI and Geant read [full simulation overview](Geant4fullsim.md#1-overview)
 
 ### 1.1. Fast simulation
 
