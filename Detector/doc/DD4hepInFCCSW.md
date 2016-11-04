@@ -21,12 +21,14 @@ DD4hep Detector Description
 
 Ingredients Describing a Detector
 --
+
 To first order two files are involved to describe a detector in DD4hep.
 - The xml-based detector description that defines the dimensions and materials of the detector
 - The macro that implements the factory method to construct the detector from the xml-description
 
 Constructing Detector Geometry
 --
+
 Similarly to Geant4 itself, DD4hep tries to re-use detector elements without having to keep every instance in memory. I.e. many `DD4hep::Geometry::PlacedVolume` are used that refer to one `DD4hep::Geometry::Volume`. To exploit this feature as much as possible:
 - Come up with the largest component that is repeatable (e.g. a detector wedge)
   - Usually this component is similar or equal to the components that are built when physically building the detector
@@ -35,9 +37,11 @@ Similarly to Geant4 itself, DD4hep tries to re-use detector elements without hav
 
 A Minimal Working Example
 --
+
 Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m. Also see [Coordinate Conventions](#coordinate-conventions) for some explanations on lengths and coordinates in DD4hep and Geant4. Note that in the following all numbers are accompanied with units to explicitly state what you mean.
 
 1. **Detector description**: First we describe the world (or a box around the sub-detector) and sub-detector in an XML:
+
   ~~~{.xml}
   <?xml version="1.0" encoding="UTF-8"?>
   <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
@@ -78,6 +82,7 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
   ~~~
 
 2. **Factory method**: Now we define a method that actually creates the geometry of the sub-detector, the `type` given in the xml tells DD4hep which factory method to call for a detector (see the very end of this snippet):
+
   ~~~{.cpp}
   namespace detector {
   static DD4hep::Geometry::Ref_t createElement(
@@ -115,6 +120,7 @@ Again, the type `Example` in the xml-description corresponds to the name we put 
 
 Sensitive Detectors
 --
+
 The above example works, but it does not yet create any sensitive detectors that are needed by Geant4 to calculate and create energy deposits. While in GDML you have to define your sensitive detectors yourself, DD4hep has a mechanism of doing some of this for you.
 
 Attaching the sensitive volume to the detector consists of:
@@ -182,6 +188,7 @@ In order to recognise where the energy was deposited, the sensitive volume has *
     In addition to this unique identifier, the same mechanism of DD4hep allows to define a segmentation of your smallest component that allows you to track where a particle passed through your sensitive detector. For example we can define a grid with step sizes of 0.5 mm. DD4hep then needs also to be able to uniquely identify those within the component and the corresponding bits need to be reserved. In our example let's keep half of the 64 bit integer for this grid, so 32 bits and half of each for x coordinate and y coordinate. Segmentation is described in more detail further.
 
     So in our example of 4 sub-detectors and our new detector having 80 modules, we would write this (leaving out all the boiler plate code shown above):
+
     ~~~{.xml}
     <readouts>
       <readout name="ExampleReadout">
@@ -204,6 +211,7 @@ In order to recognise where the energy was deposited, the sensitive volume has *
 2. Extending the factory method:
 
     In the factory method all we need to do is tell DD4hep what part a sensitive detector is and which part of the readout ID is foreseen for that part of the detector. Please note that segmentation is done automatically, hence it does not need any implementation in the factory method.
+
     ~~~{.cpp}
     // imagine the rest as above
     conePhys = experimentalHall.placeVolume( coneVol, // the volume to be placed
@@ -349,30 +357,38 @@ Coordinate Conventions
 
 Visualisation
 --
-DD4hep comes with `geoDisplay` that can be used to display the detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory (after compilation), e.g.:
-```
-./run geoDisplay -compact DetFCChhTrackerSimpleile/compact/FCChh_TrackerStandalone.xml
-```
+
+> For the event visualisation in the detector please see [visualisation package documentation](../../Visualization/doc/DDEveInFCCSW.md)
+
+
+DD4hep comes with `geoDisplay` that can be used to display the detector geometry you implement. To use this display in the FCCSW context prepend the command with the `run` script in the FCCSW directory (after compilation).
+
 You can also combine several description files (e.g. to check if components overlap, of if you want to use the [detector master files](#the-master-xmls)):
-```
+
+~~~{.sh}
 ./run geoDisplay -compact Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml \
                           Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml
-```
+~~~
 
 N.b.: When running geoDisplay through a X-Session, by default OpenGL may not be used. If you see the warning:
-```
+
+~~~{.sh}
 libGL error: No matching fbConfigs or visuals found
 libGL error: failed to load driver: swrast
-```
+~~~
+
 You can try to set the following environment variable to try and enable OpenGL:
-```
+
+~~~{.sh}
 export LIBGL_ALWAYS_INDIRECT=1
-```
+~~~
 
 FCCSW folder structure
 --
+
 The folder structure should look something like this (only including one baseline and one sub-detector), details may be found below:
-```
+
+~~~{.sh}
 + Detector              # the base directory
 |- DetInterface         # contains virtual interface classes
 |- DetComponents        # implementations of services / tools
@@ -386,7 +402,7 @@ The folder structure should look something like this (only including one baselin
 |+ DetFCChhHCalTile     # a sub-detector directory
  |- compact             # contains XMLs defining the detector, optionally an XML for standalone tests
  |- src                 # factories specific for this sub-detector
-```
+~~~
 
 The detector descriptions and geometry services / tools can be found in the `Detector` package. The FCCSW components that provide the geometry to the remaining packages can be found in:
 - DetInterface (virtual interface classes)
@@ -397,6 +413,7 @@ Extensions of the DD4hep description are found in:
 - DetSensitive (custom sensitive volumes)
 
 ### The master XMLs
+
 The descriptions are placed in sub-folders of the Detector package. We plan to have the possibility of having several baseline detectors for the different accelerators. For each such baseline we will have a sub-directory `"DetFCC" + Flavour + "Baseline" + X` where X will be an increasing index and `Flavour = ee, eh, hh`, selected to describe the accelerator the baseline is meant for (for example `DetFCChhBaseline1`). In each baseline description we expect to have a `compact` directory with:
 - A dimensions XML that defines the sub-detector envelopes, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectDimensions.xml)
 - A master XML that includes the baseline sub-detectors, e.g. [here](../DetFCChhBaseline1/compact/FCChh_DectMaster.xml)
@@ -405,9 +422,11 @@ The descriptions are placed in sub-folders of the Detector package. We plan to h
 More specifically, the latter allows to have the possibility to use the `GeoSvc` with a sub-set of sub-detectors using the official dimensions (e.g. [here](../../Sim/SimG4Components/tests/options/geant_fullsim_hcal.py)).
 
 ### Sub-detector descriptions
+
 Sub-detector directories follow the naming convention `"DetFCC" + Flavour + SubDetectorName + DetectorCharacteristic`, where `Flavour = ee, eh, hh`, `SubDetectorName = ECal, HCal, Tracker, Muon` and finally the `DetectorCharacteristic` specifies the concrete description (e.g. Parametric (for a description to be used with FastSim) or Tile (for an ATLAS-like TileCal)). Examples: `DetFCChhHCalTile` or `DetFCChhECalSimple`.
 
-Sub-detector directories should in most cases have both `compact` and `src` directories. The description in compact **should not** have a world volume defined in order to be able to include it in a master xml. If a description for standalone tests (with dimensions deviating from the baseline) is needed, it may be placed alongside the detector description with a postfix `Standalone` (and this one should define the world volume), e.g. [here](../DetFCChhTrackerSimple/compact/FCChh_TrackerStandalone.xml). However, please note that for standalone tests that use the baseline dimensions something like this should rather be put in the corresponding options file:
+Sub-detector directories should in most cases have both `compact` and `src` directories. The description in compact **should not** have a world volume defined in order to be able to include it in a master xml. If a description for standalone tests (with dimensions deviating from the baseline) is needed, it may be placed alongside the detector description with a postfix `Standalone` (and this one should define the world volume). However, please note that for standalone tests that use the baseline dimensions something like this should rather be put in the corresponding options file:
+
 ~~~{.py}
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml' ]
@@ -416,6 +435,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 To facilitate this mix-and-match functionality, the sub-detectors should use the variables that describe the envelope volume which are defined in the master dimensions. For all sub-detectors variables `rmin`, `rmax` and `dz` are defined with the naming convention `DetectorPart + SubDetector + '_' + variable` where `DetectorPart` can be `Bar`, `EndCap` or `Fwd`, `SubDetector` can be `Tracker`, `ECal`, `HCal` or `Muon` and variable can be `rmin`, `rmax`, `dz` or `zOffset` (only for forward and end-cap detectors). Examples: `BarHCal_rmin` or `FwdHCal_zOffset`.
 
 ### Common descriptions
+
 The final sub-directory `DetCommon` includes descriptions and macros that should be independently usable by all baselines / sub-detectors. This includes primitive shapes (cones, cylinders, boxes, etc.), material & element descriptions. Additionally place-holders can be found that place air-filled cylinders using the dimensions defined in a master-dimension file. These are meant for debugging the dimensions file.
 
 
