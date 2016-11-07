@@ -23,6 +23,7 @@ GaudiAlgorithm(aName, aSvcLoc)
   declareProperty("oldReadoutName", m_oldReadoutName = "");
   declareProperty("oldSegmentationIds", m_oldIdentifiers);
   declareProperty("newReadoutName", m_newReadoutName = "");
+  declareProperty("debugPrint", m_debugPrint = 10);
 }
 
 RedoSegmentation::~RedoSegmentation() {}
@@ -88,21 +89,24 @@ StatusCode RedoSegmentation::initialize() {
 StatusCode RedoSegmentation::execute() {
   const auto inHits = m_inHits.get();
   auto outHits = m_outHits.createAndPut();
-  // loop over clusters to get the energy deposits: position and cellID
-  // cellID contains the volumeID that needs to be rewritten
-  int oldid;
-  for(const auto& cluster: *inHits) {
+  // loop over positioned hits to get the energy deposits: position and cellID
+  // cellID contains the volumeID that needs to be copied to the new id
+  uint64_t oldid = 0;
+  uint debugIter = 0;
+  for(const auto& hit: *inHits) {
     fcc::CaloHit newHit = outHits->create();
-    newHit.energy(cluster.energy());
-    newHit.time(cluster.time());
-    m_oldDecoder->setValue(cluster.bits());
-    debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
+    newHit.energy(hit.energy());
+    newHit.time(hit.time());
+    m_oldDecoder->setValue(hit.cellId());
+    if (debugIter < m_debugPrint) {
+      debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
+    }
     // factor 10 to convert mm to cm
-    DD4hep::DDSegmentation::Vector3D position(cluster.position().x / 10,
-                                              cluster.position().y / 10,
-                                              cluster.position().z / 10);
+    DD4hep::DDSegmentation::Vector3D position(hit.position().x / 10,
+                                              hit.position().y / 10,
+                                              hit.position().z / 10);
     // first calculate proper segmentation fields
-    uint64_t newcellId = m_segmentation->cellID(position, position, volumeID(cluster.bits()));
+    uint64_t newcellId = m_segmentation->cellID(position, position, volumeID(hit.cellId()));
     m_segmentation->decoder()->setValue(newcellId);
     // now rewrite all other fields (detector ID)
     for(const auto& detectorField: m_detectorIdentifiers) {
@@ -110,7 +114,10 @@ StatusCode RedoSegmentation::execute() {
       (*m_segmentation->decoder())[detectorField] = oldid;
     }
     newHit.cellId(m_segmentation->decoder()->getValue());
-    debug() << "NEW: " << m_segmentation->decoder()->valueString() << endmsg;
+    if (debugIter < m_debugPrint) {
+      debug() << "NEW: " << m_segmentation->decoder()->valueString() << endmsg;
+      debugIter++;
+    }
   }
 
   return StatusCode::SUCCESS;

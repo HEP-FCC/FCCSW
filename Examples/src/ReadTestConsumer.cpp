@@ -14,7 +14,6 @@ public:
     GaudiAlgorithm(name, svcLoc)
   {
     declareInput("genParticles", m_genParticles, "allGenParticles");
-    declareInput("hits", m_trkHits, "hits");
   }
 
   ~ReadTestConsumer() {};
@@ -25,7 +24,7 @@ public:
 
   StatusCode execute() {
     const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
-    const fcc::TrackHitCollection* trkhits = m_trkHits.get();
+
     debug() << mcparticles << endmsg;
 
     debug() << "MCParticle size: " << mcparticles->size() << endmsg;
@@ -35,7 +34,6 @@ public:
         debug() << "vertex x: " << mcpart.startVertex().position().x << endmsg;
       }
     }
-    debug() << "hits size: " << trkhits->size() << endmsg;
 
     return StatusCode::SUCCESS;
   }
@@ -46,6 +44,5 @@ public:
 
 private:
   DataHandle<fcc::MCParticleCollection> m_genParticles;
-  DataHandle<fcc::TrackHitCollection> m_trkHits;
 };
 DECLARE_COMPONENT(ReadTestConsumer)
