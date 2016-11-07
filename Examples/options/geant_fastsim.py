@@ -38,7 +38,7 @@ smeartool = SimG4ParticleSmearFormula("smear", resolutionMomentum = "0.013")
 ## create region and a parametrisation model, pass smearing tool
 regiontooltracker = SimG4FastSimTrackerRegion("modelTracker", volumeNames=["TrackerEnvelopeBarrel"], smearing=smeartool)
 ## create parametrisation of the calorimeter
-gflash = SimG4GflashSamplingCalo("gflash", materials = ["G4_lAr", "G4_Pb"], thickness = [2, 4])
+gflash = SimG4GflashSamplingCalo("gflash", materials = ["G4_lAr", "G4_Pb"], thickness = [4, 2])
 regiontoolcalo = SimG4FastSimCalorimeterRegion("modelCalo", volumeNames=["ECalBarrel"], parametrisation = gflash)
 ## create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
@@ -55,7 +55,7 @@ saveparticlestool = SimG4SaveSmearedParticles("saveSmearedParticles")
 saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["BarECal_Readout"])
-savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")

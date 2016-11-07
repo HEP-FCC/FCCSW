@@ -45,7 +45,7 @@
       </cryostat>
       <calorimeter id="1" name="EM_barrel" >
         <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
-        <active_layers thickness="6*mm" material="LAr" nSamplings="50" />
+        <active_layers thickness="4*mm" material="LAr" nSamplings="50" />
         <passive_layers thickness="2*mm" material="Lead" />
       </calorimeter>
     </detector>
