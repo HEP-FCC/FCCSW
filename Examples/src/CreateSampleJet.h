@@ -3,8 +3,12 @@
 
 
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "datamodel/JetCollection.h"
 #include "FWCore/DataHandle.h"
+
+// forward declarations:
+namespace fcc {
+class JetCollection;
+}
 
 class CreateSampleJet: public GaudiAlgorithm {
   friend class AlgFactory<CreateSampleJet> ;

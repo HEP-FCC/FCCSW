@@ -19,7 +19,7 @@ namespace DDSegmentation {
 
 // datamodel
 namespace fcc {
-class CaloClusterCollection;
+class PositionedCaloHitCollection;
 class CaloHitCollection;
 }
 
@@ -62,8 +62,8 @@ private:
   uint64_t volumeID(uint64_t aCellId) const;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for the EDM clusters to be read
-  DataHandle<fcc::CaloClusterCollection> m_inClusters;
+  /// Handle for the EDM positioned hits to be read
+  DataHandle<fcc::PositionedCaloHitCollection> m_inHits;
   /// Handle for the EDM hits to be written
   DataHandle<fcc::CaloHitCollection> m_outHits;
   /// New segmentation
@@ -73,10 +73,12 @@ private:
   /// Name of the new detector readout
   std::string m_newReadoutName;
   /// Old bitfield decoder
-  std::unique_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
+  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
   std::vector<std::string> m_oldIdentifiers;
   /// Detector fields that are going to be rewritten
   std::vector<std::string> m_detectorIdentifiers;
+  /// Limit of debug printing
+  uint m_debugPrint;
 };
 #endif /* DETCOMPONENTS_REDOSEGMENTATION_H */

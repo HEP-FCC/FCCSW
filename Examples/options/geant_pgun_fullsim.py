@@ -54,12 +54,12 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4SaveCalHits, SimG
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
+savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
-savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["BarECal_Readout","BarHCal_Readout"])
-savehcaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
+savehcaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
+
 savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")

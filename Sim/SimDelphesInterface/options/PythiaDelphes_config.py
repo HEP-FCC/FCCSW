@@ -46,7 +46,7 @@ def apply_paths(obj, names):
 ############################################################
 
 ## N-events
-nEvents=1000
+nEvents=100
 
 ## Message level
 messageLevelPythia =INFO
@@ -71,21 +71,20 @@ delphesRootOutFile=""
 # The second level key - value corresponds to output-type - collection-name. NOTE: Do only change the values, not the keys.
 out_names = {
     # Muon output tool
-    "muons": {"particles": "muons", "mcAssociations": "muonsToMC", "isolationTags": "muonITags", "isolationAssociations": "muonsToITags"},
+    "muons": {"particles": "muons", "mcAssociations": "muonsToMC", "isolationTags": "muonITags"},
     # Electron output tool
-    "electrons": {"particles": "electrons", "mcAssociations": "electronsToMC", "isolationTags": "electronITags", "isolationAssociations": "electronsToITags"},
+    "electrons": {"particles": "electrons", "mcAssociations": "electronsToMC", "isolationTags": "electronITags"},
     # Charged hadron output tool
     "charged": {"particles": "charged", "mcAssociations": "chargedToMC"},
     # Neutral hadron output tool
     "neutral": {"particles": "neutral", "mcAssociations": "neutralToMC"},
     # Photons output tool
-    "photons": {"particles": "photons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags", "isolationAssociations": "photonsToITags"},
+    "photons": {"particles": "photons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags"},
     # GenJets output tool
-    "genJets": {"genJets": "genJets", "mcAssociations": "genJetsToMC", "jetFlavorTags": "genJetsFlavor", "jetFlavorAssociations": "genJetsToFlavor"},
+    "genJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
     # Jets output tool
-    "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetConstituentAssociations": "jetsToParts", "jetFlavorTags": "jetsFlavor",
-             "jetFlavorTagAssociations": "jetsToFlavor", "bTags": "bTags", "cTags": "cTags", "tauTags": "tauTags",
-             "jetBTagAssociations": "jetsToBTags", "jetCTagAssociations": "jetsToCTags", "jetTauTagAssociations": "jetsToTauTags"},
+    "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetsFlavorTagged": "jetsFlavor",
+             "jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"},
     # Missing transverse energy output tool
     "met": {"missingEt": "met"}
     }

@@ -54,7 +54,6 @@ static DD4hep::Geometry::Ref_t createHCal (
   Volume facePlateVol("facePlate", facePlateShape, lcdd.material(xFacePlate.materialStr()));
   facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
   PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
-  placedFacePlate.addPhysVolID("facePlate", facePlate.id());
   facePlate.setPlacement(placedFacePlate);
 
 
@@ -69,13 +68,11 @@ static DD4hep::Geometry::Ref_t createHCal (
   DetElement endPlatePos("endPlate", 0);
   DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz() -  dZEndPlate);
   PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
-  placedEndPlatePos.addPhysVolID("endPlatePos", endPlatePos.id());
   endPlatePos.setPlacement(placedEndPlatePos);
 
   DetElement endPlateNeg("endPlate", 1);
   DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz() +  dZEndPlate);
   PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
-  placedEndPlateNeg.addPhysVolID("endPlateNeg", endPlateNeg.id());
   endPlateNeg.setPlacement(placedEndPlateNeg);
 
 

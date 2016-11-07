@@ -47,8 +47,8 @@ double GridPhiEta::eta() const {
 }
 /// determine the azimuthal angle phi based on the current cell ID
 double GridPhiEta::phi() const {
-  CellID phiIndex = (*_decoder)[m_phiID].value();
-  return 2. * M_PI * ((double) phiIndex + 0.5) / (double) m_phiBins;
+  CellID phiValue = (*_decoder)[m_phiID].value();
+  return binToPosition(phiValue, 2.*M_PI/(double)m_phiBins, m_offsetPhi);
 }
 
 /// determine the polar angle theta based on the cell ID
@@ -60,8 +60,8 @@ double GridPhiEta::eta(const CellID& cID) const {
 /// determine the azimuthal angle phi based on the cell ID
 double GridPhiEta::phi(const CellID& cID) const {
   _decoder->setValue(cID);
-  CellID phiIndex = (*_decoder)[m_phiID].value();
-  return 2. * M_PI * ((double) phiIndex + 0.5) / (double) m_phiBins;
+  CellID phiValue = (*_decoder)[m_phiID].value();
+  return binToPosition(phiValue, 2.*M_PI/(double)m_phiBins, m_offsetPhi);
 }
 REGISTER_SEGMENTATION(GridPhiEta)
 }

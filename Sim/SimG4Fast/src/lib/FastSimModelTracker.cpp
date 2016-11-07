@@ -17,21 +17,20 @@
 
 namespace sim {
 
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName):
+FastSimModelTracker::FastSimModelTracker(
+  const std::string& aModelName,
+  G4Region* aEnvelope,
+  ToolHandle<ISimG4ParticleSmearTool>& aSmearTool,
+  double aMinMomentum,
+  double aMaxMomentum,
+  double aMaxEta):
   G4VFastSimulationModel(aModelName, aEnvelope),
   m_msgSvc("MessageSvc","FastSimModelTracker"),
   m_log(&(*m_msgSvc),"FastSimModelTracker"),
-  m_toolSvc("ToolSvc","ToolSvc") {
-  if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
-    throw GaudiException("Smearing tool "+aSmearToolName+" not found",
-                         "FastSimModelTracker", StatusCode::FAILURE);
-  m_minTriggerMomentum = m_smearTool->minP()/Gaudi::Units::MeV;
-  m_maxTriggerMomentum = m_smearTool->maxP()/Gaudi::Units::MeV;
-  if(m_minTriggerMomentum > m_maxTriggerMomentum) {
-    throw GaudiException("Momentum range is not defined properly in smearing tool",
-                         "FastSimModelTracker", StatusCode::FAILURE);
-  }
-  m_maxTriggerEta = m_smearTool->maxEta();
+  m_smearTool(aSmearTool),
+  m_minTriggerMomentum(aMinMomentum/Gaudi::Units::MeV),
+  m_maxTriggerMomentum(aMaxMomentum/Gaudi::Units::MeV),
+  m_maxTriggerEta(aMaxEta) {
   m_log<<MSG::INFO<<"Tracker smearing configuration:\n"
        <<"\tEnvelope name:\t"<<aEnvelope->GetName()<<"\n"
        <<"\tMomentum range:\t"<<G4BestUnit(m_minTriggerMomentum, "Energy")
@@ -40,11 +39,12 @@ FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region
        <<endmsg;
 }
 
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName)
+FastSimModelTracker::FastSimModelTracker(const std::string& aModelName,
+  ToolHandle<ISimG4ParticleSmearTool>& aSmearTool)
   : G4VFastSimulationModel(aModelName),
     m_msgSvc("MessageSvc","FastSimModelTracker"),
     m_log(&(*m_msgSvc),"FastSimModelTracker"),
-    m_toolSvc("ToolSvc","ToolSvc") {}
+    m_smearTool(aSmearTool) {}
 
 FastSimModelTracker::~FastSimModelTracker() {}
 

@@ -8,7 +8,7 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "datamodel/CaloClusterCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
 #include "datamodel/CaloHitCollection.h"
 
 DECLARE_TOOL_FACTORY(SimG4SaveTestCalHits)
@@ -17,7 +17,7 @@ SimG4SaveTestCalHits::SimG4SaveTestCalHits(const std::string& aType, const std::
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("caloType", m_calType);
-  declareOutput("caloClusters", m_caloClusters,"hits/caloClusters");
+  declareOutput("caloClusters", m_caloHitsPositioned, "hits/caloHitsPositioned");
   declareOutput("caloHits", m_caloHits,"hits/caloHits");
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
@@ -51,8 +51,8 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
   double energyTotal;
   int hitNo;
   if(collections != nullptr) {
-    fcc::CaloClusterCollection* edmClusters = new fcc::CaloClusterCollection();
-    fcc::CaloHitCollection* edmHits = new fcc::CaloHitCollection();
+    auto edmPositioned = m_caloHitsPositioned.createAndPut();
+    auto edmHits = m_caloHits.createAndPut();;
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (collect->GetName().find(m_calType) != std::string::npos) {
@@ -63,30 +63,24 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
         for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<test::TestCalorimeterHit*>(collect->GetHit(iter_hit));
           if(hit->GetXid() != -1 && hit->GetYid() != -1 && hit->GetZid() != -1) {
-            fcc::CaloHit edmHit = edmHits->create();
-            fcc::CaloCluster edmCluster = edmClusters->create();
-            fcc::BareHit& edmHitCore = edmHit.Core();
-            fcc::BareCluster& edmClusterCore = edmCluster.Core();
-            edmHitCore.Cellid = fCellNo*fCellNo*hit->GetXid()+fCellNo*hit->GetYid()+hit->GetZid();
-            edmHitCore.Energy = hit->GetEdep()*sim::g42edm::energy;
-            if( edmHitCore.Energy!=0)
-              hitNo++;
-
-            edmClusterCore.position.X = hit->GetPos().x()*sim::g42edm::length;
-            edmClusterCore.position.Y = hit->GetPos().y()*sim::g42edm::length;
-            edmClusterCore.position.Z = hit->GetPos().z()*sim::g42edm::length;
+            auto edmHit = edmHits->create();
+            auto& edmHitCore = edmHit.core();
+            edmHitCore.cellId = fCellNo*fCellNo*hit->GetXid()+fCellNo*hit->GetYid()+hit->GetZid();
+            edmHitCore.energy = hit->GetEdep()*sim::g42edm::energy;;
+            auto position = fcc::Point();
+            position.x = hit->GetPos().x()*sim::g42edm::length;
+            position.y = hit->GetPos().y()*sim::g42edm::length;
+            position.z = hit->GetPos().z()*sim::g42edm::length;
             debug() <<"position of hit: " << hit->GetPos()<< "mm "<<endmsg;
-            edmClusterCore.Energy = hit->GetEdep()*sim::g42edm::energy;
-            energyTotal += edmClusterCore.Energy;
+            auto posHit = edmPositioned->create(position, edmHitCore);
+            energyTotal += edmHitCore.energy;
           }
         }
         debug() << "\t" << hitNo<< " hits are non-zero in collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
-        debug() << "\t" << edmClusters->size()<< " hits are stored in EDM"<<endmsg;
+        debug() << "\t" << edmPositioned->size()<< " hits are stored in EDM"<<endmsg;
         debug() << "\t" << energyTotal<< " GeV = total energy stored"<<endmsg;
       }
     }
-    m_caloClusters.put(edmClusters);
-    m_caloHits.put(edmHits);
   }
   return StatusCode::SUCCESS;
 }
