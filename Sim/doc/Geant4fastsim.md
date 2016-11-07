@@ -1,5 +1,5 @@
 Fast Simulation with Geant4 in FCCSW
-====
+==
 
 Instruction how to use the fast simulation in Geant4 within FCCSW (GAUDI).
 
