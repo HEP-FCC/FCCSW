@@ -2,7 +2,7 @@
 
 // ACTS
 #include "ACTS/Detector/TrackingGeometry.hpp"
-#include "ACTS/Examples/BuildGenericDetector.hpp""
+#include "ACTS/Examples/BuildGenericDetector.hpp"
 
 
 DECLARE_SERVICE_FACTORY(DummyTrkGeoSvc)
@@ -17,7 +17,11 @@ StatusCode DummyTrkGeoSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_trackingGeo = Acts::trackingGeometry();
+  m_trackingGeo = Acts::buildGenericDetector(Acts::Logging::VERBOSE,
+                                   Acts::Logging::VERBOSE,
+                                   Acts::Logging::VERBOSE,
+                                   0);
+ ;
   return StatusCode::SUCCESS;
 }
 
