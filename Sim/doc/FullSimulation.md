@@ -3,7 +3,7 @@ Full Simulation with Geant4 in FCCSW
 
 Instruction how to use Geant4 within FCCSW (GAUDI framework).
 
-For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
+For additional information on fast simulation in Geant4 [see](FastSimulationUsingGeant.md).
 
 > All relative paths refer to the main FCCSW directory.
 
@@ -26,7 +26,7 @@ For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 * [use sensitive detectors](#sensitive-detectors)
 * [change the physics list](#how-to-use-different-physics-list)
 * [add user action](#how-to-add-a-user-action)
-* [use fast simulation](Geant4fastsim.md)
+* [use fast simulation](FastSimulationUsingGeant.md)
 
 [DD4hep]: http://aidasoft.web.cern.ch/DD4hep "DD4hep user manuals"
 [DD4hep manual]: http://www.cern.ch/frankm/DD4hep/DD4hepManual.pdf "DD4hep manual"

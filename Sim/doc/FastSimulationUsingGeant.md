@@ -3,7 +3,7 @@ Fast Simulation with Geant4 in FCCSW
 
 Instruction how to use the fast simulation in Geant4 within FCCSW (GAUDI).
 
-It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
+It is an addition to the [instruction on Geant4 in FCCSW](FullSimulation.md).
 
 > All relative paths refer to the main FCCSW directory.
 
@@ -28,7 +28,7 @@ It is an addition to the [instruction on Geant4 in FCCSW](Geant4fullsim.md).
 
 ## Overview
 
-For details on GAUDI and Geant read [full simulation overview](Geant4fullsim.md#overview)
+For details on GAUDI and Geant read [full simulation overview](FullSimulation.md#overview)
 
 ### Fast simulation
 
@@ -137,7 +137,7 @@ The differences between the configuration file of the fast simulation (Examples/
 3. Geant configuration: via GAUDI service SimG4Svc
 ----
 
-Described in details in the [instruction on Geant4 simulation in FCCSW](Geant4fullsim.md#geant-configuration-via-gaudi-service-simg4svc)
+Described in details in the [instruction on Geant4 simulation in FCCSW](FullSimulation.md#geant-configuration-via-gaudi-service-simg4svc)
 
 
 ### Geometry construction
@@ -150,7 +150,7 @@ In the fast simulation user wants to define a specific behaviour in certain geom
 
   The fast simulation model needs to be attached to a `G4Region` object. That `G4Region` can contain one or many logical volumes (parts of the detector). Logical volumes are created by DD4hep. `G4Region` is created together with an appropriate fast simulation model and its configuration.
 
-`G4Region` can contain one or many logical volumes (parts of the detector). Regions are created for all the volumes which names as passed in property **volumeNames** of the region tool.  Logical volumes are created by DD4hep. Name of the detector is specified in DD4hep xml file (see more in [short description](Geant4fullsim.md#geometry-construction) or [DD4hep user guides][DD4hep]):
+`G4Region` can contain one or many logical volumes (parts of the detector). Regions are created for all the volumes which names as passed in property **volumeNames** of the region tool.  Logical volumes are created by DD4hep. Name of the detector is specified in DD4hep xml file (see more in [short description](FullSimulation.md#geometry-construction) or [DD4hep user guides][DD4hep]):
 
 ~~~{.xml}
 <detector name ="CentralTracker">
