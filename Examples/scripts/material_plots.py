@@ -7,12 +7,15 @@ import ROOT
 
 def main():
     parser = argparse.ArgumentParser(description='Material Plotter')
-    parser.add_argument('--fname', "-f", dest='fname', type=str, help="file name to read")
+    parser.add_argument('--fname', "-f", dest='fname', type=str, help="name of file to read")
     args = parser.parse_args()
 
     f = ROOT.TFile.Open(args.fname, "read")
     tree = f.Get("materials")
     histDict = {}
+
+    # go through the eta bins and fill the histograms in the histDict, skipping air
+    # keys in the histDict are the material names
     for etaBin, entry in enumerate(tree):
         nMat = entry.nMaterials
         for i in range(nMat):
@@ -30,6 +33,7 @@ def main():
 
     axis_titles = ["Number of X_{0}", "Number of #lambda", "Material depth [cm]"]
 
+    # This loop does the drawing, sets the style and saves the pdf files
     for plot, title in zip(["x0", "lambda", "depth"], axis_titles):
         legend = ROOT.TLegend(.75, .75, .94, .94)
         legend.SetLineColor(0)
