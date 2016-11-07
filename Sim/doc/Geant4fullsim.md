@@ -8,18 +8,18 @@ For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 > All relative paths refer to the main FCCSW directory.
 
 ## Contents
-1. [Overview](#1-overview)
-   * [Geant](#11-geant-components)
-   * [Sim package in FCCSW](#12-simulation-package-in-fccsw)
-2. [Example of full sim configuration](#2-example)
-3. [Geant configuration via GAUDI service `SimG4Svc`](#3-geant-configuration-via-gaudi-service-simg4svc)
-  * [Geometry construction](#31-geometry-construction)
-  * [Physics list](#32-physics-list)
-  * [User actions](#33-user-actions)
-4. [Simulation in GAUDI algorithm `SimG4Alg`](#4-simulation-in-gaudi-algorithm-simg4alg)
-  * [Events](#41-event-processing)
-  * [Output](#42-output)
-5. [Units](#5-units)
+[Overview](#overview)
+  * [Geant](#geant-components)
+  * [Sim package in FCCSW](#simulation-package-in-fccsw)
+[Example of full sim configuration](#example)
+[Geant configuration via GAUDI service `SimG4Svc`](#geant-configuration-via-gaudi-service-simg4svc)
+  * [Geometry construction](#geometry-construction)
+  * [Physics list](#physics-list)
+  * [User actions](#user-actions)
+[Simulation in GAUDI algorithm `SimG4Alg`](#simulation-in-gaudi-algorithm-simg4alg)
+  * [Events](#event-processing)
+  * [Output](#output)
+[Units](#units)
 
 
 ## How to
@@ -31,13 +31,13 @@ For additional information on fast simulation in Geant4 [see](Geant4fastsim.md).
 [DD4hep]: http://aidasoft.web.cern.ch/DD4hep "DD4hep user manuals"
 [DD4hep manual]: http://www.cern.ch/frankm/DD4hep/DD4hepManual.pdf "DD4hep manual"
 
-## 1. Overview
+## Overview
 
-### 1.1. Geant components
+### Geant components
 
 Geant main manager class is `G4RunManager`. It has own implementation in FCCSW `sim::RunManager` as the event flow is governed by GAUDI and not by Geant.
 
-#### Main service `SimG4Svc` ([see more](#3-geant-configuration-via-gaudi-service-simg4svc))
+#### Main service `SimG4Svc` ([see more](#geant-configuration-via-gaudi-service-simg4svc))
 
 The main simulation service `SimG4Svc` owns `sim::RunManager` and controls the communication between GAUDI and Geant (`sim::RunManager`).
 
@@ -48,16 +48,16 @@ Necessary information about the simulation that needs to be given:
 
 This service is also passing events (`G4Event`) to and from Geant.
 
-#### Main algorithm `SimG4Alg` ([see more](#4-simulation-in-gaudi-algorithm-simg4alg))
+#### Main algorithm `SimG4Alg` ([see more](#simulation-in-gaudi-algorithm-simg4alg))
 
 The main simulation algorithm communicates with `SimG4Svc` in each event loop execution.
 It is responsible for creation of a `G4Event` (by default: translation from the EDM event), passing it to the service for the simulation and retrieving it afterwards.
 
-Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and [various information](#4-simulation-in-gaudi-algorithm-simg4alg). To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `ISimG4SaveOutputTool`.
+Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and [various information](#simulation-in-gaudi-algorithm-simg4alg). To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `ISimG4SaveOutputTool`.
 A property **outputs** of `SimG4Alg` takes a list of strings with those tool names.
 Those tools should declare the output that can be further stored by the algorithm `PodioOutput`.
 
-### 1.2. Simulation package in FCCSW
+### Simulation package in FCCSW
 
 Simulation package contains following directories:
 
@@ -74,7 +74,7 @@ Simulation package contains following directories:
   * components and Geant classes' implementations used in the fast simulation (e.g. `sim::FastSimPhysics`)
 
 
-## 2. Example
+## Example
 
 ~~~{.sh}
 ./run gaudirun.py Examples/options/geant_fullsim.py
@@ -109,10 +109,10 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
                          'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'])
     ~~~
 
-  * Geant configuration ([see more](#3-geant-configuration-via-gaudi-service-simg4svc))
-    - **detector** - tool providing the [geometry](#31-geometry-construction), possible: SimG4DD4hepDetector (default) and [SimG4GdmlDetector](#gdml-example)
-    - **physicslist** - tool providing the [physics list](#32-physics-list), possible: SimG4FtfpBert(default)
-    - **actions** - tool providing the [user actions initialisation list](#33-user-actions), possible: SimG4FullSimActions(default)
+  * Geant configuration ([see more](#geant-configuration-via-gaudi-service-simg4svc))
+    - **detector** - tool providing the [geometry](#geometry-construction), possible: SimG4DD4hepDetector (default) and [SimG4GdmlDetector](#gdml-example)
+    - **physicslist** - tool providing the [physics list](#physics-list), possible: SimG4FtfpBert(default)
+    - **actions** - tool providing the [user actions initialisation list](#user-actions), possible: SimG4FullSimActions(default)
     ~~~{.py}
     from Configurables import SimG4Svc
     geantservice = SimG4Svc("SimG4Svc",
@@ -122,8 +122,8 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
     ~~~
 
 
-  * simulation ([see more](#4-simulation-in-gaudi-algorithm-simg4alg))
-    - `outputs` - names of the tools saving the [output](#42-output) from a simulated event,
+  * simulation ([see more](#simulation-in-gaudi-algorithm-simg4alg))
+    - `outputs` - names of the tools saving the [output](#output) from a simulated event,
       possible: `SimG4SaveTrackerHits`, `SimG4SaveCalHits`
     - `eventProvider` - tool that provides `G4Event` to the simulation, possible `SimG4PrimariesFromEdmTool`, `SimG4SingleParticleGeneratorTool`
 
@@ -182,7 +182,7 @@ Simple example:
 ~~~
 
 
-## 3. Geant configuration: via GAUDI service SimG4Svc
+## Geant configuration: via GAUDI service SimG4Svc
 
 Main service for simulation with Geant4 `SimG4Svc` owns `sim::RunManager` which derives from `G4RunManager`. Own implementation of G4RunManager was necessary in order to leave the event flow to GAUDI. All the details that does not concern the particle generator remain the same. Consult Geant4 [User's Guide](http://geant4.web.cern.ch/geant4/UserDocumentation/UsersGuides/ForToolkitDeveloper/html/index.html) or [Physics Manual](http://geant4.web.cern.ch/geant4/UserDocumentation/UsersGuides/PhysicsReferenceManual/fo/PhysicsReferenceManual.pdf) for more details.
 
@@ -192,15 +192,15 @@ The general concept of the simulation in Geant is to divide each simulation 'sta
 
 Any communication with the Geant Run Manager is handled by this service:
 - configuration:
-  - [geometry construction](#31-geometry-construction)
-  - [physics list initialisation](#32-physics-list)
-  - [user actions initialisation](#33-user-actions)
+  - [geometry construction](#geometry-construction)
+  - [physics list initialisation](#physics-list)
+  - [user actions initialisation](#user-actions)
 - simulation:
-  - [passing an event to `G4EventManager`](#41-event-processing)
-  - [retrieving a simulated event (with hits collections and other information)](#42-output)
+  - [passing an event to `G4EventManager`](#event-processing)
+  - [retrieving a simulated event (with hits collections and other information)](#output)
 
 
-### 3.1. Geometry construction
+### Geometry construction
 
 > Consult [detector documentation in FCCSW](../../Detector/doc/DD4hepInFCCSW.md) and [DD4hep user guides][DD4hep] for more details.
 
@@ -241,7 +241,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
 
     This way the hits collection are created automatically and are filled whenever a particle traverses a sensitive material. Hits are be stored in either `DD4hep::Simulation::Geant4TrackerHit` or `DD4hep::Simulation::Geant4CalorimeterHit`. See more on the current implementations of the sensitive detector types in the [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md#using-an-existing-sensitive-detector-definition).
 
-### 3.2. Physics List
+### Physics List
 
 Physics list describes all the particles and physics processes used in the simulation.
 
@@ -258,7 +258,7 @@ Any new implementation of a physics list (or any other component) should be pres
 
 
 
-### 3.3. User Actions
+### User Actions
 
 User actions tool can be added as a property **actions** to `SimG4Svc`. If none is set, the default action initialization is used (currently empty - no default actions are specified).
 
@@ -287,7 +287,7 @@ Different 'sets' of user actions can be created in other implementations of `G4V
 In that case, a relevant GAUDI tool should be created, basing on `SimG4FullSimActions`. Its name should follow the convention of adding a prefix "SimG4" to the name of the class (implementation of `G4VUserActionInitialization` that it creates).
 
 
-## 4. Simulation in GAUDI algorithm SimG4Alg
+## Simulation in GAUDI algorithm SimG4Alg
 
 Simulation algorithm handles all the communication between other algorithms and `SimG4Svc`.
 
@@ -296,12 +296,12 @@ It takes as input **eventProvider** tool that passes `G4Event`, either translate
 Also, a list of names to the output-saving tools can be specified in **outputs**.
 
 
-### 4.1. Event Processing
+### Event Processing
 
 For each execution of the algorithm an event `G4Event` is retrieved from the **eventProvider** tool. `G4Event` is passed to `SimG4Svc` and after the simulation is done, it is retrieved. Here all (if any) saving tools are called. Finally, an event is terminated.
 
 
-### 4.2. Output
+### Output
 
 Saving the output from a simulated `G4Event` is performed by tools deriving from an interface `ISimG4SaveOutputTool`.
 Tools should have the data outputs specified.
@@ -324,8 +324,7 @@ Existing tools store hits collections from the tracker detectors (`SimG4SaveTrac
 Positioned hits contain not only the information about the hit, but also the exact position of each energy deposit. If that information is not required by the study, it can be dropped before saving to the output file (by setting in the algorithm `PodioOutput` the property **outputCommands** to e.g. ['keep *', 'drop positionedHits']).
 
 
-5. Units
------
+### Units
 
 Important aspect of the translations between HepMC, EDM and Geant4 are the units. Since each framework uses by default different units, every translation should take that into account.
 
