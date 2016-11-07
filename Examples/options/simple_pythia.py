@@ -16,10 +16,16 @@ from Configurables import FCCDataSvc
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
+from Configurables import ConstPileUp
+
+pileuptool = ConstPileUp(numPileUpEvents=2, Filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
+
 from Configurables import PythiaInterface
 ### PYTHIA algorithm
 pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen.PileUpTool = pileuptool
 pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
+
 
 from Configurables import HepMCConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
@@ -34,11 +40,10 @@ genfilter = GenParticleFilter("StableParticles")
 genfilter.DataInputs.genparticles.Path = "all_genparticles"
 genfilter.DataOutputs.genparticles.Path = "genparticles"
 
-from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_fcc__GenJetParticleAssociationCollection_ as JetClustering
+from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_ as JetClustering
 genjet_clustering = JetClustering("GenJetClustering", verbose = False)
 genjet_clustering.DataInputs.particles.Path='genparticles'
 genjet_clustering.DataOutputs.jets.Path='genjets'
-genjet_clustering.DataOutputs.constituents.Path='genjets_particles'
 
 from Configurables import PodioOutput
 ### PODIO algorithm
@@ -48,7 +53,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg=[ pythia8gen, hepmc_converter, genfilter, genjet_clustering, out ],
                 EvtSel='NONE',
-                EvtMax=100,
+                EvtMax=2,
                 ExtSvc=[podioevent],
                 OutputLevel=DEBUG
 )

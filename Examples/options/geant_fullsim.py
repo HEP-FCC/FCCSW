@@ -28,7 +28,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'])
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -43,9 +43,8 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmT
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
+savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
