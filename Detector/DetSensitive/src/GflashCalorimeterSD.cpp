@@ -1,4 +1,4 @@
-#include "DetSensitive/GFlashCalorimeterSD.h"
+#include "DetSensitive/GflashCalorimeterSD.h"
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
@@ -15,7 +15,7 @@
 #include "G4SDManager.hh"
 
 namespace det {
-GFlashCalorimeterSD::GFlashCalorimeterSD(const std::string& aDetectorName,
+GflashCalorimeterSD::GflashCalorimeterSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
   const DD4hep::Geometry::Segmentation& aSeg)
   : G4VSensitiveDetector(aDetectorName), G4VGFlashSensitiveDetector(), m_seg(aSeg) {
@@ -23,9 +23,9 @@ GFlashCalorimeterSD::GFlashCalorimeterSD(const std::string& aDetectorName,
   collectionName.insert(aReadoutName);
 }
 
-GFlashCalorimeterSD::~GFlashCalorimeterSD(){}
+GflashCalorimeterSD::~GflashCalorimeterSD(){}
 
-void GFlashCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
+void GflashCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
 {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
@@ -34,7 +34,7 @@ void GFlashCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection), m_calorimeterCollection);
 }
 
-bool GFlashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
+bool GflashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   // This method is called if full simulation is performed
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
@@ -51,7 +51,7 @@ bool GFlashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   return true;
 }
 
-bool GFlashCalorimeterSD::ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) {
+bool GflashCalorimeterSD::ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) {
   // This method will be called if gflash parametrisation is performed
   G4double edep = aSpot->GetEnergySpot()->GetEnergy();
   // check if energy was deposited
@@ -67,7 +67,7 @@ bool GFlashCalorimeterSD::ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) 
   return true;
 }
 
-uint64_t GFlashCalorimeterSD::cellID(const G4GFlashSpot& aSpot) {
+uint64_t GflashCalorimeterSD::cellID(const G4GFlashSpot& aSpot) {
   DD4hep::Simulation::Geant4VolumeManager volMgr = DD4hep::Simulation::Geant4Mapping::instance().volumeManager();
   DD4hep::Geometry::VolumeManager::VolumeID volID = volMgr.volumeID(aSpot.GetTouchableHandle()());
   if (m_seg.isValid() )  {

@@ -44,7 +44,7 @@
   <detectors>
     <detector id="0" name="BarrelECal" type="SlicedBarrel" sensitive="true" readout="ECalHits">
       <material name="PbWO4"/>
-      <sensitive type="GFlashCalorimeterSD"/>
+      <sensitive type="GflashCalorimeterSD"/>
       <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz"/>
       <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>

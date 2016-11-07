@@ -10,7 +10,7 @@
 #include "G4VGFlashSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
 
-/** GFlashCalorimeterSD DetectorDescription/DetSensitive/src/GFlashCalorimeterSD.h GFlashCalorimeterSD.h
+/** GflashCalorimeterSD DetectorDescription/DetSensitive/src/GflashCalorimeterSD.h GflashCalorimeterSD.h
  *
  *  Sensitive detector for calorimeters that use GFlash parametrisation.
  *  If no parametrisation is invoked, hits are processed as in det::SimpleCalorimeterSD.
@@ -21,18 +21,18 @@
  */
 
 namespace det {
-class GFlashCalorimeterSD : public G4VSensitiveDetector, public G4VGFlashSensitiveDetector {
+class GflashCalorimeterSD : public G4VSensitiveDetector, public G4VGFlashSensitiveDetector {
 public:
   /** Constructor.
    *  @param aDetectorName Name of the detector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  GFlashCalorimeterSD(const std::string& aDetectorName,
+  GflashCalorimeterSD(const std::string& aDetectorName,
                       const std::string& aReadoutName,
                       const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  ~GFlashCalorimeterSD();
+  ~GflashCalorimeterSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.

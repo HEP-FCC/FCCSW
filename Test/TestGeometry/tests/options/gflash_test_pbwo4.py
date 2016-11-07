@@ -2,21 +2,6 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-# from Configurables import ParticleGunAlg, MomentumRangeParticleGun
-# pgun = MomentumRangeParticleGun("PGun",
-#                                 PdgCodes=[11], # electron
-#                                 MomentumMin = 100, # GeV
-#                                 MomentumMax = 100, # GeV
-#                                 ThetaMin = 1.581, # rad
-#                                 ThetaMax = 1.581, # rad
-#                                 PhiMin = 0, # rad
-#                                 PhiMax = 6.2) # rad
-# gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
-# gen.DataOutputs.hepmc.Path = "hepmc"
-
-# from Configurables import Gaudi__ParticlePropertySvc
-# ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
 ## reads HepMC text file and write the HepMC::GenEvent to the data service
@@ -32,7 +17,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 from Configurables import GeoSvc
 ## parse the given xml file
-geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/Barrel_testCaloSD_rphiz.xml'])
+geoservice = GeoSvc("GeoSvc", detectors=['file:..//data/Barrel_testCaloSD_rphiz.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -49,7 +34,7 @@ geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHits"])
-savecaltool.DataOutputs.caloClusters.Path = "caloClusters"
+savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
@@ -60,7 +45,7 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import PodioOutput
 ## PODIO algorithm
-out = PodioOutput("out", filename = "out_fast_calo_100GeV_100ev_fullpi.root")
+out = PodioOutput("out", filename = "out_fast_calo_100GeV_fullpi.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
@@ -70,7 +55,7 @@ ApplicationMgr( TopAlg = [# gen
     reader
                           , hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice# , ppservice
                 ],

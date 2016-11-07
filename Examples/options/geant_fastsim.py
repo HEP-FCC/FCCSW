@@ -28,7 +28,7 @@ from Configurables import GeoSvc
 ## parse the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetCommon/compact/TrackerAir.xml',
-                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_GFlash.xml'])
+                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -54,7 +54,7 @@ from Configurables import SimG4Alg, SimG4SaveSmearedParticles, SimG4SaveCalHits,
 saveparticlestool = SimG4SaveSmearedParticles("saveSmearedParticles")
 saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
-savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["BarECal_Readout"])
+savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta"])
 savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
 savecaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")

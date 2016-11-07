@@ -5,7 +5,7 @@
 #include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
 #include "DetSensitive/AggregateCalorimeterSD.h"
-#include "DetSensitive/GFlashCalorimeterSD.h"
+#include "DetSensitive/GflashCalorimeterSD.h"
 
 namespace DD4hep {
 namespace Simulation {
@@ -47,12 +47,12 @@ static G4VSensitiveDetector* create_aggregate_calorimeter_sd(
     readoutName,
     aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
-// Factory method to create an instance of GFlashCalorimeterSD
+// Factory method to create an instance of GflashCalorimeterSD
 static G4VSensitiveDetector* create_gflash_calorimeter_sd(
     const std::string& aDetectorName,
     DD4hep::Geometry::LCDD& aLcdd)  {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
-  return new det::GFlashCalorimeterSD(aDetectorName,
+  return new det::GflashCalorimeterSD(aDetectorName,
     readoutName,
     aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
@@ -62,4 +62,4 @@ DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD,DD4hep::Simulation::cre
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MiddleStepTrackerSD,DD4hep::Simulation::create_middle_step_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,DD4hep::Simulation::create_simple_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD,DD4hep::Simulation::create_aggregate_calorimeter_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GFlashCalorimeterSD,DD4hep::Simulation::create_gflash_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GflashCalorimeterSD,DD4hep::Simulation::create_gflash_calorimeter_sd)
