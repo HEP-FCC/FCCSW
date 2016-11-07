@@ -62,12 +62,14 @@ To run the fast simulation:
 
 The differences between the configuration file of the fast simulation (Examples/options/geant_fastsim.py) with respect to the full simulation:
 
-  * Detector - detailed geometry of tracker is not needed, envelope is sufficient
+  * Detector:
+    - tracker: detailed geometry is not needed, envelope is sufficient
+    - calorimeter: sensitive detector type needs to be set to `GflashCalorimeterSD` (can be used for both full and fast sim studies)
     ~~~{.py}
     from Configurables import GeoSvc
     geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-    'file:Detector/DetCommon/compact/TrackerAir.xml'])
-
+    'file:Detector/DetCommon/compact/TrackerAir.xml',
+    'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml']])
     ~~~
 
   * Geant configuration ([see more](#geant-configuration-via-gaudi-service-simg4svc))
@@ -82,37 +84,52 @@ The differences between the configuration file of the fast simulation (Examples/
 
     - **regions** - create [regions where parametrisation may take place](#regions), based on the attached to it fast simulation model
 
-      `SimG4FastSimTrackerRegion` creates model `sim::FastSimModelTracker` that configures the parametrisation (trigger conditions, what happens to the particles).
-      The parametrisation may be triggered inside the volumes which names are passed in property **volumeNames**.
-      Also a simple smearing tool `SimG4ParticleSmearFormula` is created that describes how the particle momentum is altered (once the parametrisation is triggered), property **smearing**.
+        - `SimG4FastSimTrackerRegion` creates model `sim::FastSimModelTracker` that configures the parametrisation (trigger conditions, what happens to the particles).
+          The parametrisation may be triggered inside the volumes which names are passed in property **volumeNames**.
+          Also a simple smearing tool `SimG4ParticleSmearFormula` is created that describes how the particle momentum is altered (once the parametrisation is triggered), property **smearing**.
+
+        - `SimG4FastSimCalorimeterRegion` creates model `GFlashShowerModel` for volumes which names are passed in property **volumeNames**.
+          Parametrisation is specified in a tool `SimG4GflashSamplingCalo`, property **parametrisation**.
 
     ~~~{.py}
     from Configurables import SimG4ParticleSmearFormula, SimG4FastSimTrackerRegion
     smeartool = SimG4ParticleSmearFormula("smear", resolutionMomentum = "0.013")
-    regiontool = SimG4FastSimTrackerRegion("model", volumeNames=["TrackerEnvelopeBarrel"], smearing=smeartool)
-    geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/model"])
+    regiontooltracker = SimG4FastSimTrackerRegion("modelTracker", volumeNames=["TrackerEnvelopeBarrel"], smearing=smeartool)
+
+    from Configurables import SimG4GflashSamplingCalo, SimG4FastSimCalorimeterRegion
+    gflash = SimG4GflashSamplingCalo("gflash", materials = ["G4_lAr", "G4_Pb"], thickness = [4, 2])
+    regiontoolcalo = SimG4FastSimCalorimeterRegion("modelCalo", volumeNames=["ECalBarrel"], parametrisation = gflash)
+
     ~~~
 
     - `SimG4Svc` configuration:
 
     ~~~{.py}
     from Configurables import SimG4Svc
-    geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/model"])
+    geantservice = SimG4Svc("SimG4Svc",
+                 physicslist=physicslisttool,
+                 regions=["SimG4FastSimTrackerRegion/modelTracker", "SimG4FastSimCalorimeterRegion/modelCalo"])
     ~~~
 
 
   * simulation ([see more](#simulation-in-gaudi-algorithm-simg4alg))
-    - as for the full simulation, but using different tools to store the output of the simulation (`SimG4SaveSmearedParticles`)
+    - tracker: different tools to store the output of the fast sim (`SimG4SaveSmearedParticles`)
+    - calorimeters: output of the fast sim treated as from the full sim (`SimG4SaveCalHits`)
 
     ~~~{.py}
     from Configurables import SimG4Alg,SimG4SaveSmearedParticles, SimG4PrimariesFromEdmTool
     saveparticlestool = SimG4SaveSmearedParticles("SimG4SaveSmearedParticles")
     saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
     saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
+    # as for the full sim:
+    savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta"])
+    savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
+    savecaltool.DataOutputs.caloHits.Path = "caloHits"
     particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
     particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+
     geantsim = SimG4Alg("SimG4Alg",
-                         outputs = ["SimG4SaveSmearedParticles/SimG4SaveSmearedParticles"],
+                         outputs = ["SimG4SaveSmearedParticles/SimG4SaveSmearedParticles", "SimG4SaveCalHits/saveCalHits"],
                          eventProvider=particle_converter)
     ~~~
 
@@ -177,10 +194,14 @@ The simple smearing tool, `SimG4ParticleSmearSimple`, smears particles (its mome
 - **maxEnergy** - (optional, default 10 TeV) maximum kinetic energy to trigger parametrisation
 - **energyToKill** - (optional, default 0.1 GeV) maximum kinetic energy for electrons to be killed
 
-There are currently two parametrisation tools implemented: `SimG4GflashHomoCalo` and `SimG4GflashSamplingCalo`. The first tool creates the parametrisation of the homogenous calorimeter, taking its material (name in Geant NIST database) in **material** property and parameters as defined in [`GVFlashHomoShowerTuning`](http://www-geant4.kek.jp/Reference/10.02/classGVFlashHomoShowerTuning.html) class.
+There are currently two parametrisation tools implemented: `SimG4GflashHomoCalo` and `SimG4GflashSamplingCalo`. The first tool creates the parametrisation of the homogeneous calorimeter, taking its material (name in Geant NIST database) in **material** property and parameters as defined in [`GVFlashHomoShowerTuning`](http://www-geant4.kek.jp/Reference/10.02/classGVFlashHomoShowerTuning.html) class.
 The latter creates the parametrisation for the sampling calorimeter, taking its materials as a 2-element list **materials** and their thicknesses as **thickness**. The parameters are defined in  [`GFlashSamplingShowerTuning`](http://www.apc.univ-paris7.fr/~franco/g4doxy/html/classGFlashSamplingShowerTuning.html) class.
 
 There is ongoing work to implement the third parametrisation tool that would allow to use a parametrisation generated by user based on a small sample of full simulation (so very detector specific).
+
+Examples:
+`Examples/options/geant_fastsim.py` - for the `SimG4GflashSamplingCalo` (lAr-Pb sampling calorimeter)
+`Test/TestGeometry/tests/options/gflash_test_pbwo4.py` - for the `SimG4GflashHomoCalo`  (PbWO4 homogeneous calorimeter)
 
 
 ### Physics List
@@ -205,5 +226,8 @@ However, in order to be able to save the smeared particles in the tracker (that 
 
 ### Output
 
+To store the output of the tracker fast simulation, new tool was introduced. It saves the colleciot of tracks/particles that may be later treated as if they were simulated and reconstructed in the tracker.
 `SimG4SaveSmearedParticles` tool stores all the particles (EDM `ParticleCollection`) and particlesMCparticles (EDM `ParticleMCParticleAssociationCollection`). They can be treated as 'reconstructed' particles as the detector effects (both resolution and reconstruction efficiency) are imitated by the smearing and the resulting changes to the momentum are taken into account.
 In the current implementation only the primary particles may be saved as they contain the particle information created in the translation of the event. This needs to be reimplemented so that the information is attached to the track rather then to the particle.
+
+In case of the calorimeters, fast simulation produces energy deposits that are saved to the hit collections. Hence, they are treated the same way as the energy deopsits from the hits collections from the full simulation (and they can undergo the full chain of the reconstruction using the same tools). The only difference comes from the nature of the hit creation: they are created instantly, hence they do not carry information of the time of the deposit.
