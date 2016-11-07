@@ -21,7 +21,6 @@ GaudiTool(type, name, parent), m_parametrisation(nullptr), m_particleBounds(null
   declareProperty("parametrisation", m_parametrisationTool);
   declarePrivateTool(m_parametrisationTool, "SimG4GflashHomo", true);
   declareProperty("volumeNames", m_volumeNames);
-  // declareProperty("material", m_material = "");
   declareProperty("minEnergy", m_minTriggerEnergy = 0.1*Gaudi::Units::GeV);
   declareProperty("maxEnergy", m_maxTriggerEnergy = 10*Gaudi::Units::TeV);
   declareProperty("energyToKill", m_energyToKill = 0.1*Gaudi::Units::GeV);
