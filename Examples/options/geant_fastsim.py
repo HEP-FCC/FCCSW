@@ -32,16 +32,18 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearFormula, SimG4FastSimTrackerRegion, SimG4FastSimCalorimeterRegion
-# ## create particle smearing tool, used for smearing in the tracker
+from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearFormula, SimG4FastSimTrackerRegion, SimG4GflashSamplingCalo, SimG4FastSimCalorimeterRegion
+## create particle smearing tool, used for smearing in the tracker
 smeartool = SimG4ParticleSmearFormula("smear", resolutionMomentum = "0.013")
 ## create region and a parametrisation model, pass smearing tool
 regiontooltracker = SimG4FastSimTrackerRegion("modelTracker", volumeNames=["TrackerEnvelopeBarrel"], smearing=smeartool)
-regiontoolcalo = SimG4FastSimCalorimeterRegion("modelCalo", volumeNames=["ECalBarrel"])
+## create parametrisation of the calorimeter
+gflash = SimG4GflashSamplingCalo("gflash", materials = ["G4_lAr", "G4_Pb"], thickness = [2, 4])
+regiontoolcalo = SimG4FastSimCalorimeterRegion("modelCalo", volumeNames=["ECalBarrel"], parametrisation = gflash)
 ## create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 ## attach those tools to the G4 service
-geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/modelTracker", "SimG4FastSimTrackerRegion/modelCalo"])
+geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/modelTracker", "SimG4FastSimCalorimeterRegion/modelCalo"])
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -74,7 +76,7 @@ THistSvc().OutputLevel=INFO
 
 from Configurables import PodioOutput
 ## PODIO algorithm
-out = PodioOutput("out", filename = "out_fast_tracker_calo_formula.root")
+out = PodioOutput("out", filename = "out_fast_tracker_formula_calo_gflash.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr

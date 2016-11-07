@@ -7,11 +7,11 @@
 
 // FCCSW
 #include "SimG4Interface/ISimG4RegionTool.h"
-#include "SimG4Interface/ISimG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4GflashTool.h"
 
 // Geant
 #include "GFlashParticleBounds.hh"
-#include "GFlashHomoShowerParameterisation.hh"
+#include "GVFlashShowerParameterisation.hh"
 #include "GFlashHitMaker.hh"
 class G4VFastSimulationModel;
 class G4Region;
@@ -21,6 +21,7 @@ class G4Region;
  *
  *  Tool for creating regions for fast simulation, attaching GFlashModel to them.
  *  Regions are created for volumes specified in the job options (\b'volumeNames').
+ *  Details on the parametrisation of shower profiles is set by tool '\b parametrisation'
  *  [For more information please see](@ref md_sim_doc_geant4fastsim).
  *
  *  @author Anna Zaborowska
@@ -48,21 +49,21 @@ public:
   inline virtual const std::vector<std::string>& volumeNames() const final {return m_volumeNames;};
 
 private:
+  /// Pointer to a parametrisation tool, to retrieve calorimeter parametrisation
+  ToolHandle<ISimG4GflashTool> m_parametrisationTool;
   /// Envelopes that are used in a parametric simulation
   /// deleted by the G4RegionStore
   std::vector<G4Region*> m_g4regions;
   /// Fast simulation (parametrisation) models
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
-  /// GFlash model parametrisation
-  std::unique_ptr<GFlashHomoShowerParameterisation> m_parametrisation;
+  /// GFlash model parametrisation (retrieved from the m_parametrisationTool)
+  std::unique_ptr<GVFlashShowerParameterisation> m_parametrisation;
   /// GFlash model configuration
   std::unique_ptr<GFlashParticleBounds> m_particleBounds;
   /// GFlash hit maker
   std::unique_ptr<GFlashHitMaker> m_hitMaker;
   /// Names of the parametrised volumes (set by job options)
   std::vector<std::string> m_volumeNames;
-  /// Material name of the homogenous calorimeter (to be searched for in Geant NIST table)
-  std::string m_material;
   /// minimum energy of the electron (positron) that triggers the model
   double m_minTriggerEnergy;
   /// maximum energy of the electron (positron) that triggers the model

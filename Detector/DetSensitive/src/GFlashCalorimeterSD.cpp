@@ -34,8 +34,7 @@ void GFlashCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection), m_calorimeterCollection);
 }
 
-bool GFlashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
-{
+bool GFlashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   // This method is called if full simulation is performed
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
@@ -49,7 +48,6 @@ bool GFlashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
   m_calorimeterCollection->insert(hit);
-  std::cout<<"bool GFlashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) "<<std::endl;
   return true;
 }
 
@@ -66,7 +64,6 @@ bool GFlashCalorimeterSD::ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) 
   hit->cellID = cellID(*aSpot);
   hit->energyDeposit = edep;
   m_calorimeterCollection->insert(hit);
-  std::cout<<"bool GFlashCalorimeterSD::ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) "<<std::endl;
   return true;
 }
 
