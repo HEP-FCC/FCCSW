@@ -34,7 +34,7 @@
   <!-- T R A C K E R -->
   <include ref="./estimates/FCChh_TrackerMaterial.xml" />
   <include ref="./estimates/FCChh_TrackerEndCapMaterial.xml" />
-  <!--<include ref="./estimates/FCChh_TrackerMaterial.xml" />-->
+  <include ref="./estimates/FCChh_TrackerFwdMaterial.xml" />
 
   <!-- E L E C T R O M A G N E T I C   C A L -->
   <include ref="./estimates/FCChh_ECalMaterial.xml" />

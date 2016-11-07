@@ -57,7 +57,7 @@
     <!-- not explicitly defined, up to tracker design -->
     <!-- Tracker Forward -->
     <constant name="FwdTracker_id" value="4"/>
-    <constant name="FwdTracker_rmin1" value="30*mm"/>
+    <constant name="FwdTracker_rmin1" value="60*mm"/>
     <constant name="FwdTracker_rmax1" value="3500*mm"/>
     <constant name="FwdTracker_z1" value="2500*mm"/>
     <constant name="FwdTracker_rmin2" value="2000*mm"/>
