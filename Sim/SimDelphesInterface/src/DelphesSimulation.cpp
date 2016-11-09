@@ -17,6 +17,7 @@
 // FCC EDM
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
+#include "datamodel/MCEventWeightCollection.h"
 
 // ROOT
 #include "TFile.h"
@@ -47,7 +48,8 @@ GaudiAlgorithm(name, svcLoc) ,
 
   declareInput("hepmc", m_hepmcHandle);
   declareProperty("outputs", m_saveToolNames);
-
+ 
+  declareOutput("mcEventWeights"    , m_handleMCEventWeights, "mcEventWeights");
   declareOutput("genParticles"      , m_handleGenParticles, "genParticles");
   declareOutput("genVertices"       , m_handleGenVertices, "genVertices");
 }
@@ -131,6 +133,7 @@ StatusCode DelphesSimulation::execute() {
 
   // Read event
   const HepMC::GenEvent *hepMCEvent = m_hepmcHandle.get();
+
   sc = m_hepMCConverter->hepMCEventToArrays(hepMCEvent, *m_Delphes->GetFactory(), *m_allParticles, *m_stableParticles, *m_partons);
   if (!sc.isSuccess()) {
     return sc;
@@ -222,9 +225,18 @@ StatusCode DelphesSimulation::execute() {
   if (m_outRootFile!=nullptr) m_treeWriter->Fill();
 
   // FCC EDM (event-data model) based output
+  auto mcEventWeights     = m_handleMCEventWeights.createAndPut();
   auto genParticles       = m_handleGenParticles.createAndPut();
   auto genVertices        = m_handleGenVertices.createAndPut();
 
+  //loop over HepMC event weights
+  for(unsigned int j=0; j<hepMCEvent->weights().size(); j++) {
+    // FIXME: weights are stored as collection. Eventually move to meta-data
+    auto weight = mcEventWeights->create();
+    weight.weight(hepMCEvent->weights()[j]);
+  }
+
+  // convert Delphes MC particles to FCC EDM
   if (m_allParticles !=nullptr) DelphesSimulation::ConvertMCParticles(m_allParticles , genParticles  , genVertices);
 
   for(auto saveTool : m_saveTools) {
@@ -305,7 +317,7 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     auto particle = colMCParticles->create();
 
     auto& barePart    = particle.core();
-    barePart.pdgId     = cand->PID;
+    barePart.pdgId    = cand->PID;
     barePart.status   = cand->Status;
     barePart.p4.px    = cand->Momentum.Px();
     barePart.p4.py    = cand->Momentum.Py();
