@@ -35,10 +35,10 @@ public:
    */
   virtual StatusCode finalize();
   /**  Save Delphes collection to EDM.
-   *   Converts Delphes MC particles to fcc::Particle and creates associations to fcc::MCParticle
+   *   Converts Delphes MC particles to fcc::Particle
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes) final;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
 
 private:
   /// Handle the particles to be saved

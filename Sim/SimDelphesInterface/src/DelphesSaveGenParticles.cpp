@@ -32,7 +32,7 @@ StatusCode DelphesSaveGenParticles::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode DelphesSaveGenParticles::saveOutput(Delphes& delphes) {
+StatusCode DelphesSaveGenParticles::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) {
   // Create the collections
   auto colParticles = m_particles.createAndPut();
 
@@ -41,6 +41,8 @@ StatusCode DelphesSaveGenParticles::saveOutput(Delphes& delphes) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
   }
+  // ! FIXME: when Delphes skimmed gen collection will have proerly stored mother/daughter indices,
+  //          add start/end vertex information here.
 
   // Save MC particles and vertices
   for(int j=0; j<delphesColl->GetEntries(); j++) {
