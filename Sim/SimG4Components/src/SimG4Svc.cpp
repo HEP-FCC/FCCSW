@@ -8,6 +8,11 @@
 #include "G4UImanager.hh"
 #include "G4VModularPhysicsList.hh"
 
+#include "G4UIsession.hh"
+#include "G4UIterminal.hh"
+#include "G4VisExecutive.hh"
+#include "G4VisManager.hh"
+
 DECLARE_SERVICE_FACTORY(SimG4Svc)
 
 SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL) : base_class(aName, aSL) {
@@ -54,12 +59,20 @@ StatusCode SimG4Svc::initialize() {
   m_runManager.SetUserInitialization(m_detectorTool->detectorConstruction());
 
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
-  for (auto command: m_g4PreInitCommands) {
+  for (auto command : m_g4PreInitCommands) {
     UImanager->ApplyCommand(command);
   }
 
-
   m_runManager.Initialize();
+  if (m_interactiveMode) {
+    G4VisManager* visManager = new G4VisExecutive;
+    visManager->Initialize();
+    // Define UI terminal for interactive mode
+    G4UIsession* session = new G4UIterminal;
+    session->SessionStart();
+    delete session;
+  }
+
   // Attach user actions
   m_runManager.SetUserInitialization(m_actionsTool->userActionInitialization());
   // Create regions
@@ -74,7 +87,7 @@ StatusCode SimG4Svc::initialize() {
   for (auto& tool : m_regionTools) {
     tool->create();
   }
- for (auto command: m_g4PostInitCommands) {
+  for (auto command : m_g4PostInitCommands) {
     UImanager->ApplyCommand(command);
   }
 

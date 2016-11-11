@@ -77,6 +77,8 @@ private:
   Gaudi::Property<std::vector<std::string>> m_regionToolNames{
       this, "regions", {}, "Names of the tools that create regions and fast simulation models"};
 
+  Gaudi::Property<bool> m_interactiveMode{this, "InteractiveMode", false, "Enter the interactive mode"};
+
   /// Run Manager
   sim::RunManager m_runManager;
 };
