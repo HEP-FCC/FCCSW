@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCChh_ECalBarrel_Gflash"
+    title="ECal Barrel Calorimeter for GFlash parametrisation"
+    author="A.Dell'Acqua, J.Faltova, A.Zaborowska"
+    url="no"
+    status="development"
+    version="$Id:??$">
+    <comment>ECal lAr-Pb simple cylindrical layers design, with GFlash SD. Based on FCChh_ECalBarrel_Mockup</comment>
+  </info>
+
+  <define>
+    <constant name="BarECalOuterSpacer" value="100*mm"/>
+    <constant name="BarECalCryoThickness" value="100*mm"/>
+    <!-- calorimeter volume -->
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin+BarECalOuterSpacer"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax-BarECalOuterSpacer"/>
+    <constant name="BarCryoECal_dz" value="BarECal_dz"/>
+
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+BarECalCryoThickness"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-BarECalCryoThickness"/>
+    <constant name="EMBarrel_dz" value="BarECal_dz-BarECalCryoThickness"/>
+  </define>
+
+  <display>
+    <vis name="ecal_envelope" r="0.1" g="0.2" b="0.6" alpha="1" showDaughers="false" visible="true" />
+  </display>
+
+  <readouts>
+    <readout name="ECalHitsPhiEta">
+      <segmentation type="GridPhiEta" grid_size_eta="0.5" phi_bins="5"/>
+      <id>system:3,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-6,phi:-4</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
+      <sensitive type="GflashCalorimeterSD"/>
+      <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
+      <cryostat id="1" name="ECAL_Cryo" material="Air" >
+        <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="10*mm" />
+      </cryostat>
+      <calorimeter id="1" name="EM_barrel" >
+        <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
+        <active_layers thickness="4*mm" material="LAr" nSamplings="50" />
+        <passive_layers thickness="2*mm" material="Lead" />
+      </calorimeter>
+    </detector>
+
+  </detectors>
+</lccdd>
+
