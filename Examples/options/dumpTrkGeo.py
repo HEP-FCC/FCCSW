@@ -1,13 +1,14 @@
 import os
 from Gaudi.Configuration import *
 
-from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
-                    OutputLevel = DEBUG)
-
 from Configurables import TrackingGeoSvc
 trkgeoservice = TrackingGeoSvc("TrackingGeometryService") 
+
+from Configurables import GeoSvc
+geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml', 'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
+#geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetActsTest/compact/FCCTracker.xml'],
+                    OutputLevel = DEBUG)
+
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc",
@@ -25,13 +26,13 @@ from Configurables import GeoToGdmlDumpSvc
 geodumpservice = GeoToGdmlDumpSvc("GeoDump", gdml=export_fname)
 
 from Configurables import TrkGeoToGdmlDumpSvc
-trkgeodumpservice = TrkGeoToGdmlDumpSvc("TrkGeoDump", gdml="TrkGeoDump.gdml")
+trkgeodumpservice = TrkGeoToGdmlDumpSvc("TrkGeoDump", gdml="TrkGeoDump2.gdml")
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [geoservice, geantservice, trkgeoservice, geodumpservice, trkgeodumpservice],
+                ExtSvc = [geoservice, geantservice, trkgeoservice,  trkgeodumpservice],
                 OutputLevel=DEBUG
  )

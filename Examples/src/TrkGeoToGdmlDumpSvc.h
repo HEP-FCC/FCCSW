@@ -5,6 +5,7 @@
 
 // Gaudi
 #include "GaudiKernel/Service.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 #include "DetInterface/ITrackingGeoSvc.h"
 

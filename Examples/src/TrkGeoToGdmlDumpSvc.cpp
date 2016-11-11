@@ -1,6 +1,10 @@
-#include "DummyTrkGeoToGdmlDumpSvc.h"
+#include "TrkGeoToGdmlDumpSvc.h"
 
 #include "TGeoManager.h"
+
+
+#include "GaudiKernel/ISvcLocator.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 #include "ACTS/Detector/TrackingGeometry.hpp"
 #include "ACTS/Detector/TrackingVolume.hpp"
@@ -45,7 +49,7 @@ void TrkGeoToGdmlDumpSvc::dumpTrackingLayer(const Acts::Layer* layer, TGeoVolume
   int module_counter = 0;
   TGeoMaterial* matAl = new TGeoMaterial("Aluminium", 26, 13, 3);
   TGeoMedium* Al = new TGeoMedium("Aluminium", 2, matAl);
-  TGeoVolume* module = gGeoManager->MakeBox("module", Al, 1, 1, 1);
+  TGeoVolume* module = gGeoManager->MakeBox("module", Al, 10, 10, 10);
 
   if (nullptr != surfArr) {
     auto surfVec = surfArr->arrayObjects();
@@ -58,8 +62,8 @@ void TrkGeoToGdmlDumpSvc::dumpTrackingLayer(const Acts::Layer* layer, TGeoVolume
 }
 
 StatusCode TrkGeoToGdmlDumpSvc::initialize() {
-  m_geoSvc = service("TrackingGeometryService");
-  if (!m_geoSvc) {
+  m_geoSvc = service("TrackingGeoSvc");
+  if (nullptr == m_geoSvc) {
     error() << "Unable to locate Tracking Geometry Service" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -74,7 +78,7 @@ StatusCode TrkGeoToGdmlDumpSvc::initialize() {
   /// @todo: get dimensions from surface
   TGeoMaterial* matAl = new TGeoMaterial("Aluminium", 26, 13, 3);
   TGeoMedium* Al = new TGeoMedium("Aluminium", 2, matAl);
-  TGeoVolume* top = gGeoManager->MakeBox("top", Al, 10, 10, 10);
+  TGeoVolume* top = gGeoManager->MakeBox("top", Al, 2000, 20000, 20000);
   // recurse through tracking geometry
   dumpTrackingVolume(highestVol, top);
   gGeoManager->SetTopVolume(top);
