@@ -38,7 +38,11 @@ smeartool = SimG4ParticleSmearFormula("smear", resolutionMomentum = "0.013")
 ## create region and a parametrisation model, pass smearing tool
 regiontooltracker = SimG4FastSimTrackerRegion("modelTracker", volumeNames=["TrackerEnvelopeBarrel"], smearing=smeartool)
 ## create parametrisation of the calorimeter
-gflash = SimG4GflashSamplingCalo("gflash", materials = ["G4_lAr", "G4_Pb"], thickness = [4, 2])
+gflash = SimG4GflashSamplingCalo("gflash",
+                                 materialActive = "G4_lAr",
+                                 materialPassive = "G4_Pb",
+                                 thicknessActive = 4,
+                                 thicknessPassive = 2)
 regiontoolcalo = SimG4FastSimCalorimeterRegion("modelCalo", volumeNames=["ECalBarrel"], parametrisation = gflash)
 ## create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")

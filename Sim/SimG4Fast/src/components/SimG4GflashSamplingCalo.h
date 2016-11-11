@@ -12,8 +12,8 @@
  *
  *  Tool creating a parametrisation of a sampling calorimeter.
  *  The original parameters from arXiv:hep-ex/0001020v1 are taken.
- *  Materials of the active and passive layers of the calorimeter are set in a property '\b materials' (length: 2).
- *  Respective thicknesses of the layers are set in a property '\b thickness'.
+ *  Materials of the active and passive layers of the calorimeter are set in properties '\b materialActive' and '\b materialPassive'.
+ *  Relative thicknessees of the layers are set in properties '\b thicknessActive' and '\b thicknessPassive'.
  *
  *  @author Anna Zaborowska
 */
@@ -36,11 +36,14 @@ public:
   virtual std::unique_ptr<GVFlashShowerParameterisation> parametrisation() final;
 
 private:
-  /// Material names of the layers in the sampling calorimeter (to be searched for in Geant NIST table)
-  std::vector<std::string> m_materials;
-
-  /// Thicknesses of the layers
-  std::vector<double> m_thickness;
+  /// Material name of the active layer in the sampling calorimeter (to be searched for in Geant NIST table)
+  std::string m_materialActive;
+  /// Material name of the passive layer in the sampling calorimeter (to be searched for in Geant NIST table)
+  std::string m_materialPassive;
+  /// Thickness of the active layer
+  double m_thicknessActive;
+  /// Thickness of the passive layer
+  double m_thicknessPassive;
 
 };
 
