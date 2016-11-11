@@ -8,6 +8,9 @@
 #include "SimG4Interface/ISimG4EventProviderTool.h"
 #include "FWCore/DataHandle.h"
 
+// Geant4
+#include "G4SystemOfUnits.hh"
+
 // Forward declarations
 // Geant4
 class G4Event;
@@ -44,17 +47,28 @@ public:
 private:
   /// Saves primary vertex and particle to FCC EDM (called if property saveEDM is set to true)
   StatusCode saveToEdm(const G4PrimaryVertex*, const G4PrimaryParticle*);
-  double m_energyMin;          ///< Minimum energy of the particles generated, set with energyMin
-  double m_energyMax;          ///< Maximum energy of the particles generated, set with energyMax
-  double m_etaMin;             ///< Minimum eta of the particles generated, set with etaMin
-  double m_etaMax;             ///< Maximum eta of the particles generated, set with etaMax
-  double m_phiMin;             ///< Minimum phi of the particles generated, set with phiMin
-  double m_phiMax;             ///< Maximum phi of the particles generated, set with phiMax
-  double m_vertexX;            ///< x position of the vertex associated with the particles generated, set with vertexX
-  double m_vertexY;            ///< y position of the vertex associated with the particles generated, set with vertexY
-  double m_vertexZ;            ///< z position of the vertex associated with the particles generated, set with vertexZ
-  std::string m_particleName;  ///< Name of the generated particle, set with particleName
-  bool m_saveEdm;              ///< Flag whether to save primary particle to EDM, set with saveEdm
+  /// Minimum energy of the particles generated, set with energyMin
+  Gaudi::Property<double> m_energyMin{this, "energyMin", 1 * CLHEP::GeV, "Minimum energy of generated particles"};
+  /// Maximum energy of the particles generated, set with energyMax
+  Gaudi::Property<double> m_energyMax{this, "energyMax", 1 * CLHEP::TeV, "Maximum energy of generated particles"};
+  /// Minimum eta of the particles generated, set with etaMin
+  Gaudi::Property<double> m_etaMin{this, "etaMin", -5., "Minimum eta of generated particles"};
+  /// Maximum eta of the particles generated, set with etaMax
+  Gaudi::Property<double> m_etaMax{this, "etaMax", 5, "Maximum eta of generated particles"};
+  /// Minimum phi of the particles generated, set with phiMin
+  Gaudi::Property<double> m_phiMin{this, "phiMin", 0., "Minimum phi of generated particles"};
+  /// Maximum phi of the particles generated, set with phiMax
+  Gaudi::Property<double> m_phiMax{this, "phiMax", 2 * M_PI, "Maximum phi of generated particles"};
+  /// x position of the vertex associated with the particles generated, set with vertexX
+  Gaudi::Property<double> m_vertexX{this, "vertexX", 0};
+  /// y position of the vertex associated with the particles generated, set with vertexY
+  Gaudi::Property<double> m_vertexY{this, "vertexY", 0};
+  /// z position of the vertex associated with the particles generated, set with vertexZ
+  Gaudi::Property<double> m_vertexZ{this, "vertexZ", 0};
+  /// Name of the generated particle, set with particleName
+  Gaudi::Property<std::string> m_particleName{this, "particleName", "geantino", "Name of the generated particles"};
+  /// Flag whether to save primary particle to EDM, set with saveEdm
+  Gaudi::Property<bool> m_saveEdm{this, "saveEdm", false};
   /// Handle for the genparticles to be written
   DataHandle<fcc::MCParticleCollection> m_genParticlesHandle;
   /// Handle for the genvertices to be written

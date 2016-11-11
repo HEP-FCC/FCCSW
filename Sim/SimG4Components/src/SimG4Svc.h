@@ -66,13 +66,13 @@ private:
   /// Handle for the magnetic field initialization
   ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool;
   /// Geant4 commands to be executed
-  std::vector<std::string> m_g4Commands;
+  Gaudi::Property<std::vector<std::string>> m_g4Commands{this, "G4commands"};
   /// Handles to the tools creating regions and fast simulation models
   /// to be replaced with the ToolHandleArray<ISimG4RegionTool> m_regionTools
   std::vector<ISimG4RegionTool*> m_regionTools;
   /// Names of the tools that create regions and fast simulation models
   /// to be deleted once the ToolHandleArray<ISimG4RegionTool> m_regionTools is in place
-  std::vector<std::string> m_regionToolNames;
+  Gaudi::Property<std::vector<std::string>> m_regionToolNames{this, "regions"};
 
   /// Run Manager
   sim::RunManager m_runManager;

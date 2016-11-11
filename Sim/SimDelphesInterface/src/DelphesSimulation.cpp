@@ -27,10 +27,13 @@
 DECLARE_COMPONENT(DelphesSimulation)
 
 DelphesSimulation::DelphesSimulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc) ,
+  GaudiAlgorithm(name, svcLoc),
   m_DelphesCard(),
   m_Delphes(nullptr),
   m_hepMCConverter(nullptr),
+  m_hepmcHandle("hepmc", Gaudi::DataHandle::Reader, this),
+  m_handleGenParticles("genParticles", Gaudi::DataHandle::Writer, this),
+  m_handleGenVertices("genVertices", Gaudi::DataHandle::Writer, this),
   m_eventCounter(0),
   m_outRootFile(nullptr),
   m_outRootFileName(""),
@@ -41,15 +44,9 @@ GaudiAlgorithm(name, svcLoc) ,
   m_stableParticles(nullptr),
   m_partons(nullptr)
 {
-  //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
-  declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
-  declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)");
-
-  declareInput("hepmc", m_hepmcHandle);
-  declareProperty("outputs", m_saveToolNames);
-
-  declareOutput("genParticles"      , m_handleGenParticles, "genParticles");
-  declareOutput("genVertices"       , m_handleGenVertices, "genVertices");
+  declareProperty("hepmc", m_hepmcHandle);
+  declareProperty("genParticles", m_handleGenParticles);
+  declareProperty("genVertices", m_handleGenVertices);
 }
 
 StatusCode DelphesSimulation::initialize() {
@@ -58,7 +55,7 @@ StatusCode DelphesSimulation::initialize() {
   if (m_outRootFileName!="") {
 
     info()  << "Opening ROOT output file: " << m_outRootFileName << endmsg;
-    m_outRootFile = new TFile(m_outRootFileName.c_str(), "RECREATE");
+    m_outRootFile = new TFile(m_outRootFileName.value().c_str(), "RECREATE");
     if (m_outRootFile->IsZombie()) {
 
       error() << "Can't open " << m_outRootFileName << endmsg;
@@ -68,7 +65,7 @@ StatusCode DelphesSimulation::initialize() {
 
   // Read Delphes configuration card (deleted by finalize())
   m_confReader = std::unique_ptr<ExRootConfReader>(new ExRootConfReader);
-  m_confReader->ReadFile(m_DelphesCard.c_str());
+  m_confReader->ReadFile(m_DelphesCard.value().c_str());
 
   // Instance of Delphes (deleted by finalize())
   m_Delphes = std::unique_ptr<Delphes>(new Delphes("Delphes"));

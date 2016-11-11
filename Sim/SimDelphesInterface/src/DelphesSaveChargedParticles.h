@@ -52,9 +52,9 @@ private:
   /// Handle for isolation tags
   DataHandle<fcc::TaggedParticleCollection> m_isolationTaggedParticles;
   /// Name of the Delphes array that should be converted
-  std::string m_delphesArrayName;
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"};
   /// Switch whether to save tag information
-  bool m_saveIso;
+  Gaudi::Property<bool> m_saveIso{this, "saveIsolation", true};
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVECHARGEDPARTICLES */

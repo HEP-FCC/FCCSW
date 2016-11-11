@@ -17,14 +17,12 @@
 DECLARE_TOOL_FACTORY(SimG4SaveTrackerHits)
 
 SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent),
+  m_trackHits("hits/trackerHits", Gaudi::DataHandle::Writer, this),
+  m_positionedTrackHits("hits/positionedTrackerHits", Gaudi::DataHandle::Writer, this) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("readoutNames", m_readoutNames);
-  declareOutput("positionedTrackHits", m_positionedTrackHits,"hits/positionedTrackerHits");
-  declareOutput("trackHits", m_trackHits,"hits/trackerHits");
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("positionedTrackHits", m_positionedTrackHits);
+  declareProperty("trackHits", m_trackHits);
 }
 
 SimG4SaveTrackerHits::~SimG4SaveTrackerHits() {}

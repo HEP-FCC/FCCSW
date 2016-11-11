@@ -68,7 +68,8 @@ public:
 private:
 
   // Delphes detector card to be read in
-  std::string            m_DelphesCard; //!< Name of Delphes tcl config file with detector and simulation parameters
+  /// Name of Delphes tcl config file with detector and simulation parameters
+  Gaudi::Property<std::string> m_DelphesCard{this, "DelphesCard", "", "Name of Delphes tcl config file with detector and simulation parameters"};
 
   // Delphes
   std::unique_ptr<Delphes>               m_Delphes;
@@ -93,11 +94,12 @@ private:
 
   // Delphes ROOT output
   TFile*                            m_outRootFile;
-  std::string                       m_outRootFileName; //!< Name of Delphes Root output file, if defined, the Delphes standard tree write out in addition to FCC output
+  /// Name of Delphes Root output file, if defined, the Delphes standard tree write out in addition to FCC output
+  Gaudi::Property<std::string>      m_outRootFileName{this, "ROOTOutputFile", "", "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)"};
   ExRootTreeWriter*                 m_treeWriter;
   ExRootTreeBranch*                 m_branchEvent;
   std::unique_ptr<ExRootConfReader> m_confReader;
-  std::vector<std::string> m_saveToolNames;
+  Gaudi::Property<std::vector<std::string>> m_saveToolNames{this, "outputs"};
   std::vector<IDelphesSaveOutputTool*> m_saveTools;
 
   // Arrays used by Delphes and internally for initial particles

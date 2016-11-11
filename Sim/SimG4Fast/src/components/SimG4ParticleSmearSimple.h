@@ -55,7 +55,7 @@ private:
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   Rndm::Numbers m_gauss;
   /// Constant resolution for the smearing (set by job options)
-  double m_sigma;
+  Gaudi::Property<double> m_sigma{this, "sigma", 0.01};
 };
 
 #endif /* SIMG4FAST_G4PARTICLESMEARSIMPLE_H */

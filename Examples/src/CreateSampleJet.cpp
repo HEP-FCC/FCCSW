@@ -4,10 +4,9 @@
 DECLARE_COMPONENT(CreateSampleJet)
 
 CreateSampleJet::CreateSampleJet(const std::string& name, ISvcLocator* svcLoc)
-    : GaudiAlgorithm(name, svcLoc)
-
+    : GaudiAlgorithm(name, svcLoc),
+      m_jethandle("podioJets", Gaudi::DataHandle::Writer, this)
 {
-  declareOutput("podioJets", m_jethandle);
 }
 
 StatusCode CreateSampleJet::initialize() {

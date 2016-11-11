@@ -53,13 +53,13 @@ private:
   /// Handle for positioned hits (output collection)
   DataHandle<fcc::PositionedCaloHitCollection> m_caloPositionedHits;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsNew"};
   /// Name of active layers for sampling calorimeter
-  std::string m_activeFieldName;
+  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer"};
   ///Name of active volumes (material name)
-  std::string m_activeVolumeName;
+  Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "LAr"};
  /// Number of volumes with same name as active layer (not to be counted as a layer, e.g. ECAL: bath)
-  unsigned m_numVolumesRemove;
+  Gaudi::Property<unsigned> m_numVolumesRemove{this, "numVolumesRemove", 1, "ECAL LAr specific: LAr bath in cryostat same material as active layer volume"};
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

@@ -15,14 +15,12 @@
 DECLARE_TOOL_FACTORY(DelphesSaveGenJets)
 
 DelphesSaveGenJets::DelphesSaveGenJets(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent),
+  m_genJets("genJets", Gaudi::DataHandle::Writer, this),
+  m_taggedGenJets("genJets", Gaudi::DataHandle::Writer, this) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareOutput("genJets", m_genJets);
-  declareOutput("genJetsFlavorTagged", m_taggedGenJets);
-  declareProperty("delphesArrayName", m_delphesArrayName);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("genJets", m_genJets);
+  declareProperty("genJetsFlavorTagged", m_taggedGenJets);
 }
 
 DelphesSaveGenJets::~DelphesSaveGenJets() {}
@@ -40,7 +38,7 @@ StatusCode DelphesSaveGenJets::saveOutput(Delphes& delphes, const fcc::MCParticl
   auto colGenJets = m_genJets.createAndPut();
   auto colTaggedJets = m_taggedGenJets.createAndPut();
 
-  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
+  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;

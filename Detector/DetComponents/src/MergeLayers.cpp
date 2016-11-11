@@ -16,14 +16,11 @@
 DECLARE_ALGORITHM_FACTORY(MergeLayers)
 
 MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc):
-GaudiAlgorithm(aName, aSvcLoc){
-  declareInput("inhits", m_inHits,"hits/caloInHits");
-  declareOutput("outhits", m_outHits,"hits/caloOutHits");
-  declareProperty("readout", m_readoutName);
-  declareProperty("identifier", m_idToMerge);
-  declareProperty("volumeName", m_volumeName = "");
-  declareProperty("merge", m_listToMerge);
-  declareProperty("debugPrint", m_debugPrint = 10);
+  GaudiAlgorithm(aName, aSvcLoc),
+  m_inHits("hits/caloInHits", Gaudi::DataHandle::Reader, this),
+  m_outHits("hits/caloOutHits", Gaudi::DataHandle::Writer, this) {
+  declareProperty("inhits", m_inHits);
+  declareProperty("outhits", m_outHits);
 }
 
 MergeLayers::~MergeLayers() {}

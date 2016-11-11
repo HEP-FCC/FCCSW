@@ -11,9 +11,10 @@ class ReadTestConsumer : public GaudiAlgorithm {
 
 public:
   ReadTestConsumer(const std::string& name, ISvcLocator* svcLoc) :
-    GaudiAlgorithm(name, svcLoc)
+    GaudiAlgorithm(name, svcLoc),
+    m_genParticles("allGenParticles", Gaudi::DataHandle::Reader, this)
   {
-    declareInput("genParticles", m_genParticles, "allGenParticles");
+    declareProperty("genParticles", m_genParticles);
   }
 
   ~ReadTestConsumer() {};

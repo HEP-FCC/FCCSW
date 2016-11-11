@@ -13,14 +13,10 @@
 DECLARE_TOOL_FACTORY(DelphesSaveMet)
 
 DelphesSaveMet::DelphesSaveMet(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent),
+  m_mets("missingEt", Gaudi::DataHandle::Writer, this) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareOutput("missingEt", m_mets);
-  declareProperty("delphesMETArrayName", m_delphesMETArrayName);
-  declareProperty("delphesSHTArrayName", m_delphesSHTArrayName);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("missingEt", m_mets);
 }
 
 DelphesSaveMet::~DelphesSaveMet() {}
@@ -36,8 +32,8 @@ StatusCode DelphesSaveMet::finalize() {
 StatusCode DelphesSaveMet::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& /*mcParticles*/) {
   // Create the collections
   auto colMET = m_mets.createAndPut();
-  const TObjArray* delphesMETColl = delphes.ImportArray(m_delphesMETArrayName.c_str());
-  const TObjArray* delphesSHTColl = delphes.ImportArray(m_delphesSHTArrayName.c_str());
+  const TObjArray* delphesMETColl = delphes.ImportArray(m_delphesMETArrayName.value().c_str());
+  const TObjArray* delphesSHTColl = delphes.ImportArray(m_delphesSHTArrayName.value().c_str());
   if (delphesSHTColl == nullptr || delphesMETColl == nullptr) {
     warning() << "Delphes collection " << m_delphesMETArrayName << " or " << m_delphesSHTArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;

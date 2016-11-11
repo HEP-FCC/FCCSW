@@ -16,14 +16,12 @@
 DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
 
 RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc):
-GaudiAlgorithm(aName, aSvcLoc)
+  GaudiAlgorithm(aName, aSvcLoc),
+  m_inHits("hits/positionedCaloHits", Gaudi::DataHandle::Reader, this),
+  m_outHits("hits/caloOutHits", Gaudi::DataHandle::Writer, this)
 {
-  declareInput("inhits", m_inHits,"hits/positionedCaloHits");
-  declareOutput("outhits", m_outHits,"hits/caloOutHits");
-  declareProperty("oldReadoutName", m_oldReadoutName = "");
-  declareProperty("oldSegmentationIds", m_oldIdentifiers);
-  declareProperty("newReadoutName", m_newReadoutName = "");
-  declareProperty("debugPrint", m_debugPrint = 10);
+  declareProperty("inhits", m_inHits);
+  declareProperty("outhits", m_outHits);
 }
 
 RedoSegmentation::~RedoSegmentation() {}

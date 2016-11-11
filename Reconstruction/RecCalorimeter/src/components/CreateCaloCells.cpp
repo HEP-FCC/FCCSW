@@ -16,31 +16,19 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
 CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc)
+  : GaudiAlgorithm(name, svcLoc),
+    m_mergeTool("MergeCaloHitsTool", this),
+    m_calibTool("CalibrateCaloHitsTool", this),
+    m_noiseTool("NoiseCaloCellsTool", this),
+    m_hits("hits", Gaudi::DataHandle::Reader, this),
+    m_cells("cells", Gaudi::DataHandle::Writer, this)
 {
-  declareInput("hits", m_hits,"hits");
-  declareOutput("cells", m_cells,"cells");
+  declareProperty("hits", m_hits);
+  declareProperty("cells", m_cells);
 
-  declareProperty("mergeTool",m_mergeTool);
-  declarePrivateTool(m_mergeTool,"MergeCaloHitsTool");
-  declareProperty("calibTool",m_calibTool);
-  declarePrivateTool(m_calibTool,"CalibrateCaloHitsTool");
-  declareProperty("noiseTool",m_noiseTool);
-  declarePrivateTool(m_noiseTool,"NoiseCaloCellsTool");
-
-  declareProperty("doCellCalibration",m_doCellCalibration=true);
-  declareProperty("addCellNoise",m_addCellNoise=true);
-  declareProperty("filterCellNoise",m_filterCellNoise=false);
-
-  //PhiEta segmentation required
-  declareProperty("readoutName", m_readoutName="ECalHitsPhiEta");
-  declareProperty("activeVolumeName", m_activeVolumeName="LAr");
-  //number of volumes with active material which are not readout
-  declareProperty("numVolumesRemove",m_numVolumesRemove=0);
-  declareProperty("activeFieldName", m_activeFieldName="active_layer");
-  declareProperty("fieldNames", m_fieldNames);
-  declareProperty("fieldValues", m_fieldValues);
-
+  declareProperty("mergeTool", m_mergeTool);
+  declareProperty("calibTool", m_calibTool);
+  declareProperty("noiseTool", m_noiseTool);
 }
 
 CreateCaloCells::~CreateCaloCells()

@@ -49,33 +49,33 @@ private:
   /// Pointer to the actual Geant 4 magnetic field
   sim::ConstantField* m_field;
   /// Switch to turn field on or off (default is off). Set with property FieldOn
-  bool m_fieldOn;
+  Gaudi::Property<bool> m_fieldOn{this, "FieldOn", false, "Switch to turn field off"};
   /// Minimum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property
   /// MinimumEpsilon
-  double m_minEps;
+  Gaudi::Property<double> m_minEps{this, "MinimumEpsilon", 0, "Minimum epsilon (see G4 documentation)"};
   /// Maximum epsilon (relative error of position / momentum, see G4 doc for more details). Set with property
   /// MaximumEpsilon
-  double m_maxEps;
+  Gaudi::Property<double> m_maxEps{this, "MaximumEpsilon", 0, "Maximum epsilon (see G4 documentation)"};
   /// This parameter governs accuracy of volume intersection, see G4 doc for more details. Set with property DeltaChord
-  double m_deltaChord;
+  Gaudi::Property<double> m_deltaChord{this, "DeltaChord", 0, "Missing distance for the chord finder"};
   /// This parameter is roughly the position error which is acceptable in an integration step, see G4 doc for details.
   /// Set with property DeltaOneStep
-  double m_deltaOneStep;
+  Gaudi::Property<double> m_deltaOneStep{this, "DeltaOneStep", 0, "Delta(one-step)"};
   /// Upper limit of the step size, see G4 doc for more details. Set with property MaximumStep
-  double m_maxStep;
+  Gaudi::Property<double> m_maxStep{this, "MaximumStep", 1. * m, "Maximum step length in field (see G4 documentation)";
   /// Name of the integration stepper, defaults to NystromRK4.
-  std::string m_integratorStepper;
+  Gaudi::Property<std::string> m_integratorStepper{this, "IntegratorStepper", "NystromRK4", "Integrator stepper name"};
 
   /// Field component in X direction. Set with property FieldComponentX
-  double m_fieldComponentX;
+  Gaudi::Property<double> m_fieldComponentX{this, "FieldComponentX", 0, "Field X component"};
   /// Field component in Y direction. Set with property FieldComponentY
-  double m_fieldComponentY;
+  Gaudi::Property<double> m_fieldComponentY{this, "FieldComponentY", 0, "Field Y component"};
   /// Field component in Z direction. Set with property FieldComponentZ
-  double m_fieldComponentZ;
+  Gaudi::Property<double> m_fieldComponentZ{this, "FieldComponentZ", -6 * tesla, "Field Z component"};
   /// Size of the field in radial direction. Set with property FieldRMax
-  double m_fieldRadMax;
+  Gaudi::Property<double> m_fieldRadMax{this, "FieldRMax", 6 * m, "Field max radius"};
   /// Size of the field along the beam line. Set with property FieldZMax
-  double m_fieldZMax;
+  Gaudi::Property<double> m_fieldZMax{this, "FieldZMax", 6. * m, "Field max Z"};
 };
 
 #endif

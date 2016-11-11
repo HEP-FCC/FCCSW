@@ -13,9 +13,9 @@
 DECLARE_ALGORITHM_FACTORY(TestNeighbours)
 
 TestNeighbours::TestNeighbours(const std::string& aName, ISvcLocator* aSvcLoc):
-  GaudiAlgorithm(aName, aSvcLoc) {
-  declareProperty("readout",m_readoutName);
-  declareInput("inhits", m_inHits,"hits/caloInHits");
+  GaudiAlgorithm(aName, aSvcLoc),
+  m_inHits("hits/caloInHits", Gaudi::DataHandle::Reader, this) {
+  declareProperty("inhits", m_inHits);
 }
 
 TestNeighbours::~TestNeighbours() {}

@@ -4,6 +4,7 @@
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/ToolHandle.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 // FCCSW
 #include "SimG4Interface/ISimG4RegionTool.h"
@@ -63,13 +64,13 @@ private:
   /// GFlash hit maker
   std::unique_ptr<GFlashHitMaker> m_hitMaker;
   /// Names of the parametrised volumes (set by job options)
-  std::vector<std::string> m_volumeNames;
+  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumesNames"};
   /// minimum energy of the electron (positron) that triggers the model
-  double m_minTriggerEnergy;
+  Gaudi::Property<double> m_minTriggerEnergy{this, "minEnergy", 0.1*Gaudi::Units::GeV};
   /// maximum energy of the electron (positron) that triggers the model
-  double m_maxTriggerEnergy;
+  Gaudi::Property<double> m_maxTriggerEnergy{this, "minEnergy", 10*Gaudi::Units::TeV};
   /// threshold below which the electrons (positrons) are killed
-  double m_energyToKill;
+  Gaudi::Property<double> m_energyToKill{this, "minEnergy", 0.1*Gaudi::Units::GeV};
 };
 
 #endif /* SIMG4FAST_SIMG4FASTSIMCALORIMETERREGION_H */

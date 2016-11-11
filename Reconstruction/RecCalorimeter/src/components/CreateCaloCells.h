@@ -59,27 +59,27 @@ private:
   ToolHandle<INoiseCaloCellsTool> m_noiseTool;
 
   /// Calibrate to EM scale?
-  bool m_doCellCalibration;
+  Gaudi::Property<bool> m_doCellCalibration{this, "doCellCalibration", true, "Calibrate to EM scale?"};
   /// Add noise to cells?
-  bool m_addCellNoise;
+  Gaudi::Property<bool> m_addCellNoise{this, "addCellNoise", true, "Add noise to cells?"};
   /// Save only cells with energy above threshold?
-  bool m_filterCellNoise;
+  Gaudi::Property<bool> m_filterCellNoise{this, "filterCellNoise", false, "Save only cells with energy above threshold?"};
   /// Handle for calo hits (input collection)
   DataHandle<fcc::CaloHitCollection> m_hits;
   /// Handle for calo cells (output collection)
   DataHandle<fcc::CaloHitCollection> m_cells;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active volumes (material name)
-  std::string m_activeVolumeName;
+  Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "LAr", "Name of the active volumes (material name)"};
   /// Number of volumes with active material which are not readout(e.g. ECAL: LAr bath in cryostat)
-  unsigned m_numVolumesRemove;
+  Gaudi::Property<unsigned> m_numVolumesRemove{this, "numVolumesRemove", 0, "Number of volumes with active material which are not readout"};
   /// Name of active layers for sampling calorimeter
-  std::string m_activeFieldName;
+  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer", "Name of active layers for sampling calorimeter"};
   /// Name of the fields describing the segmented volume
-  std::vector<std::string> m_fieldNames;
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames", {}, "Name of the fields describing the segmented volume"};
   /// Values of the fields describing the segmented volume
-  std::vector<int> m_fieldValues;
+  Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues", {}, "Values of the fields describing the segmented volume"};
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

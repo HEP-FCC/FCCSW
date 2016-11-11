@@ -29,34 +29,8 @@ DECLARE_COMPONENT(SimG4ConstantMagneticFieldTool)
 SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string& type, const std::string& name,
                                                          const IInterface* parent)
     : GaudiTool(type, name, parent),
-      m_field(nullptr),
-      m_fieldOn(false),
-      m_minEps(0),
-      m_maxEps(0),
-      m_deltaChord(0),
-      m_deltaOneStep(0),
-      m_maxStep(1. * m),
-      m_integratorStepper("NystromRK4"),
-      m_fieldComponentX(0),
-      m_fieldComponentY(0),
-      m_fieldComponentZ(-6. * tesla),
-      m_fieldRadMax(6 * m),
-      m_fieldZMax(6. * m) {
+      m_field(nullptr) {
   declareInterface<ISimG4MagneticFieldTool>(this);
-
-  declareProperty("FieldOn", m_fieldOn, "Switch to turn field off");
-  declareProperty("DeltaChord", m_deltaChord, "Missing distance for the chord finder");
-  declareProperty("DeltaOneStep", m_deltaOneStep, "Delta(one-step)");
-  declareProperty("MinimumEpsilon", m_minEps, "Minimum epsilon (see G4 documentation)");
-  declareProperty("MaximumEpsilon", m_maxEps, "Maximum epsilon (see G4 documentation)");
-  declareProperty("MaximumStep", m_maxStep, "Maximum step length in field (see G4 documentation)");
-
-  declareProperty("IntegratorStepper", m_integratorStepper = "NystromRK4", "Integrator stepper name");
-  declareProperty("FieldComponentX", m_fieldComponentX, "Field X component");
-  declareProperty("FieldComponentY", m_fieldComponentY, "Field Y component");
-  declareProperty("FieldComponentZ", m_fieldComponentZ, "Field Z component");
-  declareProperty("FieldRMax", m_fieldRadMax, "Field max radius");
-  declareProperty("FieldZMax", m_fieldZMax, "field max Z");
 }
 
 SimG4ConstantMagneticFieldTool::~SimG4ConstantMagneticFieldTool() {

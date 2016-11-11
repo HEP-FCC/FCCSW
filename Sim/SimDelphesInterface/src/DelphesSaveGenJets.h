@@ -57,7 +57,7 @@ private:
   /// Handle to the jets including additional flavour tag information
   DataHandle<fcc::TaggedGenJetCollection> m_taggedGenJets;
   /// Name of the Delphes array that should be converted
-  std::string m_delphesArrayName;
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"};
 
 };
 

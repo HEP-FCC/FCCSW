@@ -11,7 +11,6 @@ DECLARE_TOOL_FACTORY(SimG4GdmlTestDetector)
 SimG4GdmlTestDetector::SimG4GdmlTestDetector(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   AlgTool(aType, aName, aParent) {
   declareInterface<ISimG4DetectorConstruction>(this);
-  declareProperty("gdml", m_gdmlFile);
 }
 
 SimG4GdmlTestDetector::~SimG4GdmlTestDetector() {}

@@ -61,7 +61,7 @@ public:
   std::vector<ISimG4SaveOutputTool*> m_saveTools;
   /// Names for the saving tools
   /// to be deleted once the ToolHandleArray<ISimG4SaveOutputTool> m_saveTools is in place
-  std::vector<std::string> m_saveToolNames;
+  Gaudi::Property<std::vector<std::string>> m_saveToolNames{this, "outputs"};
   /// Handle for tool that creates the G4Event
   ToolHandle<ISimG4EventProviderTool> m_eventTool;
 };

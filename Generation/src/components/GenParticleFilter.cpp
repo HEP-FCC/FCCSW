@@ -7,11 +7,13 @@
 DECLARE_COMPONENT(GenParticleFilter)
 
 GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc)
+  GaudiAlgorithm(name, svcLoc),
+  m_iGenpHandle("AllGenParticles", Gaudi::DataHandle::Reader, this),
+  m_oGenpHandle("FilteredGenParticles", Gaudi::DataHandle::Writer, this)
+
 {
-  declareProperty("accept", m_accept, {1});
-  declareInput("genparticles", m_iGenpHandle);
-  declareOutput("genparticles", m_oGenpHandle);
+  declareProperty("genparticles", m_iGenpHandle);
+  declareProperty("genparticles", m_oGenpHandle);
 }
 
 StatusCode GenParticleFilter::initialize() {

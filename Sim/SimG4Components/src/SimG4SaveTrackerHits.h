@@ -54,7 +54,7 @@ private:
   /// Handle for tracker hits including position information
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
   /// Name of the readouts (hits collections) to save
-  std::vector<std::string> m_readoutNames;
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames"};
 
 };
 

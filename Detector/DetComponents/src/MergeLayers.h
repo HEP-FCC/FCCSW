@@ -59,14 +59,14 @@ private:
   // Handle to the detector ID descriptor
   DD4hep::Geometry::IDDescriptor m_descriptor;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readout"};
   /// Identifier to be merged
-  std::string m_idToMerge;
+  Gaudi::Property<std::string> m_idToMerge{this, "identifier"};
   /// Name (or its part) of the volume
-  std::string m_volumeName;
+  Gaudi::Property<std::string> m_volumeName{this, "volumeName", ""};
   /// List with number of adjacent cells to be merged
-  std::vector<uint> m_listToMerge;
+  Gaudi::Property<std::vector<uint>> m_listToMerge{this, "merge"};
   /// Limit of debug printing
-  uint m_debugPrint;
+  Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10};
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

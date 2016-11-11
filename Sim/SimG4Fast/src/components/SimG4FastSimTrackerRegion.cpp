@@ -11,14 +11,10 @@
 DECLARE_TOOL_FACTORY(SimG4FastSimTrackerRegion)
 
 SimG4FastSimTrackerRegion::SimG4FastSimTrackerRegion(const std::string& type, const std::string& name, const IInterface* parent) :
-GaudiTool(type, name, parent) {
+  GaudiTool(type, name, parent),
+  m_smearTool("SimG4ParticleSmearSimple", this, true) {
   declareInterface<ISimG4RegionTool>(this);
   declareProperty("smearing", m_smearTool);
-  declarePrivateTool(m_smearTool, "SimG4ParticleSmearSimple", true);
-  declareProperty("volumeNames", m_volumeNames);
-  declareProperty("minMomentum", m_minMomentum = 0);
-  declareProperty("maxMomentum", m_maxMomentum = 0);
-  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4FastSimTrackerRegion::~SimG4FastSimTrackerRegion() {}

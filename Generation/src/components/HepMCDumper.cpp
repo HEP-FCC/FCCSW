@@ -3,9 +3,10 @@
 DECLARE_COMPONENT(HepMCDumper)
 
 HepMCDumper::HepMCDumper(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc)
+  GaudiAlgorithm(name, svcLoc),
+  m_hepmchandle("HepMC", Gaudi::DataHandle::Reader, this)
 {
-  declareInput("hepmc", m_hepmchandle);
+  declareProperty("hepmc", m_hepmchandle);
 }
 
 StatusCode HepMCDumper::initialize() {

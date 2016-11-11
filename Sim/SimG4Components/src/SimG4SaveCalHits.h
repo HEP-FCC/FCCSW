@@ -54,7 +54,7 @@ private:
   /// Handle for calo hits
   DataHandle<fcc::CaloHitCollection> m_caloHits;
   /// Name of the readouts (hits collections) to save
-  std::vector<std::string> m_readoutNames;
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames"};
 
 };
 

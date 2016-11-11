@@ -45,9 +45,9 @@ private:
   /// Handle the METs to be saved
   DataHandle<fcc::METCollection> m_mets;
   /// Name of the Delphes MET array that should be converted
-  std::string m_delphesMETArrayName;
+  Gaudi::Property<std::string> m_delphesMETArrayName{this, "delphesMETArrayName"};
   /// Name of the Delphes SHT array that should be converted
-  std::string m_delphesSHTArrayName;
+  Gaudi::Property<std::string> m_delphesSHTArrayName{this, "delphesSHTArrayName"};
 
 };
 

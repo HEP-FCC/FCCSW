@@ -48,7 +48,7 @@ private:
   /// Handle for calo hits
   DataHandle<fcc::CaloHitCollection> m_caloHits;
   /// Name of the calorimeter type (ECal/HCal)
-  std::string m_calType;
+  Gaudi::Property<std::string> m_calType{this, "caloType"};
 
 };
 

@@ -15,13 +15,18 @@
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc), m_pythiaSignal(nullptr), m_parfile(), m_nAbort(0), m_iAbort(0), m_iEvent(0) {
-
-  declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
-  declareOutput(  "hepmc"   , m_hepmchandle);
-
+  GaudiAlgorithm(name, svcLoc),
+  m_pythiaSignal(nullptr),
+  m_pythiaPileup(nullptr),
+  m_pileUpTool("ConstPileUp/PileUpTool", this),
+  m_HepMCMergeTool(),
+  m_vertexSmearingTool(),
+  m_hepmchandle("HepMC", Gaudi::DataHandle::Reader, this),
+  m_nAbort(0),
+  m_iAbort(0),
+  m_iEvent(0) {
+  declareProperty("hepmc", m_hepmchandle);
   declareProperty("PileUpTool", m_pileUpTool);
-  declarePrivateTool(m_pileUpTool, "ConstPileUp/PileUpTool");
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -39,11 +44,11 @@ StatusCode PythiaInterface::initialize() {
   m_pythiaPileup = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
 
   // Read Pythia configuration files
-  m_pythiaSignal->readFile( m_parfile.c_str() );
+  m_pythiaSignal->readFile( m_parfile.value().c_str() );
   // do not bother with pileup configuration if no pileup
   if (0. < m_pileUpTool->getMeanPileUp()) {
     if (m_pileUpTool->getFilename().empty()) {
-     return Error ( "Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!" );  
+     return Error ( "Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!" );
     }
     m_pythiaPileup->readFile(m_pileUpTool->getFilename().c_str());
   }

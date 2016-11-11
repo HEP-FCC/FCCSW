@@ -36,7 +36,7 @@ public:
 
 private:
   /// Material name of the homogenous calorimeter (to be searched for in Geant NIST table)
-  std::string m_material;
+  Gaudi::Property<std::string> m_material{this, "material", ""};
 
 };
 

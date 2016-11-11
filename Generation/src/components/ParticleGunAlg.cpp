@@ -23,15 +23,16 @@ DECLARE_ALGORITHM_FACTORY( ParticleGunAlg )
 ParticleGunAlg::ParticleGunAlg(
   const std::string& name,
   ISvcLocator* pSvcLocator)
-  : GaudiAlgorithm ( name , pSvcLocator ) {
+  : GaudiAlgorithm ( name , pSvcLocator ),
+    m_particleGunTool("FlatSmearVertex/VertexSmearingToolPGun", this),
+    m_vertexSmearingTool("FlatSmearVertex/VertexSmearingToolPGun", this),
+    m_hepmchandle("hepmc", Gaudi::DataHandle::Writer, this) {
   // Generation Method
-  declareProperty ( "ParticleGunTool" ,
+  declareProperty ( "ParticleGunTool",
                     m_particleGunTool ) ;
   declareProperty ( "VertexSmearingToolPGun" ,
                      m_vertexSmearingTool ) ;
-  declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingToolPGun");
-  declarePrivateTool(m_particleGunTool, "MomentumRangeParticleGun/ParticleGunTool");
-  declareOutput("hepmc", m_hepmchandle);
+  declareProperty("hepmc", m_hepmchandle);
 }
 
 /// Destructor

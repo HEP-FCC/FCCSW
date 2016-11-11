@@ -58,7 +58,7 @@ private:
   /// Handle to the tau tags to be saved
   DataHandle<fcc::TaggedJetCollection> m_jetsTauTagged;
   /// Name of the Delphes array that should be converted
-  std::string m_delphesArrayName;
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"};
 
 };
 

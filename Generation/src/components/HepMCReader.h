@@ -43,11 +43,11 @@ public:
 
 private:
   /// the name of the input file
-  std::string m_filename;
+  Gaudi::Property<std::string> m_filename{this, "Filename", "", "Name of the HepMC file to read"};
   /// Tools to handle input from HepMC-file
   ToolHandle<IHepMCFileReaderTool> m_signalFileReader;
   ToolHandle<IHepMCFileReaderTool> m_pileupFileReader;
-  
+
   // Pileup Interface Tool
   ToolHandle<IPileUpTool> m_pileUpTool;
   /// Tool to merge HepMC events

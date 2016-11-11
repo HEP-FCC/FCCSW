@@ -12,7 +12,6 @@
 
 // Geant4
 #include "G4Event.hh"
-#include "G4SystemOfUnits.hh"
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 
@@ -26,21 +25,12 @@ DECLARE_COMPONENT(SimG4SingleParticleGeneratorTool)
 SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::string& type,
                                                              const std::string& nam,
                                                              const IInterface* parent)
-    : GaudiTool(type, nam, parent) {
+    : GaudiTool(type, nam, parent),
+      m_genParticlesHandle("GenParticles", Gaudi::DataHandle::Writer, this),
+      m_genVerticesHandle("GenVertices", Gaudi::DataHandle::Writer, this) {
   declareInterface<ISimG4EventProviderTool>(this);
-  declareProperty("particleName", m_particleName = "geantino", "Name of the generated particles");
-  declareProperty("energyMin", m_energyMin = 1 * CLHEP::GeV, "Minimum energy of generated particles");
-  declareProperty("energyMax", m_energyMax = 1 * CLHEP::TeV, "Maximum energy of generated particles");
-  declareProperty("etaMin", m_etaMin = -5., "Minimum eta of generated particles");
-  declareProperty("etaMax", m_etaMax = 5, "Maximum eta of generated particles");
-  declareProperty("phiMin", m_phiMin = 0., "Minimum phi of generated particles");
-  declareProperty("phiMax", m_phiMax = 2 * M_PI, "Maximum phi of generated particles");
-  declareProperty("vertexX", m_vertexX = 0);
-  declareProperty("vertexY", m_vertexY = 0);
-  declareProperty("vertexZ", m_vertexZ = 0);
-  declareProperty("saveEdm", m_saveEdm = false);
-  declareOutput("genParticles", m_genParticlesHandle, "GenParticles");
-  declareOutput("genVertices", m_genVerticesHandle, "GenVertices");
+  declareProperty("genParticles", m_genParticlesHandle);
+  declareProperty("genVertices", m_genVerticesHandle);
 }
 
 SimG4SingleParticleGeneratorTool::~SimG4SingleParticleGeneratorTool() {}
@@ -49,7 +39,7 @@ StatusCode SimG4SingleParticleGeneratorTool::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  if(!G4ParticleTable::GetParticleTable()->contains(m_particleName)) {
+  if(!G4ParticleTable::GetParticleTable()->contains(m_particleName.value())) {
     error()<<"Particle "<<m_particleName<<" cannot be found in G4ParticleTable"<<endmsg;
     return StatusCode::FAILURE;
   }
@@ -71,7 +61,7 @@ StatusCode SimG4SingleParticleGeneratorTool::initialize() {
 G4Event* SimG4SingleParticleGeneratorTool::g4Event() {
   auto theEvent = new G4Event();
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4ParticleDefinition* particleDef = particleTable->FindParticle(m_particleName);
+  G4ParticleDefinition* particleDef = particleTable->FindParticle(m_particleName.value());
   debug() << "particle definition " << particleDef << " +++ " << m_particleName << endmsg;
   G4double mass = particleDef->GetPDGMass();
   debug() << "particle mass = " << mass << endmsg;

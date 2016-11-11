@@ -14,16 +14,14 @@
 DECLARE_TOOL_FACTORY(DelphesSaveNeutralParticles)
 
 DelphesSaveNeutralParticles::DelphesSaveNeutralParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent),
+  m_particles("particles", Gaudi::DataHandle::Writer, this),
+  m_mcAssociations("mcAssociations", Gaudi::DataHandle::Writer, this),
+  m_isolationTags("isolationTags", Gaudi::DataHandle::Writer, this) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareOutput("particles", m_particles);
-  declareOutput("mcAssociations", m_mcAssociations);
-  declareOutput("isolationTags", m_isolationTags);
-  declareProperty("delphesArrayName", m_delphesArrayName);
-  declareProperty("saveIsolation", m_saveIso=true);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("particles", m_particles);
+  declareProperty("mcAssociations", m_mcAssociations);
+  declareProperty("isolationTags", m_isolationTags);
 }
 
 DelphesSaveNeutralParticles::~DelphesSaveNeutralParticles() {}
@@ -46,7 +44,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     colITags = m_isolationTags.createAndPut();
   }
 
-  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
+  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;

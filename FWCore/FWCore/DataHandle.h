@@ -22,13 +22,14 @@ public:
   DataHandle();
 
   /// Initialises mother class
-  DataHandle(DataObjectDescriptor & descriptor,
-                   IAlgorithm* fatherAlg);
+  DataHandle(DataObjID & descriptor,
+             Gaudi::DataHandle::Mode a,
+             IDataHandleHolder* fatherAlg);
 
-  /// Initialises mother class
-  DataHandle(DataObjectDescriptor & descriptor,
-                   IAlgTool* fatherAlg);
 
+  DataHandle(const std::string& k,
+             Gaudi::DataHandle::Mode a,
+             IDataHandleHolder* fatherAlg);
   /**
    * Retrieve object from transient data store
    */
@@ -43,34 +44,21 @@ public:
   * Create and register object in transient store
   */
   T* createAndPut();
-
 private:
-  /// FIXME: not needed in Gaudi v27r1+ anymore, remove once we migrate.
-  // DetaObjectHandle has this as a protected member and gets it from fatherAlg / fatherTool
-  ServiceHandle<IDataProviderSvc> m_eds;
-  /// FIXME: This is also temporary (see m_eds)
   bool m_isGoodType;
   bool m_isCollection;
-
 };
 
-// FIXME: These won't be needed once we have migrated either:
 //---------------------------------------------------------------------------
 template<typename T>
-DataHandle<T>::DataHandle() : m_eds("EventDataSvc", "DataHandle") {
+DataHandle<T>::DataHandle(DataObjID & descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg) :
+    DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg) {
 }
 //---------------------------------------------------------------------------
 template<typename T>
-DataHandle<T>::DataHandle(DataObjectDescriptor & descriptor, IAlgorithm* fatherAlg) :
-    DataObjectHandle<DataWrapper<T>>(descriptor, fatherAlg),
-    m_eds("EventDataSvc", "DataHandle") {
+DataHandle<T>::DataHandle(const std::string& descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg) :
+    DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg) {
 }
-template<typename T>
-DataHandle<T>::DataHandle(DataObjectDescriptor & descriptor, IAlgTool* fatherTool) :
-    DataObjectHandle<DataWrapper<T>>(descriptor, fatherTool),
-    m_eds("EventDataSvc", "DataHandle") {
-}
-
 
 /**
  * Try to retrieve from the transient store. If the retrieval succeded and
@@ -82,15 +70,9 @@ DataHandle<T>::DataHandle(DataObjectDescriptor & descriptor, IAlgTool* fatherToo
 template<typename T>
 const T* DataHandle<T>::get() {
   DataObject* dataObjectp = nullptr;
-  // once we migrate to Gaudi v27r1+ replace with this:
-  // DataObjectHandle<DataWrapper<T>>::m_EDS->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), 
-  //    dataObjectp);
-  auto sc = DataHandle<T>::m_eds->retrieveObject(DataObjectHandle<DataWrapper<T> >::dataProductName(), dataObjectp);
-  if (sc.isFailure() && !DataObjectHandle<DataWrapper<T>>::m_descriptor->alternativeAddresses().empty()) {
-    for(uint i = 0; i < DataObjectHandle<DataWrapper<T>>::m_descriptor->alternativeAddresses().size() && sc.isFailure(); ++i){
-      sc = m_eds->retrieveObject(DataObjectHandle<DataWrapper<T>>::m_descriptor->alternativeAddresses()[i], dataObjectp);
-    }
-  }
+  auto sc = DataObjectHandle<DataWrapper<T>>::m_EDS->retrieveObject(DataObjectHandle<DataWrapper<T> >::toString(),
+     dataObjectp);
+
 
   if (LIKELY(sc.isSuccess())) {
     if (UNLIKELY(!m_isGoodType && !m_isCollection)) {
@@ -113,12 +95,12 @@ const T* DataHandle<T>::get() {
       DataObjectHandle<DataWrapper<T> >::setRead();
       return reinterpret_cast<const T*>(tmp->collectionBase());
     } else {
-      std::string errorMsg("The type provided for "+ DataObjectHandle<DataWrapper<T> >::dataProductName()
+      std::string errorMsg("The type provided for "+ DataObjectHandle<DataWrapper<T> >::toString()
                      + " is different from the one of the object in the store.");
       throw GaudiException(errorMsg, "wrong product type", StatusCode::FAILURE);
     }
   }
-  std::string msg("Could not retrieve product " + DataObjectHandle<DataWrapper<T>>::dataProductName());
+  std::string msg("Could not retrieve product " + DataObjectHandle<DataWrapper<T>>::toString());
   throw GaudiException(msg, "wrong product name", StatusCode::FAILURE);
 }
 
@@ -142,6 +124,20 @@ T* DataHandle<T>::createAndPut () {
     T *objectp = new T();
     this->put(objectp);
     return objectp;
+}
+
+// temporary to allow property declaration
+namespace Gaudi
+{
+  template <class T>
+  class Property<::DataHandle<T>&> : public ::DataObjectHandleProperty
+  {
+  public:
+    Property( const std::string& name, ::DataHandle<T>& value ) : ::DataObjectHandleProperty( name, value ) {}
+
+    /// virtual Destructor
+    virtual ~Property() {}
+  };
 }
 
 #endif

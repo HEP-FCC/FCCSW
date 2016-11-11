@@ -14,19 +14,13 @@ DECLARE_COMPONENT(HepMCJetClustering)
 
 HepMCJetClustering::HepMCJetClustering(const std::string& name, ISvcLocator* svcLoc):
   GaudiAlgorithm(name, svcLoc)
+	, m_hepmchandle("HepMC", Gaudi::DataHandle::Reader, this)
+	, m_jets("GenJets", Gaudi::DataHandle::Writer, this)
   , m_fj_jetAlgorithm(JetAlgorithm::undefined_jet_algorithm)
   , m_fj_recombinationScheme(RecombinationScheme::E_scheme)
 {
-  declareInput("hepmc", m_hepmchandle);
-  declareOutput("jets", m_jets);
-
-  declareProperty("JetAlgorithm", m_jetAlgorithm = "kt", "the Jet Algorithm to use [kt, antikt, cambridge]");
-  declareProperty("ConeRadius", m_R = 1.0, "cone radius");
-  declareProperty("RecominbationScheme", m_recombinationScheme = "E", "the Recombination Scheme to use [E, pt, et]");
-  declareProperty("InclusiveJets", m_inclusiveJets = true, "use inclusive or exclusive jets");
-  declareProperty("PtMin", m_ptMin = 0.0, "Minimum pT of jets for inclusiveJets");
-  declareProperty("Dcut", m_dcut = -1, "dcut for exclusive jets");
-  declareProperty("NJets", m_njets = -1.0, "Number of jets for exclusive jets");
+  declareProperty("hepmc", m_hepmchandle);
+  declareProperty("jets", m_jets);
 }
 
 StatusCode HepMCJetClustering::initialize() {

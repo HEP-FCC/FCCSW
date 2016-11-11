@@ -69,16 +69,16 @@ private:
   /// New segmentation
   DD4hep::DDSegmentation::Segmentation* m_segmentation;
   /// Name of the detector readout used in simulation
-  std::string m_oldReadoutName;
+  Gaudi::Property<std::string> m_oldReadoutName{this, "oldReadoutName", ""};
   /// Name of the new detector readout
-  std::string m_newReadoutName;
+  Gaudi::Property<std::string> m_newReadoutName{this, "newReadoutName", ""};
   /// Old bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
-  std::vector<std::string> m_oldIdentifiers;
+  Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{this, "newSegmentationIds"};
   /// Detector fields that are going to be rewritten
   std::vector<std::string> m_detectorIdentifiers;
   /// Limit of debug printing
-  uint m_debugPrint;
+  Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10};
 };
 #endif /* DETCOMPONENTS_REDOSEGMENTATION_H */

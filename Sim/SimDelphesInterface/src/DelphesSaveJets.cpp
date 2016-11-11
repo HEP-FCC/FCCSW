@@ -15,19 +15,20 @@
 DECLARE_TOOL_FACTORY(DelphesSaveJets)
 
 DelphesSaveJets::DelphesSaveJets(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent) {
+  GaudiTool(aType, aName, aParent),
+  m_jets("jets", Gaudi::DataHandle::Writer, this),
+  m_jetParticles("jetConstituents", Gaudi::DataHandle::Writer, this),
+  m_jetsFlavorTagged("jetsFlavorTagged", Gaudi::DataHandle::Writer, this),
+  m_jetsBTagged("jetsBTagged", Gaudi::DataHandle::Writer, this),
+  m_jetsCTagged("jetsCTagged", Gaudi::DataHandle::Writer, this),
+  m_jetsTauTagged("jetsTauTagged", Gaudi::DataHandle::Writer, this) {
   declareInterface<IDelphesSaveOutputTool>(this);
-
-  declareOutput("jets", m_jets);
-  declareOutput("jetConstituents", m_jetParticles);
-  declareOutput("jetsFlavorTagged", m_jetsFlavorTagged);
-  declareOutput("jetsBTagged", m_jetsBTagged);
-  declareOutput("jetsCTagged", m_jetsCTagged);
-  declareOutput("jetsTauTagged", m_jetsTauTagged);
-  declareProperty("delphesArrayName", m_delphesArrayName);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("jets", m_jets);
+  declareProperty("jetConstituents", m_jetParticles);
+  declareProperty("jetsFlavorTagged", m_jetsFlavorTagged);
+  declareProperty("jetsBTagged", m_jetsBTagged);
+  declareProperty("jetsCTagged", m_jetsCTagged);
+  declareProperty("jetsTauTagged", m_jetsTauTagged);
 }
 
 DelphesSaveJets::~DelphesSaveJets() {}
@@ -50,7 +51,7 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
   auto colJetParts = m_jetParticles.createAndPut();
 
 
-  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
+  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;

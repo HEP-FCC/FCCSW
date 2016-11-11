@@ -31,8 +31,8 @@ public:
   /// Finalize.
   virtual StatusCode finalize();
 private:
-  /// Statuses to accept
-  std::vector<unsigned> m_accept;
+  /// Particle statuses to accept
+  Gaudi::Property<std::vector<unsigned>> m_accept{this, "accept", {1}, "Particle statuses to accept"};
   /// Handle for the ParticleCollection to be read
   DataHandle<fcc::MCParticleCollection> m_iGenpHandle;
   /// Handle for the genparticles to be written

@@ -18,10 +18,9 @@ DECLARE_COMPONENT(SimG4PrimariesFromEdmTool)
 SimG4PrimariesFromEdmTool::SimG4PrimariesFromEdmTool(const std::string& type,
                                                const std::string& name,
                                                const IInterface* parent)
-    : GaudiTool(type, name, parent) {
-  declareInput("genParticles", m_genParticles, "allGenParticles");
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+    : GaudiTool(type, name, parent),
+      m_genParticles("allGenParticles", Gaudi::DataHandle::Reader, this) {
+  declareProperty("genParticles", m_genParticles);
 }
 
 SimG4PrimariesFromEdmTool::~SimG4PrimariesFromEdmTool() {}

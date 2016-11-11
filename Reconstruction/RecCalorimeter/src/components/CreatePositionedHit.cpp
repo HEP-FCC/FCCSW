@@ -14,15 +14,12 @@
 DECLARE_ALGORITHM_FACTORY(CreatePositionedHit)
 
 CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc)
+  : GaudiAlgorithm(name, svcLoc),
+    m_caloCells("caloCells", Gaudi::DataHandle::Reader, this),
+    m_caloPositionedHits("caloPositionedHits", Gaudi::DataHandle::Writer, this)
 {
-  declareInput("caloCells", m_caloCells,"caloCells");
-  declareOutput("caloPositionedHits", m_caloPositionedHits,"caloPositionedHits");
-  declareProperty("readoutName", m_readoutName="ECalHitsNew");
-  declareProperty("activeFieldName", m_activeFieldName="active_layer");
-  declareProperty("activeVolumeName", m_activeVolumeName="LAr");
-  //ECAL LAr specific: LAr bath in cryostat same material as active layer volume
-  declareProperty("numVolumesRemove",m_numVolumesRemove=1);
+  declareProperty("caloCells", m_caloCells);
+  declareProperty("caloPositionedHits", m_caloPositionedHits);
 }
 
 CreatePositionedHit::~CreatePositionedHit()

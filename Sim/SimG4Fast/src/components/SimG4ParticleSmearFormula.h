@@ -61,7 +61,7 @@ private:
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)
   IRndmGen* m_gauss;
   /// string defining a TFormula representing resolution momentum-dependent for the smearing (set by job options)
-  std::string m_resolutionMomentumStr;
+  Gaudi::Property<std::string> m_resolutionMomentumStr{this, "resolutionMomentum", ""};
 };
 
 #endif /* SIMG4FAST_G4PARTICLESMEARSIMPLE_H */

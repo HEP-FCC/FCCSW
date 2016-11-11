@@ -67,13 +67,13 @@ private:
   /// Fast simulation (parametrisation) models
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
   /// Names of the parametrised volumes (set by job options)
-  std::vector<std::string> m_volumeNames;
+  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames"};
   /// minimum momentum that triggers the fast sim model (set by job options)
-  double m_minMomentum;
+  Gaudi::Property<double> m_minMomentum{this, "minMomentum", 0};
   /// maximum momentum that triggers the fast sim model (set by job options)
-  double m_maxMomentum;
+  Gaudi::Property<double> m_maxMomentum{this, "maxMomentum", 0};
   /// maximum pseudorapidity (set by job options)
-  double m_maxEta;
+  Gaudi::Property<double> m_maxEta{this, "maxEta", 0};
 
 };
 
