@@ -46,7 +46,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   sensDet.setType("SimpleCalorimeterSD");
 
   // Add structural support made of steel inside of HCal
-  xml_comp_t xFacePlate = xmlElement.child("face_plate");
+  xml_comp_t xFacePlate = xmlElement.child(_Unicode("face_plate"));
   double dRhoFacePlate = xFacePlate.thickness();
   double sensitiveBarrelRmin = dimensions.rmin() + dRhoFacePlate;
   DetElement facePlate("facePlate", 0);
@@ -58,7 +58,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
 
   // Add structural support made of steel at both ends of HCal
-  xml_comp_t xEndPlate = xmlElement.child("end_plate");
+  xml_comp_t xEndPlate = xmlElement.child(_Unicode("end_plate"));
   double dZEndPlate = xEndPlate.thickness();
 
   DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
@@ -77,7 +77,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
 
   // Hard-coded assumption that we have two different sequences for the modules
-  std::vector<xml_comp_t> sequences = {xmlElement.child("sequence_a"), xmlElement.child("sequence_b")};
+  std::vector<xml_comp_t> sequences = {xmlElement.child(_Unicode("sequence_a")), xmlElement.child(_Unicode("sequence_b"))};
   // NOTE: This assumes that both have the same dimensions!
   Dimension moduleDimensions(sequences[0].dimensions());
   double dzModule = moduleDimensions.dz();

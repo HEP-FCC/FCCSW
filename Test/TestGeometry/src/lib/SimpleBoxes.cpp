@@ -18,7 +18,7 @@ static DD4hep::Geometry::Ref_t createSimpleBoxes(DD4hep::Geometry::LCDD& aLcdd,
       DD4hep::Geometry::RotationZYX(rot.z(),rot.y(),rot.x())), DD4hep::Geometry::Position(pos.x(),pos.y(),pos.z()));
 
   // add cells :
-  DD4hep::XML::DetElement cell_det = aXmlElement.child("module");
+  DD4hep::XML::DetElement cell_det = aXmlElement.child(_Unicode("module"));
   DD4hep::XML::Dimension  cell_dim(cell_det.dimensions());
   DD4hep::Geometry::Material cell_mat (aLcdd.material(cell_det.materialStr()));
   // assume same no of cells each direction (x,y,z)

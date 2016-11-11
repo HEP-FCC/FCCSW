@@ -17,7 +17,7 @@ static DD4hep::Geometry::Ref_t createSlicedBarrel(DD4hep::Geometry::LCDD& aLcdd,
       DD4hep::Geometry::RotationZYX(rot.z(),rot.y(),rot.x())), DD4hep::Geometry::Position(pos.x(),pos.y(),pos.z()));
 
   // here add cells :
-  DD4hep::XML::DetElement cell_det = aXmlElement.child("module");
+  DD4hep::XML::DetElement cell_det = aXmlElement.child(_Unicode("module"));
   std::string cell_name = cell_det.nameStr();
   DD4hep::XML::Dimension  slice_dim(cell_det.dimensions());
   DD4hep::Geometry::Material cell_mat (aLcdd.material(cell_det.materialStr()));
