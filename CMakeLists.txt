@@ -16,4 +16,4 @@ find_package(GaudiProject)
 #---------------------------------------------------------------
 
 gaudi_project(FCCSW HEAD
-              USE Gaudi v27r0 )
+              USE Gaudi v28r0 )
