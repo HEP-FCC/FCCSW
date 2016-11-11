@@ -1,6 +1,9 @@
 
 #include "DetCommon/DetUtils.h"
 
+#include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
+#include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
+
 #include "DD4hep/DetFactoryHelper.h"
 
 using DD4hep::Geometry::Volume;
@@ -20,10 +23,15 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");
   // sensitive detector used for all sensitive parts of this detector
   sensDet.setType(sdTyp.typeStr());
+
   // definition of top volume
   // has min/max dimensions of tracker for visualization etc.
   std::string detectorName = xmlDet.nameStr();
   DetElement topDetElement(detectorName, xmlDet.id());
+  Acts::ActsExtension::Config volConfig;
+  volConfig.isBarrel             = true;
+  Acts::ActsExtension* detWorldExt = new Acts::ActsExtension(volConfig);
+  topDetElement.addExtension<Acts::IActsExtension>(detWorldExt);
   DD4hep::Geometry::Tube topVolumeShape(
       dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
@@ -67,7 +75,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
           0, integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness"), 0);
       integratedModuleComponentThickness += xModuleComponentOdd.thickness();
 
-      moduleComponentVolume.setSensitiveDetector(sensDet);
       PlacedVolume placedModuleComponentVolume = moduleVolume.placeVolume(moduleComponentVolume, offset);
       placedModuleComponentVolume.addPhysVolID("component", moduleComponentCounter);
       ++moduleComponentCounter;
@@ -79,6 +86,10 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     layerVolume.setVisAttributes(lcdd.invisible());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", layerCounter);
+    DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
+    Acts::ActsExtension::Config layConfig;
+    layConfig.isLayer             = true;
+    Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
     nPhi = xRods.repeat();
     int moduleCounter = 0;
     DD4hep::XML::Handle_t currentComp;
@@ -99,9 +110,15 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
         DD4hep::Geometry::RotationZ lRotation(phi);
         PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo);
         placedModuleVolume.addPhysVolID("module", moduleCounter);
+        moduleVolume.setSensitiveDetector(sensDet);
+        DetElement mod_det("module" + std::to_string(moduleCounter), moduleCounter);
+        mod_det.setPlacement(placedModuleVolume);
+        lay_det.add(mod_det);
         ++moduleCounter;
       }
     }
+    lay_det.addExtension<Acts::IActsExtension>(detlayer);
+    lay_det.setPlacement(placedLayerVolume);
     ++layerCounter;
   }
   Volume motherVol = lcdd.pickMotherVolume(topDetElement);

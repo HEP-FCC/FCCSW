@@ -15,10 +15,13 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
+find_package(ACTS COMPONENTS Core TGeoPlugin DD4hepPlugin)
+link_directories(${ROOT_INCLUDE_DIR}/../lib)
+
 gaudi_add_module(DetFCChhTrackerTkLayout
                  src/*.cpp
-                 INCLUDE_DIRS DD4hep ROOT Geant4 DetCommon
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetCommon)
+                 INCLUDE_DIRS DD4hep ROOT Geant4 DetCommon ACTS 
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetCommon ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
