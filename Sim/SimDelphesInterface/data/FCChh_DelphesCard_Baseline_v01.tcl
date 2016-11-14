@@ -5,9 +5,9 @@
 #                Filip Moortgat (CERN)
 #                Michele Selvaggi (CERN)
 #
-#  Released on: Oct 02th, 2016
+#  Released on: Nov 14th, 2016
 #
-#  Configuration: FCC-hh generic detector without dipole in the forward region, no pile-up
+#  Configuration: FCC-hh baseline detector 
 #
 #######################################
 # Order of execution of various modules
