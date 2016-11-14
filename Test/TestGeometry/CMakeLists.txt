@@ -49,3 +49,6 @@ gaudi_add_test(CmpRandomCellIDDd4hepSegmentationwithVolumes
                COMMAND python ./scripts/cmpCellIdDd4hep.py
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                DEPENDS TestCellIDFromDd4hepSegmentation TestCellIDFromDd4hepVolumes)
+gaudi_add_test(TestGFlashHomoCalo
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
+               FRAMEWORK tests/options/gflash_test_pbwo4.py)
