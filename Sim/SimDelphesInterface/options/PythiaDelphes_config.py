@@ -38,7 +38,7 @@ def apply_paths(obj, names):
   """ Applies the collection names to the Paths of DataOutputs """
   for attr, name in names.iteritems():
     getattr(obj.DataOutputs, attr).Path = name
-
+  
 ############################################################
 #
 # User: Configure variables
@@ -46,7 +46,7 @@ def apply_paths(obj, names):
 ############################################################
 
 ## N-events
-nEvents=100
+nEvents=1000
 
 ## Message level
 messageLevelPythia =INFO
@@ -54,13 +54,13 @@ messageLevelDelphes=INFO
 messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
-pythiaConfFile="Generation/data//Pythia_ttbar.cmd"
+pythiaConfFile="Generation/data/Pythia_ttbar.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_WithDipole_v00.tcl"
+delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl"
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
@@ -70,21 +70,24 @@ delphesRootOutFile=""
 ## This map defines the names of the output collections. The key of the top level dict corresponds to the output tool name
 # The second level key - value corresponds to output-type - collection-name. NOTE: Do only change the values, not the keys.
 out_names = {
+    
+    # Particle-Flow Charged hadron output tool
+    "pfcharged": {"particles": "pfcharged", "mcAssociations": "chargedToMC"},
+    # Particle-Flow Neutral hadron output tool
+    "pfneutrals": {"particles": "pfneutrals", "mcAssociations": "pfneutralsToMC"},
+    # Particle-Flow photon output tool
+    "pfphotons": {"particles": "pfphotons", "mcAssociations": "pfphotonsToMC"},
     # Muon output tool
     "muons": {"particles": "muons", "mcAssociations": "muonsToMC", "isolationTags": "muonITags"},
     # Electron output tool
     "electrons": {"particles": "electrons", "mcAssociations": "electronsToMC", "isolationTags": "electronITags"},
-    # Charged hadron output tool
-    "charged": {"particles": "charged", "mcAssociations": "chargedToMC"},
-    # Neutral hadron output tool
-    "neutral": {"particles": "neutral", "mcAssociations": "neutralToMC"},
     # Photons output tool
     "photons": {"particles": "photons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags"},
     # GenJets output tool
     "genJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
     # Jets output tool
     "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetsFlavorTagged": "jetsFlavor",
-             "jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"},
+              "jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"},
     # Missing transverse energy output tool
     "met": {"missingEt": "met"}
     }
@@ -98,19 +101,23 @@ podioEvent=FCCDataSvc("EventDataSvc")
 #
 ############################################################
 # Define all output tools that convert the Delphes collections to FCC-EDM:
-muonSaveTool = DelphesSaveChargedParticles("muons", delphesArrayName="MuonIsolation/muons")
+
+muonSaveTool = DelphesSaveChargedParticles("muons", delphesArrayName="MuonMomentumSmearing/muons")
 apply_paths(muonSaveTool, out_names["muons"])
 
-eleSaveTool = DelphesSaveChargedParticles("electrons", delphesArrayName="ElectronIsolation/electrons")
+eleSaveTool = DelphesSaveChargedParticles("electrons", delphesArrayName="ElectronFilter/electrons")
 apply_paths(eleSaveTool, out_names["electrons"])
 
-chhadSaveTool = DelphesSaveChargedParticles("charged", delphesArrayName="ChargedHadronMomentumSmearing/chargedHadrons", saveIsolation=False)
-apply_paths(chhadSaveTool, out_names["charged"])
+chhadSaveTool = DelphesSaveChargedParticles("pfcharged", delphesArrayName="ChargedHadronFilter/chargedHadrons", saveIsolation=False)
+apply_paths(chhadSaveTool, out_names["pfcharged"])
 
-neuthadSaveTool = DelphesSaveNeutralParticles("neutral", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
-apply_paths(neuthadSaveTool, out_names["neutral"])
+neuthadSaveTool = DelphesSaveNeutralParticles("pfneutrals", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
+apply_paths(neuthadSaveTool, out_names["pfneutrals"])
 
-photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonIsolation/photons")
+pfphotonsSaveTool = DelphesSaveNeutralParticles("pfphotons", delphesArrayName="ECal/eflowPhotons", saveIsolation=False)
+apply_paths(pfphotonsSaveTool, out_names["pfphotons"])
+
+photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonEfficiency/photons")
 apply_paths(photonsSaveTool, out_names["photons"])
 
 genJetSaveTool = DelphesSaveGenJets("genJets", delphesArrayName="GenJetFinder/jets")
@@ -133,18 +140,28 @@ pythia8gen.DataOutputs.hepmc.Path = "hepmc"
 from Configurables import DelphesSimulation
 delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                ROOTOutputFile=delphesRootOutFile,
+                               ApplyGenFilter=True,
                                OutputLevel=messageLevelDelphes,
                                outputs=["DelphesSaveChargedParticles/muons",
                                         "DelphesSaveChargedParticles/electrons",
-                                        "DelphesSaveChargedParticles/charged",
                                         "DelphesSaveNeutralParticles/photons",
-                                        "DelphesSaveNeutralParticles/neutral",
+                                        "DelphesSaveChargedParticles/pfcharged",
+                                        "DelphesSaveNeutralParticles/pfphotons",
+                                        "DelphesSaveNeutralParticles/pfneutrals",
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
-                                        "DelphesSaveMet/met"])
-delphessim.DataInputs.hepmc.Path               = "hepmc"
-delphessim.DataOutputs.genParticles.Path       = "genParticles"
-delphessim.DataOutputs.genVertices.Path        = "genVertices"
+                                        "DelphesSaveMet/met"])					
+delphessim.DataInputs.hepmc.Path                = "hepmc"
+delphessim.DataOutputs.genParticles.Path        = "skimmedGenParticles"
+delphessim.DataOutputs.mcEventWeights.Path      = "mcEventWeights"
+
+### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
+from Configurables import HepMCConverter
+hepmc_converter = HepMCConverter("Converter")
+hepmc_converter.DataInputs.hepmc.Path="hepmc"
+hepmc_converter.DataOutputs.genparticles.Path="genParticles"
+hepmc_converter.DataOutputs.genvertices.Path="genVertices"
+
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput
 
@@ -155,7 +172,7 @@ out.filename       = "FCCDelphesOutput.root"
 #                      "keep genVertices",
 #                      "keep genJets",
 #                      "keep genJetsToMC"]
-out.outputCommands = ["keep *"]
+out.outputCommands = ["keep *", "drop genParticles", "drop genVertices"]
 
 ############################################################
 #
@@ -164,7 +181,9 @@ out.outputCommands = ["keep *"]
 ############################################################
 
 # Run Pythia + Delphes
-ApplicationMgr( TopAlg = [ pythia8gen, delphessim, out ],
+ApplicationMgr( TopAlg = [ pythia8gen, hepmc_converter, delphessim, out ],
                 EvtSel = 'NONE',
                 EvtMax = nEvents,
                 ExtSvc = [podioEvent])
+		
+ApplicationMgr.EvtMax=10
