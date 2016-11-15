@@ -25,7 +25,7 @@ class ExRootTreeWriter;
 namespace fcc {
 class MCParticleCollection;
 class GenVertexCollection;
-class MCEventWeightCollection;
+class FloatCollection;
 }
 
 // Forward ROOT
@@ -79,7 +79,7 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmcHandle;
 
   // Handle for the generated or reconstructed objects to be written out
-  DataHandle<fcc::MCEventWeightCollection>  m_handleMCEventWeights; //!< MC event weights handle
+  DataHandle<fcc::FloatCollection>  m_handleMCEventWeights; //!< MC event weights handle
   DataHandle<fcc::MCParticleCollection> m_handleGenParticles; 
   
   //! Recursive method to find an id of MCParticle related to the given Delphes Candidate object,

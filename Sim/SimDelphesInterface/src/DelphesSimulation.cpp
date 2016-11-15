@@ -17,7 +17,7 @@
 // FCC EDM
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
-#include "datamodel/MCEventWeightCollection.h"
+#include "datamodel/FloatCollection.h"
 
 // ROOT
 #include "TFile.h"
@@ -231,7 +231,7 @@ StatusCode DelphesSimulation::execute() {
   for(unsigned int j=0; j<hepMCEvent->weights().size(); j++) {
     // FIXME: weights are stored as collection. Eventually move to meta-data
     auto weight = mcEventWeights->create();
-    weight.weight(hepMCEvent->weights()[j]);
+    weight.value(hepMCEvent->weights()[j]);
   }
   
   // FCC EDM (event-data model) based output
