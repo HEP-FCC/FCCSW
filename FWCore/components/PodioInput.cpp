@@ -26,7 +26,7 @@ StatusCode PodioInput::initialize() {
   for (auto& name : m_collectionNames) {
     debug() << "Finding collection " << name << " in collection registry." << endmsg;
     if (!idTable->present(name)) {
-      error() << "Requested product " << name << "not found." << endmsg;
+      error() << "Requested product " << name << " not found." << endmsg;
       return StatusCode::FAILURE;
     }
     m_collectionIDs.push_back(idTable->collectionID(name));
