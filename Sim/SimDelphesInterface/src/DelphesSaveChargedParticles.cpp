@@ -53,11 +53,10 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
   }
-
   for(int j=0; j < delphesColl->GetEntries(); j++) {
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
-
+    
     auto& barePart    = particle.core();
     barePart.pdgId    = cand->PID;
     barePart.status   = cand->Status;
@@ -66,31 +65,37 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     barePart.p4.pz    = cand->Momentum.Pz();
     barePart.p4.mass  = cand->Momentum.M();
     barePart.charge   = cand->Charge;
-    barePart.vertex.x = cand->Position.X();
-    barePart.vertex.y = cand->Position.Y();
-    barePart.vertex.z = cand->Position.Z();
+    barePart.vertex.x = cand->InitialPosition.X();
+    barePart.vertex.y = cand->InitialPosition.Y();
+    barePart.vertex.z = cand->InitialPosition.Z();
+    
     // Isolation-tag info
     float iTagValue = 0;
     if (colITags!=nullptr) {
-
       auto iTag           = colITags->create();
       iTag.tag(cand->IsolationVar);
       iTag.particle(particle);
-
       iTagValue = iTag.tag();
     }
 
     // Reference to MC - Delphes holds references to all objects related to the <T> object, only one relates to MC particle
     auto relation   = ascColParticlesToMC->create();
-    int idRefMCPart = -1;
     if (cand->GetCandidates()->GetEntries()>0) {
-
       auto refCand = static_cast<Candidate*>(cand->GetCandidates()->At(0));
-      idRefMCPart  = refCand->GetUniqueID()-1;     // Use C numbering from 0
-      if (idRefMCPart<mcParticles.size()) {
+      
+      // find refCand in mcParticle collection
+      int index = -1;
+      for(int k=0 ; k < mcParticles.size();  k++) {
+        if(mcParticles.at(k).core().bits == refCand->GetUniqueID()){
+          index = k;
+          break;
+        }
+      }
+
+      if (index > 0) {
         barePart.bits = static_cast<unsigned>(ParticleStatus::kMatched);
         relation.rec(particle);
-        relation.sim(mcParticles.at(idRefMCPart));
+        relation.sim(mcParticles.at(index));
       }
       else {
         barePart.bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
@@ -138,7 +143,6 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
               << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.vertex().x
               << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.vertex().y
               << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.vertex().z
-              << " RefId: "    << std::setw(3)  << idRefMCPart+1
               << " Rel E: "    << std::setprecision(2) << std::setw(9) << simE << " <-> " << std::setw(9) << recE
               << std::fixed
               << endmsg;
