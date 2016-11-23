@@ -22,7 +22,7 @@ link_directories(${ROOT_INCLUDE_DIR}/../lib)
 gaudi_add_module(DetFCChhTrackerSimple
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4 DetCommon ACTS::ACTSCore ACTS::ACTSDD4hepPlugin
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetCommon ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetCommon ACTS::ACTSCore ACTS::ACTSDD4hepPlugin ACTS::ACTSTGeoPlugin)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
