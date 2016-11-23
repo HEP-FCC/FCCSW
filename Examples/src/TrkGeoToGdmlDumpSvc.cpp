@@ -10,7 +10,6 @@
 #include "ACTS/Detector/TrackingVolume.hpp"
 #include "ACTS/Tools/CylinderVolumeHelper.hpp"
 #include "ACTS/Tools/CylinderVolumeBuilder.hpp"
-#include "ACTS/Plugins/DD4hepPlugins/DD4hepCylinderGeometryBuilder.hpp"
 #include "ACTS/Tools/LayerArrayCreator.hpp"
 #include "ACTS/Layers/Layer.hpp"
 #include "ACTS/Tools/TrackingVolumeArrayCreator.hpp"
