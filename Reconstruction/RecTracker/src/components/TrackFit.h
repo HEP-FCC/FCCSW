@@ -10,13 +10,15 @@
 class IGeoSvc;
 class ITrackingGeoSvc;
 
-namespace fcc {
-class CaloHitCollection;
-class PositionedCaloHitCollection;
+namespace Acts {
+class TrackingGeometry;
 }
 
-class TrackFit : public GaudiAlgorithm
-{
+namespace fcc {
+class TrackHitCollection;
+}
+
+class TrackFit : public GaudiAlgorithm {
 public:
   TrackFit(const std::string& name, ISvcLocator* svcLoc);
 
@@ -29,9 +31,9 @@ public:
   StatusCode finalize();
 
 private:
-
   /// Pointer to the geometry service
   SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
+  std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
 };
 
 #endif /* RECTRACKER_TRACKFIT_H */
