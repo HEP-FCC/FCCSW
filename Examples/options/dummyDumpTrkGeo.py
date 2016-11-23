@@ -3,7 +3,7 @@ from Gaudi.Configuration import *
 
 
 from Configurables import DummyTrkGeoSvc
-trkgeoservice = DummyTrkGeoSvc("TrackingGeometryService") 
+trkgeoservice = DummyTrkGeoSvc("TrackingGeometrySvc") 
 
 
 from Configurables import GeoSvc
