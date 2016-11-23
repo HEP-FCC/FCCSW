@@ -21,11 +21,6 @@ gaudi_add_module(RecTracker
                  LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ${DD4hep_COMPONENT_LIBRARIES} ACTS::ACTSCore ACTS::ACTSDD4hepPlugin ACTS::ACTSExamples) 
 
 include(CTest)
-#gaudi_add_test(genJetClustering
-#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-#               FRAMEWORK options/genJetClustering.py)
-#
-#gaudi_add_test(runEcalReconstruction
-#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-#               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so	
-#               FRAMEWORK options/runEcalReconstruction.py)
+gaudi_add_test(trackFitExample
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/trackFitExample.py)
