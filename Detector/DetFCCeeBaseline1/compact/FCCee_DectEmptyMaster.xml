@@ -4,8 +4,8 @@
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
   <includes>
-    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
-    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+    <gdmlFile  ref="elements.xml"/>
+    <gdmlFile  ref="materials.xml"/>
   </includes>
 
   <info name="FCCDectMaster"
@@ -17,10 +17,10 @@
     <comment>Use this one if you want to use official dimensions but only place one detector inside</comment>
   </info>
   <define>
-    <constant name="world_size" value="7000*mm"/>
-    <constant name="world_x" value="world_size"/>
-    <constant name="world_y" value="world_size"/>
-    <constant name="world_z" value="world_size"/>
+    <constant name="world_side" value="7000*mm"/>
+    <constant name="world_x" value="world_side"/>
+    <constant name="world_y" value="world_side"/>
+    <constant name="world_z" value="world_side"/>
   </define>
-  <include ref="./FCChh_DectDimensions.xml" />
+  <include ref="./FCCee_DectDimensions.xml" />
 </lccdd>
