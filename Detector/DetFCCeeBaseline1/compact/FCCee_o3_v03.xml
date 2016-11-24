@@ -58,10 +58,10 @@
         <constant name="DetID_LumiCal"          value=" 15"/>
         <constant name="DetID_BeamCal"          value=" 16"/>
         
-        <constant name="BeamPipeWidth"   	value="0.5*mm" />
-        <constant name="CentralBeamPipe_zmax" value="25*cm"/>
-	<constant name="SeparatedBeamPipe_z" value="100*cm"/>
-        <constant name="CentralBeamPipe_rmax" value="20.0*mm"/>
+        <constant name="BeamPipeWidth"   	value="0.5*mm" /> <!-- nalipour Ok-->
+        <constant name="CentralBeamPipe_zmax" value="25*cm"/><!-- nalipour Ok-->
+	<constant name="SeparatedBeamPipe_z" value="100*cm"/><!-- nalipour Ok-->
+        <constant name="CentralBeamPipe_rmax" value="20.0*mm"/><!-- nalipour Ok-->
 <!--
         <constant name="ConeBeamPipe_zmax" value="1100*mm"/>
         <constant name="ConeBeamPipe_rmax" value="116.0*mm"/>
