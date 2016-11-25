@@ -15,8 +15,8 @@
     </info>
     
     <includes>
-        <gdmlFile  ref="elements.xml"/>
-        <gdmlFile  ref="materials.xml"/>
+        <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+        <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
     </includes>
     
     <define>
