@@ -97,39 +97,33 @@ After the job finishes you should see a file `FCCDelphesOutput.root`. Details ab
 ### FCCSW configuration file
 
 The FCCSW configuration file (python script) to run Pythia & Delphes in one job:
-[PythiaDelphes\_config.py](https://github.com/HEP-FCC/FCCSW/blob/master/Sim/SimDelphesInterface/options/PythiaDelphes_config.py)
 
-The following attributes may be of interest:
+**[PythiaDelphes\_config.py](https://github.com/HEP-FCC/FCCSW/blob/master/Sim/SimDelphesInterface/options/PythiaDelphes_config.py)** -
+Parameters of interest:
 
-
--   **PythiaDelphes\_config.py** : FCCSW run config file --&gt; defines
-    input/output, main algorithms running (i.e. Pythia & Delphes),
-    Pythia starting configuration, Delphes detector/running sequence
-    configuration ...
-    -   Variables to be set-up:
-    -   `nEvents` --&gt; events to be simulated
-    -   `messageLevel` --&gt; GAUDI messaging
-        verbosity: ERROR, WARNING, INFO, DEBUG, ... --&gt; use WARNING
-        or INFO
-    -   `pythiaconfFile` --&gt; Pythia
-        configuration file (use either Pythia\_LHEinput.cmd
-        or Pythia\_standard.cmd)
-    -   `delphesCard` --&gt; Delphes
-        configuration file (use official Delphes card)
-    -   `delphesHepMCInFile` --&gt; Delphes
-        input file (use "" to read <span class="twikiNewLink"> HepMC
-        </span> directly from Pythia, i.e. from transient data store)
-    -   `delphesRootOutFile` --&gt; Delphes
-        output file (use "" to avoid extra output with Delphes objects
-        to ROOT file, FCC-EDM objects automatically written out!)
-    -   `delphesXXXOutArray` --&gt; Define
-        Delphes output arrays to be processed as FCC-EDM XXX particles
-        (muons, electrons, etc.) --&gt; various Delphes modules provide
-        the same type of particle with different level of processing.
-        (For better understanding, watch the content of the Delphes card
-        and search e.g. for muons to see how individual Delphes modules
-        work out muon particles. Focus on
-        `OutputArray` variable.)
+-   `nEvents` --&gt; events to be simulated
+-   `messageLevel` --&gt; GAUDI messaging
+    verbosity: ERROR, WARNING, INFO, DEBUG, ... --&gt; use WARNING
+    or INFO
+-   `pythiaconfFile` --&gt; Pythia
+    configuration file (use either Pythia\_LHEinput.cmd
+    or Pythia\_standard.cmd)
+-   `delphesCard` --&gt; Delphes
+    configuration file (use official Delphes card)
+-   `delphesHepMCInFile` --&gt; Delphes
+    input file (use "" to read <span class="twikiNewLink"> HepMC
+    </span> directly from Pythia, i.e. from transient data store)
+-   `delphesRootOutFile` --&gt; Delphes
+    output file (use "" to avoid extra output with Delphes objects
+    to ROOT file, FCC-EDM objects automatically written out!)
+-   `delphesXXXOutArray` --&gt; Define
+    Delphes output arrays to be processed as FCC-EDM XXX particles
+    (muons, electrons, etc.) --&gt; various Delphes modules provide
+    the same type of particle with different level of processing.
+    (For better understanding, watch the content of the Delphes card
+    and search e.g. for muons to see how individual Delphes modules
+    work out muon particles. Focus on
+    `OutputArray` variable.)
 
 ### Delphes card
 
@@ -137,11 +131,10 @@ Some cards are located in the
 [Sim/SimDelphesInterface/data](https://github.com/HEP-FCC/FCCSW/tree/master/Sim/SimDelphesInterface/data)
 directory:
 
-[FCChh\_DelphesCard\_Baseline\_v01.tcl](https://github.com/HEP-FCC/FCCSW/blob/master/Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl)
+-   **[FCChh\_DelphesCard\_Baseline\_v01.tcl](https://github.com/HEP-FCC/FCCSW/blob/master/Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl)**:
+    Official FCChh Delphes configuration card, defining sequence of Delphes modules to be executed and detector characterization.
 
--   **FCChh\_DelphesCard\_Baseline\_vXX.tcl** : Official FCChh Delphes
-    configuration card, defining sequence of Delphes modules to be
-    executed and detector characterization.
+(more to come)
 
 FCC-EDM output
 --------------
