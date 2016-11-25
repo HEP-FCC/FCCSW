@@ -36,15 +36,13 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Detector/DetFCChhBaselin
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimActions, SimG4ParticleSmearSimple
-# create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearSimple("Smear", detectorNames=["TrackerEnvelopeBarrel"], sigma = 0.013)
-# create actions initialization tool
-actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
+from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimTrackerRegion
+## create region and a parametrisation model with a default smearing (sigma=const=0.01)
+regiontool = SimG4FastSimTrackerRegion("model", volumeNames=["TrackerEnvelopeBarrel"])
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=physicslisttool, actions=actionstool)
+geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/model"])
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -53,7 +51,6 @@ from Configurables import SimG4Alg, SimG4SaveSmearedParticles, SimG4PrimariesFro
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveSmearedParticles")
 # and YY is the given name ("saveSmearedParticles")
 saveparticlestool = SimG4SaveSmearedParticles("saveSmearedParticles")
-saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
@@ -64,7 +61,6 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
-hist.DataInputs.particles.Path = "smearedParticles"
 hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 THistSvc().Output = ["rec DATAFILE='histSimple.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

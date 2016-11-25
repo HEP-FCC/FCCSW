@@ -53,9 +53,9 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
 
 
     // create petals
-    unsigned int nPhi = static_cast<unsigned int>(getAttrValueWithFallback(xLayer, "nPhi", 16));
+    unsigned int nPhi = static_cast<unsigned int>(utils::getAttrValueWithFallback(xLayer, "nPhi", 16));
 
-    const double lModuleTwistAngle = getAttrValueWithFallback(xLayer, "module_twist_angle", 0.05 * M_PI);
+    const double lModuleTwistAngle = utils::getAttrValueWithFallback(xLayer, "module_twist_angle", 0.05 * M_PI);
     double dr = xLayer.rmax() - xLayer.rmin();
     double dphi = 2 * dd4hep::pi / static_cast<double>(nPhi);
     double tn = tan(dphi);

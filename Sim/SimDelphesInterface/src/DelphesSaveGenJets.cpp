@@ -6,9 +6,7 @@
 
 // datamodel
 #include "datamodel/GenJetCollection.h"
-#include "datamodel/GenJetParticleAssociationCollection.h"
-#include "datamodel/IntTagCollection.h"
-#include "datamodel/GenJetIntTagAssociationCollection.h"
+#include "datamodel/TaggedGenJetCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
 // ROOT
@@ -20,9 +18,7 @@ DelphesSaveGenJets::DelphesSaveGenJets(const std::string& aType, const std::stri
   GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
   declareOutput("genJets", m_genJets);
-  declareOutput("mcAssociations", m_mcAssociations);
-  declareOutput("jetFlavorTags", m_jetFlavorTags);
-  declareOutput("jetFlavorAssociations", m_jetFlavorAssociations);
+  declareOutput("genJetsFlavorTagged", m_taggedGenJets);
   declareProperty("delphesArrayName", m_delphesArrayName);
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
@@ -42,9 +38,7 @@ StatusCode DelphesSaveGenJets::finalize() {
 StatusCode DelphesSaveGenJets::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) {
   // Create the collections
   auto colGenJets = m_genJets.createAndPut();
-  auto colJetsFlavor = m_jetFlavorTags.createAndPut();
-  auto ascColJetsToFlavor = m_jetFlavorAssociations.createAndPut();
-  auto ascColGenJetsToMC = m_mcAssociations.createAndPut();
+  auto colTaggedJets = m_taggedGenJets.createAndPut();
 
   const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
   if (delphesColl == nullptr) {
@@ -59,37 +53,35 @@ StatusCode DelphesSaveGenJets::saveOutput(Delphes& delphes, const fcc::MCParticl
     // Jet info
     auto jet         = colGenJets->create();
     auto bareJet     = fcc::BareJet();
-    bareJet.Area     = -1;
-    bareJet.P4.Px    = cand->Momentum.Px();
-    bareJet.P4.Py    = cand->Momentum.Py();
-    bareJet.P4.Pz    = cand->Momentum.Pz();
-    bareJet.P4.Mass  = cand->Mass;
-    jet.Core(bareJet);
+    bareJet.area     = -1;
+    bareJet.p4.px    = cand->Momentum.Px();
+    bareJet.p4.py    = cand->Momentum.Py();
+    bareJet.p4.pz    = cand->Momentum.Pz();
+    bareJet.p4.mass  = cand->Mass;
+    jet.core(bareJet);
 
     // Flavor-tag info
-    auto flavorTag        = colJetsFlavor->create();
-    auto relationToFlavor = ascColJetsToFlavor->create();
-    flavorTag.Value(cand->Flavor);
-    relationToFlavor.Jet(jet);
-    relationToFlavor.Tag(flavorTag);
+    auto flavorGenJet = colTaggedJets->create();
+    flavorGenJet.tag(cand->Flavor);
+    flavorGenJet.jet(jet);
 
     // Debug: print FCC-EDM jets info
     if (msgLevel() <= MSG::DEBUG) {
 
-      double energy = sqrt(jet.Core().P4.Px*jet.Core().P4.Px +
-                           jet.Core().P4.Py*jet.Core().P4.Py +
-                           jet.Core().P4.Pz*jet.Core().P4.Pz +
-                           jet.Core().P4.Mass*jet.Core().P4.Mass);
+      double energy = sqrt(jet.p4().px*jet.p4().px +
+                           jet.p4().py*jet.p4().py +
+                           jet.p4().pz*jet.p4().pz +
+                           jet.p4().mass*jet.p4().mass);
 
       debug() << "Gen Jet: "
               << " Id: "       << std::setw(3)  << j+1
-              << " Flavor: "   << std::setw(3)  << relationToFlavor.Tag().Value()
+              << " Flavor: "   << std::setw(3)  << flavorGenJet.tag()
               << std::scientific
-              << " Px: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Px
-              << " Py: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Py
-              << " Pz: "       << std::setprecision(2) << std::setw(9) << jet.Core().P4.Pz
+              << " Px: "       << std::setprecision(2) << std::setw(9) << jet.p4().px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << jet.p4().py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << jet.p4().pz
               << " E: "        << std::setprecision(2) << std::setw(9) << energy
-              << " M: "        << std::setprecision(2) << std::setw(9) << jet.Core().P4.Mass
+              << " M: "        << std::setprecision(2) << std::setw(9) << jet.p4().mass
               << std::fixed
               << std::endl;
     }
@@ -107,21 +99,19 @@ StatusCode DelphesSaveGenJets::saveOutput(Delphes& delphes, const fcc::MCParticl
     double totSimE = 0;
 
     for (auto id : idRefMCPart) {
-
-      auto relationToMC = ascColGenJetsToMC->create();
-      relationToMC.Jet(jet);
-      relationToMC.Particle(mcParticles.at(id));
+      auto& mcParticle = mcParticles.at(id);
+      jet.addparticles(mcParticles.at(id));
 
       // Debug: print FCC-EDM jet relation info
       if (msgLevel() <= MSG::DEBUG) {
-        double recE   = sqrt(relationToMC.Jet().Core().P4.Px*relationToMC.Jet().Core().P4.Px +
-                             relationToMC.Jet().Core().P4.Py*relationToMC.Jet().Core().P4.Py +
-                             relationToMC.Jet().Core().P4.Pz*relationToMC.Jet().Core().P4.Pz +
-                             relationToMC.Jet().Core().P4.Mass*relationToMC.Jet().Core().P4.Mass);
-        double simE   = sqrt(relationToMC.Particle().Core().P4.Px*relationToMC.Particle().Core().P4.Px +
-                             relationToMC.Particle().Core().P4.Py*relationToMC.Particle().Core().P4.Py +
-                             relationToMC.Particle().Core().P4.Pz*relationToMC.Particle().Core().P4.Pz +
-                             relationToMC.Particle().Core().P4.Mass*relationToMC.Particle().Core().P4.Mass);
+        double recE   = sqrt(jet.p4().px*jet.p4().px +
+                             jet.p4().py*jet.p4().py +
+                             jet.p4().pz*jet.p4().pz +
+                             jet.p4().mass*jet.p4().mass);
+        double simE   = sqrt(mcParticle.p4().px*mcParticle.p4().px +
+                             mcParticle.p4().py*mcParticle.p4().py +
+                             mcParticle.p4().pz*mcParticle.p4().pz +
+                             mcParticle.p4().mass*mcParticle.p4().mass);
         totSimE += simE;
         debug() << " RefId: " << std::setw(3)            << id+1
                 << " Rel E: " << std::setprecision(2)

@@ -42,8 +42,6 @@ public:
    */
   virtual StatusCode finalize() final;
   private:
-  /// Handle for the EDM MC particles to be read
-  DataHandle<fcc::ParticleCollection> m_smParticles;
   /// Handle for the EDM particles and MC particles associations to be read
   DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles;
   /// Pointer to the interface of histogram service
