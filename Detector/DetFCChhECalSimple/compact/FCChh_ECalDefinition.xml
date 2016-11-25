@@ -1,4 +1,5 @@
 <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
+  <sensitive type="SimpleCalorimeterSD"/>
   <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
   <cryostat id="1" name="ECAL_Cryo" material="Aluminum" >
     <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="100*mm" />

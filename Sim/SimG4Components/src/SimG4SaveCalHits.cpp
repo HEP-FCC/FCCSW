@@ -2,6 +2,7 @@
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
+#include "SimG4Common/Units.h"
 
 // Geant4
 #include "G4Event.hh"
@@ -72,11 +73,11 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
           auto edmHit = edmHits->create();
           auto& edmHitCore = edmHit.core();
           edmHitCore.cellId = hit->cellID;
-          edmHitCore.energy = hit->energyDeposit;
+          edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
           auto position = fcc::Point();
-          position.x = hit->position.x();
-          position.y = hit->position.y();
-          position.z = hit->position.z();
+          position.x = hit->position.x() * sim::g42edm::length;
+          position.y = hit->position.y() * sim::g42edm::length;
+          position.z = hit->position.z() * sim::g42edm::length;
           auto posHit = edmPositioned->create(position, edmHitCore);
         }
       }

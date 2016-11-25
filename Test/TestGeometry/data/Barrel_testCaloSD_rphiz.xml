@@ -18,12 +18,12 @@
   </info>
 
   <define>
-    <constant name="world_x" value="3*m"/>
-    <constant name="world_y" value="3*m"/>
-    <constant name="world_z" value="10*m"/>
+    <constant name="world_x" value="2*m"/>
+    <constant name="world_y" value="2*m"/>
+    <constant name="world_z" value="2*m"/>
     <constant name="BarECal_rmin" value="2500*mm"/>
     <constant name="BarECal_rmax" value="3600*mm"/>
-    <constant name="BarECal_dz" value="1000.0625*mm"/> <!--shortened to decrease build time-->
+    <constant name="BarECal_dz" value="1000.0625*mm"/>
     <constant name="dphi" value="0.00005"/>
     <constant name="dr" value="10*mm"/>
     <constant name="dz" value="0.0625*mm"/> <!--half length-->
@@ -44,7 +44,7 @@
   <detectors>
     <detector id="0" name="BarrelECal" type="SlicedBarrel" sensitive="true" readout="ECalHits">
       <material name="PbWO4"/>
-      <sensitive type="SimpleCalorimeterSD"/>
+      <sensitive type="GflashCalorimeterSD"/>
       <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz"/>
       <position   x="0"     y="0"     z="0"/>
       <rotation   x="0"     y="0"     z="0"/>
