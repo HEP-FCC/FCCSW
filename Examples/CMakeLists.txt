@@ -72,6 +72,11 @@ gaudi_add_test(PrintOverlaps
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so 
                FRAMEWORK options/printOverlaps.py
                PASSREGEX "Number of illegal overlaps/extrusions : 0" )
+gaudi_add_test(PrintOverlaps_FCCee
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               FRAMEWORK options/printOverlaps_FCCee.py
+               PASSREGEX "Number of illegal overlaps/extrusions : 0" )
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile
