@@ -25,9 +25,7 @@ CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* s
   declareProperty("numVolumesRemove",m_numVolumesRemove=1);
 }
 
-CreatePositionedHit::~CreatePositionedHit()
-{
-}
+CreatePositionedHit::~CreatePositionedHit() {}
 
 StatusCode CreatePositionedHit::initialize() {
 
@@ -109,9 +107,11 @@ StatusCode CreatePositionedHit::execute() {
     positionedHit.position().z = position.z()*10.;
 
     //Debug information about cells
-    debug() << "cellID " << ecells.core().cellId <<" energy " << ecells.core().energy << " decoder: all fields "
-            << decoder->valueString() << " r " << r_cell << " eta " <<  m_segmentation->eta(ecells.core().cellId)
-            << " phi " <<  m_segmentation->phi(ecells.core().cellId)<< endmsg;
+    if ( msgLevel ( MSG::DEBUG ) ) {
+      debug() << "cellID " << ecells.core().cellId <<" energy " << ecells.core().energy << " decoder: all fields "
+              << decoder->valueString() << " r " << r_cell << " eta " <<  m_segmentation->eta(ecells.core().cellId)
+              << " phi " <<  m_segmentation->phi(ecells.core().cellId)<< endmsg;
+    }
   }
   debug() << "Output CaloCluster collection size: " << edmPositionedHitCollection->size() << endmsg;
 
