@@ -88,7 +88,7 @@ Options:
 
 ### 1. Create calorimeter towers.
 
-A tower contains all cells within certain eta and phi (tower size: **deltaEtaTower, **deltaPhiTower). Distance in *r* plays no role in this algorithm.
+A tower contains all cells within certain eta and phi (tower size: **deltaEtaTower**, **deltaPhiTower**). Distance in r plays no role in this algorithm.
 
 >TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower and that can be achieved using `GridEtaPhi` segmentation.
 
