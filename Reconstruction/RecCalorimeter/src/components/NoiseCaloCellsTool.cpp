@@ -44,18 +44,14 @@ void NoiseCaloCellsTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCell
 
 void NoiseCaloCellsTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   //Erase a cell if it has energy bellow a threshold from the vector
-  for (auto ecell = aCells.begin(); ecell!=aCells.end();) {
-    if ( (*ecell)->core().energy<m_filterThreshold*m_cellNoise ) {
-      aCells.erase(ecell);
-    }
-    else {
-      ++ecell;
-    }
-  }
+  double threshold = m_filterThreshold * m_cellNoise;
+  aCells.erase( std::remove_if( aCells.begin(),
+      aCells.end(),
+      [&threshold](fcc::CaloHit* h){return bool( h->core().energy < threshold);} ),
+    aCells.end() );
 }
 
 
 StatusCode NoiseCaloCellsTool::finalize() {
-  StatusCode sc = GaudiTool::finalize();
-  return sc;
+  return GaudiTool::finalize();
 }
