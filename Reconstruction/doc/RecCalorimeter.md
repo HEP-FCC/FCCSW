@@ -3,33 +3,23 @@ RecCalorimeter package
 
 Information about calorimeter reconstruction software within FCCSW. The software is designed for ECAL, but should be general enough to be used for other calorimeters.
 
-ECAL calorimeter description in Detector/DetFCChhECalSimple:
+# Detector description
 
-* Tube geometry with alternating layers of active and passive materials
+ECAL calorimeter description in `Detector/DetFCChhECalSimple`:
+
+* Tube geometry with alternating layers of active and passive material
 * Using phi-eta segmentation
 * Calorimeter cells defined by a layer in R + phi-eta segment
 
-# CreateCaloCells
+# Digitisation
 
-Cell energy reconstruction from Geant4 energy deposits.
+Digitisation creates cells out of simulated energy deposits. From the EDM point of view, both input and output of the digitisation uses `fcc::CaloHit`.
+The input (simulated deposits) contain raw information about the energy deposited in the cells of the sensitive volumes.
+The ouput (cells) contains calibrated energy and the noise. It may also use different segmentation than the original cells of the sensitive volumes.
 
-Input: Geant4 hits (EDM: CaloHitCollection)
+> Note: some resegmentation procedures (`RedoSegmentation`) expect the tru position of the energy deposits, hence they require `fcc::PositionedCaloHit` collection.
 
-Output: Calorimeter cells (EDM: CaloHitCollection)
-
-**Tools used:**
-
-* MergeCaloHitsTool: Merge Geant4 energy deposits with same cellID
-* CalibrateCaloHitsTool: Calibrate Geant4 energy to electromagnetic (EM) scale
-* NoiseCaloCellsTool: Prepare random noise hits for each cell
-
-  A list of all cellIDs are needed for the noise tool (we want to simulate noise in all cells, not only in thouse with signal). This is done in the initialize method of the  algorithm. This is the only part which is geometry dependent (assuming tube geometry and phi-eta segmentation).
-
-* MergeCaloHitsTool: Merge signal with noise hits
-* NoiseCaloCellsTool: Filter cell energy and accept only cells with energy above threshold
-
-**Configurables:**
-
+`CreateCaloCells` is an algorithm for the digitisation. It expects 3 tools to perform the deposits merging, energy calibration and noise addition.
 * hits (input data)
 * cells (output data)
 * doCellCalibration (bool, calibrate energy to EM scale?)
@@ -37,17 +27,92 @@ Output: Calorimeter cells (EDM: CaloHitCollection)
 * filterCellNoise (bool, save only cells with energy above threshold?)
 * readoutName (string, name of the detector readout)
 * activeVolumeName (string, name of active volumes - material name)
-* numVolumesRemove (unsigned, number of volumes with active material which are not readout - e.g. ECAL: LAr bath in cryostat)
 * activeFieldName (string, name of active layers for sampling calorimeter)
-* fieldNames (vector of string, name of the fields describing the segmented volume)
-* fieldValues (vector of int, values of the fields describing the segmented volume);
+* fieldNames (list of strings, name of the fields describing the segmented volume)
+* fieldValues (list of ints, values of the fields describing the segmented volume)
+
+## 1. Deposits merging
+
+The output of the simulation contains a large collection of energy deposits. First step towards the digitisation is merging those hits into the hit collection with one hit per cell of the sensitive volume. The energy of such hit is a sum of all the deposits within that sensitive volume cell.
+
+> Note: Energy deposits may be merged by Sensitive Detector implementation (`AggregateCalorimeterSD`), however it is not encuraged due to the time performance issues.
+
+`MergeCaloHitsTool`: Merge Geant4 energy deposits with same cellID
+
+## 2. Energy calibration
+
+Energy calibration is done for sampling calorimeters to compensate for the energy deposited in the passive material.
+
+`CalibrateCaloHitsTool`: Calibrate Geant4 energy to electromagnetic (EM) scale.
+
+## 3. Noise addition
+
+Noise is added to all cells, not only those with signal. Hence a list of all cellIDs is needed and it is retrieved from the geometry. This is the only part which is geometry dependent and assumes tube geometry and phi-eta segmentation.
+
+ `NoiseCaloCellsTool`: Prepare random noise hits for each cell.
+ `MergeCaloHitsTool`: Merge signal with noise hits.
+ `NoiseCaloCellsTool`: Filter cell energy and accept only cells with energy above threshold.
 
 More details can be found in [Doxygen documentation] (http://fccsw.web.cern.ch/fccsw/).
 
+# Reconstruction
+
+Reconstruction creates clusters (`fcc::CaloCluster`) out of cells (`fcc::CaloHit`). Each cluster stores the relation to the cells it is composed of.
+
+## Sliding window algorithm
+
+Sliding window algorithm is an algorithm used for the reconstruction of electrons and photons [ref].
+
+`CreateCaloClustersSlidingWindow` implementation assumes the detector with eta-phi segmentation.
+
+> Note: If this segmentation was not used for the original simulation and the true deposits' positions are saved (`fcc::PositionedCaloHit`, it is possible to resegment using `RedoSegmentation` algorithm.
+
+Options:
+* cells  (input data)
+* clusters (output data)
+* readoutName (string, used to retrieve the segmentation)
+* fieldNames (list of strings, name of the fields describing the segmented volume)
+* fieldValues (list of ints, values of the fields describing the segmented volume)
+* deltaEtaTower (float, size of the tower in eta)
+* deltaPhiTower (float, size of the tower in eta)
+* nEtaWindow (int, size in eta of the sliding window, in units of tower size)
+* nPhiWindow (int, size in phi of the sliding window, in units of tower size)
+* nEtaPosition (int, size in eta of the window used for barycentre calculation, in units of tower size)
+* nPhiPosition (int, size in phi of the window used for barycentre calculation, in units of tower size)
+* nEtaDuplicates (int, size in eta of the window used to remove duplicates, in units of tower size)
+* nPhiDuplicates (int, size in phi of the window used to remove duplicates, in units of tower size)
+* energyThreshold (float, GeV, energy threshold for sliding window to find pfre-clusters)
+
+### 1. Create calorimeter towers.
+
+A tower contains all cells within certain eta and phi (tower size: '\b deltaEtaTower', '\b deltaPhiTower'). Distance in r plays no role in this algorithm.
+TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower and that can be achieved using `GridEtaPhi` segmentation.
+
+### 2. Find local maxima.
+
+Local maxima are found using the sliding window of a fixed size in phi x eta ('\b nEtaWindow' '\b nPhiWindow' in units of tower size). If a local max is found and its energy is above threshold ('\b energyThreshold'), it is added to the preclusters list. Each precluster contains the barycentre position and the transverse energy. Position is recalculated using the window size in eta x phi ('\b nEtaPosition', '\b nPhiPosition') that may be smaller than the sliding window to reduce the noise influence. Both windows are centred at the same tower. The energy of the precluster is the energy calculated using the sliding window.
+
+### 3. Remove duplicates.
+
+If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the pre-cluster with lower energy is removed. TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than sliding window, some towers may be taken twice (nstead of the weighted energy).
+
+### 4. Build clusters.
+
+Clusters are created using the pre-clusters energy (energy of towers within the sliding window). Position is calculated from the barycentre position and the inner radius of the detector. For each cluster the cell collection is searched and all those inside the cluster are attached.
+TODO: Final cluster may have a different size, so recalculation of energy around the tower containing barycentre should be done.
+
 # Example
 
-Example script which runs ECAL cell reconstruction is [here] (https://github.com/HEP-FCC/FCCSW/blame/master/Reconstruction/RecCalorimeter/options/runEcalReconstruction.py).
+Example script which runs ECAL cell reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
 
 * Read input file with Geant4 hits
+* Merge layers of the detector (MergeLayers)
 * Produce calo cells (CreateCaloCells)
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
+* Reconstruct clusters using the sliding window algorithm (CreateCaloClustersSlidingWindow)
+
+Befor running the script load the library libDetSegmentation.so (necessary because of the phi-eta segmenation usage):
+~~~{.sh}
+LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
+./run gaudirun.py Reconstruction/RecCalorimeter/options/runEcalReconstruction.py
+~~~
