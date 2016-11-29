@@ -85,21 +85,25 @@ Options:
 
 ### 1. Create calorimeter towers.
 
-A tower contains all cells within certain eta and phi (tower size: '\b deltaEtaTower', '\b deltaPhiTower'). Distance in r plays no role in this algorithm.
-TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower and that can be achieved using `GridEtaPhi` segmentation.
+A tower contains all cells within certain eta and phi (tower size: **deltaEtaTower**, **deltaPhiTower**). Distance in r plays no role in this algorithm.
+
+>TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower and that can be achieved using `GridEtaPhi` segmentation.
 
 ### 2. Find local maxima.
 
-Local maxima are found using the sliding window of a fixed size in phi x eta ('\b nEtaWindow' '\b nPhiWindow' in units of tower size). If a local max is found and its energy is above threshold ('\b energyThreshold'), it is added to the preclusters list. Each precluster contains the barycentre position and the transverse energy. Position is recalculated using the window size in eta x phi ('\b nEtaPosition', '\b nPhiPosition') that may be smaller than the sliding window to reduce the noise influence. Both windows are centred at the same tower. The energy of the precluster is the energy calculated using the sliding window.
+Local maxima are found using the sliding window of a fixed size in phi x eta (**nEtaWindow** **nPhiWindow** in units of tower size). If a local max is found and its energy is above threshold (**energyThreshold**), it is added to the preclusters list. Each precluster contains the barycentre position and the transverse energy. Position is recalculated using the window size in eta x phi (**nEtaPosition**, **nPhiPosition**) that may be smaller than the sliding window to reduce the noise influence. Both windows are centred at the same tower. The energy of the precluster is the energy calculated using the sliding window.
 
 ### 3. Remove duplicates.
 
-If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the pre-cluster with lower energy is removed. TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than sliding window, some towers may be taken twice (nstead of the weighted energy).
+If two pre-clusters are found next to each other (within window **nEtaDuplicates**, **nPhiDuplicates**), the pre-cluster with lower energy is removed.
+
+>TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than sliding window, some towers may be taken twice (nstead of the weighted energy).
 
 ### 4. Build clusters.
 
 Clusters are created using the pre-clusters energy (energy of towers within the sliding window). Position is calculated from the barycentre position and the inner radius of the detector. For each cluster the cell collection is searched and all those inside the cluster are attached.
-TODO: Final cluster may have a different size, so recalculation of energy around the tower containing barycentre should be done.
+
+>TODO: Final cluster may have a different size, so recalculation of energy around the tower containing barycentre should be done.
 
 # Example
 
