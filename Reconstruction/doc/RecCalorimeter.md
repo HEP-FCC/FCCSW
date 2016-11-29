@@ -106,7 +106,6 @@ TODO: Final cluster may have a different size, so recalculation of energy around
 Example script which runs ECAL cell reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
 
 * Read input file with Geant4 hits
-* Merge layers of the detector (MergeLayers)
 * Produce calo cells (CreateCaloCells)
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
 * Reconstruct clusters using the sliding window algorithm (CreateCaloClustersSlidingWindow)

@@ -13,20 +13,6 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml'],
                     OutputLevel = INFO)
 
-from Configurables import MergeLayers
-merge = MergeLayers("mergeLayers",
-                   # take the bitfield description from the geometry service
-                   readout ="ECalHitsPhiEta",
-                   # cells in which field should be merged
-                   identifier = "active_layer",
-                   # how many cells to merge
-                   # merge first 22 into new layer (id=0), next 83 into second layer (id=1), and last 11 into 3rd laer
-                   merge = [22,83,11],
-                   volumeName = "LAr_sensitive",
-                   OutputLevel = INFO)
-merge.DataInputs.inhits.Path = "ECalHits"
-merge.DataOutputs.outhits.Path = "mergedECalHits"
-
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
@@ -40,7 +26,7 @@ createcells = CreateCaloCells("CreateCaloCells",
                               fieldNames=["system","ECAL_Cryo","bath","EM_barrel"],
                               fieldValues=[5,1,1,1],
                               OutputLevel=INFO)
-createcells.DataInputs.hits.Path="mergedECalHits"
+createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
 
 from Configurables import CreatePositionedHit
@@ -70,7 +56,6 @@ out.outputCommands = ["keep *"]
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              merge,
               createcells,
               positionhit,
               out
