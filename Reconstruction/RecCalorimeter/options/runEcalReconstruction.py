@@ -45,7 +45,7 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  nEtaPosition = 7, nPhiPosition = 7,
                                                  nEtaDuplicates = 9, nPhiDuplicates = 9,
                                                  energyThreshold = 3,
-                                                 OutputLevel = INFO)
+                                                 OutputLevel = DEBUG)
 createclusters.DataInputs.cells.Path="caloCells"
 createclusters.DataOutputs.clusters.Path="caloClusters"
 
@@ -57,6 +57,7 @@ ApplicationMgr(
     TopAlg = [podioinput,
               createcells,
               positionhit,
+              createclusters,
               out
               ],
     EvtSel = 'NONE',
