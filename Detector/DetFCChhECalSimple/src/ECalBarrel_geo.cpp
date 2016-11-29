@@ -61,7 +61,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   DetElement calo_bath(active_mat, 0);
   DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
   lLog << MSG::DEBUG << "ECAL: Filling cryostat with active medium from " << cryo_dims.rmin()+cryo_thickness << " to " << cryo_dims.rmax()-cryo_thickness << endmsg;
-  Volume bathVol(active_mat, bathShape, lcdd.material(active_mat));
+  Volume bathVol(active_mat+"_notSensitive", bathShape, lcdd.material(active_mat));
   PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
   placedBath.addPhysVolID("bath", 1);
   calo_bath.setPlacement(placedBath);
@@ -86,12 +86,12 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   for (int i=0;i<active_samples;i++)
   {
     double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);
-    DetElement caloLayer(active_mat+"_sensitive", i+1);
+    DetElement caloLayer(active_mat+"_sensitive", i);
     DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_dims.dz());
     lLog << MSG::DEBUG << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << endmsg;
     Volume layerVol(active_mat, layerShape, lcdd.material(active_mat));
     PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
-    placedLayer.addPhysVolID("active_layer", i+1);
+    placedLayer.addPhysVolID(active_mat+"_sensitive", i);
     caloLayer.setPlacement(placedLayer);
     layerVol.setSensitiveDetector(sensDet);
   }
