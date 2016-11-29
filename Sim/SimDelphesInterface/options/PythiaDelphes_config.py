@@ -34,11 +34,15 @@ from Configurables import ApplicationMgr, FCCDataSvc
 from Configurables import DelphesSaveGenJets, DelphesSaveJets, DelphesSaveMet
 from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticles
 
+
 def apply_paths(obj, names):
   """ Applies the collection names to the Paths of DataOutputs """
   for attr, name in names.iteritems():
     getattr(obj.DataOutputs, attr).Path = name
-  
+
+from FWCore.joboptions import parse_standard_job_options
+args = parse_standard_job_options()
+
 ############################################################
 #
 # User: Configure variables
@@ -47,6 +51,8 @@ def apply_paths(obj, names):
 
 ## N-events
 nEvents=100
+if args.nevents is not None:
+    nEvents = args.nevents
 
 ## Message level
 messageLevelPythia =INFO
@@ -55,6 +61,8 @@ messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
 pythiaConfFile="Generation/data/Pythia_ttbar.cmd"
+if args.inputfile != '':
+    pythiaConfFile = args.inputfile
 
 ## or pythia configuration file to read in LHE file & generate events
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
@@ -70,7 +78,7 @@ delphesRootOutFile=""
 ## This map defines the names of the output collections. The key of the top level dict corresponds to the output tool name
 # The second level key - value corresponds to output-type - collection-name. NOTE: Do only change the values, not the keys.
 out_names = {
-    
+
     # Particle-Flow Charged hadron output tool
     "pfcharged": {"particles": "pfcharged", "mcAssociations": "chargedToMC"},
     # Particle-Flow Neutral hadron output tool
@@ -150,7 +158,7 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveNeutralParticles/pfneutrals",
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
-                                        "DelphesSaveMet/met"])					
+                                        "DelphesSaveMet/met"])
 delphessim.DataInputs.hepmc.Path                = "hepmc"
 delphessim.DataOutputs.genParticles.Path        = "skimmedGenParticles"
 delphessim.DataOutputs.mcEventWeights.Path      = "mcEventWeights"
@@ -167,6 +175,9 @@ from Configurables import PodioOutput
 
 out = PodioOutput("out",OutputLevel=messageLevelOut)
 out.filename       = "FCCDelphesOutput.root"
+if args.outputfile != '':
+    out.filename = args.outputfile
+
 #out.outputCommands = ["drop *",
 #                      "keep genParticles",
 #                      "keep genVertices",
@@ -179,11 +190,10 @@ out.outputCommands = ["keep *", "drop genParticles", "drop genVertices"]
 # Run modules
 #
 ############################################################
-
 # Run Pythia + Delphes
 ApplicationMgr( TopAlg = [ pythia8gen, hepmc_converter, delphessim, out ],
                 EvtSel = 'NONE',
                 EvtMax = nEvents,
                 ExtSvc = [podioEvent])
-		
+
 ApplicationMgr.EvtMax=10
