@@ -91,7 +91,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     lLog << MSG::DEBUG << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << endmsg;
     Volume layerVol(active_mat, layerShape, lcdd.material(active_mat));
     PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
-    placedLayer.addPhysVolID(active_mat+"_sensitive", i);
+    placedLayer.addPhysVolID("active_layer", i);
     caloLayer.setPlacement(placedLayer);
     layerVol.setSensitiveDetector(sensDet);
   }

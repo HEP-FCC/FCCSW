@@ -56,11 +56,8 @@ private:
   std::string m_readoutName;
   /// Name of active layers for sampling calorimeter
   std::string m_activeFieldName;
-  ///Name of active volumes (material name)
+  ///Name of active volumes
   std::string m_activeVolumeName;
- /// Number of volumes with same name as active layer (not to be counted as a layer, e.g. ECAL: bath)
-  unsigned m_numVolumesRemove;
-
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation

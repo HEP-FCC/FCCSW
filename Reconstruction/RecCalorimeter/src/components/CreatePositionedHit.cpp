@@ -20,9 +20,7 @@ CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* s
   declareOutput("caloPositionedHits", m_caloPositionedHits,"caloPositionedHits");
   declareProperty("readoutName", m_readoutName="ECalHitsNew");
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
-  declareProperty("activeVolumeName", m_activeVolumeName="LAr");
-  //ECAL LAr specific: LAr bath in cryostat same material as active layer volume
-  declareProperty("numVolumesRemove",m_numVolumesRemove=1);
+  declareProperty("activeVolumeName", m_activeVolumeName="LAr_sensitive");
 }
 
 CreatePositionedHit::~CreatePositionedHit() {}
@@ -53,8 +51,7 @@ StatusCode CreatePositionedHit::initialize() {
 
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  //Substract volumes with same name as the active layers (e.g. ECAL: bath volume)
-  m_numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName)-m_numVolumesRemove;
+  m_numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName);
   debug() << "Number of active layers " << m_numLayers << endmsg;
 
   return sc;

@@ -22,7 +22,6 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool=calibcells, doCellCalibration=True,
                               addCellNoise=False, filterCellNoise=False,
                               readoutName="ECalHitsPhiEta",
-                              numVolumesRemove=1,
                               fieldNames=["system","ECAL_Cryo","bath","EM_barrel"],
                               fieldValues=[5,1,1,1],
                               OutputLevel=INFO)
@@ -30,7 +29,7 @@ createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
 
 from Configurables import CreatePositionedHit
-positionhit = CreatePositionedHit("CreatePositionedHit", readoutName = "ECalHitsPhiEta",activeFieldName = "active_layer",activeVolumeName="LAr",numVolumesRemove="1")
+positionhit = CreatePositionedHit("CreatePositionedHit", readoutName = "ECalHitsPhiEta",activeFieldName = "active_layer",activeVolumeName="LAr_sensitive")
 positionhit.DataInputs.caloCells.Path="caloCells"
 positionhit.DataOutputs.caloPositionedHits.Path="caloCellsPositions"
 
