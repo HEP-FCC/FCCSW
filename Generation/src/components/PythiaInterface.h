@@ -14,7 +14,7 @@
 // Forward Pythia
 namespace Pythia8 {
   class Pythia;
-  class UserHooks;
+  class SlowJet;
   class JetMatchingMadgraph;
   class amcnlo_unitarised_interface;
 }
@@ -44,9 +44,11 @@ private:
   // Pythia8 engine for pileup events
   std::unique_ptr<Pythia8::Pythia> m_pythiaPileup;
   // Pythia8 engine for ME/PS matching
-  Pythia8::JetMatchingMadgraph *m_matching;
+  std::unique_ptr<Pythia8::JetMatchingMadgraph> m_matching;
   // Pythia8 engine for NLO ME/PS merging
-  Pythia8::amcnlo_unitarised_interface *m_setting;
+  std::unique_ptr<Pythia8::amcnlo_unitarised_interface> m_setting;
+  // Pythia8 engine for jet clustering
+  std::unique_ptr<Pythia8::SlowJet> m_slowJet;
   // Name of Pythia configuration input file
   std::string       m_parfile; //!< Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
   // Pileup Interface Tool

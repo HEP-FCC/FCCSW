@@ -66,8 +66,7 @@ StatusCode PythiaInterface::initialize() {
   m_iAbort = 0;
   m_iEvent = 0;
 
-  // begin ME/PS Matching specific code
-  
+  // Begin ME/PS Matching specific code
   // Check if jet matching should be applied.
   m_doMePsMatching = m_pythiaSignal->settings.flag("JetMatching:merge");
 
@@ -79,7 +78,7 @@ StatusCode PythiaInterface::initialize() {
     return Error ( "Jet matching and merging cannot be used simultaneously!" );
   }
   
-  // Allow to set the number of addtional partons dynamically.
+  // Allow to set the number of additional partons dynamically.
   if (m_doMePsMerging) {
     // Store merging scheme.
     int scheme = ( m_pythiaSignal->settings.flag("Merging:doUMEPSTree")
@@ -91,23 +90,26 @@ StatusCode PythiaInterface::initialize() {
                 || m_pythiaSignal->settings.flag("Merging:doUNLOPSSubtNLO")) ?
                 2 :
                 0 );
-//    m_setting = std::unique_ptr<Pythia8::amcnlo_unitarised_interface>(new Pythia8::amcnlo_unitarised_interface(scheme));
-    m_setting = new Pythia8::amcnlo_unitarised_interface(scheme);
-    m_pythiaSignal->setUserHooksPtr(m_setting);
+    m_setting = std::unique_ptr<Pythia8::amcnlo_unitarised_interface>(new Pythia8::amcnlo_unitarised_interface(scheme));
+    m_pythiaSignal->setUserHooksPtr(m_setting.get());
   }
 
   // For jet matching, initialise the respective user hooks code.
   if (m_doMePsMatching) {
-    m_matching = new Pythia8::JetMatchingMadgraph();
+    m_matching = std::unique_ptr<Pythia8::JetMatchingMadgraph>(new Pythia8::JetMatchingMadgraph());
     if (!m_matching) {
       return Error ( " Failed to initialise jet matching structures.");
     }
-    m_pythiaSignal->setUserHooksPtr(m_matching);
+    m_pythiaSignal->setUserHooksPtr(m_matching.get());
   }
-  
+
+  // store additional branch containing matching/merging validation observables
   if(m_doMePsMatching || m_doMePsMerging) declareOutput("mePsMatchingVars" , m_handleMePsMatchingVars, "mePsMatchingVars");
-  
-  // end ME/PS Matching specific code
+
+  // jet clustering needed for matching
+  m_slowJet = std::unique_ptr<Pythia8::SlowJet>(new Pythia8::SlowJet(1, 0.4, 0, 4.4, 2, 2, NULL, false));
+
+  // End ME/PS Matching specific code
 
   m_pythiaSignal->init();
 
@@ -120,7 +122,7 @@ StatusCode PythiaInterface::execute() {
   // Interface for conversion from Pythia8::Event to HepMC event.
   HepMC::Pythia8ToHepMC *toHepMC = new HepMC::Pythia8ToHepMC();
   Pythia8::Event sumEvent;
- 
+
   // Generate events. Quit if many failures in a row
   while ( !m_pythiaSignal->next() ) {
     if (++m_iAbort > m_nAbort) {
@@ -133,32 +135,14 @@ StatusCode PythiaInterface::execute() {
     else{
        warning () << "PythiaInterface Pythia8 abort : "<< m_iAbort << "/" << m_nAbort << std::endl;
     }
-    
-    /*std::vector<double> my_DJRs = matching->getDJR();
-    int my_nHardPartons    = matching->nMEpartons().first;
-
-    double evtweight         = m_pythiaSignal->info.weight();
-    if (m_doMePsMerging) evtweight  *= m_pythiaSignal->info.mergingWeightNLO()*setting->getNormFactor();
-    
-    // Do not print zero-weight events.
-    if ( evtweight == 0. ) continue;
-    // end ME/PS Matching specific code */
-    
-    
-    
   }
 
   if(m_doMePsMatching || m_doMePsMerging) {
 
     auto mePsMatchingVars = m_handleMePsMatchingVars.createAndPut();
-
- 
-    double ptprint = m_pythiaSignal->settings.parm("Syscalc:qWeed");
-    //double ptmin = (doMerge) ? pythia.settings.parm("Merging:TMS") : 10.0;
-    Pythia8::SlowJet* slowJet = new Pythia8::SlowJet(1, 0.4, ptprint, 4.4, 2, 2, NULL, false);
-  
     int njetNow = 0;
     std::vector<double> dijVec;
+
     // Construct input for jet algorithm.
     Pythia8::Event jetInput;
     jetInput.init("jet input",&(m_pythiaSignal->particleData));
@@ -167,13 +151,14 @@ StatusCode PythiaInterface::execute() {
       if (  m_pythiaSignal->event[i].isFinal()
         && (m_pythiaSignal->event[i].colType() != 0 || m_pythiaSignal->event[i].isHadron()))
         jetInput.append(m_pythiaSignal->event[i]);
-    slowJet->setup(jetInput);
+    m_slowJet->setup(jetInput);
     // Run jet algorithm.
     std::vector<double> result;
-    while ( slowJet->sizeAll() - slowJet->sizeJet() > 0 ) {
-      result.push_back(sqrt(slowJet->dNext()));
-      slowJet->doStep();
+    while ( m_slowJet->sizeAll() - m_slowJet->sizeJet() > 0 ) {
+      result.push_back(sqrt(m_slowJet->dNext()));
+      m_slowJet->doStep();
     }
+
     // Reorder by decreasing multiplicity.
     for (int i=int(result.size())-1; i >= 0; --i)
       dijVec.push_back(result[i]);
@@ -183,7 +168,14 @@ StatusCode PythiaInterface::execute() {
     // that for MLM jet matching, this might not coincide with the
     // actual number of partons in the input LH event, since some
     // partons may be excluded from the matching.
-    if (m_doMePsMatching) njetNow = m_matching->nMEpartons().first;
+    
+    bool doShowerKt = m_pythiaSignal->settings.flag("JetMatching:doShowerKt");
+    if (m_doMePsMatching && !doShowerKt) 
+       	njetNow = m_matching->nMEpartons().first;
+    //FIXME: "getProcessSubset()" method does not exist in < 8.219
+    //FIXME: simply un-comment the following two lines in >= 8.219
+    //else if (m_doMePsMatching && doShowerKt)
+      //njetNow = m_matching->getProcessSubset().size(); 
     else if (m_doMePsMerging){
       njetNow = m_pythiaSignal->settings.mode("Merging:nRequested");
       if ( m_pythiaSignal->settings.flag("Merging:doUMEPSSubt")
@@ -195,51 +187,29 @@ StatusCode PythiaInterface::execute() {
     // Inclusive jet pTs as further validation plot.
     std::vector<double> ptVec;
     // Run jet algorithm.
-    slowJet->analyze(jetInput);
-    for (int i = 0; i < slowJet->sizeJet(); ++i)
-      ptVec.push_back(slowJet->pT(i));
+    m_slowJet->analyze(jetInput);
+    for (int i = 0; i < m_slowJet->sizeJet(); ++i)
+      ptVec.push_back(m_slowJet->pT(i));
 
-    // end matching code from MG5
-    /*std::cout<<"------------------------------  main method ----------------------------------"<<std::endl;
-    std::cout<<"nPartons ME: "<<njetNow<<std::endl;
-    std::cout<<"d01: "<<log10(dijVec[0])<<", d12: "<<log10(dijVec[1])<<", d23: "<<log10(dijVec[2])<<", d34: "<<log10(dijVec[3])<<std::endl;
-    std::cout<<"pt1: "<<ptVec[0]<<", pt2: "<<ptVec[1]<<", pt3: "<<ptVec[2]<<", pt4: "<<ptVec[3]<<std::endl;
-    */
-    
     auto var = mePsMatchingVars->create();
+
+    // 0th entry = number of generated partons 
     var.value(njetNow);
-    
+
+    // odd  entries: d(ij) observables --- 1): d01, 3): d12, 5): d23, 7): d34
+    // even entries: pT(i) observables --- 2): pT1, 4): pT2, 6): pT3, 8): pT4
     for (int i = 0; i < 4; ++i) {
-    
       var = mePsMatchingVars->create();
       var.value(-999);
       if(dijVec.size() > i)
         var.value(log10(dijVec[i]));
-      
+
       var = mePsMatchingVars->create();
       var.value(-999);
       if(ptVec.size() > i)
         var.value(ptVec[i]);
     }
   }
-  // begin ME/PS Matching specific code
-/*  std::cout<<m_doMePsMatching<<std::endl;
-  if(m_doMePsMatching || m_doMePsMerging) {
-      
-    auto mePsMatchingVars = m_handleMePsMatchingVars.createAndPut();
-    auto var = mePsMatchingVars->create();
-    var.value(m_matching->nMEpartons().first);
-    //loop over HepMC event weights
-    // FIXME: method becomes "getDJR()" starting from Pythia8.219
-    for(unsigned int j=0; j<m_matching->GetDJR().size(); j++) {
-      auto var = mePsMatchingVars->create();
-      var.value(m_matching->GetDJR()[j]);
-    }
-    std::cout<<"-------------------------------------------------------------------"<<std::endl;
-    std::cout<<"nPartons ME: "<<m_matching->nMEpartons().first<<std::endl;
-    std::cout<<"d01: "<<log10(m_matching->GetDJR()[0])<<", d12: "<<log10(m_matching->GetDJR()[1])<<", d23: "<<log10(m_matching->GetDJR()[2])<<", d34: "<<log10(m_matching->GetDJR()[3])<<std::endl;
-  }
-*/
 
   // Reset the counter to count failed events in a row
   m_iAbort=0;
@@ -327,6 +297,8 @@ StatusCode PythiaInterface::execute() {
   // Handle event via standard Gaudi mechanism
   m_hepmchandle.put(theEvent);
   m_iEvent++;
+  
+  delete toHepMC;
   return StatusCode::SUCCESS;
 }
 
