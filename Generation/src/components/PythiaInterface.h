@@ -13,8 +13,15 @@
 
 // Forward Pythia
 namespace Pythia8 {
-
   class Pythia;
+  class UserHooks;
+  class JetMatchingMadgraph;
+  class amcnlo_unitarised_interface;
+}
+
+// Forward FCC EDM
+namespace fcc {
+  class FloatCollection;
 }
 
 class PythiaInterface: public GaudiAlgorithm {
@@ -36,6 +43,10 @@ private:
   std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
   // Pythia8 engine for pileup events
   std::unique_ptr<Pythia8::Pythia> m_pythiaPileup;
+  // Pythia8 engine for ME/PS matching
+  Pythia8::JetMatchingMadgraph *m_matching;
+  // Pythia8 engine for NLO ME/PS merging
+  Pythia8::amcnlo_unitarised_interface *m_setting;
   // Name of Pythia configuration input file
   std::string       m_parfile; //!< Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
   // Pileup Interface Tool
@@ -46,11 +57,14 @@ private:
   ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
   // Output handle for HepMC event
   DataHandle<HepMC::GenEvent> m_hepmchandle;
-
+  // Output handle for ME/PS matching variables
+  DataHandle<fcc::FloatCollection> m_handleMePsMatchingVars;
+  
   int m_nAbort;
   int m_iAbort;
   int m_iEvent;
-
+  bool m_doMePsMatching;
+  bool m_doMePsMerging;
 };
 
 #endif // GENERATION_PYTHIAINTERFACE_H
