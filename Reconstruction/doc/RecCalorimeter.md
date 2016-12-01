@@ -21,18 +21,6 @@ The ouput (cells) contains calibrated energy and the noise. It may also use diff
 
 `CreateCaloCells` is an algorithm for the digitisation. It calls 3 tools to perform the deposits merging, energy calibration and noise addition.
 
-Options:
-* hits (input data)
-* cells (output data)
-* doCellCalibration (bool, calibrate energy to EM scale?)
-* addCellNoise (bool, add noise to cells?)
-* filterCellNoise (bool, save only cells with energy above threshold?)
-* readoutName (string, name of the detector readout)
-* activeVolumeName (string, name of active volumes)
-* activeFieldName (string, name of active layers for sampling calorimeter)
-* fieldNames (list of strings, name of the fields describing the segmented volume)
-* fieldValues (list of ints, values of the fields describing the segmented volume)
-
 ## 1. Deposits merging
 
 The output of the simulation contains a large collection of energy deposits. First step towards the digitisation is merging those hits into the hit collection with one hit per cell of the sensitive volume. The energy of such hit is a sum of all the deposits within that sensitive volume cell. 
@@ -64,27 +52,11 @@ Reconstruction creates clusters (`fcc::CaloCluster`) out of cells (`fcc::CaloHit
 
 ## Sliding window algorithm
 
-Sliding window algorithm is an algorithm used for the reconstruction of electrons and photons [ref].
+Sliding window algorithm is an algorithm used for the reconstruction of electrons and photons. The algorithm is the same one as used by the ATLAS experiment [link](https://cds.cern.ch/record/1099735?ln=de).
 
 `CreateCaloClustersSlidingWindow` implementation assumes the detector with eta-phi segmentation.
 
 > Note: If this segmentation was not used for the original simulation and the true deposits' positions are saved (`fcc::PositionedCaloHit`, it is possible to resegment using `RedoSegmentation` algorithm.
-
-Options:
-* cells  (input data)
-* clusters (output data)
-* readoutName (string, used to retrieve the segmentation)
-* fieldNames (list of strings, name of the fields describing the segmented volume)
-* fieldValues (list of ints, values of the fields describing the segmented volume)
-* deltaEtaTower (float, size of the tower in eta)
-* deltaPhiTower (float, size of the tower in eta)
-* nEtaWindow (int, size in eta of the sliding window, in units of tower size)
-* nPhiWindow (int, size in phi of the sliding window, in units of tower size)
-* nEtaPosition (int, size in eta of the window used for barycentre calculation, in units of tower size)
-* nPhiPosition (int, size in phi of the window used for barycentre calculation, in units of tower size)
-* nEtaDuplicates (int, size in eta of the window used to remove duplicates, in units of tower size)
-* nPhiDuplicates (int, size in phi of the window used to remove duplicates, in units of tower size)
-* energyThreshold (float, GeV, energy threshold for the sliding window to find pre-clusters)
 
 ### 1. Create calorimeter towers.
 
@@ -110,15 +82,23 @@ Clusters are created using the pre-clusters energy (energy of towers within the 
 
 # Example
 
-Example script which runs ECAL cell reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
+Example script which runs ECAL reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
 
 * Read input file with Geant4 hits
 * Produce calo cells (CreateCaloCells)
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
 * Reconstruct clusters using the sliding window algorithm (CreateCaloClustersSlidingWindow)
 
-Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmenation usage):
+First, prepare the input file. Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmenation usage):
+~~~{.sh}
+LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
+./run gaudirun.py Reconstruction/RecCalorimeter/options/geant_fullsim_ecal_singleparticles.py
+~~~
+
+Now, we can run the reconstruction:
 ~~~{.sh}
 LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
 ./run gaudirun.py Reconstruction/RecCalorimeter/options/runEcalReconstruction.py
 ~~~
+
+

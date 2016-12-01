@@ -68,7 +68,6 @@ struct cluster {
 class CreateCaloClustersSlidingWindow : public GaudiAlgorithm {
 public:
   CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc);
-  ~CreateCaloClustersSlidingWindow();
   /**  Initialize.
    *   @return status code
    */

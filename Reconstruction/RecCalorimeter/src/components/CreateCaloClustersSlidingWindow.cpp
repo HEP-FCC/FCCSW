@@ -37,8 +37,6 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
 }
 
-CreateCaloClustersSlidingWindow::~CreateCaloClustersSlidingWindow() {}
-
 StatusCode CreateCaloClustersSlidingWindow::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) {
     return StatusCode::FAILURE;
@@ -219,8 +217,6 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   }
   debug()<<"Pre-clusters size after duplicates removal: "<<m_preClusters.size()<<endmsg;
 
-  //TODO: if m_nEtaDuplicates < m_nEtaWindow and two close clusters are reconstructed, we have to divide energy between two clusters to avoid double counting.
-
   // 6. Create final clusters
   // currently r plays no role, take inner radius for position calculation
   auto tubeSizes = det::utils::tubeDimensions(m_volumeId);
@@ -257,7 +253,6 @@ void CreateCaloClustersSlidingWindow::prepareTowers() {
   m_nEtaTower = numOfCells[1];
   m_nPhiTower = numOfCells[0];
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower,0));
-  // TODO change segmentation so it uses offset and ids of bins are always positive
   if(m_nPhiTower % 2 == 0 || m_nEtaTower % 2 == 0) {
     error()<<"Number of segmentation bins must be an odd number. See detector documentation for more details."<<endmsg;
   }
@@ -284,26 +279,22 @@ void CreateCaloClustersSlidingWindow::buildTowers() {
 int CreateCaloClustersSlidingWindow::idEta(float aEta) const {
   // shift Ids so they start at 0 (segmentation returns IDs that may be from -N to N)
   // for segmentation in eta the middle cell has its centre at eta=0 (segmentation offset = 0)
-  // TODO: take into account possible offset of segmentation
   return floor((aEta+m_deltaEtaTower/2.)/m_deltaEtaTower) + floor(m_nEtaTower/2);
 }
 
 int CreateCaloClustersSlidingWindow::idPhi(float aPhi) const {
   // shift Ids so they start at 0 (segmentation returns IDs that may be from -N to N)
   // for segmentation in phi the middle cell has its centre at phi=0 (segmentation offset = 0)
-  // TODO: take into account possible offset of segmentation
   return floor((aPhi+m_deltaPhiTower/2.)/m_deltaPhiTower) + floor(m_nPhiTower/2);
 }
 
 float CreateCaloClustersSlidingWindow::eta(int aIdEta) const {
   // middle of the tower
-  // TODO: take into account possible offset of segmentation
   return (aIdEta - (m_nEtaTower-1)/2 ) * m_deltaEtaTower;
 }
 
 float CreateCaloClustersSlidingWindow::phi(int aIdPhi) const {
   // middle of the tower
-  // TODO: take into account possible offset of segmentation
   return (aIdPhi - (m_nPhiTower-1)/2 ) * m_deltaPhiTower;
 }
 

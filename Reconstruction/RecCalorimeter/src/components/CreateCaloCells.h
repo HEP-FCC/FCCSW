@@ -38,8 +38,6 @@ class CreateCaloCells : public GaudiAlgorithm
 {
 public:
   CreateCaloCells(const std::string& name, ISvcLocator* svcLoc);
- 
-  ~CreateCaloCells();
 
   StatusCode initialize();
 
