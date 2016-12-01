@@ -39,8 +39,6 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("fieldValues", m_fieldValues);
 }
 
-CreateCaloCells::~CreateCaloCells() {}
-
 StatusCode CreateCaloCells::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
