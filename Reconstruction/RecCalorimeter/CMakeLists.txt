@@ -34,3 +34,9 @@ gaudi_add_test(runEcalReconstruction
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateECalForReconstruction
                FRAMEWORK tests/options/runEcalReconstruction.py)
+
+gaudi_add_test(runEcalReconstructionCheckNumClusters
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
+               DEPENDS runEcalReconstruction)
