@@ -109,13 +109,9 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   bool toRemove = false;
   // one slice in eta = window, now only sum over window elements in phi
   for(int iEta = halfEtaWin; iEta < m_nEtaTower - halfEtaWin; iEta++) {
-    // sum the first window in phi: for full phi coverage we start with phi bins from the end ...
-    for(int iPhiWindow = m_nPhiTower - halfPhiWin; iPhiWindow < m_nPhiTower; iPhiWindow++) {
-      sumWindow += sumOverEta[iPhiWindow];
-    }
-    // ... and add first bins
-    for(int iPhiWindow = 0; iPhiWindow <= halfPhiWin; iPhiWindow++) {
-      sumWindow += sumOverEta[iPhiWindow];
+    // sum the first window in phi
+    for(int iPhiWindow =  - halfPhiWin; iPhiWindow <= halfPhiWin; iPhiWindow++) {
+      sumWindow += sumOverEta[phiNeighbour(iPhiWindow)];
     }
     // loop over all the phi slices
     for(int iPhi = 0; iPhi < m_nPhiTower; iPhi++) {
@@ -124,32 +120,12 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         // test local maximum in phi
         if(m_checkPhiLocalMax) {
           // check closest neighbour on the right
-          if(iPhi > halfPhiWin - 1 && iPhi < m_nPhiTower - halfPhiWin - 1) {
-            if(sumOverEta[iPhi-halfPhiWin] < sumOverEta[iPhi+halfPhiWin+1]) {
-              toRemove = true;
-            }
-          } else if(iPhi < halfPhiWin ) {
-            if(sumOverEta[iPhi-halfPhiWin+m_nPhiTower] < sumOverEta[iPhi+halfPhiWin+1]) {
-              toRemove = true;
-            }
-          } else {
-            if(sumOverEta[iPhi-halfPhiWin] < sumOverEta[iPhi+halfPhiWin+1-m_nPhiTower]) {
-              toRemove = true;
-            }
+          if(sumOverEta[phiNeighbour(iPhi-halfPhiWin)] < sumOverEta[phiNeighbour(iPhi+halfPhiWin+1)]) {
+            toRemove = true;
           }
           // check closest neighbour on the left
-          if(iPhi > halfPhiWin && iPhi < m_nPhiTower - halfPhiWin) {
-            if(sumOverEta[iPhi+halfPhiWin] < sumOverEta[iPhi-halfPhiWin-1]) {
-              toRemove = true;
-            }
-          } else if(iPhi < halfPhiWin + 1 )  {
-            if(sumOverEta[iPhi+halfPhiWin] < sumOverEta[iPhi-halfPhiWin-1+m_nPhiTower]) {
-              toRemove = true;
-            }
-          } else {
-            if(sumOverEta[iPhi+halfPhiWin-m_nPhiTower] < sumOverEta[iPhi-halfPhiWin-1]) {
-              toRemove = true;
-            }
+          if(sumOverEta[phiNeighbour(iPhi+halfPhiWin)] < sumOverEta[phiNeighbour(iPhi-halfPhiWin-1)]) {
+            toRemove = true;
           }
         }
         // test local maximum in eta (if it wasn't already marked as to be removed)
@@ -157,8 +133,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
           // check closest neighbour on the right (if it is not the first window)
           if(iEta > halfEtaWin) {
             for(int iPhiWindowLocalCheck = iPhi - halfPhiWin; iPhiWindowLocalCheck <= iPhi+halfPhiWin; iPhiWindowLocalCheck++) {
-              sumPhiSlicePrevEtaWin += m_towers[iEta - halfEtaWin - 1][iPhiWindowLocalCheck];
-              sumLastPhiSlice += m_towers[iEta + halfEtaWin][iPhiWindowLocalCheck];
+              sumPhiSlicePrevEtaWin += m_towers[iEta - halfEtaWin - 1][phiNeighbour(iPhiWindowLocalCheck)];
+              sumLastPhiSlice += m_towers[iEta + halfEtaWin][phiNeighbour(iPhiWindowLocalCheck)];
             }
             if(sumPhiSlicePrevEtaWin > sumLastPhiSlice) {
               toRemove = true;
@@ -167,8 +143,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
           // check closest neighbour on the left (if it is not the last window)
           if(iEta < m_nEtaTower - halfEtaWin - 1) {
             for(int iPhiWindowLocalCheck = iPhi - halfPhiWin; iPhiWindowLocalCheck <= iPhi+halfPhiWin; iPhiWindowLocalCheck++) {
-              sumPhiSliceNextEtaWin += m_towers[iEta + halfEtaWin + 1][iPhiWindowLocalCheck];
-              sumFirstPhiSlice += m_towers[iEta - halfEtaWin][iPhiWindowLocalCheck];
+              sumPhiSliceNextEtaWin += m_towers[iEta + halfEtaWin + 1][phiNeighbour(iPhiWindowLocalCheck)];
+              sumFirstPhiSlice += m_towers[iEta - halfEtaWin][phiNeighbour(iPhiWindowLocalCheck)];
             }
             if(sumPhiSliceNextEtaWin > sumFirstPhiSlice) {
               toRemove = true;
@@ -183,37 +159,10 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         if (!toRemove) {
           // Calculate barycentre position (usually smaller window used to reduce noise influence)
           for(int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
-            if(iPhi >= halfPhiWin && iPhi < m_nPhiTower - halfPhiWin - 1) {
-              // most common
-              for(int ipPhi = iPhi-halfPhiPos; ipPhi <= iPhi+halfPhiPos; ipPhi++) {
-                posEta += eta(ipEta) * m_towers[ipEta][ipPhi];
-                posPhi += phi(ipPhi) * m_towers[ipEta][ipPhi];
-                sumEnergyPos += m_towers[ipEta][ipPhi];
-              }
-            }  else if (iPhi < halfPhiWin) {
-              // corner case: centre in phi is close to lower edge
-              for(int ipPhi = iPhi-halfPhiPos+m_nPhiTower; ipPhi < m_nPhiTower; ipPhi++) {
-                posEta += eta(ipEta) * m_towers[ipEta][ipPhi];
-                posPhi += phi(ipPhi) * m_towers[ipEta][ipPhi];
-                sumEnergyPos += m_towers[ipEta][ipPhi];
-              }
-              for(int ipPhi = 0; ipPhi <= iPhi+halfPhiPos; ipPhi++) {
-                posEta += eta(ipEta) * m_towers[ipEta][ipPhi];
-                posPhi += phi(ipPhi) * m_towers[ipEta][ipPhi];
-                sumEnergyPos += m_towers[ipEta][ipPhi];
-              }
-            } else {
-              // corner case: centre in phi is close to upper edge
-              for(int ipPhi = iPhi-halfPhiPos; ipPhi < m_nPhiTower; ipPhi++) {
-                posEta += eta(ipEta) * m_towers[ipEta][ipPhi];
-                posPhi += phi(ipPhi) * m_towers[ipEta][ipPhi];
-                sumEnergyPos += m_towers[ipEta][ipPhi];
-              }
-              for(int ipPhi = 0; ipPhi <= iPhi+halfPhiPos-m_nPhiTower; ipPhi++) {
-                posEta += eta(ipEta) * m_towers[ipEta][ipPhi];
-                posPhi += phi(ipPhi) * m_towers[ipEta][ipPhi];
-                sumEnergyPos += m_towers[ipEta][ipPhi];
-              }
+            for(int ipPhi = iPhi-halfPhiPos; ipPhi <= iPhi+halfPhiPos; ipPhi++) {
+              posEta += eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
+              posPhi += phi(phiNeighbour(ipPhi)) * m_towers[ipEta][phiNeighbour(ipPhi)];
+              sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
             }
           }
           // If non-zero energy in the cluster, add to pre-clusters (reduced size for pos. calculation -> energy in the core can be zero)
@@ -233,24 +182,10 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       }
       toRemove = false;
       // finish processing that window in phi, shift window to the next phi tower
-      if(iPhi >= halfPhiWin && iPhi < m_nPhiTower - halfPhiWin - 1) {
-        // substract first phi tower in current window
-        sumWindow -= sumOverEta[iPhi-halfPhiWin];
-        // add next phi tower to the window
-        sumWindow += sumOverEta[iPhi+halfPhiWin+1];
-      }  else if (iPhi < halfPhiWin) {
-        // for windows at the lower edge of phi
-        // substract first phi tower in current window
-        sumWindow -= sumOverEta[iPhi-halfPhiWin+m_nPhiTower];
-        // add next phi tower to the window
-        sumWindow += sumOverEta[iPhi+halfPhiWin+1];
-      } else {
-        // for windows at the upper edge of phi
-        // substract first phi tower in current window
-        sumWindow -= sumOverEta[iPhi-halfPhiWin];
-        // add next phi tower to the window
-        sumWindow += sumOverEta[iPhi+halfPhiWin+1-m_nPhiTower];
-      }
+      // substract first phi tower in current window
+      sumWindow -= sumOverEta[phiNeighbour(iPhi-halfPhiWin)];
+      // add next phi tower to the window
+      sumWindow += sumOverEta[phiNeighbour(iPhi+halfPhiWin+1)];
     }
     sumWindow = 0;
     // finish processing that slice, shift window to next eta tower
@@ -370,4 +305,13 @@ float CreateCaloClustersSlidingWindow::phi(int aIdPhi) const {
   // middle of the tower
   // TODO: take into account possible offset of segmentation
   return (aIdPhi - (m_nPhiTower-1)/2 ) * m_deltaPhiTower;
+}
+
+uint CreateCaloClustersSlidingWindow::phiNeighbour(int aIPhi) const {
+  if ( aIPhi < 0 ) {
+    return m_nPhiTower + aIPhi;
+  } else if ( aIPhi >= m_nPhiTower ) {
+    return aIPhi % m_nPhiTower;
+  }
+  return aIPhi;
 }
