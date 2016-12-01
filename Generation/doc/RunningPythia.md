@@ -49,18 +49,18 @@ directory:
 -   **Pythia\_LHEinput\_Matching.cmd** : An example of Pythia configuration to
     produce events with the correct description of higher jet multiplicites (ME/PS matching). 
     Important Configuration parameters:
-    - `JetMatching:merge  = on/off`   --> Switch on/off merging
-    - `JetMatching:qCut   = 15`       --> Matching scale
-    - `JetMatching:coneRadius = 1.0`  --> Cone for jet jet clustering
-    - `JetMatching:etaJetMax  = 10.0` --> Max eta of  jets
-    - `JetMatching:nJetMax    = 2`     --> Max jet multiplicity defined in hard scattering
+    - `JetMatching:merge      = on/off` --> Switch on/off merging
+    - `JetMatching:qCut       = 15`     --> Matching scale
+    - `JetMatching:coneRadius = 1.0`    --> Cone for jet jet clustering
+    - `JetMatching:etaJetMax  = 10.0`   --> Max eta of  jets
+    - `JetMatching:nJetMax    = 2`      --> Max jet multiplicity defined in hard scattering
 
 More information on PS/ME matching/merging with Pythia8 can be found 
 [here](http://home.thep.lu.se/~torbjorn/pythia81html/MatchingAndMerging.html) and 
 [here](http://home.thep.lu.se/~torbjorn/pythia81html/JetMatching.html).
 
-A small tutorial on how to validate the choice of parameters can be found [here](https://github.com/HEP-FCC/fcc-physics/pythia8/validation/
-).
+A small example on how to validate the choice of parameters can be found
+[here](https://github.com/HEP-FCC/fcc-physics/tree/master/pythia8/validation/README.md).
 
 Running Pythia
 --------------
