@@ -50,9 +50,7 @@ pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits"
-                                 #, "InspectHitsCollectionsTool/inspect"
-                                 ],
+                       outputs= ["SimG4SaveCalHits/saveECalHits"],
                        eventProvider=pgun,
                        OutputLevel=DEBUG)
 

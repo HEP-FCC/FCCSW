@@ -62,7 +62,7 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
   // get the ID of the volume for which the cells are counted
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   if(m_fieldNames.size() != m_fieldValues.size()) {
-    error() << "Size of names and values is not the same" << endmsg;
+    error() << "Volume readout field descriptors (names and values) have different size. " << endmsg;
     return StatusCode::FAILURE;
   }
   for(uint it = 0; it < m_fieldNames.size(); it++) {

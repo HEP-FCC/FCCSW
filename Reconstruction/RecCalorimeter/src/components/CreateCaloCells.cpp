@@ -164,13 +164,12 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
   }
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  // Substract volumes with active material which are not readout (e.g. ECAL: bath volume)
   unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName);
   info() << "Number of active layers " << numLayers << endmsg;
 
   // Check if size of names and values of readout fields agree
   if(m_fieldNames.size() != m_fieldValues.size()) {
-    error() << "Size of names and values is not the same" << endmsg;
+    error() << "Volume readout field descriptors (names and values) have different size." << endmsg;
     return StatusCode::FAILURE;
   }
 
