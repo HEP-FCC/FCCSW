@@ -82,7 +82,7 @@ Clusters are created using the pre-clusters energy (energy of towers within the 
 
 # Example
 
-Example script which runs ECAL cell reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
+Example script which runs ECAL reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
 
 * Read input file with Geant4 hits
 * Produce calo cells (CreateCaloCells)
