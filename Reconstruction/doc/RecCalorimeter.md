@@ -89,15 +89,16 @@ Example script which runs ECAL cell reconstruction is [here](../RecCalorimeter/o
 * Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
 * Reconstruct clusters using the sliding window algorithm (CreateCaloClustersSlidingWindow)
 
-Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmenation usage):
+First, prepare the input file. Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmenation usage):
+~~~{.sh}
+LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
+./run gaudirun.py Reconstruction/RecCalorimeter/options/geant_fullsim_ecal_singleparticles.py
+~~~
+
+Now, we can run the reconstruction:
 ~~~{.sh}
 LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
 ./run gaudirun.py Reconstruction/RecCalorimeter/options/runEcalReconstruction.py
 ~~~
 
-The input file for the reconstruction script can be produced using this command:
-~~~{.sh}
-LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
-./run gaudirun.py Reconstruction/RecCalorimeter/options/geant_fullsim_ecal_singleparticles.py
-~~~
 
