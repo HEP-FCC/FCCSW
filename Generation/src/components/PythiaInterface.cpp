@@ -81,15 +81,21 @@ StatusCode PythiaInterface::initialize() {
   // Allow to set the number of additional partons dynamically.
   if (m_doMePsMerging) {
     // Store merging scheme.
-    int scheme = ( m_pythiaSignal->settings.flag("Merging:doUMEPSTree")
-                || m_pythiaSignal->settings.flag("Merging:doUMEPSSubt")) ?
-                1 :
-                 ( ( m_pythiaSignal->settings.flag("Merging:doUNLOPSTree")
-                || m_pythiaSignal->settings.flag("Merging:doUNLOPSSubt")
-                || m_pythiaSignal->settings.flag("Merging:doUNLOPSLoop")
-                || m_pythiaSignal->settings.flag("Merging:doUNLOPSSubtNLO")) ?
-                2 :
-                0 );
+    int scheme;
+    if (  m_pythiaSignal->settings.flag("Merging:doUMEPSTree")
+       || m_pythiaSignal->settings.flag("Merging:doUMEPSSubt")) {
+      scheme = 1;
+    }
+    else if (   m_pythiaSignal->settings.flag("Merging:doUNLOPSTree")
+             || m_pythiaSignal->settings.flag("Merging:doUNLOPSSubt")
+             || m_pythiaSignal->settings.flag("Merging:doUNLOPSLoop")
+             || m_pythiaSignal->settings.flag("Merging:doUNLOPSSubtNLO")) {
+      scheme = 2;
+    }
+    else {
+      scheme = 0;
+    }
+    
     m_setting = std::unique_ptr<Pythia8::amcnlo_unitarised_interface>(new Pythia8::amcnlo_unitarised_interface(scheme));
     m_pythiaSignal->setUserHooksPtr(m_setting.get());
   }
@@ -104,8 +110,10 @@ StatusCode PythiaInterface::initialize() {
   }
 
   // store additional branch containing matching/merging validation observables
-  if(m_doMePsMatching || m_doMePsMerging) declareOutput("mePsMatchingVars" , m_handleMePsMatchingVars, "mePsMatchingVars");
-
+  if (m_doMePsMatching || m_doMePsMerging) {
+    declareOutput("mePsMatchingVars" , m_handleMePsMatchingVars, "mePsMatchingVars");
+  }
+  
   // jet clustering needed for matching
   m_slowJet = std::unique_ptr<Pythia8::SlowJet>(new Pythia8::SlowJet(1, 0.4, 0, 4.4, 2, 2, NULL, false));
 
@@ -137,7 +145,7 @@ StatusCode PythiaInterface::execute() {
     }
   }
 
-  if(m_doMePsMatching || m_doMePsMerging) {
+  if (m_doMePsMatching || m_doMePsMerging) {
 
     auto mePsMatchingVars = m_handleMePsMatchingVars.createAndPut();
     int njetNow = 0;
@@ -218,7 +226,7 @@ StatusCode PythiaInterface::execute() {
   if (msgLevel() <= MSG::DEBUG) {
 
     for (int i = 0; i < m_pythiaSignal->event.size(); ++i){
-      info () << "PythiaInterface Pythia8 abort : "<< m_iAbort << "/" << m_nAbort << endmsg;
+      debug () << "PythiaInterface Pythia8 abort : "<< m_iAbort << "/" << m_nAbort << endmsg;
 
       debug() << "Pythia: "
               << " Id: "        << std::setw(3) << i
