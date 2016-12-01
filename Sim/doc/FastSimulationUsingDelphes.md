@@ -16,7 +16,7 @@ Contents
 Overview
 --------
 
-This is a technical description of the Delphes interface in FCCSW. It describes the configuration file and properties
+This is a technical description of the Delphes interface in FCCSW. It describes the configuration file of FCCSW and properties
 that allow customisation of the Delphes job. We also have dedicated tutorials to
 [get started with Delphes](https://github.com/HEP-FCC/fcc-tutorials/blob/master/FccSoftwareGettingStartedFastSim.md#getting-started-with-delphes-fcc-hh) and
 [run a full analysis using Delphes fast simulation](https://github.com/HEP-FCC/fcc-tutorials/blob/master/FccFullAnalysis.md).

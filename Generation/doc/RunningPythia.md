@@ -16,7 +16,7 @@ supports configuration through `cmd` files that are also used in FCCSW. The outp
 Pythia configuration
 --------------------
 
-We have two Pythia configuration file(s), that support two different use cases
+We have two Pythia configuration file(s), that show two different use cases in the
 [Generation/data](https://github.com/HEP-FCC/FCCSW/tree/master/Generation/data)
 directory:
 
@@ -54,7 +54,7 @@ A simple FCCSW configuration file exists that allows you to run Pythia with:
 ```
 
 This gives you an `output.root` file that contains generated particles and vertices, as well as jets that are constructed
-from the generated particles. The configuration runs five modules:
+from the generated particles. The configuration runs five algorithms:
 
 - PythiaInterface: The actual interface that runs Pythia itself
 - HepMCConverter: Translates HepMC output of PythiaInterface to FCC-EDM
