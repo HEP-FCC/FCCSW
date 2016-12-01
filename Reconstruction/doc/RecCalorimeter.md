@@ -23,7 +23,7 @@ The ouput (cells) contains calibrated energy and the noise. It may also use diff
 
 ## 1. Deposits merging
 
-The output of the simulation contains a large collection of energy deposits. First step towards the digitisation is merging those hits into the hit collection with one hit per cell of the sensitive volume. The energy of such hit is a sum of all the deposits within that sensitive volume cell. 
+The output of the simulation contains a large collection of energy deposits. First step towards the digitisation is merging those hits into the hit collection with one hit per cell of the sensitive volume. The energy of such hit is a sum of all the deposits within that sensitive volume cell.
 
 > Note: Energy deposits may be merged by Sensitive Detector implementation (`AggregateCalorimeterSD`), however it is not encouraged due to the time performance issues.
 
@@ -92,13 +92,13 @@ Example script which runs ECAL reconstruction is [here](../RecCalorimeter/option
 First, prepare the input file. Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmenation usage):
 ~~~{.sh}
 LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
-./run gaudirun.py Reconstruction/RecCalorimeter/options/geant_fullsim_ecal_singleparticles.py
+./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/geant_fullsim_ecal_singleparticles.py
 ~~~
 
 Now, we can run the reconstruction:
 ~~~{.sh}
 LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
-./run gaudirun.py Reconstruction/RecCalorimeter/options/runEcalReconstruction.py
+./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
 ~~~
 
 
