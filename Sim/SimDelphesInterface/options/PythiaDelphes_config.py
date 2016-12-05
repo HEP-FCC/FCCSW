@@ -69,6 +69,9 @@ if args.inputfile != '':
 
 ## Define Delphes card
 delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl"
+if args.delphescard != '':
+    delphesCard = args.delphescard
+
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
