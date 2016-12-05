@@ -5,7 +5,7 @@ def parse_standard_job_options(scriptname=""):
     Returns the parsed arguments, adding a parser with commonly needed opts:
     - args.nevents      -- number of events (int), specify with --nevents
     - args.inputfile    -- the input file (string), specify with --inputfile
-    - args.outputfile   -- the output file (string), specifu with --outputfile
+    - args.outputfile   -- the output file (string), specify with --outputfile
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--inputfile', type=str, default='', help='specify an input file')

@@ -22,15 +22,21 @@ gaudi_add_module(RecCalorimeterPlugins
 include(CTest)
 gaudi_add_test(genJetClustering
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/genJetClustering.py)
+               FRAMEWORK tests/options/genJetClustering.py)
 
 gaudi_add_test(simulateECalForReconstruction
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
-               FRAMEWORK options/geant_fullsim_ecal_singleparticles.py)
+               FRAMEWORK tests/options/geant_fullsim_ecal_singleparticles.py)
 
 gaudi_add_test(runEcalReconstruction
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateECalForReconstruction
-               FRAMEWORK options/runEcalReconstruction.py)
+               FRAMEWORK tests/options/runEcalReconstruction.py)
+
+gaudi_add_test(runEcalReconstructionCheckNumClusters
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
+               DEPENDS runEcalReconstruction)
