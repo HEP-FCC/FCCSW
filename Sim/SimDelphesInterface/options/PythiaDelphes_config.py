@@ -43,7 +43,7 @@ def apply_paths(obj, names):
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--delphescard', type=str, default='', help='specify an input delphes card')
+parser.add_argument('--delphescard', type=str, default=None, help='specify an input delphes card')
 delphes_args, _ = parser.parse_known_args()
 
 from FWCore.joboptions import parse_standard_job_options
@@ -75,7 +75,7 @@ if args.inputfile != '':
 
 ## Define Delphes card
 delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl"
-if delphes_args.delphescard != '':
+if delphes_args.delphescard != None:
     delphesCard = delphes_args.delphescard
 
 
