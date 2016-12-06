@@ -183,7 +183,7 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
     for(uint it=0; it<m_fieldNames.size(); it++) {
       (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
     }
-    (*decoder)[m_activeFieldName] = ilayer+1;
+    (*decoder)[m_activeFieldName] = ilayer;
     uint64_t volumeId = decoder->getValue();
 
     debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(volumeId, *segmentation)<<endmsg;
@@ -192,19 +192,19 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
     //Loop over segmenation
     for (int iphi = -floor(numCells[0]*0.5); iphi<numCells[0]*0.5; iphi++) {
       for (int ieta = -floor(numCells[1]*0.5); ieta<numCells[1]*0.5; ieta++) {
-	(*decoder)["phi"] = iphi;
-	(*decoder)["eta"] = ieta;
-	uint64_t cellId = decoder->getValue();
+        (*decoder)["phi"] = iphi;
+        (*decoder)["eta"] = ieta;
+        uint64_t cellId = decoder->getValue();
 
-	fcc::CaloHit *newCell = new fcc::CaloHit();
-	newCell->core().cellId = cellId;
-	newCell->core().energy = 0;
-	newCell->core().time = 0;
-	newCell->core().bits = 0;
-	caloCellsVector.push_back(newCell);
-   if( msgLevel( MSG::DEBUG ) ) {
-     debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg;
-   }
+        fcc::CaloHit *newCell = new fcc::CaloHit();
+        newCell->core().cellId = cellId;
+        newCell->core().energy = 0;
+        newCell->core().time = 0;
+        newCell->core().bits = 0;
+        caloCellsVector.push_back(newCell);
+        if( msgLevel( MSG::DEBUG ) ) {
+          debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg;
+        }
       }
     }
   }
