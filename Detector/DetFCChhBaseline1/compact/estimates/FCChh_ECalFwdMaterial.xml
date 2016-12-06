@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the EMCal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>ECal Forward material approximation</comment>
+  </info>
+
+  <detectors>
+    <!-- F O R W A R D -->
+    <detector name="ECalEnvelopeFwdPos" type="SimpleCylinder"  vis="ECalVis">
+        <dimensions rmin="FwdECal_rmin" rmax="FwdECal_rmax" dz="FwdECal_dz" phi0="0" deltaphi="360*deg" z_offset="FwdECal_zOffset" material="EM"/>
+    </detector>
+    <detector name="ECalEnvelopeFwdNeg" type="SimpleCylinder"  vis="ECalVis">
+        <dimensions rmin="FwdECal_rmin" rmax="FwdECal_rmax" dz="FwdECal_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdECal_zOffset" material="EM"/>
+    </detector>
+  </detectors>
+</lccdd>

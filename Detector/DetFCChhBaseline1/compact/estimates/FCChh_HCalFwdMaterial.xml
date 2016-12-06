@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the HCal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>FHCal material approximation</comment>
+  </info>
+  <detectors>
+    <!-- F O R W A R D -->
+    <detector name="HCalEnvelopeFwdPos" type="SimpleCylinder"  vis="HCalVis">
+        <dimensions rmin="FwdHCal_rmin" rmax="FwdHCal_rmax" dz="FwdHCal_dz" phi0="0" deltaphi="360*deg" z_offset="FwdHCal_zOffset" material="HC"/>
+    </detector>
+    <detector name="HCalEnvelopeFwdNeg" type="SimpleCylinder"  vis="HCalVis">
+        <dimensions rmin="FwdHCal_rmin" rmax="FwdHCal_rmax" dz="FwdHCal_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdHCal_zOffset" material="HC"/>
+    </detector>
+  </detectors>
+</lccdd>

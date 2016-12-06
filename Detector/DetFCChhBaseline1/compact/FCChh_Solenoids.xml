@@ -5,26 +5,30 @@
 
   <info name="FCC"
         title="FCC Inner solenoid"
-        author="Clement"
+        author="C. Helsens, J. Lingemann"
         url="no"
         status="development"
         version="$Id:??$">
-    <comment>A solenoid</comment>
+    <comment>Envelope for the barrel and forward solenoid coils</comment>
   </info>
 
   <display>
-    <vis name="SolenoidVis" r="0.3" g="0.3" b="0.3" showDaughters="true" visible="true" />
+    <vis name="SolenoidVis" r="0.3" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" />
   </display>
 
  <detectors>
-    <detector  id="20" name="InnerSolenoid" type="SimpleCylinder"  vis="SolenoidVis">
-      <comment>Inner solenoid</comment>
-      <dimensions rmin="InnerSolenoidRmin" rmax="InnerSolenoidRmax" dz="InnerSolenoidZ" phi0="0" deltaphi="360*deg"  z_offset="0*cm" material="Aluminum"/>
+    <detector  id="20" name="BarrelSolenoid" type="SimpleCylinder"  vis="SolenoidVis">
+      <comment>Barrel solenoid</comment>
+      <dimensions rmin="BarSolenoid_rmin" rmax="BarSolenoid_rmax" dz="BarSolenoid_dz" phi0="0" deltaphi="360*deg"  z_offset="0*cm" material="Aluminum"/>
     </detector>
 
-    <detector  id="21" name="OuterSolenoid" type="SimpleCylinder"  vis="SolenoidVis">
-      <comment>Outer solenoid</comment>
-      <dimensions rmin="OuterSolenoidRmin" rmax="OuterSolenoidRmax" dz="OuterSolenoidZ" phi0="0" deltaphi="360*deg"  z_offset="0*cm" material="Aluminum"/>
+    <detector  id="21" name="FwdSolenoidPos" type="SimpleCylinder"  vis="SolenoidVis">
+      <comment>Forward solenoid</comment>
+      <dimensions rmin="FwdSolenoid_rmin" rmax="FwdSolenoid_rmax" dz="FwdSolenoid_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoid_zOffset" material="Aluminum"/>
+    </detector>
+    <detector  id="22" name="FwdSolenoidNeg" type="SimpleCylinder"  vis="SolenoidVis">
+      <comment>Forward solenoid</comment>
+      <dimensions rmin="FwdSolenoid_rmin" rmax="FwdSolenoid_rmax" dz="FwdSolenoid_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoid_zOffset" material="Aluminum"/>
     </detector>
   </detectors>
 </lccdd>

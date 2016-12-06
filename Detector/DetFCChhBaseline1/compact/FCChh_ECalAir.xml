@@ -21,25 +21,22 @@
   </define>
   <detectors>
     <detector name="ECalEnvelope" type="SimpleCylinder"  vis="ECalEnvelopeVis">
-      <comment>Envelope for ECal</comment>
       <dimensions rmin="BarECal_rmin+EcalSpacer" rmax="BarECal_rmax" dz="BarECal_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
     </detector>
     <!-- End-caps -->
-    <detector name="ECalEnvelopeEndcapPos" type="SimpleCylinder"  vis="ECalEnvelopeEndcapVis">
-        <comment>Envelope for ECal positive end-cap</comment>
-        <dimensions rmin="EndCapECal_rmin+EcalSpacer" rmax="EndCapECal_rmax" dz="EndCapECal_dz" phi0="0" deltaphi="360*deg" z_offset="EndCapECal_zOffset" material="Air"/>
+    <detector name="ECalEnvelopeEndcapPos" type="SimpleCone" vis="ECalEnvelopeEndcapVis">
+      <dimensions rmin1="EndCapECal_rmin1" rmax1="EndCapECal_rmax1" rmin2="EndCapECal_rmin2" rmax2="EndCapECal_rmax2" dz="EndCapECal_dz" z_offset="EndCapECal_zOffset"  material="Lead"/>
     </detector>
-    <detector name="ECalEnvelopeEndcapNeg" type="SimpleCylinder"  vis="ECalEnvelopeEndcapVis">
-        <comment>Envelope for ECal positive end-cap</comment>
-        <dimensions rmin="EndCapECal_rmin+EcalSpacer" rmax="EndCapECal_rmax" dz="EndCapECal_dz" phi0="0" deltaphi="360*deg" z_offset="-EndCapECal_zOffset" material="Air"/>
+
+    <detector name="ECalEnvelopeEndcapNeg" type="SimpleCone" vis="ECalEnvelopeEndcapVis">
+      <dimensions rmin2="EndCapECal_rmin1" rmax2="EndCapECal_rmax1" rmin1="EndCapECal_rmin2" rmax1="EndCapECal_rmax2" dz="EndCapECal_dz" z_offset="-EndCapECal_zOffset"  material="Lead"/>
     </detector>
+
     <!-- Forward detectors -->
     <detector name="ECalEnvelopeFwdPos" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
-        <comment>Envelope for forward ECal positive</comment>
         <dimensions rmin="FwdECal_rmin" rmax="FwdECal_rmax" dz="FwdECal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="FwdECal_zOffset+EcalSpacer" material="Air"/>
     </detector>
     <detector name="ECalEnvelopeFwdNeg" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
-        <comment>Envelope for forward ECal positive</comment>
         <dimensions rmin="FwdECal_rmin" rmax="FwdECal_rmax" dz="FwdECal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="-FwdECal_zOffset-EcalSpacer" material="Air"/>
     </detector>
   </detectors>

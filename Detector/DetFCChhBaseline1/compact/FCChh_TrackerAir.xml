@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace the Tracker"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="$Id:??$">
+    <comment>Tracker Place-Holder</comment>
+  </info>
+  <detectors>
+    <detector name="TrackerEnvelopeBarrel" type="SimpleCylinder"  vis="TrackerVis">
+      <comment>Envelope for Tracker</comment>
+      <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" dz="Tracker_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+    <detector name="TrackerFwdEnvelopePos" type="SubtractedCylinder"  vis="TrackerVis">
+      <comment>Envelope for Muon Barrel</comment>
+      <dimensions rmin1="FwdTracker_rmin1" rmax1="FwdTracker_rmax1" z1="FwdTracker_z1"
+                  rmin2="FwdTracker_rmin2" rmax2="FwdTracker_rmax2" z2="FwdTracker_z2"
+                  z_offset="FwdTracker_zOffset" material="Air"/>
+    </detector>
+    <detector name="TrackerFwdEnvelopeNeg" type="SubtractedCylinder"  vis="TrackerVis">
+      <comment>Envelope for Muon Barrel</comment>
+      <dimensions rmin1="FwdTracker_rmin1" rmax1="FwdTracker_rmax1" z1="FwdTracker_z1"
+                  rmin2="FwdTracker_rmin2" rmax2="FwdTracker_rmax2" z2="FwdTracker_z2"
+                  z_offset="-FwdTracker_zOffset" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

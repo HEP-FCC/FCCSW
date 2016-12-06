@@ -28,6 +28,9 @@ DoxyWarnings.log
 *.launch.py
 *.launch.opts
 
+.DS_Store
+._*
+
 .project
 .cproject
 .settings

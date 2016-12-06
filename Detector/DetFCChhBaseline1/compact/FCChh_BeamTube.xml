@@ -13,26 +13,23 @@
   </info>
 
   <display>
-    <vis name="BeamPipeVis" r="0.2" g="0.7" b="0.3" showDaughters="false" visible="true"/>
+    <vis name="BeamPipeVis" r="0.2" g="0.7" b="0.3" a="1" showDaughters="false" visible="true"/>
   </display>
 
   <detectors>
     <detector name="CentralBeamTube" type="SimpleCylinder"  vis="BeamPipeVis">
-      <status id="0"/>
       <comment>Central Be Beampipe</comment>
-      <dimensions rmin="CentralBeamTubeRmin" rmax="CentralBeamTubeRmax" dz="CentralBeamTubeZ" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Beryllium"/>
+      <dimensions rmin="CentralBeamTube_rmin" rmax="CentralBeamTube_rmax" dz="CentralBeamTube_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Beryllium"/>
     </detector>
 
     <detector name="ForwardBeamTube1" type="SimpleCone"  vis="BeamPipeVis">
-      <status id="1"/>
       <comment>Forward Be Beampipe positive z</comment>
-      <dimensions rmin1="ForwardBeamTubeRmin1" rmax1="ForwardBeamTubeRmax1" rmin2="ForwardBeamTubeRmin2" rmax2="ForwardBeamTubeRmax2" dz="ForwardBeamTubeZ" z_offset="ForwardBeamTubeZoffset+ForwardBeamTubeZ"  material="Beryllium"/>
+      <dimensions rmin1="ForwardBeamTube_rmin1" rmax1="ForwardBeamTube_rmax1" rmin2="ForwardBeamTube_rmin2" rmax2="ForwardBeamTube_rmax2" dz="ForwardBeamTube_dz" z_offset="ForwardBeamTube_zOffset"  material="Beryllium"/>
     </detector>
 
     <detector name="ForwardBeamTube2" type="SimpleCone"  vis="BeamPipeVis">
-      <status id="2"/>
       <comment>Forward Be Beampipe negative z</comment>
-      <dimensions rmin1="ForwardBeamTubeRmin1" rmax1="ForwardBeamTubeRmax1" rmin2="ForwardBeamTubeRmin2" rmax2="ForwardBeamTubeRmax2" dz="-ForwardBeamTubeZ" z_offset="-ForwardBeamTubeZoffset-ForwardBeamTubeZ" material="Beryllium"/>
+      <dimensions rmin1="ForwardBeamTube_rmin1" rmax1="ForwardBeamTube_rmax1" rmin2="ForwardBeamTube_rmin2" rmax2="ForwardBeamTube_rmax2" dz="ForwardBeamTube_dz" z_offset="-ForwardBeamTube_zOffset" material="Beryllium"/>
     </detector>
   </detectors>
 

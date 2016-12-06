@@ -17,6 +17,7 @@ DD4hep Detector Description
   * [The master XMLs](#the-master-xmls)
   * [Sub-detector descriptions](#sub-detector-descriptions) (please read if you plan to contribute)
   * [Common descriptions](#common-descriptions)
+* [Material budget estimation](#material-budget-estimation)
 * [Troubleshooting](#troubleshooting)
 
 Ingredients Describing a Detector
@@ -441,6 +442,32 @@ To facilitate this mix-and-match functionality, the sub-detectors should use the
 
 The final sub-directory `DetCommon` includes descriptions and macros that should be independently usable by all baselines / sub-detectors. This includes primitive shapes (cones, cylinders, boxes, etc.), material & element descriptions. Additionally place-holders can be found that place air-filled cylinders using the dimensions defined in a master-dimension file. These are meant for debugging the dimensions file.
 
+
+## Material budget estimation
+
+We provide an example configuration and plotting script for estimating the material budget as a function of eta.
+
+~~~{.sh}
+./run gaudirun.py Examples/options/material_scan.py
+./run python Examples/scripts/material_plots.py
+~~~
+
+The configuration file `material_scan` allows to customize the binning of the material scan with `etaMax` and `etaBinning`. The scan is
+performed from `-etaMax` to `+etaMax` with a step-size of `etaBinning`. The detector which is scanned is optained from
+the `GeoSvc` and the corresponding detector description can be changed there as usual.
+
+The output of the first command is the ROOT file `DD4hep_material_scan.root` which contains a `TTree` that has 6 branches:
+
+- `eta`: The pseudorapidity along which the ray was cast from `(0, 0, 0)`
+- `nMaterials`: The number of materials found by the ray-cast along the eta direction
+- `nX0`: The number of radiation lenghts `X0` for each material in this eta bin
+- `nLambda`: The number of nuclear interaction lengths `lambda` for each material in this eta bin
+- `matDepth`: The depth in *mm* for each material in this eta bin
+- `material`: The names of all materials in this eta bin (as defined in DD4hep)
+
+The plotting script outputs three plots as `pdf`, which contain the number of interaction lenghts, radiation lengths and
+the material thickness, stacked according to the material name. Additionally, the plots are created for `|eta|` and `eta`.
+The script sums up all materials that have the same name in the eta bin and discards any air that is encountered.
 
 Troubleshooting
 ---
