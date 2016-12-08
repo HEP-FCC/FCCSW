@@ -20,20 +20,10 @@ DECLARE_TOOL_FACTORY( MomentumRangeParticleGun )
 
 /// Constructor
 MomentumRangeParticleGun::MomentumRangeParticleGun( const std::string & type ,
-                              const std::string & name , 
+                              const std::string & name ,
                               const IInterface * parent )
   : GaudiTool( type , name, parent ) {
   declareInterface< IParticleGunTool >( this ) ;
-  declareProperty( "MomentumMin"  , m_minMom = 100.0 * Gaudi::Units::GeV, "Minimal momentum"  ) ;
-  declareProperty( "ThetaMin"     , m_minTheta = 0.1 * Gaudi::Units::rad, "Minimal theta"     ) ;
-  declareProperty( "PhiMin"       , m_minPhi = 0. * Gaudi::Units::rad,    "Minimal phi"       ) ;
-
-  declareProperty( "MomentumMax" , m_maxMom   = 100.0 * Gaudi::Units::GeV, "Maximal momentum" ) ;
-  declareProperty( "ThetaMax"     , m_maxTheta = 0.4 * Gaudi::Units::rad,  "Maximal theta"    ) ;
-  declareProperty( "PhiMax"      , m_maxPhi   = Gaudi::Units::twopi * Gaudi::Units::rad, "Maximal phi" ) ;
-
-  m_pdgCodes.push_back( -211 ); // default pi-
-  declareProperty("PdgCodes",m_pdgCodes, "list of pdg codes to produce");
 }
 
 /// Destructor

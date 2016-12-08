@@ -69,9 +69,6 @@ private:
 
   /// type of area calculation
   fastjet::AreaType m_areaType;
-
-  /// verbosity flag
-  bool m_verbose;
 };
 
 
@@ -192,11 +189,9 @@ template< class P, class J>
   std::vector<fastjet::PseudoJet> pjets = fastjet::sorted_by_pt(cs->inclusive_jets(m_ptMin));
 
   J* jets = new J();
-  if(m_verbose)
-    std::cout<<"njets = "<<pjets.size()<<std::endl;
+  debug() << "njets = " << pjets.size() << endmsg;
   for(const auto& pjet : pjets) {
-    if(m_verbose)
-      std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
+    debug() << pjet.e() << " " << pjet.pt() << " " << pjet.eta() << " " << pjet.phi() << endmsg;
     auto jet = jets->create();
     auto& core = jet.core();
     core.p4.px = pjet.px();
@@ -209,8 +204,7 @@ template< class P, class J>
       core.area = -1;
     const std::vector<fastjet::PseudoJet>& constituents = pjet.constituents();
     for(const auto& constit : constituents) {
-      if(m_verbose)
-        std::cout<<"\t"<<constit.user_index()<<std::endl;
+      debug() << "\t" << constit.user_index() << endmsg;
       jet.addparticles(particles->at(constit.user_index()));
     }
   }
