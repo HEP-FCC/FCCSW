@@ -58,8 +58,6 @@ private:
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer"};
   ///Name of active volumes (material name)
   Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "LAr"};
- /// Number of volumes with same name as active layer (not to be counted as a layer, e.g. ECAL: bath)
-  Gaudi::Property<unsigned> m_numVolumesRemove{this, "numVolumesRemove", 1, "ECAL LAr specific: LAr bath in cryostat same material as active layer volume"};
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

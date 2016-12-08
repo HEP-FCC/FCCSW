@@ -25,6 +25,7 @@ class ExRootTreeWriter;
 namespace fcc {
 class MCParticleCollection;
 class GenVertexCollection;
+class FloatCollection;
 }
 
 // Forward ROOT
@@ -79,8 +80,8 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmcHandle;
 
   // Handle for the generated or reconstructed objects to be written out
-  DataHandle<fcc::MCParticleCollection> m_handleGenParticles;    //!< Generated particles handle
-  DataHandle<fcc::GenVertexCollection>  m_handleGenVertices;     //!< Handle to vertices of generated particles
+  DataHandle<fcc::FloatCollection>  m_handleMCEventWeights;
+  DataHandle<fcc::MCParticleCollection> m_handleGenParticles;
 
   //! Recursive method to find an id of MCParticle related to the given Delphes Candidate object,
   //! if MC particle found (id>=0), its index is then saved to idRefMCPart set,
@@ -88,8 +89,7 @@ private:
   void findJetPartMC(Candidate* cand, int rangeMCPart, std::set<int>& idRefMCPart);
 
   void ConvertMCParticles(const TObjArray* Input,
-                          fcc::MCParticleCollection* colMCParticles,
-                          fcc::GenVertexCollection* colGenVertices);
+                          fcc::MCParticleCollection* colMCParticles);
   int m_eventCounter;
 
   // Delphes ROOT output
@@ -101,6 +101,7 @@ private:
   std::unique_ptr<ExRootConfReader> m_confReader;
   Gaudi::Property<std::vector<std::string>> m_saveToolNames{this, "outputs"};
   std::vector<IDelphesSaveOutputTool*> m_saveTools;
+  bool m_applyGenFilter; // only for debugging purposes. If entire MC particle collection is needed, request in cfg file.
 
   // Arrays used by Delphes and internally for initial particles
   TObjArray* m_allParticles;

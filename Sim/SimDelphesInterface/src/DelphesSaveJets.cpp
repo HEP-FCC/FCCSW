@@ -86,7 +86,7 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
 
     // C-tag info
     auto cTag             = colCTags->create();
-    cTag.tag(cand->BTag & (1 << 1)); // ctagging is stored in bit 0 of BTag variable
+    cTag.tag(cand->BTag & (1 << 1)); // ctagging is stored in bit 1 of BTag variable
     cTag.jet(jet);
 
     // Tau-tag info

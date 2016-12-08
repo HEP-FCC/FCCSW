@@ -31,14 +31,8 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("noiseTool", m_noiseTool);
 }
 
-CreateCaloCells::~CreateCaloCells()
-{
-}
-
-
 
 StatusCode CreateCaloCells::initialize() {
-
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
 
@@ -75,12 +69,10 @@ StatusCode CreateCaloCells::initialize() {
       return StatusCode::FAILURE;
     }
   }
-    
   return sc;
 }
 
 StatusCode CreateCaloCells::execute() {
-   
   //Get the input collection with Geant4 hits
   const fcc::CaloHitCollection* hits = m_hits.get();
   debug() << "Input Hit collection size: " << hits->size() << endmsg;
@@ -95,8 +87,7 @@ StatusCode CreateCaloCells::execute() {
   if (m_doCellCalibration) {
     m_calibTool->calibrate(edmMergedHitsVector);
   }
-  
- 
+
   if (!m_addCellNoise) {
     edmFinalCellsVector = edmMergedHitsVector;
   }
@@ -113,7 +104,7 @@ StatusCode CreateCaloCells::execute() {
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (auto ecells : edmFinalCellsVector) {
     fcc::CaloHit newCell = edmCellsCollection->create();
-    newCell.core().energy = ecells->core().energy;     
+    newCell.core().energy = ecells->core().energy;
     newCell.core().time = ecells->core().time;
     newCell.core().bits = ecells->core().bits;
     newCell.core().cellId = ecells->core().cellId;
@@ -129,15 +120,12 @@ StatusCode CreateCaloCells::execute() {
       delete ecells;
     }
   }
-
-
   //Push the CaloHitCollection to event store
   m_cells.put(edmCellsCollection);
- 
   return StatusCode::SUCCESS;
 }
 
-StatusCode CreateCaloCells::finalize() {  
+StatusCode CreateCaloCells::finalize() {
   //Cleaning of the vector of CaloHits*
   for (auto ehit: m_edmHitsNoiseVector) {
     delete ehit;
@@ -147,7 +135,6 @@ StatusCode CreateCaloCells::finalize() {
 }
 
 StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCellsVector) {
-
   // Get GeoSvc
   m_geoSvc = service ("GeoSvc");
   if (!m_geoSvc) {
@@ -155,7 +142,6 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
- 
   // Check if readouts exist
   info()<<"Readout: "<<m_readoutName<< endmsg;
   if(m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
@@ -171,13 +157,12 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
   }
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  // Substract volumes with active material which are not readout (e.g. ECAL: bath volume)
-  unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName)-m_numVolumesRemove;
+  unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName);
   info() << "Number of active layers " << numLayers << endmsg;
 
   // Check if size of names and values of readout fields agree
   if(m_fieldNames.size() != m_fieldValues.size()) {
-    error() << "Size of names and values is not the same" << endmsg;
+    error() << "Volume readout field descriptors (names and values) have different size." << endmsg;
     return StatusCode::FAILURE;
   }
 
@@ -193,7 +178,7 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
     }
     (*decoder)[m_activeFieldName] = ilayer+1;
     uint64_t volumeId = decoder->getValue();
-    
+
     debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(volumeId, *segmentation)<<endmsg;
     //Number of cells in the volume
     auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
@@ -203,18 +188,19 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
 	(*decoder)["phi"] = iphi;
 	(*decoder)["eta"] = ieta;
 	uint64_t cellId = decoder->getValue();
-	
+
 	fcc::CaloHit *newCell = new fcc::CaloHit();
 	newCell->core().cellId = cellId;
-	newCell->core().energy = 0;     
+	newCell->core().energy = 0;
 	newCell->core().time = 0;
 	newCell->core().bits = 0;
 	caloCellsVector.push_back(newCell);
-	debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg; 
+   if( msgLevel( MSG::DEBUG ) ) {
+     debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg;
+   }
       }
-    }     
+    }
   }
-
   return StatusCode::SUCCESS;
 }
 

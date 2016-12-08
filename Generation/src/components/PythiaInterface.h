@@ -14,8 +14,15 @@
 
 // Forward Pythia
 namespace Pythia8 {
-
   class Pythia;
+  class SlowJet;
+  class JetMatchingMadgraph;
+  class amcnlo_unitarised_interface;
+}
+
+// Forward FCC EDM
+namespace fcc {
+  class FloatCollection;
 }
 
 class PythiaInterface: public GaudiAlgorithm {
@@ -39,6 +46,12 @@ private:
   std::unique_ptr<Pythia8::Pythia> m_pythiaPileup;
   // Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
   Gaudi::Property<std::string> m_parfile{this, "Filename", "", "Name of the Pythia parameter file to read"};
+  // Pythia8 engine for ME/PS matching
+  std::unique_ptr<Pythia8::JetMatchingMadgraph> m_matching;
+  // Pythia8 engine for NLO ME/PS merging
+  std::unique_ptr<Pythia8::amcnlo_unitarised_interface> m_setting;
+  // Pythia8 engine for jet clustering
+  std::unique_ptr<Pythia8::SlowJet> m_slowJet;
   // Pileup Interface Tool
   ToolHandle<IPileUpTool> m_pileUpTool;
   /// Tool to merge HepMC events
@@ -47,11 +60,14 @@ private:
   ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
   // Output handle for HepMC event
   DataHandle<HepMC::GenEvent> m_hepmchandle;
+  // Output handle for ME/PS matching variables
+  DataHandle<fcc::FloatCollection> m_handleMePsMatchingVars;
 
   int m_nAbort;
   int m_iAbort;
   int m_iEvent;
-
+  bool m_doMePsMatching;
+  bool m_doMePsMerging;
 };
 
 #endif // GENERATION_PYTHIAINTERFACE_H

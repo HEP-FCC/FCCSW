@@ -49,8 +49,10 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
   }
+
   for(int j=0; j<delphesColl->GetEntries(); j++) {
 
+    
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
 
@@ -62,9 +64,9 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     barePart.p4.pz    = cand->Momentum.Pz();
     barePart.p4.mass  = cand->Momentum.M();
     barePart.charge   = cand->Charge;
-    barePart.vertex.x = cand->Position.X();
-    barePart.vertex.y = cand->Position.Y();
-    barePart.vertex.z = cand->Position.Z();
+    barePart.vertex.x = cand->InitialPosition.X();
+    barePart.vertex.y = cand->InitialPosition.Y();
+    barePart.vertex.z = cand->InitialPosition.Z();
     particle.core(barePart);
 
     // Isolation-tag info
@@ -76,7 +78,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
       iTagValue = iTag.tag();
     }
-
+   
     // Debug: print FCC-EDM tower info
     if (msgLevel() <= MSG::DEBUG) {
 
@@ -111,25 +113,22 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
     // Reference to MC - Delphes holds references to all objects related to the Photon object, several relations might exist for gammas
     std::set<int> idRefMCPart; // Avoid double counting when referencingh MC particles
-
-    // Get corresponding cluster in calorimeter
+    // Loop over hits in a given tower
     for (auto itCand=cand->GetCandidates()->begin(); itCand!=cand->GetCandidates()->end(); ++itCand) {
+        Candidate* hit = static_cast<Candidate*>(*itCand);
+        if (hit->GetCandidates()->GetEntries()>0) {
 
-      // Cluster in calorimeter
-      Candidate* clsCand = static_cast<Candidate*>(*itCand);
-
-      // Get corresponding MC particle
-      for (auto itCls=clsCand->GetCandidates()->begin(); itCls!=clsCand->GetCandidates()->end(); ++itCls) {
-
-        Candidate* refCand = static_cast<Candidate*>(*itCls);
-        int id = refCand->GetUniqueID()-1;
-        if (id<mcParticles.size()) idRefMCPart.insert(id);
-        else {
-          warning() << "Can't build one of the relations from Photon/NHadron to MC particle!" << std::endl;
-        }
-
-      } // Iter MC particles
-    } // Iter cluster
+        // Get MC particle
+        Candidate* refCand = static_cast<Candidate*>(hit->GetCandidates()->At(0));
+        for(int k=0 ; k < mcParticles.size();  k++) {
+          double pt = sqrt(mcParticles.at(k).core().p4.px *  mcParticles.at(k).core().p4.px + mcParticles.at(k).core().p4.py *  mcParticles.at(k).core().p4.py);
+            if(mcParticles.at(k).core().bits == refCand->GetUniqueID()) {
+            idRefMCPart.insert(k);
+            break;
+          }
+        } // Iter MC particles
+      } 
+    } // Iter hits on tower 
 
     // Debug: print variable
     double totSimE = 0;
@@ -152,7 +151,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
                              relation.sim().p4().pz*relation.sim().p4().pz +
                              relation.sim().p4().mass*relation.sim().p4().mass);
 
-        totSimE += simE;
+        if(relation.sim().charge() != 0) totSimE += simE;
         debug() << " RefId: " << std::setw(3)            << id+1
                 << " Rel E: " << std::setprecision(2)
                               << std::scientific
