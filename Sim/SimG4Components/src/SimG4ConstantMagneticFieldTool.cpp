@@ -6,7 +6,6 @@
 
 // Geant 4
 #include "G4VUserPrimaryGeneratorAction.hh"
-#include "G4RunManager.hh"
 #include "G4MagneticField.hh"
 #include "G4FieldManager.hh"
 #include "G4TransportationManager.hh"
@@ -20,8 +19,6 @@
 #include "G4HelixExplicitEuler.hh"
 #include "G4NystromRK4.hh"
 #include "G4ClassicalRK4.hh"
-
-#include "G4SystemOfUnits.hh"
 
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4ConstantMagneticFieldTool)

@@ -7,9 +7,13 @@
 // FCCSW
 #include "SimG4Interface/ISimG4MagneticFieldTool.h"
 
+// Geant4
+#include "G4SystemOfUnits.hh"
+
 // Forward declarations:
 // Geant 4 classes
 class G4MagIntegratorStepper;
+
 // FCCSW
 namespace sim {
 class ConstantField;

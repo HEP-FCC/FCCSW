@@ -15,7 +15,7 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom)
 find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
 
 find_package(Geant4)
-
+include(${Geant4_USE_FILE})
 gaudi_add_module(DetComponents
                  src/*.cpp
                  INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetExtensions DetSegmentation DetCommon
