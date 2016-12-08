@@ -14,32 +14,30 @@ class IGeoSvc;
 
 /** @class CreateCaloCells
  *
- *  Algorithm for creating calorimeter cells from Geant4 hits. 
+ *  Algorithm for creating calorimeter cells from Geant4 hits.
  *  Tube geometry with PhiEta segmentation expected.
- * 
+ *
  *  Flow of the program:
  *  1/ Merge Geant4 hits with same cellID
  *  2/ Calibrate to electromagnetic scale (if calibration switched on)
  *  3/ Prepare random noise hits for each cell (if noise switched on)
  *  4/ Merge signal with noise hits (if noise switched on)
  *  5/ Filter cell energy and accept only cells with energy above threshold (if noise + filtering switched on)
- * 
+ *
  *  Tools caled:
  *    - MergeCaloHitsTool
  *    - CalibrateCaloHitsTool
  *    - NoiseCaloCellsTool
- *   
+ *
  *  @author Jana Faltova
  *  @date   2016-09
  *
  */
 
-class CreateCaloCells : public GaudiAlgorithm 
+class CreateCaloCells : public GaudiAlgorithm
 {
 public:
   CreateCaloCells(const std::string& name, ISvcLocator* svcLoc);
- 
-  ~CreateCaloCells();
 
   StatusCode initialize();
 
@@ -72,8 +70,6 @@ private:
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active volumes (material name)
   Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "LAr", "Name of the active volumes (material name)"};
-  /// Number of volumes with active material which are not readout(e.g. ECAL: LAr bath in cryostat)
-  Gaudi::Property<unsigned> m_numVolumesRemove{this, "numVolumesRemove", 0, "Number of volumes with active material which are not readout"};
   /// Name of active layers for sampling calorimeter
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer", "Name of active layers for sampling calorimeter"};
   /// Name of the fields describing the segmented volume

@@ -64,10 +64,12 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
                                                          0.5 * xModulePropertiesOdd.attr<double>("modLength")),
                                    lcdd.material(xModuleComponentOdd.materialStr()));
       DD4hep::Geometry::Position offset(
-          0, integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness"), 0);
+          0, integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness") + 0.5 * xModuleComponentOdd.thickness(), 0);
       integratedModuleComponentThickness += xModuleComponentOdd.thickness();
 
-      moduleComponentVolume.setSensitiveDetector(sensDet);
+      if( xModuleComponentOdd.isSensitive() ) {
+	moduleComponentVolume.setSensitiveDetector(sensDet);
+      }
       PlacedVolume placedModuleComponentVolume = moduleVolume.placeVolume(moduleComponentVolume, offset);
       placedModuleComponentVolume.addPhysVolID("component", moduleComponentCounter);
       ++moduleComponentCounter;
