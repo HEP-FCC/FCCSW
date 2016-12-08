@@ -1,26 +1,7 @@
 # define a minimun default version
-set(GAUDI_CXX_STANDARD_DEFAULT "c++11")
+set(GAUDI_CXX_STANDARD_DEFAULT "c++14")
 # overriddend depending on the compiler
 
-if (LCG_COMP STREQUAL "clang" AND LCG_COMPVERS VERSION_GREATER "36")
-  set(GAUDI_CXX_STANDARD_DEFAULT "c++14")
-elseif(LCG_COMP STREQUAL "gcc")
-  # Special defaults
-  if (LCG_COMPVERS VERSION_LESS "47")
-    set(GAUDI_CXX_STANDARD_DEFAULT "c++98")
-  elseif(LCG_COMPVERS VERSION_LESS "49")
-    # C++11 is enable by default on 4.7 <= gcc < 4.9
-    set(GAUDI_CXX_STANDARD_DEFAULT "c++11")
-  elseif(LCG_COMPVERS VERSION_LESS "51")
-    # C++1y (C++14 preview) is enable by default on 4.9 <= gcc < 5.1
-    set(GAUDI_CXX_STANDARD_DEFAULT "c++1y")
-  else()
-    # C++14 is enable by default on gcc >= 5.1
-    set(GAUDI_CXX_STANDARD_DEFAULT "c++14")
-    option(GAUDI_GCC_OLD_ABI "use old gcc ABI for c++11 and above (gcc >= 5.1)"
-           OFF)
-  endif()
-endif()
 # special for GaudiHive
 set(GAUDI_CPP11_DEFAULT ON)
 #--- Gaudi Build Options -------------------------------------------------------
