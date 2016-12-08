@@ -17,24 +17,13 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
-: GaudiAlgorithm(name, svcLoc), m_volumeId(0) {
-  declareInput("cells", m_cells,"calo/cells");
-  declareOutput("clusters", m_clusters,"calo/clusters");
-  declareProperty("readoutName", m_readoutName = "ECalHitsPhiEta");
-  declareProperty("fieldNames", m_fieldNames);
-  declareProperty("fieldValues", m_fieldValues);
-  declareProperty("deltaEtaTower", m_deltaEtaTower = 0.01);
-  declareProperty("deltaPhiTower", m_deltaPhiTower = 0.01);
-  declareProperty("nEtaWindow", m_nEtaWindow = 5);
-  declareProperty("nPhiWindow", m_nPhiWindow = 5);
-  declareProperty("nEtaPosition", m_nEtaPosition = 3);
-  declareProperty("nPhiPosition", m_nPhiPosition = 3);
-  declareProperty("nEtaDuplicates", m_nEtaDuplicates = 2);
-  declareProperty("nPhiDuplicates", m_nPhiDuplicates = 2);
-  declareProperty("energyThreshold", m_energyThreshold = 3);
-  declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
-  declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
-  declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
+: GaudiAlgorithm(name, svcLoc),
+  m_cells("calo/cells", Gaudi::DataHandle::Reader, this),
+  m_clusters("calo/clusters", Gaudi::DataHandle::Writer, this),
+  m_volumeId(0) {
+  declareProperty("cells", m_cells);
+  declareProperty("clusters", m_clusters);
+
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {

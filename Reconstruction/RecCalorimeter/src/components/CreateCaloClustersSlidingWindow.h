@@ -133,42 +133,41 @@ private:
   /// Vector of pre-clusters
   std::vector<cluster> m_preClusters;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{"readoutName", "ECalHitsPhiEta"};
   /// Name of the fields describing the segmented calorimeter
-  std::vector<std::string> m_fieldNames;
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{"fieldNames", {}};
   /// Values of the fields describing the segmented calorimeter
-  std::vector<int> m_fieldValues;
+  Gaudi::Property<std::vector<int>> m_fieldValues{"fieldValues", {}};
   /// Volume ID of the volume with cells to calculate
   uint64_t m_volumeId;
   /// Size of the tower in eta
-  float m_deltaEtaTower;
+  Gaudi::Property<float> m_deltaEtaTower{"deltaEtaTower", 0.01, "Size of the tower in eta"};
   /// Size of the tower in phi
-  float m_deltaPhiTower;
+  Gaudi::Property<float> m_deltaPhiTower{"deltaPhiTower", 0.01, "Size of the tower in phi"};
   /// number of towers in eta (calculated from m_deltaEtaTower and the eta size of the first layer)
   int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
   int m_nPhiTower;
   /// Size of the window in eta for pre-clusters (in units of tower size)
-  int m_nEtaWindow;
+  Gaudi::Property<int> m_nEtaWindow{"nEtaWindow", 5};
   /// Size of the window in phi for pre-clusters (in units of tower size)
-  int m_nPhiWindow;
+  Gaudi::Property<int> m_nPhiWindow{"nPhiWindow", 5};
   /// Size of the window in eta for cluster position calculation (in units of tower size)
-  int m_nEtaPosition;
+  Gaudi::Property<int> m_nEtaPosition{"nEtaPosition", 3};
   /// Size of the window in phi for cluster position calculation (in units of tower size)
-  int m_nPhiPosition;
+  Gaudi::Property<int> m_nPhiPosition{"nPhiPosition", 3};
  /// Size of the window in eta for the overlap removal (in units of tower size)
-  int m_nEtaDuplicates;
+  Gaudi::Property<int> m_nEtaDuplicates{"nEtaDuplicates", 2};
   /// Size of the window in phi for the overlap removal (in units of tower size)
-  int m_nPhiDuplicates;
+  Gaudi::Property<int> m_nPhiDuplicates{"nPhiDuplicates", 2};
   /// Energy threshold for cluster finding
-  float m_energyThreshold;
+  Gaudi::Property<float> m_energyThreshold{"energyThreshold", 3};
   /// Energy threshold in the window for the position calculation
-  float m_energyPosThreshold;
+  Gaudi::Property<float> m_energyPosThreshold{"energyPosThreshold", 0.00001};
   /// Flag if a check on local maxima in phi should be done (temporary, to test the algorithm)
-  bool m_checkPhiLocalMax;
+  Gaudi::Property<bool> m_checkPhiLocalMax{"checkPhiLocalMax", true};
   /// Flag if a check on local maxima in eta should be done (temporary, to test the algorithm)
-  bool m_checkEtaLocalMax;
-
+  Gaudi::Property<bool> m_checkEtaLocalMax{"checkEtaLocalMax", true};
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */
