@@ -35,6 +35,7 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
   declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
   declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
+  declareProperty("saveCells", m_saveCells = false);
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {
@@ -231,13 +232,15 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
     edmClusterCore.position.z = rDetector * sinh(clu.eta);
     edmClusterCore.energy = clu.transEnergy * cosh(clu.eta);
     debug() << "Cluster x: " << edmClusterCore.position.x << " y " <<  edmClusterCore.position.y << " z "<<  edmClusterCore.position.z << " energy " << edmClusterCore.energy <<endmsg;
-    // loop over cells and see if they belong here
-    for (const auto& cell : *cells) {
-      float etaCell = m_segmentation->eta(cell.core().cellId);
-      float phiCell = m_segmentation->phi(cell.core().cellId);
-      if( (abs(idEta(etaCell)-idEta(clu.eta)) <= halfEtaWin)
-        && (abs(idPhi(phiCell)-idPhi(clu.phi)) <= halfPhiWin) ) {
-        edmCluster.addhits(cell);
+    if(m_saveCells) {
+      // loop over cells and see if they belong here
+      for (const auto& cell : *cells) {
+        float etaCell = m_segmentation->eta(cell.core().cellId);
+        float phiCell = m_segmentation->phi(cell.core().cellId);
+        if( (abs(idEta(etaCell)-idEta(clu.eta)) <= halfEtaWin)
+          && (abs(idPhi(phiCell)-idPhi(clu.phi)) <= halfPhiWin) ) {
+          edmCluster.addhits(cell);
+        }
       }
     }
   }

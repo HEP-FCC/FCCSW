@@ -168,6 +168,8 @@ private:
   bool m_checkPhiLocalMax;
   /// Flag if a check on local maxima in eta should be done (temporary, to test the algorithm)
   bool m_checkEtaLocalMax;
+  /// Flag if references to cells should be done)
+  bool m_saveCells;
 
 };
 
