@@ -21,21 +21,22 @@ StatusCode GenParticleFilter::initialize() {
 }
 
 StatusCode GenParticleFilter::execute() {
-  const fcc::MCParticleCollection* inparticles = m_iGenpHandle.get();
+  const auto inparticles = m_iGenpHandle.get();
   auto particles = m_oGenpHandle.createAndPut();
   bool accept = false;
+  int cntr = 0;
   for (auto ptc : (*inparticles)) {
     accept = false;
     for (auto status : m_accept) {
       if (ptc.status() == status) {
         accept = true;
       }
-      if (accept) {
-        fcc::MCParticle outptc = particles->create(ptc.core());
-        outptc.startVertex(ptc.startVertex());
-        outptc.endVertex(ptc.endVertex());
-      }
     }
+    if (accept) {
+      fcc::MCParticle outptc = ptc.clone();
+      particles->push_back(outptc);
+    }
+    cntr++;
   }
   return StatusCode::SUCCESS;
 }
