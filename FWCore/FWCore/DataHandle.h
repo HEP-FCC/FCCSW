@@ -45,6 +45,7 @@ public:
   */
   T* createAndPut();
 private:
+  ServiceHandle<IDataProviderSvc> m_eds;
   bool m_isGoodType;
   bool m_isCollection;
 };
@@ -52,12 +53,14 @@ private:
 //---------------------------------------------------------------------------
 template<typename T>
 DataHandle<T>::DataHandle(DataObjID & descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg) :
-    DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg) {
+    DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg),
+    m_eds("EventDataSvc", "DataHandle") {
 }
 //---------------------------------------------------------------------------
 template<typename T>
 DataHandle<T>::DataHandle(const std::string& descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg) :
-    DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg) {
+    DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg),
+    m_eds("EventDataSvc", "DataHandle") {
 }
 
 /**
@@ -70,9 +73,8 @@ DataHandle<T>::DataHandle(const std::string& descriptor, Gaudi::DataHandle::Mode
 template<typename T>
 const T* DataHandle<T>::get() {
   DataObject* dataObjectp = nullptr;
-  auto sc = DataObjectHandle<DataWrapper<T>>::m_EDS->retrieveObject(DataObjectHandle<DataWrapper<T> >::toString(),
+  auto sc = m_eds->retrieveObject(DataObjectHandle<DataWrapper<T> >::fullKey().key(),
      dataObjectp);
-
 
   if (LIKELY(sc.isSuccess())) {
     if (UNLIKELY(!m_isGoodType && !m_isCollection)) {
