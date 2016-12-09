@@ -86,7 +86,7 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
     ~~~{.py}
     from Configurables import HepMCReader
     reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
-    reader.DataOutputs.hepmc.Path = "hepmc"
+    reader.hepmc.Path = "hepmc"
     ~~~
 
   * translating a HepMC event to the EDM
@@ -94,9 +94,9 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
     ~~~{.py}
     from Configurables import HepMCConverter
     hepmc_converter = HepMCConverter("Converter")
-    hepmc_converter.DataInputs.hepmc.Path="hepmc"
-    hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-    hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+    hepmc_converter.hepmc.Path="hepmc"
+    hepmc_converter.genparticles.Path="allGenParticles"
+    hepmc_converter.genvertices.Path="allGenVertices"
     ~~~
 
   * construction of the geometry using DD4hep
@@ -130,10 +130,10 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
     ~~~{.py}
     from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
     savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-    savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
-    savetrackertool.DataOutputs.trackHits.Path = "hits"
+    savetrackertool.positionedTrackHits.Path = "positionedHits"
+    savetrackertool.trackHits.Path = "hits"
     particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-    particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+    particle_converter.genParticles.Path = "allGenParticles"
     geantsim = SimG4Alg("SimG4Alg",
                          outputs= ["SimG4SaveTrackerHits/SimG4SaveTrackerHits"],
                          eventProvider=particle_converter)

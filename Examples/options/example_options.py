@@ -15,10 +15,10 @@ podioevent   = FCCDataSvc("EventDataSvc")
 from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
 # In the following line,
-#   reader.DataOutputs.YYY.Path = "XXX"
+#   reader.YYY.Path = "XXX"
 # YYY matches the string passed to declareOutput in the constructor of the algorithm (here "hepmc")
 # XXX declares a name for the product (here the product is HepMC::GenEvent: "hepmcevent")
-reader.DataOutputs.hepmc.Path = "hepmcevent"
+reader.hepmc.Path = "hepmcevent"
 
 from Configurables import HepMCDumper
 ## dumps the HepMC::GenEvent
@@ -26,12 +26,12 @@ dumper = HepMCDumper("Dumper")
 # the input product name matches the output product name of the previous module ("hepmcevent")
 # the string "hepmc" is passed in the constructor of HepMCDumper in DeclareProperty method
 #     note that it is only by coincidence the same as in HepMCReader
-dumper.DataInputs.hepmc.Path="hepmcevent"
+dumper.hepmc.Path="hepmcevent"
 
 from Configurables import CreateSampleJet, PodioOutput
 ## dummy algorithm creating a sample jet
 podiowrite = CreateSampleJet("SampleJet",OutputLevel=DEBUG)
-podiowrite.DataOutputs.podioJets.Path = "podioJets"
+podiowrite.podioJets.Path = "podioJets"
 
 from Configurables import PodioOutput
 ## PODIO algorithm

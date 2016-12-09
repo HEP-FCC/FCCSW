@@ -25,13 +25,13 @@ createcells = CreateCaloCells("CreateCaloCells",
                               fieldNames=["system","ECAL_Cryo","bath","EM_barrel"],
                               fieldValues=[5,1,1,1],
                               OutputLevel=INFO)
-createcells.DataInputs.hits.Path="ECalHits"
-createcells.DataOutputs.cells.Path="caloCells"
+createcells.hits.Path="ECalHits"
+createcells.cells.Path="caloCells"
 
 from Configurables import CreatePositionedHit
 positionhit = CreatePositionedHit("CreatePositionedHit", readoutName = "ECalHitsPhiEta",activeFieldName = "active_layer",activeVolumeName="LAr_sensitive")
-positionhit.DataInputs.caloCells.Path="caloCells"
-positionhit.DataOutputs.caloPositionedHits.Path="caloCellsPositions"
+positionhit.caloCells.Path="caloCells"
+positionhit.caloPositionedHits.Path="caloCellsPositions"
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow
@@ -46,8 +46,8 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  nEtaDuplicates = 9, nPhiDuplicates = 9,
                                                  energyThreshold = 3,
                                                  OutputLevel = DEBUG)
-createclusters.DataInputs.cells.Path="caloCells"
-createclusters.DataOutputs.clusters.Path="caloClusters"
+createclusters.cells.Path="caloCells"
+createclusters.clusters.Path="caloClusters"
 
 out = PodioOutput("out", filename="output_ecalReco_test.root",
                    OutputLevel=DEBUG)

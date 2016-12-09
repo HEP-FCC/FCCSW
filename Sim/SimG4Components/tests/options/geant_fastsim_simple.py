@@ -14,7 +14,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PhiMin = 0, # rad
                                 PhiMax = 3.14) # rad
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
-gen.DataOutputs.hepmc.Path = "hepmc"
+gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
 ## Particle service
@@ -24,9 +24,9 @@ ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticleProperties
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 # DD4hep geometry service
 # Parses the given xml file
@@ -51,17 +51,17 @@ from Configurables import SimG4Alg, SimG4SaveSmearedParticles, SimG4PrimariesFro
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveSmearedParticles")
 # and YY is the given name ("saveSmearedParticles")
 saveparticlestool = SimG4SaveSmearedParticles("saveSmearedParticles")
-saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
+saveparticlestool.particlesMCparticles.Path = "particleMCparticleAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveSmearedParticles/saveSmearedParticles"],
                     eventProvider=particle_converter)
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
-hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
+hist.particlesMCparticles.Path = "particleMCparticleAssociation"
 THistSvc().Output = ["rec DATAFILE='histSimple.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True

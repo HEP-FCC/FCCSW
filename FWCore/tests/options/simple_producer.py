@@ -7,13 +7,13 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import PythiaInterface
 pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
-pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
+pythia8gen.hepmc.Path = "hepmcevent"
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmcevent"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import PodioOutput
 ### PODIO algorithm

@@ -10,23 +10,23 @@ genpileup = PoissonPileUp(name="ConstPileUp", Filename="/afs/cern.ch/exp/fcc/sw/
 reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat", PileUpTool=genpileup)
 # have a look at the source code of HepMCReader, in Generation/src/HepMCReader
 # In the following line,
-#   reader.DataOutputs.YYY.Path = "ZZZ"
+#   reader.YYY.Path = "ZZZ"
 # YYY matches the string passed to declareOutput in the constructor of the algorithm
 # XXX declares a name for the product (the HepMC::GenEvent)
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 
 dumper = HepMCDumper()
-dumper.DataInputs.hepmc.Path="hepmc"
+dumper.hepmc.Path="hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes
 # a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
 # the input product name matches the output product name of the previous module
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
-hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="all_genparticles"
+hepmc_converter.genvertices.Path="all_genvertices"
 
 
 out = PodioOutput("out",

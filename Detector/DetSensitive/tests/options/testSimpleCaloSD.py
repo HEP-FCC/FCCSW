@@ -10,18 +10,18 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PhiMin = 1.6, # rad
                                 PhiMax = 1.6) # rad
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun)
-gen.DataOutputs.hepmc.Path = "hepmc"
+gen.hepmc.Path = "hepmc"
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import HepMCDumper
 hepmc_dump = HepMCDumper("hepmc")
-hepmc_dump.DataInputs.hepmc.Path="hepmc"
+hepmc_dump.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:compact/Box_simpleCaloSD.xml'], OutputLevel = DEBUG)
@@ -35,11 +35,11 @@ geantservice = SimG4Svc("SimG4Svc",
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool, InspectHitsCollectionsTool
 inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHits"], OutputLevel = DEBUG)
 savehcaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"])
-savehcaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
-savehcaltool.DataOutputs.caloHits.Path = "caloHits"
+savehcaltool.positionedCaloHits.Path = "positionedCaloHits"
+savehcaltool.caloHits.Path = "caloHits"
 
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveCalHits/saveECalHits",
                              "InspectHitsCollectionsTool/inspect"],

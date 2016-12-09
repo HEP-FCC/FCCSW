@@ -151,7 +151,7 @@ from Configurables import PythiaInterface
 
 pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 ## Write the HepMC::GenEvent to the data service
-pythia8gen.DataOutputs.hepmc.Path = "hepmc"
+pythia8gen.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
 from Configurables import DelphesSimulation
@@ -168,16 +168,16 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
                                         "DelphesSaveMet/met"])
-delphessim.DataInputs.hepmc.Path                = "hepmc"
-delphessim.DataOutputs.genParticles.Path        = "skimmedGenParticles"
-delphessim.DataOutputs.mcEventWeights.Path      = "mcEventWeights"
+delphessim.hepmc.Path                = "hepmc"
+delphessim.genParticles.Path        = "skimmedGenParticles"
+delphessim.mcEventWeights.Path      = "mcEventWeights"
 
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="genParticles"
-hepmc_converter.DataOutputs.genvertices.Path="genVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="genParticles"
+hepmc_converter.genvertices.Path="genVertices"
 
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput

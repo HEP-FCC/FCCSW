@@ -30,15 +30,15 @@ genpileup = PoissonPileUp(name="Pileup",
 
 mergetool = HepMCFullMerge()
 
-reader = HepMCReader("Reader", 
+reader = HepMCReader("Reader",
     Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
     PileUpTool=genpileup,
     HepMCMergeTool=mergetool,
     VertexSmearingTool = smeartool)
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 dumper = HepMCDumper()
-dumper.DataInputs.hepmc.Path="hepmc"
+dumper.hepmc.Path="hepmc"
 
 ApplicationMgr(
     TopAlg=[reader, dumper],
