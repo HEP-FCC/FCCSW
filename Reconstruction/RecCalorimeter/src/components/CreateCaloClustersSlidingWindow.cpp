@@ -206,8 +206,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
     // loop over all clusters with energy lower than it1 (sorting), erase if too close
     for(auto it2 = it1+1; it2!=m_preClusters.end();) {
       if ( (abs(idEta((*it1).eta)-idEta((*it2).eta)) < m_nEtaDuplicates)
-        && ( (abs(idPhi((*it1).phi)-idPhi((*it2).phi)) < floor(m_nPhiDuplicates/2.))
-          || (abs(idPhi((*it1).phi)-idPhi((*it2).phi)) > m_nPhiTower - floor(m_nPhiDuplicates/2.)) ) ) {
+        && ( (abs(idPhi((*it1).phi)-idPhi((*it2).phi)) < m_nPhiDuplicates)
+          || (abs(idPhi((*it1).phi)-idPhi((*it2).phi)) > m_nPhiTower - m_nPhiDuplicates) ) ) {
         m_preClusters.erase(it2);
       }
       else {
