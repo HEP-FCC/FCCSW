@@ -36,12 +36,12 @@ hepmc_converter.genvertices.Path="all_genvertices"
 
 from Configurables import GenParticleFilter
 ### Filters generated particles
-genfilter = GenParticleFilter("StableParticles")
-genfilter.genparticles.Path = "all_genparticles"
-genfilter.genparticles.Path = "genparticles"
+genfilter = GenParticleFilter("StableParticles", accept=[1], OutputLevel=DEBUG)
+genfilter.allGenParticles.Path = "all_genparticles"
+genfilter.filteredGenParticles.Path = "genparticles"
 
 from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_ as JetClustering
-genjet_clustering = JetClustering("GenJetClustering", verbose = False)
+genjet_clustering = JetClustering("GenJetClustering", OutputLevel=DEBUG)
 genjet_clustering.particles.Path='genparticles'
 genjet_clustering.jets.Path='genjets'
 

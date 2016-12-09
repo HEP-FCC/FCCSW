@@ -11,7 +11,6 @@ DECLARE_COMPONENT(PodioInput)
 PodioInput::PodioInput(const std::string& name, ISvcLocator* svcLoc) :
 GaudiAlgorithm(name, svcLoc)
 {
-  declareProperty("collections", m_collectionNames, "Places of collections to read.");
 }
 
 StatusCode PodioInput::initialize() {
@@ -38,7 +37,7 @@ StatusCode PodioInput::execute() {
   size_t cntr = 0;
   // Re-create the collections from ROOT file
   for (auto& id : m_collectionIDs) {
-    const std::string& collName = m_collectionNames.at(cntr++);
+    const std::string& collName = m_collectionNames.value().at(cntr++);
     debug() << "Registering collection to read " << collName << " with id " << id << endmsg;
     if (m_podioDataSvc->readCollection(collName, id).isFailure()) {
       return StatusCode::FAILURE;

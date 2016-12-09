@@ -13,7 +13,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
 ### Pileup tool. A number of additional events are merg with the signal event in HepMCReader.
 genpileup = PoissonPileUp(name="ConstPileUp",
-                          Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
+                          filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
                           numPileUpEvents=1)
 ## reads HepMC text file and write the HepMC::GenEvent to the data service
 reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat",
@@ -39,7 +39,7 @@ hepmc_converter.genvertices.Path="all_genvertices"
 from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_ as JetClustering
 genjet_clustering = JetClustering(
     "GenJetClustering",
-    verbose = False
+    OutputLevel=INFO
 )
 # the input product name matches the output product name of the previous module
 genjet_clustering.particles.Path='all_genparticles'

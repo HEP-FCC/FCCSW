@@ -52,9 +52,10 @@ private:
     /// Pointer to the detector construction of DDG4
     std::shared_ptr<G4VUserDetectorConstruction> m_geant4geo;
     /// XML-files with the detector description
-    std::vector<std::string>   m_xmlFileNames;
+    Gaudi::Property<std::vector<std::string>> m_xmlFileNames{this, "detectors", {}, "Detector descriptions XML-files"};
     //output
     MsgStream m_log;
 };
+
 
 #endif //GEOSVC_H

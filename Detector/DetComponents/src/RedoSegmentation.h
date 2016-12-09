@@ -75,7 +75,7 @@ private:
   /// Old bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
-  Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{this, "newSegmentationIds"};
+  Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{this, "oldSegmentationIds"};
   /// Detector fields that are going to be rewritten
   std::vector<std::string> m_detectorIdentifiers;
   /// Limit of debug printing

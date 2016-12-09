@@ -21,13 +21,7 @@ DECLARE_ALGORITHM_FACTORY(TestCellCounting)
 
 TestCellCounting::TestCellCounting(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc) {
-  declareProperty("readoutName", m_readoutName);
-  declareProperty("fieldNames", m_fieldNames);
-  declareProperty("fieldValues", m_fieldValues);
-  declareProperty("volumeMatchName", m_volumeMatchName, "Silicon");
 }
-
-TestCellCounting::~TestCellCounting() {}
 
 StatusCode TestCellCounting::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) {

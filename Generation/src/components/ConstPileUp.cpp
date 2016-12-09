@@ -11,9 +11,6 @@ ConstPileUp::ConstPileUp(
   const IInterface* parent)
   : GaudiTool ( type, name , parent ) {
   declareInterface< IPileUpTool >( this );
-  
-  declareProperty( "numPileUpEvents", m_numPileUpEvents = 0 );
-  declareProperty( "Filename", m_filename = "" );
 }
 
 ConstPileUp::~ConstPileUp( ) { ; }

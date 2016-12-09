@@ -41,26 +41,26 @@ private:
   /// Minimum momentum (Set by options)
   Gaudi::Property<double> m_minMom{this, "MomentumMin", 100.0 * Gaudi::Units::GeV, "Minimal momentum"};
   /// Minimum theta angle (Set by options)
-  Gaudi::Property<double> m_minTheta{"ThetaMin", 0.1 * Gaudi::Units::rad, "Minimal theta"};
+  Gaudi::Property<double> m_minTheta{this, "ThetaMin", 0.1 * Gaudi::Units::rad, "Minimal theta"};
   /// Minimum phi angle (Set by options)
-  Gaudi::Property<double> m_minPhi{"PhiMin", 0. * Gaudi::Units::rad, "Minimal phi"};
+  Gaudi::Property<double> m_minPhi{this, "PhiMin", 0. * Gaudi::Units::rad, "Minimal phi"};
 
   /// Maximum momentum (Set by options)
-  Gaudi::Property<double> m_maxMom{"MomentumMax", 100.0 * Gaudi::Units::GeV, "Maximal momentum"};
+  Gaudi::Property<double> m_maxMom{this, "MomentumMax", 100.0 * Gaudi::Units::GeV, "Maximal momentum"};
   /// Maximum theta angle (Set by options)
-  Gaudi::Property<double> m_maxTheta{"ThetaMax", 0.4 * Gaudi::Units::rad, "Maximal theta"};
+  Gaudi::Property<double> m_maxTheta{this, "ThetaMax", 0.4 * Gaudi::Units::rad, "Maximal theta"};
   /// Maximum phi angle (Set by options)
-  Gaudi::Property<double> m_maxPhi{"PhiMax", Gaudi::Units::twopi * Gaudi::Units::rad, "Maximal phi"};
+  Gaudi::Property<double> m_maxPhi{this, "PhiMax", Gaudi::Units::twopi * Gaudi::Units::rad, "Maximal phi"};
 
   /// Momentum range
-  Gaudi::Property<double> m_deltaMom{};
+  double m_deltaMom;
   /// Theta range
-  Gaudi::Property<double> m_deltaTheta{};
+  double m_deltaTheta;
   /// Phi range
-  Gaudi::Property<double> m_deltaPhi{};
+  double m_deltaPhi;
 
   /// Pdg Codes of particles to generate (Set by options)
-  Gaudi::Property<std::vector<int>> m_pdgCodes{"PdgCodes", {-211}, "list of pdg codes to produce"};
+  Gaudi::Property<std::vector<int>> m_pdgCodes{this, "PdgCodes", {-211}, "list of pdg codes to produce"};
 
   /// Masses of particles to generate (derived from PDG codes)
   std::vector<double> m_masses;

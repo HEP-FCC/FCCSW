@@ -143,9 +143,9 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
     return StatusCode::FAILURE;
   }
   // Check if readouts exist
-  info()<<"Readout: "<<m_readoutName<< endmsg;
-  if(m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
-    error()<<"Readout <<"<<m_readoutName<<">> does not exist."<<endmsg;
+  info()<<"Readout: "<<m_readoutName.value()<< endmsg;
+  if(m_geoSvc->lcdd()->readouts().find(m_readoutName.value()) == m_geoSvc->lcdd()->readouts().end()) {
+    error()<<"Readout <<"<<m_readoutName.value()<<">> does not exist."<<endmsg;
     return StatusCode::FAILURE;
   }
 

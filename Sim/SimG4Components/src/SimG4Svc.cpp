@@ -14,7 +14,7 @@ SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL):
   base_class(aName, aSL),
   m_detectorTool("SimG4DD4hepDetector", this, true),
   m_physicsListTool("SimG4FtfpBert", this, true),
-  m_actionsTool("", this),
+  m_actionsTool("SimG4FullSimActions", this, true),
   m_magneticFieldTool("SimG4ConstantMagneticFieldTool", this, true) {
   declareProperty("detector", m_detectorTool);
   declareProperty("physicslist", m_physicsListTool);

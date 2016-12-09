@@ -64,7 +64,7 @@ private:
   /// GFlash hit maker
   std::unique_ptr<GFlashHitMaker> m_hitMaker;
   /// Names of the parametrised volumes (set by job options)
-  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumesNames"};
+  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames"};
   /// minimum energy of the electron (positron) that triggers the model
   Gaudi::Property<double> m_minTriggerEnergy{this, "minEnergy", 0.1*Gaudi::Units::GeV};
   /// maximum energy of the electron (positron) that triggers the model

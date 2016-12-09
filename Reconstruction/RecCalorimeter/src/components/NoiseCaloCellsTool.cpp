@@ -6,14 +6,6 @@ NoiseCaloCellsTool::NoiseCaloCellsTool(const std::string& type,const std::string
   : GaudiTool(type, name, parent)
 {
   declareInterface<INoiseCaloCellsTool>(this);
-  //uniform noise per cell in GeV
-  declareProperty("cellNoise", m_cellNoise = 0.003);
-  //remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)
-  declareProperty("filterNoiseThreshold", m_filterThreshold = 3);
-}
-
-NoiseCaloCellsTool::~NoiseCaloCellsTool()
-{
 }
 
 StatusCode NoiseCaloCellsTool::initialize() {

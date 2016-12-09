@@ -12,8 +12,8 @@ GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLo
   m_oGenpHandle("FilteredGenParticles", Gaudi::DataHandle::Writer, this)
 
 {
-  declareProperty("genparticles", m_iGenpHandle);
-  declareProperty("genparticles", m_oGenpHandle);
+  declareProperty("allGenParticles", m_iGenpHandle);
+  declareProperty("filteredGenParticles", m_oGenpHandle);
 }
 
 StatusCode GenParticleFilter::initialize() {

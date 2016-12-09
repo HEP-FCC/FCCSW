@@ -38,7 +38,7 @@ from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticl
 def apply_paths(obj, names):
   """ Applies the collection names to the Paths of DataOutputs """
   for attr, name in names.iteritems():
-    getattr(obj.DataOutputs, attr).Path = name
+    getattr(obj, attr).Path = name
 
 
 import argparse

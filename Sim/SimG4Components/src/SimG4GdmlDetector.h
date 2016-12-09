@@ -37,7 +37,7 @@ public:
   virtual G4VUserDetectorConstruction* detectorConstruction();
 private:
   /// name of the GDML file
-  std::string m_gdmlFile;
+  Gaudi::Property<std::string> m_gdmlFile{this, "gdml"};
 };
 
 #endif /* SIMG4COMPONENTS_G4GDMLDETECTOR_H */

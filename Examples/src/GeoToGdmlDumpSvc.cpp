@@ -8,7 +8,6 @@ DECLARE_SERVICE_FACTORY(GeoToGdmlDumpSvc)
 
 GeoToGdmlDumpSvc::GeoToGdmlDumpSvc(const std::string& aName, ISvcLocator* aSL):
   base_class(aName, aSL) {
-  declareProperty("gdml", m_gdmlFileName="GeantDetector.gdml");
 }
 
 StatusCode GeoToGdmlDumpSvc::initialize() {
@@ -18,7 +17,8 @@ StatusCode GeoToGdmlDumpSvc::initialize() {
   }
   // dump geometry to gdml
   G4GDMLParser parser;
-  parser.Write(m_gdmlFileName,G4TransportationManager::GetTransportationManager()->GetNavigatorForTracking()->GetWorldVolume()->GetLogicalVolume());
+  parser.Write(m_gdmlFileName.value(),
+               G4TransportationManager::GetTransportationManager()->GetNavigatorForTracking()->GetWorldVolume()->GetLogicalVolume());
   return StatusCode::SUCCESS;
 }
 

@@ -101,7 +101,8 @@ private:
   std::unique_ptr<ExRootConfReader> m_confReader;
   Gaudi::Property<std::vector<std::string>> m_saveToolNames{this, "outputs"};
   std::vector<IDelphesSaveOutputTool*> m_saveTools;
-  bool m_applyGenFilter; // only for debugging purposes. If entire MC particle collection is needed, request in cfg file.
+  /// only for debugging purposes. If entire MC particle collection is needed, request in cfg file.
+  Gaudi::Property<bool> m_applyGenFilter{this, "ApplyGenFilter", true, "only for debugging purposes. If entire MC particle collection is needed, request in cfg file."};
 
   // Arrays used by Delphes and internally for initial particles
   TObjArray* m_allParticles;

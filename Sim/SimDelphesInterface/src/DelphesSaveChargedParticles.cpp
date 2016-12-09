@@ -17,10 +17,13 @@ DECLARE_TOOL_FACTORY(DelphesSaveChargedParticles)
 
 DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent),
-  m_particles("genParticles", Gaudi::DataHandle::Writer, this),
+  m_particles("particles", Gaudi::DataHandle::Writer, this),
   m_mcAssociations("mcAssociations", Gaudi::DataHandle::Writer, this),
   m_isolationTaggedParticles("isolationTags", Gaudi::DataHandle::Writer, this) {
   declareInterface<IDelphesSaveOutputTool>(this);
+  declareProperty("particles", m_particles);
+  declareProperty("mcAssociations", m_mcAssociations);
+  declareProperty("isolationTags", m_isolationTaggedParticles);
 }
 
 DelphesSaveChargedParticles::~DelphesSaveChargedParticles() {}
