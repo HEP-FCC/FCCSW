@@ -31,11 +31,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   // Invisibility seems to be broken in visualisation tags, have to hardcode that
   envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
 
-  xml_comp_t cryostat = xmlElement.child(_Unicode("cryostat"));
+  xml_comp_t cryostat = xmlElement.child(_Unicode(cryostat));
   Dimension cryo_dims(cryostat.dimensions());
   double cryo_thickness=cryo_dims.thickness();
 
-  xml_comp_t calo = xmlElement.child(_Unicode("calorimeter"));
+  xml_comp_t calo = xmlElement.child(_Unicode(calorimeter));
   Dimension calo_dims(calo.dimensions());
   std::string calo_name=calo.nameStr();
   double calo_id=calo.id();

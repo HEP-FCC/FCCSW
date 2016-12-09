@@ -20,7 +20,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
   Dimension dimensions(xmlDet.dimensions());
 
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode("sensitive"));  // retrieve the type
+  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
   if (xmlDet.isSensitive()) {
     sensDet.setType(sdTyp.typeStr());  // set for the whole detector
   }
