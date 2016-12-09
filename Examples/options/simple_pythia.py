@@ -18,7 +18,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import ConstPileUp
 
-pileuptool = ConstPileUp(numPileUpEvents=2, Filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
+pileuptool = ConstPileUp(numPileUpEvents=2, filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
 
 from Configurables import PythiaInterface
 ### PYTHIA algorithm

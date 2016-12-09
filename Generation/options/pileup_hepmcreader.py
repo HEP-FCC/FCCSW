@@ -25,7 +25,7 @@ smeartool = FlatSmearVertex(
      zVertexMax=pileupconf['zVertexMax'])
 
 genpileup = PoissonPileUp(name="Pileup",
-    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
+    filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
     numPileUpEvents=pileupconf['numPileUpEvents'])
 
 mergetool = HepMCFullMerge()
