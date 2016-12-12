@@ -113,7 +113,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
         DD4hep::Geometry::RotationZ lRotation(phi);
         PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo);
         placedModuleVolume.addPhysVolID("module", moduleCounter);
-        moduleVolume.setSensitiveDetector(sensDet);
         DetElement mod_det("module" + std::to_string(moduleCounter), moduleCounter);
         mod_det.setPlacement(placedModuleVolume);
         lay_det.add(mod_det);

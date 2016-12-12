@@ -165,10 +165,12 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
         PlacedVolume placedComponentVolume = moduleVolume.placeVolume(
             componentVolume,
             DD4hep::Geometry::Position(
-                0, integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness"), 0));
+                0, integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness")  + 0.5 * xComp.thickness(), 0));
         placedComponentVolume.addPhysVolID("component", componentCounter);
 
-        ///componentVolume.setSensitiveDetector(sensDet);
+        if( xComp.isSensitive() ){
+          componentVolume.setSensitiveDetector(sensDet);
+        }
         integratedCompThickness += xComp.thickness();
         ++componentCounter;
       }
@@ -208,7 +210,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
         DD4hep::Geometry::Transform3D myTrafo(lRotation4 * lRotation3 * lRotation2 * lRotation1, lTranslation);
         PlacedVolume placedModuleVolume = discVolume.placeVolume(moduleVolume, lRotation_PhiPos * myTrafo);
         placedModuleVolume.addPhysVolID("module", moduleCounter);
-        moduleVolume.setSensitiveDetector(sensDet);
         DetElement mod_det("module" + std::to_string(moduleCounter), moduleCounter);
         mod_det.setPlacement(placedModuleVolume);
         disc_det.add(mod_det);
