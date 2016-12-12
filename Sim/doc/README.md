@@ -15,16 +15,17 @@ FCCSW Simulation Documentation
 - generated vertices
 - hits in the sensitive parts of the tracker (barrel + endcaps)
 
-For the full explanation of the example [see](Geant4fullsim.md#2-example)
+For the full explanation of the example [see](FullSimulation.md#example)
 
 
 # How to ...
 
 * [change event generator](#event-generators)
 * [change the geometry](../../Detector/doc/DD4hepInFCCSW.md)
-* [use fast simulation for trackers](Geant4fastsim.md#2-example)
+* [use fast simulation](FastSimulationUsingGeant.md)
+  - [example for tracker and calorimeter](FastSimulationUsingGeant.md#example)
 
-For the full documentation of the simulation in Geant [see](Geant4fullsim.md)
+For the full documentation of the simulation in Geant [see](FullSimulation.md)
 
 ## Event generation
 

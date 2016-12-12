@@ -9,6 +9,8 @@ find_package(ROOT COMPONENTS RIO Tree)
 
 # this declaration will not be needed in the future
 gaudi_depends_on_subdirs(GaudiAlg GaudiKernel)
+gaudi_install_scripts()
+gaudi_install_python_modules()
 
 gaudi_add_library(FWCore
 		  src/*.cpp

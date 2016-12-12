@@ -72,9 +72,12 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
                                                          0.5 * xModulePropertiesOdd.attr<double>("modLength")),
                                    lcdd.material(xModuleComponentOdd.materialStr()));
       DD4hep::Geometry::Position offset(
-          0, integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness"), 0);
+          0, integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness") + 0.5 * xModuleComponentOdd.thickness(), 0);
       integratedModuleComponentThickness += xModuleComponentOdd.thickness();
 
+      if( xModuleComponentOdd.isSensitive() ) {
+        	moduleComponentVolume.setSensitiveDetector(sensDet);
+      }
       PlacedVolume placedModuleComponentVolume = moduleVolume.placeVolume(moduleComponentVolume, offset);
       placedModuleComponentVolume.addPhysVolID("component", moduleComponentCounter);
       ++moduleComponentCounter;
@@ -110,7 +113,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
         DD4hep::Geometry::RotationZ lRotation(phi);
         PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo);
         placedModuleVolume.addPhysVolID("module", moduleCounter);
-        moduleVolume.setSensitiveDetector(sensDet);
         DetElement mod_det("module" + std::to_string(moduleCounter), moduleCounter);
         mod_det.setPlacement(placedModuleVolume);
         lay_det.add(mod_det);

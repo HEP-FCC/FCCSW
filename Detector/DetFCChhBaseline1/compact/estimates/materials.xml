@@ -1,0 +1,27 @@
+  <materials>
+    <!-- densities is derived as weighted sum of the used materials -->
+    <comment>Approximate material of the ECal</comment>
+    <material name="EM">
+      <D type="density" unit="g/cm3" value="4.0777"/>
+      <fraction n="0.648" ref="LAr"/>
+      <fraction n="0.217" ref="Lead"/>
+      <fraction n="0.072" ref="Copper"/>
+      <fraction n="0.063" ref="Polystyrene"/>
+    </material>
+    <comment>Approximate material of the HCal</comment>
+    <material name="HC">
+      <D type="density" unit="g/cm3" value="6.581"/>
+      <fraction n="0.818" ref="Iron"/>
+      <fraction n="0.136" ref="Polystyrene"/>
+      <fraction n="0.046" ref="Air"/>
+    </material>
+    <comment>Approximate material of the Tracker</comment>
+    <material name="TR">
+      <D type="density" unit="g/cm3" value="1.96"/>
+      <fraction n="0.2" ref="Silicon"/>
+      <fraction n="0.42" ref="Carbon"/>
+      <fraction n="0.02" ref="Copper"/>
+      <fraction n="0.06" ref="Aluminum"/>
+      <fraction n="0.30" ref="Polystyrene"/>
+    </material>
+  </materials>

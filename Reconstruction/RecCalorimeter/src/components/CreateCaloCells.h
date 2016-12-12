@@ -38,8 +38,6 @@ class CreateCaloCells : public GaudiAlgorithm
 {
 public:
   CreateCaloCells(const std::string& name, ISvcLocator* svcLoc);
- 
-  ~CreateCaloCells();
 
   StatusCode initialize();
 
@@ -70,10 +68,8 @@ private:
   DataHandle<fcc::CaloHitCollection> m_cells;
   /// Name of the detector readout
   std::string m_readoutName;
-  /// Name of active volumes (material name)
+  /// Name of active volumes
   std::string m_activeVolumeName;
-  /// Number of volumes with active material which are not readout(e.g. ECAL: LAr bath in cryostat)
-  unsigned m_numVolumesRemove;
   /// Name of active layers for sampling calorimeter
   std::string m_activeFieldName;
   /// Name of the fields describing the segmented volume
