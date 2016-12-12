@@ -35,6 +35,7 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("readoutName", m_readoutName="ECalHitsPhiEta");
   declareProperty("activeVolumeName", m_activeVolumeName="LAr_sensitive");
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
+  declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
   declareProperty("fieldNames", m_fieldNames);
   declareProperty("fieldValues", m_fieldValues);
 }
@@ -164,7 +165,13 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
   }
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
-  unsigned int numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName);
+  unsigned int numLayers;
+  if( !m_activeVolumesNumber ) {
+    numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName);
+  } else {
+    // used when MergeLayers tool is used. To be removed once MergeLayer gets replaced by RedoSegmentation.
+    numLayers = 3;
+  }
   info() << "Number of active layers " << numLayers << endmsg;
 
   // Check if size of names and values of readout fields agree
