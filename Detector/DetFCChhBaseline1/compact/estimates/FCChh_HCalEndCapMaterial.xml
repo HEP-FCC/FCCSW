@@ -10,7 +10,7 @@
         author="J. Lingemann"
         url="no"
         status="development"
-        version="$Id:??$">
+        version="1.0">
     <comment>HCal material end cap approximation</comment>
   </info>
   <define>

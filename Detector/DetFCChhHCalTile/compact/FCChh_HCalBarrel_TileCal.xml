@@ -8,7 +8,7 @@
     author="C. Solans, J. Lingemann"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>HCal layout based on ATLAS HCal</comment>
   </info>
 

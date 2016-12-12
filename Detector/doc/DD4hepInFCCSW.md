@@ -63,7 +63,7 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
     author="T. Test"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>This is really just a test!</comment>
   </info>
 

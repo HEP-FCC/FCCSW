@@ -8,7 +8,7 @@
         author="C. Helsens, J. Lingemann"
         url="no"
         status="development"
-        version="$Id:??$">
+        version="1.0">
     <comment>Envelope for the barrel and forward solenoid coils</comment>
   </info>
 
@@ -17,16 +17,16 @@
   </display>
 
  <detectors>
-    <detector  id="20" name="BarrelSolenoid" type="SimpleCylinder"  vis="SolenoidVis">
+    <detector name="BarrelSolenoid" type="SimpleCylinder"  vis="SolenoidVis">
       <comment>Barrel solenoid</comment>
       <dimensions rmin="BarSolenoid_rmin" rmax="BarSolenoid_rmax" dz="BarSolenoid_dz" phi0="0" deltaphi="360*deg"  z_offset="0*cm" material="Aluminum"/>
     </detector>
 
-    <detector  id="21" name="FwdSolenoidPos" type="SimpleCylinder"  vis="SolenoidVis">
+    <detector name="FwdSolenoidPos" type="SimpleCylinder"  vis="SolenoidVis">
       <comment>Forward solenoid</comment>
       <dimensions rmin="FwdSolenoid_rmin" rmax="FwdSolenoid_rmax" dz="FwdSolenoid_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoid_zOffset" material="Aluminum"/>
     </detector>
-    <detector  id="22" name="FwdSolenoidNeg" type="SimpleCylinder"  vis="SolenoidVis">
+    <detector name="FwdSolenoidNeg" type="SimpleCylinder"  vis="SolenoidVis">
       <comment>Forward solenoid</comment>
       <dimensions rmin="FwdSolenoid_rmin" rmax="FwdSolenoid_rmax" dz="FwdSolenoid_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoid_zOffset" material="Aluminum"/>
     </detector>

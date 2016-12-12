@@ -13,7 +13,7 @@
     author="C. Helsens"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>master file with includes and world dimension</comment>
   </info>
   <define>
