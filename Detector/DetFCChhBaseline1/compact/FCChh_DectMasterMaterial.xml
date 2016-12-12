@@ -14,7 +14,7 @@
     author="J. Lingemann"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>master file with material estimates and world dimension</comment>
   </info>
   <define>

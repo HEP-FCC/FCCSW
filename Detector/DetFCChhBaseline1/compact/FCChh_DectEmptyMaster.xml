@@ -13,7 +13,7 @@
     author="C. Helsens"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>Use this one if you want to use official dimensions but only place one detector inside</comment>
   </info>
   <define>

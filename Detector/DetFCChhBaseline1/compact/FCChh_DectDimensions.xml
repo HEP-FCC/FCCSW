@@ -8,7 +8,7 @@
     author="C. Helsens, J. Lingemann"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>
         Dimensions for FCChhBaseline1: Design with Twin Solenoid, 6 T, 12 m bore, 10 Tm dipole
         Sources: FCC hadron detector meeting 31 Aug 2016 (excel table): https://indico.cern.ch/event/557687/

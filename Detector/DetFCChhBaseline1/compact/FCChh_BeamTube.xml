@@ -8,7 +8,7 @@
         author="Clement Helsens"
         url="no"
         status="development"
-        version="$Id:??$">
+        version="1.0">
     <comment>A beam pipe for FCC detector</comment>
   </info>
 
