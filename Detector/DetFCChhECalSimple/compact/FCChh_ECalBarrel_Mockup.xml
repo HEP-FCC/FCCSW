@@ -8,7 +8,7 @@
     author="A.Dell'Acqua"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>ECal very conceptual design</comment>
   </info>
 
@@ -31,10 +31,9 @@
 
   <readouts>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="0.5" phi_bins="5"/>
-      <id>system:3,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-6,phi:-4</id>
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629"/>
+      <id>system:4,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-9,phi:-10</id>
     </readout>
-
   </readouts>
 
   <detectors>
