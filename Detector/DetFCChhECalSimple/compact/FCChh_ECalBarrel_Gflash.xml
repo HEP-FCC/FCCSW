@@ -8,7 +8,7 @@
     author="A.Dell'Acqua, J.Faltova, A.Zaborowska"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>ECal lAr-Pb simple cylindrical layers design, with GFlash SD. Based on FCChh_ECalBarrel_Mockup</comment>
   </info>
 

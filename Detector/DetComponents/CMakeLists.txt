@@ -10,9 +10,9 @@ gaudi_depends_on_subdirs(GaudiKernel
                          Detector/DetCommon
                          Detector/DetExtensions)
 
-find_package(ROOT COMPONENTS MathCore GenVector Geom)
+find_package(ROOT COMPONENTS MathCore GenVector Geom Tree)
 
-find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
+find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
 
 find_package(Geant4)
 

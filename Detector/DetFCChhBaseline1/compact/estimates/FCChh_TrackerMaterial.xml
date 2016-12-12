@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the Tracker"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Tracker Place-Holder</comment>
+  </info>
+  <define>
+    <constant name="TrackerInner_rmax" value="500*mm"/>
+  </define>
+
+  <detectors>
+    <!-- B A R R E L S -->
+    <detector name="TrackerBarrelInner" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="Tracker_rmin" rmax="TrackerInner_rmax" dz="830*mm" z_offset="0*cm" material="Air"/>
+      <!-- INNER -->
+      <layer rmin="46.94*mm" rmax="51.3*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="142.48*mm" rmax="161.66*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="248.94*mm" rmax="267.32*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="346.93*mm" rmax="364.98*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="440.65*mm" rmax="458.51*mm" dz="830*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+    </detector>
+    <detector name="TrackerBarrelOuter" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="TrackerInner_rmax" rmax="Tracker_rmax" dz="2250*mm" z_offset="0*cm" material="Air"/>
+      <!-- OUTER -->
+      <layer rmin="597.95*mm" rmax="619.37*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="797.71*mm" rmax="818.61*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="960.06*mm" rmax="980.7*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="1154.82*mm" rmax="1175.23*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="1349.54*mm" rmax="1369.79*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+      <layer rmin="1531.90*mm" rmax="1552.04*mm" dz="2250*mm" z_offset="0*cm" material="TR" vis="TrackerVis" />
+    </detector>
+  </detectors>
+</lccdd>

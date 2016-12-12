@@ -36,52 +36,16 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   // Make volume that envelopes the whole barrel; set material to air
   Dimension dimensions(xmlDet.dimensions());
-  DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
-  Volume envelopeVolume(detName, envelopeShape, lcdd.air());
-  // Invisibility seems to be broken in visualisation tags, have to hardcode that
-  // envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
-  envelopeVolume.setVisAttributes(lcdd.invisible());
-
-  // set the sensitive detector type to the DD4hep calorimeter
-  sensDet.setType("SimpleCalorimeterSD");
-
-  // Add structural support made of steel inside of HCal
+  xml_comp_t xEndPlate = xmlElement.child("end_plate");
+  double dZEndPlate = xEndPlate.thickness();
   xml_comp_t xFacePlate = xmlElement.child("face_plate");
   double dRhoFacePlate = xFacePlate.thickness();
   double sensitiveBarrelRmin = dimensions.rmin() + dRhoFacePlate;
-  DetElement facePlate("facePlate", 0);
-  DD4hep::Geometry::Tube facePlateShape(dimensions.rmin(), sensitiveBarrelRmin, dimensions.dz());
-  Volume facePlateVol("facePlate", facePlateShape, lcdd.material(xFacePlate.materialStr()));
-  facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
-  PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
-  facePlate.setPlacement(placedFacePlate);
-
-
-  // Add structural support made of steel at both ends of HCal
-  xml_comp_t xEndPlate = xmlElement.child("end_plate");
-  double dZEndPlate = xEndPlate.thickness();
-
-  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
-  Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
-  endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
-
-  DetElement endPlatePos("endPlate", 0);
-  DD4hep::Geometry::Position posOffset(0, 0, dimensions.dz() -  dZEndPlate);
-  PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
-  endPlatePos.setPlacement(placedEndPlatePos);
-
-  DetElement endPlateNeg("endPlate", 1);
-  DD4hep::Geometry::Position negOffset(0, 0, -dimensions.dz() +  dZEndPlate);
-  PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
-  endPlateNeg.setPlacement(placedEndPlateNeg);
-
-
   // Hard-coded assumption that we have two different sequences for the modules
   std::vector<xml_comp_t> sequences = {xmlElement.child("sequence_a"), xmlElement.child("sequence_b")};
   // NOTE: This assumes that both have the same dimensions!
   Dimension moduleDimensions(sequences[0].dimensions());
   double dzModule = moduleDimensions.dz();
-
   // calculate the number of modules fitting in phi, Z and Rho
   unsigned int numModulesPhi = moduleDimensions.phiBins();
   unsigned int numModulesZ = static_cast<unsigned>(dimensions.dz() / dzModule);
@@ -93,7 +57,41 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
   double dzDetector = numModulesZ * dzModule + dZEndPlate;
-  lLog << MSG::INFO << "correction of dz:" << dimensions.dz() - dzDetector << endmsg;
+  lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
+
+  DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
+  Volume envelopeVolume(detName, envelopeShape, lcdd.air());
+  // Invisibility seems to be broken in visualisation tags, have to hardcode that
+  // envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
+  envelopeVolume.setVisAttributes(lcdd.invisible());
+
+  // set the sensitive detector type to the DD4hep calorimeter
+  sensDet.setType("SimpleCalorimeterSD");
+
+  // Add structural support made of steel inside of HCal
+  DetElement facePlate("facePlate", 0);
+  DD4hep::Geometry::Tube facePlateShape(dimensions.rmin(), sensitiveBarrelRmin, dzDetector);
+  Volume facePlateVol("facePlate", facePlateShape, lcdd.material(xFacePlate.materialStr()));
+  facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
+  PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
+  facePlate.setPlacement(placedFacePlate);
+
+
+  // Add structural support made of steel at both ends of HCal
+
+  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
+  Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
+  endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
+
+  DetElement endPlatePos("endPlate", 0);
+  DD4hep::Geometry::Position posOffset(0, 0, dzDetector -  dZEndPlate);
+  PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
+  endPlatePos.setPlacement(placedEndPlatePos);
+
+  DetElement endPlateNeg("endPlate", 1);
+  DD4hep::Geometry::Position negOffset(0, 0, -dzDetector +  dZEndPlate);
+  PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
+  endPlateNeg.setPlacement(placedEndPlateNeg);
 
   // calculate the dimensions of one module:
   double dphi = 2 * dd4hep::pi / static_cast<double>(numModulesPhi);
