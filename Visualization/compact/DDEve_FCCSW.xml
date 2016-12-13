@@ -1,0 +1,35 @@
+<ddeve>
+  <display visLevel="7" loadLevel="4" eventHandler="DDEve_FCCEventHandler"/>
+  <calodata name="trackerdata"  hits="clusters"  towerH="10" emax="100"
+	    n_eta="200" eta_min="-5" eta_max="5"
+	    n_phi="200" phi_min="-pi" phi_max="pi"
+	    alpha="0.5" rmin="500*mm" dz="500*mm" color="kCyan"/>
+  <collection name="clusters" hits="PointSet" color="kMagenta" size="0.3" type="20"/>
+  <calodata name="calohits" hits="caloClusters" towerH="10" emax="100"
+	    n_eta="200" eta_min="-5" eta_max="5"
+	    n_phi="200" phi_min="-pi" phi_max="pi"
+	    alpha="0.5" rmin="500*mm" dz="500*mm" color="kRed"/>
+  <collection name="caloClusters" hits="PointSet" color="kRed" size="0.7" type="20"/>
+  <view name="Multiview" type="MultiView">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+    <calodata name="calohits" />
+  </view>
+  <view name="Calo2DProjection" type="Calo2DProjection">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+    <calodata name="calohits" />
+  </view>
+  <view name="Calo3DProjection" type="Calo3DProjection">
+    <detelement name="GenericTrackerBarrel" load_geo="-1" alpha="0.5"/>
+    <calodata name="trackerdata" />
+    <calodata name="calohits" />
+  </view>
+  <view name="CaloLego" type="CaloLego">
+    <calodata name="trackerdata" />
+    <calodata name="calohits" />
+  </view>
+  <include ref="../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
+  <include ref="../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
+  <include ref="../../Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml"/>
+</ddeve>
