@@ -22,7 +22,7 @@ from Configurables import GeoSvc
 ## DD4hep geometry service
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml' ],
+                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel.xml' ],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool

@@ -170,7 +170,7 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
     numLayers = det::utils::countPlacedVolumes(highestVol, m_activeVolumeName);
   } else {
     // used when MergeLayers tool is used. To be removed once MergeLayer gets replaced by RedoSegmentation.
-    numLayers = 3;
+    numLayers = m_activeVolumesNumber;
   }
   info() << "Number of active layers " << numLayers << endmsg;
 

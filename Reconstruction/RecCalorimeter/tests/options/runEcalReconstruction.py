@@ -10,7 +10,7 @@ podioinput = PodioInput("PodioReader", collections=["ECalHits", "ECalPositionedH
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                           'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml'],
+                                           'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel.xml'],
                     OutputLevel = INFO)
 
 #Configure tools for calo reconstruction
