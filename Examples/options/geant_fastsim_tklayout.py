@@ -20,7 +20,7 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetCommon/compact/TrackerAir.xml'])
+                                         'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -55,7 +55,6 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
-hist.DataInputs.particles.Path = "smearedParticles"
 hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 THistSvc().Output = ["rec DATAFILE='histTklayout.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

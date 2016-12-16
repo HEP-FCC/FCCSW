@@ -17,6 +17,7 @@
 // FCC EDM
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
+#include "datamodel/FloatCollection.h"
 
 // ROOT
 #include "TFile.h"
@@ -39,17 +40,18 @@ GaudiAlgorithm(name, svcLoc) ,
   m_confReader(nullptr),
   m_allParticles(nullptr),
   m_stableParticles(nullptr),
-  m_partons(nullptr)
+  m_partons(nullptr),
+  m_applyGenFilter(true)
 {
   //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
   declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
   declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)");
+  declareProperty("ApplyGenFilter"   , m_applyGenFilter, "Decide whether or not to apply filtering on MC particles collection");
 
   declareInput("hepmc", m_hepmcHandle);
   declareProperty("outputs", m_saveToolNames);
-
-  declareOutput("genParticles"      , m_handleGenParticles, "genParticles");
-  declareOutput("genVertices"       , m_handleGenVertices, "genVertices");
+  declareOutput("mcEventWeights" , m_handleMCEventWeights, "mcEventWeights");
+  declareOutput("genParticles" , m_handleGenParticles, "genParticles");
 }
 
 StatusCode DelphesSimulation::initialize() {
@@ -131,6 +133,7 @@ StatusCode DelphesSimulation::execute() {
 
   // Read event
   const HepMC::GenEvent *hepMCEvent = m_hepmcHandle.get();
+
   sc = m_hepMCConverter->hepMCEventToArrays(hepMCEvent, *m_Delphes->GetFactory(), *m_allParticles, *m_stableParticles, *m_partons);
   if (!sc.isSuccess()) {
     return sc;
@@ -222,10 +225,20 @@ StatusCode DelphesSimulation::execute() {
   if (m_outRootFile!=nullptr) m_treeWriter->Fill();
 
   // FCC EDM (event-data model) based output
-  auto genParticles       = m_handleGenParticles.createAndPut();
-  auto genVertices        = m_handleGenVertices.createAndPut();
+  auto mcEventWeights       = m_handleMCEventWeights.createAndPut();
 
-  if (m_allParticles !=nullptr) DelphesSimulation::ConvertMCParticles(m_allParticles , genParticles  , genVertices);
+  //loop over HepMC event weights
+  for(unsigned int j=0; j<hepMCEvent->weights().size(); j++) {
+    // FIXME: weights are stored as collection. Eventually move to meta-data
+    auto weight = mcEventWeights->create();
+    weight.value(hepMCEvent->weights()[j]);
+  }
+  
+  // FCC EDM (event-data model) based output
+  auto genParticles       = m_handleGenParticles.createAndPut();
+  
+  // convert Delphes MC particles to FCC EDM
+  if (m_allParticles !=nullptr) DelphesSimulation::ConvertMCParticles(m_allParticles , genParticles);
 
   for(auto saveTool : m_saveTools) {
     saveTool->saveOutput(*m_Delphes, *genParticles);
@@ -264,167 +277,86 @@ StatusCode DelphesSimulation::finalize() {
 }
 
 //
-// Convert internal Delphes objects: MCParticles to FCC EDM: MCParticle & GenVertices
+// Convert internal Delphes objects: MCParticles to FCC EDM: MCParticle
 //
 void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
-                                           fcc::MCParticleCollection* colMCParticles,
-                                           fcc::GenVertexCollection* colGenVertices) {
+                                           fcc::MCParticleCollection* colMCParticles) {
 
-  //Initialize MC particle vertex mapping: production & decay vertex
-  std::vector<std::pair<int, int>> vecPartProdVtxIDDecVtxID;
 
-  vecPartProdVtxIDDecVtxID.resize(Input->GetEntries());
-  for(int j=0; j<Input->GetEntries(); j++) {
-    vecPartProdVtxIDDecVtxID[j].first  = -1;
-    vecPartProdVtxIDDecVtxID[j].second = -1;
-  }
-
-  // Find true daughters of the colliding particles (necessary fix for missing links
-  // between primary colliding particles and their daughters if LHE file used within Pythia)
-  std::set<int> primary1Daughters;
-  std::set<int> primary2Daughters;
-
-  for(int j=0; j<Input->GetEntries(); j++) {
-
-    auto cand = static_cast<Candidate *>(m_allParticles->At(j));
-
-    // Go through all not primary particles
-    if (cand->M1!=-1) {
-      for (int iMother=cand->M1; iMother<=cand->M2; iMother++) {
-
-        if (iMother==0) primary1Daughters.insert(j);
-        if (iMother==1) primary2Daughters.insert(j);
-      }
-    }
-  } // Fix
 
   // Save MC particles and vertices
   for(int j=0; j<Input->GetEntries(); j++) {
 
-    auto cand     = static_cast<Candidate *>(m_allParticles->At(j));
+    auto cand     = static_cast<Candidate *>(Input->At(j));
+    
+    ///////////////////////////////////////
+    // filter only interesting particles //
+    ///////////////////////////////////////
+    
+    bool pass = false;
+    
+    auto status = cand->Status;
+    auto pdgCode = TMath::Abs(cand->PID);
+    auto pt = cand->Momentum.Pt();
+    
+    // hard scattering particles (first condition for Py6, second for Py8)
+    if(status == 3) pass = true;
+    if(status > 20 && status < 30 ) pass = true;
+    
+    // electrons, muons, taus and neutrinos
+    if(pdgCode > 10 && pdgCode < 17) pass = true;
+
+    // heavy quarks
+    if(pdgCode == 4 ||pdgCode == 5 || pdgCode == 6) pass = true;
+
+    // Gauge bosons and other fundamental bosons
+    if(pdgCode > 22 && pdgCode < 43) pass = true;
+
+    // retain only stable particles with high enough transverse momentum
+    if(status == 1 && pt > 5.0) pass = true;
+
+    if (!pass && m_applyGenFilter) continue;
+   
+    //////////////////////////////
+    // store filtered particles //
+    //////////////////////////////
+    
     auto particle = colMCParticles->create();
 
-    auto barePart     = fcc::BareParticle();
-    barePart.Type     = cand->PID;
-    barePart.Status   = cand->Status;
-    barePart.P4.Px    = cand->Momentum.Px();
-    barePart.P4.Py    = cand->Momentum.Py();
-    barePart.P4.Pz    = cand->Momentum.Pz();
-    barePart.P4.Mass  = cand->Momentum.M();
-    barePart.Charge   = cand->Charge;
-    barePart.Vertex.X = cand->Position.X();
-    barePart.Vertex.Y = cand->Position.Y();
-    barePart.Vertex.Z = cand->Position.Z();
+    auto& barePart    = particle.core();
+    barePart.pdgId    = cand->PID;
+    barePart.status   = cand->Status;
+    barePart.p4.px    = cand->Momentum.Px();
+    barePart.p4.py    = cand->Momentum.Py();
+    barePart.p4.pz    = cand->Momentum.Pz();
+    barePart.p4.mass  = cand->Momentum.M();
+    barePart.charge   = cand->Charge;
+    barePart.vertex.x = cand->Position.X();
+    barePart.vertex.y = cand->Position.Y();
+    barePart.vertex.z = cand->Position.Z();
 
-    if (cand->M1==-1)      barePart.Bits = static_cast<unsigned>(ParticleStatus::kBeam);
-    else if (cand->D1==-1) barePart.Bits = static_cast<unsigned>(ParticleStatus::kStable);
-    else                   barePart.Bits = static_cast<unsigned>(ParticleStatus::kDecayed);
-
-    particle.Core(barePart);
-
-    // Mapping the vertices
-    int& idPartStartVertex = vecPartProdVtxIDDecVtxID[j].first;
-    int& idPartEndVertex   = vecPartProdVtxIDDecVtxID[j].second;
-
-    // Production vertex
-    if (cand->M1!=-1) {
-      if (idPartStartVertex!=-1) {
-        particle.StartVertex(colMCParticles->at(idPartStartVertex).EndVertex());
-      }
-      else {
-        fcc::Point point;
-        point.X = cand->Position.X();
-        point.Y = cand->Position.Y();
-        point.Z = cand->Position.Z();
-
-        auto vertex = colGenVertices->create();
-        vertex.Position(point);
-        vertex.Ctau(cand->Position.T());
-        particle.StartVertex(vertex);
-
-        idPartStartVertex = j;
-      }
-      for (int iMother=cand->M1; iMother<=cand->M2; iMother++) {
-        if (vecPartProdVtxIDDecVtxID[iMother].second==-1) vecPartProdVtxIDDecVtxID[iMother].second = j;
-      }
-    }
-    // Decay vertex
-    if (cand->D1!=-1) {
-      Candidate* daughter  = static_cast<Candidate *>(Input->At(cand->D1));
-
-      if (idPartEndVertex!=-1) {
-        particle.EndVertex(colMCParticles->at(idPartEndVertex).StartVertex());
-      }
-      else {
-        fcc::Point point;
-        point.X  = daughter->Position.X();
-        point.Y  = daughter->Position.Y();
-        point.Z  = daughter->Position.Z();
-
-        auto vertex = colGenVertices->create();
-        vertex.Position(point);
-        vertex.Ctau(cand->Position.T());
-        particle.EndVertex(vertex);
-
-        idPartEndVertex = cand->D1;
-      }
-
-      // Option for colliding particles -> broken daughters range -> use only D1, which is correctly set (D2 & D2-D1 is wrong!!!)
-      if (cand->M1==-1) {
-
-        // Primary particle 0 correction
-        if (j==0) for (const int& iDaughter : primary1Daughters) {
-
-          if (iDaughter>=0 && vecPartProdVtxIDDecVtxID[iDaughter].first==-1) vecPartProdVtxIDDecVtxID[iDaughter].first = j;
-        }
-        // Primary particle 1 correction
-        else if (j==1) for (const int& iDaughter : primary2Daughters) {
-
-          if (iDaughter>=0 && vecPartProdVtxIDDecVtxID[iDaughter].first==-1) vecPartProdVtxIDDecVtxID[iDaughter].first = j;
-        }
-      }
-      // Option for all other particles
-      else {
-        for (int iDaughter=cand->D1; iDaughter<=cand->D2; iDaughter++) {
-
-          if (iDaughter>=0 && vecPartProdVtxIDDecVtxID[iDaughter].first==-1) vecPartProdVtxIDDecVtxID[iDaughter].first = j;
-        }
-      }
-    }
+    // need to store Delphes UniqueID in order to store MC association
+    barePart.bits     = cand->GetUniqueID(); 
 
     // Debug: print FCC-EDM MCParticle and GenVertex
     if (msgLevel() <= MSG::DEBUG) {
 
-      double partE = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
-                          particle.Core().P4.Py*particle.Core().P4.Py +
-                          particle.Core().P4.Pz*particle.Core().P4.Pz +
-                          particle.Core().P4.Mass*particle.Core().P4.Mass);
+      double partE = sqrt(particle.p4().px*particle.p4().px +
+                          particle.p4().py*particle.p4().py +
+                          particle.p4().pz*particle.p4().pz +
+                          particle.p4().mass*particle.p4().mass);
 
       debug() << "MCParticle: "
               << " Id: "       << std::setw(3)  << j+1
-              << " Pdg: "      << std::setw(5)  << particle.Core().Type
-              << " Stat: "     << std::setw(2)  << particle.Core().Status
-              << " Bits: "     << std::setw(2)  << particle.Core().Bits
+              << " Pdg: "      << std::setw(5)  << particle.pdgId()
+              << " Stat: "     << std::setw(2)  << particle.status()
+              << " Bits: "     << std::setw(2)  << particle.bits()
               << std::scientific
-              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
-              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
-              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.p4().px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.p4().py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.p4().pz
               << " E: "        << std::setprecision(2) << std::setw(9) << partE
-              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass;
-      if (particle.StartVertex().isAvailable()) {
-        debug() << " VSId: "     << std::setw(3)  << vecPartProdVtxIDDecVtxID[j].first+1;
-                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().X
-                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Y
-                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.StartVertex().Position().Z
-                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.StartVertex().Ctau();
-      }
-      if (particle.EndVertex().isAvailable()) {
-        debug() << " VEId: "     << std::setw(3)  << vecPartProdVtxIDDecVtxID[j].second+1;
-                //<< " Vx: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().X
-                //<< " Vy: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Y
-                //<< " Vz: "       << std::setprecision(2) << std::setw(9) << particle.EndVertex().Position().Z
-                //<< " T: "        << std::setprecision(2) << std::setw(9) << particle.EndVertex().Ctau();
-      }
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.p4().mass;
       debug() << std::fixed << endmsg;
 
     } // Debug

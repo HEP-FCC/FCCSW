@@ -115,7 +115,7 @@ StatusCode HepMCDelphesConverter::hepMCEventToArrays(const HepMC::GenEvent* hepM
       allParticleOutputArray.Add(candidate);
       if(pdgParticle) {
         int pdgCode = TMath::Abs(candidate->PID);
-        if(candidate->Status == 1 && pdgParticle->Stable()) {
+        if(candidate->Status == 1) {
           stableParticleOutputArray.Add(candidate);
         } else if(pdgCode <= 5 || pdgCode == 21 || pdgCode == 15) {
           partonOutputArray.Add(candidate);

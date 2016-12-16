@@ -40,11 +40,10 @@ genfilter = GenParticleFilter("StableParticles")
 genfilter.DataInputs.genparticles.Path = "all_genparticles"
 genfilter.DataOutputs.genparticles.Path = "genparticles"
 
-from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_fcc__GenJetParticleAssociationCollection_ as JetClustering
+from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_ as JetClustering
 genjet_clustering = JetClustering("GenJetClustering", verbose = False)
 genjet_clustering.DataInputs.particles.Path='genparticles'
 genjet_clustering.DataOutputs.jets.Path='genjets'
-genjet_clustering.DataOutputs.constituents.Path='genjets_particles'
 
 from Configurables import PodioOutput
 ### PODIO algorithm

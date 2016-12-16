@@ -7,8 +7,7 @@
 // datamodel
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
-#include "datamodel/TagCollection.h"
-#include "datamodel/ParticleTagAssociationCollection.h"
+#include "datamodel/TaggedParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
 // ROOT
 #include "TObjArray.h"
@@ -20,7 +19,6 @@ DelphesSaveNeutralParticles::DelphesSaveNeutralParticles(const std::string& aTyp
   declareOutput("particles", m_particles);
   declareOutput("mcAssociations", m_mcAssociations);
   declareOutput("isolationTags", m_isolationTags);
-  declareOutput("isolationAssociations", m_isoAssociations);
   declareProperty("delphesArrayName", m_delphesArrayName);
   declareProperty("saveIsolation", m_saveIso=true);
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
@@ -43,11 +41,9 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
   auto colParticles = m_particles.createAndPut();
   auto ascColParticlesToMC = m_mcAssociations.createAndPut();
-  fcc::TagCollection* colITags(nullptr);
-  fcc::ParticleTagAssociationCollection* ascColParticlesToITags(nullptr);
+  fcc::TaggedParticleCollection* colITags(nullptr);
   if (m_saveIso) {
     colITags = m_isolationTags.createAndPut();
-    ascColParticlesToITags = m_isoAssociations.createAndPut();
   }
 
   const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
@@ -55,50 +51,49 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
   }
+
   for(int j=0; j<delphesColl->GetEntries(); j++) {
 
+    
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
 
     auto barePart     = fcc::BareParticle();
-    barePart.Type     = cand->PID;
-    barePart.Status   = cand->Status;
-    barePart.P4.Px    = cand->Momentum.Px();
-    barePart.P4.Py    = cand->Momentum.Py();
-    barePart.P4.Pz    = cand->Momentum.Pz();
-    barePart.P4.Mass  = cand->Momentum.M();
-    barePart.Charge   = cand->Charge;
-    barePart.Vertex.X = cand->Position.X();
-    barePart.Vertex.Y = cand->Position.Y();
-    barePart.Vertex.Z = cand->Position.Z();
-    particle.Core(barePart);
+    barePart.pdgId     = cand->PID;
+    barePart.status   = cand->Status;
+    barePart.p4.px    = cand->Momentum.Px();
+    barePart.p4.py    = cand->Momentum.Py();
+    barePart.p4.pz    = cand->Momentum.Pz();
+    barePart.p4.mass  = cand->Momentum.M();
+    barePart.charge   = cand->Charge;
+    barePart.vertex.x = cand->InitialPosition.X();
+    barePart.vertex.y = cand->InitialPosition.Y();
+    barePart.vertex.z = cand->InitialPosition.Z();
+    particle.core(barePart);
 
     // Isolation-tag info
     float iTagValue = 0;
     if (colITags!=nullptr) {
-
       auto iTag           = colITags->create();
-      auto relationToITag = ascColParticlesToITags->create();
-      iTag.Value(cand->IsolationVar);
-      relationToITag.Particle(particle);
-      relationToITag.Tag(iTag);
+      iTag.tag(cand->IsolationVar);
+      iTag.particle(particle);
 
-      iTagValue = iTag.Value();
+      iTagValue = iTag.tag();
     }
-
+   
     // Debug: print FCC-EDM tower info
     if (msgLevel() <= MSG::DEBUG) {
 
-      double energy = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
-                           particle.Core().P4.Py*particle.Core().P4.Py +
-                           particle.Core().P4.Pz*particle.Core().P4.Pz +
-                           particle.Core().P4.Mass*particle.Core().P4.Mass);
+      double energy = sqrt(particle.p4().px*particle.p4().px +
+                           particle.p4().py*particle.p4().py +
+                           particle.p4().pz*particle.p4().pz +
+                           particle.p4().mass*particle.p4().mass);
 
       debug() << "Tower: "
               << " Id: "       << std::setw(3) << j+1
-              << " Pdg: "      << std::setw(5) << particle.Core().Type
-              << " Stat: "     << std::setw(2) << particle.Core().Status
-              << " Bits: "     << std::setw(2) << particle.Core().Bits;
+              << " Pdg: "      << std::setw(5) << particle.pdgId()
+              << " Stat: "     << std::setw(2) << particle.status()
+              << " Bits: "     << std::setw(2) << particle.bits();
 
       if (colITags!=nullptr) {
 
@@ -106,39 +101,36 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
       }
 
       debug() << std::scientific
-              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
-              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
-              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.p4().px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.p4().py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.p4().pz
               << " E: "        << std::setprecision(2) << std::setw(9) << energy
-              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass
-              << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.X
-              << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Y
-              << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Z
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.p4().mass
+              << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.vertex().x
+              << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.vertex().y
+              << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.vertex().z
               << std::fixed
               << std::endl;
     } // Debug
 
     // Reference to MC - Delphes holds references to all objects related to the Photon object, several relations might exist for gammas
     std::set<int> idRefMCPart; // Avoid double counting when referencingh MC particles
-
-    // Get corresponding cluster in calorimeter
+    // Loop over hits in a given tower
     for (auto itCand=cand->GetCandidates()->begin(); itCand!=cand->GetCandidates()->end(); ++itCand) {
+        Candidate* hit = static_cast<Candidate*>(*itCand);
+        if (hit->GetCandidates()->GetEntries()>0) {
 
-      // Cluster in calorimeter
-      Candidate* clsCand = static_cast<Candidate*>(*itCand);
-
-      // Get corresponding MC particle
-      for (auto itCls=clsCand->GetCandidates()->begin(); itCls!=clsCand->GetCandidates()->end(); ++itCls) {
-
-        Candidate* refCand = static_cast<Candidate*>(*itCls);
-        int id = refCand->GetUniqueID()-1;
-        if (id<mcParticles.size()) idRefMCPart.insert(id);
-        else {
-          warning() << "Can't build one of the relations from Photon/NHadron to MC particle!" << std::endl;
-        }
-
-      } // Iter MC particles
-    } // Iter cluster
+        // Get MC particle
+        Candidate* refCand = static_cast<Candidate*>(hit->GetCandidates()->At(0));
+        for(int k=0 ; k < mcParticles.size();  k++) {
+          double pt = sqrt(mcParticles.at(k).core().p4.px *  mcParticles.at(k).core().p4.px + mcParticles.at(k).core().p4.py *  mcParticles.at(k).core().p4.py);
+            if(mcParticles.at(k).core().bits == refCand->GetUniqueID()) {
+            idRefMCPart.insert(k);
+            break;
+          }
+        } // Iter MC particles
+      } 
+    } // Iter hits on tower 
 
     // Debug: print variable
     double totSimE = 0;
@@ -147,21 +139,21 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     for (auto id : idRefMCPart) {
 
       auto relation = ascColParticlesToMC->create();
-      relation.Rec(particle);
-      relation.Sim(mcParticles.at(id));
+      relation.rec(particle);
+      relation.sim(mcParticles.at(id));
 
       // Debug: print FCC-EDM tower relation info
       if (msgLevel() <= MSG::DEBUG) {
-        double recE   = sqrt(relation.Rec().Core().P4.Px*relation.Rec().Core().P4.Px +
-                             relation.Rec().Core().P4.Py*relation.Rec().Core().P4.Py +
-                             relation.Rec().Core().P4.Pz*relation.Rec().Core().P4.Pz +
-                             relation.Rec().Core().P4.Mass*relation.Rec().Core().P4.Mass);
-        double simE   = sqrt(relation.Sim().Core().P4.Px*relation.Sim().Core().P4.Px +
-                             relation.Sim().Core().P4.Py*relation.Sim().Core().P4.Py +
-                             relation.Sim().Core().P4.Pz*relation.Sim().Core().P4.Pz +
-                             relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
+        double recE   = sqrt(relation.rec().p4().px*relation.rec().p4().px +
+                             relation.rec().p4().py*relation.rec().p4().py +
+                             relation.rec().p4().pz*relation.rec().p4().pz +
+                             relation.rec().p4().mass*relation.rec().p4().mass);
+        double simE   = sqrt(relation.sim().p4().px*relation.sim().p4().px +
+                             relation.sim().p4().py*relation.sim().p4().py +
+                             relation.sim().p4().pz*relation.sim().p4().pz +
+                             relation.sim().p4().mass*relation.sim().p4().mass);
 
-        totSimE += simE;
+        if(relation.sim().charge() != 0) totSimE += simE;
         debug() << " RefId: " << std::setw(3)            << id+1
                 << " Rel E: " << std::setprecision(2)
                               << std::scientific
@@ -169,8 +161,8 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
                               << std::setw(9) << totSimE << " <-> "
                               << std::setw(9) << recE
                               << std::fixed;
-        if      (mcParticles.at(id).Core().Type ==22) debug() << " Gamma";
-        else if (mcParticles.at(id).Core().Charge==0) debug() << " Neutral";
+        if      (mcParticles.at(id).pdgId() == 22) debug() << " Gamma";
+        else if (mcParticles.at(id).charge() == 0) debug() << " Neutral";
         debug() << std::endl;
       } // Debug
     }

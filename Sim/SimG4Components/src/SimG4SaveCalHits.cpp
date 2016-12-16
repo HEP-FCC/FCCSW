@@ -2,12 +2,13 @@
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
+#include "SimG4Common/Units.h"
 
 // Geant4
 #include "G4Event.hh"
 
 // datamodel
-#include "datamodel/CaloClusterCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
@@ -19,7 +20,7 @@ SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& 
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("readoutNames", m_readoutNames);
-  declareOutput("caloClusters", m_caloClusters,"hits/caloClusters");
+  declareOutput("positionedCaloHits", m_positionedCaloHits,"hits/positionedCaloHits");
   declareOutput("caloHits", m_caloHits,"hits/caloHits");
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
   declareProperty("DataInputs", inputDataObjects());
@@ -60,8 +61,8 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
   G4VHitsCollection* collect;
   DD4hep::Simulation::Geant4CalorimeterHit* hit;
   if(collections != nullptr) {
-    fcc::CaloClusterCollection* edmClusters = new fcc::CaloClusterCollection();
-    fcc::CaloHitCollection* edmHits = new fcc::CaloHitCollection();
+    auto edmPositioned = m_positionedCaloHits.createAndPut();
+    auto edmHits = m_caloHits.createAndPut();
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (std::find(m_readoutNames.begin(), m_readoutNames.end(), collect->GetName()) != m_readoutNames.end()) {
@@ -69,22 +70,18 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
         debug() << "\t" << n_hit<< " hits are stored in a collection #"<<iter_coll<<": "<<collect->GetName()<<endmsg;
         for(size_t iter_hit=0; iter_hit<n_hit; iter_hit++ ) {
           hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
-          fcc::CaloHit edmHit = edmHits->create();
-          fcc::CaloCluster edmCluster = edmClusters->create();
-          fcc::BareHit& edmHitCore = edmHit.Core();
-          fcc::BareCluster& edmClusterCore = edmCluster.Core();
-          edmHitCore.Cellid = hit->cellID;
-          edmHitCore.Energy = hit->energyDeposit;
-          edmClusterCore.position.X = hit->position.x();
-          edmClusterCore.position.Y = hit->position.y();
-          edmClusterCore.position.Z = hit->position.z();
-          edmClusterCore.Bits = hit->cellID;
-          edmClusterCore.Energy = hit->energyDeposit;
+          auto edmHit = edmHits->create();
+          auto& edmHitCore = edmHit.core();
+          edmHitCore.cellId = hit->cellID;
+          edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
+          auto position = fcc::Point();
+          position.x = hit->position.x() * sim::g42edm::length;
+          position.y = hit->position.y() * sim::g42edm::length;
+          position.z = hit->position.z() * sim::g42edm::length;
+          auto posHit = edmPositioned->create(position, edmHitCore);
         }
       }
     }
-    m_caloClusters.put(edmClusters);
-    m_caloHits.put(edmHits);
   }
   return StatusCode::SUCCESS;
 }

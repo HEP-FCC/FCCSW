@@ -1,4 +1,4 @@
-<detector id="4" name="HCalBarrel0" type="CaloBarrel" readout="BarHCal_Readout" vis="hcal_envelope">
+<detector id="BarHCal_id" name="HCalBarrel0" type="CaloBarrel" readout="BarHCal_Readout" vis="hcal_envelope">
   <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmaxWithBuffer" dz="BarHCal_dz" />
   <sequence_a id="0" name="sequence_1" material="Air" vis="hcal_barrel_seq1_vis">
     <dimensions

@@ -1,14 +1,17 @@
 #include "GenParticleFilter.h"
 
 #include "datamodel/LorentzVector.h"
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/GenVertex.h"
 
 DECLARE_COMPONENT(GenParticleFilter)
 
 GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLoc):
   GaudiAlgorithm(name, svcLoc)
 {
-  declareInput("genparticles", m_igenphandle);
-  declareOutput("genparticles", m_ogenphandle);
+  declareProperty("accept", m_accept, {1});
+  declareInput("genparticles", m_iGenpHandle);
+  declareOutput("genparticles", m_oGenpHandle);
 }
 
 StatusCode GenParticleFilter::initialize() {
@@ -16,15 +19,22 @@ StatusCode GenParticleFilter::initialize() {
 }
 
 StatusCode GenParticleFilter::execute() {
-  const fcc::MCParticleCollection* inparticles = m_igenphandle.get();
-  fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
-  for(auto ptc : (*inparticles)) {
-    if(ptc.Core().Status == 1) {
-      fcc::MCParticle outptc = particles->create();
-      outptc.Core(ptc.Core()); //COLIN Should not clone only the core!
+  const fcc::MCParticleCollection* inparticles = m_iGenpHandle.get();
+  auto particles = m_oGenpHandle.createAndPut();
+  bool accept = false;
+  for (auto ptc : (*inparticles)) {
+    accept = false;
+    for (auto status : m_accept) {
+      if (ptc.status() == status) {
+        accept = true;
+      }
+      if (accept) {
+        fcc::MCParticle outptc = particles->create(ptc.core());
+        outptc.startVertex(ptc.startVertex());
+        outptc.endVertex(ptc.endVertex());
+      }
     }
   }
-  m_ogenphandle.put(particles);
   return StatusCode::SUCCESS;
 }
 

@@ -6,15 +6,11 @@
 #include "FWCore/PodioDataSvc.h"
 #include "FWCore/DataWrapper.h"
 
-#include "datamodel/MCParticleCollection.h"
-#include "datamodel/GenVertex.h"
-
 DECLARE_COMPONENT(PodioInput)
 
 PodioInput::PodioInput(const std::string& name, ISvcLocator* svcLoc) :
-GaudiAlgorithm(name, svcLoc), m_eventNum(0)
+GaudiAlgorithm(name, svcLoc)
 {
-  declareProperty("filename", m_filename="output.root", "Name of the file to create");
   declareProperty("collections", m_collectionNames, "Places of collections to read.");
 }
 
@@ -24,17 +20,13 @@ StatusCode PodioInput::initialize() {
 
   // check whether we have the PodioEvtSvc active
   m_podioDataSvc = dynamic_cast<PodioDataSvc*>(evtSvc().get());
-  if (0 == m_podioDataSvc) return StatusCode::FAILURE;
+  if (nullptr == m_podioDataSvc) return StatusCode::FAILURE;
 
-  m_reader.openFile(m_filename);
-  m_eventMax = m_reader.getEntries();
-  auto idTable = m_reader.getCollectionIDTable();
-  m_podioDataSvc->setCollectionIDs(idTable);
-  m_provider.setReader(&m_reader);
+  auto idTable = m_podioDataSvc->getCollectionIDs();
   for (auto& name : m_collectionNames) {
-    debug() << "Registering collection " << name << endmsg;
+    debug() << "Finding collection " << name << " in collection registry." << endmsg;
     if (!idTable->present(name)) {
-      error() << "Requested product " << name << "not found in input file " << m_filename << endmsg;
+      error() << "Requested product " << name << " not found." << endmsg;
       return StatusCode::FAILURE;
     }
     m_collectionIDs.push_back(idTable->collectionID(name));
@@ -44,29 +36,21 @@ StatusCode PodioInput::initialize() {
 
 StatusCode PodioInput::execute() {
   size_t cntr = 0;
+  // Re-create the collections from ROOT file
   for (auto& id : m_collectionIDs) {
-    podio::CollectionBase* collection(nullptr);
-    m_provider.get(id, collection);
-    auto wrapper = new DataWrapper<podio::CollectionBase>;
-    wrapper->setData(collection);
     const std::string& collName = m_collectionNames.at(cntr++);
     debug() << "Registering collection to read " << collName << " with id " << id << endmsg;
-    m_podioDataSvc->registerObject(collName, wrapper);
+    if (m_podioDataSvc->readCollection(collName, id).isFailure()) {
+      return StatusCode::FAILURE;
+    }
   }
-  m_provider.clearCaches();
-  m_reader.endOfEvent();
-  if(m_eventNum++ > m_eventMax) {
-    info() << "Reached end of file with event " << m_eventMax << endmsg;
-    IEventProcessor* eventProcessor;
-    service("ApplicationMgr",eventProcessor);
-    eventProcessor->stopRun();
-  }
+  // Tell data service that we are done with requested collections
+  m_podioDataSvc->endOfRead();
   return StatusCode::SUCCESS;
 }
 
 StatusCode PodioInput::finalize() {
   if (GaudiAlgorithm::finalize().isFailure())
     return StatusCode::FAILURE;
-  m_reader.closeFile();
   return StatusCode::SUCCESS;
 }

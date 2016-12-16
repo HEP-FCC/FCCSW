@@ -7,8 +7,7 @@
 // datamodel
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
-#include "datamodel/TagCollection.h"
-#include "datamodel/ParticleTagAssociationCollection.h"
+#include "datamodel/TaggedParticleCollection.h"
 #include "datamodel/MCParticleCollection.h"
 // ROOT
 #include "TObjArray.h"
@@ -21,8 +20,7 @@ DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aTyp
   declareInterface<IDelphesSaveOutputTool>(this);
   declareOutput("particles", m_particles);
   declareOutput("mcAssociations", m_mcAssociations);
-  declareOutput("isolationTags", m_isolationTags);
-  declareOutput("isolationAssociations", m_isoAssociations);
+  declareOutput("isolationTags", m_isolationTaggedParticles);
   declareProperty("delphesArrayName", m_delphesArrayName);
   declareProperty("saveIsolation", m_saveIso=true);
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
@@ -45,11 +43,9 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
   auto colParticles = m_particles.createAndPut();
   auto ascColParticlesToMC = m_mcAssociations.createAndPut();
 
-  fcc::TagCollection* colITags(nullptr);
-  fcc::ParticleTagAssociationCollection* ascColParticlesToITags(nullptr);
+  fcc::TaggedParticleCollection* colITags(nullptr);
   if (m_saveIso) {
-    colITags = m_isolationTags.createAndPut();
-    ascColParticlesToITags = m_isoAssociations.createAndPut();
+    colITags = m_isolationTaggedParticles.createAndPut();
   }
 
   const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
@@ -57,83 +53,81 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
   }
-
-  for(int j=0; j<delphesColl->GetEntries(); j++) {
+  for(int j=0; j < delphesColl->GetEntries(); j++) {
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
-
-    auto barePart     = fcc::BareParticle();
-    barePart.Type     = cand->PID;
-    barePart.Status   = cand->Status;
-    barePart.P4.Px    = cand->Momentum.Px();
-    barePart.P4.Py    = cand->Momentum.Py();
-    barePart.P4.Pz    = cand->Momentum.Pz();
-    barePart.P4.Mass  = cand->Momentum.M();
-    barePart.Charge   = cand->Charge;
-    barePart.Vertex.X = cand->Position.X();
-    barePart.Vertex.Y = cand->Position.Y();
-    barePart.Vertex.Z = cand->Position.Z();
-
+    
+    auto& barePart    = particle.core();
+    barePart.pdgId    = cand->PID;
+    barePart.status   = cand->Status;
+    barePart.p4.px    = cand->Momentum.Px();
+    barePart.p4.py    = cand->Momentum.Py();
+    barePart.p4.pz    = cand->Momentum.Pz();
+    barePart.p4.mass  = cand->Momentum.M();
+    barePart.charge   = cand->Charge;
+    barePart.vertex.x = cand->InitialPosition.X();
+    barePart.vertex.y = cand->InitialPosition.Y();
+    barePart.vertex.z = cand->InitialPosition.Z();
+    
     // Isolation-tag info
     float iTagValue = 0;
     if (colITags!=nullptr) {
-
       auto iTag           = colITags->create();
-      auto relationToITag = ascColParticlesToITags->create();
-      iTag.Value(cand->IsolationVar);
-      relationToITag.Particle(particle);
-      relationToITag.Tag(iTag);
-
-      iTagValue = iTag.Value();
+      iTag.tag(cand->IsolationVar);
+      iTag.particle(particle);
+      iTagValue = iTag.tag();
     }
 
     // Reference to MC - Delphes holds references to all objects related to the <T> object, only one relates to MC particle
     auto relation   = ascColParticlesToMC->create();
-    int idRefMCPart = -1;
     if (cand->GetCandidates()->GetEntries()>0) {
-
       auto refCand = static_cast<Candidate*>(cand->GetCandidates()->At(0));
-      idRefMCPart  = refCand->GetUniqueID()-1;     // Use C numbering from 0
-      if (idRefMCPart<mcParticles.size()) {
+      
+      // find refCand in mcParticle collection
+      int index = -1;
+      for(int k=0 ; k < mcParticles.size();  k++) {
+        if(mcParticles.at(k).core().bits == refCand->GetUniqueID()){
+          index = k;
+          break;
+        }
+      }
 
-        barePart.Bits = static_cast<unsigned>(ParticleStatus::kMatched);
-        particle.Core(barePart);
-        relation.Rec(particle);
-        relation.Sim(mcParticles.at(idRefMCPart));
+      if (index > 0) {
+        barePart.bits = static_cast<unsigned>(ParticleStatus::kMatched);
+        relation.rec(particle);
+        relation.sim(mcParticles.at(index));
       }
       else {
-        barePart.Bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
-        particle.Core(barePart);
+        barePart.bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
         warning() << "Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
       }
     }
     else {
-      barePart.Bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
-      particle.Core(barePart);
+      barePart.bits = static_cast<unsigned>(ParticleStatus::kUnmatched);
       warning() << "Can't build relation from Electron/Muon/ChHadron to MC particle!" << std::endl;
     }
 
     // Debug: print FCC-EDM track info
     if (msgLevel() <= MSG::DEBUG) {
 
-      double energy = sqrt(particle.Core().P4.Px*particle.Core().P4.Px +
-                           particle.Core().P4.Py*particle.Core().P4.Py +
-                           particle.Core().P4.Pz*particle.Core().P4.Pz +
-                           particle.Core().P4.Mass*particle.Core().P4.Mass);
-      double recE   = sqrt(relation.Rec().Core().P4.Px*relation.Rec().Core().P4.Px +
-                           relation.Rec().Core().P4.Py*relation.Rec().Core().P4.Py +
-                           relation.Rec().Core().P4.Pz*relation.Rec().Core().P4.Pz +
-                           relation.Rec().Core().P4.Mass*relation.Rec().Core().P4.Mass);
-      double simE   = sqrt(relation.Sim().Core().P4.Px*relation.Sim().Core().P4.Px +
-                           relation.Sim().Core().P4.Py*relation.Sim().Core().P4.Py +
-                           relation.Sim().Core().P4.Pz*relation.Sim().Core().P4.Pz +
-                           relation.Sim().Core().P4.Mass*relation.Sim().Core().P4.Mass);
+      double energy = sqrt(particle.p4().px*particle.p4().px +
+                           particle.p4().py*particle.p4().py +
+                           particle.p4().pz*particle.p4().pz +
+                           particle.p4().mass*particle.p4().mass);
+      double recE   = sqrt(relation.rec().p4().px*relation.rec().p4().px +
+                           relation.rec().p4().py*relation.rec().p4().py +
+                           relation.rec().p4().pz*relation.rec().p4().pz +
+                           relation.rec().p4().mass*relation.rec().p4().mass);
+      double simE   = sqrt(relation.sim().p4().px*relation.sim().p4().px +
+                           relation.sim().p4().py*relation.sim().p4().py +
+                           relation.sim().p4().pz*relation.sim().p4().pz +
+                           relation.sim().p4().mass*relation.sim().p4().mass);
 
       debug() << "Track: "
               << " Id: "       << std::setw(3)  << j+1
-              << " Pdg: "      << std::setw(5)  << particle.Core().Type
-              << " Stat: "     << std::setw(2)  << particle.Core().Status
-              << " Bits: "     << std::setw(2)  << particle.Core().Bits;
+              << " Pdg: "      << std::setw(5)  << particle.pdgId()
+              << " Stat: "     << std::setw(2)  << particle.status()
+              << " Bits: "     << std::setw(2)  << particle.bits();
 
       if (colITags!=nullptr) {
 
@@ -141,15 +135,14 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
       }
 
       debug() << std::scientific
-              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Px
-              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Py
-              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.Core().P4.Pz
+              << " Px: "       << std::setprecision(2) << std::setw(9) << particle.p4().px
+              << " Py: "       << std::setprecision(2) << std::setw(9) << particle.p4().py
+              << " Pz: "       << std::setprecision(2) << std::setw(9) << particle.p4().pz
               << " E: "        << std::setprecision(2) << std::setw(9) << energy
-              << " M: "        << std::setprecision(2) << std::setw(9) << particle.Core().P4.Mass
-              << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.X
-              << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Y
-              << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.Core().Vertex.Z
-              << " RefId: "    << std::setw(3)  << idRefMCPart+1
+              << " M: "        << std::setprecision(2) << std::setw(9) << particle.p4().mass
+              << " Vx: "       << std::setprecision(2) << std::setw(9) << particle.vertex().x
+              << " Vy: "       << std::setprecision(2) << std::setw(9) << particle.vertex().y
+              << " Vz: "       << std::setprecision(2) << std::setw(9) << particle.vertex().z
               << " Rel E: "    << std::setprecision(2) << std::setw(9) << simE << " <-> " << std::setw(9) << recE
               << std::fixed
               << endmsg;

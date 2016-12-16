@@ -11,9 +11,8 @@ class IGeoSvc;
 
 // datamodel
 namespace fcc {
-class TrackClusterCollection;
 class TrackHitCollection;
-class TrackClusterHitsAssociationCollection;
+class PositionedTrackHitCollection;
 }
 
 /** @class SimG4SaveTrackerHits SimG4Components/src/SimG4SaveTrackerHits.h SimG4SaveTrackerHits.h
@@ -50,12 +49,10 @@ public:
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for tracker clusters
-  DataHandle<fcc::TrackClusterCollection> m_trackClusters;
   /// Handle for tracker hits
   DataHandle<fcc::TrackHitCollection> m_trackHits;
-  /// Handle for tracker hits-clusters associations
-  DataHandle<fcc::TrackClusterHitsAssociationCollection> m_trackHitsClusters;
+  /// Handle for tracker hits including position information
+  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
   /// Name of the readouts (hits collections) to save
   std::vector<std::string> m_readoutNames;
 

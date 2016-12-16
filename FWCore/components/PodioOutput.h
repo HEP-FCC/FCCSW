@@ -29,6 +29,10 @@ public:
   virtual StatusCode finalize();
 
 private:
+  void resetBranches(const std::vector<std::pair<std::string, podio::CollectionBase*>>& collections,
+                                  bool prepare);
+  void createBranches(const std::vector<std::pair<std::string, podio::CollectionBase*>>& collections,
+                                   bool prepare);
   /// First event or not
   bool m_firstEvent;
   /// Root file name the output is written to

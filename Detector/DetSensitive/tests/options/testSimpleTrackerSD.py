@@ -36,9 +36,8 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmT
 inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["TrackerSiliconHits"], OutputLevel = DEBUG)
 
 savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerSiliconHits"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
+savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the Forward Tracker"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Forward Tracker Place-Holder</comment>
+  </info>
+  <define>
+    <constant name="TrackerFwdBar_rmax" value="FwdTracker_rmin2-1.3*mm"/>
+    <constant name="TrackerFwdDisc_dz" value="9.6*mm"/>
+    <constant name="TrackerFwdDisc_zOffset" value="1650*mm"/>
+  </define>
+  <detectors>
+    <!-- F O R W A R D    T R A C K E R -->
+    <detector name="FwdTrackerDisc1Pos" type="SimpleCylinder"  vis="TrackerVisEnv">
+        <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1-43*mm" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="FwdTracker_zOffset-2250*mm" material="TR"/>
+    </detector>
+    <detector name="FwdTrackerDisc2Pos" type="SimpleCylinder"  vis="TrackerVisEnv">
+        <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1-36*mm" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="FwdTracker_zOffset+2250*mm" material="TR"/>
+    </detector>
+    <detector name="FwdTrackerPos" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="FwdTracker_rmin1" rmax="TrackerFwdBar_rmax" dz="FwdTracker_z2" z_offset="FwdTracker_zOffset" material="Air"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="-TrackerFwdDisc_zOffset" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="-TrackerFwdDisc_zOffset+590.7*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="-TrackerFwdDisc_zOffset+1209.7*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="-TrackerFwdDisc_zOffset+1858.3*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="-TrackerFwdDisc_zOffset+2537.9*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="-TrackerFwdDisc_zOffset+3250.0*mm" material="TR" vis="TrackerVis"/>
+    </detector>
+
+    <detector name="FwdTrackerDisc1Neg" type="SimpleCylinder"  vis="TrackerVisEnv">
+        <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1-43*mm" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdTracker_zOffset+2250*mm" material="TR"/>
+    </detector>
+    <detector name="FwdTrackerDisc2Neg" type="SimpleCylinder"  vis="TrackerVisEnv">
+        <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1-36*mm" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdTracker_zOffset-2250*mm" material="TR"/>
+    </detector>
+    <detector name="FwdTrackerNeg" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="FwdTracker_rmin1" rmax="TrackerFwdBar_rmax" dz="FwdTracker_z2" z_offset="-FwdTracker_zOffset" material="Air"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="TrackerFwdDisc_zOffset" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="TrackerFwdDisc_zOffset-590.7*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="TrackerFwdDisc_zOffset-1209.7*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="TrackerFwdDisc_zOffset-1858.3*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="TrackerFwdDisc_zOffset-2537.9*mm" material="TR" vis="TrackerVis"/>
+      <layer rmin="Tracker_rmin" rmax="TrackerFwdBar_rmax" dz="TrackerFwdDisc_dz" z_offset="TrackerFwdDisc_zOffset-3250.0*mm" material="TR" vis="TrackerVis"/>
+    </detector>
+
+  </detectors>
+</lccdd>
