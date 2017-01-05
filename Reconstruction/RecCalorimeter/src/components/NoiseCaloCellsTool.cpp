@@ -25,7 +25,7 @@ StatusCode NoiseCaloCellsTool::initialize() {
     error() << "Couldn't get RndmGenSvc" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(0,m_cellNoise));
+  m_gauss.initialize(m_randSvc, Rndm::Gauss(0.,1.));
 
   info() << "Sigma of the cell noise: " <<  m_cellNoise * 1.e3 << " MeV" << endmsg;
   info() << "Filter noise threshold: " <<  m_filterThreshold << "*sigma" << endmsg;
@@ -35,7 +35,7 @@ StatusCode NoiseCaloCellsTool::initialize() {
 void NoiseCaloCellsTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   double randomNoise = 0;
   for (auto& ecell : aCells) {
-    randomNoise = m_gauss.shoot();
+    randomNoise = m_gauss.shoot()*m_cellNoise;
     ecell->core().energy = randomNoise;
     ecell->core().time = 0;
     ecell->core().bits = 0;
