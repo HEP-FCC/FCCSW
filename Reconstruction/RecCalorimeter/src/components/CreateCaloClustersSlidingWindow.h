@@ -54,7 +54,7 @@ struct cluster {
  *     If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the pre-cluster with lower energy is removed.
  *     TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than sliding window, some towers may be taken twice (nstead of the weighted energy).
  *  4. Build clusters.
- *     Clusters are created using the pre-clusters energy (energy of towers within the sliding window).
+ *     Clusters are created using the window of a fixed size in phi x eta ('\b nEtaFinal' '\b nPhiFinal' in units of tower size) around the barycentre position.
  *     Position is calculated from the barycentre position and the inner radius of the detector.
  *     For each cluster the cell collection is searched and all those inside the cluster are attached.
  *     TODO: Final cluster may have a different size, so recalculation of energy around the tower containing barycentre should be done.
@@ -160,6 +160,10 @@ private:
   int m_nEtaDuplicates;
   /// Size of the window in phi for the overlap removal (in units of tower size)
   int m_nPhiDuplicates;
+ /// Size of the window in eta for the final cluster building (in units of tower size)
+  int m_nEtaFinal;
+  /// Size of the window in phi for the final cluster building (in units of tower size)
+  int m_nPhiFinal;
   /// Energy threshold for cluster finding
   float m_energyThreshold;
   /// Energy threshold in the window for the position calculation

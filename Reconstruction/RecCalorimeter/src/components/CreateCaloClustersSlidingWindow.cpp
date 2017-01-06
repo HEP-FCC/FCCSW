@@ -26,11 +26,13 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("deltaEtaTower", m_deltaEtaTower = 0.01);
   declareProperty("deltaPhiTower", m_deltaPhiTower = 0.01);
   declareProperty("nEtaWindow", m_nEtaWindow = 5);
-  declareProperty("nPhiWindow", m_nPhiWindow = 5);
+  declareProperty("nPhiWindow", m_nPhiWindow = 15);
   declareProperty("nEtaPosition", m_nEtaPosition = 3);
   declareProperty("nPhiPosition", m_nPhiPosition = 3);
   declareProperty("nEtaDuplicates", m_nEtaDuplicates = 2);
   declareProperty("nPhiDuplicates", m_nPhiDuplicates = 2);
+  declareProperty("nEtaFinal", m_nEtaFinal = 5);
+  declareProperty("nPhiFinal", m_nPhiFinal = 15);
   declareProperty("energyThreshold", m_energyThreshold = 3);
   declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
   declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
@@ -223,21 +225,37 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   double rDetector = tubeSizes.x() * 10; //cm to mm
   auto edmClusters = m_clusters.createAndPut();
   const fcc::CaloHitCollection* cells = m_cells.get();
+  int halfEtaFin =  floor(m_nEtaFinal/2.);
+  int halfPhiFin =  floor(m_nPhiFinal/2.);
+  double sumEnergyFin = 0.;
+  uint idEtaFin = 0;
+  uint idPhiFin = 0;
   for(const auto clu: m_preClusters) {
+    // Calculate final cluster energy
+    sumEnergyFin = 0;
+    idEtaFin = idEta(clu.eta);
+    idPhiFin = idPhi(clu.phi);
+    for(int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
+      for(int ipPhi = idPhiFin-halfPhiFin; ipPhi <= idPhiFin+halfPhiFin; ipPhi++) {
+        sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+      }
+    }
     auto edmCluster = edmClusters->create();
     auto& edmClusterCore = edmCluster.core();
     edmClusterCore.position.x = rDetector * cos(clu.phi);
     edmClusterCore.position.y = rDetector * sin(clu.phi);
     edmClusterCore.position.z = rDetector * sinh(clu.eta);
-    edmClusterCore.energy = clu.transEnergy * cosh(clu.eta);
+    edmClusterCore.energy = sumEnergyFin * cosh(clu.eta);
     debug() << "Cluster x: " << edmClusterCore.position.x << " y " <<  edmClusterCore.position.y << " z "<<  edmClusterCore.position.z << " energy " << edmClusterCore.energy <<endmsg;
-    // loop over cells and see if they belong here
-    for (const auto& cell : *cells) {
-      float etaCell = m_segmentation->eta(cell.core().cellId);
-      float phiCell = m_segmentation->phi(cell.core().cellId);
-      if( (abs(idEta(etaCell)-idEta(clu.eta)) <= halfEtaWin)
-        && (abs(idPhi(phiCell)-idPhi(clu.phi)) <= halfPhiWin) ) {
-        edmCluster.addhits(cell);
+    if(m_saveCells) {
+      // loop over cells and see if they belong here
+      for (const auto& cell : *cells) {
+        float etaCell = m_segmentation->eta(cell.core().cellId);
+        float phiCell = m_segmentation->phi(cell.core().cellId);
+        if( (abs(idEta(etaCell)-idEta(clu.eta)) <= halfEtaFin)
+          && (abs(idPhi(phiCell)-idPhi(clu.phi)) <= halfPhiFin) ) {
+          edmCluster.addhits(cell);
+        }
       }
     }
   }
