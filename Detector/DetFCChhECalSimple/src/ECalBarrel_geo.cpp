@@ -88,8 +88,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);
     DetElement caloLayer(active_mat+"_sensitive", i);
     DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_dims.dz());
-    //lLog << MSG::DEBUG << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << " "<< active_mat+"_sensitive" << endmsg;
-    Volume layerVol(active_mat, layerShape, lcdd.material(active_mat));
+    Volume layerVol(active_mat+"_sensitive", layerShape, lcdd.material(active_mat));
     PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
     placedLayer.addPhysVolID("active_layer", i);
     caloLayer.setPlacement(placedLayer);
