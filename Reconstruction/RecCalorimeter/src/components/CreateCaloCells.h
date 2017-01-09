@@ -76,6 +76,8 @@ private:
   std::vector<std::string> m_fieldNames;
   /// Values of the fields describing the segmented volume
   std::vector<int> m_fieldValues;
+  /// Temporary: for use with MergeLayer tool
+  unsigned int m_activeVolumesNumber;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

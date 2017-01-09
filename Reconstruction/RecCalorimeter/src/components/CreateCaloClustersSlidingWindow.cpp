@@ -37,6 +37,7 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
   declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
   declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
+  declareProperty("saveCells", m_saveCells = true);
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {
