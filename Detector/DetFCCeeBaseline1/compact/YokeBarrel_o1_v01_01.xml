@@ -31,7 +31,7 @@
     
     
     <detectors>
-        <detector id="DetID_Yoke_Barrel" name="YokeBarrel" type="GenericCalBarrel_o1_v01" readout="YokeBarrelCollection" vis="YOKEVis" calorimeterType="MUON_BARREL" gap="0.*cm" material="Steel235">
+        <detector id="DetID_Yoke_Barrel" name="YokeBarrel" type="DD4hep_PolyhedraBarrelCalorimeter2" readout="YokeBarrelCollection" vis="YOKEVis" calorimeterType="MUON_BARREL" gap="0.*cm" material="Steel235">
             
             <comment>Yoke Calorimeter Barrel</comment>
             <envelope vis="YOKEVis">

@@ -352,28 +352,37 @@
     
     <include ref="Materials_v01.xml"/>
 
-    <include ref="Beampipe_o3_v01.xml"/>  
-    <!-- <include ref="Beampipe_o3_v01_noMask.xml"/>  -->
 
+    <include ref="Beampipe_o3_v01.xml"/>  
     <include ref="BeamInstrumentation_o3_v01.xml"/>     
+
     <include ref="LumiCal_o3_v01_01.xml"/>
 
     <include ref="Vertex_o3_v03.xml"/>  
 
+
     <include ref="InnerTracker_o3_v03.xml"/>   
+
+
     <include ref="OuterTracker_o2_v03_03.xml"/>
-    
+
+<!--
+
     <include ref="ECalBarrel_o2_v01_01.xml"/>
     <include ref="ECalEndcap_o2_v01_01.xml"/>
+
     <include ref="ECalPlug_o1_v01_01.xml"/>
-    
+
     <include ref="HCalBarrel_o1_v01_01.xml"/>
+
     <include ref="HCalEndcap_o1_v01_01.xml"/>
 
     <include ref="Solenoid_o1_v01_01.xml"/>
 
     <include ref="YokeBarrel_o1_v01_01.xml"/>
+
     <include ref="YokeEndcap_o1_v01_01.xml"/>
+-->
 
 <!--
     <include ref="BeamCal_o1_v01_01.xml"/>

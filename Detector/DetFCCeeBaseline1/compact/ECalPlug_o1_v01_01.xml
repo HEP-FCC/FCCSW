@@ -13,7 +13,7 @@
     <!--  Includes for sensitives and support                -->
     <detectors>
         
-        <detector name="ECalPlug" type="GenericCalEndcap_o1_v01" id="DetID_ECal_Plug" readout="ECalPlugCollection" vis="ECALVis" >
+        <detector name="ECalPlug" type="DD4hep_PolyhedraEndcapCalorimeter2" id="DetID_ECal_Plug" readout="ECalPlugCollection" vis="ECALVis" >
             
             <comment>Hadronic Calorimeter Endcap</comment>
             
@@ -26,7 +26,7 @@
             </envelope>
             
             
-            <dimensions nsides_inner="ECalPlug_inner_symmetry" nsides_outer="(int) ECalPlug_outer_symmetry" zmin="ECalPlug_min_z" rmin="ECalPlug_inner_radius" rmax="ECalPlug_outer_radius" phi0="0"/>
+            <dimensions nsides_inner="ECalPlug_inner_symmetry" nsides_outer="(int) ECalPlug_outer_symmetry" zmin="ECalPlug_min_z" rmin="ECalPlug_inner_radius" rmax="ECalPlug_outer_radius" phi0="0" numsides="ECalPlug_outer_symmetry"/>
             
             <layer repeat="17" vis="ECalLayerVis">
                 <slice material = "TungstenDens24" thickness = "2.40*mm" vis="ECalAbsorberVis" radiator="yes"/>

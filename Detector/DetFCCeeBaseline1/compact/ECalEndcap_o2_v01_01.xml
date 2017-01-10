@@ -13,7 +13,7 @@
     <!--  Includes for sensitives and support                -->
     <detectors>
         
-        <detector name="ECalEndcap" type="GenericCalEndcap_o1_v01" id="DetID_ECal_Endcap" readout="ECalEndcapCollection" vis="ECALVis" >
+        <detector name="ECalEndcap" type="DD4hep_PolyhedraEndcapCalorimeter2" id="DetID_ECal_Endcap" readout="ECalEndcapCollection" vis="ECALVis" >
             
             <comment>Electromagnetic Calorimeter Endcap</comment>
             
@@ -26,7 +26,7 @@
             </envelope>
             
             
-            <dimensions nsides_inner="ECalEndcap_inner_symmetry" nsides_outer="(int) ECalEndcap_outer_symmetry" zmin="ECalEndcap_min_z" rmin="ECalEndcap_inner_radius" rmax="ECalEndcap_outer_radius"/>
+            <dimensions nsides_inner="ECalEndcap_inner_symmetry" nsides_outer="(int) ECalEndcap_outer_symmetry" zmin="ECalEndcap_min_z" rmin="ECalEndcap_inner_radius" rmax="ECalEndcap_outer_radius" numsides="ECalEndcap_outer_symmetry"/>
             
             <layer repeat="17" vis="ECalLayerVis">
                 <slice material = "TungstenDens24" thickness = "2.40*mm" vis="ECalAbsorberVis" radiator="yes"/>

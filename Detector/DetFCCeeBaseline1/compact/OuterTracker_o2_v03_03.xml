@@ -28,6 +28,7 @@
         
     </define>
     
+    <!--
     <comment>Tracking detectors</comment>
     <detectors>
         <detector name="OuterTrackers" type="DD4hep_SubdetectorAssembly" vis="OTVis">
@@ -40,11 +41,11 @@
             <composite name="OuterTrackerEndcapSupport"/>             
         </detector>
     </detectors>
-    
+    -->
     
     <!--  Definition of the used visualization attributes    -->
     <display>
-        <vis name="OuterTrackerLayerVis"   alpha="1.0" r="1.0" g="1.0" b="0.6" showDaughters="true" visible="true"/>
+        <vis name="OuterTrackerLayerVis"   alpha="1.0" r="1.0" g="1.0" b="0.6" showDaughters="true" visible="false"/>
         <vis name="OuterTrackerModuleVis"  alpha="0.1" r="0.0" g="1.0" b="0.6" showDaughters="false" visible="true"/>
         <vis name="OuterTrackerForwardVis" alpha="1.0" r="0.8" g="0.1" b="0.1" showDaughters="false" visible="true"/>
     </display>
@@ -61,14 +62,14 @@
     
     
     <detectors>
-        <detector id="DetID_OT_Barrel" name="OuterTrackerBarrel" type="TrackerBarrel_o1_v03" readout="OuterTrackerBarrelCollection" region="SiTrackerBarrelRegion" limits="SiTrackerBarrelRegionLimitSet">
+        <detector id="DetID_OT_Barrel" name="OuterTrackerBarrel" type="DD4hep_SiTrackerBarrel" readout="OuterTrackerBarrelCollection" region="SiTrackerBarrelRegion" limits="SiTrackerBarrelRegionLimitSet">
             <envelope vis="OTVis">
                 <shape type="Assembly"/>
             </envelope>
             <comment>Silicon Outer Tracker Barrel</comment>
             
             <module name="OuterTrackerBarrelModule" vis="OuterTrackerModuleVis">
-                <module_envelope width="10*cm" length="10*cm"/>
+                <module_envelope width="10*cm" length="10*cm" thickness="3*mm"/>
                 <!-- Build slices top-down from innermost slice (closest to IP) to outer-most (away from IP)-->
                 <module_component width="10*cm" length="10*cm" thickness="0.1*mm"   material="Epoxy"           sensitive="false"/>
                 <module_component width="10*cm" length="10*cm" thickness="0.2*mm"   material="Kapton"          sensitive="false"/>
@@ -88,14 +89,17 @@
             </module>
  
             <layer module="OuterTrackerBarrelModule" id="0" vis="OuterTrackerLayerVis">
+	      <barrel_envelope inner_r="OuterTracker_Barrel_radius_0-1*mm" outer_r="OuterTracker_Barrel_radius_0+30*mm" z_length="OuterTracker_Barrel_half_length_0*2"/>
                 <rphi_layout phi_tilt="2*deg" nphi="55" phi0="0" rc="OuterTracker_Barrel_radius_0" dr="0.0"/>
                 <z_layout dr="6*mm" z0="OuterTracker_Barrel_half_length_0-5*cm" nz="21"/>
             </layer>
             <layer module="OuterTrackerBarrelModule" id="1" vis="OuterTrackerLayerVis">
+	      <barrel_envelope inner_r="OuterTracker_Barrel_radius_1-1*mm" outer_r="OuterTracker_Barrel_radius_1+30*mm" z_length="OuterTracker_Barrel_half_length_1*2"/>
                 <rphi_layout phi_tilt="2*deg" nphi="75" phi0="0" rc="OuterTracker_Barrel_radius_1" dr="0.0"/>
                 <z_layout dr="6*mm" z0="OuterTracker_Barrel_half_length_1-5*cm" nz="27"/>
             </layer>
             <layer module="OuterTrackerBarrelModule" id="2" vis="OuterTrackerLayerVis">
+	      <barrel_envelope inner_r="OuterTracker_Barrel_radius_2-1*mm" outer_r="OuterTracker_Barrel_radius_2+30*mm" z_length="OuterTracker_Barrel_half_length_2*2"/>
                 <rphi_layout phi_tilt="2*deg" nphi="94" phi0="0" rc="OuterTracker_Barrel_radius_2" dr="0.0"/>
                 <z_layout dr="6*mm" z0="OuterTracker_Barrel_half_length_2-5*cm" nz="33"/>
             </layer>
@@ -104,7 +108,7 @@
     
     
     <detectors>
-        <detector id="DetID_OT_Endcap" name="OuterTrackerEndcap" type="TrackerEndcap_o1_v03" readout="OuterTrackerEndcapCollection" reflect="true">
+        <detector id="DetID_OT_Endcap" name="OuterTrackerEndcap" type="DD4hep_SiTrackerEndcap2" readout="OuterTrackerEndcapCollection" reflect="true">
             <envelope vis="OTVis">
                 <shape type="Assembly"/>
             </envelope>
@@ -184,7 +188,7 @@
         </detector>
     </detectors>
     
-    
+    <!--
     <detectors>	
         <detector name="OuterTrackerBarrelSupport" type="TrackerBarrelSupport_o1_v01" id="0" insideTrackingVolume="true" reflect="true" >
             <envelope>
@@ -225,7 +229,7 @@
          
         </detector>
         
-    </detectors>
+    </detectors>-->
     
     <plugins>
         <plugin name="DD4hep_GenericSurfaceInstallerPlugin">
