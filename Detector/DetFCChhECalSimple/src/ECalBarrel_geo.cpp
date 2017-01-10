@@ -38,8 +38,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   xml_comp_t calo = xmlElement.child("calorimeter");
   Dimension calo_dims(calo.dimensions());
   std::string calo_name=calo.nameStr();
-  double calo_id=calo.id();
-
+  
   xml_comp_t active = calo.child("active_layers");
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
@@ -74,7 +73,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   // Step 3 : create the actual calorimeter
   int active_samples= (calo_dims.rmax()-  calo_dims.rmin() - passive_tck)/(passive_tck+active_tck);
   double calo_tck=active_samples*(active_tck+passive_tck)+passive_tck;
-  DetElement caloDet(calo_name, calo_id);
+  DetElement caloDet(calo_name, 1);
   DD4hep::Geometry::Tube caloShape(calo_dims.rmin() , calo_dims.rmin()+calo_tck, calo_dims.dz());
   lLog << MSG::DEBUG << "ECAL: Building the actual calorimeter from " << calo_dims.rmin() << " to " <<   calo_dims.rmin()+calo_tck << endmsg;
   Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));

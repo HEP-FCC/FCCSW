@@ -12,6 +12,8 @@
     <comment>ECal very conceptual design</comment>
   </info>
 
+<!--  <include ref="./FCChh_ECalBarrel_Common.xml" /> -->
+
   <define>
     <constant name="CryoThickness" value="100*mm"/>
     <constant name="LArBathThickness" value="100*mm"/>
@@ -52,4 +54,3 @@
     
   </detectors>
 </lccdd>
-
