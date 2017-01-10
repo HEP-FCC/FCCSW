@@ -13,10 +13,12 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml'],
                     OutputLevel = INFO)
 
+#from ecalCommonSetup import *
+
 from Configurables import MergeLayers
 mergelayers = MergeLayers("MergeLayers",
                    # take the bitfield description from the geometry service
-                   readout ="ECalHitsPhiEta",
+                   readout = "ECalHitsPhiEta",
                    # cells in which field should be merged
                    identifier = "active_layer",
                    volumeName = "LAr_sensitive",
@@ -39,6 +41,7 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool=calibcells, doCellCalibration=True,
                               noiseTool=noisefile,
                               addCellNoise=True, filterCellNoise=False,
+                              useVolumeIdOnly=False,
                               readoutName="ECalHitsPhiEta",
                               fieldNames=["system","ECAL_Cryo","bath","EM_barrel"],
                               fieldValues=[5,1,1,1],

@@ -31,13 +31,15 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("addCellNoise",m_addCellNoise=true);
   declareProperty("filterCellNoise",m_filterCellNoise=false);
 
-  //PhiEta segmentation required
+  //Readout details
   declareProperty("readoutName", m_readoutName="ECalHitsPhiEta");
   declareProperty("activeVolumeName", m_activeVolumeName="LAr_sensitive");
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
   declareProperty("fieldNames", m_fieldNames);
   declareProperty("fieldValues", m_fieldValues);
+
+  declareProperty("useVolumeIdOnly", m_useVolumeIdOnly=false);
 }
 
 StatusCode CreateCaloCells::initialize() {
@@ -158,10 +160,13 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
   }
 
   //Get PhiEta segmentation
-  auto segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
-  if(segmentation == nullptr) {
-    error()<<"There is no phi-eta segmentation!!!!"<<endmsg;
-    return StatusCode::FAILURE;
+  DD4hep::DDSegmentation::GridPhiEta* segmentation;
+  if (!m_useVolumeIdOnly) {
+    segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+    if(segmentation == nullptr) {
+      error()<<"There is no phi-eta segmentation!!!!"<<endmsg;
+      return StatusCode::FAILURE;
+    }
   }
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
@@ -193,28 +198,40 @@ StatusCode CreateCaloCells::prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCe
     (*decoder)[m_activeFieldName] = ilayer;
     uint64_t volumeId = decoder->getValue();
 
-    debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(volumeId, *segmentation)<<endmsg;
-    //Number of cells in the volume
-    auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
-    //Loop over segmenation
-    for (int iphi = -floor(numCells[0]*0.5); iphi<numCells[0]*0.5; iphi++) {
-      for (int ieta = -floor(numCells[1]*0.5); ieta<numCells[1]*0.5; ieta++) {
-	(*decoder)["phi"] = iphi;
-	(*decoder)["eta"] = ieta;
-	uint64_t cellId = decoder->getValue();
-
-	fcc::CaloHit *newCell = new fcc::CaloHit();
-	newCell->core().cellId = cellId;
-	newCell->core().energy = 0;
-	newCell->core().time = 0;
-	newCell->core().bits = 0;
-	caloCellsVector.push_back(newCell);
-   if( msgLevel( MSG::DEBUG ) ) {
-     debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg;
-   }
+    if (!m_useVolumeIdOnly) {
+      debug()<<"Number of segmentation cells in (phi,eta): "<<det::utils::numberOfCells(volumeId, *segmentation)<<endmsg;
+      //Number of cells in the volume
+      auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
+      //Loop over segmenation
+      for (int iphi = -floor(numCells[0]*0.5); iphi<numCells[0]*0.5; iphi++) {
+	for (int ieta = -floor(numCells[1]*0.5); ieta<numCells[1]*0.5; ieta++) {
+	  (*decoder)["phi"] = iphi;
+	  (*decoder)["eta"] = ieta;
+	  uint64_t cellId = decoder->getValue();
+	  createNewHit(cellId, caloCellsVector);
+	  if( msgLevel( MSG::DEBUG ) ) {
+	    debug() << "ieta " << ieta << " iphi " << iphi << " decoder " << decoder->valueString() << " cellID " << cellId << endmsg;
+	  }
+	}
+      }
+    }
+    else {
+      createNewHit(volumeId, caloCellsVector);
+      if( msgLevel( MSG::DEBUG ) ) {
+	debug() << "decoder " << decoder->valueString() << " cellID " << volumeId << endmsg;
       }
     }
   }
   return StatusCode::SUCCESS;
 }
 
+void CreateCaloCells::createNewHit(uint64_t cellId, std::vector<fcc::CaloHit*>& caloCellsVector) 
+{
+  fcc::CaloHit *newCell = new fcc::CaloHit();
+  newCell->core().cellId = cellId;
+  newCell->core().energy = 0;
+  newCell->core().time = 0;
+  newCell->core().bits = 0;
+  caloCellsVector.push_back(newCell);
+}
+	  

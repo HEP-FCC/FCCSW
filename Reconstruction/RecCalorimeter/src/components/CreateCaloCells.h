@@ -48,6 +48,7 @@ public:
 private:
 
   StatusCode prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCells);
+  void createNewHit(uint64_t cellId, std::vector<fcc::CaloHit*>& caloCellsVector);
 
   /// Handle for merging Geant4 hits tool
   ToolHandle<IMergeCaloHitsTool> m_mergeTool;
@@ -78,6 +79,8 @@ private:
   std::vector<int> m_fieldValues;
   /// Temporary: for use with MergeLayer tool
   unsigned int m_activeVolumesNumber;
+  /// Use only volume ID? If false, using PhiEtaSegmentation
+  bool m_useVolumeIdOnly;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

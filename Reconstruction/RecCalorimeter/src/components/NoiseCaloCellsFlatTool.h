@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_NOISECALOCELLSTOOL_H
-#define RECCALORIMETER_NOISECALOCELLSTOOL_H
+#ifndef RECCALORIMETER_NOISECALOCELLSFLATTOOL_H
+#define RECCALORIMETER_NOISECALOCELLSFLATTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -9,27 +9,23 @@ class IRndmGenSvc;
 // FCCSW
 #include "RecInterface/INoiseCaloCellsTool.h"
 
-/** @class NoiseCaloCellsTool
+/** @class NoiseCaloCellsFlatTool
  *
- *  Tool for calorimeter noise
+ *  Very simple tool for calorimeter noise using a single noise value for all cells
  *  Energy units are MeV (calibrated to EM scale) --> cannot be merged directly with Geant4 energy deposits for sampling calorimeters!!!
  *  createRandomCellNoise: Create random CaloHits (gaussian distribution) for the vector of cells
  *  filterCellNoise: remove cells with energy bellow threshold*sigma from the vector of cells
- *  Noise defined by a single value - sigma of the noise, same for each cell
- *  TODO: 
- *     - noise dependence on the size of the cell, position in eta & r
- *     - read noise from DB when available
- *
+ *  
  *  @author Jana Faltova
  *  @date   2016-09
  *
  */
 
-class NoiseCaloCellsTool : public GaudiTool, virtual public INoiseCaloCellsTool 
+class NoiseCaloCellsFlatTool : public GaudiTool, virtual public INoiseCaloCellsTool 
 {
 public:
-  NoiseCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~NoiseCaloCellsTool();
+  NoiseCaloCellsFlatTool(const std::string& type,const std::string& name, const IInterface* parent);
+  virtual ~NoiseCaloCellsFlatTool();
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
@@ -52,4 +48,4 @@ private:
   Rndm::Numbers m_gauss;
 };
 
-#endif /* RECCALORIMETER_NOISECALOCELLSTOOL_H */
+#endif /* RECCALORIMETER_NOISECALOCELLSFLATTOOL_H */
