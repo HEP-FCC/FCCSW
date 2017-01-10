@@ -18,8 +18,8 @@ DECLARE_TOOL_FACTORY(SimG4SaveSmearedParticles)
 
 SimG4SaveSmearedParticles::SimG4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent),
-  m_particles("particles/smearedParticles", Gaudi::DataHandle::Writer, this),
-  m_particlesMCparticles("particles/smearedParticlesToParticles", Gaudi::DataHandle::Writer, this) {
+  m_particles("smearedParticles", Gaudi::DataHandle::Writer, this),
+  m_particlesMCparticles("smearedParticlesToParticles", Gaudi::DataHandle::Writer, this) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("particles", m_particles);
   declareProperty("particlesMCparticles", m_particlesMCparticles);
