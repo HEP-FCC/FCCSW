@@ -50,8 +50,9 @@ gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK options/geant_pgun_fullsim.py)
-gaudi_add_test(GeantFastSimTracker
+gaudi_add_test(GeantFastSimTrackerECalGFlash
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK options/geant_fastsim.py)
 gaudi_add_test(GeantFastSimTrackerTkLayout
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

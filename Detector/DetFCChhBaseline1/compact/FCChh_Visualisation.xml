@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCCVis"
+        title="Visualisation parameters"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Visualisation parameters for FCChh baseline 1</comment>
+  </info>
+  <display>
+    <vis name="TrackerVisEnv" r="0.87" g="0.27" b="0.15" alpha="0.0" showDaughters="true" visible="false"/>
+    <vis name="TrackerVis" r="0.87" g="0.27" b="0.15" alpha="1" showDaughters="false" visible="true"/>
+
+    <vis name="HCalEnvVis" r="0.25" g="0.29" b="0.91" alpha="0.1" showDaughters="true" visible="false"/>
+    <vis name="HCalVis" r="0.2" g="0.6" b="0.2" alpha="1" showDaughters="false" visible="true"/>
+    <vis name="HCalIronVis" r="0.3" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true"/>
+
+    <vis name="ECalEnvVis" r="0.25" g="0.29" b="0.91" alpha="1" showDaughters="true" visible="true"/>
+    <vis name="ECalVis" r="0.25" g="0.29" b="0.91" alpha="1" showDaughters="false" visible="true"/>
+    <vis name="ECalVisLAr" r="0.1" g="0.1" b="0.8" alpha="1" showDaughters="false" visible="true"/>
+    <vis name="ECalCryo" r="0.25" g="0.25" b="0.25" alpha="1" showDaughters="false" visible="true"/>
+  </display>
+</lccdd>

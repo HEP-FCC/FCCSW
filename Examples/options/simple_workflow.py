@@ -34,6 +34,8 @@ hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
 hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
 hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
 
+# In the name below the "_" replace special C++ characters, such as ":" or "<" and ">", the actual C++ class name is:
+# JetClustering<fcc::MCParticleCollection, fcc::GenJetCollection>
 from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_ as JetClustering
 genjet_clustering = JetClustering(
     "GenJetClustering",

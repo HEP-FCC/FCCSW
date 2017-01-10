@@ -8,7 +8,7 @@ One particular exception is that we extended the 80 characters per line requirem
 
 Give guidelines on naming conventions and how to structure code.
 
-General tips on how to write good code can be found [here](http://fccsw.web.cern.ch/fccsw/FCCSW/md_doc__general_cpp_guidelines.html).
+General tips on how to write good code can be found [here](./GeneralCppGuidelines.md).
 
 ## Contents
 
