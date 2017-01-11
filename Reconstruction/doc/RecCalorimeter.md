@@ -82,17 +82,6 @@ Clusters are created using the pre-clusters energy (energy of towers within the 
 
 # Example
 
-<<<<<<< HEAD
-Example script which runs ECAL cell reconstruction is [here] (https://github.com/HEP-FCC/FCCSW/blob/master/Reconstruction/RecCalorimeter/options/runEcalReconstruction.py).
-* Read input file with Geant4 hits
-* Produce calo cells (CreateCaloCells)
-* Store cells as CaloHits with cellID (produced by CreateCaloCells) and as CaloClusters with position (produced by CreatePositionedHit)
-
-How to run the script (loading of libDetSegmentation.so necessary because of the phi-eta segmenation usage):
-~~~{.sh}
-LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so ./run gaudirun.py Reconstruction/RecCalorimeter/options/runEcalReconstruction.py
-~~~
-=======
 Example script which runs ECAL reconstruction is [here](../RecCalorimeter/options/runEcalReconstruction.py).
 
 * Read input file with Geant4 hits
