@@ -3,26 +3,17 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <info name="FCChh_ECalBarrel_Mockup"
-    title="ECal Barrel Calorimeter"
+  <info name="FCChh_ECalBarrel_Mockup_NoCryostat"
+    title="ECal Barrel Calorimeter without cryostat"
     author="A.Dell'Acqua, J.Faltova"
     url="no"
     status="development"
     version="$Id:??$">
-    <comment>ECal very conceptual design</comment>
+    <comment>ECal test geometry without cryostat. Active volume is the same as in the case with cryostat in front. </comment>
   </info>
 
   <define>
-    <constant name="CryoThickness" value="100*mm"/>
-    <constant name="LArBathThickness" value="100*mm"/>
-    <!-- calorimeter volume -->
-    <constant name="BarCryoECal_rmin" value="BarECal_rmin"/>
-    <constant name="BarCryoECal_rmax" value="BarECal_rmax"/>
-    <constant name="BarCryoECal_dz" value="BarECal_dz"/>
-
-    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CryoThickness+LArBathThickness"/>
-    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CryoThickness-LArBathThickness"/>
-    <constant name="EMBarrel_dz" value="BarECal_dz-CryoThickness"/>
+    <include ref="FCChh_ECalBarrel_Common.xml" />
   </define>
 
   <display>
@@ -31,7 +22,7 @@
 
   <readouts>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="628"/>
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629"/>
       <id>system:3,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-9,phi:-10</id>
     </readout>
 
