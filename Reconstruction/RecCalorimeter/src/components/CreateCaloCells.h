@@ -6,7 +6,6 @@
 
 #include "FWCore/DataHandle.h"
 
-#include "RecInterface/IMergeCaloHitsTool.h"
 #include "RecInterface/ICalibrateCaloHitsTool.h"
 #include "RecInterface/INoiseCaloCellsTool.h"
 
@@ -18,18 +17,17 @@ class IGeoSvc;
  *  Tube geometry with PhiEta segmentation expected.
  *
  *  Flow of the program:
- *  1/ Merge Geant4 hits with same cellID
+ *  1/ Merge Geant4 energy deposits with same cellID
  *  2/ Calibrate to electromagnetic scale (if calibration switched on)
- *  3/ Prepare random noise hits for each cell (if noise switched on)
- *  4/ Merge signal with noise hits (if noise switched on)
- *  5/ Filter cell energy and accept only cells with energy above threshold (if noise + filtering switched on)
+ *  3/ Add random noise to each cell (if noise switched on)
+ *  4/ Filter cells and remove those with energy below threshold (if noise + filtering switched on)
  *
- *  Tools caled:
- *    - MergeCaloHitsTool
+ *  Tools called:
  *    - CalibrateCaloHitsTool
  *    - NoiseCaloCellsTool
  *
  *  @author Jana Faltova
+ *  @author Anna Zaborowska
  *  @date   2016-09
  *
  */
@@ -47,11 +45,8 @@ public:
 
 private:
 
-  StatusCode prepareEmptyCells(std::vector<fcc::CaloHit*>& caloCells);
-  void createNewHit(uint64_t cellId, std::vector<fcc::CaloHit*>& caloCellsVector);
+  StatusCode prepareEmptyCells();
 
-  /// Handle for merging Geant4 hits tool
-  ToolHandle<IMergeCaloHitsTool> m_mergeTool;
   /// Handle for calibration Geant4 energy to EM scale tool
   ToolHandle<ICalibrateCaloHitsTool> m_calibTool;
   /// Handle for the calorimeter cells noise tool
@@ -81,11 +76,10 @@ private:
   unsigned int m_activeVolumesNumber;
   /// Use only volume ID? If false, using PhiEtaSegmentation
   bool m_useVolumeIdOnly;
-
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Vector of noise hits
-  std::vector<fcc::CaloHit*> m_edmHitsNoiseVector;
+  /// Map of cells and energy
+  std::unordered_map<uint64_t, double> m_cellsMap;
 
 };
 

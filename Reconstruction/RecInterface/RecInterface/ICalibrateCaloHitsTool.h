@@ -23,7 +23,7 @@ class ICalibrateCaloHitsTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ICalibrateCaloHitsTool, 1, 0);
 
-  virtual void calibrate(std::vector<fcc::CaloHit*>& aHits) = 0;
+  virtual void calibrate(std::unordered_map<uint64_t, double>& aHits) = 0;
 };
 
 #endif /* RECINTERFACE_ICALIBRATECALOHITSTOOL_H */
