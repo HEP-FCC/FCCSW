@@ -53,16 +53,15 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     // Step 1 : cryostat
     DetElement cryo(cryostat.nameStr(), 0);
     DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
-    lLog << MSG::DEBUG << "ECAL Building cryostat from " << cryo_dims.rmin() << " to " << cryo_dims.rmax() << endmsg;
+    lLog << MSG::DEBUG << "ECAL cryostat: rmin " << cryo_dims.rmin() << " rmax " << cryo_dims.rmax() << endmsg;
     Volume cryoVol(cryostat.nameStr(), cryoShape, lcdd.material(cryostat.materialStr()));
     PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
     placedCryo.addPhysVolID("ECAL_Cryo", 1);
     cryo.setPlacement(placedCryo);
-
     // Step 2 : fill cryostat with active medium
     DetElement calo_bath(active_mat+"_notSensitive", 0);
     DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
-    lLog << MSG::DEBUG << "ECAL: Filling cryostat with active medium from " << cryo_dims.rmin()+cryo_thickness << " to " << cryo_dims.rmax()-cryo_thickness << endmsg;
+    lLog << MSG::DEBUG << "ECAL " << active_mat << " bath: rmin " << cryo_dims.rmin()+cryo_thickness << " rmax " << cryo_dims.rmax()-cryo_thickness << endmsg;
     bathVol = Volume(active_mat+"_notSensitive", bathShape, lcdd.material(active_mat));
     PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
     placedBath.addPhysVolID("bath", 1);
@@ -74,7 +73,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   double calo_tck=active_samples*(active_tck+passive_tck)+passive_tck;
   DetElement caloDet(calo_name, 1);
   DD4hep::Geometry::Tube caloShape(calo_dims.rmin() , calo_dims.rmin()+calo_tck, calo_dims.dz());
-  lLog << MSG::DEBUG << "ECAL: Building the actual calorimeter from " << calo_dims.rmin() << " to " <<   calo_dims.rmin()+calo_tck << endmsg;
+  lLog << MSG::DEBUG << "ECAL actual calorimeter: rmin " << calo_dims.rmin() << " rmax " <<   calo_dims.rmin()+calo_tck << endmsg;
   Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));
   PlacedVolume placedCalo;
   if (cryo_thickness>0) {

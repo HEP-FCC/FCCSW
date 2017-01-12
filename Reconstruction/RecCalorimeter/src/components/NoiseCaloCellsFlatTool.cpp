@@ -1,8 +1,8 @@
-#include "NoiseCaloCellsTool.h"
+#include "NoiseCaloCellsFlatTool.h"
 
-DECLARE_TOOL_FACTORY(NoiseCaloCellsTool)
+DECLARE_TOOL_FACTORY(NoiseCaloCellsFlatTool)
 
-NoiseCaloCellsTool::NoiseCaloCellsTool(const std::string& type,const std::string& name, const IInterface* parent)
+NoiseCaloCellsFlatTool::NoiseCaloCellsFlatTool(const std::string& type,const std::string& name, const IInterface* parent)
   : GaudiTool(type, name, parent)
 {
   declareInterface<INoiseCaloCellsTool>(this);
@@ -12,11 +12,11 @@ NoiseCaloCellsTool::NoiseCaloCellsTool(const std::string& type,const std::string
   declareProperty("filterNoiseThreshold", m_filterThreshold = 3);
 }
 
-NoiseCaloCellsTool::~NoiseCaloCellsTool()
+NoiseCaloCellsFlatTool::~NoiseCaloCellsFlatTool()
 {
 }
 
-StatusCode NoiseCaloCellsTool::initialize() {
+StatusCode NoiseCaloCellsFlatTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
 
@@ -25,24 +25,24 @@ StatusCode NoiseCaloCellsTool::initialize() {
     error() << "Couldn't get RndmGenSvc" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(0,m_cellNoise));
+  m_gauss.initialize(m_randSvc, Rndm::Gauss(0.,1.));
 
   info() << "Sigma of the cell noise: " <<  m_cellNoise * 1.e3 << " MeV" << endmsg;
   info() << "Filter noise threshold: " <<  m_filterThreshold << "*sigma" << endmsg;
   return sc;
 }
 
-void NoiseCaloCellsTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) {
+void NoiseCaloCellsFlatTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   double randomNoise = 0;
   for (auto& ecell : aCells) {
-    randomNoise = m_gauss.shoot();
+    randomNoise = m_gauss.shoot()*m_cellNoise;
     ecell->core().energy = randomNoise;
     ecell->core().time = 0;
     ecell->core().bits = 0;
   }
 }
 
-void NoiseCaloCellsTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
+void NoiseCaloCellsFlatTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
   //Erase a cell if it has energy bellow a threshold from the vector
   double threshold = m_filterThreshold * m_cellNoise;
   aCells.erase( std::remove_if( aCells.begin(),
@@ -52,6 +52,6 @@ void NoiseCaloCellsTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
 }
 
 
-StatusCode NoiseCaloCellsTool::finalize() {
+StatusCode NoiseCaloCellsFlatTool::finalize() {
   return GaudiTool::finalize();
 }

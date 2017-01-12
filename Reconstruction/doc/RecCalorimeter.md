@@ -100,5 +100,3 @@ Now, we can run the reconstruction:
 LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
 ./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
 ~~~
-
-
