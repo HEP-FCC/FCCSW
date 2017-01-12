@@ -15,21 +15,19 @@ ECAL calorimeter description in `Detector/DetFCChhECalSimple`:
 
 Digitisation creates cells out of simulated energy deposits. From the EDM point of view, both input and output of the digitisation uses `fcc::CaloHit`.
 The input (simulated deposits) contains raw information about the energy deposited in the cells of the sensitive volumes.
-The ouput (cells) contains calibrated energy and the noise. It may also use different segmentation than the original cells of the sensitive volumes.
+The ouput (cells) contains calibrated energy and the noise. The cells may correspond to the active volumes or to the segmentation cells. In particuler, different segmentation may be used than the original cells of the sensitive volumes used in the simulation.
 
 > Note: some resegmentation procedures (`RedoSegmentation`) expect the truth position of the energy deposits, hence they require `fcc::PositionedCaloHit` collection.
 
-`CreateCaloCells` is an algorithm for the digitisation. It calls 3 tools to perform the deposits merging, energy calibration and noise addition.
+`CreateCaloCells` is an algorithm for the digitisation. It calls tools to perform the energy calibration and cell noise addition.
 
-## 1. Deposits merging
+## 1. Energy deposits merging
 
 The output of the simulation contains a large collection of energy deposits. First step towards the digitisation is merging those hits into the hit collection with one hit per cell of the sensitive volume. The energy of such hit is a sum of all the deposits within that sensitive volume cell.
 
 > Note: Energy deposits may be merged by Sensitive Detector implementation (`AggregateCalorimeterSD`), however it is not encouraged due to the time performance issues.
 
->TODO: Take time into account. At the moment the time of the last hit in the cell is stored.
-
-`MergeCaloHitsTool`: Merge Geant4 energy deposits with same cellID
+> TODO: Take time into account. At the moment no time information is used.
 
 ## 2. Energy calibration
 
@@ -39,11 +37,12 @@ Energy calibration is done for sampling calorimeters to compensate for the energ
 
 ## 3. Noise addition
 
-Noise is added to all cells, not only those with signal. Hence a list of all cellIDs is needed and it is retrieved from the geometry. This is the only part which is geometry dependent and assumes tube geometry and phi-eta segmentation.
+Noise is added to all cells, not only those with signal. Hence a list of all existing in the geometry cellIDs is needed and it is retrieved from the geometry. This is the only part which is geometry dependent. Currently it is possible to use no segmentation (`\b useVolumeIdOnly=True') and only volume IDs are used. The default case is the use of phi-eta segmentation.
 
- `NoiseCaloCellsTool`: Prepare random noise hits for each cell.
- `MergeCaloHitsTool`: Merge signal with noise hits.
- `NoiseCaloCellsTool`: Filter cell energy and accept only cells with energy above threshold.
+ `NoiseCaloCellsFlatTool`: Adding noise from Gaussian distribution (with sigma '\b cellNoise'), the same distribution for all cells
+ `NoiseCaloCellsFromFileTool`: Adding noise from Gaussian distribution with sigma taken from a file.
+
+> TODO: What is in the file, how to obtain it
 
 
 # Reconstruction
