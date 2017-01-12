@@ -2,7 +2,7 @@ from ROOT import gSystem
 from EventStore import EventStore
 
 gSystem.Load("libdatamodelDict")
-store = EventStore(['output_ecalReco_test.root'])
+store = EventStore(['output_ecalReco_flatNoise_test.root'])
 
 for event in store:
     clusters = event.get('caloClusters')
