@@ -35,14 +35,20 @@ gaudi_add_test(EcalReconstructionFlatNoise
                DEPENDS simulateECalForReconstruction
                FRAMEWORK tests/options/runEcalReconstructionFlatNoise.py)
 
-gaudi_add_test(EcalReconstructionNoiseFromFile
+gaudi_add_test(EcalReconstructionWithoutNoise
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateECalForReconstruction
-               FRAMEWORK tests/options/runEcalReconstruction.py)
+               FRAMEWORK tests/options/runEcalReconstructionWithoutNoise.py)
 
 gaudi_add_test(EcalReconstructionCheckNumClusters
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
-               DEPENDS runEcalReconstructionFlatNoise)
+               DEPENDS runEcalReconstructionFlatNoise runEcalReconstructionWithoutNoise)
+
+gaudi_add_test(EcalReconstructionNoiseFromFile
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               DEPENDS simulateECalForReconstruction
+               FRAMEWORK tests/options/runEcalReconstruction.py)
