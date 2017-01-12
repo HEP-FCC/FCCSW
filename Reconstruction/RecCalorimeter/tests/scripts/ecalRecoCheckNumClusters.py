@@ -6,5 +6,4 @@ store = EventStore(['output_ecalReco_test.root'])
 
 for event in store:
     clusters = event.get('caloClusters')
-#    assert(len(clusters) == 1)
-    assert(len(clusters) < 5) 
+    assert(len(clusters) == 1)

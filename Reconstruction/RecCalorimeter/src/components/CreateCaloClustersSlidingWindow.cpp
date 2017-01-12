@@ -68,6 +68,7 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
     error() << "Volume readout field descriptors (names and values) have different size. " << endmsg;
     return StatusCode::FAILURE;
   }
+  decoder->setValue(0);
   for(uint it = 0; it < m_fieldNames.size(); it++) {
     (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
   }
