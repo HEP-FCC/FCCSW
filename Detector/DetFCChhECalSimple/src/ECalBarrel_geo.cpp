@@ -38,7 +38,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   xml_comp_t calo = xmlElement.child("calorimeter");
   Dimension calo_dims(calo.dimensions());
   std::string calo_name=calo.nameStr();
-  
+
   xml_comp_t active = calo.child("active_layers");
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
@@ -58,10 +58,8 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
     placedCryo.addPhysVolID("ECAL_Cryo", 1);
     cryo.setPlacement(placedCryo);
-  
-
     // Step 2 : fill cryostat with active medium
-    DetElement calo_bath(active_mat, 0);
+    DetElement calo_bath(active_mat+"_notSensitive", 0);
     DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
     lLog << MSG::DEBUG << "ECAL " << active_mat << " bath: rmin " << cryo_dims.rmin()+cryo_thickness << " rmax " << cryo_dims.rmax()-cryo_thickness << endmsg;
     bathVol = Volume(active_mat+"_notSensitive", bathShape, lcdd.material(active_mat));
@@ -77,7 +75,6 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   DD4hep::Geometry::Tube caloShape(calo_dims.rmin() , calo_dims.rmin()+calo_tck, calo_dims.dz());
   lLog << MSG::DEBUG << "ECAL actual calorimeter: rmin " << calo_dims.rmin() << " rmax " <<   calo_dims.rmin()+calo_tck << endmsg;
   Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));
-
   PlacedVolume placedCalo;
   if (cryo_thickness>0) {
     placedCalo = bathVol.placeVolume(caloVol);
@@ -99,6 +96,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);
     DetElement caloLayer(active_mat+"_sensitive", i);
     DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_dims.dz());
+    lLog << MSG::DEBUG << "ECAL senst. layers :  #" << i << " from " << layer_r << " to " <<  layer_r+active_tck << endmsg;
     Volume layerVol(active_mat+"_sensitive", layerShape, lcdd.material(active_mat));
     PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
     placedLayer.addPhysVolID("active_layer", i);

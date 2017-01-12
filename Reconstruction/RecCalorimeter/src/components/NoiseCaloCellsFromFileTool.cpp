@@ -33,8 +33,6 @@ NoiseCaloCellsFromFileTool::~NoiseCaloCellsFromFileTool()
 }
 
 StatusCode NoiseCaloCellsFromFileTool::initialize() {
-
- 
   // Get GeoSvc
   m_geoSvc = service ("GeoSvc");
   if (!m_geoSvc) {
@@ -51,7 +49,7 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
   m_gauss.initialize(m_randSvc, Rndm::Gauss(0.,1.));
 
 
-  //open and check file, read the histograms with noise constants 
+  //open and check file, read the histograms with noise constants
   if (initNoiseFromFile().isFailure()) {
     error() << "Couldn't open file with noise constants!!!" << endmsg;
     return StatusCode::FAILURE;
@@ -62,7 +60,7 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
     error()<<"There is no phi-eta segmentation."<<endmsg;
     return StatusCode::FAILURE;
   }
- 
+
   debug() << "Filter noise threshold: " <<  m_filterThreshold << "*sigma" << endmsg;
 
   StatusCode sc = GaudiTool::initialize();
@@ -72,34 +70,19 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
 
 }
 
-void NoiseCaloCellsFromFileTool::createRandomCellNoise(std::vector<fcc::CaloHit*>& aCells) {
-
-  double noisePerCell = 0;
-
-  for (auto& ecell : aCells) { 
-    //Get the noise constant
-    noisePerCell = getNoiseConstantPerCell(ecell->core().cellId);
-    //Store random noise hits
-    //Time=0 (out-of-time pile-up should be taken into account in the pile-up constants) - to be checked
-    //info() << "noise per cell: " << noisePerCell << endmsg;
-    ecell->core().energy =  noisePerCell*m_gauss.shoot();
-    ecell->core().time = 0;
-    ecell->core().bits = 0;
-  }
+void NoiseCaloCellsFromFileTool::addRandomCellNoise(std::unordered_map<uint64_t, double>& aCells) {
+  std::for_each( aCells.begin(), aCells.end(),
+    [this](std::pair<const uint64_t , double>& p) {p.second += ( getNoiseConstantPerCell(p.second) * m_gauss.shoot() );} );
 }
 
-void NoiseCaloCellsFromFileTool::filterCellNoise(std::vector<fcc::CaloHit*>& aCells) {
+void NoiseCaloCellsFromFileTool::filterCellNoise(std::unordered_map<uint64_t, double>& aCells) {
   //Erase a cell if it has energy bellow a threshold from the vector
-  double noisePerCell = 0;
-  for (auto ecell = aCells.begin(); ecell!=aCells.end();) {
-    //Get the noise constant
-    noisePerCell = getNoiseConstantPerCell((*ecell)->core().cellId);
-    if ( (*ecell)->core().energy<m_filterThreshold*noisePerCell ) {
-      aCells.erase(ecell);
-    }
-    else {
-      ++ecell;
-    }
+  auto it = aCells.begin();
+  while ((it = std::find_if(it, aCells.end(),
+        [this](std::pair<const uint64_t,double>& p){
+          return bool(p.second < m_filterThreshold * getNoiseConstantPerCell(p.first));}
+        )) != aCells.end()) {
+    aCells.erase(it++);
   }
 }
 

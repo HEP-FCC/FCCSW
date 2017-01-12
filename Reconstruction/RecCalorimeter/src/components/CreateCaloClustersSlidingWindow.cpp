@@ -37,7 +37,7 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
   declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
   declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
-  declareProperty("saveCells", m_saveCells = true);
+  declareProperty("saveCells", m_saveCells = false);
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {
@@ -68,6 +68,7 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
     error() << "Volume readout field descriptors (names and values) have different size. " << endmsg;
     return StatusCode::FAILURE;
   }
+  decoder->setValue(0);
   for(uint it = 0; it < m_fieldNames.size(); it++) {
     (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
   }
