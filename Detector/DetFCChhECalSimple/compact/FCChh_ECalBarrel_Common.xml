@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <info name="FCChh_ECalBarrel_Gflash"
-    title="ECal Barrel Calorimeter for GFlash parametrisation"
-    author="A.Dell'Acqua, J.Faltova, A.Zaborowska"
-    url="no"
-    status="development"
-    version="1.0">
+  <info name="FCChh_ECalBarrel_Common"
+        title="Common settings for Simple ECal Barrel Calorimeter"
+        author="J.Faltova, A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
     <comment>
-      Most simple liquid argon - lead Ecal design.
-      It consists of cylindrical layers of lead and liquid argon.
-      It includes cryostat.
-      Using implementation of sensitive detector that allows fast sim.
-      It is not possible to use ./FCChh_ECalBarrel_Common.xml as constants cannot be strings, so no generalisation can be made for sensitive detector type.
+      Common settings for a simple liquid argon - lead Ecal design.
+      Definition of sizes, visualization settings and readout are specified.
     </comment>
   </info>
 
   <define>
-    <constant name="CryoThickness" value="100*mm"/>
     <constant name="LArBathThickness" value="100*mm"/>
     <!-- overall calorimeter volume (including cryostat) -->
     <constant name="BarCryoECal_rmin" value="BarECal_rmin"/>
@@ -44,18 +40,17 @@
 
   <detectors>
     <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
-      <sensitive type="GflashCalorimeterSD"/>
+      <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
-      <cryostat id="1" name="ECAL_Cryo" material="Air" >
-        <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness" />
+      <cryostat name="ECAL_Cryo" material="Aluminum" >
+	<dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness" />
       </cryostat>
-      <calorimeter id="1" name="EM_barrel" >
-        <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
-        <active_layers thickness="4*mm" material="LAr" nSamplings="50" />
-        <passive_layers thickness="2*mm" material="Lead" />
+      <calorimeter name="EM_barrel" >
+	<dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
+	<active_layers thickness="4*mm" material="LAr" />
+	<passive_layers thickness="2*mm" material="Lead" />
       </calorimeter>
     </detector>
-
   </detectors>
-</lccdd>
 
+</lccdd>
