@@ -187,11 +187,14 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
                 sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
               }
             }
-            cluster newPreCluster;
-            newPreCluster.eta = posEta;
-            newPreCluster.phi = posPhi;
-            newPreCluster.transEnergy = sumEnergyFin;
-            m_preClusters.push_back(newPreCluster);
+            // check if changing the barycentre did not decrease energy below threshold
+            if (sumEnergyFin > m_energyThreshold) {
+              cluster newPreCluster;
+              newPreCluster.eta = posEta;
+              newPreCluster.phi = posPhi;
+              newPreCluster.transEnergy = sumEnergyFin;
+              m_preClusters.push_back(newPreCluster);
+            }
           }
           posEta = 0;
           posPhi = 0;
