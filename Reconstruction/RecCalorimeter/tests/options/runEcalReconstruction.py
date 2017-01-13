@@ -74,10 +74,10 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  fieldValues = ecalFieldValues,
                                                  deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                                                  nEtaWindow = 5, nPhiWindow = 15,
-                                                 nEtaPosition = 3, nPhiPosition = 3,
+                                                 nEtaPosition = 5, nPhiPosition = 5,
                                                  nEtaDuplicates = 5, nPhiDuplicates = 15,
                                                  nEtaFinal = 5, nPhiFinal = 15,
-                                                 energyThreshold = 7,
+                                                 energyThreshold = 10,
                                                  OutputLevel = DEBUG)
 createclusters.DataInputs.cells.Path="caloCells"
 createclusters.DataOutputs.clusters.Path="caloClusters"

@@ -60,13 +60,14 @@ StatusCode CreateCaloCells::initialize() {
       error()<<"Unable to retrieve the calo cells noise tool!!!"<<endmsg;
       return StatusCode::FAILURE;
     }
-    // Prepare map of all existing cells in calorimeter to add noise to all
-    StatusCode sc_prepareCells = prepareEmptyCells();
-    if (sc_prepareCells.isFailure()) {
-      error()<<"Unable to create empty cells!"<<endmsg;
-      return StatusCode::FAILURE;
-    }
   }
+  // Prepare map of all existing cells in calorimeter to add noise to all, also needed for clustering
+  StatusCode sc_prepareCells = prepareEmptyCells();
+  if (sc_prepareCells.isFailure()) {
+    error()<<"Unable to create empty cells!"<<endmsg;
+    return StatusCode::FAILURE;
+  }
+  
   return StatusCode::SUCCESS;
 }
 
