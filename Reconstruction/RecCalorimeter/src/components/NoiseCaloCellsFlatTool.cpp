@@ -25,7 +25,7 @@ StatusCode NoiseCaloCellsFlatTool::initialize() {
     error() << "Couldn't get RndmGenSvc" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(0.,m_cellNoise));
+  m_gauss.initialize(m_randSvc, Rndm::Gauss(0.,1.));
 
   info() << "Sigma of the cell noise: " <<  m_cellNoise * 1.e3 << " MeV" << endmsg;
   info() << "Filter noise threshold: " <<  m_filterThreshold << "*sigma" << endmsg;
@@ -34,7 +34,7 @@ StatusCode NoiseCaloCellsFlatTool::initialize() {
 
 void NoiseCaloCellsFlatTool::addRandomCellNoise(std::unordered_map<uint64_t, double>& aCells) {
   std::for_each( aCells.begin(), aCells.end(),
-    [this](std::pair<const uint64_t , double>& p) { p.second += m_gauss.shoot(); } );
+		 [this](std::pair<const uint64_t , double>& p) { p.second += ( m_gauss.shoot() * m_cellNoise ); } );
 }
 
 void NoiseCaloCellsFlatTool::filterCellNoise(std::unordered_map<uint64_t, double>& aCells) {
