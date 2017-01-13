@@ -24,25 +24,26 @@
     <constant name="BarHCal_module_drho" value="100*mm"/>
     <constant name="BarHCAL_module_spacing_phi" value="0.001*mm"/>
     <!-- component dimensions -->
-    <constant name="BarHCal_master_plate_thickness" value="2.5*mm" />
-    <constant name="BarHCal_spacer_plate_thickness" value="2*mm" />
-    <constant name="BarHCal_air_space_thickness" value="0.25*mm" />
-    <constant name="BarHCal_scintillator_thickness" value="1.5*mm" />
+    <constant name="BarHCal_master_plate_thickness" value="5*mm" />
+    <constant name="BarHCal_spacer_plate_thickness" value="4*mm" />
+    <constant name="BarHCal_air_space_thickness" value="0.5*mm" />
+    <constant name="BarHCal_scintillator_thickness" value="3*mm" />
     <!-- face and end-plate dimensions -->
     <constant name="BarHCal_end_plate_thickness" value="5*mm" />
     <constant name="BarHCal_face_plate_thickness" value="10*mm" />
   </define>
 
   <display>
-    <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
+    <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="false" visible="false" drawingStyle="solid" />
     <vis name="hcal_steel_master_vis" r="0.6" g="0.6" b="0.6" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_face_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_end_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-    <vis name="hcal_polystyrene_vis" r="0.4" g="0.4" b="0.8" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
-    <vis name="hcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="false" />
-    <vis name="hcal_barrel_seq1_vis" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
-    <vis name="hcal_barrel_seq2_vis" r="0.6" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
-    <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_polystyrene_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
+    <vis name="hcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_barrel_seq1_vis" r="0.1" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_barrel_seq2_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="false" />
+    <!--vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" /-->
+    <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="false" />
   </display>
 
   <readouts>
