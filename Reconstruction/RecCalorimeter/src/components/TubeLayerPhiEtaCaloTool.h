@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_SIMPLECYLINDRICALCALOTOOL_H
-#define RECCALORIMETER_SIMPLECYLINDRICALCALOTOOL_H
+#ifndef RECCALORIMETER_TUBELAYERPHIETACALOTOOL_H
+#define RECCALORIMETER_TUBELAYERPHIETACALOTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -9,11 +9,11 @@
 
 class IGeoSvc;
 
-class SimpleCylindricalCaloTool : public GaudiTool, virtual public ICalorimeterTool
+class TubeLayerPhiEtaCaloTool : public GaudiTool, virtual public ICalorimeterTool
 {
 public:
-  SimpleCylindricalCaloTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~SimpleCylindricalCaloTool();
+  TubeLayerPhiEtaCaloTool(const std::string& type,const std::string& name, const IInterface* parent);
+  virtual ~TubeLayerPhiEtaCaloTool();
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
   virtual StatusCode prepareEmptyCells(std::unordered_map<uint64_t, double>& aCells) final;
@@ -37,4 +37,4 @@ private:
   bool m_useVolumeIdOnly;
 };
 
-#endif /* RECCALORIMETER_SIMPLECYLINDRICALCALOTOOL_H */
+#endif /* RECCALORIMETER_TUBELAYERPHIETACALOTOOL_H */

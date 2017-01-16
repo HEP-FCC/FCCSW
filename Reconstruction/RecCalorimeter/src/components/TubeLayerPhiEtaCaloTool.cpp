@@ -1,13 +1,13 @@
-#include "SimpleCylindricalCaloTool.h"
+#include "TubeLayerPhiEtaCaloTool.h"
 
 // segm
 #include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
 #include "DD4hep/LCDD.h"
 
-DECLARE_TOOL_FACTORY(SimpleCylindricalCaloTool)
+DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
 
-SimpleCylindricalCaloTool::SimpleCylindricalCaloTool(const std::string& type,const std::string& name, const IInterface* parent)
+TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type,const std::string& name, const IInterface* parent)
 : GaudiTool(type, name, parent) {
   declareInterface<ICalorimeterTool>(this);
   declareProperty("readoutName", m_readoutName = "ECalHitsPhiEta");
@@ -18,9 +18,9 @@ SimpleCylindricalCaloTool::SimpleCylindricalCaloTool(const std::string& type,con
   declareProperty("fieldValues", m_fieldValues);
 }
 
-SimpleCylindricalCaloTool::~SimpleCylindricalCaloTool() {}
+TubeLayerPhiEtaCaloTool::~TubeLayerPhiEtaCaloTool() {}
 
-StatusCode SimpleCylindricalCaloTool::initialize() {
+StatusCode TubeLayerPhiEtaCaloTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
   m_geoSvc = service ("GeoSvc");
@@ -38,11 +38,11 @@ StatusCode SimpleCylindricalCaloTool::initialize() {
   return sc;
 }
 
-StatusCode SimpleCylindricalCaloTool::finalize() {
+StatusCode TubeLayerPhiEtaCaloTool::finalize() {
   return GaudiTool::finalize();
 }
 
-StatusCode SimpleCylindricalCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, double>& aCells) {
+StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, double>& aCells) {
   // Get the total number of active volumes in the geometry
   auto highestVol = gGeoManager->GetTopVolume();
   unsigned int numLayers;

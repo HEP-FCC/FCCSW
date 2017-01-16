@@ -38,7 +38,7 @@ Energy calibration is done for sampling calorimeters to compensate for the energ
 
 Noise is added to all cells, not only those with signal. Hence a list of all existing in the geometry cell IDs is needed and it is retrieved from the geometry. This is the only part which is geometry dependent.
 
-Such a list is provided by a Gaudi tool deriving from `ICalorimeterTool`. Currently there are two implementations: `SimpleCylindricalCaloTool` and `NoSegmentationCaloTool`.
+Such a list is provided by a Gaudi tool deriving from `ICalorimeterTool`. Currently there are two implementations: `TubeLayerPhiEtaCaloTool` and `NoSegmentationCaloTool`.
 
 The first one expects cylindrical layers of active volume and phi-eta segmentation. The number of cells is calculated taking each active layer and checking how many phi and eta bins exist (number of phi bins is the same for all layers). The number of all active layers is searched in the geometry by given name.
 > Note. Temporarily it is possible to use MergeLayer algorithm which does decrease the total number of existing layers (in cell IDs) without changing the geometry. Hence it is necessary to specify how many active volumes exist (disabling the look-up of active layers in geometry).
