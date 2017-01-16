@@ -184,7 +184,9 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             idPhiFin = idPhi(posPhi);
             for(int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
               for(int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
-                sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+                if(idEtaFin > 0 && idEtaFin < m_nEtaTower) {
+                  sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+                }
               }
             }
             // check if changing the barycentre did not decrease energy below threshold
