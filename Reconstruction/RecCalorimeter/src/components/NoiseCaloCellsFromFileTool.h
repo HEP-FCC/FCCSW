@@ -48,7 +48,6 @@ public:
   /// Find the appropriate noise constant from the histogram
   double getNoiseConstantPerCell(int64_t aCellID);
 
-
 private:
   /// Add pileup contribution to the electronics noise? (only if read from file)
   bool m_addPileup;

@@ -30,13 +30,9 @@ calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction=
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
-                              calibTool=calibcells,
                               doCellCalibration=True,
+                              calibTool=calibcells,
                               addCellNoise=False, filterCellNoise=False,
-                              useVolumeIdOnly=False,
-                              readoutName=ecalReadoutName,
-                              fieldNames=ecalFieldNames,
-                              fieldValues=ecalFieldValues,
                               OutputLevel=DEBUG)
 createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"

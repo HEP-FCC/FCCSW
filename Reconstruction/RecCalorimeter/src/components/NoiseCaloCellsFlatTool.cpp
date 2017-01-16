@@ -12,9 +12,7 @@ NoiseCaloCellsFlatTool::NoiseCaloCellsFlatTool(const std::string& type,const std
   declareProperty("filterNoiseThreshold", m_filterThreshold = 3);
 }
 
-NoiseCaloCellsFlatTool::~NoiseCaloCellsFlatTool()
-{
-}
+NoiseCaloCellsFlatTool::~NoiseCaloCellsFlatTool() {}
 
 StatusCode NoiseCaloCellsFlatTool::initialize() {
   StatusCode sc = GaudiTool::initialize();

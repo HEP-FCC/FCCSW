@@ -1,13 +1,20 @@
 #ifndef RECCALORIMETER_CREATECALOCELLS_H
 #define RECCALORIMETER_CREATECALOCELLS_H
 
+// FCCSW
+#include "RecInterface/ICalibrateCaloHitsTool.h"
+#include "RecInterface/INoiseCaloCellsTool.h"
+#include "RecInterface/ICalorimeterTool.h"
+#include "FWCore/DataHandle.h"
+
+// Gaudi
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
 
-#include "FWCore/DataHandle.h"
 
-#include "RecInterface/ICalibrateCaloHitsTool.h"
-#include "RecInterface/INoiseCaloCellsTool.h"
+
+#include "datamodel/CaloHitCollection.h"
+#include "datamodel/CaloHit.h"
 
 class IGeoSvc;
 
@@ -45,12 +52,12 @@ public:
 
 private:
 
-  StatusCode prepareEmptyCells();
-
   /// Handle for calibration Geant4 energy to EM scale tool
   ToolHandle<ICalibrateCaloHitsTool> m_calibTool;
   /// Handle for the calorimeter cells noise tool
   ToolHandle<INoiseCaloCellsTool> m_noiseTool;
+  /// Handle for the geometry tool
+  ToolHandle<ICalorimeterTool> m_geoTool;
 
   /// Calibrate to EM scale?
   bool m_doCellCalibration;
