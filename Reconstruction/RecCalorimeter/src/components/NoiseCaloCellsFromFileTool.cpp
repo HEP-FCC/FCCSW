@@ -22,7 +22,7 @@ NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type,c
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("elecNoiseHistoName", m_elecNoiseHistoName="h_elecNoise_layer");
   declareProperty("pileupHistoName", m_pileupHistoName="h_pileup_layer");
-
+  declareProperty("numRadialLayers",m_numRadialLayers=3);
   //remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)
   declareProperty("filterNoiseThreshold", m_filterThreshold=3);
 }

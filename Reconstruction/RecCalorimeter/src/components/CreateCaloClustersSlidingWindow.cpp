@@ -34,7 +34,6 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("nEtaFinal", m_nEtaFinal = 5);
   declareProperty("nPhiFinal", m_nPhiFinal = 15);
   declareProperty("energyThreshold", m_energyThreshold = 3);
-  declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
   declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
   declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
   declareProperty("saveCells", m_saveCells = false);
@@ -175,7 +174,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             }
           }
           // If non-zero energy in the cluster, add to pre-clusters (reduced size for pos. calculation -> energy in the core can be zero)
-          if (sumEnergyPos > m_energyPosThreshold) {
+          if (sumEnergyPos != 0) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
             // Calculate final cluster energy
