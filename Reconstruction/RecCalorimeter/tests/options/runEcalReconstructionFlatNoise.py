@@ -25,16 +25,16 @@ ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
 ecalFieldValues=[5,1,1,1]
 
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, SimpleCylindricalCaloTool
+from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
 noise = NoiseCaloCellsFlatTool("NoiseCaloCellsFlatTool", cellNoise = 0.01)
-ecalgeo = SimpleCylindricalCaloTool("EcalGeo",
-                                    readoutName=ecalReadoutName,
-                                    activeVolumeName = ecalVolumeName,
-                                    activeFieldName = ecalIdentifierName,
-                                    fieldNames=ecalFieldNames,
-                                    fieldValues=ecalFieldValues,
-                                    OutputLevel=DEBUG)
+ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
+                                  readoutName=ecalReadoutName,
+                                  activeVolumeName = ecalVolumeName,
+                                  activeFieldName = ecalIdentifierName,
+                                  fieldNames=ecalFieldNames,
+                                  fieldValues=ecalFieldValues,
+                                  OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",

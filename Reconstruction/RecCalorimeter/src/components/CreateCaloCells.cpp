@@ -23,7 +23,7 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("noiseTool", m_noiseTool);
   declarePrivateTool(m_noiseTool, "NoiseCaloCellsFlatTool");
   declareProperty("geometryTool", m_geoTool);
-  declarePrivateTool(m_geoTool, "SimpleCylindricalCaloTool");
+  declarePrivateTool(m_geoTool, "TubeLayerPhiEtaCaloTool");
 
   declareProperty("doCellCalibration", m_doCellCalibration = true);
   declareProperty("addCellNoise", m_addCellNoise = true);
