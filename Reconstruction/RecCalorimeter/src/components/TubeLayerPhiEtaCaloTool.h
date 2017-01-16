@@ -33,8 +33,6 @@ private:
   std::vector<int> m_fieldValues;
   /// Temporary: for use with MergeLayer tool
   unsigned int m_activeVolumesNumber;
-  /// Use only volume ID? If false, using PhiEtaSegmentation
-  bool m_useVolumeIdOnly;
 };
 
 #endif /* RECCALORIMETER_TUBELAYERPHIETACALOTOOL_H */
