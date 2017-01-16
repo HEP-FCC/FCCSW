@@ -43,18 +43,18 @@ mergelayers.DataInputs.inhits.Path = "ECalHits"
 mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
 
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, SimpleCylindricalCaloTool
+from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
 noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
-ecalgeo = SimpleCylindricalCaloTool("EcalGeo",
-                                    readoutName=ecalReadoutName,
-                                    activeVolumeName = ecalVolumeName,
-                                    activeFieldName = ecalIdentifierName,
-                                    fieldNames=ecalFieldNames,
-                                    fieldValues=ecalFieldValues,
-                                    # to make it working with MergeLayers algorithm
-                                    activeVolumesNumber=ecalNumberOfLayers,
-                                    OutputLevel=DEBUG)
+ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
+                                  readoutName=ecalReadoutName,
+                                  activeVolumeName = ecalVolumeName,
+                                  activeFieldName = ecalIdentifierName,
+                                  fieldNames=ecalFieldNames,
+                                  fieldValues=ecalFieldValues,
+                                  # to make it working with MergeLayers algorithm
+                                  activeVolumesNumber=ecalNumberOfLayers,
+                                  OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
