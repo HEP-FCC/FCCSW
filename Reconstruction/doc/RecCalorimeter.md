@@ -46,7 +46,9 @@ The first one expects cylindrical layers of active volume and phi-eta segmentati
 The second implementation may be used if no segmentation is used. In this case only volume IDs are used and the total number of active volumes taken from geometry is also the total number of cells.
 
 Once the total number of cells and their IDs are extracted, the noise is added. The noise tools derive from `INoiseCaloCellsTool`, with two existing implementations.
+
  `NoiseCaloCellsFlatTool`: Adding noise assuming Gaussian distribution (with sigma '\b cellNoise'), the same distribution for all cells
+
  `NoiseCaloCellsFromFileTool`: Adding Gaussian noise assuming different noise levels in different cells. The noise is defined in a ROOT file and it is presented by TH1F histograms showing cell noise as a function of abs(eta). There are two sets of histograms - one with the electronics noise and the second one with the pileup contribution. It is expected that there is a separate histogram for each radial level (numbered from 1).
 
 # Reconstruction
