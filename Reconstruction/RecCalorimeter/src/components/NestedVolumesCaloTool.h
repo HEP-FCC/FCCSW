@@ -9,6 +9,15 @@
 
 class IGeoSvc;
 
+/** @class NestedVolumesCaloTool Reconstruction/RecCalorimeter/src/components/NestedVolumesCaloTool.h NestedVolumesCaloTool.h
+ *
+ *  Tool for geometry-dependent settings of the digitisation.
+ *  It assumes no segmentation is used. It may be used for nested volumes.
+ *   For more explanation please [see reconstruction documentation](@ref md_reconstruction_doc_reccalorimeter).
+ *
+ *  @author Anna Zaborowska
+ */
+
 class NestedVolumesCaloTool : public GaudiTool, virtual public ICalorimeterTool
 {
 public:
@@ -16,6 +25,14 @@ public:
   virtual ~NestedVolumesCaloTool();
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
+  /** Prepare a map of all existing cells in current geometry.
+   *   Active volumes are looked in the geometry manager by name ('\b activeVolumeName').
+   *   Corresponding bitfield name is given in '\b activeFieldName'.
+   *   If more than one name is given, it is assumed that volumes are nested.
+   *   For more explanation please [see reconstruction documentation](@ref md_reconstruction_doc_reccalorimeter).
+   *   @param[out] aCells map of existing cells (and deposited energy, set to 0)
+   *   return Status code.
+   */
   virtual StatusCode prepareEmptyCells(std::unordered_map<uint64_t, double>& aCells) final;
 
 private:
