@@ -166,8 +166,6 @@ private:
   int m_nPhiFinal;
   /// Energy threshold for cluster finding
   float m_energyThreshold;
-  /// Energy threshold in the window for the position calculation
-  float m_energyPosThreshold;
   /// Flag if a check on local maxima in phi should be done (temporary, to test the algorithm)
   bool m_checkPhiLocalMax;
   /// Flag if a check on local maxima in eta should be done (temporary, to test the algorithm)

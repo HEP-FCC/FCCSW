@@ -1,7 +1,7 @@
 RecCalorimeter package
 ===
 
-Information about calorimeter reconstruction software within FCCSW. The software being tested using ECAL, but should be general enough to be used for other calorimeters.
+Information about calorimeter reconstruction software within FCCSW. The software being tested using ECAL, but should be general enough to be used for other calorimeters. Let us know if you have any problems or questions.
 
 # Detector description
 
@@ -15,7 +15,7 @@ ECAL calorimeter description in `Detector/DetFCChhECalSimple`:
 
 Digitisation creates cells out of simulated energy deposits. From the EDM point of view, both input and output of the digitisation uses `fcc::CaloHit`.
 The input (simulated deposits) contains raw information about the energy deposited in the cells of the sensitive volumes.
-The output (cells) contains calibrated energy and the noise. The cells may correspond to the active volumes or to the segmentation cells. In particular, different segmentation may be used than the original cells of the sensitive volumes used in the simulation.
+The output (cells) contains energy (corrected for the losses in the passive layers) and the noise. The cells may correspond to the active volumes or to the segmentation cells. In particular, different segmentation may be used than the original cells of the sensitive volumes used in the simulation.
 
 > Note: resegmentation procedures (`RedoSegmentation`) expect the truth position of the energy deposits, hence they require `fcc::PositionedCaloHit` collection.
 
@@ -49,11 +49,11 @@ Such a list is provided by a Gaudi tool deriving from `ICalorimeterTool`. Curren
 
 The second implementation (`NestedVolumesCaloTool`) may be used if no segmentation is used. In this case only volume IDs are used and the total number of active volumes taken from geometry is also the total number of cells. In particular, if active volumes are nested, this tool finds the correct identifiers of all volumes.
 
-Once the total number of cells and their IDs are extracted, the noise is added. The noise tools derive from `INoiseCaloCellsTool`, with two existing implementations.
- `NoiseCaloCellsFlatTool`: Adding noise from Gaussian distribution (with sigma '\b cellNoise'), the same distribution for all cells
- `NoiseCaloCellsFromFileTool`: Adding noise from Gaussian distribution with sigma taken from a file.
+Once the total number of cells and their IDs are extracted, the noise is added. The noise tools derive from `INoiseCaloCellsTool`, with two existing implementations:
 
-> TODO: What is in the file, how to obtain it
+ `NoiseCaloCellsFlatTool`: Adding noise assuming Gaussian distribution (with sigma '\b cellNoise'), the same distribution for all cells
+
+ `NoiseCaloCellsFromFileTool`: Adding Gaussian noise assuming different noise levels in different cells. The noise is defined in a ROOT file and it is presented by TH1F histograms showing cell noise as a function of abs(eta). There are two sets of histograms - one with the electronics noise and the second one with the pileup contribution. It is expected that there is a separate histogram for each radial level. See the code for details [here](../RecCalorimeter/src/components/NoiseCaloCellsFromFileTool.cpp).
 
 # Reconstruction
 
@@ -61,7 +61,7 @@ Reconstruction creates clusters (`fcc::CaloCluster`) out of cells (`fcc::CaloHit
 
 ## Sliding window algorithm
 
-Sliding window algorithm is an algorithm used for the reconstruction of electrons and photons. The algorithm is the same one as used by the ATLAS experiment [link](https://cds.cern.ch/record/1099735?ln=de).
+Sliding window algorithm is an algorithm used for the reconstruction of electrons and photons. The algorithm is the same one as used by the ATLAS experiment ( [link](https://cds.cern.ch/record/1099735?ln=de) ).
 
 `CreateCaloClustersSlidingWindow` implementation operates on towers in phi-eta space, hence it requires the cells to have eta-phi segmentation.
 
@@ -89,11 +89,10 @@ Clusters are created using the pre-clusters energy (energy of towers within the 
 
 # Example
 
-Example script which runs ECAL reconstruction can be found for three cases: [without noise](../RecCalorimeter/options/runEcalReconstructionWithotNoise.py), [with same Gaussian noise for all cells](../RecCalorimeter/options/runEcalReconstructionFlatNoise.py), [with noise from file](../RecCalorimeter/options/runEcalReconstruction.py).
+Example script which runs ECAL reconstruction can be found for three cases: [without noise](../RecCalorimeter/tests/options/runEcalReconstructionWithotNoise.py), [with same Gaussian noise for all cells](../RecCalorimeter/tests/options/runEcalReconstructionFlatNoise.py), [with noise from file](../RecCalorimeter/tests/options/runEcalReconstruction.py).
 
 * Read input file with Geant4 hits
-* Produce calo cells (CreateCaloCells)
-* Store cells as CaloHits with cellID (produced by CreateCaloCells)
+* Produce and store calo cells (CreateCaloCells)
 * Reconstruct clusters using the sliding window algorithm (CreateCaloClustersSlidingWindow)
 
 First, prepare the input file. Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmentation usage):
