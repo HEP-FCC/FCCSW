@@ -41,22 +41,23 @@ static DD4hep::Geometry::Ref_t createHCal (
   xml_comp_t xFacePlate = xmlElement.child("face_plate");
   double dRhoFacePlate = xFacePlate.thickness();
   double sensitiveBarrelRmin = dimensions.rmin() + dRhoFacePlate;
+
   // Hard-coded assumption that we have two different sequences for the modules
   std::vector<xml_comp_t> sequences = {xmlElement.child("sequence_a"), xmlElement.child("sequence_b")};
   // NOTE: This assumes that both have the same dimensions!
-  Dimension moduleDimensions(sequences[0].dimensions());
-  double dzModule = moduleDimensions.dz();
+  Dimension sequenceDimensions(sequences[0].dimensions());
+  double dzSequence = sequenceDimensions.dz();
   // calculate the number of modules fitting in phi, Z and Rho
-  unsigned int numModulesPhi = moduleDimensions.phiBins();
-  unsigned int numModulesZ = static_cast<unsigned>(dimensions.dz() / dzModule);
-  unsigned int numModulesR = static_cast<unsigned>((dimensions.rmax() - sensitiveBarrelRmin) / moduleDimensions.dr());
-  lLog << MSG::DEBUG << "constructing " << numModulesPhi << " modules per ring in phi, "
-                     << numModulesZ << " rings in Z, "
-                     << numModulesR << " rings (layers) in Rho"
-                     << numModulesR*numModulesZ*numModulesPhi << " modules" << endmsg;
+  unsigned int numSequencesPhi = sequenceDimensions.phiBins();
+  unsigned int numSequencesZ = static_cast<unsigned>(dimensions.dz() / dzSequence);
+  unsigned int numSequencesR = static_cast<unsigned>((dimensions.rmax() - sensitiveBarrelRmin) / sequenceDimensions.dr());
+  lLog << MSG::DEBUG << "constructing " << numSequencesPhi << " modules per ring in phi, "
+                     << numSequencesZ << " rings in Z, "
+                     << numSequencesR << " rings (layers) in Rho"
+                     << numSequencesR*numSequencesZ*numSequencesPhi << " modules" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
-  double dzDetector = numModulesZ * dzModule + dZEndPlate;
+  double dzDetector = numSequencesZ * dzSequence + dZEndPlate;
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
 
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
@@ -78,7 +79,6 @@ static DD4hep::Geometry::Ref_t createHCal (
 
 
   // Add structural support made of steel at both ends of HCal
-
   DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
   Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
   endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
@@ -93,27 +93,32 @@ static DD4hep::Geometry::Ref_t createHCal (
   PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
   endPlateNeg.setPlacement(placedEndPlateNeg);
 
-  // calculate the dimensions of one module:
-  double dphi = 2 * dd4hep::pi / static_cast<double>(numModulesPhi);
+  // Calculation the dimensions of one whole module:
+  double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
   double tn = tan(dphi / 2.);
-  double spacing = moduleDimensions.x();
-  double dy0 = moduleDimensions.dz();
-  double dz0 = moduleDimensions.dr() / 2.;
+  double spacing = sequenceDimensions.x();
+  //the width of sequence is planced in y
+  double dy0 = sequenceDimensions.dz();
+  //the minimum depth of the sequence defines the minimum depth of the module and first wedge
+  double dz0 = sequenceeDimensions.dr() / 2.;
 
-  double drWedge = cos(dphi / 2.) * (dimensions.rmax() - sensitiveBarrelRmin) * 0.5;
-
+  //double drWedge = cos(dphi / 2.) * (dimensions.rmax() - sensitiveBarrelRmin) * 0.5;
+  //-changed drWedge to be the exactly half depth of the whole HCAL module 
+  double drModule = (dimensions.rmax() - sensitiveBarrelRmin) * 0.5;
   double dxWedge1 = tn * sensitiveBarrelRmin - spacing;
   double dxWedge2 = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;
 
-  // First we construct one wedge with width of one module:
+  // First we construct one module:
   Volume subWedgeVolume("subWedge", DD4hep::Geometry::Trapezoid(
-        dxWedge1, dxWedge2, dzModule, dzModule, drWedge
+        dxWedge1, dxWedge2, dzSequence, dzSequence, drModule
       ), lcdd.material("Air")
   );
-  for (unsigned int idxLayer = 0; idxLayer < numModulesR; ++idxLayer) {
+  // Placement of single wedges in the module 
+  for (unsigned int idxLayer = 0; idxLayer < numSequencesR; ++idxLayer) {
     auto layerName = std::string("wedge") + DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
-    double rminLayer = idxLayer * moduleDimensions.dr();
+    //in Module rmin = 0  for first wedge
+    double rminLayer = idxLayer * sequenceDimensions.dr();
     double rmaxLayer = (idxLayer + 1) * cos(dphi / 2.) * moduleDimensions.dr();
     double dx1 = tn * (rminLayer + sensitiveBarrelRmin) - spacing;
     double dx2 = tn * cos(dphi / 2.) * (rmaxLayer + sensitiveBarrelRmin) - spacing;
