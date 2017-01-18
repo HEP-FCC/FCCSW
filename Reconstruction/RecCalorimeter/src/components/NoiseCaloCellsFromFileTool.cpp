@@ -17,7 +17,7 @@ NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type,c
 : GaudiTool(type, name, parent) {
   declareInterface<INoiseCaloCellsTool>(this);
   declareProperty("addPileup", m_addPileup=true);
-  declareProperty("noiseFileName", m_noiseFileName="/afs/cern.ch/user/n/novaj/public/fcc_caloCellNoise_mu1000_3radialLayers_v1.root");
+  declareProperty("noiseFileName", m_noiseFileName="/afs/cern.ch/exp/fcc/sw/0.8pre/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root");
   declareProperty("readoutName", m_readoutName="ECalHitsPhiEta");
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("elecNoiseHistoName", m_elecNoiseHistoName="h_elecNoise_layer");

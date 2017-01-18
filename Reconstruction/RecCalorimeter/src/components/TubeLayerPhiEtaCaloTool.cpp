@@ -10,7 +10,7 @@ DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
 TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type,const std::string& name, const IInterface* parent)
 : GaudiTool(type, name, parent) {
   declareInterface<ICalorimeterTool>(this);
-  declareProperty("readoutName", m_readoutName = "ECalHitsPhiEta");
+  declareProperty("readoutName", m_readoutName = "");
   declareProperty("activeVolumeName", m_activeVolumeName="LAr_sensitive");
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
@@ -29,11 +29,13 @@ StatusCode TubeLayerPhiEtaCaloTool::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  // Check if readouts exist
-  info()<<"Readout: "<<m_readoutName<< endmsg;
-  if(m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
-    error()<<"Readout <<"<<m_readoutName<<">> does not exist."<<endmsg;
-    return StatusCode::FAILURE;
+  if (m_readoutName!="") {
+    // Check if readouts exist
+    info()<<"Readout: "<<m_readoutName<< endmsg;
+    if(m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
+      error()<<"Readout <<"<<m_readoutName<<">> does not exist."<<endmsg;
+      return StatusCode::FAILURE;
+    }
   }
   return sc;
 }
