@@ -34,7 +34,6 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("nEtaFinal", m_nEtaFinal = 5);
   declareProperty("nPhiFinal", m_nPhiFinal = 15);
   declareProperty("energyThreshold", m_energyThreshold = 3);
-  declareProperty("energyPosThreshold", m_energyPosThreshold = 0.00001);
   declareProperty("checkPhiLocalMax", m_checkPhiLocalMax = true);
   declareProperty("checkEtaLocalMax", m_checkEtaLocalMax = true);
   declareProperty("saveCells", m_saveCells = false);
@@ -99,6 +98,13 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   float posEta = 0;
   float posPhi = 0;
   float sumEnergyPos = 0;
+
+  // final cluster window
+  int halfEtaFin =  floor(m_nEtaFinal/2.);
+  int halfPhiFin =  floor(m_nPhiFinal/2.);
+  double sumEnergyFin = 0.;
+  int idEtaFin = 0;
+  int idPhiFin = 0;
 
   // loop over all Eta slices starting at the half of the first window
   int halfEtaWin =  floor(m_nEtaWindow/2.);
@@ -168,14 +174,28 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             }
           }
           // If non-zero energy in the cluster, add to pre-clusters (reduced size for pos. calculation -> energy in the core can be zero)
-          if (sumEnergyPos > m_energyPosThreshold) {
+          if (sumEnergyPos != 0) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
-            cluster newPreCluster;
-            newPreCluster.eta = posEta;
-            newPreCluster.phi = posPhi;
-            newPreCluster.transEnergy = sumWindow;
-            m_preClusters.push_back(newPreCluster);
+            // Calculate final cluster energy
+            sumEnergyFin = 0;
+            idEtaFin = idEta(posEta);
+            idPhiFin = idPhi(posPhi);
+            for(int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
+              for(int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
+                if(idEtaFin > 0 && idEtaFin < m_nEtaTower) {
+                  sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+                }
+              }
+            }
+            // check if changing the barycentre did not decrease energy below threshold
+            if (sumEnergyFin > m_energyThreshold) {
+              cluster newPreCluster;
+              newPreCluster.eta = posEta;
+              newPreCluster.phi = posPhi;
+              newPreCluster.transEnergy = sumEnergyFin;
+              m_preClusters.push_back(newPreCluster);
+            }
           }
           posEta = 0;
           posPhi = 0;
@@ -227,28 +247,14 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   double rDetector = tubeSizes.x() * 10; //cm to mm
   auto edmClusters = m_clusters.createAndPut();
   const fcc::CaloHitCollection* cells = m_cells.get();
-  int halfEtaFin =  floor(m_nEtaFinal/2.);
-  int halfPhiFin =  floor(m_nPhiFinal/2.);
-  double sumEnergyFin = 0.;
-  uint idEtaFin = 0;
-  uint idPhiFin = 0;
   for(const auto clu: m_preClusters) {
-    // Calculate final cluster energy
-    sumEnergyFin = 0;
-    idEtaFin = idEta(clu.eta);
-    idPhiFin = idPhi(clu.phi);
-    for(int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
-      for(int ipPhi = idPhiFin-halfPhiFin; ipPhi <= idPhiFin+halfPhiFin; ipPhi++) {
-        sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
-      }
-    }
     auto edmCluster = edmClusters->create();
     auto& edmClusterCore = edmCluster.core();
     edmClusterCore.position.x = rDetector * cos(clu.phi);
     edmClusterCore.position.y = rDetector * sin(clu.phi);
     edmClusterCore.position.z = rDetector * sinh(clu.eta);
-    edmClusterCore.energy = sumEnergyFin * cosh(clu.eta);
-    debug() << "Cluster x: " << edmClusterCore.position.x << " y " <<  edmClusterCore.position.y << " z "<<  edmClusterCore.position.z << " energy " << edmClusterCore.energy <<endmsg;
+    edmClusterCore.energy = clu.transEnergy * cosh(clu.eta);
+    debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << "x: " << edmClusterCore.position.x << " y " <<  edmClusterCore.position.y << " z "<<  edmClusterCore.position.z << " energy " << edmClusterCore.energy <<endmsg;
     if(m_saveCells) {
       // loop over cells and see if they belong here
       for (const auto& cell : *cells) {

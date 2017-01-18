@@ -25,22 +25,24 @@ ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
 ecalFieldValues=[5,1,1,1]
 
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool
+from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-
-from Configurables import NoiseCaloCellsFlatTool
 noise = NoiseCaloCellsFlatTool("NoiseCaloCellsFlatTool", cellNoise = 0.01)
+ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
+                                  readoutName=ecalReadoutName,
+                                  activeVolumeName = ecalVolumeName,
+                                  activeFieldName = ecalIdentifierName,
+                                  fieldNames=ecalFieldNames,
+                                  fieldValues=ecalFieldValues,
+                                  OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
-                              calibTool=calibcells,
+                              geometryTool = ecalgeo,
                               doCellCalibration=True,
-                              noiseTool=noise,
+                              calibTool=calibcells,
                               addCellNoise=True, filterCellNoise=False,
-                              useVolumeIdOnly=False,
-                              readoutName=ecalReadoutName,
-                              fieldNames=ecalFieldNames,
-                              fieldValues=ecalFieldValues,
+                              noiseTool=noise,
                               OutputLevel=DEBUG)
 createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
@@ -54,7 +56,7 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  fieldValues = ecalFieldValues,
                                                  deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                                                  nEtaWindow = 5, nPhiWindow = 15,
-                                                 nEtaPosition = 3, nPhiPosition = 3,
+                                                 nEtaPosition = 5, nPhiPosition = 5,
                                                  nEtaDuplicates = 5, nPhiDuplicates = 15,
                                                  nEtaFinal = 5, nPhiFinal = 15,
                                                  energyThreshold = 7,

@@ -1,15 +1,8 @@
 #ifndef RECINTERFACE_ICALIBRATECALOHITSTOOL_H
 #define RECINTERFACE_ICALIBRATECALOHITSTOOL_H
 
-// from Gaudi
+// Gaudi
 #include "GaudiKernel/IAlgTool.h"
-
-// our EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloHit.h"
-
-
-#include <vector>
 
 /** @class ICalibrateCaloHitsTool
  *

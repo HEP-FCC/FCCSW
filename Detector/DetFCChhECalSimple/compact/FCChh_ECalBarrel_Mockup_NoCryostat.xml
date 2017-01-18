@@ -17,10 +17,10 @@
   </info>
 
   <define>
+    <include ref="FCChh_ECalBarrel_CrystatThickness.xml" />
     <constant name="CryoThickness" value="-1"/>
   </define>
 
-  <include ref="FCChh_ECalBarrel_Common.xml" />
+  <include ref="./FCChh_ECalBarrel_Common.xml" />
 
 </lccdd>
-

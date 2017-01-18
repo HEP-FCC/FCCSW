@@ -43,24 +43,26 @@ mergelayers.DataInputs.inhits.Path = "ECalHits"
 mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
 
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool
+from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-
-from Configurables import NoiseCaloCellsFromFileTool
 noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
+ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
+                                  readoutName=ecalReadoutName,
+                                  activeVolumeName = ecalVolumeName,
+                                  activeFieldName = ecalIdentifierName,
+                                  fieldNames=ecalFieldNames,
+                                  fieldValues=ecalFieldValues,
+                                  # to make it working with MergeLayers algorithm
+                                  activeVolumesNumber=ecalNumberOfLayers,
+                                  OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
-                              calibTool=calibcells,
+                              geometryTool = ecalgeo,
                               doCellCalibration=True,
-                              noiseTool=noise,
+                              calibTool=calibcells,
                               addCellNoise=True, filterCellNoise=False,
-                              useVolumeIdOnly=False,
-                              readoutName=ecalReadoutName,
-                              fieldNames=ecalFieldNames,
-                              fieldValues=ecalFieldValues,
-                              # to make it working with MergeLayers algorithm
-                              activeVolumesNumber=ecalNumberOfLayers,
+                              noiseTool=noise,
                               OutputLevel=DEBUG)
 createcells.DataInputs.hits.Path="mergedECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
@@ -74,10 +76,10 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  fieldValues = ecalFieldValues,
                                                  deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                                                  nEtaWindow = 5, nPhiWindow = 15,
-                                                 nEtaPosition = 3, nPhiPosition = 3,
+                                                 nEtaPosition = 5, nPhiPosition = 5,
                                                  nEtaDuplicates = 5, nPhiDuplicates = 15,
                                                  nEtaFinal = 5, nPhiFinal = 15,
-                                                 energyThreshold = 7,
+                                                 energyThreshold = 10,
                                                  OutputLevel = DEBUG)
 createclusters.DataInputs.cells.Path="caloCells"
 createclusters.DataOutputs.clusters.Path="caloClusters"

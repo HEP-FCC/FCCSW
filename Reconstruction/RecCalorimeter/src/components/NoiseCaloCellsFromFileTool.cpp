@@ -13,9 +13,8 @@
 
 DECLARE_TOOL_FACTORY(NoiseCaloCellsFromFileTool)
 
-NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type,const std::string& name, const IInterface* parent) 
-: GaudiTool(type, name, parent)
-{
+NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type,const std::string& name, const IInterface* parent)
+: GaudiTool(type, name, parent) {
   declareInterface<INoiseCaloCellsTool>(this);
   declareProperty("addPileup", m_addPileup=true);
   declareProperty("noiseFileName", m_noiseFileName="/afs/cern.ch/user/n/novaj/public/fcc_caloCellNoise_mu1000_3radialLayers_v1.root");
@@ -23,14 +22,12 @@ NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type,c
   declareProperty("activeFieldName", m_activeFieldName="active_layer");
   declareProperty("elecNoiseHistoName", m_elecNoiseHistoName="h_elecNoise_layer");
   declareProperty("pileupHistoName", m_pileupHistoName="h_pileup_layer");
- 
+  declareProperty("numRadialLayers",m_numRadialLayers=3);
   //remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)
   declareProperty("filterNoiseThreshold", m_filterThreshold=3);
 }
 
-NoiseCaloCellsFromFileTool::~NoiseCaloCellsFromFileTool()
-{
-}
+NoiseCaloCellsFromFileTool::~NoiseCaloCellsFromFileTool() {}
 
 StatusCode NoiseCaloCellsFromFileTool::initialize() {
   // Get GeoSvc
@@ -48,14 +45,14 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
   }
   m_gauss.initialize(m_randSvc, Rndm::Gauss(0.,1.));
 
-
   //open and check file, read the histograms with noise constants
   if (initNoiseFromFile().isFailure()) {
     error() << "Couldn't open file with noise constants!!!" << endmsg;
     return StatusCode::FAILURE;
   }
   // Get PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+    m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if(m_segmentation == nullptr) {
     error()<<"There is no phi-eta segmentation."<<endmsg;
     return StatusCode::FAILURE;
@@ -86,7 +83,6 @@ void NoiseCaloCellsFromFileTool::filterCellNoise(std::unordered_map<uint64_t, do
   }
 }
 
-
 StatusCode NoiseCaloCellsFromFileTool::finalize() {
   //Delete histograms & file
   debug() << "Deleting histograms with noise constants" << endmsg;
@@ -99,7 +95,7 @@ StatusCode NoiseCaloCellsFromFileTool::finalize() {
     }
   }
   delete m_file;
- 
+
   StatusCode sc = GaudiTool::finalize();
   return sc;
 
@@ -141,7 +137,7 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
       }
     }
   }
-  
+
   //Check if we have same number of histograms (all layers) for pileup and electronics noise
   if (m_histoElecNoiseConst.size()==0) {
     error()<<"No histograms with noise found!!!!"<<endmsg;
@@ -153,11 +149,9 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
       return StatusCode::FAILURE;
     }
   }
-  
+
   return StatusCode::SUCCESS;
-
 }
-
 
 double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
 
@@ -201,7 +195,7 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
     error() << "No histograms with noise constants!!!!! " << endmsg;
   }
 
-  //Total noise: electronics noise + pileup 
+  //Total noise: electronics noise + pileup
   double totalNoise = TMath::Sqrt( TMath::Power(elecNoise,2)+ TMath::Power(pileupNoise,2));
 
   if (totalNoise<1e-3) {
@@ -209,5 +203,4 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   }
 
   return totalNoise;
-
 }

@@ -9,13 +9,13 @@ class IRndmGenSvc;
 // FCCSW
 #include "RecInterface/INoiseCaloCellsTool.h"
 
+
 /** @class NoiseCaloCellsFlatTool
  *
  *  Very simple tool for calorimeter noise using a single noise value for all cells
- *  Energy units are MeV (calibrated to EM scale) --> cannot be merged directly with Geant4 energy deposits for sampling calorimeters!!!
  *  createRandomCellNoise: Create random CaloHits (gaussian distribution) for the vector of cells
  *  filterCellNoise: remove cells with energy bellow threshold*sigma from the vector of cells
- *  
+ *
  *  @author Jana Faltova
  *  @date   2016-09
  *

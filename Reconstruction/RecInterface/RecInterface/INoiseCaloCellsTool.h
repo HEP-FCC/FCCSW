@@ -4,10 +4,6 @@
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
-// our EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/CaloHit.h"
-
 /** @class INoiseCaloCellsTool
  *
  *  Abstract interface to calorimeter noise tool

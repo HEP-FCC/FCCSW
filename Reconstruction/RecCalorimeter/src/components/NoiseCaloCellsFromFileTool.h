@@ -48,7 +48,6 @@ public:
   /// Find the appropriate noise constant from the histogram
   double getNoiseConstantPerCell(int64_t aCellID);
 
-
 private:
   /// Add pileup contribution to the electronics noise? (only if read from file)
   bool m_addPileup;
@@ -64,9 +63,9 @@ private:
   std::string m_elecNoiseHistoName;
   /// Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)
   double m_filterThreshold;
-
   /// Number of radial layers
-  static const unsigned m_numRadialLayers = 3;
+  uint m_numRadialLayers;
+
   /// Histograms with pileup constants (index in array - radial layer)
   std::vector<TH1F*> m_histoPileupConst;
   /// Histograms with electronics noise constants (index in array - radial layer)

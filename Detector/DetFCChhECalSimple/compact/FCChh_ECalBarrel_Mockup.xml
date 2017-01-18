@@ -17,7 +17,8 @@
   </info>
 
   <define>
-    <constant name="CryoThickness" value="100*mm"/>
+    <include ref="FCChh_ECalBarrel_CrystatThickness.xml" />
+    <constant name="CryoThickness" value=CommonCryoThickness/>
   </define>
 
   <include ref="./FCChh_ECalBarrel_Common.xml" />
