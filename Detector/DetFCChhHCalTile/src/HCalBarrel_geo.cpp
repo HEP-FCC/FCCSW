@@ -98,20 +98,21 @@ static DD4hep::Geometry::Ref_t createHCal (
   double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
   double tn = tan(dphi / 2.);
   double spacing = sequenceDimensions.x();
-  //the width of sequence is planced in y
-  double dy0 = sequenceDimensions.dz();
-  //the minimum depth of the sequence defines the minimum depth of the module and first wedge
-  double dz0 = sequenceeDimensions.dr() / 2.;
+  //the half width of sequence is planced in y
+  double dy0 = dzSequence * 0.5;
+  //the half minimum depth of the sequence defines the minimum depth of the module and first wedge
+  double dz0 = sequenceeDimensions.dr() * 0.5;
 
+  //- changed dxWedge12 to dx12Module
+  //- changed drWedge to dzModule, to be height of trapezoid 
+  double dx1Module = tn * sensitiveBarrelRmin - spacing;
+  double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;
   //double drWedge = cos(dphi / 2.) * (dimensions.rmax() - sensitiveBarrelRmin) * 0.5;
-  //-changed drWedge to be rmax-(rmin/cos(dphi/2)) * 0.5 
-  double drModule = (dimensions.rmax() - (sensitiveBarrelRmin / cos(dphi / 2.) ) ) * 0.5;
-  double dxWedge1 = tn * sensitiveBarrelRmin - spacing;
-  double dxWedge2 = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;
+  double dzModule = ( dx2Module / tn - sensitiveBarrelRmin ) * 0.5;
 
   // First we construct one module:
   Volume subWedgeVolume("subWedge", DD4hep::Geometry::Trapezoid(
-        dxWedge1, dxWedge2, dzSequence, dzSequence, drModule
+        dx1Module, dx2Module, dy0, dy0, dzModule
       ), lcdd.material("Air")
   );
   // Placement of single wedges in the module 
