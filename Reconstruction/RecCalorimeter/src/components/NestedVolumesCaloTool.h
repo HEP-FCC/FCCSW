@@ -9,7 +9,8 @@
 
 class IGeoSvc;
 
-/** @class NestedVolumesCaloTool Reconstruction/RecCalorimeter/src/components/NestedVolumesCaloTool.h NestedVolumesCaloTool.h
+/** @class NestedVolumesCaloTool Reconstruction/RecCalorimeter/src/components/NestedVolumesCaloTool.h
+ *NestedVolumesCaloTool.h
  *
  *  Tool for geometry-dependent settings of the digitisation.
  *  It assumes no segmentation is used. It may be used for nested volumes.
@@ -18,11 +19,10 @@ class IGeoSvc;
  *  @author Anna Zaborowska
  */
 
-class NestedVolumesCaloTool : public GaudiTool, virtual public ICalorimeterTool
-{
+class NestedVolumesCaloTool : public GaudiTool, virtual public ICalorimeterTool {
 public:
-  NestedVolumesCaloTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~NestedVolumesCaloTool();
+  NestedVolumesCaloTool(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~NestedVolumesCaloTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
   /** Prepare a map of all existing cells in current geometry.

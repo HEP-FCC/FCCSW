@@ -20,7 +20,7 @@ class CaloClusterCollection;
 #include "DD4hep/Readout.h"
 namespace DD4hep {
 namespace DDSegmentation {
-  class Segmentation;
+class Segmentation;
 }
 }
 
@@ -35,7 +35,8 @@ struct cluster {
  *
  *  Algorithm for creating calorimeter clusters from cells.
  *
- *  Reconstruction is performed for the calorimeter with readout '\b readoutName' and volume ID retrieved using '\b fieldNames' and '\b fieldValues'.
+ *  Reconstruction is performed for the calorimeter with readout '\b readoutName' and volume ID retrieved using '\b
+ *fieldNames' and '\b fieldValues'.
  *
  *  Sliding window algorithm:
  *  1. Create calorimeter towers.
@@ -44,22 +45,28 @@ struct cluster {
  *     TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower
  *     and that can be achieved using `GridEtaPhi` segmentation.
  *  2. Find local maxima.
- *     Local maxima are found using the sliding window of a fixed size in phi x eta ('\b nEtaWindow' '\b nPhiWindow' in units of tower size).
- *     If a local max is found and its energy is above threshold ('\b energyThreshold'), it is added to the preclusters list.
+ *     Local maxima are found using the sliding window of a fixed size in phi x eta ('\b nEtaWindow' '\b nPhiWindow' in
+ *units of tower size).
+ *     If a local max is found and its energy is above threshold ('\b energyThreshold'), it is added to the preclusters
+ *list.
  *     Each precluster contains the barycentre position and the transverse energy.
  *     Position is recalculated using the window size in eta x phi ('\b nEtaPosition', '\b nPhiPosition')
- *     that may be smaller than the sliding window to reduce the noise influence. Both windows are centred at the same tower.
+ *     that may be smaller than the sliding window to reduce the noise influence. Both windows are centred at the same
+ *tower.
  *     The energy of the precluster is the energy calculated using the sliding window.
  *  3. Remove duplicates.
- *     If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the pre-cluster with lower energy is removed.
- *     TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than sliding window, some towers may be taken twice (nstead of the weighted energy).
+ *     If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the
+ *pre-cluster with lower energy is removed.
+ *     TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than
+ *sliding window, some towers may be taken twice (nstead of the weighted energy).
  *  4. Build clusters.
- *     Clusters are created using the window of a fixed size in phi x eta ('\b nEtaFinal' '\b nPhiFinal' in units of tower size) around the barycentre position.
+ *     Clusters are created using the window of a fixed size in phi x eta ('\b nEtaFinal' '\b nPhiFinal' in units of
+ *tower size) around the barycentre position.
  *     Position is calculated from the barycentre position and the inner radius of the detector.
  *     For each cluster the cell collection is searched and all those inside the cluster are attached.
- *     TODO: Final cluster may have a different size, so recalculation of energy around the tower containing barycentre should be done.
- *  Sliding window performs well for electrons/gamma reconstruction.
- *  Topological clusters should be better for jets.
+ *
+ *  Note: Sliding window performs well for electrons/gamma reconstruction. Topological clusters should be better for
+ *jets.
  *
  *  @author Jana Faltova
  *  @author Anna Zaborowska
@@ -119,7 +126,7 @@ private:
    *   @param[in] aIPhi requested ID of a phi tower, may be < 0 or >= m_nPhiTower
    *   @return  ID of a tower - shifted and corrected (in [0, m_nPhiTower) range)
    */
-  uint phiNeighbour(int aIPhi) const;
+  unsigned int phiNeighbour(int aIPhi) const;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for calo cells (input collection)
@@ -156,11 +163,11 @@ private:
   int m_nEtaPosition;
   /// Size of the window in phi for cluster position calculation (in units of tower size)
   int m_nPhiPosition;
- /// Size of the window in eta for the overlap removal (in units of tower size)
+  /// Size of the window in eta for the overlap removal (in units of tower size)
   int m_nEtaDuplicates;
   /// Size of the window in phi for the overlap removal (in units of tower size)
   int m_nPhiDuplicates;
- /// Size of the window in eta for the final cluster building (in units of tower size)
+  /// Size of the window in eta for the final cluster building (in units of tower size)
   int m_nEtaFinal;
   /// Size of the window in phi for the final cluster building (in units of tower size)
   int m_nPhiFinal;
@@ -172,7 +179,6 @@ private:
   bool m_checkEtaLocalMax;
   /// Flag if references to the cells should be saved
   bool m_saveCells;
-
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */

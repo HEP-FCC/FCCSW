@@ -9,7 +9,8 @@
 
 class IGeoSvc;
 
-/** @class TubeLayerPhiEtaCaloTool Reconstruction/RecCalorimeter/src/components/TubeLayerPhiEtaCaloTool.h TubeLayerPhiEtaCaloTool.h
+/** @class TubeLayerPhiEtaCaloTool Reconstruction/RecCalorimeter/src/components/TubeLayerPhiEtaCaloTool.h
+ *TubeLayerPhiEtaCaloTool.h
  *
  *  Tool for geometry-dependent settings of the digitisation.
  *  It assumes cylindrical geometry (layers) and phi-eta segmentation.
@@ -17,11 +18,10 @@ class IGeoSvc;
  *  @author Anna Zaborowska
  */
 
-class TubeLayerPhiEtaCaloTool : public GaudiTool, virtual public ICalorimeterTool
-{
+class TubeLayerPhiEtaCaloTool : public GaudiTool, virtual public ICalorimeterTool {
 public:
-  TubeLayerPhiEtaCaloTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~TubeLayerPhiEtaCaloTool();
+  TubeLayerPhiEtaCaloTool(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~TubeLayerPhiEtaCaloTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
   /** Prepare a map of all existing cells in current geometry.

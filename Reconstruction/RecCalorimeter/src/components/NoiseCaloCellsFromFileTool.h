@@ -12,8 +12,8 @@ class IRndmGenSvc;
 class IGeoSvc;
 
 // Root
-#include "TH1F.h"
-#include "TFile.h"
+class TH1F;
+class TFile;
 
 /** @class NoiseCaloCellsFromFileTool
  *
@@ -27,11 +27,10 @@ class IGeoSvc;
  *
  */
 
-class NoiseCaloCellsFromFileTool : public GaudiTool, virtual public INoiseCaloCellsTool
-{
+class NoiseCaloCellsFromFileTool : public GaudiTool, virtual public INoiseCaloCellsTool {
 public:
-  NoiseCaloCellsFromFileTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~NoiseCaloCellsFromFileTool();
+  NoiseCaloCellsFromFileTool(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~NoiseCaloCellsFromFileTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
@@ -76,13 +75,12 @@ private:
   /// Gaussian random number generator used for the generation of random noise hits
   Rndm::Numbers m_gauss;
 
-  TFile* m_file;
+  std::unique_ptr<TFile> m_file;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
-
 };
 
 #endif /* RECCALORIMETER_NOISECALOCELLSCOMPLEXTOOL_H */

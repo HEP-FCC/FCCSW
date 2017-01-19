@@ -11,8 +11,6 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
 
-
-
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
 
@@ -39,8 +37,7 @@ class IGeoSvc;
  *
  */
 
-class CreateCaloCells : public GaudiAlgorithm
-{
+class CreateCaloCells : public GaudiAlgorithm {
 public:
   CreateCaloCells(const std::string& name, ISvcLocator* svcLoc);
 
@@ -51,7 +48,6 @@ public:
   StatusCode finalize();
 
 private:
-
   /// Handle for calibration Geant4 energy to EM scale tool
   ToolHandle<ICalibrateCaloHitsTool> m_calibTool;
   /// Handle for the calorimeter cells noise tool
@@ -79,15 +75,18 @@ private:
   std::vector<std::string> m_fieldNames;
   /// Values of the fields describing the segmented volume
   std::vector<int> m_fieldValues;
-  /// Temporary: for use with MergeLayer tool
+  /** Temporary: for use with MergeLayer tool
+   * MergeLayer is going to be replaced by RedoSegmentation once we can define segmentation with variable cell (layer)
+   * size.
+   * This property won't be needed anymore.
+   */
   unsigned int m_activeVolumesNumber;
   /// Use only volume ID? If false, using PhiEtaSegmentation
   bool m_useVolumeIdOnly;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Map of cells and energy
+  /// Map of cell IDs (corresponding to DD4hep IDs) and energy
   std::unordered_map<uint64_t, double> m_cellsMap;
-
 };
 
 #endif /* RECCALORIMETER_CREATECALOCELLS_H */
