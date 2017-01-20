@@ -13,7 +13,6 @@ class IGeoSvc;
 
 // Root
 class TH1F;
-class TFile;
 
 /** @class NoiseCaloCellsFromFileTool
  *
@@ -66,16 +65,14 @@ private:
   uint m_numRadialLayers;
 
   /// Histograms with pileup constants (index in array - radial layer)
-  std::vector<TH1F*> m_histoPileupConst;
+  std::vector<TH1F> m_histoPileupConst;
   /// Histograms with electronics noise constants (index in array - radial layer)
-  std::vector<TH1F*> m_histoElecNoiseConst;
+  std::vector<TH1F> m_histoElecNoiseConst;
 
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for the generation of random noise hits
   Rndm::Numbers m_gauss;
-
-  std::unique_ptr<TFile> m_file;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

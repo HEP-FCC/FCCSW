@@ -85,16 +85,6 @@ void NoiseCaloCellsFromFileTool::filterCellNoise(std::unordered_map<uint64_t, do
 }
 
 StatusCode NoiseCaloCellsFromFileTool::finalize() {
-  // Delete pointers to histograms
-  debug() << "Deleting pointers to histograms with noise constants" << endmsg;
-  for (auto it : m_histoElecNoiseConst) {
-    delete it;
-  }
-  if (m_addPileup) {
-    for (auto it : m_histoPileupConst) {
-      delete it;
-    }
-  }
   StatusCode sc = GaudiTool::finalize();
   return sc;
 }
@@ -105,8 +95,8 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
     error() << "Name of the file with noise values not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_file = std::unique_ptr<TFile>(new TFile(m_noiseFileName.c_str(), "READ"));
-  if (m_file->IsZombie()) {
+  TFile file(m_noiseFileName.c_str(), "READ");
+  if (file.IsZombie()) {
     error() << "Couldn't open the file with noise constants" << endmsg;
     return StatusCode::FAILURE;
   } else {
@@ -118,18 +108,18 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
   for (unsigned i = 0; i < m_numRadialLayers; i++) {
     elecNoiseLayerHistoName = m_elecNoiseHistoName + std::to_string(i + 1);
     debug() << "Getting histogram with a name " << elecNoiseLayerHistoName << endmsg;
-    m_histoElecNoiseConst.push_back(dynamic_cast<TH1F*>(m_file->Get(elecNoiseLayerHistoName.c_str())));
-    if (m_histoElecNoiseConst.at(i) == nullptr) {
-      error() << "Histogram  " << elecNoiseLayerHistoName << " does not exist!!!!" << endmsg;
+    m_histoElecNoiseConst.push_back(*dynamic_cast<TH1F*>(file.Get(elecNoiseLayerHistoName.c_str())));
+    if (m_histoElecNoiseConst.at(i).GetNbinsX() < 1) {
+      error() << "Histogram  " << elecNoiseLayerHistoName << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
       return StatusCode::FAILURE;
     }
     if (m_addPileup) {
       pileupLayerHistoName = m_pileupHistoName + std::to_string(i + 1);
       debug() << "Getting histogram with a name " << pileupLayerHistoName << endmsg;
-      m_histoPileupConst.push_back(dynamic_cast<TH1F*>(m_file->Get(pileupLayerHistoName.c_str())));
-      if (m_histoPileupConst.at(i) == nullptr) {
-        error() << "Histogram  " << pileupLayerHistoName << " does not exist!!!!" << endmsg;
-        return StatusCode::FAILURE;
+      m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file.Get(pileupLayerHistoName.c_str())));
+      if (m_histoPileupConst.at(i).GetNbinsX() < 1) {
+	error() << "Histogram  " << pileupLayerHistoName << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
+	return StatusCode::FAILURE;
       }
     }
   }
@@ -165,10 +155,10 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   // Using the histogram in the first layer to get the bin size
   unsigned index = 0;
   if (m_histoElecNoiseConst.size() != 0) {
-    int Nbins = m_histoElecNoiseConst.at(index)->GetNbinsX();
+    int Nbins = m_histoElecNoiseConst.at(index).GetNbinsX();
     double deltaEtaBin =
-        (m_histoElecNoiseConst.at(index)->GetBinLowEdge(Nbins) + m_histoElecNoiseConst.at(index)->GetBinWidth(Nbins) -
-         m_histoElecNoiseConst.at(index)->GetBinLowEdge(1)) /
+        (m_histoElecNoiseConst.at(index).GetBinLowEdge(Nbins) + m_histoElecNoiseConst.at(index).GetBinWidth(Nbins) -
+         m_histoElecNoiseConst.at(index).GetBinLowEdge(1)) /
         Nbins;
     // find the eta bin for the cell
     int ibin = floor(TMath::Abs(cellEta) / deltaEtaBin) + 1;
@@ -178,9 +168,9 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
     }
     // Check that there are not more layers than the constants are provided for
     if (cellLayer < m_histoElecNoiseConst.size()) {
-      elecNoise = m_histoElecNoiseConst.at(cellLayer)->GetBinContent(ibin);
+      elecNoise = m_histoElecNoiseConst.at(cellLayer).GetBinContent(ibin);
       if (m_addPileup) {
-        pileupNoise = m_histoPileupConst.at(cellLayer)->GetBinContent(ibin);
+        pileupNoise = m_histoPileupConst.at(cellLayer).GetBinContent(ibin);
       }
     } else {
       error()
