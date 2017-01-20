@@ -13,11 +13,7 @@
   </info>
 
   <define>
-    <!-- Note that this is just a guideline to the factory method: It will actually do a HCal of length
-      static_cast<int>(BarHCal_dz / Module_thickness) +
-    -->
     <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax-200*mm"/>
-    <!-- NOTE: All lengths (anything but radii) given below are interpreted as half-lenghts! -->
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
     <constant name="BarHCal_n_phi_modules" value="128"/>
@@ -34,28 +30,23 @@
   </define>
 
   <display>
-    <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="false" visible="false" drawingStyle="solid" />
+    <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_steel_master_vis" r="0.6" g="0.6" b="0.6" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_face_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_end_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_polystyrene_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="false" visible="true" drawingStyle="solid" />
     <vis name="hcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
     <vis name="hcal_barrel_seq1_vis" r="0.1" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
-    <vis name="hcal_barrel_seq2_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="false" />
-    <!--vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" /-->
-    <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="false" />
+    <vis name="hcal_barrel_seq2_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" />
   </display>
 
   <readouts>
     <readout name="BarHCal_Readout">
-<<<<<<< HEAD
      <!-- <segmentation type="CartesianGridXY" grid_size_x="1*cm" grid_size_y="1*cm"/>
       <id>system:4,layer:6,wedge:7,sub_module:2,row:10,x:32:-16,y:-16</id>
 -->
-     <id>system:4,layer:6,wedge:7,sub_module:2,row:17</id>
-=======
-      <id>system:4,layer:6,wedge:7,sub_module:2,row:10</id>
->>>>>>> faltova/caloReconstruction
+     <id>system:4,wedge:7,row:10,layer:6,sub_module:2</id>
     </readout>
   </readouts>
 
