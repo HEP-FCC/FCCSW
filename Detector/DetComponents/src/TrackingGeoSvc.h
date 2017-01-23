@@ -44,10 +44,6 @@ public:
   virtual StatusCode initialize();
   /// Finalize function
   virtual StatusCode finalize();
-  /** Query the interfaces.
-   /   Input: riid, Requested interface ID
-   /          ppvInterface, Pointer to requested interface **/
-  //       StatusCode queryInterface( const InterfaceID& riid, void** ppvInterface );
   // receive DD4hep Geometry
   virtual std::shared_ptr<Acts::TrackingGeometry> trackingGeometry() const;
 
