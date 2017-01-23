@@ -39,7 +39,7 @@ class CreatePositionedHit : public GaudiAlgorithm
 public:
   CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc);
 
-  ~CreatePositionedHit();
+  ~CreatePositionedHit() = default;
 
   StatusCode initialize();
 

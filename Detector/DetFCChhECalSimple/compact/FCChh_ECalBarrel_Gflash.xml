@@ -9,20 +9,26 @@
     url="no"
     status="development"
     version="1.0">
-    <comment>ECal lAr-Pb simple cylindrical layers design, with GFlash SD. Based on FCChh_ECalBarrel_Mockup</comment>
+    <comment>
+      Most simple liquid argon - lead Ecal design.
+      It consists of cylindrical layers of lead and liquid argon.
+      It includes cryostat.
+      Using implementation of sensitive detector that allows fast sim.
+      It is not possible to use ./FCChh_ECalBarrel_Common.xml as constants cannot be strings, so no generalisation can be made for sensitive detector type.
+    </comment>
   </info>
 
   <define>
-    <constant name="BarECalOuterSpacer" value="100*mm"/>
-    <constant name="BarECalCryoThickness" value="100*mm"/>
-    <!-- calorimeter volume -->
-    <constant name="BarCryoECal_rmin" value="BarECal_rmin+BarECalOuterSpacer"/>
-    <constant name="BarCryoECal_rmax" value="BarECal_rmax-BarECalOuterSpacer"/>
+    <constant name="CryoThickness" value="100*mm"/>
+    <constant name="LArBathThickness" value="100*mm"/>
+    <!-- overall calorimeter volume (including cryostat) -->
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax"/>
     <constant name="BarCryoECal_dz" value="BarECal_dz"/>
-
-    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+BarECalCryoThickness"/>
-    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-BarECalCryoThickness"/>
-    <constant name="EMBarrel_dz" value="BarECal_dz-BarECalCryoThickness"/>
+    <!-- calorimeter active volume -->
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CryoThickness+LArBathThickness"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CryoThickness-LArBathThickness"/>
+    <constant name="EMBarrel_dz" value="BarECal_dz-CryoThickness"/>
   </define>
 
   <display>
@@ -31,17 +37,17 @@
 
   <readouts>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="0.5" phi_bins="5"/>
-      <id>system:3,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-6,phi:-4</id>
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629"/>
+      <id>system:4,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-9,phi:-10</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="5" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
+    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
       <sensitive type="GflashCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
       <cryostat id="1" name="ECAL_Cryo" material="Air" >
-        <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="10*mm" />
+        <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness" />
       </cryostat>
       <calorimeter id="1" name="EM_barrel" >
         <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
