@@ -16,6 +16,7 @@ static DD4hep::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4he
   // add Extension to Detlement for the RecoGeometry
   Acts::ActsExtension::Config volConfig;
   volConfig.isBeampipe = true;
+  // ownership of extension object given to the DetElement 
   Acts::ActsExtension* detvolume = new Acts::ActsExtension(volConfig);
   beamtube.addExtension<Acts::IActsExtension>(detvolume);
   // add Extension to Detlement for the RecoGeometry
