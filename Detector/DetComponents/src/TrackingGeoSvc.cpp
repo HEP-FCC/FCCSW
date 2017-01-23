@@ -22,8 +22,33 @@ StatusCode TrackingGeoSvc::initialize() {
     error() << "Unable to locate Geometry Service" << endmsg;
     return StatusCode::FAILURE;
   }
+  /// @todo: this is an ad-hoc conversion between gaudi and acts msg levels.
+  // A proper logger for acts should be implemented, and this removed.
+  Acts::Logging::Level geoMsgLevel;
+  switch  (msgLevel()) {
+    case (MSG::DEBUG):
+      geoMsgLevel = Acts::Logging::DEBUG;
+      break;
+    case (MSG::VERBOSE):
+      geoMsgLevel = Acts::Logging::VERBOSE;
+      break;
+    case (MSG::INFO):
+      geoMsgLevel = Acts::Logging::INFO;
+      break;
+    case (MSG::WARNING):
+      geoMsgLevel = Acts::Logging::WARNING;
+      break;
+    case (MSG::FATAL):
+      geoMsgLevel = Acts::Logging::FATAL;
+      break;
+    case (MSG::ERROR):
+      geoMsgLevel = Acts::Logging::ERROR;
+      break;
+    default:
+      geoMsgLevel = Acts::Logging::VERBOSE;
+  }
   m_trackingGeo = std::move(Acts::convertDD4hepDetector(
-        m_geoSvc->getDD4HepGeo(),Acts::Logging::VERBOSE, Acts::equidistant, Acts::equidistant, Acts::equidistant));
+        m_geoSvc->getDD4HepGeo(), geoMsgLevel, Acts::equidistant, Acts::equidistant, Acts::equidistant));
   return StatusCode::SUCCESS;
 }
 
