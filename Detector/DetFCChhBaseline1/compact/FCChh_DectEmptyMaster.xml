@@ -13,11 +13,11 @@
     author="C. Helsens"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>Use this one if you want to use official dimensions but only place one detector inside</comment>
   </info>
   <define>
-    <constant name="world_size" value="80*m"/>
+    <constant name="world_size" value="30*m"/>
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>

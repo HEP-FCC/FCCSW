@@ -83,7 +83,7 @@ StatusCode ParticleGunAlg::execute() {
   theEvent -> set_signal_process_id( 0 ) ;
   theEvent -> set_signal_process_vertex( v ) ;
 
-  m_vertexSmearingTool->smearVertex(theEvent);
+  m_vertexSmearingTool->smearVertex(*theEvent);
 
   m_hepmchandle.put(theEvent);
   return sc;

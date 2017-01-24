@@ -11,7 +11,7 @@ PoissonPileUp::PoissonPileUp(
   const IInterface* parent )
   : GaudiTool ( type, name , parent ) {
   declareInterface< IPileUpTool >( this );
-  
+
  declareProperty( "numPileUpEvents", m_meanPileUpEvents = 0 );
  declareProperty( "Filename", m_filename = "");
 }
@@ -26,7 +26,7 @@ StatusCode PoissonPileUp::initialize( ) {
   IRndmGenSvc * randSvc = svc< IRndmGenSvc >( "RndmGenSvc" , true ) ;
   if ( m_meanPileUpEvents < 0 ) return Error( "Number of Pileup events cannot be negative!" ) ;
   sc = m_PoissonDist.initialize( randSvc , Rndm::Poisson( m_meanPileUpEvents ) ) ;
-  if ( ! sc.isSuccess() ) 
+  if ( ! sc.isSuccess() )
     return Error( "Could not initialize Poisson random number generator" ) ;
   release( randSvc ) ;
   m_currentNumPileUpEvents = m_PoissonDist();
@@ -39,6 +39,7 @@ std::string PoissonPileUp::getFilename() {
 }
 
 unsigned int PoissonPileUp::numberOfPileUp( ) {
+  m_currentNumPileUpEvents = m_PoissonDist();
   return m_currentNumPileUpEvents;
 }
 

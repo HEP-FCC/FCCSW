@@ -32,17 +32,18 @@ geantservice = SimG4Svc("SimG4Svc",
                         physicslist="SimG4FtfpBert",
                         actions="SimG4FullSimActions")
 
-from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
-savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits")
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
+from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool, InspectHitsCollectionsTool
+inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["TrackerSiliconHits"], OutputLevel = DEBUG)
+
+savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerSiliconHits"])
+savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
 savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
 
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/SimG4SaveTrackerHits",
-                             "InspectHitsCollectionsTool"],
+                             "InspectHitsCollectionsTool/inspect"],
                     eventProvider=particle_converter)
 
 from Configurables import FCCDataSvc, PodioOutput

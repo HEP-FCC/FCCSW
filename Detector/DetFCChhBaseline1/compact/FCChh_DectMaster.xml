@@ -13,29 +13,33 @@
     author="C. Helsens"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>master file with includes and world dimension</comment>
   </info>
   <define>
-    <constant name="world_size" value="80*m"/>
+    <constant name="world_size" value="25*m"/>
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>
   </define>
   <include ref="./FCChh_DectDimensions.xml" />
+  <include ref="./FCChh_Visualisation.xml" />
 
   <!-- Including the sub-detectors / volume definitions -->
   <include ref="./FCChh_BeamTube.xml" />
   <include ref="./FCChh_Solenoids.xml" />
-  <include ref="./FCChh_Dipoles.xml" />
-  <include ref="../../DetFCChhTrackerSimple/compact/FCChh_Tracker.xml" />
+  <include ref="./FCChh_Shielding.xml" />
+
+
+  <include ref="../../DetFCChhTrackerSimple/compact/Tracker.xml" />
   <include ref="../../DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
-  <!--
+
+  <!-->
     These can be used as replacement if you want to use only a sub-set of detectors:
-    <include ref="../../DetCommon/compact/TrackerAir.xml" />
-    <include ref="../../DetCommon/compact/EcalAir.xml" />
+    <include ref="./FCChh_TrackerAir.xml" />
+    <include ref="./FCChh_ECalAir.xml" />
     <include ref="../../DetCommon/compact/HcalAir.xml" />
   -->
-  <include ref="../../DetCommon/compact/MuonSystemAir.xml" />
+  <include ref="./FCChh_MuonAir.xml" />
 </lccdd>

@@ -8,7 +8,7 @@
     author="A.Dell'Acqua"
     url="no"
     status="development"
-    version="$Id:??$">
+    version="1.0">
     <comment>ECal very conceptual design</comment>
   </info>
 
@@ -30,9 +30,9 @@
   </display>
 
   <readouts>
-    <readout name="BarECal_Readout">
-      <segmentation type="CartesianGridXY" grid_size_x="0.5*mm" grid_size_y="0.5*mm"/>
-      <id>system:3,ECAL_Cryo:1,active:1,EM_barrel:1,layer:7,x:32:-16,y:-16</id>
+    <readout name="ECalHitsPhiEta">
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629"/>
+      <id>system:4,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:-9,phi:-10</id>
     </readout>
   </readouts>
 

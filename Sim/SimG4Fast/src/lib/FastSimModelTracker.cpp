@@ -6,24 +6,45 @@
 
 // Gaudi
 #include "GaudiKernel/IToolSvc.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 // Geant4
 #include "G4PathFinder.hh"
 #include "G4FieldTrackUpdator.hh"
 #include "G4PrimaryParticle.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4UnitsTable.hh"
 
 namespace sim {
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope, const std::string& aSmearToolName):
+
+FastSimModelTracker::FastSimModelTracker(
+  const std::string& aModelName,
+  G4Region* aEnvelope,
+  ToolHandle<ISimG4ParticleSmearTool>& aSmearTool,
+  double aMinMomentum,
+  double aMaxMomentum,
+  double aMaxEta):
   G4VFastSimulationModel(aModelName, aEnvelope),
-  m_toolSvc("ToolSvc","ToolSvc") {
-  if( m_toolSvc->retrieveTool(aSmearToolName, m_smearTool, 0, false).isFailure())
-    throw GaudiException("Smearing tool "+aSmearToolName+" not found",
-                         "FastSimModelTracker", StatusCode::FAILURE);
+  m_msgSvc("MessageSvc","FastSimModelTracker"),
+  m_log(&(*m_msgSvc),"FastSimModelTracker"),
+  m_smearTool(aSmearTool),
+  m_minTriggerMomentum(aMinMomentum/Gaudi::Units::MeV),
+  m_maxTriggerMomentum(aMaxMomentum/Gaudi::Units::MeV),
+  m_maxTriggerEta(aMaxEta) {
+  m_log<<MSG::INFO<<"Tracker smearing configuration:\n"
+       <<"\tEnvelope name:\t"<<aEnvelope->GetName()<<"\n"
+       <<"\tMomentum range:\t"<<G4BestUnit(m_minTriggerMomentum, "Energy")
+       <<" - "<<G4BestUnit(m_maxTriggerMomentum, "Energy")<<"\n"
+       <<"\tMaximum pseudorapidity:\t"<<m_maxTriggerEta<<"\n"
+       <<endmsg;
 }
 
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName)
-  : G4VFastSimulationModel(aModelName), m_toolSvc("ToolSvc","ToolSvc") {}
+FastSimModelTracker::FastSimModelTracker(const std::string& aModelName,
+  ToolHandle<ISimG4ParticleSmearTool>& aSmearTool)
+  : G4VFastSimulationModel(aModelName),
+    m_msgSvc("MessageSvc","FastSimModelTracker"),
+    m_log(&(*m_msgSvc),"FastSimModelTracker"),
+    m_smearTool(aSmearTool) {}
 
 FastSimModelTracker::~FastSimModelTracker() {}
 
@@ -31,8 +52,26 @@ G4bool FastSimModelTracker::IsApplicable(const G4ParticleDefinition& aParticleTy
   return aParticleType.GetPDGCharge() != 0;
 }
 
-G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& /*aFastTrack*/) {
-  return true;
+G4bool FastSimModelTracker::ModelTrigger(const G4FastTrack& aFastTrack) {
+  double momentum = aFastTrack.GetPrimaryTrackLocalMomentum().mag();
+  double eta = aFastTrack.GetPrimaryTrackLocalDirection().eta();
+  // first check pseudorapidity
+  if(m_maxTriggerEta > 0) {
+    if(eta > m_maxTriggerEta) {
+      // do not trigger if eta is larger than threshold (if defined)
+      return false;
+    }
+  }
+  // next check momentum
+  if(m_minTriggerMomentum == m_maxTriggerMomentum) {
+    // if no trigger threshold defined for the model
+    return true;
+  }
+  // check the threshold
+  if(momentum >= m_minTriggerMomentum && momentum <= m_maxTriggerMomentum) {
+    return true;
+  }
+  return false;
 }
 
 void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack,

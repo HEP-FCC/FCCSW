@@ -39,13 +39,3 @@ StatusCode SimG4ParticleSmearSimple::smearMomentum( CLHEP::Hep3Vector& aMom, int
   aMom *= tmp;
   return StatusCode::SUCCESS;
 }
-
-StatusCode SimG4ParticleSmearSimple::smearEnergy( double& aEn, int /*aPdg*/) {
-  double tmp;
-  do {
-    tmp = m_gauss.shoot();
-    aEn *= tmp;
-  }
-  while(aEn<0);
-  return StatusCode::SUCCESS;
-}

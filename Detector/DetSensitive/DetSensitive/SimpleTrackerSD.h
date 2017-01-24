@@ -11,9 +11,9 @@
 /** SimpleTrackerSD DetectorDescription/DetSensitive/src/SimpleTrackerSD.h SimpleTrackerSD.h
  *
  *  Simple sensitive detector for tracker.
- *  It is based on DD4hep::Simulation::Geant4GenericSD<Tracker> (and is meant to be identical).
- *  In particular, the position of the hit is set to middle step between
- *  G4Step::GetPreStepPoint() and G4Step::GetPostStepPoint()
+ *  The position of the hit is set to the position from G4Step::GetPreStepPoint() to ensure that the volume ID
+ *  is calculated for the correct volume (in case where step is limited by a boundary, post-step point
+ *  belongs to the next volume).
  *
  *  @author    Anna Zaborowska
  */
@@ -47,7 +47,7 @@ namespace det {
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* trackerCollection;
+  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* m_trackerCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
 };

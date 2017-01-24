@@ -4,10 +4,22 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+pgun = MomentumRangeParticleGun("PGun",
+                                PdgCodes=[11], # electron
+                                MomentumMin = 10, # GeV
+                                MomentumMax = 10, # GeV
+                                ThetaMin = 1.57, # rad
+                                ThetaMax = 1.57, # rad
+                                PhiMin = 0, # rad
+                                PhiMax = 3.14) # rad
+gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
+gen.DataOutputs.hepmc.Path = "hepmc"
+
+from Configurables import Gaudi__ParticlePropertySvc
+## Particle service
+# list of possible particles is defined in ParticlePropertiesFile
+ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
@@ -19,19 +31,18 @@ hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Detector/DetFCChhTrackerParametric/compact/ParametricSimTrackerStandalone.xml'])
+geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
+                                         'file:../../../Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimActions, SimG4ParticleSmearSimple
-# create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearSimple("Smear",sigma = 0.013)
-# create actions initialization tool
-actionstool = SimG4FastSimActions("Actions", smearing=smeartool)
+from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4FastSimTrackerRegion
+## create region and a parametrisation model with a default smearing (sigma=const=0.01)
+regiontool = SimG4FastSimTrackerRegion("model", volumeNames=["TrackerEnvelopeBarrel"])
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=physicslisttool, actions=actionstool)
+geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/model"])
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -40,7 +51,6 @@ from Configurables import SimG4Alg, SimG4SaveSmearedParticles, SimG4PrimariesFro
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveSmearedParticles")
 # and YY is the given name ("saveSmearedParticles")
 saveparticlestool = SimG4SaveSmearedParticles("saveSmearedParticles")
-saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
 saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
@@ -51,7 +61,6 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
-hist.DataInputs.particles.Path = "smearedParticles"
 hist.DataInputs.particlesMCparticles.Path = "particleMCparticleAssociation"
 THistSvc().Output = ["rec DATAFILE='histSimple.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
@@ -66,10 +75,10 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
-                EvtMax   = 100,
+                EvtMax   = 1000,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podioevent, geoservice, geantservice],
+                ExtSvc = [ppservice, podioevent, geoservice, geantservice],
                 OutputLevel=INFO
  )

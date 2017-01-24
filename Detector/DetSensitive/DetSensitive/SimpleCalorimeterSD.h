@@ -11,11 +11,11 @@
 
 /** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
  *
- *  Simple sensitive detector for calorimeter (accumulates energy deposits).
+ *  Simple sensitive detector for calorimeter.
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
- *  In particular, the position of the hit is set to middle step between
- *  G4Step::GetPreStepPoint() and G4Step::GetPostStepPoint()
- *  No timing information is saved (energy deposits aggregated in the cells)
+ *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
+ *  New hit is created for each energy deposit.
+ *  No timing information is saved.
  *
  *  @author    Anna Zaborowska
  */
@@ -43,15 +43,14 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
   /** Process hit once the particle hit the sensitive volume.
    *  Checks if the energy deposit is larger than 0, calculates the position and cellID,
    *  saves that into the hit collection.
-   *  If there is already entry in the same cell, the energy is accumulated.
-   *  Otherwise new hit is created.
+   *  New hit is created for each energy deposit.
    *  @param aStep Step in which particle deposited the energy.
    */
   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* calorimeterCollection;
+  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
 };
