@@ -177,7 +177,7 @@ StatusCode TrackFit::execute() {
 
   debug() << "created " << fccMeasurements.size() << " fcc-measurements" << endmsg;
   for (const auto& m : fccMeasurements)
-    info() << m << endmsg
+    info() << m << endmsg;
 
   KalmanFitter<MyExtrapolator, CacheGenerator, NoCalibration, GainMatrixUpdator> KF;
   KF.m_oCacheGenerator = CacheGenerator();
