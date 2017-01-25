@@ -5,12 +5,14 @@
     </info>
     <readouts>
         <readout name="TrackerBarrelReadout">
-            <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:4,layer:5,module:16,component:4,x:-15,z:-15</id>
+            <!-- <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/> -->
+            <!-- <id>system:4,layer:5,module:16,component:4,x:-15,z:-15</id> -->
+            <id>system:4,layer:5,module:16,component:4</id> 
         </readout>
         <readout name="TrackerEndcapReadout">
-            <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:4,posneg:1,disc:5,module:16,component:4,x:-15,z:-15</id>
+            <!-- <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/> -->
+            <!-- <id>system:4,posneg:1,disc:5,module:16,component:4,x:-15,z:-15</id> -->
+            <id>system:4,posneg:1,disc:5,module:16,component:4</id>
         </readout>
     </readouts>
     <!-- include tag needed for usage of SubdetectorAssembly - doesn't work without -->
@@ -19,17 +21,19 @@
         <!-- preliminary, until FCC beam pipe supported -->
         <detector id="0" name="beampipe" type="BeamTube">
             <status id="0"/>
-            <dimensions rmin="0.*mm" rmax="15.*mm" z="5000.*mm" vis="violet" material="Air"/>
+            <dimensions rmin="0.*mm" rmax="15.*mm" z="500.*mm" vis="violet" material="Air"/>
         </detector>
+        <detector id="1" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="InnerBRL_Inner1"/>
+            <!--
+            <composite name="InnerECAPpos"/>
+            <composite name="InnerECAPneg"/>
+            -->
+        </detector>
+        <!-- TODO: investigate segfault in DD4hepPlugin
         <detector id="10" name="FCChhInner0" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="InnerBRL_Inner0"/>
         </detector>
-        <detector id="11" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
-            <composite name="InnerECAPpos"/>
-            <composite name="InnerBRL_Inner1"/>
-            <composite name="InnerECAPneg"/>
-        </detector>
-        <!-- TODO: investigate segfault in DD4hepPlugin
         <detector id="12" name="FCChhOuter" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="OuterECAPpos"/>
             <composite name="OuterBRL"/>

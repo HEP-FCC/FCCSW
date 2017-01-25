@@ -9,7 +9,7 @@ gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(HepMC)
-find_package(DD4hep)
+find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
 find_package(ROOT)
 find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
 #workaround for the lone -lGeom flag exported by ACTS
