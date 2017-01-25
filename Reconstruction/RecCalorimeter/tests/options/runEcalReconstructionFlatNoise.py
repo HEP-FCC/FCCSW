@@ -20,40 +20,20 @@ ecalReadoutName = "ECalHitsPhiEta"
 ecalIdentifierName = "active_layer"
 # active material volume name
 ecalVolumeName = "LAr_sensitive"
-# number of active layers to be merged to create cells
-ecalNumberOfLayersToMerge = [19,71,9]
-# number of ECAL layers
-ecalNumberOfLayers = len(ecalNumberOfLayersToMerge)
 # ECAL bitfield names & values
 ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
 ecalFieldValues=[5,1,1,1]
 
-from Configurables import MergeLayers
-mergelayers = MergeLayers("MergeLayers",
-                   # take the bitfield description from the geometry service
-                   readout = ecalReadoutName,
-                   # cells in which field should be merged
-                   identifier = ecalIdentifierName,
-                   volumeName = ecalVolumeName,
-                   # how many cells to merge
-                   # merge first 19 into new cell (id=0), next 71 into second cell (id=1), ...
-                   merge = ecalNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayers.DataInputs.inhits.Path = "ECalHits"
-mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
-
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
+from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
+noise = NoiseCaloCellsFlatTool("NoiseCaloCellsFlatTool", cellNoise = 0.01)
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   readoutName=ecalReadoutName,
                                   activeVolumeName = ecalVolumeName,
                                   activeFieldName = ecalIdentifierName,
                                   fieldNames=ecalFieldNames,
                                   fieldValues=ecalFieldValues,
-                                  # to make it working with MergeLayers algorithm
-                                  activeVolumesNumber=ecalNumberOfLayers,
                                   OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
@@ -64,7 +44,7 @@ createcells = CreateCaloCells("CreateCaloCells",
                               addCellNoise=True, filterCellNoise=False,
                               noiseTool=noise,
                               OutputLevel=DEBUG)
-createcells.DataInputs.hits.Path="mergedECalHits"
+createcells.DataInputs.hits.Path="ECalHits"
 createcells.DataOutputs.cells.Path="caloCells"
 
 #Create calo clusters
@@ -79,12 +59,12 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  nEtaPosition = 5, nPhiPosition = 5,
                                                  nEtaDuplicates = 5, nPhiDuplicates = 15,
                                                  nEtaFinal = 5, nPhiFinal = 15,
-                                                 energyThreshold = 10,
+                                                 energyThreshold = 7,
                                                  OutputLevel = DEBUG)
 createclusters.DataInputs.cells.Path="caloCells"
 createclusters.DataOutputs.clusters.Path="caloClusters"
 
-out = PodioOutput("out", filename="output_ecalReco_noiseFromFile_test.root",
+out = PodioOutput("out", filename="output_ecalReco_flatNoise_test.root",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
@@ -96,12 +76,11 @@ audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
 createclusters.AuditExecute = True
 createcells.AuditExecute = True
-mergelayers.AuditExecute = True
 out.AuditExecute = True
+
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              mergelayers,
               createcells,
               createclusters,
               out
