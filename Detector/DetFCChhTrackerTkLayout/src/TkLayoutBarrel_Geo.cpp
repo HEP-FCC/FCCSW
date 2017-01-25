@@ -92,6 +92,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
     Acts::ActsExtension::Config layConfig;
     layConfig.isLayer             = true;
+    layConfig.axes = "XzY";
     Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
     nPhi = xRods.repeat();
     int moduleCounter = 0;
