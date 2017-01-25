@@ -108,21 +108,21 @@ StatusCode TrackFit::execute() {
 
     // debug printouts
     long long int theCellId = hit.core().cellId;
-    std::cout << theCellId << std::endl;
-    std::cout << "surface pointer: " << fccSurf<< std::endl;
-    std::cout << "position: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z << std::endl; 
-    std::cout << "phi: " << std::atan(hit.position().y / hit.position().x) << std::endl;
+    debug() << theCellId << endmsg;
+    debug() << "surface pointer: " << fccSurf<< endmsg;
+    debug() << "position: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z << endmsg; 
+    debug() << "phi: " << std::atan(hit.position().y / hit.position().x) << endmsg;
     m_decoderBarrel->setValue(theCellId);
     int system_id = (*m_decoderBarrel)["system"];
-    std::cout << " hit in system: " << system_id;
+    debug() << " hit in system: " << system_id;
     if ( 14 == system_id ) {
       int layer_id = (*m_decoderBarrel)["layer"];
-      std::cout << "\t layer " << layer_id;
+      debug() << "\t layer " << layer_id;
       int module_id = (*m_decoderBarrel)["module"];
-      std::cout << "\t module " << module_id;
+      debug() << "\t module " << module_id;
       int component_id = (*m_decoderBarrel)["component"];
-      std::cout << "\t component " << component_id;
-      std::cout << std::endl;
+      debug() << "\t component " << component_id;
+      debug() << endmsg;
     }
   }
 
@@ -173,13 +173,11 @@ StatusCode TrackFit::execute() {
 
   debug() << "created " << vMeasurements.size() << " pseudo-measurements" << endmsg;
   for (const auto& m : vMeasurements)
-    info() << m << std::endl
-           << endmsg;
+    info() << m << endmsg;
 
   debug() << "created " << fccMeasurements.size() << " fcc-measurements" << endmsg;
   for (const auto& m : fccMeasurements)
-    info() << m << std::endl
-           << endmsg;
+    info() << m << endmsg
 
   KalmanFitter<MyExtrapolator, CacheGenerator, NoCalibration, GainMatrixUpdator> KF;
   KF.m_oCacheGenerator = CacheGenerator();
