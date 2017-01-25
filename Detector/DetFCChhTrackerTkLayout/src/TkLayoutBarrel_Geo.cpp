@@ -53,35 +53,12 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     DD4hep::XML::Component xModulesEven = xRodEven.child("modules");
     DD4hep::XML::Component xModulePropertiesOdd = xRodOdd.child("moduleProperties");
     DD4hep::XML::Component xModulesOdd = xRodOdd.child("modules");
+    /// @todo: restore module components.
     Volume moduleVolume("module",
                         DD4hep::Geometry::Box(0.5 * xModulePropertiesOdd.attr<double>("modWidth"),
                                               0.5 * xModulePropertiesOdd.attr<double>("modThickness"),
                                               0.5 * xModulePropertiesOdd.attr<double>("modLength")),
                         lcdd.material("Silicon"));
-    // moduleVolume.setVisAttributes(lcdd, xModulePropertiesOdd.visStr());
-    /*
-    DD4hep::XML::Component xModuleComponentsOdd = xModulePropertiesOdd.child("components");
-    integratedModuleComponentThickness = 0;
-    moduleComponentCounter = 0;
-    for (DD4hep::XML::Collection_t xModuleComponentOddColl(xModuleComponentsOdd, _U(component));
-         nullptr != xModuleComponentOddColl;
-         ++xModuleComponentOddColl) {
-      DD4hep::XML::Component xModuleComponentOdd = static_cast<DD4hep::XML::Component>(xModuleComponentOddColl);
-      Volume moduleComponentVolume(xModuleComponentOdd.nameStr(),
-                                   DD4hep::Geometry::Box(0.5 * xModulePropertiesOdd.attr<double>("modWidth"),
-                                                         0.5 * xModuleComponentOdd.thickness(),
-                                                         0.5 * xModulePropertiesOdd.attr<double>("modLength")),
-                                   lcdd.material(xModuleComponentOdd.materialStr()));
-      DD4hep::Geometry::Position offset(
-          0, integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness"), 0);
-      integratedModuleComponentThickness += xModuleComponentOdd.thickness();
-
-      PlacedVolume placedModuleComponentVolume = moduleVolume.placeVolume(moduleComponentVolume, offset);
-      placedModuleComponentVolume.addPhysVolID("component", moduleComponentCounter);
-      ++moduleComponentCounter;
-    }
-    */
-    // definition of layer volumes
     double lX, lY, lZ;
     DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax(), dimensions.zmax());
     Volume layerVolume("layer", layerShape, lcdd.material("Air"));
