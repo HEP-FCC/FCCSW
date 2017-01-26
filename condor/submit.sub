@@ -1,0 +1,8 @@
+executable            = jobToRun.sh
+arguments             = 2000000 500 0 20 $(ClusterID) $(ProcId)
+output                = output/job.$(ClusterId).$(ProcId).out
+log                   = log/job.$(ClusterId).log
+error                 = error/job.$(ClusterId).$(ProcId).err
++JobFlavour = "tomorrow"
+send_credential        = True
+queue

@@ -43,10 +43,9 @@
 
   <readouts>
     <readout name="BarHCal_Readout">
-     <!-- <segmentation type="CartesianGridXY" grid_size_x="1*cm" grid_size_y="1*cm"/>
-      <id>system:4,layer:6,wedge:7,sub_module:2,row:10,x:32:-16,y:-16</id>
--->
-     <id>system:4,wedge:7,row:10,layer:6,sub_module:2</id>
+      <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
+     <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256" phi_offset="0"/>
+     <id>system:4,layer:6,module:7,row:10,tile:2,eta:1,phi:-8</id>
     </readout>
   </readouts>
 

@@ -17,14 +17,18 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 from Configurables import CalibrateCaloHitsTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="40")
 
+from Configurables import NoiseCaloCellsFlatTool
+noise = NoiseCaloCellsFlatTool("NoiseCaloCellsFlatTool", cellNoise = 0.0)
+
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
                               calibTool=calibcells, doCellCalibration=True,
+                              noiseTool=noise,
                               addCellNoise=True, filterCellNoise=False,
-
                               readoutName="BarHCal_Readout",
+                              useVolumeIdOnly=True,
                               fieldNames=["system"],
-                              fieldValues=[6],
+                              fieldValues=[8],
                               OutputLevel=INFO)
 createcells.DataInputs.hits.Path="HCalHits"
 createcells.DataOutputs.cells.Path="caloCells"

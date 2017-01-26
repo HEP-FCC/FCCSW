@@ -28,10 +28,12 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
    *  @param aDetectorName Name of the detector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
+   *  @param[in] aBirksLaw Flag indication if Birks Law correction should be applied
    */
   SimpleCalorimeterSD(const std::string& aDetectorName,
-    const std::string& aReadoutName,
-    const DD4hep::Geometry::Segmentation& aSeg);
+		      const std::string& aReadoutName,
+		      const DD4hep::Geometry::Segmentation& aSeg,
+		      bool aBirksLaw = false);
   /// Destructor
   virtual ~SimpleCalorimeterSD();
   /** Initialization.
@@ -47,6 +49,10 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
    *  @param aStep Step in which particle deposited the energy.
    */
   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
+
+  /** Flag indication if Birks Law should be applied
+   */ 
+  bool m_applyBirksLaw;
 
 private:
   /// Collection of calorimeter hits

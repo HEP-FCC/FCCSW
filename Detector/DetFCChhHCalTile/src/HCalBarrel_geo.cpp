@@ -102,7 +102,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   lLog << MSG::DEBUG << "half width of full module: " << dy0 << endmsg;
 
   // First we construct one wedge:
-  Volume wedgeVolume("Wedge", DD4hep::Geometry::Trapezoid(
+  Volume wedgeVolume("wedge", DD4hep::Geometry::Trapezoid(
         dx1Module, dx2Module, dy0, dy0, dzModule
       ), lcdd.material("Air")
   );
@@ -125,12 +125,13 @@ static DD4hep::Geometry::Ref_t createHCal (
     );
     subWedgeVolume.setVisAttributes(lcdd.invisible());
     unsigned int idxSubMod = 0;
+    unsigned int idxActMod = 0;
     double modCompZOffset = - sequenceDimensions.dz() * 0.5;
 
-    //Filling of the suWedge with coponents (submodules)
+    //Filling of the subWedge with coponents (submodules)
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _U(module_component)); xCompColl; ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
-      std::string subModuleName = DD4hep::XML::_toString(idxSubMod, "module_component%d");
+      std::string subModuleName =  xComp.materialStr() + DD4hep::XML::_toString(idxSubMod, "_tile%d");
       //added * 0.5 for Trapezoid 
       double dyComp = xComp.thickness() * 0.5;
       Volume modCompVol(subModuleName, DD4hep::Geometry::Trapezoid(
@@ -141,10 +142,13 @@ static DD4hep::Geometry::Ref_t createHCal (
       DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset()*0.5, 0);
       lLog << MSG::DEBUG << "position of components in z : " << modCompZOffset + dyComp + xComp.y_offset()*0.5 << endmsg;
       PlacedVolume placedModCompVol = subWedgeVolume.placeVolume(modCompVol, offset);
+
       if (xComp.isSensitive()) {
         modCompVol.setSensitiveDetector(sensDet);
-	placedModCompVol.addPhysVolID("sub_module", idxSubMod);
+	placedModCompVol.addPhysVolID("tile", idxActMod);
+	idxActMod++;
       }
+
       // modCompDet.setPlacement(placedModCompVol);
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
@@ -174,7 +178,7 @@ static DD4hep::Geometry::Ref_t createHCal (
     auto modName = DD4hep::XML::_toString(idxPhi, "mod%d");
     // Volume and DetElement for one row in Z
     DetElement wedgeDet(hCal, modName, idxPhi);
- // first rotation due to default rotation of trapezoid
+    // first rotation due to default rotation of trapezoid
     double phi = 0.5 * dphi - idxPhi * dphi; // 0.5*dphi for middle of module
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
@@ -185,7 +189,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 					moduleOffset
 					);
     PlacedVolume placedWedgeVol = envelopeVolume.placeVolume(moduleVolume, trans);
-    placedWedgeVol.addPhysVolID("wedge", idxPhi);
+    placedWedgeVol.addPhysVolID("module", idxPhi);
     wedgeDet.setPlacement(placedWedgeVol);
   }
 
