@@ -2,7 +2,6 @@
     <detectors>
         <comment>The tracker geometry as described here follows the concept of CMS tracker design. Each sub-tracker (inner, outer, etc. tracker) is either of barrel type or end-cape type. In case of barrel-type, individual modules are arranged in layers, layers consist of individual rods (ladders) and each rod contains several silicon modules. Within a layer, even/odd rods are offset by +/-bigDelta parameter with respect to the layer average radius (rods are arranged in so-called staggered structure). Further on, within each rod the modules are positioned in Z in a way, that they hermetically cover the primary vertex (taking also into account the Gaussian shape of p-p beam-spot). Similar concept is hence used in positioning in Z, even/odd modules are offset by +-smallDelta parameter with respect to the rod average radius. In case of end-cap type, individual modules are arranged in discs, discs consist of individual rings and each ring contains several silicon modules. The modules hermetically cover the primary vertex up-to required eta. In the same manner as for the rods, the rings are offset by +-/bigDelta parameter and as for the modules within a rod, the modules are offset by +/-smallDelta parameter. Each sub-tracker is assumed to have a phi-symmetry, therefore the data are saved in the XML file in a way to avoid their duplication. Each layer is described only by first two rods: an even and odd rod. Similarly, each ring is described by first two modules: an even and odd module. The symmetry considerations are also applied in a description of individual end-cap sub-trackers, where +/-Z symmetry is naturally assumed. Therefore, only information about discs placed at positive Z are written out. The end-cap tracker is designed in a way that the geometry of individual discs is replicated accross the whole end-cap sub-detector. The XML file describes only one disc for each end-cap detector. Additionally, the modules material budget as described by moduleProperties tag (as a sequence of material components) is assumed to be for simplicity uniformaly distributed across the module surface. Individual material properties are specified as defined within tkLayout, i.e. by their density, radiation and interaction lengths. Finally, positioning of individual modules have been optimized in the tkLayout software. Hence, the relevant geometry parameters are directly the X, Y, Z coordinates of modules centre position plus modules rotation: in phi (phiTilt) and theta (thetaTilt=0*deg for barrel modules, thetaTilt=90*deg for end-cap modules. Other parameters, based on which tkLayout algorithms have found the optimial positions of tracker modules are given just for completeness. </comment>
         <comment>The tracker numbering scheme applied in the XML is designed as follows: all sub-trackers, barrels/discs, layers/rings etc. are numbered by increasing ID from inside, i.e. IP, out. Individual subtrackers' ID start with 10, subtracker components' ID with 1. In addition, no global numbering scheme accross the overall tracker is applied. Instead, the hierarchical scheme is used, e.g. individual rings numbering starts with ID=1 for each disc, modules numbering with ID=1 for each ring etc. As for the sub-components arranged in R-Phi, ID increases along the increasing phi angle (rotation along Z-axis in right-handed coordinate scheme), starting with ID=1 for a component positioned at phi0. As for the sub-components arranged in Z (e.g. modules in a rod), ID increases from -Z to +Z.</comment>
-        <!--
         <detector id="13" name="InnerBRL_Inner0" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
             <dimensions rmin="19.975*mm" rmax="23.994*mm" zmin="-380.000*mm" zmax="380.000*mm"/>
             <sensitive type="SimpleTrackerSD"/>
@@ -51,12 +50,10 @@
                 </layer>
             </layers>
         </detector>
-        -->
-        <detector id="14" name="InnerBRL_Inner1" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
+        <detector  name="InnerBRL_Inner1" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
             <dimensions rmin="48.975*mm" rmax="451.011*mm" zmin="-750.000*mm" zmax="750.000*mm"/>
             <sensitive type="SimpleTrackerSD"/>
             <layers repeat="6">
-            <!--
                 <layer id="1" radius="57.550*mm" rmin="48.975*mm" rmax="67.352*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
                     <rods repeat="16" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.500*mm" nModules="17">
                         <rodOdd id="1">
@@ -125,7 +122,6 @@
                         </rodEven>
                     </rods>
                 </layer>
-                -->
                 <layer id="2" radius="141.435*mm" rmin="132.860*mm" rmax="152.179*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
                     <rods repeat="18" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.500*mm" nModules="17">
                         <rodOdd id="1">
@@ -468,7 +464,6 @@
                 </layer>
             </layers>
         </detector>
-        <!--
         <detector id="15" name="InnerECAPpos" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
             <dimensions rmin="21.000*mm" rmax="451.094*mm" zmin="991.425*mm" zmax="2258.575*mm" reflect="false"/>
             <sensitive type="SimpleTrackerSD"/>
@@ -2023,8 +2018,6 @@
                 </discZPls>
             </discs>
         </detector>
-        -->
-        <!--
         <detector id="110" name="FwdECAPpos" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
             <dimensions rmin="60.000*mm" rmax="1555.421*mm" zmin="8990.350*mm" zmax="16009.650*mm" reflect="false"/>
             <sensitive type="SimpleTrackerSD"/>
@@ -2619,5 +2612,4 @@
                 </discZPls>
             </discs>
         </detector>
-        -->
     </detectors>
