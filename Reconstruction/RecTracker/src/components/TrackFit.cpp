@@ -36,6 +36,8 @@
 #include <cmath>
 
 #include "TrackFit.h"
+#include "FastHelix.h"
+#include "TrackParameterConversions.h"
 
 
 
@@ -97,7 +99,17 @@ StatusCode TrackFit::execute() {
   /// @todo: get local position from segmentation
   double fcc_l1 = 0;
   double fcc_l2 = 0;
+  int hitcounter = 0;
+  GlobalPoint middlePoint;
+  GlobalPoint outerPoint;
   for (auto hit: *hits) {
+    if (hitcounter == 0) {
+      middlePoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
+    } else if (hitcounter == 1) {
+
+      outerPoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
+    }
+
     const Acts::Surface* fccSurf = m_trkGeoDumpSvc->lookUpTrkSurface(Identifier(hit.core().cellId));
     double std1 = 1;
     double std2 = 1;
@@ -124,10 +136,16 @@ StatusCode TrackFit::execute() {
       debug() << "\t component " << component_id;
       debug() << endmsg;
     }
+    ++hitcounter;
   }
 
+  
+  FastHelix helix(outerPoint, middlePoint, GlobalPoint(0,0,0), 0.002);
+  PerigeeTrackParameters res = ParticleProperties2TrackParameters(GlobalPoint(0,0,0), helix.getPt(), 0.002, 1);
+  
+
   ActsVector<ParValue_t, NGlobalPars> pars;
-  pars << 0, 0, 0, M_PI / 2, 0.0001;
+  pars << res.d0, res.z0, res.phi0, std::atan(1. / res.cotTheta) + M_PI, res.qOverPt;
   auto startCov =
       std::make_unique<ActsSymMatrix<ParValue_t, NGlobalPars>>(ActsSymMatrix<ParValue_t, NGlobalPars>::Identity());
 
