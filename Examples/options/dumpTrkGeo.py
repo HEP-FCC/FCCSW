@@ -5,8 +5,7 @@ from Configurables import TrackingGeoSvc
 trkgeoservice = TrackingGeoSvc("TrackingGeometryService") 
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml', 'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
-#geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetActsTest/compact/FCCTracker.xml'],
+geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml', 'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker_ACTSCompatible.xml'],
                     OutputLevel = DEBUG)
 
 
