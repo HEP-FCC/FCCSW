@@ -21,6 +21,10 @@ gaudi_add_module(RecTracker
                  LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ${DD4hep_COMPONENT_LIBRARIES} ACTS::ACTSCore ACTS::ACTSDD4hepPlugin ACTS::ACTSExamples) 
 
 include(CTest)
-gaudi_add_test(trackFitExample
+gaudi_add_test(muonsForTrackReco
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_tracker_singleparticles.py)
+gaudi_add_test(TrackRecoFitExample
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               DEPENDS muonsForTrackReco
                FRAMEWORK options/trackFitExample.py)

@@ -2,7 +2,7 @@ import os
 from Gaudi.Configuration import *
 
 from Configurables import FCCDataSvc
-podioevent   = FCCDataSvc("EventDataSvc", input="output.root")
+podioevent   = FCCDataSvc("EventDataSvc", input="output_trk_singlemuons.root")
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader", collections=["positionedHits"], OutputLevel=DEBUG)
 
