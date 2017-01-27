@@ -44,7 +44,7 @@
   <readouts>
     <readout name="BarHCal_Readout">
       <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
-     <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256" phi_offset="0"/>
+     <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256"/>
      <id>system:4,layer:6,module:7,row:10,tile:2,eta:1,phi:-8</id>
     </readout>
   </readouts>

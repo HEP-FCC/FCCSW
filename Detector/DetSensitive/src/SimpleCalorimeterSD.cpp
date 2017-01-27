@@ -41,7 +41,6 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   if(edep==0.)
     return false;
 
-  //
   if(m_applyBirksLaw){
     const G4String myMaterial = "Polystyrene";
     const G4double birk1 = 0.0130*CLHEP::g/(CLHEP::MeV*CLHEP::cm2);

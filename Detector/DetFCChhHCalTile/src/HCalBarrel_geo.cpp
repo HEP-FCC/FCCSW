@@ -60,8 +60,8 @@ static DD4hep::Geometry::Ref_t createHCal (
   Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
-  // set the sensitive detector type to the DD4hep calorimeter
-  sensDet.setType("SimpleCalorimeterSD");
+  // set the sensitive detector type to the DD4hep calorimeter -- including Birks Law
+  sensDet.setType("SimpleCalorimeterSDWithBirksLaw");
 
   // Add structural support made of steel inside of HCal
   DetElement facePlate("facePlate", 0);
