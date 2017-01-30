@@ -4,7 +4,7 @@
 gaudi_subdir(RecTracker v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface)
+gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Reconstruction/RecInterface)
 
 find_package(FCCEDM)
 find_package(PODIO)
