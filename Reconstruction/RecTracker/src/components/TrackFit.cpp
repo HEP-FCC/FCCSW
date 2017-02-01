@@ -2,6 +2,7 @@
 #include "DetInterface/ITrackingGeoSvc.h"
 #include "DetInterface/ITrkGeoDumpSvc.h"
 #include "DetInterface/IGeoSvc.h"
+#include "RecInterface/ITrackSeedingTool.h"
 
 #include "datamodel/TrackHitCollection.h"
 
@@ -46,6 +47,8 @@ DECLARE_ALGORITHM_FACTORY(TrackFit)
 TrackFit::TrackFit(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 
   declareInput("positionedTrackHits", m_positionedTrackHits,"hits/TrackerPositionedHits");
+  declareProperty("trackSeedingTool", m_trackSeedingTool);
+  declarePublicTool(m_trackSeedingTool, "TrackSeedingTool/TruthSeedingTool");
 
   }
 
@@ -77,18 +80,9 @@ StatusCode TrackFit::initialize() {
 StatusCode TrackFit::execute() {
 
     auto lcdd = m_geoSvc->lcdd();
-    //DD4hep::Geometry::VolumeManager volman = lcdd->volumeManager();
-    //DD4hep::DDRec::IDDecoder& iddec = DD4hep::DDRec::IDDecoder::getInstance();
     auto allReadouts = lcdd->readouts();
     auto readoutBarrel = lcdd->readout("TrackerBarrelReadout");
-    //auto readoutEndcap = lcdd->readout("TrackerEndcapReadout");
     auto m_decoderBarrel = readoutBarrel.idSpec().decoder();
-    /*
-    auto segmentationBarrel = readoutBarrel.segmentation();
-    info() << "Barrel segmentation of type " << segmentationBarrel->type() << endmsg;
-    auto m_decoderEndcap = readoutEndcap.idSpec().decoder();
-    auto segmentationEndcap = readoutEndcap.segmentation().segmentation();
-    */
 
   const fcc::PositionedTrackHitCollection* hits = m_positionedTrackHits.get();
 
@@ -102,32 +96,41 @@ StatusCode TrackFit::execute() {
   int hitcounter = 0;
   GlobalPoint middlePoint;
   GlobalPoint outerPoint;
-  for (auto hit: *hits) {
-    if (hitcounter == 0) {
-      middlePoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
-    } else if (hitcounter == 1) {
 
-      outerPoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
-    }
+  auto seedmap = m_trackSeedingTool->findSeeds(hits);
+  for (auto it = seedmap.begin(); it != seedmap.end(); ++it) {
+    if (it->first == 1) { // TrackID for primary particle
 
-    const Acts::Surface* fccSurf = m_trkGeoDumpSvc->lookUpTrkSurface(Identifier(hit.core().cellId));
-    double std1 = 1;
-    double std2 = 1;
-    ActsSymMatrixD<2> cov;
-    cov << std1* std1, 0, 0, std2* std2;
-    fccMeasurements.push_back(Meas_t<eLOC_1, eLOC_2>(*fccSurf, hit.core().cellId, std::move(cov), fcc_l1, fcc_l2));
-    surfVec.push_back(fccSurf);
+    auto hit = (*hits)[it->second]; // the TrackID maps to an index for the hit collection
 
-    // debug printouts
     long long int theCellId = hit.core().cellId;
     debug() << theCellId << endmsg;
-    debug() << "surface pointer: " << fccSurf<< endmsg;
     debug() << "position: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z << endmsg; 
-    debug() << "phi: " << std::atan(hit.position().y / hit.position().x) << endmsg;
+    debug() << "phi: " << std::atan2(hit.position().y, hit.position().x) << endmsg;
     m_decoderBarrel->setValue(theCellId);
     int system_id = (*m_decoderBarrel)["system"];
     debug() << " hit in system: " << system_id;
+    (*m_decoderBarrel)["x"] = 0; // workaround for broken `volumeID` method --
+    (*m_decoderBarrel)["z"] = 0; // set everything not connected with the VolumeID to zero,
+    // so the cellID can be used to look up the tracking surface
     if ( 14 == system_id ) {
+      if (hitcounter == 0) {
+        middlePoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
+      } else if (hitcounter == 1) {
+
+        outerPoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
+      }
+      // need to use cellID without segmentation bits
+      const Acts::Surface* fccSurf = m_trkGeoDumpSvc->lookUpTrkSurface(Identifier(m_decoderBarrel->getValue()));
+      debug() << " found surface pointer: " << fccSurf<< endmsg;
+      double std1 = 1;
+      double std2 = 1;
+      ActsSymMatrixD<2> cov;
+      cov << std1* std1, 0, 0, std2* std2;
+      fccMeasurements.push_back(Meas_t<eLOC_1, eLOC_2>(*fccSurf, hit.core().cellId, std::move(cov), fcc_l1, fcc_l2));
+      surfVec.push_back(fccSurf);
+
+    // debug printouts
       int layer_id = (*m_decoderBarrel)["layer"];
       debug() << "\t layer " << layer_id;
       int module_id = (*m_decoderBarrel)["module"];
@@ -137,6 +140,7 @@ StatusCode TrackFit::execute() {
       debug() << endmsg;
     }
     ++hitcounter;
+    }
   }
 
   

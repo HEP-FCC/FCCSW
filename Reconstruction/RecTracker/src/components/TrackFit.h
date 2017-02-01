@@ -10,6 +10,7 @@
 class IGeoSvc;
 class ITrackingGeoSvc;
 class ITrkGeoDumpSvc;
+class ITrackSeedingTool;
 
 
 namespace Acts {
@@ -38,6 +39,8 @@ private:
   SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
   SmartIF<ITrkGeoDumpSvc> m_trkGeoDumpSvc;
   SmartIF<IGeoSvc> m_geoSvc;
+
+  ToolHandle<ITrackSeedingTool> m_trackSeedingTool;
 
   std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
 
