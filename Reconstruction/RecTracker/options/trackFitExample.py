@@ -8,7 +8,7 @@ podioinput = PodioInput("PodioReader", collections=["positionedHits"], OutputLev
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'])
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker_ACTSCompatible.xml'])
 from Configurables import TrackingGeoSvc
 trkgeoservice = TrackingGeoSvc("TrackingGeometryService")
 
@@ -21,9 +21,14 @@ geantservice = SimG4Svc("SimG4Svc",
 from Configurables import TrkGeoToGdmlDumpSvc
 trkgeodumpservice = TrkGeoToGdmlDumpSvc("TrkGeoDump", gdml="TrkGeoDump2.gdml")
 
+from Configurables import TruthSeedingTool
+
+truthseedtool = TruthSeedingTool()
+
 
 from Configurables import TrackFit
 trackFitAlg = TrackFit()
+trackFitAlg.trackSeedingTool = truthseedtool
 trackFitAlg.DataInputs.positionedTrackHits.Path = "positionedHits"
 #trackFitAlg.DataInputs.trackHits.Path = "hits"
 

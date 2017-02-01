@@ -23,7 +23,7 @@ ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticleProperties
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker_ACTSCompatible.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import HepMCConverter
