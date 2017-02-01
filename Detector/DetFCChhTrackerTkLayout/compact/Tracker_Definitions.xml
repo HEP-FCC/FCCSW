@@ -50,7 +50,7 @@
                 </layer>
             </layers>
         </detector>
-        <detector  name="InnerBRL_Inner1" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
+        <detector id="14"  name="InnerBRL_Inner1" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
             <dimensions rmin="48.975*mm" rmax="451.011*mm" zmin="-750.000*mm" zmax="750.000*mm"/>
             <sensitive type="SimpleTrackerSD"/>
             <layers repeat="6">
