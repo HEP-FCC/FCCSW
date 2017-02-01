@@ -14,7 +14,7 @@
         </readout>
     </readouts>
     <!-- include tag needed for usage of SubdetectorAssembly - doesn't work without -->
-    <include ref="Tracker_Definitions.xml" />
+    <include ref="Tracker_Definitions_ACTSCompatible.xml" />
     <detectors>
         <!-- preliminary, until FCC beam pipe supported -->
         <detector id="0" name="beampipe" type="BeamTube">
