@@ -18,7 +18,8 @@ static DD4hep::Geometry::Ref_t createHCal (
   xml_h xmlElement,
   DD4hep::Geometry::SensitiveDetector sensDet
   ) {
-  // Get the Gaudi message service and message stream:
+
+ // Get the Gaudi message service and message stream:
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "HCalConstruction");
   MsgStream lLog(&(*msgSvc), "HCalConstruction");
 
