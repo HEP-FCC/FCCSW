@@ -141,6 +141,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   PlacedVolume placedDiscVolume = envelopeVolume.placeVolume(discVolume, DD4hep::Geometry::Position(0, 0, currentZ));
   placedDiscVolume.addPhysVolID("disc", discCounter);
   Acts::ActsExtension::Config layConfig;
+  layConfig.axes = "XzY";
   layConfig.isLayer             = true;
   Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
   disc_det.addExtension<Acts::IActsExtension>(detlayer);
