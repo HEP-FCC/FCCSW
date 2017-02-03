@@ -45,7 +45,8 @@ static DD4hep::Geometry::Ref_t createHCal (
   // calculate the number of modules fitting in phi, Z and Rho
   unsigned int numSequencesPhi = sequenceDimensions.phiBins();
   double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
-  unsigned int numSequencesZ = static_cast<unsigned>(dimensions.dz() / dzSequence);
+  unsigned int numSequencesdZ = static_cast<unsigned>(dimensions.dz() / dzSequence);
+  unsigned int numSequencesZ = static_cast<unsigned>(2*dimensions.dz() / dzSequence);
   unsigned int numSequencesR = static_cast<unsigned>((cos(dphi / 2) * dimensions.rmax() - sensitiveBarrelRmin) / sequenceDimensions.dr()); // needed due to trapezoid shapes inside the available HCAL volume
   lLog << MSG::DEBUG << "constructing " << numSequencesPhi << " modules per ring in phi, "
                      << numSequencesZ << " rings in Z, "
@@ -53,7 +54,7 @@ static DD4hep::Geometry::Ref_t createHCal (
                      << numSequencesR*numSequencesZ*numSequencesPhi << " modules" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
-  double dzDetector = numSequencesZ * dzSequence + 2*dZEndPlate;
+  double dzDetector = numSequencesdZ * dzSequence + dZEndPlate;
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
 
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
