@@ -51,6 +51,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   int moduleCounter = 0;
 
   unsigned int discCounter = 0;
+  unsigned int compCounter = 0;
   double currentZ;
   for (DD4hep::XML::Collection_t xDiscColl(xDiscs, "discZPls"); nullptr != xDiscColl; ++xDiscColl) {
     Component xDisc = static_cast<Component>(xDiscColl);
@@ -93,6 +94,9 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
         if( xComp.isSensitive() ){
           componentVolume.setSensitiveDetector(sensDet);
         }
+        DetElement comp_det(disc_det, "comp" + std::to_string(compCounter), compCounter);
+        comp_det.setPlacement(placedComponentVolume);
+        ++compCounter;
         integratedCompThickness += xComp.thickness();
         ++componentCounter;
       }

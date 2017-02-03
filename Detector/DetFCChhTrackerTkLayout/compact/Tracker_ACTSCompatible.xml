@@ -17,29 +17,23 @@
     <include ref="Tracker_Definitions_Option3_v02.xml" />
     <detectors>
         <!-- preliminary, until FCC beam pipe supported -->
-            <!--
-            <composite name="InnerECAPpos"/>
-            <composite name="InnerECAPneg"/>
         <detector id="0" name="beampipe" type="BeamTube">
             <status id="0"/>
             <dimensions rmin="0.*mm" rmax="15.*mm" z="500.*mm" vis="violet" material="Air"/>
         </detector>
-        <detector id="10" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+        <detector id="100" name="FCChhInner0" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="InnerBRL_0"/>
+        </detector>
+        <detector id="101" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="InnerBRL_1"/>
             <composite name="InnerECAPpos"/>
             <composite name="InnerECAPneg"/>
         </detector>
-            -->
         <detector id="102" name="FCChhOuter" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="OuterBRL"/>
             <composite name="OuterECAPpos"/>
             <composite name="OuterECAPneg"/>
         </detector>
-        <!--
-        <detector id="100" name="FCChhInner0" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
-            <composite name="InnerBRL_Inner0"/>
-        </detector>
-        -->
     </detectors>
 
 </lccdd>
