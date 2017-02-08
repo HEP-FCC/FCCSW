@@ -44,7 +44,6 @@
 ################################################################################
 
 # settings
-
 CMAKE = cmake
 ifneq ($(wildcard $(CURDIR)/toolchain.cmake),)
   override CMAKEFLAGS += -DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/toolchain.cmake
@@ -60,7 +59,16 @@ ifndef BINARY_TAG
   endif
 endif
 
+# set build type to sensible default
+ifndef BUILDTYPE
+	BUILDTYPE=Release
+endif
+
 override CMAKEFLAGS += -DCMAKE_BUILD_TYPE=$(BUILDTYPE)
+
+# allow user options for cmake (useful for debugging)
+override CMAKEFLAGS += ${CMAKEOPTS}
+
 BUILDDIR := $(CURDIR)/build.$(BINARY_TAG)
 
 
