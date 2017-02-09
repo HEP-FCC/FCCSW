@@ -55,7 +55,7 @@ StatusCode DelphesSaveGenJets::saveOutput(Delphes& delphes, const fcc::MCParticl
     bareJet.p4.px    = cand->Momentum.Px();
     bareJet.p4.py    = cand->Momentum.Py();
     bareJet.p4.pz    = cand->Momentum.Pz();
-    bareJet.p4.mass  = cand->Mass;
+    bareJet.p4.mass  = cand->Momentum.M();
     jet.core(bareJet);
 
     // Flavor-tag info

@@ -52,7 +52,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   unsigned int numModulesR = static_cast<unsigned>((dimensions.rmax() - sensitiveBarrelRmin) / moduleDimensions.dr());
   lLog << MSG::DEBUG << "constructing " << numModulesPhi << " modules per ring in phi, "
                      << numModulesZ << " rings in Z, "
-                     << numModulesR << " rings (layers) in Rho"
+                     << numModulesR << " rings (layers) in Rho  = total of "
                      << numModulesR*numModulesZ*numModulesPhi << " modules" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
@@ -110,7 +110,7 @@ static DD4hep::Geometry::Ref_t createHCal (
       ), lcdd.material("Air")
   );
   for (unsigned int idxLayer = 0; idxLayer < numModulesR; ++idxLayer) {
-    auto layerName = std::string("wedge") + DD4hep::XML::_toString(idxLayer, "layer%d");
+    auto layerName = DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
     double rminLayer = idxLayer * moduleDimensions.dr();
     double rmaxLayer = (idxLayer + 1) * cos(dphi / 2.) * moduleDimensions.dr();
@@ -124,11 +124,10 @@ static DD4hep::Geometry::Ref_t createHCal (
     );
     moduleVolume.setVisAttributes(lcdd.invisible());
     unsigned int idxSubMod = 0;
-    // DetElement moduleDet(wedgeDet, layerName, idxLayer);
     double modCompZOffset = -moduleDimensions.dz();
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _U(module_component)); xCompColl; ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
-      std::string subModuleName = layerName+DD4hep::XML::_toString(idxSubMod, "module_component%d");
+      std::string subModuleName = DD4hep::XML::_toString(idxSubMod, "module_component%d");
       double dyComp = xComp.thickness();
       Volume modCompVol(subModuleName, DD4hep::Geometry::Trapezoid(
           dx1, dx2, dyComp, dyComp, dz0
@@ -139,7 +138,6 @@ static DD4hep::Geometry::Ref_t createHCal (
       }
       modCompVol.setVisAttributes(lcdd, xComp.visStr());
       // modCompVol.setVisAttributes(lcdd.invisible());
-      // DetElement modCompDet(wedgeDet, subModuleName, idxSubMod);
       DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset()*2, 0);
       PlacedVolume placedModCompVol = moduleVolume.placeVolume(modCompVol, offset);
       placedModCompVol.addPhysVolID("sub_module", idxSubMod);
@@ -161,7 +159,6 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   for (unsigned int idxZRow = 0; idxZRow < numModulesZ; ++idxZRow) {
     double zOffset = -dzDetector + dZEndPlate * 2 + (2*idxZRow + 1) * dzModule;
-    auto wedgeRowName = DD4hep::XML::_toString(idxZRow, "row%d");
     DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
     PlacedVolume placedRowVolume = wedgeVolume.placeVolume(subWedgeVolume, wedgeOffset);
     placedRowVolume.addPhysVolID("row", idxZRow);

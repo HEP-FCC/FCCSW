@@ -20,51 +20,21 @@ ecalReadoutName = "ECalHitsPhiEta"
 ecalIdentifierName = "active_layer"
 # active material volume name
 ecalVolumeName = "LAr_sensitive"
-# number of active layers to be merged to create cells
-ecalNumberOfLayersToMerge = [19,71,9]
-# number of ECAL layers
-ecalNumberOfLayers = len(ecalNumberOfLayersToMerge)
 # ECAL bitfield names & values
 ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
 ecalFieldValues=[5,1,1,1]
 
-from Configurables import MergeLayers
-mergelayers = MergeLayers("MergeLayers",
-                   # take the bitfield description from the geometry service
-                   readout = ecalReadoutName,
-                   # cells in which field should be merged
-                   identifier = ecalIdentifierName,
-                   volumeName = ecalVolumeName,
-                   # how many cells to merge
-                   # merge first 19 into new cell (id=0), next 71 into second cell (id=1), ...
-                   merge = ecalNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayers.inhits.Path = "ECalHits"
-mergelayers.outhits.Path = "mergedECalHits"
-
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
+from Configurables import CalibrateCaloHitsTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
-ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
-                                  readoutName=ecalReadoutName,
-                                  activeVolumeName = ecalVolumeName,
-                                  activeFieldName = ecalIdentifierName,
-                                  fieldNames=ecalFieldNames,
-                                  fieldValues=ecalFieldValues,
-                                  # to make it working with MergeLayers algorithm
-                                  activeVolumesNumber=ecalNumberOfLayers,
-                                  OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
-                              geometryTool = ecalgeo,
                               doCellCalibration=True,
                               calibTool=calibcells,
-                              addCellNoise=True, filterCellNoise=False,
-                              noiseTool=noise,
+                              addCellNoise=False, filterCellNoise=False,
                               OutputLevel=DEBUG)
-createcells.hits.Path="mergedECalHits"
+createcells.hits.Path="ECalHits"
 createcells.cells.Path="caloCells"
 
 #Create calo clusters
@@ -76,15 +46,15 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  fieldValues = ecalFieldValues,
                                                  deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                                                  nEtaWindow = 5, nPhiWindow = 15,
-                                                 nEtaPosition = 5, nPhiPosition = 5,
+                                                 nEtaPosition = 3, nPhiPosition = 3,
                                                  nEtaDuplicates = 5, nPhiDuplicates = 15,
                                                  nEtaFinal = 5, nPhiFinal = 15,
-                                                 energyThreshold = 10,
+                                                 energyThreshold = 7,
                                                  OutputLevel = DEBUG)
 createclusters.cells.Path="caloCells"
 createclusters.clusters.Path="caloClusters"
 
-out = PodioOutput("out", filename="output_ecalReco_noiseFromFile_test.root",
+out = PodioOutput("out", filename="output_ecalReco_noNoise_test.root",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
@@ -96,12 +66,10 @@ audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
 createclusters.AuditExecute = True
 createcells.AuditExecute = True
-mergelayers.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              mergelayers,
               createcells,
               createclusters,
               out
