@@ -23,3 +23,7 @@ gaudi_add_test(TestSegmentationPhiEta
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/phiEtaSegmentation.py)
+
+dd4hep_add_dictionary( G__DD4hep__GridPhiEta
+  SOURCES DetSegmentation/GridPhiEtaHandle.h
+  LINKDEF DD4hep/include/ROOT/LinkDef.h)
