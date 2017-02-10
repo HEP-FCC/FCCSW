@@ -209,7 +209,7 @@ StatusCode PythiaInterface::execute() {
 
     // odd  entries: d(ij) observables --- 1): d01, 3): d12, 5): d23, 7): d34
     // even entries: pT(i) observables --- 2): pT1, 4): pT2, 6): pT3, 8): pT4
-    for (int i = 0; i < 4; ++i) {
+    for (unsigned int i = 0; i < 4; ++i) {
       var = mePsMatchingVars->create();
       var.value(-999);
       if(dijVec.size() > i)

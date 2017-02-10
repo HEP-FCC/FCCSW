@@ -56,7 +56,7 @@ StatusCode MergeLayers::initialize() {
     return StatusCode::FAILURE;
   }
   // check sizes of new volumes in the list - it must sum to the total number of volumes
-  uint sumCells = std::accumulate(m_listToMerge.begin(), m_listToMerge.end(), 0);
+  unsigned int sumCells = std::accumulate(m_listToMerge.begin(), m_listToMerge.end(), 0);
   auto highestVol = gGeoManager->GetTopVolume();
   auto numPlacedVol = det::utils::countPlacedVolumes(highestVol, m_volumeName);
   if (numPlacedVol != sumCells) {
@@ -77,18 +77,18 @@ StatusCode MergeLayers::execute() {
   auto outHits = new fcc::CaloHitCollection();
 
   // rewriting list of cell sizes to list of top boundaries to facilitate the loop over hits
-  std::vector<uint> listToMergeBoundary(m_listToMerge.size());
-  uint sumCells = 0;
-  for (uint i=0; i<m_listToMerge.size(); i++) {
+  std::vector<unsigned int> listToMergeBoundary(m_listToMerge.size());
+  unsigned int sumCells = 0;
+  for (unsigned int i=0; i<m_listToMerge.size(); i++) {
     sumCells += m_listToMerge[i];
     listToMergeBoundary[i] = sumCells;
   }
 
-  uint field_id = m_descriptor.fieldID(m_idToMerge);
+  unsigned int field_id = m_descriptor.fieldID(m_idToMerge);
   auto decoder = m_descriptor.decoder();
   uint64_t cellId = 0;
-  int value = 0;
-  uint debugIter = 0;
+  unsigned int value = 0;
+  unsigned int debugIter = 0;
 
   for (const auto& hit: *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
@@ -98,7 +98,7 @@ StatusCode MergeLayers::execute() {
     if (debugIter < m_debugPrint) {
       debug() << "old ID = " << value << endmsg;
     }
-    for (uint i=0; i<listToMergeBoundary.size(); i++) {
+    for (unsigned int i=0; i<listToMergeBoundary.size(); i++) {
       if (value < listToMergeBoundary[i]) {
         value = i;
         break;

@@ -84,7 +84,7 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
     debug() << "Total number of cells ( " << numVolumesMap.back().first << " ) is " << checkTotal << endmsg;
   }
   // Loop over all volumes in calorimeter to retrieve active cells
-  std::vector<unsigned int> currentVol;
+  std::vector<int> currentVol;
   unsigned int numVolTypes = numVolumes.size();
   currentVol.assign(numVolTypes, 0);
   unsigned int index = 0;
