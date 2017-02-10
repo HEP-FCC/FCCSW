@@ -28,6 +28,9 @@ PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
   GaudiAlgorithm(name, svcLoc),
   m_pythiaSignal(nullptr),
   m_pythiaPileup(nullptr),
+  m_matching(nullptr),
+  m_setting(nullptr),
+  m_slowJet(nullptr),
   m_pileUpTool("ConstPileUp/PileUpTool", this),
   m_HepMCMergeTool(),
   m_vertexSmearingTool(),
@@ -36,10 +39,8 @@ PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
   m_nAbort(0),
   m_iAbort(0),
   m_iEvent(0),
-  m_matching(nullptr),
-  m_setting(nullptr),
-  m_doMePsMatching(0),
-  m_doMePsMerging(0) {
+  m_doMePsMatching(false),
+  m_doMePsMerging(false) {
   declareProperty("hepmc", m_hepmchandle);
   declareProperty("PileUpTool", m_pileUpTool);
 }
