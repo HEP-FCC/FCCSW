@@ -121,14 +121,13 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
         // Get MC particle
         Candidate* refCand = static_cast<Candidate*>(hit->GetCandidates()->At(0));
         for(int k=0 ; k < mcParticles.size();  k++) {
-          double pt = sqrt(mcParticles.at(k).core().p4.px *  mcParticles.at(k).core().p4.px + mcParticles.at(k).core().p4.py *  mcParticles.at(k).core().p4.py);
             if(mcParticles.at(k).core().bits == refCand->GetUniqueID()) {
             idRefMCPart.insert(k);
             break;
           }
         } // Iter MC particles
-      } 
-    } // Iter hits on tower 
+      }
+    } // Iter hits on tower
 
     // Debug: print variable
     double totSimE = 0;
