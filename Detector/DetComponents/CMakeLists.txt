@@ -24,17 +24,13 @@ gaudi_add_module(DetComponents
 include(CTest)
 gaudi_add_test(RedoSegmentationXYZ
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/redoSegmentationXYZ.py)
 gaudi_add_test(RedoSegmentationPhiEta
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/redoSegmentationPhiEta.py)
 gaudi_add_test(MergeCells
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/mergeCells.py)
 gaudi_add_test(MergeLayers
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/mergeLayers.py)

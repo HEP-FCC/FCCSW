@@ -26,18 +26,15 @@ gaudi_add_test(genJetClustering
 
 gaudi_add_test(simulateECalForReconstruction
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/geant_fullsim_ecal_singleparticles.py)
 
 gaudi_add_test(EcalReconstructionFlatNoise
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateECalForReconstruction
                FRAMEWORK tests/options/runEcalReconstructionFlatNoise.py)
 
 gaudi_add_test(EcalReconstructionWithoutNoise
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateECalForReconstruction
                FRAMEWORK tests/options/runEcalReconstructionWithoutNoise.py)
 
@@ -49,7 +46,6 @@ gaudi_add_test(EcalReconstructionCheckNumClusters
 
 gaudi_add_test(EcalReconstructionNoiseFromFile
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateECalForReconstruction
                FRAMEWORK tests/options/runEcalReconstruction.py)
 
