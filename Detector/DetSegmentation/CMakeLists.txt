@@ -13,17 +13,21 @@ find_package(ROOT COMPONENTS MathCore Physics GenVector Geom REQUIRED)
 gaudi_install_headers(DetSegmentation)
 
 gaudi_add_library(DetSegmentation
-                  src/*.cpp
-                  INCLUDE_DIRS DD4hep ROOT
-                  LINK_LIBRARIES GaudiKernel DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
-                  PUBLIC_HEADERS DetSegmentation)
+                 src/*.cpp
+                 INCLUDE_DIRS DD4hep ROOT
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
+                 PUBLIC_HEADERS DetSegmentation)
+
+gaudi_add_module(DetSegmentationPlugin
+                 src/plugins/*.cpp
+                 INCLUDE_DIRS DD4hep ROOT
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation)
+
+set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
+dd4hep_generate_rootmap(DetSegmentationPlugin)
 
 include(CTest)
 gaudi_add_test(TestSegmentationPhiEta
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/phiEtaSegmentation.py)
-
-dd4hep_add_dictionary( G__DD4hep__GridPhiEta
-  SOURCES DetSegmentation/GridPhiEtaHandle.h
-  LINKDEF DD4hep/include/ROOT/LinkDef.h)

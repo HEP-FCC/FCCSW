@@ -21,6 +21,10 @@ class GridPhiEta: public Segmentation {
 public:
   /// default constructor using an arbitrary type
   GridPhiEta(const std::string& aCellEncoding);
+  /// Default constructor used by derived classes passing an existing decoder
+  GridPhiEta(BitField64* decoder);
+
+
   /// destructor
   virtual ~GridPhiEta();
 
@@ -73,13 +77,13 @@ public:
   /**  Get the field name used for pseudorapidity
    *   return The field name for eta.
    */
-  inline std::string fieldNameEta() const {
+  inline const std::string& fieldNameEta() const {
     return m_etaID;
   }
   /**  Get the field name for azimuthal angle.
    *   return The field name for phi.
    */
-  inline std::string fieldNamePhi() const {
+  inline const std::string& fieldNamePhi() const {
     return m_phiID;
   }
   /**  Set the grid size in pseudorapidity.
