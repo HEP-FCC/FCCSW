@@ -14,24 +14,24 @@
         </readout>
     </readouts>
     <!-- include tag needed for usage of SubdetectorAssembly - doesn't work without -->
-    <include ref="Tracker_Definitions.xml" />
+    <include ref="Tracker_Definitions_Option3_v02.xml" />
     <detectors>
         <!-- preliminary, until FCC beam pipe supported -->
         <detector id="0" name="beampipe" type="BeamTube">
             <status id="0"/>
             <dimensions rmin="0.*mm" rmax="15.*mm" z="500.*mm" vis="violet" material="Air"/>
-        <detector name="FCChhInner0" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
-            <composite name="InnerBRL_Inner0"/>
         </detector>
+        <detector id="100" name="FCChhInner0" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="InnerBRL_0"/>
         </detector>
-        <detector name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
-            <composite name="InnerBRL_Inner1"/>
+        <detector id="101" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="InnerBRL_1"/>
             <composite name="InnerECAPpos"/>
             <composite name="InnerECAPneg"/>
         </detector>
-        <detector name="FCChhOuter" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
-            <composite name="OuterECAPpos"/>
+        <detector id="102" name="FCChhOuter" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="OuterBRL"/>
+            <composite name="OuterECAPpos"/>
             <composite name="OuterECAPneg"/>
         </detector>
     </detectors>
