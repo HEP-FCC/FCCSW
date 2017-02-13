@@ -18,8 +18,8 @@ geantservice = SimG4Svc("SimG4Svc",
                         physicslist="SimG4FtfpBert",
                         actions="SimG4FullSimActions")
 
-from Configurables import TrkGeoToGdmlDumpSvc
-trkgeodumpservice = TrkGeoToGdmlDumpSvc("TrkGeoDump", gdml="TrkGeoDump2.gdml")
+from Configurables import TrkVolumeManagerSvc
+trkvolmanservice = TrkVolumeManagerSvc("TrkVolMan")
 
 from Configurables import TruthSeedingTool
 
@@ -38,6 +38,6 @@ ApplicationMgr( TopAlg = [podioinput, trackFitAlg],
                 EvtSel = 'NONE',
                 EvtMax   = 20,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podioevent, geoservice, geantservice, trkgeoservice, trkgeodumpservice],
+                ExtSvc = [podioevent, geoservice, geantservice, trkgeoservice, trkvolmanservice],
                 OutputLevel=DEBUG
  )

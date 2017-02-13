@@ -9,7 +9,7 @@
 #include "FWCore/DataHandle.h"
 class IGeoSvc;
 class ITrackingGeoSvc;
-class ITrkGeoDumpSvc;
+class ITrkVolumeManagerSvc;
 class ITrackSeedingTool;
 
 
@@ -37,7 +37,7 @@ public:
 private:
   /// Pointer to the geometry service
   SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
-  SmartIF<ITrkGeoDumpSvc> m_trkGeoDumpSvc;
+  SmartIF<ITrkVolumeManagerSvc> m_trkVolMan;
   SmartIF<IGeoSvc> m_geoSvc;
 
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool;
@@ -132,7 +132,6 @@ std::shared_ptr<IExtrapolationEngine> initExtrapolator(const std::shared_ptr<con
   exEngineConfig.navigationEngine = navEngine;
   exEngineConfig.extrapolationEngines = {statEngine};
   auto exEngine = std::make_shared<ExtrapolationEngine>(exEngineConfig);
-  exEngine->setLogger(getDefaultLogger("ExtrapolationEngine", Logging::VERBOSE));
 
   return exEngine;
 }

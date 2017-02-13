@@ -1,6 +1,6 @@
 
 #include "DetInterface/ITrackingGeoSvc.h"
-#include "DetInterface/ITrkGeoDumpSvc.h"
+#include "RecInterface/ITrkVolumeManagerSvc.h"
 #include "DetInterface/IGeoSvc.h"
 #include "RecInterface/ITrackSeedingTool.h"
 
@@ -42,6 +42,7 @@
 
 
 
+
 DECLARE_ALGORITHM_FACTORY(TrackFit)
 
 TrackFit::TrackFit(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
@@ -67,8 +68,8 @@ StatusCode TrackFit::initialize() {
     return StatusCode::FAILURE;
   }
 
-  m_trkGeoDumpSvc = service("TrkGeoDump");
-  if (nullptr == m_trkGeoDumpSvc) {
+  m_trkVolMan = service("TrkVolMan");
+  if (nullptr == m_trkVolMan) {
     error() << "Unable to locate Tracking Geometry Service. " << endmsg;
     return StatusCode::FAILURE;
   }
@@ -113,32 +114,29 @@ StatusCode TrackFit::execute() {
     (*m_decoderBarrel)["x"] = 0; // workaround for broken `volumeID` method --
     (*m_decoderBarrel)["z"] = 0; // set everything not connected with the VolumeID to zero,
     // so the cellID can be used to look up the tracking surface
-    if ( 14 == system_id ) {
-      if (hitcounter == 0) {
-        middlePoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
-      } else if (hitcounter == 1) {
+    if (hitcounter == 0) {
+      middlePoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
+    } else if (hitcounter == 1) {
 
-        outerPoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
-      }
-      // need to use cellID without segmentation bits
-      const Acts::Surface* fccSurf = m_trkGeoDumpSvc->lookUpTrkSurface(Identifier(m_decoderBarrel->getValue()));
-      debug() << " found surface pointer: " << fccSurf<< endmsg;
-      double std1 = 1;
-      double std2 = 1;
-      ActsSymMatrixD<2> cov;
-      cov << std1* std1, 0, 0, std2* std2;
-      fccMeasurements.push_back(Meas_t<eLOC_1, eLOC_2>(*fccSurf, hit.core().cellId, std::move(cov), fcc_l1, fcc_l2));
-      surfVec.push_back(fccSurf);
-
-    // debug printouts
-      int layer_id = (*m_decoderBarrel)["layer"];
-      debug() << "\t layer " << layer_id;
-      int module_id = (*m_decoderBarrel)["module"];
-      debug() << "\t module " << module_id;
-      int component_id = (*m_decoderBarrel)["component"];
-      debug() << "\t component " << component_id;
-      debug() << endmsg;
+      outerPoint = GlobalPoint(hit.position().x, hit.position().y, hit.position().z);
     }
+    // need to use cellID without segmentation bits
+    const Acts::Surface* fccSurf = m_trkVolMan->lookUpTrkSurface(Identifier(m_decoderBarrel->getValue()));
+    debug() << " found surface pointer: " << fccSurf<< endmsg;
+    double std1 = 1;
+    double std2 = 1;
+    ActsSymMatrixD<2> cov;
+    cov << std1* std1, 0, 0, std2* std2;
+    fccMeasurements.push_back(Meas_t<eLOC_1, eLOC_2>(*fccSurf, hit.core().cellId, std::move(cov), fcc_l1, fcc_l2));
+    surfVec.push_back(fccSurf);
+
+  // debug printouts
+    int layer_id = (*m_decoderBarrel)["layer"];
+    debug() << "\t layer " << layer_id;
+    int module_id = (*m_decoderBarrel)["module"];
+    debug() << "\t module " << module_id;
+    debug() << endmsg;
+    
     ++hitcounter;
     }
   }
@@ -149,7 +147,7 @@ StatusCode TrackFit::execute() {
   
 
   ActsVector<ParValue_t, NGlobalPars> pars;
-  pars << res.d0, res.z0, res.phi0, std::atan(1. / res.cotTheta) + M_PI, res.qOverPt;
+  pars << res.d0, res.z0, res.phi0, M_PI * 0.5, res.qOverPt;
   auto startCov =
       std::make_unique<ActsSymMatrix<ParValue_t, NGlobalPars>>(ActsSymMatrix<ParValue_t, NGlobalPars>::Identity());
 
