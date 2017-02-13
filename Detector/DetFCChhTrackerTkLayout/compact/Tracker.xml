@@ -6,11 +6,11 @@
     <readouts>
         <readout name="TrackerBarrelReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:7,layer:5,module:16,component:4,x:-15,z:-15</id> 
+            <id>system:7,layer:5,module:20,x:-15,z:-15</id> 
         </readout>
         <readout name="TrackerEndcapReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:7,posneg:1,disc:5,module:16,component:4,x:-15,z:-15</id>
+            <id>system:7,disc:6,component:20,x:-15,z:-15</id>
         </readout>
     </readouts>
     <!-- include tag needed for usage of SubdetectorAssembly - doesn't work without -->
@@ -26,13 +26,17 @@
         </detector>
         <detector id="101" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="InnerBRL_1"/>
+            <!--
             <composite name="InnerECAPpos"/>
             <composite name="InnerECAPneg"/>
+            -->
         </detector>
         <detector id="102" name="FCChhOuter" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="OuterBRL"/>
+            <!--
             <composite name="OuterECAPpos"/>
             <composite name="OuterECAPneg"/>
+            -->
         </detector>
     </detectors>
 

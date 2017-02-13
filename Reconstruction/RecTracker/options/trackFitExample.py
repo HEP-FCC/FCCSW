@@ -8,7 +8,7 @@ podioinput = PodioInput("PodioReader", collections=["positionedHits"], OutputLev
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker_ACTSCompatible.xml'])
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'])
 from Configurables import TrackingGeoSvc
 trkgeoservice = TrackingGeoSvc("TrackingGeometryService")
 

@@ -10,7 +10,7 @@ from Configurables import ParticleGunAlg, MomentumRangeParticleGun
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
-pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13], ThetaMin=1.1, ThetaMax=1.1, MomentumMin=10, MomentumMax=100)
+pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13], ThetaMin=1.5, ThetaMax=1.5, MomentumMin=10, MomentumMax=100)
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun_tool, VertexSmearingToolPGun="FlatSmearVertex")
 gen.DataOutputs.hepmc.Path = "hepmc"
 
@@ -23,7 +23,7 @@ ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticleProperties
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker_ACTSCompatible.xml'],
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import HepMCConverter
