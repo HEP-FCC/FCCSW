@@ -50,8 +50,8 @@ static DD4hep::Geometry::Ref_t createHCal (
   unsigned int numSequencesR = static_cast<unsigned>((cos(dphi / 2) * dimensions.rmax() - sensitiveBarrelRmin) / sequenceDimensions.dr()); // needed due to trapezoid shapes inside the available HCAL volume
   lLog << MSG::DEBUG << "constructing " << numSequencesPhi << " modules per ring in phi, "
                      << numSequencesZ << " rings in Z, "
-                     << numSequencesR << " rings (layers) in Rho, "
-                     << numSequencesR*numSequencesZ*numSequencesPhi << " modules" << endmsg;
+                     << numSequencesR << " layers in Rho, "
+                     << numSequencesR*numSequencesZ*numSequencesPhi << " tiles" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
   double dzDetector = numSequencesdZ * dzSequence + dZEndPlate;
@@ -97,10 +97,10 @@ static DD4hep::Geometry::Ref_t createHCal (
   double dz0 = sequenceDimensions.dr() * 0.5;
 
   double dx1Module = tn * sensitiveBarrelRmin - spacing;
-  double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;
+  double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;         
   double dzModule = ( cos(dphi / 2.) * dimensions.rmax() - sensitiveBarrelRmin ) * 0.5;
-  lLog << MSG::DEBUG << "half depth of full module: " << dzModule << endmsg;
-  lLog << MSG::DEBUG << "half width of full module: " << dy0 << endmsg;
+  lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;
+  lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
 
   // First we construct one wedge:
   Volume wedgeVolume("wedge", DD4hep::Geometry::Trapezoid(
@@ -112,7 +112,7 @@ static DD4hep::Geometry::Ref_t createHCal (
     auto layerName = DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
 
-    //in Module rmin = 0  for first wedge, changed radis to the full raius starting at (0,0,0)
+    //in Module rmin = 0  for first wedge, changed radius to the full radius starting at (0,0,0)
     double rminLayer = sensitiveBarrelRmin + idxLayer * sequenceDimensions.dr();
     double rmaxLayer = sensitiveBarrelRmin + (idxLayer + 1) * sequenceDimensions.dr();
     double dx1 = tn * rminLayer - spacing;
@@ -140,8 +140,9 @@ static DD4hep::Geometry::Ref_t createHCal (
         ), lcdd.material(xComp.materialStr())
       );
       modCompVol.setVisAttributes(lcdd, xComp.visStr());
-      DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset()*0.5, 0);
-      lLog << MSG::DEBUG << "position of components in z : " << modCompZOffset + dyComp + xComp.y_offset()*0.5 << endmsg;
+      DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset()/2, 0);
+      std::cout << "air space total " << xComp.y_offset() << std::endl;
+      lLog << MSG::DEBUG << "position of components in z : " << modCompZOffset + dyComp << endmsg;
       PlacedVolume placedModCompVol = subWedgeVolume.placeVolume(modCompVol, offset);
 
       if (xComp.isSensitive()) {
