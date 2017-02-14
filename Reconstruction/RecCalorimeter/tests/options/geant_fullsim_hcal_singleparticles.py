@@ -47,7 +47,7 @@ inspect = InspectHitsCollectionsTool("inspect", readoutNames = ["BarHCal_Readout
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.01,etaMax=0.01,
+                particleName="e-",energyMin=energy,energyMax=energy,etaMin=0.36,etaMax=0.36,
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
