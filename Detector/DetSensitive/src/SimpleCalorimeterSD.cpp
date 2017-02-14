@@ -40,6 +40,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   G4double edep = aStep->GetTotalEnergyDeposit();
   if(edep==0.)
     return false;
+  //  std::cout << "energy before Birks law " << edep << std::endl;
 
   if(m_applyBirksLaw){
     const G4String myMaterial = "Polystyrene";
@@ -65,6 +66,7 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
       }
     }
     edep = response;
+    //std::cout << "energy after " << edep << std::endl;
   }
   
   // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
