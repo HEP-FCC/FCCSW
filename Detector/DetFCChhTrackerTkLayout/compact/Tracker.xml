@@ -6,7 +6,7 @@
     <readouts>
         <readout name="TrackerBarrelReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:5,layer:5,module:16,component:4,x:-15,z:-15</id>
+            <id>system:5,layer:5,module:18,x:-15,z:-15</id>
         </readout>
         <readout name="TrackerEndcapReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
@@ -16,24 +16,20 @@
     <include ref="FCChh_Option3_Definitions.xml"/>
     <detectors>
         <detector id="0" name="beampipe" type="BeamTube">
-            <dimensions rmin="0.000*mm" rmax="15.000*mm" z="500.000*mm" material="Air" vis="violet"/>
+            <dimensions rmin="CentralBeamTube_rmin" rmax="CentralBeamTube_rmax" z="CentralBeamTube_dz" material="Beryllium" vis="violet"/>
         </detector>
         <detector id="100" name="FCChhInner0" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="InnerBRL_0"/>
         </detector>
         <detector id="101" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="InnerBRL_1"/>
-            <!--
             <composite name="InnerECAPpos"/>
             <composite name="InnerECAPneg"/>
-            -->
         </detector>
         <detector id="102" name="FCChhOuter" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="OuterBRL"/>
-            <!--
             <composite name="OuterECAPpos"/>
             <composite name="OuterECAPneg"/>
-            -->
         </detector>
     </detectors>
 </lccdd>
