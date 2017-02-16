@@ -10,7 +10,6 @@
 
 // DD4hep
 #include "DD4hep/LCDD.h"
-#include "DDSegmentation/CartesianGridXYZ.h"
 #include "DDSegmentation/Segmentation.h"
 
 DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
@@ -119,7 +118,6 @@ StatusCode RedoSegmentation::execute() {
       debugIter++;
     }
   }
-
   return StatusCode::SUCCESS;
 }
 
