@@ -111,6 +111,11 @@ StatusCode TrackFit::execute() {
     m_decoderBarrel->setValue(theCellId);
     int system_id = (*m_decoderBarrel)["system"];
     debug() << " hit in system: " << system_id;
+    int layer_id = (*m_decoderBarrel)["layer"];
+    debug() << "\t layer " << layer_id;
+    int module_id = (*m_decoderBarrel)["module"];
+    debug() << "\t module " << module_id;
+    debug() << endmsg;
     (*m_decoderBarrel)["x"] = 0; // workaround for broken `volumeID` method --
     (*m_decoderBarrel)["z"] = 0; // set everything not connected with the VolumeID to zero,
     // so the cellID can be used to look up the tracking surface
@@ -123,6 +128,7 @@ StatusCode TrackFit::execute() {
     // need to use cellID without segmentation bits
     const Acts::Surface* fccSurf = m_trkVolMan->lookUpTrkSurface(Identifier(m_decoderBarrel->getValue()));
     debug() << " found surface pointer: " << fccSurf<< endmsg;
+    if (nullptr != fccSurf) {
     double std1 = 1;
     double std2 = 1;
     ActsSymMatrixD<2> cov;
@@ -131,13 +137,9 @@ StatusCode TrackFit::execute() {
     surfVec.push_back(fccSurf);
 
   // debug printouts
-    int layer_id = (*m_decoderBarrel)["layer"];
-    debug() << "\t layer " << layer_id;
-    int module_id = (*m_decoderBarrel)["module"];
-    debug() << "\t module " << module_id;
-    debug() << endmsg;
     
     ++hitcounter;
+    }
     }
   }
 
