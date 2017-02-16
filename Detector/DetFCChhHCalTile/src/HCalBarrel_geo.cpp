@@ -45,8 +45,8 @@ static DD4hep::Geometry::Ref_t createHCal (
   // calculate the number of modules fitting in phi, Z and Rho
   unsigned int numSequencesPhi = sequenceDimensions.phiBins();
   double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
-  unsigned int numSequencesdZ = static_cast<unsigned>(dimensions.dz() / dzSequence);
-  unsigned int numSequencesZ = static_cast<unsigned>(2*dimensions.dz() / dzSequence);
+  //  unsigned int numSequencesdZ = static_cast<unsigned>(dimensions.dz() / dzSequence);
+  unsigned int numSequencesZ = static_cast<unsigned>((2*dimensions.dz()-2*dZEndPlate) / dzSequence);
   unsigned int numSequencesR = static_cast<unsigned>((cos(dphi / 2) * dimensions.rmax() - sensitiveBarrelRmin) / sequenceDimensions.dr()); // needed due to trapezoid shapes inside the available HCAL volume
   lLog << MSG::DEBUG << "constructing " << numSequencesPhi << " modules per ring in phi, "
                      << numSequencesZ << " rings in Z, "
@@ -54,7 +54,7 @@ static DD4hep::Geometry::Ref_t createHCal (
                      << numSequencesR*numSequencesZ*numSequencesPhi << " tiles" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
-  double dzDetector = numSequencesdZ * dzSequence + dZEndPlate;
+  double dzDetector = (numSequencesZ * dzSequence)/2 + dZEndPlate;
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
 
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
@@ -98,15 +98,13 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   double dx1Module = tn * sensitiveBarrelRmin - spacing;
   double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;         
-  double dzModule = ( cos(dphi / 2.) * dimensions.rmax() - sensitiveBarrelRmin ) * 0.5;
+  double dzModule = (numSequencesR*sequenceDimensions.dr())/2; //( cos(dphi / 2.) * dimensions.rmax() - sensitiveBarrelRmin ) * 0.5;
   lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;
+  //lLog << MSG::DEBUG << "half height of full module (diff way):       " << (numSequencesR*sequenceDimensions.dr())/2 << endmsg;
   lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
 
   // First we construct one wedge:
-  Volume wedgeVolume("wedge", DD4hep::Geometry::Trapezoid(
-        dx1Module, dx2Module, dy0, dy0, dzModule
-      ), lcdd.material("Air")
-  );
+  Volume wedgeVolume("wedge", DD4hep::Geometry::Trapezoid(dx1Module, dx2Module, dy0, dy0, dzModule), lcdd.material("Air"));
   // Placement of subWedges in Wedge 
   for (unsigned int idxLayer = 0; idxLayer < numSequencesR; ++idxLayer) {
     auto layerName = DD4hep::XML::_toString(idxLayer, "layer%d");
@@ -141,16 +139,15 @@ static DD4hep::Geometry::Ref_t createHCal (
       );
       modCompVol.setVisAttributes(lcdd, xComp.visStr());
       DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset()/2, 0);
-      std::cout << "air space total " << xComp.y_offset() << std::endl;
       lLog << MSG::DEBUG << "position of components in z : " << modCompZOffset + dyComp << endmsg;
       PlacedVolume placedModCompVol = subWedgeVolume.placeVolume(modCompVol, offset);
 
       if (xComp.isSensitive()) {
-        modCompVol.setSensitiveDetector(sensDet);
+	//std::cout << xComp.materialStr() << std::endl;
+	modCompVol.setSensitiveDetector(sensDet);
 	placedModCompVol.addPhysVolID("tile", idxActMod);
 	idxActMod++;
       }
-
       // modCompDet.setPlacement(placedModCompVol);
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
@@ -168,12 +165,13 @@ static DD4hep::Geometry::Ref_t createHCal (
   moduleVolume.setVisAttributes(lcdd.invisible());
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
-    double zOffset = -dzDetector + dZEndPlate + (2*idxZRow + 1) * (dzSequence / 2);
+    double zOffset = -dzDetector + (2*idxZRow + 1) * (dzSequence / 2);
     DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
     PlacedVolume placedRowVolume = moduleVolume.placeVolume(wedgeVolume, wedgeOffset);
     placedRowVolume.addPhysVolID("row", idxZRow);
     //wedgeDet.setPlacement(placedWedgeVol);
   }
+
 
   // Finally we place all the wedges around phi
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
@@ -186,10 +184,10 @@ static DD4hep::Geometry::Ref_t createHCal (
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     DD4hep::Geometry::Position moduleOffset(xPosModule, yPosModule, 0);
     DD4hep::Geometry::Transform3D trans(
-					DD4hep::Geometry::RotationX(-0.5*dd4hep::pi)*
-					DD4hep::Geometry::RotationY(phi),
-					moduleOffset
-					);
+ 					DD4hep::Geometry::RotationX(-0.5*dd4hep::pi)*
+ 					DD4hep::Geometry::RotationY(phi),
+ 					moduleOffset
+ 					);
     PlacedVolume placedWedgeVol = envelopeVolume.placeVolume(moduleVolume, trans);
     placedWedgeVol.addPhysVolID("module", idxPhi);
     //wedgeDet.setPlacement(placedWedgeVol);
