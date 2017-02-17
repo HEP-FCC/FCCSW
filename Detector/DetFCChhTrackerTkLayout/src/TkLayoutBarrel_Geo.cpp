@@ -12,7 +12,6 @@ using DD4hep::XML::Dimension;
 using DD4hep::Geometry::PlacedVolume;
 
 namespace det {
-
 static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCDD& lcdd,
                                                            DD4hep::XML::Handle_t xmlElement,
                                                            DD4hep::Geometry::SensitiveDetector sensDet) {
@@ -40,7 +39,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   // counts all layers - incremented in the inner loop over repeat - tags
   unsigned int layerCounter = 0;
   double integratedModuleComponentThickness = 0;
-  unsigned int moduleComponentCounter = 0;
   unsigned int nPhi;
   double phi = 0;
   // loop over 'layer' nodes in xml
@@ -65,7 +63,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
     lay_det.addExtension<Acts::IActsExtension>(detlayer);
     lay_det.setPlacement(placedLayerVolume);
-    /// @todo: restore module components.
     DD4hep::XML::Component xModuleComponentsOdd = xModulePropertiesOdd.child("components");
     integratedModuleComponentThickness = 0;
     int moduleCounter = 0;
@@ -91,16 +88,13 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
         }
         for (DD4hep::XML::Collection_t xModuleColl(currentComp, _U(module)); nullptr != xModuleColl; ++xModuleColl) {
           DD4hep::XML::Component xModule = static_cast<DD4hep::XML::Component>(xModuleColl);
-          lX = xModule.X();
-          lY = xModule.Y();
+          double currentPhi = atan2(xModule.Y(), xModule.X());
+          double componentOffset =  integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness") + 0.5 * xModuleComponentOdd.thickness();
+          lX = xModule.X() + cos(currentPhi) * componentOffset;
+          lY = xModule.Y() + sin(currentPhi) * componentOffset;
           lZ = xModule.Z();
-          // DD4hep::Geometry::Translation3D moduleOffset(lX, lY, lZ);
-          DD4hep::Geometry::Translation3D moduleOffset(lX,
-                                                       lY + integratedModuleComponentThickness -
-                                                           0.5 * xModulePropertiesOdd.attr<double>("modThickness") +
-                                                           0.5 * xModuleComponentOdd.thickness(),
-                                                       lZ);
-          DD4hep::Geometry::Transform3D lTrafo(DD4hep::Geometry::RotationZ(atan(lY / lX) + 0.5 * M_PI), moduleOffset);
+          DD4hep::Geometry::Translation3D moduleOffset(lX, lY, lZ);
+          DD4hep::Geometry::Transform3D lTrafo(DD4hep::Geometry::RotationZ(atan2(lY,  lX) + 0.5 * M_PI), moduleOffset);
           DD4hep::Geometry::RotationZ lRotation(phi);
           PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo);
           if (xModuleComponentOdd.nameStr() == "Sensor-Si") {
