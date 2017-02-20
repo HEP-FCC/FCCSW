@@ -35,8 +35,8 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
   }
   // Get number of calorimeter towers
   auto towerMapSize = m_towerTool->towersNumber();
-  m_nEtaTower = towerMapSize[0];
-  m_nPhiTower = towerMapSize[1];
+  m_nEtaTower = towerMapSize.eta;
+  m_nPhiTower = towerMapSize.phi;
   // set flag used later to check if recalculation of number of towers for each event should be done
   m_recalculateEtaTowers = m_nEtaTower;
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;

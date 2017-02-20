@@ -7,6 +7,11 @@
 // datamodel
 #include "datamodel/CaloCluster.h"
 
+struct tower {
+  int eta;
+  int phi;
+};
+
 /** @class ITowerTool RecInterface/RecInterface/ITowerTool.h ITowerTool.h
  *
  *  Abstract interface to tower building tool.
@@ -18,9 +23,9 @@ class ITowerTool: virtual public IAlgTool {
 public:
   DeclareInterfaceID(ITowerTool, 1, 0);
   /**  Find number of calorimeter towers.
-   *   @return Array containing number of towers in eta and phi.
+   *   @return Struct containing number of towers in eta and phi.
    */
-  virtual std::array<int,2> towersNumber() = 0;
+  virtual tower towersNumber() = 0;
   /**  Find number of calorimeter towers in eta for current event.
    *   @return Number of towers in eta for current event.
    */
@@ -37,7 +42,7 @@ public:
    *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
-  virtual void matchCells(float, float, uint, uint, fcc::CaloCluster& aEdmCluster) = 0;
+  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal, fcc::CaloCluster& aEdmCluster) = 0;
   /**  Get the radius for the position calculation.
    *   @return Radius
    */

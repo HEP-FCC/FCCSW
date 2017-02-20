@@ -58,7 +58,7 @@ StatusCode SingleCaloTowerTool::initialize() {
 
 StatusCode SingleCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
-std::array<int, 2> SingleCaloTowerTool::towersNumber() {
+tower SingleCaloTowerTool::towersNumber() {
   // number of phi bins
   m_nPhiTower = idPhi(2 * M_PI);
   // number of eta bins (if eta maximum is defined)
@@ -67,7 +67,10 @@ std::array<int, 2> SingleCaloTowerTool::towersNumber() {
   } else {
     m_nEtaTower = 0;
   }
-  return {m_nEtaTower, m_nPhiTower};
+  tower total;
+  total.eta = m_nEtaTower;
+  total.phi = m_nPhiTower;
+  return total;
 }
 
 int SingleCaloTowerTool::etaTowersNumber() {

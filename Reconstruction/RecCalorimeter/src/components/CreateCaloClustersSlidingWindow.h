@@ -32,7 +32,7 @@ struct cluster {
  *  1. Create calorimeter towers.
  *     A tower contains all cells within certain eta and phi (tower size: '\b deltaEtaTower', '\b deltaPhiTower').
  *     Distance in r plays no role in this algorithm.
- *     TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower
+ *     Currently there is no support of cell splitting, so each cell should be completely inside the tower
  *     and that can be achieved using `GridEtaPhi` segmentation.
  *  2. Find local maxima.
  *     Local maxima are found using the sliding window of a fixed size in phi x eta ('\b nEtaWindow' '\b nPhiWindow' in
@@ -47,7 +47,7 @@ struct cluster {
  *  3. Remove duplicates.
  *     If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the
  *pre-cluster with lower energy is removed.
- *     TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than
+ *     Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than
  *sliding window, some towers may be taken twice (instead of the weighted energy).
  *  4. Build clusters.
  *     Clusters are created using the window of a fixed size in phi x eta ('\b nEtaFinal' '\b nPhiFinal' in units of
