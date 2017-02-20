@@ -39,13 +39,18 @@ StatusCode MaterialScan::initialize() {
   std::unique_ptr<std::vector<double>> nLambda(new std::vector<double>);
   std::unique_ptr<std::vector<double>> matDepth(new std::vector<double>);
   std::unique_ptr<std::vector<std::string>> material(new std::vector<std::string>);
+  auto nX0Ptr = nX0.get();
+  auto nLambdaPtr = nLambda.get();
+  auto matDepthPtr = matDepth.get();
+  auto materialPtr = material.get();
+            
   tree->Branch("eta", &eta);
   tree->Branch("nMaterials", &nMaterials);
-  tree->Branch("nX0", &nX0);
-  tree->Branch("nLambda", &nLambda);
-  tree->Branch("matDepth", &matDepth);
-  tree->Branch("material", &material);
-
+  tree->Branch("nX0", &nX0Ptr);
+  tree->Branch("nLambda", &nLambdaPtr);
+  tree->Branch("matDepth", &matDepthPtr);
+  tree->Branch("material", &materialPtr);
+  
   auto lcdd = m_geoSvc->lcdd();
   DD4hep::DDRec::MaterialManager matMgr;
   DDSurfaces::Vector3D beginning(0, 0, 0);
