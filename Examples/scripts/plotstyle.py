@@ -4,6 +4,7 @@ ____________________________________________________
 ____________________________________________________
 """
 from ROOT import gROOT, gStyle, kWhite, kGray
+import ROOT
 
 class FCCStyle():
     fillcolors = [ROOT.kGray, ROOT.kRed, ROOT.kOrange, ROOT.kSpring+10, ROOT.kCyan-10, ROOT.kAzure-9, ROOT.kMagenta-9]
