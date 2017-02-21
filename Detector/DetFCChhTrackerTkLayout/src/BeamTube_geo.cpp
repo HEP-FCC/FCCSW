@@ -22,7 +22,7 @@ static DD4hep::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4he
   // add Extension to Detlement for the RecoGeometry
   DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
   Tube tube_shape(x_det_dim.rmin(), x_det_dim.rmax(), x_det_dim.z());
-  Volume tube_vol(det_name, tube_shape, lcdd.air());  
+  Volume tube_vol(det_name, tube_shape, lcdd.material(x_det_dim.attr<std::string>("material")));
   tube_vol.setVisAttributes(lcdd, x_det_dim.visStr());
   // Place Volume
   Volume mother_vol = lcdd.pickMotherVolume(beamtube);
