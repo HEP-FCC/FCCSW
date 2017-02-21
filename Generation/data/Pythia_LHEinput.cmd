@@ -7,10 +7,8 @@
 ! Adjusted from Pythia example: main42.cmnd
 
 ! 1) Settings that will be used in a main program.
-Main:numberOfEvents = 1            ! number of events to generate
-Main:timesAllowErrors = 3          ! abort run after this many flawed events
-Random:seed = 1234                ! initialize random generator with a seed
-
+Main:numberOfEvents = 100          ! number of events to generate
+Main:timesAllowErrors = 100        ! abort run after this many flawed events
 
 ! 2) Settings related to output in init(), next() and stat() functions.
 Init:showChangedSettings = on      ! list changed settings
