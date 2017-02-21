@@ -97,7 +97,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
           DD4hep::Geometry::Transform3D lTrafo(DD4hep::Geometry::RotationZ(atan2(lY,  lX) + 0.5 * M_PI), moduleOffset);
           DD4hep::Geometry::RotationZ lRotation(phi);
           PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo);
-          if (xModuleComponentOdd.nameStr() == "Sensor-Si") {
+          if (xModuleComponentOdd.isSensitive()) {
             placedModuleVolume.addPhysVolID("module", moduleCounter);
             moduleVolume.setSensitiveDetector(sensDet);
             DetElement mod_det(lay_det, "module" + std::to_string(moduleCounter), moduleCounter);
