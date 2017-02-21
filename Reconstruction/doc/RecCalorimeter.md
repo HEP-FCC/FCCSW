@@ -1,7 +1,7 @@
 RecCalorimeter package
 ===
 
-Information about calorimeter reconstruction software within FCCSW. The software being tested using ECAL, but should be general enough to be used for other calorimeters. Let us know if you have any problems or questions.
+Information about calorimeter reconstruction software within FCCSW. The software is being tested using ECAL, but should be general enough to be used for other calorimeters. Let us know if you have any problems or questions (Jana Faltova, Anna Zaborowska).
 
 # Detector description
 
@@ -15,7 +15,7 @@ ECAL calorimeter description in `Detector/DetFCChhECalSimple`:
 
 Digitisation creates cells out of simulated energy deposits. From the EDM point of view, both input and output of the digitisation uses `fcc::CaloHit`.
 The input (simulated deposits) contains raw information about the energy deposited in the cells of the sensitive volumes.
-The output (cells) contains energy (corrected for the losses in the passive layers) and the noise. The cells may correspond to the active volumes or to the segmentation cells. In particular, different segmentation may be used than the original cells of the sensitive volumes used in the simulation.
+The output (cells) may contain energy (corrected for the losses in the passive layers) and the noise. The calibration and noise tools could be switched on/off by setting the appropriate flags in your script. The cells may correspond to the active volumes or to the segmentation cells. In particular, different segmentation may be used than the original cells of the sensitive volumes used in the simulation.
 
 > Note: resegmentation procedures (`RedoSegmentation`) expect the truth position of the energy deposits, hence they require `fcc::PositionedCaloHit` collection.
 
@@ -24,7 +24,7 @@ The output (cells) contains energy (corrected for the losses in the passive laye
 ## 1. Energy deposits merging
 
 The output of the simulation contains a large collection of energy deposits. First step towards the digitisation is merging those hits into the hit collection with one hit per cell of the sensitive volume. The energy of such hit is a sum of all the deposits within that sensitive volume cell.
-`CreateCaloCells` does not take time into account. The current implementation allows introduction of a time threshold (i.a. energy deposits with timing above threshold would be neglected). For any more complicated digitisation, new digitisation algorithm should be developed.
+`CreateCaloCells` does not take time into account at the moment. It is possible to add a time threshold within the current implementation (i.e. do not add energy deposits coming from delayed neutrons' energy deposits above a certain time threshold). For any more complicated digitisation, new digitisation algorithm should be developed.
 
 > Note: Energy deposits may be merged by Sensitive Detector implementation (`AggregateCalorimeterSD`), however it is not encouraged due to the time performance issues.
 
@@ -38,7 +38,7 @@ Energy calibration is done for sampling calorimeters to compensate for the energ
 
 Noise is added to all cells, not only those with signal. Hence a list of all existing in the geometry cell IDs is needed and it is retrieved from the geometry. This is the only part which is geometry dependent.
 
-Such a list is provided by a Gaudi tool deriving from `ICalorimeterTool`. Currently there are two implementations: `TubeLayerPhiEtaCaloTool` and `NestedVolumesCaloTool`.
+Such a list is provided by a Gaudi tool deriving from `ICalorimeterTool`. Currently there are two implementations: `TubeLayerPhiEtaCaloTool` and `NestedVolumesCaloTool`. For other detector geometries additional dedicated tools could be implemented.
 
 ### ECal geometry
 
@@ -108,6 +108,3 @@ LD_PRELOAD=build.$BINARY_TAG/lib/libDetSegmentation.so
 ./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionFlatNoise.py
 ./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
 ~~~
-
- LocalWords:  AggregateCalorimeterSD CalibrateCaloHitsTool Geant4
- LocalWords:  ICalorimeterTool

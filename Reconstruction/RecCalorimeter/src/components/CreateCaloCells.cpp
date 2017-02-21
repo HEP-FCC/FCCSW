@@ -1,6 +1,6 @@
 #include "CreateCaloCells.h"
 
-//FCCSW
+// FCCSW
 #include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
 
@@ -13,8 +13,7 @@
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
-CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
-: GaudiAlgorithm(name, svcLoc) {
+CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareInput("hits", m_hits, "hits");
   declareOutput("cells", m_cells, "cells");
 
@@ -69,16 +68,16 @@ StatusCode CreateCaloCells::initialize() {
 }
 
 StatusCode CreateCaloCells::execute() {
-  //Get the input collection with Geant4 hits
+  // Get the input collection with Geant4 hits
   const fcc::CaloHitCollection* hits = m_hits.get();
   debug() << "Input Hit collection size: " << hits->size() << endmsg;
 
   // 0. Clear all cells
-  std::for_each( m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t , double>& p) {p.second = 0;} );
+  std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
 
   // 1. Merge energy deposits into cells
   // If running with noise map already was prepared. Otherwise it is being created below
-  for(const auto& hit: *hits) {
+  for (const auto& hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
 
@@ -98,7 +97,7 @@ StatusCode CreateCaloCells::execute() {
   // 4. Copy information to CaloHitCollection
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (const auto& cell : m_cellsMap) {
-    if( cell.second != 0 ) {
+    if (cell.second != 0) {
       fcc::CaloHit newCell = edmCellsCollection->create();
       newCell.core().energy = cell.second;
       newCell.core().cellId = cell.first;
@@ -112,6 +111,4 @@ StatusCode CreateCaloCells::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode CreateCaloCells::finalize() {
-  return GaudiAlgorithm::finalize();
-}
+StatusCode CreateCaloCells::finalize() { return GaudiAlgorithm::finalize(); }

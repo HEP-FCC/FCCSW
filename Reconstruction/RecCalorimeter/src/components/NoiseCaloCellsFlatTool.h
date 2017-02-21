@@ -9,7 +9,6 @@ class IRndmGenSvc;
 // FCCSW
 #include "RecInterface/INoiseCaloCellsTool.h"
 
-
 /** @class NoiseCaloCellsFlatTool
  *
  *  Very simple tool for calorimeter noise using a single noise value for all cells
@@ -21,11 +20,10 @@ class IRndmGenSvc;
  *
  */
 
-class NoiseCaloCellsFlatTool : public GaudiTool, virtual public INoiseCaloCellsTool
-{
+class NoiseCaloCellsFlatTool : public GaudiTool, virtual public INoiseCaloCellsTool {
 public:
-  NoiseCaloCellsFlatTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~NoiseCaloCellsFlatTool();
+  NoiseCaloCellsFlatTool(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~NoiseCaloCellsFlatTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 

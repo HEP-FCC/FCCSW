@@ -12,8 +12,7 @@ class IRndmGenSvc;
 class IGeoSvc;
 
 // Root
-#include "TH1F.h"
-#include "TFile.h"
+class TH1F;
 
 /** @class NoiseCaloCellsFromFileTool
  *
@@ -27,11 +26,10 @@ class IGeoSvc;
  *
  */
 
-class NoiseCaloCellsFromFileTool : public GaudiTool, virtual public INoiseCaloCellsTool
-{
+class NoiseCaloCellsFromFileTool : public GaudiTool, virtual public INoiseCaloCellsTool {
 public:
-  NoiseCaloCellsFromFileTool(const std::string& type,const std::string& name, const IInterface* parent);
-  virtual ~NoiseCaloCellsFromFileTool();
+  NoiseCaloCellsFromFileTool(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~NoiseCaloCellsFromFileTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
@@ -67,22 +65,19 @@ private:
   uint m_numRadialLayers;
 
   /// Histograms with pileup constants (index in array - radial layer)
-  std::vector<TH1F*> m_histoPileupConst;
+  std::vector<TH1F> m_histoPileupConst;
   /// Histograms with electronics noise constants (index in array - radial layer)
-  std::vector<TH1F*> m_histoElecNoiseConst;
+  std::vector<TH1F> m_histoElecNoiseConst;
 
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for the generation of random noise hits
   Rndm::Numbers m_gauss;
 
-  TFile* m_file;
-
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
-
 };
 
 #endif /* RECCALORIMETER_NOISECALOCELLSCOMPLEXTOOL_H */
