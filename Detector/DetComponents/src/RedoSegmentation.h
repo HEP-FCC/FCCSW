@@ -26,12 +26,12 @@ class CaloHitCollection;
 /** @class RedoSegmentation Detector/DetComponents/src/RedoSegmentation.h RedoSegmentation.h
  *
  *  Redo the segmentation after the simulation has ended.
- *  True positions of the deposits are required!
- *  Positions of the energy deposits are saved in clusters. Cell ID is taken from bits in cluster.
+ *  True positions of the hits are required!
  *  New readout (with new segmentation) has to be added to <readouts> tag in the detector description xml.
- *  Cell IDs are goign to be rewritten from the old readout (`\b oldReadoutName`) to the new readout (`\b newReadoutName`).
+ *  Cell IDs are rewritten from the old readout (`\b oldReadoutName`) to the new readout (`\b newReadoutName`).
  *  Names of the old segmentation fields need to be passed as a vector '\b oldSegmentationIds'.
- *  Those fields are going to be replaced by the new segmentation.
+ *  Those fields are replaced by the new segmentation.
+ *
  *  For an example see Detector/DetComponents/tests/options/redoSegmentationXYZ.py
  *  and Detector/DetComponents/tests/options/redoSegmentationRPhi.py.
  *

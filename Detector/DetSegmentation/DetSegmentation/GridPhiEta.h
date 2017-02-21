@@ -22,11 +22,12 @@ public:
   /// default constructor using an arbitrary type
   GridPhiEta(const std::string& aCellEncoding);
   /// destructor
-  virtual ~GridPhiEta();
+  virtual ~GridPhiEta() = default;
 
   /**  Determine the global position based on the cell ID.
+   *   @warning This segmentation has no knowledge of radius, so radius = 1 is taken into calculations.
    *   @param[in] aCellId ID of a cell.
-   *   return Position.
+   *   return Position (radius = 1).
    */
   virtual Vector3D position(const CellID& aCellID) const;
   /**  Determine the cell ID based on the position.
