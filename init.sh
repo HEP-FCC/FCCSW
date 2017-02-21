@@ -1,2 +1,3 @@
 #!/bin/sh -u
-source /afs/cern.ch/exp/fcc/sw/0.8pre/setup.sh $1
+source /cvmfs/fcc.cern.ch/sw/0.8pre/setup.sh $1
+
