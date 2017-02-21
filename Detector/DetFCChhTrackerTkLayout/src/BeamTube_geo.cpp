@@ -27,9 +27,7 @@ static DD4hep::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4he
   // Place Volume
   Volume mother_vol = lcdd.pickMotherVolume(beamtube);
   PlacedVolume placedTube = mother_vol.placeVolume(tube_vol);
-  placedTube.addPhysVolID("tube", beamtube.id());
   beamtube.setPlacement(placedTube);
-
   return beamtube;
 }
 
