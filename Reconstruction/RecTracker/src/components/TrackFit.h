@@ -4,6 +4,7 @@
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
+#include "ACTSLogger.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
@@ -132,6 +133,11 @@ std::shared_ptr<IExtrapolationEngine> initExtrapolator(const std::shared_ptr<con
   exEngineConfig.navigationEngine = navEngine;
   exEngineConfig.extrapolationEngines = {statEngine};
   auto exEngine = std::make_shared<ExtrapolationEngine>(exEngineConfig);
+  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "Expol");
+  //auto GaudiLogger = std::make_unique<Acts::Logger>(std::make_unique<GaudiPrintPolicy>(&(*msgSvc)),std::make_unique<GaudiFilterPolicy>(&(*msgSvc)));
+  //exEngine->setLogger(
+  //    getDefaultLogger("ExtrapolationEngine", Logging::VERBOSE));
+  exEngine->setLogger( std::make_unique<Acts::Logger>(std::make_unique<GaudiPrintPolicy>(&(*msgSvc)),std::make_unique<GaudiFilterPolicy>(&(*msgSvc))));
 
   return exEngine;
 }
