@@ -165,4 +165,14 @@
     <composite n="1" ref="Ar"/>
   </material>
 
+  <material name="PCB" state="solid">
+    <MEE unit="eV" value="88.255598548367"/>
+    <D unit="g/cm3" value="1.7"/>
+    <fraction n="0.180774" ref="Si"/>
+    <fraction n="0.405633" ref="O"/>
+    <fraction n="0.278042" ref="C"/>
+    <fraction n="0.0684428" ref="H"/>
+    <fraction n="0.0671091" ref="Br"/>
+  </material>
+
 </materials>

@@ -5,7 +5,7 @@
 
   <info name="FCChh_ECalBarrel_Common"
         title="Common settings for Inclined ECal Barrel Calorimeter"
-        author="A.Zaborowska"
+        author="M.Aleksa,J.Faltova,A.Zaborowska"
         url="no"
         status="development"
         version="1.0">
@@ -28,6 +28,7 @@
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThickness"/>
     <constant name="LAr_thickness" value="6*mm"/>
     <constant name="Pb_thickness" value="2*mm"/>
+    <constant name="readout_thickness" value="1*mm"/>
   </define>
 
   <display>
@@ -35,29 +36,32 @@
   </display>
 
   <readouts>
-    <readout name="ECalHitsRPhiEta">
-      <segmentation type="GridRPhiEta" grid_size_eta="0.01" phi_bins="629" grid_size_r="100*mm" offset_r="EMBarrel_rmin+0.5*LAr_thickness+0.5*Pb_thickness+0.0001*mm"/>
-      <id>system:4,r:9,eta:-9,phi:-10</id>
+    <readout name="ECalHitsPhiEta">
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629"/>
+      <id>system:4,cell:22,eta:-9,phi:-10</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsRPhiEta">
+    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
       <cryostat name="ECAL_Cryo">
         <material name="Aluminum"/>
-	     <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness" />
+	     <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness"/>
       </cryostat>
-      <calorimeter name="EM_barrel" >
-	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
+      <calorimeter name="EM_barrel">
+	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz"/>
 	     <active thickness="LAr_thickness">
-          <material name="LAr" />
+          <material name="LAr"/>
         </active>
 	     <passive thickness="Pb_thickness">
           <material name="Lead"/>
-          <rotation angle="5*degree"/>
+          <rotation angle="0*degree"/>
         </passive>
+        <readout thickness="readout_thickness">
+          <material name="PCB"/>
+        </readout>
       </calorimeter>
     </detector>
   </detectors>
