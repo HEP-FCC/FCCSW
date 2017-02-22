@@ -58,7 +58,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
 
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
-  Volume envelopeVolume(detName, envelopeShape, lcdd.air());
+  Volume envelopeVolume("envelopeVolume", envelopeShape, lcdd.air());
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
   // set the sensitive detector type to the DD4hep calorimeter -- including Birks Law
@@ -74,7 +74,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
 
   // Add structural support made of steel at both ends of HCal
-  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate);
+  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), dimensions.rmax(), dZEndPlate/2);
   Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
   endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
 
@@ -109,6 +109,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   for (unsigned int idxLayer = 0; idxLayer < numSequencesR; ++idxLayer) {
     auto layerName = DD4hep::XML::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
+    DetElement layerDet(hCal, layerName, idxLayer);
 
     //in Module rmin = 0  for first wedge, changed radius to the full radius starting at (0,0,0)
     double rminLayer = sensitiveBarrelRmin + idxLayer * sequenceDimensions.dr();
@@ -130,7 +131,9 @@ static DD4hep::Geometry::Ref_t createHCal (
     //Filling of the subWedge with coponents (submodules)
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _U(module_component)); xCompColl; ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
+      auto compName = DD4hep::XML::_toString(idxLayer, "layer%d") + DD4hep::XML::_toString(idxSubMod, "_tile%d");
       std::string subModuleName =  xComp.materialStr() + DD4hep::XML::_toString(idxSubMod, "_tile%d");
+      DetElement compDet(hCal, compName, idxSubMod);
       //added * 0.5 for Trapezoid 
       double dyComp = xComp.thickness() * 0.5;
       Volume modCompVol(subModuleName, DD4hep::Geometry::Trapezoid(
@@ -148,13 +151,13 @@ static DD4hep::Geometry::Ref_t createHCal (
 	placedModCompVol.addPhysVolID("tile", idxActMod);
 	idxActMod++;
       }
-      // modCompDet.setPlacement(placedModCompVol);
+      compDet.setPlacement(placedModCompVol);
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
     DD4hep::Geometry::Position modOffset(0, 0, rMiddle);
     PlacedVolume placedModuleVol = wedgeVolume.placeVolume(subWedgeVolume, modOffset);
     placedModuleVol.addPhysVolID("layer", idxLayer);
-    // moduleDet.setPlacement(placedModuleVol);
+    layerDet.setPlacement(placedModuleVol);
   }
 
   // Now we place the components along z within the module
@@ -165,19 +168,25 @@ static DD4hep::Geometry::Ref_t createHCal (
   moduleVolume.setVisAttributes(lcdd.invisible());
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
-    double zOffset = -dzDetector + (2*idxZRow + 1) * (dzSequence / 2);
+    auto wedgeName = DD4hep::XML::_toString(idxZRow, "row%d");
+    DetElement wedgeDet(hCal, wedgeName, idxZRow);  
+    double zOffset = -dzDetector + (2*idxZRow + 1) * (dzSequence*0.5);
+    std::cout << "z offset of wedges = " << zOffset << std::endl;
+    
+    if ( -dzDetector+zOffset >= dzDetector )
+      std::cout << " WARNING!!!! Module position outside" << std::endl;
+    
     DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
     PlacedVolume placedRowVolume = moduleVolume.placeVolume(wedgeVolume, wedgeOffset);
     placedRowVolume.addPhysVolID("row", idxZRow);
-    //wedgeDet.setPlacement(placedWedgeVol);
+    wedgeDet.setPlacement(placedRowVolume);
   }
 
 
   // Finally we place all the wedges around phi
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
     auto modName = DD4hep::XML::_toString(idxPhi, "mod%d");
-    // Volume and DetElement for one row in Z
-    DetElement wedgeDet(hCal, modName, idxPhi);
+    DetElement moduleDet(hCal, modName, idxPhi);
     // first rotation due to default rotation of trapezoid
     double phi = 0.5 * dphi - idxPhi * dphi; // 0.5*dphi for middle of module
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
@@ -190,7 +199,7 @@ static DD4hep::Geometry::Ref_t createHCal (
  					);
     PlacedVolume placedWedgeVol = envelopeVolume.placeVolume(moduleVolume, trans);
     placedWedgeVol.addPhysVolID("module", idxPhi);
-    //wedgeDet.setPlacement(placedWedgeVol);
+    moduleDet.setPlacement(placedWedgeVol);
   }
 
   //Place envelope (or barrel) volume
@@ -204,4 +213,3 @@ static DD4hep::Geometry::Ref_t createHCal (
 } // namespace hcal
 
 DECLARE_DETELEMENT(CaloBarrel, det::createHCal)
-
