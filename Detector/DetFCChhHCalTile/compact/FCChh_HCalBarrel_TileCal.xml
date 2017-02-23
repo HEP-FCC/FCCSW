@@ -19,7 +19,7 @@
     <!-- tile dimensions -->
     <constant name="BarHCal_n_phi_modules" value="128"/>
     <constant name="BarHCal_module_drho" value="100*mm"/>
-    <constant name="BarHCAL_module_spacing_phi" value="0.001*mm"/>
+    <constant name="BarHCAL_module_spacing_phi" value="1*mm"/>
     <!-- component dimensions -->
     <constant name="BarHCal_master_plate_thickness" value="5*mm" />
     <constant name="BarHCal_spacer_plate_thickness" value="4*mm" />
@@ -28,6 +28,7 @@
     <!-- face and end-plate dimensions -->
     <constant name="BarHCal_end_plate_thickness" value="5*mm" />
     <constant name="BarHCal_face_plate_thickness" value="10*mm" />
+    <constant name="BarHCal_plate_space" value="0.5*mm" />
   </define>
 
   <display>
