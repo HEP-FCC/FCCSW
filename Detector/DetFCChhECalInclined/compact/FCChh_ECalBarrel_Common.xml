@@ -11,7 +11,9 @@
         version="1.0">
     <comment>
       Common settings for the inclined EMcal.
-      The barrel is filled with liquid argon. Lead strips are inclined by a certain angle from the radial direction.
+      The barrel is filled with liquid argon. Lead plates are inclined by a certain angle from the radial direction.
+      In between of two lead plates there is a readout.
+      Space between the plane and readout is of trapezoidal shape and filled with liquid argon.
       Definition of sizes, visualization settings and readout are specified.
     </comment>
   </info>
@@ -26,7 +28,8 @@
     <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThickness+LArBathThickness"/>
     <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThickness-LArBathThickness"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThickness"/>
-    <constant name="LAr_thickness" value="6*mm"/>
+    <!-- thickness of active volume between two lead plates, measuring perpendicular to the readout plate -->
+    <constant name="LAr_thickness" value="5*mm"/>
     <constant name="Pb_thickness" value="2*mm"/>
     <constant name="readout_thickness" value="1*mm"/>
   </define>
@@ -57,11 +60,14 @@
         </active>
 	     <passive thickness="Pb_thickness">
           <material name="Lead"/>
-          <rotation angle="0*degree"/>
+          <rotation angle="30*degree"/>
         </passive>
         <readout thickness="readout_thickness">
           <material name="PCB"/>
         </readout>
+        <cell>
+	       <dimensions height="1*cm"/>
+        </cell>
       </calorimeter>
     </detector>
   </detectors>

@@ -36,6 +36,9 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   std::string active_mat = active.materialStr();
   double active_thickness = active.thickness();
 
+  DD4hep::XML::DetElement cell = calo.child("cell");
+  double cell_height = cell.dimensions().height();
+
   DD4hep::XML::DetElement readout = calo.child("readout");
   std::string readout_mat = readout.materialStr();
   double readout_thickness = readout.thickness();
@@ -46,12 +49,10 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   double angle = passive.rotation().angle();
 
   // 1. Create the tubes for the outer shapes of the volumes
-  DD4hep::Geometry::Tube calo_outer_shape(calo_dim.rmin(), calo_dim.rmax(), calo_dim.dz());
   DD4hep::Geometry::Tube bath_outer_shape(cryo_dim.rmin() + cryo_thickness,
     cryo_dim.rmax() - cryo_thickness, cryo_dim.dz() - cryo_thickness);
   DD4hep::Geometry::Tube cryo_outer_shape(cryo_dim.rmin(), cryo_dim.rmax(), cryo_dim.dz());
-  // Subtract volumes to get the actual shapes of bath and cryo
-  DD4hep::Geometry::SubtractionSolid bath_shape(bath_outer_shape, calo_outer_shape);
+  // Subtract volumes to get the actual shape of cryo
   DD4hep::Geometry::SubtractionSolid cryo_shape(cryo_outer_shape, bath_outer_shape);
 
   // 1. Create cryostat
@@ -62,26 +63,22 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
 
   // 2. Create bath that is inside the cryostat and surrounds the calorimeter
   //    Bath is filled with active material -> but not sensitive
-  DD4hep::Geometry::Volume bath_vol(active_mat + "_bath", bath_shape, aLcdd.material(active_mat));
+  DD4hep::Geometry::Volume bath_vol(active_mat + "_bath", bath_outer_shape, aLcdd.material(active_mat));
   lLog << MSG::DEBUG << "ECAL bath: material = " << active_mat << " rmin (cm) =  "
        << cryo_dim.rmin() + cryo_thickness << " rmax (cm) = " << cryo_dim.rmax() - cryo_thickness << endmsg;
-  envelope_vol.placeVolume(bath_vol);
 
-  // 3. Create the calorimeter by placing the passive material, trapezoid active cells, readout and again trapezoid active cells.
-  DD4hep::Geometry::Volume calo_vol(active_mat + "_sensitive", calo_outer_shape, aLcdd.material(active_mat));
+  // 3. Create the calorimeter by placing the passive material, trapezoid active cells, readout and again trapezoid active cells in the bath.
   // sensitive detector for the cells
   DD4hep::Geometry::SensitiveDetector sd = aSensDet;
   DD4hep::XML::Dimension sd_typ = xml_det.child(_U(sensitive));
   sd.setType(sd_typ.typeStr());
-  // TODO move to cell
-  calo_vol.setSensitiveDetector(aSensDet);
   lLog << MSG::DEBUG << "ECAL sensitive volume: material = " << active_mat << " rmin (cm) =  "
        << calo_dim.rmin() << " rmax (cm) = " << calo_dim.rmax() << endmsg;
 
   // 3.a. Create the passive planes, readout in between of 2 passive planes and the remaining space fill with active material
   lLog << MSG::DEBUG << "passive material = " << passive_mat << " thickness of planes (cm) =  "
        << passive_thickness << " rotation angle = " << angle << endmsg;
-  uint numPlanes = M_PI / asin( (passive_thickness + active_thickness) / (2. * calo_dim.rmin() * cos(angle) )) ;
+  uint numPlanes = M_PI / asin( (passive_thickness + active_thickness + readout_thickness) / (2. * calo_dim.rmin() * cos(angle) )) ;
   double dPhi = 2. * M_PI / numPlanes;
   lLog << MSG::DEBUG << "number of passive plates = " << numPlanes << " azim. angle difference =  " << dPhi << endmsg;
   lLog << MSG::DEBUG << " distance at inner radius (cm) = " << 2. * M_PI * calo_dim.rmin() / numPlanes
@@ -95,17 +92,36 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   double Rmax = calo_dim.rmax();
   double dR = Rmax - Rmin;
   double plane_length = - Rmin * cos(angle) + sqrt( pow(Rmax,2) - pow( Rmin * sin(angle), 2) );
+  lLog << MSG::DEBUG << "thickness of calorimeter (cm) = " << dR << " length of passive or readout planes (cm) =  "
+       << plane_length << endmsg;
   DD4hep::Geometry::Box passive_shape(plane_length / 2., passive_thickness / 2., calo_dim.dz());
   DD4hep::Geometry::Volume passive_vol(passive_mat, passive_shape , aLcdd.material(passive_mat));
   DD4hep::Geometry::Box readout_shape(plane_length / 2., readout_thickness / 2., calo_dim.dz());
   DD4hep::Geometry::Volume readout_vol(readout_mat, readout_shape , aLcdd.material(readout_mat));
   // thickness of active cells at inner radius and outer ( = distance between passive plane and readout plane)
-  float active_in_thck = Rmin * sin(dPhi / 2.) * cos(angle) - passive_thickness / 2. - readout_thickness / 2.;
-  float active_out_thck = (Rmin + plane_length) * sin(dPhi / 2.) * cos(angle) - passive_thickness / 2. - readout_thickness / 2.;
+  // at inner radius: distance projected at plane perpendicular to readout plane
+  double active_in_thck = Rmin * sin(dPhi / 2.) * cos(angle);
+  // decreased by the thickness of passive and readout planes
+  active_in_thck -= passive_thickness / 2. + readout_thickness / 2.;
+  // at outer radius: distance projected at plane perpendicular to readout plane
+  double active_out_thck = (Rmin + plane_length) * sin(dPhi / 2.) * cos(angle);
+  // make correction for outer readius caused by inclination angle
+  // first calculate intersection of readout plane and plane parallel to shifted passive plane
+  double xIntersect = (Rmin * (tan(angle) - cos(dPhi / 2.) * tan(angle + dPhi / 2.)) - plane_length * sin(dPhi / 2.)) /
+    (tan(angle) - tan(angle + dPhi / 2.));
+  double yIntersect = tan(angle) * xIntersect + Rmin * (sin(dPhi / 2.) - tan(angle)) + plane_length * sin(dPhi / 2.);
+  // distance from inner radius to intersection
+  double correction = plane_length - sqrt(pow(xIntersect - Rmin * cos(dPhi/2), 2) +
+    pow(yIntersect - Rmin * sin(dPhi/2), 2));
+  // correction to the active thickness
+  active_out_thck += 2. * correction * sin(dPhi / 4.);
+  // decreased by the thickness of passive and readout planes
+  active_out_thck -= passive_thickness / 2. + readout_thickness / 2.;
   lLog << MSG::DEBUG << " active cells thickness at inner radius (cm) = " << active_in_thck
        << " thickness at outer radious (cm) = " << active_out_thck << " making "
        << (active_out_thck - active_in_thck) * 100 / active_in_thck << " % increase." << endmsg;
-  // creating shapes for cells (reflected along readout)
+
+  // creating shapes for rows of cells (reflected along readout -> assumption of small phi angle)
   DD4hep::Geometry::Trap active_shape_below(
     plane_length / 2., // (after rotation) radial length
     atan((active_out_thck / 2. - active_in_thck / 2.)/(2.* (plane_length / 2.))) * 180 / M_PI, // right angle at one side
@@ -115,15 +131,64 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     active_out_thck / 2. , active_out_thck / 2., // side at outer radius at low and high z
     0.);
   DD4hep::Geometry::Trap active_shape_above(
-      plane_length / 2.,
-      - atan((active_out_thck / 2. - active_in_thck / 2.)/(2.* (plane_length / 2.))) * 180 / M_PI, // right angle
-      0., calo_dim.dz(),
-      active_in_thck / 2. , active_in_thck / 2.,
-      0., calo_dim.dz(),
-      active_out_thck / 2. , active_out_thck / 2., 0.);
+    plane_length / 2.,
+    - atan((active_out_thck / 2. - active_in_thck / 2.)/(2.* (plane_length / 2.))) * 180 / M_PI, // right angle
+    0., calo_dim.dz(),
+    active_in_thck / 2. , active_in_thck / 2.,
+    0., calo_dim.dz(),
+    active_out_thck / 2. , active_out_thck / 2., 0.);
   DD4hep::Geometry::Volume active_vol_below("activeBelow", active_shape_below, aLcdd.material(active_mat) );
   DD4hep::Geometry::Volume active_vol_above("activeAbove", active_shape_above, aLcdd.material(active_mat) );
-  // place elements
+
+  // First place cells in rows
+  uint numCells = plane_length / cell_height;
+  cell_height = plane_length / numCells;
+  double cell_in_thck = active_in_thck;
+  float dThickness = (active_out_thck - active_in_thck) / numCells;
+  std::cout <<" THICKNESS: " << dThickness << std::endl;
+  float cell_out_thck = active_in_thck + dThickness;
+  float offsetCellRadial = - plane_length / 2. + cell_height / 2.;
+  float offsetCellX = - dThickness / 2. * (numCells / 2. - 0.5);
+  lLog << MSG::DEBUG << " Number of cells for each readout plane = " << numCells
+       << " Total number of cells  = " << numCells * numPlanes
+       << " OFFSET = " << offsetCellX
+       << " Corrected height of one cell (cm) = " << cell_height << endmsg;
+  for(uint iCell = 0; iCell < numCells; iCell ++) {
+    // Trapezoid shape for current radial distance
+    DD4hep::Geometry::Trap cell_shape_below(
+      cell_height / 2., // (after rotation) radial length
+      atan((cell_out_thck / 2. - cell_in_thck / 2.)/(2.* (cell_height / 2.))) * 180 / M_PI, // right angle at one side
+      0., calo_dim.dz(), // length along beam axis
+      cell_in_thck / 2. , cell_in_thck / 2., // side at inner radius at low and high z
+      0., calo_dim.dz(), // length along beam axis
+      cell_out_thck / 2. , cell_out_thck / 2., // side at outer radius at low and high z
+      0.);
+    DD4hep::Geometry::Trap cell_shape_above(
+      cell_height / 2.,
+      - atan((cell_out_thck / 2. - cell_in_thck / 2.)/(2.* (cell_height / 2.))) * 180 / M_PI, // right angle at other side
+      0., calo_dim.dz(),
+      cell_in_thck / 2. , cell_in_thck / 2.,
+      0., calo_dim.dz(),
+      cell_out_thck / 2. , cell_out_thck / 2.,
+      0.);
+
+    DD4hep::Geometry::Volume cell_vol_below("cell_vol_below", cell_shape_below, aLcdd.material(active_mat) );
+    DD4hep::Geometry::Volume cell_vol_above("cell_vol_above", cell_shape_above, aLcdd.material(active_mat) );
+    cell_vol_below.setSensitiveDetector(aSensDet);
+    cell_vol_below.setSensitiveDetector(aSensDet);
+    DD4hep::Geometry::PlacedVolume cell_physvol_below = active_vol_below.placeVolume(cell_vol_below,
+      DD4hep::Geometry::Position(offsetCellX + iCell * dThickness / 2.,
+        0,
+        offsetCellRadial + iCell * cell_height));
+    DD4hep::Geometry::PlacedVolume cell_physvol_above = active_vol_above.placeVolume(cell_vol_above,
+      DD4hep::Geometry::Position( - offsetCellX - iCell * dThickness / 2.,
+        0,
+        offsetCellRadial + iCell * cell_height));
+    cell_in_thck = cell_out_thck;
+    cell_out_thck += dThickness;
+  }
+
+  // Next place elements: passive planes, readout planes and rows of cells
   for(uint iPlane = 0; iPlane < numPlanes; iPlane ++) {
     // PASSIVE
     // calculate centre position of the plane without plane rotation
@@ -138,7 +203,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     double yRotated = yRmin + (xRadial - xRmin) * sin(angle) + (yRadial - yRmin) * cos(angle);
     DD4hep::Geometry::Transform3D transform( DD4hep::Geometry::RotationZ(phi + angle),
       DD4hep::Geometry::Position(xRotated, yRotated, 0) );
-    DD4hep::Geometry::PlacedVolume passive_physvol = calo_vol.placeVolume(passive_vol, transform);
+    DD4hep::Geometry::PlacedVolume passive_physvol = bath_vol.placeVolume(passive_vol, transform);
 
     // READOUT
     // calculate centre position of the plane without plane rotation
@@ -153,7 +218,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     double yRotatedRead = yRminRead + (xRadialRead - xRminRead) * sin(angle) + (yRadialRead - yRminRead) * cos(angle);
     DD4hep::Geometry::Transform3D transformRead (DD4hep::Geometry::RotationZ(phiRead + angle),
       DD4hep::Geometry::Position(xRotatedRead, yRotatedRead, 0) );
-    DD4hep::Geometry::PlacedVolume readout_physvol = calo_vol.placeVolume(readout_vol, transformRead);
+    DD4hep::Geometry::PlacedVolume readout_physvol = bath_vol.placeVolume(readout_vol, transformRead);
 
     // ACTIVE
     double dCentre = readout_thickness / 2. + (active_in_thck + active_out_thck) / 4.;
@@ -166,12 +231,12 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
       DD4hep::Geometry::RotationX(- M_PI / 2.) // to get trapezoid in XY plane
       * DD4hep::Geometry::RotationY(M_PI / 2. // to get trapezoid pointed towards centre
         - phiRead - angle)); // rotation of individual module
-    DD4hep::Geometry::PlacedVolume active_physvol_below = calo_vol.placeVolume(active_vol_below,
+    DD4hep::Geometry::PlacedVolume active_physvol_below = bath_vol.placeVolume(active_vol_below,
       DD4hep::Geometry::Transform3D(rotationActive, DD4hep::Geometry::Position(xRotatedActBelow, yRotatedActBelow, 0) ));
-    DD4hep::Geometry::PlacedVolume active_physvol_above = calo_vol.placeVolume(active_vol_above,
+    DD4hep::Geometry::PlacedVolume active_physvol_above = bath_vol.placeVolume(active_vol_above,
       DD4hep::Geometry::Transform3D(rotationActive, DD4hep::Geometry::Position(xRotatedActAbove, yRotatedActAbove, 0) ));
   }
-  envelope_vol.placeVolume(calo_vol);
+  envelope_vol.placeVolume(bath_vol);
 
   // Place the envelope
   DD4hep::Geometry::Volume mother_vol = aLcdd.pickMotherVolume(det_element);
