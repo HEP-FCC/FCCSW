@@ -26,7 +26,8 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   // Retrieve cryostat data
   DD4hep::XML::DetElement cryostat = aXmlElement.child("cryostat");
   DD4hep::XML::Dimension cryo_dim (cryostat.dimensions());
-  double cryo_thickness = cryo_dim.thickness();
+  double cryo_thickness_front = cryo_dim.rmin2() - cryo_dim.rmin1();
+  double cryo_thickness_back = cryo_dim.rmax2() - cryo_dim.rmax1();
 
   // Retrieve active and passive material data
   DD4hep::XML::DetElement calo = aXmlElement.child("calorimeter");
@@ -49,15 +50,16 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   double angle = passive.rotation().angle();
 
   // 1. Create the tubes for the outer shapes of the volumes
-  DD4hep::Geometry::Tube bath_outer_shape(cryo_dim.rmin() + cryo_thickness,
-    cryo_dim.rmax() - cryo_thickness, cryo_dim.dz() - cryo_thickness);
-  DD4hep::Geometry::Tube cryo_outer_shape(cryo_dim.rmin(), cryo_dim.rmax(), cryo_dim.dz());
+  DD4hep::Geometry::Tube bath_outer_shape(cryo_dim.rmin2(),
+    cryo_dim.rmax1(), calo_dim.dz());
+  DD4hep::Geometry::Tube cryo_outer_shape(cryo_dim.rmin1(), cryo_dim.rmax2(), cryo_dim.dz());
   // Subtract volumes to get the actual shape of cryo
   DD4hep::Geometry::SubtractionSolid cryo_shape(cryo_outer_shape, bath_outer_shape);
 
   // 1. Create cryostat
-  lLog << MSG::DEBUG << "ECAL cryostat: rmin (cm) = " << cryo_dim.rmin() << " rmax (cm) = "
-       << cryo_dim.rmax() << " thickness (cm) = " << cryo_thickness << endmsg;
+  lLog << MSG::DEBUG << "ECAL cryostat: rmin (cm) = " << cryo_dim.rmin1() << " rmax (cm) = "
+       << cryo_dim.rmax2() << " thickness in front of ECal (cm) = " << cryo_thickness_front
+       << " thickness behind ECal (cm) = " << cryo_thickness_back << endmsg;
   DD4hep::Geometry::Volume cryoVol(cryostat.nameStr(), cryo_shape, aLcdd.material(cryostat.materialStr()));
   envelope_vol.placeVolume(cryoVol);
 
@@ -65,14 +67,16 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   //    Bath is filled with active material -> but not sensitive
   DD4hep::Geometry::Volume bath_vol(active_mat + "_bath", bath_outer_shape, aLcdd.material(active_mat));
   lLog << MSG::DEBUG << "ECAL bath: material = " << active_mat << " rmin (cm) =  "
-       << cryo_dim.rmin() + cryo_thickness << " rmax (cm) = " << cryo_dim.rmax() - cryo_thickness << endmsg;
+       << cryo_dim.rmin2() << " rmax (cm) = " << cryo_dim.rmax1()
+       << " thickness in front of ECal (cm) = " << calo_dim.rmin() - cryo_dim.rmin2()
+       << " thickness behind ECal (cm) = " << cryo_dim.rmax1() - calo_dim.rmax()  << endmsg;
 
   // 3. Create the calorimeter by placing the passive material, trapezoid active cells, readout and again trapezoid active cells in the bath.
   // sensitive detector for the cells
   DD4hep::Geometry::SensitiveDetector sd = aSensDet;
   DD4hep::XML::Dimension sd_typ = xml_det.child(_U(sensitive));
   sd.setType(sd_typ.typeStr());
-  lLog << MSG::DEBUG << "ECAL sensitive volume: material = " << active_mat << " rmin (cm) =  "
+  lLog << MSG::DEBUG << "ECAL sensitive volume rmin (cm) =  "
        << calo_dim.rmin() << " rmax (cm) = " << calo_dim.rmax() << endmsg;
 
   // 3.a. Create the passive planes, readout in between of 2 passive planes and the remaining space fill with active material
@@ -117,8 +121,8 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   active_out_thck += 2. * correction * sin(dPhi / 4.);
   // decreased by the thickness of passive and readout planes
   active_out_thck -= passive_thickness / 2. + readout_thickness / 2.;
-  lLog << MSG::DEBUG << " active cells thickness at inner radius (cm) = " << active_in_thck
-       << " thickness at outer radious (cm) = " << active_out_thck << " making "
+  lLog << MSG::DEBUG << "active material = " << active_mat << " active cells thickness at inner radius (cm) = "
+       << active_in_thck << " thickness at outer radious (cm) = " << active_out_thck << " making "
        << (active_out_thck - active_in_thck) * 100 / active_in_thck << " % increase." << endmsg;
 
   // creating shapes for rows of cells (reflected along readout -> assumption of small phi angle)
