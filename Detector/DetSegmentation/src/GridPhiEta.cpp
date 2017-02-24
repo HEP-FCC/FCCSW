@@ -8,7 +8,7 @@ GridPhiEta::GridPhiEta(const std::string& cellEncoding) :
   Segmentation(cellEncoding) {
   // define type and description
   _type = "GridPhiEta";
-  _description = "Projective segmentation in the global coordinates";
+  _description = "Phi-eta segmentation in the global coordinates";
 
   // register all necessary parameters
   registerParameter("grid_size_eta", "Cell size in Eta", m_gridSizeEta, 1., SegmentationParameter::LengthUnit);
@@ -17,11 +17,6 @@ GridPhiEta::GridPhiEta(const std::string& cellEncoding) :
   registerParameter("offset_phi", "Angular offset in phi", m_offsetPhi, 0., SegmentationParameter::AngleUnit, true);
   registerIdentifier("identifier_eta", "Cell ID identifier for eta", m_etaID, "eta");
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
-}
-
-/// destructor
-GridPhiEta::~GridPhiEta() {
-
 }
 
 /// determine the local based on the cell ID

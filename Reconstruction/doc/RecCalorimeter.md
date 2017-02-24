@@ -65,13 +65,20 @@ Sliding window algorithm is an algorithm used for the reconstruction of electron
 
 `CreateCaloClustersSlidingWindow` implementation operates on towers in phi-eta space, hence it requires the cells to have eta-phi segmentation.
 
-> Note: If this segmentation was not used for the original simulation and the true deposits' positions are saved (`fcc::PositionedCaloHit`, it is possible to re-segment using `RedoSegmentation` algorithm. This approach is currently being tested for HCal.
+> Note: If this segmentation was not used for the original simulation and the true deposits' positions are saved (`fcc::PositionedCaloHit`, it is possible to re-segment using `RedoSegmentation` algorithm.
+
+All operations on cell collection from calorimeter are defined in a tool derived from `ITowerTool`. Currently there are two implementations of that tool: `SingleCaloTowerTool` used for one cell collection and `CombinedCaloTowerTool` used for two cell collections.
 
 ### 1. Create calorimeter towers.
 
-A tower contains all cells within certain eta and phi (tower size: **deltaEtaTower**, **deltaPhiTower**). Distance in r plays no role in this algorithm.
+Calorimeter towers are created by a tool deriving from `ITowerTool`. That is where the size of the tower is defined. A tower contains all cells within certain eta and phi (tower size: **deltaEtaTower**, **deltaPhiTower**). Distance in r plays no role in this algorithm. However, the final clusters contain position in Cartesian coordinates, hence some radius needs to be defined (**radiusForPosition**) allowing (eta, phi, r) transformation to (x, y, z). By default it is set to 1.
 
->TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower and that can be achieved using `GridEtaPhi` segmentation.
+The first step is to define the number of towers in eta and phi. The latter is calculated from the full azimuthal angle (2pi) and the size of the tower in phi.
+The number of towers in eta is calculated from detector's maximum eta and the tower size in eta. Maximum eta should be defined by in job options (**maxEta**). If it is undefined, the number of towers in eta is recalculated for each event, by searching for the highest (absolute) value of pseudorapidity. This approach may be used in tests or to determine what is the maximum eta of the detector. It is highly advised that in production **maxEta** is defined, as it can take even ~10 seconds per event to loop over cells collection (or up to 35\% of sliding window algorithm runtime) - determined with existing test cases.
+
+The next step is to loop over all cells and add the cell transverse energy to the tower that cells belongs to.
+
+>TODO: Currently there is no support of cell splitting, so each cell should be completely inside one tower.
 
 ### 2. Find local maxima.
 
