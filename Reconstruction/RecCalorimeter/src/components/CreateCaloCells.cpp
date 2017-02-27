@@ -97,11 +97,11 @@ StatusCode CreateCaloCells::execute() {
   // 4. Copy information to CaloHitCollection
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (const auto& cell : m_cellsMap) {
-    //if (cell.second != 0) {
+    if (cell.second != 0) {
       fcc::CaloHit newCell = edmCellsCollection->create();
       newCell.core().energy = cell.second;
       newCell.core().cellId = cell.first;
-      // }
+    }
   }
 
   // push the CaloHitCollection to event store
