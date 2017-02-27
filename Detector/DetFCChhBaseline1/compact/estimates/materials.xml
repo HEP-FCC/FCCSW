@@ -11,9 +11,9 @@
     <comment>Approximate material of the HCal</comment>
     <material name="HC">
       <D type="density" unit="g/cm3" value="6.581"/>
-      <fraction n="0.818" ref="Iron"/>
-      <fraction n="0.136" ref="Polystyrene"/>
-      <fraction n="0.046" ref="Air"/>
+      <fraction n="0.778" ref="Iron"/>
+      <fraction n="0.167" ref="Polystyrene"/>
+      <fraction n="0.055" ref="Air"/>
     </material>
     <comment>Approximate material of the Tracker</comment>
     <material name="TR">

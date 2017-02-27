@@ -14,9 +14,9 @@
 
   <define>
     <constant name="HCalActive_rmin" value="BarHCal_rmin"/>
-    <constant name="HCalActive_rmax" value="BarHCal_rmin+1800*mm"/>
+    <constant name="HCalActive_rmax" value="BarHCal_rmin+1820*mm"/>
     <constant name="HCalSupport_rmin" value="HCalActive_rmax"/>
-    <constant name="HCalSupport_rmax" value="HCalSupport_rmin+200*mm"/>
+    <constant name="HCalSupport_rmax" value="HCalSupport_rmin+180*mm"/>
   </define>
 
   <detectors>

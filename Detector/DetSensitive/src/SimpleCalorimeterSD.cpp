@@ -51,12 +51,13 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
     G4double destep      = aStep->GetTotalEnergyDeposit();
     G4Material* material = aStep->GetPreStepPoint()->GetMaterial();
     G4double charge      = aStep->GetPreStepPoint()->GetCharge();
+
     if ( (charge!=0.) && (material->GetName()==myMaterial) ) {
       G4double rkb = birk1;
       // --- correction for particles with more than 1 charge unit ---
       // --- based on alpha particle data (only apply for MODEL=1) ---
-      if (std::fabs(charge) > 1.0) 
-	rkb *= 7.2/12.6;
+      if (std::fabs(charge) > 1.0) rkb *= 7.2/12.6;
+      
       if(aStep->GetStepLength() != 0 ) {
 	G4double dedx = destep/(aStep->GetStepLength())/(material->GetDensity());
 	response = destep/(1. + rkb*dedx + birk2*dedx*dedx);
@@ -65,9 +66,12 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 	response = destep;
       }
     }
+    else{
+      response = destep;
+    }
     edep = response;
     //std::cout << "energy after " << edep << std::endl;
-  }
+  }  
   
   // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();

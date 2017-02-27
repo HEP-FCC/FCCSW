@@ -62,7 +62,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
   Volume envelopeVolume("envelopeVolume", envelopeShape, lcdd.air());
-  envelopeVolume.setVisAttributes(lcdd.invisible());
+  envelopeVolume.setVisAttributes(lcdd, xmlDet.visStr());
 
   // set the sensitive detector type to the DD4hep calorimeter -- including Birks Law
   sensDet.setType("SimpleCalorimeterSDWithBirksLaw");
@@ -81,12 +81,12 @@ static DD4hep::Geometry::Ref_t createHCal (
   Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
   endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
 
-  DetElement endPlatePos("endPlate", 0);
+  DetElement endPlatePos(hCal, "endPlatePos", 0);
   DD4hep::Geometry::Position posOffset(0, 0, dzDetector -  (dZEndPlate/2));
   PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
   endPlatePos.setPlacement(placedEndPlatePos);
-
-  DetElement endPlateNeg("endPlate", 1);
+  
+  DetElement endPlateNeg(hCal, "endPlateNeg", 1);
   DD4hep::Geometry::Position negOffset(0, 0, -dzDetector +  (dZEndPlate/2));
   PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
   endPlateNeg.setPlacement(placedEndPlateNeg);
@@ -108,7 +108,7 @@ static DD4hep::Geometry::Ref_t createHCal (
   lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
 
   // First we construct one wedge:
-  Volume wedgeVolume("wedge", DD4hep::Geometry::Trapezoid(dx1Module, dx2Module, dy0, dy0, dzModule), lcdd.material("Air"));
+  Volume wedgeVolume("wedgeVolume", DD4hep::Geometry::Trapezoid(dx1Module, dx2Module, dy0, dy0, dzModule), lcdd.material("Air"));
   // Placement of subWedges in Wedge 
   for (unsigned int idxLayer = 0; idxLayer < numSequencesR; ++idxLayer) {
     auto layerName = DD4hep::XML::_toString(idxLayer, "layer%d");
@@ -134,6 +134,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
     //Filling of the subWedge with coponents (submodules)
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _U(module_component)); xCompColl; ++xCompColl, ++idxSubMod) {
+      //for (unsigned int idxTiles = 0; idxTiles < sequences[sequenceIdx].size(); ++idxTiles) {   
       xml_comp_t xComp = xCompColl;
       auto compName = DD4hep::XML::_toString(idxLayer, "layer%d") + DD4hep::XML::_toString(idxSubMod, "_tile%d");
       std::string subModuleName =  xComp.materialStr() + DD4hep::XML::_toString(idxSubMod, "_tile%d");
@@ -159,13 +160,14 @@ static DD4hep::Geometry::Ref_t createHCal (
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
     DD4hep::Geometry::Position modOffset(0, 0, rMiddle);
+    if( (rMiddle + 0.5 * sequenceDimensions.dr()) > dzModule)  lLog << MSG::DEBUG << "something's wrong with the positions in rho!" << endmsg;
     PlacedVolume placedModuleVol = wedgeVolume.placeVolume(subWedgeVolume, modOffset);
     placedModuleVol.addPhysVolID("layer", idxLayer);
     layerDet.setPlacement(placedModuleVol);
   }
 
   // Now we place the wedges along z within the module
-  Volume moduleVolume("module", DD4hep::Geometry::Trapezoid(
+  Volume moduleVolume("moduleVolume", DD4hep::Geometry::Trapezoid(
 							    dx1Module, dx2Module, (dzDetector - dZEndPlate - space), (dzDetector - dZEndPlate - space), dzModule
 							   ), lcdd.material("Air")
 		     );

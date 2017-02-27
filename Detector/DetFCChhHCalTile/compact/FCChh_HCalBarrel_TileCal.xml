@@ -12,6 +12,12 @@
     <comment>HCal layout based on ATLAS HCal</comment>
   </info>
 
+  <!-- use DD4hep elements and material definitions: -->
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+  </includes>
+  
   <define>
     <!-- Get 2cm from the margin extra for placing 18 layers in rho, 1cm needed to compensate for faceplate-->
     <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax-180*mm"/>
