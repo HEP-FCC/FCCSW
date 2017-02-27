@@ -53,6 +53,8 @@ private:
   std::vector<int> m_fieldValues;
   /// Temporary: for use with MergeLayer tool
   unsigned int m_activeVolumesNumber;
+  /// Maximum eta of detector
+  float m_etaMax;
 };
 
 #endif /* RECCALORIMETER_TUBELAYERPHIETACALOTOOL_H */

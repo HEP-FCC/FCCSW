@@ -17,6 +17,7 @@ TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type, const 
   declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
   declareProperty("fieldNames", m_fieldNames);
   declareProperty("fieldValues", m_fieldValues);
+  declareProperty("etaMax", m_etaMax = 0.);
 }
 
 StatusCode TubeLayerPhiEtaCaloTool::initialize() {
@@ -61,6 +62,8 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
   }
+  info() << "GridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins() << endmsg;
+  info() << "GridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi " << segmentation->offsetPhi() << endmsg;
 
   // Take readout bitfield decoder from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
@@ -83,8 +86,9 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
     auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
     debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
     // Loop over segmenation cells
-    for (int iphi = -floor(numCells[0] * 0.5); iphi < numCells[0] * 0.5; iphi++) {
-      for (int ieta = -floor(numCells[1] * 0.5); ieta < numCells[1] * 0.5; ieta++) {
+    unsigned int iEtaMin = floor((fabs(segmentation->offsetEta())-m_etaMax)/segmentation->gridSizeEta());
+    for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
+      for (unsigned int ieta = iEtaMin; ieta < (iEtaMin+numCells[1]); ieta++) {
         (*decoder)["phi"] = iphi;
         (*decoder)["eta"] = ieta;
         uint64_t cellId = decoder->getValue();
