@@ -70,7 +70,7 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
 
 void NoiseCaloCellsFromFileTool::addRandomCellNoise(std::unordered_map<uint64_t, double>& aCells) {
   std::for_each(aCells.begin(), aCells.end(), [this](std::pair<const uint64_t, double>& p) {
-    p.second += (getNoiseConstantPerCell(p.second) * m_gauss.shoot());
+    p.second += (getNoiseConstantPerCell(p.first) * m_gauss.shoot());
   });
 }
 
@@ -163,7 +163,7 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
     // find the eta bin for the cell
     int ibin = floor(TMath::Abs(cellEta) / deltaEtaBin) + 1;
     if (ibin > Nbins) {
-      error() << "eta outside range of the histograms!" << endmsg;
+      error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins << endmsg;
       ibin = Nbins;
     }
     // Check that there are not more layers than the constants are provided for

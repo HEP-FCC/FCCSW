@@ -37,6 +37,11 @@ StatusCode TubeLayerPhiEtaCaloTool::initialize() {
       return StatusCode::FAILURE;
     }
   }
+  if (m_etaMax == 0) {
+    error() << "Maximum eta value not set!!!! Please do so!" << endmsg;
+    return StatusCode::FAILURE;
+  }
+
   return sc;
 }
 

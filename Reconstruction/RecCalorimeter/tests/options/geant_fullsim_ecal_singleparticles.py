@@ -59,7 +59,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_ecalSim_e50GeV_eta0_10events.root"
+out.filename = "output_ecalSim_e50GeV_10events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor

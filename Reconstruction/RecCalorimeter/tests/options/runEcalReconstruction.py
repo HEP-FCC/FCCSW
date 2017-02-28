@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent   = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_eta0_10events.root")
+podioevent   = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_10events.root")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
@@ -14,6 +14,8 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = INFO)
 
 # common ECAL specific information
+#centre of the last cell
+etaMaxValue = 1.65103
 # readout name
 ecalReadoutName = "ECalHitsPhiEta"
 # active material identifier name
@@ -54,6 +56,7 @@ ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   fieldValues=ecalFieldValues,
                                   # to make it working with MergeLayers algorithm
                                   activeVolumesNumber=ecalNumberOfLayers,
+                                  etaMax=etaMaxValue,
                                   OutputLevel=DEBUG)
 
 from Configurables import CreateCaloCells
@@ -103,7 +106,7 @@ ApplicationMgr(
     TopAlg = [podioinput,
               mergelayers,
               createcells,
-              createclusters,
+#              createclusters,
               out
               ],
     EvtSel = 'NONE',
