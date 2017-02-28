@@ -75,6 +75,7 @@ from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
 towers = SingleCaloTowerTool("towers",
                              deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
+                             etaMax = etaMaxValue,
                              readoutName = ecalReadoutName)
 towers.DataInputs.cells.Path="caloCells"
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
@@ -106,7 +107,7 @@ ApplicationMgr(
     TopAlg = [podioinput,
               mergelayers,
               createcells,
-#              createclusters,
+              createclusters,
               out
               ],
     EvtSel = 'NONE',

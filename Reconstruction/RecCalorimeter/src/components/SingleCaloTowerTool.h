@@ -60,7 +60,8 @@ public:
    *   Cell collection is searched for a highest eta (absolute value).
    *   @return Number of towers in eta for current event.
    */
-  virtual int etaTowersNumber() final;
+  virtual uint etaTowersNumber() final;
+  virtual uint idEtaMin() final;
   /**  Build calorimeter towers.
    *   Tower is segmented in eta and phi, with the energy from all layers (no r segmentation).
    *   Currently the size of tower needs to be a multiple of a cell size (so each cell belongs to only one tower).
@@ -122,9 +123,9 @@ private:
   /// Size of the tower in phi
   float m_deltaPhiTower;
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
-  int m_nEtaTower;
+  uint m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
-  int m_nPhiTower;
+  uint m_nPhiTower;
 };
 
 #endif /* RECCALORIMETER_SINGLECALOTOWERTOOL_H */

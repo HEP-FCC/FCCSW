@@ -60,10 +60,10 @@ StatusCode SingleCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
 tower SingleCaloTowerTool::towersNumber() {
   // number of phi bins
-  m_nPhiTower = idPhi(2 * M_PI);
+  m_nPhiTower = idPhi(M_PI);
   // number of eta bins (if eta maximum is defined)
   if( m_etaMax) {
-    m_nEtaTower = 2 * idEta(m_etaMax - m_deltaEtaTower / 2.) + 1;
+    m_nEtaTower = idEta(m_etaMax);
   } else {
     m_nEtaTower = 0;
   }
@@ -73,7 +73,7 @@ tower SingleCaloTowerTool::towersNumber() {
   return total;
 }
 
-int SingleCaloTowerTool::etaTowersNumber() {
+unsigned int SingleCaloTowerTool::etaTowersNumber() {
   // recalculate number of eta bins for each event
   const fcc::CaloHitCollection* cells = m_cells.get();
   float etaCell = 0;
@@ -84,8 +84,12 @@ int SingleCaloTowerTool::etaTowersNumber() {
     }
   }
   // eta from cell collection is middle of cell
-  m_nEtaTower = 2 * m_etaMax / m_deltaEtaTower+ 1;
+  m_nEtaTower = idEta( m_etaMax );
   return m_nEtaTower;
+}
+
+unsigned int SingleCaloTowerTool::idEtaMin() {
+  return idEta(-m_etaMax);
 }
 
 
@@ -110,23 +114,25 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
 uint SingleCaloTowerTool::idEta(float aEta) const {
   // shift Ids so they start at 0 (segmentation returns IDs that may be from -N to N)
   // for segmentation in eta the middle cell has its centre at eta=0 (segmentation offset = 0)
-  return floor((aEta + m_deltaEtaTower / 2.) / m_deltaEtaTower) + floor(m_nEtaTower / 2);
+  //return floor(aEta / m_deltaEtaTower);
+  return floor((aEta - m_segmentation->offsetEta()) / m_deltaEtaTower);
 }
 
 uint SingleCaloTowerTool::idPhi(float aPhi) const {
   // shift Ids so they start at 0 (segmentation returns IDs that may be from -N to N)
   // for segmentation in phi the middle cell has its centre at phi=0 (segmentation offset = 0)
-  return floor((aPhi + m_deltaPhiTower / 2.) / m_deltaPhiTower) + floor(m_nPhiTower / 2);
+  //return floor(aPhi  / m_deltaPhiTower);
+  return floor((aPhi - m_segmentation->offsetPhi()) / m_deltaPhiTower);
 }
 
 float SingleCaloTowerTool::eta(int aIdEta) const {
   // middle of the tower
-  return (aIdEta - (m_nEtaTower - 1) / 2) * m_deltaEtaTower;
+  return (aIdEta * m_deltaEtaTower + m_segmentation->offsetEta());
 }
 
 float SingleCaloTowerTool::phi(int aIdPhi) const {
   // middle of the tower
-  return (aIdPhi - (m_nPhiTower - 1) / 2) * m_deltaPhiTower;
+  return (aIdPhi * m_deltaPhiTower + m_segmentation->offsetPhi());
 }
 
 void SingleCaloTowerTool::matchCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {

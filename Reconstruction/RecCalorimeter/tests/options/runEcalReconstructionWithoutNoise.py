@@ -14,6 +14,8 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = INFO)
 
 # common ECAL specific information
+#centre of the last cell
+etaMaxValue = 1.65103
 # readout name
 ecalReadoutName = "ECalHitsPhiEta"
 # active material identifier name
@@ -43,6 +45,7 @@ from GaudiKernel.PhysicalConstants import pi
 towers = SingleCaloTowerTool("towers",
                              deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                              readoutName = ecalReadoutName,
+                             etaMax = etaMaxValue,
                              OutputLevel=DEBUG)
 towers.DataInputs.cells.Path="caloCells"
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
@@ -72,7 +75,7 @@ out.AuditExecute = True
 ApplicationMgr(
     TopAlg = [podioinput,
               createcells,
-#              createclusters,
+              createclusters,
               out
               ],
     EvtSel = 'NONE',

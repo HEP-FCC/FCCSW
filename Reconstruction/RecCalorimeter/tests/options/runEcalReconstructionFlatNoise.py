@@ -86,7 +86,7 @@ out.AuditExecute = True
 ApplicationMgr(
     TopAlg = [podioinput,
               createcells,
-#              createclusters,
+              createclusters,
               out
               ],
     EvtSel = 'NONE',

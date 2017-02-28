@@ -62,7 +62,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 2. Find local maxima with sliding window, build preclusters, calculate their barycentre position
   // calculate the sum of first m_nEtaWindow bins in eta, for each phi tower
   std::vector<float> sumOverEta(m_nPhiTower, 0);
-  for (int iEta = 0; iEta < m_nEtaWindow; iEta++) {
+  for (int iEta = m_towerTool->idEtaMin(); iEta < (m_towerTool->idEtaMin()+m_nEtaWindow); iEta++) {
     std::transform(sumOverEta.begin(), sumOverEta.end(), m_towers[iEta].begin(), sumOverEta.begin(),
                    std::plus<float>());
   }
