@@ -19,7 +19,7 @@
   </info>
 
   <define>
-    <constant name="LArBathThickness" value="50*mm"/>
+    <constant name="LArBathThickness" value="100*mm"/>
     <!-- overall calorimeter volume (cryostat) -->
     <constant name="BarCryoECal_rmin" value="BarECal_rmin"/>
     <constant name="BarCryoECal_rmax" value="BarECal_rmax"/>
@@ -29,8 +29,13 @@
     <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThickness"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
     <!-- thickness of active volume between two lead plates, measuring perpendicular to the readout plate -->
-    <constant name="LAr_thickness" value="3*mm"/>
-    <constant name="Pb_thickness" value="2*mm"/>
+    <constant name="LAr_thickness" value="4.*mm"/>
+    <!-- passive layer consist of lead in the middle and steel on the outside, glued -->
+    <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
+    <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
+    <constant name="Steel_thickness" value="0.4*mm*2./2.16"/>
+    <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
+    <constant name="Glue_thickness" value="0.26*mm*2./2.16"/>
     <constant name="readout_thickness" value="1*mm"/>
   </define>
 
@@ -40,8 +45,8 @@
 
   <readouts>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629"/>
-      <id>system:4,cell:22,eta:-9,phi:-10</id>
+      <segmentation type="GridPhiEta" grid_size_eta="2" phi_bins="1"/>
+      <id>system:4,row:13,cell:7,eta:-2,phi:-1,readout:13,passive:12,sub:3,part:2</id>
     </readout>
   </readouts>
 
@@ -58,9 +63,17 @@
 	     <active thickness="LAr_thickness">
           <material name="LAr"/>
         </active>
-	     <passive thickness="Pb_thickness">
-          <material name="Lead"/>
+        <passive>
           <rotation angle="30*degree"/>
+	       <inner thickness="Pb_thickness">
+            <material name="Lead"/>
+          </inner>
+	       <glue thickness="Glue_thickness">
+            <material name="ATLASglue"/>
+          </glue>
+	       <outer thickness="Steel_thickness">
+            <material name="ATLASsteel"/>
+          </outer>
         </passive>
         <readout thickness="readout_thickness">
           <material name="PCB"/>
