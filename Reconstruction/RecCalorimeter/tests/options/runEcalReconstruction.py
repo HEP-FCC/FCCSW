@@ -15,7 +15,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 
 # common ECAL specific information
 #centre of the last cell
-etaMaxValue = 1.65103
+etaMaxValue = 1.68
 # readout name
 ecalReadoutName = "ECalHitsPhiEta"
 # active material identifier name

@@ -91,9 +91,8 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
     auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
     debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
     // Loop over segmenation cells
-    unsigned int iEtaMin = floor((fabs(segmentation->offsetEta())-m_etaMax)/segmentation->gridSizeEta());
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
-      for (unsigned int ieta = iEtaMin; ieta < (iEtaMin+numCells[1]); ieta++) {
+      for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
         (*decoder)["phi"] = iphi;
         (*decoder)["eta"] = ieta;
         uint64_t cellId = decoder->getValue();

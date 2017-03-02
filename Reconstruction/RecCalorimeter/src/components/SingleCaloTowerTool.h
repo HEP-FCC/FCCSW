@@ -61,7 +61,6 @@ public:
    *   @return Number of towers in eta for current event.
    */
   virtual uint etaTowersNumber() final;
-  virtual uint idEtaMin() final;
   /**  Build calorimeter towers.
    *   Tower is segmented in eta and phi, with the energy from all layers (no r segmentation).
    *   Currently the size of tower needs to be a multiple of a cell size (so each cell belongs to only one tower).

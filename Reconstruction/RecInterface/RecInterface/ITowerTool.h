@@ -30,7 +30,6 @@ public:
    *   @return Number of towers in eta for current event.
    */
   virtual uint etaTowersNumber() = 0;
-  virtual uint idEtaMin() = 0;
   /**  Build calorimeter towers.
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
