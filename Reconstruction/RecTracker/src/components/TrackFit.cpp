@@ -76,7 +76,6 @@ StatusCode TrackFit::initialize() {
   }
 
   m_trkGeo = m_trkGeoSvc->trackingGeometry();
-
   return sc;
 }
 
