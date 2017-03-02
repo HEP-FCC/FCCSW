@@ -29,7 +29,7 @@
     <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThickness"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
     <!-- thickness of active volume between two lead plates, measuring perpendicular to the readout plate -->
-    <constant name="LAr_thickness" value="4.*mm"/>
+    <constant name="LAr_thickness" value="3.*mm"/>
     <!-- passive layer consist of lead in the middle and steel on the outside, glued -->
     <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
     <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
@@ -59,7 +59,7 @@
 	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
       </cryostat>
       <calorimeter name="EM_barrel">
-	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz"/>
+	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-20/180*pi"/>
 	     <active thickness="LAr_thickness">
           <material name="LAr"/>
           <overlap offset="0.5"/>
@@ -80,7 +80,7 @@
           <material name="PCB"/>
         </readout>
         <cell>
-	       <dimensions height="1*cm"/>
+	       <dimensions height="5*cm"/>
         </cell>
       </calorimeter>
     </detector>
