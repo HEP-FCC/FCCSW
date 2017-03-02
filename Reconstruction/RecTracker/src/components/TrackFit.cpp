@@ -77,9 +77,6 @@ StatusCode TrackFit::initialize() {
 
   m_trkGeo = m_trkGeoSvc->trackingGeometry();
 
-  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "TrackFit");
-  MsgStream lLog(&(*msgSvc), "HCalConstruction");
-  auto GaudiLogger = std::make_unique<Acts::Logger>(std::make_unique<GaudiPrintPolicy>(&(*msgSvc)),std::make_unique<GaudiFilterPolicy>(&(*msgSvc)));
   return sc;
 }
 
