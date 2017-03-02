@@ -62,6 +62,7 @@
 	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz"/>
 	     <active thickness="LAr_thickness">
           <material name="LAr"/>
+          <overlap offset="0.5"/>
         </active>
         <passive>
           <rotation angle="30*degree"/>

@@ -4,6 +4,8 @@
 #include "GaudiKernel/ServiceHandle.h"
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/Incident.h"
+#include "GaudiKernel/IIncidentSvc.h"
 
 namespace det {
 static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD& aLcdd,
@@ -37,6 +39,13 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   std::string active_mat = active.materialStr();
   double active_thickness = active.thickness();
 
+  DD4hep::XML::DetElement overlap = active.child("overlap");
+  double active_passive_overlap = overlap.offset();
+  if(active_passive_overlap < 0 || active_passive_overlap > 0.5) {
+    ServiceHandle<IIncidentSvc> incidentSvc("IncidentSvc", "ECalConstruction");
+    lLog << MSG::ERROR << "Overlap between active and passive cannot be more than half of passive plane!" << endmsg;
+    incidentSvc->fireIncident(Incident("ECalConstruction","GeometryFailure"));
+  }
   DD4hep::XML::DetElement cell = calo.child("cell");
   double cell_height = cell.dimensions().height();
 
