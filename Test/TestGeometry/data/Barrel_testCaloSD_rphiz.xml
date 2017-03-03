@@ -37,7 +37,7 @@
   <readouts>
     <readout name="ECalHits">
       <segmentation type="PolarGridRPhi" grid_size_r="dr" grid_size_phi="dphi"/>
-      <id>r:9,phi:-17,z:14,system:1</id>
+      <id>system:1,z:14,r:9,phi:-18</id>
     </readout>
   </readouts>
 
