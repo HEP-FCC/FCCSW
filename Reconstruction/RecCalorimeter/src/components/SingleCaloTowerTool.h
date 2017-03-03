@@ -56,11 +56,6 @@ public:
    *   @return Struct containing number of towers in eta and phi.
    */
   virtual tower towersNumber() final;
-  /**  Find number of calorimeter towers in eta for current event.
-   *   Cell collection is searched for a highest eta (absolute value).
-   *   @return Number of towers in eta for current event.
-   */
-  virtual uint etaTowersNumber() final;
   /**  Build calorimeter towers.
    *   Tower is segmented in eta and phi, with the energy from all layers (no r segmentation).
    *   Currently the size of tower needs to be a multiple of a cell size (so each cell belongs to only one tower).

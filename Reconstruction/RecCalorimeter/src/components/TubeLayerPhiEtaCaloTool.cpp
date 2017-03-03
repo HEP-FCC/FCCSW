@@ -17,7 +17,6 @@ TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type, const 
   declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
   declareProperty("fieldNames", m_fieldNames);
   declareProperty("fieldValues", m_fieldValues);
-  declareProperty("etaMax", m_etaMax = 0.);
 }
 
 StatusCode TubeLayerPhiEtaCaloTool::initialize() {
@@ -37,11 +36,6 @@ StatusCode TubeLayerPhiEtaCaloTool::initialize() {
       return StatusCode::FAILURE;
     }
   }
-  if (m_etaMax == 0) {
-    error() << "Maximum eta value not set!!!! Please do so!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-
   return sc;
 }
 

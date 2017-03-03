@@ -9,7 +9,6 @@
 
 // Root
 #include "TFile.h"
-#include "TMath.h"
 #include "TH1F.h"
 
 DECLARE_TOOL_FACTORY(NoiseCaloCellsFromFileTool)
@@ -161,7 +160,7 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
          m_histoElecNoiseConst.at(index).GetBinLowEdge(1)) /
         Nbins;
     // find the eta bin for the cell
-    int ibin = floor(TMath::Abs(cellEta) / deltaEtaBin) + 1;
+    int ibin = floor(fabs(cellEta) / deltaEtaBin) + 1;
     if (ibin > Nbins) {
       error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins << endmsg;
       ibin = Nbins;
@@ -182,7 +181,7 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   }
 
   // Total noise: electronics noise + pileup
-  double totalNoise = TMath::Sqrt(TMath::Power(elecNoise, 2) + TMath::Power(pileupNoise, 2));
+  double totalNoise = sqrt(pow(elecNoise, 2) + pow(pileupNoise, 2));
 
   if (totalNoise < 1e-3) {
     warning() << "Zero noise: cell eta " << cellEta << " layer " << cellLayer << " noise " << totalNoise << endmsg;

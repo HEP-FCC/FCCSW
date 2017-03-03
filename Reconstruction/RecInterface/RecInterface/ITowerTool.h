@@ -26,10 +26,6 @@ public:
    *   @return Struct containing number of towers in eta and phi.
    */
   virtual tower towersNumber() = 0;
-  /**  Find number of calorimeter towers in eta for current event.
-   *   @return Number of towers in eta for current event.
-   */
-  virtual uint etaTowersNumber() = 0;
   /**  Build calorimeter towers.
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.

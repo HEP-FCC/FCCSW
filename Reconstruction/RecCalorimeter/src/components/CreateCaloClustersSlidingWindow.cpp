@@ -9,7 +9,7 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
-: GaudiAlgorithm(name, svcLoc), m_recalculateEtaTowers(true) {
+: GaudiAlgorithm(name, svcLoc) {
   declareOutput("clusters", m_clusters, "calo/clusters");
   declareProperty("towerTool", m_towerTool);
   declarePrivateTool(m_towerTool, "SingleCaloTowerTool");
@@ -37,8 +37,6 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
   auto towerMapSize = m_towerTool->towersNumber();
   m_nEtaTower = towerMapSize.eta;
   m_nPhiTower = towerMapSize.phi;
-  // set flag used later to check if recalculation of number of towers for each event should be done
-  m_recalculateEtaTowers = m_nEtaTower;
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
   info() << "CreateCaloClustersSlidingWindow initialized" << endmsg;
   return StatusCode::SUCCESS;
@@ -46,13 +44,9 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
 
 StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 1. Create calorimeter towers (calorimeter grid in eta phi, all layers merged)
-  if( ! m_recalculateEtaTowers) { // make sure the number of cells is defined
-    m_nEtaTower = m_towerTool->etaTowersNumber();
-    // make sure that the tower size in eta is larger than the seeding sliding window
-    if(m_nEtaTower < m_nEtaWindow) {
-      m_nEtaTower = m_nEtaWindow;
-    }
-    debug() << "Recalculated number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
+  // make sure that the tower size in eta is larger than the seeding sliding window
+  if(m_nEtaTower < m_nEtaWindow) {
+    m_nEtaTower = m_nEtaWindow;
   }
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
   if( m_towerTool->buildTowers(m_towers) == 0 ) {

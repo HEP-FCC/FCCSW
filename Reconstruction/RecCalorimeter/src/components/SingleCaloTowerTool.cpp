@@ -11,9 +11,6 @@
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
 
-// Root
-#include "TMath.h"
-
 DECLARE_TOOL_FACTORY(SingleCaloTowerTool)
 
 SingleCaloTowerTool::SingleCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
@@ -23,7 +20,6 @@ SingleCaloTowerTool::SingleCaloTowerTool(const std::string& type, const std::str
   declareProperty("readoutName", m_readoutName);
   // the default value to calculate the position of clusters
   declareProperty("radiusForPosition", m_radius = 1.);
-  declareProperty("etaMax", m_etaMax = 0.);
   declareProperty("deltaEtaTower", m_deltaEtaTower = 0.01);
   declareProperty("deltaPhiTower", m_deltaPhiTower = 0.01);
   // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
@@ -53,42 +49,22 @@ StatusCode SingleCaloTowerTool::initialize() {
     error() << "There is no phi-eta segmentation." << endmsg;
     return StatusCode::FAILURE;
   }
-  if( ! m_etaMax) {
-    warning() << "Undefined detector size in eta. In each event the cell collection will be searched for maximum eta." << endmsg;
-  }
   return StatusCode::SUCCESS;
 }
 
 StatusCode SingleCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
 tower SingleCaloTowerTool::towersNumber() {
+  // maximum eta of the detector (== to the eta offset)
+  m_etaMax = fabs( m_segmentation->offsetEta() );
   // number of phi bins
-  m_nPhiTower = 2 * M_PI / m_deltaPhiTower;
+  m_nPhiTower = 2 * M_PI / m_deltaPhiTower + 1;
   // number of eta bins (if eta maximum is defined)
-  if( m_etaMax) {
-    m_nEtaTower = 2 * m_etaMax / m_deltaEtaTower;
-  } else {
-    m_nEtaTower = 2 * TMath::Abs(m_segmentation->offsetEta()) / m_deltaEtaTower;
-  }
+  m_nEtaTower = 2 * m_etaMax / m_deltaEtaTower + 1;
   tower total;
   total.eta = m_nEtaTower;
   total.phi = m_nPhiTower;
   return total;
-}
-
-unsigned int SingleCaloTowerTool::etaTowersNumber() {
-  // recalculate number of eta bins for each event
-  const fcc::CaloHitCollection* cells = m_cells.get();
-  float etaCell = 0;
-  for (const auto& cell : *cells) {
-    etaCell = fabs(m_segmentation->eta(cell.core().cellId));
-    if( etaCell > m_etaMax ) {
-      m_etaMax = etaCell;
-    }
-  }
-  // eta from cell collection is middle of cell
-  m_nEtaTower = 2 * m_etaMax / m_deltaEtaTower;
-  return m_nEtaTower;
 }
 
 uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
