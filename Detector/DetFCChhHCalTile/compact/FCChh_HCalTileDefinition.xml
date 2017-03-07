@@ -1,5 +1,5 @@
 <detector id="BarHCal_id" name="HCalBarrel0" type="CaloBarrel" readout="BarHCal_Readout" vis="hcal_envelope">
-  <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmaxWithBuffer" dz="BarHCal_dz" />
+  <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmaxWithBuffer" dz="BarHCal_dz"/>
   <sequence_a id="0" name="sequence_1" material="Air" vis="hcal_barrel_seq1_vis">
     <dimensions
       dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
