@@ -48,6 +48,10 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
    */
   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 
+  /** Flag indication if Birks Law should be applied
+   */ 
+  bool m_applyBirksLaw;
+
 private:
   /// Collection of calorimeter hits
   G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
