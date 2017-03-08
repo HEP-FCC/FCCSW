@@ -1,5 +1,5 @@
 ---
-# ROOT Clang Format YAML configuration
+# FCCSW Clang Format YAML configuration
 Language:        Cpp
 Standard: 		 Cpp11
 AccessModifierOffset: -2
