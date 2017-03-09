@@ -17,7 +17,7 @@ namespace det {
 SimpleCalorimeterSD::SimpleCalorimeterSD(const std::string& aDetectorName,
 					 const std::string& aReadoutName,
 					 const DD4hep::Geometry::Segmentation& aSeg,
-					 bool aBirksLaw))
+					 bool aBirksLaw)
   : G4VSensitiveDetector(aDetectorName), m_calorimeterCollection(nullptr), m_seg(aSeg), m_applyBirksLaw(aBirksLaw) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);

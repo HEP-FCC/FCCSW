@@ -28,4 +28,6 @@ private:
   double m_etaBinning;
   /// Maximum eta until which to scan, scan is performed from -m_etaMax to +m_etaMax
   double m_etaMax;
+  /// Number of bins for scan, scan is performed from with binning m_phi between -m_etaMax +m_etaMax
+  double  m_phi;
 };

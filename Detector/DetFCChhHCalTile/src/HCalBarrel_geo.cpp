@@ -24,7 +24,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   xml_det_t xmlDet = xmlElement;
   std::string detName = xmlDet.nameStr();
-  //Make DetElement
+  // Make DetElement
   DetElement hCal(detName, xmlDet.id());
 
   // Make volume that envelopes the whole barrel; set material to air
@@ -104,11 +104,10 @@ static DD4hep::Geometry::Ref_t createHCal (
   double dzModule = (numSequencesR*sequenceDimensions.dr())/2; //( cos(dphi / 2.) * dimensions.rmax() - sensitiveBarrelRmin ) * 0.5;
 
   lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;
-  //lLog << MSG::DEBUG << "half height of full module (diff way):       " << (numSequencesR*sequenceDimensions.dr())/2 << endmsg;
   lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-  //Get DetElement to place the others inside
+    // Get DetElement to place the others inside
     auto modName = DD4hep::XML::_toString(idxPhi, "mod%d");                                                                                                                                                                                
     DetElement moduleDet(hCal, modName, idxPhi);
     // First we construct one wedge:
@@ -126,7 +125,6 @@ static DD4hep::Geometry::Ref_t createHCal (
       double dx1 = tn * rminLayer - spacing;
       double dx2 = tn * rmaxLayer - spacing;
       double rMiddle = (rminLayer-sensitiveBarrelRmin) + 0.5 * sequenceDimensions.dr() - dzModule;
-      //      lLog << MSG::DEBUG << "offset of layer inside the wedge: " << rMiddle << endmsg;
       
       Volume subWedgeVolume(layerName, DD4hep::Geometry::Trapezoid(
 								   dx1, dx2, dy0, dy0, dz0
@@ -137,19 +135,21 @@ static DD4hep::Geometry::Ref_t createHCal (
       unsigned int idxActMod = 0;
       double modCompZOffset = - sequenceDimensions.dz() * 0.5;
       
-      //test effect of changed sequences for diff layers
-      if (sequenceIdx == 0)
+      // this matches the order of sequences of standalone HCAL geo description
+      if (sequenceIdx == 0){
 	sequenceIdx = 1;
-      else
-	sequenceIdx =0;
-      //Filling of the subWedge with coponents (submodules)
+      }
+      else{
+	sequenceIdx = 0;
+      }
+      // Filling of the subWedge with coponents (submodules)
       for (xml_coll_t xCompColl(sequences[sequenceIdx], _U(module_component)); xCompColl; ++xCompColl, ++idxSubMod) {
-	//for (unsigned int idxTiles = 0; idxTiles < sequences[sequenceIdx].size(); ++idxTiles) {   
+	// for (unsigned int idxTiles = 0; idxTiles < sequences[sequenceIdx].size(); ++idxTiles) {   
 	xml_comp_t xComp = xCompColl;
 	auto compName = DD4hep::XML::_toString(idxLayer, "layer%d") + DD4hep::XML::_toString(idxSubMod, "_tile%d");
 	std::string subModuleName =  xComp.materialStr() + DD4hep::XML::_toString(idxSubMod, "_tile%d");
 	DetElement compDet(layerDet, compName, idxSubMod);
-	//added * 0.5 for Trapezoid 
+	// added * 0.5 for Trapezoid 
 	double dyComp = xComp.thickness() * 0.5;
 	Volume modCompVol(subModuleName, DD4hep::Geometry::Trapezoid(
 								     dx1, dx2, dyComp, dyComp, dz0
@@ -157,11 +157,9 @@ static DD4hep::Geometry::Ref_t createHCal (
 			  );
 	modCompVol.setVisAttributes(lcdd, xComp.visStr());
 	DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset()/2, 0);
-	//lLog << MSG::DEBUG << "position of components in z : " << modCompZOffset + dyComp << endmsg;
 	PlacedVolume placedModCompVol = subWedgeVolume.placeVolume(modCompVol, offset);
 	
 	if (xComp.isSensitive()) {
-	//std::cout << xComp.materialStr() << std::endl;
 	  modCompVol.setSensitiveDetector(sensDet);
 	  placedModCompVol.addPhysVolID("tile", idxActMod);
 	  idxActMod++;
@@ -170,7 +168,9 @@ static DD4hep::Geometry::Ref_t createHCal (
 	modCompZOffset += xComp.thickness() + xComp.y_offset();
       }
       DD4hep::Geometry::Position modOffset(0, 0, rMiddle);
-      if( (rMiddle + 0.5 * sequenceDimensions.dr()) > dzModule)  lLog << MSG::DEBUG << "something's wrong with the positions in rho!" << endmsg;
+      if( (rMiddle + 0.5 * sequenceDimensions.dr()) > dzModule){
+	lLog << MSG::DEBUG << "something's wrong with the positions in rho!" << endmsg;
+      }
       PlacedVolume placedModuleVol = wedgeVolume.placeVolume(subWedgeVolume, modOffset);
       placedModuleVol.addPhysVolID("layer", idxLayer);
       layerDet.setPlacement(placedModuleVol);
