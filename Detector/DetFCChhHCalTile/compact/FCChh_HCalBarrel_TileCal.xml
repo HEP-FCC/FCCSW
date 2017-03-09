@@ -13,7 +13,7 @@
   </info>
   
   <define>
-    <!-- Get 2cm from the margin extra for placing 18 layers in rho, 1cm needed to compensate for faceplate-->
+    <!-- Buffer for support reduced from 20 to 18cm to get 2cm for placing 18 layers in rho, 1cm needed to compensate for faceplate-->
     <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax-180*mm"/>
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
