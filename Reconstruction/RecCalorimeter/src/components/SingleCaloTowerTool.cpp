@@ -56,12 +56,15 @@ StatusCode SingleCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
 tower SingleCaloTowerTool::towersNumber() {
   // maximum eta of the detector (== to the eta offset)
-  m_etaMax = fabs( m_segmentation->offsetEta() );
+  m_etaMax = fabs( m_segmentation->offsetEta() + m_segmentation->gridSizeEta()*0.5 );
+  m_phiMax = fabs( m_segmentation->offsetPhi() + M_PI/(double)m_segmentation->phiBins()) );
+
   // number of phi bins
-  double epsilon = 0.0001;
-  m_nPhiTower = ceil(2 * (M_PI-epsilon) / m_deltaPhiTower);
+  float epsilon = 0.0001;
+  m_nPhiTower = ceil(2 * (m_phiMax - epsilon ) / m_deltaPhiTower);
   // number of eta bins (if eta maximum is defined)
-  m_nEtaTower = ceil(2 * (m_etaMax-epsilon) / m_deltaEtaTower);
+  m_nEtaTower = ceil(2 * (m_etaMax - epsilon ) / m_deltaEtaTower);
+  debug() << m_etaMax << " " << m_deltaEtaTower << " " << m_nEtaTower << endmsg;
   tower total;
   total.eta = m_nEtaTower;
   total.phi = m_nPhiTower;
@@ -75,13 +78,12 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
   // Loop over a collection of calorimeter cells and build calo towers
   int iPhi = 0, iEta = 0;
   float etaCell = 0;
-  float deltaEtaHalf = m_deltaEtaTower*0.5;
-  float deltaPhiHalf = m_deltaPhiTower*0.5;
+  float epsilon = 0.0001;
   for (const auto& cell : *cells) {
     // find to which tower the cell belongs
     etaCell = m_segmentation->eta(cell.core().cellId);
-    iEta = idEta(etaCell + deltaEtaHalf);
-    iPhi = idPhi(m_segmentation->phi(cell.core().cellId) + deltaPhiHalf);
+    iEta = idEta(etaCell);
+    iPhi = idPhi(m_segmentation->phi(cell.core().cellId));
     // save transverse energy
     aTowers[iEta][phiNeighbour(iPhi)] += cell.core().energy / cosh(etaCell);
   }
@@ -89,17 +91,19 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
 }
 
 uint SingleCaloTowerTool::idEta(float aEta) const {
-  if ( floor((aEta + m_etaMax) / m_deltaEtaTower) < 0 ) {
-    std::cout << "eta " << aEta << " "<< floor((aEta + m_etaMax) / m_deltaEtaTower) << " "<< ceil((aEta + m_etaMax) / m_deltaEtaTower) << std::endl;
+  int id = floor((aEta + m_etaMax) / m_deltaEtaTower);
+  if (id < 0 || id >= m_nEtaTower) {
+    debug() << "idEta outside range!!!! eta " << aEta << " id "<< id << endmsg;
   }
-  return floor((aEta + m_etaMax) / m_deltaEtaTower);
+  return id;
 }
 
 uint SingleCaloTowerTool::idPhi(float aPhi) const {
-  if ( floor((aPhi + M_PI) / m_deltaPhiTower) < 0 ) {
-   std::cout << aPhi << " "<< floor((aPhi + M_PI) / m_deltaPhiTower) << std::endl;
+  int id = floor((aPhi + m_phiMax) / m_deltaPhiTower);
+  if (id < 0 || id >= m_nPhiTower) {
+    debug() << "idPhi outside range!!!! phi " << aPhi << " id "<< id << endmsg;
   }
-  return floor((aPhi + M_PI) / m_deltaPhiTower);
+  return id;
 }
 
 float SingleCaloTowerTool::eta(int aIdEta) const {
@@ -109,7 +113,7 @@ float SingleCaloTowerTool::eta(int aIdEta) const {
 
 float SingleCaloTowerTool::phi(int aIdPhi) const {
   // middle of the tower
-  return ( (aIdPhi + 0.5) * m_deltaPhiTower - M_PI);
+  return ((aIdPhi + 0.5) * m_deltaPhiTower - m_phiMax);
 }
 
 void SingleCaloTowerTool::matchCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {

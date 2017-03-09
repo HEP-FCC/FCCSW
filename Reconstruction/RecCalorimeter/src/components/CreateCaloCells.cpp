@@ -75,11 +75,14 @@ StatusCode CreateCaloCells::execute() {
   // 0. Clear all cells
   std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
 
+  debug() << m_cellsMap.size() << endmsg;
+
   // 1. Merge energy deposits into cells
   // If running with noise map already was prepared. Otherwise it is being created below
   for (const auto& hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
+  debug() << m_cellsMap.size() << endmsg;
 
   // 2. Calibrate simulation energy to EM scale
   if (m_doCellCalibration) {

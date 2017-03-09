@@ -38,16 +38,18 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
   m_nEtaTower = towerMapSize.eta;
   m_nPhiTower = towerMapSize.phi;
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
+  // make sure that the tower size in eta is larger than the seeding sliding window
+  //TODO: we want to do it probably the other way round .....
+  if(m_nEtaTower < m_nEtaWindow) {
+    debug() << "Window size in eta too small!!! Window " << m_nEtaWindow << " # of eta towers " << m_nEtaTower << endmsg;
+    m_nEtaTower = m_nEtaWindow;
+  }
   info() << "CreateCaloClustersSlidingWindow initialized" << endmsg;
   return StatusCode::SUCCESS;
 }
 
 StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 1. Create calorimeter towers (calorimeter grid in eta phi, all layers merged)
-  // make sure that the tower size in eta is larger than the seeding sliding window
-  if(m_nEtaTower < m_nEtaWindow) {
-    m_nEtaTower = m_nEtaWindow;
-  }
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
   if( m_towerTool->buildTowers(m_towers) == 0 ) {
      debug() << "Empty cell collection." << endmsg;

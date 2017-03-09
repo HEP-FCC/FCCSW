@@ -120,6 +120,8 @@ private:
   double m_radius;
   /// Maximum eta of detector. If undefined, it is calculated for each event from the cell collection.
   float m_etaMax;
+  /// Phi offset
+  float m_phiMax;
   /// Size of the tower in eta
   float m_deltaEtaTower;
   /// Size of the tower in phi
