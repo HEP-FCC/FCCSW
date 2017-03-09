@@ -40,7 +40,7 @@ def main():
         ths = ROOT.THStack()
         for i, material in enumerate(histDict.keys()):
             linecolor = 1
-            fillcolor = FCCSyle.fillcolors[i]
+            fillcolor = FCCStyle.fillcolors[i]
             histDict[material][plot].SetLineColor(linecolor)
             histDict[material][plot].SetFillColor(fillcolor)
             histDict[material][plot].SetLineWidth(1)

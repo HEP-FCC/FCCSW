@@ -186,6 +186,7 @@ static DD4hep::Geometry::Ref_t createHCal (
     double phi = 0.5 * dphi + idxPhi * dphi; // 0.5*dphi for middle of module                                                                                                                                                             
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
+
     DD4hep::Geometry::Position moduleOffset(xPosModule, yPosModule, 0);
     DD4hep::Geometry::Transform3D trans(
 					DD4hep::Geometry::RotationX(-0.5*dd4hep::pi)*
