@@ -12,7 +12,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # DD4hep geometry service
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                          'file:Detector/DetFCChh'
+                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'
                                         ],
                     OutputLevel = INFO)
 
@@ -39,18 +39,18 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits
-saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"])
-saveecaltool.DataOutputs.positionedCaloHits.Path = "ECalPositionedHits"
-saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"])
+savehcaltool.DataOutputs.positionedCaloHits.Path = "HCalPositionedHits"
+savehcaltool.DataOutputs.caloHits.Path = "HCalHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.01,etaMax=0.01,
+                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.36,etaMax=0.36,
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits"],
+                       outputs= ["SimG4SaveCalHits/saveHCalHits"],
                        eventProvider=pgun,
                        OutputLevel=DEBUG)
 
@@ -59,7 +59,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_ecalSim_e50GeV_eta0_10events.root"
+out.filename = "output_hcalSim_e50GeV_eta036_10events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
