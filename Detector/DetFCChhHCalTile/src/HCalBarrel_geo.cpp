@@ -94,14 +94,14 @@ static DD4hep::Geometry::Ref_t createHCal (
   // Calculation the dimensions of one whole module:
   double tn = tan(dphi / 2.);
   double spacing = sequenceDimensions.x();
-  //the half depth of sequence (placed in z in HCAL coordinated) is y coordinate of trapezoid definition
+  // the half depth of sequence (placed in z in HCAL coordinated) is y coordinate of trapezoid definition
   double dy0 = dzSequence * 0.5;
-  //the half minimum depth of the sequence defines the minimum depth of layers
+  // the half minimum depth of the sequence defines the minimum depth of layers
   double dz0 = sequenceDimensions.dr() * 0.5;
 
   double dx1Module = tn * sensitiveBarrelRmin - spacing;
   double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;         
-  double dzModule = (numSequencesR*sequenceDimensions.dr())/2; //( cos(dphi / 2.) * dimensions.rmax() - sensitiveBarrelRmin ) * 0.5;
+  double dzModule = (numSequencesR*sequenceDimensions.dr())/2;
 
   lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;
   lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
@@ -186,6 +186,7 @@ static DD4hep::Geometry::Ref_t createHCal (
     double phi = 0.5 * dphi + idxPhi * dphi; // 0.5*dphi for middle of module                                                                                                                                                             
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
+
     DD4hep::Geometry::Position moduleOffset(xPosModule, yPosModule, 0);
     DD4hep::Geometry::Transform3D trans(
 					DD4hep::Geometry::RotationX(-0.5*dd4hep::pi)*
@@ -199,9 +200,9 @@ static DD4hep::Geometry::Ref_t createHCal (
       double zOffset = -dzDetector + dZEndPlate + space + (2*idxZRow + 1) * (dzSequence*0.5); 
       lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
       
-      if ( (-dzDetector + zOffset) >= dzDetector )
+      if ( (-dzDetector + zOffset) >= dzDetector ){
 	lLog << MSG::DEBUG << " WARNING!!!! Module position outside" << std::endl;
-      
+      }
       DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
       PlacedVolume placedRowVolume = moduleVolume.placeVolume(wedgeVolume, wedgeOffset);
       placedRowVolume.addPhysVolID("row", idxZRow);

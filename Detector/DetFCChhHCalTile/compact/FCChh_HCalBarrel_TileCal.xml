@@ -11,12 +11,6 @@
     version="1.0">
     <comment>HCal layout based on ATLAS HCal</comment>
   </info>
-
-  <!-- use DD4hep elements and material definitions: -->
-  <includes>
-    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
-    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
-  </includes>
   
   <define>
     <!-- 20cm for support is reduced to 18cm, 1cm is needed to place max number of trapazoids and 1cm needed to compensate for faceplate-->
@@ -54,6 +48,7 @@
       <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
      <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256"/>
      <id>system:4,layer:6,module:7,row:10,tile:21,eta:1,phi:-9</id>
+
     </readout>
   </readouts>
 

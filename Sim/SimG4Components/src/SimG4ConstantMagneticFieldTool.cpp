@@ -39,7 +39,7 @@ SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string
       m_integratorStepper("NystromRK4"),
       m_fieldComponentX(0),
       m_fieldComponentY(0),
-      m_fieldComponentZ(-6. * tesla),
+      m_fieldComponentZ(-4. * tesla),
       m_fieldRadMax(6 * m),
       m_fieldZMax(6. * m) {
   declareInterface<ISimG4MagneticFieldTool>(this);

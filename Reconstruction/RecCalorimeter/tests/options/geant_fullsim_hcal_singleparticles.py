@@ -38,10 +38,12 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
-from Configurables import SimG4Alg, SimG4SaveCalHits
+from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
 savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"])
 savehcaltool.DataOutputs.positionedCaloHits.Path = "HCalPositionedHits"
 savehcaltool.DataOutputs.caloHits.Path = "HCalHits"
+# Change INFO to DEBUG for printout of each deposit
+#inspect = InspectHitsCollectionsTool("inspect", readoutNames = ["BarHCal_Readout"], OutputLevel = INFO)
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
@@ -59,7 +61,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_hcalSim_e50GeV_eta036_10events.root"
+out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta036_10events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor

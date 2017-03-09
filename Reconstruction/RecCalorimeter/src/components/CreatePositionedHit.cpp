@@ -22,8 +22,6 @@ CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* s
   declareProperty("activeVolumeName", m_activeVolumeName="LAr_sensitive");
 }
 
-CreatePositionedHit::~CreatePositionedHit() {}
-
 StatusCode CreatePositionedHit::initialize() {
 
   StatusCode sc = GaudiAlgorithm::initialize();
