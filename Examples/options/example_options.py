@@ -13,7 +13,7 @@ podioevent   = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.6/testsamples/example_MyPythia.dat")
+reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
 # In the following line,
 #   reader.DataOutputs.YYY.Path = "XXX"
 # YYY matches the string passed to declareOutput in the constructor of the algorithm (here "hepmc")
