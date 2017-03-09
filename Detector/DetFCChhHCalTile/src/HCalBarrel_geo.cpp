@@ -24,7 +24,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   xml_det_t xmlDet = xmlElement;
   std::string detName = xmlDet.nameStr();
-  //Make DetElement
+  // Make DetElement
   DetElement hCal(detName, xmlDet.id());
 
   // Make volume that envelopes the whole barrel; set material to air
@@ -94,21 +94,20 @@ static DD4hep::Geometry::Ref_t createHCal (
   // Calculation the dimensions of one whole module:
   double tn = tan(dphi / 2.);
   double spacing = sequenceDimensions.x();
-  //the half depth of sequence (placed in z in HCAL coordinated) is y coordinate of trapezoid definition
+  // the half depth of sequence (placed in z in HCAL coordinated) is y coordinate of trapezoid definition
   double dy0 = dzSequence * 0.5;
-  //the half minimum depth of the sequence defines the minimum depth of layers
+  // the half minimum depth of the sequence defines the minimum depth of layers
   double dz0 = sequenceDimensions.dr() * 0.5;
 
   double dx1Module = tn * sensitiveBarrelRmin - spacing;
   double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;         
-  double dzModule = (numSequencesR*sequenceDimensions.dr())/2; //( cos(dphi / 2.) * dimensions.rmax() - sensitiveBarrelRmin ) * 0.5;
+  double dzModule = (numSequencesR*sequenceDimensions.dr())/2;
 
   lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;
-  //lLog << MSG::DEBUG << "half height of full module (diff way):       " << (numSequencesR*sequenceDimensions.dr())/2 << endmsg;
   lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-  //Get DetElement to place the others inside
+    // Get DetElement to place the others inside
     auto modName = DD4hep::XML::_toString(idxPhi, "mod%d");                                                                                                                                                                                
     DetElement moduleDet(hCal, modName, idxPhi);
     // First we construct one wedge:
@@ -126,7 +125,6 @@ static DD4hep::Geometry::Ref_t createHCal (
       double dx1 = tn * rminLayer - spacing;
       double dx2 = tn * rmaxLayer - spacing;
       double rMiddle = (rminLayer-sensitiveBarrelRmin) + 0.5 * sequenceDimensions.dr() - dzModule;
-      //      lLog << MSG::DEBUG << "offset of layer inside the wedge: " << rMiddle << endmsg;
       
       Volume subWedgeVolume(layerName, DD4hep::Geometry::Trapezoid(
 								   dx1, dx2, dy0, dy0, dz0
@@ -138,10 +136,12 @@ static DD4hep::Geometry::Ref_t createHCal (
       double modCompZOffset = - sequenceDimensions.dz() * 0.5;
       
       //test effect of changed sequences for diff layers
-      if (sequenceIdx == 0)
+      if (sequenceIdx == 0){
 	sequenceIdx = 1;
-      else
+	}	
+      else{
 	sequenceIdx =0;
+	}
       //Filling of the subWedge with coponents (submodules)
       for (xml_coll_t xCompColl(sequences[sequenceIdx], _U(module_component)); xCompColl; ++xCompColl, ++idxSubMod) {
 	//for (unsigned int idxTiles = 0; idxTiles < sequences[sequenceIdx].size(); ++idxTiles) {   
@@ -200,9 +200,9 @@ static DD4hep::Geometry::Ref_t createHCal (
       double zOffset = -dzDetector + dZEndPlate + space + (2*idxZRow + 1) * (dzSequence*0.5); 
       lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
       
-      if ( (-dzDetector + zOffset) >= dzDetector )
+      if ( (-dzDetector + zOffset) >= dzDetector ){
 	lLog << MSG::DEBUG << " WARNING!!!! Module position outside" << std::endl;
-      
+      }
       DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
       PlacedVolume placedRowVolume = moduleVolume.placeVolume(wedgeVolume, wedgeOffset);
       placedRowVolume.addPhysVolID("row", idxZRow);
