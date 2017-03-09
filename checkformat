@@ -18,7 +18,7 @@ def parse_args():
 
 
 def set_env():
-    llvm = "/cvmfs/sft.cern.ch/lcg/contrib/llvm/3.9/x86_64-slc6/"
+    llvm = "/cvmfs/sft.cern.ch/lcg/contrib/llvm/3.9/x86_64-slc6-gcc49-opt/"
     os.environ["LD_LIBRARY_PATH"] = llvm+"lib64:"+os.environ["LD_LIBRARY_PATH"]
     os.environ["PATH"] = llvm+"bin:"+os.environ["PATH"]
 
