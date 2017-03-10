@@ -27,25 +27,31 @@
   <include ref="./FCChh_Visualisation.xml" />
 
   <!-- Including the sub-detectors / volume definitions -->
+<!--
   <include ref="./FCChh_BeamTube.xml" />
   <include ref="./FCChh_Solenoids.xml" />
   <include ref="./FCChh_Shielding.xml" />
+  -->
 
   <!-- T R A C K E R -->
-  <include ref="./estimates/FCChh_TrackerMaterial.xml" />
+  <!--                                                                                                                                                                                                                                          <include ref="./estimates/FCChh_TrackerMaterial.xml" />
   <include ref="./estimates/FCChh_TrackerEndCapMaterial.xml" />
   <include ref="./estimates/FCChh_TrackerFwdMaterial.xml" />
+  -->
 
   <!-- E L E C T R O M A G N E T I C   C A L -->
-  <include ref="./estimates/FCChh_ECalMaterial.xml" />
+  <!--                                                                                                                                                                                                                                        <include ref="./estimates/FCChh_ECalMaterial.xml" />
   <include ref="./estimates/FCChh_ECalEndCapMaterial.xml" />
   <include ref="./estimates/FCChh_ECalFwdMaterial.xml" />
-
+  -->
   <!-- H A D R O N I C   C A L -->
   <include ref="./estimates/FCChh_HCalMaterial.xml" />
+<!--
   <include ref="./estimates/FCChh_HCalEndCapMaterial.xml" />
   <include ref="./estimates/FCChh_HCalFwdMaterial.xml" />
-
+-->
   <!-- M U O N   S Y S T E M -->
-  <include ref="./FCChh_MuonAir.xml" />
+  <!--
+     <include ref="./FCChh_MuonAir.xml" />
+  -->
 </lccdd>

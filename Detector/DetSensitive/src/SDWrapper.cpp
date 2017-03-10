@@ -38,6 +38,16 @@ static G4VSensitiveDetector* create_simple_calorimeter_sd(
     readoutName,
     aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
+  // Factory method to create an instance of SimpleCalorimeterSD                                                                                                                                                                           
+  static G4VSensitiveDetector* create_simple_calorimeter_sd_with_briks_law(
+							    const std::string& aDetectorName,
+							    DD4hep::Geometry::LCDD& aLcdd)  {
+    std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
+    return new det::SimpleCalorimeterSD(aDetectorName,
+					readoutName,
+					aLcdd.sensitiveDetector(aDetectorName).readout().segmentation(),
+					true); // enable Birks Law correction
+  }
 // Factory method to create an instance of AggregateCalorimeterSD
 static G4VSensitiveDetector* create_aggregate_calorimeter_sd(
     const std::string& aDetectorName,
@@ -61,5 +71,6 @@ static G4VSensitiveDetector* create_gflash_calorimeter_sd(
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD,DD4hep::Simulation::create_simple_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MiddleStepTrackerSD,DD4hep::Simulation::create_middle_step_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,DD4hep::Simulation::create_simple_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSDWithBirksLaw,DD4hep::Simulation::create_simple_calorimeter_sd_with_briks_law)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD,DD4hep::Simulation::create_aggregate_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GflashCalorimeterSD,DD4hep::Simulation::create_gflash_calorimeter_sd)

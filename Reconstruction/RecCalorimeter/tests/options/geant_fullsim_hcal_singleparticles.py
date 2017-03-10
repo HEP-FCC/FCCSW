@@ -32,7 +32,7 @@ else:
 #geantservice.G4commands += ["/random/setSeeds "+str(x)+" 0"] #where x is the number you want
 
 #range cut
-geantservice.G4commands += ["/run/setCut 0.1 mm"]
+geantservice.G4commands += ["/run/rangeCut 0.1 mm"]
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools

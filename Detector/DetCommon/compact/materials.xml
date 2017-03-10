@@ -57,10 +57,24 @@
 
   <material name="Polystyrene">
     <D value="1.032" unit="g/cm3"/>
+    <composite n="8" ref="C" />
+    <composite n="8" ref="H" />
+<!-- check of impact on response using Carlos implementation
     <composite n="19" ref="C"/>
     <composite n="21" ref="H"/>
+-->
   </material>
-
+<!--
+  <material name="StainlessSteel">
+    <D value="8.06" unit="g/cm3"/>
+    <fraction n="0.001" ref="C"/>
+    <fraction n="0.007" ref="Si"/>
+    <fraction n="0.18" ref="Cr"/>
+    <fraction n="0.01" ref="Mn"/>
+    <fraction n="0.712" ref="Fe"/>
+    <fraction n="0.09" ref="Ni"/>
+  </material>
+-->
   <material name="Steel235">
     <D value="7.85" unit="g/cm3"/>
     <fraction n="0.998" ref="Fe"/>
