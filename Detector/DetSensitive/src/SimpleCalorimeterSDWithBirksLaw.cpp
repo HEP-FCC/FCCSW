@@ -17,13 +17,13 @@ namespace det {
 SimpleCalorimeterSDWithBirksLaw::SimpleCalorimeterSDWithBirksLaw(const std::string& aDetectorName,
                                                                  const std::string& aReadoutName,
                                                                  const DD4hep::Geometry::Segmentation& aSeg)
-    : G4VSensitiveDetector(aDetectorName),
-      m_calorimeterCollection(nullptr),
-      m_seg(aSeg), 
-      // variables for birks law
-      myMaterial("Polystyrene"),
-      birk1(0.0130 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)),
-      birk2(9.6e-6 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2) * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)) {
+  : G4VSensitiveDetector(aDetectorName),
+    m_calorimeterCollection(nullptr),
+    m_seg(aSeg), 
+    // variables for birks law
+    myMaterial("Polystyrene"),
+    birk1(0.0130 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)),
+    birk2(9.6e-6 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2) * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
 }
