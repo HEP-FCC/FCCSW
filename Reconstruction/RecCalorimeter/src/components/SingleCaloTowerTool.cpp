@@ -57,7 +57,7 @@ StatusCode SingleCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 tower SingleCaloTowerTool::towersNumber() {
   // maximum eta of the detector (== to the eta offset)
   m_etaMax = fabs( m_segmentation->offsetEta() + m_segmentation->gridSizeEta()*0.5 );
-  m_phiMax = fabs( m_segmentation->offsetPhi() + M_PI/(double)m_segmentation->phiBins()) );
+  m_phiMax = fabs( m_segmentation->offsetPhi() + M_PI/(double)m_segmentation->phiBins() );
 
   // number of phi bins
   float epsilon = 0.0001;
