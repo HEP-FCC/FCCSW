@@ -51,7 +51,7 @@ static DD4hep::Geometry::Ref_t createHCal (
 
   unsigned int numSequencesZ = static_cast<unsigned>((2*dimensions.dz() - 2*dZEndPlate - 2*space) / dzSequence);
   unsigned int numSequencesR = static_cast<unsigned>((cos(dphi / 2) * dimensions.rmax() - sensitiveBarrelRmin) / sequenceDimensions.dr()); // needed due to trapezoid shapes inside the available HCAL volume
-  lLog << MSG::DEBUG << "constructing " << numSequencesPhi << " modules, within the angle " << (dphi*180./dd4hep::pi) <<" per ring in phi, "
+  lLog << MSG::INFO << "constructing " << numSequencesPhi << " modules, within the angle " << (dphi*180./dd4hep::pi) <<" per ring in phi, "
                      << numSequencesZ << " rings in Z, "
                      << numSequencesR << " layers in Rho, "
                      << numSequencesR*numSequencesZ*numSequencesPhi << " tiles" << endmsg;
