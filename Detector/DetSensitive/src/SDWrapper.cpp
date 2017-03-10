@@ -4,6 +4,7 @@
 #include "DetSensitive/SimpleTrackerSD.h"
 #include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
+#include "DetSensitive/SimpleCalorimeterSDWithBirksLaw.h"
 #include "DetSensitive/AggregateCalorimeterSD.h"
 #include "DetSensitive/GflashCalorimeterSD.h"
 
@@ -43,10 +44,9 @@ static G4VSensitiveDetector* create_simple_calorimeter_sd_with_briks_law(
 							    const std::string& aDetectorName,
 							    DD4hep::Geometry::LCDD& aLcdd)  {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
-  return new det::SimpleCalorimeterSD(aDetectorName,
+  return new det::SimpleCalorimeterSDWithBirksLaw(aDetectorName,
 				      readoutName,
-				      aLcdd.sensitiveDetector(aDetectorName).readout().segmentation(),
-				      true); // enable Birks Law correction
+				      aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of AggregateCalorimeterSD
 static G4VSensitiveDetector* create_aggregate_calorimeter_sd(

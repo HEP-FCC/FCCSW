@@ -1,5 +1,5 @@
-#ifndef DETSENSITIVE_SIMPLECALORIMETERSD_H
-#define DETSENSITIVE_SIMPLECALORIMETERSD_H
+#ifndef DETSENSITIVE_SIMPLECALORIMETERSD_WITHBIRKS_H
+#define DETSENSITIVE_SIMPLECALORIMETERSD_WITHBIRKS_H
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -16,12 +16,12 @@
  *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
  *  New hit is created for each energy deposit.
  *  No timing information is saved.
- *
- *  @author    Anna Zaborowska
+ *  Birks law is included for polystyrene
+ *  @author    Coralie Neubueser
  */
 
 namespace det {
-class SimpleCalorimeterSD : public G4VSensitiveDetector
+class SimpleCalorimeterSDWithBirksLaw : public G4VSensitiveDetector
 {
   public:
   /** Constructor.
@@ -29,11 +29,11 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleCalorimeterSD(const std::string& aDetectorName,
-		      const std::string& aReadoutName,
-		      const DD4hep::Geometry::Segmentation& aSeg);
+  SimpleCalorimeterSDWithBirksLaw(const std::string& aDetectorName,
+				  const std::string& aReadoutName,
+				  const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  virtual ~SimpleCalorimeterSD();
+  virtual ~SimpleCalorimeterSDWithBirksLaw();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.
@@ -56,4 +56,4 @@ private:
 };
 }
 
-#endif /* DETSENSITIVE_SIMPLECALORIMETERSD_H */
+#endif /* DETSENSITIVE_SIMPLECALORIMETERSD_WITHBIRKS_H */
