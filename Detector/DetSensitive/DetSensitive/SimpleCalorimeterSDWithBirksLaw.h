@@ -47,16 +47,15 @@ public:
    */
   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 
-  // Variables needed for the calculation of birks law
-  const G4String myMaterial;
-  const G4double birk1;
-  const G4double birk2;
-
 private:
   /// Collection of calorimeter hits
   G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
+  // Variables needed for the calculation of birks law
+  const G4String myMaterial;
+  const G4double birk1;
+  const G4double birk2;
 };
 }
 
