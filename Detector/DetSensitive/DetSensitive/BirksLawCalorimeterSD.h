@@ -1,5 +1,5 @@
-#ifndef DETSENSITIVE_SIMPLECALORIMETERSD_WITHBIRKS_H
-#define DETSENSITIVE_SIMPLECALORIMETERSD_WITHBIRKS_H
+#ifndef DETSENSITIVE_BIRKSLAWCALORIMETERSD_H
+#define DETSENSITIVE_BIRKSLAWCALORIMETERSD_H
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -9,30 +9,30 @@
 #include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
 
-/** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
+/** SimpleCalorimeterSDWithBirksLaw DetectorDescription/DetSensitive/src/SimpleCalorimeterSDWithBirksLaw.h SimpleCalorimeterSDWithBirksLaw.h
  *
- *  Simple sensitive detector for calorimeter.
+ *  Sensitive detector for calorimeters, using Polystyrene.
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
  *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
  *  New hit is created for each energy deposit.
  *  No timing information is saved.
- *  Birks law is included for polystyrene
+ *  Birks law reduces the energy deposited in the scintillator
  *  @author    Coralie Neubueser
  */
 
 namespace det {
-class SimpleCalorimeterSDWithBirksLaw : public G4VSensitiveDetector {
+class BirksLawCalorimeterSD : public G4VSensitiveDetector {
 public:
   /** Constructor.
    *  @param aDetectorName Name of the detector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleCalorimeterSDWithBirksLaw(const std::string& aDetectorName,
-                                  const std::string& aReadoutName,
-                                  const DD4hep::Geometry::Segmentation& aSeg);
+  BirksLawCalorimeterSD(const std::string& aDetectorName,
+			const std::string& aReadoutName,
+			const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
-  virtual ~SimpleCalorimeterSDWithBirksLaw();
+  virtual ~BirksLawCalorimeterSD();
   /** Initialization.
    *  Creates the hit collection with the name passed in the constructor.
    *  The hit collection is registered in Geant.
@@ -54,9 +54,9 @@ private:
   DD4hep::Geometry::Segmentation m_seg;
   // Variables needed for the calculation of birks law
   const G4String myMaterial;
-  const G4double birk1;
-  const G4double birk2;
+  const double birk1;
+  const double birk2;
 };
 }
 
-#endif /* DETSENSITIVE_SIMPLECALORIMETERSD_WITHBIRKS_H */
+#endif /* DETSENSITIVE_BIRKSLAWCALORIMETERSD_H */

@@ -1,4 +1,4 @@
-#include "DetSensitive/SimpleCalorimeterSDWithBirksLaw.h"
+#include "DetSensitive/BirksLawCalorimeterSD.h"
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
@@ -14,9 +14,9 @@
 #include "G4SDManager.hh"
 
 namespace det {
-SimpleCalorimeterSDWithBirksLaw::SimpleCalorimeterSDWithBirksLaw(const std::string& aDetectorName,
-                                                                 const std::string& aReadoutName,
-                                                                 const DD4hep::Geometry::Segmentation& aSeg)
+BirksLawCalorimeterSD::BirksLawCalorimeterSD(const std::string& aDetectorName,
+					     const std::string& aReadoutName,
+					     const DD4hep::Geometry::Segmentation& aSeg)
   : G4VSensitiveDetector(aDetectorName),
     m_calorimeterCollection(nullptr),
     m_seg(aSeg), 
@@ -28,9 +28,9 @@ SimpleCalorimeterSDWithBirksLaw::SimpleCalorimeterSDWithBirksLaw(const std::stri
   collectionName.insert(aReadoutName);
 }
 
-SimpleCalorimeterSDWithBirksLaw::~SimpleCalorimeterSDWithBirksLaw() {}
+BirksLawCalorimeterSD::~BirksLawCalorimeterSD() {}
 
-void SimpleCalorimeterSDWithBirksLaw::Initialize(G4HCofThisEvent* aHitsCollections) {
+void BirksLawCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   m_calorimeterCollection =
@@ -39,31 +39,30 @@ void SimpleCalorimeterSDWithBirksLaw::Initialize(G4HCofThisEvent* aHitsCollectio
                                       m_calorimeterCollection);
 }
 
-bool SimpleCalorimeterSDWithBirksLaw::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
+bool BirksLawCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
   if (edep == 0.) return false;
 
   G4double response = 0.;
 
-  G4double destep = aStep->GetTotalEnergyDeposit();
   G4Material* material = aStep->GetPreStepPoint()->GetMaterial();
   G4double charge = aStep->GetPreStepPoint()->GetCharge();
 
   if ((charge != 0.) && (material->GetName() == myMaterial)) {
     G4double rkb = birk1;
     // --- correction for particles with more than 1 charge unit ---
-    // --- based on alpha particle data (only apply for MODEL=1) ---
+    // --- based on alpha particle data ---
     if (std::fabs(charge) > 1.0) rkb *= 7.2 / 12.6;
 
     if (aStep->GetStepLength() != 0) {
-      G4double dedx = destep / (aStep->GetStepLength()) / (material->GetDensity());
-      response = destep / (1. + rkb * dedx + birk2 * dedx * dedx);
+      G4double dedx = edep / (aStep->GetStepLength()) / (material->GetDensity());
+      response = edep / (1. + rkb * dedx + birk2 * dedx * dedx);
     } else {
-      response = destep;
+      response = edep;
     }
   } else {
-    response = destep;
+    response = edep;
   }
   edep = response;
 
