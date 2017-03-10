@@ -12,14 +12,14 @@
  */
 
 class MaterialScan: public Service {
-public:
+ public:
   explicit MaterialScan(const std::string& name, ISvcLocator* svcLoc);
 
   virtual StatusCode initialize();
   virtual StatusCode finalize();
   virtual ~MaterialScan() {};
 
-private:
+ private:
   /// name of the output file
   std::string m_filename;
   /// Handle to the geometry service from which the detector is retrieved
@@ -28,6 +28,4 @@ private:
   double m_etaBinning;
   /// Maximum eta until which to scan, scan is performed from -m_etaMax to +m_etaMax
   double m_etaMax;
-  /// Number of bins for scan, scan is performed from with binning m_phi between -m_etaMax +m_etaMax
-  double  m_phi;
 };
