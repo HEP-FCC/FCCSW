@@ -21,17 +21,16 @@
  */
 
 namespace det {
-class SimpleCalorimeterSDWithBirksLaw : public G4VSensitiveDetector
-{
-  public:
+class SimpleCalorimeterSDWithBirksLaw : public G4VSensitiveDetector {
+public:
   /** Constructor.
    *  @param aDetectorName Name of the detector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
   SimpleCalorimeterSDWithBirksLaw(const std::string& aDetectorName,
-				  const std::string& aReadoutName,
-				  const DD4hep::Geometry::Segmentation& aSeg);
+                                  const std::string& aReadoutName,
+                                  const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
   virtual ~SimpleCalorimeterSDWithBirksLaw();
   /** Initialization.
