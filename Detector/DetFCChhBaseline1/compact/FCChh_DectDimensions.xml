@@ -65,50 +65,47 @@
     <constant name="FwdTracker_z2" value="2000*mm"/>
     <constant name="FwdTracker_zOffset" value="14000*mm"/>
 
-    <!-- E(M)CAL DIMENSIONS -->
-    <!-- E(M)Cal Barrel -->
+    <!-- CALORIMETER DIMENSIONS -->
+    <!-- ECal Barrel (EM B) -->
     <constant name="BarECal_id" value="5"/>
     <constant name="BarECal_rmin" value="1750*mm"/>
     <constant name="BarECal_rmax" value="2750*mm"/>
     <constant name="BarECal_dz" value="5000*mm"/>
-    <!-- E(M)Cal End-caps -->
-    <constant name="EndCapECal_id" value="6"/>
-    <constant name="EndCapECal_rmin1" value="864.278*mm"/>
-    <constant name="EndCapECal_rmax1" value="2800*mm"/>
-    <constant name="EndCapECal_rmin2" value="1467.641*mm"/>
-    <constant name="EndCapECal_rmax2" value="2800*mm"/>
-    <constant name="EndCapECal_dz" value="1850*mm"/>
-    <constant name="EndCapECal_zOffset" value="5300*mm + EndCapECal_dz"/>
-    <!-- E(M)Cal forward -->
-    <constant name="FwdECal_id" value="7"/>
-    <constant name="FwdECal_rmin" value="30*mm"/>
-    <constant name="FwdECal_rmax" value="3500*mm"/>
-    <constant name="FwdECal_dz" value="750*mm"/>
-    <constant name="FwdECal_zOffset" value="16500*mm+FwdECal_dz"/>
-
-
-    <!-- HCAL DIMENSIONS -->
-    <!-- HCal Barrel -->
+    <!-- HCal Barrel (HCAL B) -->
     <constant name="BarHCal_id" value="8"/>
     <constant name="BarHCal_rmin" value="2850*mm"/>
     <constant name="BarHCal_rmax" value="4850*mm"/>
     <constant name="BarHCal_dz" value="4600*mm"/>
-    <!-- HCal End-Cap -->
-    <constant name="EndCapHCal_id" value="9"/>
-    <constant name="EndCapHCal_rmin" value="2850*mm"/>
-    <constant name="EndCapHCal_rmax" value="4550*mm"/>
-    <constant name="EndCapHCal_dz" value="2000*mm"/>
-    <constant name="EndCapHCal_zOffset" value="5000*mm + EndCapHCal_dz"/>
-    <!-- HCal forward -->
-    <constant name="FwdHCal_id" value="10"/>
-    <constant name="FwdHCal_rmin" value="30*mm"/>
-    <constant name="FwdHCal_rmax" value="3500*mm"/>
-    <constant name="FwdHCal_dz" value="1250*mm"/>
-    <constant name="FwdHCal_zOffset" value="18000*mm + FwdHCal_dz"/>
+    <!-- Extended barrel (EM EB id 6 + HEC id 7)-->
+    <constant name="ExtBarCal_id" value="6"/>
+    <constant name="ExtBarCal_rmin1" value="776*mm"/>
+    <constant name="ExtBarCal_rmax1" value="2700*mm"/>
+    <constant name="ExtBarCal_rmin2" value="1272*mm"/>
+    <constant name="ExtBarCal_rmax2" value="2700*mm"/>
+    <constant name="ExtBarCal_dz" value="1500*mm"/>
+    <constant name="ExtBarCal_zOffset" value="5300*mm + ExtBarCal_dz"/>
+    <!-- HCal extended barrel (HCAL EB) -->
+    <constant name="ExtBarHCal_id" value="9"/>
+    <constant name="ExtBarHCal_rmin1" value="3500*mm"/>
+    <constant name="ExtBarHCal_rmax1" value="4550*mm"/>
+    <constant name="ExtBarHCal_rmin2" value="2850*mm"/>
+    <constant name="ExtBarHCal_rmax2" value="4550*mm"/>
+    <constant name="ExtBarHCal_dz1" value="150*mm"/>
+    <constant name="ExtBarHCal_zOffset1" value="5000*mm + ExtBarHCal_dz1"/>
+    <constant name="ExtBarHCal_dz2" value="1350*mm"/>
+    <constant name="ExtBarHCal_zOffset2" value="5300*mm + ExtBarHCal_dz2"/>
+    <!-- Forward calorimeters (EFCAL id 10 + HFCAL id 11) -->
+    <constant name="FwdCal_id" value="10"/>
+    <constant name="FwdCap_rmin1" value="49.6*mm"/>
+    <constant name="FwdCal_rmax1" value="3600*mm"/>
+    <constant name="FwdCal_rmin2" value="58.6*mm"/>
+    <constant name="FwdCal_rmax2" value="3600*mm"/>
+    <constant name="FwdCal_dz" value="1500*mm"/>
+    <constant name="FwdCal_zOffset" value="16500*mm + FwdCal_dz"/>
 
     <!-- MUON SYSTEM DIMENSIONS -->
     <!-- Muon system barrel -->
-    <constant name="BarMuon_id" value="11"/>
+    <constant name="BarMuon_id" value="12"/>
     <constant name="BarMuon_rmin1" value="5250*mm"/>
     <constant name="BarMuon_rmax1" value="9000*mm"/>
     <constant name="BarMuon_z1" value="13000*mm"/>
@@ -116,7 +113,7 @@
     <constant name="BarMuon_rmax2" value="6500*mm"/>
     <constant name="BarMuon_z2" value="10500*mm"/>
     <!-- Muon system end-caps -->
-    <constant name="EndCapMuon_id" value="12"/>
+    <constant name="EndCapMuon_id" value="13"/>
     <constant name="EndCapMuon_rmin1" value="2458.67*mm"/>
     <constant name="EndCapMuon_rmax1" value="4750*mm"/>
     <constant name="EndCapMuon_rmin2" value="2724.47*mm"/>
@@ -125,13 +122,13 @@
     <constant name="EndCapMuon_zOffset" value="9750*mm"/>
 
     <!-- Muon system forward -->
-    <constant name="FwdBarMuon_id" value="13"/>
+    <constant name="FwdBarMuon_id" value="14"/>
     <constant name="FwdBarMuon_rmin" value="5250*mm"/>
     <constant name="FwdBarMuon_rmax" value="7000*mm"/>
     <constant name="FwdBarMuon_dz" value="1750*mm"/>
     <constant name="FwdBarMuon_zOffset" value="14000*mm + FwdBarMuon_dz"/>
 
-    <constant name="FwdMuon_id" value="14"/>
+    <constant name="FwdMuon_id" value="15"/>
     <constant name="FwdMuon_rmin" value="30*mm"/>
     <constant name="FwdMuon_rmax" value="7000*mm"/>
     <constant name="FwdMuon_dz" value="1500*mm"/>
