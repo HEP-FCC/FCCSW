@@ -43,7 +43,6 @@ savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"
 savehcaltool.DataOutputs.positionedCaloHits.Path = "HCalPositionedHits"
 savehcaltool.DataOutputs.caloHits.Path = "HCalHits"
 # Change INFO to DEBUG for printout of each deposit
-#inspect = InspectHitsCollectionsTool("inspect", readoutNames = ["BarHCal_Readout"], OutputLevel = INFO)
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool

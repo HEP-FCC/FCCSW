@@ -12,14 +12,14 @@
  */
 
 class MaterialScan: public Service {
- public:
+public:
   explicit MaterialScan(const std::string& name, ISvcLocator* svcLoc);
 
   virtual StatusCode initialize();
   virtual StatusCode finalize();
   virtual ~MaterialScan() {};
 
- private:
+private:
   /// name of the output file
   std::string m_filename;
   /// Handle to the geometry service from which the detector is retrieved

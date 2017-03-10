@@ -4,7 +4,7 @@
 #include "DetSensitive/SimpleTrackerSD.h"
 #include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
-#include "DetSensitive/SimpleCalorimeterSDWithBirksLaw.h"
+#include "DetSensitive/BirksLawCalorimeterSD.h"
 #include "DetSensitive/AggregateCalorimeterSD.h"
 #include "DetSensitive/GflashCalorimeterSD.h"
 
@@ -33,10 +33,10 @@ static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDe
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of SimpleCalorimeterSD with Birks law
-static G4VSensitiveDetector* create_simple_calorimeter_sd_with_briks_law(const std::string& aDetectorName,
-                                                                         DD4hep::Geometry::LCDD& aLcdd) {
+static G4VSensitiveDetector* create_birks_law_calorimeter_sd(const std::string& aDetectorName,
+							     DD4hep::Geometry::LCDD& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
-  return new det::SimpleCalorimeterSDWithBirksLaw(
+  return new det::BirksLawCalorimeterSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of AggregateCalorimeterSD
@@ -58,7 +58,6 @@ static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDe
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD, DD4hep::Simulation::create_simple_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MiddleStepTrackerSD, DD4hep::Simulation::create_middle_step_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD, DD4hep::Simulation::create_simple_calorimeter_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSDWithBirksLaw,
-                                         DD4hep::Simulation::create_simple_calorimeter_sd_with_briks_law)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(BirksLawCalorimeterSD, DD4hep::Simulation::create_birks_law_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD, DD4hep::Simulation::create_aggregate_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GflashCalorimeterSD, DD4hep::Simulation::create_gflash_calorimeter_sd)
