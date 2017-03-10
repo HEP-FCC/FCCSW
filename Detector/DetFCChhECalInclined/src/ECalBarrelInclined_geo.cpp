@@ -132,7 +132,35 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   lLog << MSG::DEBUG << "thickness of calorimeter (cm) = " << dR << " length of passive or readout planes (cm) =  "
        << plane_length << endmsg;
   DD4hep::Geometry::Box passive_shape(passive_thickness / 2., calo_dim.dz(), plane_length / 2.);
-  DD4hep::Geometry::Volume passive_vol("passive", passive_shape, aLcdd.material(passive_inner_mat));
+  DD4hep::Geometry::Box passive_inner_shape(passive_inner_thickness / 2., calo_dim.dz(), plane_length / 2.);
+  DD4hep::Geometry::Box passive_outer_shape(passive_outer_thickness / 4., calo_dim.dz(), plane_length / 2.);
+  DD4hep::Geometry::Box passive_glue_shape(passive_glue_thickness / 4., calo_dim.dz(), plane_length / 2.);
+  DD4hep::Geometry::Volume passive_inner_vol(passive_inner_mat+"_passive", passive_inner_shape,
+    aLcdd.material(passive_inner_mat));
+  DD4hep::Geometry::Volume passive_outer_vol(passive_outer_mat+"_passive", passive_outer_shape,
+    aLcdd.material(passive_outer_mat));
+  DD4hep::Geometry::Volume passive_glue_vol(passive_glue_mat+"_passive", passive_glue_shape,
+    aLcdd.material(passive_glue_mat));
+  // passive volume consists of inner part and two outer, joind by glue
+  DD4hep::Geometry::Volume passive_vol("passive", passive_shape, aLcdd.material("Air"));
+  DD4hep::Geometry::PlacedVolume passive_inner_physvol = passive_vol.placeVolume(passive_inner_vol,
+    DD4hep::Geometry::Position(0, 0, 0));
+  DD4hep::Geometry::PlacedVolume passive_outer_physvol_below = passive_vol.placeVolume(passive_outer_vol,
+    DD4hep::Geometry::Position(passive_inner_thickness / 2. + passive_glue_thickness / 2. + passive_outer_thickness / 4., 0, 0));
+  DD4hep::Geometry::PlacedVolume passive_outer_physvol_above = passive_vol.placeVolume(passive_outer_vol,
+    DD4hep::Geometry::Position(- passive_inner_thickness / 2. - passive_glue_thickness / 2. - passive_outer_thickness / 4., 0, 0));
+  DD4hep::Geometry::PlacedVolume passive_glue_physvol_below = passive_vol.placeVolume(passive_glue_vol,
+    DD4hep::Geometry::Position(- passive_inner_thickness / 2. - passive_glue_thickness / 4., 0, 0));
+  DD4hep::Geometry::PlacedVolume passive_glue_physvol_above = passive_vol.placeVolume(passive_glue_vol,
+    DD4hep::Geometry::Position( passive_inner_thickness / 2. + passive_glue_thickness / 4., 0, 0));
+  passive_outer_vol.setSensitiveDetector(aSensDet);
+  passive_inner_vol.setSensitiveDetector(aSensDet);
+  passive_glue_vol.setSensitiveDetector(aSensDet);
+  passive_inner_physvol.addPhysVolID("sub",2);
+  passive_outer_physvol_below.addPhysVolID("sub",1);
+  passive_outer_physvol_above.addPhysVolID("sub",3);
+  passive_glue_physvol_below.addPhysVolID("sub",4);
+  passive_glue_physvol_above.addPhysVolID("sub",5);
 
   //////////////////////////////
   // READOUT PLANES

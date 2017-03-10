@@ -46,7 +46,7 @@
   <readouts>
     <readout name="ECalHitsPhiEta">
       <segmentation type="GridPhiEta" grid_size_eta="2" phi_bins="1"/>
-      <id>system:4,row:13,cell:7,eta:-2,phi:-1,readout:13,passive:12,sub:3,part:2</id>
+      <id>system:4,row:13,eta:-2,phi:-1,readout:13,passive:13,sub:3,part:2</id>
     </readout>
   </readouts>
 
@@ -59,7 +59,7 @@
 	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
       </cryostat>
       <calorimeter name="EM_barrel">
-	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-20/180*pi"/>
+	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-30/180*pi"/>
 	     <active thickness="LAr_thickness">
           <material name="LAr"/>
           <overlap offset="0.5"/>
