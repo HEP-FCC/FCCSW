@@ -33,7 +33,7 @@ Stat:showPartonLevel = off         ! additional statistics on MPI
 
 ! 4) Read-in Les Houches Event file - alternative beam and process selection.
 Beams:frameType = 4                      ! read info from a LHEF
-Beams:LHEF = /afs/cern.ch/user/s/selvaggi/public/tutorialFCC/pp_h_4l.lhe
+Beams:LHEF = /eos/project/f/fccsw-web/testsamples/pp_h_4l.lhe
 
 ! 5) Other settings. Can be expanded as desired.
 ! Note: may overwrite some of the values above, so watch out.
