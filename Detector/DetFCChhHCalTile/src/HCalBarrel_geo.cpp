@@ -124,8 +124,8 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
       double dx2 = tn * rmaxLayer - spacing;
       double rMiddle = (rminLayer - sensitiveBarrelRmin) + 0.5 * sequenceDimensions.dr() - dzModule;
 
-      Volume subWedgeVolume(layerName, DD4hep::Geometry::Trapezoid(dx1, dx2, dy0, dy0, dz0), lcdd.material("Air"));
-      subWedgeVolume.setVisAttributes(lcdd.invisible());
+      Volume layerVolume("layerVolume", DD4hep::Geometry::Trapezoid(dx1, dx2, dy0, dy0, dz0), lcdd.material("Air"));
+      layerVolume.setVisAttributes(lcdd.invisible());
       unsigned int idxSubMod = 0;
       unsigned int idxActMod = 0;
       double modCompZOffset = -sequenceDimensions.dz() * 0.5;
@@ -144,11 +144,11 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
         DetElement compDet(layerDet, compName, idxSubMod);
         // added * 0.5 for Trapezoid
         double dyComp = xComp.thickness() * 0.5;
-        Volume modCompVol(subModuleName, DD4hep::Geometry::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+        Volume modCompVol("modCompVolume", DD4hep::Geometry::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                           lcdd.material(xComp.materialStr()));
         modCompVol.setVisAttributes(lcdd, xComp.visStr());
         DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);
-        PlacedVolume placedModCompVol = subWedgeVolume.placeVolume(modCompVol, offset);
+        PlacedVolume placedModCompVol = layerVolume.placeVolume(modCompVol, offset);
 
         if (xComp.isSensitive()) {
           modCompVol.setSensitiveDetector(sensDet);
@@ -162,7 +162,7 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
       if ((rMiddle + 0.5 * sequenceDimensions.dr()) > dzModule) {
         lLog << MSG::WARNING << "something's wrong with the positions in rho!" << endmsg;
       }
-      PlacedVolume placedModuleVol = wedgeVolume.placeVolume(subWedgeVolume, modOffset);
+      PlacedVolume placedModuleVol = wedgeVolume.placeVolume(layerVolume, modOffset);
       placedModuleVol.addPhysVolID("layer", idxLayer);
       layerDet.setPlacement(placedModuleVol);
     }

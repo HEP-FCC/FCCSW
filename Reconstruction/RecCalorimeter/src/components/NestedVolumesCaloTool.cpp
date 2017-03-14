@@ -55,6 +55,10 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
   for (const auto& volName : m_activeVolumeName) {
     numVolumes.push_back(det::utils::countPlacedVolumes(highestVol, volName));
     info() << "Number of active volumes named " << volName << " is " << numVolumes.back() << endmsg;
+    if (numVolumes.back() == 0){
+      error() << "Volume name " << volName << " not found! Check naming in detector description." << endmsg;
+      return StatusCode::FAILURE;
+    }
   }
   // First sort to figure out which volume is inside which one
   std::vector<std::pair<std::string, int>> numVolumesMap;

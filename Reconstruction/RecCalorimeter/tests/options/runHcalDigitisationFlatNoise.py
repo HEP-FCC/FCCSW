@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent   = FCCDataSvc("EventDataSvc", input="output_hcalSim_e50GeV_eta0_10events.root")
+podioevent   = FCCDataSvc("EventDataSvc", input="output_hcalSim_e50GeV_eta036_10events.root")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
@@ -17,9 +17,9 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 # readout name
 hcalReadoutName = "BarHCal_Readout"
 # active material identifier name
-hcalIdentifierName = ["layer", "wedge","row","sub_module"]
+hcalIdentifierName = ["module", "row", "layer", "tile"]
 # active material volume name
-hcalVolumeName = ["layer", "wedge","subWedge", "module_component"]
+hcalVolumeName = ["moduleVolume", "wedgeVolume", "layerVolume", "modCompVolume"]
 # ECAL bitfield names & values
 hcalFieldNames=["system"]
 hcalFieldValues=[8]
