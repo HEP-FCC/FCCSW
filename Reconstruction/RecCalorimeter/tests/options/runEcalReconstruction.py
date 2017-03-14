@@ -45,7 +45,8 @@ mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
+noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
+    noiseFileName="/eos/project/f/fccsw-web/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   readoutName=ecalReadoutName,
                                   activeVolumeName = ecalVolumeName,
