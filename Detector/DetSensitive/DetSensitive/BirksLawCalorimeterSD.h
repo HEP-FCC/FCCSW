@@ -9,14 +9,14 @@
 #include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
 
-/** SimpleCalorimeterSDWithBirksLaw DetectorDescription/DetSensitive/src/SimpleCalorimeterSDWithBirksLaw.h SimpleCalorimeterSDWithBirksLaw.h
+/** BirksLawCalorimeterSD DetectorDescription/DetSensitive/src/BirksLawCalorimeterSD.h BirksLawCalorimeterSD.h
  *
  *  Sensitive detector for calorimeters, using Polystyrene.
  *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
  *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
  *  New hit is created for each energy deposit.
  *  No timing information is saved.
- *  Birks law reduces the energy deposited in the scintillator
+ *  Birks law reduces the energy deposited in the scintillator.
  *  @author    Coralie Neubueser
  */
 
@@ -42,6 +42,10 @@ public:
   /** Process hit once the particle hit the sensitive volume.
    *  Checks if the energy deposit is larger than 0, calculates the position and cellID,
    *  saves that into the hit collection.
+   *  The energy deposit is reduced following the Birks law, that is an empirical formula 
+   *  for the light yield per path length as a function of the energy loss per path length 
+   *  of a particle traversing the scintillator. With th assumption that kB is 0.126 mm/MeV 
+   *  for polystyrene-based scintillators.
    *  New hit is created for each energy deposit.
    *  @param aStep Step in which particle deposited the energy.
    */
