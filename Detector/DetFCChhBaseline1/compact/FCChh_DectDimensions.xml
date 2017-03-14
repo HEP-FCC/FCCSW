@@ -74,7 +74,7 @@
     <!-- HCal Barrel (HCAL B) -->
     <constant name="BarHCal_id" value="8"/>
     <constant name="BarHCal_rmin" value="2850*mm"/>
-    <constant name="BarHCal_rmax" value="4850*mm"/>
+    <constant name="BarHCal_rmax" value="4890*mm"/>
     <constant name="BarHCal_dz" value="4600*mm"/>
     <!-- Extended barrel (EM EB id 6 + HEC id 7)-->
     <constant name="ExtBarCal_id" value="6"/>
@@ -87,9 +87,9 @@
     <!-- HCal extended barrel (HCAL EB) -->
     <constant name="ExtBarHCal_id" value="9"/>
     <constant name="ExtBarHCal_rmin1" value="3500*mm"/>
-    <constant name="ExtBarHCal_rmax1" value="4550*mm"/>
+    <constant name="ExtBarHCal_rmax1" value="4590*mm"/>
     <constant name="ExtBarHCal_rmin2" value="2850*mm"/>
-    <constant name="ExtBarHCal_rmax2" value="4550*mm"/>
+    <constant name="ExtBarHCal_rmax2" value="4590*mm"/>
     <constant name="ExtBarHCal_dz1" value="150*mm"/>
     <constant name="ExtBarHCal_zOffset1" value="5000*mm + ExtBarHCal_dz1"/>
     <constant name="ExtBarHCal_dz2" value="1350*mm"/>
