@@ -57,9 +57,9 @@ private:
   /// Segmentation of the detector used to retrieve the cell Ids
   DD4hep::Geometry::Segmentation m_seg;
   // Variables needed for the calculation of birks law
-  const G4String myMaterial;
-  const double birk1;
-  const double birk2;
+  const std::string m_material;
+  const double m_birk1;
+  const double m_birk2;
 };
 }
 
