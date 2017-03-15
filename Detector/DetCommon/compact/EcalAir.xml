@@ -36,11 +36,11 @@
     <!-- Forward detectors (ECAL + HCAL) -->
     <detector name="ECalEnvelopeFwdPos" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
         <comment>Envelope for forward ECal positive</comment>
-        <dimensions rmin="FwdCal_rmin" rmax="FwdECal_rmax" dz="FwdCal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="FwdCal_zOffset+EcalSpacer" material="Air"/>
+        <dimensions rmin="FwdCal_rmin1" rmax="FwdECal_rmax1" dz="FwdCal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="FwdCal_zOffset+EcalSpacer" material="Air"/>
     </detector>
     <detector name="ECalEnvelopeFwdNeg" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
         <comment>Envelope for forward ECal positive</comment>
-        <dimensions rmin="FwdCal_rmin" rmax="FwdCal_rmax" dz="FwdCal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="-FwdCal_zOffset-EcalSpacer" material="Air"/>
+        <dimensions rmin="FwdCal_rmin1" rmax="FwdCal_rmax1" dz="FwdCal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="-FwdCal_zOffset-EcalSpacer" material="Air"/>
     </detector>
   </detectors>
 </lccdd>
