@@ -76,8 +76,9 @@
     <constant name="BarHCal_rmin" value="2850*mm"/>
     <constant name="BarHCal_rmax" value="4890*mm"/>
     <constant name="BarHCal_dz" value="4600*mm"/>
-    <!-- Extended barrel (EM EB id 6 + HEC id 7)-->
-    <constant name="ExtBarCal_id" value="6"/>
+    <!-- Extended barrel (EM EB + HEC)-->
+    <constant name="ExtBarECal_id" value="6"/>
+    <constant name="HadronicEndCap_id" value="7"/>
     <constant name="ExtBarCal_rmin1" value="776*mm"/>
     <constant name="ExtBarCal_rmax1" value="2700*mm"/>
     <constant name="ExtBarCal_rmin2" value="1272*mm"/>
@@ -94,8 +95,9 @@
     <constant name="ExtBarHCal_zOffset1" value="5000*mm + ExtBarHCal_dz1"/>
     <constant name="ExtBarHCal_dz2" value="1350*mm"/>
     <constant name="ExtBarHCal_zOffset2" value="5300*mm + ExtBarHCal_dz2"/>
-    <!-- Forward calorimeters (EFCAL id 10 + HFCAL id 11) -->
-    <constant name="FwdCal_id" value="10"/>
+    <!-- Forward calorimeters (EFCAL + HFCAL) -->
+    <constant name="FwdECal_id" value="10"/>
+    <constant name="FwdHCal_id" value="11"/>
     <constant name="FwdCap_rmin1" value="49.6*mm"/>
     <constant name="FwdCal_rmax1" value="3600*mm"/>
     <constant name="FwdCal_rmin2" value="58.6*mm"/>
