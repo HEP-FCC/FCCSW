@@ -57,13 +57,15 @@
     <!-- not explicitly defined, up to tracker design -->
     <!-- Tracker Forward -->
     <constant name="FwdTracker_id" value="4"/>
-    <constant name="FwdTracker_rmin1" value="60*mm"/>
-    <constant name="FwdTracker_rmax1" value="3500*mm"/>
-    <constant name="FwdTracker_z1" value="2500*mm"/>
-    <constant name="FwdTracker_rmin2" value="2000*mm"/>
-    <constant name="FwdTracker_rmax2" value="3505*mm"/>
-    <constant name="FwdTracker_z2" value="2000*mm"/>
-    <constant name="FwdTracker_zOffset" value="14000*mm"/>
+    <!-- single layer close to ExCal -->
+    <constant name="FwdTracker_rmin1" value="40*mm"/>
+    <constant name="FwdTracker_rmax1" value="1173*mm"/>
+    <constant name="FwdTracker_zOffset1" value="7500*mm"/>
+    <!-- the rest of the tracking layers inside the forward solenoid / shielding -->
+    <constant name="FwdTracker_rmin2" value="60*mm"/>
+    <constant name="FwdTracker_rmax2" value="1556*mm"/>
+    <constant name="FwdTracker_z2" value="3000*mm"/>
+    <constant name="FwdTracker_zOffset2" value="13000*mm"/>
 
     <!-- CALORIMETER DIMENSIONS -->
     <!-- ECal Barrel (EM B) -->
