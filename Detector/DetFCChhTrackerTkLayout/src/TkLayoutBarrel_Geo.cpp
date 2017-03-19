@@ -32,7 +32,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   Acts::ActsExtension* detWorldExt = new Acts::ActsExtension(volConfig);
   topDetElement.addExtension<Acts::IActsExtension>(detWorldExt);
   DD4hep::Geometry::Tube topVolumeShape(
-      dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
+      dimensions.rmin(), dimensions.rmax() + 0.0001, (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
   topVolume.setVisAttributes(lcdd.invisible());
 
@@ -51,7 +51,8 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     DD4hep::XML::Component xModulesEven = xRodEven.child("modules");
     DD4hep::XML::Component xModulePropertiesOdd = xRodOdd.child("moduleProperties");
     DD4hep::XML::Component xModulesOdd = xRodOdd.child("modules");
-    DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax(), dimensions.zmax());
+    double l_overlapMargin = 0.0001;
+    DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax() + l_overlapMargin, dimensions.zmax());
     Volume layerVolume("layer", layerShape, lcdd.material("Air"));
     layerVolume.setVisAttributes(lcdd.invisible());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
