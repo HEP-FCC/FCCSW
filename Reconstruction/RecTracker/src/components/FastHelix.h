@@ -26,23 +26,23 @@
 class FastHelix {
 public:
   FastHelix(const GlobalPoint& oHit, const GlobalPoint& mHit, const GlobalPoint& aVertex, double nomField)
-      : theCircle(oHit, mHit, aVertex) {
-    tesla0 = 0.1 * nomField;
-    maxRho = maxPt / (0.01 * 0.3 * tesla0);
-    useBasisVertex = false;
+      : m_theCircle(oHit, mHit, aVertex) {
+    m_tesla0 = 0.1 * nomField;
+    m_maxRho = maxPt / (0.01 * 0.3 * m_tesla0);
+    m_useBasisVertex = false;
     compute();
   }
 
-  bool isValid() const { return theCircle.isValid(); }
+  bool isValid() const { return m_theCircle.isValid(); }
 
-  const FastCircle& circle() const { return theCircle; }
+  const FastCircle& circle() const { return m_theCircle; }
 
-  const GlobalPoint& getPt() const { return pt_; }
+  const GlobalPoint& getPt() const { return m_pt; }
 
 private:
-  GlobalPoint const& outerHit() const { return theCircle.outerPoint(); }
-  GlobalPoint const& middleHit() const { return theCircle.innerPoint(); }
-  GlobalPoint const& vertex() const { return theCircle.vertexPoint(); }
+  GlobalPoint const& outerHit() const { return m_theCircle.outerPoint(); }
+  GlobalPoint const& middleHit() const { return m_theCircle.innerPoint(); }
+  GlobalPoint const& vertex() const { return m_theCircle.vertexPoint(); }
 
   void compute();
   void helixStateAtVertex();
@@ -50,18 +50,18 @@ private:
 
   static constexpr float maxPt = 10000;  // 10Tev
 
-  GlobalPoint pt_;
+  GlobalPoint m_pt;
 
-  GlobalPoint basisVertex;
-  FastCircle theCircle;
-  float tesla0;
-  float maxRho;
-  bool useBasisVertex;
-  typedef int TrackCharge;
+  GlobalPoint m_basisVertex;
+  FastCircle m_theCircle;
+  float m_tesla0;
+  float m_maxRho;
+  bool m_useBasisVertex;
+  typedef int t_trackCharge;
 };
 
 void FastHelix::compute() {
-  if (isValid() && (std::abs(tesla0) > 1e-3) && theCircle.rho() < maxRho) {
+  if (isValid() && (std::abs(m_tesla0) > 1e-3) && m_theCircle.rho() < m_maxRho) {
     helixStateAtVertex();
   } else {
     straightLineStateAtVertex();
@@ -70,21 +70,21 @@ void FastHelix::compute() {
 
 void FastHelix::helixStateAtVertex() {
   // given the above rho>0.
-  double rho = theCircle.rho();
+  double rho = m_theCircle.rho();
   // remember (radius rho in cm):
   // rho =
   // 100. * pt *
   //(10./(3.*MagneticField::inTesla(GlobalPoint(0., 0., 0.)).z()));
   // pt = 0.01 * rho * (0.3*MagneticField::inTesla(GlobalPoint(0.,0.,0.)).z());
 
-  double cm2GeV = 0.01 * 0.3 * tesla0;
+  double cm2GeV = 0.01 * 0.3 * m_tesla0;
   double pt = cm2GeV * rho;
 
   // verify that rho is not too large
   // first calculate cos phi (where phi is angle between outer and middle hit)
   // by taking scalar product and
-  double dcphi = ((outerHit().x() - theCircle.x0()) * (middleHit().x() - theCircle.x0()) +
-                  (outerHit().y() - theCircle.y0()) * (middleHit().y() - theCircle.y0())) /
+  double dcphi = ((outerHit().x() - m_theCircle.x0()) * (middleHit().x() - m_theCircle.x0()) +
+                  (outerHit().y() - m_theCircle.y0()) * (middleHit().y() - m_theCircle.y0())) /
       (rho * rho);
 
   // if the scalar product is one, the points do not lie on a circle
@@ -94,8 +94,8 @@ void FastHelix::helixStateAtVertex() {
   }
 
   // tangent in v (or the opposite...)
-  double px = -cm2GeV * (vertex().y() - theCircle.y0());
-  double py = cm2GeV * (vertex().x() - theCircle.x0());
+  double px = -cm2GeV * (vertex().y() - m_theCircle.y0());
+  double py = cm2GeV * (vertex().x() - m_theCircle.x0());
   // check sign with scalar product
   if (px * (middleHit().x() - vertex().x()) + py * (middleHit().y() - vertex().y()) < 0.) {
     px = -px;
@@ -111,9 +111,9 @@ void FastHelix::helixStateAtVertex() {
   double dzdrphi = (outerHit().z() - middleHit().z()) / (rho * acos(dcphi));
   double pz = pt * dzdrphi;
 
-  pt_[0] = px;
-  pt_[1] = py;
-  pt_[2] = pz;
+  m_pt[0] = px;
+  m_pt[1] = py;
+  m_pt[2] = pz;
 }
 
 void FastHelix::straightLineStateAtVertex() {
@@ -121,11 +121,11 @@ void FastHelix::straightLineStateAtVertex() {
   double dydx = 0.;
   double pt = 0., px = 0., py = 0.;
 
-  if (fabs(theCircle.n1()) > 0. || fabs(theCircle.n2()) > 0.) {
+  if (fabs(m_theCircle.n1()) > 0. || fabs(m_theCircle.n2()) > 0.) {
     pt = maxPt;  // 10 TeV //else no pt
   }
-  if (fabs(theCircle.n2()) > 0.) {
-    dydx = -theCircle.n1() / theCircle.n2();  // else px = 0
+  if (fabs(m_theCircle.n2()) > 0.) {
+    dydx = -m_theCircle.n1() / m_theCircle.n2();  // else px = 0
   }
   px = pt / sqrt(1. + dydx * dydx);
   py = px * dydx;
@@ -147,9 +147,9 @@ void FastHelix::straightLineStateAtVertex() {
   double dzdr = -flfit.n1() / flfit.n2();
   double pz = pt * dzdr;
 
-  pt_[0] = px;
-  pt_[1] = py;
-  pt_[2] = pz;
+  m_pt[0] = px;
+  m_pt[1] = py;
+  m_pt[2] = pz;
 }
 
 #endif

@@ -10,30 +10,30 @@
 /// Adapted from CMSSW via https://github.com/JuantAldea/FastFitters
 class GlobalPoint {
 public:
-  GlobalPoint() : v{0, 0, 0} {}
+  GlobalPoint() : m_v{0, 0, 0} {}
 
-  GlobalPoint(float x, float y, float z) : v{x, y, z} {}
+  GlobalPoint(float x, float y, float z) : m_v{x, y, z} {}
 
-  GlobalPoint(const GlobalPoint& o) : v{o[0], o[1], o[2]} {}
+  GlobalPoint(const GlobalPoint& o) : m_v{o[0], o[1], o[2]} {}
 
-  float x() const { return v[0]; }
+  float x() const { return m_v[0]; }
 
-  float y() const { return v[1]; }
+  float y() const { return m_v[1]; }
 
-  float z() const { return v[2]; }
+  float z() const { return m_v[2]; }
 
-  float& operator[](const uint8_t index) { return v[index]; }
+  float& operator[](const uint8_t index) { return m_v[index]; }
 
   const float& operator[](const uint8_t index) const { return const_cast<GlobalPoint&>(*this)[index]; }
 
-  GlobalPoint operator-(const GlobalPoint& o) const { return GlobalPoint(v[0] - o[0], v[1] - o[1], v[2] - o[2]); }
+  GlobalPoint operator-(const GlobalPoint& o) const { return GlobalPoint(m_v[0] - o[0], m_v[1] - o[1], m_v[2] - o[2]); }
 
-  GlobalPoint operator+(const GlobalPoint& o) const { return GlobalPoint(v[0] + o[0], v[1] + o[1], v[2] + o[2]); }
+  GlobalPoint operator+(const GlobalPoint& o) const { return GlobalPoint(m_v[0] + o[0], m_v[1] + o[1], m_v[2] + o[2]); }
 
-  GlobalPoint operator*(const float scalar) const { return GlobalPoint(v[0] * scalar, v[1] * scalar, v[2] * scalar); }
+  GlobalPoint operator*(const float scalar) const { return GlobalPoint(m_v[0] * scalar, m_v[1] * scalar, m_v[2] * scalar); }
 
 private:
-  float v[3];
+  float m_v[3];
 };
 
 std::ostream& operator<<(std::ostream& os, const GlobalPoint& obj) {

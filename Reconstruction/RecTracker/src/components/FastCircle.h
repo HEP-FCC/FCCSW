@@ -101,65 +101,65 @@ class FastCircle {
 
 public:
   FastCircle(const GlobalPoint& outerHit, const GlobalPoint& middleHit, const GlobalPoint& aVertex, double norm = 128.)
-      : outerPoint_(outerHit),
-        innerPoint_(middleHit),
-        vertexPoint_(aVertex),
-        norm_(norm),
-        x0_(0.),
-        y0_(0.),
-        rho_(0.),
-        n1_(0.),
-        n2_(0.),
-        c_(0.),
-        fittingValid_(true) {
-    auto parameters = fastRiemannCircleFit(outerHit, middleHit, aVertex, float(norm_));
-    x0_ = std::get<0>(parameters);
-    y0_ = std::get<1>(parameters);
-    rho_ = std::get<2>(parameters);
-    n1_ = std::get<3>(parameters);
-    n2_ = std::get<4>(parameters);
-    c_ = std::get<5>(parameters);
-    fittingValid_ = std::get<6>(parameters);
+      : m_outerPoint(outerHit),
+        m_innerPoint(middleHit),
+        m_vertexPoint(aVertex),
+        m_norm(norm),
+        m_x0(0.),
+        m_y0(0.),
+        m_rho(0.),
+        m_n1(0.),
+        m_n2(0.),
+        m_c(0.),
+        m_fittingValid(true) {
+    auto parameters = fastRiemannCircleFit(outerHit, middleHit, aVertex, float(m_norm));
+    m_x0 = std::get<0>(parameters);
+    m_y0 = std::get<1>(parameters);
+    m_rho = std::get<2>(parameters);
+    m_n1 = std::get<3>(parameters);
+    m_n2 = std::get<4>(parameters);
+    m_c = std::get<5>(parameters);
+    m_fittingValid = std::get<6>(parameters);
   }
 
   // all returned values have dimensions of cm
   // parameters of the circle (circle is valid)
-  double x0() const { return x0_; }
+  double x0() const { return m_x0; }
 
-  double y0() const { return y0_; }
+  double y0() const { return m_y0; }
 
-  double rho() const { return rho_; }
+  double rho() const { return m_rho; }
 
-  bool isValid() const { return fittingValid_; }
+  bool isValid() const { return m_fittingValid; }
 
   // parameters of the straight line
   // (if circle is invalid only these are available)
-  double n1() const { return n1_; }
+  double n1() const { return m_n1; }
 
-  double n2() const { return n2_; }
+  double n2() const { return m_n2; }
 
-  double c() const { return c_; }
+  double c() const { return m_c; }
 
-  GlobalPoint const& outerPoint() const { return outerPoint_; }
-  GlobalPoint const& innerPoint() const { return innerPoint_; }
-  GlobalPoint const& vertexPoint() const { return vertexPoint_; }
+  GlobalPoint const& outerPoint() const { return m_outerPoint; }
+  GlobalPoint const& innerPoint() const { return m_innerPoint; }
+  GlobalPoint const& vertexPoint() const { return m_vertexPoint; }
 
 private:
-  GlobalPoint outerPoint_;
-  GlobalPoint innerPoint_;
-  GlobalPoint vertexPoint_;
+  GlobalPoint m_outerPoint;
+  GlobalPoint m_innerPoint;
+  GlobalPoint m_vertexPoint;
 
-  double norm_;
+  double m_norm;
 
-  double x0_;
-  double y0_;
-  double rho_;
+  double m_x0;
+  double m_y0;
+  double m_rho;
 
-  double n1_;
-  double n2_;
-  double c_;
+  double m_n1;
+  double m_n2;
+  double m_c;
 
-  bool fittingValid_;
+  bool m_fittingValid;
 };
 
 #endif

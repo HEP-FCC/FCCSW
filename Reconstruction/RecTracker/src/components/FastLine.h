@@ -57,41 +57,41 @@ class FastLine {
 
 public:
   FastLine(const GlobalPoint& outerHit, const GlobalPoint& innerHit)
-      : outerHit_(outerHit), innerHit_(innerHit), rho_(0.), n1_(0.), n2_(0.), c_(0.), fittingValid_(true) {
-    auto fit = FastLineFit(innerHit, outerHit, rho_);
-    n1_ = std::get<0>(fit);
-    n2_ = std::get<1>(fit);
-    c_ = std::get<2>(fit);
-    fittingValid_ = std::get<3>(fit);
+      : m_outerHit(outerHit), m_innerHit(innerHit), m_rho(0.), m_n1(0.), m_n2(0.), m_c(0.), m_fittingValid(true) {
+    auto fit = FastLineFit(innerHit, outerHit, m_rho);
+    m_n1 = std::get<0>(fit);
+    m_n2 = std::get<1>(fit);
+    m_c = std::get<2>(fit);
+    m_fittingValid = std::get<3>(fit);
   }
 
   FastLine(const GlobalPoint& outerHit, const GlobalPoint& innerHit, double rho)
-      : outerHit_(outerHit), innerHit_(innerHit), rho_(rho), n1_(0.), n2_(0.), c_(0.), fittingValid_(true) {
-    auto fit = FastLineFit(innerHit, outerHit, rho_);
-    n1_ = std::get<0>(fit);
-    n2_ = std::get<1>(fit);
-    c_ = std::get<2>(fit);
-    fittingValid_ = std::get<3>(fit);
+      : m_outerHit(outerHit), m_innerHit(innerHit), m_rho(rho), m_n1(0.), m_n2(0.), m_c(0.), m_fittingValid(true) {
+    auto fit = FastLineFit(innerHit, outerHit, m_rho);
+    m_n1 = std::get<0>(fit);
+    m_n2 = std::get<1>(fit);
+    m_c = std::get<2>(fit);
+    m_fittingValid = std::get<3>(fit);
   }
 
-  double n1() const { return n1_; }
+  double n1() const { return m_n1; }
 
-  double n2() const { return n2_; }
+  double n2() const { return m_n2; }
 
-  double c() const { return c_; }
+  double c() const { return m_c; }
 
-  bool isValid() const { return fittingValid_; }
+  bool isValid() const { return m_fittingValid; }
 
 private:
-  GlobalPoint outerHit_;
-  GlobalPoint innerHit_;
-  double rho_;
+  GlobalPoint m_outerHit;
+  GlobalPoint m_innerHit;
+  double m_rho;
 
-  double n1_;
-  double n2_;
-  double c_;
+  double m_n1;
+  double m_n2;
+  double m_c;
 
-  bool fittingValid_;
+  bool m_fittingValid;
 };
 
 #endif
