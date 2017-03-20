@@ -35,9 +35,9 @@ public:
   /// Destructor
   virtual ~TrkVolumeManagerSvc() {}
 
-  void dumpTrackingLayer(const Acts::Layer* layer);
+  void dumpTrackingLayer(std::shared_ptr<const Acts::Layer> layer);
 
-  void dumpTrackingVolume(const Acts::TrackingVolume* volume);
+  void dumpTrackingVolume(std::shared_ptr<const Acts::TrackingVolume> volume);
 
   const Acts::Surface* lookUpTrkSurface(const Identifier id);
 
