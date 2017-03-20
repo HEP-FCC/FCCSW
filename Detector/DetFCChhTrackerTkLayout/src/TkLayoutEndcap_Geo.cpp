@@ -82,8 +82,9 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
       unsigned int nPhi = xRing.attr<int>("nModules");
       double lX, lY, lZ;
       double phi = 0;
-      double phiTilt, thetaTilt;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
+        double phiTilt = 0;
+        double thetaTilt = 0;
         if (0 == phiIndex % 2) {
           // the rotation for the odd module is already taken care
           // of by the position in tklayout xml
