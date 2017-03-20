@@ -165,7 +165,7 @@ StatusCode TrackFit::execute() {
   auto exEngine = initExtrapolator(m_trkGeo);
   exEngine->extrapolate(exCell);
 
-  debug() << "got " << exCell.extrapolationSteps.size() << " extrapolation steps" << endmsg;
+  info() << "got " << exCell.extrapolationSteps.size() << " extrapolation steps" << endmsg;
 
   std::vector<FitMeas_t> vMeasurements;
   vMeasurements.reserve(exCell.extrapolationSteps.size());
@@ -194,13 +194,13 @@ StatusCode TrackFit::execute() {
     ++id;
   }
 
-  debug() << "created " << vMeasurements.size() << " pseudo-measurements" << endmsg;
+  info() << "created " << vMeasurements.size() << " pseudo-measurements" << endmsg;
   for (const auto& m : vMeasurements)
-    info() << m << endmsg;
+    debug() << m << endmsg;
 
-  debug() << "created " << fccMeasurements.size() << " fcc-measurements" << endmsg;
+  info() << "created " << fccMeasurements.size() << " fcc-measurements" << endmsg;
   for (const auto& m : fccMeasurements)
-    info() << m << endmsg;
+    debug() << m << endmsg;
 
   KalmanFitter<MyExtrapolator, CacheGenerator, NoCalibration, GainMatrixUpdator> KF;
   KF.m_oCacheGenerator = CacheGenerator();
