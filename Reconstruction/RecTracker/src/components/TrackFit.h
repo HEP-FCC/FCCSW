@@ -13,7 +13,6 @@ class ITrackingGeoSvc;
 class ITrkVolumeManagerSvc;
 class ITrackSeedingTool;
 
-
 namespace Acts {
 class TrackingGeometry;
 }
@@ -23,30 +22,6 @@ class TrackHitCollection;
 class PositionedTrackHitCollection;
 }
 
-class TrackFit : public GaudiAlgorithm {
-public:
-  TrackFit(const std::string& name, ISvcLocator* svcLoc);
-
-  ~TrackFit();
-
-  StatusCode initialize();
-
-  StatusCode execute();
-
-  StatusCode finalize();
-
-private:
-  /// Pointer to the geometry service
-  SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
-  SmartIF<ITrkVolumeManagerSvc> m_trkVolMan;
-  SmartIF<IGeoSvc> m_geoSvc;
-
-  ToolHandle<ITrackSeedingTool> m_trackSeedingTool;
-
-  std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
-
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
-};
 
 
 typedef Acts::FittableMeasurement<long int> FitMeas_t;
@@ -139,4 +114,31 @@ std::shared_ptr<Acts::IExtrapolationEngine> initExtrapolator(const std::shared_p
   return exEngine;
 }
 
+class TrackFit : public GaudiAlgorithm {
+public:
+  TrackFit(const std::string& name, ISvcLocator* svcLoc);
+
+  ~TrackFit();
+
+  StatusCode initialize();
+
+  StatusCode execute();
+
+  StatusCode finalize();
+
+private:
+  /// Pointer to the geometry service
+  SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
+  SmartIF<ITrkVolumeManagerSvc> m_trkVolMan;
+  SmartIF<IGeoSvc> m_geoSvc;
+
+  ToolHandle<ITrackSeedingTool> m_trackSeedingTool;
+
+  std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
+  std::shared_ptr<Acts::IExtrapolationEngine> m_exEngine;
+
+  Acts::KalmanFitter<MyExtrapolator, CacheGenerator, NoCalibration, Acts::GainMatrixUpdator> m_KF;
+
+  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
+};
 #endif /* RECTRACKER_TRACKFIT_H */

@@ -77,6 +77,13 @@ StatusCode TrackFit::initialize() {
   }
 
   m_trkGeo = m_trkGeoSvc->trackingGeometry();
+  m_exEngine = initExtrapolator(m_trkGeo);
+
+  m_KF.m_oCacheGenerator = CacheGenerator();
+  m_KF.m_oCalibrator = NoCalibration();
+  m_KF.m_oExtrapolator = MyExtrapolator(m_exEngine);
+  m_KF.m_oUpdator = GainMatrixUpdator();
+
   return sc;
 }
 
@@ -163,8 +170,7 @@ StatusCode TrackFit::execute() {
   exCell.addConfigurationMode(ExtrapolationMode::CollectPassive);
   exCell.addConfigurationMode(ExtrapolationMode::StopAtBoundary);
 
-  auto exEngine = initExtrapolator(m_trkGeo);
-  exEngine->extrapolate(exCell);
+  m_exEngine->extrapolate(exCell);
 
   info() << "got " << exCell.extrapolationSteps.size() << " extrapolation steps" << endmsg;
 
@@ -203,13 +209,8 @@ StatusCode TrackFit::execute() {
   for (const auto& m : fccMeasurements)
     debug() << m << endmsg;
 
-  KalmanFitter<MyExtrapolator, CacheGenerator, NoCalibration, GainMatrixUpdator> KF;
-  KF.m_oCacheGenerator = CacheGenerator();
-  KF.m_oCalibrator = NoCalibration();
-  KF.m_oExtrapolator = MyExtrapolator(exEngine);
-  KF.m_oUpdator = GainMatrixUpdator();
 
-  auto track = KF.fit(fccMeasurements, std::make_unique<BoundParameters>(*startTP));
+  auto track = m_KF.fit(fccMeasurements, std::make_unique<BoundParameters>(*startTP));
 
   // dump track
   for (const auto& p : track) {
