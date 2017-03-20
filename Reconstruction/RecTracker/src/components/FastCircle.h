@@ -7,6 +7,7 @@
 #include "GlobalPoint.h"
 
 /**
+ *  Adapted from CMSSW via  https://github.com/JuantAldea/FastFitters
  *  Calculate circle parameters (x0, y0, rho) for a circle:
  *  (x-x0)^2 + (y-y0)^2 = rho^2
  *  in Global Cartesian Coordinates in the (x,y) plane for a given set of

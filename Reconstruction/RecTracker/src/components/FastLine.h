@@ -7,6 +7,7 @@
 #include "GlobalPoint.h"
 
 /**
+ * Adapted from CMSSW via https://github.com/JuantAldea/FastFitters
  *  Calculate the Line parameters (n1, n2, c) of a Line in Rho*Phi-Z.
  *
  *  A Line is defined by n1 * x + n2 * y + c = 0. (== n1 * RHOPHI + n2 * Z + c)

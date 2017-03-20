@@ -5,6 +5,9 @@
 #include <cinttypes>
 #include <iostream>
 
+
+
+/// Adapted from CMSSW via https://github.com/JuantAldea/FastFitters
 class GlobalPoint {
 public:
   GlobalPoint() : v{0, 0, 0} {}

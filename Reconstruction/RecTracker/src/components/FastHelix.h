@@ -7,6 +7,7 @@
 #include <iostream>
 
 /**
+ *  Adapted from CMSSW via https://github.com/JuantAldea/FastFitters
  *  Generation of track parameters at a vertex using two hits and a vertex.
  *  It is used e.g. by a seed generator.
  *
