@@ -31,8 +31,9 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   volConfig.isBarrel = true;
   Acts::ActsExtension* detWorldExt = new Acts::ActsExtension(volConfig);
   topDetElement.addExtension<Acts::IActsExtension>(detWorldExt);
+  double l_overlapMargin = 0.0001;
   DD4hep::Geometry::Tube topVolumeShape(
-      dimensions.rmin(), dimensions.rmax() + 0.0001, (dimensions.zmax() - dimensions.zmin()) * 0.5);
+      dimensions.rmin(), dimensions.rmax() + l_overlapMargin, (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
   topVolume.setVisAttributes(lcdd.invisible());
 
