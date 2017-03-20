@@ -42,6 +42,7 @@
 
 #include "ACTSLogger.h"
 
+using namespace Acts;
 
 
 DECLARE_ALGORITHM_FACTORY(TrackFit)

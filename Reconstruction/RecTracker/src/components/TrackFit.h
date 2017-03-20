@@ -48,15 +48,14 @@ private:
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
 };
 
-using namespace Acts;
 
-typedef FittableMeasurement<long int> FitMeas_t;
-template <ParID_t... pars>
-using Meas_t = Measurement<long int, pars...>;
+typedef Acts::FittableMeasurement<long int> FitMeas_t;
+template <Acts::ParID_t... pars>
+using Meas_t = Acts::Measurement<long int, pars...>;
 
 struct MyCache {
-  std::unique_ptr<const KF::Step<long int>::JacobianMatrix> jacobian;
-  std::unique_ptr<const BoundParameters> parameters;
+  std::unique_ptr<const Acts::KF::Step<long int>::JacobianMatrix> jacobian;
+  std::unique_ptr<const Acts::BoundParameters> parameters;
 
   MyCache() = default;
   MyCache(const MyCache&) = delete;
@@ -65,40 +64,40 @@ struct MyCache {
 
 class MyExtrapolator {
 public:
-  MyExtrapolator(std::shared_ptr<const IExtrapolationEngine> exEngine = nullptr) : m_exEngine(std::move(exEngine)) {}
+  MyExtrapolator(std::shared_ptr<const Acts::IExtrapolationEngine> exEngine = nullptr) : m_exEngine(std::move(exEngine)) {}
 
-  MyCache operator()(const FitMeas_t& m, const TrackParameters& tp) const {
-    auto exCell = std::make_unique<ExtrapolationCell<TrackParameters>>(tp);
+  MyCache operator()(const FitMeas_t& m, const Acts::TrackParameters& tp) const {
+    auto exCell = std::make_unique<Acts::ExtrapolationCell<Acts::TrackParameters>>(tp);
     //exCell->addConfigurationMode(ExtrapolationMode::Destination);
-    exCell->addConfigurationMode(ExtrapolationMode::FATRAS);
-    exCell->addConfigurationMode(ExtrapolationMode::CollectJacobians);
-    const Surface& sf = getSurface(m);
+    exCell->addConfigurationMode(Acts::ExtrapolationMode::FATRAS);
+    exCell->addConfigurationMode(Acts::ExtrapolationMode::CollectJacobians);
+    const Acts::Surface& sf = getSurface(m);
 
     m_exEngine->extrapolate(*exCell, &sf);
     MyCache c;
     auto j = exCell->extrapolationSteps.back().transportJacobian.release();
-    c.jacobian.reset(new KF::Step<long int>::JacobianMatrix(*j));
-    auto pars = static_cast<const BoundParameters*>(exCell->leadParameters->clone());
+    c.jacobian.reset(new Acts::KF::Step<long int>::JacobianMatrix(*j));
+    auto pars = static_cast<const Acts::BoundParameters*>(exCell->leadParameters->clone());
     c.parameters.reset(pars);
 
     return c;
   }
 
 private:
-  std::shared_ptr<const IExtrapolationEngine> m_exEngine;
+  std::shared_ptr<const Acts::IExtrapolationEngine> m_exEngine;
 };
 
 class NoCalibration {
 public:
-  std::unique_ptr<const FitMeas_t> operator()(const FitMeas_t& m, const BoundParameters&) const {
+  std::unique_ptr<const FitMeas_t> operator()(const FitMeas_t& m, const Acts::BoundParameters&) const {
     return std::make_unique<const FitMeas_t>(m);
   }
 };
 
 class CacheGenerator {
 public:
-  std::unique_ptr<KF::Step<long int>> operator()(MyCache m) const {
-    auto step = std::make_unique<KF::Step<long int>>();
+  std::unique_ptr<Acts::KF::Step<long int>> operator()(MyCache m) const {
+    auto step = std::make_unique<Acts::KF::Step<long int>>();
     step->setPredictedState(std::move(m.parameters));
     step->setJacobian(std::move(m.jacobian));
 
@@ -106,33 +105,33 @@ public:
   }
 };
 
-std::shared_ptr<IExtrapolationEngine> initExtrapolator(const std::shared_ptr<const TrackingGeometry>& geo) {
-  auto propConfig = RungeKuttaEngine<>::Config();
+std::shared_ptr<Acts::IExtrapolationEngine> initExtrapolator(const std::shared_ptr<const Acts::TrackingGeometry>& geo) {
+  auto propConfig = Acts::RungeKuttaEngine<>::Config();
   /// @todo: use magnetic field service
-  propConfig.fieldService = std::make_shared<ConstantBField>(0, 0, 0.002);
-  auto propEngine = std::make_shared<RungeKuttaEngine<>>(propConfig);
+  propConfig.fieldService = std::make_shared<Acts::ConstantBField>(0, 0, 0.002); // kT
+  auto propEngine = std::make_shared<Acts::RungeKuttaEngine<>>(propConfig);
 
-  auto matConfig = MaterialEffectsEngine::Config();
-  auto materialEngine = std::make_shared<MaterialEffectsEngine>(matConfig);
+  auto matConfig = Acts::MaterialEffectsEngine::Config();
+  auto materialEngine = std::make_shared<Acts::MaterialEffectsEngine>(matConfig);
 
-  auto navConfig = StaticNavigationEngine::Config();
+  auto navConfig = Acts::StaticNavigationEngine::Config();
   navConfig.propagationEngine = propEngine;
   navConfig.materialEffectsEngine = materialEngine;
   navConfig.trackingGeometry = geo;
-  auto navEngine = std::make_shared<StaticNavigationEngine>(navConfig);
+  auto navEngine = std::make_shared<Acts::StaticNavigationEngine>(navConfig);
 
-  auto statConfig = StaticEngine::Config();
+  auto statConfig = Acts::StaticEngine::Config();
   statConfig.propagationEngine = propEngine;
   statConfig.navigationEngine = navEngine;
   statConfig.materialEffectsEngine = materialEngine;
-  auto statEngine = std::make_shared<StaticEngine>(statConfig);
+  auto statEngine = std::make_shared<Acts::StaticEngine>(statConfig);
 
-  auto exEngineConfig = ExtrapolationEngine::Config();
+  auto exEngineConfig = Acts::ExtrapolationEngine::Config();
   exEngineConfig.trackingGeometry = geo;
   exEngineConfig.propagationEngine = propEngine;
   exEngineConfig.navigationEngine = navEngine;
   exEngineConfig.extrapolationEngines = {statEngine};
-  auto exEngine = std::make_shared<ExtrapolationEngine>(exEngineConfig);
+  auto exEngine = std::make_shared<Acts::ExtrapolationEngine>(exEngineConfig);
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "Expol");
   auto GaudiLogger = std::make_unique<Acts::Logger>(std::make_unique<GaudiPrintPolicy>(&(*msgSvc)),std::make_unique<GaudiFilterPolicy>(&(*msgSvc)));
   exEngine->setLogger( std::move(GaudiLogger));
