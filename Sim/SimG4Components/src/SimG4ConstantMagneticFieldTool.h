@@ -75,7 +75,7 @@ private:
   /// Field component in Y direction. Set with property FieldComponentY
   Gaudi::Property<double> m_fieldComponentY{this, "FieldComponentY", 0, "Field Y component"};
   /// Field component in Z direction. Set with property FieldComponentZ
-  Gaudi::Property<double> m_fieldComponentZ{this, "FieldComponentZ", -6 * tesla, "Field Z component"};
+  Gaudi::Property<double> m_fieldComponentZ{this, "FieldComponentZ", -4 * tesla, "Field Z component"};
   /// Size of the field in radial direction. Set with property FieldRMax
   Gaudi::Property<double> m_fieldRadMax{this, "FieldRMax", 6 * m, "Field max radius"};
   /// Size of the field along the beam line. Set with property FieldZMax

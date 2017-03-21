@@ -14,18 +14,10 @@
 DECLARE_TOOL_FACTORY(SingleCaloTowerTool)
 
 SingleCaloTowerTool::SingleCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent),
+      m_cells("calo/cells", Gaudi::DataHandle::Reader, this) {
+  declareProperty("cells", m_cells);
   declareInterface<ITowerTool>(this);
-  declareInput("cells", m_cells, "calo/cells");
-  declareProperty("readoutName", m_readoutName);
-  // the default value to calculate the position of clusters
-  declareProperty("radiusForPosition", m_radius = 1.);
-  declareProperty("etaMax", m_etaMax = 0.);
-  declareProperty("deltaEtaTower", m_deltaEtaTower = 0.01);
-  declareProperty("deltaPhiTower", m_deltaPhiTower = 0.01);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
 }
 
 StatusCode SingleCaloTowerTool::initialize() {

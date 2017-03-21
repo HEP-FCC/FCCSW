@@ -57,7 +57,7 @@ StatusCode MergeCells::initialize() {
     error() << "It is not possible to merge more cells than the maximum number of cells." << endmsg;
     return StatusCode::FAILURE;
   }
-  if (m_numToMerge < 2) {
+  if (m_numToMerge < 2u) {
     error() << "Number of cells to me merged must be larger than 1." << endmsg;
     return StatusCode::FAILURE;
   }
