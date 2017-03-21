@@ -14,32 +14,31 @@
     <comment>HCal material end cap approximation</comment>
   </info>
   <define>
-    <constant name="EndCapHCalActual_dz" value="EndCapHCal_dz - 650*mm"/>
-    <constant name="EndCapHCalActual_zOffset" value="EndCapHCal_zOffset - EndCapHCal_dz + EndCapHCalActual_dz + 300*mm"/>
-
+    <constant name="ExtBarSupport_dr" value="200*mm"/>
+    <constant name="ExtBarInner_rmax" value="ExtBarHCal_rmax2 - ExtBarSupport_dr"/>
   </define>
   <detectors>
     <!-- E N D C A P S -->
     <detector name="HCalPreShowerPos" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="3500*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="EndCapHCal_zOffset-EndCapHCal_dz+150*mm" material="Air"/>
-      <layer rmin="3500*mm" rmax="EndCapHCal_rmax-200*mm" dz="150*mm" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal_rmin1" rmax="ExtBarHCal_rmax1" dz="ExtBarHCal_dz1" z_offset="ExtBarHCal_zOffset1" material="Air"/>
+      <layer rmin="ExtBarHCal_rmin1" rmax="ExtBarInner_rmax" dz="ExtBarHCal_dz1" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal_rmax1" dz="ExtBarHCal_dz1" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
     <detector name="HCalEndCapPos" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="EndCapHCalActual_zOffset" material="Air"/>
-      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCalActual_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal_rmin2" rmax="ExtBarHCal_rmax2" dz="ExtBarHCal_dz2" z_offset="ExtBarHCal_zOffset2" material="Air"/>
+      <layer rmin="ExtBarHCal_rmin2" rmax="ExtBarInner_rmax" dz="ExtBarHCal_dz2" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal_rmax2" dz="ExtBarHCal_dz2" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
 
     <detector name="HCalPreShowerNeg" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="3500*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="-EndCapHCal_zOffset+EndCapHCal_dz-150*mm" material="Air"/>
-      <layer rmin="3500*mm" rmax="EndCapHCal_rmax-200*mm" dz="150*mm" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal_rmin1" rmax="ExtBarHCal_rmax1" dz="ExtBarHCal_dz1" z_offset="-ExtBarHCal_zOffset1" material="Air"/>
+      <layer rmin="ExtBarHCal_rmin1" rmax="ExtBarInner_rmax" dz="ExtBarHCal_dz1" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal_rmax1" dz="ExtBarHCal_dz1" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
     <detector name="HCalEndCapNeg" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="-EndCapHCalActual_zOffset" material="Air"/>
-      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCalActual_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal_rmin2" rmax="ExtBarHCal_rmax2" dz="ExtBarHCal_dz2" z_offset="-ExtBarHCal_zOffset2" material="Air"/>
+      <layer rmin="ExtBarHCal_rmin2" rmax="ExtBarInner_rmax" dz="ExtBarHCal_dz2" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal_rmax2" dz="ExtBarHCal_dz2" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
   </detectors>
 </lccdd>
