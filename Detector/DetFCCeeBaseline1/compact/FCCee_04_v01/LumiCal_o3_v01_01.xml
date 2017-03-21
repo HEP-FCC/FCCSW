@@ -1,0 +1,63 @@
+<lccdd>
+    
+    <define>
+            <constant name="LumiCal_cell_size" value="1*mm"/>
+    </define>
+    
+    <readouts>
+        <readout name="LumiCalCollection">
+	    <segmentation type="PolarGridRPhi"
+			  grid_size_r="(LumiCal_outer_radius-LumiCal_inner_radius)/64"
+			  grid_size_phi="360/48*degree"
+			  offset_r="LumiCal_inner_radius"
+			  />
+	    <id>system:8,barrel:3,layer:8,slice:8,r:32:-16,phi:-16</id>
+        </readout>
+    </readouts>
+    
+    <detectors>
+        <detector name="LumiCal" type="LumiCal_o1_v01" vis="SeeThrough" id="DetID_LumiCal" readout="LumiCalCollection" insideTrackingVolume="false" >
+            
+            <envelope vis="LCALVis">
+                <shape type="BooleanShape" operation="union" material="Air">
+                    <shape type="BooleanShape" operation="Intersection">
+                        <shape type="Box"  dx="world_side" dy="world_side" dz="world_side"/>
+                        <shape type="Tube"  rmin="LumiCal_inner_radius" rmax="LumiCal_outer_radius+env_safety" dz="LumiCal_dz+env_safety"/>
+                        <position x="tan(0.5*abs(CrossingAngle))*(LumiCal_min_z+LumiCal_dz)" y="0" z="LumiCal_min_z+LumiCal_dz"/>
+                        <rotation x="0" y="0.5*abs(CrossingAngle)" z="0"/>
+                    </shape>
+                    <shape type="BooleanShape" operation="Intersection">
+                        <shape type="Box"  dx="world_side" dy="world_side" dz="world_side"/>
+                        <shape type="Tube"  rmin="LumiCal_inner_radius" rmax="LumiCal_outer_radius+env_safety" dz="LumiCal_dz+env_safety"/>
+                        <position x="tan(0.5*abs(CrossingAngle))*(LumiCal_min_z+LumiCal_dz)" y="0" z="-(LumiCal_min_z+LumiCal_dz)"/>
+                        <rotation x="0" y="-0.5*abs(CrossingAngle)" z="0"/>
+                    </shape>
+                </shape>
+            </envelope>
+            
+            <parameter crossingangle="CrossingAngle" />
+            
+            <dimensions inner_r = "LumiCal_inner_radius"
+            inner_z = "LumiCal_min_z"
+            outer_r = "LumiCal_outer_radius"
+            modules = "12"
+            phi_sectors = "4"
+            r_sectors = "64"
+            phi_gap = "2*mm"
+            r_gap = "2*mm" />
+            
+            
+            <layer repeat="40" vis="SeeThrough">
+                <slice material = "TungstenDens24" thickness = "3.5*mm" 		   vis="BCLayerVis1" />
+                <slice material = "Air"     thickness = "0.1*mm" />
+                <slice material = "Silicon" thickness = "0.355*mm" 	sensitive = "yes"  vis="BCLayerVis2"/>
+                <slice material = "Copper"  thickness = "0.4*mm"                    vis="BCLayerVis3"/>
+            </layer>
+            
+            
+        </detector>
+    </detectors>
+    
+</lccdd>
+
+
