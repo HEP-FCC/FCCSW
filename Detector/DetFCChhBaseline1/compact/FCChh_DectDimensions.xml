@@ -100,10 +100,9 @@
     <!-- Forward calorimeters (EFCAL + HFCAL) -->
     <constant name="FwdECal_id" value="10"/>
     <constant name="FwdHCal_id" value="11"/>
-    <constant name="FwdCap_rmin1" value="49.6*mm"/>
-    <constant name="FwdCal_rmax1" value="3600*mm"/>
+    <constant name="FwdCal_rmin1" value="49.6*mm"/>
     <constant name="FwdCal_rmin2" value="58.6*mm"/>
-    <constant name="FwdCal_rmax2" value="3600*mm"/>
+    <constant name="FwdCal_rmax" value="3600*mm"/>
     <constant name="FwdCal_dz" value="1500*mm"/>
     <constant name="FwdCal_zOffset" value="16500*mm + FwdCal_dz"/>
 

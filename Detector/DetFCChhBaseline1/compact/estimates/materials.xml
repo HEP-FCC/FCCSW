@@ -24,4 +24,10 @@
       <fraction n="0.06" ref="Aluminum"/>
       <fraction n="0.30" ref="Polystyrene"/>
     </material>
+    <comment>Approximate material of the ECal / HCal end-caps</comment>
+    <material name="CalEC">
+      <D type="density" unit="g/cm3" value="7.45"/>
+      <fraction n="0.2" ref="LAr"/>
+      <fraction n="0.8" ref="Cu"/>
+    </material>
   </materials>
