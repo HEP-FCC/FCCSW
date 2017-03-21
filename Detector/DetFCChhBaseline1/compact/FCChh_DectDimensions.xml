@@ -59,7 +59,7 @@
     <constant name="FwdTracker_id" value="4"/>
     <!-- single layer close to ExCal -->
     <constant name="FwdTracker_rmin1" value="40*mm"/>
-    <constant name="FwdTracker_rmax1" value="1173*mm"/>
+    <constant name="FwdTracker_rmax1" value="1076.8*mm"/>
     <constant name="FwdTracker_zOffset1" value="7500*mm"/>
     <!-- the rest of the tracking layers inside the forward solenoid / shielding -->
     <constant name="FwdTracker_rmin2" value="60*mm"/>
