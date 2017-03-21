@@ -38,20 +38,21 @@ createcells.hits.Path="ECalHits"
 createcells.cells.Path="caloCells"
 
 #Create calo clusters
-from Configurables import CreateCaloClustersSlidingWindow
+from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
+towers = SingleCaloTowerTool("towers",
+                             deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
+                             readoutName = ecalReadoutName,
+                             OutputLevel=DEBUG)
+towers.DataInputs.cells.Path="caloCells"
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
-                                                 readoutName = ecalReadoutName,
-                                                 fieldNames = ecalFieldNames,
-                                                 fieldValues = ecalFieldValues,
-                                                 deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
+                                                 towerTool = towers,
                                                  nEtaWindow = 5, nPhiWindow = 15,
                                                  nEtaPosition = 3, nPhiPosition = 3,
                                                  nEtaDuplicates = 5, nPhiDuplicates = 15,
                                                  nEtaFinal = 5, nPhiFinal = 15,
                                                  energyThreshold = 7,
                                                  OutputLevel = DEBUG)
-createclusters.cells.Path="caloCells"
 createclusters.clusters.Path="caloClusters"
 
 out = PodioOutput("out", filename="output_ecalReco_noNoise_test.root",

@@ -3,25 +3,15 @@
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
+#include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "DetSegmentation/GridPhiEta.h"
-class IGeoSvc;
+#include "RecInterface/ITowerTool.h"
 
 // datamodel
-#include "datamodel/CaloHit.h"
 namespace fcc {
-class CaloHitCollection;
 class CaloClusterCollection;
-}
-
-// DD4hep
-#include "DD4hep/Readout.h"
-namespace DD4hep {
-namespace DDSegmentation {
-class Segmentation;
-}
 }
 
 // Cluster
@@ -42,7 +32,7 @@ struct cluster {
  *  1. Create calorimeter towers.
  *     A tower contains all cells within certain eta and phi (tower size: '\b deltaEtaTower', '\b deltaPhiTower').
  *     Distance in r plays no role in this algorithm.
- *     TODO: Currently there is no support of cell splitting, so each cell should be completely inside the tower
+ *     Currently there is no support of cell splitting, so each cell should be completely inside the tower
  *     and that can be achieved using `GridEtaPhi` segmentation.
  *  2. Find local maxima.
  *     Local maxima are found using the sliding window of a fixed size in phi x eta ('\b nEtaWindow' '\b nPhiWindow' in
@@ -57,12 +47,14 @@ struct cluster {
  *  3. Remove duplicates.
  *     If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the
  *pre-cluster with lower energy is removed.
- *     TODO: Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than
- *sliding window, some towers may be taken twice (nstead of the weighted energy).
+ *     Currently there is no support on energy sharing between clusters, so if duplicate window is smaller than
+ *sliding window, some towers may be taken twice (instead of the weighted energy).
  *  4. Build clusters.
  *     Clusters are created using the window of a fixed size in phi x eta ('\b nEtaFinal' '\b nPhiFinal' in units of
  *tower size) around the barycentre position.
- *     Position is calculated from the barycentre position and the inner radius of the detector.
+ *     Position is calculated from the barycentre position and the radius of the detector.
+ *     Radius may be defined by user ('\b radiusForPosition') or (if not defined) taken from det::utils::tubeDimensions.
+ *     The second approach may be used for sensitive cylindrical geometries.
  *     For each cluster the cell collection is searched and all those inside the cluster are attached.
  *
  *  Note: Sliding window performs well for electrons/gamma reconstruction. Topological clusters should be better for
@@ -90,36 +82,6 @@ public:
   StatusCode finalize();
 
 private:
-  /**  Prepare calorimeter towers.
-   *  Create empty towers for the calorimeter.
-   */
-  void prepareTowers();
-  /**  Build calorimeter towers.
-   *  Tower is segmented in eta and phi, with the energy from all layers (no r segmentation).
-   *  Cuurently the cells need to be included only in one tower.
-   *  TODO: split cell energy into more towers if cell size is larger than the tower
-   */
-  void buildTowers();
-  /**  Get the tower IDs in eta.
-   *   @param[in] aEta Position of the calorimeter cell in eta
-   *   @return ID (eta) of a tower
-   */
-  int idEta(float aEta) const;
-  /**  Get the tower IDs in phi.
-   *   @param[in] aPhi Position of the calorimeter cell in phi
-   *   @return ID (phi) of a tower
-   */
-  int idPhi(float aPhi) const;
-  /**  Get the eta position of the centre of the tower.
-   *   @param[in] aIdEta ID (eta) of a tower
-   *   @return Position of the centre of the tower
-   */
-  float eta(int aIdEta) const;
-  /**  Get the phi position of the centre of the tower.
-   *   @param[in] aIdPhi ID (phi) of a tower
-   *   @return Position of the centre of the tower
-   */
-  float phi(int aIdPhi) const;
   /**  Correct way to access the neighbour of the phi tower, taking into account the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct neighbour
    *   of the last tower in phi with ID = m_nPhiTower - 1).
@@ -127,30 +89,14 @@ private:
    *   @return  ID of a tower - shifted and corrected (in [0, m_nPhiTower) range)
    */
   unsigned int phiNeighbour(int aIPhi) const;
-  /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for calo cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_cells;
   /// Handle for calo clusters (output collection)
   DataHandle<fcc::CaloClusterCollection> m_clusters;
-  /// PhiEta segmentation (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  /// Handle for the tower building tool
+  ToolHandle<ITowerTool> m_towerTool;
   // calorimeter towers
   std::vector<std::vector<float>> m_towers;
   /// Vector of pre-clusters
   std::vector<cluster> m_preClusters;
-  /// Name of the detector readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta"};
-  /// Name of the fields describing the segmented calorimeter
-  Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames", {}};
-  /// Values of the fields describing the segmented calorimeter
-  Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues", {}};
-  /// Volume ID of the volume with cells to calculate
-  uint64_t m_volumeId;
-  /// Size of the tower in eta
-  Gaudi::Property<float> m_deltaEtaTower{this, "deltaEtaTower", 0.01, "Size of the tower in eta"};
-  /// Size of the tower in phi
-  Gaudi::Property<float> m_deltaPhiTower{this, "deltaPhiTower", 0.01, "Size of the tower in phi"};
   /// number of towers in eta (calculated from m_deltaEtaTower and the eta size of the first layer)
   int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
@@ -158,7 +104,7 @@ private:
   /// Size of the window in eta for pre-clusters (in units of tower size)
   Gaudi::Property<int> m_nEtaWindow{this, "nEtaWindow", 5};
   /// Size of the window in phi for pre-clusters (in units of tower size)
-  Gaudi::Property<int> m_nPhiWindow{this, "nPhiWindow", 5};
+  Gaudi::Property<int> m_nPhiWindow{this, "nPhiWindow", 15};
   /// Size of the window in eta for cluster position calculation (in units of tower size)
   Gaudi::Property<int> m_nEtaPosition{this, "nEtaPosition", 3};
   /// Size of the window in phi for cluster position calculation (in units of tower size)
@@ -173,12 +119,10 @@ private:
   Gaudi::Property<int> m_nEtaFinal{this, "nEtaFinal", 5};
   /// Size of the window in phi for the final cluster building (in units of tower size)
   Gaudi::Property<int> m_nPhiFinal{this, "nPhiFinal", 15};
-  /// Flag if a check on local maxima in phi should be done (temporary, to test the algorithm)
-  Gaudi::Property<bool> m_checkPhiLocalMax{this, "checkPhiLocalMax", true};
-  /// Flag if a check on local maxima in eta should be done (temporary, to test the algorithm)
-  Gaudi::Property<bool> m_checkEtaLocalMax{this, "checkEtaLocalMax", true};
   /// Flag if references to the cells should be saved
   Gaudi::Property<bool> m_saveCells{this, "saveCells", false};
+  /// Flag if in each event the number of eta towers should be recalculated (true: default, false: if m_towerTool has etaMax defined)
+  bool m_recalculateEtaTowers;
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */

@@ -24,9 +24,9 @@
 DECLARE_COMPONENT(SimG4ConstantMagneticFieldTool)
 
 SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string& type, const std::string& name,
-                                                         const IInterface* parent)
-    : GaudiTool(type, name, parent),
-      m_field(nullptr) {
+                                                               const IInterface* parent)
+  : GaudiTool(type, name, parent),
+    m_field(nullptr) {
   declareInterface<ISimG4MagneticFieldTool>(this);
 }
 
