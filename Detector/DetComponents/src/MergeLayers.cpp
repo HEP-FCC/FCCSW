@@ -13,6 +13,9 @@
 // ROOT
 #include "TGeoManager.h"
 
+// STL
+#include <numeric>
+
 DECLARE_ALGORITHM_FACTORY(MergeLayers)
 
 MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc):
