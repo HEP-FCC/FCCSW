@@ -21,15 +21,15 @@
   <define>
     <!-- BEAM PIPE -->
     <constant name="CentralBeamTube_dz" value="800.0*cm"/>
-    <constant name="CentralBeamTube_rmax" value="2.1*cm"/>
+    <constant name="CentralBeamTube_rmax" value="2.08*cm"/>
     <constant name="CentralBeamTube_rmin" value="2.*cm"/>
 
     <constant name="ForwardBeamTube_rmin1" value="2.*cm"/>
-    <constant name="ForwardBeamTube_rmax1" value="2.1*cm"/>
-    <constant name="ForwardBeamTube_rmin2" value="2.6*cm"/>
-    <constant name="ForwardBeamTube_rmax2" value="2.7*cm"/>
+    <constant name="ForwardBeamTube_rmax1" value="2.08*cm"/>
+    <constant name="ForwardBeamTube_rmin2" value="6.15*cm"/>
+    <constant name="ForwardBeamTube_rmax2" value="6.23*cm"/>
     <constant name="ForwardBeamTube_dz" value="850*cm"/>
-    <constant name="ForwardBeamTube_zOffset" value="1650*cm"/>
+    <constant name="ForwardBeamTube_zOffset" value="CentralBeamTube_dz + ForwardBeamTube_dz"/>
 
     <!-- MAGNET SYSTEM -->
     <!-- Central Solenoid -->
