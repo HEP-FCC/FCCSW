@@ -90,14 +90,14 @@
     <constant name="ExtBarCal_zOffset" value="5300*mm + ExtBarCal_dz"/>
     <!-- HCal extended barrel (HCAL EB) -->
     <constant name="ExtBarHCal_id" value="9"/>
-    <constant name="ExtBarHCal_rmin1" value="3500*mm"/>
-    <constant name="ExtBarHCal_rmax1" value="4590*mm"/>
-    <constant name="ExtBarHCal_rmin2" value="2850*mm"/>
-    <constant name="ExtBarHCal_rmax2" value="4590*mm"/>
-    <constant name="ExtBarHCal_dz1" value="150*mm"/>
-    <constant name="ExtBarHCal_zOffset1" value="5000*mm + ExtBarHCal_dz1"/>
-    <constant name="ExtBarHCal_dz2" value="1350*mm"/>
-    <constant name="ExtBarHCal_zOffset2" value="5300*mm + ExtBarHCal_dz2"/>
+    <constant name="ExtBarHCal1_rmin" value="3500*mm"/>
+    <constant name="ExtBarHCal1_rmax" value="4590*mm"/>
+    <constant name="ExtBarHCal2_rmin" value="2850*mm"/>
+    <constant name="ExtBarHCal2_rmax" value="4590*mm"/>
+    <constant name="ExtBarHCal1_dz" value="150*mm"/>
+    <constant name="ExtBarHCal1_zOffset2" value="5000*mm + ExtBarHCal_dz1"/>
+    <constant name="ExtBarHCal2_dz" value="1350*mm"/>
+    <constant name="ExtBarHCal2_zOffset" value="ExtBarHCal_zOffset1 + ExtBarHCal_dz1 + ExtBarHCal_dz2"/>
     <!-- Forward calorimeters (EFCAL + HFCAL) -->
     <constant name="FwdECal_id" value="10"/>
     <constant name="FwdHCal_id" value="11"/>
