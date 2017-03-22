@@ -15,7 +15,7 @@
     <constant name="TrackerFwdDisc_dz" value="9.6*mm"/>
     <!-- This makes it easier to copy over tkLayout numbers (this offset places the first disk at the lower z side of
      the forward tracker) -->
-    <constant name="FwdTrackerDisc_zOffset" value="-FwdTracker_z2-TrackerFwdDisc_dz"/>
+    <constant name="FwdTrackerDisc_zOffset" value="-FwdTracker_z2"/>
   </define>
   <detectors>
     <!-- F O R W A R D    T R A C K E R -->
@@ -23,7 +23,7 @@
         <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="FwdTracker_zOffset1" material="TR"/>
     </detector>
     <detector name="FwdTrackerPos" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
-      <dimensions rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="FwdTracker_z2+2*TrackerFwdDisc_dz" z_offset="FwdTracker_zOffset2" material="Air"/>
+      <dimensions rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="FwdTracker_z2" z_offset="FwdTracker_zOffset2" material="Air"/>
       <layer rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="TrackerFwdDisc_dz" z_offset="FwdTrackerDisc_zOffset" material="TR" vis="TrackerVis"/>
       <layer rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="TrackerFwdDisc_dz" z_offset="FwdTrackerDisc_zOffset+985.6*mm" material="TR" vis="TrackerVis"/>
       <layer rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="TrackerFwdDisc_dz" z_offset="FwdTrackerDisc_zOffset+2068.4*mm" material="TR" vis="TrackerVis"/>
@@ -36,7 +36,7 @@
         <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdTracker_zOffset1" material="TR"/>
     </detector>
     <detector name="FwdTrackerNeg" type="SimpleLayeredCylinder"  vis="TrackerVisEnv">
-      <dimensions rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="FwdTracker_z2+2*TrackerFwdDisc_dz" z_offset="-FwdTracker_zOffset2" material="Air"/>
+      <dimensions rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="FwdTracker_z2" z_offset="-FwdTracker_zOffset2" material="Air"/>
       <layer rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="TrackerFwdDisc_dz" z_offset="-FwdTrackerDisc_zOffset" material="TR" vis="TrackerVis"/>
       <layer rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="TrackerFwdDisc_dz" z_offset="-FwdTrackerDisc_zOffset-985.6*mm" material="TR" vis="TrackerVis"/>
       <layer rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="TrackerFwdDisc_dz" z_offset="-FwdTrackerDisc_zOffset-2068.4*mm" material="TR" vis="TrackerVis"/>
