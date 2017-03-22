@@ -110,7 +110,7 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", ""};
   /// PhiEta segmentation (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)

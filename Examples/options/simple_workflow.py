@@ -13,7 +13,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
 ### Pileup tool. A number of additional events are merg with the signal event in HepMCReader.
 genpileup = PoissonPileUp(name="ConstPileUp",
-                          Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat",
+                          filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat",
                           numPileUpEvents=1)
 ## reads HepMC text file and write the HepMC::GenEvent to the data service
 reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat",

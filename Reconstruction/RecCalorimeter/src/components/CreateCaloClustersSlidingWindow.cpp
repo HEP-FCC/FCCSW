@@ -12,6 +12,7 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   : GaudiAlgorithm(name, svcLoc),
     m_clusters("calo/clusters", Gaudi::DataHandle::Writer, this) {
   declareProperty("clusters", m_clusters);
+  declareProperty("towerTool", m_towerTool);
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {

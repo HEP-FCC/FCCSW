@@ -11,10 +11,6 @@ hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"
 
-from Configurables import HepMCDumper
-hepmc_dump = HepMCDumper("hepmc")
-hepmc_dump.hepmc.Path="hepmc"
-
 from Configurables import SimG4Svc, SimG4GdmlTestDetector
 det = SimG4GdmlTestDetector("SimG4GdmlTestDetector", gdml = "../data/TestBoxCaloSD.gdml")
 geantservice = SimG4Svc("SimG4Svc", detector=det, physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
@@ -32,7 +28,7 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, hepmc_dump, geantsim, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 32,
                 ExtSvc = [podiosvc, geantservice],

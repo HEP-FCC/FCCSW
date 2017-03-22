@@ -86,7 +86,7 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
     ~~~{.py}
     from Configurables import HepMCReader
     reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-    reader.DataOutputs.hepmc.Path = "hepmc"
+    reader.hepmc.Path = "hepmc"
     ~~~
 
   * translating a HepMC event to the EDM

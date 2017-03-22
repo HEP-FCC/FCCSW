@@ -44,7 +44,7 @@ towers = SingleCaloTowerTool("towers",
                              deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                              readoutName = ecalReadoutName,
                              OutputLevel=DEBUG)
-towers.DataInputs.cells.Path="caloCells"
+towers.cells.Path="caloCells"
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
                                                  nEtaWindow = 5, nPhiWindow = 15,
