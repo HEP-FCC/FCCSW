@@ -17,12 +17,12 @@
     <constant name="CalExtBarInner_dz" value="ExtBarCal_dz - 2*CalExtBarFlange_width"/>
     <constant name="CalExtBarLAr_rmin" value="2470*mm"/>
     <constant name="CalExtBarECal_dz" value="375*mm"/>
-    <constant name="CalExtBarECal_rmin1" value="880.6*mm"/>
-    <constant name="CalExtBarECal_rmin2" value="1002.8*mm"/>
+    <constant name="CalExtBarECal_rmin1" value="892.5*mm"/>
+    <constant name="CalExtBarECal_rmin2" value="1016.5*mm"/>
     <constant name="CalExtBar_zLow" value="ExtBarCal_zOffset - ExtBarCal_dz"/>
     <constant name="CalExtBarECal_zOffset" value="-CalExtBarInner_dz + CalExtBarECal_dz"/>
     <constant name="CalExtBarHCal_rmin1" value="CalExtBarECal_rmin2"/>
-    <constant name="CalExtBarHCal_rmin2" value="1337.2*mm"/>
+    <constant name="CalExtBarHCal_rmin2" value="1355.3*mm"/>
     <constant name="CalExtBarHCal_dz" value="1025*mm"/>
     <constant name="CalExtBarHCal_zOffset" value="CalExtBarECal_zOffset + CalExtBarECal_dz + CalExtBarHCal_dz"/>
     <constant name="CalExtBarFlange1_zOffset" value="CalExtBar_zLow+CalExtBarFlange_width"/>
