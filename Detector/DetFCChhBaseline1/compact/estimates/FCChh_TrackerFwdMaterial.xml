@@ -15,7 +15,7 @@
     <constant name="TrackerFwdDisc_dz" value="9.6*mm"/>
     <!-- This makes it easier to copy over tkLayout numbers (this offset places the first disk at the lower z side of
      the forward tracker) -->
-    <constant name="FwdTrackerDisc_zOffset" value="-FwdTracker_z2"/>
+    <constant name="FwdTrackerDisc_zOffset" value="-FwdTracker_z2+TrackerFwdDisc_dz" />
   </define>
   <detectors>
     <!-- F O R W A R D    T R A C K E R -->

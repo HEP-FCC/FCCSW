@@ -77,7 +77,7 @@
     <!-- the rest of the tracking layers inside the forward solenoid / shielding -->
     <constant name="FwdTracker_rmin2" value="60*mm"/>
     <constant name="FwdTracker_rmax2" value="1549.8*mm"/>
-    <constant name="FwdTracker_z2" value="3009*mm"/>
+    <constant name="FwdTracker_z2" value="3009.65*mm"/>
     <constant name="FwdTracker_zOffset2" value="10*m + FwdTracker_z2"/>
 
     <!-- CALORIMETER DIMENSIONS -->
