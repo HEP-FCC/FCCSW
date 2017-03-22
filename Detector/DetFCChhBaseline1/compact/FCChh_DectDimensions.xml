@@ -33,15 +33,27 @@
 
     <!-- MAGNET SYSTEM -->
     <!-- Central Solenoid -->
-    <constant name="BarSolenoid_dz" value="1000*cm"/>
-    <constant name="BarSolenoid_rmin" value="510*cm"/>
-    <constant name="BarSolenoid_rmax" value="610*cm"/>
+    <constant name="BarSolenoid_dz" value="950*cm"/>
+    <constant name="BarSolenoid_rmin" value="5450*mm"/>
+    <constant name="BarSolenoid_rmax" value="6000*mm"/>
+    <constant name="BarSolenoidCryo1_rmin" value="5000*mm"/>
+    <constant name="BarSolenoidCryo1_rmax" value="5090*mm"/>
+    <constant name="BarSolenoidCryo_dz" value="10000*mm"/>
+    <constant name="BarSolenoidCryo2_rmin" value="6250*mm"/>
+    <constant name="BarSolenoidCryo2_rmax" value="6305*mm"/>
+    <constant name="BarSolenoidCryoFlange_dz" value="53.5*mm"/>
 
     <!-- Forward Solenoids -->
-    <constant name="FwdSolenoid_dz" value="200*cm"/>
-    <constant name="FwdSolenoid_rmin" value="265*cm"/>
-    <constant name="FwdSolenoid_rmax" value="365*cm"/>
-    <constant name="FwdSolenoid_zOffset" value="1200*cm+FwdSolenoid_dz"/>
+    <constant name="FwdSolenoid_dz" value="1700*mm"/>
+    <constant name="FwdSolenoid_rmin" value="280*cm"/>
+    <constant name="FwdSolenoid_rmax" value="307*cm"/>
+    <constant name="FwdSolenoid_zOffset" value="1230*cm+FwdSolenoid_dz"/>
+    <constant name="FwdSolenoidCryo1_rmin" value="2650*mm"/>
+    <constant name="FwdSolenoidCryo1_rmax" value="2670*mm"/>
+    <constant name="FwdSolenoidCryo_dz" value="2135*mm"/>
+    <constant name="FwdSolenoidCryo2_rmin" value="3500*mm"/>
+    <constant name="FwdSolenoidCryo2_rmax" value="3560*mm"/>
+    <constant name="FwdSolenoidCryoFlange_dz" value="35*mm"/>
 
     <!-- TRACKER DIMENSIONS -->
     <constant name="Tracker_rmin" value="23.28*mm"/>
