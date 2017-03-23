@@ -79,6 +79,7 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
           position.x = hit->position.x() * sim::g42edm::length;
           position.y = hit->position.y() * sim::g42edm::length;
           position.z = hit->position.z() * sim::g42edm::length;
+          edmHitCore.bits = hit->truth.trackID;
           edmPositions->create(position, edmHitCore);
         }
       }

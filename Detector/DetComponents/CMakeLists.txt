@@ -16,10 +16,16 @@ find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
 
 find_package(Geant4)
 
+find_package(ACTS COMPONENTS Core TGeoPlugin DD4hepPlugin Examples)
+#workaround for the lone -lGeom flag exported by ACTS
+link_directories(${ROOT_INCLUDE_DIR}/../lib)
+
+gaudi_install_headers(DetComponents)
+
 gaudi_add_module(DetComponents
                  src/*.cpp
-                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetExtensions DetSegmentation DetCommon
-                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore)
+                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetExtensions DetSegmentation DetCommon ACTS
+                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore ACTS::ACTSCore ACTS::ACTSDD4hepPlugin ACTS::ACTSExamples)
 
 include(CTest)
 gaudi_add_test(RedoSegmentationXYZ
