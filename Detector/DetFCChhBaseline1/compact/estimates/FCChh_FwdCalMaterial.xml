@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the forward calorimeter"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>ECal + HCal Forward material approximation</comment>
+  </info>
+  <define>
+    <constant name="FwdCal_lowZ" value="FwdCal_zOffset - FwdCal_dz"/>
+    <constant name="FwdCal_highZ" value="FwdCal_zOffset + FwdCal_dz"/>
+    <constant name="FwdCalFlange_rmax" value="FwdCal_rmax"/>
+    <constant name="FwdCalFlange_dz" value="50*mm"/>
+    <constant name="FwdCalFlange1_rmin2" value="49.9*mm"/>
+    <constant name="FwdCalFlange1_zOffset" value="FwdCal_lowZ + FwdCalFlange_dz"/>
+    <constant name="FwdCalFlange2_rmin1" value="58.3*mm"/>
+    <constant name="FwdCalFlange2_zOffset" value="FwdCal_highZ - FwdCalFlange_dz"/>
+    <constant name="FwdCalCryo_dz" value="1400*mm"/>
+    <constant name="FwdCalCryo_zOffset" value="FwdCal_zOffset"/>
+    <constant name="FwdCalCryo1_rmin" value="3500*mm"/>
+    <constant name="FwdCalCryo1_rmax" value="FwdCal_rmax"/>
+    <constant name="FwdCalCryo2_rmin1" value="FwdCalFlange1_rmin2"/>
+    <constant name="FwdCalCryo2_rmin2" value="58.3*mm"/>
+    <constant name="FwdCalCryo2_rmax1" value="82.3*mm"/>
+    <constant name="FwdCalCryo2_rmax2" value="96.2*mm"/>
+    <constant name="FwdCalInner_rmax" value="FwdCalCryo1_rmin"/>
+    <constant name="FwdECal_rmin1" value="FwdCalCryo2_rmax1"/>
+    <constant name="FwdECal_rmin2" value="86.0*mm"/>
+    <constant name="FwdECal_dz" value="375.0*mm"/>
+    <constant name="FwdECal_zOffset" value="-FwdCalCryo_dz+FwdECal_dz"/>
+    <constant name="FwdCalLArgon_rmin1" value="FwdECal_rmin2"/>
+    <constant name="FwdCalLArgon_rmin2" value="86.3*mm"/>
+    <constant name="FwdCalLArgon_dz" value="25.0*mm"/>
+    <constant name="FwdCalLArgon_zOffset" value="FwdECal_zOffset + FwdECal_dz + FwdCalLArgon_dz"/>
+    <constant name="FwdHCal_rmin1" value="FwdCalLArgon_rmin2"/>
+    <constant name="FwdHCal_rmin2" value="FwdCalCryo2_rmax2"/>
+    <constant name="FwdHCal_dz" value="1000*mm"/>
+    <constant name="FwdHCal_zOffset" value="FwdCalLArgon_zOffset + FwdCalLArgon_dz + FwdHCal_dz"/>
+  </define>
+  <detectors>
+    <!-- F O R W A R D -->
+    <detector name="FCalFlange1Pos" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="FwdCal_rmin1" rmax1="FwdCalFlange_rmax" rmin2="FwdCalFlange1_rmin2" rmax2="FwdCalFlange_rmax"  dz="FwdCalFlange_dz" z_offset="FwdCalFlange1_zOffset" material="Aluminum"/>
+    </detector>
+    <detector name="FCalFlange2Pos" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="FwdCalFlange2_rmin1" rmax1="FwdCalFlange_rmax" rmin2="FwdCal_rmin2" rmax2="FwdCalFlange_rmax"  dz="FwdCalFlange_dz" z_offset="FwdCalFlange2_zOffset" material="Aluminum"/>
+    </detector>
+    <detector name="FwdCalCryo1Pos" type="SimpleCylinder"  vis="ECalCryo">
+        <dimensions rmin="FwdCalCryo1_rmin" rmax="FwdCalCryo1_rmax" dz="FwdCalCryo_dz" z_offset="FwdCalCryo_zOffset" material="EM" deltaphi="360*deg" phi0="0" />
+    </detector>
+    <detector name="FwdCalCryo2Pos" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="FwdCalCryo2_rmin1" rmax1="FwdCalCryo2_rmax1" rmin2="FwdCalCryo2_rmin2" rmax2="FwdCalCryo2_rmax2" dz="FwdCalCryo_dz" z_offset="FwdCalCryo_zOffset" material="EM"/>
+    </detector>
+    <detector name="FwdCaloPos" type="LayeredCone" vis="ECalEnvVis">
+      <dimensions rmin1="FwdECal_rmin1" rmax1="FwdCalInner_rmax" rmin2="FwdHCal_rmin2" rmax2="FwdCalInner_rmax" dz="FwdCalLArgon_dz+FwdECal_dz+FwdHCal_dz" z_offset="FwdCal_zOffset" material="Air"/>
+      <layer rmin1="FwdECal_rmin1" rmax1="FwdCalInner_rmax" rmin2="FwdECal_rmin2" rmax2="FwdCalInner_rmax" dz="FwdECal_dz" z_offset="FwdECal_zOffset" material="CalEC" vis="ECalCryo"/>
+      <layer rmin1="FwdCalLArgon_rmin1" rmax1="FwdCalInner_rmax" rmin2="FwdCalLArgon_rmin2" rmax2="FwdCalInner_rmax" dz="FwdCalLArgon_dz" z_offset="FwdCalLArgon_zOffset" material="LAr" vis="ECalVis"/>
+      <layer rmin1="FwdHCal_rmin1" rmax1="FwdCalInner_rmax" rmin2="FwdHCal_rmin2" rmax2="FwdCalInner_rmax" dz="FwdHCal_dz" z_offset="FwdHCal_zOffset" material="CalEC" vis="ECalVisLAr"/>
+    </detector>
+
+    <detector name="FCalFlange1Neg" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="FwdCal_rmin1" rmax1="FwdCalFlange_rmax" rmin2="FwdCalFlange1_rmin2" rmax2="FwdCalFlange_rmax"  dz="FwdCalFlange_dz" z_offset="-FwdCalFlange1_zOffset" material="Aluminum"/>
+    </detector>
+    <detector name="FCalFlange2Neg" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="FwdCalFlange2_rmin1" rmax1="FwdCalFlange_rmax" rmin2="FwdCal_rmin2" rmax2="FwdCalFlange_rmax"  dz="FwdCalFlange_dz" z_offset="-FwdCalFlange2_zOffset" material="Aluminum"/>
+    </detector>
+    <detector name="FwdCalCryo1Neg" type="SimpleCylinder"  vis="ECalCryo">
+        <dimensions rmin="FwdCalCryo1_rmin" rmax="FwdCalCryo1_rmax" dz="FwdCalCryo_dz" z_offset="-FwdCalCryo_zOffset" material="Aluminum"  deltaphi="360*deg" phi0="0"  />
+    </detector>
+    <detector name="FwdCalCryo2Neg" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin2="FwdCalCryo2_rmin1" rmax2="FwdCalCryo2_rmax1" rmin1="FwdCalCryo2_rmin2" rmax1="FwdCalCryo2_rmax2" dz="FwdCalCryo_dz" z_offset="-FwdCalCryo_zOffset" material="Aluminum"/>
+    </detector>
+    <detector name="FwdCaloNeg" type="LayeredCone" vis="ECalEnvVis">
+      <dimensions rmin2="FwdECal_rmin1" rmax2="FwdCalInner_rmax" rmin1="FwdHCal_rmin2" rmax1="FwdCalInner_rmax" dz="FwdCalLArgon_dz+FwdECal_dz+FwdHCal_dz" z_offset="-FwdCal_zOffset" material="Air"/>
+      <layer rmin2="FwdECal_rmin1" rmax2="FwdCalInner_rmax" rmin1="FwdECal_rmin2" rmax1="FwdCalInner_rmax" dz="FwdECal_dz" z_offset="-FwdECal_zOffset" material="CalEC" vis="ECalCryo"/>
+      <layer rmin2="FwdCalLArgon_rmin1" rmax2="FwdCalInner_rmax" rmin1="FwdCalLArgon_rmin2" rmax1="FwdCalInner_rmax" dz="FwdCalLArgon_dz" z_offset="-FwdCalLArgon_zOffset" material="LAr" vis="ECalVis"/>
+      <layer rmin2="FwdHCal_rmin1" rmax2="FwdCalInner_rmax" rmin1="FwdHCal_rmin2" rmax1="FwdCalInner_rmax" dz="FwdHCal_dz" z_offset="-FwdHCal_zOffset" material="CalEC" vis="ECalVisLAr"/>
+    </detector>
+
+  </detectors>
+</lccdd>

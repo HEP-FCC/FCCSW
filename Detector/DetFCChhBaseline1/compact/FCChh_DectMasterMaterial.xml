@@ -36,16 +36,15 @@
   <include ref="./estimates/FCChh_TrackerEndCapMaterial.xml" />
   <include ref="./estimates/FCChh_TrackerFwdMaterial.xml" />
 
-  <!-- E L E C T R O M A G N E T I C   C A L -->
+  <!-- C A L O R I M E T E R S -->
   <include ref="./estimates/FCChh_ECalMaterial.xml" />
   <include ref="./estimates/FCChh_ECalEndCapMaterial.xml" />
-  <include ref="./estimates/FCChh_ECalFwdMaterial.xml" />
 
-  <!-- H A D R O N I C   C A L -->
   <include ref="./estimates/FCChh_HCalMaterial.xml" />
   <include ref="./estimates/FCChh_HCalEndCapMaterial.xml" />
-  <include ref="./estimates/FCChh_HCalFwdMaterial.xml" />
+
+  <include ref="./estimates/FCChh_FwdCalMaterial.xml" />
 
   <!-- M U O N   S Y S T E M -->
-  <include ref="./FCChh_MuonAir.xml" />
+  <!--<include ref="./FCChh_MuonAir.xml" />-->
 </lccdd>
