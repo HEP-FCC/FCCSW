@@ -18,8 +18,8 @@
     <constant name="FwdSolenoidCryoFlange_rmin" value="FwdSolenoidCryo1_rmax"/>
     <constant name="FwdSolenoidCryoFlange_rmax" value="FwdSolenoidCryo2_rmin"/>
     <constant name="FwdSolenoidCryo_zOffset" value="FwdSolenoid_zOffset"/>
-    <constant name="FwdSolenoidCryoFlange1_zOffset" value="FwdSolenoidCryo_zOffset + FwdSolenoidCryo_dz - FwdSolenoidCryoFlange_dz"/>
-    <constant name="FwdSolenoidCryoFlange2_zOffset" value="FwdSolenoidCryo_zOffset - FwdSolenoidCryo_dz + FwdSolenoidCryoFlange_dz"/>
+    <constant name="FwdSolenoidCryoFlange1_zOffset" value="FwdSolenoidCryo_zOffset - FwdSolenoidCryo_dz + FwdSolenoidCryoFlange1_dz"/>
+    <constant name="FwdSolenoidCryoFlange2_zOffset" value="FwdSolenoidCryo_zOffset + FwdSolenoidCryo_dz - FwdSolenoidCryoFlange2_dz"/>
 
   </define>
   <display>
@@ -62,10 +62,10 @@
       <dimensions rmin="FwdSolenoidCryo2_rmin" rmax="FwdSolenoidCryo2_rmax" dz="FwdSolenoidCryo_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoidCryo_zOffset" material="Steel235"/>
     </detector>
     <detector name="FwdSolenoidCryoFlange1Pos" type="SimpleCylinder"  vis="SolenoidVis">
-      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoidCryoFlange1_zOffset" material="Steel235"/>
+      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange1_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoidCryoFlange1_zOffset" material="Steel235"/>
     </detector>
     <detector name="FwdrelSolenoidCryoFlange2Pos" type="SimpleCylinder"  vis="SolenoidVis">
-      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoidCryoFlange2_zOffset" material="Steel235"/>
+      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange2_dz" phi0="0" deltaphi="360*deg"  z_offset="FwdSolenoidCryoFlange2_zOffset" material="Steel235"/>
     </detector>
     <!-- forward solenoid cryostat negative z -->
     <detector name="FwdSolenoidCryo1Neg" type="SimpleCylinder"  vis="SolenoidVis">
@@ -75,10 +75,10 @@
       <dimensions rmin="FwdSolenoidCryo2_rmin" rmax="FwdSolenoidCryo2_rmax" dz="FwdSolenoidCryo_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoidCryo_zOffset" material="Steel235"/>
     </detector>
     <detector name="FwdSolenoidCryoFlange1Neg" type="SimpleCylinder"  vis="SolenoidVis">
-      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoidCryoFlange1_zOffset" material="Steel235"/>
+      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange1_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoidCryoFlange1_zOffset" material="Steel235"/>
     </detector>
     <detector name="FwdrelSolenoidCryoFlange2Neg" type="SimpleCylinder"  vis="SolenoidVis">
-      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoidCryoFlange2_zOffset" material="Steel235"/>
+      <dimensions rmin="FwdSolenoidCryoFlange_rmin" rmax="FwdSolenoidCryoFlange_rmax" dz="FwdSolenoidCryoFlange2_dz" phi0="0" deltaphi="360*deg"  z_offset="-FwdSolenoidCryoFlange2_zOffset" material="Steel235"/>
     </detector>
   </detectors>
 </lccdd>
