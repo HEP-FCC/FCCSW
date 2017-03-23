@@ -8,7 +8,7 @@ meaningful title. The title is also used to create our release notes.
 Give a bulleted list of things you address (mentioning related issues).
 
 We are happy if you create pull-requests also if you feature is not ready, yet.
-Please mark them as such by adding `[WIP]` to the start of the title. The purpose
+Please mark them as such by adding `[WIP]` to the beginning of the title. The purpose
 of this is, for example, that you want to let other people know you are working
 on a given issue. For these work-in-progress pull-request, we propose to have a
 check list of things that still need to be done.
