@@ -58,7 +58,7 @@
     <!-- TRACKER DIMENSIONS -->
     <constant name="Tracker_rmin" value="23.28*mm"/>
     <constant name="Tracker_rmax" value="1700*mm"/>
-    <constant name="Tracker_dz" value="5000*mm"/>
+    <constant name="Tracker_dz" value="5009.7*mm"/>
     <!-- Tracker Barrel -->
     <constant name="BarTrackerInner_id" value="0"/>
     <constant name="BarTrackerOuter_id" value="1"/>
