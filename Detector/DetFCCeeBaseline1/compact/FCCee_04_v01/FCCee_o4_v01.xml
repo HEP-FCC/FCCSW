@@ -311,18 +311,18 @@
     
     <include ref="Materials_v01.xml"/>
 
-    <include ref="Beampipe_o4_v01.xml"/>  
+    <include ref="Beampipe_o4_v02.xml"/>  
     <!--include ref="Mask.xml"/-->  
-<!--
-    <include ref="BeamInstrumentation_o3_v02.xml"/>     
 
+    <include ref="BeamInstrumentation_o3_v01.xml"/>     
+<!--
     <include ref="LumiCal_o2_v01_02.xml"/>
     <include ref="LumiCal_o2_v01_02_plusInstr.xml"/>
 -->
     <!--include ref="HOMAbsorber_o1_v02.xml"/-->
 
-    <include ref="Vertex_o3_v04_test.xml"/>  
-<!--
+    <include ref="Vertex_o3_v05.xml"/>  
+
     <include ref="InnerTracker_o3_v03.xml"/>   
     <include ref="OuterTracker_o2_v03_03.xml"/>
     
@@ -337,7 +337,7 @@
 
     <include ref="YokeBarrel_o1_v01_01.xml"/>
     <include ref="YokeEndcap_o1_v01_01.xml"/>
--->
+
 
     <plugins>
       <plugin name="InstallSurfaceManager"/>

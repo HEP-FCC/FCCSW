@@ -12,7 +12,7 @@
 #include "DD4hep/DD4hepUnits.h"
 #include "DD4hep/DetType.h"
 #include "DDRec/DetectorData.h"
-//#include "DDRec/Surface.h"
+#include "DDRec/Surface.h"
 #include "XML/Utilities.h"
 #include "XMLHandlerDB.h"
 #include <cmath>
@@ -22,7 +22,7 @@
 using namespace DD4hep;
 using namespace DD4hep::Geometry;
 using namespace DD4hep::DDRec ;
-//using namespace DDSurfaces ;
+using namespace DDSurfaces ;
 
 using DD4hep::Geometry::Transform3D;
 using DD4hep::Geometry::Position;
@@ -37,6 +37,67 @@ using DD4hep::Geometry::Tube;
 using DD4hep::Geometry::PlacedVolume;
 using DD4hep::Geometry::Assembly;
 
+
+
+/// helper class for a simple cylinder surface parallel to z with a given length - used as IP layer
+class SimpleCylinderImpl : public  DD4hep::DDRec::VolCylinderImpl{
+  double _half_length ;
+public:
+  /// standard c'tor with all necessary arguments - origin is (0,0,0) if not given.
+  SimpleCylinderImpl( DD4hep::Geometry::Volume vol, DDSurfaces::SurfaceType type, 
+		      double thickness_inner ,double thickness_outer,  DDSurfaces::Vector3D origin ) :
+    DD4hep::DDRec::VolCylinderImpl( vol,  type, thickness_inner, thickness_outer,   origin ),
+    _half_length(0){
+  }
+  void setHalfLength( double half_length){
+    _half_length = half_length ;
+  }
+  void setID( DD4hep::long64 id ) { _id = id ; 
+  }
+  // overwrite to include points inside the inner radius of the barrel 
+  bool insideBounds(const DDSurfaces::Vector3D& point, double epsilon) const {
+    return ( std::abs( point.rho() - origin().rho() ) < epsilon && std::abs( point.z() ) < _half_length ) ; 
+  }
+  
+  virtual std::vector< std::pair<DDSurfaces::Vector3D, DDSurfaces::Vector3D> > getLines(unsigned nMax=100){
+    
+    std::vector< std::pair<DDSurfaces::Vector3D, DDSurfaces::Vector3D> >  lines ;
+    
+    lines.reserve( nMax ) ;
+    
+    Vector3D zv( 0. , 0. , _half_length ) ;
+    double r = _o.rho() ;
+
+    unsigned n = nMax / 4 ;
+    double dPhi = 2.* ROOT::Math::Pi() / double( n ) ; 
+
+    for( unsigned i = 0 ; i < n ; ++i ) {
+      
+      Vector3D rv0(  r*sin(  i   *dPhi ) , r*cos(  i   *dPhi )  , 0. ) ;
+      Vector3D rv1(  r*sin( (i+1)*dPhi ) , r*cos( (i+1)*dPhi )  , 0. ) ;
+      
+      Vector3D pl0 =  zv + rv0 ;
+      Vector3D pl1 =  zv + rv1 ;
+      Vector3D pl2 = -zv + rv1  ;
+      Vector3D pl3 = -zv + rv0 ;
+      
+      lines.push_back( std::make_pair( pl0, pl1 ) ) ;
+      lines.push_back( std::make_pair( pl1, pl2 ) ) ;
+      lines.push_back( std::make_pair( pl2, pl3 ) ) ;
+      lines.push_back( std::make_pair( pl3, pl0 ) ) ;
+    } 
+    return lines; 
+  }
+};
+  
+class SimpleCylinder : public VolSurface{
+public:
+  SimpleCylinder( Geometry::Volume vol, SurfaceType type, double thickness_inner ,
+		  double thickness_outer,  Vector3D origin ) :
+    VolSurface( new SimpleCylinderImpl( vol,  type,  thickness_inner , thickness_outer, origin ) ) {
+  }
+  SimpleCylinderImpl* operator->() { return static_cast<SimpleCylinderImpl*>( _surf ) ; }
+} ;
 
 
 /** Construction of VTX detector, ported from Mokka driver TubeX01.cc
@@ -193,7 +254,7 @@ static DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd,
 
 	  // add surface for tracking ....
 	  const bool isCylinder = ( rInnerStart == rInnerEnd );
-	  /*
+
 	  if (isCylinder) {  // cylinder
 
 	    Vector3D ocyl(  rInnerStart + thickness/2.  , 0. , 0. ) ;
@@ -230,7 +291,7 @@ static DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd,
 	    volSurfaceList( tube )->push_back( conSurf2 );
 
 	  }
-	  */
+
 	  if( rInnerStart < min_radius ) min_radius = rInnerStart ;
 	  if( rOuterStart < min_radius ) min_radius = rOuterStart ;
 	}
@@ -247,11 +308,11 @@ static DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd,
 	tubeLog.placeVolume( wallLog,  Transform3D() );
 	tubeLog2.placeVolume( wallLog2,  Transform3D() );
 	
-	
-	// place golad coating as a daughter of the wall (?)
-	tubeLog.placeVolume( goldLog,  Transform3D() );
-	tubeLog2.placeVolume( goldLog2,  Transform3D() );
-	
+	if( crossType == ODH::kCenter ) { 	
+	  // place golad coating as a daughter of the wall (?)
+	  tubeLog.placeVolume( goldLog,  Transform3D() );
+	  tubeLog2.placeVolume( goldLog2,  Transform3D() );
+	}	
       }
     }  
       break;
@@ -587,14 +648,13 @@ static DD4hep::Geometry::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd,
   //######################################################################################################################################################################
   
   std::cout << std::setw(8) << " minimum radius" << min_radius << std::endl ;
-  /*
   // add a surface just inside the beampipe for tracking:
   Vector3D oIPCyl( (min_radius-1.e-3)  , 0. , 0.  ) ;
   SimpleCylinder ipCylSurf( envelope , SurfaceType( SurfaceType::Helper ) , 1.e-5  , 1e-5 , oIPCyl ) ;
   // the length does not really matter here as long as it is long enough for all tracks ...
   ipCylSurf->setHalfLength(  100*dd4hep::cm ) ; 
   volSurfaceList( tube )->push_back( ipCylSurf ) ;
-  */
+
   tube.addExtension< DD4hep::DDRec::ConicalSupportData >( beampipeData ) ;
 
   //--------------------------------------

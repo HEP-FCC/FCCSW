@@ -1,0 +1,77 @@
+<lccdd>
+    <!--  Definition of global dictionary constants          -->
+    <define>
+    </define>
+    
+    <!--  Definition of the used visualization attributes    -->
+    <display>
+        <vis name="BeamPipeVis" alpha="0.0" r="0.0" g="1.0" b="0.0" showDaughters="true" visible="false"/>
+        <vis name="GoldCoatingVis" alpha="0.0" r="0.0" g="1.0" b="1.0" showDaughters="true" visible="true"/>
+        <vis name="TubeVis"  alpha="1.0" r="1.0" g="0.7"  b="0.5"   showDaughters="true"  visible="true"/>
+        <vis name="VacVis"   alpha="1.0" r="1.0" g="1.0"  b="1.0"   showDaughters="true"  visible="false"/>
+    </display>
+    
+    
+    <detectors>
+        <comment>Beampipe</comment>
+        
+        <detector name="Beampipe" type="Beampipe_o2_v01" insideTrackingVolume="true" vis="BeamPipeVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="BlueVis">
+                <shape type="Assembly"/>
+            </envelope>
+
+            <!--             &A                       Z1                  Z2                    RIn1                RIn2                                 ROut1                        ROut2                                              Material -->
+
+            <section type="Center"               start="0*mm"    end="CentralBeamPipe_zmax" rMin1="CentralBeamPipe_rmax"  rMin2="CentralBeamPipe_rmax"    rMax1="CentralBeamPipe_rmax+BeamPipeWidth"  rMax2="CentralBeamPipe_rmax+BeamPipeWidth"                material="Beryllium" name="VertexInner"/>
+
+
+            <section type="Center" start="CentralBeamPipe_zmax"  end="BePartEnd_z"  rMin1="CentralBeamPipe_rmax"  rMin2="CentralBeamPipe_rmax+(BePartEnd_z-CentralBeamPipe_zmax)*0.015"      rMax1="CentralBeamPipe_rmax+BeamPipeWidthFirstCone"  rMax2="CentralBeamPipe_rmax+BeamPipeWidthFirstCone+(BePartEnd_z-CentralBeamPipe_zmax)*0.015" material="Beryllium" name="FirstCone" />
+
+            <section type="Center" start="BePartEnd_z"  end="SeparatedBeamPipe_z"  rMin1="CentralBeamPipe_rmax+(BePartEnd_z-CentralBeamPipe_zmax)*0.015"  rMin2="CentralBeamPipe_rmax+(BePartEnd_z-CentralBeamPipe_zmax)*0.015+(SeparatedBeamPipe_z-BePartEnd_z)*0.015"      rMax1="CentralBeamPipe_rmax+BeamPipeWidthFirstCone+(BePartEnd_z-CentralBeamPipe_zmax)*0.015"  rMax2="CentralBeamPipe_rmax+BeamPipeWidthFirstCone+(BePartEnd_z-CentralBeamPipe_zmax)*0.015+(SeparatedBeamPipe_z-BePartEnd_z)*0.015" material="Copper" name="CopperCone" />
+
+
+   <!-- PunchedCenter = un volume qui s'etend jusqu'a rMax1 (a z=start) et rMax2 (a end) et avec deux cylindres extrudes le long
+        des directions up / down (depend du xing angle), de rayon rMin1 et rMin2  -->
+
+
+	    <section type="PunchedCenter"        start="SeparatedBeamPipe_z" end="SeparatedBeamPipe_z+3*mm"    rMin1="SeparatedBeamPipe_rmax"      rMin2="SeparatedBeamPipe_rmax"       rMax1="CentralBeamPipe_rmax+BeamPipeWidthFirstCone+(BePartEnd_z-CentralBeamPipe_zmax)*0.015+(SeparatedBeamPipe_z-BePartEnd_z)*0.015"     rMax2="CentralBeamPipe_rmax+BeamPipeWidthFirstCone+(BePartEnd_z-CentralBeamPipe_zmax)*0.015+(SeparatedBeamPipe_z-BePartEnd_z)*0.015 + 3*mm*0.015" material="Copper"     name="SplitVacChambers"/>
+
+	<!-- Downstream pipe : first part : radius = 1.2 cm -->
+
+             <section type="DnstreamClippedFront" start="SeparatedBeamPipe_z+3.2*mm" end="QD0_min_z-CollimatorInFrontOfQD0_dz"  rMin1="SeparatedBeamPipe_rmax"  rMin2="SeparatedBeamPipe_rmax" rMax1="SeparatedBeamPipe_rmax+1*mm"  rMax2="SeparatedBeamPipe_rmax+1*mm"  material="Copper"      name="DownStreamBeamPipe_1"/>
+
+	<!-- that's a window to go to a lower radius -->
+
+             <section type="Dnstream" start="QD0_min_z-CollimatorInFrontOfQD0_dz"  end="QD0_min_z-CollimatorInFrontOfQD0_dz+0.1*mm" rMin1="SeparatedBeamPipe_rmax" rMin2="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax1="SeparatedBeamPipe_rmax+1*mm" rMax2="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" material="Copper"  name="DownStreamBeamPipe_2"/>
+
+	<!-- smaller radius as to insert the R = 1cm collimator (Ta shielding) -->
+
+             <section type="Dnstream" start="QD0_min_z-CollimatorInFrontOfQD0_dz+0.1*mm" end="QD0_min_z-0.1*mm" rMin1="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMin2="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax1="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax2="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" material="Copper"  name="DownStreamBeamPipe_3"/>
+
+	<!-- then the BP goes to 1.2 cm again -->
+
+             <section type="Dnstream" start="QD0_min_z-0.1*mm" end="QD0_min_z" rMin1="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax1="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMin2="SeparatedBeamPipe_rmax" rMax2="SeparatedBeamPipe_rmax+1*mm"  material="Copper" name="DownStreamBeamPipe_4"/>
+
+	<!-- and the last part ... -->
+
+             <section type="Dnstream" start="QD0_min_z" end="6000*mm" rMin1="SeparatedBeamPipe_rmax"  rMin2="SeparatedBeamPipe_rmax" rMax1="SeparatedBeamPipe_rmax+1*mm"  rMax2="SeparatedBeamPipe_rmax+1*mm"  material="Copper" name="DownStreamBeamPipe_5"/>
+
+
+	<!-- NOW THE UPSTREAM BEAMPIPE -->
+
+             <section type="UpstreamClippedFront"  start="SeparatedBeamPipe_z+3*mm" end="QD0_min_z-CollimatorInFrontOfQD0_dz"  rMin1="SeparatedBeamPipe_rmax"  rMin2="SeparatedBeamPipe_rmax" rMax1="SeparatedBeamPipe_rmax+1*mm"  rMax2="SeparatedBeamPipe_rmax+1*mm"  material="Copper"      name="UpStreamBeamPipe_1"/>
+
+	     <section type="Upstream" start="QD0_min_z-CollimatorInFrontOfQD0_dz"  end="QD0_min_z-CollimatorInFrontOfQD0_dz+0.1*mm" rMin1="SeparatedBeamPipe_rmax" rMin2="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax1="SeparatedBeamPipe_rmax+1*mm" rMax2="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" material="Copper"  name="UpStreamBeamPipe_2"/>
+
+             <section type="Upstream" start="QD0_min_z-CollimatorInFrontOfQD0_dz+0.1*mm" end="QD0_min_z-0.1*mm" rMin1="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMin2="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax1="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax2="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" material="Copper"  name="UptreamBeamPipe_3"/>
+
+	    <section type="Upstream" start="QD0_min_z-0.1*mm" end="QD0_min_z" rMin1="SeparatedBeamPipe_rmax-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMax1="SeparatedBeamPipe_rmax+1*mm-(SeparatedBeamPipe_rmax-CollimatorInFrontOfQD0_radius)" rMin2="SeparatedBeamPipe_rmax" rMax2="SeparatedBeamPipe_rmax+1*mm"  material="Copper" name="UptreamBeamPipe_4"/>
+
+           <section type="Upstream" start="QD0_min_z" end="6000*mm" rMin1="SeparatedBeamPipe_rmax"  rMin2="SeparatedBeamPipe_rmax" rMax1="SeparatedBeamPipe_rmax+1*mm"  rMax2="SeparatedBeamPipe_rmax+1*mm"  material="Copper" name="UptreamBeamPipe_5"/>
+
+            
+        </detector>
+
+    </detectors>
+</lccdd>

@@ -193,7 +193,7 @@
         
         <constant name="CompSol_min_z" value="1300*mm"/>
 
-	<!-- cylindrical LumiCal -- >
+	<!-- cylindrical LumiCal -->
         <constant name="LumiCal_max_z" value="CompSol_min_z - 5*cm" />
         <constant name="LumiCal_min_z" value="LumiCal_max_z - 20*cm"/>
         <constant name="LumiCal_dz" value="(LumiCal_max_z-LumiCal_min_z)/2.0"/>
@@ -315,7 +315,7 @@
     
     <include ref="Materials_v01.xml"/>
 
-    <include ref="Beampipe_o4_v01.xml"/>  
+    <include ref="Beampipe_o4_v02.xml"/>  
     
     <include ref="BeamInstrumentation_o3_v01.xml"/>  
 
@@ -325,7 +325,7 @@
     <include ref="HOMAbsorber_o1_v02.xml"/>
     -->   
     <include ref="Vertex_o3_v05.xml"/>  
-<!--    
+    
     <include ref="InnerTracker_o3_v03.xml"/>   
     <include ref="OuterTracker_o2_v03_03.xml"/>
     
@@ -340,7 +340,7 @@
     
     <include ref="YokeBarrel_o1_v01_01.xml"/>
     <include ref="YokeEndcap_o1_v01_01.xml"/>
-    -->
+    
 
     <plugins>
       <plugin name="InstallSurfaceManager"/>
