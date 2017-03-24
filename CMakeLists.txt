@@ -10,8 +10,6 @@ if (SAS)
         )
 endif(SAS)
 
-set(LCG_SYSTEM "$ENV{PLATFORM}")
-set(LCG_releases_base "$ENV{LCGPREFIX}/releases")
 #---------------------------------------------------------------
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
