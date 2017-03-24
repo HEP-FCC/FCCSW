@@ -10,20 +10,18 @@
 /** GridPhiEta Detector/DetSegmentation/DetSegmentation/GridPhiEta.h GridPhiEta.h
  *
  *  Segmentation in eta and phi.
- *  It requires 'export LD_PRELOAD_PATH=$LD_PRELOAD_PATH:build.$BINARY_TAG/lib/libDetSegmentation.so'
  *
  *  @author    Anna Zaborowska
  */
 
 namespace DD4hep {
 namespace DDSegmentation {
-class GridPhiEta: public Segmentation {
+class GridPhiEta : public Segmentation {
 public:
   /// default constructor using an arbitrary type
   GridPhiEta(const std::string& aCellEncoding);
   /// Default constructor used by derived classes passing an existing decoder
   GridPhiEta(BitField64* decoder);
-
 
   /// destructor
   virtual ~GridPhiEta() = default;
