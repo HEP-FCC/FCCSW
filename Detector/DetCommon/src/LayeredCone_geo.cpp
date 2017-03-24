@@ -29,8 +29,8 @@ static DD4hep::Geometry::Ref_t createLayeredCone(DD4hep::Geometry::LCDD& lcdd,
   DD4hep::Geometry::Volume envVolume(name, envelope, lcdd.material(dimensions.materialStr()));
   envVolume.setVisAttributes(lcdd.invisible());
   // Create layer cylinders with their respective material, etc
-  auto layers = xmlElement.children("layer");
-  auto numLayers = xmlElement.numChildren("layer", true);
+  auto layers = xmlElement.children(_Unicode("layer"));
+  auto numLayers = xmlElement.numChildren(_Unicode("layer"), true);
   // Joschka: Although this is awkward, it was the only way to loop through children I could find
   DD4hep::XML::Handle_t layer(layers.reset());
   for(unsigned layerIdx = 0; layerIdx < numLayers; ++layerIdx) {
