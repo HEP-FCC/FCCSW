@@ -36,6 +36,7 @@ hepmc_converter.genvertices.Path="all_genvertices"
 
 from Configurables import GenParticleFilter
 ### Filters generated particles
+# accept is a list of particle statuses that should be accepted
 genfilter = GenParticleFilter("StableParticles", accept=[1], OutputLevel=DEBUG)
 genfilter.allGenParticles.Path = "all_genparticles"
 genfilter.filteredGenParticles.Path = "genparticles"
