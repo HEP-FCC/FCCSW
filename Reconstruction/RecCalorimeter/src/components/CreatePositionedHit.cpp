@@ -14,12 +14,9 @@
 DECLARE_ALGORITHM_FACTORY(CreatePositionedHit)
 
 CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc),
-    m_caloCells("caloCells", Gaudi::DataHandle::Reader, this),
-    m_caloPositionedHits("caloPositionedHits", Gaudi::DataHandle::Writer, this)
-{
-  declareProperty("caloCells", m_caloCells);
-  declareProperty("caloPositionedHits", m_caloPositionedHits);
+  : GaudiAlgorithm(name, svcLoc) {
+  declareProperty("caloCells", m_caloCells, "Handle for calo cells (input collection with cellID)");
+  declareProperty("caloPositionedHits", m_caloPositionedHits, "Handle for positioned hits (output collection)");
 }
 
 StatusCode CreatePositionedHit::initialize() {

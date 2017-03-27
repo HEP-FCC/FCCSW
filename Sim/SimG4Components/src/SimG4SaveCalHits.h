@@ -50,11 +50,11 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for calo hits with additional position information
-  DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits;
+  DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits{"hits/positionedCaloHits", Gaudi::DataHandle::Writer, this};
   /// Handle for calo hits
-  DataHandle<fcc::CaloHitCollection> m_caloHits;
+  DataHandle<fcc::CaloHitCollection> m_caloHits{"hits/caloHits", Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
-  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames"};
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
 
 };
 

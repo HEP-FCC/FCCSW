@@ -51,13 +51,12 @@ private:
   //! if MC particle found (id>=0), its index is then saved to idRefMCPart set,
   //! if relation doesn't exist (id<0), warning is given on output and search for other relations continues
   void findJetPartMC(Candidate* cand, int rangeMCPart, std::set<int>& idRefMCPart);
-
   /// Handle to the jets to be saved
-  DataHandle<fcc::GenJetCollection> m_genJets;
+  DataHandle<fcc::GenJetCollection> m_genJets{"genJets", Gaudi::DataHandle::Writer, this};
   /// Handle to the jets including additional flavour tag information
-  DataHandle<fcc::TaggedGenJetCollection> m_taggedGenJets;
+  DataHandle<fcc::TaggedGenJetCollection> m_taggedGenJets{"taggedGenJets", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes array that should be converted
-  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"};
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName" "", "Name of the Delphes array that should be converted"};
 
 };
 

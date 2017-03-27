@@ -11,15 +11,11 @@
 DECLARE_SERVICE_FACTORY(SimG4Svc)
 
 SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL):
-  base_class(aName, aSL),
-  m_detectorTool("SimG4DD4hepDetector", this, true),
-  m_physicsListTool("SimG4FtfpBert", this, true),
-  m_actionsTool("SimG4FullSimActions", this, true),
-  m_magneticFieldTool("SimG4ConstantMagneticFieldTool", this, true) {
-  declareProperty("detector", m_detectorTool);
-  declareProperty("physicslist", m_physicsListTool);
-  declareProperty("actions", m_actionsTool);
-  declareProperty("magneticField", m_magneticFieldTool);
+  base_class(aName, aSL) {
+  declareProperty("detector", m_detectorTool, "Handle for the detector construction tool");
+  declareProperty("physicslist", m_physicsListTool, "Handle for the Geant physics list tool");
+  declareProperty("actions", m_actionsTool, "Handle for the user action initialization");
+  declareProperty("magneticField", m_magneticFieldTool, "Handle for the magnetic field initialization");
 }
 
 SimG4Svc::~SimG4Svc(){}

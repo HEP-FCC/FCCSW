@@ -48,21 +48,21 @@ public:
 
 private:
   /// Add pileup contribution to the electronics noise? (only if read from file)
-  bool m_addPileup;
+  Gaudi::Property<bool> m_addPileup{this, "addPileup", true, "Add pileup contribution to the electronics noise? (only if read from file)"};
   /// Name of the file with noise constants
-  std::string m_noiseFileName;
+  Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "", "Name of the file with noise constants"};
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active layers for sampling calorimeter
-  std::string m_activeFieldName;
+  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer", "Name of active layers for sampling calorimeter"};
   /// Name of pileup histogram
-  std::string m_pileupHistoName;
+  Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "h_pileup_layer", "Name of pileup histogram"};
   /// Name of electronics noise histogram
-  std::string m_elecNoiseHistoName;
+  Gaudi::Property<std::string> m_elecNoiseHistoName{"elecNoiseHistoName", "h_elecNoise_layer", "Name of electronics noise histogram"};
   /// Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)
-  double m_filterThreshold;
+  Gaudi::Property<double> m_filterThreshold{this, "filterNoiseThreshold", 3, " Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)"};
   /// Number of radial layers
-  uint m_numRadialLayers;
+  Gaudi::Property<uint> m_numRadialLayers{this, "numRadialLayers", 3, "Number of radial layers"};
 
   /// Histograms with pileup constants (index in array - radial layer)
   std::vector<TH1F> m_histoPileupConst;

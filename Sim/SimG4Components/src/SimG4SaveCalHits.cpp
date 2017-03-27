@@ -17,12 +17,10 @@
 DECLARE_TOOL_FACTORY(SimG4SaveCalHits)
 
 SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_positionedCaloHits("hits/positionedCaloHits", Gaudi::DataHandle::Writer, this),
-  m_caloHits("hits/caloHits", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("positionedCaloHits", m_positionedCaloHits);
-  declareProperty("caloHits", m_caloHits);
+  declareProperty("positionedCaloHits", m_positionedCaloHits, "Handle for calo hits with additional position information");
+  declareProperty("caloHits", m_caloHits, "Handle for calo hits");
 }
 
 SimG4SaveCalHits::~SimG4SaveCalHits() {}

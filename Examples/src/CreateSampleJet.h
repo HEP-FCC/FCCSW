@@ -25,7 +25,7 @@ public:
 
 private:
   /// Handle for the jets to be written
-  DataHandle<fcc::JetCollection> m_jethandle;
+  DataHandle<fcc::JetCollection> m_jethandle{"podioJets", Gaudi::DataHandle::Writer, this};
 
 };
 

@@ -12,11 +12,9 @@
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
 MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc):
-  GaudiAlgorithm(aName, aSvcLoc),
-  m_inHits("hits/caloInHits", Gaudi::DataHandle::Reader, this),
-  m_outHits("hits/caloOutHits", Gaudi::DataHandle::Writer, this) {
-  declareProperty("inhits", m_inHits);
-  declareProperty("outhits", m_outHits);
+  GaudiAlgorithm(aName, aSvcLoc) {
+  declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
+  declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
 
 MergeCells::~MergeCells() {}

@@ -18,15 +18,6 @@ NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type, 
                                                        const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<INoiseCaloCellsTool>(this);
-  declareProperty("addPileup", m_addPileup = true);
-  declareProperty("noiseFileName", m_noiseFileName = "");
-  declareProperty("readoutName", m_readoutName = "ECalHitsPhiEta");
-  declareProperty("activeFieldName", m_activeFieldName = "active_layer");
-  declareProperty("elecNoiseHistoName", m_elecNoiseHistoName = "h_elecNoise_layer");
-  declareProperty("pileupHistoName", m_pileupHistoName = "h_pileup_layer");
-  declareProperty("numRadialLayers", m_numRadialLayers = 3);
-  // remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)
-  declareProperty("filterNoiseThreshold", m_filterThreshold = 3);
 }
 
 StatusCode NoiseCaloCellsFromFileTool::initialize() {
@@ -93,7 +84,7 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
     error() << "Name of the file with noise values not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile file(m_noiseFileName.c_str(), "READ");
+  TFile file(m_noiseFileName.value().c_str(), "READ");
   if (file.IsZombie()) {
     error() << "Couldn't open the file with noise constants" << endmsg;
     return StatusCode::FAILURE;

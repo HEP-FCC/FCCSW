@@ -11,10 +11,9 @@
 DECLARE_TOOL_FACTORY(SimG4FastSimTrackerRegion)
 
 SimG4FastSimTrackerRegion::SimG4FastSimTrackerRegion(const std::string& type, const std::string& name, const IInterface* parent) :
-  GaudiTool(type, name, parent),
-  m_smearTool("SimG4ParticleSmearSimple", this, true) {
+  GaudiTool(type, name, parent) {
   declareInterface<ISimG4RegionTool>(this);
-  declareProperty("smearing", m_smearTool);
+  declareProperty("smearing", m_smearTool, "Pointer to a smearing tool, to retrieve tracker configuration (names of volumes)");
 }
 
 SimG4FastSimTrackerRegion::~SimG4FastSimTrackerRegion() {}

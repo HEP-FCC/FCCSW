@@ -10,13 +10,10 @@
 DECLARE_COMPONENT(HepMCConverter)
 
 HepMCConverter::HepMCConverter(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc),
-m_hepmchandle("hepmc", Gaudi::DataHandle::Reader, this),
-m_genphandle("genParticles", Gaudi::DataHandle::Writer, this),
-m_genvhandle("genVertices", Gaudi::DataHandle::Writer, this) {
-  declareProperty("hepmc", m_hepmchandle);
-  declareProperty("genparticles", m_genphandle);
-  declareProperty("genvertices", m_genvhandle);
+GaudiAlgorithm(name, svcLoc) {
+  declareProperty("hepmc", m_hepmchandle, "HepMC event handle (input)");
+  declareProperty("genparticles", m_genphandle, "Generated particles collection (output)");
+  declareProperty("genvertices", m_genvhandle, "Generated vertices collection (output)");
   }
 
 StatusCode HepMCConverter::initialize() {

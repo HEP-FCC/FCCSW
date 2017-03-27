@@ -25,12 +25,10 @@ DECLARE_COMPONENT(SimG4SingleParticleGeneratorTool)
 SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::string& type,
                                                              const std::string& nam,
                                                              const IInterface* parent)
-    : GaudiTool(type, nam, parent),
-      m_genParticlesHandle("GenParticles", Gaudi::DataHandle::Writer, this),
-      m_genVerticesHandle("GenVertices", Gaudi::DataHandle::Writer, this) {
+    : GaudiTool(type, nam, parent) {
   declareInterface<ISimG4EventProviderTool>(this);
-  declareProperty("genParticles", m_genParticlesHandle);
-  declareProperty("genVertices", m_genVerticesHandle);
+  declareProperty("genParticles", m_genParticlesHandle, "Handle for the genparticles to be written");
+  declareProperty("genVertices", m_genVerticesHandle, "Handle for the genvertices to be written");
 }
 
 SimG4SingleParticleGeneratorTool::~SimG4SingleParticleGeneratorTool() {}

@@ -14,19 +14,14 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
 CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc),
-    m_calibTool("CalibrateCaloHitsTool", this),
-    m_noiseTool("NoiseCaloCellsFlatTool", this),
-    m_geoTool("TubeLayerPhiEtaCaloTool", this),
-    m_hits("hits", Gaudi::DataHandle::Reader, this),
-    m_cells("cells", Gaudi::DataHandle::Writer, this)
+  : GaudiAlgorithm(name, svcLoc)
 {
-  declareProperty("hits", m_hits);
-  declareProperty("cells", m_cells);
+  declareProperty("hits", m_hits, "Hits from which to create cells (input)");
+  declareProperty("cells", m_cells, "The created calorimeter cells (output)");
 
-  declareProperty("calibTool", m_calibTool);
-  declareProperty("noiseTool", m_noiseTool);
-  declareProperty("geometryTool", m_geoTool);
+  declareProperty("calibTool", m_calibTool, "Handle for tool to calibrate Geant4 energy to EM scale tool");
+  declareProperty("noiseTool", m_noiseTool, "Handle for the calorimeter cells noise tool");
+  declareProperty("geometryTool", m_geoTool, "Handle for the geometry tool");
 }
 
 

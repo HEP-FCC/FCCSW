@@ -14,14 +14,11 @@
 DECLARE_TOOL_FACTORY(DelphesSaveNeutralParticles)
 
 DelphesSaveNeutralParticles::DelphesSaveNeutralParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_particles("particles", Gaudi::DataHandle::Writer, this),
-  m_mcAssociations("mcAssociations", Gaudi::DataHandle::Writer, this),
-  m_isolationTags("isolationTags", Gaudi::DataHandle::Writer, this) {
+GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareProperty("particles", m_particles);
-  declareProperty("mcAssociations", m_mcAssociations);
-  declareProperty("isolationTags", m_isolationTags);
+  declareProperty("particles", m_particles, "Handle the particles to be saved");
+  declareProperty("mcAssociations", m_mcAssociations, "Handle to associate particles with MCParticles");
+  declareProperty("isolationTags", m_isolationTags, "Handle for particles with isolation information");
 }
 
 DelphesSaveNeutralParticles::~DelphesSaveNeutralParticles() {}
@@ -52,7 +49,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
   for(int j=0; j<delphesColl->GetEntries(); j++) {
 
-    
+
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
 
@@ -78,7 +75,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
       iTagValue = iTag.tag();
     }
-   
+
     // Debug: print FCC-EDM tower info
     if (msgLevel() <= MSG::DEBUG) {
 

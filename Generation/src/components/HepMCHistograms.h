@@ -23,15 +23,15 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataHandle<HepMC::GenEvent> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Reader, this};
 
-  ITHistSvc* m_ths; ///< THistogram service
+  ITHistSvc* m_ths{nullptr}; ///< THistogram service
 
-  TH1F* m_pt; ///< histogram for pT of particles
-  TH1F* m_eta; ///< histogram for pseudorapidity of particles
+  TH1F* m_pt{nullptr}; ///< histogram for pT of particles
+  TH1F* m_eta{nullptr}; ///< histogram for pseudorapidity of particles
 
-  TH1F* m_d0; ///< histogram for transversal IP
-  TH1F* m_z0; ///< histogram for longidudinal IP
+  TH1F* m_d0{nullptr}; ///< histogram for transversal IP
+  TH1F* m_z0{nullptr}; ///< histogram for longidudinal IP
 };
 
 #endif // GENERATION_HEPMCHISTOGRAMS_H

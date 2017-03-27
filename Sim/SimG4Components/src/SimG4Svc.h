@@ -58,21 +58,21 @@ private:
   /// Pointer to the tool service
   SmartIF<IToolSvc> m_toolSvc;
   /// Handle for the detector construction tool
-  ToolHandle<ISimG4DetectorConstruction> m_detectorTool;
+  ToolHandle<ISimG4DetectorConstruction> m_detectorTool{"SimG4DD4hepDetector", this, true};
   /// Handle for the Geant physics list tool
-  ToolHandle<ISimG4PhysicsList> m_physicsListTool;
+  ToolHandle<ISimG4PhysicsList> m_physicsListTool{"SimG4FtfpBert", this, true};
   /// Handle for the user action initialization
-  ToolHandle<ISimG4ActionTool> m_actionsTool;
+  ToolHandle<ISimG4ActionTool> m_actionsTool{"SimG4FullSimActions", this, true};
   /// Handle for the magnetic field initialization
-  ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool;
+  ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool{"SimG4ConstantMagneticFieldTool", this, true};
   /// Geant4 commands to be executed
-  Gaudi::Property<std::vector<std::string>> m_g4Commands{this, "G4commands"};
+  Gaudi::Property<std::vector<std::string>> m_g4Commands{this, "G4commands", {}, "Geant4 commands to be executed"};
   /// Handles to the tools creating regions and fast simulation models
   /// to be replaced with the ToolHandleArray<ISimG4RegionTool> m_regionTools
   std::vector<ISimG4RegionTool*> m_regionTools;
   /// Names of the tools that create regions and fast simulation models
   /// to be deleted once the ToolHandleArray<ISimG4RegionTool> m_regionTools is in place
-  Gaudi::Property<std::vector<std::string>> m_regionToolNames{this, "regions"};
+  Gaudi::Property<std::vector<std::string>> m_regionToolNames{this, "regions", {}, "Names of the tools that create regions and fast simulation models"};
 
   /// Run Manager
   sim::RunManager m_runManager;

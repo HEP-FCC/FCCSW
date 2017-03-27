@@ -14,7 +14,7 @@ public:
     GaudiAlgorithm(name, svcLoc),
     m_genParticles("allGenParticles", Gaudi::DataHandle::Reader, this)
   {
-    declareProperty("genParticles", m_genParticles);
+    declareProperty("genParticles", m_genParticles, "Generated particles to read");
   }
 
   ~ReadTestConsumer() {};

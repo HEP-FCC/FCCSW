@@ -13,10 +13,9 @@
 DECLARE_TOOL_FACTORY(DelphesSaveMet)
 
 DelphesSaveMet::DelphesSaveMet(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_mets("missingEt", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareProperty("missingEt", m_mets);
+  declareProperty("missingEt", m_mets, "Handle the METs to be saved");
 }
 
 DelphesSaveMet::~DelphesSaveMet() {}

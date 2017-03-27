@@ -13,14 +13,9 @@ using namespace fastjet;
 DECLARE_COMPONENT(HepMCJetClustering)
 
 HepMCJetClustering::HepMCJetClustering(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc)
-	, m_hepmchandle("HepMC", Gaudi::DataHandle::Reader, this)
-	, m_jets("GenJets", Gaudi::DataHandle::Writer, this)
-  , m_fj_jetAlgorithm(JetAlgorithm::undefined_jet_algorithm)
-  , m_fj_recombinationScheme(RecombinationScheme::E_scheme)
-{
-  declareProperty("hepmc", m_hepmchandle);
-  declareProperty("jets", m_jets);
+  GaudiAlgorithm(name, svcLoc) {
+  declareProperty("hepmc", m_hepmchandle, "Handle for the HepMC to be read");
+  declareProperty("jets", m_jets, "Handle for PseudoJets to be produced");
 }
 
 StatusCode HepMCJetClustering::initialize() {

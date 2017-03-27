@@ -3,13 +3,7 @@
 DECLARE_COMPONENT(HepMCHistograms)
 
 HepMCHistograms::HepMCHistograms(const std::string& name, ISvcLocator* svcLoc) :
-  GaudiAlgorithm(name, svcLoc),
-  m_hepmchandle("HepMC", Gaudi::DataHandle::Reader, this),
-  m_ths(nullptr),
-  m_pt(nullptr),
-  m_eta(nullptr),
-  m_d0(nullptr),
-  m_z0(nullptr) {
+  GaudiAlgorithm(name, svcLoc) {
   declareProperty("hepmc", m_hepmchandle);
 }
 
@@ -65,13 +59,13 @@ StatusCode HepMCHistograms::execute() {
     m_d0->Fill(vertex->position().perp());
     m_z0->Fill(vertex->position().z());
   }
-  
+
   return StatusCode::SUCCESS;
 }
 
 StatusCode HepMCHistograms::finalize() {
   if (GaudiAlgorithm::finalize().isFailure())
     return StatusCode::FAILURE;
-  
+
   return StatusCode::SUCCESS;
 }

@@ -8,21 +8,13 @@
 DECLARE_COMPONENT(HepMCReader)
 
 HepMCReader::HepMCReader(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc),
-  m_signalFileReader("HepMCFileReader/FileReaderSignal", this),
-  m_pileupFileReader("HepMCFileReader/FileReaderPileup", this),
-  // FIXME: Why are these public tools?
-  m_pileUpTool("ConstPileUp/PileUpTool"),
-  m_HepMCMergeTool("HepMCSimpleMerge/HepMCMergeTool"),
-  m_vertexSmearingTool("FlatSmearVertex/VertexSmearingTool"),
-  m_hepmchandle("HepMC", Gaudi::DataHandle::Writer, this) {
-
-  declareProperty("PileUpTool", m_pileUpTool);
-  declareProperty("VertexSmearingTool", m_vertexSmearingTool);
-  declareProperty("HepMCMergeTool", m_HepMCMergeTool);
-  declareProperty("FileReaderSignal", m_signalFileReader);
-  declareProperty("FileReaderPileUp", m_pileupFileReader);
-  declareProperty("hepmc", m_hepmchandle);
+  GaudiAlgorithm(name, svcLoc) {
+  declareProperty("PileUpTool", m_pileUpTool, "Tool that provides the number of pile up events");
+  declareProperty("VertexSmearingTool", m_vertexSmearingTool, "Tool that allows to smear vertices");
+  declareProperty("HepMCMergeTool", m_HepMCMergeTool, "Tool that merges the pile up events into the signal event");
+  declareProperty("FileReaderSignal", m_signalFileReader, "Tool that allows to read signal file events");
+  declareProperty("FileReaderPileUp", m_pileupFileReader, "Tool that allows to file containing pile up events");
+  declareProperty("hepmc", m_hepmchandle, "The HepMc Event output (output)");
 }
 
 StatusCode HepMCReader::initialize() {

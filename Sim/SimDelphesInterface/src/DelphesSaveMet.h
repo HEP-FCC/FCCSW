@@ -43,11 +43,11 @@ public:
                                 const fcc::MCParticleCollection& mcParticles) final;
 private:
   /// Handle the METs to be saved
-  DataHandle<fcc::METCollection> m_mets;
+  DataHandle<fcc::METCollection> m_mets{"missingEt", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes MET array that should be converted
-  Gaudi::Property<std::string> m_delphesMETArrayName{this, "delphesMETArrayName"};
+  Gaudi::Property<std::string> m_delphesMETArrayName{this, "delphesMETArrayName", "", "Name of the Delphes MET array that should be converted"};
   /// Name of the Delphes SHT array that should be converted
-  Gaudi::Property<std::string> m_delphesSHTArrayName{this, "delphesSHTArrayName"};
+  Gaudi::Property<std::string> m_delphesSHTArrayName{this, "delphesSHTArrayName", "", "Name of the Delphes SHT array that should be converted"};
 
 };
 

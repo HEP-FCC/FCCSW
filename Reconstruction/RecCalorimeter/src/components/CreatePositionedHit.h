@@ -49,9 +49,9 @@ public:
 
 private:
   /// Handle for calo cells (input collection with cellID)
-  DataHandle<fcc::CaloHitCollection> m_caloCells;
+  DataHandle<fcc::CaloHitCollection> m_caloCells{"caloCells", Gaudi::DataHandle::Reader, this};
   /// Handle for positioned hits (output collection)
-  DataHandle<fcc::PositionedCaloHitCollection> m_caloPositionedHits;
+  DataHandle<fcc::PositionedCaloHitCollection> m_caloPositionedHits{"caloPositionedHits", Gaudi::DataHandle::Writer, this};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsNew"};
   /// Name of active layers for sampling calorimeter

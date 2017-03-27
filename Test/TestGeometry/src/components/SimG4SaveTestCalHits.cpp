@@ -14,12 +14,10 @@
 DECLARE_TOOL_FACTORY(SimG4SaveTestCalHits)
 
 SimG4SaveTestCalHits::SimG4SaveTestCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_caloHitsPositioned("hits/caloHitsPositioned", Gaudi::DataHandle::Writer, this),
-  m_caloHits("hits/caloHits", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("caloClusters", m_caloHitsPositioned);
-  declareProperty("caloHits", m_caloHits);
+  declareProperty("caloClusters", m_caloHitsPositioned, "Handle for calo clusters");
+  declareProperty("caloHits", m_caloHits,"Handle for calo hits");
 }
 
 SimG4SaveTestCalHits::~SimG4SaveTestCalHits() {}

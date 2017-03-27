@@ -15,20 +15,14 @@
 DECLARE_TOOL_FACTORY(DelphesSaveJets)
 
 DelphesSaveJets::DelphesSaveJets(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_jets("jets", Gaudi::DataHandle::Writer, this),
-  m_jetParticles("jetConstituents", Gaudi::DataHandle::Writer, this),
-  m_jetsFlavorTagged("jetsFlavorTagged", Gaudi::DataHandle::Writer, this),
-  m_jetsBTagged("jetsBTagged", Gaudi::DataHandle::Writer, this),
-  m_jetsCTagged("jetsCTagged", Gaudi::DataHandle::Writer, this),
-  m_jetsTauTagged("jetsTauTagged", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareProperty("jets", m_jets);
-  declareProperty("jetConstituents", m_jetParticles);
-  declareProperty("jetsFlavorTagged", m_jetsFlavorTagged);
-  declareProperty("jetsBTagged", m_jetsBTagged);
-  declareProperty("jetsCTagged", m_jetsCTagged);
-  declareProperty("jetsTauTagged", m_jetsTauTagged);
+  declareProperty("jets", m_jets, "Handle to the jets to be saved");
+  declareProperty("jetConstituents", m_jetParticles, "Handle to the jet constituents to be saved");
+  declareProperty("jetsFlavorTagged", m_jetsFlavorTagged, "Handle to the jet flavor tags to be saved");
+  declareProperty("jetsBTagged", m_jetsBTagged, "Handle to the b tags to be saved");
+  declareProperty("jetsCTagged", m_jetsCTagged, "Handle to the c tags to be saved");
+  declareProperty("jetsTauTagged", m_jetsTauTagged, "Handle to the tau tags to be saved");
 }
 
 DelphesSaveJets::~DelphesSaveJets() {}

@@ -37,13 +37,13 @@ public:
 
 private:
   /// Material name of the active layer in the sampling calorimeter (to be searched for in Geant NIST table)
-  Gaudi::Property<std::string> m_materialActive{this, "materialActive", ""};
+  Gaudi::Property<std::string> m_materialActive{this, "materialActive", "", "Material name of the active layer in the sampling calorimeter (to be searched for in Geant NIST table)"};
   /// Material name of the passive layer in the sampling calorimeter (to be searched for in Geant NIST table)
-  Gaudi::Property<std::string> m_materialPassive{this, "materialPassive", ""};
+  Gaudi::Property<std::string> m_materialPassive{this, "materialPassive", "", "Material name of the passive layer in the sampling calorimeter (to be searched for in Geant NIST table)"};
   /// Thickness of the active layer
-  Gaudi::Property<double> m_thicknessActive{this, "thicknessActive", 0};
+  Gaudi::Property<double> m_thicknessActive{this, "thicknessActive", 0, "Thickness of the active layer"};
   /// Thickness of the passive layer
-  Gaudi::Property<double> m_thicknessPassive{this, "thicknessPassive", 0};
+  Gaudi::Property<double> m_thicknessPassive{this, "thicknessPassive", 0, "Thickness of the passive layer"};
 
 };
 

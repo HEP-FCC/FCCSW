@@ -76,7 +76,7 @@ private:
   /// (lower end is defined by previous entry, and eta=0 for the first one)
   std::map<double, TGraph> m_momentumResolutions;
   /// File name with the resolutions obtained from root file (set by job options)
-  Gaudi::Property<std::string> m_resolutionFileName{this, "filename"};
+  Gaudi::Property<std::string> m_resolutionFileName{this, "filename", "", "File name with the resolutions obtained from root file"};
   /// minimum momentum defined in the resolution file
   double m_minMomentum;
   /// maximum momentum defined in the resolution file

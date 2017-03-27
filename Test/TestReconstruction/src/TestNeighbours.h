@@ -49,9 +49,9 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::CaloHitCollection> m_inHits;
+  DataHandle<fcc::CaloHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Name of the detector readout
-  Gaudi::Property<std::string> m_readoutName {this, "readout", ""};
+  Gaudi::Property<std::string> m_readoutName {this, "readout", "", "Name of the detector readout"};
   /// Pointer to the bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
   /// Names of the fields for which neighbours are found

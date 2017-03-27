@@ -50,11 +50,11 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for tracker hits
-  DataHandle<fcc::TrackHitCollection> m_trackHits;
+  DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trackerHits", Gaudi::DataHandle::Writer, this};
   /// Handle for tracker hits including position information
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
+  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits", Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
-  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames"};
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
 
 };
 

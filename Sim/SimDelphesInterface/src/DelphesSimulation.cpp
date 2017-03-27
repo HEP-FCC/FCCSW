@@ -28,21 +28,8 @@
 DECLARE_COMPONENT(DelphesSimulation)
 
 DelphesSimulation::DelphesSimulation(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc),
-  m_Delphes(nullptr),
-  m_hepMCConverter(nullptr),
-  m_hepmcHandle("hepmc", Gaudi::DataHandle::Reader, this),
-  m_handleMCEventWeights("mcEventWeights", Gaudi::DataHandle::Writer, this),
-  m_handleGenParticles("genParticles", Gaudi::DataHandle::Writer, this),
-  m_eventCounter(0),
-  m_outRootFile(nullptr),
-  m_treeWriter(nullptr),
-  m_branchEvent(nullptr),
-  m_confReader(nullptr),
-  m_allParticles(nullptr),
-  m_stableParticles(nullptr)
-{
-  declareProperty("hepmc", m_hepmcHandle);
+  GaudiAlgorithm(name, svcLoc) {
+  declareProperty("hepmc", m_hepmcHandle, "");
   declareProperty("mcEventWeights", m_handleMCEventWeights);
   declareProperty("genParticles", m_handleGenParticles);
 }

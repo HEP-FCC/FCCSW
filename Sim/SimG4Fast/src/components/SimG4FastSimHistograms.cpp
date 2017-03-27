@@ -15,12 +15,8 @@
 DECLARE_ALGORITHM_FACTORY(SimG4FastSimHistograms)
 
 SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc):
-  GaudiAlgorithm(aName, aSvcLoc),
-  m_particlesMCparticles("particlesMCparticles", Gaudi::DataHandle::Reader, this),
-  m_p(nullptr),
-  m_diffP(nullptr),
-  m_pdg(nullptr) {
-  declareProperty("particlesMCparticles", m_particlesMCparticles);
+  GaudiAlgorithm(aName, aSvcLoc) {
+  declareProperty("particlesMCparticles", m_particlesMCparticles, "Handle for the EDM particles and MC particles associations to be read");
 }
 SimG4FastSimHistograms::~SimG4FastSimHistograms() {}
 

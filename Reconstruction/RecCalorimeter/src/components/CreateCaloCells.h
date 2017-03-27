@@ -50,12 +50,12 @@ public:
   StatusCode finalize();
 
 private:
-  /// Handle for calibration Geant4 energy to EM scale tool
-  ToolHandle<ICalibrateCaloHitsTool> m_calibTool;
+  /// Handle for tool to calibrate Geant4 energy to EM scale tool
+  ToolHandle<ICalibrateCaloHitsTool> m_calibTool{"CalibrateCaloHitsTool", this};
   /// Handle for the calorimeter cells noise tool
-  ToolHandle<INoiseCaloCellsTool> m_noiseTool;
+  ToolHandle<INoiseCaloCellsTool> m_noiseTool{"NoiseCaloCellsFlatTool", this};
   /// Handle for the geometry tool
-  ToolHandle<ICalorimeterTool> m_geoTool;
+  ToolHandle<ICalorimeterTool> m_geoTool{"TubeLayerPhiEtaCaloTool", this};
 
   /// Calibrate to EM scale?
   Gaudi::Property<bool> m_doCellCalibration{this, "doCellCalibration", true, "Calibrate to EM scale?"};
@@ -64,9 +64,9 @@ private:
   /// Save only cells with energy above threshold?
   Gaudi::Property<bool> m_filterCellNoise{this, "filterCellNoise", false, "Save only cells with energy above threshold?"};
   /// Handle for calo hits (input collection)
-  DataHandle<fcc::CaloHitCollection> m_hits;
+  DataHandle<fcc::CaloHitCollection> m_hits{"hits", Gaudi::DataHandle::Reader, this};
   /// Handle for calo cells (output collection)
-  DataHandle<fcc::CaloHitCollection> m_cells;
+  DataHandle<fcc::CaloHitCollection> m_cells{"cells", Gaudi::DataHandle::Writer, this};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active volumes (material name)

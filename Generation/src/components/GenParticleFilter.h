@@ -34,9 +34,9 @@ private:
   /// Particle statuses to accept
   Gaudi::Property<std::vector<unsigned>> m_accept{this, "accept", {1}, "Particle statuses to accept"};
   /// Handle for the ParticleCollection to be read
-  DataHandle<fcc::MCParticleCollection> m_iGenpHandle;
+  DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"AllGenParticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_oGenpHandle;
+  DataHandle<fcc::MCParticleCollection> m_oGenpHandle{"FilteredGenParticles", Gaudi::DataHandle::Writer, this};
 };
 
 #endif // GENERATION_GENPARTICLEFILTER_H

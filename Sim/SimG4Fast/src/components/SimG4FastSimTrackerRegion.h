@@ -60,20 +60,20 @@ public:
 
 private:
   /// Pointer to a smearing tool, to retrieve tracker configuration (names of volumes)
-  ToolHandle<ISimG4ParticleSmearTool> m_smearTool;
+  ToolHandle<ISimG4ParticleSmearTool> m_smearTool{"SimG4ParticleSmearSimple", this, true};
   /// Envelopes that are used in a parametric simulation
   /// deleted by the G4RegionStore
   std::vector<G4Region*> m_g4regions;
   /// Fast simulation (parametrisation) models
   std::vector<std::unique_ptr<G4VFastSimulationModel>> m_models;
   /// Names of the parametrised volumes (set by job options)
-  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames"};
+  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames", {}, "Names of the parametrised volumes"};
   /// minimum momentum that triggers the fast sim model (set by job options)
-  Gaudi::Property<double> m_minMomentum{this, "minMomentum", 0};
+  Gaudi::Property<double> m_minMomentum{this, "minMomentum", 0, "minimum momentum that triggers the fast sim model"};
   /// maximum momentum that triggers the fast sim model (set by job options)
-  Gaudi::Property<double> m_maxMomentum{this, "maxMomentum", 0};
+  Gaudi::Property<double> m_maxMomentum{this, "maxMomentum", 0, "maximum momentum that triggers the fast sim model"};
   /// maximum pseudorapidity (set by job options)
-  Gaudi::Property<double> m_maxEta{this, "maxEta", 0};
+  Gaudi::Property<double> m_maxEta{this, "maxEta", 0, "maximum pseudorapidity"};
 
 };
 

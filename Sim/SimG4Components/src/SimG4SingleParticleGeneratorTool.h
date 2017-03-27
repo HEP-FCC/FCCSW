@@ -70,9 +70,9 @@ private:
   /// Flag whether to save primary particle to EDM, set with saveEdm
   Gaudi::Property<bool> m_saveEdm{this, "saveEdm", false};
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle;
+  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle{"GenParticles", Gaudi::DataHandle::Writer, this};
   /// Handle for the genvertices to be written
-  DataHandle<fcc::GenVertexCollection> m_genVerticesHandle;
+  DataHandle<fcc::GenVertexCollection> m_genVerticesHandle{"GenVertices", Gaudi::DataHandle::Writer, this};
 };
 
 #endif

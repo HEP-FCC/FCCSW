@@ -9,10 +9,9 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc),
-    m_clusters("calo/clusters", Gaudi::DataHandle::Writer, this) {
-  declareProperty("clusters", m_clusters);
-  declareProperty("towerTool", m_towerTool);
+  : GaudiAlgorithm(name, svcLoc) {
+  declareProperty("clusters", m_clusters, "Handle for calo clusters (output collection)");
+  declareProperty("towerTool", m_towerTool, "Handle for the tower building tool");
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {

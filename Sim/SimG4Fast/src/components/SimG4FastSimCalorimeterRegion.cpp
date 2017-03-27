@@ -13,12 +13,9 @@
 DECLARE_TOOL_FACTORY(SimG4FastSimCalorimeterRegion)
 
 SimG4FastSimCalorimeterRegion::SimG4FastSimCalorimeterRegion(const std::string& type, const std::string& name, const IInterface* parent) :
-  GaudiTool(type, name, parent),
-  m_parametrisationTool("SimG4GflashHomo", this, true),
-  m_parametrisation(nullptr),
-  m_particleBounds(nullptr) {
+  GaudiTool(type, name, parent) {
   declareInterface<ISimG4RegionTool>(this);
-  declareProperty("parametrisation", m_parametrisationTool);
+  declareProperty("parametrisation", m_parametrisationTool, "Pointer to a parametrisation tool, to retrieve calorimeter parametrisation");
 }
 
 SimG4FastSimCalorimeterRegion::~SimG4FastSimCalorimeterRegion() {}

@@ -46,19 +46,19 @@ public:
                                 const fcc::MCParticleCollection& mcParticles) final;
 private:
   /// Handle to the jets to be saved
-  DataHandle<fcc::JetCollection> m_jets;
+  DataHandle<fcc::JetCollection> m_jets{"jets", Gaudi::DataHandle::Writer, this};
   /// Handle to the jet constituents to be saved
-  DataHandle<fcc::ParticleCollection> m_jetParticles;
+  DataHandle<fcc::ParticleCollection> m_jetParticles{"jetConstituents", Gaudi::DataHandle::Writer, this};
   /// Handle to the jet flavor tags to be saved
-  DataHandle<fcc::TaggedJetCollection> m_jetsFlavorTagged;
+  DataHandle<fcc::TaggedJetCollection> m_jetsFlavorTagged{"jetsFlavorTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the b tags to be saved
-  DataHandle<fcc::TaggedJetCollection> m_jetsBTagged;
+  DataHandle<fcc::TaggedJetCollection> m_jetsBTagged{"jetsBTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the c tags to be saved
-  DataHandle<fcc::TaggedJetCollection> m_jetsCTagged;
+  DataHandle<fcc::TaggedJetCollection> m_jetsCTagged{"jetsCTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the tau tags to be saved
-  DataHandle<fcc::TaggedJetCollection> m_jetsTauTagged;
+  DataHandle<fcc::TaggedJetCollection> m_jetsTauTagged{"jetsTauTagged", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes array that should be converted
-  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"};
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "", "Name of the Delphes array that should be converted"};
 
 };
 

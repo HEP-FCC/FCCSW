@@ -15,12 +15,10 @@
 DECLARE_TOOL_FACTORY(DelphesSaveGenJets)
 
 DelphesSaveGenJets::DelphesSaveGenJets(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_genJets("genJets", Gaudi::DataHandle::Writer, this),
-  m_taggedGenJets("genJets", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareProperty("genJets", m_genJets);
-  declareProperty("genJetsFlavorTagged", m_taggedGenJets);
+  declareProperty("genJets", m_genJets, "Handle to the jets to be saved");
+  declareProperty("genJetsFlavorTagged", m_taggedGenJets, "Handle to the jets including additional flavour tag information");
 }
 
 DelphesSaveGenJets::~DelphesSaveGenJets() {}

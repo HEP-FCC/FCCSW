@@ -16,14 +16,11 @@
 DECLARE_TOOL_FACTORY(DelphesSaveChargedParticles)
 
 DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_particles("particles", Gaudi::DataHandle::Writer, this),
-  m_mcAssociations("mcAssociations", Gaudi::DataHandle::Writer, this),
-  m_isolationTaggedParticles("isolationTags", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareProperty("particles", m_particles);
-  declareProperty("mcAssociations", m_mcAssociations);
-  declareProperty("isolationTags", m_isolationTaggedParticles);
+  declareProperty("particles", m_particles, "Handle the particles to be saved");
+  declareProperty("mcAssociations", m_mcAssociations, "Handle to associate particles with MCParticles");
+  declareProperty("isolationTags", m_isolationTaggedParticles, "Handle for isolation tags");
 }
 
 DelphesSaveChargedParticles::~DelphesSaveChargedParticles() {}
@@ -54,7 +51,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
   for(int j=0; j < delphesColl->GetEntries(); j++) {
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
-    
+
     auto& barePart    = particle.core();
     barePart.pdgId    = cand->PID;
     barePart.status   = cand->Status;
@@ -66,7 +63,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     barePart.vertex.x = cand->InitialPosition.X();
     barePart.vertex.y = cand->InitialPosition.Y();
     barePart.vertex.z = cand->InitialPosition.Z();
-    
+
     // Isolation-tag info
     float iTagValue = 0;
     if (colITags!=nullptr) {
@@ -80,7 +77,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     auto relation   = ascColParticlesToMC->create();
     if (cand->GetCandidates()->GetEntries()>0) {
       auto refCand = static_cast<Candidate*>(cand->GetCandidates()->At(0));
-      
+
       // find refCand in mcParticle collection
       int index = -1;
       for(int k=0 ; k < mcParticles.size();  k++) {

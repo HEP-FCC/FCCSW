@@ -23,7 +23,7 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataHandle<HepMC::GenEvent> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Reader, this};
 };
 
 #endif // GENERATION_HEPMCDUMPER_H

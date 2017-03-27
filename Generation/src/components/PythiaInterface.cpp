@@ -25,24 +25,9 @@
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc),
-  m_pythiaSignal(nullptr),
-  m_pythiaPileup(nullptr),
-  m_matching(nullptr),
-  m_setting(nullptr),
-  m_slowJet(nullptr),
-  m_pileUpTool("ConstPileUp/PileUpTool", this),
-  m_HepMCMergeTool(),
-  m_vertexSmearingTool(),
-  m_hepmchandle("HepMC", Gaudi::DataHandle::Reader, this),
-  m_handleMePsMatchingVars("mePsMatchingVars", Gaudi::DataHandle::Writer, this),
-  m_nAbort(0),
-  m_iAbort(0),
-  m_iEvent(0),
-  m_doMePsMatching(false),
-  m_doMePsMerging(false) {
-  declareProperty("hepmc", m_hepmchandle);
-  declareProperty("PileUpTool", m_pileUpTool);
+  GaudiAlgorithm(name, svcLoc) {
+  declareProperty("hepmc", m_hepmchandle, "The HepMC event (output)");
+  declareProperty("PileUpTool", m_pileUpTool, "Tool to smear vertices");
 }
 
 StatusCode PythiaInterface::initialize() {

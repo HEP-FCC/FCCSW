@@ -46,15 +46,15 @@ public:
                                 const fcc::MCParticleCollection& mcParticles) final;
 private:
   /// Handle the particles to be saved
-  DataHandle<fcc::ParticleCollection> m_particles;
+  DataHandle<fcc::ParticleCollection> m_particles{"particles", Gaudi::DataHandle::Writer, this};
   /// Handle to associate particles with MCParticles
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_mcAssociations;
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_mcAssociations{"mcAssociations", Gaudi::DataHandle::Writer, this};
   /// Handle for particles with isolation information
-  DataHandle<fcc::TaggedParticleCollection> m_isolationTags;
+  DataHandle<fcc::TaggedParticleCollection> m_isolationTags{"isolationTags", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes array that should be converted
-  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"};
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "", "Name of the Delphes array that should be converted"};
   /// Switch whether to save tag information
-  Gaudi::Property<bool> m_saveIso{this, "saveIsolation", true};
+  Gaudi::Property<bool> m_saveIso{this, "saveIsolation", true, "Switch whether to save tag information"};
 
 };
 

@@ -37,7 +37,7 @@ public:
 
 private:
   /// Handle for the EDM MC particles to be read
-  DataHandle<fcc::MCParticleCollection> m_genParticles;
+  DataHandle<fcc::MCParticleCollection> m_genParticles{"allGenParticles", Gaudi::DataHandle::Reader, this};
 };
 
 #endif

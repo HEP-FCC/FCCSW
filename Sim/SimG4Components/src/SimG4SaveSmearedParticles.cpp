@@ -17,12 +17,10 @@
 DECLARE_TOOL_FACTORY(SimG4SaveSmearedParticles)
 
 SimG4SaveSmearedParticles::SimG4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent),
-  m_particles("smearedParticles", Gaudi::DataHandle::Writer, this),
-  m_particlesMCparticles("smearedParticlesToParticles", Gaudi::DataHandle::Writer, this) {
+  GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("particles", m_particles);
-  declareProperty("particlesMCparticles", m_particlesMCparticles);
+  declareProperty("particles", m_particles, "Handle for the particles to be written");
+  declareProperty("particlesMCparticles", m_particlesMCparticles, "Handle for the associations between particles and MC particles to be written");
 }
 
 SimG4SaveSmearedParticles::~SimG4SaveSmearedParticles() {}

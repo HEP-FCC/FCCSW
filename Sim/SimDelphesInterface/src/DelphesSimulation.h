@@ -67,22 +67,6 @@ public:
   virtual StatusCode finalize();
 
 private:
-
-  // Delphes detector card to be read in
-  /// Name of Delphes tcl config file with detector and simulation parameters
-  Gaudi::Property<std::string> m_DelphesCard{this, "DelphesCard", "", "Name of Delphes tcl config file with detector and simulation parameters"};
-
-  // Delphes
-  std::unique_ptr<Delphes>               m_Delphes;
-  std::unique_ptr<HepMCDelphesConverter> m_hepMCConverter;
-
-  // Handle for the HepMC to be read in from the data store
-  DataHandle<HepMC::GenEvent> m_hepmcHandle;
-
-  // Handle for the generated or reconstructed objects to be written out
-  DataHandle<fcc::FloatCollection>  m_handleMCEventWeights;
-  DataHandle<fcc::MCParticleCollection> m_handleGenParticles;
-
   //! Recursive method to find an id of MCParticle related to the given Delphes Candidate object,
   //! if MC particle found (id>=0), its index is then saved to idRefMCPart set,
   //! if relation doesn't exist (id<0), warning is given on output and search for other relations continues
@@ -90,24 +74,38 @@ private:
 
   void ConvertMCParticles(const TObjArray* Input,
                           fcc::MCParticleCollection* colMCParticles);
-  int m_eventCounter;
+  // Delphes detector card to be read in
+  /// Name of Delphes tcl config file with detector and simulation parameters
+  Gaudi::Property<std::string> m_DelphesCard{this, "DelphesCard", "", "Name of Delphes tcl config file with detector and simulation parameters"};
+
+  // Delphes
+  std::unique_ptr<Delphes>               m_Delphes{nullptr};
+  std::unique_ptr<HepMCDelphesConverter> m_hepMCConverter{nullptr};
+
+  // Handle for the HepMC to be read in from the data store
+  DataHandle<HepMC::GenEvent> m_hepmcHandle{"hepmc", Gaudi::DataHandle::Reader, this};
+
+  // Handle for the generated or reconstructed objects to be written out
+  DataHandle<fcc::FloatCollection>  m_handleMCEventWeights{"mcEventWeights", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::MCParticleCollection> m_handleGenParticles{"genParticles", Gaudi::DataHandle::Writer, this};
+  int m_eventCounter{0};
 
   // Delphes ROOT output
-  TFile*                            m_outRootFile;
+  TFile*                            m_outRootFile{nullptr};
   /// Name of Delphes Root output file, if defined, the Delphes standard tree write out in addition to FCC output
   Gaudi::Property<std::string>      m_outRootFileName{this, "ROOTOutputFile", "", "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)"};
-  ExRootTreeWriter*                 m_treeWriter;
-  ExRootTreeBranch*                 m_branchEvent;
-  std::unique_ptr<ExRootConfReader> m_confReader;
+  ExRootTreeWriter*                 m_treeWriter{nullptr};
+  ExRootTreeBranch*                 m_branchEvent{nullptr};
+  std::unique_ptr<ExRootConfReader> m_confReader{nullptr};
   Gaudi::Property<std::vector<std::string>> m_saveToolNames{this, "outputs"};
   std::vector<IDelphesSaveOutputTool*> m_saveTools;
   /// only for debugging purposes. If entire MC particle collection is needed, request in cfg file.
   Gaudi::Property<bool> m_applyGenFilter{this, "ApplyGenFilter", true, "only for debugging purposes. If entire MC particle collection is needed, request in cfg file."};
 
   // Arrays used by Delphes and internally for initial particles
-  TObjArray* m_allParticles;
-  TObjArray* m_stableParticles;
-  TObjArray* m_partons;
+  TObjArray* m_allParticles{nullptr};
+  TObjArray* m_stableParticles{nullptr};
+  TObjArray* m_partons{nullptr};
 };
 
 #endif // #define _DELPHESSIMULATION_H

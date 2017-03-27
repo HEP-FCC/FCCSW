@@ -31,15 +31,14 @@ public:
   virtual StatusCode finalize();
 
 private:
-  /// Handle for the HepMC to be read
-  DataHandle<P> m_genphandle;
+  /// Handle for the particles to be read
+  DataHandle<P> m_genphandle{"Particles", Gaudi::DataHandle::Reader, this};
 
   /// Handle for PseudoJets to be produced
-  DataHandle<J> m_jets;
-
+  DataHandle<J> m_jets{"Jets", Gaudi::DataHandle::Writer, this};
   /// Name for the jet algorithm to be used
   Gaudi::Property<std::string> m_jetAlgorithm{this, "jetAlgorithm", "antikt", "he Jet Algorithm to use [kt, antikt, cambridge]"};
-  fastjet::JetAlgorithm m_fj_jetAlgorithm;
+  fastjet::JetAlgorithm m_fj_jetAlgorithm{fastjet::JetAlgorithm::undefined_jet_algorithm};
 
   /// Cone radius. COLIN: not sure how it's interpreted
   /// depending on the algorithm... should be described here
@@ -49,7 +48,7 @@ private:
   Gaudi::Property<std::string> m_recombinationScheme{this, "recombinationScheme", "E", "the Recombination Scheme to use [E, pt, et]"};
 
   /// Recombination scheme object
-  fastjet::RecombinationScheme m_fj_recombinationScheme;
+  fastjet::RecombinationScheme m_fj_recombinationScheme{fastjet::RecombinationScheme::E_scheme};
 
   /// If true, reconstruct an arbitrary number of jets.
   /// if not, for the reconstruction of m_njets jets.
@@ -68,21 +67,15 @@ private:
   Gaudi::Property<std::string> m_areaTypeName{this, "areaType", "none", "Area type [none, active, passive]"};
 
   /// type of area calculation
-  fastjet::AreaType m_areaType;
+  fastjet::AreaType m_areaType{fastjet::invalid_area};
 };
 
 
 template<class P, class J>
   JetClustering<P, J>::JetClustering(const std::string& name, ISvcLocator* svcLoc):
-    GaudiAlgorithm(name, svcLoc)
-  , m_genphandle("Particles", Gaudi::DataHandle::Reader, this)
-  , m_jets("Jets", Gaudi::DataHandle::Writer, this)
-  , m_fj_jetAlgorithm(fastjet::JetAlgorithm::undefined_jet_algorithm)
-  , m_fj_recombinationScheme(fastjet::RecombinationScheme::E_scheme)
-  , m_areaType(fastjet::invalid_area)
-{
-  declareProperty("particles", m_genphandle);
-  declareProperty("jets", m_jets);
+    GaudiAlgorithm(name, svcLoc) {
+  declareProperty("particles", m_genphandle, "Handle for the input particles");
+  declareProperty("jets", m_jets, "Handle for PseudoJets to be produced");
 }
 
 template<class P, class J>

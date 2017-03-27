@@ -53,20 +53,20 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::CaloHitCollection> m_inHits;
+  DataHandle<fcc::CaloHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Handle for the EDM Hits to be written
-  DataHandle<fcc::CaloHitCollection> m_outHits;
+  DataHandle<fcc::CaloHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer, this};
   // Handle to the detector ID descriptor
   DD4hep::Geometry::IDDescriptor m_descriptor;
   /// Name of the detector readout
-  Gaudi::Property<std::string> m_readoutName{this, "readout"};
+  Gaudi::Property<std::string> m_readoutName{this, "readout", "", "Name of the detector readout"};
   /// Identifier to be merged
-  Gaudi::Property<std::string> m_idToMerge{this, "identifier"};
+  Gaudi::Property<std::string> m_idToMerge{this, "identifier", "", "Identifier to be merged"};
   /// Name (or its part) of the volume
-  Gaudi::Property<std::string> m_volumeName{this, "volumeName", ""};
+  Gaudi::Property<std::string> m_volumeName{this, "volumeName", "", "Name (or its part) of the volume"};
   /// List with number of adjacent cells to be merged
-  Gaudi::Property<std::vector<uint>> m_listToMerge{this, "merge"};
+  Gaudi::Property<std::vector<uint>> m_listToMerge{this, "merge", {}, "List with number of adjacent cells to be merged"};
   /// Limit of debug printing
-  Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10};
+Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Limit of debug printing"};
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

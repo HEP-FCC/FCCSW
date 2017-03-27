@@ -14,9 +14,8 @@
 DECLARE_TOOL_FACTORY(SingleCaloTowerTool)
 
 SingleCaloTowerTool::SingleCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
-    : GaudiTool(type, name, parent),
-      m_cells("calo/cells", Gaudi::DataHandle::Reader, this) {
-  declareProperty("cells", m_cells);
+    : GaudiTool(type, name, parent) {
+  declareProperty("cells", m_cells, "Cells to create towers from (input)");
   declareInterface<ITowerTool>(this);
 }
 
