@@ -69,16 +69,16 @@ private:
   DataHandle<fcc::CaloHitCollection> m_cells{"cells", Gaudi::DataHandle::Writer, this};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
-  /// Name of active volumes (material name)
-  Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "_sensitive", "Name of the active volumes (material name)"};
+  /// Name of active volumes
+  Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "_sensitive", "Name of the active volumes"};
   /// Name of active layers for sampling calorimeter
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer", "Name of active layers for sampling calorimeter"};
-  /// Name of the bit-fields (in the readout) that contain the volume to segment
+  /// Name of the bit-fields (in the readout) describing the volume
   Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames", {},
-                                         "Name of the bit-fields (in the readout) that contains the volume to segment"};
-  /// Values of the fields that identify the volume to be segmented (e.g. ID of the ECal)
+                                         "Name of the bit-fields (in the readout) describing the volume"};
+  /// Values of the fields that identify the volume to change segmentation (e.g. ID of the ECal)
   Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues", {},
-                                 "Value of the field that identifies the volume to be segmented (e.g. ID of the ECal)"};
+                                 "Value of the field that identifies the volume to to change segmentation (e.g. ID of the ECal)"};
 
   /** Temporary: for use with MergeLayer tool
    * MergeLayer is going to be replaced by RedoSegmentation once we can define segmentation with variable cell (layer)

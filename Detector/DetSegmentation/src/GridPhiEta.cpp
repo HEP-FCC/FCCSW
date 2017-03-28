@@ -23,7 +23,7 @@ GridPhiEta::GridPhiEta(BitField64* decoder) :
   Segmentation(decoder) {
   // define type and description
   _type = "GridPhiEta";
-  _description = "Projective segmentation in the global coordinates";
+  _description = "Phi-eta segmentation in the global coordinates";
 
   // register all necessary parameters
   registerParameter("grid_size_eta", "Cell size in Eta", m_gridSizeEta, 1., SegmentationParameter::LengthUnit);
