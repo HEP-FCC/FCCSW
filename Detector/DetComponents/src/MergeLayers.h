@@ -66,7 +66,7 @@ private:
   Gaudi::Property<std::string> m_volumeName{this, "volumeName", "", "Name (or its part) of the volume"};
   /// List with number of adjacent cells to be merged
   Gaudi::Property<std::vector<uint>> m_listToMerge{this, "merge", {}, "List with number of adjacent cells to be merged"};
-  /// Limit of debug printing
-Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Limit of debug printing"};
+  /// Maximum number of lines in debug output
+Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Maximum number of lines in debug output"};
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */
