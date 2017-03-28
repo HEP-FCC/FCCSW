@@ -56,15 +56,17 @@ StatusCode SingleCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
 tower SingleCaloTowerTool::towersNumber() {
   // maximum eta of the detector (== to the eta offset)
-  m_etaMax = fabs( m_segmentation->offsetEta() + m_segmentation->gridSizeEta()*0.5 );
-  m_phiMax = fabs( m_segmentation->offsetPhi() + M_PI/(double)m_segmentation->phiBins() );
+  m_etaMax = fabs( m_segmentation->offsetEta() - m_segmentation->gridSizeEta()*0.5 );
+  m_phiMax = fabs( m_segmentation->offsetPhi() - M_PI/(double)m_segmentation->phiBins() );
 
   // number of phi bins
   float epsilon = 0.0001;
-  m_nPhiTower = ceil(2 * (m_phiMax - epsilon ) / m_deltaPhiTower);
+  m_nPhiTower = ceil(2 * m_phiMax / m_deltaPhiTower);
   // number of eta bins (if eta maximum is defined)
-  m_nEtaTower = ceil(2 * (m_etaMax - epsilon ) / m_deltaEtaTower);
-  debug() << m_etaMax << " " << m_deltaEtaTower << " " << m_nEtaTower << endmsg;
+  m_nEtaTower = ceil(2 * m_etaMax / m_deltaEtaTower);
+  debug() << "etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
+  debug() << "phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nEtaTower " << m_nPhiTower << endmsg;
+ 
   tower total;
   total.eta = m_nEtaTower;
   total.phi = m_nPhiTower;

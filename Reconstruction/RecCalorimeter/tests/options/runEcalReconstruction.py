@@ -44,8 +44,10 @@ mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
-calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction = "5.4")
-noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
+calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
+noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
+    noiseFileName="/eos/project/f/fccsw-web/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
+
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   readoutName = ecalReadoutName,
                                   activeVolumeName = ecalVolumeName,
@@ -71,7 +73,7 @@ createcells.DataOutputs.cells.Path = "caloCells"
 from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
 towers = SingleCaloTowerTool("towers",
-                             deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
+                             deltaEtaTower = 0.003, deltaPhiTower = 2*pi/629.,
                              readoutName = ecalReadoutName,
                              OutputLevel = DEBUG)
 towers.DataInputs.cells.Path = "caloCells"

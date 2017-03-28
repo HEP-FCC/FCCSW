@@ -55,14 +55,17 @@ gaudi_add_test(EcalReconstructionNoiseFromFile
 
 gaudi_add_test(simulateHCal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/geant_fullsim_hcal_singleparticles.py)
 
 gaudi_add_test(HcalDigitisationWithoutNoise
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateHCal
                FRAMEWORK tests/options/runHcalDigitisationWithoutNoise.py)
 
 gaudi_add_test(HcalDigitisationFlatNoise
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                DEPENDS simulateHCal
                FRAMEWORK tests/options/runHcalDigitisationFlatNoise.py)
