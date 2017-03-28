@@ -7,8 +7,6 @@
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
 
-#include <memory>
-
 DECLARE_TOOL_FACTORY(HepMCFileReader)
 
 HepMCFileReader::HepMCFileReader(
