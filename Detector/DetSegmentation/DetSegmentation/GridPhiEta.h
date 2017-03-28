@@ -55,6 +55,12 @@ public:
   inline double gridSizeEta() const {
     return m_gridSizeEta;
   }
+  /**  Get the grid size in phi.
+   *   return Grid size in phi.
+   */
+  inline double gridSizePhi() const {
+    return 2 * M_PI / static_cast<double>(m_phiBins);
+  }
   /**  Get the number of bins in azimuthal angle.
    *   return Number of bins in phi.
    */
