@@ -3,6 +3,7 @@
 
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 #include "Generation/IVertexSmearingTool.h"
 
@@ -32,29 +33,30 @@ public:
 
 private:
   /// Minimum value for the x coordinate of the vertex (set by options)
-  double m_xmin   ;
+  Gaudi::Property<double> m_xmin{this, "xVertexMin", 0.0 * Gaudi::Units::mm, "Min value for x coordinate"};
 
   /// Minimum value for the y coordinate of the vertex (set by options)
-  double m_ymin   ;
+  Gaudi::Property<double> m_ymin{this, "yVertexMin", 0.0 * Gaudi::Units::mm, "Min value for y coordinate"};
 
   /// Minimum value for the z coordinate of the vertex (set by options)
-  double m_zmin   ;
+  Gaudi::Property<double> m_zmin{this, "zVertexMin",0.0 * Gaudi::Units::mm, "Min value for z coordinate"};
 
   /// Maximum value for the x coordinate of the vertex (set by options)
-  double m_xmax   ;
+  Gaudi::Property<double> m_xmax{this, "xVertexMax", 0.0 * Gaudi::Units::mm, "Max value for x coordinate"};
 
   /// Maximum value for the y coordinate of the vertex (set by options)
-  double m_ymax   ;
+  Gaudi::Property<double> m_ymax{this, "yVertexMax", 0.0 * Gaudi::Units::mm, "Max value for y coordinate"};
 
   /// Maximum value for the z coordinate of the vertex (set by options)
-  double m_zmax   ;
+  Gaudi::Property<double> m_zmax{this, "zVertexMax", 0.0 * Gaudi::Units::mm, "Max value for z coordinate"};
 
   /// Direction of the beam to take into account TOF vs nominal IP8, can have
   /// only values -1 or 1, or 0 to switch off the TOF and set time of
   /// interaction to zero (default = 1, as for beam 1)
-  int m_zDir;
+  Gaudi::Property<int> m_zDir{"beamDirection", 0, "Direction of the beam, possible values: -1, 1 or 0"};
 
-  Rndm::Numbers m_flatDist ; ///< Flat random number generator
+  /// Flat random number generator
+  Rndm::Numbers m_flatDist;
 };
 
 #endif // GENERATION_FLATSMEARVERTEX_H

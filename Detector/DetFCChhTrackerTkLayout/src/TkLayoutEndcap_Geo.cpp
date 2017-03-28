@@ -17,7 +17,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   Dimension dimensions(xmlDet.dimensions());
 
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");  // retrieve the type
+  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
   sensDet.setType(sdTyp.typeStr());  // set for the whole detector
 
   // definition of top volume
@@ -42,7 +42,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
-  Component xDiscs = xmlElement.child("discs");
+  Component xDiscs = xmlElement.child(_Unicode(discs));
   Component xFirstDisc = xDiscs.child("discZPls");
   Component xFirstDiscRings = xFirstDisc.child("rings");
 

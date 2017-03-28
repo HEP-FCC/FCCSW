@@ -18,8 +18,8 @@ createcells = CreateCaloCells("CreateCaloCells",
                               doCellCalibration = False,
                               addCellNoise = False, filterCellNoise = False,
                               OutputLevel = DEBUG)
-createcells.DataInputs.hits.Path="HCalHits"
-createcells.DataOutputs.cells.Path="HCalCells"
+createcells.hits.Path="HCalHits"
+createcells.cells.Path="HCalCells"
 
 out = PodioOutput("out", filename="output_HCalCells_digitisation_noNoise.root",
                    OutputLevel = DEBUG)

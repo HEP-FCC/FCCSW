@@ -14,16 +14,11 @@
 DECLARE_TOOL_FACTORY(DelphesSaveNeutralParticles)
 
 DelphesSaveNeutralParticles::DelphesSaveNeutralParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  GaudiTool(aType, aName, aParent) {
+GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareOutput("particles", m_particles);
-  declareOutput("mcAssociations", m_mcAssociations);
-  declareOutput("isolationTags", m_isolationTags);
-  declareProperty("delphesArrayName", m_delphesArrayName);
-  declareProperty("saveIsolation", m_saveIso=true);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("particles", m_particles, "Handle the particles to be saved");
+  declareProperty("mcAssociations", m_mcAssociations, "Handle to associate particles with MCParticles");
+  declareProperty("isolationTags", m_isolationTags, "Handle for particles with isolation information");
 }
 
 DelphesSaveNeutralParticles::~DelphesSaveNeutralParticles() {}
@@ -46,7 +41,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
     colITags = m_isolationTags.createAndPut();
   }
 
-  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
+  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
@@ -54,7 +49,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
   for(int j=0; j<delphesColl->GetEntries(); j++) {
 
-    
+
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
 
@@ -80,7 +75,7 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
 
       iTagValue = iTag.tag();
     }
-   
+
     // Debug: print FCC-EDM tower info
     if (msgLevel() <= MSG::DEBUG) {
 
@@ -123,14 +118,13 @@ StatusCode DelphesSaveNeutralParticles::saveOutput(Delphes& delphes, const fcc::
         // Get MC particle
         Candidate* refCand = static_cast<Candidate*>(hit->GetCandidates()->At(0));
         for(int k=0 ; k < mcParticles.size();  k++) {
-          double pt = sqrt(mcParticles.at(k).core().p4.px *  mcParticles.at(k).core().p4.px + mcParticles.at(k).core().p4.py *  mcParticles.at(k).core().p4.py);
             if(mcParticles.at(k).core().bits == refCand->GetUniqueID()) {
             idRefMCPart.insert(k);
             break;
           }
         } // Iter MC particles
-      } 
-    } // Iter hits on tower 
+      }
+    } // Iter hits on tower
 
     // Debug: print variable
     double totSimE = 0;

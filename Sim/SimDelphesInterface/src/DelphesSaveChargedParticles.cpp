@@ -18,14 +18,9 @@ DECLARE_TOOL_FACTORY(DelphesSaveChargedParticles)
 DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-  declareOutput("particles", m_particles);
-  declareOutput("mcAssociations", m_mcAssociations);
-  declareOutput("isolationTags", m_isolationTaggedParticles);
-  declareProperty("delphesArrayName", m_delphesArrayName);
-  declareProperty("saveIsolation", m_saveIso=true);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("particles", m_particles, "Handle the particles to be saved");
+  declareProperty("mcAssociations", m_mcAssociations, "Handle to associate particles with MCParticles");
+  declareProperty("isolationTags", m_isolationTaggedParticles, "Handle for isolation tags");
 }
 
 DelphesSaveChargedParticles::~DelphesSaveChargedParticles() {}
@@ -48,7 +43,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     colITags = m_isolationTaggedParticles.createAndPut();
   }
 
-  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
+  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;
@@ -56,7 +51,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
   for(int j=0; j < delphesColl->GetEntries(); j++) {
     auto cand     = static_cast<Candidate *>(delphesColl->At(j));
     auto particle = colParticles->create();
-    
+
     auto& barePart    = particle.core();
     barePart.pdgId    = cand->PID;
     barePart.status   = cand->Status;
@@ -68,7 +63,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     barePart.vertex.x = cand->InitialPosition.X();
     barePart.vertex.y = cand->InitialPosition.Y();
     barePart.vertex.z = cand->InitialPosition.Z();
-    
+
     // Isolation-tag info
     float iTagValue = 0;
     if (colITags!=nullptr) {
@@ -82,7 +77,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     auto relation   = ascColParticlesToMC->create();
     if (cand->GetCandidates()->GetEntries()>0) {
       auto refCand = static_cast<Candidate*>(cand->GetCandidates()->At(0));
-      
+
       // find refCand in mcParticle collection
       int index = -1;
       for(int k=0 ; k < mcParticles.size();  k++) {

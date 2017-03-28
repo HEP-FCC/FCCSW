@@ -25,15 +25,9 @@
 DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc), m_pythiaSignal(nullptr), m_parfile(), m_nAbort(0), m_iAbort(0), m_iEvent(0),
-                 m_doMePsMatching(0), m_doMePsMerging(0),
-                 m_matching(nullptr), m_setting(nullptr) {
-
-  declareProperty("Filename", m_parfile="", "Name of the Pythia parameter file to read");
-  declareOutput(  "hepmc"   , m_hepmchandle);
-
-  declareProperty("PileUpTool", m_pileUpTool);
-  declarePrivateTool(m_pileUpTool, "ConstPileUp/PileUpTool");
+  GaudiAlgorithm(name, svcLoc) {
+  declareProperty("hepmc", m_hepmchandle, "The HepMC event (output)");
+  declareProperty("PileUpTool", m_pileUpTool, "Tool to smear vertices");
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -51,11 +45,11 @@ StatusCode PythiaInterface::initialize() {
   m_pythiaPileup = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
 
   // Read Pythia configuration files
-  m_pythiaSignal->readFile( m_parfile.c_str() );
+  m_pythiaSignal->readFile( m_parfile.value().c_str() );
   // do not bother with pileup configuration if no pileup
   if (0. < m_pileUpTool->getMeanPileUp()) {
     if (m_pileUpTool->getFilename().empty()) {
-     return Error ( "Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!" );  
+     return Error ( "Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!" );
     }
     m_pythiaPileup->readFile(m_pileUpTool->getFilename().c_str());
   }
@@ -77,7 +71,7 @@ StatusCode PythiaInterface::initialize() {
   if (m_doMePsMerging && m_doMePsMatching) {
     return Error ( "Jet matching and merging cannot be used simultaneously!" );
   }
-  
+
   // Allow to set the number of additional partons dynamically.
   if (m_doMePsMerging) {
     // Store merging scheme.
@@ -95,7 +89,7 @@ StatusCode PythiaInterface::initialize() {
     else {
       scheme = 0;
     }
-    
+
     m_setting = std::unique_ptr<Pythia8::amcnlo_unitarised_interface>(new Pythia8::amcnlo_unitarised_interface(scheme));
     m_pythiaSignal->setUserHooksPtr(m_setting.get());
   }
@@ -109,11 +103,6 @@ StatusCode PythiaInterface::initialize() {
     m_pythiaSignal->setUserHooksPtr(m_matching.get());
   }
 
-  // store additional branch containing matching/merging validation observables
-  if (m_doMePsMatching || m_doMePsMerging) {
-    declareOutput("mePsMatchingVars" , m_handleMePsMatchingVars, "mePsMatchingVars");
-  }
-  
   // jet clustering needed for matching
   m_slowJet = std::unique_ptr<Pythia8::SlowJet>(new Pythia8::SlowJet(1, 0.4, 0, 4.4, 2, 2, NULL, false));
 
@@ -176,14 +165,14 @@ StatusCode PythiaInterface::execute() {
     // that for MLM jet matching, this might not coincide with the
     // actual number of partons in the input LH event, since some
     // partons may be excluded from the matching.
-    
+
     bool doShowerKt = m_pythiaSignal->settings.flag("JetMatching:doShowerKt");
-    if (m_doMePsMatching && !doShowerKt) 
+    if (m_doMePsMatching && !doShowerKt)
        	njetNow = m_matching->nMEpartons().first;
     //FIXME: "getProcessSubset()" method does not exist in < 8.219
     //FIXME: simply un-comment the following two lines in >= 8.219
     //else if (m_doMePsMatching && doShowerKt)
-      //njetNow = m_matching->getProcessSubset().size(); 
+      //njetNow = m_matching->getProcessSubset().size();
     else if (m_doMePsMerging){
       njetNow = m_pythiaSignal->settings.mode("Merging:nRequested");
       if ( m_pythiaSignal->settings.flag("Merging:doUMEPSSubt")
@@ -201,12 +190,12 @@ StatusCode PythiaInterface::execute() {
 
     auto var = mePsMatchingVars->create();
 
-    // 0th entry = number of generated partons 
+    // 0th entry = number of generated partons
     var.value(njetNow);
 
     // odd  entries: d(ij) observables --- 1): d01, 3): d12, 5): d23, 7): d34
     // even entries: pT(i) observables --- 2): pT1, 4): pT2, 6): pT3, 8): pT4
-    for (int i = 0; i < 4; ++i) {
+    for (unsigned int i = 0; i < 4; ++i) {
       var = mePsMatchingVars->create();
       var.value(-999);
       if(dijVec.size() > i)
@@ -305,7 +294,7 @@ StatusCode PythiaInterface::execute() {
   // Handle event via standard Gaudi mechanism
   m_hepmchandle.put(theEvent);
   m_iEvent++;
-  
+
   delete toHepMC;
   return StatusCode::SUCCESS;
 }

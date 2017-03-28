@@ -10,7 +10,6 @@ static DD4hep::Geometry::Ref_t createSimpleBarrel(DD4hep::Geometry::LCDD& aLcdd,
   DD4hep::XML::Dimension   pos    (x_det.position());
   DD4hep::XML::Dimension   rot    (x_det.rotation());
   DD4hep::Geometry::DetElement   det    (name,x_det.id());
-  DD4hep::Geometry::Material air = aLcdd.air();
   DD4hep::Geometry::Volume      det_vol(name+"_vol",
     DD4hep::Geometry::Tube(dim.rmin(),dim.rmax(),dim.dz()), aLcdd.material(x_det.materialStr()));
   DD4hep::Geometry::Volume      mother = aLcdd.pickMotherVolume(det);

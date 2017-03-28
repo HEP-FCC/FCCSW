@@ -9,20 +9,9 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
-: GaudiAlgorithm(name, svcLoc), m_recalculateEtaTowers(true) {
-  declareOutput("clusters", m_clusters, "calo/clusters");
-  declareProperty("towerTool", m_towerTool);
-  declarePrivateTool(m_towerTool, "SingleCaloTowerTool");
-  declareProperty("nEtaWindow", m_nEtaWindow = 5);
-  declareProperty("nPhiWindow", m_nPhiWindow = 15);
-  declareProperty("nEtaPosition", m_nEtaPosition = 3);
-  declareProperty("nPhiPosition", m_nPhiPosition = 3);
-  declareProperty("nEtaDuplicates", m_nEtaDuplicates = 2);
-  declareProperty("nPhiDuplicates", m_nPhiDuplicates = 2);
-  declareProperty("nEtaFinal", m_nEtaFinal = 5);
-  declareProperty("nPhiFinal", m_nPhiFinal = 15);
-  declareProperty("energyThreshold", m_energyThreshold = 3);
-  declareProperty("saveCells", m_saveCells = false);
+  : GaudiAlgorithm(name, svcLoc) {
+  declareProperty("clusters", m_clusters, "Handle for calo clusters (output collection)");
+  declareProperty("towerTool", m_towerTool, "Handle for the tower building tool");
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {

@@ -23,11 +23,9 @@ gaudi_add_module(SimG4Components
 include(CTest)
 gaudi_add_test(GeantFullSimHCal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/geant_fullsim_hcal.py)
 gaudi_add_test(GeantFullSimECal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so 
                FRAMEWORK tests/options/geant_fullsim_ecal.py)
 gaudi_add_test(GeantFullSimGdml
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

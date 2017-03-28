@@ -36,9 +36,10 @@ private:
   /// First event or not
   bool m_firstEvent;
   /// Root file name the output is written to
-  std::string m_filename;
+  Gaudi::Property<std::string> m_filename{this, "filename", "output.root", "Name of the file to create"};
   /// Commands which output is to be kept
-  std::vector<std::string> m_outputCommands;
+  Gaudi::Property<std::vector<std::string>> m_outputCommands{this, "outputCommands", {"keep *"},
+                                            "A set of commands to declare which collections to keep or drop."};
   /// Switch for keeping or dropping outputs
   KeepDropSwitch m_switch;
   /// Needed for collection ID table

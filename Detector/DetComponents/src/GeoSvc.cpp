@@ -19,7 +19,6 @@ base_class(name, svc),
   m_dd4hepgeo(0),
   m_geant4geo(0),
   m_log(msgSvc(), name) {
-  declareProperty("detectors", m_xmlFileNames, "XML file with detector description");
 }
 
 GeoSvc::~GeoSvc() {

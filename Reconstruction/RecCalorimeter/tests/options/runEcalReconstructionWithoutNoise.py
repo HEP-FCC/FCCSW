@@ -34,8 +34,8 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool=calibcells,
                               addCellNoise=False, filterCellNoise=False,
                               OutputLevel=DEBUG)
-createcells.DataInputs.hits.Path="ECalHits"
-createcells.DataOutputs.cells.Path="caloCells"
+createcells.hits.Path="ECalHits"
+createcells.cells.Path="caloCells"
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
@@ -44,7 +44,7 @@ towers = SingleCaloTowerTool("towers",
                              deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                              readoutName = ecalReadoutName,
                              OutputLevel=DEBUG)
-towers.DataInputs.cells.Path="caloCells"
+towers.cells.Path="caloCells"
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
                                                  nEtaWindow = 5, nPhiWindow = 15,
@@ -53,7 +53,7 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  nEtaFinal = 5, nPhiFinal = 15,
                                                  energyThreshold = 7,
                                                  OutputLevel = DEBUG)
-createclusters.DataOutputs.clusters.Path="caloClusters"
+createclusters.clusters.Path="caloClusters"
 
 out = PodioOutput("out", filename="output_ecalReco_noNoise_test.root",
                    OutputLevel=DEBUG)

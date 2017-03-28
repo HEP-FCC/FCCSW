@@ -36,7 +36,7 @@ public:
 
 private:
   /// Handle for the full physics list tool
-  ToolHandle<ISimG4PhysicsList> m_physicsListTool;
+  ToolHandle<ISimG4PhysicsList> m_physicsListTool{"SimG4FtfpBert", this, true};
 
 };
 

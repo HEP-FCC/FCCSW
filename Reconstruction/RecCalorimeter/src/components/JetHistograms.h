@@ -23,12 +23,12 @@ public:
 
 private:
   /// Handle for the HepMC to be read
-  DataHandle<fcc::JetCollection> m_jethandle;
+  DataHandle<fcc::JetCollection> m_jethandle{"jets", Gaudi::DataHandle::Reader, this};
 
-  ITHistSvc* m_ths; ///< THistogram service
+  ITHistSvc* m_ths{nullptr}; ///< THistogram service
 
-  TH1F* m_E; ///< histogram for energy of jets
-  TH1F* m_n; ///< histogram for number of jets
+  TH1F* m_E{nullptr}; ///< histogram for energy of jets
+  TH1F* m_n{nullptr}; ///< histogram for number of jets
 
 };
 

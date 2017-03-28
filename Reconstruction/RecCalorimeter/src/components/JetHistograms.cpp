@@ -3,10 +3,8 @@
 DECLARE_COMPONENT(JetHistograms)
 
 JetHistograms::JetHistograms(const std::string& name, ISvcLocator* svcLoc) :
-		GaudiAlgorithm(name, svcLoc), m_ths(nullptr), m_E(nullptr), m_n(nullptr)
-
-{
-	declareInput("jets", m_jethandle);
+		GaudiAlgorithm(name, svcLoc) {
+	declareProperty("jets", m_jethandle, "Jets from which to create histograms (input)");
 }
 
 StatusCode JetHistograms::initialize() {

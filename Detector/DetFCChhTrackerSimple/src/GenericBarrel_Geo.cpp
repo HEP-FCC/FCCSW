@@ -17,7 +17,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
   DD4hep::XML::DetElement xmlDet = static_cast<DD4hep::XML::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");
+  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));
   if (xmlDet.isSensitive()) {
     // sensitive detector used for all sensitive parts of this detector
     sensDet.setType(sdTyp.typeStr());
@@ -36,7 +36,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
   for (DD4hep::XML::Collection_t xLayerColl(xmlElement, _U(layers)); nullptr != xLayerColl; ++xLayerColl) {
     DD4hep::XML::Component xLayer = static_cast<DD4hep::XML::Component>(xLayerColl);
 
-    DD4hep::XML::Component xModuleComponents = xmlElement.child("module_components");
+    DD4hep::XML::Component xModuleComponents = xmlElement.child(_Unicode(module_components));
     DD4hep::XML::Component xModule =
         utils::getNodeByStrAttr(xmlElement, "module", "name", xLayer.attr<std::string>("module"));
 

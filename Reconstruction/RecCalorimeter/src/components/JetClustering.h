@@ -31,69 +31,51 @@ public:
   virtual StatusCode finalize();
 
 private:
-  /// Handle for the HepMC to be read
-  DataHandle<P> m_genphandle;
+  /// Handle for the particles to be read
+  DataHandle<P> m_genphandle{"Particles", Gaudi::DataHandle::Reader, this};
 
   /// Handle for PseudoJets to be produced
-  DataHandle<J> m_jets;
-
+  DataHandle<J> m_jets{"Jets", Gaudi::DataHandle::Writer, this};
   /// Name for the jet algorithm to be used
-  std::string m_jetAlgorithm;
-  fastjet::JetAlgorithm m_fj_jetAlgorithm;
+  Gaudi::Property<std::string> m_jetAlgorithm{this, "jetAlgorithm", "antikt", "he Jet Algorithm to use [kt, antikt, cambridge]"};
+  fastjet::JetAlgorithm m_fj_jetAlgorithm{fastjet::JetAlgorithm::undefined_jet_algorithm};
 
   /// Cone radius. COLIN: not sure how it's interpreted
   /// depending on the algorithm... should be described here
-  float m_R;
+  Gaudi::Property<float> m_R{this, "coneRadius", 0.5, "cone radius"};
 
   /// Recombination scheme name
-  std::string m_recombinationScheme;
+  Gaudi::Property<std::string> m_recombinationScheme{this, "recombinationScheme", "E", "the Recombination Scheme to use [E, pt, et]"};
 
   /// Recombination scheme object
-  fastjet::RecombinationScheme m_fj_recombinationScheme;
+  fastjet::RecombinationScheme m_fj_recombinationScheme{fastjet::RecombinationScheme::E_scheme};
 
   /// If true, reconstruct an arbitrary number of jets.
   /// if not, for the reconstruction of m_njets jets.
-  bool m_inclusiveJets; ///< use inclusive or exclusive jets
+  Gaudi::Property<bool> m_inclusiveJets{this, "inclusiveJets", true, "use inclusive or exclusive jets"};
 
   /// pT threshold for inclusive jets
-  float m_ptMin;
+  Gaudi::Property<float> m_ptMin{this , "ptMin", 10, "Minimum pT of jets for inclusiveJets"};
 
   /// distance threshold for exclusive jets
-  float m_dcut;
+  Gaudi::Property<float> m_dcut{this, "dcut", -1, "dcut for exclusive jets"};
 
   /// number of jets for exclusive jets
-  int m_njets;
+  Gaudi::Property<int> m_njets{this, "nJets", -1, "Number of jets for exclusive jets"};
 
   /// name of the area calculation method
-  std::string m_areaTypeName;
+  Gaudi::Property<std::string> m_areaTypeName{this, "areaType", "none", "Area type [none, active, passive]"};
 
   /// type of area calculation
-  fastjet::AreaType m_areaType;
-
-  /// verbosity flag
-  bool m_verbose;
+  fastjet::AreaType m_areaType{fastjet::invalid_area};
 };
 
 
 template<class P, class J>
   JetClustering<P, J>::JetClustering(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc)
-  , m_fj_jetAlgorithm(fastjet::JetAlgorithm::undefined_jet_algorithm)
-  , m_fj_recombinationScheme(fastjet::RecombinationScheme::E_scheme)
-  , m_areaType(fastjet::invalid_area)
-{
-  declareInput("particles", m_genphandle);
-  declareOutput("jets", m_jets);
-
-  declareProperty("jetAlgorithm", m_jetAlgorithm = "antikt", "the Jet Algorithm to use [kt, antikt, cambridge]");
-  declareProperty("coneRadius", m_R = 0.5, "cone radius");
-  declareProperty("recominbationScheme", m_recombinationScheme = "E", "the Recombination Scheme to use [E, pt, et]");
-  declareProperty("inclusiveJets", m_inclusiveJets = true, "use inclusive or exclusive jets");
-  declareProperty("ptMin", m_ptMin = 10, "Minimum pT of jets for inclusiveJets");
-  declareProperty("dcut", m_dcut = -1, "dcut for exclusive jets");
-  declareProperty("nJets", m_njets = -1.0, "Number of jets for exclusive jets");
-  declareProperty("verbose", m_verbose = false, "Boolean flag for verbosity");
-  declareProperty("areaType", m_areaTypeName = "none", "Area type [none, active, passive]");
+    GaudiAlgorithm(name, svcLoc) {
+  declareProperty("particles", m_genphandle, "Handle for the input particles");
+  declareProperty("jets", m_jets, "Handle for PseudoJets to be produced");
 }
 
 template<class P, class J>
@@ -200,11 +182,9 @@ template< class P, class J>
   std::vector<fastjet::PseudoJet> pjets = fastjet::sorted_by_pt(cs->inclusive_jets(m_ptMin));
 
   J* jets = new J();
-  if(m_verbose)
-    std::cout<<"njets = "<<pjets.size()<<std::endl;
+  debug() << "njets = " << pjets.size() << endmsg;
   for(const auto& pjet : pjets) {
-    if(m_verbose)
-      std::cout<<pjet.e()<<" "<<pjet.pt()<<" "<<pjet.eta()<<" "<<pjet.phi()<<std::endl;
+    debug() << pjet.e() << " " << pjet.pt() << " " << pjet.eta() << " " << pjet.phi() << endmsg;
     auto jet = jets->create();
     auto& core = jet.core();
     core.p4.px = pjet.px();
@@ -217,8 +197,7 @@ template< class P, class J>
       core.area = -1;
     const std::vector<fastjet::PseudoJet>& constituents = pjet.constituents();
     for(const auto& constit : constituents) {
-      if(m_verbose)
-        std::cout<<"\t"<<constit.user_index()<<std::endl;
+      debug() << "\t" << constit.user_index() << endmsg;
       jet.addparticles(particles->at(constit.user_index()));
     }
   }

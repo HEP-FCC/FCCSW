@@ -10,17 +10,19 @@
 /** GridPhiEta Detector/DetSegmentation/DetSegmentation/GridPhiEta.h GridPhiEta.h
  *
  *  Segmentation in eta and phi.
- *  It requires 'export LD_PRELOAD_PATH=$LD_PRELOAD_PATH:build.$BINARY_TAG/lib/libDetSegmentation.so'
  *
  *  @author    Anna Zaborowska
  */
 
 namespace DD4hep {
 namespace DDSegmentation {
-class GridPhiEta: public Segmentation {
+class GridPhiEta : public Segmentation {
 public:
   /// default constructor using an arbitrary type
   GridPhiEta(const std::string& aCellEncoding);
+  /// Default constructor used by derived classes passing an existing decoder
+  GridPhiEta(BitField64* decoder);
+
   /// destructor
   virtual ~GridPhiEta() = default;
 
@@ -53,6 +55,12 @@ public:
   inline double gridSizeEta() const {
     return m_gridSizeEta;
   }
+  /**  Get the grid size in phi.
+   *   return Grid size in phi.
+   */
+  inline double gridSizePhi() const {
+    return 2 * M_PI / static_cast<double>(m_phiBins);
+  }
   /**  Get the number of bins in azimuthal angle.
    *   return Number of bins in phi.
    */
@@ -74,13 +82,13 @@ public:
   /**  Get the field name used for pseudorapidity
    *   return The field name for eta.
    */
-  inline std::string fieldNameEta() const {
+  inline const std::string& fieldNameEta() const {
     return m_etaID;
   }
   /**  Get the field name for azimuthal angle.
    *   return The field name for phi.
    */
-  inline std::string fieldNamePhi() const {
+  inline const std::string& fieldNamePhi() const {
     return m_phiID;
   }
   /**  Set the grid size in pseudorapidity.

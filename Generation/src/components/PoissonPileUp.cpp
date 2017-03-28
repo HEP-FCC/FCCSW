@@ -11,9 +11,6 @@ PoissonPileUp::PoissonPileUp(
   const IInterface* parent )
   : GaudiTool ( type, name , parent ) {
   declareInterface< IPileUpTool >( this );
-
- declareProperty( "numPileUpEvents", m_meanPileUpEvents = 0 );
- declareProperty( "Filename", m_filename = "");
 }
 
 

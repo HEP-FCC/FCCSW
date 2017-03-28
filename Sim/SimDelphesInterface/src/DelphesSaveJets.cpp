@@ -17,17 +17,12 @@ DECLARE_TOOL_FACTORY(DelphesSaveJets)
 DelphesSaveJets::DelphesSaveJets(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
-
-  declareOutput("jets", m_jets);
-  declareOutput("jetConstituents", m_jetParticles);
-  declareOutput("jetsFlavorTagged", m_jetsFlavorTagged);
-  declareOutput("jetsBTagged", m_jetsBTagged);
-  declareOutput("jetsCTagged", m_jetsCTagged);
-  declareOutput("jetsTauTagged", m_jetsTauTagged);
-  declareProperty("delphesArrayName", m_delphesArrayName);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("jets", m_jets, "Handle to the jets to be saved");
+  declareProperty("jetConstituents", m_jetParticles, "Handle to the jet constituents to be saved");
+  declareProperty("jetsFlavorTagged", m_jetsFlavorTagged, "Handle to the jet flavor tags to be saved");
+  declareProperty("jetsBTagged", m_jetsBTagged, "Handle to the b tags to be saved");
+  declareProperty("jetsCTagged", m_jetsCTagged, "Handle to the c tags to be saved");
+  declareProperty("jetsTauTagged", m_jetsTauTagged, "Handle to the tau tags to be saved");
 }
 
 DelphesSaveJets::~DelphesSaveJets() {}
@@ -50,7 +45,7 @@ StatusCode DelphesSaveJets::saveOutput(Delphes& delphes, const fcc::MCParticleCo
   auto colJetParts = m_jetParticles.createAndPut();
 
 
-  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.c_str());
+  const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
     return StatusCode::SUCCESS;

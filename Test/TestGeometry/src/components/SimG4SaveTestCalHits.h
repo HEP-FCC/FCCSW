@@ -44,11 +44,11 @@ public:
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
 private:
   /// Handle for calo clusters
-  DataHandle<fcc::PositionedCaloHitCollection> m_caloHitsPositioned;
+  DataHandle<fcc::PositionedCaloHitCollection> m_caloHitsPositioned{"hits/caloHitsPositioned", Gaudi::DataHandle::Writer, this};
   /// Handle for calo hits
-  DataHandle<fcc::CaloHitCollection> m_caloHits;
+  DataHandle<fcc::CaloHitCollection> m_caloHits{"hits/caloHits", Gaudi::DataHandle::Writer, this};
   /// Name of the calorimeter type (ECal/HCal)
-  std::string m_calType;
+  Gaudi::Property<std::string> m_calType{this, "caloType", "", "Name of the calorimeter type (ECal/HCal)"};
 
 };
 

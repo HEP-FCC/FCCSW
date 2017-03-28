@@ -12,13 +12,9 @@
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
 MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc):
-GaudiAlgorithm(aName, aSvcLoc){
-  declareInput("inhits", m_inHits,"hits/caloInHits");
-  declareOutput("outhits", m_outHits,"hits/caloOutHits");
-  declareProperty("readout", m_readoutName);
-  declareProperty("identifier", m_idToMerge);
-  declareProperty("merge", m_numToMerge = 0);
-  declareProperty("debugPrint", m_debugPrint = 10);
+  GaudiAlgorithm(aName, aSvcLoc) {
+  declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
+  declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
 
 MergeCells::~MergeCells() {}
@@ -59,7 +55,7 @@ StatusCode MergeCells::initialize() {
     error() << "It is not possible to merge more cells than the maximum number of cells." << endmsg;
     return StatusCode::FAILURE;
   }
-  if (m_numToMerge < 2) {
+  if (m_numToMerge < 2u) {
     error() << "Number of cells to me merged must be larger than 1." << endmsg;
     return StatusCode::FAILURE;
   }

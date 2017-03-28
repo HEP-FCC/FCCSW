@@ -12,7 +12,6 @@ DECLARE_TOOL_FACTORY(SimG4ParticleSmearSimple)
 SimG4ParticleSmearSimple::SimG4ParticleSmearSimple(const std::string& type, const std::string& name, const IInterface* parent):
     GaudiTool(type, name, parent) {
   declareInterface<ISimG4ParticleSmearTool>(this);
-  declareProperty("sigma", m_sigma = 0.01);
 }
 
 SimG4ParticleSmearSimple::~SimG4ParticleSmearSimple() {}

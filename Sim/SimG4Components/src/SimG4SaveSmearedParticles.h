@@ -42,9 +42,9 @@ public:
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
 private:
   /// Handle for the particles to be written
-  DataHandle<fcc::ParticleCollection> m_particles;
+  DataHandle<fcc::ParticleCollection> m_particles{"smearedParticles", Gaudi::DataHandle::Writer, this};
   /// Handle for the associations between particles and MC particles to be written
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles;
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles{"smearedParticlesToParticles", Gaudi::DataHandle::Writer, this};
 
 };
 

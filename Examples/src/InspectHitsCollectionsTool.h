@@ -31,7 +31,7 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the readouts (hits collections)
-  std::vector<std::string> m_readoutNames;
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames", {}, "Names of the readouts (hits collections)"};
 };
 
 #endif /* TESTDD4HEP_INSPECTHITSCOLLECTIONSTOOL_H */

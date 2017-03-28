@@ -34,7 +34,6 @@ public:
 
 private:
   /// Value of 1/sampling fraction
-  double m_invSamplingFraction;
+  Gaudi::Property<double> m_invSamplingFraction{this, "invSamplingFraction", 1.0, "Value of 1/sampling fraction"};
 };
-
 #endif /* RECCALORIMETER_CALIBRATECALOHITSTOOL_H */

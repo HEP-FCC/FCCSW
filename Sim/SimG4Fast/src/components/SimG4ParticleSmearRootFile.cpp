@@ -20,7 +20,6 @@ DECLARE_TOOL_FACTORY(SimG4ParticleSmearRootFile)
 SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent):
     GaudiTool(type, name, parent) {
   declareInterface<ISimG4ParticleSmearTool>(this);
-  declareProperty("filename", m_resolutionFileName);
 }
 
 SimG4ParticleSmearRootFile::~SimG4ParticleSmearRootFile() {}
@@ -61,7 +60,7 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
     error() << "Name of the resolution file not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile f(m_resolutionFileName.c_str(),"READ");
+  TFile f(m_resolutionFileName.value().c_str(),"READ");
   if (f.IsZombie()) {
     error() << "Couldn't open the resolution file" << endmsg;
     return StatusCode::FAILURE;

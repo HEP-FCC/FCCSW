@@ -28,30 +28,10 @@
 DECLARE_COMPONENT(DelphesSimulation)
 
 DelphesSimulation::DelphesSimulation(const std::string& name, ISvcLocator* svcLoc):
-GaudiAlgorithm(name, svcLoc) ,
-  m_DelphesCard(),
-  m_Delphes(nullptr),
-  m_hepMCConverter(nullptr),
-  m_eventCounter(0),
-  m_outRootFile(nullptr),
-  m_outRootFileName(""),
-  m_treeWriter(nullptr),
-  m_branchEvent(nullptr),
-  m_confReader(nullptr),
-  m_allParticles(nullptr),
-  m_stableParticles(nullptr),
-  m_partons(nullptr),
-  m_applyGenFilter(true)
-{
-  //declareProperty("filename", m_filename="" , "Name of the HepMC file to read");
-  declareProperty("DelphesCard"      , m_DelphesCard              , "Name of Delphes tcl config file with detector and simulation parameters");
-  declareProperty("ROOTOutputFile"   , m_outRootFileName          , "Name of Delphes Root output file, if defined, the Delphes standard tree write out (in addition to FCC-EDM based output to transient data store)");
-  declareProperty("ApplyGenFilter"   , m_applyGenFilter, "Decide whether or not to apply filtering on MC particles collection");
-
-  declareInput("hepmc", m_hepmcHandle);
-  declareProperty("outputs", m_saveToolNames);
-  declareOutput("mcEventWeights" , m_handleMCEventWeights, "mcEventWeights");
-  declareOutput("genParticles" , m_handleGenParticles, "genParticles");
+  GaudiAlgorithm(name, svcLoc) {
+  declareProperty("hepmc", m_hepmcHandle, "");
+  declareProperty("mcEventWeights", m_handleMCEventWeights);
+  declareProperty("genParticles", m_handleGenParticles);
 }
 
 StatusCode DelphesSimulation::initialize() {
@@ -60,7 +40,7 @@ StatusCode DelphesSimulation::initialize() {
   if (m_outRootFileName!="") {
 
     info()  << "Opening ROOT output file: " << m_outRootFileName << endmsg;
-    m_outRootFile = new TFile(m_outRootFileName.c_str(), "RECREATE");
+    m_outRootFile = new TFile(m_outRootFileName.value().c_str(), "RECREATE");
     if (m_outRootFile->IsZombie()) {
 
       error() << "Can't open " << m_outRootFileName << endmsg;
@@ -70,7 +50,7 @@ StatusCode DelphesSimulation::initialize() {
 
   // Read Delphes configuration card (deleted by finalize())
   m_confReader = std::unique_ptr<ExRootConfReader>(new ExRootConfReader);
-  m_confReader->ReadFile(m_DelphesCard.c_str());
+  m_confReader->ReadFile(m_DelphesCard.value().c_str());
 
   // Instance of Delphes (deleted by finalize())
   m_Delphes = std::unique_ptr<Delphes>(new Delphes("Delphes"));
@@ -233,10 +213,10 @@ StatusCode DelphesSimulation::execute() {
     auto weight = mcEventWeights->create();
     weight.value(hepMCEvent->weights()[j]);
   }
-  
+
   // FCC EDM (event-data model) based output
   auto genParticles       = m_handleGenParticles.createAndPut();
-  
+
   // convert Delphes MC particles to FCC EDM
   if (m_allParticles !=nullptr) DelphesSimulation::ConvertMCParticles(m_allParticles , genParticles);
 
@@ -288,21 +268,21 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
   for(int j=0; j<Input->GetEntries(); j++) {
 
     auto cand     = static_cast<Candidate *>(Input->At(j));
-    
+
     ///////////////////////////////////////
     // filter only interesting particles //
     ///////////////////////////////////////
-    
+
     bool pass = false;
-    
+
     auto status = cand->Status;
     auto pdgCode = TMath::Abs(cand->PID);
     auto pt = cand->Momentum.Pt();
-    
+
     // hard scattering particles (first condition for Py6, second for Py8)
     if(status == 3) pass = true;
     if(status > 20 && status < 30 ) pass = true;
-    
+
     // electrons, muons, taus and neutrinos
     if(pdgCode > 10 && pdgCode < 17) pass = true;
 
@@ -316,11 +296,11 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     if(status == 1 && pt > 5.0) pass = true;
 
     if (!pass && m_applyGenFilter) continue;
-   
+
     //////////////////////////////
     // store filtered particles //
     //////////////////////////////
-    
+
     auto particle = colMCParticles->create();
 
     auto& barePart    = particle.core();
@@ -336,7 +316,7 @@ void DelphesSimulation::ConvertMCParticles(const TObjArray* Input,
     barePart.vertex.z = cand->Position.Z();
 
     // need to store Delphes UniqueID in order to store MC association
-    barePart.bits     = cand->GetUniqueID(); 
+    barePart.bits     = cand->GetUniqueID();
 
     // Debug: print FCC-EDM MCParticle and GenVertex
     if (msgLevel() <= MSG::DEBUG) {

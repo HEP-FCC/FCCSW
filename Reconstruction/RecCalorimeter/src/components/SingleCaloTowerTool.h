@@ -106,21 +106,21 @@ public:
   virtual float phi(int aIdPhi) const final;
 private:
   /// Handle for calo cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_cells;
+  DataHandle<fcc::CaloHitCollection> m_cells{"calo/cells", Gaudi::DataHandle::Reader, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   /// PhiEta segmentation (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
-  double m_radius;
+  Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0, "Radius used to calculate cluster position from eta and phi (in mm)"};
   /// Maximum eta of detector. If undefined, it is calculated for each event from the cell collection.
-  float m_etaMax;
+  Gaudi::Property<float> m_etaMax{this, "etaMax", 0.0, "Maximum eta of detector. If undefined, it is calculated for each event from the cell collection."};
   /// Size of the tower in eta
-  float m_deltaEtaTower;
+  Gaudi::Property<float> m_deltaEtaTower{this, "deltaEtaTower", 0.01, "Size of the tower in eta"};
   /// Size of the tower in phi
-  float m_deltaPhiTower;
+  Gaudi::Property<float> m_deltaPhiTower{this, "deltaPhiTower", 0.01, "Size of the tower in phi"};
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
   int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)

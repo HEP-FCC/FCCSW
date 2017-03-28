@@ -63,22 +63,22 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for the EDM positioned hits to be read
-  DataHandle<fcc::PositionedCaloHitCollection> m_inHits;
+  DataHandle<fcc::PositionedCaloHitCollection> m_inHits{"hits/positionedCaloHits", Gaudi::DataHandle::Reader, this};
   /// Handle for the EDM hits to be written
-  DataHandle<fcc::CaloHitCollection> m_outHits;
+  DataHandle<fcc::CaloHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer, this};
   /// New segmentation
   DD4hep::DDSegmentation::Segmentation* m_segmentation;
   /// Name of the detector readout used in simulation
-  std::string m_oldReadoutName;
+  Gaudi::Property<std::string> m_oldReadoutName{this, "oldReadoutName", "", "Name of the detector readout used in simulation"};
   /// Name of the new detector readout
-  std::string m_newReadoutName;
+  Gaudi::Property<std::string> m_newReadoutName{this, "newReadoutName", "", "Name of the new detector readout"};
   /// Old bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
-  std::vector<std::string> m_oldIdentifiers;
+  Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{this, "oldSegmentationIds", {}, "Segmentation fields that are going to be replaced by the new segmentation"};
   /// Detector fields that are going to be rewritten
   std::vector<std::string> m_detectorIdentifiers;
   /// Limit of debug printing
-  uint m_debugPrint;
+  Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Limit of debug printing"};
 };
 #endif /* DETCOMPONENTS_REDOSEGMENTATION_H */

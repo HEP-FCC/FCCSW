@@ -24,14 +24,9 @@ ParticleGunAlg::ParticleGunAlg(
   const std::string& name,
   ISvcLocator* pSvcLocator)
   : GaudiAlgorithm ( name , pSvcLocator ) {
-  // Generation Method
-  declareProperty ( "ParticleGunTool" ,
-                    m_particleGunTool ) ;
-  declareProperty ( "VertexSmearingToolPGun" ,
-                     m_vertexSmearingTool ) ;
-  declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingToolPGun");
-  declarePrivateTool(m_particleGunTool, "MomentumRangeParticleGun/ParticleGunTool");
-  declareOutput("hepmc", m_hepmchandle);
+  declareProperty("ParticleGunTool", m_particleGunTool, "Tool that interfaces to the actual particle gun");
+  declareProperty("VertexSmearingToolPGun", m_vertexSmearingTool, "Tool that allows to smear vertex") ;
+  declareProperty("hepmc", m_hepmchandle, "HepMC event (output)");
 }
 
 /// Destructor

@@ -17,7 +17,6 @@ SimG4ParticleSmearFormula::SimG4ParticleSmearFormula(const std::string& type, co
     GaudiTool(type, name, parent),
     m_resolutionMomentum() {
   declareInterface<ISimG4ParticleSmearTool>(this);
-  declareProperty("resolutionMomentum", m_resolutionMomentumStr = "");
 }
 
 SimG4ParticleSmearFormula::~SimG4ParticleSmearFormula() {}
@@ -32,7 +31,7 @@ StatusCode SimG4ParticleSmearFormula::initialize() {
     return StatusCode::FAILURE;
   }
   if (!m_resolutionMomentumStr.empty()) {
-    m_resolutionMomentum = TFormula("pdep",m_resolutionMomentumStr.c_str());
+    m_resolutionMomentum = TFormula("pdep",m_resolutionMomentumStr.value().c_str());
     info() << "Momentum-dependent resolutions: "<< m_resolutionMomentum.GetExpFormula() << endmsg;
   } else {
     info() << "No momentum-dependent resolutions defined."<< endmsg;

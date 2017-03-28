@@ -16,12 +16,8 @@ DECLARE_TOOL_FACTORY(SimG4SaveTestCalHits)
 SimG4SaveTestCalHits::SimG4SaveTestCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("caloType", m_calType);
-  declareOutput("caloClusters", m_caloHitsPositioned, "hits/caloHitsPositioned");
-  declareOutput("caloHits", m_caloHits,"hits/caloHits");
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("caloClusters", m_caloHitsPositioned, "Handle for calo clusters");
+  declareProperty("caloHits", m_caloHits,"Handle for calo hits");
 }
 
 SimG4SaveTestCalHits::~SimG4SaveTestCalHits() {}
@@ -30,7 +26,7 @@ StatusCode SimG4SaveTestCalHits::initialize() {
   if(GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  if (m_calType.find("ECal") != std::string::npos && m_calType.find("HCal") != std::string::npos) {
+  if (m_calType.value().find("ECal") != std::string::npos && m_calType.value().find("HCal") != std::string::npos) {
     error()<<"Wrong type of the calorimeter. Set the property 'caloType' to either 'ECal' or 'HCal'"<<endmsg;
     return StatusCode::FAILURE;
   } else {
@@ -55,7 +51,7 @@ StatusCode SimG4SaveTestCalHits::saveOutput(const G4Event& aEvent) {
     auto edmHits = m_caloHits.createAndPut();;
     for (int iter_coll=0; iter_coll<collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
-      if (collect->GetName().find(m_calType) != std::string::npos) {
+      if (collect->GetName().find(m_calType.value()) != std::string::npos) {
         size_t n_hit = collect->GetSize();
         energyTotal = 0;
         hitNo = 0;

@@ -19,6 +19,21 @@ GridPhiEta::GridPhiEta(const std::string& cellEncoding) :
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
+GridPhiEta::GridPhiEta(BitField64* decoder) :
+  Segmentation(decoder) {
+  // define type and description
+  _type = "GridPhiEta";
+  _description = "Phi-eta segmentation in the global coordinates";
+
+  // register all necessary parameters
+  registerParameter("grid_size_eta", "Cell size in Eta", m_gridSizeEta, 1., SegmentationParameter::LengthUnit);
+  registerParameter("phi_bins", "Number of bins phi", m_phiBins, 1);
+  registerParameter("offset_eta", "Angular offset in eta", m_offsetEta, 0., SegmentationParameter::AngleUnit, true);
+  registerParameter("offset_phi", "Angular offset in phi", m_offsetPhi, 0., SegmentationParameter::AngleUnit, true);
+  registerIdentifier("identifier_eta", "Cell ID identifier for eta", m_etaID, "eta");
+  registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
+}
+
 /// determine the local based on the cell ID
 Vector3D GridPhiEta::position(const CellID& cID) const {
   _decoder->setValue(cID);
@@ -58,7 +73,6 @@ double GridPhiEta::phi(const CellID& cID) const {
   CellID phiValue = (*_decoder)[m_phiID].value();
   return binToPosition(phiValue, 2.*M_PI/(double)m_phiBins, m_offsetPhi);
 }
-REGISTER_SEGMENTATION(GridPhiEta)
 }
 }
 

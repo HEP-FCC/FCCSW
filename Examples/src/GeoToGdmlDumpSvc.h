@@ -26,7 +26,7 @@ public:
 
 private:
    /// Name of the GDML output file
-   std::string m_gdmlFileName;
+   Gaudi::Property<std::string> m_gdmlFileName{this, "gdml", "GeantDetector.gdml", "Output GDML file name"};
 };
 
 #endif /* EXAMPLES_GEOTOGDMLDUMPSVC_H */

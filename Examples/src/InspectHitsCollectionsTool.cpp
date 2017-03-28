@@ -14,7 +14,6 @@ DECLARE_TOOL_FACTORY(InspectHitsCollectionsTool)
 InspectHitsCollectionsTool::InspectHitsCollectionsTool(const std::string& aType, const std::string& aName, const IInterface* aParent):
 GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("readoutNames", m_readoutNames);
 }
 
 InspectHitsCollectionsTool::~InspectHitsCollectionsTool() {}

@@ -14,12 +14,9 @@
 DECLARE_ALGORITHM_FACTORY(CreatePositionedHit)
 
 CreatePositionedHit::CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc)
-: GaudiAlgorithm(name, svcLoc) {
-  declareInput("caloCells", m_caloCells,"caloCells");
-  declareOutput("caloPositionedHits", m_caloPositionedHits,"caloPositionedHits");
-  declareProperty("readoutName", m_readoutName="ECalHitsNew");
-  declareProperty("activeFieldName", m_activeFieldName="active_layer");
-  declareProperty("activeVolumeName", m_activeVolumeName="LAr_sensitive");
+  : GaudiAlgorithm(name, svcLoc) {
+  declareProperty("caloCells", m_caloCells, "Handle for calo cells (input collection with cellID)");
+  declareProperty("caloPositionedHits", m_caloPositionedHits, "Handle for positioned hits (output collection)");
 }
 
 StatusCode CreatePositionedHit::initialize() {

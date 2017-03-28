@@ -10,9 +10,7 @@ DECLARE_ALGORITHM_FACTORY(SimG4Alg)
 
 SimG4Alg::SimG4Alg(const std::string& aName, ISvcLocator* aSvcLoc):
   GaudiAlgorithm(aName, aSvcLoc) {
-  declareProperty("outputs",m_saveToolNames);
-  declarePrivateTool(m_eventTool, "SimG4PrimariesFromEdmTool", true);
-  declareProperty("eventProvider", m_eventTool);
+  declareProperty("eventProvider", m_eventTool, "Handle for tool that creates the G4Event");
 }
 SimG4Alg::~SimG4Alg() {}
 

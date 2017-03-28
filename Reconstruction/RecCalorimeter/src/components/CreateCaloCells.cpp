@@ -13,21 +13,17 @@
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
-CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
-  declareInput("hits", m_hits, "hits");
-  declareOutput("cells", m_cells, "cells");
+CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
+  : GaudiAlgorithm(name, svcLoc)
+{
+  declareProperty("hits", m_hits, "Hits from which to create cells (input)");
+  declareProperty("cells", m_cells, "The created calorimeter cells (output)");
 
-  declareProperty("calibTool", m_calibTool);
-  declarePrivateTool(m_calibTool, "CalibrateCaloHitsTool");
-  declareProperty("noiseTool", m_noiseTool);
-  declarePrivateTool(m_noiseTool, "NoiseCaloCellsFlatTool");
-  declareProperty("geometryTool", m_geoTool);
-  declarePrivateTool(m_geoTool, "TubeLayerPhiEtaCaloTool");
-
-  declareProperty("doCellCalibration", m_doCellCalibration = true);
-  declareProperty("addCellNoise", m_addCellNoise = true);
-  declareProperty("filterCellNoise", m_filterCellNoise = false);
+  declareProperty("calibTool", m_calibTool, "Handle for tool to calibrate Geant4 energy to EM scale tool");
+  declareProperty("noiseTool", m_noiseTool, "Handle for the calorimeter cells noise tool");
+  declareProperty("geometryTool", m_geoTool, "Handle for the geometry tool");
 }
+
 
 StatusCode CreateCaloCells::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();

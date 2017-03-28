@@ -53,20 +53,20 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::CaloHitCollection> m_inHits;
+  DataHandle<fcc::CaloHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Handle for the EDM Hits to be written
-  DataHandle<fcc::CaloHitCollection> m_outHits;
+  DataHandle<fcc::CaloHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer, this};
   // Handle to the detector ID descriptor
   DD4hep::Geometry::IDDescriptor m_descriptor;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readout", "", "Name of the detector readout"};
   /// Identifier to be merged
-  std::string m_idToMerge;
+  Gaudi::Property<std::string> m_idToMerge{this, "identifier", "", "Identifier to be merged"};
   /// Name (or its part) of the volume
-  std::string m_volumeName;
+  Gaudi::Property<std::string> m_volumeName{this, "volumeName", "", "Name (or its part) of the volume"};
   /// List with number of adjacent cells to be merged
-  std::vector<uint> m_listToMerge;
-  /// Limit of debug printing
-  uint m_debugPrint;
+  Gaudi::Property<std::vector<uint>> m_listToMerge{this, "merge", {}, "List with number of adjacent cells to be merged"};
+  /// Maximum number of lines in debug output
+Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Maximum number of lines in debug output"};
 };
 #endif /* DETCOMPONENTS_MERGECELLS_H */

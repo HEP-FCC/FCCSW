@@ -34,13 +34,14 @@ public:
   /** Implements IPileUpTool::printPileUpCounters.
    */
   virtual void printPileUpCounters( ) ;
-  
+
   virtual std::string getFilename();
-  
+
 private:
   /// Number of min bias events to pile on signal event.
-  unsigned int m_numPileUpEvents;
-  std::string m_filename;
+  Gaudi::Property<unsigned int> m_numPileUpEvents{this, "numPileUpEvents", 0, "number of pile-up events"};
+  /// Name of the file from which to read the pile-up
+  Gaudi::Property<std::string> m_filename{this, "filename", "", "File from which to read the pile-up"};
 };
 
 #endif // GENERATION_CONSTPILEUP_H

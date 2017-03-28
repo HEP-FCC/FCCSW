@@ -19,11 +19,8 @@ DECLARE_TOOL_FACTORY(SimG4SaveSmearedParticles)
 SimG4SaveSmearedParticles::SimG4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent) :
   GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareOutput("particles", m_particles,"particles/smearedParticles");
-  declareOutput("particlesMCparticles", m_particlesMCparticles,"particles/smearedParticles");
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("particles", m_particles, "Handle for the particles to be written");
+  declareProperty("particlesMCparticles", m_particlesMCparticles, "Handle for the associations between particles and MC particles to be written");
 }
 
 SimG4SaveSmearedParticles::~SimG4SaveSmearedParticles() {}

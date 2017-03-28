@@ -26,17 +26,17 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
 
   // Make volume that envelopes the whole barrel; set material to air
   Dimension dimensions(xmlDet.dimensions());
-  xml_comp_t xEndPlate = xmlElement.child("end_plate");
+  xml_comp_t xEndPlate = xmlElement.child(_Unicode(end_plate));
   double dZEndPlate = xEndPlate.thickness();
-  xml_comp_t xFacePlate = xmlElement.child("face_plate");
+  xml_comp_t xFacePlate = xmlElement.child(_Unicode(face_plate));
   double dRhoFacePlate = xFacePlate.thickness();
-  xml_comp_t xSpace = xmlElement.child("plate_space");  // to avoid overlaps
+  xml_comp_t xSpace = xmlElement.child(_Unicode(plate_space));  // to avoid overlaps
   double space = xSpace.thickness();
 
   double sensitiveBarrelRmin = dimensions.rmin() + dRhoFacePlate + space;
 
   // Hard-coded assumption that we have two different sequences for the modules
-  std::vector<xml_comp_t> sequences = {xmlElement.child("sequence_a"), xmlElement.child("sequence_b")};
+  std::vector<xml_comp_t> sequences = {xmlElement.child(_Unicode(sequence_a)), xmlElement.child(_Unicode(sequence_b))};
   // NOTE: This assumes that both have the same dimensions!
   Dimension sequenceDimensions(sequences[1].dimensions());
   double dzSequence = sequenceDimensions.dz();

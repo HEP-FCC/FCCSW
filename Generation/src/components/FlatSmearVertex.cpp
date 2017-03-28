@@ -15,14 +15,6 @@ FlatSmearVertex::FlatSmearVertex(
   const IInterface* parent )
   : GaudiTool ( type, name , parent ) {
   declareInterface< IVertexSmearingTool >( this ) ;
-
-  declareProperty( "xVertexMin" , m_xmin = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "xVertexMax" , m_xmax = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "yVertexMin" , m_ymin = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "yVertexMax" , m_ymax = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "zVertexMin" , m_zmin = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "zVertexMax" , m_zmax = 0.0 * Gaudi::Units::mm ) ;
-  declareProperty( "BeamDirection", m_zDir = 0 );
 }
 
 /// Destructor

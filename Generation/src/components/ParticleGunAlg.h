@@ -47,17 +47,12 @@ public:
   virtual StatusCode finalize  ();
 
 private:
-  /// Location where to store generator events (set by options)
-  std::string  m_hepMCEventLocation ;
-
-  ToolHandle<IParticleGunTool> m_particleGunTool; ///< Particle gun tool
-
-  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool; ///< Vertex smear tool
-
-  /// Name to put in the event
-  std::string m_particleGunName ;
+  /// Tool that interfaces to the actual particle gun
+  ToolHandle<IParticleGunTool> m_particleGunTool{"FlatSmearVertex/VertexSmearingToolPGun", this};
+  /// Tool that allows to smear vertex
+  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool{"FlatSmearVertex/VertexSmearingToolPGun", this};
   /// The output handle for what is being produced
-  DataHandle<HepMC::GenEvent> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle{"hepmc", Gaudi::DataHandle::Writer, this};
 };
 
 #endif
