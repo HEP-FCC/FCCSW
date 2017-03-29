@@ -1,12 +1,12 @@
-#include "DDG4/Factories.h"
 #include "DD4hep/LCDD.h"
+#include "DDG4/Factories.h"
 
-#include "DetSensitive/SimpleTrackerSD.h"
+#include "DetSensitive/AggregateCalorimeterSD.h"
+#include "DetSensitive/BirksLawCalorimeterSD.h"
+#include "DetSensitive/GflashCalorimeterSD.h"
 #include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
-#include "DetSensitive/BirksLawCalorimeterSD.h"
-#include "DetSensitive/AggregateCalorimeterSD.h"
-#include "DetSensitive/GflashCalorimeterSD.h"
+#include "DetSensitive/SimpleTrackerSD.h"
 
 namespace DD4hep {
 namespace Simulation {
@@ -34,7 +34,7 @@ static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDe
 }
 // Factory method to create an instance of SimpleCalorimeterSD with Birks law
 static G4VSensitiveDetector* create_birks_law_calorimeter_sd(const std::string& aDetectorName,
-							     DD4hep::Geometry::LCDD& aLcdd) {
+                                                             DD4hep::Geometry::LCDD& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::BirksLawCalorimeterSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());

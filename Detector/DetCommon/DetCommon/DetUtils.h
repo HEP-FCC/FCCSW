@@ -8,8 +8,8 @@
 #include "DD4hep/DetFactoryHelper.h"
 #include "DD4hep/Segmentations.h"
 #include "DDSegmentation/BitField64.h"
-#include "DDSegmentation/CartesianGridXYZ.h"
 #include "DDSegmentation/CartesianGridXY.h"
+#include "DDSegmentation/CartesianGridXYZ.h"
 #include "DDSegmentation/PolarGridRPhi.h"
 
 // Geant
@@ -20,18 +20,18 @@
 
 #include "TGeoManager.h"
 
-
 /** Given a XML element with several daughters with the same name, e.g.
  <detector> <layer name="1" /> <layer name="2"> </detector>
  this method returns the first daughter of type nodeName whose attribute has a given value
  e.g. returns <layer name="2"/> when called with (detector, "layer", "name", "1") */
 namespace det {
 namespace utils {
-DD4hep::XML::Component getNodeByStrAttr(const DD4hep::XML::Handle_t& mother, const std::string& nodeName, const std::string& attrName,
-                                        const std::string& attrValue);
+DD4hep::XML::Component getNodeByStrAttr(const DD4hep::XML::Handle_t& mother, const std::string& nodeName,
+                                        const std::string& attrName, const std::string& attrValue);
 
 /// try to get attribute with double value, return defaultValue if attribute not found
-double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::string& attrName, const double& defaultValue);
+double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::string& attrName,
+                                const double& defaultValue);
 
 /** Retrieves the cellID based on the position of the step and the detector segmentation.
  *  @param aSeg Handle to the segmentation of the volume.
@@ -50,17 +50,17 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep,
  *   return Vector of neighbours.
  */
 std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
-  const std::vector<std::string>& aFieldNames,
-  const std::vector<std::pair<int,int>>& aFieldExtremes,
-  uint64_t aCellId);
+                                 const std::vector<std::string>& aFieldNames,
+                                 const std::vector<std::pair<int, int>>& aFieldExtremes,
+                                 uint64_t aCellId);
 
 /** Get minimal and maximal values that can be decoded in the fields of the bitfield.
  *   @param[in] aDecoder Handle to the bitfield decoder.
  *   @param[in] aFieldNames Names of the fields for which extremes are found.
  *   return Vector of pairs (min,max)
  */
-std::vector<std::pair<int,int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder,
-    const std::vector<std::string>& aFieldNames);
+std::vector<std::pair<int, int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder,
+                                                  const std::vector<std::string>& aFieldNames);
 
 /** Get the half widths of the box envelope (TGeoBBox).
  *   @param[in] aVolumeId The volume ID.

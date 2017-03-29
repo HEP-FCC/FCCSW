@@ -23,7 +23,7 @@
  */
 
 namespace sim {
-class ParticleInformation: public G4VUserPrimaryParticleInformation {
+class ParticleInformation : public G4VUserPrimaryParticleInformation {
 public:
   /** A constructor.
    *  @param[in] aMCpart EDM MCParticle.
@@ -69,6 +69,7 @@ public:
    *  @returns Flag indicating if particle was smeared in the tracker.
    */
   bool smeared() const;
+
 private:
   /// EDM MC particle
   const fcc::MCParticle m_mcParticle;

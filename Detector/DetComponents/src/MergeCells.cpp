@@ -11,8 +11,7 @@
 
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
-MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc):
-  GaudiAlgorithm(aName, aSvcLoc) {
+MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
   declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
@@ -20,13 +19,12 @@ MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc):
 MergeCells::~MergeCells() {}
 
 StatusCode MergeCells::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
   if (m_idToMerge.empty()) {
     error() << "No identifier to merge specified." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service ("GeoSvc");
+  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -41,17 +39,18 @@ StatusCode MergeCells::initialize() {
   m_descriptor = readout.idSpec();
   // check if identifier exists in the decoder
   auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
-    m_descriptor.fields().end(),
-    [this](const std::pair<std::string, DD4hep::Geometry::IDDescriptor::Field>& field) {
-      return bool(field.first.compare(m_idToMerge) == 0);
-    });
-  if ( itIdentifier == m_descriptor.fields().end()) {
-    error() << "Identifier  << " << m_idToMerge << ">> does not exist in the readout <<" << m_readoutName << ">>" << endmsg;
+                                   m_descriptor.fields().end(),
+                                   [this](const std::pair<std::string, DD4hep::Geometry::IDDescriptor::Field>& field) {
+                                     return bool(field.first.compare(m_idToMerge) == 0);
+                                   });
+  if (itIdentifier == m_descriptor.fields().end()) {
+    error() << "Identifier  << " << m_idToMerge << ">> does not exist in the readout <<" << m_readoutName << ">>"
+            << endmsg;
     return StatusCode::FAILURE;
   }
   // check if proper number of cells to be merged was given (>1 and odd for signed fields)
   // it'd be nice to get max num of cells and warn user if it's not multipicity
-  if(m_numToMerge > std::pow(2,(*itIdentifier).second->width())) {
+  if (m_numToMerge > std::pow(2, (*itIdentifier).second->width())) {
     error() << "It is not possible to merge more cells than the maximum number of cells." << endmsg;
     return StatusCode::FAILURE;
   }
@@ -59,7 +58,7 @@ StatusCode MergeCells::initialize() {
     error() << "Number of cells to me merged must be larger than 1." << endmsg;
     return StatusCode::FAILURE;
   }
-  if ((*itIdentifier).second->isSigned() && (m_numToMerge%2 == 0)) {
+  if ((*itIdentifier).second->isSigned() && (m_numToMerge % 2 == 0)) {
     error() << "If field is signed, merge can only be done for an odd number of cells"
             << "(to ensure that middle cell is centred at 0)." << endmsg;
     return StatusCode::FAILURE;
@@ -80,7 +79,7 @@ StatusCode MergeCells::execute() {
   int value = 0;
   uint debugIter = 0;
 
-  for (const auto& hit: *inHits) {
+  for (const auto& hit : *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
     cellId = hit.cellId();
     decoder->setValue(cellId);
@@ -89,10 +88,10 @@ StatusCode MergeCells::execute() {
       debug() << "old ID = " << value << endmsg;
     }
     if ((*decoder)[field_id].isSigned()) {
-      if (value<0) {
-        value -= m_numToMerge/2;
+      if (value < 0) {
+        value -= m_numToMerge / 2;
       } else {
-        value += m_numToMerge/2;
+        value += m_numToMerge / 2;
       }
     }
     value /= int(m_numToMerge);
@@ -108,6 +107,4 @@ StatusCode MergeCells::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeCells::finalize() {
-  return GaudiAlgorithm::finalize();
-}
+StatusCode MergeCells::finalize() { return GaudiAlgorithm::finalize(); }

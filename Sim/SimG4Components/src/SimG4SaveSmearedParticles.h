@@ -21,10 +21,9 @@ class ParticleMCParticleAssociationCollection;
  *  @author Anna Zaborowska
  */
 
-class SimG4SaveSmearedParticles: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveSmearedParticles : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit SimG4SaveSmearedParticles(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4SaveSmearedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveSmearedParticles();
   /**  Initialize.
    *   @return status code
@@ -40,12 +39,13 @@ public:
    *   @return status code
    */
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+
 private:
   /// Handle for the particles to be written
   DataHandle<fcc::ParticleCollection> m_particles{"smearedParticles", Gaudi::DataHandle::Writer, this};
   /// Handle for the associations between particles and MC particles to be written
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles{"smearedParticlesToParticles", Gaudi::DataHandle::Writer, this};
-
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles{"smearedParticlesToParticles",
+                                                                                  Gaudi::DataHandle::Writer, this};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVESMEAREDPARTICLES_H */

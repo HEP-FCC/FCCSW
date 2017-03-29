@@ -14,16 +14,15 @@
  *  @author Anna Zaborowska
  */
 
-class SimG4FullSimActions: public AlgTool, virtual public ISimG4ActionTool {
+class SimG4FullSimActions : public AlgTool, virtual public ISimG4ActionTool {
 public:
-   explicit SimG4FullSimActions(const std::string& type , const std::string& name,
-               const IInterface* parent);
-   virtual ~SimG4FullSimActions();
+  explicit SimG4FullSimActions(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~SimG4FullSimActions();
 
   /**  Initialize.
    *   @return status code
    */
-   virtual StatusCode initialize() final;
+  virtual StatusCode initialize() final;
   /**  Finalize.
    *   @return status code
    */
@@ -31,7 +30,7 @@ public:
   /** Get the user action initialization.
    *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
-   virtual G4VUserActionInitialization* userActionInitialization() final;
+  virtual G4VUserActionInitialization* userActionInitialization() final;
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

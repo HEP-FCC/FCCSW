@@ -19,10 +19,9 @@ class IRndmGenSvc;
  *  @author Anna Zaborowska
  */
 
-class SimG4ParticleSmearSimple: public GaudiTool, virtual public ISimG4ParticleSmearTool {
+class SimG4ParticleSmearSimple : public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
-  explicit SimG4ParticleSmearSimple(const std::string& type , const std::string& name,
-    const IInterface* parent);
+  explicit SimG4ParticleSmearSimple(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SimG4ParticleSmearSimple();
 
   /**  Initialize the tool and a random number generator.
@@ -41,13 +40,14 @@ public:
    */
   virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
 
-  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the model.
+  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the
+   * model.
    *   @param[in] aMinMomentum Minimum momentum.
    *   @param[in] aMaxMomentum Maximum momentum.
    *   @param[in] aMaxEta Maximum pseudorapidity.
    *   @return status code
    */
-  inline virtual StatusCode checkConditions(double, double, double) const final {return StatusCode::SUCCESS;}
+  inline virtual StatusCode checkConditions(double, double, double) const final { return StatusCode::SUCCESS; }
 
 private:
   /// Random Number Service

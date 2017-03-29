@@ -2,8 +2,8 @@
 #include "SimG4PrimariesFromEdmTool.h"
 
 // FCCSW
-#include "SimG4Common/Units.h"
 #include "SimG4Common/ParticleInformation.h"
+#include "SimG4Common/Units.h"
 
 // datamodel
 #include "datamodel/GenVertexCollection.h"
@@ -16,8 +16,8 @@
 DECLARE_COMPONENT(SimG4PrimariesFromEdmTool)
 
 SimG4PrimariesFromEdmTool::SimG4PrimariesFromEdmTool(const std::string& type,
-                                               const std::string& name,
-                                               const IInterface* parent)
+                                                     const std::string& name,
+                                                     const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareProperty("genParticles", m_genParticles, "Handle for the EDM MC particles to be read");
 }

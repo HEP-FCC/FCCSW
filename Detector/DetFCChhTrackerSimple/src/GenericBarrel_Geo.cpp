@@ -113,7 +113,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       // let r be the middle between two equidistant layer boundaries
       r = layer_rmin + (0.5 + repeatIndex) * layerThickness;
       // definition of layer volumes
-      DD4hep::Geometry::Tube layerShape(r - 0.5*layerThickness, r + 0.5*layerThickness, xLayer.dz());
+      DD4hep::Geometry::Tube layerShape(r - 0.5 * layerThickness, r + 0.5 * layerThickness, xLayer.dz());
       std::string layerName = "layer" + std::to_string(layerCounter);
       Volume layerVolume(layerName, layerShape, lcdd.material("Silicon"));
       layerVolume.setVisAttributes(lcdd.invisible());
@@ -121,7 +121,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       placedLayerVolume.addPhysVolID("layer", layerCounter);
       // approximation of tklayout values
       double phiOverlapFactor = utils::getAttrValueWithFallback(xLayer, "phi_overlap_factor", 1.15);
-      nPhi = static_cast<unsigned int>( phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
+      nPhi = static_cast<unsigned int>(phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
         phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
         DD4hep::Geometry::Translation3D lTranslation(r * cos(phi), r * sin(phi), 0);

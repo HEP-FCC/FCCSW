@@ -6,9 +6,8 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimG4Interface/ISimG4SaveOutputTool.h"
 #include "SimG4Interface/ISimG4EventProviderTool.h"
-
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 
 // Forward declarations:
 // Interfaces
@@ -33,7 +32,7 @@ class G4Event;
  *  @author Anna Zaborowska
  */
 
-class SimG4Alg: public GaudiAlgorithm {
+class SimG4Alg : public GaudiAlgorithm {
 public:
   explicit SimG4Alg(const std::string&, ISvcLocator*);
   virtual ~SimG4Alg();
@@ -53,7 +52,8 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
-  private:
+
+private:
   /// Pointer to the interface of Geant simulation service
   SmartIF<ISimG4Svc> m_geantSvc;
   /// Handle to the tools saving the output

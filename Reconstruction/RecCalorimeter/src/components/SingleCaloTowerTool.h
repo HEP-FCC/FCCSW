@@ -5,9 +5,9 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
+#include "DetSegmentation/GridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITowerTool.h"
-#include "DetSegmentation/GridPhiEta.h"
 class IGeoSvc;
 
 // datamodel
@@ -50,9 +50,12 @@ public:
    */
   virtual StatusCode finalize() final;
   /**  Find number of calorimeter towers.
-   *   Number of towers in phi is calculated from full azimuthal angle (2 pi) and the size of tower in phi ('\b deltaPhiTower').
-   *   Number of towers in eta is calculated from maximum detector eta ('\b etaMax`) and the size of tower in eta ('\b deltaEtaTower').
-   *   If max eta is undefined, 0 is returned. In this case number of eta towers should be calculated for each event separately (etaTowersNumber()).
+   *   Number of towers in phi is calculated from full azimuthal angle (2 pi) and the size of tower in phi ('\b
+   * deltaPhiTower').
+   *   Number of towers in eta is calculated from maximum detector eta ('\b etaMax`) and the size of tower in eta ('\b
+   * deltaEtaTower').
+   *   If max eta is undefined, 0 is returned. In this case number of eta towers should be calculated for each event
+   * separately (etaTowersNumber()).
    *   @return Struct containing number of towers in eta and phi.
    */
   virtual tower towersNumber() final;
@@ -67,7 +70,7 @@ public:
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
-  virtual uint buildTowers(std::vector<std::vector<float>> & aTowers) final;
+  virtual uint buildTowers(std::vector<std::vector<float>>& aTowers) final;
   /**  Find cells belonging to a cluster.
    *   @param[in] aEta Position of the middle tower of a cluster in eta
    *   @param[in] aPhi Position of the middle tower of a cluster in phi
@@ -75,9 +78,11 @@ public:
    *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
-  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal, fcc::CaloCluster& aEdmCluster) final;
+  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                          fcc::CaloCluster& aEdmCluster) final;
   /**  Get the radius (in mm) for the position calculation.
-   *   Reconstructed cluster has eta and phi position, without the radial coordinate. The cluster in EDM contains Cartesian position, so the radial position (e.g. the inner radius of the calorimeter)
+   *   Reconstructed cluster has eta and phi position, without the radial coordinate. The cluster in EDM contains
+   * Cartesian position, so the radial position (e.g. the inner radius of the calorimeter)
    *   needs to be specified. By default it is equal to 1.
    *   @return Radius
    */
@@ -88,13 +93,15 @@ public:
    */
   virtual uint idEta(float aEta) const final;
   /**  Get the tower IDs in phi.
-   *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is phi=0, phi is defined form -pi to pi). No segmentation offset is taken into account.
+   *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is phi=0, phi is defined form -pi to pi). No
+   * segmentation offset is taken into account.
    *   @param[in] aPhi Position of the calorimeter cell in phi
    *   @return ID (phi) of a tower
    */
   virtual uint idPhi(float aPhi) const final;
   /**  Get the eta position of the centre of the tower.
-   *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is eta=0). No segmentation offset is taken into account.
+   *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is eta=0). No segmentation offset is taken
+   * into account.
    *   @param[in] aIdEta ID (eta) of a tower
    *   @return Position of the centre of the tower
    */
@@ -104,6 +111,7 @@ public:
    *   @return Position of the centre of the tower
    */
   virtual float phi(int aIdPhi) const final;
+
 private:
   /// Handle for calo cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_cells{"calo/cells", Gaudi::DataHandle::Reader, this};
@@ -114,9 +122,12 @@ private:
   /// PhiEta segmentation (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
-  Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0, "Radius used to calculate cluster position from eta and phi (in mm)"};
+  Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
+                                   "Radius used to calculate cluster position from eta and phi (in mm)"};
   /// Maximum eta of detector. If undefined, it is calculated for each event from the cell collection.
-  Gaudi::Property<float> m_etaMax{this, "etaMax", 0.0, "Maximum eta of detector. If undefined, it is calculated for each event from the cell collection."};
+  Gaudi::Property<float> m_etaMax{
+      this, "etaMax", 0.0,
+      "Maximum eta of detector. If undefined, it is calculated for each event from the cell collection."};
   /// Size of the tower in eta
   Gaudi::Property<float> m_deltaEtaTower{this, "deltaEtaTower", 0.01, "Size of the tower in eta"};
   /// Size of the tower in phi

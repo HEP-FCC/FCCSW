@@ -41,13 +41,17 @@ private:
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active volumes (if different than all)
-  Gaudi::Property<std::vector<std::string>> m_activeVolumeName{this, "activeVolumeName", {"LAr_sensitive"}, "Name of active volumes (if different than all)"};
+  Gaudi::Property<std::vector<std::string>> m_activeVolumeName{
+      this, "activeVolumeName", {"LAr_sensitive"}, "Name of active volumes (if different than all)"};
   /// Name of active layers for sampling calorimeter
-  Gaudi::Property<std::vector<std::string>> m_activeFieldName{this, "activeFieldName", {"active_layer"}, "Name of active layers for sampling calorimeter"};
+  Gaudi::Property<std::vector<std::string>> m_activeFieldName{
+      this, "activeFieldName", {"active_layer"}, "Name of active layers for sampling calorimeter"};
   /// Name of the fields describing the segmented volume
-  Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames", {}, "Name of the fields describing the segmented volume"};
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{
+      this, "fieldNames", {}, "Name of the fields describing the segmented volume"};
   /// Values of the fields describing the segmented volume
-  Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues", {}, "Values of the fields describing the segmented volume"};
+  Gaudi::Property<std::vector<int>> m_fieldValues{
+      this, "fieldValues", {}, "Values of the fields describing the segmented volume"};
 };
 
 #endif /* RECCALORIMETER_NESTEDVOLUMESCALOTOOL_H */

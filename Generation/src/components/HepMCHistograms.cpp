@@ -2,14 +2,12 @@
 
 DECLARE_COMPONENT(HepMCHistograms)
 
-HepMCHistograms::HepMCHistograms(const std::string& name, ISvcLocator* svcLoc) :
-  GaudiAlgorithm(name, svcLoc) {
+HepMCHistograms::HepMCHistograms(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hepmc", m_hepmchandle);
 }
 
 StatusCode HepMCHistograms::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
 
   if (service("THistSvc", m_ths).isFailure()) {
     error() << "Couldn't get THistSvc" << endmsg;
@@ -44,17 +42,14 @@ StatusCode HepMCHistograms::execute() {
 
   info() << "Processing event with " << evt->particles_size() << " particles" << endmsg;
 
-  for (HepMC::GenEvent::particle_const_iterator it = evt->particles_begin(), end = evt->particles_end();
-    it != end;
-    ++it) {
+  for (HepMC::GenEvent::particle_const_iterator it = evt->particles_begin(), end = evt->particles_end(); it != end;
+       ++it) {
     auto particle = *it;
     m_eta->Fill(particle->momentum().eta());
     m_pt->Fill(particle->momentum().perp());
   }
 
-  for (HepMC::GenEvent::vertex_const_iterator it = evt->vertices_begin(), end = evt->vertices_end();
-    it != end;
-    ++it) {
+  for (HepMC::GenEvent::vertex_const_iterator it = evt->vertices_begin(), end = evt->vertices_end(); it != end; ++it) {
     auto vertex = *it;
     m_d0->Fill(vertex->position().perp());
     m_z0->Fill(vertex->position().z());
@@ -64,8 +59,7 @@ StatusCode HepMCHistograms::execute() {
 }
 
 StatusCode HepMCHistograms::finalize() {
-  if (GaudiAlgorithm::finalize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::finalize().isFailure()) return StatusCode::FAILURE;
 
   return StatusCode::SUCCESS;
 }

@@ -13,7 +13,7 @@
  */
 
 namespace sim {
-class FastSimPhysics: public G4VPhysicsConstructor {
+class FastSimPhysics : public G4VPhysicsConstructor {
 public:
   /// Constructor.
   FastSimPhysics();
@@ -33,4 +33,3 @@ public:
 }
 
 #endif /* SIMG4FAST_FASTSIMPHYSICS_H */
-

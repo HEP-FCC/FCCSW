@@ -6,13 +6,12 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "SimG4Interface/ISimG4RegionTool.h"
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4RegionTool.h"
 
 // Geant
 class G4VFastSimulationModel;
 class G4Region;
-
 
 /** @class SimG4FastSimTrackerRegion SimG4Fast/src/components/SimG4FastSimTrackerRegion.h SimG4FastSimTrackerRegion.h
  *
@@ -25,7 +24,7 @@ class G4Region;
  *  @author Anna Zaborowska
 */
 
-class SimG4FastSimTrackerRegion: public GaudiTool, virtual public ISimG4RegionTool {
+class SimG4FastSimTrackerRegion : public GaudiTool, virtual public ISimG4RegionTool {
 public:
   explicit SimG4FastSimTrackerRegion(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SimG4FastSimTrackerRegion();
@@ -44,19 +43,19 @@ public:
   /**  Get the names of the volumes where fast simulation should be performed.
    *   @return vector of volume names
    */
-  inline virtual const std::vector<std::string>& volumeNames() const final {return m_volumeNames;};
+  inline virtual const std::vector<std::string>& volumeNames() const final { return m_volumeNames; };
   /**  Get the minimum momentum that triggers fast simulation
    *   @return minimum momentum
    */
-  inline virtual double minMom() const final {return m_minMomentum;};
+  inline virtual double minMom() const final { return m_minMomentum; };
   /**  Get the maximum momentum that triggers fast simulation
    *   @return maximum momentum
    */
-  inline virtual double maxP() const final {return m_maxMomentum;};
+  inline virtual double maxP() const final { return m_maxMomentum; };
   /**  Get the maximum pseudorapidity that triggers fast simulation
    *   @return maximum eta
    */
-  inline virtual double maxEta() const final {return m_maxEta;};
+  inline virtual double maxEta() const final { return m_maxEta; };
 
 private:
   /// Pointer to a smearing tool, to retrieve tracker configuration (names of volumes)
@@ -74,7 +73,6 @@ private:
   Gaudi::Property<double> m_maxMomentum{this, "maxMomentum", 0, "maximum momentum that triggers the fast sim model"};
   /// maximum pseudorapidity (set by job options)
   Gaudi::Property<double> m_maxEta{this, "maxEta", 0, "maximum pseudorapidity"};
-
 };
 
 #endif /* SIMG4FAST_SIMG4FASTSIMTRACKERREGION_H */

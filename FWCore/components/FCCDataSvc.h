@@ -3,15 +3,14 @@
 
 #include "FWCore/PodioDataSvc.h"
 
-class FCCDataSvc  : public PodioDataSvc   {
+class FCCDataSvc : public PodioDataSvc {
   friend class SvcFactory<FCCDataSvc>;
 
- public:
+public:
   /// Standard Constructor
   FCCDataSvc(const std::string& name, ISvcLocator* svc);
 
   /// Standard Destructor
   virtual ~FCCDataSvc();
-
 };
-#endif // FWCORE_FCCDATASVC_H
+#endif  // FWCORE_FCCDATASVC_H

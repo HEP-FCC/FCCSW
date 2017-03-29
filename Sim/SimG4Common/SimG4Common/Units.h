@@ -21,13 +21,13 @@ const double energy = CLHEP::GeV;
 }
 namespace edm2g4 {
 // FIXME: these should be a constexpr, but CLHEP is only const
-const double length = edmdefault::length/CLHEP::mm;
-const double energy = edmdefault::energy/CLHEP::MeV;
+const double length = edmdefault::length / CLHEP::mm;
+const double energy = edmdefault::energy / CLHEP::MeV;
 }
 namespace g42edm {
 // FIXME: these should be a constexpr, but CLHEP is only const
-const double length = CLHEP::mm/edmdefault::length;
-const double energy = CLHEP::MeV/edmdefault::energy;
+const double length = CLHEP::mm / edmdefault::length;
+const double energy = CLHEP::MeV / edmdefault::energy;
 }
 }
 #endif /* SIMG4COMMON_UNITS_H */

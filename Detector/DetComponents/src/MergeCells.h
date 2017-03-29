@@ -23,13 +23,14 @@ class CaloHitCollection;
  *  Name of the field to be merged is defined be property '\b identifier'.
  *  Property '\b merge' describes how many adjacent cells should be merged.
  *  If the identifier describes an unsigned field, the number of cells to be merged can be any number.
- *  If the identifier describes a signed field, however, the number of cells to be merged need to be an odd number (to keep the centre of the central bin in 0).
+ *  If the identifier describes a signed field, however, the number of cells to be merged need to be an odd number (to
+ * keep the centre of the central bin in 0).
  *  For an example see Detector/DetComponents/tests/options/mergeCells.py
  *
  *  @author Anna Zaborowska
  */
 
-class MergeCells: public GaudiAlgorithm {
+class MergeCells : public GaudiAlgorithm {
 public:
   explicit MergeCells(const std::string&, ISvcLocator*);
   virtual ~MergeCells();
@@ -46,6 +47,7 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
+
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

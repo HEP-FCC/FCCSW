@@ -12,16 +12,16 @@
 
 /** @class SimG4GdmlTestDetector TestGeometry/src/components/SimG4GdmlTestDetector.h SimG4GdmlTestDetector.h
  *
- *  Detector construction tool using the GDML file. It creates the detector as defined in test::GdmlDetectorConstruction.
+ *  Detector construction tool using the GDML file. It creates the detector as defined in
+ * test::GdmlDetectorConstruction.
  *  GDML file name needs to be specified in job options file (\b'gdml').
  *
  *  @author Anna Zaborowska
  */
 
-class SimG4GdmlTestDetector: public AlgTool, virtual public ISimG4DetectorConstruction {
+class SimG4GdmlTestDetector : public AlgTool, virtual public ISimG4DetectorConstruction {
 public:
-  explicit SimG4GdmlTestDetector(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4GdmlTestDetector(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4GdmlTestDetector();
   /**  Initialize.
    *   @return status code
@@ -35,6 +35,7 @@ public:
    *  @return pointer to G4VUserDetectorConstruction
    */
   virtual G4VUserDetectorConstruction* detectorConstruction();
+
 private:
   /// name of the GDML file
   Gaudi::Property<std::string> m_gdmlFile{this, "gdml", "", "name of the GDML file"};

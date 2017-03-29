@@ -5,8 +5,8 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "SimG4Interface/ISimG4EventProviderTool.h"
 #include "FWCore/DataHandle.h"
+#include "SimG4Interface/ISimG4EventProviderTool.h"
 
 // Geant4
 #include "G4SystemOfUnits.hh"
@@ -16,7 +16,7 @@
 class G4Event;
 class G4PrimaryVertex;
 class G4PrimaryParticle;
-//datamodel
+// datamodel
 namespace fcc {
 class MCParticleCollection;
 class GenVertexCollection;

@@ -3,9 +3,9 @@
 #define GENERATION_HEPMCREADER_H
 
 #include "Generation/IHepMCFileReaderTool.h"
-#include "Generation/IVertexSmearingTool.h"
-#include "Generation/IPileUpTool.h"
 #include "Generation/IHepMCMergeTool.h"
+#include "Generation/IPileUpTool.h"
+#include "Generation/IVertexSmearingTool.h"
 
 #include "FWCore/DataHandle.h"
 
@@ -13,7 +13,7 @@
 #include "GaudiKernel/ToolHandle.h"
 
 namespace HepMC {
-  class GenEvent;
+class GenEvent;
 }
 
 /**@class HepMCReader HepMCReader.h HepMCReader.h
@@ -28,8 +28,8 @@ namespace HepMC {
  *  @version 1.0
  */
 
-class HepMCReader: public GaudiAlgorithm {
-  friend class AlgFactory<HepMCReader> ;
+class HepMCReader : public GaudiAlgorithm {
+  friend class AlgFactory<HepMCReader>;
 
 public:
   /// Constructor.
@@ -57,4 +57,4 @@ private:
   // output handle for finished event
   DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Writer, this};
 };
-#endif //GENERATION_HEPMCREADER_H
+#endif  // GENERATION_HEPMCREADER_H

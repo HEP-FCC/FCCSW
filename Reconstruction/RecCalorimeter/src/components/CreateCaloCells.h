@@ -2,17 +2,17 @@
 #define RECCALORIMETER_CREATECALOCELLS_H
 
 // FCCSW
-#include "RecInterface/ICalibrateCaloHitsTool.h"
-#include "RecInterface/INoiseCaloCellsTool.h"
-#include "RecInterface/ICalorimeterTool.h"
 #include "FWCore/DataHandle.h"
+#include "RecInterface/ICalibrateCaloHitsTool.h"
+#include "RecInterface/ICalorimeterTool.h"
+#include "RecInterface/INoiseCaloCellsTool.h"
 
 // Gaudi
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
 
-#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
+#include "datamodel/CaloHitCollection.h"
 
 class IGeoSvc;
 
@@ -37,8 +37,7 @@ class IGeoSvc;
  *
  */
 
-class CreateCaloCells : public GaudiAlgorithm
-{
+class CreateCaloCells : public GaudiAlgorithm {
 
 public:
   CreateCaloCells(const std::string& name, ISvcLocator* svcLoc);
@@ -62,7 +61,8 @@ private:
   /// Add noise to cells?
   Gaudi::Property<bool> m_addCellNoise{this, "addCellNoise", true, "Add noise to cells?"};
   /// Save only cells with energy above threshold?
-  Gaudi::Property<bool> m_filterCellNoise{this, "filterCellNoise", false, "Save only cells with energy above threshold?"};
+  Gaudi::Property<bool> m_filterCellNoise{this, "filterCellNoise", false,
+                                          "Save only cells with energy above threshold?"};
   /// Handle for calo hits (input collection)
   DataHandle<fcc::CaloHitCollection> m_hits{"hits", Gaudi::DataHandle::Reader, this};
   /// Handle for calo cells (output collection)
@@ -72,13 +72,17 @@ private:
   /// Name of active volumes
   Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "_sensitive", "Name of the active volumes"};
   /// Name of active layers for sampling calorimeter
-  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer", "Name of active layers for sampling calorimeter"};
+  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer",
+                                                 "Name of active layers for sampling calorimeter"};
   /// Name of the bit-fields (in the readout) describing the volume
-  Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames", {},
-                                         "Name of the bit-fields (in the readout) describing the volume"};
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{
+      this, "fieldNames", {}, "Name of the bit-fields (in the readout) describing the volume"};
   /// Values of the fields that identify the volume to change segmentation (e.g. ID of the ECal)
-  Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues", {},
-                                 "Value of the field that identifies the volume to to change segmentation (e.g. ID of the ECal)"};
+  Gaudi::Property<std::vector<int>> m_fieldValues{
+      this,
+      "fieldValues",
+      {},
+      "Value of the field that identifies the volume to to change segmentation (e.g. ID of the ECal)"};
 
   /** Temporary: for use with MergeLayer tool
    * MergeLayer is going to be replaced by RedoSegmentation once we can define segmentation with variable cell (layer)

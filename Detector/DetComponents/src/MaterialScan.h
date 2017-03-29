@@ -11,13 +11,13 @@
  *  @author J. Lingemann
  */
 
-class MaterialScan: public Service {
+class MaterialScan : public Service {
 public:
   explicit MaterialScan(const std::string& name, ISvcLocator* svcLoc);
 
   virtual StatusCode initialize();
   virtual StatusCode finalize();
-  virtual ~MaterialScan() {};
+  virtual ~MaterialScan(){};
 
 private:
   /// name of the output file

@@ -12,19 +12,19 @@
 
 // Geant4
 #include "G4Event.hh"
-#include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
+#include "G4ParticleTable.hh"
 
 // datamodel
-#include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
+#include "datamodel/MCParticleCollection.h"
 
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4SingleParticleGeneratorTool)
 
 SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::string& type,
-                                                             const std::string& nam,
-                                                             const IInterface* parent)
+                                                                   const std::string& nam,
+                                                                   const IInterface* parent)
     : GaudiTool(type, nam, parent) {
   declareInterface<ISimG4EventProviderTool>(this);
   declareProperty("genParticles", m_genParticlesHandle, "Handle for the genparticles to be written");
@@ -34,23 +34,23 @@ SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::st
 SimG4SingleParticleGeneratorTool::~SimG4SingleParticleGeneratorTool() {}
 
 StatusCode SimG4SingleParticleGeneratorTool::initialize() {
-  if(GaudiTool::initialize().isFailure()) {
+  if (GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  if(!G4ParticleTable::GetParticleTable()->contains(m_particleName.value())) {
-    error()<<"Particle "<<m_particleName<<" cannot be found in G4ParticleTable"<<endmsg;
+  if (!G4ParticleTable::GetParticleTable()->contains(m_particleName.value())) {
+    error() << "Particle " << m_particleName << " cannot be found in G4ParticleTable" << endmsg;
     return StatusCode::FAILURE;
   }
-  if(m_energyMin > m_energyMax) {
-    error()<<"Maximum energy cannot be lower than the minumum energy"<<endmsg;
+  if (m_energyMin > m_energyMax) {
+    error() << "Maximum energy cannot be lower than the minumum energy" << endmsg;
     return StatusCode::FAILURE;
   }
-  if(m_etaMin > m_etaMax) {
-    error()<<"Maximum psudorapidity cannot be lower than the minumum psudorapidity"<<endmsg;
+  if (m_etaMin > m_etaMax) {
+    error() << "Maximum psudorapidity cannot be lower than the minumum psudorapidity" << endmsg;
     return StatusCode::FAILURE;
   }
-  if(m_phiMin > m_phiMax) {
-    error()<<"Maximum azimuthal angle cannot be lower than the minumum angle"<<endmsg;
+  if (m_phiMin > m_phiMax) {
+    error() << "Maximum azimuthal angle cannot be lower than the minumum angle" << endmsg;
     return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
@@ -97,26 +97,25 @@ G4Event* SimG4SingleParticleGeneratorTool::g4Event() {
   return theEvent;
 }
 
-
 StatusCode SimG4SingleParticleGeneratorTool::saveToEdm(const G4PrimaryVertex* aVertex,
-                                                    const G4PrimaryParticle* aParticle) {
+                                                       const G4PrimaryParticle* aParticle) {
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
   auto vertex = vertices->create();
   auto& position = vertex.position();
-  position.x = aVertex->GetX0()*sim::g42edm::length;
-  position.y = aVertex->GetY0()*sim::g42edm::length;
-  position.z = aVertex->GetZ0()*sim::g42edm::length;
-  vertex.ctau(aVertex->GetT0()*Gaudi::Units::c_light*sim::g42edm::length);
+  position.x = aVertex->GetX0() * sim::g42edm::length;
+  position.y = aVertex->GetY0() * sim::g42edm::length;
+  position.z = aVertex->GetZ0() * sim::g42edm::length;
+  vertex.ctau(aVertex->GetT0() * Gaudi::Units::c_light * sim::g42edm::length);
 
   fcc::MCParticle particle = particles->create();
   fcc::BareParticle& core = particle.core();
   core.pdgId = aParticle->GetPDGcode();
   core.status = 1;
-  core.p4.px = aParticle->GetPx()*sim::g42edm::energy;
-  core.p4.py = aParticle->GetPy()*sim::g42edm::energy;
-  core.p4.pz = aParticle->GetPz()*sim::g42edm::energy;
-  core.p4.mass = aParticle->GetMass()*sim::g42edm::energy;
+  core.p4.px = aParticle->GetPx() * sim::g42edm::energy;
+  core.p4.py = aParticle->GetPy() * sim::g42edm::energy;
+  core.p4.pz = aParticle->GetPz() * sim::g42edm::energy;
+  core.p4.mass = aParticle->GetMass() * sim::g42edm::energy;
   particle.startVertex(vertex);
 
   m_genParticlesHandle.put(particles);

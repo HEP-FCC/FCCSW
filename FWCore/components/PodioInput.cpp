@@ -3,19 +3,15 @@
 #include "TFile.h"
 #include "TROOT.h"
 
-#include "FWCore/PodioDataSvc.h"
 #include "FWCore/DataWrapper.h"
+#include "FWCore/PodioDataSvc.h"
 
 DECLARE_COMPONENT(PodioInput)
 
-PodioInput::PodioInput(const std::string& name, ISvcLocator* svcLoc) :
-GaudiAlgorithm(name, svcLoc)
-{
-}
+PodioInput::PodioInput(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {}
 
 StatusCode PodioInput::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
 
   // check whether we have the PodioEvtSvc active
   m_podioDataSvc = dynamic_cast<PodioDataSvc*>(evtSvc().get());
@@ -49,7 +45,6 @@ StatusCode PodioInput::execute() {
 }
 
 StatusCode PodioInput::finalize() {
-  if (GaudiAlgorithm::finalize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::finalize().isFailure()) return StatusCode::FAILURE;
   return StatusCode::SUCCESS;
 }

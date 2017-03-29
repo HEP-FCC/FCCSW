@@ -2,9 +2,9 @@
 #define GENERATION_MOMENTUMRANGEPARTICLEGUN_H
 
 #include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/SystemOfUnits.h"
-#include "GaudiKernel/PhysicalConstants.h"
 
 #include "Generation/IParticleGunTool.h"
 
@@ -16,12 +16,11 @@
  *  @author Benedikt Hegner
  *  @date   2008-05-18
  */
-class MomentumRangeParticleGun : public GaudiTool , virtual public IParticleGunTool {
+class MomentumRangeParticleGun : public GaudiTool, virtual public IParticleGunTool {
 
 public:
   /// Constructor
-  MomentumRangeParticleGun( const std::string & type , const std::string& name,
-                 const IInterface * parent ) ;
+  MomentumRangeParticleGun(const std::string& type, const std::string& name, const IInterface* parent);
 
   /// Destructor
   virtual ~MomentumRangeParticleGun();
@@ -30,12 +29,10 @@ public:
   virtual StatusCode initialize();
 
   /// Generation of particles
-  virtual void generateParticle( Gaudi::LorentzVector & momentum ,
-                                 Gaudi::LorentzVector & origin ,
-                                 int & pdgId ) ;
+  virtual void generateParticle(Gaudi::LorentzVector& momentum, Gaudi::LorentzVector& origin, int& pdgId);
 
   /// Print counters
-  virtual void printCounters( ) { ; } ;
+  virtual void printCounters() { ; };
 
 private:
   /// Minimum momentum (Set by options)
@@ -50,7 +47,7 @@ private:
   /// Maximum theta angle (Set by options)
   Gaudi::Property<double> m_maxTheta{this, "ThetaMax", 0.4 * Gaudi::Units::rad, "Maximal theta"};
   /// Maximum phi angle (Set by options)
-  Gaudi::Property<double> m_maxPhi{this, "PhiMax", Gaudi::Units::twopi * Gaudi::Units::rad, "Maximal phi"};
+  Gaudi::Property<double> m_maxPhi{this, "PhiMax", Gaudi::Units::twopi* Gaudi::Units::rad, "Maximal phi"};
 
   /// Momentum range
   double m_deltaMom;
@@ -69,7 +66,7 @@ private:
   std::vector<std::string> m_names;
 
   /// Flat random number generator
-  Rndm::Numbers m_flatGenerator ;
+  Rndm::Numbers m_flatGenerator;
 };
 
-#endif // GENERATION_MOMENTUMRANGEPARTICLEGUN_H
+#endif  // GENERATION_MOMENTUMRANGEPARTICLEGUN_H

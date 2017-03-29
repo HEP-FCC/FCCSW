@@ -1,9 +1,9 @@
 #include "TubeLayerPhiEtaCaloTool.h"
 
 // segm
-#include "DetInterface/IGeoSvc.h"
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/LCDD.h"
+#include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
 

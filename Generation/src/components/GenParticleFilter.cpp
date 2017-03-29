@@ -1,21 +1,17 @@
 #include "GenParticleFilter.h"
 
+#include "datamodel/GenVertex.h"
 #include "datamodel/LorentzVector.h"
 #include "datamodel/MCParticleCollection.h"
-#include "datamodel/GenVertex.h"
 
 DECLARE_COMPONENT(GenParticleFilter)
 
-GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLoc):
-  GaudiAlgorithm(name, svcLoc)
-{
+GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("allGenParticles", m_iGenpHandle, "Generator Particles to filter (input)");
   declareProperty("filteredGenParticles", m_oGenpHandle, "Filtered Generator particles (output)");
 }
 
-StatusCode GenParticleFilter::initialize() {
-  return GaudiAlgorithm::initialize();
-}
+StatusCode GenParticleFilter::initialize() { return GaudiAlgorithm::initialize(); }
 
 StatusCode GenParticleFilter::execute() {
   const auto inparticles = m_iGenpHandle.get();
@@ -38,6 +34,4 @@ StatusCode GenParticleFilter::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode GenParticleFilter::finalize() {
-  return GaudiAlgorithm::finalize();
-}
+StatusCode GenParticleFilter::finalize() { return GaudiAlgorithm::finalize(); }

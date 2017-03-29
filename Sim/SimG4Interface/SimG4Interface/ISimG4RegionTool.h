@@ -11,9 +11,9 @@
  *  @author Anna Zaborowska
  */
 
-class ISimG4RegionTool: virtual public IAlgTool {
+class ISimG4RegionTool : virtual public IAlgTool {
 public:
-  DeclareInterfaceID(ISimG4RegionTool,1,0);
+  DeclareInterfaceID(ISimG4RegionTool, 1, 0);
 
   /**  Create region.
    *   @return status code

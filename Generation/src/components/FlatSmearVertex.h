@@ -19,17 +19,16 @@
 class FlatSmearVertex : public GaudiTool, virtual public IVertexSmearingTool {
 public:
   /// Standard constructor
-  FlatSmearVertex( const std::string& type , const std::string& name,
-                    const IInterface* parent ) ;
+  FlatSmearVertex(const std::string& type, const std::string& name, const IInterface* parent);
 
-  virtual ~FlatSmearVertex( ); ///< Destructor
+  virtual ~FlatSmearVertex();  ///< Destructor
 
   /// Initialize method
-  virtual StatusCode initialize( ) ;
+  virtual StatusCode initialize();
 
   /** Implements IVertexSmearingTool::smearVertex.
    */
-  virtual StatusCode smearVertex( HepMC::GenEvent& theEvent ) ;
+  virtual StatusCode smearVertex(HepMC::GenEvent& theEvent);
 
 private:
   /// Minimum value for the x coordinate of the vertex (set by options)
@@ -39,7 +38,7 @@ private:
   Gaudi::Property<double> m_ymin{this, "yVertexMin", 0.0 * Gaudi::Units::mm, "Min value for y coordinate"};
 
   /// Minimum value for the z coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_zmin{this, "zVertexMin",0.0 * Gaudi::Units::mm, "Min value for z coordinate"};
+  Gaudi::Property<double> m_zmin{this, "zVertexMin", 0.0 * Gaudi::Units::mm, "Min value for z coordinate"};
 
   /// Maximum value for the x coordinate of the vertex (set by options)
   Gaudi::Property<double> m_xmax{this, "xVertexMax", 0.0 * Gaudi::Units::mm, "Max value for x coordinate"};
@@ -59,4 +58,4 @@ private:
   Rndm::Numbers m_flatDist;
 };
 
-#endif // GENERATION_FLATSMEARVERTEX_H
+#endif  // GENERATION_FLATSMEARVERTEX_H

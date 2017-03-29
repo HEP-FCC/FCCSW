@@ -34,8 +34,8 @@ void NoiseCaloCellsFlatTool::filterCellNoise(std::unordered_map<uint64_t, double
   double threshold = m_filterThreshold * m_cellNoise;
   auto it = aCells.begin();
   while ((it = std::find_if(it, aCells.end(), [&threshold](std::pair<const uint64_t, double>& p) {
-    return bool(p.second < threshold);
-  })) != aCells.end()) {
+            return bool(p.second < threshold);
+          })) != aCells.end()) {
     aCells.erase(it++);
   }
 }
