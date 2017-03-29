@@ -65,7 +65,7 @@ tower SingleCaloTowerTool::towersNumber() {
   // number of eta bins (if eta maximum is defined)
   m_nEtaTower = ceil(2 * m_etaMax / m_deltaEtaTower);
   debug() << "etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
-  debug() << "phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nEtaTower " << m_nPhiTower << endmsg;
+  debug() << "phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower << endmsg;
  
   tower total;
   total.eta = m_nEtaTower;
@@ -111,11 +111,13 @@ uint SingleCaloTowerTool::idPhi(float aPhi) const {
 float SingleCaloTowerTool::eta(int aIdEta) const {
   // middle of the tower
   return ((aIdEta + 0.5) *  m_deltaEtaTower - m_etaMax);
+  //return (aIdEta *  m_deltaEtaTower - m_etaMax);
 }
 
 float SingleCaloTowerTool::phi(int aIdPhi) const {
   // middle of the tower
   return ((aIdPhi + 0.5) * m_deltaPhiTower - m_phiMax);
+  //return (aIdPhi * m_deltaPhiTower - m_phiMax);
 }
 
 void SingleCaloTowerTool::matchCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {

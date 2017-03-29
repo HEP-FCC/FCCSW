@@ -136,11 +136,12 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         // Build precluster
         if (!toRemove) {
           // Calculate barycentre position (usually smaller window used to reduce noise influence)
+	  //weighted mean for position in eta and phi (weights must be non-negative!)
           for (int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
             for (int ipPhi = iPhi - halfPhiPos; ipPhi <= iPhi + halfPhiPos; ipPhi++) {
-              posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
-              posPhi +=  m_towerTool->phi(phiNeighbour(ipPhi)) * m_towers[ipEta][phiNeighbour(ipPhi)];
-              sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
+              posEta += m_towerTool->eta(ipEta) * fabs(m_towers[ipEta][phiNeighbour(ipPhi)]);
+              posPhi +=  m_towerTool->phi(phiNeighbour(ipPhi)) * fabs(m_towers[ipEta][phiNeighbour(ipPhi)]);
+              sumEnergyPos += fabs(m_towers[ipEta][phiNeighbour(ipPhi)]);
             }
           }
           // If non-zero energy in the cluster, add to pre-clusters (reduced size for pos. calculation -> energy in the
