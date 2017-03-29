@@ -1,13 +1,13 @@
 #include "TestGeometry/TestPhysicsList.h"
 
-//Geant4
+// Geant4
+#include "G4Electron.hh"
 #include "G4LeptonConstructor.hh"
 #include "G4ProcessManager.hh"
-#include "G4Electron.hh"
 
 namespace test {
 
-TestPhysicsList::TestPhysicsList(): G4VModularPhysicsList(), m_process() {}
+TestPhysicsList::TestPhysicsList() : G4VModularPhysicsList(), m_process() {}
 
 TestPhysicsList::~TestPhysicsList() {}
 

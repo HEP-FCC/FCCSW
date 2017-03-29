@@ -25,7 +25,7 @@ class TH1F;
  *  @author Anna Zaborowska
  */
 
-class SimG4FastSimHistograms: public GaudiAlgorithm {
+class SimG4FastSimHistograms : public GaudiAlgorithm {
 public:
   explicit SimG4FastSimHistograms(const std::string&, ISvcLocator*);
   virtual ~SimG4FastSimHistograms();
@@ -41,9 +41,11 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
+
 private:
   /// Handle for the EDM particles and MC particles associations to be read
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles{"particlesMCparticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles{"particlesMCparticles",
+                                                                                  Gaudi::DataHandle::Reader, this};
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
   // Histogram of the smeared particle's momentum

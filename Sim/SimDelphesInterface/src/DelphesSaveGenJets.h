@@ -23,10 +23,9 @@ class Candidate;
  *  @author Z. Drasal, J. Lingemann
  */
 
-class DelphesSaveGenJets: public GaudiTool, virtual public IDelphesSaveOutputTool {
+class DelphesSaveGenJets : public GaudiTool, virtual public IDelphesSaveOutputTool {
 public:
-  explicit DelphesSaveGenJets(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit DelphesSaveGenJets(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~DelphesSaveGenJets();
   /**  Initialize.
    *   @return status code
@@ -40,11 +39,11 @@ public:
    *   Converts genJets to fcc::GenJet and creates associations to fcc::MCParticle
    *   If flavor tags are defined, they are also translated and associations are created.
    *   @param[in] delphes: reference to Delphes module
-   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some point)
+   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some
+   * point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes,
-                                const fcc::MCParticleCollection& mcParticles) final;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
 
 private:
   //! Recursive method to find an id of MCParticle related to the given Delphes Candidate object,
@@ -56,8 +55,9 @@ private:
   /// Handle to the jets including additional flavour tag information
   DataHandle<fcc::TaggedGenJetCollection> m_taggedGenJets{"taggedGenJets", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes array that should be converted
-  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName" "", "Name of the Delphes array that should be converted"};
-
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName"
+                                                        "",
+                                                  "Name of the Delphes array that should be converted"};
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVEGENJETS */

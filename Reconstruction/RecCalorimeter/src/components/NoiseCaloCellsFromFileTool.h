@@ -7,8 +7,8 @@
 class IRndmGenSvc;
 
 // FCCSW
-#include "RecInterface/INoiseCaloCellsTool.h"
 #include "DetSegmentation/GridPhiEta.h"
+#include "RecInterface/INoiseCaloCellsTool.h"
 class IGeoSvc;
 
 // Root
@@ -48,19 +48,23 @@ public:
 
 private:
   /// Add pileup contribution to the electronics noise? (only if read from file)
-  Gaudi::Property<bool> m_addPileup{this, "addPileup", true, "Add pileup contribution to the electronics noise? (only if read from file)"};
+  Gaudi::Property<bool> m_addPileup{this, "addPileup", true,
+                                    "Add pileup contribution to the electronics noise? (only if read from file)"};
   /// Name of the file with noise constants
   Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "", "Name of the file with noise constants"};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active layers for sampling calorimeter
-  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer", "Name of active layers for sampling calorimeter"};
+  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer",
+                                                 "Name of active layers for sampling calorimeter"};
   /// Name of pileup histogram
   Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "h_pileup_layer", "Name of pileup histogram"};
   /// Name of electronics noise histogram
-  Gaudi::Property<std::string> m_elecNoiseHistoName{"elecNoiseHistoName", "h_elecNoise_layer", "Name of electronics noise histogram"};
+  Gaudi::Property<std::string> m_elecNoiseHistoName{"elecNoiseHistoName", "h_elecNoise_layer",
+                                                    "Name of electronics noise histogram"};
   /// Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)
-  Gaudi::Property<double> m_filterThreshold{this, "filterNoiseThreshold", 3, " Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)"};
+  Gaudi::Property<double> m_filterThreshold{
+      this, "filterNoiseThreshold", 3, " Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)"};
   /// Number of radial layers
   Gaudi::Property<uint> m_numRadialLayers{this, "numRadialLayers", 3, "Number of radial layers"};
 

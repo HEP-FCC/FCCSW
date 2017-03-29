@@ -109,7 +109,7 @@ private:
   Gaudi::Property<int> m_nEtaPosition{this, "nEtaPosition", 3};
   /// Size of the window in phi for cluster position calculation (in units of tower size)
   Gaudi::Property<int> m_nPhiPosition{this, "nPhiPosition", 3};
- /// Size of the window in eta for the overlap removal (in units of tower size)
+  /// Size of the window in eta for the overlap removal (in units of tower size)
   Gaudi::Property<int> m_nEtaDuplicates{this, "nEtaDuplicates", 2};
   /// Size of the window in phi for the overlap removal (in units of tower size)
   Gaudi::Property<int> m_nPhiDuplicates{this, "nPhiDuplicates", 2};
@@ -121,7 +121,8 @@ private:
   Gaudi::Property<int> m_nPhiFinal{this, "nPhiFinal", 15};
   /// Flag if references to the cells should be saved
   Gaudi::Property<bool> m_saveCells{this, "saveCells", false};
-  /// Flag if in each event the number of eta towers should be recalculated (true: default, false: if m_towerTool has etaMax defined)
+  /// Flag if in each event the number of eta towers should be recalculated (true: default, false: if m_towerTool has
+  /// etaMax defined)
   bool m_recalculateEtaTowers;
 };
 

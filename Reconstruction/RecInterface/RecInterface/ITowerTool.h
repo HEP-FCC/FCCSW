@@ -19,7 +19,7 @@ struct tower {
  *  @author Anna Zaborowska
  */
 
-class ITowerTool: virtual public IAlgTool {
+class ITowerTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ITowerTool, 1, 0);
   /**  Find number of calorimeter towers.
@@ -34,7 +34,7 @@ public:
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
-  virtual uint buildTowers(std::vector<std::vector<float>> & aTowers) = 0;
+  virtual uint buildTowers(std::vector<std::vector<float>>& aTowers) = 0;
   /**  Find cells belonging to a cluster.
    *   @param[in] aEta Position of the middle tower of a cluster in eta
    *   @param[in] aPhi Position of the middle tower of a cluster in phi
@@ -42,7 +42,8 @@ public:
    *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
-  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal, fcc::CaloCluster& aEdmCluster) = 0;
+  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                          fcc::CaloCluster& aEdmCluster) = 0;
   /**  Get the radius for the position calculation.
    *   @return Radius
    */

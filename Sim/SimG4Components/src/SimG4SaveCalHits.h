@@ -27,10 +27,9 @@ class CaloHitCollection;
  *  @author Anna Zaborowska
  */
 
-class SimG4SaveCalHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveCalHits : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit SimG4SaveCalHits(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveCalHits();
   /**  Initialize.
    *   @return status code
@@ -46,16 +45,18 @@ public:
    *   @return status code
    */
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for calo hits with additional position information
-  DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits{"hits/positionedCaloHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits{"hits/positionedCaloHits",
+                                                                    Gaudi::DataHandle::Writer, this};
   /// Handle for calo hits
   DataHandle<fcc::CaloHitCollection> m_caloHits{"hits/caloHits", Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
-  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
-
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{
+      this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVECALHITS_H */

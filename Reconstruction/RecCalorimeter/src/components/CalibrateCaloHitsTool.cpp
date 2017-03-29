@@ -2,9 +2,8 @@
 
 DECLARE_TOOL_FACTORY(CalibrateCaloHitsTool)
 
-CalibrateCaloHitsTool::CalibrateCaloHitsTool(const std::string& type,const std::string& name, const IInterface* parent)
-  : GaudiTool(type, name, parent)
-{
+CalibrateCaloHitsTool::CalibrateCaloHitsTool(const std::string& type, const std::string& name, const IInterface* parent)
+    : GaudiTool(type, name, parent) {
   declareInterface<ICalibrateCaloHitsTool>(this);
 }
 

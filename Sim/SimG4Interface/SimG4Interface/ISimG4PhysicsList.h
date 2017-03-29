@@ -2,7 +2,7 @@
 #define SIMG4INTERFACE_ISIMG4PHYSICSLIST_H
 
 // Gaudi
-#include  "GaudiKernel/IAlgTool.h"
+#include "GaudiKernel/IAlgTool.h"
 
 // Geant4
 class G4VModularPhysicsList;
@@ -14,17 +14,15 @@ class G4VModularPhysicsList;
  *  @author Benedikt HEGNER
  */
 
-class ISimG4PhysicsList: virtual public IAlgTool {
+class ISimG4PhysicsList : virtual public IAlgTool {
 public:
-
   /// Retrieve interface ID
-  DeclareInterfaceID(ISimG4PhysicsList,1,0);
+  DeclareInterfaceID(ISimG4PhysicsList, 1, 0);
 
   /** get initilization hook for the physics list
    *  @return  pointer to G4VModularPhysicsList
    */
-   virtual G4VModularPhysicsList* physicsList() = 0;
-
+  virtual G4VModularPhysicsList* physicsList() = 0;
 };
 
 #endif /* SIMG4INTERFACE_ISIMG4PHYSICSLIST_H */

@@ -1,12 +1,12 @@
 #ifndef GENERATION_PYTHIAINTERFACE_H
 #define GENERATION_PYTHIAINTERFACE_H
 
+#include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/Property.h"
+#include "Generation/IHepMCMergeTool.h"
 #include "Generation/IPileUpTool.h"
 #include "Generation/IVertexSmearingTool.h"
-#include "Generation/IHepMCMergeTool.h"
-#include "FWCore/DataHandle.h"
 #include <memory>
 
 // HepMC
@@ -14,19 +14,19 @@
 
 // Forward Pythia
 namespace Pythia8 {
-  class Pythia;
-  class SlowJet;
-  class JetMatchingMadgraph;
-  class amcnlo_unitarised_interface;
+class Pythia;
+class SlowJet;
+class JetMatchingMadgraph;
+class amcnlo_unitarised_interface;
 }
 
 // Forward FCC EDM
 namespace fcc {
-  class FloatCollection;
+class FloatCollection;
 }
 
-class PythiaInterface: public GaudiAlgorithm {
-  friend class AlgFactory<PythiaInterface> ;
+class PythiaInterface : public GaudiAlgorithm {
+  friend class AlgFactory<PythiaInterface>;
 
 public:
   /// Constructor.
@@ -65,4 +65,4 @@ private:
   bool m_doMePsMerging{false};
 };
 
-#endif // GENERATION_PYTHIAINTERFACE_H
+#endif  // GENERATION_PYTHIAINTERFACE_H

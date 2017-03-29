@@ -22,10 +22,9 @@ class TaggedJetCollection;
  *  @author Z. Drasal, J. Lingemann
  */
 
-class DelphesSaveJets: public GaudiTool, virtual public IDelphesSaveOutputTool {
+class DelphesSaveJets : public GaudiTool, virtual public IDelphesSaveOutputTool {
 public:
-  explicit DelphesSaveJets(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit DelphesSaveJets(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~DelphesSaveJets();
   /**  Initialize.
    *   @return status code
@@ -39,11 +38,12 @@ public:
    *   Converts genJets to fcc::Jet and creates associations to fcc::MCParticle
    *   If flavor tags are defined, they are also translated and associations are created.
    *   @param[in] delphes: reference to Delphes module
-   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some point)
+   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some
+   * point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes,
-                                const fcc::MCParticleCollection& mcParticles) final;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
+
 private:
   /// Handle to the jets to be saved
   DataHandle<fcc::JetCollection> m_jets{"jets", Gaudi::DataHandle::Writer, this};
@@ -58,8 +58,8 @@ private:
   /// Handle to the tau tags to be saved
   DataHandle<fcc::TaggedJetCollection> m_jetsTauTagged{"jetsTauTagged", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes array that should be converted
-  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "", "Name of the Delphes array that should be converted"};
-
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "",
+                                                  "Name of the Delphes array that should be converted"};
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVEJETS */

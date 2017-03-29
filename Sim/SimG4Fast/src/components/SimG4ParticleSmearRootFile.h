@@ -7,7 +7,7 @@
 class IRndmGenSvc;
 class IRndmGen;
 
-//ROOT
+// ROOT
 #include "TGraph.h"
 
 // FCCSW
@@ -28,10 +28,9 @@ class IRndmGen;
  *  @author Anna Zaborowska
  */
 
-class SimG4ParticleSmearRootFile: public GaudiTool, virtual public ISimG4ParticleSmearTool {
+class SimG4ParticleSmearRootFile : public GaudiTool, virtual public ISimG4ParticleSmearTool {
 public:
-  explicit SimG4ParticleSmearRootFile(const std::string& type , const std::string& name,
-    const IInterface* parent);
+  explicit SimG4ParticleSmearRootFile(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SimG4ParticleSmearRootFile();
 
   /**  Initialize the tool and a random number generator.
@@ -59,7 +58,8 @@ public:
    */
   double resolution(double aEta, double aMom);
 
-  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the model.
+  /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the
+   * model.
    *   @param[in] aMinMomentum Minimum momentum.
    *   @param[in] aMaxMomentum Maximum momentum.
    *   @param[in] aMaxEta Maximum pseudorapidity.
@@ -76,7 +76,8 @@ private:
   /// (lower end is defined by previous entry, and eta=0 for the first one)
   std::map<double, TGraph> m_momentumResolutions;
   /// File name with the resolutions obtained from root file (set by job options)
-  Gaudi::Property<std::string> m_resolutionFileName{this, "filename", "", "File name with the resolutions obtained from root file"};
+  Gaudi::Property<std::string> m_resolutionFileName{this, "filename", "",
+                                                    "File name with the resolutions obtained from root file"};
   /// minimum momentum defined in the resolution file
   double m_minMomentum;
   /// maximum momentum defined in the resolution file

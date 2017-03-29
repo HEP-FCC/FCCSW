@@ -9,8 +9,9 @@
 
 DECLARE_TOOL_FACTORY(SimG4FastSimPhysicsList)
 
-SimG4FastSimPhysicsList::SimG4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent) :
-  AlgTool(aType, aName, aParent) {
+SimG4FastSimPhysicsList::SimG4FastSimPhysicsList(const std::string& aType, const std::string& aName,
+                                                 const IInterface* aParent)
+    : AlgTool(aType, aName, aParent) {
   declareInterface<ISimG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool, "Handle for the full physics list tool");
 }
@@ -18,16 +19,14 @@ SimG4FastSimPhysicsList::SimG4FastSimPhysicsList(const std::string& aType, const
 SimG4FastSimPhysicsList::~SimG4FastSimPhysicsList() {}
 
 StatusCode SimG4FastSimPhysicsList::initialize() {
-  if(AlgTool::initialize().isFailure()) {
+  if (AlgTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
   m_physicsListTool.retrieve();
   return StatusCode::SUCCESS;
 }
 
-StatusCode SimG4FastSimPhysicsList::finalize() {
-  return AlgTool::finalize();
-}
+StatusCode SimG4FastSimPhysicsList::finalize() { return AlgTool::finalize(); }
 
 G4VModularPhysicsList* SimG4FastSimPhysicsList::physicsList() {
   // ownership passed to SimG4Svc which will register it in G4RunManager. To be deleted in ~G4RunManager()
@@ -38,4 +37,3 @@ G4VModularPhysicsList* SimG4FastSimPhysicsList::physicsList() {
   physicsList->RegisterPhysics(new sim::FastSimPhysics);
   return physicsList;
 }
-

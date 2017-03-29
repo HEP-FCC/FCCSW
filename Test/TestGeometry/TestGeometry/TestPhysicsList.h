@@ -15,7 +15,7 @@
  */
 
 namespace test {
-class TestPhysicsList: public G4VModularPhysicsList {
+class TestPhysicsList : public G4VModularPhysicsList {
 public:
   /// Constructor.
   TestPhysicsList();
@@ -25,10 +25,10 @@ public:
   virtual void ConstructProcess() final;
   /// Construction of particles.
   virtual void ConstructParticle() final;
+
 private:
   TestKillProcess m_process;
 };
 }
 
 #endif /* TESTGEOMETRY_PHYSICSLIST_H */
-

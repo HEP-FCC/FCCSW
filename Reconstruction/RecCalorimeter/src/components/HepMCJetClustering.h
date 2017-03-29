@@ -1,15 +1,15 @@
 #ifndef RECO_HEPMCJETCLUSTERING_H
 #define RECO_HEPMCJETCLUSTERING_H
 
-#include "GaudiAlg/GaudiAlgorithm.h"
-#include "datamodel/JetCollection.h"
-#include "HepMC/GenEvent.h"
 #include "FWCore/DataHandle.h"
+#include "GaudiAlg/GaudiAlgorithm.h"
+#include "HepMC/GenEvent.h"
+#include "datamodel/JetCollection.h"
 
 #include "fastjet/JetDefinition.hh"
 
-class HepMCJetClustering: public GaudiAlgorithm {
-  friend class AlgFactory<HepMCJetClustering> ;
+class HepMCJetClustering : public GaudiAlgorithm {
+  friend class AlgFactory<HepMCJetClustering>;
 
 public:
   /// Constructor.
@@ -20,6 +20,7 @@ public:
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
+
 private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Reader, this};
@@ -28,13 +29,15 @@ private:
   DataHandle<fcc::JetCollection> m_jets{"GenJets", Gaudi::DataHandle::Writer, this};
 
   /// the jet algorithm to use
-  Gaudi::Property<std::string> m_jetAlgorithm{this, "JetAlgorithm", "kt", "the Jet Algorithm to use [kt, antikt, cambridge]"};
+  Gaudi::Property<std::string> m_jetAlgorithm{this, "JetAlgorithm", "kt",
+                                              "the Jet Algorithm to use [kt, antikt, cambridge]"};
   fastjet::JetAlgorithm m_fj_jetAlgorithm{fastjet::JetAlgorithm::undefined_jet_algorithm};
 
   /// the cone radius
   Gaudi::Property<float> m_R{this, "ConeRadius", 1.0, "cone radius"};
   /// the recombination scheme
-  Gaudi::Property<std::string> m_recombinationScheme{this, "RecominbationScheme", "E", "the Recombination Scheme to use [E, pt, et]"};
+  Gaudi::Property<std::string> m_recombinationScheme{this, "RecominbationScheme", "E",
+                                                     "the Recombination Scheme to use [E, pt, et]"};
   fastjet::RecombinationScheme m_fj_recombinationScheme{fastjet::RecombinationScheme::E_scheme};
 
   /// use inclusive or exclusive jets

@@ -16,10 +16,9 @@ class IGeoSvc;
  *  @author Anna Zaborowska
  */
 
-class SimG4DD4hepDetector: public GaudiTool, virtual public ISimG4DetectorConstruction {
-  public:
-  explicit SimG4DD4hepDetector(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+class SimG4DD4hepDetector : public GaudiTool, virtual public ISimG4DetectorConstruction {
+public:
+  explicit SimG4DD4hepDetector(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4DD4hepDetector();
   /**  Initialize.
    *   @return status code
@@ -33,6 +32,7 @@ class SimG4DD4hepDetector: public GaudiTool, virtual public ISimG4DetectorConstr
    *  @return pointer to G4VUserDetectorConstruction (ownership is transferred to the caller)
    */
   virtual G4VUserDetectorConstruction* detectorConstruction();
+
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

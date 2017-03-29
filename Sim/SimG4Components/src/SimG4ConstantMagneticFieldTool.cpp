@@ -5,28 +5,27 @@
 #include "SimG4Common/ConstantField.h"
 
 // Geant 4
-#include "G4VUserPrimaryGeneratorAction.hh"
-#include "G4MagneticField.hh"
-#include "G4FieldManager.hh"
-#include "G4TransportationManager.hh"
 #include "G4ChordFinder.hh"
+#include "G4FieldManager.hh"
+#include "G4MagneticField.hh"
+#include "G4TransportationManager.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
 
-#include "G4PropagatorInField.hh"
-#include "G4MagIntegratorStepper.hh"
-#include "G4Mag_UsualEqRhs.hh"
+#include "G4ClassicalRK4.hh"
+#include "G4HelixExplicitEuler.hh"
 #include "G4HelixImplicitEuler.hh"
 #include "G4HelixSimpleRunge.hh"
-#include "G4HelixExplicitEuler.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4Mag_UsualEqRhs.hh"
 #include "G4NystromRK4.hh"
-#include "G4ClassicalRK4.hh"
+#include "G4PropagatorInField.hh"
 
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4ConstantMagneticFieldTool)
 
 SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string& type, const std::string& name,
                                                                const IInterface* parent)
-  : GaudiTool(type, name, parent),
-    m_field(nullptr) {
+    : GaudiTool(type, name, parent), m_field(nullptr) {
   declareInterface<ISimG4MagneticFieldTool>(this);
 }
 

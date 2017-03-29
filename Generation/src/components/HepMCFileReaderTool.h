@@ -8,11 +8,10 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/IO_GenEvent.h"
 
-class HepMCFileReader: public GaudiTool, virtual public IHepMCFileReaderTool {
+class HepMCFileReader : public GaudiTool, virtual public IHepMCFileReaderTool {
 public:
-  HepMCFileReader( const std::string& type, const std::string& name,
-    const IInterface* parent) ;
-  virtual ~HepMCFileReader(); ///< Destructor
+  HepMCFileReader(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~HepMCFileReader();  ///< Destructor
   virtual StatusCode initialize();
   virtual StatusCode finalize();
 
@@ -29,4 +28,4 @@ private:
   std::unique_ptr<HepMC::IO_GenEvent> m_file;
 };
 
-#endif // GENERATION_HEPMCFILEREADER_H
+#endif  // GENERATION_HEPMCFILEREADER_H

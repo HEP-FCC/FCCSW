@@ -39,8 +39,9 @@ private:
   /// Sigma of noise -- uniform noise per cell in GeV
   Gaudi::Property<double> m_cellNoise{this, "cellNoise", 0.003, "uniform noise per cell in GeV"};
   /// Energy threshold (Ecell < filterThreshold*m_cellNoise removed)
-  Gaudi::Property<double> m_filterThreshold{this, "filterNoiseThreshold", 3,
-                     "remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)"};
+  Gaudi::Property<double> m_filterThreshold{
+      this, "filterNoiseThreshold", 3,
+      "remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)"};
   /// Random Number Service
   IRndmGenSvc* m_randSvc;
   /// Gaussian random number generator used for smearing with a constant resolution (m_sigma)

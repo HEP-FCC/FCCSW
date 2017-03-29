@@ -15,15 +15,15 @@
 
 namespace det {
 BirksLawCalorimeterSD::BirksLawCalorimeterSD(const std::string& aDetectorName,
-					     const std::string& aReadoutName,
-					     const DD4hep::Geometry::Segmentation& aSeg)
-  : G4VSensitiveDetector(aDetectorName),
-    m_calorimeterCollection(nullptr),
-    m_seg(aSeg), 
-    // variables for birks law
-    m_material("Polystyrene"),
-    m_birk1(0.0130 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)),
-    m_birk2(9.6e-6 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2) * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)) {
+                                             const std::string& aReadoutName,
+                                             const DD4hep::Geometry::Segmentation& aSeg)
+    : G4VSensitiveDetector(aDetectorName),
+      m_calorimeterCollection(nullptr),
+      m_seg(aSeg),
+      // variables for birks law
+      m_material("Polystyrene"),
+      m_birk1(0.0130 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)),
+      m_birk2(9.6e-6 * CLHEP::g / (CLHEP::MeV * CLHEP::cm2) * CLHEP::g / (CLHEP::MeV * CLHEP::cm2)) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
 }
@@ -49,7 +49,7 @@ bool BirksLawCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   G4Material* material = aStep->GetPreStepPoint()->GetMaterial();
   G4double charge = aStep->GetPreStepPoint()->GetCharge();
 
-  if ((charge != 0.) && ( m_material.compare(material->GetName())==0 )) {
+  if ((charge != 0.) && (m_material.compare(material->GetName()) == 0)) {
     G4double rkb = m_birk1;
     // --- correction for particles with more than 1 charge unit ---
     // --- based on alpha particle data ---

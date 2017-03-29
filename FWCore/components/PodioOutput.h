@@ -1,9 +1,9 @@
 #ifndef FWCORE_PODIOOUTPUT_H
 #define FWCORE_PODIOOUTPUT_H
 
+#include "FWCore/KeepDropSwitch.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "podio/CollectionBase.h"
-#include "FWCore/KeepDropSwitch.h"
 
 #include "TTree.h"
 
@@ -14,7 +14,7 @@ class TFile;
 class PodioDataSvc;
 
 class PodioOutput : public GaudiAlgorithm {
-  friend class AlgFactory<PodioOutput> ;
+  friend class AlgFactory<PodioOutput>;
 
 public:
   /// Constructor.
@@ -29,17 +29,15 @@ public:
   virtual StatusCode finalize();
 
 private:
-  void resetBranches(const std::vector<std::pair<std::string, podio::CollectionBase*>>& collections,
-                                  bool prepare);
-  void createBranches(const std::vector<std::pair<std::string, podio::CollectionBase*>>& collections,
-                                   bool prepare);
+  void resetBranches(const std::vector<std::pair<std::string, podio::CollectionBase*>>& collections, bool prepare);
+  void createBranches(const std::vector<std::pair<std::string, podio::CollectionBase*>>& collections, bool prepare);
   /// First event or not
   bool m_firstEvent;
   /// Root file name the output is written to
   Gaudi::Property<std::string> m_filename{this, "filename", "output.root", "Name of the file to create"};
   /// Commands which output is to be kept
-  Gaudi::Property<std::vector<std::string>> m_outputCommands{this, "outputCommands", {"keep *"},
-                                            "A set of commands to declare which collections to keep or drop."};
+  Gaudi::Property<std::vector<std::string>> m_outputCommands{
+      this, "outputCommands", {"keep *"}, "A set of commands to declare which collections to keep or drop."};
   /// Switch for keeping or dropping outputs
   KeepDropSwitch m_switch;
   /// Needed for collection ID table
@@ -52,7 +50,6 @@ private:
   TTree* m_metadatatree;
   /// The stored collections
   std::vector<podio::CollectionBase*> m_storedCollections;
-
 };
 
 #endif

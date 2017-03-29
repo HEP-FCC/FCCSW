@@ -2,9 +2,9 @@
 #include "DD4hep/DetFactoryHelper.h"
 
 // Gaudi
-#include "GaudiKernel/ServiceHandle.h"
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
@@ -13,8 +13,8 @@ using DD4hep::Geometry::PlacedVolume;
 
 namespace det {
 
-static DD4hep::Geometry::Ref_t
-createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::SensitiveDetector sensDet) {
+static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement,
+                                          DD4hep::Geometry::SensitiveDetector sensDet) {
   // Get the Gaudi message service and message stream:
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "HCalConstruction");
   MsgStream lLog(&(*msgSvc), "HCalConstruction");

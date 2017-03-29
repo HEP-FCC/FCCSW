@@ -9,7 +9,7 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc) {
+    : GaudiAlgorithm(name, svcLoc) {
   declareProperty("clusters", m_clusters, "Handle for calo clusters (output collection)");
   declareProperty("towerTool", m_towerTool, "Handle for the tower building tool");
 }
@@ -35,18 +35,19 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
 
 StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 1. Create calorimeter towers (calorimeter grid in eta phi, all layers merged)
-  if( ! m_recalculateEtaTowers) { // make sure the number of cells is defined
+  if (!m_recalculateEtaTowers) {  // make sure the number of cells is defined
     m_nEtaTower = m_towerTool->etaTowersNumber();
     // make sure that the tower size in eta is larger than the seeding sliding window
-    if(m_nEtaTower < m_nEtaWindow) {
+    if (m_nEtaTower < m_nEtaWindow) {
       m_nEtaTower = m_nEtaWindow;
     }
-    debug() << "Recalculated number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
+    debug() << "Recalculated number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower
+            << endmsg;
   }
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
-  if( m_towerTool->buildTowers(m_towers) == 0 ) {
-     debug() << "Empty cell collection." << endmsg;
-     return StatusCode::SUCCESS;
+  if (m_towerTool->buildTowers(m_towers) == 0) {
+    debug() << "Empty cell collection." << endmsg;
+    return StatusCode::SUCCESS;
   }
   // 2. Find local maxima with sliding window, build preclusters, calculate their barycentre position
   // calculate the sum of first m_nEtaWindow bins in eta, for each phi tower
@@ -132,7 +133,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
           for (int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
             for (int ipPhi = iPhi - halfPhiPos; ipPhi <= iPhi + halfPhiPos; ipPhi++) {
               posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
-              posPhi +=  m_towerTool->phi(phiNeighbour(ipPhi)) * m_towers[ipEta][phiNeighbour(ipPhi)];
+              posPhi += m_towerTool->phi(phiNeighbour(ipPhi)) * m_towers[ipEta][phiNeighbour(ipPhi)];
               sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
             }
           }
@@ -148,7 +149,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             // Recalculating the energy within the final cluster size
             for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
               for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
-                if (ipEta >= 0 && ipEta < m_nEtaTower) { // check if we are not outside of map in eta
+                if (ipEta >= 0 && ipEta < m_nEtaTower) {  // check if we are not outside of map in eta
                   sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
                 }
               }
@@ -208,7 +209,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   debug() << "Pre-clusters size after duplicates removal: " << m_preClusters.size() << endmsg;
 
   // 6. Create final clusters
-    // currently only role of r is to calculate x,y,z position
+  // currently only role of r is to calculate x,y,z position
   double radius = m_towerTool->radiusForPosition();
   auto edmClusters = m_clusters.createAndPut();
   for (const auto clu : m_preClusters) {
@@ -222,8 +223,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             << edmClusterCore.position.y << " z " << edmClusterCore.position.z << " energy " << edmClusterCore.energy
             << endmsg;
     if (m_saveCells) {
-       // fins cells that belong to the cluster
-       m_towerTool->matchCells(clu.eta, clu.phi, halfEtaWin, halfPhiWin, edmCluster);
+      // fins cells that belong to the cluster
+      m_towerTool->matchCells(clu.eta, clu.phi, halfEtaWin, halfPhiWin, edmCluster);
     }
   }
   return StatusCode::SUCCESS;

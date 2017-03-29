@@ -27,10 +27,9 @@ class PositionedTrackHitCollection;
  *  @author Anna Zaborowska
  */
 
-class SimG4SaveTrackerHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveTrackerHits : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit SimG4SaveTrackerHits(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4SaveTrackerHits(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveTrackerHits();
   /**  Initialize.
    *   @return status code
@@ -46,16 +45,18 @@ public:
    *   @return status code
    */
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for tracker hits
   DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trackerHits", Gaudi::DataHandle::Writer, this};
   /// Handle for tracker hits including position information
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits",
+                                                                      Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
-  Gaudi::Property<std::vector<std::string>> m_readoutNames{this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
-
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{
+      this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVETRACKERHITS_H */

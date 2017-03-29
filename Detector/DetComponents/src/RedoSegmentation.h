@@ -13,7 +13,7 @@ class IGeoSvc;
 #include "DD4hep/Readout.h"
 namespace DD4hep {
 namespace DDSegmentation {
-  class Segmentation;
+class Segmentation;
 }
 }
 
@@ -38,7 +38,7 @@ class CaloHitCollection;
  *  @author Anna Zaborowska
  */
 
-class RedoSegmentation: public GaudiAlgorithm {
+class RedoSegmentation : public GaudiAlgorithm {
 public:
   explicit RedoSegmentation(const std::string&, ISvcLocator*);
   virtual ~RedoSegmentation();
@@ -54,6 +54,7 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
+
 private:
   /**  Get ID of the volume that contains the cell.
    *   @param[in] aCellId ID of the cell.
@@ -69,13 +70,15 @@ private:
   /// New segmentation
   DD4hep::DDSegmentation::Segmentation* m_segmentation;
   /// Name of the detector readout used in simulation
-  Gaudi::Property<std::string> m_oldReadoutName{this, "oldReadoutName", "", "Name of the detector readout used in simulation"};
+  Gaudi::Property<std::string> m_oldReadoutName{this, "oldReadoutName", "",
+                                                "Name of the detector readout used in simulation"};
   /// Name of the new detector readout
   Gaudi::Property<std::string> m_newReadoutName{this, "newReadoutName", "", "Name of the new detector readout"};
   /// Old bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
-  Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{this, "oldSegmentationIds", {}, "Segmentation fields that are going to be replaced by the new segmentation"};
+  Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{
+      this, "oldSegmentationIds", {}, "Segmentation fields that are going to be replaced by the new segmentation"};
   /// Detector fields that are going to be rewritten
   std::vector<std::string> m_detectorIdentifiers;
   /// Limit of debug printing

@@ -18,10 +18,9 @@
  *  @author Anna Zaborowska
  */
 
-class SimG4GdmlDetector: public AlgTool, virtual public ISimG4DetectorConstruction {
+class SimG4GdmlDetector : public AlgTool, virtual public ISimG4DetectorConstruction {
 public:
-  explicit SimG4GdmlDetector(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4GdmlDetector(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4GdmlDetector();
   /**  Initialize.
    *   @return status code
@@ -35,6 +34,7 @@ public:
    *  @return pointer to G4VUserDetectorConstruction (ownership is transferred to the caller)
    */
   virtual G4VUserDetectorConstruction* detectorConstruction();
+
 private:
   /// name of the GDML file
   Gaudi::Property<std::string> m_gdmlFile{this, "gdml", "", "name of the GDML file"};

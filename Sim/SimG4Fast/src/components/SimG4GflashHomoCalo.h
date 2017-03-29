@@ -7,7 +7,6 @@
 // FCCSW
 #include "SimG4Interface/ISimG4GflashTool.h"
 
-
 /** @class SimG4GflashHomoCalo SimG4Fast/src/components/SimG4GflashHomoCalo.h SimG4GflashHomoCalo.h
  *
  *  Tool creating a parametrisation of a homogenous calorimeter.
@@ -17,7 +16,7 @@
  *  @author Anna Zaborowska
 */
 
-class SimG4GflashHomoCalo: public GaudiTool, virtual public ISimG4GflashTool {
+class SimG4GflashHomoCalo : public GaudiTool, virtual public ISimG4GflashTool {
 public:
   explicit SimG4GflashHomoCalo(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SimG4GflashHomoCalo();
@@ -36,8 +35,8 @@ public:
 
 private:
   /// Material name of the homogenous calorimeter (to be searched for in Geant NIST table)
-  Gaudi::Property<std::string> m_material{this, "material", "", "Material name of the homogenous calorimeter (to be searched for in Geant NIST table)"};
-
+  Gaudi::Property<std::string> m_material{
+      this, "material", "", "Material name of the homogenous calorimeter (to be searched for in Geant NIST table)"};
 };
 
 #endif /* SIMG4FAST_SIMG4GFLASHHOMOCALO_H */

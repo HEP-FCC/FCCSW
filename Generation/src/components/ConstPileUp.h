@@ -6,11 +6,11 @@
 #include "GaudiAlg/GaudiTool.h"
 
 /** @class ConstPileUp ConstPileUp.h "ConstPileup.h"
- *  
+ *
  *  Tool to generate number of pile-up events to be mixed with signal event.
  *  Concrete implementation of a IPileUpTool -- the most trivial one, actually,
  *  returning just a constant (that can be specified as a property).
- * 
+ *
  *  @author Valentin Volkl
  *  @date   2015-12-16
  */
@@ -18,22 +18,21 @@
 class ConstPileUp : public GaudiTool, virtual public IPileUpTool {
 public:
   /// Standard constructor
-  ConstPileUp( const std::string& type , const std::string& name,
-                    const IInterface* parent ) ;
-  
-  virtual ~ConstPileUp( ); ///< Destructor
+  ConstPileUp(const std::string& type, const std::string& name, const IInterface* parent);
+
+  virtual ~ConstPileUp();  ///< Destructor
 
   /// Initialize method
-  virtual StatusCode initialize( ) ;
-  
+  virtual StatusCode initialize();
+
   /** Implements IPileUpTool::numberOfPileUp.
    */
-  virtual unsigned int numberOfPileUp( ) ;
+  virtual unsigned int numberOfPileUp();
 
   virtual double getMeanPileUp();
   /** Implements IPileUpTool::printPileUpCounters.
    */
-  virtual void printPileUpCounters( ) ;
+  virtual void printPileUpCounters();
 
   virtual std::string getFilename();
 
@@ -44,4 +43,4 @@ private:
   Gaudi::Property<std::string> m_filename{this, "filename", "", "File from which to read the pile-up"};
 };
 
-#endif // GENERATION_CONSTPILEUP_H
+#endif  // GENERATION_CONSTPILEUP_H

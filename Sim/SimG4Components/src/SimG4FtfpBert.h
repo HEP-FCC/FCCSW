@@ -13,10 +13,9 @@
  *  @author Anna Zaborowska
  */
 
-class SimG4FtfpBert: public AlgTool, virtual public ISimG4PhysicsList {
+class SimG4FtfpBert : public AlgTool, virtual public ISimG4PhysicsList {
 public:
-  explicit SimG4FtfpBert(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4FtfpBert(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4FtfpBert();
   /**  Initialize.
    *   @return status code
@@ -30,7 +29,6 @@ public:
    *  @return pointer to G4VModularPhysicsList (ownership is transferred to the caller)
    */
   virtual G4VModularPhysicsList* physicsList();
-
 };
 
 #endif /* SIMG4COMPONENTS_G4FTFPBERT_H */

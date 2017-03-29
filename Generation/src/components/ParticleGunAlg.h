@@ -1,10 +1,10 @@
 #ifndef GENERATION_PARTICLEGUNALG_H
 #define GENERATION_PARTICLEGUNALG_H
 
-#include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
-#include "HepMC/GenEvent.h"
+#include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
+#include "HepMC/GenEvent.h"
 
 /// Forward declarations
 #include "Generation/IParticleGunTool.h"
@@ -22,9 +22,9 @@
 class ParticleGunAlg : public GaudiAlgorithm {
 public:
   /// Standard constructor
-  ParticleGunAlg( const std::string& name, ISvcLocator* pSvcLocator );
+  ParticleGunAlg(const std::string& name, ISvcLocator* pSvcLocator);
 
-  virtual ~ParticleGunAlg( ); ///< Destructor
+  virtual ~ParticleGunAlg();  ///< Destructor
 
   /** Algorithm initialization.
    *  -# Initializes the common Gaudi random number generator used in all
@@ -39,12 +39,12 @@ public:
    *  generated.
    *  -#
    */
-  virtual StatusCode execute   ();
+  virtual StatusCode execute();
 
   /** Algorithm finalization.
    *  Print generation counters.
    */
-  virtual StatusCode finalize  ();
+  virtual StatusCode finalize();
 
 private:
   /// Tool that interfaces to the actual particle gun

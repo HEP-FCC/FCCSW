@@ -19,7 +19,8 @@ namespace sim {
 class ConstantField;
 }
 
-/** @class SimG4ConstantMagneticFieldTool SimG4Components/src/SimG4ConstantMagneticFieldTool.h SimG4ConstantMagneticFieldTool.h
+/** @class SimG4ConstantMagneticFieldTool SimG4Components/src/SimG4ConstantMagneticFieldTool.h
+* SimG4ConstantMagneticFieldTool.h
 *
 *  Implementation of ISimG4MagneticFieldTool that generates a constant field
 *

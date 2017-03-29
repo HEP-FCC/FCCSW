@@ -1,8 +1,8 @@
 #include "MergeLayers.h"
 
 // FCCSW
-#include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 // datamodel
 #include "datamodel/CaloHitCollection.h"
@@ -18,8 +18,7 @@
 
 DECLARE_ALGORITHM_FACTORY(MergeLayers)
 
-MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc):
-  GaudiAlgorithm(aName, aSvcLoc) {
+MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
   declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
@@ -27,13 +26,12 @@ MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc):
 MergeLayers::~MergeLayers() {}
 
 StatusCode MergeLayers::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
   if (m_idToMerge.empty()) {
-    error()<<"No identifier to merge specified."<<endmsg;
+    error() << "No identifier to merge specified." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service ("GeoSvc");
+  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -41,19 +39,20 @@ StatusCode MergeLayers::initialize() {
   }
   // check if readout exists
   if (m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
-    error()<<"Readout <<"<<m_readoutName<<">> does not exist."<<endmsg;
+    error() << "Readout <<" << m_readoutName << ">> does not exist." << endmsg;
     return StatusCode::FAILURE;
   }
   auto readout = m_geoSvc->lcdd()->readout(m_readoutName);
   m_descriptor = readout.idSpec();
   // check if identifier exists in the decoder
   auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
-    m_descriptor.fields().end(),
-    [this](const std::pair<std::string, DD4hep::Geometry::IDDescriptor::Field>& field) {
-      return bool(field.first.compare(m_idToMerge) == 0);
-    });
-  if ( itIdentifier == m_descriptor.fields().end()) {
-    error()<<"Identifier <<"<<m_idToMerge<<">> does not exist in the readout <<"<<m_readoutName<<">>"<<endmsg;
+                                   m_descriptor.fields().end(),
+                                   [this](const std::pair<std::string, DD4hep::Geometry::IDDescriptor::Field>& field) {
+                                     return bool(field.first.compare(m_idToMerge) == 0);
+                                   });
+  if (itIdentifier == m_descriptor.fields().end()) {
+    error() << "Identifier <<" << m_idToMerge << ">> does not exist in the readout <<" << m_readoutName << ">>"
+            << endmsg;
     return StatusCode::FAILURE;
   }
   // check sizes of new volumes in the list - it must sum to the total number of volumes
@@ -61,15 +60,15 @@ StatusCode MergeLayers::initialize() {
   auto highestVol = gGeoManager->GetTopVolume();
   auto numPlacedVol = det::utils::countPlacedVolumes(highestVol, m_volumeName);
   if (numPlacedVol != sumCells) {
-    error()<<"Total number of volumes named "<<m_volumeName<<" ("<<numPlacedVol<<") "
-           <<"is not equal to the sum of volumes from the list 'merge' given in job options ("
-           <<sumCells<<")"<<endmsg;
+    error() << "Total number of volumes named " << m_volumeName << " (" << numPlacedVol << ") "
+            << "is not equal to the sum of volumes from the list 'merge' given in job options (" << sumCells << ")"
+            << endmsg;
     return StatusCode::FAILURE;
   }
-  info()<<"Field description: "<<m_descriptor.fieldDescription()<<endmsg;
-  info()<<"Merging volumes named: "<<m_volumeName<<endmsg;
-  info()<<"Merging volumes for identifier: "<<m_idToMerge<<endmsg;
-  info()<<"List of number of volumes to be merged: "<<m_listToMerge<<"\n"<<endmsg;
+  info() << "Field description: " << m_descriptor.fieldDescription() << endmsg;
+  info() << "Merging volumes named: " << m_volumeName << endmsg;
+  info() << "Merging volumes for identifier: " << m_idToMerge << endmsg;
+  info() << "List of number of volumes to be merged: " << m_listToMerge << "\n" << endmsg;
   return StatusCode::SUCCESS;
 }
 
@@ -80,7 +79,7 @@ StatusCode MergeLayers::execute() {
   // rewriting list of cell sizes to list of top boundaries to facilitate the loop over hits
   std::vector<unsigned int> listToMergeBoundary(m_listToMerge.size());
   unsigned int sumCells = 0;
-  for (unsigned int i=0; i<m_listToMerge.size(); i++) {
+  for (unsigned int i = 0; i < m_listToMerge.size(); i++) {
     sumCells += m_listToMerge[i];
     listToMergeBoundary[i] = sumCells;
   }
@@ -91,7 +90,7 @@ StatusCode MergeLayers::execute() {
   unsigned int value = 0;
   unsigned int debugIter = 0;
 
-  for (const auto& hit: *inHits) {
+  for (const auto& hit : *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
     cellId = hit.cellId();
     decoder->setValue(cellId);
@@ -99,7 +98,7 @@ StatusCode MergeLayers::execute() {
     if (debugIter < m_debugPrint) {
       debug() << "old ID = " << value << endmsg;
     }
-    for (unsigned int i=0; i<listToMergeBoundary.size(); i++) {
+    for (unsigned int i = 0; i < listToMergeBoundary.size(); i++) {
       if (value < listToMergeBoundary[i]) {
         value = i;
         break;
@@ -117,6 +116,4 @@ StatusCode MergeLayers::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MergeLayers::finalize() {
-  return GaudiAlgorithm::finalize();
-}
+StatusCode MergeLayers::finalize() { return GaudiAlgorithm::finalize(); }

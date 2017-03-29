@@ -1,21 +1,19 @@
 #include "CreateCaloCells.h"
 
 // FCCSW
-#include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
 
 // our EDM
-#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
+#include "datamodel/CaloHitCollection.h"
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
-CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
-  : GaudiAlgorithm(name, svcLoc)
-{
+CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hits from which to create cells (input)");
   declareProperty("cells", m_cells, "The created calorimeter cells (output)");
 
@@ -23,7 +21,6 @@ CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("noiseTool", m_noiseTool, "Handle for the calorimeter cells noise tool");
   declareProperty("geometryTool", m_geoTool, "Handle for the geometry tool");
 }
-
 
 StatusCode CreateCaloCells::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();

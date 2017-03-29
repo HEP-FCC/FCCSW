@@ -1,23 +1,22 @@
 #include "MaterialScan.h"
 #include "DetInterface/IGeoSvc.h"
 
-#include "GaudiKernel/Service.h"
 #include "GaudiKernel/ITHistSvc.h"
+#include "GaudiKernel/Service.h"
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Printout.h"
 #include "DDRec/MaterialManager.h"
 
-#include "TMath.h"
 #include "TFile.h"
+#include "TMath.h"
 #include "TTree.h"
 #include "TVector3.h"
 
-
-MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc): Service(name, svcLoc) {
-    declareProperty("filename", m_filename, "file name to save the tree to");
-    declareProperty("etaBinning", m_etaBinning, "eta bin size");
-    declareProperty("etaMax", m_etaMax, "maximum eta value");
+MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {
+  declareProperty("filename", m_filename, "file name to save the tree to");
+  declareProperty("etaBinning", m_etaBinning, "eta bin size");
+  declareProperty("etaMax", m_etaMax, "maximum eta value");
 }
 
 StatusCode MaterialScan::initialize() {
@@ -43,14 +42,14 @@ StatusCode MaterialScan::initialize() {
   auto nLambdaPtr = nLambda.get();
   auto matDepthPtr = matDepth.get();
   auto materialPtr = material.get();
-            
+
   tree->Branch("eta", &eta);
   tree->Branch("nMaterials", &nMaterials);
   tree->Branch("nX0", &nX0Ptr);
   tree->Branch("nLambda", &nLambdaPtr);
   tree->Branch("matDepth", &matDepthPtr);
   tree->Branch("material", &materialPtr);
-  
+
   auto lcdd = m_geoSvc->lcdd();
   DD4hep::DDRec::MaterialManager matMgr;
   DDSurfaces::Vector3D beginning(0, 0, 0);
@@ -69,13 +68,14 @@ StatusCode MaterialScan::initialize() {
     dir = {n.X(), n.Y(), n.Z()};
     double distance = worldVol->DistFromInside(pos.data(), dir.data());
 
-    DDSurfaces::Vector3D end(dir[0]*distance, dir[1]*distance, dir[2]*distance);
-    debug() << "Calculating material between 0 and (" <<end.x()  << ", " << end.y() << ", " << end.z() << ") <=> eta = " << eta << endmsg;
+    DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
+    debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
+            << ") <=> eta = " << eta << endmsg;
     const DD4hep::DDRec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
     nMaterials = materials.size();
 
-    for (unsigned i=0, n = materials.size(); i < n; ++i){
-      TGeoMaterial* mat =  materials[i].first->GetMaterial();
+    for (unsigned i = 0, n = materials.size(); i < n; ++i) {
+      TGeoMaterial* mat = materials[i].first->GetMaterial();
       material->push_back(mat->GetName());
       matDepth->push_back(materials[i].second);
       nX0->push_back(materials[i].second / mat->GetRadLen());
@@ -88,6 +88,6 @@ StatusCode MaterialScan::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode MaterialScan::finalize() {return StatusCode::SUCCESS;}
+StatusCode MaterialScan::finalize() { return StatusCode::SUCCESS; }
 
 DECLARE_SERVICE_FACTORY(MaterialScan)

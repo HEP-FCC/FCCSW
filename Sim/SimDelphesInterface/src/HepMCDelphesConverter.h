@@ -18,35 +18,34 @@ class TObjArray;
 class TDatabasePDG;
 class DelphesFactory;
 
-namespace HepMC
-{
-  class GenEvent;
+namespace HepMC {
+class GenEvent;
 }
 
-class HepMCDelphesConverter
-{
+class HepMCDelphesConverter {
 public:
-
   /// Default constructor
   HepMCDelphesConverter();
   /// Default destructor
-  ~HepMCDelphesConverter() {};
+  ~HepMCDelphesConverter(){};
 
   /// Fill vertices and particles into arrays and add them through the factory
-  StatusCode hepMCEventToArrays(const HepMC::GenEvent* hepMCEvent, DelphesFactory& factory, TObjArray& allParticleOutputArray, TObjArray& stableParticleOutputArray, TObjArray& partonOutputArray) const;
+  StatusCode hepMCEventToArrays(const HepMC::GenEvent* hepMCEvent,
+                                DelphesFactory& factory,
+                                TObjArray& allParticleOutputArray,
+                                TObjArray& stableParticleOutputArray,
+                                TObjArray& partonOutputArray) const;
 
 private:
   /// Map to store vertex to particle relations
-  typedef std::map<int, std::pair <int, int>> VertexParticleMap;
+  typedef std::map<int, std::pair<int, int>> VertexParticleMap;
   /// Sets relations of particles
   void setRelationIndices(TObjArray& allParticleOutputArray,
-                         const VertexParticleMap& daughterMap,
-                         const VertexParticleMap& motherMap) const;
+                          const VertexParticleMap& daughterMap,
+                          const VertexParticleMap& motherMap) const;
 
   /// Database to get charge
-  const TDatabasePDG *m_pdg;
+  const TDatabasePDG* m_pdg;
 };
 
-#endif // SIM_HEPMCDELPHESCONVERTER_H
-
-
+#endif  // SIM_HEPMCDELPHESCONVERTER_H

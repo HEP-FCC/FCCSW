@@ -4,8 +4,7 @@ namespace DD4hep {
 namespace DDSegmentation {
 
 /// default constructor using an encoding string
-GridPhiEta::GridPhiEta(const std::string& cellEncoding) :
-  Segmentation(cellEncoding) {
+GridPhiEta::GridPhiEta(const std::string& cellEncoding) : Segmentation(cellEncoding) {
   // define type and description
   _type = "GridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
@@ -19,8 +18,7 @@ GridPhiEta::GridPhiEta(const std::string& cellEncoding) :
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
-GridPhiEta::GridPhiEta(BitField64* decoder) :
-  Segmentation(decoder) {
+GridPhiEta::GridPhiEta(BitField64* decoder) : Segmentation(decoder) {
   // define type and description
   _type = "GridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
@@ -41,12 +39,13 @@ Vector3D GridPhiEta::position(const CellID& cID) const {
 }
 
 /// determine the cell ID based on the position
-CellID GridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition, const VolumeID& vID) const {
+CellID GridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition,
+                          const VolumeID& vID) const {
   _decoder->setValue(vID);
   double lEta = etaFromXYZ(globalPosition);
   double lPhi = phiFromXYZ(globalPosition);
   (*_decoder)[m_etaID] = positionToBin(lEta, m_gridSizeEta, m_offsetEta);
-  (*_decoder)[m_phiID] = positionToBin(lPhi, 2 * M_PI / (double) m_phiBins, m_offsetPhi);
+  (*_decoder)[m_phiID] = positionToBin(lPhi, 2 * M_PI / (double)m_phiBins, m_offsetPhi);
   return _decoder->getValue();
 }
 
@@ -58,7 +57,7 @@ double GridPhiEta::eta() const {
 /// determine the azimuthal angle phi based on the current cell ID
 double GridPhiEta::phi() const {
   CellID phiValue = (*_decoder)[m_phiID].value();
-  return binToPosition(phiValue, 2.*M_PI/(double)m_phiBins, m_offsetPhi);
+  return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
 }
 
 /// determine the polar angle theta based on the cell ID
@@ -71,8 +70,7 @@ double GridPhiEta::eta(const CellID& cID) const {
 double GridPhiEta::phi(const CellID& cID) const {
   _decoder->setValue(cID);
   CellID phiValue = (*_decoder)[m_phiID].value();
-  return binToPosition(phiValue, 2.*M_PI/(double)m_phiBins, m_offsetPhi);
+  return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
 }
 }
 }
-

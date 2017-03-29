@@ -4,27 +4,26 @@
 #include "GaudiKernel/ITHistSvc.h"
 
 // datamodel
+#include "datamodel/MCParticleCollection.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
-#include "datamodel/MCParticleCollection.h"
 
-#include "TH1F.h"
 #include "CLHEP/Vector/ThreeVector.h"
-
+#include "TH1F.h"
 
 DECLARE_ALGORITHM_FACTORY(SimG4FastSimHistograms)
 
-SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc):
-  GaudiAlgorithm(aName, aSvcLoc) {
-  declareProperty("particlesMCparticles", m_particlesMCparticles, "Handle for the EDM particles and MC particles associations to be read");
+SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc)
+    : GaudiAlgorithm(aName, aSvcLoc) {
+  declareProperty("particlesMCparticles", m_particlesMCparticles,
+                  "Handle for the EDM particles and MC particles associations to be read");
 }
 SimG4FastSimHistograms::~SimG4FastSimHistograms() {}
 
 StatusCode SimG4FastSimHistograms::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
   m_histSvc = service("THistSvc");
-  if (! m_histSvc) {
+  if (!m_histSvc) {
     error() << "Unable to locate Histogram Service" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -49,7 +48,7 @@ StatusCode SimG4FastSimHistograms::initialize() {
 
 StatusCode SimG4FastSimHistograms::execute() {
   const auto associations = m_particlesMCparticles.get();
-  for(const auto& assoc : *associations) {
+  for (const auto& assoc : *associations) {
     const fcc::BareParticle& core = assoc.rec().core();
     CLHEP::Hep3Vector mom(core.p4.px, core.p4.py, core.p4.pz);
     m_eta->Fill(mom.eta());
@@ -57,11 +56,9 @@ StatusCode SimG4FastSimHistograms::execute() {
     m_pdg->Fill(core.pdgId);
     const fcc::BareParticle& coreMC = assoc.sim().core();
     CLHEP::Hep3Vector momMC(coreMC.p4.px, coreMC.p4.py, coreMC.p4.pz);
-    m_diffP->Fill((momMC.mag()-mom.mag())/momMC.mag());
+    m_diffP->Fill((momMC.mag() - mom.mag()) / momMC.mag());
   }
   return StatusCode::SUCCESS;
 }
 
-StatusCode SimG4FastSimHistograms::finalize() {
-  return GaudiAlgorithm::finalize();
-}
+StatusCode SimG4FastSimHistograms::finalize() { return GaudiAlgorithm::finalize(); }

@@ -20,10 +20,9 @@ class METCollection;
  *  @author Z. Drasal, J. Lingemann
  */
 
-class DelphesSaveMet: public GaudiTool, virtual public IDelphesSaveOutputTool {
+class DelphesSaveMet : public GaudiTool, virtual public IDelphesSaveOutputTool {
 public:
-  explicit DelphesSaveMet(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit DelphesSaveMet(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~DelphesSaveMet();
   /**  Initialize.
    *   @return status code
@@ -39,16 +38,17 @@ public:
    *   @param[in] mcParticles: Not used here will vanish in the future: (FIXME: will be input at some point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes,
-                                const fcc::MCParticleCollection& mcParticles) final;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
+
 private:
   /// Handle the METs to be saved
   DataHandle<fcc::METCollection> m_mets{"missingEt", Gaudi::DataHandle::Writer, this};
   /// Name of the Delphes MET array that should be converted
-  Gaudi::Property<std::string> m_delphesMETArrayName{this, "delphesMETArrayName", "", "Name of the Delphes MET array that should be converted"};
+  Gaudi::Property<std::string> m_delphesMETArrayName{this, "delphesMETArrayName", "",
+                                                     "Name of the Delphes MET array that should be converted"};
   /// Name of the Delphes SHT array that should be converted
-  Gaudi::Property<std::string> m_delphesSHTArrayName{this, "delphesSHTArrayName", "", "Name of the Delphes SHT array that should be converted"};
-
+  Gaudi::Property<std::string> m_delphesSHTArrayName{this, "delphesSHTArrayName", "",
+                                                     "Name of the Delphes SHT array that should be converted"};
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVEMET */

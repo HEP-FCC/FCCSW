@@ -4,13 +4,12 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 
 // STL
-#include <vector>
 #include <string>
+#include <vector>
 
 // forward declarations
 // from FWCore:
 class PodioDataSvc;
-
 
 /** @class PodioInput FWCore/components/PodioInput.h PodioInput.h
  *
@@ -20,7 +19,7 @@ class PodioDataSvc;
  */
 
 class PodioInput : public GaudiAlgorithm {
-  friend class AlgFactory<PodioInput> ;
+  friend class AlgFactory<PodioInput>;
 
 public:
   /// Constructor.

@@ -3,22 +3,22 @@
 
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
-#include "GaudiKernel/ToolHandle.h"
 #include "GaudiKernel/SystemOfUnits.h"
+#include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "SimG4Interface/ISimG4RegionTool.h"
 #include "SimG4Interface/ISimG4GflashTool.h"
+#include "SimG4Interface/ISimG4RegionTool.h"
 
 // Geant
+#include "GFlashHitMaker.hh"
 #include "GFlashParticleBounds.hh"
 #include "GVFlashShowerParameterisation.hh"
-#include "GFlashHitMaker.hh"
 class G4VFastSimulationModel;
 class G4Region;
 
-
-/** @class SimG4FastSimCalorimeterRegion SimG4Fast/src/components/SimG4FastSimCalorimeterRegion.h SimG4FastSimCalorimeterRegion.h
+/** @class SimG4FastSimCalorimeterRegion SimG4Fast/src/components/SimG4FastSimCalorimeterRegion.h
+ * SimG4FastSimCalorimeterRegion.h
  *
  *  Tool for creating regions for fast simulation, attaching GFlashModel to them.
  *  Regions are created for volumes specified in the job options (\b'volumeNames').
@@ -28,7 +28,7 @@ class G4Region;
  *  @author Anna Zaborowska
 */
 
-class SimG4FastSimCalorimeterRegion: public GaudiTool, virtual public ISimG4RegionTool {
+class SimG4FastSimCalorimeterRegion : public GaudiTool, virtual public ISimG4RegionTool {
 public:
   explicit SimG4FastSimCalorimeterRegion(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SimG4FastSimCalorimeterRegion();
@@ -47,7 +47,7 @@ public:
   /**  Get the names of the volumes where fast simulation should be performed.
    *   @return vector of volume names
    */
-  inline virtual const std::vector<std::string>& volumeNames() const final {return m_volumeNames;};
+  inline virtual const std::vector<std::string>& volumeNames() const final { return m_volumeNames; };
 
 private:
   /// Pointer to a parametrisation tool, to retrieve calorimeter parametrisation
@@ -64,13 +64,17 @@ private:
   /// GFlash hit maker
   std::unique_ptr<GFlashHitMaker> m_hitMaker{nullptr};
   /// Names of the parametrised volumes (set by job options)
-  Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames", {}, "Names of the parametrised volumes (set by job options)"};
+  Gaudi::Property<std::vector<std::string>> m_volumeNames{
+      this, "volumeNames", {}, "Names of the parametrised volumes (set by job options)"};
   /// minimum energy of the electron (positron) that triggers the model
-  Gaudi::Property<double> m_minTriggerEnergy{this, "minEnergy", 0.1*Gaudi::Units::GeV, "minimum energy of the electron (positron) that triggers the model"};
+  Gaudi::Property<double> m_minTriggerEnergy{this, "minEnergy", 0.1 * Gaudi::Units::GeV,
+                                             "minimum energy of the electron (positron) that triggers the model"};
   /// maximum energy of the electron (positron) that triggers the model
-  Gaudi::Property<double> m_maxTriggerEnergy{this, "minEnergy", 10*Gaudi::Units::TeV, "maximum energy of the electron (positron) that triggers the model"};
+  Gaudi::Property<double> m_maxTriggerEnergy{this, "minEnergy", 10 * Gaudi::Units::TeV,
+                                             "maximum energy of the electron (positron) that triggers the model"};
   /// threshold below which the electrons (positrons) are killed
-  Gaudi::Property<double> m_energyToKill{this, "minEnergy", 0.1*Gaudi::Units::GeV, "threshold below which the electrons (positrons) are killed"};
+  Gaudi::Property<double> m_energyToKill{this, "minEnergy", 0.1 * Gaudi::Units::GeV,
+                                         "threshold below which the electrons (positrons) are killed"};
 };
 
 #endif /* SIMG4FAST_SIMG4FASTSIMCALORIMETERREGION_H */

@@ -1,9 +1,9 @@
 #include "NestedVolumesCaloTool.h"
 
 // segm
-#include "DetInterface/IGeoSvc.h"
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/LCDD.h"
+#include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 DECLARE_TOOL_FACTORY(NestedVolumesCaloTool)
 
@@ -50,7 +50,7 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
   for (const auto& volName : m_activeVolumeName) {
     numVolumes.push_back(det::utils::countPlacedVolumes(highestVol, volName));
     info() << "Number of active volumes named " << volName << " is " << numVolumes.back() << endmsg;
-    if (numVolumes.back() == 0){
+    if (numVolumes.back() == 0) {
       error() << "Volume name " << volName << " not found! Check naming in detector description." << endmsg;
       return StatusCode::FAILURE;
     }

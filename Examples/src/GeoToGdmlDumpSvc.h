@@ -13,20 +13,20 @@
  *  @author Anna Zaborowska
  */
 
-class GeoToGdmlDumpSvc: public extends1<Service, ITestDD4hepSvc> {
+class GeoToGdmlDumpSvc : public extends1<Service, ITestDD4hepSvc> {
 public:
-   /// Constructor.
-   explicit GeoToGdmlDumpSvc(const std::string& name, ISvcLocator* svcLoc);
-   /// Initialize.
-   virtual StatusCode initialize();
-   /// Finalize.
-   virtual StatusCode finalize();
-   /// Destructor
-   virtual ~GeoToGdmlDumpSvc() {}
+  /// Constructor.
+  explicit GeoToGdmlDumpSvc(const std::string& name, ISvcLocator* svcLoc);
+  /// Initialize.
+  virtual StatusCode initialize();
+  /// Finalize.
+  virtual StatusCode finalize();
+  /// Destructor
+  virtual ~GeoToGdmlDumpSvc() {}
 
 private:
-   /// Name of the GDML output file
-   Gaudi::Property<std::string> m_gdmlFileName{this, "gdml", "GeantDetector.gdml", "Output GDML file name"};
+  /// Name of the GDML output file
+  Gaudi::Property<std::string> m_gdmlFileName{this, "gdml", "GeantDetector.gdml", "Output GDML file name"};
 };
 
 #endif /* EXAMPLES_GEOTOGDMLDUMPSVC_H */

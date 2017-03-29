@@ -6,8 +6,8 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "FWCore/DataHandle.h"
 #include "DetSegmentation/GridPhiEta.h"
+#include "FWCore/DataHandle.h"
 class IGeoSvc;
 
 namespace fcc {
@@ -19,7 +19,7 @@ class PositionedCaloHitCollection;
 #include "DD4hep/Readout.h"
 namespace DD4hep {
 namespace DDSegmentation {
-  class Segmentation;
+class Segmentation;
 }
 }
 
@@ -33,9 +33,7 @@ namespace DDSegmentation {
  *
  */
 
-
-class CreatePositionedHit : public GaudiAlgorithm
-{
+class CreatePositionedHit : public GaudiAlgorithm {
 public:
   CreatePositionedHit(const std::string& name, ISvcLocator* svcLoc);
 
@@ -51,12 +49,13 @@ private:
   /// Handle for calo cells (input collection with cellID)
   DataHandle<fcc::CaloHitCollection> m_caloCells{"caloCells", Gaudi::DataHandle::Reader, this};
   /// Handle for positioned hits (output collection)
-  DataHandle<fcc::PositionedCaloHitCollection> m_caloPositionedHits{"caloPositionedHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::PositionedCaloHitCollection> m_caloPositionedHits{"caloPositionedHits", Gaudi::DataHandle::Writer,
+                                                                    this};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsNew"};
   /// Name of active layers for sampling calorimeter
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer"};
-  ///Name of active volumes (material name)
+  /// Name of active volumes (material name)
   Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "LAr"};
 
   /// Pointer to the geometry service

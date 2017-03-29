@@ -4,26 +4,25 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 
 #include "FWCore/DataHandle.h"
-#include "fastjet/JetDefinition.hh"
-#include "fastjet/ClusterSequence.hh"
 #include "fastjet/AreaDefinition.hh"
+#include "fastjet/ClusterSequence.hh"
 #include "fastjet/ClusterSequenceArea.hh"
+#include "fastjet/JetDefinition.hh"
 
+#include "datamodel/BareJet.h"
 #include "datamodel/BareParticle.h"
 #include "datamodel/LorentzVector.h"
-#include "datamodel/BareJet.h"
 
 #include "TLorentzVector.h"
 
 #include <iostream>
 
-template<class P, class J>
-class JetClustering: public GaudiAlgorithm {
+template <class P, class J>
+class JetClustering : public GaudiAlgorithm {
   // Colin: the following doesn't seem to be necessary
   // friend class AlgFactory< JetClustering<P, J> > ;
 
 public:
-
   JetClustering(const std::string& name, ISvcLocator* svcLoc);
   virtual ~JetClustering() {}
   virtual StatusCode initialize();
@@ -37,7 +36,8 @@ private:
   /// Handle for PseudoJets to be produced
   DataHandle<J> m_jets{"Jets", Gaudi::DataHandle::Writer, this};
   /// Name for the jet algorithm to be used
-  Gaudi::Property<std::string> m_jetAlgorithm{this, "jetAlgorithm", "antikt", "he Jet Algorithm to use [kt, antikt, cambridge]"};
+  Gaudi::Property<std::string> m_jetAlgorithm{this, "jetAlgorithm", "antikt",
+                                              "he Jet Algorithm to use [kt, antikt, cambridge]"};
   fastjet::JetAlgorithm m_fj_jetAlgorithm{fastjet::JetAlgorithm::undefined_jet_algorithm};
 
   /// Cone radius. COLIN: not sure how it's interpreted
@@ -45,7 +45,8 @@ private:
   Gaudi::Property<float> m_R{this, "coneRadius", 0.5, "cone radius"};
 
   /// Recombination scheme name
-  Gaudi::Property<std::string> m_recombinationScheme{this, "recombinationScheme", "E", "the Recombination Scheme to use [E, pt, et]"};
+  Gaudi::Property<std::string> m_recombinationScheme{this, "recombinationScheme", "E",
+                                                     "the Recombination Scheme to use [E, pt, et]"};
 
   /// Recombination scheme object
   fastjet::RecombinationScheme m_fj_recombinationScheme{fastjet::RecombinationScheme::E_scheme};
@@ -55,7 +56,7 @@ private:
   Gaudi::Property<bool> m_inclusiveJets{this, "inclusiveJets", true, "use inclusive or exclusive jets"};
 
   /// pT threshold for inclusive jets
-  Gaudi::Property<float> m_ptMin{this , "ptMin", 10, "Minimum pT of jets for inclusiveJets"};
+  Gaudi::Property<float> m_ptMin{this, "ptMin", 10, "Minimum pT of jets for inclusiveJets"};
 
   /// distance threshold for exclusive jets
   Gaudi::Property<float> m_dcut{this, "dcut", -1, "dcut for exclusive jets"};
@@ -70,20 +71,17 @@ private:
   fastjet::AreaType m_areaType{fastjet::invalid_area};
 };
 
-
-template<class P, class J>
-  JetClustering<P, J>::JetClustering(const std::string& name, ISvcLocator* svcLoc):
-    GaudiAlgorithm(name, svcLoc) {
+template <class P, class J>
+JetClustering<P, J>::JetClustering(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("particles", m_genphandle, "Handle for the input particles");
   declareProperty("jets", m_jets, "Handle for PseudoJets to be produced");
 }
 
-template<class P, class J>
-  StatusCode JetClustering<P, J>::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+template <class P, class J>
+StatusCode JetClustering<P, J>::initialize() {
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
 
-  //initialize jet algorithm
+  // initialize jet algorithm
   if (m_jetAlgorithm == "kt")
     m_fj_jetAlgorithm = fastjet::JetAlgorithm::kt_algorithm;
   else if (m_jetAlgorithm == "antikt")
@@ -95,7 +93,7 @@ template<class P, class J>
     return StatusCode::FAILURE;
   }
 
-  //initialize recombination scheme
+  // initialize recombination scheme
   if (m_recombinationScheme == "E") {
     m_fj_recombinationScheme = fastjet::RecombinationScheme::E_scheme;
   } else if (m_recombinationScheme == "pt") {
@@ -107,46 +105,37 @@ template<class P, class J>
     return StatusCode::FAILURE;
   }
 
-  //jet area
+  // jet area
   if (m_areaTypeName == "active") {
     m_areaType = fastjet::active_area;
-  }
-  else if (m_areaTypeName == "passive") {
+  } else if (m_areaTypeName == "passive") {
     m_areaType = fastjet::passive_area;
-  }
-  else {
+  } else {
     m_areaType = fastjet::invalid_area;
   }
 
-  //check sanity of configuration
+  // check sanity of configuration
   if (m_inclusiveJets) {
     if (m_ptMin < 0.0) {
       error() << "Sub-zero min pT for jets" << endmsg;
       return StatusCode::FAILURE;
     }
-    if (m_dcut != -1 || m_njets != -1)
-      warning()
-	<< "Set options for exclusive jets, but inclusive jets used"
-	<< endmsg;
-  } else { //exclusive jets
+    if (m_dcut != -1 || m_njets != -1) warning() << "Set options for exclusive jets, but inclusive jets used" << endmsg;
+  } else {  // exclusive jets
     if (m_dcut == -1 && m_njets == -1) {
-      error() << "Neither Dcut nor NJets configured for exclusive jets"
-	      << endmsg;
+      error() << "Neither Dcut nor NJets configured for exclusive jets" << endmsg;
       return StatusCode::FAILURE;
     }
-    if (m_ptMin != 0.0)
-      warning()
-	<< "Set options for inclusive jets, but exclusive jets used"
-	<< endmsg;
+    if (m_ptMin != 0.0) warning() << "Set options for inclusive jets, but exclusive jets used" << endmsg;
   }
 
   return StatusCode::SUCCESS;
 }
 
-template< class P, class J>
-  StatusCode JetClustering<P, J>::execute() {
+template <class P, class J>
+StatusCode JetClustering<P, J>::execute() {
 
-  //setup input for fastjet
+  // setup input for fastjet
   const P* particles = m_genphandle.get();
   std::vector<fastjet::PseudoJet> input;
   unsigned index = 0;
@@ -154,9 +143,8 @@ template< class P, class J>
     auto ptchandle = *it;
     auto& ptc = ptchandle.core();
     TLorentzVector p4;
-    p4.SetXYZM(ptc.p4.px, ptc.p4.py,
-                    ptc.p4.pz, ptc.p4.mass);
-    //TODO apply some filtering if required
+    p4.SetXYZM(ptc.p4.px, ptc.p4.py, ptc.p4.pz, ptc.p4.mass);
+    // TODO apply some filtering if required
     input.emplace_back(p4.Px(), p4.Py(), p4.Pz(), p4.E());
     input.back().set_user_index(index);
     ++index;
@@ -165,17 +153,16 @@ template< class P, class J>
   fastjet::ClusterSequence* cs;
 
   fastjet::JetDefinition def(m_fj_jetAlgorithm, m_R, m_fj_recombinationScheme);
-  if(m_areaType != fastjet::invalid_area) {
+  if (m_areaType != fastjet::invalid_area) {
     fastjet::AreaDefinition areadef(m_areaType);
-    std::cout<<m_areaType<<std::endl;
+    std::cout << m_areaType << std::endl;
     cs = new fastjet::ClusterSequenceArea(input, def, areadef);
-  }
-  else {
+  } else {
     cs = new fastjet::ClusterSequence(input, def);
   }
   // fastjet::PseudoJetEntry * output = new fastjet::PseudoJetEntry();
   // output->setJets(sorted_by_pt( m_inclusiveJets ? cs.inclusive_jets(m_ptMin)
-  //use exclusive jets
+  // use exclusive jets
   //                            : m_njets != -1 ? cs.exclusive_jets(m_njets) : cs.exclusive_jets(m_dcut) ));
   //  std::vector<fastjet::PseudoJet> pjets = m_inclusiveJets ? cs.inclusive_jets(m_ptMin)
   //  : m_njets != -1 ? cs.exclusive_jets(m_njets) : cs.exclusive_jets(m_dcut);
@@ -183,7 +170,7 @@ template< class P, class J>
 
   J* jets = new J();
   debug() << "njets = " << pjets.size() << endmsg;
-  for(const auto& pjet : pjets) {
+  for (const auto& pjet : pjets) {
     debug() << pjet.e() << " " << pjet.pt() << " " << pjet.eta() << " " << pjet.phi() << endmsg;
     auto jet = jets->create();
     auto& core = jet.core();
@@ -191,12 +178,12 @@ template< class P, class J>
     core.p4.py = pjet.py();
     core.p4.pz = pjet.pz();
     core.p4.mass = pjet.m();
-    if(pjet.has_area())
+    if (pjet.has_area())
       core.area = pjet.area();
     else
       core.area = -1;
     const std::vector<fastjet::PseudoJet>& constituents = pjet.constituents();
-    for(const auto& constit : constituents) {
+    for (const auto& constit : constituents) {
       debug() << "\t" << constit.user_index() << endmsg;
       jet.addparticles(particles->at(constit.user_index()));
     }
@@ -207,10 +194,9 @@ template< class P, class J>
   return StatusCode::SUCCESS;
 }
 
-template<class P, class J>
-  StatusCode JetClustering<P, J>::finalize() {
+template <class P, class J>
+StatusCode JetClustering<P, J>::finalize() {
   return GaudiAlgorithm::finalize();
 }
-
 
 #endif

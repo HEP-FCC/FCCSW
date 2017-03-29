@@ -2,8 +2,7 @@
 
 namespace test {
 
-TestKillProcess::TestKillProcess(const std::string& aName, G4ProcessType aType):
-  G4VProcess(aName,aType) {}
+TestKillProcess::TestKillProcess(const std::string& aName, G4ProcessType aType) : G4VProcess(aName, aType) {}
 
 G4VParticleChange* TestKillProcess::PostStepDoIt(const G4Track& aTrack, const G4Step&) {
   G4VParticleChange* finalState = new G4VParticleChange();

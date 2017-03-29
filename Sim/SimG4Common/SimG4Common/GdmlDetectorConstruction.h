@@ -2,13 +2,13 @@
 #define SIMG4COMMON_GDMLDETECTORCONSTRUCTION_H
 
 // Geant
-#include "G4VUserDetectorConstruction.hh"
 #include "G4GDMLParser.hh"
+#include "G4VUserDetectorConstruction.hh"
 
 // Gaudi
-#include "GaudiKernel/ServiceHandle.h"
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 /** @class GdmlDetectorConstruction SimG4Common/SimG4Common/GdmlDetectorConstruction.h GdmlDetectorConstruction.h
  *
@@ -18,7 +18,7 @@
  */
 
 namespace sim {
-class GdmlDetectorConstruction: public G4VUserDetectorConstruction {
+class GdmlDetectorConstruction : public G4VUserDetectorConstruction {
 public:
   /**  Constructor.
    *   @param[in] aFileName Name of the GDML file with the detector description.
@@ -34,6 +34,7 @@ public:
    *   See Geant examples/extended/persistency/gdml/G04 for further details.
    */
   virtual void ConstructSDandField() override;
+
 private:
   /// Message Service
   ServiceHandle<IMessageSvc> m_msgSvc;
