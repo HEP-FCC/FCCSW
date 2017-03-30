@@ -33,6 +33,9 @@ gaudi_add_test(TestBorderCellIDFromGdml
 gaudi_add_test(TestBorderCellIDFromDd4hep
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                FRAMEWORK tests/options/geant_testcellid_dd4hep.py)
+gaudi_add_test(TestPrimitiveShapes
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
+               FRAMEWORK tests/options/test_primitives.py)
 gaudi_add_test(CmpBorderCellIDGdmlwithDd4hep
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                COMMAND python ./scripts/cmpCellId.py
