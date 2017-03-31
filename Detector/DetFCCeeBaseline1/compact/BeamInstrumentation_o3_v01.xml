@@ -1,0 +1,110 @@
+<lccdd>    
+    
+    <detectors>
+        <comment>Beampipe Instrumentation</comment>
+        
+<!--
+        <detector name="QD0CoilI" type="Mask_o1_v01" insideTrackingVolume="true" vis="QD0CoilIVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="CoilVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="Dnstream"               start="QD0_min_z"    end="QD0_max_z" rMin1="QD0Coil_outer_radius-10*mm"  rMin2="QD0Coil_outer_radius-10*mm"  rMax1="QD0Coil_outer_radius" rMax2="QD0Coil_outer_radius"    material="Iron"  name="QD0CoilI" />
+        </detector>
+
+        <detector name="QD0CoilO" type="Mask_o1_v01" insideTrackingVolume="true" vis="QD0CoilOVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="CoilVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="Upstream"               start="QD0_min_z+20*mm"    end="QD0_max_z" rMin1="QD0Coil_outer_radius-10*mm"  rMin2="QD0Coil_outer_radius-10*mm"  rMax1="QD0Coil_outer_radius" rMax2="QD0Coil_outer_radius"    material="Iron"  name="QD0CoilI" />
+        </detector>
+-->
+
+<!--
+        <detector name="QD0" type="Beampipe_o1_v01" insideTrackingVolume="true" vis="QD0CoilOVis">
+
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="CoilVis">
+                <shape type="Assembly"/>
+            </envelope>
+
+            <section type="PunchedCenter"        start="QD0_min_z+20*mm" end="QD0_max_z"    rMin1="QD0Coil_outer_radius"  rMin2="QD0Coil_outer_radius"   rMax1="QD0_min_z*0.1 -4*cm"    rMax2="QD0_min_z*0.1 -4*cm"       material="Beryllium"     name="SplitVacChambers"/>
+
+        </detector>
+-->
+
+
+<!--
+        <detector name="Collimator" type="Mask_o1_v01" insideTrackingVolume="true" vis="ColliVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="ColliVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="PunchedCenter"  start="QD0_min_z-CollimatorInFrontOfQD0_dz" end="QD0_min_z"    rMin1="SeparatedBeamPipe_rmax +1*mm"  rMin2="SeparatedBeamPipe_rmax+1*mm" rMax1="(QD0_min_z-CollimatorInFrontOfQD0_dz)*0.1" rMax2="(QD0_min_z-CollimatorInFrontOfQD0_dz)*0.1"  material="Beryllium"  name="machin"/>
+        </detector>
+-->
+
+
+        <detector name="CompSol" type="Mask_o1_v01" insideTrackingVolume="true" vis="CompSolVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="CoilVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="Center"               start="CompSol_min_z"    end="QD0_min_z" rMin1="CompSol_min_z*0.1-2*cm"  rMin2="QD0_min_z*0.1 - 2*cm"  rMax1="CompSol_min_z * 0.1" rMax2="QD0_min_z * 0.1"    material="Iron"  name="CompSol" />
+        </detector>
+
+        <detector name="ScreenSol" type="Mask_o1_v01" insideTrackingVolume="true" vis="ScreenSolVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="CoilVis">
+                <shape type="Assembly"/>
+            </envelope>
+
+           <section type="PunchedCenter"  start="QD0_min_z" end="QD0_min_z+5*cm" rMin1="SeparatedBeamPipe_rmax+1*mm" rMin2="SeparatedBeamPipe_rmax+1*mm" rMax1="QD0_min_z*0.1" rMax2="QD0_min_z*0.1" material="Iron"  name="CompSol" />
+
+            <section type="Center"    start="QD0_min_z+5*cm"    end="QD0_max_z" rMin1="QD0_min_z*0.1 -2*cm"  rMin2="QD0_min_z*0.1 -2*cm"  rMax1="QD0_min_z*0.1" rMax2="QD0_min_z*0.1"    material="Iron"  name="CompSol" />
+        </detector>
+
+
+
+<!--
+        <detector name="BeamPipeShield" type="Mask_o1_v01" insideTrackingVolume="true" vis="TantalumVis" >
+            <parameter crossingangle="CrossingAngle" />
+
+            <section type="Center" start="CentralBeamPipe_zmax + 1*cm"  end="SeparatedBeamPipe_z"  rMin1="CentralBeamPipe_rmax+0.1*mm"  rMin2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*CrossingAngle/2. + 0.1*mm"      rMax1="CentralBeamPipe_rmax+0.1*mm + BeamPipeTantalShieldWidth"  rMax2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*CrossingAngle/2. + 0.1*mm +BeamPipeTantalShieldWidth" material="Tantalum" name="BeamPipeShield" />
+
+            <section type="PunchedCenter"        start="SeparatedBeamPipe_z+3*mm" end="SeparatedBeamPipe_z+3*mm+BeamPipeTantalShieldWidth" rMin1="SeparatedBeamPipe_rmax-0.5*mm+BeamPipeTantalShieldWidth"   rMin2="SeparatedBeamPipe_rmax-0.5*mm+BeamPipeTantalShieldWidth" rMax1="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*0.015"     rMax2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*0.015"       material="Tantalum" name="BeamPipeShieldSplitVacChambers" />
+
+            <section type="Center" start="SeparatedBeamPipe_z" end="SeparatedBeamPipe_z+3*mm" rMin1="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*CrossingAngle/2+0.01*mm" rMin2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*CrossingAngle/2+0.01*mm" rMax1="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*CrossingAngle/2+BeamPipeTantalShieldWidth" rMax2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*CrossingAngle/2+BeamPipeTantalShieldWidth"  material="Tantalum" name="BeamPipeShieldSplitVacChambersBorder" />
+
+            <section type="Dnstream" start="SeparatedBeamPipe_z+3*mm" end="QD0_min_z" rMin1="SeparatedBeamPipe_rmax+0.1*mm" rMin2="SeparatedBeamPipe_rmax+0.1*mm" rMax1="SeparatedBeamPipe_rmax+0.1*mm+BeamPipeTantalShieldWidth" rMax2="SeparatedBeamPipe_rmax+0.1*mm+BeamPipeTantalShieldWidth" material="Tantalum" name="BeamPipeShieldDnstream" />
+
+            <section type="Upstream" start="SeparatedBeamPipe_z+3*mm" end="QD0_min_z" rMin1="SeparatedBeamPipe_rmax+0.1*mm" rMin2="SeparatedBeamPipe_rmax+0.1*mm" rMax1="SeparatedBeamPipe_rmax+0.1*mm+BeamPipeTantalShieldWidth" rMax2="SeparatedBeamPipe_rmax+0.1*mm+BeamPipeTantalShieldWidth" material="Tantalum" name="BeamPipeShieldUpstream" />
+
+         </detector>
+-->
+
+
+
+<!--
+        <detector name="Kicker" type="Mask_o1_v01" insideTrackingVolume="true" vis="KICKVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="KICKVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="Upstream"               start="Kicker_min_z"    end="Kicker_max_z" rMin1="Kicker_inner_radius"  rMin2="Kicker_inner_radius"  rMax1="Kicker_outer_radius"  rMax2="Kicker_outer_radius"  material="Iron" name="Kicker"/>     
+        </detector>
+        
+        
+        <detector name="BPM" type="Mask_o1_v01" insideTrackingVolume="true" vis="BPMVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="BPMVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="Dnstream"               start="BPM_min_z"    end="BPM_max_z" rMin1="BPM_inner_radius"  rMin2="BPM_inner_radius"  rMax1="BPM_outer_radius"  rMax2="BPM_outer_radius"  material="Iron" name="BPM"/>     
+        </detector>
+        
+-->
+        
+    </detectors>
+</lccdd>
