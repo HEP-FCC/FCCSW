@@ -34,11 +34,11 @@ from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
 savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["BarHCal_Readout"])
-savehcaltool.positionedCaloHits.Path = "positionedCaloHits"
-savehcaltool.caloHits.Path = "caloHits"
+savehcaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
+savehcaltool.DataOutputs.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.genParticles.Path = "allGenParticles"
+particle_converter.DataInputs.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)

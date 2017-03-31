@@ -45,13 +45,15 @@ savehcaltool.caloHits.Path = "HCalHits"
 # Change INFO to DEBUG for printout of each deposit
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-from Configurables import SimG4SingleParticleGeneratorTool
+from Configurables import SimG4SingleParticleGeneratorTool, SimG4SaveParticleHistory
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                 particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.36,etaMax=0.36,
                 OutputLevel =DEBUG)
+savehisttool = SimG4SaveParticleHistory("saveHistory")
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveHCalHits"],
+                       outputs= ["SimG4SaveCalHits/saveHCalHits",
+                       "SimG4SaveParticleHistory/saveHistory"],
                        eventProvider=pgun,
                        OutputLevel=DEBUG)
 
