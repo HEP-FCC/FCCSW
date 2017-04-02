@@ -65,8 +65,10 @@ private:
   ToolHandle<ISimG4ActionTool> m_actionsTool{"SimG4FullSimActions", this, true};
   /// Handle for the magnetic field initialization
   ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool{"SimG4ConstantMagneticFieldTool", this, true};
-  /// Geant4 commands to be executed
-  Gaudi::Property<std::vector<std::string>> m_g4Commands{this, "G4commands", {}, "Geant4 commands to be executed"};
+  /// Geant4 commands to be executed before user initialization
+  Gaudi::Property<std::vector<std::string>> m_g4PreInitCommands{this, "g4PreInitCommands", {}, "Geant4 commands to be executed before user initialization"};
+  /// Geant4 commands to be executed after user initialization
+  Gaudi::Property<std::vector<std::string>> m_g4PostInitCommands{this, "g4PostInitCommands", {}, "Geant4 commands to be executed after user initialization"};
   /// Handles to the tools creating regions and fast simulation models
   /// to be replaced with the ToolHandleArray<ISimG4RegionTool> m_regionTools
   std::vector<ISimG4RegionTool*> m_regionTools;
