@@ -1,6 +1,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 #include "GaudiKernel/Service.h"
+#include "GaudiKernel/RndmGenerators.h"
 
 /** @class MaterialScan Detector/DetComponents/src/MaterialScan.h MaterialScan.h
  *
@@ -28,4 +29,8 @@ private:
   double m_etaBinning;
   /// Maximum eta until which to scan, scan is performed from -m_etaMax to +m_etaMax
   double m_etaMax;
+  /// number of different phi values to average over 
+  double m_nPhiTrials;
+  /// Flat random number generator
+  Rndm::Numbers m_flatPhiDist;
 };

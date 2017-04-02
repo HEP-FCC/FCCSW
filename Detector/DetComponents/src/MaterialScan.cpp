@@ -17,6 +17,7 @@ MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Servi
   declareProperty("filename", m_filename, "file name to save the tree to");
   declareProperty("etaBinning", m_etaBinning, "eta bin size");
   declareProperty("etaMax", m_etaMax, "maximum eta value");
+  declareProperty("nPhiTrials", m_nPhiTrials, "number of random phi values to average over");
 }
 
 StatusCode MaterialScan::initialize() {
@@ -29,10 +30,13 @@ StatusCode MaterialScan::initialize() {
     return StatusCode::FAILURE;
   }
 
+  sc = m_flatPhiDist.initialize(randSvc, Rndm::Flat(0., M_PI / 2.));
+
   std::unique_ptr<TFile> rootFile(TFile::Open(m_filename.c_str(), "RECREATE"));
   // no smart pointers possible because TTree is owned by rootFile (root mem management FTW!)
   TTree* tree = new TTree("materials", "");
   double eta = 0;
+  double phi = 0;
   unsigned nMaterials = 0;
   std::unique_ptr<std::vector<double>> nX0(new std::vector<double>);
   std::unique_ptr<std::vector<double>> nLambda(new std::vector<double>);
@@ -58,30 +62,41 @@ StatusCode MaterialScan::initialize() {
   std::array<Double_t, 3> dir = {0, 0, 0};
   TVector3 vec(0, 0, 0);
   for (eta = -m_etaMax; eta < m_etaMax; eta += m_etaBinning) {
-    nX0->clear();
-    nLambda->clear();
-    matDepth->clear();
-    material->clear();
+      for (int i = 0; i < m_nPhiTrials; ++i) {
+      phi = m_flatPhiDist();
+      nX0->clear();
+      nLambda->clear();
+      matDepth->clear();
+      material->clear();
 
-    vec.SetPtEtaPhi(1, eta, 0);
-    auto n = vec.Unit();
-    dir = {n.X(), n.Y(), n.Z()};
-    double distance = worldVol->DistFromInside(pos.data(), dir.data());
+      std::map<DD4hep::Geometry::Material, double> phiAveragedMaterialsBetween;
+      for (int iPhi = 0; iPhi < m_nPhiTrials; ++iPhi) {
+          phi = m_flatPhiDist();
+          //phi = 0;
+        vec.SetPtEtaPhi(1, eta, phi);
+        auto n = vec.Unit();
+        dir = {n.X(), n.Y(), n.Z()};
+        double distance = worldVol->DistFromInside(pos.data(), dir.data());
 
-    DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
-    debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
-            << ") <=> eta = " << eta << endmsg;
-    const DD4hep::DDRec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
-    nMaterials = materials.size();
-
-    for (unsigned i = 0, n = materials.size(); i < n; ++i) {
-      TGeoMaterial* mat = materials[i].first->GetMaterial();
-      material->push_back(mat->GetName());
-      matDepth->push_back(materials[i].second);
-      nX0->push_back(materials[i].second / mat->GetRadLen());
-      nLambda->push_back(materials[i].second / mat->GetIntLen());
+        DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
+        debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
+                << ") <=> eta = " << eta << ", phi =  " << phi  <<  endmsg;
+        const DD4hep::DDRec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
+        for (unsigned i = 0, n = materials.size(); i < n; ++i) {
+          phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
+      }
+      }
+      nMaterials = phiAveragedMaterialsBetween.size();
+      for (auto matpair: phiAveragedMaterialsBetween) {
+        TGeoMaterial* mat = matpair.first->GetMaterial();
+        material->push_back(mat->GetName());
+        matDepth->push_back(matpair.second ); 
+        nX0->push_back(matpair.second / mat->GetRadLen()); 
+        nLambda->push_back(matpair.second / mat->GetIntLen()); 
+      }
     }
     tree->Fill();
+
   }
   tree->Write();
   rootFile->Close();
