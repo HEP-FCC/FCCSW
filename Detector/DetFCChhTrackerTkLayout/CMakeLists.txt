@@ -1,5 +1,5 @@
 ################################################################################
-# Package: DetFCChhTrackerSimple
+# Package: DetFCChhTrackerTkLayout
 ################################################################################
 gaudi_subdir(DetFCChhTrackerTkLayout v1r0)
 
