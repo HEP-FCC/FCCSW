@@ -61,9 +61,9 @@ tower SingleCaloTowerTool::towersNumber() {
 
   // number of phi bins
   float epsilon = 0.0001;
-  m_nPhiTower = ceil(2 * m_phiMax / m_deltaPhiTower);
+  m_nPhiTower = ceil(2 * (m_phiMax-epsilon) / m_deltaPhiTower);
   // number of eta bins (if eta maximum is defined)
-  m_nEtaTower = ceil(2 * m_etaMax / m_deltaEtaTower);
+  m_nEtaTower = ceil(2 * (m_etaMax-epsilon) / m_deltaEtaTower);
   debug() << "etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
   debug() << "phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower << endmsg;
  
@@ -78,16 +78,73 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
   const fcc::CaloHitCollection* cells = m_cells.get();
   debug() << "Input Hit collection size: " << cells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  int iPhi = 0, iEta = 0;
-  float etaCell = 0;
+  int iPhiMin = 0, iPhiMax = 0;
+  int iEtaMin = 0, iEtaMax = 0;
+  float ratioEta = 1.0, ratioPhi = 1.0;
+  float fracEtaMin = 1.0, fracEtaMax = 1.0, fracEtaRest = 1.0;
+  float fracPhiMin = 1.0, fracPhiMax = 1.0, fracPhiRest = 1.0;
+  float etaCellMin, etaCellMax;
+  float phiCellMin, phiCellMax;
   float epsilon = 0.0001;
   for (const auto& cell : *cells) {
     // find to which tower the cell belongs
-    etaCell = m_segmentation->eta(cell.core().cellId);
-    iEta = idEta(etaCell);
-    iPhi = idPhi(m_segmentation->phi(cell.core().cellId));
-    // save transverse energy
-    aTowers[iEta][phiNeighbour(iPhi)] += cell.core().energy / cosh(etaCell);
+    etaCellMin = m_segmentation->eta(cell.core().cellId) - m_segmentation->gridSizeEta()*0.5;
+    etaCellMax = m_segmentation->eta(cell.core().cellId) + m_segmentation->gridSizeEta()*0.5;
+    phiCellMin = m_segmentation->phi(cell.core().cellId) - M_PI/(double)m_segmentation->phiBins() ;
+    phiCellMax = m_segmentation->phi(cell.core().cellId) + M_PI/(double)m_segmentation->phiBins() ;
+    iEtaMin = idEta(etaCellMin + epsilon);
+    iPhiMin = idPhi(phiCellMin + epsilon);
+    iEtaMax = idEta(etaCellMax - epsilon);
+    iPhiMax = idPhi(phiCellMax - epsilon);
+    fracEtaMin = 1.0;
+    fracEtaMax = 1.0;
+    fracEtaRest = 1.0;
+    if (iEtaMin != iEtaMax) {
+      fracEtaMin = fabs(eta(iEtaMin) + 0.5* m_deltaEtaTower - etaCellMin) / m_segmentation->gridSizeEta();
+      fracEtaMax = fabs(etaCellMax - eta(iEtaMax) + 0.5* m_deltaEtaTower) / m_segmentation->gridSizeEta();
+      if (fracEtaMin>1 || fracEtaMax>1) {
+	debug() << "ERROR!!!! Fraction > 1 not possible!!! " << fracEtaMin <<"  "<<fracEtaMax <<endmsg;
+      }
+      fracEtaRest = (1 - fracEtaMin - fracEtaMax)/float(iEtaMax - iEtaMin - 1);
+    }
+    fracPhiMin = 1.0;
+    fracPhiMax = 1.0;
+    fracPhiRest = 1.0; 
+    if (iPhiMin != iPhiMax) {
+      fracPhiMin = fabs(phi(iPhiMin) + 0.5* m_deltaPhiTower - phiCellMin) /  (2*M_PI/(double)m_segmentation->phiBins());
+      fracPhiMax = fabs(phiCellMax - phi(iPhiMax) + 0.5* m_deltaPhiTower) /  (2*M_PI/(double)m_segmentation->phiBins());
+     if (fracPhiMin>1 || fracPhiMax>1) {
+	debug() << "ERROR!!!! Fraction > 1 not possible!!! Phi " << fracPhiMin <<"  "<<fracPhiMax <<endmsg;
+      }
+      fracPhiRest = (1 - fracPhiMin - fracPhiMax)/float(iPhiMax - iPhiMin - 1);
+    }
+   
+    //Loop through the appropriate towers and add transverse energy    
+    for (auto iEta = iEtaMin; iEta <= iEtaMax; iEta++) {
+      if (iEta == iEtaMin) {
+	ratioEta = fracEtaMin;
+      }
+      else if (iEta == iEtaMax) {
+	ratioEta = fracEtaMax;
+      }
+      else {
+	ratioEta = fracEtaRest;
+      }
+      //debug() << etaCellMin << " " << etaCellMax << " "<<iEta << " " << iEtaMin << " "<<iEtaMax<< " "<< eta(iEtaMin) + 0.5* m_deltaEtaTower << " " <<etaCellMax - eta(iEtaMax) + 0.5* m_deltaEtaTower<< " "<<ratioEta << endmsg;
+      for (auto iPhi = iPhiMin; iPhi <= iPhiMax; iPhi++ ) {
+	if (iPhi == iPhiMin) {
+	  ratioPhi = fracPhiMin;
+        }
+	else if (iPhi == iPhiMax) {
+          ratioPhi = fracPhiMax;
+        }
+        else {
+          ratioPhi = fracPhiRest;
+        }
+	//debug() << phiCellMin << " " << phiCellMax << " "<<iPhi << " " << iPhiMin << " "<<iPhiMax<< " "<< phi(iPhiMin) + 0.5* m_deltaPhiTower << " " <<phiCellMax - phi(iPhiMax) + 0.5* m_deltaPhiTower<< " "<<ratioPhi*ratioEta << endmsg;
+        aTowers[iEta][phiNeighbour(iPhi)] += cell.core().energy/cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
+      }
+    }
   }
   return cells->size();
 }

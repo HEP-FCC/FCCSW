@@ -226,8 +226,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
     edmClusterCore.position.y = radius * sin(clu.phi);
     edmClusterCore.position.z = radius * sinh(clu.eta);
     edmClusterCore.energy = clu.transEnergy * cosh(clu.eta);
-    debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << "x: " << edmClusterCore.position.x << " y "
-            << edmClusterCore.position.y << " z " << edmClusterCore.position.z << " energy " << edmClusterCore.energy
+    debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x << " y: "
+            << edmClusterCore.position.y << " z: " << edmClusterCore.position.z << " energy: " << edmClusterCore.energy
             << endmsg;
     if (m_saveCells) {
        // fins cells that belong to the cluster
