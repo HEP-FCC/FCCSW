@@ -139,41 +139,45 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
 	  //weighted mean for position in eta and phi (weights must be non-negative!)
           for (int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
             for (int ipPhi = iPhi - halfPhiPos; ipPhi <= iPhi + halfPhiPos; ipPhi++) {
-              posEta += m_towerTool->eta(ipEta) * fabs(m_towers[ipEta][phiNeighbour(ipPhi)]);
-              posPhi +=  m_towerTool->phi(phiNeighbour(ipPhi)) * fabs(m_towers[ipEta][phiNeighbour(ipPhi)]);
-              sumEnergyPos += fabs(m_towers[ipEta][phiNeighbour(ipPhi)]);
+              posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
+              posPhi += m_towerTool->phi(phiNeighbour(ipPhi)) * m_towers[ipEta][phiNeighbour(ipPhi)];
+              sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
             }
           }
-          // If non-zero energy in the cluster, add to pre-clusters (reduced size for pos. calculation -> energy in the
-          // core can be zero)
-          if (sumEnergyPos != 0) {
+          if (sumEnergyPos > 0) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
-            // Calculate final cluster energy
-            sumEnergyFin = 0;
+            // Final cluster position         
             idEtaFin = m_towerTool->idEta(posEta);
             idPhiFin = m_towerTool->idPhi(posPhi);
-            // Recalculating the energy within the final cluster size
-            for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
-              for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
-                if (ipEta >= 0 && ipEta < m_nEtaTower) { // check if we are not outside of map in eta
-                  sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
-                }
-              }
-            }
-            // check if changing the barycentre did not decrease energy below threshold
-            if (sumEnergyFin > m_energyThreshold) {
-              cluster newPreCluster;
-              newPreCluster.eta = posEta;
-              newPreCluster.phi = posPhi;
-              newPreCluster.transEnergy = sumEnergyFin;
-              m_preClusters.push_back(newPreCluster);
-            }
-          }
-          posEta = 0;
-          posPhi = 0;
-          sumEnergyPos = 0;
-        }
+	  }
+	  else {
+	    idEtaFin = iEta;
+	    idPhiFin = iPhi;
+	  }
+	  // Calculate final cluster energy 
+	  sumEnergyFin = 0;
+	  // Recalculating the energy within the final cluster size
+	  for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
+	    for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
+	      if (ipEta >= 0 && ipEta < m_nEtaTower) { // check if we are not outside of map in eta
+		sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+	      }
+	    }
+	  }
+	  // check if changing the barycentre did not decrease energy below threshold
+	  if (sumEnergyFin > m_energyThreshold) {
+	    cluster newPreCluster;
+	    newPreCluster.eta = posEta;
+	    newPreCluster.phi = posPhi;
+	    newPreCluster.transEnergy = sumEnergyFin;
+	    m_preClusters.push_back(newPreCluster);
+	  }
+	
+	  posEta = 0;
+	  posPhi = 0;
+	  sumEnergyPos = 0;
+	}
       }
       toRemove = false;
       // finish processing that window in phi, shift window to the next phi tower
