@@ -1,0 +1,58 @@
+<lccdd> 
+  <!--
+  <detectors>
+    <detector name="HOMAbsorber" type="HOMAbsorber_o1_v01" vis="SeeThrough" insideTrackingVolume="false" >
+      
+      <envelope vis="HOMVis">
+ 
+          <shape type="Box"  dx="60*mm" dy="12*mm" dz="50*mm" material="Iron"/>
+          <position x="0*mm" y="15*mm" z="1400*mm"/>
+      </envelope>
+      
+      <parameter crossingangle="CrossingAngle" />
+      
+    </detector>
+  </detectors>
+  -->
+  <display>
+    <vis name="HOMVis"       alpha="0.5"  r="0.7" g="0.7"  b="0.0" showDaughters="true"  visible="true"/>
+  </display>
+
+  <detector name="HOMAbsorber" type="HOMAbsorber_o1_v01" vis="HOMVis" insideTrackingVolume="false" >
+    <dimensions 
+       dim_x = "60*mm"
+       dim_y = "12*mm"
+       dim_z = "50*mm"
+       />
+  </detector>
+  
+  
+    <!--
+<detectors>
+  <detector name="HOMAbsorber" type="HOMAbsorber_o1_v01" vis="SeeThrough" id="DetID_HOMAbsorber" insideTrackingVolume="false" vis="HOMVis" >
+    <envelope vis="HOMVis">        
+      
+      <shape type="BooleanShape" operation="Subtraction" material="Air">
+        <shape type="BooleanShape" operation="Subtraction">
+          <shape type="PolyhedraRegular"  numsides="YokeEndcap_outer_symmetry" rmin="0" rmax="YokeEndcap_outer_radius+ 10.0*env_safety" dz="2.0*YokeEndcap_max_z+2*env_safety"/>
+          <shape type="PolyhedraRegular"  numsides="YokeEndcap_outer_symmetry" rmin="0" rmax="YokeEndcap_outer_radius+ 100.0*env_safety" dz="2.0*YokeEndcap_min_z-2*env_safety"/>
+        </shape>
+        <shape type="Tube"  rmin="0" rmax="YokeEndcap_inner_radius-env_safety" dz="2.0*YokeEndcap_max_z+4*env_safety"/>
+      </shape>
+    </envelope>
+
+    <parameter crossingangle="CrossingAngle" />
+    
+    <dimensions 
+       dim_x = "60*mm"
+       dim_y = "12*mm"
+       dim_z = "50*mm"
+       />
+
+
+  </detector>
+  
+</detectors>
+-->            
+
+</lccdd>

@@ -12,12 +12,7 @@ using namespace DD4hep::Geometry;
 
 static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
                                                xml_h element,
-                                               DD4hep::Geometry::SensitiveDetector sens) {
-
-    std::cout << __PRETTY_FUNCTION__  << std::endl;
-    std::cout << "Here is my LumiCal"  << std::endl;
-    std::cout << " and this is the sensitive detector: " << &sens  << std::endl;
-    sens.setType("calorimeter");
+                                               DD4hep::Geometry::SensitiveDetector /*sens*/) {
 
     //Materials
     DD4hep::Geometry::Material air = lcdd.air();
@@ -49,13 +44,14 @@ static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
     const double rOuterStart = dimensions.rmin2();
     const double rInnerEnd = dimensions.rmax1();
     const double rOuterEnd = dimensions.rmax2();
+
     //const double zHalf = dimensions.zhalf();
     const double lcalThickness = DD4hep::Layering(xmlLumiCal).totalThickness();
     //const double lcalThickness = 2*zHalf;
     const double lcalCentreZ = lcalOuterZ-lcalThickness*0.5;
  
     
-    double LumiCal_cell_size      = lcdd.constant<double>("LumiCal_cell_size");
+    //double LumiCal_cell_size      = lcdd.constant<double>("LumiCal_cell_size");
 
     //** DD4hep/TGeo seems to need rad (as opposed to the manual)
     const double phi1 = 0 ;
@@ -64,25 +60,6 @@ static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
     const double thetaOut = 0.140*dd4hep::rad;
 
     std::cout << " LumiCal dimensions " << "rInnerStart " << rInnerStart << "rInnerEnd " << rInnerEnd << "rOuterStart " << rOuterStart << "rOuterEnd " << rOuterEnd << " size along z " << lcalThickness <<  " starts at " << lcalInnerZ << " ends at " << lcalOuterZ << "centered at " << lcalCentreZ << std::endl ;
-
-    //========== fill data for reconstruction ============================
-    // Is that needed or is only used for making a gear file?
-
-    DD4hep::DDRec::LayeredCalorimeterData* caloData = new DD4hep::DDRec::LayeredCalorimeterData ;
-    caloData->layoutType = DD4hep::DDRec::LayeredCalorimeterData::ConicalLayout ;
-    caloData->inner_symmetry = 0  ; // hardcoded tube
-    caloData->outer_symmetry = 0  ; 
-    caloData->phi0 = 0 ;
-    
-    /// extent of the calorimeter in the r-z-plane [ rmin, rmax, zmin, zmax ] in mm.
-    caloData->extent[0] = rInnerStart ;
-    caloData->extent[1] = rOuterStart ;
-    caloData->extent[4] = rInnerEnd ;
-    caloData->extent[5] = rOuterEnd ;
-    caloData->extent[2] = lcalInnerZ ;
-    caloData->extent[3] = lcalInnerZ + lcalThickness ;
-
-    std::cout << " caloData " << *caloData << std::endl ;
 
 
     // counter for the current layer to be placed
@@ -101,6 +78,8 @@ static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
     DD4hep::Geometry::Volume envelopeVol(detName+"_module",envelopeCone,air);
     envelopeVol.setVisAttributes(lcdd,xmlLumiCal.visStr());
  
+
+
 
     ////////////////////////////////////////////////////////////////////////////////
     // Create all the layers
@@ -146,66 +125,7 @@ static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
             
             DD4hep::Geometry::Volume layer_vol(layer_name,layer_base,air);
             
-	    int sliceID=0;
-            double inThisLayerPosition = -layerThickness*0.5;
-            
-            double nRadiationLengths=0.;
-            double nInteractionLengths=0.;
-            double thickness_sum=0;
-            
-            DD4hep::DDRec::LayeredCalorimeterData::Layer caloLayer ;
-            
-            for(DD4hep::XML::Collection_t collSlice(xmlLayer,_U(slice)); collSlice; ++collSlice)  {
-                DD4hep::XML::Component compSlice = collSlice;
-                const double      slice_thickness = compSlice.thickness();
-                const std::string sliceName = layer_name + DD4hep::XML::_toString(sliceID,"slice%d");
-                DD4hep::Geometry::Material   slice_material  = lcdd.material(compSlice.materialStr());
-                
-                //DD4hep::Geometry::Tube sliceBase(lcalInnerR,lcalOuterR,slice_thickness/2);
-		DD4hep::Geometry::ConeSegment sliceBase(slice_thickness/2.,rInn1,rOut1,rInn2,rOut2,phi1,phi2);
-                
-                DD4hep::Geometry::Volume slice_vol (sliceName,sliceBase,slice_material);
-                
-                nRadiationLengths += slice_thickness/(2.*slice_material.radLength());
-                nInteractionLengths += slice_thickness/(2.*slice_material.intLength());
-                thickness_sum += slice_thickness/2;
-                
-                if ( compSlice.isSensitive() )  {
-		  
-		  
-		  //Reset counters to measure "outside" quantitites
-		  nRadiationLengths=0.;
-		  nInteractionLengths=0.;
-		  thickness_sum = 0.;
-		  slice_vol.setSensitiveDetector(sens);
-                }
-                
-                nRadiationLengths += slice_thickness/(2.*slice_material.radLength());
-                nInteractionLengths += slice_thickness/(2.*slice_material.intLength());
-                thickness_sum += slice_thickness/2;
-                
-                slice_vol.setAttributes(lcdd,compSlice.regionStr(),compSlice.limitsStr(),compSlice.visStr());
-                layer_vol.placeVolume(slice_vol,DD4hep::Geometry::Position(0,0,inThisLayerPosition+slice_thickness*0.5));
-                    
-                inThisLayerPosition += slice_thickness;
-                ++sliceID;
-            }//For all slices in this layer
-       
-            //-----------------------------------------------------------------------------------------
 
-	    // Is that needed or is only used for making a gear file?
-	    //Needs to be innermost face distance
-            caloLayer.distance = lcalCentreZ + referencePosition;
-	    
-            
-            caloLayer.cellSize0 = LumiCal_cell_size ;
-            caloLayer.cellSize1 = LumiCal_cell_size ;
-            
-            caloData->layers.push_back( caloLayer ) ;
-	    
-            //-----------------------------------------------------------------------------------------
-
-	    
             //Why are we doing this for each layer, this just needs to be done once and then placed multiple times
             //Do we need unique IDs for each piece?
             layer_vol.setVisAttributes(lcdd,xmlLayer.visStr());
@@ -228,7 +148,8 @@ static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
         
     }// for all layer collections
 
-    
+
+
 
 
     const DD4hep::Geometry::Position bcForwardPos (std::tan(0.5*fullCrossingAngle)*lcalCentreZ,0.0, lcalCentreZ);
@@ -243,9 +164,7 @@ static DD4hep::Geometry::Ref_t create_detector(DD4hep::Geometry::LCDD& lcdd,
     pv2.addPhysVolID("barrel", 2);
 
 
-    sdet.addExtension< DD4hep::DDRec::LayeredCalorimeterData >( caloData ) ;
-    
     return sdet;
 }
                                                
-DECLARE_DETELEMENT(LumiCal_o2_v01,create_detector)
+DECLARE_DETELEMENT(LumiCal_o2_v02,create_detector)

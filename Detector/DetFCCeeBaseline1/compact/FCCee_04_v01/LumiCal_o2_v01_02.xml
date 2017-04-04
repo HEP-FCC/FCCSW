@@ -16,7 +16,7 @@
     </readouts>
 
  <detectors>
-   <detector name="LumiCal" type="LumiCal_o2_v01" vis="SeeThrough" id="DetID_LumiCal"  insideTrackingVolume="false" >
+   <detector name="LumiCal" type="LumiCal_o2_v01" vis="SeeThrough" id="DetID_LumiCal" readout="LumiCalCollection" insideTrackingVolume="false" >
      
      <envelope vis="LCALVis">
        <shape type="BooleanShape" operation="union" material="Air">

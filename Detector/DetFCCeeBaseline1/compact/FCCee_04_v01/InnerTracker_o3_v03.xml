@@ -42,7 +42,7 @@
                         <!-- <shape type="BooleanShape" operation="Subtraction">  -->
                             <shape type="BooleanShape" operation="Subtraction">
                                 <shape type="BooleanShape" operation="Subtraction"  >
-                                    <shape type="Tube" rmin="CentralBeamPipe_rmax" rmax="InnerTracker_outer_radius" dz="InnerTracker_half_length+env_safety-0.5*cm"/>
+                                    <shape type="Tube" rmin="CentralBeamPipe_rmax" rmax="InnerTracker_outer_radius" dz="InnerTracker_half_length+env_safety"/>
                                     <!--<shape type="Cone" rmin1="0" rmax1="CentralBeamPipe_rmax" rmin2="0" rmax2="ConeBeamPipe_rmax" z="(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0"/>  -->
 				    <shape type="Cone" rmin1="0" rmax1="CentralBeamPipe_rmax" rmin2="0" rmax2="ConeBeamPipe_rmax_1" z="(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0"/>
                                     <position x="0" y="0" z="(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0 + CentralBeamPipe_zmax" />
@@ -95,7 +95,7 @@
         </readout>
     </readouts>
     
-    <!--detectors>
+    <detectors>
         <detector id="DetID_IT_Barrel" name="InnerTrackerBarrel" type="TrackerBarrel_o1_v03" readout="InnerTrackerBarrelCollection" region="SiTrackerBarrelRegion" limits="SiTrackerBarrelRegionLimitSet">
             <envelope vis="ITVis">
                 <shape type="Assembly"/>
@@ -105,7 +105,7 @@
             <module name="InnerTrackerBarrelModule" vis="InnerTrackerModuleVis">
                 <module_envelope width="10*cm" length="10*cm"/>
                 
-                <!-- Build slices top-down from innermost slice (closest to IP) to outer-most (away from IP)>
+                <!-- Build slices top-down from innermost slice (closest to IP) to outer-most (away from IP)-->
                 <module_component width="10*cm" length="10*cm" thickness="0.1*mm"   material="Epoxy"           sensitive="false"/>
                 <module_component width="10*cm" length="10*cm" thickness="0.2*mm"   material="Kapton"          sensitive="false"/>
                 <module_component width="10*cm" length="10*cm" thickness="0.2*mm"   material="Aluminum"        sensitive="false"/>           
@@ -134,7 +134,7 @@
             </layer>  
 
         </detector>
-    </detectors-->
+    </detectors>
     
     <detectors>
         <detector id="DetID_IT_Endcap" name="InnerTrackerEndcap" type="TrackerEndcap_o1_v03" readout="InnerTrackerEndcapCollection" reflect="true">
@@ -226,7 +226,7 @@
             </module>            
             
             
-            <!--layer id="0">
+            <layer id="0">
                 <ring r="InnerTracker_Endcap_outer_radius_0-2.19*cm"      zstart="InnerTracker_Endcap_z_0+2*mm" nmodules="38" dz="1*mm" module="InnerTrackerEndcapModule_0" phi0="0" />  
                 <ring r="InnerTracker_Endcap_outer_radius_0-6.445*cm"  zstart="InnerTracker_Endcap_z_0-2*mm" nmodules="32" dz="1*mm" module="InnerTrackerEndcapModule_0" phi0="0" />                             
                 <ring r="InnerTracker_Endcap_outer_radius_0-10.7*cm"   zstart="InnerTracker_Endcap_z_0+2*mm" nmodules="26" dz="1*mm" module="InnerTrackerEndcapModule_0" phi0="0" />  
@@ -269,14 +269,16 @@
                 <ring r="InnerTracker_Endcap_outer_radius_5-18*cm"   zstart="InnerTracker_Endcap_z_5-2*mm" nmodules="28" dz="1*mm" module="InnerTrackerEndcapModule_3" phi0="0" />
                 <ring r="InnerTracker_Endcap_outer_radius_5-29.9*cm" zstart="InnerTracker_Endcap_z_5+2*mm" nmodules="22" dz="1*mm" module="InnerTrackerEndcapModule_3" phi0="0" />             
             </layer>
+            
             <layer id="6">
                 <ring r="InnerTracker_Endcap_outer_radius_6-6.1*cm"  zstart="InnerTracker_Endcap_z_6+2*mm" nmodules="36" dz="1*mm" module="InnerTrackerEndcapModule_3" phi0="0" />
-                <ring r="InnerTracker_Endcap_outer_radius_6-16.8*cm" zstart="InnerTracker_Endcap_z_6-2*mm" nmodules="28" dz="1*mm" module="InnerTrackerEndcapModule_3" phi0="0" />
+                <ring r="InnerTracker_Endcap_outer_radius_6-16.8*cm"   zstart="InnerTracker_Endcap_z_6-2*mm" nmodules="28" dz="1*mm" module="InnerTrackerEndcapModule_3" phi0="0" />
                 <ring r="InnerTracker_Endcap_outer_radius_6-27.5*cm" zstart="InnerTracker_Endcap_z_6+2*mm" nmodules="22" dz="1*mm" module="InnerTrackerEndcapModule_3" phi0="0" />             
-            </layer-->            
+            </layer>            
+            
         </detector>
     </detectors>
-    <!--
+    
     <detectors>
         <detector name="InnerTrackerBarrelSupport" type="TrackerBarrelSupport_o1_v01" id="0" insideTrackingVolume="true" reflect="true" >
             <envelope>
@@ -312,10 +314,10 @@
            </layer>
            <layer id="5" inner_r="195*mm" inner_z="InnerTracker_Endcap_z_5+1*cm" outer_r="555*mm" vis="SupportVis">
 	           <slice material="CarbonFiber" thickness="1.04/3.7*cm" />
-           </layer>
-            <layer id="6" inner_r="220*mm" inner_z="InnerTracker_Endcap_z_6+1*cm" outer_r="555*mm" vis="SupportVis">
+           </layer>   
+           <layer id="6" inner_r="220*mm" inner_z="InnerTracker_Endcap_z_6+1*cm" outer_r="555*mm" vis="SupportVis">
 	           <slice material="CarbonFiber" thickness="1.04/3.7*cm" />
-           </layer>
+           </layer>           
         </detector>
         
         
@@ -329,7 +331,7 @@
         </detector>
 -->
         
-       <!-- 
+        
     </detectors>
     
     <plugins>
@@ -348,7 +350,7 @@
             <argument value="n_y=1."/>
         </plugin>
     </plugins>
-    -->
+    
 </lccdd>
 
 
