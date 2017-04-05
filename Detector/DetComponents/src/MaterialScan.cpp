@@ -3,6 +3,8 @@
 
 #include "GaudiKernel/ITHistSvc.h"
 #include "GaudiKernel/Service.h"
+#include "GaudiKernel/RndmGenerators.h"
+#include "GaudiKernel/IRndmGenSvc.h"
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Printout.h"
@@ -14,10 +16,6 @@
 #include "TVector3.h"
 
 MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {
-  declareProperty("filename", m_filename, "file name to save the tree to");
-  declareProperty("etaBinning", m_etaBinning, "eta bin size");
-  declareProperty("etaMax", m_etaMax, "maximum eta value");
-  declareProperty("nPhiTrials", m_nPhiTrials, "number of random phi values to average over");
 }
 
 StatusCode MaterialScan::initialize() {
@@ -30,9 +28,16 @@ StatusCode MaterialScan::initialize() {
     return StatusCode::FAILURE;
   }
 
-  sc = m_flatPhiDist.initialize(randSvc, Rndm::Flat(0., M_PI / 2.));
+  SmartIF<IRndmGenSvc> randSvc;
+  randSvc = service("RndmGenSvc");
+  StatusCode sc = m_flatPhiDist.initialize(randSvc, Rndm::Flat(0., M_PI / 2.));
+  if (sc == StatusCode::FAILURE) {
+    error() << "Unable to initialize random number generator." << endmsg;
+    return sc;
+  }
 
-  std::unique_ptr<TFile> rootFile(TFile::Open(m_filename.c_str(), "RECREATE"));
+
+  std::unique_ptr<TFile> rootFile(TFile::Open(m_filename.value().c_str(), "RECREATE"));
   // no smart pointers possible because TTree is owned by rootFile (root mem management FTW!)
   TTree* tree = new TTree("materials", "");
   double eta = 0;

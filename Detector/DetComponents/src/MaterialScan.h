@@ -1,6 +1,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 #include "GaudiKernel/Service.h"
+#include "GaudiKernel/Property.h"
 #include "GaudiKernel/RndmGenerators.h"
 
 /** @class MaterialScan Detector/DetComponents/src/MaterialScan.h MaterialScan.h
@@ -22,15 +23,15 @@ public:
 
 private:
   /// name of the output file
-  std::string m_filename;
+  Gaudi::Property<std::string> m_filename{this, "filename", "", "file name to save the tree to"};
   /// Handle to the geometry service from which the detector is retrieved
   SmartIF<IGeoSvc> m_geoSvc;
   /// Step size in eta
-  double m_etaBinning;
+  Gaudi::Property<double>  m_etaBinning{this, "etaBinning", 0.05, "eta bin size"};
   /// Maximum eta until which to scan, scan is performed from -m_etaMax to +m_etaMax
-  double m_etaMax;
-  /// number of different phi values to average over 
-  double m_nPhiTrials;
+  Gaudi::Property<double> m_etaMax{this, "etaMax", 6, "maximum eta value"};
+  /// number of random, uniformly distributed phi values to average over
+  Gaudi::Property<double> m_nPhiTrials{this, "nPhiTrials", 100, "number of random, uniformly distributed phi values to average over"};
   /// Flat random number generator
   Rndm::Numbers m_flatPhiDist;
 };
