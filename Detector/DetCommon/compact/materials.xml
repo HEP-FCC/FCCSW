@@ -141,8 +141,8 @@
 
   <material name="PE">
     <D type="density" value="0.95" unit="g/cm3"/>
-    <fraction n="4" ref="H"/>
-    <fraction n="2" ref="C"/>
+    <fraction n="0.6666666" ref="H"/>
+    <fraction n="0.3333333" ref="C"/>
   </material>
 
   <material name="Kapton">
