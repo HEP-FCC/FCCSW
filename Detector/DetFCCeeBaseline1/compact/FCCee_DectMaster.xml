@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+  </includes>
+
+  <info name="FCCDectMaster"
+    title="master file with includes and world dimension"
+    author="N. Alipour Tehrani"
+    url="no"
+    status="development: needs to be corrected"
+    version="$Id:??$">
+    <comment>master file with includes and world dimension</comment>
+  </info>
+  <define>
+    <constant name="world_side" value="7000*mm"/>
+    <constant name="world_x" value="world_side"/>
+    <constant name="world_y" value="world_side"/>
+    <constant name="world_z" value="world_side"/>
+  </define>
+  <include ref="./FCCee_DectDimensions.xml" />
+  <include ref="Materials_v01.xml"/>
+
+
+  <include ref="Beampipe_o3_v01.xml" />
+  <include ref="LumiCal_o3_v01_01.xml"/>
+  <include ref="Vertex_o3_v03.xml"/>
+
+  <include ref="InnerTracker_o3_v03.xml"/>
+
+  <include ref="OuterTracker_o2_v03_03.xml"/>
+
+  <include ref="ECalBarrel_o2_v01_01.xml"/>
+
+  <include ref="ECalEndcap_o2_v01_01.xml"/>
+  <include ref="ECalPlug_o1_v01_01.xml"/>
+  
+  <include ref="HCalBarrel_o1_v01_01.xml"/>
+  <include ref="HCalEndcap_o1_v01_01.xml"/>
+  
+  <include ref="Solenoid_o1_v01_01.xml"/>
+  
+  <include ref="YokeBarrel_o1_v01_01.xml"/>
+  <include ref="YokeEndcap_o1_v01_01.xml"/>
+
+    <plugins>
+      <plugin name="InstallSurfaceManager"/>
+    </plugins>
+
+    <fields>
+
+      <field name="GlobalSolenoid" type="solenoid"
+             inner_field="SolenoidField"
+             outer_field="-1.5*tesla"
+             zmax="Solenoid_Coil_half_length"
+             outer_radius="Solenoid_Coil_radius">
+      </field>
+
+      <field name="CompensatingSolenoidZplus" type="solenoid"
+             inner_field="-SolenoidField -SolenoidField * QD0_min_z / ( QD0_min_z - CompSol_min_z)"
+             outer_field="0*tesla"
+             zmax="QD0_min_z"
+             zmin="CompSol_min_z"
+             outer_radius="20*cm">
+      </field>
+
+      <field name="CompensatingSolenoidZminus" type="solenoid"
+             inner_field="-SolenoidField -SolenoidField * QD0_min_z / ( QD0_min_z - CompSol_min_z)"
+             outer_field="0*tesla"
+             zmin="-QD0_min_z"
+             zmax="-CompSol_min_z"
+             outer_radius="20*cm">
+      </field>
+
+</lccdd>
