@@ -1,8 +1,8 @@
 #ifndef GENERATION_UNITS_H
 #define GENERATION_UNITS_H
 
-#include "HepMC/Units.h"
 #include "GaudiKernel/SystemOfUnits.h"
+#include "HepMC/Units.h"
 
 // FIXME: All these should be a constexpr, but in CLHEP / HepMC they are only const
 

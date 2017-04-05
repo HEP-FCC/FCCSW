@@ -3,16 +3,16 @@ from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
+reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
 ## reads HepMC text file and write the HepMC::GenEvent to the data service
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -34,11 +34,11 @@ geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHits"])
-savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
-savecaltool.DataOutputs.caloHits.Path = "caloHits"
+savecaltool.positionedCaloHits.Path = "positionedCaloHits"
+savecaltool.caloHits.Path = "caloHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveCalHits/saveCalHits"],
                     eventProvider=particle_converter)

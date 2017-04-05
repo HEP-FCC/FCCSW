@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="A material approximation of the EMCal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>ECAL end cap material approximation</comment>
+  </info>
+  <define>
+    <constant name="CalExtBarFlange_width" value="50*mm"/>
+    <constant name="CalExtBarInner_rmax" value="ExtBarCal_rmax1-2*CalExtBarFlange_width"/>
+    <constant name="CalExtBarInner_dz" value="ExtBarCal_dz - 2*CalExtBarFlange_width"/>
+    <constant name="CalExtBarLAr_rmin" value="2470*mm"/>
+    <constant name="CalExtBarECal_dz" value="375*mm"/>
+    <constant name="CalExtBarECal_rmin1" value="892.5*mm"/>
+    <constant name="CalExtBarECal_rmin2" value="1016.5*mm"/>
+    <constant name="CalExtBar_zLow" value="ExtBarCal_zOffset - ExtBarCal_dz"/>
+    <constant name="CalExtBarECal_zOffset" value="-CalExtBarInner_dz + CalExtBarECal_dz"/>
+    <constant name="CalExtBarHCal_rmin1" value="CalExtBarECal_rmin2"/>
+    <constant name="CalExtBarHCal_rmin2" value="1355.3*mm"/>
+    <constant name="CalExtBarHCal_dz" value="1025*mm"/>
+    <constant name="CalExtBarHCal_zOffset" value="CalExtBarECal_zOffset + CalExtBarECal_dz + CalExtBarHCal_dz"/>
+    <constant name="CalExtBarFlange1_zOffset" value="CalExtBar_zLow+CalExtBarFlange_width"/>
+    <constant name="CalExtBarFlange2_zOffset" value="ExtBarCal_zOffset + ExtBarCal_dz - CalExtBarFlange_width"/>
+    <constant name="CalExtBarInner_zOffset" value="ExtBarCal_zOffset"/>
+  </define>
+  <detectors>
+    <!-- E X T E N D E D  B A R R E L -->
+    <!-- POSITIVE Z -->
+    <!-- Cryo system -->
+    <detector name="CalExtBarFlange1Pos" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="ExtBarCal_rmin1"
+        rmax1="ExtBarCal_rmax1"
+        rmin2="CalExtBarECal_rmin1-CalExtBarFlange_width*2"
+        rmax2="ExtBarCal_rmax1"
+        dz="CalExtBarFlange_width"
+        z_offset="CalExtBarFlange1_zOffset"
+        material="Aluminum"/>
+    </detector>
+    <detector name="CalExtBarFlange2Pos" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="CalExtBarHCal_rmin2-CalExtBarFlange_width*2"
+        rmax1="ExtBarCal_rmax1"
+        rmin2="ExtBarCal_rmin2"
+        rmax2="ExtBarCal_rmax1"
+        dz="CalExtBarFlange_width"
+        z_offset="CalExtBarFlange2_zOffset"
+        material="Aluminum"/>
+    </detector>
+    <detector name="CalExtBarCryo1Pos" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin1="CalExtBarECal_rmin1-CalExtBarFlange_width*2"
+        rmax1="CalExtBarECal_rmin1"
+        rmin2="CalExtBarHCal_rmin2-CalExtBarFlange_width*2"
+        rmax2="CalExtBarHCal_rmin2"
+        dz="ExtBarCal_dz - 2*CalExtBarFlange_width"
+        z_offset="ExtBarCal_zOffset"
+        material="Aluminum"/>
+    </detector>
+    <detector name="CalExtBarCryo2Pos" type="SimpleCylinder"  vis="ECalCryo">
+        <dimensions rmin="ExtBarCal_rmax1-CalExtBarFlange_width*2"
+        rmax="ExtBarCal_rmax1"
+        dz="ExtBarCal_dz - 2*CalExtBarFlange_width"
+        z_offset="ExtBarCal_zOffset"
+        deltaphi="360*deg" phi0="0"
+        material="Aluminum"/>
+    </detector>
+
+    <!-- actual detector -->
+    <detector name="CalExtBarPos" type="LayeredCone" vis="ECalEnvVis">
+      <dimensions rmin1="CalExtBarECal_rmin1" rmax1="CalExtBarInner_rmax" rmin2="CalExtBarHCal_rmin2" rmax2="CalExtBarInner_rmax" dz="CalExtBarInner_dz" z_offset="CalExtBarInner_zOffset" material="Air"/>
+      <layer rmin1="CalExtBarLAr_rmin" rmax1="CalExtBarInner_rmax" rmin2="CalExtBarLAr_rmin" rmax2="CalExtBarInner_rmax" dz="CalExtBarInner_dz" z_offset="0" material="LAr" vis="ECalCryo"/>
+      <layer rmin1="CalExtBarECal_rmin1" rmax1="CalExtBarLAr_rmin" rmin2="CalExtBarECal_rmin2" rmax2="CalExtBarLAr_rmin" dz="CalExtBarECal_dz" z_offset="CalExtBarECal_zOffset" material="EM" vis="ECalVis"/>
+      <layer rmin1="CalExtBarHCal_rmin1" rmax1="CalExtBarLAr_rmin" rmin2="CalExtBarHCal_rmin2" rmax2="CalExtBarLAr_rmin" dz="CalExtBarHCal_dz" z_offset="CalExtBarHCal_zOffset" material="CalEC" vis="HCalVis"/>
+    </detector>
+    <!-- NEGATIVE Z -->
+    <!-- Cryo system -->
+    <detector name="CalExtBarFlange1Neg" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin2="ExtBarCal_rmin1"
+        rmax2="ExtBarCal_rmax1"
+        rmin1="CalExtBarECal_rmin1-CalExtBarFlange_width*2"
+        rmax1="ExtBarCal_rmax1"
+        dz="CalExtBarFlange_width"
+        z_offset="-CalExtBarFlange1_zOffset"
+        material="Aluminum"/>
+    </detector>
+    <detector name="CalExtBarFlange2Neg" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin2="CalExtBarHCal_rmin2-CalExtBarFlange_width*2"
+        rmax2="ExtBarCal_rmax1"
+        rmin1="ExtBarCal_rmin2"
+        rmax1="ExtBarCal_rmax1"
+        dz="CalExtBarFlange_width"
+        z_offset="-CalExtBarFlange2_zOffset"
+        material="Aluminum"/>
+    </detector>
+    <detector name="CalExtBarCryo1Neg" type="SimpleCone"  vis="ECalCryo">
+        <dimensions rmin2="CalExtBarECal_rmin1-CalExtBarFlange_width*2"
+        rmax2="CalExtBarECal_rmin1"
+        rmin1="CalExtBarHCal_rmin2-CalExtBarFlange_width*2"
+        rmax1="CalExtBarHCal_rmin2"
+        dz="ExtBarCal_dz - 2*CalExtBarFlange_width"
+        z_offset="-ExtBarCal_zOffset"
+        material="Aluminum"/>
+    </detector>
+    <detector name="CalExtBarCryo2Neg" type="SimpleCylinder"  vis="ECalCryo">
+        <dimensions rmin="ExtBarCal_rmax1-CalExtBarFlange_width*2"
+        rmax="ExtBarCal_rmax1"
+        dz="ExtBarCal_dz - 2*CalExtBarFlange_width"
+        z_offset="-ExtBarCal_zOffset"
+        deltaphi="360*deg" phi0="0"
+        material="Aluminum"/>
+    </detector>
+
+    <!-- actual detector -->
+    <detector name="CalExtBarNeg" type="LayeredCone" vis="ECalEnvVis">
+      <dimensions rmin2="CalExtBarECal_rmin1" rmax2="CalExtBarInner_rmax" rmin1="CalExtBarHCal_rmin2" rmax1="CalExtBarInner_rmax" dz="CalExtBarInner_dz" z_offset="-CalExtBarInner_zOffset" material="Air"/>
+      <layer rmin2="CalExtBarLAr_rmin" rmax2="CalExtBarInner_rmax" rmin1="CalExtBarLAr_rmin" rmax1="CalExtBarInner_rmax" dz="CalExtBarInner_dz" z_offset="0" material="LAr" vis="ECalCryo"/>
+      <layer rmin2="CalExtBarECal_rmin1" rmax2="CalExtBarLAr_rmin" rmin1="CalExtBarECal_rmin2" rmax1="CalExtBarLAr_rmin" dz="CalExtBarECal_dz" z_offset="-CalExtBarECal_zOffset" material="EM" vis="ECalVis"/>
+      <layer rmin2="CalExtBarHCal_rmin1" rmax2="CalExtBarLAr_rmin" rmin1="CalExtBarHCal_rmin2" rmax1="CalExtBarLAr_rmin" dz="CalExtBarHCal_dz" z_offset="-CalExtBarHCal_zOffset" material="CalEC" vis="HCalVis"/>
+    </detector>
+  </detectors>
+</lccdd>

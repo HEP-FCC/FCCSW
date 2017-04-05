@@ -1,8 +1,8 @@
 #ifndef GENERATION_GENPARTICLEFILTER_H
 #define GENERATION_GENPARTICLEFILTER_H
 
-#include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
+#include "GaudiAlg/GaudiAlgorithm.h"
 
 // forward declarations:
 namespace fcc {
@@ -18,8 +18,8 @@ class MCParticleCollection;
  *  @author J. Lingemann
 */
 
-class GenParticleFilter: public GaudiAlgorithm {
-  friend class AlgFactory<GenParticleFilter> ;
+class GenParticleFilter : public GaudiAlgorithm {
+  friend class AlgFactory<GenParticleFilter>;
 
 public:
   /// Constructor.
@@ -30,13 +30,14 @@ public:
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
+
 private:
-  /// Statuses to accept
-  std::vector<unsigned> m_accept;
+  /// Particle statuses to accept
+  Gaudi::Property<std::vector<unsigned>> m_accept{this, "accept", {1}, "Particle statuses to accept"};
   /// Handle for the ParticleCollection to be read
-  DataHandle<fcc::MCParticleCollection> m_iGenpHandle;
+  DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"AllGenParticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_oGenpHandle;
+  DataHandle<fcc::MCParticleCollection> m_oGenpHandle{"FilteredGenParticles", Gaudi::DataHandle::Writer, this};
 };
 
-#endif // GENERATION_GENPARTICLEFILTER_H
+#endif  // GENERATION_GENPARTICLEFILTER_H

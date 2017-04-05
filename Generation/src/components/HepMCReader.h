@@ -3,9 +3,9 @@
 #define GENERATION_HEPMCREADER_H
 
 #include "Generation/IHepMCFileReaderTool.h"
-#include "Generation/IVertexSmearingTool.h"
-#include "Generation/IPileUpTool.h"
 #include "Generation/IHepMCMergeTool.h"
+#include "Generation/IPileUpTool.h"
+#include "Generation/IVertexSmearingTool.h"
 
 #include "FWCore/DataHandle.h"
 
@@ -13,7 +13,7 @@
 #include "GaudiKernel/ToolHandle.h"
 
 namespace HepMC {
-  class GenEvent;
+class GenEvent;
 }
 
 /**@class HepMCReader HepMCReader.h HepMCReader.h
@@ -28,8 +28,8 @@ namespace HepMC {
  *  @version 1.0
  */
 
-class HepMCReader: public GaudiAlgorithm {
-  friend class AlgFactory<HepMCReader> ;
+class HepMCReader : public GaudiAlgorithm {
+  friend class AlgFactory<HepMCReader>;
 
 public:
   /// Constructor.
@@ -43,19 +43,18 @@ public:
 
 private:
   /// the name of the input file
-  std::string m_filename;
+  Gaudi::Property<std::string> m_filename{this, "Filename", "", "Name of the HepMC file to read"};
   /// Tools to handle input from HepMC-file
-  ToolHandle<IHepMCFileReaderTool> m_signalFileReader;
-  ToolHandle<IHepMCFileReaderTool> m_pileupFileReader;
-  
-  // Pileup Interface Tool
-  ToolHandle<IPileUpTool> m_pileUpTool;
-  /// Tool to merge HepMC events
-  ToolHandle<IHepMCMergeTool> m_HepMCMergeTool;
-  // Tool to smear vertices
-  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
-  // output handle for finished event
-  DataHandle<HepMC::GenEvent> m_hepmchandle;
-};
+  ToolHandle<IHepMCFileReaderTool> m_signalFileReader{"HepMCFileReader/FileReaderSignal", this};
+  ToolHandle<IHepMCFileReaderTool> m_pileupFileReader{"HepMCFileReader/FileReaderPileup", this};
 
-#endif //GENERATION_HEPMCREADER_H
+  // Pileup Interface Tool
+  ToolHandle<IPileUpTool> m_pileUpTool{"ConstPileUp/PileUpTool"};
+  /// Tool to merge HepMC events
+  ToolHandle<IHepMCMergeTool> m_HepMCMergeTool{"HepMCSimpleMerge/HepMCMergeTool"};
+  // Tool to smear vertices
+  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool{"FlatSmearVertex/VertexSmearingTool"};
+  // output handle for finished event
+  DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Writer, this};
+};
+#endif  // GENERATION_HEPMCREADER_H

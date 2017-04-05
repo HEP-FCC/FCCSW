@@ -14,15 +14,15 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader.hepmc.Path = "hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 # DD4hep geometry service
 # Parses the given xml file
@@ -43,11 +43,11 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmT
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
-savetrackertool.DataOutputs.trackHits.Path = "hits"
+savetrackertool.positionedTrackHits.Path = "positionedHits"
+savetrackertool.trackHits.Path = "hits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveTrackerHits/saveTrackerHits"],
                     eventProvider=particle_converter)

@@ -22,9 +22,43 @@ gaudi_add_module(RecCalorimeterPlugins
 include(CTest)
 gaudi_add_test(genJetClustering
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/genJetClustering.py)
+               FRAMEWORK tests/options/genJetClustering.py)
 
-gaudi_add_test(runEcalReconstruction
+gaudi_add_test(simulateECalForReconstruction
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so	
-               FRAMEWORK options/runEcalReconstruction.py)
+               FRAMEWORK tests/options/geant_fullsim_ecal_singleparticles.py)
+
+gaudi_add_test(EcalReconstructionFlatNoise
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               DEPENDS simulateECalForReconstruction
+               FRAMEWORK tests/options/runEcalReconstructionFlatNoise.py)
+
+gaudi_add_test(EcalReconstructionWithoutNoise
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               DEPENDS simulateECalForReconstruction
+               FRAMEWORK tests/options/runEcalReconstructionWithoutNoise.py)
+
+gaudi_add_test(EcalReconstructionCheckNumClusters
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
+               DEPENDS runEcalReconstructionFlatNoise runEcalReconstructionWithoutNoise)
+
+gaudi_add_test(EcalReconstructionNoiseFromFile
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               DEPENDS simulateECalForReconstruction
+               FRAMEWORK tests/options/runEcalReconstruction.py)
+
+gaudi_add_test(simulateHCal
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/geant_fullsim_hcal_singleparticles.py)
+
+gaudi_add_test(HcalDigitisationWithoutNoise
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               DEPENDS simulateHCal
+               FRAMEWORK tests/options/runHcalDigitisationWithoutNoise.py)
+
+gaudi_add_test(HcalDigitisationFlatNoise
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               DEPENDS simulateHCal
+               FRAMEWORK tests/options/runHcalDigitisationFlatNoise.py)

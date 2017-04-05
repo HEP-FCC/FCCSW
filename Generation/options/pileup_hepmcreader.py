@@ -25,20 +25,20 @@ smeartool = FlatSmearVertex(
      zVertexMax=pileupconf['zVertexMax'])
 
 genpileup = PoissonPileUp(name="Pileup",
-    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
+    filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat",
     numPileUpEvents=pileupconf['numPileUpEvents'])
 
 mergetool = HepMCFullMerge()
 
-reader = HepMCReader("Reader", 
-    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
+reader = HepMCReader("Reader",
+    Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat",
     PileUpTool=genpileup,
     HepMCMergeTool=mergetool,
     VertexSmearingTool = smeartool)
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 dumper = HepMCDumper()
-dumper.DataInputs.hepmc.Path="hepmc"
+dumper.hepmc.Path="hepmc"
 
 ApplicationMgr(
     TopAlg=[reader, dumper],

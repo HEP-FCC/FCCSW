@@ -1,6 +1,6 @@
 
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/DetFactoryHelper.h"
+#include "DetCommon/DetUtils.h"
 
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
@@ -20,7 +20,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
   Dimension dimensions(xmlDet.dimensions());
 
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");  // retrieve the type
+  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
   if (xmlDet.isSensitive()) {
     sensDet.setType(sdTyp.typeStr());  // set for the whole detector
   }
@@ -33,7 +33,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
   // contains both endcaps, in forward and in backwards direction
   // the part between -z1 and z1 is subtracted from the envelope
   DD4hep::Geometry::Tube posnegEnvelopeShape_add(dimensions.rmin(), dimensions.rmax(), (dimensions.z2()));
-  // make the negative shape slighly larger in the radial direction 
+  // make the negative shape slighly larger in the radial direction
   // to be sure that everything is subtracted between -z1 and z1
   DD4hep::Geometry::Box posnegEnvelopeShape_subtract(
       dimensions.rmax() * 1.001, dimensions.rmax() * 1.001, dimensions.z1());
@@ -50,7 +50,6 @@ static DD4hep::Geometry::Ref_t createGenericTrackerEndcap(DD4hep::Geometry::LCDD
   unsigned int layerCounter = 0;
   for (DD4hep::XML::Collection_t xLayerColl(xmlElement, _U(layers)); nullptr != xLayerColl; ++xLayerColl) {
     DD4hep::XML::Component xLayer = static_cast<DD4hep::XML::Component>(xLayerColl);
-
 
     // create petals
     unsigned int nPhi = static_cast<unsigned int>(utils::getAttrValueWithFallback(xLayer, "nPhi", 16));

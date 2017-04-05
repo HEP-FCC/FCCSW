@@ -17,7 +17,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
   DD4hep::XML::DetElement xmlDet = static_cast<DD4hep::XML::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");
+  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));
   if (xmlDet.isSensitive()) {
     // sensitive detector used for all sensitive parts of this detector
     sensDet.setType(sdTyp.typeStr());
@@ -36,7 +36,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
   for (DD4hep::XML::Collection_t xLayerColl(xmlElement, _U(layers)); nullptr != xLayerColl; ++xLayerColl) {
     DD4hep::XML::Component xLayer = static_cast<DD4hep::XML::Component>(xLayerColl);
 
-    DD4hep::XML::Component xModuleComponents = xmlElement.child("module_components");
+    DD4hep::XML::Component xModuleComponents = xmlElement.child(_Unicode(module_components));
     DD4hep::XML::Component xModule =
         utils::getNodeByStrAttr(xmlElement, "module", "name", xLayer.attr<std::string>("module"));
 
@@ -113,7 +113,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       // let r be the middle between two equidistant layer boundaries
       r = layer_rmin + (0.5 + repeatIndex) * layerThickness;
       // definition of layer volumes
-      DD4hep::Geometry::Tube layerShape(r - 0.5*layerThickness, r + 0.5*layerThickness, xLayer.dz());
+      DD4hep::Geometry::Tube layerShape(r - 0.5 * layerThickness, r + 0.5 * layerThickness, xLayer.dz());
       std::string layerName = "layer" + std::to_string(layerCounter);
       Volume layerVolume(layerName, layerShape, lcdd.material("Silicon"));
       layerVolume.setVisAttributes(lcdd.invisible());
@@ -121,7 +121,7 @@ static DD4hep::Geometry::Ref_t createGenericTrackerBarrel(DD4hep::Geometry::LCDD
       placedLayerVolume.addPhysVolID("layer", layerCounter);
       // approximation of tklayout values
       double phiOverlapFactor = utils::getAttrValueWithFallback(xLayer, "phi_overlap_factor", 1.15);
-      nPhi = static_cast<unsigned int>( phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
+      nPhi = static_cast<unsigned int>(phiOverlapFactor * 2 * M_PI * r / (2 * xModule.width()));
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
         phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
         DD4hep::Geometry::Translation3D lTranslation(r * cos(phi), r * sin(phi), 0);

@@ -3,39 +3,27 @@
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
 
-DECLARE_TOOL_FACTORY( ConstPileUp )
+DECLARE_TOOL_FACTORY(ConstPileUp)
 
-ConstPileUp::ConstPileUp(
-  const std::string& type,
-  const std::string& name,
-  const IInterface* parent)
-  : GaudiTool ( type, name , parent ) {
-  declareInterface< IPileUpTool >( this );
-  
-  declareProperty( "numPileUpEvents", m_numPileUpEvents = 0 );
-  declareProperty( "Filename", m_filename = "" );
+ConstPileUp::ConstPileUp(const std::string& type, const std::string& name, const IInterface* parent)
+    : GaudiTool(type, name, parent) {
+  declareInterface<IPileUpTool>(this);
 }
 
-ConstPileUp::~ConstPileUp( ) { ; }
+ConstPileUp::~ConstPileUp() { ; }
 
-StatusCode ConstPileUp::initialize( ) {
-  StatusCode sc = GaudiTool::initialize( );
+StatusCode ConstPileUp::initialize() {
+  StatusCode sc = GaudiTool::initialize();
   printPileUpCounters();
   return sc;
 }
 
-unsigned int ConstPileUp::numberOfPileUp( ) {
-  return m_numPileUpEvents;
-}
+unsigned int ConstPileUp::numberOfPileUp() { return m_numPileUpEvents; }
 
-double ConstPileUp::getMeanPileUp() {
-  return m_numPileUpEvents;
-}
+double ConstPileUp::getMeanPileUp() { return m_numPileUpEvents; }
 
-std::string ConstPileUp::getFilename() {
-  return m_filename;
-}
+std::string ConstPileUp::getFilename() { return m_filename; }
 
-void ConstPileUp::printPileUpCounters () {
+void ConstPileUp::printPileUpCounters() {
   info() << "Current number of pileup events: " << m_numPileUpEvents << endmsg;
 }

@@ -1,24 +1,20 @@
 
 #include "HepMCFullMerge.h"
 
+#include "GaudiKernel/IEventProcessor.h"
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
-#include "GaudiKernel/IEventProcessor.h"
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
 
 DECLARE_TOOL_FACTORY(HepMCFullMerge)
 
-HepMCFullMerge::HepMCFullMerge(
-  const std::string& type,
-  const std::string& name,
-  const IInterface* parent)
-  : GaudiTool(type, name, parent) {
-  declareInterface< IHepMCMergeTool >( this );
+HepMCFullMerge::HepMCFullMerge(const std::string& type, const std::string& name, const IInterface* parent)
+    : GaudiTool(type, name, parent) {
+  declareInterface<IHepMCMergeTool>(this);
 }
 
-HepMCFullMerge::~HepMCFullMerge() {
-}
+HepMCFullMerge::~HepMCFullMerge() {}
 
 StatusCode HepMCFullMerge::initialize() {
   StatusCode sc = GaudiTool::initialize();
@@ -27,15 +23,15 @@ StatusCode HepMCFullMerge::initialize() {
 }
 
 StatusCode HepMCFullMerge::merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) {
-  for (auto it=eventVector.cbegin(), end = eventVector.cend(); it != end; ++it) {
+  for (auto it = eventVector.cbegin(), end = eventVector.cend(); it != end; ++it) {
     // keep track of which vertex in full event corresponds to which vertex in merged event
     std::unordered_map<const HepMC::GenVertex*, HepMC::GenVertex*> inputToMergedVertexMap;
-    for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v ) {
-        HepMC::GenVertex* outvertex = new HepMC::GenVertex((*v)->position());
-        inputToMergedVertexMap[*v] = outvertex;
-        signalEvent.add_vertex(outvertex);
-      }
-    for (auto p = (*it).particles_begin(); p != (*it).particles_end(); ++p ) {
+    for (auto v = (*it).vertices_begin(); v != (*it).vertices_end(); ++v) {
+      HepMC::GenVertex* outvertex = new HepMC::GenVertex((*v)->position());
+      inputToMergedVertexMap[*v] = outvertex;
+      signalEvent.add_vertex(outvertex);
+    }
+    for (auto p = (*it).particles_begin(); p != (*it).particles_end(); ++p) {
       HepMC::GenParticle* oldparticle = *p;
       // ownership of the particle is given to the vertex
       HepMC::GenParticle* newparticle = new HepMC::GenParticle(*oldparticle);
@@ -51,7 +47,4 @@ StatusCode HepMCFullMerge::merge(HepMC::GenEvent& signalEvent, const std::vector
   return StatusCode::SUCCESS;
 }
 
-
-StatusCode HepMCFullMerge::finalize() {
-  return GaudiTool::finalize();
-}
+StatusCode HepMCFullMerge::finalize() { return GaudiTool::finalize(); }

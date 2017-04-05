@@ -13,10 +13,9 @@
  *  @author Anna Zaborowska
  */
 
-class SimG4TestPhysicsList: public AlgTool, virtual public ISimG4PhysicsList {
+class SimG4TestPhysicsList : public AlgTool, virtual public ISimG4PhysicsList {
 public:
-  explicit SimG4TestPhysicsList(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4TestPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4TestPhysicsList();
   /**  Initialize.
    *   @return status code
@@ -30,7 +29,6 @@ public:
    *  @return pointer to G4VModularPhysicsList
    */
   virtual G4VModularPhysicsList* physicsList();
-
 };
 
 #endif /* TESTGEOMETRY_G4TESTPHYSICSLIST_H */

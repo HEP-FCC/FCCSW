@@ -8,9 +8,9 @@
 #include "G4VUserDetectorConstruction.hh"
 
 namespace DD4hep {
-  namespace Geometry {
-    class LCDD;
-  }
+namespace Geometry {
+class LCDD;
+}
 }
 /** @class GeoConstruction DetectorDescription/DetDesServices/src/GeoConstruction.h GeoConstruction.h
  *
@@ -34,6 +34,7 @@ public:
   virtual G4VPhysicalVolume* Construct() final;
   /// Construct SD
   virtual void ConstructSDandField() final;
+
 private:
   /// Reference to geometry object
   DD4hep::Geometry::LCDD& m_lcdd;

@@ -3,20 +3,15 @@
 #include "TFile.h"
 #include "TROOT.h"
 
-#include "FWCore/PodioDataSvc.h"
 #include "FWCore/DataWrapper.h"
+#include "FWCore/PodioDataSvc.h"
 
 DECLARE_COMPONENT(PodioInput)
 
-PodioInput::PodioInput(const std::string& name, ISvcLocator* svcLoc) :
-GaudiAlgorithm(name, svcLoc)
-{
-  declareProperty("collections", m_collectionNames, "Places of collections to read.");
-}
+PodioInput::PodioInput(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {}
 
 StatusCode PodioInput::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
 
   // check whether we have the PodioEvtSvc active
   m_podioDataSvc = dynamic_cast<PodioDataSvc*>(evtSvc().get());
@@ -38,7 +33,7 @@ StatusCode PodioInput::execute() {
   size_t cntr = 0;
   // Re-create the collections from ROOT file
   for (auto& id : m_collectionIDs) {
-    const std::string& collName = m_collectionNames.at(cntr++);
+    const std::string& collName = m_collectionNames.value().at(cntr++);
     debug() << "Registering collection to read " << collName << " with id " << id << endmsg;
     if (m_podioDataSvc->readCollection(collName, id).isFailure()) {
       return StatusCode::FAILURE;
@@ -50,7 +45,6 @@ StatusCode PodioInput::execute() {
 }
 
 StatusCode PodioInput::finalize() {
-  if (GaudiAlgorithm::finalize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::finalize().isFailure()) return StatusCode::FAILURE;
   return StatusCode::SUCCESS;
 }

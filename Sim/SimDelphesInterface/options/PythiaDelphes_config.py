@@ -19,13 +19,12 @@
 ##    * Define out module to write output using FCC-EDM lib (standard FCC output)
 ##
 ##  - run:
-##    * ./run gaudirun.py config/PythiaDelphes_config.py
+##    * ./run fccrun.py Sim/SimDelphesInterface/options/PythiaDelphes_config.py
 ##
 
 """
 To run Pythia together with Delphes
-> export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
-> ./run gaudirun.py PythiaDelphes_config.py
+> ./run gaudirun.py Sim/SimDelphesInterface/options/PythiaDelphes_config.py
 """
 import sys
 from Gaudi.Configuration import *
@@ -38,7 +37,13 @@ from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticl
 def apply_paths(obj, names):
   """ Applies the collection names to the Paths of DataOutputs """
   for attr, name in names.iteritems():
-    getattr(obj.DataOutputs, attr).Path = name
+    getattr(obj, attr).Path = name
+
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--delphescard', type=str, default=None, help='specify an input delphes card')
+delphes_args, _ = parser.parse_known_args()
 
 from FWCore.joboptions import parse_standard_job_options
 args = parse_standard_job_options()
@@ -69,6 +74,9 @@ if args.inputfile != '':
 
 ## Define Delphes card
 delphesCard="Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl"
+if delphes_args.delphescard != None:
+    delphesCard = delphes_args.delphescard
+
 
 ## Define Delphes input HepMC and optionaly (non-standard) ROOT output
 ##  - if ROOT file not defined --> data written-out to Gaudi data store (Ouputs)
@@ -142,7 +150,7 @@ from Configurables import PythiaInterface
 
 pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 ## Write the HepMC::GenEvent to the data service
-pythia8gen.DataOutputs.hepmc.Path = "hepmc"
+pythia8gen.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
 from Configurables import DelphesSimulation
@@ -159,16 +167,16 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
                                         "DelphesSaveMet/met"])
-delphessim.DataInputs.hepmc.Path                = "hepmc"
-delphessim.DataOutputs.genParticles.Path        = "skimmedGenParticles"
-delphessim.DataOutputs.mcEventWeights.Path      = "mcEventWeights"
+delphessim.hepmc.Path                = "hepmc"
+delphessim.genParticles.Path        = "skimmedGenParticles"
+delphessim.mcEventWeights.Path      = "mcEventWeights"
 
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="genParticles"
-hepmc_converter.DataOutputs.genvertices.Path="genVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="genParticles"
+hepmc_converter.genvertices.Path="genVertices"
 
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput

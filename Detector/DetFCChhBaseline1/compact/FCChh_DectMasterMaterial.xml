@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+    <gdmlFile  ref="./estimates/materials.xml"/>
+  </includes>
+
+  <info name="FCCDectMasterMaterial"
+    title=""
+    author="J. Lingemann"
+    url="no"
+    status="development"
+    version="1.0">
+    <comment>master file with material estimates and world dimension</comment>
+  </info>
+  <define>
+    <constant name="world_size" value="25*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+  <include ref="./FCChh_DectDimensions.xml" />
+  <include ref="./FCChh_Visualisation.xml" />
+
+  <!-- Including the sub-detectors / volume definitions -->
+  <include ref="./FCChh_BeamTube.xml" />
+  <include ref="./FCChh_Solenoids.xml" />
+  <include ref="./FCChh_Shielding.xml" />
+
+  <!-- T R A C K E R -->
+  <include ref="./estimates/FCChh_TrackerMaterial.xml" />
+  <include ref="./estimates/FCChh_TrackerEndCapMaterial.xml" />
+  <include ref="./estimates/FCChh_TrackerFwdMaterial.xml" />
+
+  <!-- C A L O R I M E T E R S -->
+  <include ref="./estimates/FCChh_ECalMaterial.xml" />
+  <include ref="./estimates/FCChh_ECalEndCapMaterial.xml" />
+
+  <include ref="./estimates/FCChh_HCalMaterial.xml" />
+  <include ref="./estimates/FCChh_HCalEndCapMaterial.xml" />
+
+  <include ref="./estimates/FCChh_FwdCalMaterial.xml" />
+
+  <!-- M U O N   S Y S T E M -->
+  <!--<include ref="./FCChh_MuonAir.xml" />-->
+</lccdd>

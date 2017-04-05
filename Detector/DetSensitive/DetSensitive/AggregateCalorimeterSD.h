@@ -6,8 +6,8 @@
 #include "DDSegmentation/Segmentation.h"
 
 // Geant
-#include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
+#include "G4VSensitiveDetector.hh"
 
 /** AggregateCalorimeterSD DetectorDescription/DetSensitive/src/AggregateCalorimeterSD.h AggregateCalorimeterSD.h
  *
@@ -20,17 +20,16 @@
  */
 
 namespace det {
-class AggregateCalorimeterSD : public G4VSensitiveDetector
-{
-  public:
+class AggregateCalorimeterSD : public G4VSensitiveDetector {
+public:
   /** Constructor.
    *  @param aDetectorName Name of the detector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
   AggregateCalorimeterSD(const std::string& aDetectorName,
-    const std::string& aReadoutName,
-    const DD4hep::Geometry::Segmentation& aSeg);
+                         const std::string& aReadoutName,
+                         const DD4hep::Geometry::Segmentation& aSeg);
   /// Destructor
   virtual ~AggregateCalorimeterSD();
   /** Initialization.

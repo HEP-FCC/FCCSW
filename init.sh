@@ -1,2 +1,5 @@
 #!/bin/sh -u
-source /afs/cern.ch/exp/fcc/sw/0.8pre/setup.sh $1
+# set FCCSWBASEDIR to the directory containing this script
+export FCCSWBASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source /cvmfs/fcc.cern.ch/sw/0.8/init_fcc_stack.sh $1
+

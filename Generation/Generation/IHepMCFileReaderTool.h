@@ -4,7 +4,7 @@
 #include "GaudiKernel/IAlgTool.h"
 
 namespace HepMC {
-  class GenEvent;
+class GenEvent;
 }
 
 /** @class IHepMCFileReaderTool IHepMCFileReaderTool.h "Generation/IHepMCFileReaderTool.h"
@@ -20,7 +20,6 @@ public:
   virtual StatusCode readNextEvent(HepMC::GenEvent&) = 0;
 
   virtual StatusCode open(const std::string& filename) = 0;
-
 };
 
-#endif // GENERATION_IHEPMCFILEREADERTOOL_H
+#endif  // GENERATION_IHEPMCFILEREADERTOOL_H

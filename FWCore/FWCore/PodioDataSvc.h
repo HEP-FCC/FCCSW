@@ -12,16 +12,14 @@
 #include <utility>
 // Forward declarations
 
-
 /** @class PodioEvtSvc EvtDataSvc.h
  *
  *   An EvtDataSvc for PODIO classes
  *
  *  @author B. Hegner
  */
-class PodioDataSvc  : public DataSvc   {
+class PodioDataSvc : public DataSvc {
 public:
-
   typedef std::vector<std::pair<std::string, podio::CollectionBase*>> CollRegistry;
 
   virtual StatusCode initialize();
@@ -39,13 +37,13 @@ public:
   using DataSvc::registerObject;
   /// Overriding standard behaviour of evt service
   /// Register object with the data store.
-  virtual StatusCode registerObject(  const std::string& fullPath, DataObject* pObject ) final;
+  virtual StatusCode registerObject(const std::string& fullPath, DataObject* pObject) final;
 
   StatusCode readCollection(const std::string& collectionName, int collectionID);
 
-  virtual const CollRegistry& getCollections() const {return m_collections;}
-  virtual const CollRegistry& getReadCollections() const {return m_readCollections;}
-  virtual podio::CollectionIDTable* getCollectionIDs() {return m_collectionIDs;}
+  virtual const CollRegistry& getCollections() const { return m_collections; }
+  virtual const CollRegistry& getReadCollections() const { return m_readCollections; }
+  virtual podio::CollectionIDTable* getCollectionIDs() { return m_collectionIDs; }
 
   /// Set the collection IDs (if reading a file)
   void setCollectionIDs(podio::CollectionIDTable* collectionIds);
@@ -73,4 +71,4 @@ protected:
   /// ROOT file name the input is read from. Set by option filename
   std::string m_filename;
 };
-#endif // CORE_PODIODATASVC_H
+#endif  // CORE_PODIODATASVC_H
