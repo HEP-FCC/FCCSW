@@ -34,7 +34,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   // counts all layers - incremented in the inner loop over repeat - tags
   unsigned int layerCounter = 0;
   double integratedModuleComponentThickness = 0;
-  unsigned int nPhi;
   double phi = 0;
   // loop over 'layer' nodes in xml
   DD4hep::XML::Component xLayers = xmlElement.child(_Unicode(layers));
@@ -67,10 +66,12 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
                                                   0.5 * xModuleComponentOdd.thickness(),
                                                   0.5 * xModulePropertiesOdd.attr<double>("modLength")),
                             lcdd.material(xModuleComponentOdd.materialStr()));
-      double lX, lY, lZ;
-      nPhi = xRods.repeat();
+      unsigned int nPhi = xRods.repeat();
       DD4hep::XML::Handle_t currentComp;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
+        double lX = 0;
+        double lY = 0;
+        double lZ = 0;
         if (0 == phiIndex % 2) {
           phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
           currentComp = xModulesEven;
