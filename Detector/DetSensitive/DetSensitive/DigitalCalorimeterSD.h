@@ -189,6 +189,7 @@ private:
   int m_incidentParticles;
 
   std::map<uint64_t, int> m_CellIDsMaskedFromPreviousEvent;
+  std::map<int,int> m_TrackIDsPerEvent;
 
   //TFile* m_rootFile;
   //TH1F* m_padMultiplicity;

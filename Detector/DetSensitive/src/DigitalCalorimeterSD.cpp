@@ -1,8 +1,9 @@
 #include "DetSensitive/DigitalCalorimeterSD.h"
 
 // FCCSW
-#include "DetSensitive/SegmentationHelper.h"
+//#include "DetSensitive/SegmentationHelper.h"
 #include "DDSegmentation/BitField64.h"
+#include "DetCommon/DetUtils.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -14,6 +15,7 @@
 // Geant4
 #include "G4SDManager.hh"
 #include "G4ThreeVector.hh"
+//#include "G4SystemOfUnits.hh"
 
 #include "iostream"
 #include "map"
@@ -65,6 +67,8 @@ void DigitalCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
   }
   m_incidentParticles = 0;
 
+  m_TrackIDsPerEvent.clear();
+
 }
 
 bool DigitalCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
@@ -74,21 +78,34 @@ bool DigitalCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   if(edep==0.)
     return false;
 
+      CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
+    CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
+
   if(aStep->GetPreStepPoint()->GetStepStatus() == fGeomBoundary){
     m_incidentParticles++;
+
+    G4int trackID = aStep->GetTrack()->GetTrackID();
+    std::map<int, int>::iterator trackID_it = m_TrackIDsPerEvent.find(trackID);
+    if(m_TrackIDsPerEvent.find(trackID) != m_TrackIDsPerEvent.end()) {
+      (*trackID_it).second++;
+    } else {
+      m_TrackIDsPerEvent[trackID] = 1;
+    }
+  
+
+    // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
+    double delta_r = sqrt(pow(postPos.x(),2) + pow(postPos.y(),2)) - sqrt(pow(prePos.x(),2) + pow(prePos.y(),2));
+    if(delta_r<0) {
+      std::map<int, int>::iterator trackID_it = m_TrackIDsPerEvent.find(trackID);
+      (*trackID_it).second = -1e6;
+      //std::cout << "BACKWARDS STEP" << std::endl;
+    }
   }
 
-  // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
-  CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-/*  CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
-  double delta_r = sqrt(pow(postPos.x(),2) + pow(postPos.y(),2)) - sqrt(pow(prePos.x(),2) + pow(prePos.y(),2));
-  if(delta_r<0) {
-    return false;
-  }
-*/
   DD4hep::Simulation::Position pos(prePos.x(), prePos.y(), prePos.z());
   auto hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
-  hit->cellID  = segmentation::cellID(m_seg, *aStep);
+  //hit->cellID  = segmentation::cellID(m_seg, *aStep);
+  hit->cellID  = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
   m_tempCollection->insert(hit);
   return true;
@@ -136,17 +153,29 @@ void DigitalCalorimeterSD::UpdateCellIDMask() {
   std::cout << "There are currently " << m_CellIDsMaskedFromPreviousEvent.size() << " pixels masked out" << std::endl;
 }
 
+
+
 void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
 
   int nHits = m_tempCollection->entries(); 
   
  // std::cout << "Total Number of hits = " << nHits << std::endl;
+  std::cout << "Total number of TrackIDs in SD = " << m_TrackIDsPerEvent.size() << std::endl;
+  std::map<int, int>::iterator trackID_it;
+  int fwd_tracks = 0;
+  for(trackID_it=m_TrackIDsPerEvent.begin(); trackID_it!=m_TrackIDsPerEvent.end(); trackID_it++){
+    if((*trackID_it).second>0) {
+      fwd_tracks++;
+    }
+  }
+  std::cout << "Total number of only forward track IDs in SD = " << fwd_tracks << std::endl;
 
   // the key here will be the cellID (unique to each layer and cell depending on segmentation)
   // second is a pair of number particles and total energy
   std::map<uint64_t, std::pair<int, DD4hep::Simulation::Geant4CalorimeterHit*> > counter;
   DD4hep::Simulation::Geant4CalorimeterHit* hit = nullptr;
 
+  std::cout << "####" <<  m_seg->type() << std::endl;
   auto decoderBarrel = m_seg->decoder();
   //std::cout << "Barrel segmentation of type " << m_seg->type() << std::endl;
   for(int i=0; i<nHits; i++) {
@@ -154,7 +183,8 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
 
     uint64_t cellID = hit->cellID;
 
-    if(IsAllowedCellID(cellID)){    
+    //if(IsAllowedCellID(cellID)){  
+    if(cellID==cellID){  
       // this map stored the energy per cell
       std::map<uint64_t, std::pair<int, DD4hep::Simulation::Geant4CalorimeterHit*> >::iterator it = counter.find(cellID);
 
@@ -198,29 +228,34 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
 
       // insert the collection to G4 so can be passed on later
       digi = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*> ((*it).second.second);
-      digi->energyDeposit = (*it).second.second->energyDeposit; //(*it).second.first; // overwrite the energy deposit with the number of mips in the cell
+      //digi->energyDeposit = (*it).second.second->energyDeposit; //(*it).second.first; // overwrite the energy deposit with the number of mips in the cell
       m_calorimeterCollection->insert(digi); // this passes to ROOT the readout... interesting!
       
+
       uint64_t cellID = (*it).first;
 
       decoderBarrel->setValue(cellID);
       int layer_id = (*decoderBarrel)["layer"];
-      int px = (*decoderBarrel)["x"];
-      int py = (*decoderBarrel)["y"];
-      int pz = (*decoderBarrel)["z"];
 
-      // convert pixel to strixel
-      Strixel strixel;
-      strixel.layer = layer_id;
-      strixel.x = px;
-      strixel.y = py;
-      strixel.z = floor(pz/100); //group in z the pixels into a strixel
+      if(m_seg->type() == "CartesianGridXYZ") {
+        
+        int px = (*decoderBarrel)["x"];
+        int py = (*decoderBarrel)["y"];
+        int pz = (*decoderBarrel)["z"];
 
-      std::map<Strixel, int>::iterator strixel_it = StrixelHitCounter.find(strixel);
-      if(StrixelHitCounter.find(strixel) != StrixelHitCounter.end()) {
-        (*strixel_it).second++;
-      } else {
-        StrixelHitCounter[strixel] = 1;
+        // convert pixel to strixel
+        Strixel strixel;
+        strixel.layer = layer_id;
+        strixel.x = px;
+        strixel.y = py;
+        strixel.z = floor(pz/100); //group in z the pixels into a strixel
+
+        std::map<Strixel, int>::iterator strixel_it = StrixelHitCounter.find(strixel);
+        if(StrixelHitCounter.find(strixel) != StrixelHitCounter.end()) {
+          (*strixel_it).second++;
+        } else {
+          StrixelHitCounter[strixel] = 1;
+        }
       }
 
       
@@ -390,6 +425,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
  // std::cout << std::endl;
 
 }
+
 
 }
 
