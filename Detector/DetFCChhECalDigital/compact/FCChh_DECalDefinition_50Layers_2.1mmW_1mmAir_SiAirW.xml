@@ -5,7 +5,6 @@
     <active_layers thickness="0.018*mm" material="Silicon" nSamplings="50"/>
     <substrate_layers thickness="0.450*mm" material="Silcion"/>
     <passive_layers thickness="2.1*mm" material="Tungsten" />
-    <between_layers thickness="0*mm" material="Air" />
-    <tracker thickness="3.123*cm" material="Silicon" />
+    <between_layers thickness="-1*mm" material="Air" />
   </calorimeter>
 </detector>

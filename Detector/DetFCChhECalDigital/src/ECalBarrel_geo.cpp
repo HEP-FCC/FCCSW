@@ -6,6 +6,8 @@
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
 
+#include "cmath"
+
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
 using DD4hep::XML::Dimension;
@@ -42,6 +44,10 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   std::string calo_name=calo.nameStr();
   double calo_id=calo.id();
 
+  xml_comp_t trkr = calo.child("tracker");
+  std::string trkr_mat = trkr.materialStr();
+  double trkr_tck = trkr.thickness();
+
   xml_comp_t active = calo.child("active_layers");
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
@@ -59,8 +65,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   std::string padding_mat=padding.materialStr();
   double padding_tck=padding.thickness();
 
-  double module_tck = active_tck+substrate_tck+passive_tck+padding_tck;
+  // here we take the fabs value of padding as if it is negative it goes before the W volume
+  double module_tck = active_tck+substrate_tck+passive_tck+std::fabs(padding_tck);
   double calo_tck=active_samples*module_tck;
+
+  lLog << MSG::DEBUG << "Tracker Material Thickness = " << trkr_tck << endmsg;
 
   lLog << MSG::DEBUG << "ECAL Epitaxial Thickness = " << active_tck << endmsg;
   lLog << MSG::DEBUG << "ECAL Substrate Thickness = " << substrate_tck << endmsg;
@@ -85,12 +94,37 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   // set the sensitive detector type to the DD4hep calorimeter
   sensDet.setType("DigitalCalorimeterSD");
 
-
+  // if we add material for the tracker then it needs to be placed first
+  if(trkr_tck > 0.0) {
+    DetElement trkrLayer(trkr_mat, 0);
+    DD4hep::Geometry::Tube trkrShape(calo_dims.rmin(), calo_dims.rmin()+trkr_tck, calo_dims.dz());
+    lLog << MSG::DEBUG << "TRKR: Tracker from " << calo_dims.rmin() << " to " << calo_dims.rmin()+trkr_tck  << endmsg;
+    Volume trkrVolume(trkr_mat, trkrShape, lcdd.material(trkr_mat));
+    PlacedVolume placedTrkrLayer = caloVolume.placeVolume(trkrVolume);
+    placedTrkrLayer.addPhysVolID("trkrLayer", 0);
+    trkrLayer.setPlacement(placedTrkrLayer);
+  }
   // Calorimeter runs
   // 1) epitaxial
   // 2) substrate
-  // 3) passive material 
+  // 3) passive material  (absorber)
   // 4) air gap between layers (this is the caleVolume made of air
+
+  // STANDARD CONFIGURATION WITH PADDING (air) >= 0 mm
+  // |    MODULE 1   |    MODULE 2   |  ...  |   MODULE N    |  
+  // |   |   |   |   |   |   |   |   |  ...  |   |   |   |   |
+  // | E | S | A | A | E | S | A | A |  ...  | E | S | A | A |
+  // | P | U | B | I | P | U | B | I |  ...  | P | U | B | I |
+  // | I | B | S | R | I | B | S | R |  ...  | I | B | S | R |
+  // |   |   |   |   |   |   |   |   |  ...  |   |   |   |   |
+
+  // ALTERNATIVE CONFIGURATION WITH PADDING (air) < 0 mm
+  // |    MODULE 1   |    MODULE 2   |  ...  |   MODULE N    |  
+  // |   |   |   |   |   |   |   |   |  ...  |   |   |   |   |
+  // | E | S | A | A | E | S | A | A |  ...  | E | S | A | A |
+  // | P | U | I | B | P | U | I | B |  ...  | P | U | I | B |
+  // | I | B | R | S | I | B | R | S |  ...  | I | B | R | S |
+  // |   |   |   |   |   |   |   |   |  ...  |   |   |   |   |  
 
   // loop on the sensitive and substrate layers and place within the caloVolume
   for (int i=0;i<active_samples;i++)
@@ -98,7 +132,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     lLog << MSG::DEBUG << "ECAL: Building Module Layer " << i << endmsg;
 
     // 1) place the epitaxial layer
-    double layer_rmin=calo_dims.rmin()+(i*module_tck);
+    double layer_rmin=calo_dims.rmin()+(i*module_tck) + trkr_tck; // thick last part adds on the tracker material infront
     double layer_rmax=layer_rmin+active_tck;
     DetElement epiLayer(active_mat+"_sensitive", i+1);
     DD4hep::Geometry::Tube epiShape(layer_rmin , layer_rmax, calo_dims.dz());
@@ -121,7 +155,13 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     subLayer.setPlacement(placedSubLayer);
 
     // 3) place the passive material
-    layer_rmin = layer_rmax;
+    // if padding_tck < 0 then the air gap goes infront of the passive material
+    if(padding_tck < 0) {
+      layer_rmin = layer_rmax-padding_tck;
+    }
+    else {
+      layer_rmin = layer_rmax;
+    }
     layer_rmax = layer_rmin+passive_tck;
     DetElement passiveLayer(passive_mat+"_passive", i+1);
     DD4hep::Geometry::Tube passiveShape(layer_rmin , layer_rmax, calo_dims.dz());
@@ -129,7 +169,9 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
     Volume passiveVolume(passive_mat, passiveShape, lcdd.material(passive_mat));
     PlacedVolume placedPassiveLayer = caloVolume.placeVolume(passiveVolume);
     placedPassiveLayer.addPhysVolID("passive", i+1);
+    //placedPassiveLayer.addPhysVolID("layer", i+1);
     passiveLayer.setPlacement(placedPassiveLayer);   
+   // passiveVolume.setSensitiveDetector(sensDet);
 
     // 4) the air volume alread exists so don't do anything
     
