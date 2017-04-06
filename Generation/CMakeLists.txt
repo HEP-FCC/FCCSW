@@ -28,6 +28,3 @@ gaudi_add_test(particleGun
 gaudi_add_test(PileUpReader
                FRAMEWORK options/pileup_hepmcreader.py)
 
-gaudi_add_test(GenMergeTest
-               FRAMEWORK options/test_merge.py
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
