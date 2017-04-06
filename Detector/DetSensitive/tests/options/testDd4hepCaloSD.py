@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
+from Configurables import GenAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 10, # GeV
@@ -9,7 +9,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 ThetaMax = -0.45, # rad
                                 PhiMin = 1.6, # rad
                                 PhiMax = 1.6) # rad
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun)
+gen = GenAlg("ParticleGun", SignalProvider=pgun)
 gen.hepmc.Path = "hepmc"
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 

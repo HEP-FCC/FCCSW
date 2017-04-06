@@ -13,11 +13,12 @@ from Configurables import FCCDataSvc
 ## Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import ParticleGunAlg
+from Configurables import GenAlg, MomentumRangeParticleGun
 ## Particle Gun using MomentumRangeParticleGun tool and FlatSmearVertex
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool="MomentumRangeParticleGun", VertexSmearingToolPGun="FlatSmearVertex")
+guntool = MomentumRangeParticleGun()
+gen = GenAlg("ParticleGun", SignalProvider=guntool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc

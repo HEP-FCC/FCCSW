@@ -10,19 +10,9 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader
-### Pileup tool. A number of additional events are merg with the signal event in HepMCReader.
-genpileup = PoissonPileUp(name="ConstPileUp",
-                          filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat",
-                          numPileUpEvents=1)
-## reads HepMC text file and write the HepMC::GenEvent to the data service
-reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat",
-                     PileUpTool=genpileup)
-# have a look at the source code of HepMCReader, in Generation/src/HepMCReader
-# In the following line,
-#   reader.YYY.Path = "XXX"
-# YYY matches the string passed to declareOutput in the constructor of the algorithm (here "hepmc")
-# XXX declares a name for the product (here the product is HepMC::GenEvent: "hepmcevent")
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmcevent"
 
 from Configurables import HepMCConverter

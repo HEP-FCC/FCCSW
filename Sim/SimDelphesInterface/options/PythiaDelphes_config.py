@@ -148,8 +148,10 @@ apply_paths(metSaveTool, out_names["met"])
 ## Pythia generator
 from Configurables import PythiaInterface
 
-pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
+pythia8gentool = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 ## Write the HepMC::GenEvent to the data service
+from Configurables import GenAlg
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
 pythia8gen.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
