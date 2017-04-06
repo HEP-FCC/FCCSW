@@ -9,12 +9,7 @@
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/SystemOfUnits.h"
 
-//===========================================================================
-// Implementation file for class: MomentumRangeParticleGun
-//
-// 2008-05-18: Patrick Robbe adaptation to tool structure
-// 2014-06-22: Benedikt Hegner adaption for non LHCb use cases
-//===========================================================================
+#include "HepMC/GenEvent.h"
 
 DECLARE_TOOL_FACTORY(MomentumRangeParticleGun)
 
@@ -109,3 +104,37 @@ void MomentumRangeParticleGun::generateParticle(Gaudi::LorentzVector& momentum,
 
   debug() << " -> " << m_names[currentType] << endmsg << "   P   = " << momentum << endmsg;
 }
+
+StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
+  Gaudi::LorentzVector theFourMomentum ;
+  Gaudi::LorentzVector origin ;
+  // note: pgdid is set in function generateParticle
+  int thePdgId ;
+  generateParticle( theFourMomentum , origin , thePdgId );
+
+  // create HepMC Vertex --
+  // by calling add_vertex(), the hepmc event is given ownership
+  //  of the vertex
+  HepMC::GenVertex * v = new HepMC::GenVertex( HepMC::FourVector( origin.X() ,
+								  origin.Y() ,
+								  origin.Z() ,
+								  origin.T() ) ) ;
+  // create HepMC particle --
+  // by calling add_particle_out(), the hepmc vertex is given ownership
+  // of the particle
+  HepMC::GenParticle * p = new HepMC::GenParticle( HepMC::FourVector( theFourMomentum.Px() ,
+								      theFourMomentum.Py() ,
+								      theFourMomentum.Pz() ,
+								      theFourMomentum.E()  ) ,
+						   thePdgId ,
+						   1 ) ; // hepmc status code for final state particle
+
+  v -> add_particle_out( p ) ;
+
+  theEvent.add_vertex( v ) ;
+  theEvent.set_signal_process_id( 0 ) ;
+  theEvent.set_signal_process_vertex( v ) ;
+
+  return StatusCode::SUCCESS;
+}
+

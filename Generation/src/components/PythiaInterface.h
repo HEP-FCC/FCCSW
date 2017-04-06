@@ -2,16 +2,15 @@
 #define GENERATION_PYTHIAINTERFACE_H
 
 #include "FWCore/DataHandle.h"
-#include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/Property.h"
-#include "Generation/IHepMCMergeTool.h"
-#include "Generation/IPileUpTool.h"
+#include "GaudiAlg/GaudiTool.h"
+#include "Generation/IHepMCProviderTool.h"
 #include "Generation/IVertexSmearingTool.h"
 #include <memory>
 
-// HepMC
-#include "HepMC/GenEvent.h"
-
+// Forward HepMC
+namespace HepMC {
+  class GenEvent;
+}
 // Forward Pythia
 namespace Pythia8 {
 class Pythia;
@@ -25,34 +24,24 @@ namespace fcc {
 class FloatCollection;
 }
 
-class PythiaInterface : public GaudiAlgorithm {
-  friend class AlgFactory<PythiaInterface>;
-
+class PythiaInterface: public GaudiTool, virtual public IHepMCProviderTool {
+  
 public:
   /// Constructor.
-  PythiaInterface(const std::string& name, ISvcLocator* svcLoc);
-  /// Initialize.
+  PythiaInterface(const std::string& type, const std::string& name, const IInterface * parent);
   virtual StatusCode initialize();
-  /// Execute.
-  virtual StatusCode execute();
-  /// Finalize.
   virtual StatusCode finalize();
+  virtual StatusCode getNextEvent(HepMC::GenEvent& theEvent);
 
 private:
-  // Pythia8 engine
-  std::unique_ptr<Pythia8::Pythia> m_pythiaSignal{nullptr};
-  // Pythia8 engine for pileup events
-  std::unique_ptr<Pythia8::Pythia> m_pythiaPileup{nullptr};
-  // Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
-  Gaudi::Property<std::string> m_parfile{this, "Filename", "", "Name of the Pythia parameter file to read"};
-  // Pythia8 engine for ME/PS matching
-  std::unique_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
-  // Pythia8 engine for NLO ME/PS merging
-  std::unique_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
-  // Pythia8 engine for jet clustering
+  /// Pythia8 engine
+  std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
+  /// Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
+  Gaudi::Property<std::string> m_parfile{this, "Filename", "Generation/data/Pythia_minbias_pp_100TeV.cmd" "Name of the Pythia cmd file"};
+  /// Pythia8 engine for jet clustering
   std::unique_ptr<Pythia8::SlowJet> m_slowJet{nullptr};
-  // Pileup Interface Tool
-  ToolHandle<IPileUpTool> m_pileUpTool{"ConstPileUp/PileUpTool", this};
+  // Tool to smear vertices
+  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
   // Output handle for HepMC event
   DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Reader, this};
   // Output handle for ME/PS matching variables
@@ -63,6 +52,11 @@ private:
   int m_iEvent{0};
   bool m_doMePsMatching{false};
   bool m_doMePsMerging{false};
+
+  /// Pythia8 engine for ME/PS matching
+  std::unique_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
+  /// Pythia8 engine for NLO ME/PS merging
+  std::unique_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H

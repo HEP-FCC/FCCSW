@@ -11,34 +11,31 @@ DECLARE_TOOL_FACTORY(HepMCFileReader)
 
 HepMCFileReader::HepMCFileReader(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent), m_file(nullptr) {
-  declareInterface<IHepMCFileReaderTool>(this);
+  declareInterface<IHepMCProviderTool>(this);
 }
 
 HepMCFileReader::~HepMCFileReader() { ; }
 
 StatusCode HepMCFileReader::initialize() {
+  if ( m_filename.empty() ) {
+    error()   <<  "Input file name is not specified!" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  // open file using HepMC routines
+  m_file = std::make_unique<HepMC::IO_GenEvent>(m_filename.value().c_str(), std::ios::in );
+  // check that readable
+  if ( ( nullptr == m_file ) || ( m_file->rdstate() == std::ios::failbit ) ) {
+    error()   <<  "Failure to read the file '"+m_filename+"'" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  return StatusCode::SUCCESS;
   StatusCode sc = GaudiTool::initialize();
   return sc;
 }
 
-StatusCode HepMCFileReader::open(const std::string& filename) {
-  // check that filename is non-empty string
-  if (filename.empty()) {
-    error() << "Input file name is not specified!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  // open file using HepMC routines
-  m_file = std::make_unique<HepMC::IO_GenEvent>(filename.c_str(), std::ios::in);
-  // check that readable
-  if ((nullptr == m_file) || (m_file->rdstate() == std::ios::failbit)) {
-    error() << "Failure to read the file '" + filename + "'" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  return StatusCode::SUCCESS;
-}
 
-StatusCode HepMCFileReader::readNextEvent(HepMC::GenEvent& event) {
-  if (!m_file->fill_next_event(&event)) {
+StatusCode HepMCFileReader::getNextEvent(HepMC::GenEvent& event) {
+  if(!m_file->fill_next_event(&event)) {
     if (m_file->rdstate() == std::ios::eofbit) {
       error() << "Error reading HepMC file" << endmsg;
       return StatusCode::FAILURE;

@@ -22,16 +22,24 @@
 // FCC EDM
 #include "datamodel/FloatCollection.h"
 
-DECLARE_COMPONENT(PythiaInterface)
+#include "HepMC/GenEvent.h"
 
-PythiaInterface::PythiaInterface(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+DECLARE_TOOL_FACTORY(PythiaInterface)
+
+PythiaInterface::PythiaInterface(const std::string& type, const std::string& name, const IInterface* parent):
+  GaudiTool(type, name, parent), m_pythiaSignal(nullptr),  m_nAbort(0), m_iAbort(0), m_iEvent(0),
+                 m_doMePsMatching(0), m_doMePsMerging(0),
+                 m_matching(nullptr), m_setting(nullptr) {
+
+  declareProperty("VertexSmearingTool", m_vertexSmearingTool);
+  declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
   declareProperty("hepmc", m_hepmchandle, "The HepMC event (output)");
-  declareProperty("PileUpTool", m_pileUpTool, "Tool to smear vertices");
+
 }
 
 StatusCode PythiaInterface::initialize() {
 
-  StatusCode sc = GaudiAlgorithm::initialize();
+  StatusCode sc = GaudiTool::initialize();
   if (!sc.isSuccess()) return sc;
   if (m_parfile.empty()) {
     return Error("Define Pythia8 configuration file (*.cmd)!");
@@ -43,18 +51,10 @@ StatusCode PythiaInterface::initialize() {
 
   // Initialize pythia
   m_pythiaSignal = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
-  m_pythiaPileup = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
 
   // Read Pythia configuration files
   m_pythiaSignal->readFile(m_parfile.value().c_str());
   // do not bother with pileup configuration if no pileup
-  if (0. < m_pileUpTool->getMeanPileUp()) {
-    if (m_pileUpTool->getFilename().empty()) {
-      return Error("Define Pythia8 configuration file for pileup in pileuptool (*.cmd)!");
-    }
-    m_pythiaPileup->readFile(m_pileUpTool->getFilename().c_str());
-  }
-  m_pythiaPileup->init();
 
   // Initialize variables from configuration file
   m_nAbort = m_pythiaSignal->settings.mode("Main:timesAllowErrors");  // how many aborts before run stops
@@ -112,7 +112,7 @@ StatusCode PythiaInterface::initialize() {
   return sc;
 }
 
-StatusCode PythiaInterface::execute() {
+StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
   // Interface for conversion from Pythia8::Event to HepMC event.
   HepMC::Pythia8ToHepMC* toHepMC = new HepMC::Pythia8ToHepMC();
@@ -225,21 +225,14 @@ StatusCode PythiaInterface::execute() {
     }
   }  // Debug
 
-  // Generate a number of pileup events.
-  for (unsigned int iPileup = 0; iPileup < m_pileUpTool->numberOfPileUp(); ++iPileup) {
-    m_pythiaPileup->next();
-    // add pileup to signal
-    m_pythiaSignal->event += m_pythiaPileup->event;
-  }
 
   // Define HepMC event and convert Pythia event into this HepMC event type
-  auto theEvent = new HepMC::GenEvent(gen::hepmcdefault::energy, gen::hepmcdefault::length);
-  toHepMC->fill_next_event(*m_pythiaSignal, theEvent, m_iEvent);
+  toHepMC->fill_next_event(*m_pythiaSignal, &theEvent, m_iEvent);
 
   // Print debug: HepMC event info
   if (msgLevel() <= MSG::DEBUG) {
 
-    for (auto ipart = theEvent->particles_begin(); ipart != theEvent->particles_end(); ++ipart) {
+    for (auto ipart = theEvent.particles_begin(); ipart != theEvent.particles_end(); ++ipart) {
 
       int motherID = -1;
       int motherIDRange = 0;
@@ -278,7 +271,6 @@ StatusCode PythiaInterface::execute() {
   }  // Debug
 
   // Handle event via standard Gaudi mechanism
-  m_hepmchandle.put(theEvent);
   m_iEvent++;
 
   delete toHepMC;
@@ -288,6 +280,5 @@ StatusCode PythiaInterface::execute() {
 StatusCode PythiaInterface::finalize() {
 
   m_pythiaSignal.reset();
-  m_pythiaPileup.reset();
-  return GaudiAlgorithm::finalize();
+  return GaudiTool::finalize();
 }
