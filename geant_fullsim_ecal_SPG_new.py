@@ -49,8 +49,8 @@ from Configurables import SimG4Alg, SimG4SaveCalHits
 # and a tool that saves the calorimeter hits with a name "G4SaveCalHits/saveHCalHits"
 
 saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["BarDECal_Readout"])
-saveecaltool.DataOutputs.caloClusters.Path = "ECalClusters"
-saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
+saveecaltool.positionedCaloHits.Path = "ECalClusters"
+saveecaltool.caloHits.Path = "ECalHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
