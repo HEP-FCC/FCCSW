@@ -18,3 +18,7 @@ gaudi_add_module(RecTracker
                  LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ${DD4hep_COMPONENT_LIBRARIES}) 
 
 include(CTest)
+gaudi_add_test(CellAutoTest
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			         FRAMEWORK options/CATest.py
+			         DEPENDS Examples.GeantFullSimTrackerHits)
