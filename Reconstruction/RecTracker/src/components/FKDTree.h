@@ -378,7 +378,7 @@ public:
 
       dimension = depth % numberOfDimensions;
       unsigned int firstIndexInDepth = (1 << depth) - 1;
-      for (unsigned int indexInDepth = 0; indexInDepth < (1 << depth); ++indexInDepth) {
+      for (unsigned int indexInDepth = 0; indexInDepth < (1u << depth); ++indexInDepth) {
         unsigned int indexInArray = firstIndexInDepth + indexInDepth;
         unsigned int leftSonIndexInArray = 2 * indexInArray + 1;
         unsigned int rightSonIndexInArray = leftSonIndexInArray + 1;

@@ -1,6 +1,8 @@
 #ifndef RECOPIXELVERTEXING_PIXELTRIPLETS_CACELL_H
 #define RECOPIXELVERTEXING_PIXELTRIPLETS_CACELL_H
 
+#include "KDDoublets.h"
+
 #include <array>
 #include <cmath>
 
@@ -68,16 +70,20 @@ public:
       }
     }
   }
+  void checkAlignmentAndTag(CACell* innerCell) {
+    tagAsInnerNeighbor(innerCell);
+    innerCell->tagAsOuterNeighbor(this);
+  }
 
   void checkAlignmentAndTag(CACell* innerCell, const float ptmin, const float region_origin_x,
                             const float region_origin_y, const float region_origin_radius, const float thetaCut,
                             const float phiCut) {
 
-    // if (areAlignedRZ(innerCell, ptmin, thetaCut) && haveSimilarCurvature(innerCell, region_origin_x, region_origin_y,
-    // region_origin_radius, phiCut)) {
+     if (areAlignedRZ(innerCell, ptmin, thetaCut) && haveSimilarCurvature(innerCell, region_origin_x, region_origin_y,
+     region_origin_radius, phiCut)) {
     tagAsInnerNeighbor(innerCell);
     innerCell->tagAsOuterNeighbor(this);
-    //}
+    }
   }
 
   bool areAlignedRZ(const CACell* otherCell, const float ptmin, const float thetaCut) const {
