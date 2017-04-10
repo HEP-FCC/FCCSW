@@ -33,75 +33,101 @@ CASeedAlg::~CASeedAlg() {}
 
 StatusCode CASeedAlg::initialize() {
 
-  m_geoSvc = service("GeoSvc");
-
   StatusCode sc = GaudiAlgorithm::initialize();
   return sc;
 }
 
+
+struct cellIDsmaller {
+  bool operator() (const fcc::PositionedTrackHit& h1, const fcc::PositionedTrackHit& h2) {
+    int system1 = h1.cellId() % 32;
+    int system2 = h2.cellId() % 32;
+    int layer1 = (h1.cellId() >> 5) % 32;
+    int layer2 = (h2.cellId() >> 5) % 32;
+    if (system1 < system2) return true;
+    if (system2 < system1) return false;
+    return (layer1 < layer2);
+  }
+};
+
+struct cellIDequal {
+  explicit cellIDequal(unsigned int i): n(i) {}
+  bool operator() (const fcc::PositionedTrackHit& h1) {
+    return (h1.cellId() % 1024) == n;
+  }
+private:
+  unsigned int n;
+};
+
 StatusCode CASeedAlg::execute() {
 
   const unsigned int numLayers = 3;
-  std::array<std::vector<FKDPoint<float, 3>>, numLayers> layerVectors;
+  const std::array<std::pair<int, int>, numLayers> seedingLayerIds = {{{0,0}, {0,1}, {0,2}}};
+
+  std::array<std::vector<FKDPoint<float, 3>>, numLayers> layerKDpointVectors;
   std::array<std::vector<fcc::PositionedTrackHit>, numLayers> layerHitVectors;
 
   const fcc::PositionedTrackHitCollection* hitColl = m_positionedTrackHits.get();
 
+  std::vector<fcc::PositionedTrackHit> hitsToSort;
+
   for (const auto ptc : *hitColl) {
-    // if (ptc.bits() == 1) { // check if primary particle
-    int system = ptc.cellId() % 16;                    // hackish, should use ddecoder for this
-    unsigned int tmpLayer = (ptc.cellId() >> 4) % 32;  // see above
-    unsigned int layer = tmpLayer - 1;
-    debug() << system << "\t" << layer << endmsg;
-    if ((0 < tmpLayer) && tmpLayer < numLayers + 1 && system == 11) {  /// @todo: remove hardcoded values for system id
-      auto pos = ptc.position();
-      float t = ptc.time();
+    hitsToSort.push_back(ptc);
+  }
+  std::sort(hitsToSort.begin(), hitsToSort.end(), cellIDsmaller());
+  
+  for (unsigned int layerCounter = 0; layerCounter < numLayers; ++layerCounter) {
+    unsigned int hitindex = seedingLayerIds[layerCounter].first + 32 * seedingLayerIds[layerCounter].second; /// @todo remove hardcoded bitfield parameters
+    auto it = std::find_if(hitsToSort.begin(), hitsToSort.end(), cellIDequal(hitindex));
+    auto it_end = std::find_if_not(it, hitsToSort.end(), cellIDequal(hitindex));
+    for(; it !=it_end; ++it) {
+      auto pos = (*it).position();
+      float t = (*it).time();
       // KDtree with 3 dimensions: phi, z, time
-      layerVectors[layer].push_back(FKDPoint<float, 3>(std::atan2(pos.y, pos.x), pos.z, t, layerVectors[layer].size()));
+      layerKDpointVectors[layerCounter].push_back(FKDPoint<float, 3>(std::atan2(pos.y, pos.x), pos.z, t, layerKDpointVectors[layerCounter].size()));
       // need to clone hit
-      layerHitVectors[layer].push_back(ptc.clone());
+      layerHitVectors[layerCounter].push_back((*it).clone());
+
+
     }
 
-    //}
   }
-  debug() << layerHitVectors[2].size() << " hits in outermost layer." << endmsg;
+
+  debug() << layerHitVectors[0].size() << " hits in first seeding layer." << endmsg;
 
 
   std::vector<const HitDoublets*> doubletvector;
 
-  // loop over layer pairs
-  /// @todo: loop from outside in
-  for (unsigned int layerCounter = 1; layerCounter < layerVectors.size(); ++layerCounter) {
-    auto points = layerVectors[layerCounter];
+  for (unsigned int layerCounter = 1; layerCounter < layerKDpointVectors.size(); ++layerCounter) {
+    auto points = layerKDpointVectors[layerCounter];
     auto doublets = new HitDoublets(layerHitVectors[layerCounter - 1], layerHitVectors[layerCounter]);
+    debug() << "Build KDTree..." << endmsg;
     FKDTree<float, 3> kdtree(points.size(), points);
     kdtree.build();
     int pointCounter = 0;
-    for (auto p : layerVectors[layerCounter - 1]) {
-      auto result_ids = kdtree.search_in_the_box(FKDPoint<float, 3>(p[0] - deltaPhi, p[1] - deltaZ, p[2] - deltaT, 0),
-                                                 FKDPoint<float, 3>(p[0] + deltaPhi, p[1] + deltaZ, p[2] + deltaT, 0));
+    for (auto p : layerKDpointVectors[layerCounter - 1]) {
+      auto result_ids = kdtree.search_in_the_box(FKDPoint<float, 3>(p[0] - m_deltaPhi, p[1] - m_deltaZ, p[2] - m_deltaT, 0),
+                                                 FKDPoint<float, 3>(p[0] + m_deltaPhi, p[1] + m_deltaZ, p[2] + m_deltaT, 0));
 
       for (auto r : result_ids) {
         doublets->add(pointCounter, r);
       }
       ++pointCounter;
     }
+    debug() << "\tfound " << doublets->size() << " doublets." << endmsg;
     doubletvector.push_back(doublets);
   }
 
+  debug() << "Run Cellular Automaton..." << endmsg;
   auto automaton = new CellularAutomaton<numLayers>();
-  automaton->createAndConnectCells(doubletvector, 40, 2, 2);  // values for cuts not used at the moment
+  automaton->createAndConnectCells(doubletvector, hitColl->size(), 2, 2);  // values for cuts not used at the moment
   automaton->evolve();
   automaton->evolve();
   std::vector<CACell::CAntuplet> theNTuplets;
   automaton->findNtuplets(theNTuplets, 3);
-  debug() << theNTuplets.size() << endmsg;
-  // dump cell positions
+  debug() << "Truth track IDs (if available) : " << endmsg;
   for (auto nt : theNTuplets) {
-    debug() << nt[0]->getInnerR() << "\t" << nt[0]->getInnerPhi() << endmsg;
-    debug() << nt[0]->getOuterR() << "\t" << nt[0]->getOuterPhi() << endmsg;
-    debug() << nt[1]->getInnerR() << "\t" << nt[1]->getInnerPhi() << endmsg;
-    debug() << nt[1]->getOuterR() << "\t" << nt[1]->getOuterPhi() << endmsg;
+    debug() << nt[0]->getInnerHit().bits() << "\t" << nt[0]->getOuterHit().bits() << "\t" << nt[1]->getOuterHit().bits() << endmsg;
   }
   return StatusCode::SUCCESS;
 }

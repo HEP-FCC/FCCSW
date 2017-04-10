@@ -4,6 +4,7 @@
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
@@ -30,9 +31,9 @@ public:
 private:
 
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"positionedTrackHits", Gaudi::DataHandle::Reader, this};
-  Gaudi::Property<double> m_deltaPhi{this, "deltaPhi", 1.5, "KDTree search window in Phi"};
-  Gaudi::Property<double> m_deltaZ{this, "deltaZ", 1.5, "KDTree search window in Z"};
-  Gaudi::Property<double> m_deltaT{this, "deltaT", 1.5, "KDTree search window in T"};
+  Gaudi::Property<double> m_deltaPhi{this, "deltaPhi", 1.5 * Gaudi::Units::rad, "KDTree search window in Phi"};
+  Gaudi::Property<double> m_deltaZ{this, "deltaZ", 20 * Gaudi::Units::mm, "KDTree search window in Z"};
+  Gaudi::Property<double> m_deltaT{this, "deltaT", 50 * Gaudi::Units::ns, "KDTree search window in T"};
 };
 
 #endif /* RECTRACKER_CASEEDALG_H */
