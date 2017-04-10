@@ -28,10 +28,11 @@ public:
   StatusCode finalize();
 
 private:
-  /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
 
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
+  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"positionedTrackHits", Gaudi::DataHandle::Reader, this};
+  Gaudi::Property<double> m_deltaPhi{this, "deltaPhi", 1.5, "KDTree search window in Phi"};
+  Gaudi::Property<double> m_deltaZ{this, "deltaZ", 1.5, "KDTree search window in Z"};
+  Gaudi::Property<double> m_deltaT{this, "deltaT", 1.5, "KDTree search window in T"};
 };
 
 #endif /* RECTRACKER_CASEEDALG_H */

@@ -26,7 +26,7 @@ DECLARE_ALGORITHM_FACTORY(CASeedAlg)
 
 CASeedAlg::CASeedAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 
-  declareInput("positionedTrackHits", m_positionedTrackHits, "hits/TrackerPositionedHits");
+  declareProperty("positionedTrackHits", m_positionedTrackHits, "hits/TrackerPositionedHits");
 }
 
 CASeedAlg::~CASeedAlg() {}
@@ -66,10 +66,6 @@ StatusCode CASeedAlg::execute() {
   }
   debug() << layerHitVectors[2].size() << " hits in outermost layer." << endmsg;
 
-  // filter criteria for kdtree point search
-  double deltaPhi = 1.5;
-  double deltaZ = 5000;
-  double deltaT = 1000;
 
   std::vector<const HitDoublets*> doubletvector;
 
