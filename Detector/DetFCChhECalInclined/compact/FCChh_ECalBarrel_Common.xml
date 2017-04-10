@@ -19,14 +19,15 @@
   </info>
 
   <define>
-    <constant name="LArBathThickness" value="100*mm"/>
+    <constant name="LArBathThicknessFront" value="90*mm"/>
+    <constant name="LArBathThicknessBack" value="50*mm"/>
     <!-- overall calorimeter volume (cryostat) -->
-    <constant name="BarCryoECal_rmin" value="BarECal_rmin"/>
-    <constant name="BarCryoECal_rmax" value="BarECal_rmax"/>
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin+3*cm"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax-3*cm"/>
     <constant name="BarCryoECal_dz" value="BarECal_dz"/>
     <!-- calorimeter active volume -->
-    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThicknessFront+LArBathThickness"/>
-    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThickness"/>
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThicknessFront+LArBathThicknessFront"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThicknessBack"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
     <!-- thickness of active volume between two lead plates, measuring perpendicular to the readout plate -->
     <constant name="LAr_thickness" value="3.*mm"/>
