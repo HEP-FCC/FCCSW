@@ -10,8 +10,6 @@
 class IGeoSvc;
 class ITrackingGeoSvc;
 
-
-
 namespace fcc {
 class TrackHitCollection;
 class PositionedTrackHitCollection;
@@ -35,6 +33,5 @@ private:
 
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits;
 };
-
 
 #endif /* RECTRACKER_CASEEDALG_H */
