@@ -45,8 +45,8 @@
 
   <readouts>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="2" phi_bins="1"/>
-      <id>system:4,row:13,eta:-2,phi:-1,readout:13,passive:13,sub:3,part:2</id>
+      <segmentation type="GridRPhiEta" grid_size_eta="0.01" phi_bins="1" grid_size_r="2*cm" offset_r="EMBarrel_rmin-2*cm"/>
+      <id>system:4,active:11,cell:6,readout:11,passive:11,subpassive:3,eta:-10,phi:-2,r:6</id>
     </readout>
   </readouts>
 
@@ -66,21 +66,21 @@
         </active>
         <passive>
           <rotation angle="30*degree"/>
-	       <inner thickness="Pb_thickness">
+	       <inner thickness="Pb_thickness" sensitive="false">
             <material name="Lead"/>
           </inner>
-	       <glue thickness="Glue_thickness">
+	       <glue thickness="Glue_thickness" sensitive="false">
             <material name="ATLASglue"/>
           </glue>
-	       <outer thickness="Steel_thickness">
+	       <outer thickness="Steel_thickness" sensitive="false">
             <material name="ATLASsteel"/>
           </outer>
         </passive>
-        <readout thickness="readout_thickness">
+        <readout thickness="readout_thickness" sensitive="false">
           <material name="PCB"/>
         </readout>
         <cell>
-	       <dimensions height="5*cm"/>
+	       <dimensions repeat="32"/>
         </cell>
       </calorimeter>
     </detector>
