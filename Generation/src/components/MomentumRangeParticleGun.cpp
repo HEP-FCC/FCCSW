@@ -127,7 +127,6 @@ StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
   v->add_particle_out(p);
 
   theEvent.add_vertex(v);
-  theEvent.set_signal_process_id(0);
   theEvent.set_signal_process_vertex(v);
 
   return StatusCode::SUCCESS;
