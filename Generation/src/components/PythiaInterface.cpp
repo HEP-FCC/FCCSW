@@ -26,15 +26,20 @@
 
 DECLARE_TOOL_FACTORY(PythiaInterface)
 
-PythiaInterface::PythiaInterface(const std::string& type, const std::string& name, const IInterface* parent):
-  GaudiTool(type, name, parent), m_pythiaSignal(nullptr),  m_nAbort(0), m_iAbort(0), m_iEvent(0),
-                 m_doMePsMatching(0), m_doMePsMerging(0),
-                 m_matching(nullptr), m_setting(nullptr) {
+PythiaInterface::PythiaInterface(const std::string& type, const std::string& name, const IInterface* parent)
+    : GaudiTool(type, name, parent),
+      m_pythiaSignal(nullptr),
+      m_nAbort(0),
+      m_iAbort(0),
+      m_iEvent(0),
+      m_doMePsMatching(0),
+      m_doMePsMerging(0),
+      m_matching(nullptr),
+      m_setting(nullptr) {
 
   declareProperty("VertexSmearingTool", m_vertexSmearingTool);
   declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
   declareProperty("hepmc", m_hepmchandle, "The HepMC event (output)");
-
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -224,7 +229,6 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
               << " M: " << std::setw(9) << m_pythiaSignal->event[i].m() << std::fixed << endmsg;
     }
   }  // Debug
-
 
   // Define HepMC event and convert Pythia event into this HepMC event type
   toHepMC->fill_next_event(*m_pythiaSignal, &theEvent, m_iEvent);

@@ -4,10 +4,10 @@
 #include "GaudiKernel/IAlgTool.h"
 
 namespace HepMC {
-  class GenEvent;
+class GenEvent;
 }
 
-/** 
+/**
  *
  *  Abstract interface to generators and other components that produce HepMC data.
  *
@@ -18,7 +18,6 @@ public:
   DeclareInterfaceID(IHepMCProviderTool, 3, 0);
 
   virtual StatusCode getNextEvent(HepMC::GenEvent&) = 0;
-
 };
 
-#endif // GENERATION_IHEPMCPROVIDERTOOL_H
+#endif  // GENERATION_IHEPMCPROVIDERTOOL_H

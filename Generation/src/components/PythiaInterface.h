@@ -9,7 +9,7 @@
 
 // Forward HepMC
 namespace HepMC {
-  class GenEvent;
+class GenEvent;
 }
 // Forward Pythia
 namespace Pythia8 {
@@ -24,11 +24,11 @@ namespace fcc {
 class FloatCollection;
 }
 
-class PythiaInterface: public GaudiTool, virtual public IHepMCProviderTool {
-  
+class PythiaInterface : public GaudiTool, virtual public IHepMCProviderTool {
+
 public:
   /// Constructor.
-  PythiaInterface(const std::string& type, const std::string& name, const IInterface * parent);
+  PythiaInterface(const std::string& type, const std::string& name, const IInterface* parent);
   virtual StatusCode initialize();
   virtual StatusCode finalize();
   virtual StatusCode getNextEvent(HepMC::GenEvent& theEvent);
@@ -37,7 +37,8 @@ private:
   /// Pythia8 engine
   std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
   /// Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
-  Gaudi::Property<std::string> m_parfile{this, "Filename", "Generation/data/Pythia_minbias_pp_100TeV.cmd" "Name of the Pythia cmd file"};
+  Gaudi::Property<std::string> m_parfile{this, "Filename", "Generation/data/Pythia_minbias_pp_100TeV.cmd"
+                                                           "Name of the Pythia cmd file"};
   /// Pythia8 engine for jet clustering
   std::unique_ptr<Pythia8::SlowJet> m_slowJet{nullptr};
   // Tool to smear vertices
