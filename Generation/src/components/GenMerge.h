@@ -18,6 +18,12 @@ class GenVertexCollection;
 class MCParticleCollection;
 }
 
+/** @class GenMerge
+ *  @brief Algorithm merging two sets of MCParticle/Vertex-collections into one
+ *  The main usecase, inspiring the member names, is overlaying generated pileup on a signal event. 
+ *  Note that collections cannot be modified once created, thus all data must be cloned into a new collections.
+ *  Associations between particles and vertices are updated, so it is safe to drop the old collections.
+ */
 class GenMerge : public GaudiAlgorithm {
   friend class AlgFactory<GenMerge>;
 
