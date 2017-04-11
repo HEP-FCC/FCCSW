@@ -12,14 +12,14 @@ DECLARE_COMPONENT(GenMerge)
 
 GenMerge::GenMerge(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 
-  declareProperty("signalGenParticles", m_part_InSignal, "Generated signal particle collection (input)");
-  declareProperty("signalGenVertices", m_vert_InSignal, "Generated signal vertex collection (input)");
+  declareProperty("signalGenParticles", m_partInSignal, "Generated signal particle collection (input)");
+  declareProperty("signalGenVertices", m_vertInSignal, "Generated signal vertex collection (input)");
 
-  declareProperty("pileupGenParticles", m_part_InPileUp, "Generated pileup particle collection (input)");
-  declareProperty("pileupGenVertices", m_vert_InPileUp, "Generated pileup vertex collection (input)");
+  declareProperty("pileupGenParticles", m_partInPileUp, "Generated pileup particle collection (input)");
+  declareProperty("pileupGenVertices", m_vertInPileUp, "Generated pileup vertex collection (input)");
 
-  declareProperty("allGenParticles", m_part_Out, "Merged particle collection (output)");
-  declareProperty("allGenVertices", m_vert_Out, "Merged vertex collection (output)");
+  declareProperty("allGenParticles", m_partOut, "Merged particle collection (output)");
+  declareProperty("allGenVertices", m_vertOut, "Merged vertex collection (output)");
 }
 
 StatusCode GenMerge::initialize() {
@@ -29,11 +29,11 @@ StatusCode GenMerge::initialize() {
 }
 
 StatusCode GenMerge::execute() {
-  auto collVSig = m_vert_InSignal.get();
-  auto collPSig = m_part_InSignal.get();
+  auto collVSig = m_vertInSignal.get();
+  auto collPSig = m_partInSignal.get();
 
-  auto collVPil = m_vert_InPileUp.get();
-  auto collPPil = m_part_InPileUp.get();
+  auto collVPil = m_vertInPileUp.get();
+  auto collPPil = m_partInPileUp.get();
 
   // ownership given to data service at end of execute
   fcc::MCParticleCollection* collPOut = new fcc::MCParticleCollection();
@@ -86,8 +86,8 @@ StatusCode GenMerge::execute() {
     collPOut->push_back(newPart);
   }
 
-  m_vert_Out.put(collVOut);
-  m_part_Out.put(collPOut);
+  m_vertOut.put(collVOut);
+  m_partOut.put(collPOut);
   return StatusCode::SUCCESS;
 }
 

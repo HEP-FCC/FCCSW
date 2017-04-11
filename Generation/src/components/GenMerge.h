@@ -32,14 +32,14 @@ public:
   virtual StatusCode finalize();
 
 private:
-  DataHandle<fcc::GenVertexCollection> m_vert_InSignal{"signalGenParticles", Gaudi::DataHandle::Reader, this};
-  DataHandle<fcc::MCParticleCollection> m_part_InSignal{"signalGenVertices", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::GenVertexCollection> m_vertInSignal{"signalGenParticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::MCParticleCollection> m_partInSignal{"signalGenVertices", Gaudi::DataHandle::Reader, this};
 
-  DataHandle<fcc::GenVertexCollection> m_vert_InPileUp{"pileupGenVertices", Gaudi::DataHandle::Reader, this};
-  DataHandle<fcc::MCParticleCollection> m_part_InPileUp{"pileupGenParticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::GenVertexCollection> m_vertInPileUp{"pileupGenVertices", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::MCParticleCollection> m_partInPileUp{"pileupGenParticles", Gaudi::DataHandle::Reader, this};
 
-  DataHandle<fcc::GenVertexCollection> m_vert_Out{"allGenVertices", Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::MCParticleCollection> m_part_Out{"allGenParticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::GenVertexCollection> m_vertOut{"allGenVertices", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::MCParticleCollection> m_partOut{"allGenParticles", Gaudi::DataHandle::Writer, this};
 };
 
 #endif  // GENERATION_GENMERGE_H
