@@ -26,9 +26,9 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
   'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

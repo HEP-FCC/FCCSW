@@ -29,9 +29,9 @@ pythia8gen.PileUpTool = pileuptool
 pythia8gen.hepmc.Path = "hepmcevent"
 
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmcevent"
 hepmc_converter.genparticles.Path="all_genparticles"
 hepmc_converter.genvertices.Path="all_genvertices"

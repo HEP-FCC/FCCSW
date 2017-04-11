@@ -17,9 +17,9 @@ readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/te
 reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmc"
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

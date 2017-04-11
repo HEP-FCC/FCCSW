@@ -42,13 +42,13 @@ gun2.hepmc.Path = "hepmc2"
 
 
 
-from Configurables import HepMCConverter
-hepmc_converter1 = HepMCConverter("Converter1")
+from Configurables import HepMCToEDMConverter
+hepmc_converter1 = HepMCToEDMConverter("Converter1")
 hepmc_converter1.hepmc.Path="hepmc1"
 hepmc_converter1.genparticles.Path="signalGenParticles"
 hepmc_converter1.genvertices.Path="signalGenVertices"
 
-hepmc_converter2 = HepMCConverter("Converter2")
+hepmc_converter2 = HepMCToEDMConverter("Converter2")
 hepmc_converter2.hepmc.Path="hepmc2"
 hepmc_converter2.genparticles.Path="pileupGenParticles"
 hepmc_converter2.genvertices.Path="pileupGenVertices"

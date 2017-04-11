@@ -1,5 +1,5 @@
-#ifndef GENERATION_HEPMCCONVERTER_H
-#define GENERATION_HEPMCCONVERTER_H
+#ifndef GENERATION_HEPMCTOEDMCONVERTER_H
+#define GENERATION_HEPMCTOEDMCONVERTER_H
 
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -11,12 +11,12 @@ class MCParticleCollection;
 class GenVertexCollection;
 }
 
-class HepMCConverter : public GaudiAlgorithm {
-  friend class AlgFactory<HepMCConverter>;
+class HepMCToEDMConverter : public GaudiAlgorithm {
+  friend class AlgFactory<HepMCToEDMConverter>;
 
 public:
   /// Constructor.
-  HepMCConverter(const std::string& name, ISvcLocator* svcLoc);
+  HepMCToEDMConverter(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
   virtual StatusCode initialize();
   /// Execute.

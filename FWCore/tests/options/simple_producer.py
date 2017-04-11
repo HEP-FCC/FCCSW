@@ -11,8 +11,8 @@ pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
 pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
 pythia8gen.hepmc.Path = "hepmcevent"
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmcevent"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

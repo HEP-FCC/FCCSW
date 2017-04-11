@@ -12,9 +12,9 @@ from Configurables import Gaudi__ParticlePropertySvc
 # list of possible particles is defined in ParticlePropertiesFile
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"
