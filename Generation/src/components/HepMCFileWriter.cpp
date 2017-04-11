@@ -5,8 +5,7 @@
 DECLARE_COMPONENT(HepMCFileWriter)
 
 HepMCFileWriter::HepMCFileWriter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
-  declareProperty("Filename", m_filename = "Output_HepMC.dat", "Name of the HepMC file to write");
-  declareProperty("hepmc", m_hepmchandle, "The HepMC event to write to text file");
+  declareProperty("hepmc", m_hepmchandle, "The HepMC event to write to text file (input)");
 }
 
 StatusCode HepMCFileWriter::initialize() {

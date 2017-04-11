@@ -36,7 +36,7 @@ public:
 private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Reader, this};
-  std::string m_filename;
+  Gaudi::Property<std::string> m_filename{this. "Filename", "Output_HepMC.dat", "Name of the HepMC file to write"};
   std::unique_ptr<HepMC::IO_GenEvent> m_file;
 };
 
