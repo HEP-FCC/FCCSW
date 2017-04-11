@@ -7,6 +7,9 @@
 
 #include "Generation/Units.h"
 
+using HepMC::GenParticle;
+using HepMC::GenVertex;
+
 DECLARE_COMPONENT(EDMConverter)
 
 EDMConverter::EDMConverter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
@@ -32,15 +35,14 @@ StatusCode EDMConverter::execute() {
 
   for (auto p : *(particles)) {
     if (p.status() == 1) {  // only final state particles
-      HepMC::GenParticle* pHepMC =
-          new HepMC::GenParticle(HepMC::FourVector(p.p4().px, p.p4().py, p.p4().pz, p.p4().mass / hepmc2EdmEnergy),
-                                 p.pdgId(),
-                                 p.status());  // hepmc status code for final state particle
+      GenParticle* pHepMC =
+          new GenParticle(HepMC::FourVector(p.p4().px, p.p4().py, p.p4().pz, p.p4().mass / hepmc2EdmEnergy),
+                          p.pdgId(),
+                          p.status());  // hepmc status code for final state particle
 
       fcc::ConstGenVertex vStart = p.startVertex();
       if (p.startVertex().isAvailable()) {
-        HepMC::GenVertex* v =
-            new HepMC::GenVertex(HepMC::FourVector(vStart.position().x / hepmc2EdmLength,
+        GenVertex* v = GenVertex(HepMC::FourVector(vStart.position().x / hepmc2EdmLength,
                                                    vStart.position().y / hepmc2EdmLength,
                                                    vStart.position().z / hepmc2EdmLength,
                                                    vStart.ctau() / Gaudi::Units::c_light / hepmc2EdmLength));
