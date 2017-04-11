@@ -33,8 +33,8 @@ hepmc_converter.genvertices.Path="allGenVertices"
 
 
 # convert (final state) EDM back to HepMC
-from Configurables import EDMConverter
-edm_converter = EDMConverter("BackConverter")
+from Configurables import EDMToHepMCConverter
+edm_converter = EDMToHepMCConverter("BackConverter")
 edm_converter.hepmc.Path="hepmcconverted"
 edm_converter.genparticles.Path="allGenParticles"
 edm_converter.genvertices.Path="allGenVertices"
