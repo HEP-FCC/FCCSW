@@ -24,9 +24,3 @@ gaudi_add_module(DetFCChhECalInclined
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 message(STATUS "LIBRARY_OUTPUT_PATH -> ${LIBRARY_OUTPUT_PATH}")
 dd4hep_generate_rootmap(DetFCChhECalInclined)
-
-include(CTest)
-gaudi_add_test(ECalInclinedGeantPgun
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
-               FRAMEWORK tests/options/ECal_sim_pgun.py)
