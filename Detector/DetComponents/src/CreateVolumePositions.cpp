@@ -58,7 +58,8 @@ StatusCode CreateVolumePositions::execute() {
   // Loop though hits, retrieve volume position from cellID
   for (const auto& cell : *calocells) {
     cellid = cell.core().cellId;
-    const auto& transformMatrix = volman.worldTransformation(cellid);
+    auto detelement = volman.lookupDetElement(cellid);
+    const auto& transformMatrix = detelement.worldTransformation();
     double outGlobal[3];
     double inLocal[] = {0,0,0};
     transformMatrix.LocalToMaster(inLocal, outGlobal);
