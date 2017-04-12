@@ -54,25 +54,25 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   double passive_glue_thickness = passive_glue.thickness();
   double passive_tck = passive_inner_thickness + passive_outer_thickness + passive_glue_thickness;
 
-  // cryo_thickness < 0 => Run without a cryostat
-  Volume bathVol;  // volume inside cryostat filled with active medium
-  if (cryo_thickness > 0) {
+  //cryo_thickness < 0 => Run without a cryostat
+  Volume bathVol; //volume inside cryostat filled with active medium
+  DetElement calo_bath(eCal, active_mat+"_notSensitive", 0);
+  if (cryo_thickness>0) {
     // Step 1 : cryostat
-    //DetElement cryo(cryostat.nameStr(), 0);
     DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
     lLog << MSG::DEBUG << "ECAL cryostat: rmin " << cryo_dims.rmin() << " rmax " << cryo_dims.rmax() << endmsg;
     Volume cryoVol(cryostat.nameStr(), cryoShape, lcdd.material(cryostat.materialStr()));
     PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
-    // placedCryo.addPhysVolID("ECAL_Cryo", 1);
-    //cryo.setPlacement(placedCryo);
+    placedCryo.addPhysVolID("ECAL_Cryo", 1);
+    DetElement cryo(eCal, cryostat.nameStr(), 0);
+    cryo.setPlacement(placedCryo);
     // Step 2 : fill cryostat with active medium
-    //DetElement calo_bath(active_mat+"_notSensitive", 0);
     DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
     lLog << MSG::DEBUG << "ECAL " << active_mat << " bath: rmin " << cryo_dims.rmin()+cryo_thickness << " rmax " << cryo_dims.rmax()-cryo_thickness << endmsg;
     bathVol = Volume(active_mat+"_notSensitive", bathShape, lcdd.material(active_mat));
     PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
-    //placedBath.addPhysVolID("bath", 1);
-    //  calo_bath.setPlacement(placedBath);
+    placedBath.addPhysVolID("bath", 1);
+    calo_bath.setPlacement(placedBath);
   }
 
   // Step 3 : create the actual calorimeter
@@ -93,11 +93,9 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   for (int i=0;i<active_samples;i++)
   {
     double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);
-    // DetElement caloLayer(active_mat+"_sensitive", i);
     DD4hep::Geometry::Tube steelShape1(layer_r-passive_tck , layer_r-passive_tck+steel_thck, calo_dims.dz());
     DD4hep::Geometry::Tube glueShape1(layer_r-passive_tck+steel_thck , layer_r-passive_tck+steel_thck+glue_thck, calo_dims.dz());
     DD4hep::Geometry::Tube passiveShape(layer_r-passive_tck+steel_thck+glue_thck , layer_r-steel_thck-glue_thck, calo_dims.dz());
-    // DD4hep::Geometry::Tube passiveShape(layer_r-passive_tck , layer_r, calo_dims.dz());
     DD4hep::Geometry::Tube glueShape2(layer_r-steel_thck-glue_thck, layer_r-steel_thck , calo_dims.dz());
     DD4hep::Geometry::Tube steelShape2(layer_r-steel_thck, layer_r , calo_dims.dz());
     DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_dims.dz());
@@ -121,7 +119,9 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
       bathVol.placeVolume(glueVol2);
       bathVol.placeVolume(steelVol2);
       PlacedVolume placedLayer = bathVol.placeVolume(layerVol);
-    placedLayer.addPhysVolID("active_layer", i);
+      placedLayer.addPhysVolID("active_layer", i);
+      DetElement caloLayer(calo_bath, active_mat+"_sensitive"+std::to_string(i), i);
+      caloLayer.setPlacement(placedLayer);
     } else {
       envelopeVolume.placeVolume(steelVol1);
       envelopeVolume.placeVolume(glueVol1);
@@ -129,9 +129,10 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
       envelopeVolume.placeVolume(glueVol2);
       envelopeVolume.placeVolume(steelVol2);
       PlacedVolume placedLayer = envelopeVolume.placeVolume(layerVol);
-    placedLayer.addPhysVolID("active_layer", i);
+      placedLayer.addPhysVolID("active_layer", i);
+      DetElement caloLayer(eCal, active_mat+"_sensitive"+std::to_string(i), i);
+      caloLayer.setPlacement(placedLayer);
     }
-    //caloLayer.setPlacement(placedLayer);
     layerVol.setSensitiveDetector(sensDet);
   }
 
