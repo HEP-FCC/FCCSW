@@ -92,7 +92,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
       cryo_physvol.addPhysVolID("cryo", 1);
       lLog << MSG::DEBUG << "Cryostat volume set as sensitive" << endmsg;
     }
-    DD4hep::Geometry::DetElement cryo_element ("cryo",0);
+    DD4hep::Geometry::DetElement cryo_element (det_element,"cryo",0);
     cryo_element.setPlacement(cryo_physvol);
   }
   // 2. Create bath that is inside the cryostat and surrounds the calorimeter
@@ -298,6 +298,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
       DD4hep::Geometry::Position(  fabs(xprimB), 0, -fabs(zprimB))));
   DD4hep::Geometry::Volume active_vol("active", active_shape, aLcdd.material("Air") );
 
+  std::vector<DD4hep::Geometry::PlacedVolume> cell_physvols;
   // place cells within active volume
   double cell_increase = (active_out_thck - active_in_thck) / numCells ;
   double cell_in_thck = active_in_thck;
@@ -318,15 +319,15 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     DD4hep::Geometry::Volume cell_vol("cell", cell_shape, aLcdd.material(active_mat) );
     cell_vol.setSensitiveDetector(aSensDet);
     std::cout << " Placing cell " << iCell <<" inside active row at z = " << cell_offset + iCell * cell_height << std::endl; // z before rotation, afterwards it becomes R
-    DD4hep::Geometry::PlacedVolume cell_physvol = active_vol.placeVolume(cell_vol,
-      DD4hep::Geometry::Position(0, 0, cell_offset + iCell * cell_height));
-    cell_physvol.addPhysVolID("cell", iCell+1);
-    DD4hep::Geometry::DetElement cell_element ("cell",iCell+1);
-    cell_element.setPlacement(cell_physvol);
+    cell_physvols.push_back( active_vol.placeVolume(cell_vol,
+        DD4hep::Geometry::Position(0, 0, cell_offset + iCell * cell_height)));
+    cell_physvols.back().addPhysVolID("cell", iCell+1);
     cell_in_thck = cell_out_thck;
     cell_out_thck = cell_out_thck + cell_increase;
   }
 
+  DD4hep::Geometry::DetElement bath_element (det_element, "bath", 1);
+  std::vector<DD4hep::Geometry::PlacedVolume> active_physvols;
   // Next place elements: passive planes, readout planes and rows of cells
   for(uint iPlane = 0; iPlane < numPlanes; iPlane ++) {
     // first calculate positions of passive and readout planes
@@ -347,7 +348,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
       DD4hep::Geometry::Position( xRotated, yRotated, 0) );
     DD4hep::Geometry::PlacedVolume passive_physvol = bath_vol.placeVolume(passive_vol, transform);
     passive_physvol.addPhysVolID("passive", iPlane+1);
-    DD4hep::Geometry::DetElement passive_element ("passive",iPlane+1);
+    DD4hep::Geometry::DetElement passive_element (bath_element, "passive"+std::to_string(iPlane+1),iPlane+1);
     passive_element.setPlacement(passive_physvol);
 
     // READOUT
@@ -367,21 +368,18 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
       DD4hep::Geometry::Position(xRotatedRead, yRotatedRead, 0) );
     DD4hep::Geometry::PlacedVolume readout_physvol = bath_vol.placeVolume(readout_vol, transformRead);
     readout_physvol.addPhysVolID("readout", iPlane+1);
-    DD4hep::Geometry::DetElement readout_element ("readout",iPlane+1);
+    DD4hep::Geometry::DetElement readout_element (bath_element, "readout"+std::to_string(iPlane+1),iPlane+1);
     readout_element.setPlacement(readout_physvol);
 
     // ACTIVE
     DD4hep::Geometry::Rotation3D rotationActive (
       DD4hep::Geometry::RotationX(- M_PI/2) *
       DD4hep::Geometry::RotationY(M_PI/2 - phiRead - angle));
-    DD4hep::Geometry::PlacedVolume active_physvol = bath_vol.placeVolume(active_vol,
+    active_physvols.push_back(bath_vol.placeVolume(active_vol,
       DD4hep::Geometry::Transform3D(rotationActive,
         DD4hep::Geometry::Position(xRotatedRead,yRotatedRead, 0)
-        ));
-    active_physvol.addPhysVolID("active", iPlane + 1);
-    DD4hep::Geometry::DetElement active_element ("active",iPlane+1);
-    active_element.setPlacement(active_physvol);
-
+        )));
+    active_physvols.back().addPhysVolID("active", iPlane + 1);
   }
   DD4hep::Geometry::PlacedVolume bath_physvol = envelope_vol.placeVolume(bath_vol);
   if(cryostat.isSensitive()) {
@@ -389,8 +387,16 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     bath_physvol.addPhysVolID("bath", 1);
     lLog << MSG::DEBUG << "Bath volume set as sensitive" << endmsg;
   }
-  DD4hep::Geometry::DetElement bath_element ("bath",0);
   bath_element.setPlacement(bath_physvol);
+
+  for(uint iPlane = 0; iPlane < numPlanes; iPlane ++) {
+    DD4hep::Geometry::DetElement active_element (bath_element, "active"+std::to_string(iPlane+1),iPlane+1);
+    active_element.setPlacement(active_physvols[iPlane]);
+    for ( uint iCell = 0; iCell < numCells; iCell++ ) {
+      DD4hep::Geometry::DetElement cell_element (active_element, "cell"+std::to_string(iCell+1), iCell+1);
+      cell_element.setPlacement(cell_physvols[iCell]);
+    }
+  }
 
   // Place the envelope
   DD4hep::Geometry::Volume mother_vol = aLcdd.pickMotherVolume(det_element);
