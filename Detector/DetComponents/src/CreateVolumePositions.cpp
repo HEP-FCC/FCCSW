@@ -4,25 +4,32 @@
 #include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
 
-// EDM
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/PositionedCaloHitCollection.h"
-
 // DD4hep
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Volumes.h"
 #include "TGeoManager.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateVolumePositions)
+// EDM
+#include "datamodel/CaloHitCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
+#include "datamodel/TrackHitCollection.h"
+#include "datamodel/PositionedTrackHitCollection.h"
 
-CreateVolumePositions::CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc)
+typedef CreateVolumePositions<fcc::CaloHitCollection, fcc::PositionedCaloHitCollection> CreateVolumeCaloPositions;
+typedef CreateVolumePositions<fcc::TrackHitCollection, fcc::PositionedTrackHitCollection> CreateVolumeTrackPositions;
+DECLARE_ALGORITHM_FACTORY(CreateVolumeCaloPositions)
+DECLARE_COMPONENT_WITH_ID(CreateVolumeCaloPositions,"CreateVolumeCaloPositions")
+DECLARE_ALGORITHM_FACTORY(CreateVolumeTrackPositions)
+DECLARE_COMPONENT_WITH_ID(CreateVolumeTrackPositions,"CreateVolumeTrackPositions")
+
+
+template<class H, class P> CreateVolumePositions<H, P>::CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc)
   : GaudiAlgorithm(name, svcLoc) {
-  declareInput("caloCells", m_caloCells);
-  declareOutput("caloPositionedHits", m_caloPositionedHits);
-  declareProperty("readoutName", m_readoutName = "");
+  declareInput("hits", m_hits);
+  declareOutput("positionedHits", m_positionedHits);
 }
 
-StatusCode CreateVolumePositions::initialize() {
+template<class H, class P> StatusCode CreateVolumePositions<H, P>::initialize() {
 
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
@@ -33,30 +40,23 @@ StatusCode CreateVolumePositions::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  // check if readouts exist
-  if(m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
-    error()<<"Readout <<"<<m_readoutName<<">> does not exist."<<endmsg;
-    return StatusCode::FAILURE;
-  }
-
   return sc;
 }
 
-StatusCode CreateVolumePositions::execute() {
+template<class H, class P> StatusCode CreateVolumePositions<H, P>::execute() {
 
   //Get the input caloHits collection
-  const fcc::CaloHitCollection* calocells = m_caloCells.get();
-  debug() << "Input caloCells collection size: " << calocells->size() << endmsg;
+  const H* hits = m_hits.get();
+  debug() << "Input hit collection size: " << hits->size() << endmsg;
 
   //Initialize output CaloClusterCollection
-  auto edmPositionedHitCollection = m_caloPositionedHits.createAndPut();
+  auto edmPositionedHitCollection = m_positionedHits.createAndPut();
 
   uint64_t cellid = 0;
   DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
-  auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
 
   // Loop though hits, retrieve volume position from cellID
-  for (const auto& cell : *calocells) {
+  for (const auto& cell : *hits) {
     cellid = cell.core().cellId;
     auto detelement = volman.lookupDetElement(cellid);
     const auto& transformMatrix = detelement.worldTransformation();
@@ -71,17 +71,14 @@ StatusCode CreateVolumePositions::execute() {
     auto positionedHit = edmPositionedHitCollection->create(edmPos, cell.core());
 
     // Debug information about cells
-    if(msgLevel(MSG::DEBUG)) {
-      decoder->setValue(cellid);
-      verbose() << decoder->valueString() << " \tenergy "<< cell.core().energy << "\tcellID " << cellid << endmsg;
-      debug() << "translation of cell volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
-    }
+    debug() << "Hit energy" << cell.core().energy << "\tcellID " << cellid << endmsg;
+    debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
   }
-  debug() << "Output Hit Positions collection size: " << edmPositionedHitCollection->size() << endmsg;
+  debug() << "Output positions collection size: " << edmPositionedHitCollection->size() << endmsg;
 
   return StatusCode::SUCCESS;
 }
 
-StatusCode CreateVolumePositions::finalize() {
+template<class H, class P> StatusCode CreateVolumePositions<H, P>::finalize() {
   return GaudiAlgorithm::finalize();
 }

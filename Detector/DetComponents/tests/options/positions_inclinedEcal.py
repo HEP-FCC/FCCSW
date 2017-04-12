@@ -34,18 +34,18 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits
-saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"])
-saveecaltool.DataOutputs.positionedCaloHits.Path = "ECalPositionedHits"
-saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
+savetool = SimG4SaveCalHits("saveHits",readoutNames = ["ECalHitsPhiEta"])
+savetool.DataOutputs.positionedCaloHits.Path = "PositionedHits"
+savetool.DataOutputs.caloHits.Path = "Hits"
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits"],
+                       outputs= ["SimG4SaveCalHits/saveHits"],
                        OutputLevel=DEBUG)
 
-from Configurables import CreateVolumePositions
-positions = CreateVolumePositions("positions", readoutName = "ECalHitsPhiEta", OutputLevel = DEBUG)
-positions.DataInputs.caloCells.Path = "ECalHits"
-positions.DataOutputs.caloPositionedHits.Path = "ECalPositions"
+from Configurables import CreateVolumeCaloPositions
+positions = CreateVolumeCaloPositions("positions", OutputLevel = VERBOSE)
+positions.DataInputs.hits.Path = "Hits"
+positions.DataOutputs.positionedHits.Path = "Positions"
 
 # PODIO algorithm
 from Configurables import PodioOutput

@@ -6,7 +6,7 @@ if __name__ == "__main__":
     store = EventStore(["positions_ecalInclinedSim.root"])
 
     for iev, event in enumerate(store):
-        positions = event.get('ECalPositions')
+        positions = event.get('Positions')
         for pos in positions:
             x = pos.position().x
             y = pos.position().y

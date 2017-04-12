@@ -37,10 +37,13 @@ gaudi_add_test(MergeLayers
 gaudi_add_test(positionsInclinedEcal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
-               DEPENDS simulateInclinedEcal
                FRAMEWORK tests/options/positions_inclinedEcal.py)
 gaudi_add_test(positionsInclinedEcalCheckNonZero
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND python Detector/DetStudies/tests/scripts/check_nonzero_inclinedEcal_positions.py
-               DEPENDS simulateInclinedEcal positionsInclinedEcal)
+               COMMAND python Detector/DetComponents/tests/scripts/check_nonzero_inclinedEcal_positions.py
+               DEPENDS positionsInclinedEcal)
+gaudi_add_test(positionsTracker
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
+               FRAMEWORK tests/options/positions_tracker.py)
