@@ -1,32 +1,30 @@
-#ifndef RECCALORIMETRY_SAMPLINGFRACTIONCELLS_H
-#define RECCALORIMETRY_SAMPLINGFRACTIONCELLS_H
+#ifndef DETSTUDIES_SAMPLINGFRACTIONINCELLS_H
+#define DETSTUDIES_SAMPLINGFRACTIONINCELLS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "DetSegmentation/GridPhiEta.h"
 class IGeoSvc;
 
 // datamodel
 namespace fcc {
-class MCParticleCollection;
 class PositionedCaloHitCollection;
 }
 
 class TH1F;
 class ITHistSvc;
 
-/** @class SamplingFractionCells SamplingFractionCells.h
+/** @class SamplingFractionInCells SamplingFractionInCells.h
  *
  *  @author Anna Zaborowska
  */
 
-class SamplingFractionCells: public GaudiAlgorithm {
+class SamplingFractionInCells: public GaudiAlgorithm {
 public:
-  explicit SamplingFractionCells(const std::string&, ISvcLocator*);
-  virtual ~SamplingFractionCells();
+  explicit SamplingFractionInCells(const std::string&, ISvcLocator*);
+  virtual ~SamplingFractionInCells();
   /**  Initialize.
    *   @return status code
    */
@@ -61,7 +59,5 @@ public:
   int m_numLayers;
   /// Name of the detector readout
   std::string m_readoutName;
-  /// PhiEta segmentation (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
 };
-#endif /* RECCALORIMETRY_SAMPLINGFRACTIONCELLS_H */
+#endif /* DETSTUDIES_SAMPLINGFRACTIONINCELLS_H */

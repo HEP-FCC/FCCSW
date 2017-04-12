@@ -1,10 +1,9 @@
-#include "SamplingFractionCells.h"
+#include "SamplingFractionInCells.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/MCParticleCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
 #include "TH1F.h"
@@ -16,9 +15,9 @@
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_ALGORITHM_FACTORY(SamplingFractionCells)
+DECLARE_ALGORITHM_FACTORY(SamplingFractionInCells)
 
-SamplingFractionCells::SamplingFractionCells(const std::string& aName, ISvcLocator* aSvcLoc):
+SamplingFractionInCells::SamplingFractionInCells(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr), m_SF(nullptr) {
   declareInput("deposits", m_deposits);
   declareProperty("energy", m_energy);
@@ -27,9 +26,9 @@ GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(null
   declareProperty("activeFieldName", m_activeFieldName = "active");
   declareProperty("readoutName", m_readoutName);
 }
-SamplingFractionCells::~SamplingFractionCells() {}
+SamplingFractionInCells::~SamplingFractionInCells() {}
 
-StatusCode SamplingFractionCells::initialize() {
+StatusCode SamplingFractionInCells::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   m_geoSvc = service("GeoSvc");
@@ -41,13 +40,6 @@ StatusCode SamplingFractionCells::initialize() {
   // check if readouts exist
   if (m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
     error() << "Readout <<" << m_readoutName << ">> does not exist." << endmsg;
-    return StatusCode::FAILURE;
-  }
-  // retrieve PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
-  if (m_segmentation == nullptr) {
-    error() << "There is no phi-eta segmentation." << endmsg;
     return StatusCode::FAILURE;
   }
   m_histSvc = service("THistSvc");
@@ -91,7 +83,7 @@ StatusCode SamplingFractionCells::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SamplingFractionCells::execute() {
+StatusCode SamplingFractionInCells::execute() {
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   double sumE = 0.;
   std::vector<double> sumEcells;
@@ -130,6 +122,6 @@ StatusCode SamplingFractionCells::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SamplingFractionCells::finalize() {
+StatusCode SamplingFractionInCells::finalize() {
   return GaudiAlgorithm::finalize();
 }
