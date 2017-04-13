@@ -46,13 +46,23 @@
     <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
       <sensitive type="GflashCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
-      <cryostat id="1" name="ECAL_Cryo" material="Air" >
+      <cryostat id="1" name="ECAL_Cryo" material="Aluminum" >
         <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness" />
       </cryostat>
       <calorimeter id="1" name="EM_barrel" >
         <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
-        <active_layers thickness="4*mm" material="LAr" nSamplings="50" />
-        <passive_layers thickness="2*mm" material="Lead" />
+        <active_layers thickness="4*mm" material="LAr"/>
+	     <passive_layers>
+	       <inner thickness="1.5*mm*2./2.16">
+            <material name="Lead"/>
+          </inner>
+	       <glue thickness="0.13*mm*2*2./2.16">
+            <material name="ATLASglue"/>
+          </glue>
+	       <outer thickness="0.2*mm*2*2./2.16">
+            <material name="ATLASsteel"/>
+          </outer>
+        </passive_layers>
       </calorimeter>
     </detector>
 
