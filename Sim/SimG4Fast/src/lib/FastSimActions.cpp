@@ -1,7 +1,7 @@
 #include "SimG4Fast/FastSimActions.h"
 
-namespace sim{
-FastSimActions::FastSimActions(): G4VUserActionInitialization() {}
+namespace sim {
+FastSimActions::FastSimActions() : G4VUserActionInitialization() {}
 
 FastSimActions::~FastSimActions() {}
 

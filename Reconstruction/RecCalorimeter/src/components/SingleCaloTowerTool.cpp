@@ -4,8 +4,8 @@
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
+#include "datamodel/CaloHitCollection.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
@@ -15,16 +15,8 @@ DECLARE_TOOL_FACTORY(SingleCaloTowerTool)
 
 SingleCaloTowerTool::SingleCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
+  declareProperty("cells", m_cells, "Cells to create towers from (input)");
   declareInterface<ITowerTool>(this);
-  declareInput("cells", m_cells, "calo/cells");
-  declareProperty("readoutName", m_readoutName);
-  // the default value to calculate the position of clusters
-  declareProperty("radiusForPosition", m_radius = 1.);
-  declareProperty("deltaEtaTower", m_deltaEtaTower = 0.01);
-  declareProperty("deltaPhiTower", m_deltaPhiTower = 0.01);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
 }
 
 StatusCode SingleCaloTowerTool::initialize() {
@@ -177,10 +169,6 @@ float SingleCaloTowerTool::phi(int aIdPhi) const {
   //return (aIdPhi * m_deltaPhiTower - m_phiMax);
 }
 
-float SingleCaloTowerTool::radiusForPosition() const {
-  return m_radius;
-}
-
 unsigned int SingleCaloTowerTool::phiNeighbour(int aIPhi) const {
   if (aIPhi < 0) {
     return m_nPhiTower + aIPhi;
@@ -189,3 +177,6 @@ unsigned int SingleCaloTowerTool::phiNeighbour(int aIPhi) const {
   }
   return aIPhi;
 }
+
+float SingleCaloTowerTool::radiusForPosition() const { return m_radius; }
+

@@ -11,7 +11,7 @@
  *  @author Anna Zaborowska
  */
 
-class ICalorimeterTool: virtual public IAlgTool {
+class ICalorimeterTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ICalorimeterTool, 1, 0);
 

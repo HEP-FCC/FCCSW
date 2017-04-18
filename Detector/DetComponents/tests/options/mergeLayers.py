@@ -11,7 +11,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PhiMin = 0, # rad
                                 PhiMax = 0) # rad
 gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
-gen.DataOutputs.hepmc.Path = "hepmc"
+gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
 ## Particle service
@@ -20,9 +20,9 @@ ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticleProperties
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc",  detectors=['file:Test/TestGeometry/data/Barrel_testCaloSD_rphiz.xml'],
@@ -34,8 +34,8 @@ geantservice = SimG4Svc("SimG4Svc")
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool, SimG4PrimariesFromEdmTool
 inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["ECalHits"], OutputLevel = INFO)
 savecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"], OutputLevel = DEBUG)
-savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
-savecaltool.DataOutputs.caloHits.Path = "caloHits"
+savecaltool.positionedCaloHits.Path = "positionedCaloHits"
+savecaltool.caloHits.Path = "caloHits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","InspectHitsCollectionsTool/inspect"], eventProvider=particle_converter)
 
@@ -52,8 +52,8 @@ merge = MergeLayers("mergeLayers",
                     # below: merge first 3k volumes into new one (id=0), next 10k into second one (id=1) and last 3k into third volume (id=2)
                     merge = [3000,10001,3000],
                     OutputLevel = DEBUG)
-merge.DataInputs.inhits.Path = "caloHits"
-merge.DataOutputs.outhits.Path = "newCaloHits"
+merge.inhits.Path = "caloHits"
+merge.outhits.Path = "newCaloHits"
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")

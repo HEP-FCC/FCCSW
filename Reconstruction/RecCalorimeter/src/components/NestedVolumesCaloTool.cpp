@@ -1,20 +1,15 @@
 #include "NestedVolumesCaloTool.h"
 
 // segm
-#include "DetInterface/IGeoSvc.h"
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/LCDD.h"
+#include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 DECLARE_TOOL_FACTORY(NestedVolumesCaloTool)
 
 NestedVolumesCaloTool::NestedVolumesCaloTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICalorimeterTool>(this);
-  declareProperty("readoutName", m_readoutName = "ECalHitsPhiEta");
-  declareProperty("activeVolumeName", m_activeVolumeName = {"LAr_sensitive"});
-  declareProperty("activeFieldName", m_activeFieldName = {"active_layer"});
-  declareProperty("fieldNames", m_fieldNames);
-  declareProperty("fieldValues", m_fieldValues);
 }
 
 StatusCode NestedVolumesCaloTool::initialize() {
@@ -55,7 +50,7 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
   for (const auto& volName : m_activeVolumeName) {
     numVolumes.push_back(det::utils::countPlacedVolumes(highestVol, volName));
     info() << "Number of active volumes named " << volName << " is " << numVolumes.back() << endmsg;
-    if (numVolumes.back() == 0){
+    if (numVolumes.back() == 0) {
       error() << "Volume name " << volName << " not found! Check naming in detector description." << endmsg;
       return StatusCode::FAILURE;
     }
@@ -88,7 +83,7 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
     debug() << "Total number of cells ( " << numVolumesMap.back().first << " ) is " << checkTotal << endmsg;
   }
   // Loop over all volumes in calorimeter to retrieve active cells
-  std::vector<unsigned int> currentVol;
+  std::vector<int> currentVol;
   unsigned int numVolTypes = numVolumes.size();
   currentVol.assign(numVolTypes, 0);
   unsigned int index = 0;

@@ -17,16 +17,15 @@ class MCParticleCollection;
  *  @author J. Lingemann
  */
 
-class IDelphesSaveOutputTool: virtual public IAlgTool {
+class IDelphesSaveOutputTool : virtual public IAlgTool {
 public:
-  DeclareInterfaceID(IDelphesSaveOutputTool,1,0);
+  DeclareInterfaceID(IDelphesSaveOutputTool, 1, 0);
 
   /**  Save the certain objects from Delphes to EDM.
    *   @param[in] delphes: Delphes module from which we can retrieve the output.
    *   @param[in] mcParticles: EDM collection holding MC particles to establish relations.
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes,
-                                const fcc::MCParticleCollection& mcParticles) = 0;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) = 0;
 };
 #endif /* SIMDELPHESINTERFACE_IDELPHESAVEOUTPUTTOOL_H */

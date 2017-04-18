@@ -1,9 +1,9 @@
 #include "TubeLayerPhiEtaCaloTool.h"
 
 // segm
-#include "DetInterface/IGeoSvc.h"
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/LCDD.h"
+#include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
 
@@ -11,12 +11,6 @@ TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type, const 
                                                  const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICalorimeterTool>(this);
-  declareProperty("readoutName", m_readoutName = "");
-  declareProperty("activeVolumeName", m_activeVolumeName = "LAr_sensitive");
-  declareProperty("activeFieldName", m_activeFieldName = "active_layer");
-  declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
-  declareProperty("fieldNames", m_fieldNames);
-  declareProperty("fieldValues", m_fieldValues);
 }
 
 StatusCode TubeLayerPhiEtaCaloTool::initialize() {

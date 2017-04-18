@@ -1,11 +1,11 @@
 #ifndef TESTGEOMETRY_CALORIMETERHIT_H
 #define TESTGEOMETRY_CALORIMETERHIT_H
 
-#include "G4VHit.hh"
-#include "G4THitsCollection.hh"
 #include "G4Allocator.hh"
-#include "G4ThreeVector.hh"
 #include "G4RotationMatrix.hh"
+#include "G4THitsCollection.hh"
+#include "G4ThreeVector.hh"
+#include "G4VHit.hh"
 
 /** @class TestCalorimeterHit.h TestGeometry/TestGeometry/TestCalorimeterHit.h TestCalorimeterHit.h
  *
@@ -25,14 +25,14 @@ class TestCalorimeterHit : public G4VHit {
 public:
   TestCalorimeterHit();
   TestCalorimeterHit(int iX, int iY, int iZ);
-  TestCalorimeterHit(const TestCalorimeterHit &right);
+  TestCalorimeterHit(const TestCalorimeterHit& right);
   virtual ~TestCalorimeterHit();
 
-  const TestCalorimeterHit& operator=(const TestCalorimeterHit &right);
-  int operator==(const TestCalorimeterHit &right) const;
+  const TestCalorimeterHit& operator=(const TestCalorimeterHit& right);
+  int operator==(const TestCalorimeterHit& right) const;
 
-  inline void *operator new(size_t);
-  inline void operator delete(void *aHit);
+  inline void* operator new(size_t);
+  inline void operator delete(void* aHit);
 
   void SetXid(int z) { m_xID = z; }
   int GetXid() const { return m_xID; }
@@ -66,15 +66,12 @@ typedef G4THitsCollection<TestCalorimeterHit> TestCalorimeterHitsCollection;
 
 extern G4ThreadLocal G4Allocator<TestCalorimeterHit>* TestCalorimeterHitAllocator;
 
-inline void* TestCalorimeterHit::operator new(size_t)
-{
-  if (!TestCalorimeterHitAllocator)
-    TestCalorimeterHitAllocator = new G4Allocator<TestCalorimeterHit>;
+inline void* TestCalorimeterHit::operator new(size_t) {
+  if (!TestCalorimeterHitAllocator) TestCalorimeterHitAllocator = new G4Allocator<TestCalorimeterHit>;
   return (void*)TestCalorimeterHitAllocator->MallocSingle();
 }
 
-inline void TestCalorimeterHit::operator delete(void* aHit)
-{
+inline void TestCalorimeterHit::operator delete(void* aHit) {
   TestCalorimeterHitAllocator->FreeSingle((TestCalorimeterHit*)aHit);
 }
 }

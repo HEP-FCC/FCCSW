@@ -6,8 +6,8 @@
 #include "DDSegmentation/Segmentation.h"
 
 // Geant
-#include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
+#include "G4VSensitiveDetector.hh"
 
 /** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
  *

@@ -90,7 +90,7 @@ private:
    */
   unsigned int phiNeighbour(int aIPhi) const;
   /// Handle for calo clusters (output collection)
-  DataHandle<fcc::CaloClusterCollection> m_clusters;
+  DataHandle<fcc::CaloClusterCollection> m_clusters{"calo/clusters", Gaudi::DataHandle::Writer, this};
   /// Handle for the tower building tool
   ToolHandle<ITowerTool> m_towerTool;
   // calorimeter towers
@@ -102,27 +102,25 @@ private:
   /// Number of towers in phi (calculated from m_deltaPhiTower)
   int m_nPhiTower;
   /// Size of the window in eta for pre-clusters (in units of tower size)
-  int m_nEtaWindow;
+  Gaudi::Property<int> m_nEtaWindow{this, "nEtaWindow", 5};
   /// Size of the window in phi for pre-clusters (in units of tower size)
-  int m_nPhiWindow;
+  Gaudi::Property<int> m_nPhiWindow{this, "nPhiWindow", 15};
   /// Size of the window in eta for cluster position calculation (in units of tower size)
-  int m_nEtaPosition;
+  Gaudi::Property<int> m_nEtaPosition{this, "nEtaPosition", 3};
   /// Size of the window in phi for cluster position calculation (in units of tower size)
-  int m_nPhiPosition;
+  Gaudi::Property<int> m_nPhiPosition{this, "nPhiPosition", 3};
   /// Size of the window in eta for the overlap removal (in units of tower size)
-  int m_nEtaDuplicates;
+  Gaudi::Property<int> m_nEtaDuplicates{this, "nEtaDuplicates", 2};
   /// Size of the window in phi for the overlap removal (in units of tower size)
-  int m_nPhiDuplicates;
-  /// Size of the window in eta for the final cluster building (in units of tower size)
-  int m_nEtaFinal;
-  /// Size of the window in phi for the final cluster building (in units of tower size)
-  int m_nPhiFinal;
+  Gaudi::Property<int> m_nPhiDuplicates{this, "nPhiDuplicates", 2};
   /// Energy threshold for cluster finding
-  float m_energyThreshold;
+  Gaudi::Property<float> m_energyThreshold{this, "energyThreshold", 10};
+  /// Size of the window in eta for the final cluster building (in units of tower size)
+  Gaudi::Property<int> m_nEtaFinal{this, "nEtaFinal", 5};
+  /// Size of the window in phi for the final cluster building (in units of tower size)
+  Gaudi::Property<int> m_nPhiFinal{this, "nPhiFinal", 15};
   /// Energy fraction in the position calculation
-  float m_positionWindFraction;
-  /// Flag if in each event the number of eta towers should be recalculated (true: default, false: if m_towerTool has etaMax defined)
-  bool m_recalculateEtaTowers;
+  Gaudi::Property<float> m_positionWindFraction{this, "positionWindFraction", 0.25};
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */

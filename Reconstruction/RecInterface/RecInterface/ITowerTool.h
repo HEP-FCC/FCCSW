@@ -19,7 +19,7 @@ struct tower {
  *  @author Anna Zaborowska
  */
 
-class ITowerTool: virtual public IAlgTool {
+class ITowerTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ITowerTool, 1, 0);
   /**  Find number of calorimeter towers.
@@ -30,7 +30,7 @@ public:
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
-  virtual uint buildTowers(std::vector<std::vector<float>> & aTowers) = 0;
+  virtual uint buildTowers(std::vector<std::vector<float>>& aTowers) = 0;
   /**  Get the radius for the position calculation.
    *   @return Radius
    */

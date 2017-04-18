@@ -40,8 +40,8 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
 savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"])
-savehcaltool.DataOutputs.positionedCaloHits.Path = "HCalPositionedHits"
-savehcaltool.DataOutputs.caloHits.Path = "HCalHits"
+savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
+savehcaltool.caloHits.Path = "HCalHits"
 # Change INFO to DEBUG for printout of each deposit
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")

@@ -1,10 +1,10 @@
 #ifndef GENERATION_PARTICLEGUNALG_H
 #define GENERATION_PARTICLEGUNALG_H
 
-#include "GaudiAlg/GaudiAlgorithm.h"
 #include "FWCore/DataHandle.h"
-#include "HepMC/GenEvent.h"
+#include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
+#include "HepMC/GenEvent.h"
 
 /// Forward declarations
 #include "Generation/IParticleGunTool.h"
@@ -22,9 +22,9 @@
 class ParticleGunAlg : public GaudiAlgorithm {
 public:
   /// Standard constructor
-  ParticleGunAlg( const std::string& name, ISvcLocator* pSvcLocator );
+  ParticleGunAlg(const std::string& name, ISvcLocator* pSvcLocator);
 
-  virtual ~ParticleGunAlg( ); ///< Destructor
+  virtual ~ParticleGunAlg();  ///< Destructor
 
   /** Algorithm initialization.
    *  -# Initializes the common Gaudi random number generator used in all
@@ -39,25 +39,20 @@ public:
    *  generated.
    *  -#
    */
-  virtual StatusCode execute   ();
+  virtual StatusCode execute();
 
   /** Algorithm finalization.
    *  Print generation counters.
    */
-  virtual StatusCode finalize  ();
+  virtual StatusCode finalize();
 
 private:
-  /// Location where to store generator events (set by options)
-  std::string  m_hepMCEventLocation ;
-
-  ToolHandle<IParticleGunTool> m_particleGunTool; ///< Particle gun tool
-
-  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool; ///< Vertex smear tool
-
-  /// Name to put in the event
-  std::string m_particleGunName ;
+  /// Tool that interfaces to the actual particle gun
+  ToolHandle<IParticleGunTool> m_particleGunTool{"FlatSmearVertex/VertexSmearingToolPGun", this};
+  /// Tool that allows to smear vertex
+  ToolHandle<IVertexSmearingTool> m_vertexSmearingTool{"FlatSmearVertex/VertexSmearingToolPGun", this};
   /// The output handle for what is being produced
-  DataHandle<HepMC::GenEvent> m_hepmchandle;
+  DataHandle<HepMC::GenEvent> m_hepmchandle{"hepmc", Gaudi::DataHandle::Writer, this};
 };
 
 #endif

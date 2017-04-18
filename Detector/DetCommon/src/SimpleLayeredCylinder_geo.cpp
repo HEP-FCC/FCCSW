@@ -25,19 +25,17 @@ static DD4hep::Geometry::Ref_t createSimpleLayeredCylinder(DD4hep::Geometry::LCD
   DD4hep::Geometry::Volume envVolume(name, envelope, lcdd.material(dimensions.materialStr()));
 
   // Create layer cylinders with their respective material, etc
-  auto layers = xmlElement.children("layer");
-  auto numLayers = xmlElement.numChildren("layer", true);
+  auto layers = xmlElement.children(_Unicode(layer));
+  auto numLayers = xmlElement.numChildren(_Unicode(layer), true);
   // Joschka: Although this is awkward, it was the only way to loop through children I could find
   DD4hep::XML::Handle_t layer(layers.reset());
-  for(unsigned layerIdx = 0; layerIdx < numLayers; ++layerIdx) {
+  for (unsigned layerIdx = 0; layerIdx < numLayers; ++layerIdx) {
     DD4hep::XML::DetElement layerDet = static_cast<DD4hep::XML::DetElement>(layer);
     DD4hep::Geometry::Tube layerShape(layerDet.rmin(), layerDet.rmax(), layerDet.dz());
     std::string layerName = DD4hep::XML::_toString(layerIdx, "layer%d");
     DD4hep::Geometry::Volume layerVolume(layerName, layerShape, lcdd.material(layer.attr<std::string>("material")));
     DD4hep::Geometry::Position transLayer(0., 0., layerDet.z_offset());
-    envVolume.placeVolume(layerVolume,
-                          DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.),
-                          transLayer));
+    envVolume.placeVolume(layerVolume, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), transLayer));
     if (layer.hasAttr("vis")) {
       layerVolume.setVisAttributes(lcdd, layerDet.visStr());
     }
@@ -45,9 +43,8 @@ static DD4hep::Geometry::Ref_t createSimpleLayeredCylinder(DD4hep::Geometry::LCD
   }
 
   DD4hep::Geometry::Position trans(0., 0., dimensions.z_offset());
-  DD4hep::Geometry::PlacedVolume envPhys = experimentalHall.placeVolume(envVolume,
-                                                DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.),
-                                                trans));
+  DD4hep::Geometry::PlacedVolume envPhys =
+      experimentalHall.placeVolume(envVolume, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
   envPhys.addPhysVolID("system", xmlDet.id());
   detElement.setPlacement(envPhys);
   detElement.setVisAttributes(lcdd, xmlDet.visStr(), envVolume);

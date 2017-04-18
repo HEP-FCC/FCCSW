@@ -39,15 +39,19 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active volumes (if different than all)
-  std::vector<std::string> m_activeVolumeName;
+  Gaudi::Property<std::vector<std::string>> m_activeVolumeName{
+      this, "activeVolumeName", {"LAr_sensitive"}, "Name of active volumes (if different than all)"};
   /// Name of active layers for sampling calorimeter
-  std::vector<std::string> m_activeFieldName;
+  Gaudi::Property<std::vector<std::string>> m_activeFieldName{
+      this, "activeFieldName", {"active_layer"}, "Name of active layers for sampling calorimeter"};
   /// Name of the fields describing the segmented volume
-  std::vector<std::string> m_fieldNames;
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{
+      this, "fieldNames", {}, "Name of the fields describing the segmented volume"};
   /// Values of the fields describing the segmented volume
-  std::vector<int> m_fieldValues;
+  Gaudi::Property<std::vector<int>> m_fieldValues{
+      this, "fieldValues", {}, "Values of the fields describing the segmented volume"};
 };
 
 #endif /* RECCALORIMETER_NESTEDVOLUMESCALOTOOL_H */

@@ -4,13 +4,12 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 
 // STL
-#include <vector>
 #include <string>
+#include <vector>
 
 // forward declarations
 // from FWCore:
 class PodioDataSvc;
-
 
 /** @class PodioInput FWCore/components/PodioInput.h PodioInput.h
  *
@@ -20,7 +19,7 @@ class PodioDataSvc;
  */
 
 class PodioInput : public GaudiAlgorithm {
-  friend class AlgFactory<PodioInput> ;
+  friend class AlgFactory<PodioInput>;
 
 public:
   /// Constructor.
@@ -34,7 +33,7 @@ public:
 
 private:
   /// Name of collections to read. Set by option collections (this is temporary)
-  std::vector<std::string> m_collectionNames;
+  Gaudi::Property<std::vector<std::string>> m_collectionNames{this, "collections", {}, "Places of collections to read"};
   /// Collection IDs (retrieved with CollectionIDTable from ROOT file, using collection names)
   std::vector<int> m_collectionIDs;
   /// Data service: needed to register objects and get collection IDs. Just an observing pointer.

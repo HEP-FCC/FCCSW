@@ -9,20 +9,9 @@
 DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
-: GaudiAlgorithm(name, svcLoc) {
-  declareOutput("clusters", m_clusters, "calo/clusters");
-  declareProperty("towerTool", m_towerTool);
-  declarePrivateTool(m_towerTool, "SingleCaloTowerTool");
-  declareProperty("nEtaWindow", m_nEtaWindow = 5);
-  declareProperty("nPhiWindow", m_nPhiWindow = 15);
-  declareProperty("nEtaPosition", m_nEtaPosition = 3);
-  declareProperty("nPhiPosition", m_nPhiPosition = 3);
-  declareProperty("nEtaDuplicates", m_nEtaDuplicates = 2);
-  declareProperty("nPhiDuplicates", m_nPhiDuplicates = 2);
-  declareProperty("nEtaFinal", m_nEtaFinal = 5);
-  declareProperty("nPhiFinal", m_nPhiFinal = 15);
-  declareProperty("energyThreshold", m_energyThreshold = 3);
-  declareProperty("positionWindFraction", m_positionWindFraction = 0.0);
+    : GaudiAlgorithm(name, svcLoc) {
+  declareProperty("clusters", m_clusters, "Handle for calo clusters (output collection)");
+  declareProperty("towerTool", m_towerTool, "Handle for the tower building tool");
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {
@@ -51,9 +40,9 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
 StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 1. Create calorimeter towers (calorimeter grid in eta phi, all layers merged)
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
-  if( m_towerTool->buildTowers(m_towers) == 0 ) {
-     debug() << "Empty cell collection." << endmsg;
-     return StatusCode::SUCCESS;
+  if (m_towerTool->buildTowers(m_towers) == 0) {
+    debug() << "Empty cell collection." << endmsg;
+    return StatusCode::SUCCESS;
   }
   // 2. Find local maxima with sliding window, build preclusters, calculate their barycentre position
   // calculate the sum of first m_nEtaWindow bins in eta, for each phi tower
@@ -147,7 +136,6 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
               sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
             }
           }
-	  
           if (sumEnergyPos > m_positionWindFraction*m_energyThreshold) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
@@ -227,7 +215,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   debug() << "Pre-clusters size after duplicates removal: " << m_preClusters.size() << endmsg;
 
   // 6. Create final clusters
-    // currently only role of r is to calculate x,y,z position
+  // currently only role of r is to calculate x,y,z position
   double radius = m_towerTool->radiusForPosition();
   auto edmClusters = m_clusters.createAndPut();
   for (const auto clu : m_preClusters) {

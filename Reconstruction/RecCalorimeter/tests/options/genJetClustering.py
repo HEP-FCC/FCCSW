@@ -4,15 +4,15 @@ from Configurables import HepMCHistograms, JetHistograms
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 # dumps the HepMC::GenEvent
 dumper = HepMCDumper("Dumper")
-dumper.DataInputs.hepmc.Path="hepmc"
+dumper.hepmc.Path="hepmc"
 
 # creates histograms for HepMC
 genHisto = HepMCHistograms("GenHistograms")
-genHisto.DataInputs.hepmc.Path="hepmc"
+genHisto.hepmc.Path="hepmc"
 
 # runs sample jet clustering algorithm
 jets = HepMCJetClustering("ktCluster")
@@ -20,12 +20,12 @@ jets.JetAlgorithm = "kt"
 jets.RecominbationScheme = "E"
 jets.ConeRadius = 0.7
 jets.PtMin = 1
-jets.DataInputs.hepmc.Path="hepmc"
-jets.DataOutputs.jets.Path="ktJets"
+jets.hepmc.Path="hepmc"
+jets.jets.Path="ktJets"
 
 # creates histograms for jets
 jetHisto = JetHistograms("JetHistograms")
-jetHisto.DataInputs.jets.Path="ktJets"
+jetHisto.jets.Path="ktJets"
 
 # save all histograms
 THistSvc().Output = ["rec DATAFILE='GenHistograms.root' TYP='ROOT' OPT='RECREATE'"]

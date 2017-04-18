@@ -1,6 +1,6 @@
 //
 //  SimTrackHit.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 13/05/15.
 //
@@ -12,15 +12,13 @@
 #include "DataObjects/Point.h"
 #inlcude "/SurfaceData.h"
 
-
 class SimTrackHit {
 
-    Point entry;
-    Point exit;
-    float dE;
-    unsigned long ModuleID;
-    SurfaceData* surface;
+  Point entry;
+  Point exit;
+  float dE;
+  unsigned long ModuleID;
+  SurfaceData* surface;
 };
-
 
 #endif

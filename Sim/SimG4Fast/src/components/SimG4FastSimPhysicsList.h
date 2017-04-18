@@ -16,7 +16,7 @@
  *  @author Anna Zaborowska
  */
 
-class SimG4FastSimPhysicsList: public AlgTool, virtual public ISimG4PhysicsList {
+class SimG4FastSimPhysicsList : public AlgTool, virtual public ISimG4PhysicsList {
 public:
   explicit SimG4FastSimPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4FastSimPhysicsList();
@@ -36,8 +36,7 @@ public:
 
 private:
   /// Handle for the full physics list tool
-  ToolHandle<ISimG4PhysicsList> m_physicsListTool;
-
+  ToolHandle<ISimG4PhysicsList> m_physicsListTool{"SimG4FtfpBert", this, true};
 };
 
 #endif /* SIMG4FAST_G4FASTSIMPHYSICSLIST_H */

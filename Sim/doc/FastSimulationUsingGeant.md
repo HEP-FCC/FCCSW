@@ -123,14 +123,14 @@ The differences between the configuration file of the fast simulation (Examples/
     ~~~{.py}
     from Configurables import SimG4Alg,SimG4SaveSmearedParticles, SimG4PrimariesFromEdmTool
     saveparticlestool = SimG4SaveSmearedParticles("SimG4SaveSmearedParticles")
-    saveparticlestool.DataOutputs.particles.Path = "smearedParticles"
-    saveparticlestool.DataOutputs.particlesMCparticles.Path = "particleMCparticleAssociation"
+    saveparticlestool.particles.Path = "smearedParticles"
+    saveparticlestool.particlesMCparticles.Path = "particleMCparticleAssociation"
     # as for the full sim:
     savecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta"])
-    savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
-    savecaltool.DataOutputs.caloHits.Path = "caloHits"
+    savecaltool.positionedCaloHits.Path = "positionedCaloHits"
+    savecaltool.caloHits.Path = "caloHits"
     particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-    particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+    particle_converter.genParticles.Path = "allGenParticles"
 
     geantsim = SimG4Alg("SimG4Alg",
                          outputs = ["SimG4SaveSmearedParticles/SimG4SaveSmearedParticles", "SimG4SaveCalHits/saveCalHits"],

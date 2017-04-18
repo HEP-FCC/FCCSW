@@ -1,8 +1,8 @@
 #include "NoiseCaloCellsFromFileTool.h"
 
 // FCCSW
-#include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
@@ -10,6 +10,7 @@
 // Root
 #include "TFile.h"
 #include "TH1F.h"
+#include "TMath.h"
 
 DECLARE_TOOL_FACTORY(NoiseCaloCellsFromFileTool)
 
@@ -17,15 +18,6 @@ NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type, 
                                                        const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<INoiseCaloCellsTool>(this);
-  declareProperty("addPileup", m_addPileup = true);
-  declareProperty("noiseFileName", m_noiseFileName = "");
-  declareProperty("readoutName", m_readoutName = "ECalHitsPhiEta");
-  declareProperty("activeFieldName", m_activeFieldName = "active_layer");
-  declareProperty("elecNoiseHistoName", m_elecNoiseHistoName = "h_elecNoise_layer");
-  declareProperty("pileupHistoName", m_pileupHistoName = "h_pileup_layer");
-  declareProperty("numRadialLayers", m_numRadialLayers = 3);
-  // remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)
-  declareProperty("filterNoiseThreshold", m_filterThreshold = 3);
 }
 
 StatusCode NoiseCaloCellsFromFileTool::initialize() {
@@ -75,8 +67,8 @@ void NoiseCaloCellsFromFileTool::filterCellNoise(std::unordered_map<uint64_t, do
   // Erase a cell if it has energy bellow a threshold from the vector
   auto it = aCells.begin();
   while ((it = std::find_if(it, aCells.end(), [this](std::pair<const uint64_t, double>& p) {
-    return bool(p.second < m_filterThreshold * getNoiseConstantPerCell(p.first));
-  })) != aCells.end()) {
+            return bool(p.second < m_filterThreshold * getNoiseConstantPerCell(p.first));
+          })) != aCells.end()) {
     aCells.erase(it++);
   }
 }
@@ -92,7 +84,7 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
     error() << "Name of the file with noise values not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile file(m_noiseFileName.c_str(), "READ");
+  TFile file(m_noiseFileName.value().c_str(), "READ");
   if (file.IsZombie()) {
     error() << "Couldn't open the file with noise constants" << endmsg;
     return StatusCode::FAILURE;
@@ -107,7 +99,8 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
     debug() << "Getting histogram with a name " << elecNoiseLayerHistoName << endmsg;
     m_histoElecNoiseConst.push_back(*dynamic_cast<TH1F*>(file.Get(elecNoiseLayerHistoName.c_str())));
     if (m_histoElecNoiseConst.at(i).GetNbinsX() < 1) {
-      error() << "Histogram  " << elecNoiseLayerHistoName << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
+      error() << "Histogram  " << elecNoiseLayerHistoName
+              << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
       return StatusCode::FAILURE;
     }
     if (m_addPileup) {
@@ -115,8 +108,9 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
       debug() << "Getting histogram with a name " << pileupLayerHistoName << endmsg;
       m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file.Get(pileupLayerHistoName.c_str())));
       if (m_histoPileupConst.at(i).GetNbinsX() < 1) {
-	error() << "Histogram  " << pileupLayerHistoName << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
-	return StatusCode::FAILURE;
+        error() << "Histogram  " << pileupLayerHistoName
+                << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
+        return StatusCode::FAILURE;
       }
     }
   }

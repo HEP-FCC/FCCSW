@@ -1,30 +1,29 @@
 
-#include "DD4hep/Printout.h"
-#include "DD4hep/Objects.h"
 #include "DD4hep/Factories.h"
+#include "DD4hep/Objects.h"
+#include "DD4hep/Printout.h"
 
 #include "podio/EventStore.h"
 #include "podio/ROOTReader.h"
 
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/PositionedCaloHitCollection.h"
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
+#include "datamodel/PositionedTrackHitCollection.h"
+#include "datamodel/TrackHitCollection.h"
 
-#include "TSystem.h"
 #include "TGMsgBox.h"
+#include "TSystem.h"
 
-#include <stdexcept>
 #include <climits>
+#include <stdexcept>
 
 #include "FCCEventHandler.h"
 
 using DD4hep::DDEveParticleActor;
 using DD4hep::DDEveHitActor;
 using DD4hep::DDEveHit;
-
 
 static void* _createFCCEventHandler(const char*) {
   vis::FCCEventHandler* h = new vis::FCCEventHandler();
@@ -61,7 +60,7 @@ DD4hep::EventHandler::CollectionType FCCEventHandler::collectionType(const std::
     return NO_COLLECTION;
 }
 
-template<typename T>
+template <typename T>
 void clusterEveConversion(T& hitcoll, DDEveHitActor& actor) {
   int collsize = hitcoll->size();
   actor.setSize(collsize);
@@ -73,20 +72,21 @@ void clusterEveConversion(T& hitcoll, DDEveHitActor& actor) {
   }
 }
 
-
 /// Call functor on hit collection
 size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitActor& actor) {
   const podio::CollectionBase* collBase(nullptr);
   bool clusterPresent = m_podioStore.get(collection, collBase);
   if (clusterPresent) {
-    const fcc::PositionedTrackHitCollection* trackHitColl = dynamic_cast<const fcc::PositionedTrackHitCollection*>(collBase);
+    const fcc::PositionedTrackHitCollection* trackHitColl =
+        dynamic_cast<const fcc::PositionedTrackHitCollection*>(collBase);
     if (nullptr != trackHitColl) {
       int collsize = trackHitColl->size();
       m_data[collection].back().second = collsize;
       clusterEveConversion(trackHitColl, actor);
       return collsize;
     }
-    const fcc::PositionedCaloHitCollection* caloHitColl = dynamic_cast<const fcc::PositionedCaloHitCollection*>(collBase);
+    const fcc::PositionedCaloHitCollection* caloHitColl =
+        dynamic_cast<const fcc::PositionedCaloHitCollection*>(collBase);
     if (nullptr != caloHitColl) {
       int collsize = caloHitColl->size();
       m_data[collection].back().second = collsize;
@@ -99,7 +99,7 @@ size_t FCCEventHandler::collectionLoop(const std::string& collection, DDEveHitAc
 
 /// Loop over collection and extract particle data
 size_t FCCEventHandler::collectionLoop(const std::string&, DDEveParticleActor&) {
-  ///TODO: implement (reconstructed particles not available in FCCSW yet)
+  /// TODO: implement (reconstructed particles not available in FCCSW yet)
   return 0;
 }
 
@@ -138,5 +138,4 @@ bool FCCEventHandler::GotoEvent(long /* event_number */) {
   throw std::runtime_error("+++ This version of the reader can only access files sequentially!\n"
                            "+++ Random access is not supported.");
 }
-
 }
