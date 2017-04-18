@@ -119,8 +119,8 @@ private:
   int m_nPhiFinal;
   /// Energy threshold for cluster finding
   float m_energyThreshold;
-  /// Flag if references to the cells should be saved
-  bool m_saveCells;
+  /// Energy fraction in the position calculation
+  float m_positionWindFraction;
   /// Flag if in each event the number of eta towers should be recalculated (true: default, false: if m_towerTool has etaMax defined)
   bool m_recalculateEtaTowers;
 };

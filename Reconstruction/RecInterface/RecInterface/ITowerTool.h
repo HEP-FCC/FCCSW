@@ -31,14 +31,6 @@ public:
    *   @return Size of the cell collection.
    */
   virtual uint buildTowers(std::vector<std::vector<float>> & aTowers) = 0;
-  /**  Find cells belonging to a cluster.
-   *   @param[in] aEta Position of the middle tower of a cluster in eta
-   *   @param[in] aPhi Position of the middle tower of a cluster in phi
-   *   @param[in] aHalfEtaFinal Half size of cluster in eta (in units of tower size). Cluster size is 2*aHalfEtaFinal+1
-   *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
-   *   @param[out] aEdmCluster Cluster where cells are attached to
-   */
-  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal, fcc::CaloCluster& aEdmCluster) = 0;
   /**  Get the radius for the position calculation.
    *   @return Radius
    */

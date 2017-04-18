@@ -22,7 +22,7 @@ CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::stri
   declareProperty("nEtaFinal", m_nEtaFinal = 5);
   declareProperty("nPhiFinal", m_nPhiFinal = 15);
   declareProperty("energyThreshold", m_energyThreshold = 3);
-  declareProperty("saveCells", m_saveCells = false);
+  declareProperty("positionWindFraction", m_positionWindFraction = 0.0);
 }
 
 StatusCode CreateCaloClustersSlidingWindow::initialize() {
@@ -136,27 +136,38 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         // Build precluster
         if (!toRemove) {
           // Calculate barycentre position (usually smaller window used to reduce noise influence)
+	  posEta = 0;
+	  posPhi = 0;
+	  sumEnergyPos = 0;
 	  //weighted mean for position in eta and phi (weights must be non-negative!)
           for (int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
             for (int ipPhi = iPhi - halfPhiPos; ipPhi <= iPhi + halfPhiPos; ipPhi++) {
               posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
-              posPhi += m_towerTool->phi(phiNeighbour(ipPhi)) * m_towers[ipEta][phiNeighbour(ipPhi)];
+              posPhi += m_towerTool->phi(ipPhi) * m_towers[ipEta][phiNeighbour(ipPhi)];
               sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
             }
           }
-          if (sumEnergyPos > 0) {
+	  
+          if (sumEnergyPos > m_positionWindFraction*m_energyThreshold) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
-            // Final cluster position         
-            idEtaFin = m_towerTool->idEta(posEta);
-            idPhiFin = m_towerTool->idPhi(posPhi);
 	  }
 	  else {
-	    idEtaFin = iEta;
-	    idPhiFin = iPhi;
+	    debug() << "Small ene fraction for position calculation " <<  m_towerTool->eta(iEta) << " " << m_towerTool->phi(iPhi) << " " << posEta << " " << posPhi << " " << sumEnergyPos << endmsg;
+	    posEta = m_towerTool->eta(iEta);
+	    posPhi = m_towerTool->phi(iPhi);
+	  }
+	  if (posPhi<-M_PI) {
+	    posPhi += M_PI;
+	  }
+	  else if (posPhi>M_PI) {
+	    posPhi -= M_PI;
 	  }
 	  // Calculate final cluster energy 
 	  sumEnergyFin = 0;
+          // Final cluster position         
+	  idEtaFin = m_towerTool->idEta(posEta);
+	  idPhiFin = m_towerTool->idPhi(posPhi);
 	  // Recalculating the energy within the final cluster size
 	  for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
 	    for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
@@ -172,11 +183,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
 	    newPreCluster.phi = posPhi;
 	    newPreCluster.transEnergy = sumEnergyFin;
 	    m_preClusters.push_back(newPreCluster);
-	  }
-	
-	  posEta = 0;
-	  posPhi = 0;
-	  sumEnergyPos = 0;
+	  }	
 	}
       }
       toRemove = false;
@@ -233,10 +240,6 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
     debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x << " y: "
             << edmClusterCore.position.y << " z: " << edmClusterCore.position.z << " energy: " << edmClusterCore.energy
             << endmsg;
-    if (m_saveCells) {
-       // fins cells that belong to the cluster
-       m_towerTool->matchCells(clu.eta, clu.phi, halfEtaWin, halfPhiWin, edmCluster);
-    }
   }
   return StatusCode::SUCCESS;
 }

@@ -63,14 +63,6 @@ public:
    *   @return Size of the cell collection.
    */
   virtual uint buildTowers(std::vector<std::vector<float>> & aTowers) final;
-  /**  Find cells belonging to a cluster.
-   *   @param[in] aEta Position of the middle tower of a cluster in eta
-   *   @param[in] aPhi Position of the middle tower of a cluster in phi
-   *   @param[in] aHalfEtaFinal Half size of cluster in eta (in units of tower size). Cluster size is 2*aHalfEtaFinal+1
-   *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
-   *   @param[out] aEdmCluster Cluster where cells are attached to
-   */
-  virtual void matchCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal, fcc::CaloCluster& aEdmCluster) final;
   /**  Get the radius (in mm) for the position calculation.
    *   Reconstructed cluster has eta and phi position, without the radial coordinate. The cluster in EDM contains Cartesian position, so the radial position (e.g. the inner radius of the calorimeter)
    *   needs to be specified. By default it is equal to 1.

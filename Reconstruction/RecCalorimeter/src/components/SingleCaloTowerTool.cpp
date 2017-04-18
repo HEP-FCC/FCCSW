@@ -177,19 +177,6 @@ float SingleCaloTowerTool::phi(int aIdPhi) const {
   //return (aIdPhi * m_deltaPhiTower - m_phiMax);
 }
 
-void SingleCaloTowerTool::matchCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
-  const fcc::CaloHitCollection* cells = m_cells.get();
-  for (const auto& cell : *cells) {
-    float etaCell = m_segmentation->eta(cell.core().cellId);
-    float phiCell = m_segmentation->phi(cell.core().cellId);
-    if ((abs(idEta(etaCell) - idEta(eta)) <= halfEtaFin) &&
-        (abs(idPhi(phiCell) - idPhi(phi)) <= halfPhiFin)) {
-       aEdmCluster.addhits(cell);
-    }
-  }
-  return;
-}
-
 float SingleCaloTowerTool::radiusForPosition() const {
   return m_radius;
 }
