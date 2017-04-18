@@ -145,11 +145,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
 	    posEta = m_towerTool->eta(iEta);
 	    posPhi = m_towerTool->phi(iPhi);
 	  }
-	  if (posPhi<-M_PI) {
-	    posPhi += M_PI;
-	  }
-	  else if (posPhi>M_PI) {
-	    posPhi -= M_PI;
+	  if (fabs(posPhi)>M_PI) {
+	    posPhi += - 2 * M_PI * posPhi / fabs(posPhi);
 	  }
 	  // Calculate final cluster energy 
 	  sumEnergyFin = 0;
