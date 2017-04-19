@@ -216,15 +216,56 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   double radius = m_towerTool->radiusForPosition();
   auto edmClusters = m_clusters.createAndPut();
   for (const auto clu : m_preClusters) {
-    auto edmCluster = edmClusters->create();
-    auto& edmClusterCore = edmCluster.core();
-    edmClusterCore.position.x = radius * cos(clu.phi);
-    edmClusterCore.position.y = radius * sin(clu.phi);
-    edmClusterCore.position.z = radius * sinh(clu.eta);
-    edmClusterCore.energy = clu.transEnergy * cosh(clu.eta);
-    debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x << " y: "
-            << edmClusterCore.position.y << " z: " << edmClusterCore.position.z << " energy: " << edmClusterCore.energy
-            << endmsg;
+    float clusterEnergy = clu.transEnergy * cosh(clu.eta);
+    //apply energy sharing correction (if flag set to true)
+    if (m_energySharingCorrection) {
+      int idEtaCl = m_towerTool->idEta(clu.eta);
+      int idPhiCl = m_towerTool->idPhi(clu.phi);
+      std::vector<std::vector<float>> sumEnergySharing;
+      sumEnergySharing.assign(2*halfEtaFin+1, std::vector<float>(2*halfPhiFin+1, 0));
+      for (const auto iclu : m_preClusters) {
+	int idEtaIcl = m_towerTool->idEta(iclu.eta);
+	int idPhiIcl = m_towerTool->idPhi(iclu.phi);
+	if (idEtaCl!=idEtaIcl && idPhiCl != idPhiIcl) {
+	  if (abs(idEtaIcl - idEtaCl)<=halfEtaFin && abs(idPhiIcl - idPhiCl)<=halfPhiFin) {
+	    int iEtaShareMin = (idEtaIcl < idEtaCl) ? idEtaCl-halfEtaFin : idEtaIcl-halfEtaFin;
+	    int iEtaShareMax = (idEtaIcl < idEtaCl) ? idEtaIcl+halfEtaFin : idEtaCl+halfEtaFin;
+	    int iPhiShareMin = (idPhiIcl < idPhiCl) ? idPhiCl-halfPhiFin : idPhiIcl-halfPhiFin;
+	    int iPhiShareMax = (idPhiIcl < idPhiCl) ? idPhiIcl+halfPhiFin : idPhiCl+halfPhiFin;
+	    for (int iEta = iEtaShareMin; iEta <= iEtaShareMax; iEta++) {
+	      for (int iPhi = iPhiShareMin; iPhi <= iPhiShareMax; iPhi++) {
+		if (iEta >= 0 && iEta < m_nEtaTower) { // check if we are not outside of map in eta     
+		  sumEnergySharing[iEta-idEtaCl+halfEtaFin][iPhi-idPhiCl+halfPhiFin] += m_towers[iEta][phiNeighbour(iPhi)]*cosh(m_towerTool->eta(iEta));
+		}
+	      }
+	    }
+	  }
+	}
+      }
+      for (int iEta =  idEtaCl-halfEtaFin; iEta <= idEtaCl+halfEtaFin; iEta++) { 
+	for (int iPhi = idPhiCl-halfPhiFin; iPhi <= idPhiCl+halfPhiFin; iPhi++) {
+	  if (sumEnergySharing[iEta-idEtaCl+halfEtaFin][iPhi-idPhiCl+halfPhiFin] !=0 ) {
+	    float sumButOne = sumEnergySharing[iEta-idEtaCl+halfEtaFin][iPhi-idPhiCl+halfPhiFin];
+	    float towerEnergy = m_towers[iEta][phiNeighbour(iPhi)]*cosh(m_towerTool->eta(iEta));
+	    clusterEnergy -= towerEnergy * sumButOne / (sumButOne + towerEnergy);
+	    //debug() << "Applying energy sharing correction: iEta " << iEta << " iEtaCl " << idEtaCl << " iPhi " << iPhi << " iPhiCl " << idPhiCl << " ene " << clu.transEnergy * cosh(clu.eta) << " correction weight " << sumButOne / (sumButOne + towerEnergy) << " total correction " << towerEnergy * sumButOne / (sumButOne + towerEnergy) << endmsg;
+
+	  }
+	}
+      }
+    }
+    //check ET thereshold once more (ET could change with the energy sharing correction)
+    if ( clusterEnergy / cosh(clu.eta) > m_energyThreshold) {
+      auto edmCluster = edmClusters->create();
+      auto& edmClusterCore = edmCluster.core();
+      edmClusterCore.position.x = radius * cos(clu.phi);
+      edmClusterCore.position.y = radius * sin(clu.phi);
+      edmClusterCore.position.z = radius * sinh(clu.eta);
+      edmClusterCore.energy = clusterEnergy;
+      debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x << " y: "
+	      << edmClusterCore.position.y << " z: " << edmClusterCore.position.z << " energy: " << edmClusterCore.energy
+	      << endmsg; 
+    }
   }
   return StatusCode::SUCCESS;
 }

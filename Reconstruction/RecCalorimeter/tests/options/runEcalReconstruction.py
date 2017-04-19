@@ -56,7 +56,7 @@ ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   fieldValues = ecalFieldValues,
                                   # to make it working with MergeLayers algorithm
                                   activeVolumesNumber = ecalNumberOfLayers,
-                                  OutputLevel = DEBUG)
+                                  OutputLevel = INFO)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
@@ -65,7 +65,7 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool = calibcells,
                               addCellNoise = True, filterCellNoise = False,
                               noiseTool = noise,
-                              OutputLevel = DEBUG)
+                              OutputLevel = INFO)
 createcells.hits.Path="mergedECalHits"
 createcells.cells.Path="caloCells"
 
@@ -75,22 +75,22 @@ from GaudiKernel.PhysicalConstants import pi
 towers = SingleCaloTowerTool("towers",
                              deltaEtaTower = 0.005, deltaPhiTower = 2*pi/(629.*3),
                              readoutName = ecalReadoutName,
-                             OutputLevel = DEBUG)
+                             OutputLevel = INFO)
 towers.cells.Path = "caloCells"
 
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
-                                                 nEtaWindow = 10, nPhiWindow = 30,
-                                                 nEtaPosition = 10, nPhiPosition = 15,
-                                                 nEtaDuplicates = 10, nPhiDuplicates = 30,
-                                                 nEtaFinal = 10, nPhiFinal = 30,
+                                                 nEtaWindow = 10, nPhiWindow = 15,
+                                                 nEtaPosition = 7, nPhiPosition = 10,
+                                                 nEtaDuplicates = 10, nPhiDuplicates = 15,
+                                                 nEtaFinal = 10, nPhiFinal = 15,
                                                  energyThreshold = 8,
                                                  positionWindFraction = 0.25,
-                                                 OutputLevel = DEBUG)
+                                                 OutputLevel = INFO)
 createclusters.clusters.Path = "caloClusters"
 
 out = PodioOutput("output", filename = "output_ecalReco_noiseFromFile_test.root",
-                   OutputLevel = DEBUG)
+                   OutputLevel = INFO)
 out.outputCommands = ["keep *"]
 
 #CPU information
