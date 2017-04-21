@@ -122,7 +122,7 @@ private:
   /// Energy fraction in the position calculation
   Gaudi::Property<float> m_positionWindFraction{this, "positionWindFraction", 0.25};
   /// Apply correction for energy sharing between clusters?
-  Gaudi::Property<bool> m_energySharingCorrection{this, "energySharingCorrection", false};
+  Gaudi::Property<bool> m_energySharingCorrection{this, "energySharingCorrection", true};
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */

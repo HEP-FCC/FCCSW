@@ -71,7 +71,6 @@ StatusCode CreateCaloCells::execute() {
   } else {
     m_cellsMap.clear();
   }
-
   debug() << m_cellsMap.size() << endmsg;
 
   // 1. Merge energy deposits into cells
