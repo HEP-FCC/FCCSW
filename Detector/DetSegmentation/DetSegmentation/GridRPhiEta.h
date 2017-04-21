@@ -81,7 +81,6 @@ public:
 private:
   /// determine the radial distance R based on the current cell ID
   double r() const;
-
   /// the grid size in r
   double m_gridSizeR;
   /// the coordinate offset in r
