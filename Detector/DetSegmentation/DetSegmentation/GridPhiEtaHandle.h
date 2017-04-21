@@ -73,31 +73,31 @@ public:
     return access()->implementation->cellID(local, global, volID);
   }
 
-  /// access the grid size in R
+  /// access the grid size in eta
   inline double gridSizeEta() const { return access()->implementation->gridSizeEta(); }
 
   /// access the grid size in Phi
   inline int phiBins() const { return access()->implementation->phiBins(); }
 
-  /// access the coordinate offset in R
+  /// access the coordinate offset in eta
   inline double offsetEta() const { return access()->implementation->offsetEta(); }
 
   /// access the coordinate offset in Phi
   inline double offsetPhi() const { return access()->implementation->offsetPhi(); }
 
-  /// set the coordinate offset in R
+  /// set the coordinate offset in eta
   inline void setOffsetEta(double offset) const { access()->implementation->setOffsetEta(offset); }
 
   /// set the coordinate offset in Phi
   inline void setOffsetPhi(double offset) const { access()->implementation->setOffsetPhi(offset); }
 
-  /// set the grid size in R
+  /// set the grid size in eta
   inline void setGridSizeEta(double cellSize) const { access()->implementation->setGridSizeEta(cellSize); }
 
   /// set the grid size in Phi
   inline void setPhiBins(int cellSize) const { access()->implementation->setPhiBins(cellSize); }
 
-  /// access the field name used for R
+  /// access the field name used for eta
   inline const std::string& fieldNameEta() const { return access()->implementation->fieldNameEta(); }
 
   /// access the field name used for Phi
@@ -119,4 +119,4 @@ public:
 
 } /* End namespace Geometry              */
 } /* End namespace DD4hep                */
-#endif  // DD4HEP_DDCORE_POLARGRIDRPHI_H
+#endif  // DD4HEP_DDCORE_GRIDPHIETA_H

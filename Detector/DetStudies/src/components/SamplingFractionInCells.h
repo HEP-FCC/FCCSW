@@ -18,6 +18,12 @@ class ITHistSvc;
 
 /** @class SamplingFractionInCells SamplingFractionInCells.h
  *
+ *  Histograms of energy deposited in active material and total energy deposited in the calorimeter.
+ *  Passive material needs to be marked as sensitive. It needs to be divided into layers (cells) as active material.
+ *  Layers (cells) are numbered starting at 1 so that energy depoisted in cryostat and bath could be easily recognised.
+ *  Sampling fraction is calculated for each layer as the ratio of energy deposited in active material to energy
+ *  deposited in the layer (also in passive material).
+ *
  *  @author Anna Zaborowska
  */
 
@@ -56,12 +62,18 @@ public:
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   // Maximum energy for the axis range
   Gaudi::Property<double> m_energy{this, "energyAxis", 500, "Maximum energy for axis range"};
-  // histograms
+  // Histograms of total deposited energy within layer
+  // Layers are numbered starting at 1. Layer 0 includes total energy deposited in cryostat and bath (in front and behind calo)
   std::vector<TH1F*> m_cellsEnergy;
+  // Histogram of total deposited energy in the calorimeter (in active and passive material, excluding cryostat and bath)
   TH1F* m_totalEnergy;
+  // Histograms of energy deposited in the active material within layer
   std::vector<TH1F*> m_cellsActiveEnergy;
+  // Histogram of energy deposited in the active material of the calorimeter
   TH1F* m_totalActiveEnergy;
+  // Histograms of sampling fraction (active/total energy) calculated within layer
   std::vector<TH1F*> m_cellsSF;
+  // Histogram of sampling fraction (active/total energy) calculated for the calorimeter (excluding cryostat and bath)
   TH1F* m_SF;
 };
 #endif /* DETSTUDIES_SAMPLINGFRACTIONINCELLS_H */

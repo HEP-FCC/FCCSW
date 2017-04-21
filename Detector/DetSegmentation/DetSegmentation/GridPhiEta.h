@@ -8,7 +8,6 @@
  *
  *  Segmentation in eta and phi.
  *  Based on GridEta, addition of azimuthal angle coordinate.
- *  It requires 'export LD_PRELOAD_PATH=$LD_PRELOAD_PATH:build.$BINARY_TAG/lib/libDetSegmentation.so'
  *
  *  @author    Anna Zaborowska
  */
