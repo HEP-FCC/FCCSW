@@ -45,14 +45,14 @@
   </display>
 
   <readouts>
-    <readout name="ECalHitsPhiEta">
-      <segmentation type="GridRPhiEta" grid_size_eta="0.01" phi_bins="1" grid_size_r="2*cm" offset_r="EMBarrel_rmin-2*cm"/>
-      <id>system:4,active:11,cell:6,readout:11,passive:11,subpassive:3,eta:-10,phi:-2,r:6</id>
+    <readout name="ECalHitsEta">
+      <segmentation type="GridEta" grid_size_eta="0.01"/>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,cell:6,eta:-10,phi:-2</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsPhiEta">
+    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
       <cryostat name="ECAL_Cryo">

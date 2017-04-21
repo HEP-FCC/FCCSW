@@ -82,7 +82,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     DD4hep::Geometry::SubtractionSolid cryo_shape(cryo_outer_shape, bath_outer_shape);
 
     // 1. Create cryostat
-    lLog << MSG::DEBUG << "ECAL cryostat: rmin (cm) = " << cryo_dim.rmin1() << " rmax (cm) = "
+    lLog << MSG::INFO << "ECAL cryostat: rmin (cm) = " << cryo_dim.rmin1() << " rmax (cm) = "
          << cryo_dim.rmax2() << " thickness in front of ECal (cm) = " << cryo_thickness_front
          << " thickness behind ECal (cm) = " << cryo_thickness_back << endmsg;
     DD4hep::Geometry::Volume cryo_vol(cryostat.nameStr(), cryo_shape, aLcdd.material(cryostat.materialStr()));
@@ -90,7 +90,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     if(cryostat.isSensitive()) {
       cryo_vol.setSensitiveDetector(aSensDet);
       cryo_physvol.addPhysVolID("cryo", 1);
-      lLog << MSG::DEBUG << "Cryostat volume set as sensitive" << endmsg;
+      lLog << MSG::INFO << "Cryostat volume set as sensitive" << endmsg;
     }
     DD4hep::Geometry::DetElement cryo_element (det_element,"cryo",0);
     cryo_element.setPlacement(cryo_physvol);
@@ -98,7 +98,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   // 2. Create bath that is inside the cryostat and surrounds the calorimeter
   //    Bath is filled with active material -> but not sensitive
   DD4hep::Geometry::Volume bath_vol(active_mat + "_bath", bath_outer_shape, aLcdd.material(active_mat));
-  lLog << MSG::DEBUG << "ECAL bath: material = " << active_mat << " rmin (cm) =  "
+  lLog << MSG::INFO << "ECAL bath: material = " << active_mat << " rmin (cm) =  "
        << bath_rmin << " rmax (cm) = " << bath_rmax
        << " thickness in front of ECal (cm) = " << calo_dim.rmin() - cryo_dim.rmin2()
        << " thickness behind ECal (cm) = " << cryo_dim.rmax1() - calo_dim.rmax()  << endmsg;
@@ -108,33 +108,33 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   DD4hep::Geometry::SensitiveDetector sd = aSensDet;
   DD4hep::XML::Dimension sd_typ = xml_det.child(_U(sensitive));
   sd.setType(sd_typ.typeStr());
-  lLog << MSG::DEBUG << "ECAL calorimeter volume rmin (cm) =  "
+  lLog << MSG::INFO << "ECAL calorimeter volume rmin (cm) =  "
        << calo_dim.rmin() << " rmax (cm) = " << calo_dim.rmax() << endmsg;
 
   // 3.a. Create the passive planes, readout in between of 2 passive planes and the remaining space fill with active material
   //////////////////////////////
   // PASSIVE PLANES
   //////////////////////////////
-  lLog << MSG::DEBUG << "passive inner material = " << passive_inner_mat << " and outer material = "
+  lLog << MSG::INFO << "passive inner material = " << passive_inner_mat << " and outer material = "
        << passive_outer_mat << " thickness of inner part (cm) =  "
        << passive_inner_thickness << " thickness of outer part (cm) =  "
        << passive_outer_thickness << " thickness of total (cm) =  "
        << passive_thickness << " rotation angle = " << angle << endmsg;
   uint numPlanes = M_PI / asin( (passive_thickness + active_thickness + readout_thickness) / (2. * calo_dim.rmin() * cos(angle) )) ;
   double dPhi = 2. * M_PI / numPlanes;
-  lLog << MSG::DEBUG << "number of passive plates = " << numPlanes << " azim. angle difference =  " << dPhi << endmsg;
-  lLog << MSG::DEBUG << " distance at inner radius (cm) = " << 2. * M_PI * calo_dim.rmin() / numPlanes
+  lLog << MSG::INFO << "number of passive plates = " << numPlanes << " azim. angle difference =  " << dPhi << endmsg;
+  lLog << MSG::INFO << " distance at inner radius (cm) = " << 2. * M_PI * calo_dim.rmin() / numPlanes
        << " distance at outer radius (cm) = " << 2. * M_PI * calo_dim.rmax() / numPlanes << endmsg;
   // Readout is in the middle between two passive planes
   double offsetPassivePhi = calo_dim.offset() + dPhi / 2.;
   double offsetReadoutPhi = calo_dim.offset() + 0;
-  lLog << MSG::DEBUG << "readout material = " << readout_mat << " thickness of readout planes (cm) =  "
+  lLog << MSG::INFO << "readout material = " << readout_mat << " thickness of readout planes (cm) =  "
        << readout_thickness << " number of readout cells = " << numCells << endmsg;
   double Rmin = calo_dim.rmin();
   double Rmax = calo_dim.rmax();
   double dR = Rmax - Rmin;
   double plane_length = - Rmin * cos(angle) + sqrt( pow(Rmax,2) - pow( Rmin * sin(angle), 2) );
-  lLog << MSG::DEBUG << "thickness of calorimeter (cm) = " << dR << " length of passive or readout planes (cm) =  "
+  lLog << MSG::INFO << "thickness of calorimeter (cm) = " << dR << " length of passive or readout planes (cm) =  "
        << plane_length << endmsg;
   DD4hep::Geometry::Box passive_shape(passive_thickness / 2., calo_dim.dz(), plane_length / 2.);
   DD4hep::Geometry::Box passive_inner_shape(passive_inner_thickness / 2., calo_dim.dz(), plane_length / 2.);
@@ -152,7 +152,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   double cell_height = plane_length / numCells;
   double cell_offset = - plane_length / 2. + cell_height / 2.;
   if(passive_inner.isSensitive()) {
-     lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
+     lLog << MSG::INFO << "Passive inner volume set as sensitive" << endmsg;
      DD4hep::Geometry::Box cell_passive_inner_shape(passive_inner_thickness / 2., calo_dim.dz(), cell_height / 2.);
      DD4hep::Geometry::Volume cell_passive_inner_vol(passive_inner_mat, cell_passive_inner_shape , aLcdd.material(passive_inner_mat));
      cell_passive_inner_vol.setSensitiveDetector(aSensDet);
@@ -166,7 +166,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
      }
   }
   if(passive_outer.isSensitive()) {
-     lLog << MSG::DEBUG << "Passive outer volume set as sensitive" << endmsg;
+     lLog << MSG::INFO << "Passive outer volume set as sensitive" << endmsg;
      DD4hep::Geometry::Box cell_passive_outer_shape(passive_outer_thickness / 4., calo_dim.dz(), cell_height / 2.);
      DD4hep::Geometry::Volume cell_passive_outer_vol(passive_outer_mat, cell_passive_outer_shape , aLcdd.material(passive_outer_mat));
      cell_passive_outer_vol.setSensitiveDetector(aSensDet);
@@ -180,7 +180,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
      }
   }
   if(passive_glue.isSensitive()) {
-     lLog << MSG::DEBUG << "Passive glue volume set as sensitive" << endmsg;
+     lLog << MSG::INFO << "Passive glue volume set as sensitive" << endmsg;
      DD4hep::Geometry::Box cell_passive_glue_shape(passive_glue_thickness / 4., calo_dim.dz(), cell_height / 2.);
      DD4hep::Geometry::Volume cell_passive_glue_vol(passive_glue_mat, cell_passive_glue_shape , aLcdd.material(passive_glue_mat));
      cell_passive_glue_vol.setSensitiveDetector(aSensDet);
@@ -204,11 +204,11 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     DD4hep::Geometry::Position(- passive_inner_thickness / 2. - passive_glue_thickness / 4., 0, 0));
   DD4hep::Geometry::PlacedVolume passive_glue_physvol_above = passive_vol.placeVolume(passive_glue_vol,
     DD4hep::Geometry::Position( passive_inner_thickness / 2. + passive_glue_thickness / 4., 0, 0));
-  passive_inner_physvol.addPhysVolID("subpassive",2);
-  passive_outer_physvol_below.addPhysVolID("subpassive",1);
-  passive_outer_physvol_above.addPhysVolID("subpassive",3);
-  passive_glue_physvol_below.addPhysVolID("subpassive",4);
-  passive_glue_physvol_above.addPhysVolID("subpassive",5);
+  passive_inner_physvol.addPhysVolID("subtype",2);
+  passive_outer_physvol_below.addPhysVolID("subtype",1);
+  passive_outer_physvol_above.addPhysVolID("subtype",3);
+  passive_glue_physvol_below.addPhysVolID("subtype",4);
+  passive_glue_physvol_above.addPhysVolID("subtype",5);
 
   //////////////////////////////
   // READOUT PLANES
@@ -216,7 +216,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
   DD4hep::Geometry::Box readout_shape(readout_thickness / 2., calo_dim.dz(), plane_length / 2.);
   DD4hep::Geometry::Volume readout_vol(readout_mat, readout_shape , aLcdd.material(readout_mat));
   if(readout.isSensitive()) {
-     lLog << MSG::DEBUG << "Readout volume set as sensitive" << endmsg;
+     lLog << MSG::INFO << "Readout volume set as sensitive" << endmsg;
      DD4hep::Geometry::Box cell_readout_shape(readout_thickness / 2., calo_dim.dz(), cell_height / 2.);
      DD4hep::Geometry::Volume cell_readout_vol(readout_mat, cell_readout_shape , aLcdd.material(readout_mat));
      cell_readout_vol.setSensitiveDetector(aSensDet);
@@ -255,10 +255,10 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
     - 2. * active_passive_overlap * passive_thickness;
   double active_out_thck_after_subtr = 2. * active_out_thck - readout_thickness
     - 2.* active_passive_overlap * passive_thickness;
-  lLog << MSG::DEBUG << "active material = " << active_mat << " active cells thickness at inner radius (cm) = "
+  lLog << MSG::INFO << "active material = " << active_mat << " active cells thickness at inner radius (cm) = "
        << active_in_thck_after_subtr << " thickness at outer radious (cm) = " << active_out_thck_after_subtr << " making "
        << (active_out_thck_after_subtr - active_in_thck_after_subtr) * 100 / active_in_thck_after_subtr << " % increase." << endmsg;
-  lLog << MSG::DEBUG << "active passive initial overlap (before subtraction) (cm) = " << passive_thickness * active_passive_overlap << " = "
+  lLog << MSG::INFO << "active passive initial overlap (before subtraction) (cm) = " << passive_thickness * active_passive_overlap << " = "
        <<  active_passive_overlap * 100 << " %"  << endmsg;
 
   // creating shape for rows of cells (active material between two passive planes, with readout in the middle)
@@ -347,7 +347,8 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
         - phi - angle),
       DD4hep::Geometry::Position( xRotated, yRotated, 0) );
     DD4hep::Geometry::PlacedVolume passive_physvol = bath_vol.placeVolume(passive_vol, transform);
-    passive_physvol.addPhysVolID("passive", iPlane+1);
+    passive_physvol.addPhysVolID("module", iPlane+1);
+    passive_physvol.addPhysVolID("type", 1); // 0 = active, 1 = passive, 2 = readout
     DD4hep::Geometry::DetElement passive_element (bath_element, "passive"+std::to_string(iPlane+1),iPlane+1);
     passive_element.setPlacement(passive_physvol);
 
@@ -367,7 +368,8 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
         - phiRead - angle),
       DD4hep::Geometry::Position(xRotatedRead, yRotatedRead, 0) );
     DD4hep::Geometry::PlacedVolume readout_physvol = bath_vol.placeVolume(readout_vol, transformRead);
-    readout_physvol.addPhysVolID("readout", iPlane+1);
+    readout_physvol.addPhysVolID("module", iPlane+1);
+    readout_physvol.addPhysVolID("type", 2); // 0 = active, 1 = passive, 2 = readout
     DD4hep::Geometry::DetElement readout_element (bath_element, "readout"+std::to_string(iPlane+1),iPlane+1);
     readout_element.setPlacement(readout_physvol);
 
@@ -379,13 +381,14 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined (DD4hep::Geometry::LCDD&
       DD4hep::Geometry::Transform3D(rotationActive,
         DD4hep::Geometry::Position(xRotatedRead,yRotatedRead, 0)
         )));
-    active_physvols.back().addPhysVolID("active", iPlane + 1);
+    active_physvols.back().addPhysVolID("module", iPlane + 1);
+    active_physvols.back().addPhysVolID("type", 0); // 0 = active, 1 = passive, 2 = readout
   }
   DD4hep::Geometry::PlacedVolume bath_physvol = envelope_vol.placeVolume(bath_vol);
   if(cryostat.isSensitive()) {
     bath_vol.setSensitiveDetector(aSensDet);
-    bath_physvol.addPhysVolID("bath", 1);
-    lLog << MSG::DEBUG << "Bath volume set as sensitive" << endmsg;
+    bath_physvol.addPhysVolID("cryo", 0);
+    lLog << MSG::INFO << "Bath volume set as sensitive" << endmsg;
   }
   bath_element.setPlacement(bath_physvol);
 

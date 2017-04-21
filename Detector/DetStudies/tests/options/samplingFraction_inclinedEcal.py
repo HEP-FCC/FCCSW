@@ -21,7 +21,7 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGeneratorTool
-saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"])
+saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsEta"])
 saveecaltool.DataOutputs.positionedCaloHits.Path = "ECalPositionedHits"
 saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
 from Configurables import SimG4SingleParticleGeneratorTool
@@ -36,9 +36,11 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SamplingFractionInCells
 hist = SamplingFractionInCells("hists",
-                                 energy=50,
-                                 readoutName = "ECalHitsPhiEta",
+                                 energyAxis = 50,
+                                 readoutName = "ECalHitsEta",
                                  layerFieldName = "cell",
+                                 activeFieldName = "type",
+                                 activeFieldValue = 0,
                                  numLayers = 33, # one more because index starts at 1 - layer 0 will be always empty
                                  OutputLevel = INFO)
 hist.DataInputs.deposits.Path="ECalPositionedHits"
@@ -61,8 +63,8 @@ hist.AuditExecute = True
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [geantsim, hist],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice, audsvc],
-                OutputLevel=DEBUG
+                OutputLevel = DEBUG
 )

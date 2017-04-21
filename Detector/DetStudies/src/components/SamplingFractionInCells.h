@@ -53,6 +53,8 @@ public:
   TH1F* m_SF;
   /// Name of the active field
   std::string m_activeFieldName;
+  /// Value of the active material
+  int m_activeFieldValue;
   /// Name of the cells/layer field
   std::string m_layerFieldName;
   /// Number of layers/cells cells

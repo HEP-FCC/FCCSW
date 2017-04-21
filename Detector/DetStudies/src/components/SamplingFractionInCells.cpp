@@ -20,10 +20,11 @@ DECLARE_ALGORITHM_FACTORY(SamplingFractionInCells)
 SamplingFractionInCells::SamplingFractionInCells(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr), m_SF(nullptr) {
   declareInput("deposits", m_deposits);
-  declareProperty("energy", m_energy);
-  declareProperty("numLayers", m_numLayers = 32);
+  declareProperty("energyAxis", m_energy);
+  declareProperty("numLayers", m_numLayers);
   declareProperty("layerFieldName", m_layerFieldName = "cell");
-  declareProperty("activeFieldName", m_activeFieldName = "active");
+  declareProperty("activeFieldName", m_activeFieldName = "type");
+  declareProperty("activeFieldValue", m_activeFieldValue = 1);
   declareProperty("readoutName", m_readoutName);
 }
 SamplingFractionInCells::~SamplingFractionInCells() {}
@@ -94,18 +95,20 @@ StatusCode SamplingFractionInCells::execute() {
 
   const auto deposits = m_deposits.get();
   for(const auto& hit : *deposits) {
-    sumE += hit.core().energy;
-    decoder->setValue(hit.core().cellId);
     sumEcells[(*decoder)[m_layerFieldName]] += hit.core().energy;
-    if((*decoder)[m_layerFieldName] == 0) {
-      debug() << decoder->valueString() << endmsg;
-    }
-    if((*decoder)[m_activeFieldName] > 0) {
-      sumEactive += hit.core().energy;
-      sumEactiveCells[(*decoder)[m_layerFieldName]] += hit.core().energy;
+    // check if energy was deposited in the calorimeter (active/passive material)
+    // layers are numbered starting from 1, layer == 0 is cryostat/bath
+    if((*decoder)[m_layerFieldName] > 0) {
+      sumE += hit.core().energy;
+      decoder->setValue(hit.core().cellId);
+      // active material of calorimeter
+      if((*decoder)[m_activeFieldName] == m_activeFieldValue) {
+        sumEactive += hit.core().energy;
+        sumEactiveCells[(*decoder)[m_layerFieldName]] += hit.core().energy;
+      }
     }
   }
-  //Fill histograms
+  // Fill histograms
   m_totalEnergy->Fill(sumE);
   m_totalActiveEnergy->Fill(sumEactive);
   if(sumE > 0) {
@@ -114,7 +117,11 @@ StatusCode SamplingFractionInCells::execute() {
   for(uint i = 0; i < m_cellsEnergy.size(); i++) {
     m_cellsEnergy[i]->Fill(sumEcells[i]);
     m_cellsActiveEnergy[i]->Fill(sumEactiveCells[i]);
-    info() << "total E in cell "<< i << " = " << sumEcells[i]<< " active = " << sumEactiveCells[i] << endmsg;
+    if(i == 0) {
+      debug() << "total energy deposited in cryostat and bath = " << sumEcells[i] << endmsg;
+    } else {
+      debug() << "total energy in layer "<< i << " = " << sumEcells[i]<< " active = " << sumEactiveCells[i] << endmsg;
+    }
     if(sumEcells[i] > 0) {
       m_cellsSF[i]->Fill(sumEactiveCells[i] / sumEcells[i]);
     }
