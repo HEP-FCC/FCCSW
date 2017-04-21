@@ -46,8 +46,7 @@ class Segmentation;
 
 class SingleCaloTowerTool : public GaudiTool, virtual public ITowerTool {
 public:
-  SingleCaloTowerTool(const std::string &type, const std::string &name,
-                      const IInterface *parent);
+  SingleCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SingleCaloTowerTool() = default;
   /**  Initialize.
    *   @return status code
@@ -78,7 +77,7 @@ public:
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
-  virtual uint buildTowers(std::vector<std::vector<float>> &aTowers) final;
+  virtual uint buildTowers(std::vector<std::vector<float>>& aTowers) final;
   /**  Get the radius (in mm) for the position calculation.
    *   Reconstructed cluster has eta and phi position, without the radial
    * coordinate. The cluster in EDM contains
@@ -128,29 +127,24 @@ public:
 
 private:
   /// Handle for calo cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_cells{"calo/cells",
-                                             Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::CaloHitCollection> m_cells{"calo/cells", Gaudi::DataHandle::Reader, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "",
-                                             "Name of the detector readout"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   /// PhiEta segmentation (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta *m_segmentation;
+  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
-  Gaudi::Property<double> m_radius{
-      this, "radiusForPosition", 1.0,
-      "Radius used to calculate cluster position from eta and phi (in mm)"};
+  Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
+                                   "Radius used to calculate cluster position from eta and phi (in mm)"};
   float m_etaMax;
   /// Phi offset
   float m_phiMax;
 
   /// Size of the tower in eta
-  Gaudi::Property<float> m_deltaEtaTower{this, "deltaEtaTower", 0.01,
-                                         "Size of the tower in eta"};
+  Gaudi::Property<float> m_deltaEtaTower{this, "deltaEtaTower", 0.01, "Size of the tower in eta"};
   /// Size of the tower in phi
-  Gaudi::Property<float> m_deltaPhiTower{this, "deltaPhiTower", 0.01,
-                                         "Size of the tower in phi"};
+  Gaudi::Property<float> m_deltaPhiTower{this, "deltaPhiTower", 0.01, "Size of the tower in phi"};
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
   uint m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)

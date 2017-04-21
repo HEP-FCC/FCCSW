@@ -154,7 +154,8 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
     // find the eta bin for the cell
     int ibin = floor(fabs(cellEta) / deltaEtaBin) + 1;
     if (ibin > Nbins) {
-      error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins << endmsg;
+      error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins
+              << endmsg;
       ibin = Nbins;
     }
     // Check that there are not more layers than the constants are provided for

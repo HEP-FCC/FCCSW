@@ -28,8 +28,9 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
   m_nPhiTower = towerMapSize.phi;
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
   // make sure that the tower size in eta is larger than the seeding sliding window
-  if(m_nEtaTower < m_nEtaWindow) {
-    debug() << "Window size in eta too small!!! Window " << m_nEtaWindow << " # of eta towers " << m_nEtaTower << endmsg;
+  if (m_nEtaTower < m_nEtaWindow) {
+    debug() << "Window size in eta too small!!! Window " << m_nEtaWindow << " # of eta towers " << m_nEtaTower
+            << endmsg;
     m_nEtaTower = m_nEtaWindow;
   }
   info() << "CreateCaloClustersSlidingWindow initialized" << endmsg;
@@ -124,10 +125,10 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         // Build precluster
         if (!toRemove) {
           // Calculate barycentre position (usually smaller window used to reduce noise influence)
-	  posEta = 0;
-	  posPhi = 0;
-	  sumEnergyPos = 0;
-	  //weighted mean for position in eta and phi (weights must be non-negative!)
+          posEta = 0;
+          posPhi = 0;
+          sumEnergyPos = 0;
+          // weighted mean for position in eta and phi (weights must be non-negative!)
           for (int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
             for (int ipPhi = iPhi - halfPhiPos; ipPhi <= iPhi + halfPhiPos; ipPhi++) {
               posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
@@ -135,50 +136,49 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
               sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
             }
           }
-	  //If too small energy in the position window, calculate the position in the whole sliding window
-          if (sumEnergyPos > m_positionWindFraction*m_energyThreshold) {
+          // If too small energy in the position window, calculate the position in the whole sliding window
+          if (sumEnergyPos > m_positionWindFraction * m_energyThreshold) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
-	  }
-	  else {
-	    posEta = 0;
-	    posPhi = 0;
-	    sumEnergyPos = 0;
-	    for (int ipEta = iEta - halfEtaWin; ipEta <= iEta + halfEtaWin; ipEta++) {
-	      for (int ipPhi = iPhi - halfPhiWin; ipPhi <= iPhi + halfPhiWin; ipPhi++) {
-		posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
-		posPhi += m_towerTool->phi(ipPhi) * m_towers[ipEta][phiNeighbour(ipPhi)];
-		sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
-	      }
-	    }
-	    posEta /= sumEnergyPos;
+          } else {
+            posEta = 0;
+            posPhi = 0;
+            sumEnergyPos = 0;
+            for (int ipEta = iEta - halfEtaWin; ipEta <= iEta + halfEtaWin; ipEta++) {
+              for (int ipPhi = iPhi - halfPhiWin; ipPhi <= iPhi + halfPhiWin; ipPhi++) {
+                posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
+                posPhi += m_towerTool->phi(ipPhi) * m_towers[ipEta][phiNeighbour(ipPhi)];
+                sumEnergyPos += m_towers[ipEta][phiNeighbour(ipPhi)];
+              }
+            }
+            posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
-	  }
-	  if (fabs(posPhi)>M_PI) {
-	    posPhi += - 2 * M_PI * posPhi / fabs(posPhi);
-	  }
-	  // Calculate final cluster energy 
-	  sumEnergyFin = 0;
-          // Final cluster position         
-	  idEtaFin = m_towerTool->idEta(posEta);
-	  idPhiFin = m_towerTool->idPhi(posPhi);
-	  // Recalculating the energy within the final cluster size
-	  for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
-	    for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
-	      if (ipEta >= 0 && ipEta < m_nEtaTower) { // check if we are not outside of map in eta
-		sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
-	      }
-	    }
-	  }
-	  // check if changing the barycentre did not decrease energy below threshold
-	  if (sumEnergyFin > m_energyThreshold) {
-	    cluster newPreCluster;
-	    newPreCluster.eta = posEta;
-	    newPreCluster.phi = posPhi;
-	    newPreCluster.transEnergy = sumEnergyFin;
-	    m_preClusters.push_back(newPreCluster);
-	  }	
-	}
+          }
+          if (fabs(posPhi) > M_PI) {
+            posPhi += -2 * M_PI * posPhi / fabs(posPhi);
+          }
+          // Calculate final cluster energy
+          sumEnergyFin = 0;
+          // Final cluster position
+          idEtaFin = m_towerTool->idEta(posEta);
+          idPhiFin = m_towerTool->idPhi(posPhi);
+          // Recalculating the energy within the final cluster size
+          for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
+            for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
+              if (ipEta >= 0 && ipEta < m_nEtaTower) {  // check if we are not outside of map in eta
+                sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+              }
+            }
+          }
+          // check if changing the barycentre did not decrease energy below threshold
+          if (sumEnergyFin > m_energyThreshold) {
+            cluster newPreCluster;
+            newPreCluster.eta = posEta;
+            newPreCluster.phi = posPhi;
+            newPreCluster.transEnergy = sumEnergyFin;
+            m_preClusters.push_back(newPreCluster);
+          }
+        }
       }
       toRemove = false;
       // finish processing that window in phi, shift window to the next phi tower
@@ -231,49 +231,49 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       int idEtaCl = m_towerTool->idEta(clu.eta);
       int idPhiCl = m_towerTool->idPhi(clu.phi);
       std::vector<std::vector<float>> sumEnergySharing;
-      sumEnergySharing.assign(2*halfEtaFin+1, std::vector<float>(2*halfPhiFin+1, 0));
+      sumEnergySharing.assign(2 * halfEtaFin + 1, std::vector<float>(2 * halfPhiFin + 1, 0));
       // loop over all clusters and check if they have any tower in common with our current cluster
       for (const auto iclu : m_preClusters) {
-	int idEtaIcl = m_towerTool->idEta(iclu.eta);
-	int idPhiIcl = m_towerTool->idPhi(iclu.phi);
-	if (idEtaCl!=idEtaIcl && idPhiCl != idPhiIcl) {
-	  if (abs(idEtaIcl - idEtaCl)<=halfEtaFin && abs(idPhiIcl - idPhiCl)<=halfPhiFin) {
-	    int iEtaShareMin = (idEtaIcl < idEtaCl) ? idEtaCl-halfEtaFin : idEtaIcl-halfEtaFin;
-	    int iEtaShareMax = (idEtaIcl < idEtaCl) ? idEtaIcl+halfEtaFin : idEtaCl+halfEtaFin;
-	    int iPhiShareMin = (idPhiIcl < idPhiCl) ? idPhiCl-halfPhiFin : idPhiIcl-halfPhiFin;
-	    int iPhiShareMax = (idPhiIcl < idPhiCl) ? idPhiIcl+halfPhiFin : idPhiCl+halfPhiFin;
-	    for (int iEta = iEtaShareMin; iEta <= iEtaShareMax; iEta++) {
-	      for (int iPhi = iPhiShareMin; iPhi <= iPhiShareMax; iPhi++) {
-		if (iEta >= 0 && iEta < m_nEtaTower) { // check if we are not outside of map in eta     
-		  sumEnergySharing[iEta-idEtaCl+halfEtaFin][iPhi-idPhiCl+halfPhiFin] += m_towers[iEta][phiNeighbour(iPhi)]*cosh(m_towerTool->eta(iEta));
-		}
-	      }
-	    }
-	  }
-	}
+        int idEtaIcl = m_towerTool->idEta(iclu.eta);
+        int idPhiIcl = m_towerTool->idPhi(iclu.phi);
+        if (idEtaCl != idEtaIcl && idPhiCl != idPhiIcl) {
+          if (abs(idEtaIcl - idEtaCl) <= halfEtaFin && abs(idPhiIcl - idPhiCl) <= halfPhiFin) {
+            int iEtaShareMin = (idEtaIcl < idEtaCl) ? idEtaCl - halfEtaFin : idEtaIcl - halfEtaFin;
+            int iEtaShareMax = (idEtaIcl < idEtaCl) ? idEtaIcl + halfEtaFin : idEtaCl + halfEtaFin;
+            int iPhiShareMin = (idPhiIcl < idPhiCl) ? idPhiCl - halfPhiFin : idPhiIcl - halfPhiFin;
+            int iPhiShareMax = (idPhiIcl < idPhiCl) ? idPhiIcl + halfPhiFin : idPhiCl + halfPhiFin;
+            for (int iEta = iEtaShareMin; iEta <= iEtaShareMax; iEta++) {
+              for (int iPhi = iPhiShareMin; iPhi <= iPhiShareMax; iPhi++) {
+                if (iEta >= 0 && iEta < m_nEtaTower) {  // check if we are not outside of map in eta
+                  sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] +=
+                      m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));
+                }
+              }
+            }
+          }
+        }
       }
-      for (int iEta =  idEtaCl-halfEtaFin; iEta <= idEtaCl+halfEtaFin; iEta++) { 
-	for (int iPhi = idPhiCl-halfPhiFin; iPhi <= idPhiCl+halfPhiFin; iPhi++) {
-	  if (sumEnergySharing[iEta-idEtaCl+halfEtaFin][iPhi-idPhiCl+halfPhiFin] !=0 ) {
-	    float sumButOne = sumEnergySharing[iEta-idEtaCl+halfEtaFin][iPhi-idPhiCl+halfPhiFin];
-	    float towerEnergy = m_towers[iEta][phiNeighbour(iPhi)]*cosh(m_towerTool->eta(iEta));
-	    clusterEnergy -= towerEnergy * sumButOne / (sumButOne + towerEnergy);
-
-	  }
-	}
+      for (int iEta = idEtaCl - halfEtaFin; iEta <= idEtaCl + halfEtaFin; iEta++) {
+        for (int iPhi = idPhiCl - halfPhiFin; iPhi <= idPhiCl + halfPhiFin; iPhi++) {
+          if (sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] != 0) {
+            float sumButOne = sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin];
+            float towerEnergy = m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));
+            clusterEnergy -= towerEnergy * sumButOne / (sumButOne + towerEnergy);
+          }
+        }
       }
     }
-    //check ET thereshold once more (ET could change with the energy sharing correction)
-    if ( clusterEnergy / cosh(clu.eta) > m_energyThreshold) {
+    // check ET thereshold once more (ET could change with the energy sharing correction)
+    if (clusterEnergy / cosh(clu.eta) > m_energyThreshold) {
       auto edmCluster = edmClusters->create();
       auto& edmClusterCore = edmCluster.core();
       edmClusterCore.position.x = radius * cos(clu.phi);
       edmClusterCore.position.y = radius * sin(clu.phi);
       edmClusterCore.position.z = radius * sinh(clu.eta);
       edmClusterCore.energy = clusterEnergy;
-      debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x << " y: "
-	      << edmClusterCore.position.y << " z: " << edmClusterCore.position.z << " energy: " << edmClusterCore.energy
-	      << endmsg; 
+      debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x
+              << " y: " << edmClusterCore.position.y << " z: " << edmClusterCore.position.z
+              << " energy: " << edmClusterCore.energy << endmsg;
     }
   }
   return StatusCode::SUCCESS;

@@ -55,8 +55,10 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  info() << "GridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins() << endmsg;
-  info() << "GridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi " << segmentation->offsetPhi() << endmsg;
+  info() << "GridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
+         << endmsg;
+  info() << "GridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
+         << segmentation->offsetPhi() << endmsg;
 
   // Take readout bitfield decoder from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
