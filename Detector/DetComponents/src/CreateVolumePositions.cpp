@@ -25,8 +25,8 @@ DECLARE_COMPONENT_WITH_ID(CreateVolumeTrackPositions,"CreateVolumeTrackPositions
 
 template<class H, class P> CreateVolumePositions<H, P>::CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc)
   : GaudiAlgorithm(name, svcLoc) {
-  declareInput("hits", m_hits);
-  declareOutput("positionedHits", m_positionedHits);
+  declareProperty("hits", m_hits, "Hit collection (input)");
+  declareProperty("positionedHits", m_positionedHits, "Positions of centres of volumes (output)");
 }
 
 template<class H, class P> StatusCode CreateVolumePositions<H, P>::initialize() {

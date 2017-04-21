@@ -16,8 +16,8 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 
 from Configurables import SimG4Alg, SimG4SaveTrackerHits
 savetool = SimG4SaveTrackerHits("saveHits", readoutNames = ["TrackerBarrelReadout"])
-savetool.DataOutputs.positionedTrackHits.Path = "PositionedHits"
-savetool.DataOutputs.trackHits.Path = "Hits"
+savetool.positionedTrackHits.Path = "PositionedHits"
+savetool.trackHits.Path = "Hits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                                       particleName = "mu-", energyMin = 1000, energyMax = 1000, etaMin = 0, etaMax = 0,
@@ -29,8 +29,8 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import CreateVolumeTrackPositions
 positions = CreateVolumeTrackPositions("positions", OutputLevel = VERBOSE)
-positions.DataInputs.hits.Path = "Hits"
-positions.DataOutputs.positionedHits.Path = "Positions"
+positions.hits.Path = "Hits"
+positions.positionedHits.Path = "Positions"
 
 # PODIO algorithm
 from Configurables import PodioOutput

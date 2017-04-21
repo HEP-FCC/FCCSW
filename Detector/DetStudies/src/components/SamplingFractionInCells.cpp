@@ -19,13 +19,7 @@ DECLARE_ALGORITHM_FACTORY(SamplingFractionInCells)
 
 SamplingFractionInCells::SamplingFractionInCells(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr), m_SF(nullptr) {
-  declareInput("deposits", m_deposits);
-  declareProperty("energyAxis", m_energy);
-  declareProperty("numLayers", m_numLayers);
-  declareProperty("layerFieldName", m_layerFieldName = "cell");
-  declareProperty("activeFieldName", m_activeFieldName = "type");
-  declareProperty("activeFieldValue", m_activeFieldValue = 1);
-  declareProperty("readoutName", m_readoutName);
+  declareProperty("deposits", m_deposits, "Energy deposits in sampling calorimeter (input)");
 }
 SamplingFractionInCells::~SamplingFractionInCells() {}
 

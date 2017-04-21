@@ -22,8 +22,8 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGeneratorTool
 saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsEta"])
-saveecaltool.DataOutputs.positionedCaloHits.Path = "ECalPositionedHits"
-saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
+saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
+saveecaltool.caloHits.Path = "ECalHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                                       particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = 0, etaMax = 0,
@@ -43,7 +43,7 @@ hist = SamplingFractionInCells("hists",
                                  activeFieldValue = 0,
                                  numLayers = 33, # one more because index starts at 1 - layer 0 will be always empty
                                  OutputLevel = INFO)
-hist.DataInputs.deposits.Path="ECalPositionedHits"
+hist.deposits.Path="ECalPositionedHits"
 
 THistSvc().Output = ["rec DATAFILE='histSF_inclined_e50GeV_eta0_10events.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

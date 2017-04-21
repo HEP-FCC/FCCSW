@@ -2,17 +2,17 @@ from Gaudi.Configuration import *
 
 from Configurables import HepMCReader
 reader = HepMCReader("Reader", Filename="testHepMCrandom.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import HepMCDumper
 hepmc_dump = HepMCDumper("hepmc")
-hepmc_dump.DataInputs.hepmc.Path="hepmc"
+hepmc_dump.hepmc.Path="hepmc"
 
 # Data service
 from Configurables import FCCDataSvc
@@ -35,8 +35,8 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits
 savetool = SimG4SaveCalHits("saveHits",readoutNames = ["ECalHitsEta"])
-savetool.DataOutputs.positionedCaloHits.Path = "PositionedHits"
-savetool.DataOutputs.caloHits.Path = "Hits"
+savetool.positionedCaloHits.Path = "PositionedHits"
+savetool.caloHits.Path = "Hits"
 
 geantsim = SimG4Alg("SimG4Alg",
                        outputs= ["SimG4SaveCalHits/saveHits"],
@@ -44,8 +44,8 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import CreateVolumeCaloPositions
 positions = CreateVolumeCaloPositions("positions", OutputLevel = VERBOSE)
-positions.DataInputs.hits.Path = "Hits"
-positions.DataOutputs.positionedHits.Path = "Positions"
+positions.hits.Path = "Hits"
+positions.positionedHits.Path = "Positions"
 
 # PODIO algorithm
 from Configurables import PodioOutput
