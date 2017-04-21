@@ -11,7 +11,7 @@ podioinput = PodioInput("PodioReader", collections = ["ECalHits", "ECalPositione
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors = [  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml'],
-                    OutputLevel = INFO)
+                    OutputLevel = DEBUG)
 
 # common ECAL specific information
 # readout name
@@ -56,7 +56,7 @@ ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   fieldValues = ecalFieldValues,
                                   # to make it working with MergeLayers algorithm
                                   activeVolumesNumber = ecalNumberOfLayers,
-                                  OutputLevel = INFO)
+                                  OutputLevel = DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
@@ -65,7 +65,7 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool = calibcells,
                               addCellNoise = True, filterCellNoise = False,
                               noiseTool = noise,
-                              OutputLevel = INFO)
+                              OutputLevel = DEBUG)
 createcells.hits.Path="mergedECalHits"
 createcells.cells.Path="caloCells"
 
@@ -73,24 +73,24 @@ createcells.cells.Path="caloCells"
 from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
 towers = SingleCaloTowerTool("towers",
-                             deltaEtaTower = 0.005, deltaPhiTower = 2*pi/(629.*3),
+                             deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                              readoutName = ecalReadoutName,
-                             OutputLevel = INFO)
+                             OutputLevel = DEBUG)
 towers.cells.Path = "caloCells"
 
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
-                                                 nEtaWindow = 10, nPhiWindow = 15,
-                                                 nEtaPosition = 7, nPhiPosition = 10,
-                                                 nEtaDuplicates = 10, nPhiDuplicates = 15,
-                                                 nEtaFinal = 10, nPhiFinal = 15,
+                                                 nEtaWindow = 7, nPhiWindow = 15,
+                                                 nEtaPosition = 5, nPhiPosition = 11,
+                                                 nEtaDuplicates = 5, nPhiDuplicates = 11,
+                                                 nEtaFinal = 7, nPhiFinal = 15,
                                                  energyThreshold = 8,
                                                  positionWindFraction = 0.25,
-                                                 OutputLevel = INFO)
+                                                 OutputLevel = DEBUG)
 createclusters.clusters.Path = "caloClusters"
 
 out = PodioOutput("output", filename = "output_ecalReco_noiseFromFile_test.root",
-                   OutputLevel = INFO)
+                   OutputLevel = DEBUG)
 out.outputCommands = ["keep *"]
 
 #CPU information

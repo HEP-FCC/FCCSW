@@ -58,11 +58,11 @@ towers.cells.Path = "caloCells"
 
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
-                                                 nEtaWindow = 5, nPhiWindow = 15,
-                                                 nEtaPosition = 5, nPhiPosition = 5,
-                                                 nEtaDuplicates = 5, nPhiDuplicates = 15,
-                                                 nEtaFinal = 5, nPhiFinal = 15,
-                                                 energyThreshold = 7,
+                                                 nEtaWindow = 7, nPhiWindow = 15,
+                                                 nEtaPosition = 5, nPhiPosition = 11,
+                                                 nEtaDuplicates = 5, nPhiDuplicates = 11,
+                                                 nEtaFinal = 7, nPhiFinal = 15,
+                                                 energyThreshold = 8,
                                                  OutputLevel = DEBUG)
 createclusters.clusters.Path = "caloClusters"
 

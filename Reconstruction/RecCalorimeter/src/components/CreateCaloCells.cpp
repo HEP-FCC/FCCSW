@@ -13,29 +13,36 @@
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
-CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+CreateCaloCells::CreateCaloCells(const std::string &name, ISvcLocator *svcLoc)
+    : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hits from which to create cells (input)");
   declareProperty("cells", m_cells, "The created calorimeter cells (output)");
 
-  declareProperty("calibTool", m_calibTool, "Handle for tool to calibrate Geant4 energy to EM scale tool");
-  declareProperty("noiseTool", m_noiseTool, "Handle for the calorimeter cells noise tool");
+  declareProperty(
+      "calibTool", m_calibTool,
+      "Handle for tool to calibrate Geant4 energy to EM scale tool");
+  declareProperty("noiseTool", m_noiseTool,
+                  "Handle for the calorimeter cells noise tool");
   declareProperty("geometryTool", m_geoTool, "Handle for the geometry tool");
 }
 
 StatusCode CreateCaloCells::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
-  if (sc.isFailure()) return sc;
+  if (sc.isFailure())
+    return sc;
 
   info() << "CreateCaloCells initialized" << endmsg;
   info() << "do calibration : " << m_doCellCalibration << endmsg;
   info() << "add cell noise      : " << m_addCellNoise << endmsg;
-  info() << "remove noise cells below threshold : " << m_filterCellNoise << endmsg;
+  info() << "remove noise cells below threshold : " << m_filterCellNoise
+         << endmsg;
 
   // Initialization of tools
   // Calibrate Geant4 energy to EM scale tool
   if (m_doCellCalibration) {
     if (!m_calibTool.retrieve()) {
-      error() << "Unable to retrieve the calo cells calibration tool!!!" << endmsg;
+      error() << "Unable to retrieve the calo cells calibration tool!!!"
+              << endmsg;
       return StatusCode::FAILURE;
     }
   }
@@ -62,17 +69,23 @@ StatusCode CreateCaloCells::initialize() {
 
 StatusCode CreateCaloCells::execute() {
   // Get the input collection with Geant4 hits
-  const fcc::CaloHitCollection* hits = m_hits.get();
+  const fcc::CaloHitCollection *hits = m_hits.get();
   debug() << "Input Hit collection size: " << hits->size() << endmsg;
 
   // 0. Clear all cells
-  std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
+  if (m_addCellNoise) {
+    std::for_each(m_cellsMap.begin(), m_cellsMap.end(),
+                  [](std::pair<const uint64_t, double> &p) { p.second = 0; });
+  } else {
+    m_cellsMap.clear();
+  }
 
   debug() << m_cellsMap.size() << endmsg;
 
   // 1. Merge energy deposits into cells
-  // If running with noise map already was prepared. Otherwise it is being created below
-  for (const auto& hit : *hits) {
+  // If running with noise map already was prepared. Otherwise it is being
+  // created below
+  for (const auto &hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
   debug() << m_cellsMap.size() << endmsg;
@@ -91,9 +104,9 @@ StatusCode CreateCaloCells::execute() {
   }
 
   // 4. Copy information to CaloHitCollection
-  fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
-  for (const auto& cell : m_cellsMap) {
-    if (cell.second != 0) {
+  fcc::CaloHitCollection *edmCellsCollection = new fcc::CaloHitCollection();
+  for (const auto &cell : m_cellsMap) {
+    if (m_addCellNoise || (!m_addCellNoise && cell.second != 0)) {
       fcc::CaloHit newCell = edmCellsCollection->create();
       newCell.core().energy = cell.second;
       newCell.core().cellId = cell.first;
@@ -102,7 +115,8 @@ StatusCode CreateCaloCells::execute() {
 
   // push the CaloHitCollection to event store
   m_cells.put(edmCellsCollection);
-  debug() << "Output Cell collection size: " << edmCellsCollection->size() << endmsg;
+  debug() << "Output Cell collection size: " << edmCellsCollection->size()
+          << endmsg;
 
   return StatusCode::SUCCESS;
 }
