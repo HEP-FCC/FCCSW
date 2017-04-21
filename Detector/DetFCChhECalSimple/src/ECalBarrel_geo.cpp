@@ -38,14 +38,14 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   Dimension calo_dims(calo.dimensions());
   std::string calo_name = calo.nameStr();
 
-  xml_comp_t active = calo.child("active_layers");
+  xml_comp_t active = calo.child(_Unicode(active_layers));
   std::string active_mat = active.materialStr();
   double active_tck = active.thickness();
 
-  xml_comp_t passive = calo.child("passive_layers");
-  DD4hep::XML::DetElement passive_inner = passive.child("inner");
-  DD4hep::XML::DetElement passive_outer = passive.child("outer");
-  DD4hep::XML::DetElement passive_glue = passive.child("glue");
+  xml_comp_t passive = calo.child(_Unicode(passive_layers));
+  DD4hep::XML::DetElement passive_inner = passive.child(_Unicode(inner));
+  DD4hep::XML::DetElement passive_outer = passive.child(_Unicode(outer));
+  DD4hep::XML::DetElement passive_glue = passive.child(_Unicode(glue));
   std::string passive_inner_mat = passive_inner.materialStr();
   std::string passive_outer_mat = passive_outer.materialStr();
   std::string passive_glue_mat = passive_glue.materialStr();

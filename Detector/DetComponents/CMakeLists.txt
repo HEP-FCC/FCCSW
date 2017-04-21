@@ -36,7 +36,6 @@ gaudi_add_test(MergeLayers
                FRAMEWORK tests/options/mergeLayers.py)
 gaudi_add_test(positionsInclinedEcal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/positions_inclinedEcal.py)
 gaudi_add_test(positionsInclinedEcalCheck
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
@@ -45,5 +44,4 @@ gaudi_add_test(positionsInclinedEcalCheck
                DEPENDS positionsInclinedEcal)
 gaudi_add_test(positionsTracker
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/positions_tracker.py)

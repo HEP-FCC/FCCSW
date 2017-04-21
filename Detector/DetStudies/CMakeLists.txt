@@ -21,5 +21,4 @@ gaudi_add_module(DetStudies
 include(CTest)
 gaudi_add_test(samplingFractionInclinedEcal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libDetSegmentation.so
                FRAMEWORK tests/options/samplingFraction_inclinedEcal.py)
