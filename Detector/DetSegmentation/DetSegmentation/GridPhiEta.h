@@ -14,7 +14,7 @@
 
 namespace DD4hep {
 namespace DDSegmentation {
-class GridPhiEta: public GridEta {
+class GridPhiEta : public GridEta {
 public:
   /// default constructor using an arbitrary type
   GridPhiEta(const std::string& aCellEncoding);

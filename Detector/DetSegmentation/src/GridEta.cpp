@@ -55,4 +55,3 @@ double GridEta::eta(const CellID& cID) const {
 REGISTER_SEGMENTATION(GridEta)
 }
 }
-

@@ -15,7 +15,8 @@ class IGeoSvc;
  *  Tool for energy calibration to the electromagnetic scale.
  *  Geant4 energy deposits calibration in sampling calorimeters.
  *
- *  Sampling fraction (energy deposited in the active material to the total deposited energy) is defined for layers of the calorimeter.
+ *  Sampling fraction (energy deposited in the active material to the total deposited energy) is defined for layers of
+ *  the calorimeter.
  *  It is used for calorimeters with varying sampling fraction in radial distance.
  *  Sampling fraction for each layer is used for the calibration of the deposits within this layer.
  *  Sampling fractions for layers may be obtained using SamplingFractionInLayers algorithm.
@@ -48,6 +49,7 @@ private:
   /// Name of the cells/layer field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
   /// Values of sampling fraction
-  Gaudi::Property<std::vector<double>> m_samplingFraction{this, "samplingFraction", {}, "Values of sampling fraction per layer"};
+  Gaudi::Property<std::vector<double>> m_samplingFraction{
+      this, "samplingFraction", {}, "Values of sampling fraction per layer"};
 };
 #endif /* RECCALORIMETER_CALIBRATEINLAYERSTOOL_H */

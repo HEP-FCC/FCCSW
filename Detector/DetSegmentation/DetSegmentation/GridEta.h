@@ -16,7 +16,7 @@
 
 namespace DD4hep {
 namespace DDSegmentation {
-class GridEta: public Segmentation {
+class GridEta : public Segmentation {
 public:
   /// default constructor using an arbitrary type
   GridEta(const std::string& aCellEncoding);
@@ -37,7 +37,8 @@ public:
    *   @param[in] aVolumeId ID of a volume.
    *   return Cell ID.
    */
-  virtual CellID cellID(const Vector3D& aLocalPosition, const Vector3D& aGlobalPosition, const VolumeID& aVolumeID) const;
+  virtual CellID cellID(const Vector3D& aLocalPosition, const Vector3D& aGlobalPosition,
+                        const VolumeID& aVolumeID) const;
   /**  Determine the pseudorapidity based on the cell ID.
    *   @param[in] aCellId ID of a cell.
    *   return Pseudorapidity.
@@ -79,9 +80,7 @@ public:
   /// from SegmentationUtil
   /// to be removed once SegmentationUtil can be included w/o linker error
   /// calculates the azimuthal angle phi from Cartesian coordinates
-  inline double phiFromXYZ(const Vector3D& aposition) const {
-    return std::atan2(aposition.Y, aposition.X);
-  }
+  inline double phiFromXYZ(const Vector3D& aposition) const { return std::atan2(aposition.Y, aposition.X); }
   /// from SegmentationUtil
   /// to be removed once SegmentationUtil can be included w/o linker error
   /// calculates the radius in the xy-plane from Cartesian coordinates

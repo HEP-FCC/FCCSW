@@ -128,8 +128,7 @@ public:
       -# size in eta
   */
   inline std::vector<double> cellDimensions(const CellID& /*id*/) const {
-    return {access()->implementation->gridSizeR(),
-            access()->implementation->gridSizePhi(),
+    return {access()->implementation->gridSizeR(), access()->implementation->gridSizePhi(),
             access()->implementation->gridSizeEta()};
   }
 };

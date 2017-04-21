@@ -35,12 +35,11 @@ StatusCode CalibrateInLayersTool::initialize() {
 void CalibrateInLayersTool::calibrate(std::unordered_map<uint64_t, double>& aHits) {
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   // Loop through energy deposits, multiply energy to get cell energy at electromagnetic scale
-  std::for_each(aHits.begin(), aHits.end(),
-    [this, decoder](std::pair<const uint64_t, double>& p) {
-      decoder->setValue(p.first);
-      info() << m_samplingFraction[(*decoder)[m_layerFieldName].value()] << endmsg;
-      p.second /= m_samplingFraction[(*decoder)[m_layerFieldName].value()];
-    });
+  std::for_each(aHits.begin(), aHits.end(), [this, decoder](std::pair<const uint64_t, double>& p) {
+    decoder->setValue(p.first);
+    info() << m_samplingFraction[(*decoder)[m_layerFieldName].value()] << endmsg;
+    p.second /= m_samplingFraction[(*decoder)[m_layerFieldName].value()];
+  });
 }
 
 StatusCode CalibrateInLayersTool::finalize() { return GaudiTool::finalize(); }

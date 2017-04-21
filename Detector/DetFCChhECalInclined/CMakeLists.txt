@@ -1,5 +1,5 @@
 ################################################################################
-# Package: DetFCChhECalInclined
+#Package : DetFCChhECalInclined
 ################################################################################
 gaudi_subdir(DetFCChhECalInclined v1r0)
 

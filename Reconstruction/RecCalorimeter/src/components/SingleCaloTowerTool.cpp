@@ -120,8 +120,8 @@ float SingleCaloTowerTool::phi(int aIdPhi) const {
   return (aIdPhi - (m_nPhiTower - 1) / 2) * m_deltaPhiTower;
 }
 
-void SingleCaloTowerTool::matchCells(
-    float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
+void SingleCaloTowerTool::matchCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin,
+                                     fcc::CaloCluster& aEdmCluster) {
   const fcc::CaloHitCollection* cells = m_cells.get();
   for (const auto& cell : *cells) {
     float etaCell = m_segmentation->eta(cell.core().cellId);

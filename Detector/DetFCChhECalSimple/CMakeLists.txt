@@ -1,5 +1,5 @@
 ################################################################################
-# Package: DetFCChhECalSimple
+#Package : DetFCChhECalSimple
 ################################################################################
 gaudi_subdir(DetFCChhECalSimple v1r0)
 

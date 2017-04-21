@@ -27,7 +27,7 @@ class ITHistSvc;
  *  @author Anna Zaborowska
  */
 
-class SamplingFractionInLayers: public GaudiAlgorithm {
+class SamplingFractionInLayers : public GaudiAlgorithm {
 public:
   explicit SamplingFractionInLayers(const std::string&, ISvcLocator*);
   virtual ~SamplingFractionInLayers();
@@ -43,7 +43,8 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
-  private:
+
+private:
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service
@@ -63,9 +64,11 @@ public:
   // Maximum energy for the axis range
   Gaudi::Property<double> m_energy{this, "energyAxis", 500, "Maximum energy for axis range"};
   // Histograms of total deposited energy within layer
-  // Layers are numbered starting at 1. Layer 0 includes total energy deposited in cryostat and bath (in front and behind calo)
+  // Layers are numbered starting at 1. Layer 0 includes total energy deposited in cryostat and bath (in front and
+  // behind calo)
   std::vector<TH1F*> m_cellsEnergy;
-  // Histogram of total deposited energy in the calorimeter (in active and passive material, excluding cryostat and bath)
+  // Histogram of total deposited energy in the calorimeter (in active and passive material, excluding cryostat and
+  // bath)
   TH1F* m_totalEnergy;
   // Histograms of energy deposited in the active material within layer
   std::vector<TH1F*> m_cellsActiveEnergy;

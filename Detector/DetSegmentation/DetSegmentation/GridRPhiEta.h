@@ -15,7 +15,7 @@
 
 namespace DD4hep {
 namespace DDSegmentation {
-class GridRPhiEta: public GridPhiEta {
+class GridRPhiEta : public GridPhiEta {
 public:
   /// default constructor using an arbitrary type
   GridRPhiEta(const std::string& aCellEncoding);
@@ -35,7 +35,8 @@ public:
    *   @param[in] aVolumeId ID of a volume.
    *   return Cell ID.
    */
-  virtual CellID cellID(const Vector3D& aLocalPosition, const Vector3D& aGlobalPosition, const VolumeID& aVolumeID) const;
+  virtual CellID cellID(const Vector3D& aLocalPosition, const Vector3D& aGlobalPosition,
+                        const VolumeID& aVolumeID) const;
   /**  Determine the radius based on the cell ID.
    *   @param[in] aCellId ID of a cell.
    *   return Radius.
@@ -44,39 +45,27 @@ public:
   /**  Get the grid size in radial distance from the detector centre.
    *   return Grid size in radial distance.
    */
-  inline double gridSizeR() const {
-    return m_gridSizeR;
-  }
+  inline double gridSizeR() const { return m_gridSizeR; }
   /**  Get the coordinate offset in radial distance.
    *   return The offset in R.
    */
-  inline double offsetR() const {
-    return m_offsetR;
-  }
+  inline double offsetR() const { return m_offsetR; }
   /**  Get the field name for radial distance.
    *   return The field name for radial distance.
    */
-  inline const std::string& fieldNameR() const {
-    return m_rID;
-  }
+  inline const std::string& fieldNameR() const { return m_rID; }
   /**  Set the grid size in radial distance.
    *   @param[in] aCellSize Cell size in radial distance.
    */
-  inline void setGridSizeR(double aCellSize) {
-    m_gridSizeR = aCellSize;
-  }
+  inline void setGridSizeR(double aCellSize) { m_gridSizeR = aCellSize; }
   /**  Set the coordinate offset in radial distance.
    *   @param[in] aOffset Offset in radial distance.
    */
-  inline void setOffsetR(double offset) {
-    m_offsetR = offset;
-  }
+  inline void setOffsetR(double offset) { m_offsetR = offset; }
   /**  Set the field name used for radial distance.
    *   @param[in] aFieldName Field name for R.
    */
-  inline void setFieldNameR(const std::string& fieldName) {
-    m_rID = fieldName;
-  }
+  inline void setFieldNameR(const std::string& fieldName) { m_rID = fieldName; }
 
 private:
   /// determine the radial distance R based on the current cell ID

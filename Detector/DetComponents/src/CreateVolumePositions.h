@@ -20,7 +20,7 @@ class IGeoSvc;
  *
  */
 
-template<class H, class P>
+template <class H, class P>
 class CreateVolumePositions : public GaudiAlgorithm {
 public:
   CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc);

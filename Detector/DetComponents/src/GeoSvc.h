@@ -13,11 +13,11 @@
 #include "DetInterface/IGeoSvc.h"
 
 // Gaudi
-#include "GaudiKernel/MsgStream.h"
-#include "GaudiKernel/Service.h"
 #include "GaudiKernel/IIncidentListener.h"
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
+#include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/Service.h"
 
 // DD4Hep
 #include "DD4hep/LCDD.h"
@@ -26,7 +26,7 @@
 #include "G4RunManager.hh"
 #include "G4VUserDetectorConstruction.hh"
 
-class GeoSvc: public extends2<Service, IGeoSvc, IIncidentListener> {
+class GeoSvc : public extends2<Service, IGeoSvc, IIncidentListener> {
 
 public:
   /// Default constructor
@@ -42,10 +42,10 @@ public:
   StatusCode buildDD4HepGeo();
   /// This function generates the Geant4 geometry
   StatusCode buildGeant4Geo();
-  //receive DD4hep Geometry
+  // receive DD4hep Geometry
   virtual DD4hep::Geometry::DetElement getDD4HepGeo() override;
   virtual DD4hep::Geometry::LCDD* lcdd() override;
-  //receive Geant4 Geometry
+  // receive Geant4 Geometry
   virtual G4VUserDetectorConstruction* getGeant4Geo() override;
   /// Inform that a new incident has occurred
   virtual void handle(const Incident& inc) final;
@@ -59,7 +59,7 @@ private:
   std::shared_ptr<G4VUserDetectorConstruction> m_geant4geo;
   /// XML-files with the detector description
   Gaudi::Property<std::vector<std::string>> m_xmlFileNames{this, "detectors", {}, "Detector descriptions XML-files"};
-  //output
+  // output
   MsgStream m_log;
   // Flag set to true if any incident is fired from geometry constructors
   bool m_failureFlag;
