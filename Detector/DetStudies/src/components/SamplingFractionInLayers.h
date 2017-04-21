@@ -1,5 +1,5 @@
-#ifndef DETSTUDIES_SAMPLINGFRACTIONINCELLS_H
-#define DETSTUDIES_SAMPLINGFRACTIONINCELLS_H
+#ifndef DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H
+#define DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -16,7 +16,7 @@ class PositionedCaloHitCollection;
 class TH1F;
 class ITHistSvc;
 
-/** @class SamplingFractionInCells SamplingFractionInCells.h
+/** @class SamplingFractionInLayers SamplingFractionInLayers.h
  *
  *  Histograms of energy deposited in active material and total energy deposited in the calorimeter.
  *  Passive material needs to be marked as sensitive. It needs to be divided into layers (cells) as active material.
@@ -27,10 +27,10 @@ class ITHistSvc;
  *  @author Anna Zaborowska
  */
 
-class SamplingFractionInCells: public GaudiAlgorithm {
+class SamplingFractionInLayers: public GaudiAlgorithm {
 public:
-  explicit SamplingFractionInCells(const std::string&, ISvcLocator*);
-  virtual ~SamplingFractionInCells();
+  explicit SamplingFractionInLayers(const std::string&, ISvcLocator*);
+  virtual ~SamplingFractionInLayers();
   /**  Initialize.
    *   @return status code
    */
@@ -54,9 +54,9 @@ public:
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "", "Identifier of active material"};
   /// Value of the active material
   Gaudi::Property<int> m_activeFieldValue{this, "activeFieldValue", 0, "Value of identifier for active material"};
-  /// Name of the cells/layer field
+  /// Name of the layer/cell field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
-  /// Number of layers/cells cells
+  /// Number of layers/cells
   Gaudi::Property<int> m_numLayers{this, "numLayers", 8, "Number of layers"};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
@@ -76,4 +76,4 @@ public:
   // Histogram of sampling fraction (active/total energy) calculated for the calorimeter (excluding cryostat and bath)
   TH1F* m_SF;
 };
-#endif /* DETSTUDIES_SAMPLINGFRACTIONINCELLS_H */
+#endif /* DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H */

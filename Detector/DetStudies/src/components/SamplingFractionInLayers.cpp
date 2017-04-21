@@ -1,4 +1,4 @@
-#include "SamplingFractionInCells.h"
+#include "SamplingFractionInLayers.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -15,15 +15,15 @@
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_ALGORITHM_FACTORY(SamplingFractionInCells)
+DECLARE_ALGORITHM_FACTORY(SamplingFractionInLayers)
 
-SamplingFractionInCells::SamplingFractionInCells(const std::string& aName, ISvcLocator* aSvcLoc):
+SamplingFractionInLayers::SamplingFractionInLayers(const std::string& aName, ISvcLocator* aSvcLoc):
 GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr), m_SF(nullptr) {
   declareProperty("deposits", m_deposits, "Energy deposits in sampling calorimeter (input)");
 }
-SamplingFractionInCells::~SamplingFractionInCells() {}
+SamplingFractionInLayers::~SamplingFractionInLayers() {}
 
-StatusCode SamplingFractionInCells::initialize() {
+StatusCode SamplingFractionInLayers::initialize() {
   if (GaudiAlgorithm::initialize().isFailure())
     return StatusCode::FAILURE;
   m_geoSvc = service("GeoSvc");
@@ -78,7 +78,7 @@ StatusCode SamplingFractionInCells::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SamplingFractionInCells::execute() {
+StatusCode SamplingFractionInLayers::execute() {
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   double sumE = 0.;
   std::vector<double> sumEcells;
@@ -123,6 +123,6 @@ StatusCode SamplingFractionInCells::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode SamplingFractionInCells::finalize() {
+StatusCode SamplingFractionInLayers::finalize() {
   return GaudiAlgorithm::finalize();
 }

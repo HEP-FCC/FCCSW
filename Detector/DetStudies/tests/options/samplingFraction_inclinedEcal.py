@@ -34,8 +34,8 @@ geantsim = SimG4Alg("SimG4Alg",
                     eventProvider = pgun,
                     OutputLevel = DEBUG)
 
-from Configurables import SamplingFractionInCells
-hist = SamplingFractionInCells("hists",
+from Configurables import SamplingFractionInLayers
+hist = SamplingFractionInLayers("hists",
                                  energyAxis = 50,
                                  readoutName = "ECalHitsEta",
                                  layerFieldName = "cell",
