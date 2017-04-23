@@ -39,7 +39,6 @@ out = PodioOutput("out",
 out.outputCommands = ["keep *"]
 out.filename = "positions_trackerSim.root"
 
-
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()

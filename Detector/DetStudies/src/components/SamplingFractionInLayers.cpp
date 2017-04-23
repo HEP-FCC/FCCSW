@@ -18,7 +18,7 @@
 DECLARE_ALGORITHM_FACTORY(SamplingFractionInLayers)
 
 SamplingFractionInLayers::SamplingFractionInLayers(const std::string& aName, ISvcLocator* aSvcLoc)
-    : GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr), m_SF(nullptr) {
+    : GaudiAlgorithm(aName, aSvcLoc), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr), m_sf(nullptr) {
   declareProperty("deposits", m_deposits, "Energy deposits in sampling calorimeter (input)");
 }
 SamplingFractionInLayers::~SamplingFractionInLayers() {}
@@ -27,8 +27,7 @@ StatusCode SamplingFractionInLayers::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
   m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
-    error() << "Unable to locate Geometry Service. "
-            << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
+    error() << "Unable to locate Geometry Service. " << endmsg;
     return StatusCode::FAILURE;
   }
   // check if readouts exist
@@ -41,41 +40,41 @@ StatusCode SamplingFractionInLayers::initialize() {
     error() << "Unable to locate Histogram Service" << endmsg;
     return StatusCode::FAILURE;
   }
-  int num_layers = m_numLayers;
-  for (int i = 0; i < num_layers; i++) {
-    m_cellsEnergy.push_back(new TH1F(("cell_total" + std::to_string(i)).c_str(),
+  // create histograms
+  for (uint i = 0; i < m_numLayers; i++) {
+    m_totalEnLayers.push_back(new TH1F(("ecal_totalEnergy_layer" + std::to_string(i)).c_str(),
                                      ("Total deposited energy in layer " + std::to_string(i)).c_str(), 1000, 0,
                                      1.2 * m_energy));
-    if (m_histSvc->regHist("/rec/cell_total" + std::to_string(i), m_cellsEnergy.back()).isFailure()) {
+    if (m_histSvc->regHist("/rec/ecal_total_layer" + std::to_string(i), m_totalEnLayers.back()).isFailure()) {
       error() << "Couldn't register histogram" << endmsg;
       return StatusCode::FAILURE;
     }
-    m_cellsActiveEnergy.push_back(new TH1F(
-        ("cell_active" + std::to_string(i)).c_str(),
+    m_activeEnLayers.push_back(new TH1F(
+        ("ecal_activeEnergy_layer" + std::to_string(i)).c_str(),
         ("Deposited energy in active material, in layer " + std::to_string(i)).c_str(), 1000, 0, 1.2 * m_energy));
-    if (m_histSvc->regHist("/rec/cell_active" + std::to_string(i), m_cellsActiveEnergy.back()).isFailure()) {
+    if (m_histSvc->regHist("/rec/ecal_active_layer" + std::to_string(i), m_activeEnLayers.back()).isFailure()) {
       error() << "Couldn't register histogram" << endmsg;
       return StatusCode::FAILURE;
     }
-    m_cellsSF.push_back(
-        new TH1F(("cell_sf" + std::to_string(i)).c_str(), ("SF for layer " + std::to_string(i)).c_str(), 1000, 0, 1));
-    if (m_histSvc->regHist("/rec/cell_sf" + std::to_string(i), m_cellsSF.back()).isFailure()) {
+    m_sfLayers.push_back(
+        new TH1F(("ecal_sf_layer" + std::to_string(i)).c_str(), ("SF for layer " + std::to_string(i)).c_str(), 1000, 0, 1));
+    if (m_histSvc->regHist("/rec/ecal_sf_layer" + std::to_string(i), m_sfLayers.back()).isFailure()) {
       error() << "Couldn't register histogram" << endmsg;
       return StatusCode::FAILURE;
     }
   }
-  m_totalEnergy = new TH1F("cell_total", "Total deposited energy", 1000, 0, 1.2 * m_energy);
-  if (m_histSvc->regHist("/rec/cell_total", m_totalEnergy).isFailure()) {
+  m_totalEnergy = new TH1F("ecal_totalEnergy", "Total deposited energy", 1000, 0, 1.2 * m_energy);
+  if (m_histSvc->regHist("/rec/ecal_total", m_totalEnergy).isFailure()) {
     error() << "Couldn't register histogram" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_totalActiveEnergy = new TH1F("cell_totalActive", "Total active deposited energy", 1000, 0, 1.2 * m_energy);
-  if (m_histSvc->regHist("/rec/cell_totalActive", m_totalActiveEnergy).isFailure()) {
+  m_totalActiveEnergy = new TH1F("ecal_active", "Deposited energy in active material", 1000, 0, 1.2 * m_energy);
+  if (m_histSvc->regHist("/rec/ecal_active", m_totalActiveEnergy).isFailure()) {
     error() << "Couldn't register histogram" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_SF = new TH1F("cell_SF", "Sampling fraction", 1000, 0, 1);
-  if (m_histSvc->regHist("/rec/cell_sf", m_SF).isFailure()) {
+  m_sf = new TH1F("ecal_sf", "Sampling fraction", 1000, 0, 1);
+  if (m_histSvc->regHist("/rec/ecal_sf", m_sf).isFailure()) {
     error() << "Couldn't register histogram" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -85,15 +84,15 @@ StatusCode SamplingFractionInLayers::initialize() {
 StatusCode SamplingFractionInLayers::execute() {
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   double sumE = 0.;
-  std::vector<double> sumEcells;
+  std::vector<double> sumElayers;
   double sumEactive = 0.;
-  std::vector<double> sumEactiveCells;
-  sumEcells.assign(m_cellsEnergy.size(), 0);
-  sumEactiveCells.assign(m_cellsEnergy.size(), 0);
+  std::vector<double> sumEactiveLayers;
+  sumElayers.assign(m_numLayers, 0);
+  sumEactiveLayers.assign(m_numLayers, 0);
 
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
-    sumEcells[(*decoder)[m_layerFieldName]] += hit.core().energy;
+    sumElayers[(*decoder)[m_layerFieldName]] += hit.core().energy;
     // check if energy was deposited in the calorimeter (active/passive material)
     // layers are numbered starting from 1, layer == 0 is cryostat/bath
     if ((*decoder)[m_layerFieldName] > 0) {
@@ -102,7 +101,7 @@ StatusCode SamplingFractionInLayers::execute() {
       // active material of calorimeter
       if ((*decoder)[m_activeFieldName] == m_activeFieldValue) {
         sumEactive += hit.core().energy;
-        sumEactiveCells[(*decoder)[m_layerFieldName]] += hit.core().energy;
+        sumEactiveLayers[(*decoder)[m_layerFieldName]] += hit.core().energy;
       }
     }
   }
@@ -110,18 +109,18 @@ StatusCode SamplingFractionInLayers::execute() {
   m_totalEnergy->Fill(sumE);
   m_totalActiveEnergy->Fill(sumEactive);
   if (sumE > 0) {
-    m_SF->Fill(sumEactive / sumE);
+    m_sf->Fill(sumEactive / sumE);
   }
-  for (uint i = 0; i < m_cellsEnergy.size(); i++) {
-    m_cellsEnergy[i]->Fill(sumEcells[i]);
-    m_cellsActiveEnergy[i]->Fill(sumEactiveCells[i]);
+  for (uint i = 0; i < m_numLayers; i++) {
+    m_totalEnLayers[i]->Fill(sumElayers[i]);
+    m_activeEnLayers[i]->Fill(sumEactiveLayers[i]);
     if (i == 0) {
-      debug() << "total energy deposited in cryostat and bath = " << sumEcells[i] << endmsg;
+      debug() << "total energy deposited in cryostat and bath = " << sumElayers[i] << endmsg;
     } else {
-      debug() << "total energy in layer " << i << " = " << sumEcells[i] << " active = " << sumEactiveCells[i] << endmsg;
+      debug() << "total energy in layer " << i << " = " << sumElayers[i] << " active = " << sumEactiveLayers[i] << endmsg;
     }
-    if (sumEcells[i] > 0) {
-      m_cellsSF[i]->Fill(sumEactiveCells[i] / sumEcells[i]);
+    if (sumElayers[i] > 0) {
+      m_sfLayers[i]->Fill(sumEactiveLayers[i] / sumElayers[i]);
     }
   }
   return StatusCode::SUCCESS;

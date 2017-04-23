@@ -10,10 +10,11 @@
         status="development"
         version="1.0">
     <comment>
-      Common settings for the inclined EMcal.
-      The barrel is filled with liquid argon. Lead plates are inclined by a certain angle from the radial direction.
-      In between of two lead plates there is a readout.
-      Space between the plane and readout is of trapezoidal shape and filled with liquid argon.
+      Common settings for the inclined EM calorimeter.
+      The barrel is filled with liquid argon. Passive material includes lead in the middle and steal on the outside, glued together.
+      Passive plates are inclined by a certain angle from the radial direction.
+      In between of two passive plates there is a readout.
+      Space between the plate and readout is of trapezoidal shape and filled with liquid argon.
       Definition of sizes, visualization settings and readout are specified.
     </comment>
   </info>
@@ -22,6 +23,7 @@
     <constant name="LArBathThicknessFront" value="90*mm"/>
     <constant name="LArBathThicknessBack" value="50*mm"/>
     <!-- overall calorimeter volume (cryostat) -->
+    <!-- 3 cm air margin -->
     <constant name="BarCryoECal_rmin" value="BarECal_rmin+3*cm"/>
     <constant name="BarCryoECal_rmax" value="BarECal_rmax-3*cm"/>
     <constant name="BarCryoECal_dz" value="BarECal_dz"/>
@@ -29,14 +31,15 @@
     <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThicknessFront+LArBathThicknessFront"/>
     <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThicknessBack"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
-    <!-- thickness of active volume between two lead plates, measuring perpendicular to the readout plate -->
+    <!-- thickness of active volume between two absorber plates, measuring perpendicular to the readout plate -->
     <constant name="LAr_thickness" value="3.*mm"/>
-    <!-- passive layer consist of lead in the middle and steel on the outside, glued -->
+    <!-- passive layer consists of lead in the middle and steel on the outside, glued -->
     <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
     <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
     <constant name="Steel_thickness" value="0.4*mm*2./2.16"/>
-    <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
+    <!-- total amount of glue in one passive plate: it is divided for the outside layer on top and bottom -->
     <constant name="Glue_thickness" value="0.26*mm*2./2.16"/>
+    <!-- readout in between two absorber plates -->
     <constant name="readout_thickness" value="1*mm"/>
   </define>
 
@@ -55,7 +58,7 @@
     <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
-      <cryostat name="ECAL_Cryo">
+      <cryostat name="ECAL_Cryo" sensitive="false">
         <material name="Aluminum"/>
 	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
       </cryostat>

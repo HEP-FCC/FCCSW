@@ -165,6 +165,7 @@
     <composite n="1" ref="Ar"/>
   </material>
 
+  <!-- from  DD4hep/examples/SimpleDetector/compact/materials.xml -->
   <material name="PCB" state="solid">
     <D unit="g/cm3" value="1.7"/>
     <fraction n="0.180774" ref="Si"/>
@@ -174,6 +175,8 @@
     <fraction n="0.0671091" ref="Br"/>
   </material>
 
+  <!-- prepreg glue (C5H8O4Si) between steel and lead in absorber of EM calo -->
+  <!-- from ATL-LARG-PUB-2009-001 -->
   <material name="ATLASglue">
     <D value="1.69" unit="g/cm3" />
     <composite n="5" ref="C"/>
@@ -182,6 +185,8 @@
     <composite n="1" ref="Si" />
   </material>
 
+  <!-- stainless steel as in ATLAS EM calo -->z
+  <!-- from ATL-LARG-PUB-2009-001 -->
   <material name="ATLASsteel">
     <D value="7.84" unit="g/cm3" />
     <fraction n="0.7175" ref="Fe"/>

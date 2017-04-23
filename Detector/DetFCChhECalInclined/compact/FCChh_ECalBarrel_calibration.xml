@@ -10,9 +10,11 @@
         status="development"
         version="1.0">
     <comment>
-      Liquid argon - lead Ecal design.
-      Lead strips are inclined by a certain angle from the radial direction. The barrel is filled with liquid argon.
+      Liquid argon / lead EM calorimeter design.
+      Passive plate inlcude lead in the middle, with steal on both sides, glued together.
+      Passive plates are inclined by a certain angle from the radial direction. The barrel is filled with liquid argon.
       It includes cryostat.
+      Calculation of the sampling fraction can be done as both passive and active material is sensitive.
     </comment>
   </info>
 

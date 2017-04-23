@@ -6,7 +6,6 @@ gaudi_subdir(DetFCChhECalInclined v1r0)
 gaudi_depends_on_subdirs(GaudiKernel
                         Detector/DetExtensions)
 
-
 find_package(DD4hep)
 find_package(Geant4)
 include(${Geant4_USE_FILE})

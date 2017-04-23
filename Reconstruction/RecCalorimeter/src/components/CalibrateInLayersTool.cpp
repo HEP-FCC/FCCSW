@@ -20,11 +20,10 @@ StatusCode CalibrateInLayersTool::initialize() {
   }
   m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
-    error() << "Unable to locate Geometry Service. "
-            << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
+    error() << "Unable to locate Geometry Service. " << endmsg;
     return StatusCode::FAILURE;
   }
-  // check if readouts exist
+  // check if readout exists
   if (m_geoSvc->lcdd()->readouts().find(m_readoutName) == m_geoSvc->lcdd()->readouts().end()) {
     error() << "Readout <<" << m_readoutName << ">> does not exist." << endmsg;
     return StatusCode::FAILURE;

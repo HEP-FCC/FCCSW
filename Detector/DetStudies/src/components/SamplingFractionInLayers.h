@@ -58,7 +58,7 @@ private:
   /// Name of the layer/cell field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
   /// Number of layers/cells
-  Gaudi::Property<int> m_numLayers{this, "numLayers", 8, "Number of layers"};
+  Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers"};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   // Maximum energy for the axis range
@@ -66,17 +66,17 @@ private:
   // Histograms of total deposited energy within layer
   // Layers are numbered starting at 1. Layer 0 includes total energy deposited in cryostat and bath (in front and
   // behind calo)
-  std::vector<TH1F*> m_cellsEnergy;
+  std::vector<TH1F*> m_totalEnLayers;
   // Histogram of total deposited energy in the calorimeter (in active and passive material, excluding cryostat and
   // bath)
   TH1F* m_totalEnergy;
   // Histograms of energy deposited in the active material within layer
-  std::vector<TH1F*> m_cellsActiveEnergy;
+  std::vector<TH1F*> m_activeEnLayers;
   // Histogram of energy deposited in the active material of the calorimeter
   TH1F* m_totalActiveEnergy;
   // Histograms of sampling fraction (active/total energy) calculated within layer
-  std::vector<TH1F*> m_cellsSF;
+  std::vector<TH1F*> m_sfLayers;
   // Histogram of sampling fraction (active/total energy) calculated for the calorimeter (excluding cryostat and bath)
-  TH1F* m_SF;
+  TH1F* m_sf;
 };
 #endif /* DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H */

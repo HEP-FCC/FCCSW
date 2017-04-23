@@ -54,7 +54,6 @@ out = PodioOutput("out",
 out.outputCommands = ["keep *"]
 out.filename = "positions_ecalInclinedSim.root"
 
-
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()

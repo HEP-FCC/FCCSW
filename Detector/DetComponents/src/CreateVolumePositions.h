@@ -9,9 +9,9 @@
 #include "FWCore/DataHandle.h"
 class IGeoSvc;
 
-/** @class CreateVolumePositions
+/** @class CreateVolumePositions DetComponents/src/CreateVolumePositions.h CreateVolumePositions.h
  *
- *  Retrieve positions of the volumes.
+ *  Retrieve positions of the volumes from cell ID.
  *  This algorithm saves the centre position of the volume. No segmentation of volume is taken into account.
  *  Transformation matrix from global coordinates to local is taken from DD4hep::Geometry::DetElement.
  *  Full hierarchy of DetElements (for each sensitive volume) is required.
@@ -28,7 +28,6 @@ public:
    *   @return status code
    */
   StatusCode initialize();
-
   /**  Execute.
    *   @return status code
    */

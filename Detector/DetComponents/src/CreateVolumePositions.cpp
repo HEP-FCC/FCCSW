@@ -37,8 +37,7 @@ StatusCode CreateVolumePositions<H, P>::initialize() {
 
   m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
-    error() << "Unable to locate Geometry Service. "
-            << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
+    error() << "Unable to locate Geometry Service. " << endmsg;
     return StatusCode::FAILURE;
   }
   return sc;
@@ -47,11 +46,11 @@ StatusCode CreateVolumePositions<H, P>::initialize() {
 template <class H, class P>
 StatusCode CreateVolumePositions<H, P>::execute() {
 
-  // Get the input caloHits collection
+  // Get the input hit collection
   const H* hits = m_hits.get();
   debug() << "Input hit collection size: " << hits->size() << endmsg;
 
-  // Initialize output CaloClusterCollection
+  // Initialize output collection
   auto edmPositionedHitCollection = m_positionedHits.createAndPut();
 
   uint64_t cellid = 0;
@@ -72,7 +71,7 @@ StatusCode CreateVolumePositions<H, P>::execute() {
 
     auto positionedHit = edmPositionedHitCollection->create(edmPos, cell.core());
 
-    // Debug information about cells
+    // Debug information about volume position
     debug() << "Hit energy" << cell.core().energy << "\tcellID " << cellid << endmsg;
     debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
             << outGlobal[2] / dd4hep::mm << endmsg;
