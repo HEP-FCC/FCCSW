@@ -89,8 +89,7 @@ private:
 
   /** Temporary: for use with MergeLayer tool
    * MergeLayer is going to be replaced by RedoSegmentation once we can define
-   * segmentation with variable cell (layer)
-   * size.
+   * segmentation with variable cell (layer) size.
    * This property won't be needed anymore.
    */
   unsigned int m_activeVolumesNumber;

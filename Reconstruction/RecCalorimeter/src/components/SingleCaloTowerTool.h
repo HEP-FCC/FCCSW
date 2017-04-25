@@ -30,9 +30,8 @@ class Segmentation;
  *  A tower contains all cells within certain eta and phi (tower size: '\b
  * deltaEtaTower', '\b deltaPhiTower').
  *  Distance in r plays no role, however `\b radiusForPosition` needs to be
- * defined
- *  (e.g. to inner radius of the detector) for the cluster position calculation.
- * By default the radius is equal to 1.
+ *  defined (e.g. to inner radius of the detector) for the cluster position 
+ *  calculation. By default the radius is equal to 1.
  *
  *  This tool creates towers from a single cell collection (from one
  * calorimeter).
@@ -58,22 +57,15 @@ public:
   virtual StatusCode finalize() final;
   /**  Find number of calorimeter towers.
    *   Number of towers in phi is calculated from full azimuthal angle (2 pi)
-   * and the size of tower in phi ('\b
-   * deltaPhiTower').
+   * and the size of tower in phi ('\b deltaPhiTower').
    *   Number of towers in eta is calculated from maximum detector eta ('\b
-   * etaMax`) and the size of tower in eta ('\b
-   * deltaEtaTower').
-   *   If max eta is undefined, 0 is returned. In this case number of eta towers
-   * should be calculated for each event
-   * separately (etaTowersNumber()).
+   * etaMax`) and the size of tower in eta ('\b deltaEtaTower').
    *   @return Struct containing number of towers in eta and phi.
    */
   virtual tower towersNumber() final;
   /**  Build calorimeter towers.
-   *   Tower is segmented in eta and phi, with the energy from all layers (no r
-   * segmentation).
-   *   Currently the size of tower needs to be a multiple of a cell size (so
-   * each cell belongs to only one tower).
+   *   Tower is segmented in eta and phi, with the energy from all layers 
+   *   (no segmentation).
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
@@ -82,8 +74,7 @@ public:
    *   Reconstructed cluster has eta and phi position, without the radial
    * coordinate. The cluster in EDM contains
    * Cartesian position, so the radial position (e.g. the inner radius of the
-   * calorimeter)
-   *   needs to be specified. By default it is equal to 1.
+   * calorimeter) needs to be specified. By default it is equal to 1.
    *   @return Radius
    */
   virtual float radiusForPosition() const final;
@@ -102,8 +93,7 @@ public:
   virtual uint idPhi(float aPhi) const final;
   /**  Get the eta position of the centre of the tower.
    *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is
-   * eta=0). No segmentation offset is taken
-   * into account.
+   * eta=0). No segmentation offset is taken into account.
    *   @param[in] aIdEta ID (eta) of a tower
    *   @return Position of the centre of the tower
    */
@@ -116,12 +106,11 @@ public:
   /**  Correct way to access the neighbour of the phi tower, taking into account
    * the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct
-   * neighbour
-   *   of the last tower in phi with ID = m_nPhiTower - 1).
-   *   @param[in] aIPhi requested ID of a phi tower, may be < 0 or >=
-   * m_nPhiTower
-   *   @return  ID of a tower - shifted and corrected (in [0, m_nPhiTower)
-   * range)
+   * neighbour of the last tower in phi with ID = m_nPhiTower - 1).
+   *   @param[in] aIPhi requested ID of a phi tower, 
+   *   may be < 0 or >=m_nPhiTower
+   *   @return  ID of a tower - shifted and corrected 
+   * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
 
@@ -137,8 +126,9 @@ private:
   /// Radius used to calculate cluster position from eta and phi (in mm)
   Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
                                    "Radius used to calculate cluster position from eta and phi (in mm)"};
+  /// Maximum eta of the detector
   float m_etaMax;
-  /// Phi offset
+  /// Maximum phi of the detector
   float m_phiMax;
 
   /// Size of the tower in eta

@@ -71,15 +71,14 @@ StatusCode CreateCaloCells::execute() {
   } else {
     m_cellsMap.clear();
   }
-  debug() << m_cellsMap.size() << endmsg;
-
+  
   // 1. Merge energy deposits into cells
   // If running with noise map already was prepared. Otherwise it is being
   // created below
   for (const auto& hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
-  debug() << m_cellsMap.size() << endmsg;
+  debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;  
 
   // 2. Calibrate simulation energy to EM scale
   if (m_doCellCalibration) {

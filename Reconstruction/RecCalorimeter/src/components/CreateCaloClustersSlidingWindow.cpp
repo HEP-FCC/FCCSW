@@ -27,7 +27,7 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
   m_nEtaTower = towerMapSize.eta;
   m_nPhiTower = towerMapSize.phi;
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
-  // make sure that the tower size in eta is larger than the seeding sliding window
+  // make sure that the number of towers in eta is larger than the seeding sliding window
   if (m_nEtaTower < m_nEtaWindow) {
     debug() << "Window size in eta too small!!! Window " << m_nEtaWindow << " # of eta towers " << m_nEtaTower
             << endmsg;
@@ -40,6 +40,9 @@ StatusCode CreateCaloClustersSlidingWindow::initialize() {
 StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 1. Create calorimeter towers (calorimeter grid in eta phi, all layers merged)
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
+  // Create an output collection
+  auto edmClusters = m_clusters.createAndPut();
+  // Check if the tower building succeeded
   if (m_towerTool->buildTowers(m_towers) == 0) {
     debug() << "Empty cell collection." << endmsg;
     return StatusCode::SUCCESS;
@@ -128,7 +131,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
           posEta = 0;
           posPhi = 0;
           sumEnergyPos = 0;
-          // weighted mean for position in eta and phi (weights must be non-negative!)
+          // weighted mean for position in eta and phi
           for (int ipEta = iEta - halfEtaPos; ipEta <= iEta + halfEtaPos; ipEta++) {
             for (int ipPhi = iPhi - halfPhiPos; ipPhi <= iPhi + halfPhiPos; ipPhi++) {
               posEta += m_towerTool->eta(ipEta) * m_towers[ipEta][phiNeighbour(ipPhi)];
@@ -137,7 +140,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             }
           }
           // If too small energy in the position window, calculate the position in the whole sliding window
-          if (sumEnergyPos > m_positionWindFraction * m_energyThreshold) {
+	  // Assigns correct position for cases with maximum energy deposits close to the border in eta
+          if (sumEnergyPos > m_energyThresholdFraction * m_energyThreshold) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
           } else {
@@ -223,27 +227,27 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   // 6. Create final clusters
   // currently only role of r is to calculate x,y,z position
   double radius = m_towerTool->radiusForPosition();
-  auto edmClusters = m_clusters.createAndPut();
   for (const auto clu : m_preClusters) {
     float clusterEnergy = clu.transEnergy * cosh(clu.eta);
     // apply energy sharing correction (if flag set to true)
     if (m_energySharingCorrection) {
       int idEtaCl = m_towerTool->idEta(clu.eta);
       int idPhiCl = m_towerTool->idPhi(clu.phi);
+      // sum of energies in other clusters in each eta-phi tower of our current cluster (idEtaCl, idPhiCl)
       std::vector<std::vector<float>> sumEnergySharing;
-      sumEnergySharing.assign(2 * halfEtaFin + 1, std::vector<float>(2 * halfPhiFin + 1, 0));
+      sumEnergySharing.assign(m_nEtaFinal, std::vector<float>(m_nPhiFinal, 0));
       // loop over all clusters and check if they have any tower in common with our current cluster
-      for (const auto iclu : m_preClusters) {
-        int idEtaIcl = m_towerTool->idEta(iclu.eta);
-        int idPhiIcl = m_towerTool->idPhi(iclu.phi);
-        if (idEtaCl != idEtaIcl && idPhiCl != idPhiIcl) {
-          if (abs(idEtaIcl - idEtaCl) <= halfEtaFin && abs(idPhiIcl - idPhiCl) <= halfPhiFin) {
-            int iEtaShareMin = (idEtaIcl < idEtaCl) ? idEtaCl - halfEtaFin : idEtaIcl - halfEtaFin;
-            int iEtaShareMax = (idEtaIcl < idEtaCl) ? idEtaIcl + halfEtaFin : idEtaCl + halfEtaFin;
-            int iPhiShareMin = (idPhiIcl < idPhiCl) ? idPhiCl - halfPhiFin : idPhiIcl - halfPhiFin;
-            int iPhiShareMax = (idPhiIcl < idPhiCl) ? idPhiIcl + halfPhiFin : idPhiCl + halfPhiFin;
-            for (int iEta = iEtaShareMin; iEta <= iEtaShareMax; iEta++) {
-              for (int iPhi = iPhiShareMin; iPhi <= iPhiShareMax; iPhi++) {
+      for (const auto cluSharing : m_preClusters) {
+        int idEtaClShare = m_towerTool->idEta(cluSharing.eta);
+        int idPhiClShare = m_towerTool->idPhi(cluSharing.phi);
+        if (idEtaCl != idEtaClShare && idPhiCl != idPhiClShare) {
+	  // check for overlap between clusters
+          if (abs(idEtaClShare - idEtaCl) < m_nEtaFinal && 
+	      ((abs(idPhiClShare - idPhiCl) < m_nPhiFinal) || 
+	       (abs(idPhiClShare - idPhiCl) > m_nPhiTower - m_nPhiFinal))) {
+            // add energy in shared towers to sumEnergySharing[][]
+            for (int iEta = std::max(idEtaCl, idEtaClShare) - halfEtaFin; iEta <= std::min(idEtaCl, idEtaClShare) + halfEtaFin; iEta++) {
+              for (int iPhi = std::max(idPhiCl, idPhiClShare) - halfPhiFin; iEta <= std::min(idPhiCl, idPhiClShare) + halfPhiFin; iPhi++) {
                 if (iEta >= 0 && iEta < m_nEtaTower) {  // check if we are not outside of map in eta
                   sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] +=
                       m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));
@@ -253,6 +257,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
           }
         }
       }
+      // apply the actual correction: substract the weighted energy contributions in other clusters
       for (int iEta = idEtaCl - halfEtaFin; iEta <= idEtaCl + halfEtaFin; iEta++) {
         for (int iPhi = idPhiCl - halfPhiFin; iPhi <= idPhiCl + halfPhiFin; iPhi++) {
           if (sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] != 0) {
@@ -263,6 +268,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         }
       }
     }
+    // save the clusters in our EDM
     // check ET thereshold once more (ET could change with the energy sharing correction)
     if (clusterEnergy / cosh(clu.eta) > m_energyThreshold) {
       auto edmCluster = edmClusters->create();

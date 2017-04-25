@@ -8,7 +8,7 @@ Information about calorimeter reconstruction software within FCCSW. The software
 ECAL calorimeter description in `Detector/DetFCChhECalSimple`:
 
 * Tube geometry with alternating layers of active and passive material
-* Using phi-eta segmentation with offset (NEW: negative eta/phi identifiers not allowed!)
+* Using phi-eta segmentation with offset (Note: negative eta/phi identifiers not allowed!)
 * Calorimeter cells defined by a layer in R + phi-eta segment
 
 # Digitisation
@@ -88,7 +88,7 @@ If two pre-clusters are found next to each other (within window **nEtaDuplicates
 
 ### 4. Build clusters.
 
-Clusters are created using the pre-clusters energy (energy of towers within the sliding window). Position is calculated from the barycentre position and the inner radius of the detector. Energy sharing between final clusters is implemented (if the flag is set to true - default). For each cluster the cell collection is searched and all those inside the cluster are attached.
+Clusters are created using the pre-clusters energy (energy of towers within the sliding window). Position is calculated from the barycentre position and the inner radius of the detector. Energy sharing between final clusters is implemented (if the flag energySharingCorrection set to true - default). For each cluster the cell collection is searched and all those inside the cluster are attached.
 
 # Example
 
