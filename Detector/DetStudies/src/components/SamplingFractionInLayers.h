@@ -3,6 +3,7 @@
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
@@ -15,7 +16,6 @@ class PositionedCaloHitCollection;
 
 class TH1F;
 class ITHistSvc;
-
 /** @class SamplingFractionInLayers SamplingFractionInLayers.h
  *
  *  Histograms of energy deposited in active material and total energy deposited in the calorimeter.
@@ -46,9 +46,9 @@ public:
 
 private:
   /// Pointer to the interface of histogram service
-  SmartIF<ITHistSvc> m_histSvc;
+  ServiceHandle<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the energy deposits
   DataHandle<fcc::PositionedCaloHitCollection> m_deposits{"rec/caloHits", Gaudi::DataHandle::Reader, this};
   /// Name of the active field

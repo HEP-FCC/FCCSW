@@ -17,7 +17,7 @@ saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
 saveecaltool.caloHits.Path = "ECalHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                                      particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = 0, etaMax = 0)
+                                      particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = -1.5, etaMax = 1.5)
 geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveCalHits/saveECalHits"],
                     eventProvider = pgun)

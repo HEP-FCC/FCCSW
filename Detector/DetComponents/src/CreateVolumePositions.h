@@ -3,7 +3,7 @@
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/ToolHandle.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
@@ -20,7 +20,7 @@ class IGeoSvc;
  *
  */
 
-template <class H, class P>
+template <class Hits, class PositionedHit>
 class CreateVolumePositions : public GaudiAlgorithm {
 public:
   CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc);
@@ -39,11 +39,11 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for hits (input collection with cellID)
-  DataHandle<H> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
+  DataHandle<Hits> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
   /// Handle for positioned hits (output collection)
-  DataHandle<P> m_positionedHits{"hits/positionedHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<PositionedHit> m_positionedHits{"hits/positionedHits", Gaudi::DataHandle::Writer, this};
 };
 
 #endif /* DETCOMPONENTS_CREATEVOLUMEPOSITIONS_H */

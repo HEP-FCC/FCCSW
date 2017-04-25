@@ -3,6 +3,7 @@
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 // FCCSW
 #include "RecInterface/ICalibrateCaloHitsTool.h"
@@ -43,7 +44,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   /// Name of the cells/layer field

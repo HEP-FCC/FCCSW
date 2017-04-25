@@ -18,6 +18,7 @@
 #include "GaudiKernel/Incident.h"
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 // DD4Hep
 #include "DD4hep/LCDD.h"
@@ -52,7 +53,7 @@ public:
 
 private:
   /// Pointer to the incident service
-  SmartIF<IIncidentSvc> m_incidentSvc;
+  ServiceHandle<IIncidentSvc> m_incidentSvc;
   /// Pointer to the interface to the DD4hep geometry
   DD4hep::Geometry::LCDD* m_dd4hepgeo;
   /// Pointer to the detector construction of DDG4

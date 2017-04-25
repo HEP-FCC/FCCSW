@@ -15,18 +15,13 @@ using namespace Gaudi;
 DECLARE_COMPONENT(GeoSvc)
 
 GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc)
-    : base_class(name, svc), m_dd4hepgeo(0), m_geant4geo(0), m_log(msgSvc(), name), m_failureFlag(false) {}
+: base_class(name, svc), m_incidentSvc("IncidentSvc", "GeoSvc"), m_dd4hepgeo(0), m_geant4geo(0), m_log(msgSvc(), name), m_failureFlag(false) {}
 
 GeoSvc::~GeoSvc() { m_dd4hepgeo->destroyInstance(); }
 
 StatusCode GeoSvc::initialize() {
   StatusCode sc = Service::initialize();
   if (!sc.isSuccess()) return sc;
-  m_incidentSvc = service("IncidentSvc");
-  if (!m_incidentSvc) {
-    error() << "Unable to locate Incident Service" << endmsg;
-    return StatusCode::FAILURE;
-  }
   m_incidentSvc->addListener(this, "GeometryFailure");
   if (buildDD4HepGeo().isFailure())
     m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;

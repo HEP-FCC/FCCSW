@@ -177,7 +177,7 @@
 
   <!-- prepreg glue (C5H8O4Si) between steel and lead in absorber of EM calo -->
   <!-- from ATL-LARG-PUB-2009-001 -->
-  <material name="ATLASglue">
+  <material name="lArCaloGlue">
     <D value="1.69" unit="g/cm3" />
     <composite n="5" ref="C"/>
     <composite n="8" ref="H" />
@@ -185,9 +185,9 @@
     <composite n="1" ref="Si" />
   </material>
 
-  <!-- stainless steel as in ATLAS EM calo -->z
+  <!-- stainless steel as in ATLAS EM calo -->
   <!-- from ATL-LARG-PUB-2009-001 -->
-  <material name="ATLASsteel">
+  <material name="lArCaloSteel">
     <D value="7.84" unit="g/cm3" />
     <fraction n="0.7175" ref="Fe"/>
     <fraction n="0.19"   ref="Cr" />

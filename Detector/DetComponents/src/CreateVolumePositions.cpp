@@ -22,32 +22,23 @@ DECLARE_COMPONENT_WITH_ID(CreateVolumeCaloPositions, "CreateVolumeCaloPositions"
 DECLARE_ALGORITHM_FACTORY(CreateVolumeTrackPositions)
 DECLARE_COMPONENT_WITH_ID(CreateVolumeTrackPositions, "CreateVolumeTrackPositions")
 
-template <class H, class P>
-CreateVolumePositions<H, P>::CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc)
-    : GaudiAlgorithm(name, svcLoc) {
+template <class Hits, class PositionedHit>
+CreateVolumePositions<Hits, PositionedHit>::CreateVolumePositions(const std::string& name, ISvcLocator* svcLoc)
+    : GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", "CreateVolumePositions") {
   declareProperty("hits", m_hits, "Hit collection (input)");
   declareProperty("positionedHits", m_positionedHits, "Positions of centres of volumes (output)");
 }
 
-template <class H, class P>
-StatusCode CreateVolumePositions<H, P>::initialize() {
-
-  StatusCode sc = GaudiAlgorithm::initialize();
-  if (sc.isFailure()) return sc;
-
-  m_geoSvc = service("GeoSvc");
-  if (!m_geoSvc) {
-    error() << "Unable to locate Geometry Service. " << endmsg;
-    return StatusCode::FAILURE;
-  }
-  return sc;
+template <class Hits, class PositionedHit>
+StatusCode CreateVolumePositions<Hits, PositionedHit>::initialize() {
+  return GaudiAlgorithm::initialize();
 }
 
-template <class H, class P>
-StatusCode CreateVolumePositions<H, P>::execute() {
+template <class Hits, class PositionedHit>
+StatusCode CreateVolumePositions<Hits, PositionedHit>::execute() {
 
   // Get the input hit collection
-  const H* hits = m_hits.get();
+  const Hits* hits = m_hits.get();
   debug() << "Input hit collection size: " << hits->size() << endmsg;
 
   // Initialize output collection
@@ -81,7 +72,7 @@ StatusCode CreateVolumePositions<H, P>::execute() {
   return StatusCode::SUCCESS;
 }
 
-template <class H, class P>
-StatusCode CreateVolumePositions<H, P>::finalize() {
+template <class Hits, class PositionedHit>
+StatusCode CreateVolumePositions<Hits, PositionedHit>::finalize() {
   return GaudiAlgorithm::finalize();
 }

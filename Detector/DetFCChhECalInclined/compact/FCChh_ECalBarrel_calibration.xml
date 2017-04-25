@@ -14,6 +14,7 @@
       Passive plate inlcude lead in the middle, with steal on both sides, glued together.
       Passive plates are inclined by a certain angle from the radial direction. The barrel is filled with liquid argon.
       It includes cryostat.
+      This file is used in the calculation of the sampling fraction that corrects energy for the energy depoisted in the absorber.
       Calculation of the sampling fraction can be done as both passive and active material is sensitive.
     </comment>
   </info>

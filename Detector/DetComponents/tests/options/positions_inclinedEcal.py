@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="testHepMCrandom.dat")
+reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/testHepMCpositionsEMcal.dat")
 reader.hepmc.Path = "hepmc"
 
 from Configurables import HepMCConverter

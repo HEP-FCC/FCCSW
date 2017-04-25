@@ -74,10 +74,10 @@
             <material name="Lead"/>
           </inner>
 	       <glue thickness="Glue_thickness" sensitive="false">
-            <material name="ATLASglue"/>
+            <material name="lArCaloGlue"/>
           </glue>
 	       <outer thickness="Steel_thickness" sensitive="false">
-            <material name="ATLASsteel"/>
+            <material name="lArCaloSteel"/>
           </outer>
         </passive>
         <readout thickness="readout_thickness" sensitive="false">
