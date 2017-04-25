@@ -140,7 +140,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
             }
           }
           // If too small energy in the position window, calculate the position in the whole sliding window
-	  // Assigns correct position for cases with maximum energy deposits close to the border in eta
+          // Assigns correct position for cases with maximum energy deposits close to the border in eta
           if (sumEnergyPos > m_energyThresholdFraction * m_energyThreshold) {
             posEta /= sumEnergyPos;
             posPhi /= sumEnergyPos;
@@ -241,13 +241,15 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
         int idEtaClShare = m_towerTool->idEta(cluSharing.eta);
         int idPhiClShare = m_towerTool->idPhi(cluSharing.phi);
         if (idEtaCl != idEtaClShare && idPhiCl != idPhiClShare) {
-	  // check for overlap between clusters
-          if (abs(idEtaClShare - idEtaCl) < m_nEtaFinal && 
-	      ((abs(idPhiClShare - idPhiCl) < m_nPhiFinal) || 
-	       (abs(idPhiClShare - idPhiCl) > m_nPhiTower - m_nPhiFinal))) {
+          // check for overlap between clusters
+          if (abs(idEtaClShare - idEtaCl) < m_nEtaFinal &&
+              ((abs(idPhiClShare - idPhiCl) < m_nPhiFinal) ||
+               (abs(idPhiClShare - idPhiCl) > m_nPhiTower - m_nPhiFinal))) {
             // add energy in shared towers to sumEnergySharing[][]
-            for (int iEta = std::max(idEtaCl, idEtaClShare) - halfEtaFin; iEta <= std::min(idEtaCl, idEtaClShare) + halfEtaFin; iEta++) {
-              for (int iPhi = std::max(idPhiCl, idPhiClShare) - halfPhiFin; iEta <= std::min(idPhiCl, idPhiClShare) + halfPhiFin; iPhi++) {
+            for (int iEta = std::max(idEtaCl, idEtaClShare) - halfEtaFin;
+                 iEta <= std::min(idEtaCl, idEtaClShare) + halfEtaFin; iEta++) {
+              for (int iPhi = std::max(idPhiCl, idPhiClShare) - halfPhiFin;
+                   iEta <= std::min(idPhiCl, idPhiClShare) + halfPhiFin; iPhi++) {
                 if (iEta >= 0 && iEta < m_nEtaTower) {  // check if we are not outside of map in eta
                   sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] +=
                       m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));

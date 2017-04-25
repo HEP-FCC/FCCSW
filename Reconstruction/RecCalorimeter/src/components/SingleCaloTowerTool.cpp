@@ -75,13 +75,13 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
   // Loop over a collection of calorimeter cells and build calo towers
   // borders of the cell in eta/phi
   float etaCellMin = 0, etaCellMax = 0;
-  float phiCellMin = 0, phiCellMax =0;
+  float phiCellMin = 0, phiCellMax = 0;
   // tower index of the borders of the cell
   int iPhiMin = 0, iPhiMax = 0;
   int iEtaMin = 0, iEtaMax = 0;
-  // fraction of cell area in eta/phi belonging to towers 
+  // fraction of cell area in eta/phi belonging to towers
   // Min - first tower, Max - last tower, Middle - middle tower(s)
-  // If cell size <= tower size => first == last == middle tower, all fractions 1
+  // If cell size <= tower size => first == last == middle tower, all fractions = 1
   // cell size > tower size => Sum of fractions = 1
   float ratioEta = 1.0, ratioPhi = 1.0;
   float fracEtaMin = 1.0, fracEtaMax = 1.0, fracEtaMiddle = 1.0;
@@ -98,7 +98,7 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
     iEtaMax = idEta(etaCellMax - epsilon);
     iPhiMax = idPhi(phiCellMax - epsilon);
     // if a cell is larger than a tower in eta/phi, calculate the fraction of
-    // the cell belonging to the first/last/middle towers
+    // the cell area belonging to the first/last/middle towers
     fracEtaMin = 1.0;
     fracEtaMax = 1.0;
     fracEtaMiddle = 1.0;
@@ -106,10 +106,9 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
       fracEtaMin = fabs(eta(iEtaMin) + 0.5 * m_deltaEtaTower - etaCellMin) / m_segmentation->gridSizeEta();
       fracEtaMax = fabs(etaCellMax - eta(iEtaMax) + 0.5 * m_deltaEtaTower) / m_segmentation->gridSizeEta();
       if ((iEtaMax - iEtaMin - 1) != 0) {
-	fracEtaMiddle = (1 - fracEtaMin - fracEtaMax) / float(iEtaMax - iEtaMin - 1);
-      }
-      else {
-	fracEtaMiddle = 0.0;
+        fracEtaMiddle = (1 - fracEtaMin - fracEtaMax) / float(iEtaMax - iEtaMin - 1);
+      } else {
+        fracEtaMiddle = 0.0;
       }
     }
     fracPhiMin = 1.0;
@@ -121,9 +120,8 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
       fracPhiMax =
           fabs(phiCellMax - phi(iPhiMax) + 0.5 * m_deltaPhiTower) / (2 * M_PI / (double)m_segmentation->phiBins());
       if ((iPhiMax - iPhiMin - 1) != 0) {
-	fracPhiMiddle = (1 - fracPhiMin - fracPhiMax) / float(iPhiMax - iPhiMin - 1);
-      }
-      else {
+        fracPhiMiddle = (1 - fracPhiMin - fracPhiMax) / float(iPhiMax - iPhiMin - 1);
+      } else {
         fracPhiMiddle = 0.0;
       }
     }
