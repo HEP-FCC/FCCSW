@@ -12,8 +12,9 @@
  *
  *  Particle gun with given momentum range
  *
- *  @author Patrick Robbe
- *  @author Benedikt Hegner
+ *  @author Patrick Robbe (adaptation to tool structure)
+ *  @author Benedikt Hegner (adaption for non LHCb use cases)
+ *  @author Valentin Volkl (rewrite as tool)
  *  @date   2008-05-18
  */
 class MomentumRangeParticleGun : public GaudiTool, virtual public IParticleGunTool {
@@ -33,6 +34,7 @@ public:
 
   /// Print counters
   virtual void printCounters() { ; };
+  virtual StatusCode getNextEvent(HepMC::GenEvent&);
 
 private:
   /// Minimum momentum (Set by options)

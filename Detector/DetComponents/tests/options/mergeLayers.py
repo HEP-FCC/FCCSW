@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCReader, HepMCDumper
+from Configurables import ApplicationMgr, HepMCDumper
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 20, # GeV
@@ -10,7 +10,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 ThetaMax = 1.58, # rad
                                 PhiMin = 0, # rad
                                 PhiMax = 0) # rad
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
+gen = GenAlg("ParticleGun", SignalProvider=pgun, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
@@ -18,8 +18,8 @@ from Configurables import Gaudi__ParticlePropertySvc
 # list of possible particles is defined in ParticlePropertiesFile
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

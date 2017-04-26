@@ -42,8 +42,7 @@ struct cluster {
  *     Each precluster contains the barycentre position and the transverse energy.
  *     Position is recalculated using the window size in eta x phi ('\b nEtaPosition', '\b nPhiPosition')
  *     that may be smaller than the sliding window to reduce the noise influence. Both windows are centred at the same
- *tower.
- *     The energy of the precluster is the energy calculated using the sliding window.
+ *tower. The energy of the precluster is the energy calculated using the sliding window.
  *  3. Remove duplicates.
  *     If two pre-clusters are found next to each other (within window '\b nEtaDuplicates', '\b nPhiDuplicates'), the
  *pre-cluster with lower energy is removed.
@@ -114,16 +113,15 @@ private:
   /// Size of the window in phi for the overlap removal (in units of tower size)
   Gaudi::Property<int> m_nPhiDuplicates{this, "nPhiDuplicates", 2};
   /// Energy threshold for cluster finding
-  Gaudi::Property<float> m_energyThreshold{this, "energyThreshold", 3};
+  Gaudi::Property<float> m_energyThreshold{this, "energyThreshold", 10};
   /// Size of the window in eta for the final cluster building (in units of tower size)
   Gaudi::Property<int> m_nEtaFinal{this, "nEtaFinal", 5};
   /// Size of the window in phi for the final cluster building (in units of tower size)
   Gaudi::Property<int> m_nPhiFinal{this, "nPhiFinal", 15};
-  /// Flag if references to the cells should be saved
-  Gaudi::Property<bool> m_saveCells{this, "saveCells", false};
-  /// Flag if in each event the number of eta towers should be recalculated (true: default, false: if m_towerTool has
-  /// etaMax defined)
-  bool m_recalculateEtaTowers;
+  /// Fraction of the energy threshold used in the position calculation
+  Gaudi::Property<float> m_energyThresholdFraction{this, "energyThresholdFraction", 0.25};
+  /// Flag for the application of the correction for energy sharing between clusters
+  Gaudi::Property<bool> m_energySharingCorrection{this, "energySharingCorrection", true};
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */

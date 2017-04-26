@@ -11,9 +11,9 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent   = FCCDataSvc("EventDataSvc")
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
 # In the following line,
 #   reader.YYY.Path = "XXX"
 # YYY matches the string passed to declareOutput in the constructor of the algorithm (here "hepmc")

@@ -59,7 +59,7 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
 
 void NoiseCaloCellsFromFileTool::addRandomCellNoise(std::unordered_map<uint64_t, double>& aCells) {
   std::for_each(aCells.begin(), aCells.end(), [this](std::pair<const uint64_t, double>& p) {
-    p.second += (getNoiseConstantPerCell(p.second) * m_gauss.shoot());
+    p.second += (getNoiseConstantPerCell(p.first) * m_gauss.shoot());
   });
 }
 
@@ -152,9 +152,10 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
          m_histoElecNoiseConst.at(index).GetBinLowEdge(1)) /
         Nbins;
     // find the eta bin for the cell
-    int ibin = floor(TMath::Abs(cellEta) / deltaEtaBin) + 1;
+    int ibin = floor(fabs(cellEta) / deltaEtaBin) + 1;
     if (ibin > Nbins) {
-      error() << "eta outside range of the histograms!" << endmsg;
+      error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins
+              << endmsg;
       ibin = Nbins;
     }
     // Check that there are not more layers than the constants are provided for
@@ -173,7 +174,7 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   }
 
   // Total noise: electronics noise + pileup
-  double totalNoise = TMath::Sqrt(TMath::Power(elecNoise, 2) + TMath::Power(pileupNoise, 2));
+  double totalNoise = sqrt(pow(elecNoise, 2) + pow(pileupNoise, 2));
 
   if (totalNoise < 1e-3) {
     warning() << "Zero noise: cell eta " << cellEta << " layer " << cellLayer << " noise " << totalNoise << endmsg;
