@@ -1,7 +1,6 @@
 from Gaudi.Configuration import *
-
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
-podioevent   = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_eta0_10events.root")
+podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
