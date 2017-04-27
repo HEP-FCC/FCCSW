@@ -97,7 +97,7 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   double dz0 = sequenceDimensions.dr() * 0.5;
 
   double dx1Module = tn * sensitiveBarrelRmin - spacing;
-  double dx2Module = tn * cos(dphi / 2.) * dimensions.rmax() - spacing;
+  double dx2Module = tn * (sensitiveBarrelRmin + (numSequencesR*sequenceDimensions.dr())) - spacing;
   double dzModule = (numSequencesR * sequenceDimensions.dr()) / 2;
 
   lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;

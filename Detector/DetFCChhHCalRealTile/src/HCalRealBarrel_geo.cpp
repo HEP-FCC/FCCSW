@@ -243,10 +243,10 @@ createRealHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry:
   }
 
   // Placement of DetElements
-  std::cout << "Modules in phi : " << modules.size() << std::endl; 
-  std::cout << "Rows in z :      " << rows.size() << std::endl;
-  std::cout << "Layers in r :    " << layers.size() << std::endl;
-  std::cout << "Tiles in layers :" << tilesInLayers[1].size() << std::endl;
+  lLog << MSG::DEBUG <<  "Modules in phi : " << modules.size() << std::endl; 
+  lLog << MSG::DEBUG <<  "Rows in z :      " << rows.size() << std::endl;
+  lLog << MSG::DEBUG <<  "Layers in r :    " << layers.size() << std::endl;
+  lLog << MSG::DEBUG <<  "Tiles in layers :" << tilesInLayers[1].size() << std::endl;
 
   for (uint iPhi = 0; iPhi < numSequencesPhi; iPhi++) {
     DetElement moduleDet(hCal,  DD4hep::XML::_toString(iPhi, "module%d"), iPhi);
