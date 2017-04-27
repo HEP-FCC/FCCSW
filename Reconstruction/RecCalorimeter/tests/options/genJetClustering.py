@@ -1,9 +1,10 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, HepMCJetClustering
+from Configurables import ApplicationMgr, HepMCDumper, HepMCJetClustering
 from Configurables import HepMCHistograms, JetHistograms
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmc"
 
 # dumps the HepMC::GenEvent

@@ -4,31 +4,25 @@ namespace DD4hep {
 namespace DDSegmentation {
 
 /// default constructor using an encoding string
-GridPhiEta::GridPhiEta(const std::string& cellEncoding) : Segmentation(cellEncoding) {
+GridPhiEta::GridPhiEta(const std::string& cellEncoding) : GridEta(cellEncoding) {
   // define type and description
   _type = "GridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
 
-  // register all necessary parameters
-  registerParameter("grid_size_eta", "Cell size in Eta", m_gridSizeEta, 1., SegmentationParameter::LengthUnit);
+  // register all necessary parameters (additional to those registered in GridEta)
   registerParameter("phi_bins", "Number of bins phi", m_phiBins, 1);
-  registerParameter("offset_eta", "Angular offset in eta", m_offsetEta, 0., SegmentationParameter::AngleUnit, true);
   registerParameter("offset_phi", "Angular offset in phi", m_offsetPhi, 0., SegmentationParameter::AngleUnit, true);
-  registerIdentifier("identifier_eta", "Cell ID identifier for eta", m_etaID, "eta");
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
-GridPhiEta::GridPhiEta(BitField64* decoder) : Segmentation(decoder) {
+GridPhiEta::GridPhiEta(BitField64* decoder) : GridEta(decoder) {
   // define type and description
   _type = "GridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
 
-  // register all necessary parameters
-  registerParameter("grid_size_eta", "Cell size in Eta", m_gridSizeEta, 1., SegmentationParameter::LengthUnit);
+  // register all necessary parameters (additional to those registered in GridEta)
   registerParameter("phi_bins", "Number of bins phi", m_phiBins, 1);
-  registerParameter("offset_eta", "Angular offset in eta", m_offsetEta, 0., SegmentationParameter::AngleUnit, true);
   registerParameter("offset_phi", "Angular offset in phi", m_offsetPhi, 0., SegmentationParameter::AngleUnit, true);
-  registerIdentifier("identifier_eta", "Cell ID identifier for eta", m_etaID, "eta");
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
@@ -49,23 +43,12 @@ CellID GridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& g
   return _decoder->getValue();
 }
 
-/// determine the pseudorapidity based on the current cell ID
-double GridPhiEta::eta() const {
-  CellID etaValue = (*_decoder)[m_etaID].value();
-  return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
-}
 /// determine the azimuthal angle phi based on the current cell ID
 double GridPhiEta::phi() const {
   CellID phiValue = (*_decoder)[m_phiID].value();
   return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
 }
 
-/// determine the polar angle theta based on the cell ID
-double GridPhiEta::eta(const CellID& cID) const {
-  _decoder->setValue(cID);
-  CellID etaValue = (*_decoder)[m_etaID].value();
-  return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
-}
 /// determine the azimuthal angle phi based on the cell ID
 double GridPhiEta::phi(const CellID& cID) const {
   _decoder->setValue(cID);

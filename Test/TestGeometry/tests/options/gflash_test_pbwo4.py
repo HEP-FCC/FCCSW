@@ -2,14 +2,14 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-## reads HepMC text file and write the HepMC::GenEvent to the data service
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmc"
 
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

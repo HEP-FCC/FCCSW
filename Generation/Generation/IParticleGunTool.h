@@ -3,6 +3,7 @@
 
 #include "GaudiKernel/IAlgTool.h"
 #include "GaudiKernel/Vector4DTypes.h"
+#include "IHepMCProviderTool.h"
 
 /** @class IParticleGunTool IParticleGunTool.h "Generation/IParticleGunTool.h"
  *
@@ -12,7 +13,7 @@
  *  @date   2008-05-18
  */
 
-class IParticleGunTool : virtual public IAlgTool {
+class IParticleGunTool : virtual public IHepMCProviderTool {
 public:
   DeclareInterfaceID(IParticleGunTool, 1, 0);
   typedef std::vector<int> PIDs;

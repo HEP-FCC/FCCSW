@@ -66,13 +66,19 @@ StatusCode CreateCaloCells::execute() {
   debug() << "Input Hit collection size: " << hits->size() << endmsg;
 
   // 0. Clear all cells
-  std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
+  if (m_addCellNoise) {
+    std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
+  } else {
+    m_cellsMap.clear();
+  }
 
   // 1. Merge energy deposits into cells
-  // If running with noise map already was prepared. Otherwise it is being created below
+  // If running with noise map already was prepared. Otherwise it is being
+  // created below
   for (const auto& hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
+  debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;
 
   // 2. Calibrate simulation energy to EM scale
   if (m_doCellCalibration) {
@@ -90,7 +96,7 @@ StatusCode CreateCaloCells::execute() {
   // 4. Copy information to CaloHitCollection
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (const auto& cell : m_cellsMap) {
-    if (cell.second != 0) {
+    if (m_addCellNoise || (!m_addCellNoise && cell.second != 0)) {
       fcc::CaloHit newCell = edmCellsCollection->create();
       newCell.core().energy = cell.second;
       newCell.core().cellId = cell.first;

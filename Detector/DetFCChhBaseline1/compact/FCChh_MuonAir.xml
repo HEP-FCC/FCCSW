@@ -37,7 +37,7 @@
         <dimensions rmin="FwdBarMuon_rmin" rmax="FwdBarMuon_rmax" dz="FwdBarMuon_dz" phi0="0" deltaphi="360*deg" z_offset="FwdBarMuon_zOffset" material="Air"/>
     </detector>
     <detector name="MuonEnvelopeFwdBarNeg" type="SimpleCylinder"  vis="MuonEnvelopeVis">
-        <comment>Envelope for Muon positive end-cap</comment>
+        <comment>Envelope for Muon negative end-cap</comment>
         <dimensions rmin="FwdBarMuon_rmin" rmax="FwdBarMuon_rmax" dz="FwdBarMuon_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdBarMuon_zOffset" material="Air"/>
     </detector>
     <detector name="MuonEnvelopeFwdPos" type="SimpleCylinder"  vis="MuonEnvelopeVis">
@@ -45,7 +45,7 @@
       <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="FwdMuon_dz" phi0="0" deltaphi="360*deg" z_offset="FwdMuon_zOffset" material="Air"/>
     </detector>
     <detector name="MuonEnvelopeFwdNeg" type="SimpleCylinder"  vis="MuonEnvelopeVis">
-      <comment>Envelope for forward Muon positive</comment>
+      <comment>Envelope for forward Muon negative</comment>
       <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="FwdMuon_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdMuon_zOffset" material="Air"/>
     </detector>
   </detectors>
