@@ -5,8 +5,8 @@ import numpy as np
 #seed_array = np.loadtxt('/afs/cern.ch/user/c/cneubuse/FCCSW/condor/seeds.txt',dtype='int',delimiter=',')
 
 #set these in the .sh script                                                                                                                                                                                                                
-energy=100000
-num_events=1
+energy=100e3
+num_events=10
 magnetic_field=0
 i=1
 particle=1
@@ -27,7 +27,7 @@ podioevent   = FCCDataSvc("EventDataSvc")
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                          'file:Detector/DetFCChhHCalRealTile/compact/FCChh_HCalBarrel_RealTileCal.xml'],
+                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = INFO)
 # Geant4 service                                                                                                                                                                         
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -61,7 +61,7 @@ pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveE
 geantsim = SimG4Alg("SimG4Alg",
                        outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits"],
                        eventProvider=pgun,
-                       OutputLevel=DEBUG)
+                       OutputLevel=INFO)
 
 # common ECAL specific information
 # readout name
@@ -102,7 +102,7 @@ createEcells = CreateCaloCells("CreateECaloCells",
                                doCellCalibration=True,
                                calibTool=calibEcells,
                                addCellNoise=False, filterCellNoise=False,
-                               OutputLevel=DEBUG,
+                               OutputLevel=INFO,
                                hits="ECalHits",
                                cells="ECalCells")
 
@@ -110,13 +110,13 @@ createHcells = CreateCaloCells("CreateHCaloCells",
                                doCellCalibration=True,
                                calibTool=calibHcells,
                                addCellNoise = False, filterCellNoise = False,
-                               OutputLevel = DEBUG,
+                               OutputLevel = INFO,
                                hits="HCalHits",
                                cells="HCalCells")
 
 # additionally for HCal
 from Configurables import CreateVolumeCaloPositions
-positions = CreateVolumeCaloPositions("positions", OutputLevel = VERBOSE)
+positions = CreateVolumeCaloPositions("positions", OutputLevel = INFO)
 positions.hits.Path = "HCalCells"
 positions.positionedHits.Path = "HCalPositions"
 
@@ -129,17 +129,17 @@ resegment = RedoSegmentation("ReSegmentation",
                              # new bitfield (readout), with new segmentation
                              newReadoutName = newHcalReadoutName,
                              debugPrint = 10,
-                             OutputLevel = DEBUG,
+                             OutputLevel = INFO,
                              inhits = "HCalPositions",
                              outhits = "newHCalCells")
 # clusters are needed, with deposit position and cellID in bits
 
-positions2 = CreateVolumeCaloPositions("positions2", OutputLevel = VERBOSE)
+positions2 = CreateVolumeCaloPositions("positions2", OutputLevel = INFO)
 positions2.hits.Path = "newHCalCells"
 positions2.positionedHits.Path = "newHCalPositions"
 
 # Ecal cell positions
-positionsEcal = CreateVolumeCaloPositions("positionsEcal", OutputLevel = VERBOSE)
+positionsEcal = CreateVolumeCaloPositions("positionsEcal", OutputLevel = INFO)
 positionsEcal.hits.Path = "ECalCells"
 positionsEcal.positionedHits.Path = "ECalPositions"
 
