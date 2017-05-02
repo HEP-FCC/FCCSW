@@ -4,7 +4,7 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 10, # GeV
@@ -13,7 +13,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 ThetaMax = 1.57, # rad
                                 PhiMin = 0, # rad
                                 PhiMax = 3.14) # rad
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun, VertexSmearingToolPGun="FlatSmearVertex")
+gen = GenAlg("ParticleGun", SignalProvider=pgun, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
@@ -22,8 +22,8 @@ from Configurables import Gaudi__ParticlePropertySvc
 ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

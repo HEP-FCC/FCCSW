@@ -16,20 +16,22 @@ from Configurables import FCCDataSvc
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import ConstPileUp
+from Configurables import ConstPileUp, HepMCFileReader
 
-pileuptool = ConstPileUp(numPileUpEvents=2, filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
+pileuptool = ConstPileUp(numPileUpEvents=2)
+pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
 
-from Configurables import PythiaInterface
+from Configurables import PythiaInterface, GenAlg
 ### PYTHIA algorithm
-pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pileupreader)
 pythia8gen.PileUpTool = pileuptool
 pythia8gen.hepmc.Path = "hepmcevent"
 
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmcevent"
 hepmc_converter.genparticles.Path="all_genparticles"
 hepmc_converter.genvertices.Path="all_genvertices"

@@ -11,14 +11,15 @@ from Configurables import FCCDataSvc
 ## Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
 ## reads HepMC text file and write the HepMC::GenEvent to the data service
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmc"
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

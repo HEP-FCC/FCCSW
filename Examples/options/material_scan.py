@@ -8,7 +8,7 @@ podioevent   = FCCDataSvc("EventDataSvc")
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml'], OutputLevel = DEBUG)
 
 from Configurables import MaterialScan
-materialservice = MaterialScan("GeoDump", filename="DD4hep_material_scan.root", etaBinning=0.05, etaMax=6)
+materialservice = MaterialScan("GeoDump", filename="DD4hep_material_scan.root", etaBinning=0.05, etaMax=6, nPhiTrials=100)
 
 from Configurables import PodioOutput
 ## PODIO algorithm
