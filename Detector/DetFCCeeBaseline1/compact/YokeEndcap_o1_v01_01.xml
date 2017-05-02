@@ -6,14 +6,14 @@
     <readouts>
         <readout name="YokeEndcapCollection">
             <segmentation type="CartesianGridXY" grid_size_x="3.5" grid_size_y="3.5" />
-            <id>system:5,side:2,module:8,stave:4,layer:9,submodule:4,x:32:-16,y:-16</id>
+            <id>${GlobalCaloReadoutID}</id>
         </readout>
     </readouts>
     
     <!--  Includes for sensitives and support                -->
     <detectors>
         
-        <detector name="YokeEndcap" type="GenericCalEndcap_o1_v01" id="DetID_Yoke_Endcap" readout="YokeEndcapCollection" vis="YOKEVis" >
+        <detector name="YokeEndcap" type="DD4hep_PolyhedraEndcapCalorimeter2" id="DetID_Yoke_Endcap" readout="YokeEndcapCollection" vis="YOKEVis" >
             
             <comment>EM Calorimeter Barrel</comment>
             
@@ -28,7 +28,7 @@
                 <rotation x="0*deg" y="0*deg" z="90*deg-180*deg/YokeEndcap_outer_symmetry"/>
             </envelope>
             
-            <dimensions nsides_inner="YokeEndcap_outer_symmetry" nsides_outer="YokeEndcap_outer_symmetry" zmin="YokeEndcap_min_z" rmin="YokeEndcap_inner_radius" rmax="YokeEndcap_outer_radius"/>
+            <dimensions nsides_inner="YokeEndcap_outer_symmetry" nsides_outer="YokeEndcap_outer_symmetry" zmin="YokeEndcap_min_z" rmin="YokeEndcap_inner_radius" rmax="YokeEndcap_outer_radius" numsides="YokeEndcap_outer_symmetry"/>
             
             <layer repeat="6" vis="MuonEndcapLayerVis">
               <slice material="Iron" thickness="12.5*cm"  vis="MuonEndcapAbsorberVis" radiator="yes"/>

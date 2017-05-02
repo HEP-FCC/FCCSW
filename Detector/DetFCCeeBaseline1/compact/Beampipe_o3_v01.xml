@@ -14,7 +14,7 @@
     <detectors>
         <comment>Beampipe</comment>
         
-        <detector name="Beampipe" type="Beampipe_o1_v01" insideTrackingVolume="true" vis="BeamPipeVis">
+        <detector name="Beampipe" type="DD4hep_Beampipe_o1_v01" insideTrackingVolume="true" vis="BeamPipeVis">
             <parameter crossingangle="CrossingAngle" />
             <envelope vis="BlueVis">
                 <shape type="Assembly"/>
@@ -71,7 +71,7 @@
         </detector>
 
 
-        <detector name="BeamPipeShield" type="Mask_o1_v01" insideTrackingVolume="true" vis="TantalumVis" >
+        <detector name="BeamPipeShield" type="DD4hep_Mask_o1_v01" insideTrackingVolume="true" vis="TantalumVis" >
             <parameter crossingangle="CrossingAngle" />
 
             <section type="Center" start="CentralBeamPipe_zmax + 1*cm"  end="SeparatedBeamPipe_z"  rMin1="CentralBeamPipe_rmax+0.1*mm"  rMin2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*abs(CrossingAngle)/2. + 0.1*mm"      rMax1="CentralBeamPipe_rmax+0.1*mm + BeamPipeTantalShieldWidth"  rMax2="CentralBeamPipe_rmax+(SeparatedBeamPipe_z-CentralBeamPipe_zmax)*abs(CrossingAngle)/2. + 0.1*mm +BeamPipeTantalShieldWidth" material="Tantalum" name="BeamPipeShield" />

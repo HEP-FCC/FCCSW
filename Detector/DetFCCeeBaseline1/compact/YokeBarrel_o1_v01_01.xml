@@ -25,13 +25,13 @@
     <readouts>
         <readout name="YokeBarrelCollection">
             <segmentation type="CartesianGridXY" grid_size_x="Yoke_cell_size" grid_size_y="Yoke_cell_size" />
-            <id>system:5,side:2,layer:9,module:8,stave:4,submodule:4,x:32:-16,y:-16</id>
+            <id>${GlobalCaloReadoutID}</id>
         </readout>
     </readouts>
     
     
     <detectors>
-        <detector id="DetID_Yoke_Barrel" name="YokeBarrel" type="GenericCalBarrel_o1_v01" readout="YokeBarrelCollection" vis="YOKEVis" calorimeterType="MUON_BARREL" gap="0.*cm" material="Steel235">
+        <detector id="DetID_Yoke_Barrel" name="YokeBarrel" type="DD4hep_PolyhedraBarrelCalorimeter2" readout="YokeBarrelCollection" vis="YOKEVis" calorimeterType="MUON_BARREL" gap="0.*cm" material="Steel235">
             
             <comment>Yoke Calorimeter Barrel</comment>
             <envelope vis="YOKEVis">

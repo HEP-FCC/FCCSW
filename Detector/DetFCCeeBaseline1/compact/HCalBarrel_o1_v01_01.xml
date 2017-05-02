@@ -23,12 +23,12 @@
     <readouts>
         <readout name="HCalBarrelCollection">
           <segmentation type="CartesianGridXY" grid_size_x="HCal_cell_size" grid_size_y="HCal_cell_size" />
-          <id>system:5,side:2,module:8,stave:4,layer:9,submodule:4,x:32:-16,y:-16</id>
+          <id>${GlobalCaloReadoutID}</id>
         </readout>
     </readouts>
     
     <detectors>
-        <detector id="DetID_HCAL_Barrel" name="HCalBarrel" type="GenericCalBarrel_o1_v01" readout="HCalBarrelCollection" vis="HCALVis" calorimeterType="HAD_BARREL" gap="0.*cm" material="Steel235">
+        <detector id="DetID_HCAL_Barrel" name="HCalBarrel" type="DD4hep_PolyhedraBarrelCalorimeter2" readout="HCalBarrelCollection" vis="HCALVis" calorimeterType="HAD_BARREL" gap="0.*cm" material="Steel235">
             
             <comment>Hadron Calorimeter Barrel</comment>
             

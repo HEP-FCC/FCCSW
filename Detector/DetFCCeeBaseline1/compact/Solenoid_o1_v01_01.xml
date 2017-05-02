@@ -28,7 +28,7 @@
     
     <detectors>
         
-        <detector name="SolenoidBarrel" type="Solenoid_o1_v01" id="0" insideTrackingVolume="false" reflect="true">
+        <detector name="SolenoidBarrel" type="DD4hep_Solenoid_o1_v01" id="0" insideTrackingVolume="false" reflect="true">
             <envelope vis="SOLVis">
                 <shape type="Assembly"/>
             </envelope>

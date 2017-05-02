@@ -46,7 +46,7 @@
 -->
 
 
-        <detector name="CompSol" type="Mask_o1_v01" insideTrackingVolume="true" vis="CompSolVis">
+        <detector name="CompSol" type="DD4hep_Mask_o1_v01" insideTrackingVolume="true" vis="CompSolVis">
             <parameter crossingangle="CrossingAngle" />
             <envelope vis="CoilVis">
                 <shape type="Assembly"/>
@@ -54,7 +54,7 @@
             <section type="Center"               start="CompSol_min_z"    end="QD0_min_z" rMin1="CompSol_min_z*0.1-2*cm"  rMin2="QD0_min_z*0.1 - 2*cm"  rMax1="CompSol_min_z * 0.1" rMax2="QD0_min_z * 0.1"    material="Iron"  name="CompSol" />
         </detector>
 
-        <detector name="ScreenSol" type="Mask_o1_v01" insideTrackingVolume="true" vis="ScreenSolVis">
+        <detector name="ScreenSol" type="DD4hep_Mask_o1_v01" insideTrackingVolume="true" vis="ScreenSolVis">
             <parameter crossingangle="CrossingAngle" />
             <envelope vis="CoilVis">
                 <shape type="Assembly"/>

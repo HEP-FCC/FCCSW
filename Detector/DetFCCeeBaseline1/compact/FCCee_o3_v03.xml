@@ -15,8 +15,8 @@
     </info>
     
     <includes>
-        <gdmlFile  ref="elements.xml"/>
-        <gdmlFile  ref="materials.xml"/>
+        <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+        <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
     </includes>
     
     <define>
@@ -286,6 +286,10 @@
         
         <constant name="tracker_region_zmax" value="OuterTracker_half_length"/>
         <constant name="tracker_region_rmax" value="OuterTracker_outer_radius"/>
+
+	<constant name="GlobalTrackerReadoutID" type="string" value="system:5,side:-2,layer:6,module:8,sensor:8,barrel:3"/>
+	<constant name="GlobalTrackerReadoutID_IO" type="string" value="system:5,side:-2,layer:6,module:14,sensor:2,barrel:3"/>
+	<constant name="GlobalCaloReadoutID" type="string" value="system:5,barrel:3,module:10,layer:9,slice:5,x:32:-16,y:-16"/>
     </define>
     
     <limits>
@@ -352,32 +356,37 @@
     
     <include ref="Materials_v01.xml"/>
 
+
     <include ref="Beampipe_o3_v01.xml"/>  
-    <!-- <include ref="Beampipe_o3_v01_noMask.xml"/>  -->
 
     <include ref="BeamInstrumentation_o3_v01.xml"/>     
+
     <include ref="LumiCal_o3_v01_01.xml"/>
 
     <include ref="Vertex_o3_v03.xml"/>  
-
+<!--
     <include ref="InnerTracker_o3_v03.xml"/>   
     <include ref="OuterTracker_o2_v03_03.xml"/>
-    
+
+
+
     <include ref="ECalBarrel_o2_v01_01.xml"/>
+
     <include ref="ECalEndcap_o2_v01_01.xml"/>
+
     <include ref="ECalPlug_o1_v01_01.xml"/>
-    
+
     <include ref="HCalBarrel_o1_v01_01.xml"/>
+
     <include ref="HCalEndcap_o1_v01_01.xml"/>
 
     <include ref="Solenoid_o1_v01_01.xml"/>
 
     <include ref="YokeBarrel_o1_v01_01.xml"/>
-    <include ref="YokeEndcap_o1_v01_01.xml"/>
 
-<!--
-    <include ref="BeamCal_o1_v01_01.xml"/>
+    <include ref="YokeEndcap_o1_v01_01.xml"/>
 -->
+
 
     <plugins>
       <plugin name="InstallSurfaceManager"/>

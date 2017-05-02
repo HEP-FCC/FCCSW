@@ -1,3 +1,4 @@
+
 <lccdd>
 
     <!--  Definition of the readout segmentation  -->
@@ -8,7 +9,7 @@
     <readouts>
         <readout name="ECalBarrelCollection">
             <segmentation type="CartesianGridXY" grid_size_x="ECal_cell_size" grid_size_y="ECal_cell_size" />
-            <id>system:5,side:2,module:8,stave:4,layer:9,submodule:4,x:32:-16,y:-16</id>
+            <id>${GlobalCaloReadoutID}</id>
         </readout>
     </readouts>
     
@@ -24,7 +25,7 @@
     </display>
 
     <detectors>        
-        <detector name="ECalBarrel" type="GenericCalBarrel_o1_v01" id="DetID_ECal_Barrel" readout="ECalBarrelCollection" vis="BlueVis" gap="0.*cm">
+        <detector name="ECalBarrel" type="DD4hep_PolyhedraBarrelCalorimeter2" id="DetID_ECal_Barrel" readout="ECalBarrelCollection" vis="BlueVis" gap="0.*cm">
 
             <comment>EM Calorimeter Barrel</comment>
             
