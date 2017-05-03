@@ -12,16 +12,16 @@
   </info>
   <define>
     <!-- 21.2cm for support, 1cm is needed to place max number of trapazoids and 1cm needed to compensate for faceplate-->
-    <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax-212*mm"/>
+    <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax - BarHCal_steel_support_thickness"/>
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
     <constant name="BarHCal_n_phi_modules" value="128"/>
-    <constant name="BarHCal_n_layers_10" value="2"/>
-    <constant name="BarHCal_n_layers_15" value="4"/>
-    <constant name="BarHCal_n_layers_25" value="4"/>
-    <constant name="BarHCal_module_drho_10" value="100*mm"/>
-    <constant name="BarHCal_module_drho_15" value="150*mm"/>
-    <constant name="BarHCal_module_drho_25" value="250*mm"/>
+    <constant name="BarHCal_n_layers_1" value="2"/>
+    <constant name="BarHCal_n_layers_2" value="4"/>
+    <constant name="BarHCal_n_layers_3" value="4"/>
+    <constant name="BarHCal_module_drho_1" value="100*mm"/>
+    <constant name="BarHCal_module_drho_2" value="150*mm"/>
+    <constant name="BarHCal_module_drho_3" value="250*mm"/>
     <constant name="BarHCAL_module_spacing_phi" value="1*mm"/>
     <!-- component dimensions -->
     <constant name="BarHCal_master_plate_thickness" value="5*mm" />

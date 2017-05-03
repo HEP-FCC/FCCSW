@@ -51,7 +51,7 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
   double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
   unsigned int numSequencesZ = static_cast<unsigned>((2 * dimensions.dz() - 2 * dZEndPlate - 2 * space) / dzSequence);
 
-  // Hard-coded assumption that we have three different layers for the modules
+  // Hard-coded assumption that we have three different layer types for the modules
   std::vector<xml_comp_t> Layers = {xmlElement.child(_Unicode(layer_1)), xmlElement.child(_Unicode(layer_2)), xmlElement.child(_Unicode(layer_3))};
   unsigned int numSequencesR = 0;
   double moduleDepth = 0.;
@@ -116,10 +116,10 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
   double dx2Module = tn * (sensitiveBarrelRmin + moduleDepth) - spacing;
   double dzModule = moduleDepth / 2;
 
-  lLog << MSG::DEBUG << "half height of full module (trapazoid side): " << dzModule << endmsg;
-  lLog << MSG::DEBUG << "half width  of full module (trapazoid side): " << dy0 << endmsg;
-  lLog << MSG::DEBUG << "half width in phi (rmin) of full module (trapazoid side): " << dx1Module << endmsg;
-  lLog << MSG::DEBUG << "half width in phi (rmax) of full module (trapazoid side): " << dx2Module << endmsg;
+  lLog << MSG::DEBUG << "half height of full module (trapezoid side): " << dzModule << endmsg;
+  lLog << MSG::DEBUG << "half width  of full module (trapezoid side): " << dy0 << endmsg;
+  lLog << MSG::DEBUG << "half width in phi (rmin) of full module (trapezoid side): " << dx1Module << endmsg;
+  lLog << MSG::DEBUG << "half width in phi (rmax) of full module (trapezoid side): " << dx2Module << endmsg;
 
   double dx1Support = tn * (sensitiveBarrelRmin + moduleDepth) - spacing;
   double dx2Support = tn * (sensitiveBarrelRmin + moduleDepth + dSteelSupport) - spacing;
@@ -127,11 +127,16 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
   
   // DetElement vectors for placement in loop at the end
   std::vector<DD4hep::Geometry::PlacedVolume> supports;
+  supports.reserve(numSequencesPhi);
   std::vector<DD4hep::Geometry::PlacedVolume> modules;
+  modules.reserve(numSequencesPhi);
   std::vector<DD4hep::Geometry::PlacedVolume> rows;
+  rows.reserve(numSequencesZ);
   std::vector<DD4hep::Geometry::PlacedVolume> layers;
+  layers.reserve(layerDepths.size());
   std::vector<std::vector<DD4hep::Geometry::PlacedVolume> > tilesInLayers;
-
+  tilesInLayers.reserve(layerDepths.size());
+  
   // First we construct one wedge:
   Volume wedgeVolume("wedgeVolume", DD4hep::Geometry::Trapezoid(dx1Module, dx2Module, dy0, dy0, dzModule),
 		     lcdd.material("Air"));  
@@ -190,9 +195,6 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
       }
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
-    if ((rMiddle + 0.5 * layerDepths.at(idxLayer)) > dzModule) {
-      lLog << MSG::WARNING << "something's wrong with the positions in rho!" << endmsg;
-    }
     // Fill vector for DetElements
     tilesInLayers.push_back(tiles);
   }
@@ -213,7 +215,7 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
     lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
     
     if ((-dzDetector + zOffset) >= dzDetector) {
-      lLog << MSG::WARNING << " WARNING!!!! Module position outside" << std::endl;
+      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << std::endl;
     }
     DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
     // Fill vector for DetElements

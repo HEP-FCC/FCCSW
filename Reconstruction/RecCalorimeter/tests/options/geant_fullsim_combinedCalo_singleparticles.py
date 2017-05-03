@@ -1,22 +1,12 @@
 import os
-import numpy as np
 
-#loads array of random seeds from file                                                                                                                                                                          
-#seed_array = np.loadtxt('/afs/cern.ch/user/c/cneubuse/FCCSW/condor/seeds.txt',dtype='int',delimiter=',')
+from GaudiKernel.SystemOfUnits import MeV,GeV
 
 #set these in the .sh script                                                                                                                                                                                                                
-energy=100000
+energy=100*GeV
 num_events=1
 magnetic_field=0
-i=1
-particle=1
-
 particleType = "pi-"
-if particle==0:
-    particleType = "e-"
-if particle==2:
-    particleType = "mu-"
-print particleType
 
 from Gaudi.Configuration import *
 
@@ -124,7 +114,7 @@ from Configurables import RedoSegmentation
 resegment = RedoSegmentation("ReSegmentation",
                              # old bitfield (readout)
                              oldReadoutName = hcalReadoutName,
-                             # # specify which fields are going to be altered (deleted/rewritten)
+                             # specify which fields are going to be altered (deleted/rewritten)
                              oldSegmentationIds = ["eta","phi"],
                              # new bitfield (readout), with new segmentation
                              newReadoutName = newHcalReadoutName,
@@ -146,7 +136,7 @@ positionsEcal.positionedHits.Path = "ECalPositions"
 out = PodioOutput("out", 
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_combCalo_"+str(particleType)+str(int(energy/1e3))+"GeV_part"+str(i)+".root"
+out.filename = "output_combCalo_"+str(particleType)+str(int(energy/1e3))+"GeV.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
