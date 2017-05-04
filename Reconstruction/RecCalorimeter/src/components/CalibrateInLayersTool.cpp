@@ -31,7 +31,8 @@ void CalibrateInLayersTool::calibrate(std::unordered_map<uint64_t, double>& aHit
   // Loop through energy deposits, multiply energy to get cell energy at electromagnetic scale
   std::for_each(aHits.begin(), aHits.end(), [this, decoder](std::pair<const uint64_t, double>& p) {
     decoder->setValue(p.first);
-    uint layer = (*decoder)[m_layerFieldName].value();
+    // shift layer id if the numbering does not start at 0
+    uint layer = (*decoder)[m_layerFieldName].value() - m_firstLayerId;
     if (layer < m_samplingFraction.size()) {
       p.second /= m_samplingFraction[layer];
     } else {
