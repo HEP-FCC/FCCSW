@@ -56,17 +56,6 @@
 
            <section type="Upstream" start="QD0_min_z" end="6000*mm" rMin1="SeparatedBeamPipe_rmax-0.5*mm"  rMin2="SeparatedBeamPipe_rmax-0.5*mm" rMax1="SeparatedBeamPipe_rmax"  rMax2="SeparatedBeamPipe_rmax"  material="Beryllium" name="UptreamBeamPipe_5"/>
 
-<!--
-            <section type="PunchedDnstream"      start="1300*mm" end="1303*mm"              rMin1="12*mm"   rMin2="12.0*mm"                             rMax1="71.0*mm"               rMax2="71.0*mm"                                    material="Iron"      name="BeamCalFront"/>
-
-            <section type="Dnstream"             start="1303*mm" end="6000*mm"              rMin1="12.0*mm"  rMin2="12.0*mm"                             rMax1="12.1*mm"               rMax2="12.1*mm"                                    material="Iron"      name="BeamCalInnerDownstream"/>
-            <section type="UpstreamSlicedFront"  start="1303*mm" end="1400*mm"              rMin1="12.0*mm"   rMin2="12.0*mm"                              rMax1="12.1*mm"                rMax2="12.1*mm"                                     material="Iron"      name="BeamCalInnerUpstream"/>
-            <section type="Upstream"             start="1400*mm" end="BeamPipe_end"         rMin1="12.0*mm"   rMin2="12.0*mm"                              rMax1="12.1*mm"                rMax2="12.1*mm"                                     material="Iron"      name="Upstream"/>
-
--->
-<!--
-            <section type="Dnstream"             start="3500*mm" end="BeamPipe_end"         rMin1="31.0*mm"  rMin2="BeamPipe_end*tan(CrossingAngle*0.5)" rMax1="32.0*mm"               rMax2="BeamPipe_end*tan(CrossingAngle*0.5)+2.0*mm" material="Iron"      name="DownstreamCone"/>
--->
             
         </detector>
 
@@ -84,9 +73,6 @@
 
             <section type="Upstream" start="SeparatedBeamPipe_z+3*mm" end="QD0_min_z" rMin1="SeparatedBeamPipe_rmax+0.1*mm" rMin2="SeparatedBeamPipe_rmax+0.1*mm" rMax1="SeparatedBeamPipe_rmax+0.1*mm+BeamPipeTantalShieldWidth" rMax2="SeparatedBeamPipe_rmax+0.1*mm+BeamPipeTantalShieldWidth" material="Tantalum" name="BeamPipeShieldUpstream" />
 
-<!--
-            <section type="Dnstream" start="QD0_min_z-CollimatorInFrontOfQD0_dz+0.1*mm" end="QD0_min_z-1*mm" rMin1="CollimatorInFrontOfQD0_radius" rMin2="CollimatorInFrontOfQD0_radius" rMax1="CollimatorInFrontOfQD0_radius+CollimatorInFrontOfQD0_dr" rMax2="CollimatorInFrontOfQD0_radius+CollimatorInFrontOfQD0_dr" material="Tantalum" name="CollimaTaDnstream" />
--->
 
             <section type="Upstream" start="QD0_min_z-CollimatorInFrontOfQD0_dz+0.1*mm" end="QD0_min_z-1*mm" rMin1="CollimatorInFrontOfQD0_radius" rMin2="CollimatorInFrontOfQD0_radius" rMax1="CollimatorInFrontOfQD0_radius+CollimatorInFrontOfQD0_dr" rMax2="CollimatorInFrontOfQD0_radius+CollimatorInFrontOfQD0_dr" material="Tantalum" name="CollimaTaUpstream" />
 

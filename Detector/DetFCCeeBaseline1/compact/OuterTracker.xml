@@ -28,20 +28,6 @@
         
     </define>
     
-    <!--
-    <comment>Tracking detectors</comment>
-    <detectors>
-        <detector name="OuterTrackers" type="DD4hep_SubdetectorAssembly" vis="OTVis">
-            <shape name="OuterTrackersEnvelope" type="Tube" rmin="OuterTracker_inner_radius" rmax="OuterTracker_outer_radius" dz="OuterTracker_half_length" material="Air">
-            </shape>
-            <comment>Outer Tracker Assembly</comment>
-            <composite name="OuterTrackerBarrel"/>
-            <composite name="OuterTrackerEndcap"/>
-            <composite name="OuterTrackerBarrelSupport"/>
-            <composite name="OuterTrackerEndcapSupport"/>             
-        </detector>
-    </detectors>
-    -->
     
     <!--  Definition of the used visualization attributes    -->
     <display>

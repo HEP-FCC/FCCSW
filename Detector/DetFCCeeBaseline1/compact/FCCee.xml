@@ -142,35 +142,6 @@
 
   <constant name="VXD_cryostat_option" value="0"/>
 
-<!--
-<constant name="FTD_half_length"     value="1100*mm"/> 
-<constant name="FTD_inner_radius"    value=" 115*cm"/>
-        <constant name="FTD_outer_radius_1"  value="115*cm"/>
-        <constant name="FTD_outer_radius_2"  value="115*cm"/>
-        <constant name="FTD_outer_radius"    value=" 115*cm"/>
-        <constant name="FTD_min_z_0"         value=" VXD_half_length   + env_safety"/>
-        <constant name="FTD_min_z_1"         value="FTD_min_z_0 + 20*mm" />
-        <constant name="FTD_min_z_2"         value=" FTD_min_z_1 + 20*mm" />
-        <constant name="FTD_cone_min_z"      value="40*cm"/>
-        <constant name="FTD_cone_radius"     value=" 100*mm"/>
-
- <constant name="TPC_Ecal_Hcal_barrel_halfZ" type="string" value="2350" />
-<constant name="Ecal_endcap_zmin" value="2450.0*mm"/>
-<constant name="TPC_inner_radius"    value="329*mm"/>
-
--->
-
-
-
-<!--
--->
-
-
-<!--
-        <constant name="Vertex_inner_radius" value="30*mm"/>
-        <constant name="Vertex_outer_radius" value="111*mm"/>
-        <constant name="Vertex_half_length" value="260*mm"/>
--->
         
         <constant name="Vertex_inner_radius" value="21*mm"/>
         <constant name="Vertex_outer_radius" value="111*mm"/>
@@ -355,35 +326,35 @@
     </display>
 
 
-    <include ref="Materials_v01.xml"/>
+    <include ref="Materials.xml"/>
 
-    <include ref="Beampipe_o3_v01.xml"/>  
-    <include ref="BeamInstrumentation_o3_v01.xml"/>     
+    <include ref="Beampipe.xml"/>  
+    <include ref="BeamInstrumentation.xml"/>     
 
-    <include ref="LumiCal_o3_v01_01.xml"/>
+    <include ref="LumiCal.xml"/>
 
-    <include ref="Vertex_o3_v03.xml"/>  
+    <include ref="Vertex.xml"/>  
 
-    <include ref="InnerTracker_o3_v03.xml"/>   
-    <include ref="OuterTracker_o2_v03_03.xml"/>
+    <include ref="InnerTracker.xml"/>   
+    <include ref="OuterTracker.xml"/>
 
 
 
-    <include ref="ECalBarrel_o2_v01_01.xml"/>
+    <include ref="ECalBarrel.xml"/>
 
-    <include ref="ECalEndcap_o2_v01_01.xml"/>
+    <include ref="ECalEndcap.xml"/>
 
-    <include ref="ECalPlug_o1_v01_01.xml"/>
+    <include ref="ECalPlug.xml"/>
 
-    <include ref="HCalBarrel_o1_v01_01.xml"/>
+    <include ref="HCalBarrel.xml"/>
 
-    <include ref="HCalEndcap_o1_v01_01.xml"/>
+    <include ref="HCalEndcap.xml"/>
 
-    <include ref="Solenoid_o1_v01_01.xml"/>
+    <include ref="Solenoid.xml"/>
 
-    <include ref="YokeBarrel_o1_v01_01.xml"/>
+    <include ref="YokeBarrel.xml"/>
 
-    <include ref="YokeEndcap_o1_v01_01.xml"/>
+    <include ref="YokeEndcap.xml"/>
 
 
     <plugins>
@@ -414,27 +385,6 @@
              zmax="-CompSol_min_z"
              outer_radius="20*cm">
       </field>
-
-
-<!-- to check with the visualisation that this works... :
-
-      <field name="GlobalSolenoid" type="solenoid"
-             inner_field="SolenoidField"
-             outer_field="-1.5*tesla"
-             zmax="1*m"
-             outer_radius="Solenoid_Coil_radius">
-      </field>
-
-      <field name="CompensatingSolenoid" type="solenoid"
-             inner_field="-SolenoidField"
-             outer_field="0*tesla"
-             zmax="3*m"
-             zmin="1*m"
-             outer_radius="Solenoid_Coil_radius">
-      </field>
--->
-
-
     </fields> 
 
 

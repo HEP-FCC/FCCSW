@@ -32,37 +32,6 @@
     </define>
     
 
-    <!--
-    <comment>Tracking detectors</comment>
-    <detectors>
-        <detector name="InnerTrackers" type="DD4hep_SubdetectorAssembly" vis="ITVis">
-            
-            <shape type="BooleanShape" operation="Subtraction" material="Air" >
-                <shape type="BooleanShape" operation="Subtraction">
-                            <shape type="BooleanShape" operation="Subtraction">
-                                <shape type="BooleanShape" operation="Subtraction"  >
-                                    <shape type="Tube" rmin="CentralBeamPipe_rmax" rmax="InnerTracker_outer_radius" dz="InnerTracker_half_length+env_safety"/>
-				    <shape type="Cone" rmin1="0" rmax1="CentralBeamPipe_rmax" rmin2="0" rmax2="ConeBeamPipe_rmax_1" z="(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0"/>
-                                    <position x="0" y="0" z="(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0 + CentralBeamPipe_zmax" />
-                                </shape>
-                                <shape type="Cone" rmin2="0" rmax2="CentralBeamPipe_rmax" rmin1="0" rmax1="ConeBeamPipe_rmax_1" z="(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0"/>
-                                <position x="0" y="0" z="-(ConeBeamPipe_zmax-CentralBeamPipe_zmax)/2.0 - CentralBeamPipe_zmax" />
-                            </shape>
-                    <shape type="Tube" rmin="0" rmax="Vertex_outer_radius" dz="Vertex_half_length"/>
-                </shape>
-                <shape type="Tube" rmin="Vertex_inner_radius+0.3*cm" rmax="Vertex_outer_radius" dz="Vertex_half_length+0.5*cm"/>
-            </shape>
-            
-            
-            <comment>Inner Tracker Assembly</comment>
-            <composite name="InnerTrackerBarrel"/>
-            <composite name="InnerTrackerEndcap"/>
-            <composite name="InnerTrackerBarrelSupport"/>
-            <composite name="InnerTrackerEndcapSupport"/>            
-            <composite name="BeampipeShell"/>                        
-        </detector>
-    </detectors>
-    -->
     
     <display>
         <vis name="InnerTrackerLayerVis"   alpha="1.0" r="1.0" g="1.0" b="0.6" showDaughters="true" visible="false"/> 
