@@ -5,13 +5,13 @@ from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+from Configurables import GenAlg, MomentumRangeParticleGun
 ## Particle Gun using MomentumRangeParticleGun tool and FlatSmearVertex
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
 pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13])
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun_tool, VertexSmearingToolPGun="FlatSmearVertex")
+gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
@@ -26,9 +26,9 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
   'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"

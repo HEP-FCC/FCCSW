@@ -1,4 +1,4 @@
-#include "HepMCConverter.h"
+#include "HepMCToEDMConverter.h"
 
 #include "GaudiKernel/PhysicalConstants.h"
 
@@ -7,17 +7,17 @@
 
 #include "Generation/Units.h"
 
-DECLARE_COMPONENT(HepMCConverter)
+DECLARE_COMPONENT(HepMCToEDMConverter)
 
-HepMCConverter::HepMCConverter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hepmc", m_hepmchandle, "HepMC event handle (input)");
   declareProperty("genparticles", m_genphandle, "Generated particles collection (output)");
   declareProperty("genvertices", m_genvhandle, "Generated vertices collection (output)");
 }
 
-StatusCode HepMCConverter::initialize() { return GaudiAlgorithm::initialize(); }
+StatusCode HepMCToEDMConverter::initialize() { return GaudiAlgorithm::initialize(); }
 
-StatusCode HepMCConverter::execute() {
+StatusCode HepMCToEDMConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
@@ -65,4 +65,4 @@ StatusCode HepMCConverter::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode HepMCConverter::finalize() { return GaudiAlgorithm::finalize(); }
+StatusCode HepMCToEDMConverter::finalize() { return GaudiAlgorithm::finalize(); }

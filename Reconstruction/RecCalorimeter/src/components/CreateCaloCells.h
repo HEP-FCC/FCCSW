@@ -25,7 +25,8 @@ class IGeoSvc;
  *  1/ Merge Geant4 energy deposits with same cellID
  *  2/ Calibrate to electromagnetic scale (if calibration switched on)
  *  3/ Add random noise to each cell (if noise switched on)
- *  4/ Filter cells and remove those with energy below threshold (if noise + filtering switched on)
+ *  4/ Filter cells and remove those with energy below threshold (if noise +
+ * filtering switched on)
  *
  *  Tools called:
  *    - CalibrateCaloHitsTool
@@ -77,16 +78,18 @@ private:
   /// Name of the bit-fields (in the readout) describing the volume
   Gaudi::Property<std::vector<std::string>> m_fieldNames{
       this, "fieldNames", {}, "Name of the bit-fields (in the readout) describing the volume"};
-  /// Values of the fields that identify the volume to change segmentation (e.g. ID of the ECal)
-  Gaudi::Property<std::vector<int>> m_fieldValues{
-      this,
-      "fieldValues",
-      {},
-      "Value of the field that identifies the volume to to change segmentation (e.g. ID of the ECal)"};
+  /// Values of the fields that identify the volume to change segmentation (e.g.
+  /// ID of the ECal)
+  Gaudi::Property<std::vector<int>> m_fieldValues{this,
+                                                  "fieldValues",
+                                                  {},
+                                                  "Value of the field that identifies the volume "
+                                                  "to to change segmentation (e.g. ID of the "
+                                                  "ECal)"};
 
   /** Temporary: for use with MergeLayer tool
-   * MergeLayer is going to be replaced by RedoSegmentation once we can define segmentation with variable cell (layer)
-   * size.
+   * MergeLayer is going to be replaced by RedoSegmentation once we can define
+   * segmentation with variable cell (layer) size.
    * This property won't be needed anymore.
    */
   unsigned int m_activeVolumesNumber;

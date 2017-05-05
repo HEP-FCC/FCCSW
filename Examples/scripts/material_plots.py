@@ -8,6 +8,8 @@ import ROOT
 def main():
     parser = argparse.ArgumentParser(description='Material Plotter')
     parser.add_argument('--fname', "-f", dest='fname', type=str, help="name of file to read")
+    parser.add_argument('--etaMax', "-m", dest='etaMax', default=6, type=float, help="maximum pseudorapidity")
+    parser.add_argument('--etaBin', "-b", dest='etaBin', default=0.05, type=float, help="pseudorapidity bin width")
     args = parser.parse_args()
 
     f = ROOT.TFile.Open(args.fname, "read")
@@ -22,9 +24,9 @@ def main():
             if entry.material.at(i) == "Air": continue
             if entry.material.at(i) not in histDict.keys():
                 histDict[entry.material.at(i)] = {
-                    "x0": ROOT.TH1F("", "", 240, -6, 6),
-                    "lambda": ROOT.TH1F("", "", 240, -6, 6),
-                    "depth": ROOT.TH1F("", "", 240, -6, 6)
+                    "x0": ROOT.TH1F("", "", (int)(2 * args.etaMax / args.etaBin), -args.etaMax, args.etaMax),
+                    "lambda": ROOT.TH1F("", "", (int)(2 * args.etaMax / args.etaBin), -args.etaMax, args.etaMax),
+                    "depth": ROOT.TH1F("", "", (int)(2 * args.etaMax / args.etaBin), -args.etaMax, args.etaMax)
                 }
             hs = histDict[entry.material.at(i)]
             hs["x0"].SetBinContent(etaBin+1, hs["x0"].GetBinContent(etaBin+1) + entry.nX0.at(i))
@@ -57,7 +59,7 @@ def main():
         legend.Draw()
         cv.Print(plot + ".pdf")
 
-        ths.GetXaxis().SetRangeUser(0, 6)
+        ths.GetXaxis().SetRangeUser(0, args.etaMax)
         cv.Print(plot + "pos.pdf")
 
 if __name__ == "__main__":

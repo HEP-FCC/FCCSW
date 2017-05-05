@@ -46,7 +46,7 @@ saveecaltool.caloHits.Path = "ECalHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.01,etaMax=0.01,
+                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-1.5,etaMax=1.5,
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
@@ -59,7 +59,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_ecalSim_e50GeV_eta0_10events.root"
+out.filename = "output_ecalSim_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
