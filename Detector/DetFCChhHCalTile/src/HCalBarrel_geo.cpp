@@ -68,7 +68,7 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
   lLog << MSG::DEBUG << "retrieved number of layers:  " << numSequencesR << " , which end up to a full module depth in rho of " << moduleDepth << endmsg;
   lLog << MSG::DEBUG << "retrieved number of layers:  " << layerDepths.size() << endmsg;
 
-  lLog << MSG::INFO << "constructing " << numSequencesPhi << " modules, within the angle " << (dphi * 180. / dd4hep::pi)
+  lLog << MSG::INFO << "constructing: " << numSequencesPhi << " modules, within the angle " << (dphi * 180. / dd4hep::pi)
        << " per ring in phi, " << numSequencesZ << " rings in Z, " << numSequencesR << " layers in Rho, "
        << numSequencesR * numSequencesZ * numSequencesPhi << " tiles" << endmsg;
 
@@ -229,19 +229,20 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2*dzModule + dzSupport) * cos(phi);
     double xPosSupport = (sensitiveBarrelRmin + 2*dzModule + dzSupport) * sin(phi);
-    
+
     DD4hep::Geometry::Position moduleOffset(xPosModule, yPosModule, 0);
     DD4hep::Geometry::Position supportOffset(xPosSupport, yPosSupport, 0);
     
     DD4hep::Geometry::Transform3D trans(
 					DD4hep::Geometry::RotationX(-0.5 * dd4hep::pi) * DD4hep::Geometry::RotationY(phi), moduleOffset);
     
-    DD4hep::Geometry::Transform3D trans2(
+    DD4hep::Geometry::Transform3D transS(
 					 DD4hep::Geometry::RotationX(-0.5 * dd4hep::pi) * DD4hep::Geometry::RotationY(phi), supportOffset);   
     // Fill the vectors of DetElements    
     modules.push_back( envelopeVolume.placeVolume(moduleVolume, trans) );
     modules.back().addPhysVolID("module", idxPhi);
-    supports.push_back( envelopeVolume.placeVolume(steelSupportVolume, trans2) );
+    supports.push_back( envelopeVolume.placeVolume(steelSupportVolume, transS) );
+    //    }
   }
 
   // Placement of DetElements

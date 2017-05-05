@@ -4,15 +4,15 @@
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
   <info name="FCChh_HCalBarrel_TileCal"
     title="Barrel Calorimeter"
-    author="C. Neubueser"
+    author="C. Solans"
     url="no"
     status="development"
     version="1.0">
     <comment>HCal layout based on ATLAS HCal, with realistic longitudinal segmentation and steel support</comment>
+    <comment>5. May 2017, C. Neubueser: fixes and layer implementation </comment>
   </info>
   <define>
-    <!-- 21.2cm for support, 1cm is needed to place max number of trapazoids and 1cm needed to compensate for faceplate-->
-    <constant name="BarHCal_rmaxWithBuffer" value="BarHCal_rmax - BarHCal_steel_support_thickness"/>
+    <constant name="BarHCal_zOff" value="0"/>
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
     <constant name="BarHCal_n_phi_modules" value="128"/>
