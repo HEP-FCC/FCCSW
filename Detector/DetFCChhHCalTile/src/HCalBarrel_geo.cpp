@@ -185,13 +185,18 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
 			lcdd.material(xComp.materialStr()));
       modCompVol.setVisAttributes(lcdd, xComp.visStr());
       DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);      
-      tiles.push_back(
-                      layerVolume.placeVolume(modCompVol, offset) );
       
       if (xComp.isSensitive()) {
-	modCompVol.setSensitiveDetector(sensDet);
+	Volume tileVol("tileVolume", DD4hep::Geometry::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+		       lcdd.material(xComp.materialStr()));
+	tileVol.setSensitiveDetector(sensDet);
+	tiles.push_back( layerVolume.placeVolume(tileVol, offset) );
 	tiles.back().addPhysVolID("tile", idxActMod);
 	idxActMod++;
+      }
+      else {
+	tiles.push_back(
+			layerVolume.placeVolume(modCompVol, offset) );
       }
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
