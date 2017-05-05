@@ -4,7 +4,7 @@
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
   <info name="FCChh_HCalBarrel_TileCal"
     title="Barrel Calorimeter"
-    author="C. Solans"
+    author="C. Solans, J. Lingemann"
     url="no"
     status="development"
     version="1.0">
