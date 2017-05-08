@@ -326,7 +326,7 @@
     </display>
 
 
-    <include ref="Materials.xml"/>
+
 
     <include ref="Beampipe.xml"/>  
     <include ref="BeamInstrumentation.xml"/>     
