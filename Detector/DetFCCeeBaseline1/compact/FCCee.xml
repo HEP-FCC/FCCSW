@@ -337,23 +337,15 @@
 
     <include ref="InnerTracker.xml"/>   
     <include ref="OuterTracker.xml"/>
-
-
-
     <include ref="ECalBarrel.xml"/>
-
     <include ref="ECalEndcap.xml"/>
-
     <include ref="ECalPlug.xml"/>
-
     <include ref="HCalBarrel.xml"/>
 
     <include ref="HCalEndcap.xml"/>
 
     <include ref="Solenoid.xml"/>
-
     <include ref="YokeBarrel.xml"/>
-
     <include ref="YokeEndcap.xml"/>
 
 

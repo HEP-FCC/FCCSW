@@ -2,7 +2,7 @@ import os
 from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCCeeBaseline1/compact/FCCee_o3_v03.xml'],
+geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCCeeBaseline1/compact/FCCee.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
