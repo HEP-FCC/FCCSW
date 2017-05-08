@@ -34,23 +34,11 @@ field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=
 # common ECAL specific information
 # readout name
 ecalReadoutName = "ECalHitsEta"
-# active material identifier name
-ecalIdentifierName = "active_layer"
-# active material volume name
-ecalVolumeName = "LAr_sensitive"
-# ECAL bitfield names & values
-ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
-ecalFieldValues=[5,1,1,1]
+
 # common HCAL specific information
 # readout name
 hcalReadoutName = "BarHCal_Readout"
-# active material identifier name
-hcalIdentifierName = ["module","row","layer","tile"]
-# active material volume name
-hcalVolumeName = ["module","wedge","layer","tile"]
-# HCAL bitfield names & values
-hcalFieldNames=["system"]
-# readout name
+# new readout name
 newHcalReadoutName = hcalReadoutName + "_phieta"
 
 # Geant4 algorithm                                                                                                                                                                                                       
