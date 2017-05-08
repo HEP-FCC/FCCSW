@@ -31,28 +31,6 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
-# Geant4 algorithm                                                                                                                                                                                                       
-# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools                                                                                                                                          
-# and a tool that saves the calorimeter hits                                                                                                                                                                                         
-from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
-saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHitsEta"],
-                                positionedCaloHits = "ECalPositionedHits",
-                                caloHits = "ECalHits")
-savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"],
-                                positionedCaloHits="HCalPositionedHits",
-                                caloHits="HCalHits")
-
-# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")                                                                                                                                                     
-from Configurables import SimG4SingleParticleGeneratorTool
-pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=0.36,etaMax=0.36,
-                OutputLevel =DEBUG)
-
-geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits"],
-                       eventProvider=pgun,
-                       OutputLevel=DEBUG)
-
 # common ECAL specific information
 # readout name
 ecalReadoutName = "ECalHitsEta"
@@ -70,17 +48,39 @@ hcalReadoutName = "BarHCal_Readout"
 hcalIdentifierName = ["module","row","layer","tile"]
 # active material volume name
 hcalVolumeName = ["module","wedge","layer","tile"]
-# ECAL bitfield names & values
+# HCAL bitfield names & values
 hcalFieldNames=["system"]
 # readout name
 newHcalReadoutName = hcalReadoutName + "_phieta"
+
+# Geant4 algorithm                                                                                                                                                                                                       
+# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools                                                                                                                                          
+# and a tool that saves the calorimeter hits                                                                                                                                                                                         
+from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
+saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = [ecalReadoutName],
+                                positionedCaloHits = "ECalPositionedHits",
+                                caloHits = "ECalHits")
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName],
+                                positionedCaloHits="HCalPositionedHits",
+                                caloHits="HCalHits")
+
+# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")                                                                                                                                                     
+from Configurables import SimG4SingleParticleGeneratorTool
+pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
+                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=0.36,etaMax=0.36,
+                OutputLevel =DEBUG)
+
+geantsim = SimG4Alg("SimG4Alg",
+                       outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits"],
+                       eventProvider=pgun,
+                       OutputLevel=DEBUG)
 
 # Configure tools for calo reconstruction                                                                                                                                                                    
 from Configurables import CalibrateInLayersTool
 calibEcells = CalibrateInLayersTool("Calibrate",
                                     # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
                                     samplingFraction = [0.168] * 4 + [0.176] * 4 + [0.184] * 4 + [0.191] * 4 + [0.198] * 4 + [0.204] * 4 + [0.210] * 4 + [0.215] * 4,
-                                    readoutName = "ECalHitsEta",
+                                    readoutName = ecalReadoutName,
                                     layerFieldName = "cell")
 
 #Configure tools for calo reconstruction
@@ -136,7 +136,7 @@ positionsEcal.positionedHits.Path = "ECalPositions"
 out = PodioOutput("out", 
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_combCalo_"+str(particleType)+str(int(energy/1e3))+"GeV.root"
+out.filename = "output_combCalo_"+str(particleType)+str(int(energy/GeV))+"GeV.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
