@@ -63,6 +63,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+out.filename = "tracker_with_field.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
