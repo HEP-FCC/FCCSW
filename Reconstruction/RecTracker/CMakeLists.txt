@@ -1,0 +1,25 @@
+################################################################################
+# Package: RecTracker
+################################################################################
+gaudi_subdir(RecTracker v1r0)
+
+# this declaration will not be needed in the future
+gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Reconstruction/RecInterface)
+
+find_package(FCCEDM)
+find_package(PODIO)
+find_package(HepMC)
+find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
+find_package(ROOT)
+
+gaudi_add_module(RecTracker
+                 src/components/*.cpp
+                 INCLUDE_DIRS ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface RecInterface
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ${DD4hep_COMPONENT_LIBRARIES}) 
+
+include(CTest)
+
+gaudi_add_test(FastDigiTest
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			         FRAMEWORK options/fastDigiTest.py
+			         DEPENDS Examples.GeantFullSimTrackerHits)
