@@ -1,5 +1,5 @@
 ################################################################################
-# Package: DetComponents
+#Package : DetComponents
 ################################################################################
 gaudi_subdir(DetComponents v1r0)
 
@@ -34,3 +34,14 @@ gaudi_add_test(MergeCells
 gaudi_add_test(MergeLayers
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/mergeLayers.py)
+gaudi_add_test(positionsInclinedEcal
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/positions_inclinedEcal.py)
+gaudi_add_test(positionsInclinedEcalCheck
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Detector/DetComponents/tests/scripts/check_inclinedEcal_positions.py
+               DEPENDS positionsInclinedEcal)
+gaudi_add_test(positionsTracker
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/positions_tracker.py)

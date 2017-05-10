@@ -74,7 +74,7 @@ A simple FCCSW configuration file exists that allows you to run Pythia with:
 This gives you an `output.root` file that contains generated particles and vertices, as well as jets that are constructed
 from the generated particles. The configuration runs five algorithms:
 
-- PythiaInterface: The actual interface that runs Pythia itself
+- GenAlg, with tool PythiaInterface: The actual interface that runs Pythia itself
 - HepMCConverter: Translates HepMC output of PythiaInterface to FCC-EDM
 - GenParticleFilter: Filters the generated particles
 - JetClustering: Does the clustering of generated particles to `GenJets`
