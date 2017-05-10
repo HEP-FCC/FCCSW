@@ -96,9 +96,8 @@
     <constant name="ExtBarECal_id" value="6"/>
     <constant name="HadronicEndCap_id" value="7"/>
     <constant name="ExtBarCal_rmin1" value="776*mm"/>
-    <constant name="ExtBarCal_rmax1" value="2700*mm"/>
     <constant name="ExtBarCal_rmin2" value="1272*mm"/>
-    <constant name="ExtBarCal_rmax2" value="2700*mm"/>
+    <constant name="ExtBarCal_rmax" value="2700*mm"/>
     <constant name="ExtBarCal_dz" value="1500*mm"/>
     <constant name="ExtBarCal_zOffset" value="5300*mm + ExtBarCal_dz"/>
     <!-- HCal extended barrel (HCAL EB) -->
