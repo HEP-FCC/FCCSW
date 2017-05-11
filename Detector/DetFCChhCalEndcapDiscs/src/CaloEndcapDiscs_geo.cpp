@@ -16,7 +16,7 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   std::string nameDet = xmlDetElem.nameStr();
   int idDet = xmlDetElem.id();
   DD4hep::XML::Dimension dim(xmlDetElem.dimensions());
-  DD4hep::Geometry::DetElement caloEndcapDetElem(nameDet, 0);
+  DD4hep::Geometry::DetElement caloEndcapDetElem(nameDet, idDet);
 
   // Create air envelope for the whole endcap
   DD4hep::Geometry::Volume envelopeVol(nameDet + "_vol",
@@ -81,12 +81,13 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   double rMax = dim.rmax();
 // First disc to place is readout
   zOffset += sign * (readoutThickness / 2.);
-  double nonAbsorberRmin = dim.rmin1();
-  double tanTheta = (dim.rmin1() - dim.rmin2()) / (2 * dim.dz());
-  nonAbsorberRmin += (marginOutside + readoutThickness / 2.) * tanTheta; // for first readout position
-  double dR = (activeThickness + readoutThickness + passiveThickness) / 2. * tanTheta; // between readout and passive, twice as much: between two discs of same kind
-  // temporary to reduce overlaps:
-  nonAbsorberRmin += 1;
+  double nonAbsorberRmin = std::min(dim.rmin1(), dim.rmin2());
+  double tanTheta = fabs(dim.rmin2() - dim.rmin1()) / (2 * dim.dz());
+  nonAbsorberRmin += (marginOutside + readoutThickness + activeThickness / 2.) * tanTheta; // for first readout position
+  double dR1 = passiveThickness * tanTheta; // between readout and passive
+  double dR2 = (activeThickness + readoutThickness + passiveThickness) * tanTheta; // between two readout discs
+  lLog << MSG::WARNING << " RMIN1: " << dim.rmin1() << " RMIN@: " << dim.rmin2()
+       << " tan theta: " <<  sign * fabs(dim.rmin2() - dim.rmin1()) / (2 * dim.dz()) << " dR1: " << dR1 << " dR2: " <<dR2 <<endmsg;
   DD4hep::Geometry::Tube readoutShapePre(nonAbsorberRmin, rMax, readoutThickness / 2.);
   DD4hep::Geometry::Tube activeShapePre(nonAbsorberRmin, rMax, activeThickness / 4.);
   DD4hep::Geometry::Volume readoutVolPre("readoutPre", readoutShapePre, aLcdd.material(readoutMaterial));
@@ -102,11 +103,11 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   zOffset += sign * (readoutThickness / 2. + activeThickness / 2. + passiveThickness / 2.);
 // Loop placing readout, active and passive discs
   for (uint iDiscs = 0; iDiscs < numDiscs - 1; iDiscs++) {
-    nonAbsorberRmin -= 2. * dR;
+    nonAbsorberRmin += dR2;
     // readout and active discs on both sides of readout have the same radius, but different thickness
     DD4hep::Geometry::Tube activeShape(nonAbsorberRmin, rMax, activeThickness / 4.);
     DD4hep::Geometry::Tube readoutShape(nonAbsorberRmin, rMax, readoutThickness / 2.);
-    DD4hep::Geometry::Tube passiveShape(nonAbsorberRmin - dR, rMax, passiveThickness / 2.);
+    DD4hep::Geometry::Tube passiveShape(nonAbsorberRmin + dR1, rMax, passiveThickness / 2.);
     DD4hep::Geometry::Volume activeVol("active", activeShape, aLcdd.material(activeMaterial));
     DD4hep::Geometry::Volume readoutVol("readout", readoutShape, aLcdd.material(readoutMaterial));
     DD4hep::Geometry::Volume passiveVol("passive", passiveShape, aLcdd.material(passiveMaterial));
@@ -114,9 +115,9 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
     // absorber may consist of inner and outer material
     if (passiveInnerThickness < passiveThickness) {
       // create shapes
-      DD4hep::Geometry::Tube passiveInnerShape(nonAbsorberRmin - dR, rMax, passiveInnerThickness / 2.);
-      DD4hep::Geometry::Tube passiveGlueShape(nonAbsorberRmin - dR, rMax, passiveGlueThickness / 4.);
-      DD4hep::Geometry::Tube passiveOuterShape(nonAbsorberRmin - dR, rMax, passiveOuterThickness / 4.);
+      DD4hep::Geometry::Tube passiveInnerShape(nonAbsorberRmin + dR1, rMax, passiveInnerThickness / 2.);
+      DD4hep::Geometry::Tube passiveGlueShape(nonAbsorberRmin + dR1, rMax, passiveGlueThickness / 4.);
+      DD4hep::Geometry::Tube passiveOuterShape(nonAbsorberRmin + dR1, rMax, passiveOuterThickness / 4.);
       // create volumes
       DD4hep::Geometry::Volume passiveInnerVol(passiveInnerMaterial + "_passive", passiveInnerShape,
         aLcdd.material(passiveInnerMaterial));
