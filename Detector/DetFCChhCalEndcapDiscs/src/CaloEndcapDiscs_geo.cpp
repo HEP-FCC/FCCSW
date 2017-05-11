@@ -6,22 +6,9 @@
 #include "GaudiKernel/ServiceHandle.h"
 
 namespace det {
-static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLcdd,
-                                                        DD4hep::XML::Handle_t aXmlElement,
-                                                        DD4hep::Geometry::SensitiveDetector aSensDet) {
-  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "CalEndcapConstruction");
-  MsgStream lLog(&(*msgSvc), "CalEndcapConstruction");
+void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::SensitiveDetector& aSensDet, DD4hep::Geometry::Volume& aEnvelope, DD4hep::XML::Handle_t& aXmlElement, int sign) {
 
-  DD4hep::XML::DetElement xmlDetElem = aXmlElement;
-  std::string nameDet = xmlDetElem.nameStr();
-  int idDet = xmlDetElem.id();
-  DD4hep::XML::Dimension dim(xmlDetElem.dimensions());
-  DD4hep::Geometry::DetElement caloEndcapDetElem(nameDet, idDet);
-
-  // Create air envelope for the whole endcap
-  DD4hep::Geometry::Volume envelopeVol(nameDet + "_vol",
-    DD4hep::Geometry::Cone(dim.dz(), dim.rmin1(), dim.rmax(), dim.rmin2(), dim.rmax()),
-    aLcdd.material("Air"));
+  DD4hep::XML::Dimension dim(aXmlElement.child(_Unicode(dimensions)));
 
   DD4hep::XML::DetElement active = aXmlElement.child(_Unicode(active));
   std::string activeMaterial = active.materialStr();
@@ -52,8 +39,7 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   DD4hep::Geometry::SensitiveDetector sensDet = aSensDet;
   DD4hep::XML::Dimension sensDetType = aXmlElement.child(_U(sensitive));
   sensDet.setType(sensDetType.typeStr());
-  lLog << MSG::INFO << "Endcap volume named " << nameDet << " with ID " << idDet
-       << " rmin (cm) = " << dim.rmin1() << " rmin (cm) = " << dim.rmin2()
+  lLog << MSG::INFO << " rmin (cm) = " << dim.rmin1() << " rmin (cm) = " << dim.rmin2()
        << " rmax (cm) = " << dim.rmax()
        << " length (cm) = " << dim.dz()
        << " Sensitive volume of type: " << sensDetType.typeStr() << endmsg;
@@ -71,12 +57,8 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
        << "\nNumber of absorber/readout discs: " << numDiscs
        << "\nMargin outside first readout disc and last absorber disc, filled with non-sensitive active medium (cm) = "
        << marginOutside << endmsg;
-  lLog << MSG::INFO << "Detector offset: " <<  dim.z_offset()
-       << " Detector half-length: " <<  length / 2. << endmsg;
+  lLog << MSG::INFO << "Detector length: (cm) " <<  length << endmsg;
   // Place components starting from closer to the collision-point
-  int sign =  dim.z_offset() / abs(dim.z_offset());
-  std::string side = (sign > 0) ? "positive" : "negative";
-  lLog << MSG::INFO << "Detector placed at z " << side << "." << endmsg;
   double zOffset = (length / 2. - marginOutside) * - sign;
   double rMax = dim.rmax();
 // First disc to place is readout
@@ -91,9 +73,9 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   DD4hep::Geometry::Volume readoutVolPre("readoutPre", readoutShapePre, aLcdd.material(readoutMaterial));
   DD4hep::Geometry::Volume activeVolPre("activePre", activeShapePre, aLcdd.material(activeMaterial));
   activeVolPre.setSensitiveDetector(sensDet);
-  DD4hep::Geometry::PlacedVolume readoutPhysVolPre = envelopeVol.placeVolume(readoutVolPre,
+  DD4hep::Geometry::PlacedVolume readoutPhysVolPre = aEnvelope.placeVolume(readoutVolPre,
     DD4hep::Geometry::Position(0, 0, zOffset));
-  DD4hep::Geometry::PlacedVolume activePhysVolPre = envelopeVol.placeVolume(activeVolPre,
+  DD4hep::Geometry::PlacedVolume activePhysVolPre = aEnvelope.placeVolume(activeVolPre,
     DD4hep::Geometry::Position(0, 0, zOffset + sign * (readoutThickness / 2. + activeThickness / 4.)));
   lLog << MSG::DEBUG << "Placing first readout at " << zOffset  <<
     " and active at z= " << zOffset + sign * (activeThickness / 4. + readoutThickness / 2.) <<endmsg;
@@ -135,13 +117,13 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
       DD4hep::Geometry::PlacedVolume passiveGluePhysVolAbove = passiveVol.placeVolume(passiveGlueVol,
         DD4hep::Geometry::Position(0,0,passiveInnerThickness / 2. + passiveGlueThickness / 4.));
     }
-    DD4hep::Geometry::PlacedVolume passivePhysVol = envelopeVol.placeVolume(passiveVol,
+    DD4hep::Geometry::PlacedVolume passivePhysVol = aEnvelope.placeVolume(passiveVol,
       DD4hep::Geometry::Position(0, 0, zOffset));
-    DD4hep::Geometry::PlacedVolume activePhysVol1 = envelopeVol.placeVolume(activeVol,
+    DD4hep::Geometry::PlacedVolume activePhysVol1 = aEnvelope.placeVolume(activeVol,
       DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2. + activeThickness / 4.)));
-    DD4hep::Geometry::PlacedVolume readoutPhysVol = envelopeVol.placeVolume(readoutVol,
+    DD4hep::Geometry::PlacedVolume readoutPhysVol = aEnvelope.placeVolume(readoutVol,
       DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2.  + activeThickness / 2. + readoutThickness / 2.)));
-    DD4hep::Geometry::PlacedVolume activePhysVol2 = envelopeVol.placeVolume(activeVol,
+    DD4hep::Geometry::PlacedVolume activePhysVol2 = aEnvelope.placeVolume(activeVol,
       DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2.  + readoutThickness + activeThickness * 3 / 4.)));
     lLog << MSG::DEBUG << "Placing passive at z= " << zOffset
          << " active1 at " << zOffset + sign * (passiveThickness/ 2.  + activeThickness / 4. )
@@ -150,18 +132,52 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
         zOffset +=  sign * (readoutThickness + activeThickness + passiveThickness);
     if (iDiscs == numDiscs - 2) {
       // finish detector with the last disc of abosrber (for GND layer)
-      DD4hep::Geometry::PlacedVolume passivePhysVolPost = envelopeVol.placeVolume(passiveVol,
+      DD4hep::Geometry::PlacedVolume passivePhysVolPost = aEnvelope.placeVolume(passiveVol,
         DD4hep::Geometry::Position(0, 0, zOffset));
       lLog << MSG::DEBUG << "Placing last passive disc at z= " << zOffset << endmsg;
     }
   }
+  return;
+}
+
+static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLcdd,
+                                                        DD4hep::XML::Handle_t aXmlElement,
+                                                        DD4hep::Geometry::SensitiveDetector aSensDet) {
+  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "CalEndcapConstruction");
+  MsgStream lLog(&(*msgSvc), "CalEndcapConstruction");
+
+  DD4hep::XML::DetElement xmlDetElem = aXmlElement;
+  std::string nameDet = xmlDetElem.nameStr();
+  int idDet = xmlDetElem.id();
+  DD4hep::XML::Dimension dim(xmlDetElem.dimensions());
+  DD4hep::Geometry::DetElement caloEndcapDetElem(nameDet, idDet);
+
+  // Create air envelope for the whole endcap
+  DD4hep::Geometry::Cone envelopePositive(dim.dz(), dim.rmin1(), dim.rmax(), dim.rmin2(), dim.rmax());
+  DD4hep::Geometry::Cone envelopeNegative(dim.dz(), dim.rmin2(), dim.rmax(), dim.rmin1(), dim.rmax());
+  DD4hep::Geometry::UnionSolid envelopeShape(envelopePositive, envelopeNegative, DD4hep::Geometry::Position(0,0,-2*dim.z_offset()));
+  DD4hep::Geometry::Volume envelopeVol(nameDet + "_vol", envelopeShape, aLcdd.material("Air"));
+  DD4hep::Geometry::Volume envelopePositiveVol(nameDet + "_positive_vol", envelopePositive, aLcdd.material("Air"));
+  DD4hep::Geometry::Volume envelopeNegativeVol(nameDet + "_negative_vol", envelopeNegative, aLcdd.material("Air"));
+
+  lLog << MSG::INFO << "Placing dector on the positive side: (cm) " <<  dim.z_offset() << endmsg;
+  buildOneEndcap(lLog, aLcdd, aSensDet, envelopePositiveVol, aXmlElement, 1);
+  lLog << MSG::INFO << "Placing dector on the negative side: (cm) " <<  - dim.z_offset() << endmsg;
+  buildOneEndcap(lLog, aLcdd, aSensDet, envelopeNegativeVol, aXmlElement, -1);
+
   // Place the envelope
+  DD4hep::Geometry::PlacedVolume envelopePositivePhysVol = envelopeVol.placeVolume(envelopePositiveVol);
+  envelopePositivePhysVol.addPhysVolID("subsystem", 0);
+  DD4hep::Geometry::DetElement caloEndcapPositiveDetElem(caloEndcapDetElem, "positive", 0);
+  caloEndcapPositiveDetElem.setPlacement(envelopePositivePhysVol);
+  DD4hep::Geometry::PlacedVolume envelopeNegativePhysVol = envelopeVol.placeVolume(envelopeNegativeVol, DD4hep::Geometry::Position(0,0,-2 * dim.z_offset()));
+  envelopeNegativePhysVol.addPhysVolID("subsystem", 1);
+  DD4hep::Geometry::DetElement caloEndcapNegativeDetElem(caloEndcapDetElem, "negative", 0);
+  caloEndcapNegativeDetElem.setPlacement(envelopeNegativePhysVol);
   DD4hep::Geometry::Volume motherVol = aLcdd.pickMotherVolume(caloEndcapDetElem);
   DD4hep::Geometry::PlacedVolume envelopePhysVol = motherVol.placeVolume(envelopeVol, DD4hep::Geometry::Position(0., 0., dim.z_offset()));
   caloEndcapDetElem.setPlacement(envelopePhysVol);
   envelopePhysVol.addPhysVolID("system", idDet);
-  envelopePhysVol.addPhysVolID("subsystem", (sign > 0) ? 1 : 0);
-  lLog << MSG::INFO << "ID = system: " << idDet << "\t subsystem: " << ((sign > 0) ? 1 : 0) << endmsg;
   return caloEndcapDetElem;
 }
 }  // namespace det
