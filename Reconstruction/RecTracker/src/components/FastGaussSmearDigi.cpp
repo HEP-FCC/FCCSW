@@ -15,40 +15,12 @@
 #include <random>
 
 #include "FastGaussSmearDigi.h"
+#include "RecTracker/TrackingUtils.h"
 
 
 DECLARE_ALGORITHM_FACTORY(FastGaussSmearDigi)
 
-// For use with standard sorting algorithms
-// compares the system fields of the hits first, then the layer field
-struct CellIdOrder {
-  CellIdOrder(DD4hep::DDSegmentation::BitField64* dec) : m_decoder(dec) {}
 
-  bool operator()(const fcc::TrackHit& h1, const fcc::TrackHit& h2) {
-    m_decoder->setValue(h1.cellId());
-    int system1 = (*m_decoder)["system"];
-    int layer1 = (*m_decoder)["layer"];
-    m_decoder->setValue(h2.cellId());
-    int system2 = (*m_decoder)["system"];
-    int layer2 = (*m_decoder)["layer"];
-    if (system1 < system2) return true;
-    if (system2 < system1) return false;
-    return (layer1 < layer2);
-  }
-
-private:
-  DD4hep::DDSegmentation::BitField64* m_decoder;
-};
-
-/// fill vector with hits ordered according to the CellIdOrder struct
-void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits,
-                   DD4hep::DDSegmentation::BitField64* decoder) {
-  sortedHits.reserve(unsortedHits->size());
-  for (const auto& hit : *unsortedHits) {
-    sortedHits.push_back(hit);
-  }
-  std::sort(sortedHits.begin(), sortedHits.end(), CellIdOrder(decoder));
-}
 
 FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 
@@ -70,6 +42,10 @@ StatusCode FastGaussSmearDigi::initialize() {
   auto readout = lcdd->readout(m_readoutName);
   m_decoder = readout.idSpec().decoder();
   auto segmentationXZ = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXZ*>(readout.segmentation().segmentation());
+  if (nullptr == segmentationXZ) {
+    error() << "Could not retrieve segmentation!" << endmsg;
+    return StatusCode::FAILURE;
+  }
   m_segGridSizeX = segmentationXZ->gridSizeX();
   m_segGridSizeZ = segmentationXZ->gridSizeZ();
   m_volman = lcdd->volumeManager();
@@ -81,7 +57,7 @@ StatusCode FastGaussSmearDigi::execute() {
   // get hits from event store
   const fcc::TrackHitCollection* hits = m_trackHits.get();
   std::vector<fcc::TrackHit> sortedHits;
-  sortTrackHits(hits, sortedHits, m_decoder);
+  rec::sortTrackHits(hits, sortedHits, m_decoder);
 
   auto edmPositions = m_smearedTrackHits.createAndPut();
   for (const auto& hit : sortedHits) {
