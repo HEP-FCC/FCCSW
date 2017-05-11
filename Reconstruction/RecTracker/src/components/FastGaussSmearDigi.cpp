@@ -54,7 +54,6 @@ FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svc
 
   declareProperty("smearedHits", m_smearedTrackHits, "Smeared Tracker hits (Output)");
   declareProperty("trackHits", m_trackHits, "Tracker hits (Input)");
-  declareProperty("readoutName", m_readoutName, "Readout name");
 }
 
 FastGaussSmearDigi::~FastGaussSmearDigi() {}
