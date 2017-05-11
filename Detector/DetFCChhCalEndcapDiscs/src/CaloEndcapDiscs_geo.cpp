@@ -75,8 +75,10 @@ void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geom
   activeVolPre.setSensitiveDetector(sensDet);
   DD4hep::Geometry::PlacedVolume readoutPhysVolPre = aEnvelope.placeVolume(readoutVolPre,
     DD4hep::Geometry::Position(0, 0, zOffset));
-  DD4hep::Geometry::PlacedVolume activePhysVolPre = aEnvelope.placeVolume(activeVolPre,
-    DD4hep::Geometry::Position(0, 0, zOffset + sign * (readoutThickness / 2. + activeThickness / 4.)));
+  std::vector<DD4hep::Geometry::PlacedVolume> activePhysVols;
+  activePhysVols.reserve(numDiscs * 2);
+  activePhysVols.push_back( aEnvelope.placeVolume(activeVolPre,
+      DD4hep::Geometry::Position(0, 0, zOffset + sign * (readoutThickness / 2. + activeThickness / 4.))));
   lLog << MSG::DEBUG << "Placing first readout at " << zOffset  <<
     " and active at z= " << zOffset + sign * (activeThickness / 4. + readoutThickness / 2.) <<endmsg;
 // Now place complete sets of discs: absorber|active|readout|active
@@ -117,14 +119,13 @@ void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geom
       DD4hep::Geometry::PlacedVolume passiveGluePhysVolAbove = passiveVol.placeVolume(passiveGlueVol,
         DD4hep::Geometry::Position(0,0,passiveInnerThickness / 2. + passiveGlueThickness / 4.));
     }
-    DD4hep::Geometry::PlacedVolume passivePhysVol = aEnvelope.placeVolume(passiveVol,
-      DD4hep::Geometry::Position(0, 0, zOffset));
-    DD4hep::Geometry::PlacedVolume activePhysVol1 = aEnvelope.placeVolume(activeVol,
-      DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2. + activeThickness / 4.)));
-    DD4hep::Geometry::PlacedVolume readoutPhysVol = aEnvelope.placeVolume(readoutVol,
+    aEnvelope.placeVolume(passiveVol, DD4hep::Geometry::Position(0, 0, zOffset));
+    activePhysVols.push_back( aEnvelope.placeVolume(activeVol,
+        DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2. + activeThickness / 4.))));
+    aEnvelope.placeVolume(readoutVol,
       DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2.  + activeThickness / 2. + readoutThickness / 2.)));
-    DD4hep::Geometry::PlacedVolume activePhysVol2 = aEnvelope.placeVolume(activeVol,
-      DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2.  + readoutThickness + activeThickness * 3 / 4.)));
+    activePhysVols.push_back( aEnvelope.placeVolume(activeVol,
+        DD4hep::Geometry::Position(0, 0, zOffset + sign * (passiveThickness / 2.  + readoutThickness + activeThickness * 3 / 4.))));
     lLog << MSG::DEBUG << "Placing passive at z= " << zOffset
          << " active1 at " << zOffset + sign * (passiveThickness/ 2.  + activeThickness / 4. )
          << " readout at z= " << zOffset + sign * (passiveThickness/ 2.  + activeThickness / 2. + readoutThickness / 2.)
@@ -135,6 +136,9 @@ void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geom
       DD4hep::Geometry::PlacedVolume passivePhysVolPost = aEnvelope.placeVolume(passiveVol,
         DD4hep::Geometry::Position(0, 0, zOffset));
       lLog << MSG::DEBUG << "Placing last passive disc at z= " << zOffset << endmsg;
+    }
+    for(uint iActive = 0; iActive < activePhysVols.size(); iActive++) {
+      activePhysVols[iActive].addPhysVolID("layer", iActive);
     }
   }
   return;
