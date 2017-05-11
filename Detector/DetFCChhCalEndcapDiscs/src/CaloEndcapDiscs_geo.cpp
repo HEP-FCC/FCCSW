@@ -86,8 +86,6 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   nonAbsorberRmin += (marginOutside + readoutThickness + activeThickness / 2.) * tanTheta; // for first readout position
   double dR1 = passiveThickness * tanTheta; // between readout and passive
   double dR2 = (activeThickness + readoutThickness + passiveThickness) * tanTheta; // between two readout discs
-  lLog << MSG::WARNING << " RMIN1: " << dim.rmin1() << " RMIN@: " << dim.rmin2()
-       << " tan theta: " <<  sign * fabs(dim.rmin2() - dim.rmin1()) / (2 * dim.dz()) << " dR1: " << dR1 << " dR2: " <<dR2 <<endmsg;
   DD4hep::Geometry::Tube readoutShapePre(nonAbsorberRmin, rMax, readoutThickness / 2.);
   DD4hep::Geometry::Tube activeShapePre(nonAbsorberRmin, rMax, activeThickness / 4.);
   DD4hep::Geometry::Volume readoutVolPre("readoutPre", readoutShapePre, aLcdd.material(readoutMaterial));
@@ -162,6 +160,8 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   DD4hep::Geometry::PlacedVolume envelopePhysVol = motherVol.placeVolume(envelopeVol, DD4hep::Geometry::Position(0., 0., dim.z_offset()));
   caloEndcapDetElem.setPlacement(envelopePhysVol);
   envelopePhysVol.addPhysVolID("system", idDet);
+  envelopePhysVol.addPhysVolID("subsystem", (sign > 0) ? 1 : 0);
+  lLog << MSG::INFO << "ID = system: " << idDet << "\t subsystem: " << ((sign > 0) ? 1 : 0) << endmsg;
   return caloEndcapDetElem;
 }
 }  // namespace det

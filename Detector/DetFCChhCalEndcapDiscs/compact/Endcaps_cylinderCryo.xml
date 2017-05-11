@@ -180,49 +180,49 @@
                   z_offset="-(CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
     </detector>
 
-  <!--   <detector name="EMEC_negative" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="EMECnegative"> -->
-  <!--     <sensitive type="SimpleCalorimeterSD"/> -->
-  <!--     <dimensions rmin2="EMEC_rmin1"  rmin1="EMEC_rmin2" rmax="EMEC_rmax" dz="(EMEC_z2-EMEC_z1)/2." z_offset="-(EMEC_z1+(EMEC_z2-EMEC_z1)/2.)"/> -->
-  <!--     <active thickness="EMEC_lAr_thickness"> -->
-  <!--       <material name="LAr"/> -->
-  <!--     </active> -->
-  <!--     <passive> -->
-  <!--       <inner thickness="EMEC_Pb_thickness" sensitive="false"> -->
-  <!--         <material name="Lead"/> -->
-  <!--       </inner> -->
-  <!--       <glue thickness="EMEC_glue_thickness" sensitive="false"> -->
-  <!--         <material name="lArCaloGlue"/> -->
-  <!--       </glue> -->
-  <!--       <outer thickness="EMEC_steel_thickness" sensitive="false"> -->
-  <!--         <material name="lArCaloSteel"/> -->
-  <!--       </outer> -->
-  <!--     </passive> -->
-  <!--     <readout thickness="EMEC_readout_thickness" sensitive="false"> -->
-  <!--       <material name="PCB"/> -->
-  <!--     </readout> -->
-  <!--   </detector> -->
+    <!-- <detector name="EMEC_negative" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="EMECnegative"> -->
+    <!--   <sensitive type="SimpleCalorimeterSD"/> -->
+    <!--   <dimensions rmin2="EMEC_rmin1"  rmin1="EMEC_rmin2" rmax="EMEC_rmax" dz="(EMEC_z2-EMEC_z1)/2." z_offset="-(EMEC_z1+(EMEC_z2-EMEC_z1)/2.)"/> -->
+    <!--   <active thickness="EMEC_lAr_thickness"> -->
+    <!--     <material name="LAr"/> -->
+    <!--   </active> -->
+    <!--   <passive> -->
+    <!--     <inner thickness="EMEC_Pb_thickness" sensitive="false"> -->
+    <!--       <material name="Lead"/> -->
+    <!--     </inner> -->
+    <!--     <glue thickness="EMEC_glue_thickness" sensitive="false"> -->
+    <!--       <material name="lArCaloGlue"/> -->
+    <!--     </glue> -->
+    <!--     <outer thickness="EMEC_steel_thickness" sensitive="false"> -->
+    <!--       <material name="lArCaloSteel"/> -->
+    <!--     </outer> -->
+    <!--   </passive> -->
+    <!--   <readout thickness="EMEC_readout_thickness" sensitive="false"> -->
+    <!--     <material name="PCB"/> -->
+    <!--   </readout> -->
+    <!-- </detector> -->
 
-  <!--   <detector name="HEC_negative" type="CaloEndcapDiscs" id="HadronicEndCap_id" readout="HECnegative"> -->
-  <!--     <sensitive type="SimpleCalorimeterSD"/> -->
-  <!--     <dimensions rmin2="HEC_rmin1"  rmin1="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="-(HEC_z1+(HEC_z2-HEC_z1)/2.)"/> -->
-  <!--     <active thickness="HEC_lAr_thickness"> -->
-  <!--       <material name="LAr"/> -->
-  <!--     </active> -->
-  <!--     <passive> -->
-  <!--       <inner thickness="HEC_Cu_thickness" sensitive="false"> -->
-  <!--         <material name="Copper"/> -->
-  <!--       </inner> -->
-  <!--       <glue thickness="0" sensitive="false"> -->
-  <!--         <material name="Copper"/> -->
-  <!--       </glue> -->
-  <!--       <outer thickness="0" sensitive="false"> -->
-  <!--         <material name="Copper"/> -->
-  <!--       </outer> -->
-  <!--     </passive> -->
-  <!--     <readout thickness="HEC_readout_thickness" sensitive="false"> -->
-  <!--       <material name="PCB"/> -->
-  <!--     </readout> -->
-  <!--   </detector> -->
-  <!-- </detectors> -->
+    <!-- <detector name="HEC_negative" type="CaloEndcapDiscs" id="HadronicEndCap_id" readout="HECnegative"> -->
+    <!--   <sensitive type="SimpleCalorimeterSD"/> -->
+    <!--   <dimensions rmin2="HEC_rmin1"  rmin1="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="-(HEC_z1+(HEC_z2-HEC_z1)/2.)"/> -->
+    <!--   <active thickness="HEC_lAr_thickness"> -->
+    <!--     <material name="LAr"/> -->
+    <!--   </active> -->
+    <!--   <passive> -->
+    <!--     <inner thickness="HEC_Cu_thickness" sensitive="false"> -->
+    <!--       <material name="Copper"/> -->
+    <!--     </inner> -->
+    <!--     <glue thickness="0" sensitive="false"> -->
+    <!--       <material name="Copper"/> -->
+    <!--     </glue> -->
+    <!--     <outer thickness="0" sensitive="false"> -->
+    <!--       <material name="Copper"/> -->
+    <!--     </outer> -->
+    <!--   </passive> -->
+    <!--   <readout thickness="HEC_readout_thickness" sensitive="false"> -->
+    <!--     <material name="PCB"/> -->
+    <!--   </readout> -->
+    <!-- </detector> -->
+  </detectors>
 
 </lccdd>
