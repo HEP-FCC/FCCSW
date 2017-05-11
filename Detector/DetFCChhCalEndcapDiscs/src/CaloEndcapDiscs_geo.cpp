@@ -85,6 +85,8 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   double tanTheta = (dim.rmin1() - dim.rmin2()) / (2 * dim.dz());
   nonAbsorberRmin += (marginOutside + readoutThickness / 2.) * tanTheta; // for first readout position
   double dR = (activeThickness + readoutThickness + passiveThickness) / 2. * tanTheta; // between readout and passive, twice as much: between two discs of same kind
+  // temporary to reduce overlaps:
+  nonAbsorberRmin += 1;
   DD4hep::Geometry::Tube readoutShapePre(nonAbsorberRmin, rMax, readoutThickness / 2.);
   DD4hep::Geometry::Tube activeShapePre(nonAbsorberRmin, rMax, activeThickness / 4.);
   DD4hep::Geometry::Volume readoutVolPre("readoutPre", readoutShapePre, aLcdd.material(readoutMaterial));

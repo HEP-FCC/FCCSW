@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCChh_CaloEndcap_Discs"
+        title="Calorimeter endcaps"
+        author="M.Aleksa,J.Faltova,A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>
+      Liquid argon calorimeter endcap design.
+      Electromagnetic part (EMEC) includes lead+steel absorbers, and hadronic (HEC) - copper.
+      Both parts are immersed in the same cryostat.
+      Absorbers have shape of simple discs.
+    </comment>
+  </info>
+
+  <define>
+    <!-- cryostat, common for EMEC and HEC -->
+    <constant name="CryoThicknessFront" value="50*mm"/>
+    <constant name="CryoThicknessBack" value="100*mm"/>
+    <constant name="CryoThicknessInner" value="100*mm"/>
+    <constant name="CryoThicknessOuter" value="100*mm"/>
+    <constant name="CryoEndcap_rmin" value="4*cm"/>
+    <constant name="CryoEndcap_rmax" value="ExtBarCal_rmax"/>
+    <constant name="CryoEndcap_z1" value="ExtBarCal_zOffset - ExtBarCal_dz"/>
+    <constant name="CryoEndcap_z2" value="ExtBarCal_zOffset + ExtBarCal_dz"/>
+    <constant name="CryoEndcap_dz" value="ExtBarCal_dz"/>
+    <constant name="CryoEndcap_zOffset" value="ExtBarCal_zOffset"/>
+    <!-- space between the cryostat and calorimeter -->
+    <constant name="BathThicknessFront" value="90*mm"/>
+    <constant name="BathThicknessBack" value="50*mm"/>
+    <constant name="BathThicknessOuter" value="50*mm"/>
+    <constant name="BathThicknessMiddle" value="50*mm"/> <!-- in between of EMEC and HEC -->
+    <!-- electromegnetic calorimeter: EMEC -->
+    <constant name="EMEC_z1" value="CryoEndcap_z1 + CryoThicknessFront + BathThicknessFront"/>
+    <constant name="EMEC_z2" value="6150*mm"/>
+    <constant name="EMEC_rmin1" value="ExtBarCal_rmin1 + CryoThicknessInner"/>
+    <constant name="EMEC_rmin2" value="EMEC_z2*tan(2*atan(exp(-2.5))) - 10*cm + CryoThicknessInner"/>
+    <constant name="EMEC_rmax" value="ExtBarCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
+    <constant name="EMEC_lAr_thickness" value="30.*mm"/>
+    <constant name="EMEC_Pb_thickness" value="1.5*cm*2./2.16"/>
+    <constant name="EMEC_steel_thickness" value="0.4*cm*2./2.16"/>
+    <constant name="EMEC_glue_thickness" value="0.26*cm*2./2.16"/>
+    <constant name="EMEC_readout_thickness" value="10*mm"/>
+    <!-- hadronic calorimeter: HEC -->
+    <constant name="HEC_z1" value="EMEC_z2 + BathThicknessMiddle"/>
+    <constant name="HEC_z2" value="CryoEndcap_z2 - CryoThicknessBack - BathThicknessBack"/>
+    <constant name="HEC_rmin1" value="HEC_z1*tan(2*atan(exp(-2.5))) - 10*cm + CryoThicknessInner"/>
+    <constant name="HEC_rmin2" value="ExtBarCal_rmin2 + CryoThicknessInner"/>
+    <constant name="HEC_rmax" value="ExtBarCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
+    <constant name="HEC_lAr_thickness" value="30.*mm"/>
+    <constant name="HEC_Cu_thickness" value="20.*mm"/>
+    <constant name="HEC_readout_thickness" value="10*mm"/>
+  </define>
+  <readouts>
+    <readout name="EMECpositive">
+      <segmentation type="GridPhiEta" phi_bins="512" grid_size_eta="0.01" offset_eta="1.4"/>
+      <id>system:4,subsystem:1,cryo:2,type:3,subtype:3,eta:9,phi:10</id>
+    </readout>
+    <readout name="EMECnegative">
+      <segmentation type="GridPhiEta" phi_bins="512" grid_size_eta="0.01" offset_eta="-2.6"/>
+      <id>system:4,subsystem:1,cryo:2,type:3,subtype:3,eta:9,phi:10</id>
+    </readout>
+    <readout name="HECpositive">
+      <segmentation type="GridPhiEta" phi_bins="512" grid_size_eta="0.01" offset_eta="1.4"/>
+      <id>system:4,subsystem:1,cryo:2,type:3,subtype:3,eta:9,phi:10</id>
+    </readout>
+    <readout name="HECnegative">
+      <segmentation type="GridPhiEta" phi_bins="512" grid_size_eta="0.01" offset_eta="-2.6"/>
+      <id>system:4,subsystem:1,cryo:2,type:3,subtype:3,eta:9,phi:10</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector name="CalEndcapCryoFront_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmax" dz="CryoThicknessFront/2." z_offset="CryoEndcap_z1+CryoThicknessFront/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoBack_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmax" dz="CryoThicknessBack/2." z_offset="CryoEndcap_z2-CryoThicknessBack/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoOuter_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmax-CryoThicknessOuter" rmax="CryoEndcap_rmax"
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoInner_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmin+CryoThicknessInner"
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathFront_positive" type="SimpleCylinder">
+      <dimensions rmin="EMEC_rmin1" rmax="EMEC_rmax" dz="BathThicknessFront/2." z_offset="EMEC_z1-BathThicknessFront/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathMiddle_positive" type="SimpleCylinder">
+      <dimensions rmin="(HEC_rmin1+EMEC_rmin2)/2." rmax="EMEC_rmax" dz="BathThicknessMiddle/2." z_offset="EMEC_z2+BathThicknessMiddle/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathBack_positive" type="SimpleCylinder">
+      <dimensions rmin="HEC_rmin2" rmax="HEC_rmax" dz="BathThicknessBack/2." z_offset="HEC_z2+BathThicknessBack/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathOuter_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmax-CryoThicknessOuter-BathThicknessOuter" rmax="CryoEndcap_rmax-CryoThicknessOuter"
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+
+    <detector name="EMEC_positive" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="EMECpositive">
+      <sensitive type="SimpleCalorimeterSD"/>
+      <dimensions rmin1="EMEC_rmin1"  rmin2="EMEC_rmin2" rmax="EMEC_rmax" dz="(EMEC_z2-EMEC_z1)/2." z_offset="EMEC_z1+(EMEC_z2-EMEC_z1)/2."/>
+      <active thickness="EMEC_lAr_thickness">
+        <material name="LAr"/>
+      </active>
+      <passive>
+        <inner thickness="EMEC_Pb_thickness" sensitive="false">
+          <material name="Lead"/>
+        </inner>
+        <glue thickness="EMEC_glue_thickness" sensitive="false">
+          <material name="lArCaloGlue"/>
+        </glue>
+        <outer thickness="EMEC_steel_thickness" sensitive="false">
+          <material name="lArCaloSteel"/>
+        </outer>
+      </passive>
+      <readout thickness="EMEC_readout_thickness" sensitive="false">
+        <material name="PCB"/>
+      </readout>
+    </detector>
+
+    <detector name="HEC_positive" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="HECpositive">
+      <sensitive type="SimpleCalorimeterSD"/>
+      <dimensions rmin1="HEC_rmin1"  rmin2="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="HEC_z1+(HEC_z2-HEC_z1)/2."/>
+      <active thickness="HEC_lAr_thickness">
+        <material name="LAr"/>
+      </active>
+      <passive>
+        <inner thickness="HEC_Cu_thickness" sensitive="false">
+          <material name="Copper"/>
+        </inner>
+        <glue thickness="0" sensitive="false">
+          <material name="Copper"/>
+        </glue>
+        <outer thickness="0" sensitive="false">
+          <material name="Copper"/>
+        </outer>
+      </passive>
+      <readout thickness="HEC_readout_thickness" sensitive="false">
+        <material name="PCB"/>
+      </readout>
+    </detector>
+    <detector name="CalEndcapCryoFront_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmax" dz="CryoThicknessFront/2." z_offset="-(CryoEndcap_z1+CryoThicknessFront/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoBack_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmax" dz="CryoThicknessBack/2." z_offset="-(CryoEndcap_z2-CryoThicknessBack/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoOuter_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmax-CryoThicknessOuter" rmax="CryoEndcap_rmax"
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="-(CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoInner_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmin+CryoThicknessInner"
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="-(CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathFront_negative" type="SimpleCylinder">
+      <dimensions rmin="EMEC_rmin1" rmax="EMEC_rmax" dz="BathThicknessFront/2." z_offset="-(EMEC_z1-BathThicknessFront/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathMiddle_negative" type="SimpleCylinder">
+      <dimensions rmin="(HEC_rmin1+EMEC_rmin2)/2." rmax="EMEC_rmax" dz="BathThicknessMiddle/2." z_offset="-(EMEC_z2+BathThicknessMiddle/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathBack_negative" type="SimpleCylinder">
+      <dimensions rmin="HEC_rmin2" rmax="HEC_rmax" dz="BathThicknessBack/2." z_offset="-(HEC_z2+BathThicknessBack/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapBathOuter_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmax-CryoThicknessOuter-BathThicknessOuter" rmax="CryoEndcap_rmax-CryoThicknessOuter"
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="-(CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+
+    <!-- <detector name="EMEC_negative" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="EMECnegative"> -->
+    <!--   <sensitive type="SimpleCalorimeterSD"/> -->
+    <!--   <dimensions rmin2="EMEC_rmin1"  rmin1="EMEC_rmin2" rmax="EMEC_rmax" dz="(EMEC_z2-EMEC_z1)/2." z_offset="-(EMEC_z1+(EMEC_z2-EMEC_z1)/2.)"/> -->
+    <!--   <active thickness="EMEC_lAr_thickness"> -->
+    <!--     <material name="LAr"/> -->
+    <!--   </active> -->
+    <!--   <passive> -->
+    <!--     <inner thickness="EMEC_Pb_thickness" sensitive="false"> -->
+    <!--       <material name="Lead"/> -->
+    <!--     </inner> -->
+    <!--     <glue thickness="EMEC_glue_thickness" sensitive="false"> -->
+    <!--       <material name="lArCaloGlue"/> -->
+    <!--     </glue> -->
+    <!--     <outer thickness="EMEC_steel_thickness" sensitive="false"> -->
+    <!--       <material name="lArCaloSteel"/> -->
+    <!--     </outer> -->
+    <!--   </passive> -->
+    <!--   <readout thickness="EMEC_readout_thickness" sensitive="false"> -->
+    <!--     <material name="PCB"/> -->
+    <!--   </readout> -->
+    <!-- </detector> -->
+
+    <!-- <detector name="HEC_negative" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="HECnegative"> -->
+    <!--   <sensitive type="SimpleCalorimeterSD"/> -->
+    <!--   <dimensions rmin2="HEC_rmin1"  rmin1="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="-(HEC_z1+(HEC_z2-HEC_z1)/2.)"/> -->
+    <!--   <active thickness="HEC_lAr_thickness"> -->
+    <!--     <material name="LAr"/> -->
+    <!--   </active> -->
+    <!--   <passive> -->
+    <!--     <inner thickness="HEC_Cu_thickness" sensitive="false"> -->
+    <!--       <material name="Copper"/> -->
+    <!--     </inner> -->
+    <!--     <glue thickness="0" sensitive="false"> -->
+    <!--       <material name="Copper"/> -->
+    <!--     </glue> -->
+    <!--     <outer thickness="0" sensitive="false"> -->
+    <!--       <material name="Copper"/> -->
+    <!--     </outer> -->
+    <!--   </passive> -->
+    <!--   <readout thickness="HEC_readout_thickness" sensitive="false"> -->
+    <!--     <material name="PCB"/> -->
+    <!--   </readout> -->
+    <!-- </detector> -->
+  </detectors>
+
+</lccdd>
