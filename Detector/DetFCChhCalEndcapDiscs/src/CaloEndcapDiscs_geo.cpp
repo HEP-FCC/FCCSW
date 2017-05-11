@@ -161,6 +161,7 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   DD4hep::Geometry::Volume motherVol = aLcdd.pickMotherVolume(caloEndcapDetElem);
   DD4hep::Geometry::PlacedVolume envelopePhysVol = motherVol.placeVolume(envelopeVol, DD4hep::Geometry::Position(0., 0., dim.z_offset()));
   caloEndcapDetElem.setPlacement(envelopePhysVol);
+  envelopePhysVol.addPhysVolID("system", idDet);
   return caloEndcapDetElem;
 }
 }  // namespace det

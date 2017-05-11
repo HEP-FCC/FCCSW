@@ -129,7 +129,7 @@
       </readout>
     </detector>
 
-    <detector name="HEC_positive" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="HECpositive">
+    <detector name="HEC_positive" type="CaloEndcapDiscs" id="HadronicEndCap_id" readout="HECpositive">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="HEC_rmin1"  rmin2="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="HEC_z1+(HEC_z2-HEC_z1)/2."/>
       <active thickness="HEC_lAr_thickness">
@@ -204,7 +204,7 @@
       </readout>
     </detector>
 
-    <detector name="HEC_negative" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="HECnegative">
+    <detector name="HEC_negative" type="CaloEndcapDiscs" id="HadronicEndCap_id" readout="HECnegative">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin2="HEC_rmin1"  rmin1="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="-(HEC_z1+(HEC_z2-HEC_z1)/2.)"/>
       <active thickness="HEC_lAr_thickness">
