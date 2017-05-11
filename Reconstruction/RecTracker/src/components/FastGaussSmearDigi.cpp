@@ -89,14 +89,14 @@ StatusCode FastGaussSmearDigi::execute() {
     m_decoder->setValue(hit.core().cellId);
     /// the local coordinates on the module
     // add segmentation info and smearing here
-    double l[3] = {(*m_decoder)["x"] * m_segGridSizeX + m_gaussDist() / sqrt(12.) * m_segGridSizeX, 0,
+    std::array<double, 3> l = {(*m_decoder)["x"] * m_segGridSizeX + m_gaussDist() / sqrt(12.) * m_segGridSizeX, 0,
                    (*m_decoder)["z"] * m_segGridSizeZ + m_gaussDist() / sqrt(12.) * m_segGridSizeZ};
     // global coordinates, will be filled by the transform
-    double g[3] = {0, 0, 0};
+    std::array<double, 3> g = {0, 0, 0};
     // direct lookup of transformation in the volume manager is broken in dd4hep
     auto detelement = m_volman.lookupDetElement(m_decoder->getValue());
     const auto& localToGlobal = detelement.worldTransformation();
-    localToGlobal.LocalToMaster(l, g);
+    localToGlobal.LocalToMaster(l.data(), g.data());
     auto position = fcc::Point();
     // default dd4hep units differ from fcc ones
     position.x = g[0] * CM_2_MM;
