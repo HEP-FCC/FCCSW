@@ -65,19 +65,19 @@ StatusCode FastGaussSmearDigi::execute() {
     m_decoder->setValue(hit.core().cellId);
     /// the local coordinates on the module
     // add segmentation info and smearing here
-    std::array<double, 3> l = {(*m_decoder)["x"] * m_segGridSizeX + m_gaussDist() / sqrt(12.) * m_segGridSizeX, 0,
+    std::array<double, 3> localPos = {(*m_decoder)["x"] * m_segGridSizeX + m_gaussDist() / sqrt(12.) * m_segGridSizeX, 0,
                    (*m_decoder)["z"] * m_segGridSizeZ + m_gaussDist() / sqrt(12.) * m_segGridSizeZ};
     // global coordinates, will be filled by the transform
-    std::array<double, 3> g = {0, 0, 0};
+    std::array<double, 3> globalPos = {0, 0, 0};
     // direct lookup of transformation in the volume manager is broken in dd4hep
     auto detelement = m_volman.lookupDetElement(m_decoder->getValue());
     const auto& localToGlobal = detelement.worldTransformation();
-    localToGlobal.LocalToMaster(l.data(), g.data());
+    localToGlobal.LocalToMaster(localPos.data(), globalPos.data());
     auto position = fcc::Point();
     // default dd4hep units differ from fcc ones
-    position.x = g[0] * CM_2_MM;
-    position.y = g[1] * CM_2_MM;
-    position.z = g[2] * CM_2_MM;
+    position.x = globalPos[0] * CM_2_MM;
+    position.y = globalPos[1] * CM_2_MM;
+    position.z = globalPos[2] * CM_2_MM;
     edmPositions->create(position, hitCore);
   }
   return StatusCode::SUCCESS;
