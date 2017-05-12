@@ -25,7 +25,7 @@ from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
 # range cut                                                                                                                                                                                                                        
-geantservice.G4commands += ["/run/setCut 0.1 mm"]
+geantservice.g4PostInitCommands += ["/run/setCut 0.1 mm"]
 
 # Magnetic field                                                                                                                                                                                                                           
 from Configurables import SimG4ConstantMagneticFieldTool

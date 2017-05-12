@@ -27,6 +27,10 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 dd4hep_generate_rootmap(TestGeometry)
 
 include(CTest)
+gaudi_add_test(GeantOverlapTestFCChhMaster
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/geant_overlap_test_fcchh.py
+               FAILREGEX "Overlap is detected")
 gaudi_add_test(TestBorderCellIDFromGdml
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                FRAMEWORK tests/options/geant_testcellid_gdml.py)

@@ -30,6 +30,6 @@
     <calodata name="calohits" />
   </view>
   <include ref="../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml"/>
-  <include ref="../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml"/>
+  <include ref="../../Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml"/>
   <include ref="../../Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml"/>
 </ddeve>
