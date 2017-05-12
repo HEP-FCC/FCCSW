@@ -1,0 +1,67 @@
+<lccdd>
+    
+       
+    
+    <!--  Definition of the readout segmentation/definition  -->
+    <readouts>
+        <readout name="ECalPlugCollection">
+            <segmentation type="CartesianGridXY" grid_size_x="ECal_cell_size" grid_size_y="ECal_cell_size" />
+            <id>system:5,side:2,module:8,stave:4,layer:9,submodule:4,x:32:-16,y:-16</id>
+        </readout>
+    </readouts>
+    
+    <!--  Includes for sensitives and support                -->
+    <detectors>
+        
+        <detector name="ECalPlug" type="GenericCalEndcap_o1_v01" id="DetID_ECal_Plug" readout="ECalPlugCollection" vis="ECALVis" >
+            
+            <comment>Hadronic Calorimeter Endcap</comment>
+            
+            <envelope vis="ECALVis">
+                <shape type="BooleanShape" operation="Subtraction" material="Air">
+                        <shape type="PolyhedraRegular"  numsides="ECalPlug_outer_symmetry" rmin="ECalPlug_inner_radius-env_safety" rmax="ECalPlug_outer_radius+ 10.0*env_safety" dz="2.0*ECalPlug_max_z+2*env_safety"/>
+                        <shape type="PolyhedraRegular"  numsides="ECalPlug_outer_symmetry" rmin="0" rmax="ECalPlug_outer_radius+ 100.0*env_safety" dz="2.0*ECalPlug_min_z-2*env_safety"/>
+                    </shape>
+                <rotation x="0*deg" y="0*deg" z="90*deg-180*deg/ECalPlug_outer_symmetry"/>
+            </envelope>
+            
+            
+            <dimensions nsides_inner="ECalPlug_inner_symmetry" nsides_outer="(int) ECalPlug_outer_symmetry" zmin="ECalPlug_min_z" rmin="ECalPlug_inner_radius" rmax="ECalPlug_outer_radius" phi0="0"/>
+            
+            <layer repeat="17" vis="ECalLayerVis">
+                <slice material = "TungstenDens24" thickness = "2.40*mm" vis="ECalAbsorberVis" radiator="yes"/>
+                <slice material = "Air"            thickness = "0.25*mm" vis="InvisibleNoDaughters"/><!-- fiber -->
+                <slice material = "GroundOrHVMix"  thickness = "0.10*mm" vis="ECalAbsorberVis"/>
+                <slice material = "Silicon"        thickness = "0.50*mm" sensitive="yes" limits="cal_limits" vis="ECalSensitiveVis"/>
+                <slice material = "Air"            thickness = "0.10*mm" vis="InvisibleNoDaughters"/><!-- glue -->
+                <slice material = "siPCBMix"       thickness = "0.80*mm" vis="ECalAbsorberVis"/>
+                <slice material = "Air"            thickness = "0.25*mm" vis="InvisibleNoDaughters"/>
+            </layer>
+            <layer repeat="7" vis="ECalLayerVis">
+                <slice material = "TungstenDens24" thickness = "4.80*mm" vis="ECalAbsorberVis" radiator="yes"/>
+                <slice material = "Air"            thickness = "0.25*mm" vis="InvisibleNoDaughters"/><!-- fiber -->
+                <slice material = "GroundOrHVMix"  thickness = "0.10*mm" vis="ECalAbsorberVis"/>
+                <slice material = "Silicon"        thickness = "0.50*mm" sensitive="yes" limits="cal_limits" vis="ECalSensitiveVis"/>
+                <slice material = "Air"            thickness = "0.10*mm" vis="InvisibleNoDaughters"/><!-- glue -->
+                <slice material = "siPCBMix"       thickness = "0.80*mm" vis="ECalAbsorberVis"/>
+                <slice material = "Air"            thickness = "0.25*mm" vis="InvisibleNoDaughters"/>
+            </layer>
+
+            <!-- Easier to stick with Layers that have one sensitive element-->
+            <!-- Rather than making a passive layer, make one more group of layers with one entry  -->
+            <layer repeat="1" vis="ECalLayerVis">
+                <slice material = "TungstenDens24" thickness = "4.80*mm" vis="ECalAbsorberVis" radiator="yes"/>
+                <slice material = "Air"            thickness = "0.25*mm" vis="InvisibleNoDaughters"/><!-- fiber -->
+                <slice material = "GroundOrHVMix"  thickness = "0.10*mm" vis="ECalAbsorberVis"/>
+                <slice material = "Silicon"        thickness = "0.50*mm" sensitive="yes" limits="cal_limits" vis="ECalSensitiveVis"/>
+                <slice material = "Air"            thickness = "0.10*mm" vis="InvisibleNoDaughters"/><!-- glue -->
+                <slice material = "siPCBMix"       thickness = "0.80*mm" vis="ECalAbsorberVis"/>
+                <slice material = "Air"            thickness = "0.25*mm" vis="InvisibleNoDaughters"/>
+                <slice material = "TungstenDens24" thickness = "4.80*mm" vis="ECalAbsorberVis" radiator="yes"/>
+                <slice material = "CarbonFiber_25percent" thickness = "10.0*mm" vis="CompositeVis"/>
+            </layer>
+        </detector>
+    </detectors>
+</lccdd>
+
+
