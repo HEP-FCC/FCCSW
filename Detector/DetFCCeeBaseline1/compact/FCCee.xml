@@ -1,6 +1,15 @@
 <!--
   - set OuterTracker_half_length = InnerTracker_half_length
 -->
+
+<!--
+   WARNING: this geometry contains overlaps in:
+   - HCalEndcap
+   - LumiCal
+   - Outer tracker barrel
+   - Vertex barrek
+   - Beampipe shield
+-->
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
