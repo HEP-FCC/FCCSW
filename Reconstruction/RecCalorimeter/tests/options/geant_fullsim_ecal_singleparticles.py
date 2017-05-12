@@ -30,7 +30,7 @@ else:
     field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
 #Setting random seeds for Geant4 simulations
-#geantservice.G4commands += ["/random/setSeeds "+str(x)+" 0"] #where x is the number you want
+#geantservice.g4PreInitCommands  += ["/random/setSeeds "+str(x)+" 0"] #where x is the number you want
 
 #range cut
 geantservice.g4PreInitCommands += ["/run/setCut 0.1 mm"]
