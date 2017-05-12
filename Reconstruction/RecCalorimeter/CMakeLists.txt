@@ -42,7 +42,7 @@ gaudi_add_test(EcalReconstructionCheckNumClusters
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
-               DEPENDS runEcalReconstructionFlatNoise runEcalReconstructionWithoutNoise)
+               DEPENDS EcalReconstructionFlatNoise EcalReconstructionWithoutNoise)
 
 gaudi_add_test(EcalReconstructionNoiseFromFile
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

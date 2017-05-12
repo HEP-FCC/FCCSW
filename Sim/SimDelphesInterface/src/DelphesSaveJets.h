@@ -13,13 +13,14 @@ namespace fcc {
 class JetCollection;
 class ParticleCollection;
 class TaggedJetCollection;
+class ResolvedJetCollection;
 }
 
 /** @class DelphesSaveJets SimG4Components/src/DelphesSaveJets.h DelphesSaveJets.h
  *
  *  Save charged particles from Delphes simulation to FCC EDM
  *
- *  @author Z. Drasal, J. Lingemann
+ *  @author Z. Drasal, J. Lingemann, M. Selvaggi
  */
 
 class DelphesSaveJets : public GaudiTool, virtual public IDelphesSaveOutputTool {
@@ -57,9 +58,34 @@ private:
   DataHandle<fcc::TaggedJetCollection> m_jetsCTagged{"jetsCTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the tau tags to be saved
   DataHandle<fcc::TaggedJetCollection> m_jetsTauTagged{"jetsTauTagged", Gaudi::DataHandle::Writer, this};
+
+  // ------ Jet Substructure variables -------
+  /// Handle to the 1-subjettiness tag to be saved
+  DataHandle<fcc::TaggedJetCollection> m_jetsOneSubJettinessTagged{"jetsOneSubJettinessTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the 2-subjettiness tag to be saved
+  DataHandle<fcc::TaggedJetCollection> m_jetsTwoSubJettinessTagged{"jetsTwoSubJettinessTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the 3-subjettiness tag to be saved
+  DataHandle<fcc::TaggedJetCollection> m_jetsThreeSubJettinessTagged{"jetsThreeSubJettinessTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets tags provided by Trimming algorithm
+  DataHandle<fcc::ResolvedJetCollection> m_subjetsTrimmingTagged{"subjetsTrimmingTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets tags provided by Pruning algorithm
+  DataHandle<fcc::ResolvedJetCollection> m_subjetsPruningTagged{"subjetsPruningTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets tags provided by SoftDrop algorithm
+  DataHandle<fcc::ResolvedJetCollection> m_subjetsSoftDropTagged{"subjetsSoftDropTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets to provided by Trimming algorithm
+  DataHandle<fcc::JetCollection> m_subjetsTrimming{"subjetsTrimming", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets to provided by Pruning algorithm
+  DataHandle<fcc::JetCollection> m_subjetsPruning{"subjetsPruning", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets to provided by SoftDrop algorithm
+  DataHandle<fcc::JetCollection> m_subjetsSoftDrop{"subjetsSoftDrop", Gaudi::DataHandle::Writer, this};
+
   /// Name of the Delphes array that should be converted
   Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "",
                                                   "Name of the Delphes array that should be converted"};
+  /// Switch whether to save jet substructure information
+  Gaudi::Property<bool> m_saveSubstructure{this, "saveSubstructure", false, "Switch whether to save substructure information"};
+
+
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVEJETS */

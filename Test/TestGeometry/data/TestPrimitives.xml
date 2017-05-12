@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  <includes>
+    <gdmlFile  ref="../../../Detector/DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../../Detector/DetCommon/compact/materials.xml"/>
+  </includes>
+  <info name="DetCommonTest"
+        title="DetCommonTest"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>To test DetCommon primitive shapes</comment>
+  </info>
+  <define>
+    <constant name="world_size" value="10*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+  <detectors>
+    <!-- LayeredCone -->
+    <detector name="LayeredConeTest" type="LayeredCone">
+      <dimensions rmin2="1*m" rmax2="2*m" rmin1="1*m" rmax1="2*m" dz="1*m" z_offset="0*m" material="Air"/>
+      <layer rmin2="1*m" rmax2="1.5*m" rmin1="1*m" rmax1="1.5*m" dz="1*m" z_offset="0" material="LAr" />
+      <layer rmin2="1.5*m" rmax2="2*m" rmin1="1.5*m" rmax1="2*m" dz="1*m" z_offset="0" material="Iron" />
+    </detector>
+    <!-- Disc -->
+    <detector name="DiscTest" type="Disc">
+        <dimensions rmin="0" rmax="0.5*m" dz="1*m" phi0="0" deltaphi="360*deg" z_offset="0" material="Iron">
+    </detector>
+    <!-- SimpleBox -->
+    <!-- already tested in ./TestBoxCaloSD*.xml -->
+    <!-- SimpleCone -->
+    <!-- Already tested in Detector/DetFCChhBaseline1 (air volumes) -->
+    <!-- SimpleLayeredCylinder -->
+    <detector name="LayeredCylinderTest" type="SimpleLayeredCylinder">
+      <dimensions rmin2="1*m" rmax2="2*m" rmin1="1*m" rmax1="2*m" dz="1*m" z_offset="2*m" material="Air"/>
+      <layer rmin2="1*m" rmax2="1.5*m" rmin1="1*m" rmax1="1.5*m" dz="1*m" z_offset="0" material="LAr" />
+      <layer rmin2="1.5*m" rmax2="2*m" rmin1="1.5*m" rmax1="2*m" dz="1*m" z_offset="0" material="Iron" />
+    </detector>
+    <!-- SimpleParallelogram -->
+    <detector name="ParallelogramTest" type="SimpleParallelogram">
+        <dimensions x0="1*m" x1="2*m" dx="1*m" y0="0" y1="1*m" dy="2*m" dz="1*m" z_offset="4*m" material="LAr">
+    </detector>
+    <!-- SubtractedCylinder -->
+    <detector name="SubtractedCylinderTest" type="SubtractedCylinder">
+      <dimensions rmin1="0*m" rmax1="3*m" z1="1*m"
+                  rmin2="1*m" rmax2="2*m" z2="1*m"
+                  z_offset="-2*m" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>
