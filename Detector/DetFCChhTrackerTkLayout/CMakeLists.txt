@@ -1,5 +1,5 @@
 ################################################################################
-# Package: DetFCChhTrackerSimple
+# Package: DetFCChhTrackerTkLayout
 ################################################################################
 gaudi_subdir(DetFCChhTrackerTkLayout v1r0)
 
@@ -15,9 +15,10 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
+
 gaudi_add_module(DetFCChhTrackerTkLayout
                  src/*.cpp
-                 INCLUDE_DIRS DD4hep ROOT Geant4 DetCommon
+                 INCLUDE_DIRS DD4hep ROOT Geant4 DetCommon 
                  LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetCommon)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})

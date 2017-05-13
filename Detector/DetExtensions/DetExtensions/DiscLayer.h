@@ -1,6 +1,6 @@
 //
 //  DetDiscLayer.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 07/01/15.
 //
@@ -12,27 +12,22 @@
 #include "DetExtensions/IDetExtension.h"
 
 namespace DD4hep {
-    namespace Geometry {
-        class DetElement;
-    }
+namespace Geometry {
+class DetElement;
+}
 }
 
 namespace Det {
-    
-    class DetDiscLayer : public IDetExtension {
-    
-    public:
-        
-        DetDiscLayer()
-        {}
-        
-        DetDiscLayer(const DetDiscLayer&, const DD4hep::Geometry::DetElement&)
-        {}
-        
-        virtual ~DetDiscLayer()
-        {}
-        
-    };
+
+class DetDiscLayer : public IDetExtension {
+
+public:
+  DetDiscLayer() {}
+
+  DetDiscLayer(const DetDiscLayer&, const DD4hep::Geometry::DetElement&) {}
+
+  virtual ~DetDiscLayer() {}
+};
 }
 
-#endif //DET_DETDISCLAYER
+#endif  // DET_DETDISCLAYER

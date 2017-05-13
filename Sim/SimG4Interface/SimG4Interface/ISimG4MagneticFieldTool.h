@@ -4,9 +4,8 @@
 // from Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
-// Forward declaration:
 // Geant 4:
-class G4MagneticField;
+#include "G4MagneticField.hh"
 
 /** @class ISimG4MagneticFieldTool SimG4Interface/SimG4Interface/ISimG4MagneticFieldTool.h ISimG4MagneticFieldTool.h
  *

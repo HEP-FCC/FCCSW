@@ -5,14 +5,14 @@ from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun
+from Configurables import GenAlg, MomentumRangeParticleGun
 ## Particle Gun using MomentumRangeParticleGun tool and FlatSmearVertex
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
 pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13])
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun_tool, VertexSmearingToolPGun="FlatSmearVertex")
-gen.DataOutputs.hepmc.Path = "hepmc"
+gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
+gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
 ## Particle service
@@ -23,15 +23,15 @@ ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticleProperties
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -49,11 +49,11 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmT
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.positionedTrackHits.Path = "positionedHits"
-savetrackertool.DataOutputs.trackHits.Path = "hits"
+savetrackertool.positionedTrackHits.Path = "positionedHits"
+savetrackertool.trackHits.Path = "hits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveTrackerHits/saveTrackerHits"],
                     eventProvider=particle_converter)
@@ -63,6 +63,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+out.filename = "tracker_with_field.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr

@@ -19,7 +19,7 @@ gaudi_add_library(FWCore
                   PUBLIC_HEADERS FWCore)
 
 gaudi_add_module(FWCorePlugins
-                 components/*.cpp
+                 src/components/*.cpp
                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FWCore ROOT)
 
 

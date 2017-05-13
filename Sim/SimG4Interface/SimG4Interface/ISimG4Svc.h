@@ -14,9 +14,9 @@ class G4Event;
  *  @author Anna Zaborowska
  */
 
-class ISimG4Svc: virtual public IService {
+class ISimG4Svc : virtual public IService {
 public:
-  DeclareInterfaceID(ISimG4Svc,1,0);
+  DeclareInterfaceID(ISimG4Svc, 1, 0);
   /**  Simulate the event with Geant.
    *   @param[in] aEvent An event to be processed.
    *   @return status code

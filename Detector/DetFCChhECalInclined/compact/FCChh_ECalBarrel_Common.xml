@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCChh_ECalBarrel_Common"
+        title="Common settings for Inclined ECal Barrel Calorimeter"
+        author="M.Aleksa,J.Faltova,A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>
+      Common settings for the inclined EM calorimeter.
+      The barrel is filled with liquid argon. Passive material includes lead in the middle and steal on the outside, glued together.
+      Passive plates are inclined by a certain angle from the radial direction.
+      In between of two passive plates there is a readout.
+      Space between the plate and readout is of trapezoidal shape and filled with liquid argon.
+      Definition of sizes, visualization settings and readout are specified.
+    </comment>
+  </info>
+
+  <define>
+    <constant name="LArBathThicknessFront" value="90*mm"/>
+    <constant name="LArBathThicknessBack" value="50*mm"/>
+    <!-- overall calorimeter volume (cryostat) -->
+    <!-- 3 cm air margin -->
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin+3*cm"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax-3*cm"/>
+    <constant name="BarCryoECal_dz" value="BarECal_dz"/>
+    <!-- calorimeter active volume -->
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThicknessFront+LArBathThicknessFront"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThicknessBack"/>
+    <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
+    <!-- thickness of active volume between two absorber plates, measuring perpendicular to the readout plate -->
+    <constant name="LAr_thickness" value="3.*mm"/>
+    <!-- passive layer consists of lead in the middle and steel on the outside, glued -->
+    <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
+    <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
+    <constant name="Steel_thickness" value="0.4*mm*2./2.16"/>
+    <!-- total amount of glue in one passive plate: it is divided for the outside layer on top and bottom -->
+    <constant name="Glue_thickness" value="0.26*mm*2./2.16"/>
+    <!-- readout in between two absorber plates -->
+    <constant name="readout_thickness" value="1*mm"/>
+  </define>
+
+  <display>
+    <vis name="ecal_envelope" r="0.1" g="0.2" b="0.6" alpha="1" showDaughers="false" visible="true" />
+  </display>
+
+  <readouts>
+    <!-- readout for the simulation -->
+    <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell) -->
+    <readout name="ECalHitsEta">
+      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.68024"/>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,cell:6,eta:9</id>
+    </readout>
+    <!-- readout for the reconstruction -->
+    <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
+    <readout name="ECalHitsPhiEta">
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="512" offset_eta="-1.68024" offset_phi="-pi+(pi/512.)"/>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,cell:6,eta:9,phi:10</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsEta">
+      <sensitive type="SimpleCalorimeterSD"/>
+      <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
+      <cryostat name="ECAL_Cryo" sensitive="false">
+        <material name="Aluminum"/>
+	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
+      </cryostat>
+      <calorimeter name="EM_barrel">
+	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-30/180*pi"/>
+	     <active thickness="LAr_thickness">
+          <material name="LAr"/>
+          <overlap offset="0.5"/>
+        </active>
+        <passive>
+          <rotation angle="30*degree"/>
+	       <inner thickness="Pb_thickness" sensitive="false">
+            <material name="Lead"/>
+          </inner>
+	       <glue thickness="Glue_thickness" sensitive="false">
+            <material name="lArCaloGlue"/>
+          </glue>
+	       <outer thickness="Steel_thickness" sensitive="false">
+            <material name="lArCaloSteel"/>
+          </outer>
+        </passive>
+        <readout thickness="readout_thickness" sensitive="false">
+          <material name="PCB"/>
+        </readout>
+        <cell>
+	       <dimensions repeat="32"/>
+        </cell>
+      </calorimeter>
+    </detector>
+  </detectors>
+
+</lccdd>

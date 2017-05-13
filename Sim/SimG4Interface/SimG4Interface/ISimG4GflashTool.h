@@ -15,14 +15,13 @@
  *  @author Anna Zaborowska
  */
 
-class ISimG4GflashTool: virtual public IAlgTool {
+class ISimG4GflashTool : virtual public IAlgTool {
 public:
-  DeclareInterfaceID(ISimG4GflashTool,1,0);
+  DeclareInterfaceID(ISimG4GflashTool, 1, 0);
 
   /**  Get the parametrisation
    *   @return unique pointer to the parametrisation
    */
   virtual std::unique_ptr<GVFlashShowerParameterisation> parametrisation() = 0;
-
 };
 #endif /* SIMG4INTERFACE_ISIMG4GFLASHTOOL_H */

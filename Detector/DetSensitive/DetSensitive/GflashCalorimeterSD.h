@@ -6,9 +6,9 @@
 #include "DDSegmentation/Segmentation.h"
 
 // Geant
-#include "G4VSensitiveDetector.hh"
-#include "G4VGFlashSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
+#include "G4VGFlashSensitiveDetector.hh"
+#include "G4VSensitiveDetector.hh"
 
 /** GflashCalorimeterSD DetectorDescription/DetSensitive/src/GflashCalorimeterSD.h GflashCalorimeterSD.h
  *
@@ -57,6 +57,7 @@ public:
    */
   virtual bool ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) final;
   uint64_t cellID(const G4GFlashSpot& aSpot);
+
 private:
   /// Collection of calorimeter hits that get registered in G4Event and deleted in ~G4Event
   G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;

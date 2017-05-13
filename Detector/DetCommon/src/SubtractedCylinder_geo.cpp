@@ -23,9 +23,8 @@ static DD4hep::Geometry::Ref_t createSubtractedCylinder(DD4hep::Geometry::LCDD& 
   DD4hep::Geometry::Volume cylVolume(name, finalShape, lcdd.material(dimensions.materialStr()));
 
   DD4hep::Geometry::Position trans(0., 0., dimensions.z_offset());
-  DD4hep::Geometry::PlacedVolume conePhys = experimentalHall.placeVolume(cylVolume,
-                                                DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.),
-                                                trans));
+  DD4hep::Geometry::PlacedVolume conePhys =
+      experimentalHall.placeVolume(cylVolume, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
 
   conePhys.addPhysVolID("system", xmlDet.id());
   detElement.setPlacement(conePhys);

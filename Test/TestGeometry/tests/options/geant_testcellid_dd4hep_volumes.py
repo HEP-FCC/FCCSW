@@ -1,18 +1,19 @@
 from Gaudi.Configuration import *
 
-from Configurables import HepMCReader
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/testHepMCrandom.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/testHepMCrandom.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
+reader.hepmc.Path = "hepmc"
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import HepMCDumper
 hepmc_dump = HepMCDumper("hepmc")
-hepmc_dump.DataInputs.hepmc.Path="hepmc"
+hepmc_dump.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:../data/TestBoxCaloSD_volumes.xml'])
@@ -22,8 +23,8 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 
 from Configurables import SimG4Alg, SimG4SaveCalHits
 savecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHits"])
-savecaltool.DataOutputs.positionedCaloHits.Path = "positionedCaloHits"
-savecaltool.DataOutputs.caloHits.Path = "caloHits"
+savecaltool.positionedCaloHits.Path = "positionedCaloHits"
+savecaltool.caloHits.Path = "caloHits"
 geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits"])
 
 from Configurables import FCCDataSvc, PodioOutput

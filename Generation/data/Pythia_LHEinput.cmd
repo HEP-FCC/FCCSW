@@ -7,10 +7,8 @@
 ! Adjusted from Pythia example: main42.cmnd
 
 ! 1) Settings that will be used in a main program.
-Main:numberOfEvents = 1            ! number of events to generate
-Main:timesAllowErrors = 3          ! abort run after this many flawed events
-#Random:seed = 1234                ! initialize random generator with a seed
-
+Main:numberOfEvents = 100          ! number of events to generate
+Main:timesAllowErrors = 100        ! abort run after this many flawed events
 
 ! 2) Settings related to output in init(), next() and stat() functions.
 Init:showChangedSettings = on      ! list changed settings
@@ -24,23 +22,8 @@ Next:numberShowProcess = 1         ! print process record n times
 Next:numberShowEvent = 1           ! print event record n times
 Stat:showPartonLevel = off         ! additional statistics on MPI
 
-! 3a) Partpn, hadron-level settings -> set all to on
-PartonLevel:MPI   = on
-PartonLevel:ISR   = off
-PartonLevel:FSR   = off
-HadronLevel:all   = on
-#HadronLevel:Decay = off
-
-! 3b) PDF settings. Default is to use internal PDFs
-! some pdf sets examples: cteq61.LHpdf cteq61.LHgrid MRST2004nlo.LHgrid
-#PDF:pSet = LHAPDF5:MRST2001lo.LHgrid
-! Allow extrapolation of PDF's beyond x and Q2 boundaries, at own risk.
-! Default behaviour is to freeze PDF's at boundaries.
-#PDF:extrapolate = on
-
 ! 4) Read-in Les Houches Event file - alternative beam and process selection.
 Beams:frameType = 4                      ! read info from a LHEF
-#Beams:LHEF = data/events_hh125-100TeV.lhe ! the LHEF to read from
 Beams:LHEF = Generation/data/events.lhe ! the LHEF to read from
 
 ! 5) Other settings. Can be expanded as desired.

@@ -1,5 +1,3 @@
-
-
 <?xml version="1.0" encoding="UTF-8"?>
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
        xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -14,32 +12,31 @@
     <comment>HCal material end cap approximation</comment>
   </info>
   <define>
-    <constant name="EndCapHCalActual_dz" value="EndCapHCal_dz - 650*mm"/>
-    <constant name="EndCapHCalActual_zOffset" value="EndCapHCal_zOffset - EndCapHCal_dz + EndCapHCalActual_dz + 300*mm"/>
-
+    <constant name="ExtBarSupport_dr" value="200*mm"/>
+    <constant name="ExtBarInner_rmax" value="ExtBarHCal2_rmax - ExtBarSupport_dr"/>
   </define>
   <detectors>
     <!-- E N D C A P S -->
     <detector name="HCalPreShowerPos" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="3500*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="EndCapHCal_zOffset-EndCapHCal_dz+150*mm" material="Air"/>
-      <layer rmin="3500*mm" rmax="EndCapHCal_rmax-200*mm" dz="150*mm" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal1_rmin" rmax="ExtBarHCal1_rmax" dz="ExtBarHCal1_dz" z_offset="ExtBarHCal1_zOffset" material="Air"/>
+      <layer rmin="ExtBarHCal1_rmin" rmax="ExtBarInner_rmax" dz="ExtBarHCal1_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal1_rmax" dz="ExtBarHCal1_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
     <detector name="HCalEndCapPos" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="EndCapHCalActual_zOffset" material="Air"/>
-      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCalActual_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal2_rmin" rmax="ExtBarHCal2_rmax" dz="ExtBarHCal2_dz" z_offset="ExtBarHCal2_zOffset" material="Air"/>
+      <layer rmin="ExtBarHCal2_rmin" rmax="ExtBarInner_rmax" dz="ExtBarHCal2_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal2_rmax" dz="ExtBarHCal2_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
 
     <detector name="HCalPreShowerNeg" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="3500*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="-EndCapHCal_zOffset+EndCapHCal_dz-150*mm" material="Air"/>
-      <layer rmin="3500*mm" rmax="EndCapHCal_rmax-200*mm" dz="150*mm" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="150*mm" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal1_rmin" rmax="ExtBarHCal1_rmax" dz="ExtBarHCal1_dz" z_offset="-ExtBarHCal1_zOffset" material="Air"/>
+      <layer rmin="ExtBarHCal1_rmin" rmax="ExtBarInner_rmax" dz="ExtBarHCal1_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal1_rmax" dz="ExtBarHCal1_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
     <detector name="HCalEndCapNeg" type="SimpleLayeredCylinder" vis="HCalEnvVis">
-      <dimensions rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="-EndCapHCalActual_zOffset" material="Air"/>
-      <layer rmin="EndCapHCal_rmin" rmax="EndCapHCal_rmax-200*mm" dz="EndCapHCalActual_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
-      <layer rmin="EndCapHCal_rmax-200*mm" rmax="EndCapHCal_rmax" dz="EndCapHCalActual_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
+      <dimensions rmin="ExtBarHCal2_rmin" rmax="ExtBarHCal2_rmax" dz="ExtBarHCal2_dz" z_offset="-ExtBarHCal2_zOffset" material="Air"/>
+      <layer rmin="ExtBarHCal2_rmin" rmax="ExtBarInner_rmax" dz="ExtBarHCal2_dz" z_offset="0*cm" material="HC" vis="HCalVis"/>
+      <layer rmin="ExtBarInner_rmax" rmax="ExtBarHCal2_rmax" dz="ExtBarHCal2_dz" z_offset="0*cm" material="Iron" vis="HCalIronVis"/>
     </detector>
   </detectors>
 </lccdd>

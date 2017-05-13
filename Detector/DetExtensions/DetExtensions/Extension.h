@@ -1,6 +1,6 @@
 //
 //  Extension.h
-//  
+//
 //
 //  Created by Julia Hrdinka on 12/12/14.
 //
@@ -12,24 +12,19 @@
 #include "DetExtensions/IDetExtension.h"
 
 namespace DD4hep {
-    namespace Geometry {
-        class DetElement;
-    }
+namespace Geometry {
+class DetElement;
+}
 }
 
 namespace Det {
-    
-    class DetExtension : public IDetExtension {
-    
-    public:
-        
-        DetExtension()
-        {}
-        DetExtension(const DetExtension&, const DD4hep::Geometry::DetElement&)
-        {}
-        virtual ~DetExtension()
-        {}
-        
-    };
+
+class DetExtension : public IDetExtension {
+
+public:
+  DetExtension() {}
+  DetExtension(const DetExtension&, const DD4hep::Geometry::DetElement&) {}
+  virtual ~DetExtension() {}
+};
 }
-#endif //DET_DETEXTENSION_H
+#endif  // DET_DETEXTENSION_H

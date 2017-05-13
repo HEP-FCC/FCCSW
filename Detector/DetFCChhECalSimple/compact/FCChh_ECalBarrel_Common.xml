@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCChh_ECalBarrel_Common"
+        title="Common settings for Simple ECal Barrel Calorimeter"
+        author="J.Faltova, A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>
+      Common settings for a simple liquid argon - lead Ecal design.
+      Definition of sizes, visualization settings and readout are specified.
+    </comment>
+  </info>
+
+  <define>
+    <constant name="LArBathThickness" value="100*mm"/>
+    <!-- overall calorimeter volume (including cryostat) -->
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax"/>
+    <constant name="BarCryoECal_dz" value="BarECal_dz"/>
+    <!-- calorimeter active volume -->
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThickness+LArBathThickness"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThickness-LArBathThickness"/>
+    <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThickness"/>
+  </define>
+
+  <display>
+    <vis name="ecal_envelope" r="0.1" g="0.2" b="0.6" alpha="1" showDaughers="false" visible="true" />
+  </display>
+
+  <readouts>
+    <readout name="ECalHitsPhiEta">
+      <!-- offset == middle of the lowest eta/phi cell -->
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629" offset_eta="-1.666" offset_phi="-pi+(pi/629.)"/>
+      <!-- using only non-negative identifiers -->
+      <id>system:4,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:9,phi:10</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrel" readout="ECalHitsPhiEta">
+      <sensitive type="SimpleCalorimeterSD"/>
+      <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
+      <cryostat name="ECAL_Cryo" material="Aluminum" >
+        <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" thickness="CryoThickness" />
+      </cryostat>
+      <calorimeter name="EM_barrel" >
+        <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" />
+        <active_layers thickness="4.*mm" material="LAr" />
+        <passive_layers>
+          <inner thickness="1.5*mm*2./2.16">
+            <material name="Lead"/>
+          </inner>
+          <glue thickness="0.13*mm*2*2./2.16">
+            <material name="lArCaloGlue"/>
+          </glue>
+          <outer thickness="0.2*mm*2*2./2.16">
+            <material name="lArCaloSteel"/>
+          </outer>
+        </passive_layers>
+      </calorimeter>
+    </detector>
+  </detectors>
+
+</lccdd>

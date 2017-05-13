@@ -16,34 +16,37 @@ from Configurables import FCCDataSvc
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import ConstPileUp
+from Configurables import ConstPileUp, HepMCFileReader
 
-pileuptool = ConstPileUp(numPileUpEvents=2, Filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
+pileuptool = ConstPileUp(numPileUpEvents=2)
+pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
 
-from Configurables import PythiaInterface
+from Configurables import PythiaInterface, GenAlg
 ### PYTHIA algorithm
-pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pileupreader)
 pythia8gen.PileUpTool = pileuptool
-pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
+pythia8gen.hepmc.Path = "hepmcevent"
 
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
-hepmc_converter.DataOutputs.genparticles.Path="all_genparticles"
-hepmc_converter.DataOutputs.genvertices.Path="all_genvertices"
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmcevent"
+hepmc_converter.genparticles.Path="all_genparticles"
+hepmc_converter.genvertices.Path="all_genvertices"
 
 from Configurables import GenParticleFilter
 ### Filters generated particles
-genfilter = GenParticleFilter("StableParticles")
-genfilter.DataInputs.genparticles.Path = "all_genparticles"
-genfilter.DataOutputs.genparticles.Path = "genparticles"
+# accept is a list of particle statuses that should be accepted
+genfilter = GenParticleFilter("StableParticles", accept=[1], OutputLevel=DEBUG)
+genfilter.allGenParticles.Path = "all_genparticles"
+genfilter.filteredGenParticles.Path = "genparticles"
 
 from Configurables import JetClustering_fcc__MCParticleCollection_fcc__GenJetCollection_ as JetClustering
-genjet_clustering = JetClustering("GenJetClustering", verbose = False)
-genjet_clustering.DataInputs.particles.Path='genparticles'
-genjet_clustering.DataOutputs.jets.Path='genjets'
+genjet_clustering = JetClustering("GenJetClustering", OutputLevel=DEBUG)
+genjet_clustering.particles.Path='genparticles'
+genjet_clustering.jets.Path='genjets'
 
 from Configurables import PodioOutput
 ### PODIO algorithm

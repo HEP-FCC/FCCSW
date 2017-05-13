@@ -17,29 +17,29 @@
   <detectors>
     <!-- End-caps -->
     <detector name="ShieldingLowerConePos" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin1="1467.64*mm" rmax1="2171.65*mm" rmin2="1875.32*mm" rmax2="2774.89*mm" dz="1250*mm" z_offset="10250*mm"  material="Iron"/>
+      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="9400*mm"  material="Iron"/>
     </detector>
         <detector name="ShieldingUpperConePos" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin1="2533.59*mm" rmax1="5000*mm" rmin2="2774.89*mm" rmax2="5000*mm" dz="500*mm" z_offset="11000*mm"  material="Iron"/>
+      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="11000*mm"  material="Iron"/>
     </detector>
     <detector name="ShieldingUpperCylPos" type="SimpleCylinder"  vis="ShieldingVis">
       <dimensions rmin="4000*mm" rmax="5000*mm" dz="2500*mm" phi0="0" deltaphi="360*deg" z_offset="14000*mm" material="Iron"/>
     </detector>
     <detector name="ShieldingOuterCylPos" type="SimpleCylinder"  vis="ShieldingVis">
-      <dimensions rmin="3500*mm" rmax="5000*mm" dz="500*mm" phi0="0" deltaphi="360*deg" z_offset="17000*mm" material="Iron"/>
+      <dimensions rmin="3600*mm" rmax="5000*mm" dz="500*mm" phi0="0" deltaphi="360*deg" z_offset="17000*mm" material="Iron"/>
     </detector>
 
     <detector name="ShieldingLowerConeNeg" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin2="1467.64*mm" rmax2="2171.65*mm" rmin1="1875.32*mm" rmax1="2774.89*mm" dz="1250*mm" z_offset="-10250*mm"  material="Iron"/>
+      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="-9400*mm" reflect="true"  material="Iron"/>
     </detector>
         <detector name="ShieldingUpperConeNeg" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin2="2533.59*mm" rmax2="5000*mm" rmin1="2774.89*mm" rmax1="5000*mm" dz="500*mm" z_offset="-11000*mm"  material="Iron"/>
+      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="-11000*mm" reflect="true"  material="Iron"/>
     </detector>
     <detector name="ShieldingUpperCylNeg" type="SimpleCylinder"  vis="ShieldingVis">
       <dimensions rmin="4000*mm" rmax="5000*mm" dz="2500*mm" phi0="0" deltaphi="360*deg" z_offset="-14000*mm" material="Iron"/>
     </detector>
     <detector name="ShieldingOuterCylNeg" type="SimpleCylinder"  vis="ShieldingVis">
-      <dimensions rmin="3500*mm" rmax="5000*mm" dz="500*mm" phi0="0" deltaphi="360*deg" z_offset="-17000*mm" material="Iron"/>
+      <dimensions rmin="3600*mm" rmax="5000*mm" dz="500*mm" phi0="0" deltaphi="360*deg" z_offset="-17000*mm" material="Iron"/>
     </detector>
   </detectors>
 </lccdd>

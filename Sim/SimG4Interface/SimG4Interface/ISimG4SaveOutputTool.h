@@ -7,7 +7,6 @@
 // Geant
 class G4Event;
 
-
 /** @class ISimG4SaveOutputTool SimG4Interface/SimG4Interface/ISimG4SaveOutputTool.h ISimG4SaveOutputTool.h
  *
  *  Interface to the output saving tool.
@@ -15,9 +14,9 @@ class G4Event;
  *  @author Anna Zaborowska
  */
 
-class ISimG4SaveOutputTool: virtual public IAlgTool {
+class ISimG4SaveOutputTool : virtual public IAlgTool {
 public:
-  DeclareInterfaceID(ISimG4SaveOutputTool,1,0);
+  DeclareInterfaceID(ISimG4SaveOutputTool, 1, 0);
 
   /**  Save the data output.
    *   @param[in] aEvent Event with data to save.

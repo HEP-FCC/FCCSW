@@ -27,7 +27,7 @@ from Configurables import SimG4Alg, SimG4PrimariesFromEdmTool
 ## Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     eventProvider=particle_converter)
 
