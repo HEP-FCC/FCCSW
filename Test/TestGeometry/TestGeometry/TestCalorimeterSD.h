@@ -18,14 +18,14 @@ class G4TouchableHistory;
  *  @author Anna Zaborowska
  */
 namespace test {
-class TestCalorimeterSD : public G4VSensitiveDetector
-{
+class TestCalorimeterSD : public G4VSensitiveDetector {
 public:
   TestCalorimeterSD(std::string name);
   TestCalorimeterSD(std::string name, int aCellNoInAxis);
   virtual ~TestCalorimeterSD();
-  virtual void Initialize(G4HCofThisEvent*HCE);
-  virtual G4bool ProcessHits(G4Step*aStep, G4TouchableHistory*ROhist);
+  virtual void Initialize(G4HCofThisEvent* HCE);
+  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
+
 private:
   TestCalorimeterHitsCollection* m_HitsCollection;
   int m_CellNo;

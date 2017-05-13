@@ -30,23 +30,23 @@ else:
     field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
 #Setting random seeds for Geant4 simulations
-#geantservice.G4commands += ["/random/setSeeds "+str(x)+" 0"] #where x is the number you want
+#geantservice.g4PreInitCommands  += ["/random/setSeeds "+str(x)+" 0"] #where x is the number you want
 
 #range cut
-geantservice.G4commands += ["/run/setCut 0.1 mm"]
+geantservice.g4PreInitCommands += ["/run/setCut 0.1 mm"]
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits
 saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"])
-saveecaltool.DataOutputs.positionedCaloHits.Path = "ECalPositionedHits"
-saveecaltool.DataOutputs.caloHits.Path = "ECalHits"
+saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
+saveecaltool.caloHits.Path = "ECalHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.01,etaMax=0.01,
+                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-1.5,etaMax=1.5,
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
@@ -59,7 +59,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_ecalSim_e50GeV_eta0_10events.root"
+out.filename = "output_ecalSim_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor

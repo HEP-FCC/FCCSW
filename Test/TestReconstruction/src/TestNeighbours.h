@@ -3,15 +3,17 @@
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
+#include "GaudiKernel/Property.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+
 class IGeoSvc;
 
 // DD4hep
 namespace DD4hep {
 namespace DDSegmentation {
-  class BitField64;
+class BitField64;
 }
 }
 
@@ -27,7 +29,7 @@ class CaloHitCollection;
  *  @author Anna Zaborowska
  */
 
-class TestNeighbours: public GaudiAlgorithm {
+class TestNeighbours : public GaudiAlgorithm {
 public:
   explicit TestNeighbours(const std::string&, ISvcLocator*);
   virtual ~TestNeighbours();
@@ -43,18 +45,19 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
+
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::CaloHitCollection> m_inHits;
+  DataHandle<fcc::CaloHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readout", "", "Name of the detector readout"};
   /// Pointer to the bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
   /// Names of the fields for which neighbours are found
   std::vector<std::string> m_fieldNames;
   /// Minimal and maximal values of the fields for which neighbours are found
-  std::vector<std::pair<int,int>> m_fieldExtremes;
+  std::vector<std::pair<int, int>> m_fieldExtremes;
 };
 #endif /* TESTRECONSTRUCTION_TESTNEIGHBOURS_H */

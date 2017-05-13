@@ -5,15 +5,17 @@ pythiafile="Generation/data/Pythia_standard.cmd"
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import PythiaInterface
-pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
-pythia8gen.DataOutputs.hepmc.Path = "hepmcevent"
+from Configurables import PythiaInterface, GenAlg
+### PYTHIA algorithm
+pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
+pythia8gen.hepmc.Path = "hepmcevent"
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmcevent"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmcevent"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import PodioOutput
 ### PODIO algorithm

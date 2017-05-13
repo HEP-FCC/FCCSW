@@ -6,22 +6,20 @@
 #include "Generation/IHepMCMergeTool.h"
 
 #include "GaudiAlg/GaudiTool.h"
-#include "GaudiKernel/RndmGenerators.h" 
+#include "GaudiKernel/RndmGenerators.h"
 
-#include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
+#include "HepMC/IO_GenEvent.h"
 
-
-/** 
+/**
  * Merge several HepMC events into one. Keeps all particles of all events,
  * not just final state ones, in contrast to HepMCSimpleMerge
  * Implementation partly due to pilemc https://pilemc.hepforge.org/
  */
 
-class HepMCFullMerge: public GaudiTool, virtual public IHepMCMergeTool {
+class HepMCFullMerge : public GaudiTool, virtual public IHepMCMergeTool {
 public:
-  HepMCFullMerge( const std::string& type, 
-    const std::string& name, const IInterface* parent);
+  HepMCFullMerge(const std::string& type, const std::string& name, const IInterface* parent);
 
   virtual ~HepMCFullMerge() final;
 
@@ -35,7 +33,6 @@ public:
    *  @param[in] eventVector is the vector of pile-up GenEvents
    */
   virtual StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) final;
-
 };
 
-#endif //GENERATION_HEPMCFULLMERGE_H
+#endif  // GENERATION_HEPMCFULLMERGE_H

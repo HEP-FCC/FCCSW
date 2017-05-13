@@ -2,7 +2,7 @@
 #define SIMG4INTERFACE_ISIMG4ACTIONTOOL_H
 
 // Gaudi
-#include  "GaudiKernel/IAlgTool.h"
+#include "GaudiKernel/IAlgTool.h"
 
 // Geant4
 class G4VUserActionInitialization;
@@ -14,17 +14,15 @@ class G4VUserActionInitialization;
  *  @author Benedikt HEGNER
  */
 
-class ISimG4ActionTool: virtual public IAlgTool {
+class ISimG4ActionTool : virtual public IAlgTool {
 public:
-
   /// Retrieve interface ID
-  DeclareInterfaceID(ISimG4ActionTool,1,0);
+  DeclareInterfaceID(ISimG4ActionTool, 1, 0);
 
   /** get initilization hook for the user action
    *  @return  pointer to G4VUserActionInitialization
    */
-   virtual G4VUserActionInitialization* userActionInitialization() = 0 ;
-
+  virtual G4VUserActionInitialization* userActionInitialization() = 0;
 };
 
 #endif /* SIMG4INTERFACE_ISIMG4ACTIONTOOL_H */

@@ -2,25 +2,21 @@
 
 #include "FWCore/DataHandle.h"
 
+#include "datamodel/GenVertex.h"
 #include "datamodel/MCParticleCollection.h"
 #include "datamodel/TrackHitCollection.h"
-#include "datamodel/GenVertex.h"
-
 
 class ReadTestConsumer : public GaudiAlgorithm {
 
 public:
-  ReadTestConsumer(const std::string& name, ISvcLocator* svcLoc) :
-    GaudiAlgorithm(name, svcLoc)
-  {
-    declareInput("genParticles", m_genParticles, "allGenParticles");
+  ReadTestConsumer(const std::string& name, ISvcLocator* svcLoc)
+      : GaudiAlgorithm(name, svcLoc), m_genParticles("allGenParticles", Gaudi::DataHandle::Reader, this) {
+    declareProperty("genParticles", m_genParticles, "Generated particles to read");
   }
 
-  ~ReadTestConsumer() {};
+  ~ReadTestConsumer(){};
 
-  StatusCode initialize() {
-    return GaudiAlgorithm::initialize();
-  }
+  StatusCode initialize() { return GaudiAlgorithm::initialize(); }
 
   StatusCode execute() {
     // Read the input
@@ -36,14 +32,11 @@ public:
       if (10 < cntr++) {
         debug() << "vertex x: " << mcpart.startVertex().position().x << endmsg;
       }
-
     }
     return StatusCode::SUCCESS;
   }
 
-  StatusCode finalize() {
-    return GaudiAlgorithm::finalize();
-  }
+  StatusCode finalize() { return GaudiAlgorithm::finalize(); }
 
 private:
   /// Particles to read

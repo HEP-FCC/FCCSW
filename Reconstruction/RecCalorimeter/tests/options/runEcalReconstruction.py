@@ -2,16 +2,16 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent   = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_eta0_10events.root")
+podioevent = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_10events.root")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", collections=["ECalHits", "ECalPositionedHits"], OutputLevel=DEBUG)
+podioinput = PodioInput("PodioReader", collections = ["ECalHits", "ECalPositionedHits"], OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
+geoservice = GeoSvc("GeoSvc", detectors = [  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml'],
-                    OutputLevel = INFO)
+                    OutputLevel = DEBUG)
 
 # common ECAL specific information
 # readout name
@@ -25,8 +25,8 @@ ecalNumberOfLayersToMerge = [19,71,9]
 # number of ECAL layers
 ecalNumberOfLayers = len(ecalNumberOfLayersToMerge)
 # ECAL bitfield names & values
-ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
-ecalFieldValues=[5,1,1,1]
+ecalFieldNames = ["system","ECAL_Cryo","bath","EM_barrel"]
+ecalFieldValues = [5,1,1,1]
 
 from Configurables import MergeLayers
 mergelayers = MergeLayers("MergeLayers",
@@ -39,53 +39,57 @@ mergelayers = MergeLayers("MergeLayers",
                    # merge first 19 into new cell (id=0), next 71 into second cell (id=1), ...
                    merge = ecalNumberOfLayersToMerge,
                    OutputLevel = INFO)
-mergelayers.DataInputs.inhits.Path = "ECalHits"
-mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
+mergelayers.inhits.Path = "ECalHits"
+mergelayers.outhits.Path = "mergedECalHits"
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
+noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
+    noiseFileName="/eos/project/f/fccsw-web/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
+
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
-                                  readoutName=ecalReadoutName,
+                                  readoutName = ecalReadoutName,
                                   activeVolumeName = ecalVolumeName,
                                   activeFieldName = ecalIdentifierName,
-                                  fieldNames=ecalFieldNames,
-                                  fieldValues=ecalFieldValues,
+                                  fieldNames = ecalFieldNames,
+                                  fieldValues = ecalFieldValues,
                                   # to make it working with MergeLayers algorithm
-                                  activeVolumesNumber=ecalNumberOfLayers,
-                                  OutputLevel=DEBUG)
+                                  activeVolumesNumber = ecalNumberOfLayers,
+                                  OutputLevel = DEBUG)
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
                               geometryTool = ecalgeo,
-                              doCellCalibration=True,
-                              calibTool=calibcells,
-                              addCellNoise=True, filterCellNoise=False,
-                              noiseTool=noise,
-                              OutputLevel=DEBUG)
-createcells.DataInputs.hits.Path="mergedECalHits"
-createcells.DataOutputs.cells.Path="caloCells"
+                              doCellCalibration = True,
+                              calibTool = calibcells,
+                              addCellNoise = True, filterCellNoise = False,
+                              noiseTool = noise,
+                              OutputLevel = DEBUG)
+createcells.hits.Path="mergedECalHits"
+createcells.cells.Path="caloCells"
 
 #Create calo clusters
-from Configurables import CreateCaloClustersSlidingWindow
+from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
-createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
-                                                 readoutName = ecalReadoutName,
-                                                 fieldNames = ecalFieldNames,
-                                                 fieldValues = ecalFieldValues,
-                                                 deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
-                                                 nEtaWindow = 5, nPhiWindow = 15,
-                                                 nEtaPosition = 5, nPhiPosition = 5,
-                                                 nEtaDuplicates = 5, nPhiDuplicates = 15,
-                                                 nEtaFinal = 5, nPhiFinal = 15,
-                                                 energyThreshold = 10,
-                                                 OutputLevel = DEBUG)
-createclusters.DataInputs.cells.Path="caloCells"
-createclusters.DataOutputs.clusters.Path="caloClusters"
+towers = SingleCaloTowerTool("towers",
+                             deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
+                             readoutName = ecalReadoutName,
+                             OutputLevel = DEBUG)
+towers.cells.Path = "caloCells"
 
-out = PodioOutput("out", filename="output_ecalReco_noiseFromFile_test.root",
-                   OutputLevel=DEBUG)
+createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
+                                                 towerTool = towers,
+                                                 nEtaWindow = 7, nPhiWindow = 15,
+                                                 nEtaPosition = 5, nPhiPosition = 11,
+                                                 nEtaDuplicates = 5, nPhiDuplicates = 11,
+                                                 nEtaFinal = 7, nPhiFinal = 15,
+                                                 energyThreshold = 8,
+                                                 OutputLevel = DEBUG)
+createclusters.clusters.Path = "caloClusters"
+
+out = PodioOutput("output", filename = "output_ecalReco_noiseFromFile_test.root",
+                   OutputLevel = DEBUG)
 out.outputCommands = ["keep *"]
 
 #CPU information
@@ -107,7 +111,6 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 10,
+    EvtMax = 10,
     ExtSvc = [podioevent, geoservice],
  )
-

@@ -22,10 +22,9 @@ class CaloHitCollection;
  *  @author Anna Zaborowska
  */
 
-class SimG4SaveTestCalHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveTestCalHits : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit SimG4SaveTestCalHits(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4SaveTestCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveTestCalHits();
   /**  Initialize.
    *   @return status code
@@ -42,14 +41,15 @@ public:
    *   @return status code
    */
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+
 private:
   /// Handle for calo clusters
-  DataHandle<fcc::PositionedCaloHitCollection> m_caloHitsPositioned;
+  DataHandle<fcc::PositionedCaloHitCollection> m_caloHitsPositioned{"hits/caloHitsPositioned",
+                                                                    Gaudi::DataHandle::Writer, this};
   /// Handle for calo hits
-  DataHandle<fcc::CaloHitCollection> m_caloHits;
+  DataHandle<fcc::CaloHitCollection> m_caloHits{"hits/caloHits", Gaudi::DataHandle::Writer, this};
   /// Name of the calorimeter type (ECal/HCal)
-  std::string m_calType;
-
+  Gaudi::Property<std::string> m_calType{this, "caloType", "", "Name of the calorimeter type (ECal/HCal)"};
 };
 
 #endif /* TESTGEOMETRY_G4SAVETESTCALHITS_H */

@@ -2,9 +2,9 @@
 #include "DD4hep/DetFactoryHelper.h"
 
 // Gaudi
-#include "GaudiKernel/ServiceHandle.h"
 #include "GaudiKernel/IMessageSvc.h"
 #include "GaudiKernel/MsgStream.h"
+#include "GaudiKernel/ServiceHandle.h"
 
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
@@ -13,15 +13,14 @@ using DD4hep::Geometry::PlacedVolume;
 
 namespace det {
 
-static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xmlElement,
-        DD4hep::Geometry::SensitiveDetector sensDet)
-{
+static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement,
+                                          DD4hep::Geometry::SensitiveDetector sensDet) {
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "ECalConstruction");
   MsgStream lLog(&(*msgSvc), "ECalConstruction");
 
   xml_det_t xmlDet = xmlElement;
   std::string detName = xmlDet.nameStr();
-  //Make DetElement
+  // Make DetElement
   DetElement eCal(detName, xmlDet.id());
 
   // Make volume that envelopes the whole barrel; set material to air
@@ -31,87 +30,123 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   // Invisibility seems to be broken in visualisation tags, have to hardcode that
   envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
 
-  xml_comp_t cryostat = xmlElement.child("cryostat");
-  Dimension cryo_dims(cryostat.dimensions());
-  double cryo_thickness=cryo_dims.thickness();
+  xml_comp_t cryostat = xmlElement.child(_Unicode(cryostat));
+  Dimension cryoDim(cryostat.dimensions());
+  double cryoThickness = cryoDim.thickness();
 
-  xml_comp_t calo = xmlElement.child("calorimeter");
-  Dimension calo_dims(calo.dimensions());
-  std::string calo_name=calo.nameStr();
+  xml_comp_t calo = xmlElement.child(_Unicode(calorimeter));
+  Dimension caloDim(calo.dimensions());
 
-  xml_comp_t active = calo.child("active_layers");
-  std::string active_mat=active.materialStr();
-  double active_tck=active.thickness();
+  xml_comp_t active = calo.child(_Unicode(active_layers));
+  std::string activeMaterial = active.materialStr();
+  double activeThickness = active.thickness();
 
-  xml_comp_t passive = calo.child("passive_layers");
-  std::string passive_mat=passive.materialStr();
-  double passive_tck=passive.thickness();
+  xml_comp_t passive = calo.child(_Unicode(passive_layers));
+  DD4hep::XML::DetElement passiveInner = passive.child(_Unicode(inner));
+  DD4hep::XML::DetElement passiveOuter = passive.child(_Unicode(outer));
+  DD4hep::XML::DetElement passiveGlue = passive.child(_Unicode(glue));
+  std::string passiveInnerMaterial = passiveInner.materialStr();
+  std::string passiveOuterMaterial = passiveOuter.materialStr();
+  std::string passiveGlueMaterial = passiveGlue.materialStr();
+  double passiveInnerThickness = passiveInner.thickness();
+  double passiveOuterThickness = passiveOuter.thickness();
+  double passiveGlueThickness = passiveGlue.thickness();
+  double passiveThickness = passiveInnerThickness + passiveOuterThickness + passiveGlueThickness;
 
-  //cryo_thickness < 0 => Run without a cryostat
-  Volume bathVol; //volume inside cryostat filled with active medium
-  if (cryo_thickness>0) {
+  // cryoThickness < 0 => Run without a cryostat
+  Volume bathVol;  // volume inside cryostat filled with active medium
+  DetElement caloBath(eCal, activeMaterial + "_notSensitive", 0);
+  if (cryoThickness > 0) {
     // Step 1 : cryostat
-    DetElement cryo(cryostat.nameStr(), 0);
-    DD4hep::Geometry::Tube cryoShape(cryo_dims.rmin() , cryo_dims.rmax(), cryo_dims.dz());
-    lLog << MSG::DEBUG << "ECAL cryostat: rmin " << cryo_dims.rmin() << " rmax " << cryo_dims.rmax() << endmsg;
+    DD4hep::Geometry::Tube cryoShape(cryoDim.rmin(), cryoDim.rmax(), cryoDim.dz());
+    lLog << MSG::DEBUG << "ECAL cryostat: rmin " << cryoDim.rmin() << " rmax " << cryoDim.rmax() << endmsg;
     Volume cryoVol(cryostat.nameStr(), cryoShape, lcdd.material(cryostat.materialStr()));
     PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
     placedCryo.addPhysVolID("ECAL_Cryo", 1);
+    DetElement cryo(eCal, cryostat.nameStr(), 0);
     cryo.setPlacement(placedCryo);
     // Step 2 : fill cryostat with active medium
-    DetElement calo_bath(active_mat+"_notSensitive", 0);
-    DD4hep::Geometry::Tube bathShape(cryo_dims.rmin()+cryo_thickness , cryo_dims.rmax()-cryo_thickness, cryo_dims.dz()-cryo_thickness);
-    lLog << MSG::DEBUG << "ECAL " << active_mat << " bath: rmin " << cryo_dims.rmin()+cryo_thickness << " rmax " << cryo_dims.rmax()-cryo_thickness << endmsg;
-    bathVol = Volume(active_mat+"_notSensitive", bathShape, lcdd.material(active_mat));
+    DD4hep::Geometry::Tube bathShape(cryoDim.rmin() + cryoThickness, cryoDim.rmax() - cryoThickness,
+                                     cryoDim.dz() - cryoThickness);
+    lLog << MSG::DEBUG << "ECAL " << activeMaterial << " bath: rmin " << cryoDim.rmin() + cryoThickness << " rmax "
+         << cryoDim.rmax() - cryoThickness << endmsg;
+    bathVol = Volume(activeMaterial + "_notSensitive", bathShape, lcdd.material(activeMaterial));
     PlacedVolume placedBath = cryoVol.placeVolume(bathVol);
     placedBath.addPhysVolID("bath", 1);
-    calo_bath.setPlacement(placedBath);
+    caloBath.setPlacement(placedBath);
   }
 
   // Step 3 : create the actual calorimeter
-  int active_samples= (calo_dims.rmax()-  calo_dims.rmin() - passive_tck)/(passive_tck+active_tck);
-  double calo_tck=active_samples*(active_tck+passive_tck)+passive_tck;
-  DetElement caloDet(calo_name, 1);
-  DD4hep::Geometry::Tube caloShape(calo_dims.rmin() , calo_dims.rmin()+calo_tck, calo_dims.dz());
-  lLog << MSG::DEBUG << "ECAL actual calorimeter: rmin " << calo_dims.rmin() << " rmax " <<   calo_dims.rmin()+calo_tck << endmsg;
-  Volume caloVol(passive_mat, caloShape, lcdd.material(passive_mat));
-  PlacedVolume placedCalo;
-  if (cryo_thickness>0) {
-    placedCalo = bathVol.placeVolume(caloVol);
-  }
-  else {
-    placedCalo = envelopeVolume.placeVolume(caloVol);
-  }
-  placedCalo.addPhysVolID("EM_barrel", 1);
-  caloDet.setPlacement(placedCalo);
+  int activeSamples = (caloDim.rmax() - caloDim.rmin() - passiveThickness) / (passiveThickness + activeThickness);
+  double caloThickness = activeSamples * (activeThickness + passiveThickness) + passiveThickness;
+  lLog << MSG::DEBUG << "ECAL actual calorimeter: rmin " << caloDim.rmin() << " rmax " << caloDim.rmin() + caloThickness
+       << endmsg;
 
   // set the sensitive detector type to the DD4hep calorimeter
   DD4hep::Geometry::SensitiveDetector sd = sensDet;
-  DD4hep::XML::Dimension sd_typ = xmlDet.child(_U(sensitive));
-  sd.setType(sd_typ.typeStr());
+  DD4hep::XML::Dimension sdType = xmlDet.child(_U(sensitive));
+  sd.setType(sdType.typeStr());
 
+  double glueThickness = passiveGlueThickness / 2.;
+  double outerThickness = passiveOuterThickness / 2.;
+  double innerThickness = passiveInnerThickness;
+  lLog << MSG::DEBUG << "Passive material:  outer = 2x " << outerThickness << ", glue = 2x " << glueThickness
+       << ", inner = " << innerThickness << endmsg;
   // loop on the sensitive layers
-  for (int i=0;i<active_samples;i++)
-  {
-    double layer_r=calo_dims.rmin()+passive_tck+i*(passive_tck+active_tck);
-    DetElement caloLayer(active_mat+"_sensitive", i);
-    DD4hep::Geometry::Tube layerShape(layer_r , layer_r+active_tck, calo_dims.dz());
-    Volume layerVol(active_mat+"_sensitive", layerShape, lcdd.material(active_mat));
-    PlacedVolume placedLayer = caloVol.placeVolume(layerVol);
-    placedLayer.addPhysVolID("active_layer", i);
-    caloLayer.setPlacement(placedLayer);
+  for (int i = 0; i < activeSamples; i++) {
+    double layerRadius = caloDim.rmin() + passiveThickness + i * (passiveThickness + activeThickness);
+    DD4hep::Geometry::Tube outerShape1(layerRadius - passiveThickness, layerRadius - passiveThickness + outerThickness,
+                                       caloDim.dz());
+    DD4hep::Geometry::Tube glueShape1(layerRadius - passiveThickness + outerThickness,
+                                      layerRadius - passiveThickness + outerThickness + glueThickness, caloDim.dz());
+    DD4hep::Geometry::Tube innerShape(layerRadius - passiveThickness + outerThickness + glueThickness,
+                                      layerRadius - outerThickness - glueThickness, caloDim.dz());
+    DD4hep::Geometry::Tube glueShape2(layerRadius - outerThickness - glueThickness, layerRadius - outerThickness,
+                                      caloDim.dz());
+    DD4hep::Geometry::Tube outerShape2(layerRadius - outerThickness, layerRadius, caloDim.dz());
+    DD4hep::Geometry::Tube layerShape(layerRadius, layerRadius + activeThickness, caloDim.dz());
+    Volume layerVol(activeMaterial + "_sensitive", layerShape, lcdd.material(activeMaterial));
+    Volume outerVol1(passiveOuterMaterial + "_below", outerShape1, lcdd.material(passiveOuterMaterial));
+    Volume outerVol2(passiveOuterMaterial + "_above", outerShape2, lcdd.material(passiveOuterMaterial));
+    Volume glueVol1(passiveGlueMaterial + "_below", glueShape1, lcdd.material(passiveGlueMaterial));
+    Volume glueVol2(passiveGlueMaterial + "_above", glueShape2, lcdd.material(passiveGlueMaterial));
+    Volume innerVol(passiveInnerMaterial, innerShape, lcdd.material(passiveInnerMaterial));
+    lLog << MSG::DEBUG << "layer borders: " << layerRadius - passiveThickness << "\t"
+         << layerRadius - passiveThickness + outerThickness << "\t"
+         << layerRadius - passiveThickness + outerThickness + glueThickness << "\t"
+         << layerRadius - outerThickness - glueThickness << "\t" << layerRadius - outerThickness << "\t" << layerRadius
+         << "\t" << layerRadius + activeThickness << endmsg;
+    if (cryoThickness > 0) {
+      bathVol.placeVolume(outerVol1);
+      bathVol.placeVolume(glueVol1);
+      bathVol.placeVolume(innerVol);
+      bathVol.placeVolume(glueVol2);
+      bathVol.placeVolume(outerVol2);
+      PlacedVolume placedLayer = bathVol.placeVolume(layerVol);
+      placedLayer.addPhysVolID("active_layer", i);
+      DetElement caloLayer(caloBath, activeMaterial + "_sensitive" + std::to_string(i), i);
+      caloLayer.setPlacement(placedLayer);
+    } else {
+      envelopeVolume.placeVolume(outerVol1);
+      envelopeVolume.placeVolume(glueVol1);
+      envelopeVolume.placeVolume(innerVol);
+      envelopeVolume.placeVolume(glueVol2);
+      envelopeVolume.placeVolume(outerVol2);
+      PlacedVolume placedLayer = envelopeVolume.placeVolume(layerVol);
+      placedLayer.addPhysVolID("active_layer", i);
+      DetElement caloLayer(eCal, activeMaterial + "_sensitive" + std::to_string(i), i);
+      caloLayer.setPlacement(placedLayer);
+    }
     layerVol.setSensitiveDetector(sensDet);
   }
 
-  //Place envelope (or barrel) volume
+  // Place envelope (or barrel) volume
   Volume motherVol = lcdd.pickMotherVolume(eCal);
   PlacedVolume placedECal = motherVol.placeVolume(envelopeVolume);
   placedECal.addPhysVolID("system", eCal.id());
   eCal.setPlacement(placedECal);
   return eCal;
-
 }
-} // namespace det
+}  // namespace det
 
 DECLARE_DETELEMENT(EmCaloBarrel, det::createECal)
-

@@ -1,9 +1,9 @@
 #include "TubeLayerPhiEtaCaloTool.h"
 
 // segm
-#include "DetInterface/IGeoSvc.h"
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/LCDD.h"
+#include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
 
@@ -11,12 +11,6 @@ TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type, const 
                                                  const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICalorimeterTool>(this);
-  declareProperty("readoutName", m_readoutName = "");
-  declareProperty("activeVolumeName", m_activeVolumeName = "LAr_sensitive");
-  declareProperty("activeFieldName", m_activeFieldName = "active_layer");
-  declareProperty("activeVolumesNumber", m_activeVolumesNumber = 0);
-  declareProperty("fieldNames", m_fieldNames);
-  declareProperty("fieldValues", m_fieldValues);
 }
 
 StatusCode TubeLayerPhiEtaCaloTool::initialize() {
@@ -61,6 +55,10 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
   }
+  info() << "GridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
+         << endmsg;
+  info() << "GridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
+         << segmentation->offsetPhi() << endmsg;
 
   // Take readout bitfield decoder from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
@@ -83,8 +81,8 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
     auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
     debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
     // Loop over segmenation cells
-    for (int iphi = -floor(numCells[0] * 0.5); iphi < numCells[0] * 0.5; iphi++) {
-      for (int ieta = -floor(numCells[1] * 0.5); ieta < numCells[1] * 0.5; ieta++) {
+    for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
+      for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
         (*decoder)["phi"] = iphi;
         (*decoder)["eta"] = ieta;
         uint64_t cellId = decoder->getValue();

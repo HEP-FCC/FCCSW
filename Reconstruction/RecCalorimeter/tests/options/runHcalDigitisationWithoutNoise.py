@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent   = FCCDataSvc("EventDataSvc", input="output_hcalSim_e50GeV_eta0_10events.root")
+podioevent   = FCCDataSvc("EventDataSvc", input="output_hcalSim_e50GeV_eta036_10events.root")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
@@ -18,8 +18,8 @@ createcells = CreateCaloCells("CreateCaloCells",
                               doCellCalibration = False,
                               addCellNoise = False, filterCellNoise = False,
                               OutputLevel = DEBUG)
-createcells.DataInputs.hits.Path="HCalHits"
-createcells.DataOutputs.cells.Path="HCalCells"
+createcells.hits.Path="HCalHits"
+createcells.cells.Path="HCalCells"
 
 out = PodioOutput("out", filename="output_HCalCells_digitisation_noNoise.root",
                    OutputLevel = DEBUG)

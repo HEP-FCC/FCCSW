@@ -11,8 +11,8 @@
  *  @author Anna Zaborowska
  */
 
-class ITestDD4hepSvc: virtual public IService {
+class ITestDD4hepSvc : virtual public IService {
 public:
-  DeclareInterfaceID(ITestDD4hepSvc,1,0);
+  DeclareInterfaceID(ITestDD4hepSvc, 1, 0);
 };
 #endif /* TESTDD4HEP_ITESTDD4HEPSVC_H */

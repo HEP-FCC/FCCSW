@@ -1,32 +1,25 @@
 #include "CreateCaloCells.h"
 
 // FCCSW
-#include "DetInterface/IGeoSvc.h"
 #include "DetCommon/DetUtils.h"
+#include "DetInterface/IGeoSvc.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
 
 // our EDM
-#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
+#include "datamodel/CaloHitCollection.h"
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
 CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
-  declareInput("hits", m_hits, "hits");
-  declareOutput("cells", m_cells, "cells");
+  declareProperty("hits", m_hits, "Hits from which to create cells (input)");
+  declareProperty("cells", m_cells, "The created calorimeter cells (output)");
 
-  declareProperty("calibTool", m_calibTool);
-  declarePrivateTool(m_calibTool, "CalibrateCaloHitsTool");
-  declareProperty("noiseTool", m_noiseTool);
-  declarePrivateTool(m_noiseTool, "NoiseCaloCellsFlatTool");
-  declareProperty("geometryTool", m_geoTool);
-  declarePrivateTool(m_geoTool, "TubeLayerPhiEtaCaloTool");
-
-  declareProperty("doCellCalibration", m_doCellCalibration = true);
-  declareProperty("addCellNoise", m_addCellNoise = true);
-  declareProperty("filterCellNoise", m_filterCellNoise = false);
+  declareProperty("calibTool", m_calibTool, "Handle for tool to calibrate Geant4 energy to EM scale tool");
+  declareProperty("noiseTool", m_noiseTool, "Handle for the calorimeter cells noise tool");
+  declareProperty("geometryTool", m_geoTool, "Handle for the geometry tool");
 }
 
 StatusCode CreateCaloCells::initialize() {
@@ -73,13 +66,19 @@ StatusCode CreateCaloCells::execute() {
   debug() << "Input Hit collection size: " << hits->size() << endmsg;
 
   // 0. Clear all cells
-  std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
+  if (m_addCellNoise) {
+    std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
+  } else {
+    m_cellsMap.clear();
+  }
 
   // 1. Merge energy deposits into cells
-  // If running with noise map already was prepared. Otherwise it is being created below
+  // If running with noise map already was prepared. Otherwise it is being
+  // created below
   for (const auto& hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
+  debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;
 
   // 2. Calibrate simulation energy to EM scale
   if (m_doCellCalibration) {
@@ -97,7 +96,7 @@ StatusCode CreateCaloCells::execute() {
   // 4. Copy information to CaloHitCollection
   fcc::CaloHitCollection* edmCellsCollection = new fcc::CaloHitCollection();
   for (const auto& cell : m_cellsMap) {
-    if (cell.second != 0) {
+    if (m_addCellNoise || (!m_addCellNoise && cell.second != 0)) {
       fcc::CaloHit newCell = edmCellsCollection->create();
       newCell.core().energy = cell.second;
       newCell.core().cellId = cell.first;

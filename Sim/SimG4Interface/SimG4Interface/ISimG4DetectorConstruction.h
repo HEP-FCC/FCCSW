@@ -2,7 +2,7 @@
 #define SIMG4INTERFACE_ISIMG4DETECTORCONSTRUCTION_H
 
 // Gaudi
-#include  "GaudiKernel/IAlgTool.h"
+#include "GaudiKernel/IAlgTool.h"
 
 // Geant4
 class G4VUserDetectorConstruction;
@@ -16,15 +16,13 @@ class G4VUserDetectorConstruction;
 
 class ISimG4DetectorConstruction : virtual public IAlgTool {
 public:
-
   /// Retrieve interface ID
-  DeclareInterfaceID(ISimG4DetectorConstruction,1,0);
+  DeclareInterfaceID(ISimG4DetectorConstruction, 1, 0);
 
   /** get initilization hook for the geometry
    *  @return pointer to G4VUserDetectorConstruction
    */
-   virtual G4VUserDetectorConstruction* detectorConstruction() = 0;
-
+  virtual G4VUserDetectorConstruction* detectorConstruction() = 0;
 };
 
 #endif /* SIMG4INTERFACE_ISIMG4DETECTORCONSTRUCTION_H */

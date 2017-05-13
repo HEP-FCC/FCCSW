@@ -5,7 +5,6 @@ DECLARE_TOOL_FACTORY(CalibrateCaloHitsTool)
 CalibrateCaloHitsTool::CalibrateCaloHitsTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICalibrateCaloHitsTool>(this);
-  declareProperty("invSamplingFraction", m_invSamplingFraction = 1.0);
 }
 
 StatusCode CalibrateCaloHitsTool::initialize() {

@@ -3,19 +3,18 @@
 #include <stdexcept>
 
 // DD4hep
-#include "DDG4/Geant4Converter.h"
-#include "DD4hep/Plugins.h"
 #include "DD4hep/LCDD.h"
+#include "DD4hep/Plugins.h"
+#include "DDG4/Geant4Converter.h"
 #include "TGeoManager.h"
 
 // Geant4
-#include "G4SDManager.hh"
 #include "G4PVPlacement.hh"
+#include "G4SDManager.hh"
 #include "G4VSensitiveDetector.hh"
 
 namespace det {
-GeoConstruction::GeoConstruction(DD4hep::Geometry::LCDD& lcdd)
-  : m_lcdd(lcdd) {}
+GeoConstruction::GeoConstruction(DD4hep::Geometry::LCDD& lcdd) : m_lcdd(lcdd) {}
 
 GeoConstruction::~GeoConstruction() {}
 
@@ -27,12 +26,11 @@ void GeoConstruction::ConstructSDandField() {
   DD4hep::Simulation::Geant4GeometryInfo* p = DD4hep::Simulation::Geant4Mapping::instance().ptr();
   _SV& vols = p->sensitives;
 
-  for(_SV::const_iterator iv=vols.begin(); iv != vols.end(); ++iv)  {
+  for (_SV::const_iterator iv = vols.begin(); iv != vols.end(); ++iv) {
     DD4hep::Geometry::SensitiveDetector sd = (*iv).first;
     std::string typ = sd.type(), nam = sd.name();
     // Sensitive detectors are deleted in ~G4SDManager
-    G4VSensitiveDetector* g4sd =
-      DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
+    G4VSensitiveDetector* g4sd = DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
     if (g4sd == nullptr) {
       std::string tmp = typ;
       tmp[0] = ::toupper(tmp[0]);
@@ -41,22 +39,22 @@ void GeoConstruction::ConstructSDandField() {
       if (g4sd == nullptr) {
         DD4hep::PluginDebug dbg;
         g4sd = DD4hep::PluginService::Create<G4VSensitiveDetector*>(typ, nam, &m_lcdd);
-        if (g4sd == nullptr)  {
+        if (g4sd == nullptr) {
           throw std::runtime_error("ConstructSDandField: FATAL Failed to "
-                              "create Geant4 sensitive detector " + nam + 
-                              " of type " + typ + ".");
+                                   "create Geant4 sensitive detector " +
+                                   nam + " of type " + typ + ".");
         }
       }
     }
     g4sd->Activate(true);
     G4SDManager::GetSDMpointer()->AddNewDetector(g4sd);
     const VolSet& sens_vols = (*iv).second;
-    for(VolSet::const_iterator i=sens_vols.begin(); i!= sens_vols.end(); ++i)   {
+    for (VolSet::const_iterator i = sens_vols.begin(); i != sens_vols.end(); ++i) {
       const TGeoVolume* vol = *i;
       G4LogicalVolume* g4v = p->g4Volumes[vol];
-      if (g4v == nullptr)  {
-        throw std::runtime_error("ConstructSDandField: Failed to access G4LogicalVolume for SD "+
-                            nam + " of type " + typ + ".");
+      if (g4v == nullptr) {
+        throw std::runtime_error("ConstructSDandField: Failed to access G4LogicalVolume for SD " + nam + " of type " +
+                                 typ + ".");
       }
       G4SDManager::GetSDMpointer()->AddNewDetector(g4sd);
       g4v->SetSensitiveDetector(g4sd);

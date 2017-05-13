@@ -42,17 +42,17 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
-  std::string m_readoutName;
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", ""};
   /// Name of active volumes
-  std::string m_activeVolumeName;
+  Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "LAr_sensitive"};
   /// Name of active layers for sampling calorimeter
-  std::string m_activeFieldName;
+  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active_layer"};
   /// Name of the fields describing the segmented volume
-  std::vector<std::string> m_fieldNames;
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames"};
   /// Values of the fields describing the segmented volume
-  std::vector<int> m_fieldValues;
+  Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues"};
   /// Temporary: for use with MergeLayer tool
-  unsigned int m_activeVolumesNumber;
+  Gaudi::Property<unsigned int> m_activeVolumesNumber{this, "activeVolumesNumber", 0};
 };
 
 #endif /* RECCALORIMETER_TUBELAYERPHIETACALOTOOL_H */

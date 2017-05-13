@@ -5,58 +5,28 @@
 #include "SimG4Common/ConstantField.h"
 
 // Geant 4
-#include "G4VUserPrimaryGeneratorAction.hh"
-#include "G4RunManager.hh"
-#include "G4MagneticField.hh"
-#include "G4FieldManager.hh"
-#include "G4TransportationManager.hh"
 #include "G4ChordFinder.hh"
+#include "G4FieldManager.hh"
+#include "G4MagneticField.hh"
+#include "G4TransportationManager.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
 
-#include "G4PropagatorInField.hh"
-#include "G4MagIntegratorStepper.hh"
-#include "G4Mag_UsualEqRhs.hh"
+#include "G4ClassicalRK4.hh"
+#include "G4HelixExplicitEuler.hh"
 #include "G4HelixImplicitEuler.hh"
 #include "G4HelixSimpleRunge.hh"
-#include "G4HelixExplicitEuler.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4Mag_UsualEqRhs.hh"
 #include "G4NystromRK4.hh"
-#include "G4ClassicalRK4.hh"
-
-#include "G4SystemOfUnits.hh"
+#include "G4PropagatorInField.hh"
 
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4ConstantMagneticFieldTool)
 
 SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string& type, const std::string& name,
-                                                         const IInterface* parent)
-    : GaudiTool(type, name, parent),
-      m_field(nullptr),
-      m_fieldOn(false),
-      m_minEps(0),
-      m_maxEps(0),
-      m_deltaChord(0),
-      m_deltaOneStep(0),
-      m_maxStep(1. * m),
-      m_integratorStepper("NystromRK4"),
-      m_fieldComponentX(0),
-      m_fieldComponentY(0),
-      m_fieldComponentZ(-6. * tesla),
-      m_fieldRadMax(6 * m),
-      m_fieldZMax(6. * m) {
+                                                               const IInterface* parent)
+    : GaudiTool(type, name, parent), m_field(nullptr) {
   declareInterface<ISimG4MagneticFieldTool>(this);
-
-  declareProperty("FieldOn", m_fieldOn, "Switch to turn field off");
-  declareProperty("DeltaChord", m_deltaChord, "Missing distance for the chord finder");
-  declareProperty("DeltaOneStep", m_deltaOneStep, "Delta(one-step)");
-  declareProperty("MinimumEpsilon", m_minEps, "Minimum epsilon (see G4 documentation)");
-  declareProperty("MaximumEpsilon", m_maxEps, "Maximum epsilon (see G4 documentation)");
-  declareProperty("MaximumStep", m_maxStep, "Maximum step length in field (see G4 documentation)");
-
-  declareProperty("IntegratorStepper", m_integratorStepper = "NystromRK4", "Integrator stepper name");
-  declareProperty("FieldComponentX", m_fieldComponentX, "Field X component");
-  declareProperty("FieldComponentY", m_fieldComponentY, "Field Y component");
-  declareProperty("FieldComponentZ", m_fieldComponentZ, "Field Z component");
-  declareProperty("FieldRMax", m_fieldRadMax, "Field max radius");
-  declareProperty("FieldZMax", m_fieldZMax, "field max Z");
 }
 
 SimG4ConstantMagneticFieldTool::~SimG4ConstantMagneticFieldTool() {

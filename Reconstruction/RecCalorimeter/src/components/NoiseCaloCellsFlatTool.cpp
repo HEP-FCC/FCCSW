@@ -6,10 +6,6 @@ NoiseCaloCellsFlatTool::NoiseCaloCellsFlatTool(const std::string& type, const st
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<INoiseCaloCellsTool>(this);
-  // uniform noise per cell in GeV
-  declareProperty("cellNoise", m_cellNoise = 0.003);
-  // remove cells with energy bellow filterThreshold (threshold is multiplied by a cell noise sigma)
-  declareProperty("filterNoiseThreshold", m_filterThreshold = 3);
 }
 
 StatusCode NoiseCaloCellsFlatTool::initialize() {
@@ -38,8 +34,8 @@ void NoiseCaloCellsFlatTool::filterCellNoise(std::unordered_map<uint64_t, double
   double threshold = m_filterThreshold * m_cellNoise;
   auto it = aCells.begin();
   while ((it = std::find_if(it, aCells.end(), [&threshold](std::pair<const uint64_t, double>& p) {
-    return bool(p.second < threshold);
-  })) != aCells.end()) {
+            return bool(p.second < threshold);
+          })) != aCells.end()) {
     aCells.erase(it++);
   }
 }
