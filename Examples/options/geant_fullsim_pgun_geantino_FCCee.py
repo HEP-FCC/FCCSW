@@ -7,10 +7,9 @@ podioevent = FCCDataSvc("EventDataSvc")
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc, SimG4SingleParticleGeneratorTool
-
-
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCCeeBaseline1/compact/FCCee.xml'],         
                     OutputLevel = DEBUG)
+
 
 
 
@@ -27,9 +26,9 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
                         actions="SimG4FullSimActions",
                         magneticField=field)
 
-geantservice.G4commands += ["/run/setCut 0.7 mm"]
-geantservice.G4commands +=["/process/eLoss/minKinEnergy 1 MeV"]
-geantservice.G4commands +=["/score/quantity/energyDeposit edep1kev"]
+geantservice.g4PostInitCommands += ["/run/setCut 0.7 mm"]
+geantservice.g4PostInitCommands +=["/process/eLoss/minKinEnergy 1 MeV"]
+geantservice.g4PostInitCommands +=["/score/quantity/energyDeposit edep1kev"]
 
 
 
@@ -70,3 +69,4 @@ ApplicationMgr( TopAlg = [geantsim, out],
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG
  )
+
