@@ -31,3 +31,8 @@ gaudi_add_test(FastDigiTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/fastDigiTest.py
 			         DEPENDS Examples.GeantFullSimTrackerHits)
+
+gaudi_add_test(CombinatorialTrackSeeding
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			         FRAMEWORK options/combinatorialTrackSeedingTest.py
+			         DEPENDS Examples.GeantFullSimTrackerHits)
