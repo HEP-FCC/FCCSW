@@ -37,7 +37,7 @@ from Configurables import GeoSvc
 ## DD4hep geometry service
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml',
+                                         'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                          'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml',
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = DEBUG)

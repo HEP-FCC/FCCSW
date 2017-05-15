@@ -1,9 +1,26 @@
-<detector id="BarHCal_id" name="HCalBarrel0" type="CaloBarrel" readout="BarHCal_Readout" vis="hcal_envelope">
-  <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmaxWithBuffer" dz="BarHCal_dz"/>
-  <sequence_a id="0" name="sequence_1" material="Air" vis="hcal_barrel_seq1_vis">
+<detector id="BarHCal_id" name="HCalBarrel" type="CaloBarrel" readout="BarHCal_Readout" vis="hcal_envelope">
+  <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmax" dz="BarHCal_dz"/>
+  <layer_1 id="0" name="type_1" material="Air" vis="hcal_barrel_layer_vis">
+    <dimensions
+       dr="BarHCal_module_drho_1"
+       nModules="BarHCal_n_layers_1"
+       />
+  </layer_1>
+  <layer_2 id="1" name="type_2" material="Air" vis="hcal_barrel_layer_vis">
+    <dimensions
+       dr="BarHCal_module_drho_2"
+       nModules="BarHCal_n_layers_2"
+       />
+  </layer_2>
+  <layer_3 id="2" name="type_3" material="Air" vis="hcal_barrel_layer_vis">
+    <dimensions
+       dr="BarHCal_module_drho_3"
+       nModules="BarHCal_n_layers_3"
+       />
+  </layer_3>
+  <sequence_a id="3" name="sequence_1" material="Air" vis="hcal_barrel_seq1_vis">
     <dimensions
       dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
-      dr="BarHCal_module_drho"
       phiBins="BarHCal_n_phi_modules"
       x="BarHCAL_module_spacing_phi"
     />
@@ -20,10 +37,9 @@
     <!-- Air -->
     <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
   </sequence_a>
-  <sequence_b id="1" name="sequence_2" material="Air" vis="hcal_barrel_seq2_vis">
+  <sequence_b id="4" name="sequence_2" material="Air" vis="hcal_barrel_seq2_vis">
     <dimensions
       dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
-      dr="BarHCal_module_drho"
       phiBins="BarHCal_n_phi_modules"
       x="BarHCAL_module_spacing_phi"
     />
@@ -43,4 +59,5 @@
   <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="Steel235" sensitive="false" vis="hcal_end_plate_vis" />
   <face_plate name="face_plate" thickness="BarHCal_face_plate_thickness" material="Steel235" sensitive="false" vis="hcal_face_plate_vis" />
   <plate_space name="plate_space" thickness="BarHCal_plate_space" material="Air" sensitive="false" vis="hcal_air_vis" />
+  <steel_support name="steel_support" thickness="BarHCal_steel_support_thickness" material="Steel235" sensitive="false" vis="hcal_steel_support_vis" />
 </detector>

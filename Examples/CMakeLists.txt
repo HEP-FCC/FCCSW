@@ -42,7 +42,8 @@ gaudi_add_test(GeantFullSimTrackerHitsWithField
                FRAMEWORK options/geant_fullsim_field.py)
 gaudi_add_test(ReadFullSimTrackerHits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/read_podio_input.py)
+               FRAMEWORK options/read_podio_input.py
+               DEPENDS GeantFullSimTrackerHitsWithField)
 gaudi_add_test(GeantFullSimWithGeantino
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim_pgun_geantino.py)
@@ -58,18 +59,11 @@ gaudi_add_test(GeantFastSimTrackerTkLayout
 gaudi_add_test(SimplePythia
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/simple_pythia.py)
-gaudi_add_test(SimpleWorkflow
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/simple_workflow.py)
 gaudi_add_test(ExampleOptions
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
-gaudi_add_test(PrintOverlaps
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/printOverlaps.py
-               PASSREGEX "Number of illegal overlaps/extrusions : 0" )
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile

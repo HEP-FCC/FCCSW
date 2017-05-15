@@ -30,10 +30,10 @@
     </detector>
 
     <detector name="ShieldingLowerConeNeg" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin2="1371.9*mm" rmax2="2063.72*mm" rmin1="1735.5*mm" rmax1="2610.73*mm" dz="1100*mm" z_offset="-9400*mm"  material="Iron"/>
+      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="-9400*mm" reflect="true"  material="Iron"/>
     </detector>
         <detector name="ShieldingUpperConeNeg" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin2="1735.5*mm" rmax2="5000*mm" rmin1="1900.8*mm" rmax1="5000*mm" dz="500*mm" z_offset="-11000*mm"  material="Iron"/>
+      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="-11000*mm" reflect="true"  material="Iron"/>
     </detector>
     <detector name="ShieldingUpperCylNeg" type="SimpleCylinder"  vis="ShieldingVis">
       <dimensions rmin="4000*mm" rmax="5000*mm" dz="2500*mm" phi0="0" deltaphi="360*deg" z_offset="-14000*mm" material="Iron"/>
