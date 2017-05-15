@@ -1,5 +1,7 @@
 #include "DD4hep/DetFactoryHelper.h"
 
+#include "DetCommon/DetUtils.h"
+
 namespace det {
 /**
   Simple cone using dimensions to be used to define cone composed of 1 single material
@@ -22,9 +24,15 @@ createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Sensit
 
   double zoff = coneDim.z_offset();
   if (fabs(zoff) > 0.000000000001) {
+    double reflectionAngle = 0.;
+    if (coneDim.hasAttr(_Unicode(reflect))) {
+      if (coneDim.reflect()) {
+        reflectionAngle = M_PI;
+        }
+    }
     DD4hep::Geometry::Position trans(0., 0., zoff);
     conePhys =
-        experimentalHall.placeVolume(coneVol, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
+        experimentalHall.placeVolume(coneVol, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationX(reflectionAngle), trans));
   } else
     conePhys = experimentalHall.placeVolume(coneVol);
 

@@ -18,7 +18,7 @@ from Configurables import SimG4Svc
 # giving the names of tools will initialize the tools of that type
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
-#geantservice.G4commands += ["/tracking/verbose 1"]
+#geantservice.g4PostInitCommands  += ["/tracking/verbose 1"]
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools

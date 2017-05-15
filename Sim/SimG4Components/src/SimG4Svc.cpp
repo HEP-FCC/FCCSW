@@ -53,13 +53,11 @@ StatusCode SimG4Svc::initialize() {
   // Take geometry (from DD4Hep), deleted in ~G4RunManager()
   m_runManager.SetUserInitialization(m_detectorTool->detectorConstruction());
 
-  if (m_g4Commands.size()) {
-    // Get the pointer to the User Interface manager
-    G4UImanager* UImanager = G4UImanager::GetUIpointer();
-    for (auto command : m_g4Commands) {
-      UImanager->ApplyCommand(command);
-    }
+  G4UImanager* UImanager = G4UImanager::GetUIpointer();
+  for (auto command: m_g4PreInitCommands) {
+    UImanager->ApplyCommand(command);
   }
+
 
   m_runManager.Initialize();
   // Attach user actions
@@ -75,6 +73,9 @@ StatusCode SimG4Svc::initialize() {
   }
   for (auto& tool : m_regionTools) {
     tool->create();
+  }
+ for (auto command: m_g4PostInitCommands) {
+    UImanager->ApplyCommand(command);
   }
 
   if (!m_runManager.start()) {
