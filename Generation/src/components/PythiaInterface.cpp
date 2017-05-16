@@ -39,7 +39,6 @@ PythiaInterface::PythiaInterface(const std::string& type, const std::string& nam
 
   declareProperty("VertexSmearingTool", m_vertexSmearingTool);
   declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
-  declareProperty("hepmc", m_hepmchandle, "The HepMC event (output)");
 }
 
 StatusCode PythiaInterface::initialize() {
