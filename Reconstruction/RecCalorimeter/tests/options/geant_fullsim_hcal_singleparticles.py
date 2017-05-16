@@ -60,7 +60,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta036_10events.root"
+out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta036_1events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
