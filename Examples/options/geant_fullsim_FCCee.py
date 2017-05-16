@@ -3,7 +3,7 @@
 ### \ingroup SimulationExamples
 ### | **input (alg)**               | other algorithms                 |                                                         |                        |                                  | **output (alg)**                              |
 ### |-------------------------------|----------------------------------|---------------------------------------------------------|------------------------|----------------------------------|-----------------------------------------------|
-### | read events from a HepMC file | convert `HepMC::GenEvent` to EDM | geometry taken from GDML file (no sensitive detectors!) | FTFP_BERT physics list | empty action initialisation list | write the EDM output to ROOT file using PODIO |
+### | read events from a HepEVT file | convert them to EDM |
 
 
 from Gaudi.Configuration import *
@@ -16,7 +16,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 # from Configurables import HepMCReader
 from Configurables import HepEVTReader
-reader = HepEVTReader("Reader", Filename="/afs/cern.ch/user/v/voutsina/public/CrossingAngle15mrad/pairs_top_boosted0.hepevt")
+reader = HepEVTReader("Reader", Filename="/afs/cern.ch/user/n/nali/public/FCCSW/pairs_top_boosted0.hepevt")
 reader.genparticles.Path="allGenParticles"
 reader.genvertices.Path="allGenVertices"
 
