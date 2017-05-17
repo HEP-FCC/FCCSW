@@ -24,7 +24,7 @@ public:
   const T* getData() { return m_data; }
   void setData(T* data) { m_data = data; }
   /// try to cast to collectionBase; may return nullptr;
-  virtual podio::CollectionBase* collectionBase();
+  virtual podio::CollectionBase* collectionBase() override final;
 
 private:
   T* m_data;
