@@ -1,0 +1,24 @@
+<!-- 
+     Coil parameters for ILD_o1_v5  
+-->
+
+<detector name="Coil" type="SCoil02" vis="CoilVis" id="ILDDetID_COIL" insideTrackingVolume="false" sensitive="no">
+
+  <!-- fg: taken from SCoil02.cc::PreLoadScriptAction() : 
+       there the variable Hcal_R_max was used, which was set from Hcal_module_radius in the SHcal driver - 
+       here we simply use the value Hcal_outer_radius defined in ILD_o1_v05
+
+       -> now (03/2015) done in main compact file ILD_o1_v05.xml
+  -->
+
+  <envelope vis="ILD_COILVis">
+    <shape type="Tube" rmin="Coil_inner_radius" rmax="Coil_outer_radius" 
+	   dz="Coil_half_length" material="Air"/>
+  </envelope>
+
+  
+  <!--fg: for now only a simple aluminum cylinder is created inside the envelope -->
+  <tube rmin="Coil_inner_radius+env_safety" rmax="Coil_outer_radius-env_safety" 
+	dz="Coil_half_length-env_safety" material="G4_Al"/>
+
+</detector>

@@ -1,0 +1,16 @@
+<lccdd>    
+    
+    <detectors>
+        <comment>Beampipe Instrumentation</comment>
+        
+
+        <detector name="CompSol" type="Mask_o1_v01" insideTrackingVolume="true" vis="CompSolVis">
+            <parameter crossingangle="CrossingAngle" />
+            <envelope vis="CoilVis">
+                <shape type="Assembly"/>
+            </envelope>
+            <section type="Center"               start="CompSol_min_z"    end="QD0_min_z" rMin1="CompSol_min_z*0.1-2.5*cm"  rMin2="QD0_min_z*0.1 - 2*cm"  rMax1="CompSol_min_z * 0.1 - 0.5*cm" rMax2="QD0_min_z * 0.1"    material="Iron"  name="CompSol" />
+        </detector>
+        
+    </detectors>
+</lccdd>

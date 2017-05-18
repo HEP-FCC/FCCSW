@@ -1,0 +1,46 @@
+<lccdd>
+  <define>
+    <constant name="env_safety" value="0.001*mm"/>
+    
+    <constant name="dim_x" value="60*mm"/>
+    <constant name="dim_y" value="12*mm"/>
+    <constant name="dim_z" value="50*mm"/>
+  </define>
+
+
+  <display>
+    <vis name="HOMVis"       alpha="0.5"  r="0.7" g="0.7"  b="0.0" showDaughters="true"  visible="false"/>
+  </display>
+
+  <detectors>
+    <detector name="HOMAbsorber" type="HOMAbsorber_o1_v02" vis="HOMVis" insideTrackingVolume="false" >
+      <envelope vis="BlueVis">
+	<shape type="Box" dx="dim_x + env_safety" dy="dim_y + env_safety"  dz="dim_z + env_safety" material="Iron" />
+	<position x="0*mm" y="28*mm" z="1400*mm"/>
+      </envelope>
+    </detector>
+
+    <detector name="HOMAbsorber2" type="HOMAbsorber_o1_v02" vis="HOMVis" insideTrackingVolume="false" >
+      <envelope vis="BlueVis">
+	<shape type="Box" dx="dim_x + env_safety" dy="dim_y + env_safety"  dz="dim_z + env_safety" material="Iron" />
+	<position x="0*mm" y="-28*mm" z="1400*mm"/>
+      </envelope>
+    </detector>
+
+    <detector name="HOMAbsorber3" type="HOMAbsorber_o1_v02" vis="HOMVis" insideTrackingVolume="false" >
+      <envelope vis="BlueVis">
+	<shape type="Box" dx="dim_x + env_safety" dy="dim_y + env_safety"  dz="dim_z + env_safety" material="Iron" />
+	<position x="0*mm" y="28*mm" z="-1400*mm"/>
+      </envelope>
+    </detector>
+
+    <detector name="HOMAbsorber4" type="HOMAbsorber_o1_v02" vis="HOMVis" insideTrackingVolume="false" >
+      <envelope vis="BlueVis">
+	<shape type="Box" dx="dim_x + env_safety" dy="dim_y + env_safety"  dz="dim_z + env_safety" material="Iron" />
+	<position x="0*mm" y="-28*mm" z="-1400*mm"/>
+      </envelope>
+    </detector>
+
+
+  </detectors>
+</lccdd>
