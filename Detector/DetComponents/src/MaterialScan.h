@@ -32,6 +32,8 @@ private:
   Gaudi::Property<double> m_etaMax{this, "etaMax", 6, "maximum eta value"};
   /// number of random, uniformly distributed phi values to average over
   Gaudi::Property<double> m_nPhiTrials{this, "nPhiTrials", 100, "number of random, uniformly distributed phi values to average over"};
+  /// Name of the envelope within which the material is measured (by default: world volume)
+  Gaudi::Property<std::string>  m_envelopeName{this, "envelopeName", "world", "name of the envelope within which the material is measured"};
   /// Flat random number generator
   Rndm::Numbers m_flatPhiDist;
 };
