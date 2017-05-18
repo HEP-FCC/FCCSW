@@ -14,13 +14,13 @@ _CommonFCCPileupConf = {
           "xVertexMax": 0.5 * units.mm,
           "yVertexMin": -0.5 * units.mm,
           "yVertexMax": 0.5 * units.mm,
-          "zVertexMin": -35 * units.mm,
-          "zVertexMax": 35 * units.mm }
+          "zVertexMin": -70 * units.mm,
+          "zVertexMax": 70 * units.mm }
 
 
 FCCPhase1PileupConf = _CommonFCCPileupConf.copy()
 FCCPhase1PileupConf['numPileUpEvents'] = 180
     
 FCCPhase2PileupConf = _CommonFCCPileupConf.copy()
-FCCPhase2PileupConf['numPileUpEvents'] = 940
+FCCPhase2PileupConf['numPileUpEvents'] = 1020
 
