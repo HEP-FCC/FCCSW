@@ -68,7 +68,7 @@
     <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
-      <cryostat name="ECAL_Cryo">
+      <cryostat name="ECAL_Cryo" sensitive="true">
         <material name="Aluminum"/>
 	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
       </cryostat>
