@@ -28,41 +28,15 @@ public:
   virtual StatusCode smearVertex(HepMC::GenEvent& theEvent);
 
 private:
-  double m_xsig;
-  double m_xmean;
+  Gaudi::Property<double> m_xsig{this, "xVertexSigma", 0.0 * Gaudi::Units::mm, "Spread of x coordinate"};
+  Gaudi::Property<double> m_ysig{this, "yVertexSigma", 0.0 * Gaudi::Units::mm, "Spread of y coordinate"};
+  Gaudi::Property<double> m_zsig{this, "zVertexSigma", 0.0 * Gaudi::Units::mm, "Spread of z coordinate"};
+  Gaudi::Property<double> m_tsig{this, "tVertexSigma", 0.0 * Gaudi::Units::mm, "Spread of t coordinate"};
 
-  double m_ysig;
-  double m_ymean;
-
-  double m_zsig;
-  double m_zmean;
-
-  double m_tsig;
-  double m_tmean;
-  
-  /// Minimum value for the x coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_xmin{this, "xVertexMin", 0.0 * Gaudi::Units::mm, "Min value for x coordinate"};
-
-  /// Minimum value for the y coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_ymin{this, "yVertexMin", 0.0 * Gaudi::Units::mm, "Min value for y coordinate"};
-
-  /// Minimum value for the z coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_zmin{this, "zVertexMin", 0.0 * Gaudi::Units::mm, "Min value for z coordinate"};
-
-  /// Maximum value for the x coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_xmax{this, "xVertexMax", 0.0 * Gaudi::Units::mm, "Max value for x coordinate"};
-
-  /// Maximum value for the y coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_ymax{this, "yVertexMax", 0.0 * Gaudi::Units::mm, "Max value for y coordinate"};
-
-  /// Maximum value for the z coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_zmax{this, "zVertexMax", 0.0 * Gaudi::Units::mm, "Max value for z coordinate"};
-
-  /// Maximum value for the t coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_tmax{this, "tVertexMax", 0.0 * Gaudi::Units::mm / Gaudi::Units::c_light, "Max value for t coordinate"};
-
-  /// Minimum value for the t coordinate of the vertex (set by options)
-  Gaudi::Property<double> m_tmin{this, "tVertexMin", 0.0 * Gaudi::Units::mm / Gaudi::Units::c_light, "Min value for t coordinate"};
+  Gaudi::Property<double> m_xmean{this, "xVertexMean", 0.0 * Gaudi::Units::mm, "Mean of x coordinate"};
+  Gaudi::Property<double> m_ymean{this, "yVertexMean", 0.0 * Gaudi::Units::mm, "Mean of y coordinate"};
+  Gaudi::Property<double> m_zmean{this, "zVertexMean", 0.0 * Gaudi::Units::mm, "Mean of z coordinate"};
+  Gaudi::Property<double> m_tmean{this, "tVertexMean", 0.0 * Gaudi::Units::mm, "Mean of t coordinate"};
 
   /// Direction of the beam to take into account TOF vs nominal IP8, can have
   /// only values -1 or 1, or 0 to switch off the TOF and set time of

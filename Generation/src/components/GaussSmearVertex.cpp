@@ -14,10 +14,6 @@ GaussSmearVertex::GaussSmearVertex(const std::string& type, const std::string& n
     : GaudiTool(type, name, parent) {
   declareInterface<IVertexSmearingTool>(this);
 
-  declareProperty("xVertexSigma", m_xsig = 0.0 * Gaudi::Units::mm);
-  declareProperty("yVertexSigma", m_ysig = 0.0 * Gaudi::Units::mm);
-  declareProperty("zVertexSigma", m_zsig = 0.0 * Gaudi::Units::mm);
-  declareProperty("BeamDirection", m_zDir = 0);
 }
 
 /// Destructor
@@ -33,17 +29,6 @@ StatusCode GaussSmearVertex::initialize() {
   IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);
 
 
-  m_xsig = m_xmax - m_xmin;
-  m_xmean = m_xmin + m_xsig * 0.5;
-
-  m_ysig = m_ymax - m_ymin;
-  m_ymean = m_ymin + m_ysig * 0.5;
-
-  m_zsig = m_zmax - m_zmin;
-  m_zmean = m_zmin + m_zsig * 0.5;
-
-  m_tsig = m_tmax - m_tmin;
-  m_tmean = m_tmin + m_tsig * 0.5;
 
   sc = m_gaussDist.initialize(randSvc, Rndm::Gauss(0., 1));
   if (sc.isFailure()) return sc;
@@ -78,7 +63,7 @@ StatusCode GaussSmearVertex::smearVertex(HepMC::GenEvent& theEvent) {
   dx = m_gaussDist() * sqrt(m_xsig) + m_xmean;
   dy = m_gaussDist() * sqrt(m_ysig) + m_ymean;
   dz = m_gaussDist() * sqrt(m_zsig) + m_zmean;
-  dt = m_gaussDist() * sqrt(m_tsig)  + m_tmean;
+  dt = m_gaussDist() * sqrt(m_tsig) + m_tmean;
 
   Gaudi::LorentzVector dpos(dx, dy, dz, dt);
 
