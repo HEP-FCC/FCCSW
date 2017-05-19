@@ -27,15 +27,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  StatusCode initialize();
+  StatusCode initialize() override;
   /**  Execute.
    *   @return status code
    */
-  StatusCode execute();
+  StatusCode execute() override;
   /**  Finalize.
    *   @return status code
    */
-  StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Pointer to the geometry service

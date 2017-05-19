@@ -31,15 +31,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /**  Create regions and fast simulation models
    *   @return status code
    */
-  virtual StatusCode create() final;
+  StatusCode create() override final;
   /**  Get the names of the volumes where fast simulation should be performed.
    *   @return vector of volume names
    */

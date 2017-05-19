@@ -16,7 +16,7 @@ public:
   FullSimActions();
   virtual ~FullSimActions();
   /// Create all user actions.
-  virtual void Build() const final;
+  void Build() const override final;
 };
 }
 

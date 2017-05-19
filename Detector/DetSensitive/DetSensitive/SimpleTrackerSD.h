@@ -35,14 +35,14 @@ public:
    *  The hit collection is registered in Geant.
    *  @param aHitsCollections Geant hits collection.
    */
-  virtual void Initialize(G4HCofThisEvent* aHitsCollections) final;
+  void Initialize(G4HCofThisEvent* aHitsCollections) override final;
   /** Process hit once the particle hit the sensitive volume.
    *  Checks if the energy deposit is larger than 0, calculates the position and cellID,
    *  saves that into the hit collection.
    *  New hit is created for each energy deposit (to save information about time)
    *  @param aStep Step in which particle deposited the energy.
    */
-  virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
+  bool ProcessHits(G4Step* aStep, G4TouchableHistory*) override final;
 
 private:
   /// Collection of tracker hits

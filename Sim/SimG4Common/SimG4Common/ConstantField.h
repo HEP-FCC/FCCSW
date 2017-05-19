@@ -24,7 +24,7 @@ public:
   /// Get the value of the magnetic field value at position
   /// @param[in] point the position where the field is to be returned
   /// @param[out] bField the return value
-  virtual void GetFieldValue(const G4double point[4], double* bField) const final;
+  void GetFieldValue(const G4double point[4], double* bField) const override final;
 
   /// Set the x component of the field
   void setBx(double value) { m_bX = value; }

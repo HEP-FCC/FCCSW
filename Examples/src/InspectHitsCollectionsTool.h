@@ -22,11 +22,11 @@ public:
   explicit InspectHitsCollectionsTool(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~InspectHitsCollectionsTool();
   /// Initialize.
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /// Finalize.
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /// inspect output
-  virtual StatusCode saveOutput(const G4Event& aEvent) final;
+  StatusCode saveOutput(const G4Event& aEvent) override final;
 
 private:
   /// Pointer to the geometry service

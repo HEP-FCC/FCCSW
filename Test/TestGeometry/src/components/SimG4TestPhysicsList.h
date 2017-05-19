@@ -20,15 +20,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /** Get the physics list.
    *  @return pointer to G4VModularPhysicsList
    */
-  virtual G4VModularPhysicsList* physicsList();
+  G4VModularPhysicsList* physicsList() override;
 };
 
 #endif /* TESTGEOMETRY_G4TESTPHYSICSLIST_H */

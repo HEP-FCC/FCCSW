@@ -22,9 +22,9 @@ public:
   /// Destructor.
   virtual ~TestPhysicsList();
   /// Add the custom process that deposits all energy in the vertex.
-  virtual void ConstructProcess() final;
+  void ConstructProcess() override final;
   /// Construction of particles.
-  virtual void ConstructParticle() final;
+  void ConstructParticle() override final;
 
 private:
   TestKillProcess m_process;

@@ -45,15 +45,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Execute.
    *   @return status code
    */
-  virtual StatusCode execute() final;
+  StatusCode execute() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
 
 private:
   /**  Get ID of the volume that contains the cell.

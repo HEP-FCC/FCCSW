@@ -27,18 +27,18 @@ public:
   /**  Initialize the tool and a random number generator.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
 
   /**  Smear the momentum of the particle
    *   @param aMom Particle momentum to be smeared.
    *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
-  virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
+  StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) override final;
 
   /**  Check conditions of the smearing model, especially if the given parametrs do not exceed the parameters of the
    * model.
@@ -47,7 +47,7 @@ public:
    *   @param[in] aMaxEta Maximum pseudorapidity.
    *   @return status code
    */
-  inline virtual StatusCode checkConditions(double, double, double) const final { return StatusCode::SUCCESS; }
+  inline StatusCode checkConditions(double, double, double) const override final { return StatusCode::SUCCESS; }
 
 private:
   /// Random Number Service

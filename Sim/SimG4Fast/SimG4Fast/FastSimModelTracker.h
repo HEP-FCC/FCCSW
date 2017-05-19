@@ -57,18 +57,18 @@ public:
   /** Check if this model should be applied to this particle type.
    *  @param aParticle Particle definition (type).
    */
-  virtual G4bool IsApplicable(const G4ParticleDefinition& aParticle) final;
+  G4bool IsApplicable(const G4ParticleDefinition& aParticle) override final;
   /** Check if the model should be applied taking into account the kinematics of a track.
    *  @param aFastTrack Track.
    */
-  virtual G4bool ModelTrigger(const G4FastTrack& aFastTrack) final;
+  G4bool ModelTrigger(const G4FastTrack& aFastTrack) override final;
   /** Apply the parametrisation.
    *  Move the particle to the exit from the volume along the computed trajectory.
    *  Smear the momentum with the smearing tool m_smearTool.
    *  @param aFastTrack Track.
    *  @param aFastStep Step.
    */
-  virtual void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep) final;
+  void DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastStep) override final;
 
 private:
   /// Message Service

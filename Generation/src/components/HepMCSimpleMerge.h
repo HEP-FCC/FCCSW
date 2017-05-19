@@ -17,16 +17,16 @@ public:
 
   virtual ~HepMCSimpleMerge() final;
 
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
 
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
 
   /** Merge the events in the container into the signalEvent
    * For events in the vector, new vertices in signalEvent are created to which the final-state particles are attached.
    *  @param[in/out] signalEvent is the signal event that will be enriched with puEvents from eventVector
    *  @param[in] eventVector is the vector of pile-up GenEvents
    */
-  virtual StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) final;
+  StatusCode merge(HepMC::GenEvent& signalEvent, const std::vector<HepMC::GenEvent>& eventVector) override final;
 };
 
 #endif  // GENERATION_HEPMCPILEMERGETOOL_H

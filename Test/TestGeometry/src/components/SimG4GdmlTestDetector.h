@@ -26,15 +26,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /** Get the initilization of the geometry.
    *  @return pointer to G4VUserDetectorConstruction
    */
-  virtual G4VUserDetectorConstruction* detectorConstruction();
+  G4VUserDetectorConstruction* detectorConstruction() override;
 
 private:
   /// name of the GDML file

@@ -43,11 +43,11 @@ class CreateCaloCells : public GaudiAlgorithm {
 public:
   CreateCaloCells(const std::string& name, ISvcLocator* svcLoc);
 
-  StatusCode initialize();
+  StatusCode initialize() override;
 
-  StatusCode execute();
+  StatusCode execute() override;
 
-  StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Handle for tool to calibrate Geant4 energy to EM scale tool

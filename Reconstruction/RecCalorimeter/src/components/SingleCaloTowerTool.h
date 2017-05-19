@@ -30,7 +30,7 @@ class Segmentation;
  *  A tower contains all cells within certain eta and phi (tower size: '\b
  * deltaEtaTower', '\b deltaPhiTower').
  *  Distance in r plays no role, however `\b radiusForPosition` needs to be
- *  defined (e.g. to inner radius of the detector) for the cluster position 
+ *  defined (e.g. to inner radius of the detector) for the cluster position
  *  calculation. By default the radius is equal to 1.
  *
  *  This tool creates towers from a single cell collection (from one
@@ -50,11 +50,11 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /**  Find number of calorimeter towers.
    *   Number of towers in phi is calculated from full azimuthal angle (2 pi)
    * and the size of tower in phi ('\b deltaPhiTower').
@@ -62,14 +62,14 @@ public:
    * etaMax`) and the size of tower in eta ('\b deltaEtaTower').
    *   @return Struct containing number of towers in eta and phi.
    */
-  virtual tower towersNumber() final;
+  tower towersNumber() override final;
   /**  Build calorimeter towers.
-   *   Tower is segmented in eta and phi, with the energy from all layers 
+   *   Tower is segmented in eta and phi, with the energy from all layers
    *   (no segmentation).
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
-  virtual uint buildTowers(std::vector<std::vector<float>>& aTowers) final;
+  uint buildTowers(std::vector<std::vector<float>>& aTowers) override final;
   /**  Get the radius (in mm) for the position calculation.
    *   Reconstructed cluster has eta and phi position, without the radial
    * coordinate. The cluster in EDM contains
@@ -77,12 +77,12 @@ public:
    * calorimeter) needs to be specified. By default it is equal to 1.
    *   @return Radius
    */
-  virtual float radiusForPosition() const final;
+  float radiusForPosition() const override final;
   /**  Get the tower IDs in eta.
    *   @param[in] aEta Position of the calorimeter cell in eta
    *   @return ID (eta) of a tower
    */
-  virtual uint idEta(float aEta) const final;
+  uint idEta(float aEta) const override final;
   /**  Get the tower IDs in phi.
    *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is
    * phi=0, phi is defined form -pi to pi). No
@@ -90,26 +90,26 @@ public:
    *   @param[in] aPhi Position of the calorimeter cell in phi
    *   @return ID (phi) of a tower
    */
-  virtual uint idPhi(float aPhi) const final;
+  uint idPhi(float aPhi) const override final;
   /**  Get the eta position of the centre of the tower.
    *   Tower IDs are shifted so they start at 0 (middle of cell with ID=0 is
    * eta=0). No segmentation offset is taken into account.
    *   @param[in] aIdEta ID (eta) of a tower
    *   @return Position of the centre of the tower
    */
-  virtual float eta(int aIdEta) const final;
+  float eta(int aIdEta) const override final;
   /**  Get the phi position of the centre of the tower.
    *   @param[in] aIdPhi ID (phi) of a tower
    *   @return Position of the centre of the tower
    */
-  virtual float phi(int aIdPhi) const final;
+  float phi(int aIdPhi) const override final;
   /**  Correct way to access the neighbour of the phi tower, taking into account
    * the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct
    * neighbour of the last tower in phi with ID = m_nPhiTower - 1).
-   *   @param[in] aIPhi requested ID of a phi tower, 
+   *   @param[in] aIPhi requested ID of a phi tower,
    *   may be < 0 or >=m_nPhiTower
-   *   @return  ID of a tower - shifted and corrected 
+   *   @return  ID of a tower - shifted and corrected
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;

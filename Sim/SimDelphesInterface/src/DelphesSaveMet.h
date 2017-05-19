@@ -27,18 +27,18 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /**  Save Delphes collection to EDM.
    *   Converts met to fcc::MET and creates associations to fcc::MCParticle
    *   @param[in] delphes: reference to Delphes module
    *   @param[in] mcParticles: Not used here will vanish in the future: (FIXME: will be input at some point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
+  StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) override final;
 
 private:
   /// Handle the METs to be saved

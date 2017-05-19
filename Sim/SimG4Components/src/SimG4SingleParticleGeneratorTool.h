@@ -35,14 +35,14 @@ public:
   /// Standard constructor
   SimG4SingleParticleGeneratorTool(const std::string& type, const std::string& name, const IInterface* parent);
 
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
 
   /// Destructor
   virtual ~SimG4SingleParticleGeneratorTool();
 
   /// Generates primaries using the parameters set via options file, uses CLHEP:RandFlat random number generator
   /// @returns G4Event with primaries generated through G4ParticleGun (ownership is transferred to the caller)
-  virtual G4Event* g4Event() final;
+  G4Event* g4Event() override final;
 
 private:
   /// Saves primary vertex and particle to FCC EDM (called if property saveEDM is set to true)

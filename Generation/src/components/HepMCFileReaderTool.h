@@ -12,13 +12,13 @@ class HepMCFileReader : public GaudiTool, virtual public IHepMCProviderTool {
 public:
   HepMCFileReader(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~HepMCFileReader();  ///< Destructor
-  virtual StatusCode initialize();
-  virtual StatusCode finalize();
+  StatusCode initialize() override;
+  StatusCode finalize() override;
 
   /// Wrapper for HepMC's fill_next_event() --
   ///  as in the hepmc original, the user is responsible
   ///  for the deletion of the event returned from this function
-  virtual StatusCode getNextEvent(HepMC::GenEvent& event);
+  StatusCode getNextEvent(HepMC::GenEvent& event) override;
   /// Wrapper for HepMC file io.
 
 private:

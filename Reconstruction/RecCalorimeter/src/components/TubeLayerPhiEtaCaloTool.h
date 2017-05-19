@@ -22,8 +22,8 @@ class TubeLayerPhiEtaCaloTool : public GaudiTool, virtual public ICalorimeterToo
 public:
   TubeLayerPhiEtaCaloTool(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~TubeLayerPhiEtaCaloTool() = default;
-  virtual StatusCode initialize() final;
-  virtual StatusCode finalize() final;
+  StatusCode initialize() override final;
+  StatusCode finalize() override final;
   /** Prepare a map of all existing cells in current geometry.
    *   Active layers (cylindrical tubes) are looked in the geometry manager by name ('\b activeVolumeName').
    *   Corresponding bitfield name is given in '\b activeFieldName'.
@@ -36,7 +36,7 @@ public:
    *   @param[out] aCells map of existing cells (and deposited energy, set to 0)
    *   return Status code.
    */
-  virtual StatusCode prepareEmptyCells(std::unordered_map<uint64_t, double>& aCells) final;
+  StatusCode prepareEmptyCells(std::unordered_map<uint64_t, double>& aCells) override final;
 
 private:
   /// Pointer to the geometry service

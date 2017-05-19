@@ -29,9 +29,9 @@ class PythiaInterface : public GaudiTool, virtual public IHepMCProviderTool {
 public:
   /// Constructor.
   PythiaInterface(const std::string& type, const std::string& name, const IInterface* parent);
-  virtual StatusCode initialize();
-  virtual StatusCode finalize();
-  virtual StatusCode getNextEvent(HepMC::GenEvent& theEvent);
+  StatusCode initialize() override;
+  StatusCode finalize() override;
+  StatusCode getNextEvent(HepMC::GenEvent& theEvent) override;
 
 private:
   /// Pythia8 engine

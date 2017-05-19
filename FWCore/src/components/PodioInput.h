@@ -25,11 +25,11 @@ public:
   /// Constructor.
   PodioInput(const std::string& name, ISvcLocator* svcLoc);
   /// Initialization of PodioInput. Acquires the data service, opens root file and creates trees.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /// Execute. Re-creates collections that are specified to be read and sets references.
-  virtual StatusCode execute();
+  StatusCode execute() override;
   /// Finalize. Closes ROOT file.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Name of collections to read. Set by option collections (this is temporary)

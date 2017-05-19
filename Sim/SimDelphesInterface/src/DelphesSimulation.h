@@ -60,15 +60,15 @@ public:
   DelphesSimulation(const std::string& name, ISvcLocator* svcLoc);
 
   //! Initialize.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
 
   //! Execute. This function actually does no simulation,
   //! and simply converts the stable MCParticles in the input collection
   //! into Particles that are written to the output collection.
-  virtual StatusCode execute();
+  StatusCode execute() override;
 
   //! Finalize.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   //! Recursive method to find an id of MCParticle related to the given Delphes Candidate object,

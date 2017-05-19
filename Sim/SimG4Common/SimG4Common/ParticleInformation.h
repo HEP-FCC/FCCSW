@@ -32,7 +32,7 @@ public:
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
-  virtual void Print() const final;
+  void Print() const override final;
   /** Getter of the MCParticle.
    *  @returns EDM MCParticle.
    */

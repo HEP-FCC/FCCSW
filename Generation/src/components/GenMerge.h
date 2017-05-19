@@ -20,7 +20,7 @@ class MCParticleCollection;
 
 /** @class GenMerge
  *  @brief Algorithm merging two sets of MCParticle/Vertex-collections into one
- *  The main usecase, inspiring the member names, is overlaying generated pileup on a signal event. 
+ *  The main usecase, inspiring the member names, is overlaying generated pileup on a signal event.
  *  Note that collections cannot be modified once created, thus all data must be cloned into a new collections.
  *  Associations between particles and vertices are updated, so it is safe to drop the old collections.
  */
@@ -31,11 +31,11 @@ public:
   /// Constructor.
   GenMerge(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /// Execute.
-  virtual StatusCode execute();
+  StatusCode execute() override;
   /// Finalize.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   DataHandle<fcc::GenVertexCollection> m_vertInSignal{"signalGenParticles", Gaudi::DataHandle::Reader, this};

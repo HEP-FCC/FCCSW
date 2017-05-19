@@ -23,11 +23,11 @@ public:
   /// Constructor.
   GenAlg(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /// Execute.
-  virtual StatusCode execute();
+  StatusCode execute() override;
   /// Finalize.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Tools to handle input from HepMC-file

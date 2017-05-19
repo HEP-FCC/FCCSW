@@ -23,18 +23,18 @@ public:
   virtual ~ConstPileUp();  ///< Destructor
 
   /// Initialize method
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
 
   /** Implements IPileUpTool::numberOfPileUp.
    */
-  virtual unsigned int numberOfPileUp();
+  unsigned int numberOfPileUp() override;
 
-  virtual double getMeanPileUp();
+  double getMeanPileUp() override;
   /** Implements IPileUpTool::printPileUpCounters.
    */
-  virtual void printPileUpCounters();
+  void printPileUpCounters() override;
 
-  virtual std::string getFilename();
+  std::string getFilename() override;
 
 private:
   /// Number of min bias events to pile on signal event.

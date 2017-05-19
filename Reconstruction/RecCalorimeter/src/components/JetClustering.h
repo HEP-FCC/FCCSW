@@ -25,9 +25,9 @@ class JetClustering : public GaudiAlgorithm {
 public:
   JetClustering(const std::string& name, ISvcLocator* svcLoc);
   virtual ~JetClustering() {}
-  virtual StatusCode initialize();
-  virtual StatusCode execute();
-  virtual StatusCode finalize();
+  virtual StatusCode initialize() override;
+  virtual StatusCode execute() override;
+  virtual StatusCode finalize() override;
 
 private:
   /// Handle for the particles to be read

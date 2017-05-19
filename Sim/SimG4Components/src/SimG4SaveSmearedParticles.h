@@ -28,17 +28,17 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /**  Save the data output.
    *   Saves the 'reconstructed' (smeared) particles and associates them with MC particles.
    *   @param[in] aEvent Event with data to save.
    *   @return status code
    */
-  virtual StatusCode saveOutput(const G4Event& aEvent) final;
+  StatusCode saveOutput(const G4Event& aEvent) override final;
 
 private:
   /// Handle for the particles to be written

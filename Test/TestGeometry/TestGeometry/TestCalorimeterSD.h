@@ -23,8 +23,8 @@ public:
   TestCalorimeterSD(std::string name);
   TestCalorimeterSD(std::string name, int aCellNoInAxis);
   virtual ~TestCalorimeterSD();
-  virtual void Initialize(G4HCofThisEvent* HCE);
-  virtual G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist);
+  void Initialize(G4HCofThisEvent* HCE) override;
+  G4bool ProcessHits(G4Step* aStep, G4TouchableHistory* ROhist) override;
 
 private:
   TestCalorimeterHitsCollection* m_HitsCollection;

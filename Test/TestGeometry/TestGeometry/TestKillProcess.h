@@ -19,15 +19,15 @@ public:
   /// Destructor.
   virtual ~TestKillProcess(){};
   /// Add the custom process that deposits all energy in the vertex.
-  virtual G4VParticleChange* AtRestDoIt(const G4Track&, const G4Step&) final { return nullptr; };
-  virtual G4double AtRestGetPhysicalInteractionLength(const G4Track&, G4ForceCondition*) final { return -1; };
-  virtual G4VParticleChange* PostStepDoIt(const G4Track&, const G4Step&) final;
-  virtual G4double PostStepGetPhysicalInteractionLength(const G4Track&, G4double, G4ForceCondition*) final {
+  G4VParticleChange* AtRestDoIt(const G4Track&, const G4Step&) override final { return nullptr; };
+  G4double AtRestGetPhysicalInteractionLength(const G4Track&, G4ForceCondition*) override final { return -1; };
+  G4VParticleChange* PostStepDoIt(const G4Track&, const G4Step&) override final;
+  G4double PostStepGetPhysicalInteractionLength(const G4Track&, G4double, G4ForceCondition*) override final {
     return 0;
   };
-  virtual G4VParticleChange* AlongStepDoIt(const G4Track&, const G4Step&) final { return nullptr; };
-  virtual G4double AlongStepGetPhysicalInteractionLength(const G4Track&, G4double, G4double, G4double&,
-                                                         G4GPILSelection*) final {
+  G4VParticleChange* AlongStepDoIt(const G4Track&, const G4Step&) override final { return nullptr; };
+  G4double AlongStepGetPhysicalInteractionLength(const G4Track&, G4double, G4double, G4double&,
+                                                 G4GPILSelection*) override final {
     return -1;
   };
 };

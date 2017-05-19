@@ -29,18 +29,18 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /**  Save the data output.
    *   Saves the calorimeter hits and clusters from every hits collection associated with the event
    *   that has m_calType in its name.
    *   @param[in] aEvent Event with data to save.
    *   @return status code
    */
-  virtual StatusCode saveOutput(const G4Event& aEvent) final;
+  StatusCode saveOutput(const G4Event& aEvent) override final;
 
 private:
   /// Handle for calo clusters

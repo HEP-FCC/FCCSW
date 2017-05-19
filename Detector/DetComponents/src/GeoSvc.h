@@ -36,9 +36,9 @@ public:
   /// Destructor
   virtual ~GeoSvc();
   /// Initialize function
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /// Finalize function
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /// This function generates the DD4hep geometry
   StatusCode buildDD4HepGeo();
   /// This function generates the Geant4 geometry
@@ -49,7 +49,7 @@ public:
   // receive Geant4 Geometry
   virtual G4VUserDetectorConstruction* getGeant4Geo() override;
   /// Inform that a new incident has occurred
-  virtual void handle(const Incident& inc) final;
+  void handle(const Incident& inc) override final;
 
 private:
   /// Pointer to the incident service

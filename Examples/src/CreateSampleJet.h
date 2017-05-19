@@ -16,11 +16,11 @@ public:
   /// Constructor.
   CreateSampleJet(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /// Execute.
-  virtual StatusCode execute();
+  StatusCode execute() override;
   /// Finalize.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Handle for the jets to be written

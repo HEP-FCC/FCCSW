@@ -18,9 +18,9 @@ public:
   /// Constructor.
   explicit GeoToGdmlDumpSvc(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /// Finalize.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /// Destructor
   virtual ~GeoToGdmlDumpSvc() {}
 
