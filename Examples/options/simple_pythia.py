@@ -16,7 +16,16 @@ from Configurables import FCCDataSvc
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import ConstPileUp, HepMCFileReader
+from Configurables import ConstPileUp, HepMCFileReader, GaussSmearVertex
+
+from FCCPileupScenarios import FCCPhase1PileupConf as pileupconf
+smeartool = GaussSmearVertex(
+     xVertexMin=pileupconf['xVertexMin'],
+     xVertexMax=pileupconf['xVertexMax'],
+     yVertexMin=pileupconf['yVertexMin'],
+     yVertexMax=pileupconf['yVertexMax'],
+     zVertexMin=pileupconf['zVertexMin'],
+     zVertexMax=pileupconf['zVertexMax'])
 
 pileuptool = ConstPileUp(numPileUpEvents=2)
 pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
@@ -24,7 +33,7 @@ pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FC
 from Configurables import PythiaInterface, GenAlg
 ### PYTHIA algorithm
 pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
-pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pileupreader)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pileupreader, VertexSmearingTool=smeartool)
 pythia8gen.PileUpTool = pileuptool
 pythia8gen.hepmc.Path = "hepmcevent"
 
@@ -58,6 +67,6 @@ ApplicationMgr( TopAlg=[ pythia8gen, hepmc_converter, genfilter, genjet_clusteri
                 EvtSel='NONE',
                 EvtMax=2,
                 ExtSvc=[podioevent],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
 )
 
