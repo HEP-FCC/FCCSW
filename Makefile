@@ -34,9 +34,6 @@
 #     configure [*]_
 #         alias to CMake 'rebuild_cache' target
 #
-#     tests [*]_
-#         backward-compatibility target for the CMT generic Makefile
-#
 # :Author: Marco Clemencic
 #
 # .. [*] Targets defined by this Makefile.
@@ -44,25 +41,61 @@
 ################################################################################
 
 # settings
+CMAKE := cmake
+CTEST := ctest
+NINJA := $(shell which ninja 2> /dev/null)
 
-CMAKE = cmake
 ifneq ($(wildcard $(CURDIR)/toolchain.cmake),)
   override CMAKEFLAGS += -DCMAKE_TOOLCHAIN_FILE=$(CURDIR)/toolchain.cmake
+endif
+ifneq ($(wildcard $(CURDIR)/cache_preload.cmake),)
+  override CMAKEFLAGS += -C$(CURDIR)/cache_preload.cmake
 endif
 
 ifndef BINARY_TAG
   ifdef CMAKECONFIG
-    BINARY_TAG=${CMAKECONFIG}
+    BINARY_TAG := ${CMAKECONFIG}
   else
     ifdef CMTCONFIG
-      BINARY_TAG=${CMTCONFIG}
+      BINARY_TAG := ${CMTCONFIG}
     endif
   endif
 endif
 
-override CMAKEFLAGS += -DCMAKE_BUILD_TYPE=$(BUILDTYPE)
 BUILDDIR := $(CURDIR)/build.$(BINARY_TAG)
 
+ifneq ($(wildcard $(BUILDDIR)/Makefile),)
+  # force the use of GNU Make if the build was using it
+  USE_MAKE := 1
+endif
+ifneq ($(wildcard $(BUILDDIR)/build.ninja),)
+  ifeq ($(NINJA),)
+    # make sure we have ninja if we configured with it
+    $(error $(BUILDDIR) was configured for Ninja, but it is not in the path)
+  endif
+endif
+
+ifneq ($(NINJA),)
+  ifeq ($(USE_MAKE),)
+    ifeq ($(shell grep "FORTRAN\|NO_NINJA" CMakeLists.txt),)
+      USE_NINJA := 1
+    endif
+  endif
+endif
+
+# build tool
+ifneq ($(USE_NINJA),)
+  # enable Ninja
+  override CMAKEFLAGS += -GNinja
+  BUILD_CONF_FILE := build.ninja
+  BUILDFLAGS := $(NINJAFLAGS)
+  ifneq ($(VERBOSE),)
+    BUILDFLAGS := -v $(BUILDFLAGS)
+  endif
+else
+  BUILD_CONF_FILE := Makefile
+endif
+BUILD_CMD := $(CMAKE) --build build.$(BINARY_TAG) --target
 
 # default target
 all:
@@ -70,43 +103,47 @@ all:
 # deep clean
 purge:
 	$(RM) -r $(BUILDDIR) $(CURDIR)/InstallArea/$(BINARY_TAG)
-	find $(CURDIR) -name "*.pyc" -exec $(RM) -v \{} \;
+	find $(CURDIR) "(" -name "InstallArea" -prune -o -name "*.pyc" ")" -a -type f -exec $(RM) -v \{} \;
 
 # delegate any target to the build directory (except 'purge')
 ifneq ($(MAKECMDGOALS),purge)
-%: $(BUILDDIR)/Makefile FORCE
-	$(MAKE) -C build.$(BINARY_TAG) $*
+%: $(BUILDDIR)/$(BUILD_CONF_FILE) FORCE
+	+$(BUILD_CMD) $* -- $(BUILDFLAGS)
 endif
 
 # aliases
 .PHONY: configure tests FORCE
-ifneq ($(wildcard $(BUILDDIR)/Makefile),)
+ifneq ($(wildcard $(BUILDDIR)/$(BUILD_CONF_FILE)),)
 configure: rebuild_cache
 else
-configure: $(BUILDDIR)/Makefile
+configure: $(BUILDDIR)/$(BUILD_CONF_FILE)
 endif
 	@ # do not delegate further
 
 # This wrapping around the test target is used to ensure the generation of
 # the XML output from ctest.
-test: $(BUILDDIR)/Makefile
-	$(MAKE) -C build.$(BINARY_TAG) ARGS="-T test $(ARGS)" $@
+test: $(BUILDDIR)/$(BUILD_CONF_FILE)
+	$(RM) -r $(BUILDDIR)/Testing $(BUILDDIR)/html
+	-cd $(BUILDDIR) && $(CTEST) -T test $(ARGS)
+	+$(BUILD_CMD) HTMLSummary
 
-tests: all
-	-$(MAKE) -C build.$(BINARY_TAG) ARGS="-T test" test
-	$(MAKE) -C build.$(BINARY_TAG) QMTestSummary
+ifeq ($(VERBOSE),)
+# less verbose install (see GAUDI-1018)
+# (emulate the default CMake install target)
+install: all
+	cd $(BUILDDIR) && $(CMAKE) -P cmake_install.cmake | grep -v "^-- Up-to-date:"
+endif
 
 # ensure that the target are always passed to the CMake Makefile
 FORCE:
 	@ # dummy target
 
-# Special trick to allow a non-standard makefile name
-#  If the makefile is not called 'Makefile', we get its update delegated to
-#  cmake, unless we block the delegation.
-$(lastword $(MAKEFILE_LIST)):
+# Makefiles are used as implicit targets in make, but we should not consider
+# them for delegation.
+$(MAKEFILE_LIST):
 	@ # do not delegate further
 
 # trigger CMake configuration
-$(BUILDDIR)/Makefile:
+$(BUILDDIR)/$(BUILD_CONF_FILE):
 	mkdir -p $(BUILDDIR)
 	cd $(BUILDDIR) && $(CMAKE) $(CMAKEFLAGS) $(CURDIR)
