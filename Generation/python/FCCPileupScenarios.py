@@ -10,12 +10,25 @@ from GaudiKernel import SystemOfUnits as units
 
 
 _CommonFCCPileupConf = {
-          "xVertexMin": -0.5 * units.mm,
-          "xVertexMax": 0.5 * units.mm,
-          "yVertexMin": -0.5 * units.mm,
-          "yVertexMax": 0.5 * units.mm,
-          "zVertexMin": -70 * units.mm,
-          "zVertexMax": 70 * units.mm }
+          "xVertexMean": 0 * units.mm,
+          "xVertexSigma" = 0.5 * units.mm
+          "yVertexMean": 0 * units.mm,
+          "yVertexSigma": 0.5 * units.mm,
+          "zVertexMean": 0 * units.mm,
+          "zVertexSigma": 70 * units.mm }
+          "tVertexMean": 0 * units.ps,
+          "tVertexSigma": 120 * units.ps }
+
+
+# for flat distributions
+_CommonFCCPileupConf['xVertexMin'] = xVertexMean - 2 * xVertexSigma
+_CommonFCCPileupConf['xVertexMax'] = xVertexMean + 2 * xVertexSigma
+_CommonFCCPileupConf['yVertexMin'] = yVertexMean - 2 * yVertexSigma
+_CommonFCCPileupConf['yVertexMax'] = yVertexMean + 2 * yVertexSigma
+_CommonFCCPileupConf['zVertexMin'] = zVertexMean - 2 * zVertexSigma
+_CommonFCCPileupConf['zVertexMax'] = zVertexMean + 2 * zVertexSigma
+_CommonFCCPileupConf['tVertexMin'] = tVertexMean - 2 * tVertexSigma
+_CommonFCCPileupConf['tVertexMax'] = tVertexMean + 2 * tVertexSigma
 
 
 FCCPhase1PileupConf = _CommonFCCPileupConf.copy()

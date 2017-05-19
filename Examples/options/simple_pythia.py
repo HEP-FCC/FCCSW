@@ -5,6 +5,7 @@
 ### | ---------------------------------------------------- | ---------------------------------- | --------------------- | ------------------------------------- | ----------------------------------------------- |
 ### | generate Pythia events and save them to HepMC file   | convert `HepMC::GenEvent` to EDM   | filter MC Particles   | use sample jet clustering algorithm   | write the EDM output to ROOT file using PODIO   |
 
+from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
 ### Example of pythia configuration file to generate events
@@ -18,14 +19,15 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import ConstPileUp, HepMCFileReader, GaussSmearVertex
 
-from FCCPileupScenarios import FCCPhase1PileupConf as pileupconf
 smeartool = GaussSmearVertex(
-     xVertexMin=pileupconf['xVertexMin'],
-     xVertexMax=pileupconf['xVertexMax'],
-     yVertexMin=pileupconf['yVertexMin'],
-     yVertexMax=pileupconf['yVertexMax'],
-     zVertexMin=pileupconf['zVertexMin'],
-     zVertexMax=pileupconf['zVertexMax'])
+     xVertexMean=0. * units.mm,
+     xVertexSigma=0.5 * units.mm,
+     yVertexMean=0 * units.mm,
+     yVertexSigma=0.5 * units.mm,
+     zVertexMean=0* units.mm,
+     zVertexSigma=70*units.mm,
+     tVertexMean = 0 * units.ps
+     tVertexSigma = 30 * unit.ps)
 
 pileuptool = ConstPileUp(numPileUpEvents=2)
 pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
