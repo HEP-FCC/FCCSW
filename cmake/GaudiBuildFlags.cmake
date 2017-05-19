@@ -92,6 +92,10 @@ option(GAUDI_V22
        "enable some API extensions"
        OFF)
 
+if (BINARY_TAG_COMP_NAME STREQUAL "gcc" AND BINARY_TAG_COMP_VERSION VERSION_GREATER "5.0")
+  option(GAUDI_SUGGEST_OVERRIDE "enable warnings for missing override keyword" ON)
+endif()
+
 
 string(COMPARE EQUAL "${BINARY_TAG_TYPE}" "do0" GAUDI_SLOW_DEBUG_DEFAULT)
 option(GAUDI_SLOW_DEBUG
@@ -192,7 +196,7 @@ if(NOT GAUDI_FLAGS_SET)
     endforeach()
     # Common compilation flags
     set(CMAKE_CXX_FLAGS
-        "${arch_opts} -fmessage-length=0 -pipe -Wall -Wextra -Werror=return-type -pthread -pedantic -Wwrite-strings -Wpointer-arith -Woverloaded-virtual -Wno-long-long"
+        "${arch_opts} -fmessage-length=0 -pipe -Wall -Wextra -Werror=return-type -pthread -pedantic -Wwrite-strings -Wpointer-arith -Woverloaded-virtual -Wno-long-long -Wno-shadow"
         CACHE STRING "Flags used by the compiler during all build types."
         FORCE)
     set(CMAKE_C_FLAGS
