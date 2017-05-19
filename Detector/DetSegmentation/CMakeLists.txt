@@ -12,6 +12,8 @@ find_package(ROOT COMPONENTS MathCore Physics GenVector Geom REQUIRED)
 
 gaudi_install_headers(DetSegmentation)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_library(DetSegmentation
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT

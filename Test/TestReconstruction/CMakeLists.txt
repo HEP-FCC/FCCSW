@@ -7,6 +7,10 @@ gaudi_depends_on_subdirs(GaudiAlg GaudiKernel FWCore Detector/DetInterface Detec
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 
+find_package(DD4hep)
+find_package(ROOT)
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_module(TestTestPlugins
                  src/*.cpp
                  INCLUDE_DIRS FWCore DetInterface Geant4 DetCommon DetSegmentation GaudiKernel

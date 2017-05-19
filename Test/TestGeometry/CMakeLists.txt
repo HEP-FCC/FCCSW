@@ -12,6 +12,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_install_headers(TestGeometry)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_library(TestGeometry
 		  src/lib/*.cpp
 		  INCLUDE_DIRS Geant4 ROOT TestGeometry DD4hep

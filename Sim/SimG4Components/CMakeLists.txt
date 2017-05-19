@@ -14,6 +14,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 gaudi_install_headers(SimG4Components)
 gaudi_install_python_modules()
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_module(SimG4Components
                  src/*.cpp
                  INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface DD4hep ROOT

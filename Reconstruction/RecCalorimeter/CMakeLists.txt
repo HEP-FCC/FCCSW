@@ -14,6 +14,8 @@ find_package(HepMC)
 find_package(DD4hep COMPONENTS DDSegmentation)
 find_package(Geant4)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${Geant4_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_module(RecCalorimeterPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecCalorimeter
