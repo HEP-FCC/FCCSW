@@ -3,6 +3,7 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/PhysicalConstants.h"
+#include "GaudiKernel/SystemOfUnits.h"
 #include "GaudiKernel/Vector4DTypes.h"
 
 /// Declaration of the Tool Factory
@@ -31,11 +32,21 @@ StatusCode GaussSmearVertex::initialize() {
 
   IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);
 
-  sc = m_gaussDistX.initialize(randSvc, Rndm::Gauss(0., m_xsig));
+
+  m_xsig = m_xmax - m_xmin;
+  m_xmean = m_xmin + m_xsig * 0.5;
+
+  m_ysig = m_ymax - m_ymin;
+  m_ymean = m_ymin + m_ysig * 0.5;
+
+  m_zsig = m_zmax - m_zmin;
+  m_zmean = m_zmin + m_zsig * 0.5;
+
+  m_tsig = m_tmax - m_tmin;
+  m_tmean = m_tmin + m_tsig * 0.5;
+
+  sc = m_gaussDist.initialize(randSvc, Rndm::Gauss(0., 1));
   if (sc.isFailure()) return sc;
-  sc = m_gaussDistY.initialize(randSvc, Rndm::Gauss(0., m_ysig));
-  if (sc.isFailure()) return sc;
-  sc = m_gaussDistZ.initialize(randSvc, Rndm::Gauss(0., m_zsig));
 
   std::string infoMsg = " applying TOF of interaction with ";
   if (m_zDir == -1) {
@@ -64,10 +75,10 @@ StatusCode GaussSmearVertex::initialize() {
 StatusCode GaussSmearVertex::smearVertex(HepMC::GenEvent& theEvent) {
   double dx, dy, dz, dt;
 
-  dx = m_gaussDistX();
-  dy = m_gaussDistY();
-  dz = m_gaussDistZ();
-  dt = m_zDir * dz / Gaudi::Units::c_light;
+  dx = m_gaussDist() * sqrt(m_xsig) + m_xmean;
+  dy = m_gaussDist() * sqrt(m_ysig) + m_ymean;
+  dz = m_gaussDist() * sqrt(m_zsig) + m_zmean;
+  dt = m_gaussDist() * sqrt(m_tsig)  + m_tmean;
 
   Gaudi::LorentzVector dpos(dx, dy, dz, dt);
 
