@@ -3,6 +3,7 @@
 ################################################################################
 gaudi_subdir(FWCore v1r0)
 
+
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(ROOT COMPONENTS RIO Tree)
@@ -12,15 +13,18 @@ gaudi_depends_on_subdirs(GaudiAlg GaudiKernel)
 gaudi_install_scripts()
 gaudi_install_python_modules()
 
+include_directories(SYSTEM ${ROOT_INCLUDE_DIRS}  "$ENV{HEPMC_PREFIX}/include")
+
 gaudi_add_library(FWCore
-		  src/*.cpp
-                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM PODIO
-                  INCLUDE_DIRS FCCEDM PODIO
+                  src/*.cpp
+                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM PODIO ROOT
+                  INCLUDE_DIRS ROOT FCCEDM PODIO
                   PUBLIC_HEADERS FWCore)
 
 gaudi_add_module(FWCorePlugins
                  src/components/*.cpp
-                 LINK_LIBRARIES GaudiAlgLib GaudiKernel FWCore ROOT)
+                 LINK_LIBRARIES GaudiAlgLib GaudiKernel FWCore ROOT
+                 INCLUDE_DIRS ROOT)
 
 
 

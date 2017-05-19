@@ -11,9 +11,11 @@ find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
 include(DD4hep)
 find_package(Geant4)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS} ${Geant4_INCLUDE_DIRS})
+
 gaudi_add_module(Examples
                  src/*.cpp
-		           INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface
+                 INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface
                  LINK_LIBRARIES GaudiAlgLib FWCore ROOT GaudiKernel DD4hep ${DD4hep_COMPONENT_LIBRARIES} Geant4)
 
 
@@ -25,12 +27,12 @@ gaudi_add_test(DummyGen
                FRAMEWORK tests/options/examplejob.py)
 gaudi_add_test(DummyGenCheck
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
-			         COMMAND python ./scripts/dummy_gen_test.py
-			         DEPENDS DummyGen)
+               COMMAND python ./scripts/dummy_gen_test.py
+               DEPENDS DummyGen)
 gaudi_add_test(DummyCheck
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/tests
-			         COMMAND python ./scripts/test.py
-			         FAILS)
+               COMMAND python ./scripts/test.py
+               FAILS)
 # End of simple examples
 
 # Tests of example configs

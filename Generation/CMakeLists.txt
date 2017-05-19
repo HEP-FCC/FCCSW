@@ -8,11 +8,14 @@ gaudi_depends_on_subdirs(GaudiAlg FWCore)
 
 find_package(HepMC)
 find_package(Pythia8 COMPONENTS pythia8 pythia8tohepmc)
+find_package(ROOT)
 find_package(FCCEDM)
 find_package(PODIO)
 
 gaudi_install_headers(Generation)
 gaudi_install_python_modules()
+
+include_directories(SYSTEM ${HepMC_INCLUDE_DIRS} ${PYTHIA8_INCLUDE_DIR} ${ROOT_INCLUDE_DIRS})
 
 gaudi_add_module(Generation
                  src/components/*.cpp

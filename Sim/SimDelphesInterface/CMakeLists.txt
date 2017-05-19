@@ -12,6 +12,8 @@ find_package(PODIO)
 find_package(ROOT COMPONENTS Physics EG)
 find_package(HepMC)
 
+include_directories(SYSTEM ${DELPHES_INCLUDE_DIR} ${ROOT_INCLUDE_DIRS} "$ENV{HEPMC_PREFIX}/include")
+
 gaudi_add_module(SimDelphesInterface
                  src/*.cpp
                  INCLUDE_DIRS FWCore ROOT Delphes FCCEDM PODIO HepMC
