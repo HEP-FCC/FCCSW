@@ -63,8 +63,7 @@ StatusCode ExtrapolationTest::initialize() {
 
   m_trkGeo = m_trkGeoSvc->trackingGeometry();
   auto propConfig = RungeKuttaEngine<>::Config();
-  /// @todo: use magnetic field service
-  propConfig.fieldService = std::make_shared<ConstantBField>(0, 0, 0.004);
+  propConfig.fieldService = std::make_shared<ConstantBField>(0, 0, m_magneticFieldBz * 0.001); // needs to be in kT
   auto propEngine = std::make_shared<RungeKuttaEngine<>>(propConfig);
 
   auto matConfig = MaterialEffectsEngine::Config();

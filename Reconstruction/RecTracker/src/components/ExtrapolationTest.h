@@ -45,6 +45,7 @@ private:
 
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"positionedHits", Gaudi::DataHandle::Writer,
                                                                       this};
+  Gaudi::Property<float> m_magneticFieldBz{this, "magneticFieldBz", 4., "const magnetic field strength in z"};
   Rndm::Numbers m_flatDist;
 };
 
