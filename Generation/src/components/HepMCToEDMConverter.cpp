@@ -1,6 +1,7 @@
 #include "HepMCToEDMConverter.h"
 
 #include "GaudiKernel/PhysicalConstants.h"
+#include "GaudiKernel/ParticleProperty.h"
 
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
@@ -15,7 +16,10 @@ HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* s
   declareProperty("genvertices", m_genvhandle, "Generated vertices collection (output)");
 }
 
-StatusCode HepMCToEDMConverter::initialize() { return GaudiAlgorithm::initialize(); }
+StatusCode HepMCToEDMConverter::initialize() { 
+  m_ppSvc = svc<IParticlePropertySvc>("ParticlePropertySvc", true);
+  return GaudiAlgorithm::initialize();
+   }
 
 StatusCode HepMCToEDMConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
@@ -50,7 +54,9 @@ StatusCode HepMCToEDMConverter::execute() {
       tmp = (*particle_i)->momentum();
       fcc::MCParticle particle = particles->create();
       particle.pdgId((*particle_i)->pdg_id());
+      const ParticleProperty* particleProperty = m_ppSvc->find((*particle_i)->pdg_id());
       particle.status((*particle_i)->status());
+      particle.charge(particleProperty->charge());
       auto& p4 = particle.p4();
       p4.px = tmp.px() * hepmc2EdmEnergy;
       p4.py = tmp.py() * hepmc2EdmEnergy;
@@ -65,4 +71,6 @@ StatusCode HepMCToEDMConverter::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode HepMCToEDMConverter::finalize() { return GaudiAlgorithm::finalize(); }
+StatusCode HepMCToEDMConverter::finalize() {
+   release(m_ppSvc);
+   return GaudiAlgorithm::finalize(); }

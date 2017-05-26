@@ -5,6 +5,7 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/Units.h"
+#include "GaudiKernel/IParticlePropertySvc.h"
 
 namespace fcc {
 class MCParticleCollection;
@@ -31,5 +32,6 @@ private:
   DataHandle<fcc::MCParticleCollection> m_genphandle{"genParticles", Gaudi::DataHandle::Writer, this};
   /// Handle for the genvertices to be written
   DataHandle<fcc::GenVertexCollection> m_genvhandle{"genVertices", Gaudi::DataHandle::Writer, this};
+  IParticlePropertySvc* m_ppSvc;
 };
 #endif
