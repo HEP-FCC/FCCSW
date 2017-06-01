@@ -11,13 +11,14 @@ from GaudiKernel import SystemOfUnits as units
 
 _CommonFCCPileupConf = {
           "xVertexMean": 0 * units.mm,
-          "xVertexSigma" = 0.5 * units.mm
+          "xVertexSigma" : 0.5 * units.mm,
           "yVertexMean": 0 * units.mm,
           "yVertexSigma": 0.5 * units.mm,
           "zVertexMean": 0 * units.mm,
-          "zVertexSigma": 70 * units.mm }
-          "tVertexMean": 0 * units.ps,
-          "tVertexSigma": 120 * units.ps }
+          "zVertexSigma": 70 * units.mm,
+          "tVertexMean": 0 * units.picosecond,
+          "tVertexSigma": 120 * units.picosecond,
+           }
 
 
 # for flat distributions

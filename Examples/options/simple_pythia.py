@@ -26,8 +26,8 @@ smeartool = GaussSmearVertex(
      yVertexSigma=0.5 * units.mm,
      zVertexMean=0* units.mm,
      zVertexSigma=70*units.mm,
-     tVertexMean = 0 * units.ps
-     tVertexSigma = 30 * unit.ps)
+     tVertexMean = 0 * units.picosecond,
+     tVertexSigma = 30 * units.picosecond)
 
 pileuptool = ConstPileUp(numPileUpEvents=2)
 pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
