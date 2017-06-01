@@ -63,7 +63,7 @@ out.filename="fastDigi_Example.root"
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, fastdigi, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10,
+                EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice, ppservice,],
                 OutputLevel=DEBUG
