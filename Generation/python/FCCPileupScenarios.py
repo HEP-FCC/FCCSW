@@ -22,14 +22,14 @@ _CommonFCCPileupConf = {
 
 
 # for flat distributions
-_CommonFCCPileupConf['xVertexMin'] = xVertexMean - 2 * xVertexSigma
-_CommonFCCPileupConf['xVertexMax'] = xVertexMean + 2 * xVertexSigma
-_CommonFCCPileupConf['yVertexMin'] = yVertexMean - 2 * yVertexSigma
-_CommonFCCPileupConf['yVertexMax'] = yVertexMean + 2 * yVertexSigma
-_CommonFCCPileupConf['zVertexMin'] = zVertexMean - 2 * zVertexSigma
-_CommonFCCPileupConf['zVertexMax'] = zVertexMean + 2 * zVertexSigma
-_CommonFCCPileupConf['tVertexMin'] = tVertexMean - 2 * tVertexSigma
-_CommonFCCPileupConf['tVertexMax'] = tVertexMean + 2 * tVertexSigma
+_CommonFCCPileupConf['xVertexMin'] = _CommonFCCPileupConf['xVertexMean'] - 2 * _CommonFCCPileupConf['xVertexSigma']
+_CommonFCCPileupConf['xVertexMax'] = _CommonFCCPileupConf['xVertexMean'] + 2 * _CommonFCCPileupConf['xVertexSigma']
+_CommonFCCPileupConf['yVertexMin'] = _CommonFCCPileupConf['yVertexMean'] - 2 * _CommonFCCPileupConf['yVertexSigma']
+_CommonFCCPileupConf['yVertexMax'] = _CommonFCCPileupConf['yVertexMean'] + 2 * _CommonFCCPileupConf['yVertexSigma']
+_CommonFCCPileupConf['zVertexMin'] = _CommonFCCPileupConf['zVertexMean'] - 2 * _CommonFCCPileupConf['zVertexSigma']
+_CommonFCCPileupConf['zVertexMax'] = _CommonFCCPileupConf['zVertexMean'] + 2 * _CommonFCCPileupConf['zVertexSigma']
+_CommonFCCPileupConf['tVertexMin'] = _CommonFCCPileupConf['tVertexMean'] - 2 * _CommonFCCPileupConf['tVertexSigma']
+_CommonFCCPileupConf['tVertexMax'] = _CommonFCCPileupConf['tVertexMean'] + 2 * _CommonFCCPileupConf['tVertexSigma']
 
 
 FCCPhase1PileupConf = _CommonFCCPileupConf.copy()
