@@ -36,16 +36,21 @@ public:
   StatusCode finalize() override final;
 
 private:
-  /// Pointer to the geometry service
+  /// Tracking geometry service
   SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
+  /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
 
+  /// pointer to tracking geometry world
   std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
+  /// pointer to Acts extrapolation engine
   std::shared_ptr<const Acts::IExtrapolationEngine> m_exEngine;
 
+  /// output of points along track
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"positionedHits", Gaudi::DataHandle::Writer,
                                                                       this};
   Gaudi::Property<float> m_magneticFieldBz{this, "magneticFieldBz", 4., "const magnetic field strength in z"};
+  /// Random number generator for the track parameters
   Rndm::Numbers m_flatDist;
 };
 
