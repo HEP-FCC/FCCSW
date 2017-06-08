@@ -91,12 +91,16 @@ StatusCode ExtrapolationTest::initialize() {
 
 StatusCode ExtrapolationTest::execute() {
 
-  fcc::PositionedTrackHitCollection* phitscoll = new fcc::PositionedTrackHitCollection();
-  fcc::TrackHitCollection* hitscoll = new fcc::TrackHitCollection();
+  fcc::PositionedTrackHitCollection* posHitCollection = new fcc::PositionedTrackHitCollection();
+  fcc::TrackHitCollection* hitCollection = new fcc::TrackHitCollection();
 
-
+  // initial value for the track parameters, following Acts conventions
   ActsVector<ParValue_t, NGlobalPars> pars;
-  pars << 0, 0, m_flatDist() * M_PI * 0.5, m_flatDist() * M_PI*0.45, 0.001;
+  pars << 0, // local coordinate 1
+          0, // local coordinate 2
+          m_flatDist() * M_PI * 0.5, // phi 
+          m_flatDist() * M_PI*0.45,  // theta
+          0.001; // qOverP
   auto startCov =
       std::make_unique<DefaultCovMatrix>(DefaultCovMatrix::Identity());
 
@@ -115,16 +119,16 @@ StatusCode ExtrapolationTest::execute() {
 
   for (const auto& step : exCell.extrapolationSteps) {
     const auto& tp = step.parameters;
-    fcc::TrackHit edmHit = hitscoll->create();
+    fcc::TrackHit edmHit = hitCollection->create();
     fcc::BareHit& edmHitCore = edmHit.core();
     auto position = fcc::Point();
     position.x = tp->position().x();
     position.y = tp->position().y();
     position.z = tp->position().z();
-    phitscoll->create(position, edmHitCore);
+    posHitCollection->create(position, edmHitCore);
   }
 
-  m_positionedTrackHits.put(phitscoll);
+  m_positionedTrackHits.put(posHitCollection);
   return StatusCode::SUCCESS;
 }
 
