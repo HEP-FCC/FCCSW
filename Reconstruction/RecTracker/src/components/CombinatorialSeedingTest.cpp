@@ -27,8 +27,6 @@ CombinatorialSeedingTest::CombinatorialSeedingTest(const std::string& name, ISvc
   declareProperty("TrackSeedingTool", m_trackSeedingTool);
 }
 
-CombinatorialSeedingTest::~CombinatorialSeedingTest() {}
-
 StatusCode CombinatorialSeedingTest::initialize() {
   info() << "initialize" << endmsg;
 
@@ -41,7 +39,8 @@ StatusCode CombinatorialSeedingTest::execute() {
   const fcc::PositionedTrackHitCollection* hits = m_positionedTrackHits.get();
   auto seedmap = m_trackSeedingTool->findSeeds(hits);
 
-  for (std::multimap<unsigned int, unsigned int>::iterator it = seedmap.begin(); it != seedmap.end(); ++it) {
+  for (auto seedIdPair: seedmap) {
+    debug() << "trackseed: " << seedIdPair.first << "\t" << seedIdPair.second << endmsg;
   }
 
   return StatusCode::SUCCESS;

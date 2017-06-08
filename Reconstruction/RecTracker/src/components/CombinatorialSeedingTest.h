@@ -17,23 +17,29 @@ class TrackHitCollection;
 class PositionedTrackHitCollection;
 }
 
+
+/*** @class CombinatorialSeedingTest 
+ *
+ *  Algorithm that only calls the Combinatorial Seeding tool
+ *  for testing purposes and pints a debug statement.
+ */
 class CombinatorialSeedingTest : public GaudiAlgorithm {
 public:
   CombinatorialSeedingTest(const std::string& name, ISvcLocator* svcLoc);
 
-  ~CombinatorialSeedingTest();
+  ~CombinatorialSeedingTest() = default;
 
-  StatusCode initialize();
+  StatusCode initialize() override final;
 
-  StatusCode execute();
+  StatusCode execute() override final;
 
-  StatusCode finalize();
+  StatusCode finalize() override final;
 
 private:
-  /// Pointer to the geometry service
-
+  /// TrackHits as Input to the track seeding
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"positionedTrackHits", Gaudi::DataHandle::Reader,
                                                                       this};
+  /// Handle to Track Seeding Tool that does the work
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool{"CombinatorialSeedingTool/CombinatorialSeedingTool", this};
 };
 
