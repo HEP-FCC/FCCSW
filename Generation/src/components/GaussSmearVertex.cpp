@@ -33,16 +33,6 @@ StatusCode GaussSmearVertex::initialize() {
   sc = m_gaussDist.initialize(randSvc, Rndm::Gauss(0., 1));
   if (sc.isFailure()) return sc;
 
-  std::string infoMsg = " applying TOF of interaction with ";
-  if (m_zDir == -1) {
-    infoMsg = infoMsg + "negative beam direction";
-  } else if (m_zDir == 1) {
-    infoMsg = infoMsg + "positive beam direction";
-  } else if (m_zDir == 0) {
-    infoMsg = " with TOF of interaction equal to zero ";
-  } else {
-    return Error("BeamDirection can only be set to -1 or 1, or 0 to switch off TOF");
-  }
 
   info() << "Smearing of interaction point with normal distribution "
          << " in x, y and z " << endmsg;
