@@ -61,7 +61,9 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
     Acts::ActsExtension::Config layConfig;
     layConfig.isLayer = true;
-    layConfig.axes = "XzY";
+    // the local coordinate systems of modules in dd4hep and acts differ
+    // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
+    layConfig.axes = "XzY"; // correct translation of local x axis in dd4hep to local x axis in acts
     // detElement owns extension
     Acts::ActsExtension* layerExtension = new Acts::ActsExtension(layConfig);
     lay_det.addExtension<Acts::IActsExtension>(layerExtension);
