@@ -9,7 +9,6 @@ TrackingGeoSvc::TrackingGeoSvc(const std::string& name, ISvcLocator* svc)
     : base_class(name, svc), m_trackingGeo(nullptr),
     m_geoSvc("GeoSvc", "TrackingGeoSvc") {}
 
-TrackingGeoSvc::~TrackingGeoSvc() {}
 
 StatusCode TrackingGeoSvc::initialize() {
   if (Service::initialize().isFailure()) {

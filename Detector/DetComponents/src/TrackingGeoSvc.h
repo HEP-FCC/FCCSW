@@ -36,11 +36,11 @@ public:
   /// Default constructor
   TrackingGeoSvc(const std::string& name, ISvcLocator* svc);
   /// Default destructor
-  virtual ~TrackingGeoSvc();
+  virtual ~TrackingGeoSvc() = default;
   /// Initialize function
-  virtual StatusCode initialize();
+  virtual StatusCode initialize() override final;
   /// Finalize function
-  virtual StatusCode finalize();
+  virtual StatusCode finalize() override final;
   // receive DD4hep Geometry
   virtual std::shared_ptr<Acts::TrackingGeometry> trackingGeometry() const;
 
