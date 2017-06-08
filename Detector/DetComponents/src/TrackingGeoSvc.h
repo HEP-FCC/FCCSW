@@ -49,7 +49,7 @@ public:
 
 private:
   /// Handle to the FCC geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   // Tracking  Geometry
   std::shared_ptr<Acts::TrackingGeometry> m_trackingGeo;
 };
