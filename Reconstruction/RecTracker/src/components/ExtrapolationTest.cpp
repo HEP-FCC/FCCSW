@@ -4,6 +4,7 @@
 #include "RecInterface/ITrackSeedingTool.h"
 
 #include "GaudiKernel/IRndmGenSvc.h"
+#include "GaudiKernel/SystemOfUnits.h"
 
 
 #include "ACTS/Detector/TrackingGeometry.hpp"
@@ -65,7 +66,7 @@ StatusCode ExtrapolationTest::initialize() {
 
   m_trkGeo = m_trkGeoSvc->trackingGeometry();
   auto propConfig = RungeKuttaEngine<>::Config();
-  propConfig.fieldService = std::make_shared<ConstantBField>(0, 0, m_magneticFieldBz * 0.001); // needs to be in kT
+  propConfig.fieldService = std::make_shared<ConstantBField>(0, 0, m_magneticFieldBz * Gaudi::Units::perThousand * Gaudi::Units::tesla); // needs to be in kT
   auto propEngine = std::make_shared<RungeKuttaEngine<>>(propConfig);
 
   auto matConfig = MaterialEffectsEngine::Config();
