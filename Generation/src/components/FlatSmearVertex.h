@@ -52,7 +52,7 @@ private:
   /// Direction of the beam to take into account TOF vs nominal IP8, can have
   /// only values -1 or 1, or 0 to switch off the TOF and set time of
   /// interaction to zero (default = 1, as for beam 1)
-  Gaudi::Property<int> m_zDir{"beamDirection", 0, "Direction of the beam, possible values: -1, 1 or 0"};
+  Gaudi::Property<int> m_zDir{"beamDirection", 1, "Direction of the beam, possible values: -1, 1 or 0"};
 
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
