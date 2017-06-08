@@ -49,10 +49,9 @@ private:
   Rndm::Numbers m_flatDist;
 };
 
-using namespace Acts;
 
-typedef FittableMeasurement<long int> FitMeas_t;
-template <ParID_t... pars>
-using Meas_t = Measurement<long int, pars...>;
+typedef Acts::FittableMeasurement<long int> FitMeas_t;
+template <Acts::ParID_t... pars>
+using Meas_t = Acts::Measurement<long int, pars...>;
 
 #endif /* RECTRACKER_EXTRAPOLATIONTEST_H */

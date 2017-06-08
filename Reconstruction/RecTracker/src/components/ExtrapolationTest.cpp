@@ -37,6 +37,8 @@
 
 #include "ExtrapolationTest.h"
 
+using namespace Acts;
+
 DECLARE_ALGORITHM_FACTORY(ExtrapolationTest)
 
 ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
