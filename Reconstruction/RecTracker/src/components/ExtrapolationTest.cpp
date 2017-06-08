@@ -47,8 +47,6 @@ ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLo
   declareProperty("positionedTrackHits", m_positionedTrackHits, "hits/TrackerPositionedHits");
 }
 
-ExtrapolationTest::~ExtrapolationTest() {}
-
 StatusCode ExtrapolationTest::initialize() {
 
   IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);

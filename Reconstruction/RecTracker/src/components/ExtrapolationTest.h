@@ -27,13 +27,13 @@ class ExtrapolationTest : public GaudiAlgorithm {
 public:
   ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc);
 
-  ~ExtrapolationTest();
+  ~ExtrapolationTest() = default;
 
-  StatusCode initialize();
+  StatusCode initialize() override final;
 
-  StatusCode execute();
+  StatusCode execute() override final;
 
-  StatusCode finalize();
+  StatusCode finalize() override final;
 
 private:
   /// Pointer to the geometry service
