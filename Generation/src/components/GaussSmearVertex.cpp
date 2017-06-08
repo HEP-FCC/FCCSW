@@ -36,7 +36,6 @@ StatusCode GaussSmearVertex::initialize() {
 
   info() << "Smearing of interaction point with normal distribution "
          << " in x, y and z " << endmsg;
-  info() << infoMsg << endmsg;
   info() << " with " << m_xsig / Gaudi::Units::mm << " mm  standard deviation in x " << m_ysig / Gaudi::Units::mm
          << " mm in y and " << m_zsig / Gaudi::Units::mm << " mm in z." << endmsg;
 
