@@ -42,7 +42,9 @@ using namespace Acts;
 
 DECLARE_ALGORITHM_FACTORY(ExtrapolationTest)
 
-ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc),
+  m_geoSvc("GeoSvc", "ExtrapolationTest"),
+  m_trkGeoSvc("TrackingGeoSvc", "ExtrapolationTest") {
 
   declareProperty("positionedTrackHits", m_positionedTrackHits, "hits/TrackerPositionedHits");
 }
@@ -51,16 +53,8 @@ StatusCode ExtrapolationTest::initialize() {
 
   IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);
 
-  m_geoSvc = service("GeoSvc");
-
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
-
-  m_trkGeoSvc = service("TrackingGeoSvc");
-  if (nullptr == m_trkGeoSvc) {
-    error() << "Unable to locate Tracking Geometry Service. " << endmsg;
-    return StatusCode::FAILURE;
-  }
 
   m_trkGeo = m_trkGeoSvc->trackingGeometry();
   auto propConfig = RungeKuttaEngine<>::Config();

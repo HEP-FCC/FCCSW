@@ -36,10 +36,10 @@ public:
   StatusCode finalize() override final;
 
 private:
-  /// Tracking geometry service
-  SmartIF<ITrackingGeoSvc> m_trkGeoSvc;
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
+  /// Tracking geometry service
+  ServiceHandle<ITrackingGeoSvc> m_trkGeoSvc;
 
   /// pointer to tracking geometry world
   std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
