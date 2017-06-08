@@ -14,6 +14,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_install_headers(DetSensitive)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_library(DetSensitive
                   src/*.cpp
                   INCLUDE_DIRS Geant4 DD4hep ROOT DetCommon

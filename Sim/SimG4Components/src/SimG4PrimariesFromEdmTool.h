@@ -27,13 +27,13 @@ public:
   /// Standard constructor
   SimG4PrimariesFromEdmTool(const std::string& type, const std::string& name, const IInterface* parent);
 
-  virtual ~SimG4PrimariesFromEdmTool();
+  ~SimG4PrimariesFromEdmTool();
 
-  StatusCode initialize() final;
+  StatusCode initialize() override final;
 
   /// Translates the input (fcc::MCParticleCollection) into a G4Event
   /// @returns G4Event with primaries generated from MCParticleCollection (ownership is transferred to the caller)
-  virtual G4Event* g4Event() final;
+  G4Event* g4Event() override final;
 
 private:
   /// Handle for the EDM MC particles to be read

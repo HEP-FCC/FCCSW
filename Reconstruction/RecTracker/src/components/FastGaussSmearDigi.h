@@ -22,11 +22,11 @@ public:
 
   ~FastGaussSmearDigi();
 
-  StatusCode initialize();
+  StatusCode initialize() override;
 
-  StatusCode execute();
+  StatusCode execute() override;
 
-  StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Pointer to the geometry service

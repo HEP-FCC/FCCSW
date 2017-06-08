@@ -7,12 +7,13 @@ gaudi_subdir(Visualization v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore)
 
 find_package(ROOT COMPONENTS Geom MathCore RIO Eve GenVector Gui REQUIRED)
-
-
-set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
+set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} ${DD4hep_ROOT}/cmake )
 find_package(DD4hep COMPONENTS DDCore DDG4 DDEve REQUIRED)
 
 include(DD4hep)
+
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 
 find_package(FCCEDM)
 find_package(PODIO)

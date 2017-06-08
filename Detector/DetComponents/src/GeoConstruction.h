@@ -31,9 +31,9 @@ public:
   virtual ~GeoConstruction();
   /// Geometry construction callback: Invoke the conversion to Geant4
   /// All volumes (including world) are deleted in ~G4PhysicalVolumeStore()
-  virtual G4VPhysicalVolume* Construct() final;
+  G4VPhysicalVolume* Construct() override final;
   /// Construct SD
-  virtual void ConstructSDandField() final;
+  void ConstructSDandField() override final;
 
 private:
   /// Reference to geometry object

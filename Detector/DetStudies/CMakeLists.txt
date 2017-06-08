@@ -13,6 +13,8 @@ find_package(FCCEDM)
 find_package(PODIO)
 find_package(CLHEP)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_module(DetStudies
                  src/components/*.cpp
                  INCLUDE_DIRS GaudiKernel ROOT DD4hep FWCore CLHEP

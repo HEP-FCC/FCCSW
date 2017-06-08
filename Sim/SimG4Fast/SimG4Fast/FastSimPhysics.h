@@ -26,9 +26,9 @@ public:
   /* Add the process of parametrisation to every existing particle
   * (created by the G4ModularPhysicsList to which it is registered)
   */
-  virtual void ConstructProcess() final;
+  void ConstructProcess() override final;
   /// Construction of particles. Nothing to be done by fast sim (parametrisation).
-  virtual void ConstructParticle() final;
+  void ConstructParticle() override final;
 };
 }
 

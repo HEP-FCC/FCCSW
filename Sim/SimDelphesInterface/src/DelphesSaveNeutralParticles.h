@@ -29,11 +29,11 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /**  Save Delphes collection to EDM.
    *   Converts neutral particles to fcc::Particle and creates associations to fcc::MCParticle
    *   If isolation switch is true, isolation tags are also translated and associations are created.
@@ -42,7 +42,7 @@ public:
    * point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
+  StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) override final;
 
 private:
   /// Handle the particles to be saved

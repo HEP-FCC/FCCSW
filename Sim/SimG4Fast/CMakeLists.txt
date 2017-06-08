@@ -12,6 +12,8 @@ find_package(ROOT COMPONENTS Tree)
 
 gaudi_install_headers(SimG4Fast)
 
+include_directories(SYSTEM ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_library(SimG4Fast
                  src/lib/*.cpp
                  INCLUDE_DIRS SimG4Common FWCore SimG4Components SimG4Interface Geant4 ROOT

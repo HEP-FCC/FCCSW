@@ -23,15 +23,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /** Get the initilization of the geometry.
    *  @return pointer to G4VUserDetectorConstruction (ownership is transferred to the caller)
    */
-  virtual G4VUserDetectorConstruction* detectorConstruction();
+  G4VUserDetectorConstruction* detectorConstruction() override;
 
 private:
   /// Pointer to the geometry service

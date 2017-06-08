@@ -24,11 +24,11 @@ public:
   virtual ~FlatSmearVertex();  ///< Destructor
 
   /// Initialize method
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
 
   /** Implements IVertexSmearingTool::smearVertex.
    */
-  virtual StatusCode smearVertex(HepMC::GenEvent& theEvent);
+  StatusCode smearVertex(HepMC::GenEvent& theEvent) override;
 
 private:
   /// Minimum value for the x coordinate of the vertex (set by options)

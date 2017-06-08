@@ -24,15 +24,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /** Get the physics list.
    *  @return pointer to G4VModularPhysicsList (ownership is transferred to the caller)
    */
-  virtual G4VModularPhysicsList* physicsList();
+  G4VModularPhysicsList* physicsList() override;
 
 private:
   /// Handle for the full physics list tool

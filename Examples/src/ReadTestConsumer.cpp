@@ -16,9 +16,9 @@ public:
 
   ~ReadTestConsumer(){};
 
-  StatusCode initialize() { return GaudiAlgorithm::initialize(); }
+  StatusCode initialize() override { return GaudiAlgorithm::initialize(); }
 
-  StatusCode execute() {
+  StatusCode execute() override {
     // Read the input
     const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
 
@@ -36,7 +36,7 @@ public:
     return StatusCode::SUCCESS;
   }
 
-  StatusCode finalize() { return GaudiAlgorithm::finalize(); }
+  StatusCode finalize() override { return GaudiAlgorithm::finalize(); }
 
 private:
   /// Particles to read

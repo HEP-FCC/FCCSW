@@ -39,7 +39,7 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Execute the simulation.
    *   Translation of MCParticleCollection to G4Event is done using EDM2G4() method.
    *   Then, G4Event is passed to SimG4Svc for the simulation and retrieved afterwards.
@@ -47,11 +47,11 @@ public:
    *   Finally, the event is terminated.
    *   @return status code
    */
-  virtual StatusCode execute() final;
+  StatusCode execute() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
 
 private:
   /// Pointer to the interface of Geant simulation service

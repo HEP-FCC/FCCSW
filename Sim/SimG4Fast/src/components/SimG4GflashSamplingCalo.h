@@ -25,15 +25,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /**  Get the parametrisation
    *   @return unique pointer to the parametrisation
    */
-  virtual std::unique_ptr<GVFlashShowerParameterisation> parametrisation() final;
+  std::unique_ptr<GVFlashShowerParameterisation> parametrisation() override final;
 
 private:
   /// Material name of the active layer in the sampling calorimeter (to be searched for in Geant NIST table)

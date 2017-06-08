@@ -17,8 +17,8 @@ class MaterialScan : public Service {
 public:
   explicit MaterialScan(const std::string& name, ISvcLocator* svcLoc);
 
-  virtual StatusCode initialize();
-  virtual StatusCode finalize();
+  StatusCode initialize() override;
+  StatusCode finalize() override;
   virtual ~MaterialScan(){};
 
 private:

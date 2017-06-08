@@ -28,25 +28,25 @@ public:
   virtual ~FCCEventHandler();
 
   /// Access the map of simulation data collections
-  virtual const TypedEventCollections& data() const override { return m_data; }
+  const TypedEventCollections& data() const override { return m_data; }
   /// Access the data source name
-  std::string datasourceName() const { return hasFile() ? m_fileName : std::string("UNKNOWN"); }
+  std::string datasourceName() const override { return hasFile() ? m_fileName : std::string("UNKNOWN"); }
   /// Access the number of events on the current input data source (-1 if no data source connected)
-  virtual long numEvents() const;
+  long numEvents() const override;
   /// Access to the collection type by name
-  virtual CollectionType collectionType(const std::string& collection) const;
+  CollectionType collectionType(const std::string& collection) const override;
   /// Call functor on hit collection
-  virtual size_t collectionLoop(const std::string& collection, DD4hep::DDEveHitActor& actor);
+  size_t collectionLoop(const std::string& collection, DD4hep::DDEveHitActor& actor) override;
   /// Loop over collection and extract particle data
-  virtual size_t collectionLoop(const std::string& collection, DD4hep::DDEveParticleActor& actor);
+  size_t collectionLoop(const std::string& collection, DD4hep::DDEveParticleActor& actor) override;
   /// Open new data file
-  virtual bool Open(const std::string& type, const std::string& file_name);
+  bool Open(const std::string& type, const std::string& file_name) override;
   /// User overloadable function: Load the next event
-  virtual bool NextEvent();
+  bool NextEvent() override;
   /// User overloadable function: Load the previous event
-  virtual bool PreviousEvent();
+  bool PreviousEvent() override;
   /// Goto a specified event in the file
-  virtual bool GotoEvent(long event_number);
+  bool GotoEvent(long event_number) override;
 };
 
 } /* End namespace vis   */

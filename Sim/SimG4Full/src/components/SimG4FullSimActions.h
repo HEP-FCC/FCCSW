@@ -22,15 +22,15 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
   /** Get the user action initialization.
    *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
-  virtual G4VUserActionInitialization* userActionInitialization() final;
+  G4VUserActionInitialization* userActionInitialization() override final;
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

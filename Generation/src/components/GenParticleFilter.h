@@ -25,11 +25,11 @@ public:
   /// Constructor.
   GenParticleFilter(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
   /// Execute: Applies the filter
-  virtual StatusCode execute();
+  StatusCode execute() override;
   /// Finalize.
-  virtual StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /// Particle statuses to accept

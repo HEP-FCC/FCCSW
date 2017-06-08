@@ -36,17 +36,17 @@ public:
   /**  Initialize the tool and a random number generator.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /**  Smear the momentum of the particle
    *   @param aMom Particle momentum to be smeared.
    *   @param[in] aPdg Particle PDG code.
    *   @return status code
    */
-  virtual StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) final;
+  StatusCode smearMomentum(CLHEP::Hep3Vector& aMom, int aPdg = 0) override final;
   /**  Read the file with the resolutions. File name is set by job options.
    *   @return status code
    */
@@ -65,7 +65,7 @@ public:
    *   @param[in] aMaxEta Maximum pseudorapidity.
    *   @return status code
    */
-  virtual StatusCode checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const final;
+  StatusCode checkConditions(double aMinMomentum, double aMaxMomentum, double aMaxEta) const override final;
 
 private:
   /// Random Number Service

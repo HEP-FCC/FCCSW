@@ -37,14 +37,14 @@ public:
   virtual ~SimG4ConstantMagneticFieldTool();
 
   /// Initialize method
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
 
   /// Finalize method
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
 
   /// Get the magnetic field
   /// @returns pointer to G4MagneticField
-  virtual const G4MagneticField* field() const final;
+  const G4MagneticField* field() const override final;
 
   /// Get the stepper
   /// @returns pointer to G4MagIntegratorStepper (ownership is transferred to the caller)

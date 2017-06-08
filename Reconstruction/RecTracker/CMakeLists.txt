@@ -15,6 +15,8 @@ find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
 
 
 gaudi_install_headers(RecTracker)
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_library(TrackingUtils
                  src/lib/*.cpp
                  INCLUDE_DIRS ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface RecInterface

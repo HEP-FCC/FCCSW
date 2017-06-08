@@ -16,6 +16,8 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_module(DetFCChhHCalTile
 		  src/*.cpp
 		  INCLUDE_DIRS DD4hep ROOT DetExtensions Geant4

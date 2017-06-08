@@ -69,16 +69,16 @@ public:
   /**  Initialize.
    *   @return status code
    */
-  StatusCode initialize();
+  StatusCode initialize() override;
   /**  Execute.
    *   Perform the sliding window algorithm and build clusters.
    *   @return status code
    */
-  StatusCode execute();
+  StatusCode execute() override;
   /**  Finalize.
    *   @return status code
    */
-  StatusCode finalize();
+  StatusCode finalize() override;
 
 private:
   /**  Correct way to access the neighbour of the phi tower, taking into account the full coverage in phi.

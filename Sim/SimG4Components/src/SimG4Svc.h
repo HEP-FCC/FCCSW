@@ -34,25 +34,25 @@ public:
    *   physics list and user action initialization to initialize G4RunManager.
    *   @return status code
    */
-  virtual StatusCode initialize() final;
+  StatusCode initialize() override final;
   /**  Finalize the Geant simulation service.
    *   @return status code
    */
-  virtual StatusCode finalize() final;
+  StatusCode finalize() override final;
   /**  Simulate the event with Geant.
    *   @param[in] aEvent An event to be processed.
    *   @return status code
    */
-  StatusCode processEvent(G4Event& aEvent);
+  StatusCode processEvent(G4Event& aEvent) override;
   /**  Retrieve the processed event.
    *   @param[out] aEvent The processed event.
    *   @return status code
    */
-  StatusCode retrieveEvent(G4Event*& aEvent);
+  StatusCode retrieveEvent(G4Event*& aEvent) override;
   /**  Terminate the event simulation.
    *   @return status code
    */
-  StatusCode terminateEvent();
+  StatusCode terminateEvent() override;
 
 private:
   /// Pointer to the tool service

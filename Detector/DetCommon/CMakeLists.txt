@@ -15,6 +15,8 @@ include( DD4hep )
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_install_headers(DetCommon)
+include_directories(SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
+
 gaudi_add_library(DetCommon
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation

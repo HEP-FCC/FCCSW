@@ -22,10 +22,10 @@ class PodioDataSvc : public DataSvc {
 public:
   typedef std::vector<std::pair<std::string, podio::CollectionBase*>> CollRegistry;
 
-  virtual StatusCode initialize();
-  virtual StatusCode reinitialize();
-  virtual StatusCode finalize();
-  virtual StatusCode clearStore();
+  virtual StatusCode initialize() override final;
+  virtual StatusCode reinitialize() override final;
+  virtual StatusCode finalize() override final;
+  virtual StatusCode clearStore() override final;
 
   /// Standard Constructor
   PodioDataSvc(const std::string& name, ISvcLocator* svc);
@@ -37,7 +37,7 @@ public:
   using DataSvc::registerObject;
   /// Overriding standard behaviour of evt service
   /// Register object with the data store.
-  virtual StatusCode registerObject(const std::string& fullPath, DataObject* pObject) final;
+  virtual StatusCode registerObject(const std::string& fullPath, DataObject* pObject) override final;
 
   StatusCode readCollection(const std::string& collectionName, int collectionID);
 

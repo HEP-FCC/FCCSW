@@ -29,15 +29,15 @@ public:
    *   @param[in] aCellId ID of a cell.
    *   return Position (radius = 1).
    */
-  virtual Vector3D position(const CellID& aCellID) const;
+  Vector3D position(const CellID& aCellID) const override;
   /**  Determine the cell ID based on the position.
    *   @param[in] aLocalPosition (not used).
    *   @param[in] aGlobalPosition position in the global coordinates.
    *   @param[in] aVolumeId ID of a volume.
    *   return Cell ID.
    */
-  virtual CellID cellID(const Vector3D& aLocalPosition, const Vector3D& aGlobalPosition,
-                        const VolumeID& aVolumeID) const;
+  CellID cellID(const Vector3D& aLocalPosition, const Vector3D& aGlobalPosition,
+                const VolumeID& aVolumeID) const override;
   /**  Determine the azimuthal angle based on the cell ID.
    *   @param[in] aCellId ID of a cell.
    *   return Phi.

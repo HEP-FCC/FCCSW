@@ -27,14 +27,14 @@ public:
   virtual ~MomentumRangeParticleGun();
 
   /// Initialize particle gun parameters
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
 
   /// Generation of particles
-  virtual void generateParticle(Gaudi::LorentzVector& momentum, Gaudi::LorentzVector& origin, int& pdgId);
+  void generateParticle(Gaudi::LorentzVector& momentum, Gaudi::LorentzVector& origin, int& pdgId) override;
 
   /// Print counters
-  virtual void printCounters() { ; };
-  virtual StatusCode getNextEvent(HepMC::GenEvent&);
+  void printCounters() override { ; };
+  StatusCode getNextEvent(HepMC::GenEvent&) override;
 
 private:
   /// Minimum momentum (Set by options)

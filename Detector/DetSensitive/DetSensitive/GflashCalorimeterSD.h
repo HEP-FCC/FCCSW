@@ -38,7 +38,7 @@ public:
    *  The hit collection is registered in Geant.
    *  @param aHitsCollections Geant hits collection.
    */
-  void Initialize(G4HCofThisEvent* aHCE);
+  void Initialize(G4HCofThisEvent* aHCE) override;
   /** Process hit once the particle hit the sensitive volume (anf full sim is performed)
    *  Full simulation is be invoked if the gflash model is not triggered (e.g. because of confinement)
    *  Checks if the energy deposit is larger than 0, calculates the position and cellID,
@@ -47,7 +47,7 @@ public:
    *  Otherwise new hit is created.
    *  @param aStep Step in which particle deposited the energy.
    */
-  virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
+  bool ProcessHits(G4Step* aStep, G4TouchableHistory*) override final;
   /** Process hit once the particle hit the sensitive volume and gflash parametrisation is triggered.
    *  Checks if the energy deposit is larger than 0, calculates the position and cellID,
    *  saves that into the hit collection.
@@ -55,7 +55,7 @@ public:
    *  Otherwise new hit is created.
    *  @param aSpot Spot in which particle triggered the GFlash model.
    */
-  virtual bool ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) final;
+  bool ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) override final;
   uint64_t cellID(const G4GFlashSpot& aSpot);
 
 private:

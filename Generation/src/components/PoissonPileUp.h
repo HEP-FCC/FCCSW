@@ -23,15 +23,15 @@ public:
 
   virtual ~PoissonPileUp();
 
-  virtual StatusCode initialize();
+  StatusCode initialize() override;
 
-  virtual unsigned int numberOfPileUp();
+  unsigned int numberOfPileUp() override;
 
-  virtual double getMeanPileUp();
+  double getMeanPileUp() override;
 
-  virtual void printPileUpCounters();
+  void printPileUpCounters() override;
 
-  virtual std::string getFilename();
+  std::string getFilename() override;
 
 private:
   /// average number of min bias events to pile on signal event.
