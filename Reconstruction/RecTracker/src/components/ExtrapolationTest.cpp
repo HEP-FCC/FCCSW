@@ -39,6 +39,7 @@
 #include "ExtrapolationTest.h"
 
 using namespace Acts;
+using DefaultCovMatrix = ActsSymMatrix<ParValue_t, NGlobalPars>;
 
 DECLARE_ALGORITHM_FACTORY(ExtrapolationTest)
 
@@ -97,7 +98,7 @@ StatusCode ExtrapolationTest::execute() {
   ActsVector<ParValue_t, NGlobalPars> pars;
   pars << 0, 0, m_flatDist() * M_PI * 0.5, m_flatDist() * M_PI*0.45, 0.001;
   auto startCov =
-      std::make_unique<ActsSymMatrix<ParValue_t, NGlobalPars>>(ActsSymMatrix<ParValue_t, NGlobalPars>::Identity());
+      std::make_unique<DefaultCovMatrix>(DefaultCovMatrix::Identity());
 
   const Surface* pSurf = m_trkGeo->getBeamline();
   auto startTP = std::make_unique<BoundParameters>(std::move(startCov), std::move(pars), *pSurf);
