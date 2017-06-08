@@ -38,8 +38,6 @@ public:
 
   /// Destructor
   virtual ~TrackingGeoSvc();
-  //!< Retrieve interface ID
-  //        static const InterfaceID& interfaceID() { return IID_ITrackingGeoSvc; }
   /// Initialize function
   virtual StatusCode initialize();
   /// Finalize function
