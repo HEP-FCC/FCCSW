@@ -12,7 +12,7 @@ class TrackingGeometry;
  *  may be using the DD4hepPlugin or constructing it explicitly )
  *  Returns the top level geometry object.
  *
- * /
+ */
 class ITrackingGeoSvc : virtual public IService {
 public:
   // InterfaceID
