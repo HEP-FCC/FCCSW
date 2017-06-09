@@ -2,6 +2,10 @@
 #include "DetCommon/DetUtils.h"
 
 
+#include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
+#include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
+
+
 #include "DD4hep/DetFactoryHelper.h"
 
 using DD4hep::Geometry::Volume;
@@ -25,9 +29,13 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
   // has min/max dimensions of tracker for visualization etc.
   std::string detectorName = xmlDet.nameStr();
   DetElement topDetElement(detectorName, xmlDet.id());
-  double l_overlapMargin = 0.0001;
+  Acts::ActsExtension::Config barrelConfig;
+  barrelConfig.isBarrel = true;
+  // detElement owns extension
+  Acts::ActsExtension* detWorldExt = new Acts::ActsExtension(barrelConfig);
+  topDetElement.addExtension<Acts::IActsExtension>(detWorldExt);
   DD4hep::Geometry::Tube topVolumeShape(
-      dimensions.rmin(), dimensions.rmax() + l_overlapMargin, (dimensions.zmax() - dimensions.zmin()) * 0.5);
+      dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
   topVolume.setVisAttributes(lcdd.invisible());
 
@@ -45,13 +53,20 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerBarrel(DD4hep::Geometry::LCD
     DD4hep::XML::Component xModulesEven = xRodEven.child("modules");
     DD4hep::XML::Component xModulePropertiesOdd = xRodOdd.child("moduleProperties");
     DD4hep::XML::Component xModulesOdd = xRodOdd.child("modules");
-    double l_overlapMargin = 0.0001;
-    DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax() + l_overlapMargin, dimensions.zmax());
+    DD4hep::Geometry::Tube layerShape(xLayer.rmin(), xLayer.rmax(), dimensions.zmax());
     Volume layerVolume("layer", layerShape, lcdd.material("Air"));
     layerVolume.setVisAttributes(lcdd.invisible());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", layerCounter);
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
+    Acts::ActsExtension::Config layConfig;
+    layConfig.isLayer = true;
+    // the local coordinate systems of modules in dd4hep and acts differ
+    // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
+    layConfig.axes = "XzY"; // correct translation of local x axis in dd4hep to local x axis in acts
+    // detElement owns extension
+    Acts::ActsExtension* layerExtension = new Acts::ActsExtension(layConfig);
+    lay_det.addExtension<Acts::IActsExtension>(layerExtension);
     lay_det.setPlacement(placedLayerVolume);
     DD4hep::XML::Component xModuleComponentsOdd = xModulePropertiesOdd.child("components");
     integratedModuleComponentThickness = 0;
