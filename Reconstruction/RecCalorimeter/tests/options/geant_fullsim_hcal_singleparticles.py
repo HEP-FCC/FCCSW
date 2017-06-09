@@ -1,7 +1,7 @@
 # variables energy (energy in MeV!!!!), magnetic_field (0,1), num_events (number of events) to be defined before running
 energy = 50000
 magnetic_field = 0
-num_events = 10
+num_events = 1
 
 from Gaudi.Configuration import *
 
@@ -60,7 +60,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta036_10events.root"
+out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta036_1events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor

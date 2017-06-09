@@ -28,8 +28,6 @@ FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svc
   declareProperty("trackHits", m_trackHits, "Tracker hits (Input)");
 }
 
-FastGaussSmearDigi::~FastGaussSmearDigi() {}
-
 StatusCode FastGaussSmearDigi::initialize() {
   info() << "initialize" << endmsg;
 

@@ -6,6 +6,7 @@
 #include "datamodel/MCParticleCollection.h"
 
 #include "Generation/Units.h"
+#include "HepPDT/ParticleID.hh"
 
 DECLARE_COMPONENT(HepMCToEDMConverter)
 
@@ -51,6 +52,8 @@ StatusCode HepMCToEDMConverter::execute() {
       fcc::MCParticle particle = particles->create();
       particle.pdgId((*particle_i)->pdg_id());
       particle.status((*particle_i)->status());
+      HepPDT::ParticleID particleID((*particle_i)->pdg_id());
+      particle.charge(particleID.charge());
       auto& p4 = particle.p4();
       p4.px = tmp.px() * hepmc2EdmEnergy;
       p4.py = tmp.py() * hepmc2EdmEnergy;
