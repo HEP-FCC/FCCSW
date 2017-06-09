@@ -9,7 +9,6 @@ PodioMerge::PodioMerge(const std::string& aName, ISvcLocator* aSvcLoc):
   declareInput("fileHits", m_trackHitVec);
   declareOutput("trackHitsOut", m_trackHitsOut);
 }
-PodioMerge::~PodioMerge() {}
 
 StatusCode PodioMerge::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();

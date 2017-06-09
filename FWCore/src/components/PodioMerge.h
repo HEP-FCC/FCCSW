@@ -16,10 +16,10 @@ namespace fcc {
 class PodioMerge: public GaudiAlgorithm {
 public:
   explicit PodioMerge(const std::string&, ISvcLocator*);
-  virtual ~PodioMerge();
-  virtual StatusCode initialize() final;
-  virtual StatusCode execute() final;
-  virtual StatusCode finalize() final;
+  virtual ~PodioMerge() = default;
+  virtual StatusCode initialize() override final;
+  virtual StatusCode execute() override final;
+  virtual StatusCode finalize() override final;
 private:
   
   DataHandle<fcc::TrackHitCollection> m_trackHits;
