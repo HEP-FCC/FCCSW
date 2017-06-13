@@ -48,8 +48,8 @@
     </detector>
     <detector name="BoundaryFirstLayerECalDetector" type="SubtractedCylinder">
       <dimensions rmin1="0" rmin2="0"
-                  rmax1="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+8.125*cm+0.001*mm"
-                  rmax2="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+8.125*cm"
+                  rmax1="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+2.125*cm+0.001*mm"
+                  rmax2="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+2.125*cm"
                   z1="ExtBarCal_zOffset - ExtBarCal_dz+EndcapCryoThicknessFront+EndcapBathThicknessFront + 0.001*mm"
                   z2="ExtBarCal_zOffset - ExtBarCal_dz+EndcapCryoThicknessFront+EndcapBathThicknessFront"
                   z_offset="0"
