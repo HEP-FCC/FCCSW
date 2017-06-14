@@ -21,9 +21,9 @@
     <!-- cryostat, common for EMEC and HEC -->
     <constant name="CryoThicknessFront" value="50*mm"/>
     <constant name="CryoThicknessBack" value="100*mm"/>
-    <constant name="CryoThicknessInner" value="100*mm"/>
+    <constant name="CryoThicknessInner" value="20*mm"/>
     <constant name="CryoThicknessOuter" value="100*mm"/>
-    <constant name="CryoEndcap_rmin" value="4*cm"/>
+    <constant name="CryoEndcap_rmin" value="CentralBeamTube_rmax+1*cm"/>
     <constant name="CryoEndcap_rmax" value="ExtBarCal_rmax"/>
     <constant name="CryoEndcap_z1" value="ExtBarCal_zOffset - ExtBarCal_dz"/>
     <constant name="CryoEndcap_z2" value="ExtBarCal_zOffset + ExtBarCal_dz"/>
@@ -40,20 +40,20 @@
     <constant name="EMEC_rmin1" value="ExtBarCal_rmin1 + CryoThicknessInner"/>
     <constant name="EMEC_rmin2" value="EMEC_z2*tan(2*atan(exp(-2.5))) - 10*cm + CryoThicknessInner"/>
     <constant name="EMEC_rmax" value="ExtBarCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
-    <constant name="EMEC_lAr_thickness" value="30.*mm"/>
-    <constant name="EMEC_Pb_thickness" value="1.5*cm*2./2.16"/>
-    <constant name="EMEC_steel_thickness" value="0.4*cm*2./2.16"/>
-    <constant name="EMEC_glue_thickness" value="0.26*cm*2./2.16"/>
-    <constant name="EMEC_readout_thickness" value="10*mm"/>
+    <constant name="EMEC_lAr_thickness" value="3.*mm"/>
+    <constant name="EMEC_Pb_thickness" value="1.5*mm*2./2.16"/>
+    <constant name="EMEC_steel_thickness" value="0.4*mm*2./2.16"/>
+    <constant name="EMEC_glue_thickness" value="0.26*mm*2./2.16"/>
+    <constant name="EMEC_readout_thickness" value="1*mm"/>
     <!-- hadronic calorimeter: HEC -->
     <constant name="HEC_z1" value="EMEC_z2 + BathThicknessMiddle"/>
     <constant name="HEC_z2" value="CryoEndcap_z2 - CryoThicknessBack - BathThicknessBack"/>
     <constant name="HEC_rmin1" value="HEC_z1*tan(2*atan(exp(-2.5))) - 10*cm + CryoThicknessInner"/>
     <constant name="HEC_rmin2" value="ExtBarCal_rmin2 + CryoThicknessInner"/>
     <constant name="HEC_rmax" value="ExtBarCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
-    <constant name="HEC_lAr_thickness" value="30.*mm"/>
-    <constant name="HEC_Cu_thickness" value="20.*mm"/>
-    <constant name="HEC_readout_thickness" value="10*mm"/>
+    <constant name="HEC_lAr_thickness" value="4.*mm"/>
+    <constant name="HEC_Cu_thickness" value="2.*cm"/>
+    <constant name="HEC_readout_thickness" value="1*mm"/>
   </define>
   <readouts>
     <readout name="EMECPhiEta">
@@ -78,8 +78,13 @@
                   dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
                   z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
     </detector>
-    <detector name="CalEndcapCryoInner_positive" type="SimpleCylinder">
-      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmin+CryoThicknessInner"
+    <detector name="CalEndcapCryoInnerInner_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin" rmax="CryoEndcap_rmin+CryoThicknessInner/2."
+                  dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalEndcapCryoInnerOuter_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoEndcap_rmin+CryoThicknessInner/2.+1*cm" rmax="CryoEndcap_rmin+CryoThicknessInner+1*cm"
                   dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
                   z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
     </detector>
