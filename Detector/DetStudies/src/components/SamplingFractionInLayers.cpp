@@ -111,7 +111,7 @@ StatusCode SamplingFractionInLayers::execute() {
     m_totalEnLayers[i]->Fill(sumElayers[i]);
     m_activeEnLayers[i]->Fill(sumEactiveLayers[i]);
     if (i < m_firstLayerId) {
-      debug() << "total energy deposited in cryostat and bath = " << sumElayers[i] << endmsg;
+      debug() << "total energy deposited outside the calorimeter detector = " << sumElayers[i] << endmsg;
     } else {
       debug() << "total energy in layer " << i << " = " << sumElayers[i] << " active = " << sumEactiveLayers[i]
               << endmsg;
