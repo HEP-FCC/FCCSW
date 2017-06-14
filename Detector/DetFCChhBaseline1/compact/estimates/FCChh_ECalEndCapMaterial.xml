@@ -13,7 +13,7 @@
   </info>
   <define>
     <constant name="CalExtBarFlange_width" value="50*mm"/>
-    <constant name="CalExtBarInner_rmax" value="ExtBarCal_rmax1-2*CalExtBarFlange_width"/>
+    <constant name="CalExtBarInner_rmax" value="ExtBarCal_rmax-2*CalExtBarFlange_width"/>
     <constant name="CalExtBarInner_dz" value="ExtBarCal_dz - 2*CalExtBarFlange_width"/>
     <constant name="CalExtBarLAr_rmin" value="2470*mm"/>
     <constant name="CalExtBarECal_dz" value="375*mm"/>
@@ -35,18 +35,18 @@
     <!-- Cryo system -->
     <detector name="CalExtBarFlange1Pos" type="SimpleCone"  vis="ECalCryo">
         <dimensions rmin1="ExtBarCal_rmin1"
-        rmax1="ExtBarCal_rmax1"
+        rmax1="ExtBarCal_rmax"
         rmin2="CalExtBarECal_rmin1-CalExtBarFlange_width*2"
-        rmax2="ExtBarCal_rmax1"
+        rmax2="ExtBarCal_rmax"
         dz="CalExtBarFlange_width"
         z_offset="CalExtBarFlange1_zOffset"
         material="Aluminum"/>
     </detector>
     <detector name="CalExtBarFlange2Pos" type="SimpleCone"  vis="ECalCryo">
         <dimensions rmin1="CalExtBarHCal_rmin2-CalExtBarFlange_width*2"
-        rmax1="ExtBarCal_rmax1"
+        rmax1="ExtBarCal_rmax"
         rmin2="ExtBarCal_rmin2"
-        rmax2="ExtBarCal_rmax1"
+        rmax2="ExtBarCal_rmax"
         dz="CalExtBarFlange_width"
         z_offset="CalExtBarFlange2_zOffset"
         material="Aluminum"/>
@@ -61,8 +61,8 @@
         material="Aluminum"/>
     </detector>
     <detector name="CalExtBarCryo2Pos" type="SimpleCylinder"  vis="ECalCryo">
-        <dimensions rmin="ExtBarCal_rmax1-CalExtBarFlange_width*2"
-        rmax="ExtBarCal_rmax1"
+        <dimensions rmin="ExtBarCal_rmax-CalExtBarFlange_width*2"
+        rmax="ExtBarCal_rmax"
         dz="ExtBarCal_dz - 2*CalExtBarFlange_width"
         z_offset="ExtBarCal_zOffset"
         deltaphi="360*deg" phi0="0"
@@ -80,18 +80,18 @@
     <!-- Cryo system -->
     <detector name="CalExtBarFlange1Neg" type="SimpleCone"  vis="ECalCryo">
         <dimensions rmin2="ExtBarCal_rmin1"
-        rmax2="ExtBarCal_rmax1"
+        rmax2="ExtBarCal_rmax"
         rmin1="CalExtBarECal_rmin1-CalExtBarFlange_width*2"
-        rmax1="ExtBarCal_rmax1"
+        rmax1="ExtBarCal_rmax"
         dz="CalExtBarFlange_width"
         z_offset="-CalExtBarFlange1_zOffset"
         material="Aluminum"/>
     </detector>
     <detector name="CalExtBarFlange2Neg" type="SimpleCone"  vis="ECalCryo">
         <dimensions rmin2="CalExtBarHCal_rmin2-CalExtBarFlange_width*2"
-        rmax2="ExtBarCal_rmax1"
+        rmax2="ExtBarCal_rmax"
         rmin1="ExtBarCal_rmin2"
-        rmax1="ExtBarCal_rmax1"
+        rmax1="ExtBarCal_rmax"
         dz="CalExtBarFlange_width"
         z_offset="-CalExtBarFlange2_zOffset"
         material="Aluminum"/>
@@ -106,8 +106,8 @@
         material="Aluminum"/>
     </detector>
     <detector name="CalExtBarCryo2Neg" type="SimpleCylinder"  vis="ECalCryo">
-        <dimensions rmin="ExtBarCal_rmax1-CalExtBarFlange_width*2"
-        rmax="ExtBarCal_rmax1"
+        <dimensions rmin="ExtBarCal_rmax-CalExtBarFlange_width*2"
+        rmax="ExtBarCal_rmax"
         dz="ExtBarCal_dz - 2*CalExtBarFlange_width"
         z_offset="-ExtBarCal_zOffset"
         deltaphi="360*deg" phi0="0"

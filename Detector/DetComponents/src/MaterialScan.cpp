@@ -81,11 +81,12 @@ StatusCode MaterialScan::initialize() {
         vec.SetPtEtaPhi(1, eta, phi);
         auto n = vec.Unit();
         dir = {n.X(), n.Y(), n.Z()};
+        // if the start point (beginning) is inside the material-scan envelope (e.g. if envelope is world volume)
         double distance = boundaryVol->DistFromInside(pos.data(), dir.data());
+        // if the start point (beginning) is not inside the envelope
         if( distance == 0 ) {
           distance = boundaryVol->DistFromOutside(pos.data(), dir.data());
-          debug()<<"Checking distance to outside: " << distance << endmsg;
-       }
+        }
         DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
         debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
                 << ") <=> eta = " << eta << ", phi =  " << phi  <<  endmsg;
