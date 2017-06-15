@@ -9,7 +9,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
-geantservice.G4commands += ["/run/setCut 0.1 mm"]
+geantservice.g4PostInitCommands  += ["/run/setCut 0.1 mm"]
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGeneratorTool
 saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsEta"])
 saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
@@ -57,7 +57,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 10,
+    EvtMax   = 1,
     ExtSvc = [podioevent, geoservice],
  )
 

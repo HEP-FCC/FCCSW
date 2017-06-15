@@ -15,7 +15,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compa
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
-geantservice.G4commands += ["/run/setCut 0.1 mm"]
+geantservice.g4PostInitCommands += ["/run/setCut 0.1 mm"]
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -45,7 +45,7 @@ hist = SamplingFractionInLayers("hists",
                                  OutputLevel = INFO)
 hist.deposits.Path="ECalPositionedHits"
 
-THistSvc().Output = ["rec DATAFILE='histSF_inclined_e50GeV_eta0_10events.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='histSF_inclined_e50GeV_eta0_1events.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=False

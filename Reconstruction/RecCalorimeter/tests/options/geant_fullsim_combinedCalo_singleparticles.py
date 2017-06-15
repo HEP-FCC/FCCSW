@@ -1,22 +1,12 @@
 import os
-import numpy as np
 
-#loads array of random seeds from file                                                                                                                                                                          
-#seed_array = np.loadtxt('/afs/cern.ch/user/c/cneubuse/FCCSW/condor/seeds.txt',dtype='int',delimiter=',')
+from GaudiKernel.SystemOfUnits import MeV,GeV
 
 #set these in the .sh script                                                                                                                                                                                                                
-energy=100e3
-num_events=10
+energy=100*GeV
+num_events=1
 magnetic_field=0
-i=1
-particle=1
-
 particleType = "pi-"
-if particle==0:
-    particleType = "e-"
-if particle==2:
-    particleType = "mu-"
-print particleType
 
 from Gaudi.Configuration import *
 
@@ -27,7 +17,11 @@ podioevent   = FCCDataSvc("EventDataSvc")
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
+<<<<<<< HEAD
                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+=======
+                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+>>>>>>> upstream/master
                     OutputLevel = INFO)
 # Geant4 service                                                                                                                                                                         
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -35,20 +29,30 @@ from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
 # range cut                                                                                                                                                                                                                        
-geantservice.G4commands += ["/run/setCut 0.1 mm"]
+geantservice.g4PostInitCommands += ["/run/setCut 0.1 mm"]
 
 # Magnetic field                                                                                                                                                                                                                           
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
+# common ECAL specific information
+# readout name
+ecalReadoutName = "ECalHitsEta"
+
+# common HCAL specific information
+# readout name
+hcalReadoutName = "BarHCal_Readout"
+# new readout name
+newHcalReadoutName = hcalReadoutName + "_phieta"
+
 # Geant4 algorithm                                                                                                                                                                                                       
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools                                                                                                                                          
 # and a tool that saves the calorimeter hits                                                                                                                                                                                         
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
-saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHitsEta"],
+saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = [ecalReadoutName],
                                 positionedCaloHits = "ECalPositionedHits",
                                 caloHits = "ECalHits")
-savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"],
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName],
                                 positionedCaloHits="HCalPositionedHits",
                                 caloHits="HCalHits")
 
@@ -63,34 +67,12 @@ geantsim = SimG4Alg("SimG4Alg",
                        eventProvider=pgun,
                        OutputLevel=INFO)
 
-# common ECAL specific information
-# readout name
-ecalReadoutName = "ECalHitsEta"
-# active material identifier name
-ecalIdentifierName = "active_layer"
-# active material volume name
-ecalVolumeName = "LAr_sensitive"
-# ECAL bitfield names & values
-ecalFieldNames=["system","ECAL_Cryo","bath","EM_barrel"]
-ecalFieldValues=[5,1,1,1]
-# common HCAL specific information
-# readout name
-hcalReadoutName = "BarHCal_Readout"
-# active material identifier name
-hcalIdentifierName = ["module","row","layer","tile"]
-# active material volume name
-hcalVolumeName = ["module","wedge","layer","tile"]
-# ECAL bitfield names & values
-hcalFieldNames=["system"]
-# readout name
-newHcalReadoutName = hcalReadoutName + "_phieta"
-
 # Configure tools for calo reconstruction                                                                                                                                                                    
 from Configurables import CalibrateInLayersTool
 calibEcells = CalibrateInLayersTool("Calibrate",
                                     # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
                                     samplingFraction = [0.168] * 4 + [0.176] * 4 + [0.184] * 4 + [0.191] * 4 + [0.198] * 4 + [0.204] * 4 + [0.210] * 4 + [0.215] * 4,
-                                    readoutName = "ECalHitsEta",
+                                    readoutName = ecalReadoutName,
                                     layerFieldName = "cell")
 
 #Configure tools for calo reconstruction
@@ -124,7 +106,7 @@ from Configurables import RedoSegmentation
 resegment = RedoSegmentation("ReSegmentation",
                              # old bitfield (readout)
                              oldReadoutName = hcalReadoutName,
-                             # # specify which fields are going to be altered (deleted/rewritten)
+                             # specify which fields are going to be altered (deleted/rewritten)
                              oldSegmentationIds = ["eta","phi"],
                              # new bitfield (readout), with new segmentation
                              newReadoutName = newHcalReadoutName,
@@ -146,7 +128,7 @@ positionsEcal.positionedHits.Path = "ECalPositions"
 out = PodioOutput("out", 
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_combCalo_"+str(particleType)+str(int(energy/1e3))+"GeV_part"+str(i)+".root"
+out.filename = "output_combCalo_"+str(particleType)+str(int(energy/GeV))+"GeV.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
