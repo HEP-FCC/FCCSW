@@ -1,10 +1,10 @@
 #include "MaterialScan.h"
 #include "DetInterface/IGeoSvc.h"
 
-#include "GaudiKernel/ITHistSvc.h"
-#include "GaudiKernel/Service.h"
-#include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/IRndmGenSvc.h"
+#include "GaudiKernel/ITHistSvc.h"
+#include "GaudiKernel/RndmGenerators.h"
+#include "GaudiKernel/Service.h"
 
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Printout.h"
@@ -15,8 +15,7 @@
 #include "TTree.h"
 #include "TVector3.h"
 
-MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {
-}
+MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {}
 
 StatusCode MaterialScan::initialize() {
   if (Service::initialize().isFailure()) {
@@ -35,7 +34,6 @@ StatusCode MaterialScan::initialize() {
     error() << "Unable to initialize random number generator." << endmsg;
     return sc;
   }
-
 
   std::unique_ptr<TFile> rootFile(TFile::Open(m_filename.value().c_str(), "RECREATE"));
   // no smart pointers possible because TTree is owned by rootFile (root mem management FTW!)
@@ -67,7 +65,7 @@ StatusCode MaterialScan::initialize() {
   std::array<Double_t, 3> dir = {0, 0, 0};
   TVector3 vec(0, 0, 0);
   for (eta = -m_etaMax; eta < m_etaMax; eta += m_etaBinning) {
-      for (int i = 0; i < m_nPhiTrials; ++i) {
+    for (int i = 0; i < m_nPhiTrials; ++i) {
       phi = m_flatPhiDist();
       nX0->clear();
       nLambda->clear();
@@ -77,35 +75,33 @@ StatusCode MaterialScan::initialize() {
       std::map<DD4hep::Geometry::Material, double> phiAveragedMaterialsBetween;
       for (int iPhi = 0; iPhi < m_nPhiTrials; ++iPhi) {
         phi = m_flatPhiDist();
-        //phi = 0;
         vec.SetPtEtaPhi(1, eta, phi);
         auto n = vec.Unit();
         dir = {n.X(), n.Y(), n.Z()};
         // if the start point (beginning) is inside the material-scan envelope (e.g. if envelope is world volume)
         double distance = boundaryVol->DistFromInside(pos.data(), dir.data());
         // if the start point (beginning) is not inside the envelope
-        if( distance == 0 ) {
+        if (distance == 0) {
           distance = boundaryVol->DistFromOutside(pos.data(), dir.data());
         }
         DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
         debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
-                << ") <=> eta = " << eta << ", phi =  " << phi  <<  endmsg;
+                << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
         const DD4hep::DDRec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
         for (unsigned i = 0, n = materials.size(); i < n; ++i) {
           phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
         }
       }
       nMaterials = phiAveragedMaterialsBetween.size();
-      for (auto matpair: phiAveragedMaterialsBetween) {
+      for (auto matpair : phiAveragedMaterialsBetween) {
         TGeoMaterial* mat = matpair.first->GetMaterial();
         material->push_back(mat->GetName());
-        matDepth->push_back(matpair.second );
+        matDepth->push_back(matpair.second);
         nX0->push_back(matpair.second / mat->GetRadLen());
         nLambda->push_back(matpair.second / mat->GetIntLen());
       }
     }
     tree->Fill();
-
   }
   tree->Write();
   rootFile->Close();

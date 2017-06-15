@@ -11,7 +11,8 @@ class IGeoSvc;
 
 #include <vector>
 
-/** @class CalibrateInLayersTool Reconstruction/RecCalorimeter/src/components/CalibrateInLayersTool.h CalibrateInLayersTool.h
+/** @class CalibrateInLayersTool Reconstruction/RecCalorimeter/src/components/CalibrateInLayersTool.h
+ * CalibrateInLayersTool.h
  *
  *  Tool for energy calibration to the electromagnetic scale.
  *  Geant4 energy deposits calibration in sampling calorimeters.

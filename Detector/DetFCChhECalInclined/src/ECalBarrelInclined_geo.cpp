@@ -156,7 +156,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     lLog << MSG::INFO << "Passive inner volume set as sensitive" << endmsg;
     DD4hep::Geometry::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight / 2.);
     DD4hep::Geometry::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
-                                                 aLcdd.material(passiveInnerMaterial));
+                                                  aLcdd.material(passiveInnerMaterial));
     layerPassiveInnerVol.setSensitiveDetector(aSensDet);
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
       DD4hep::Geometry::PlacedVolume layerPassiveInnerPhysVol = passiveInnerVol.placeVolume(
@@ -170,7 +170,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     lLog << MSG::INFO << "Passive outer volume set as sensitive" << endmsg;
     DD4hep::Geometry::Box layerPassiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), layerHeight / 2.);
     DD4hep::Geometry::Volume layerPassiveOuterVol(passiveOuterMaterial, layerPassiveOuterShape,
-                                                 aLcdd.material(passiveOuterMaterial));
+                                                  aLcdd.material(passiveOuterMaterial));
     layerPassiveOuterVol.setSensitiveDetector(aSensDet);
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
       DD4hep::Geometry::PlacedVolume layerPassiveOuterPhysVol = passiveOuterVol.placeVolume(
@@ -184,7 +184,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     lLog << MSG::INFO << "Passive glue volume set as sensitive" << endmsg;
     DD4hep::Geometry::Box layerPassiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), layerHeight / 2.);
     DD4hep::Geometry::Volume layerPassiveGlueVol(passiveGlueMaterial, layerPassiveGlueShape,
-                                                aLcdd.material(passiveGlueMaterial));
+                                                 aLcdd.material(passiveGlueMaterial));
     layerPassiveGlueVol.setSensitiveDetector(aSensDet);
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
       DD4hep::Geometry::PlacedVolume layerPassiveGluePhysVol = passiveGlueVol.placeVolume(
@@ -315,7 +315,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   lLog << MSG::DEBUG << " number of layers = " << numLayers << " layer height (cm) = " << layerHeight << endmsg;
   for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
     DD4hep::Geometry::Trapezoid layerOuterShape(layerInThickness, layerOutThickness, caloDim.dz(), caloDim.dz(),
-                                               layerHeight / 2.);
+                                                layerHeight / 2.);
     DD4hep::Geometry::SubtractionSolid layerShapeNoReadout(layerOuterShape, readoutShape);
     DD4hep::Geometry::SubtractionSolid layerShapeNoPassiveAbove(
         layerShapeNoReadout, passiveShape,
