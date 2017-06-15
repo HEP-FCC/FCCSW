@@ -13,9 +13,11 @@ PileupMerge::PileupMerge(const std::string& aName, ISvcLocator* aSvcLoc):
   declareProperty("pileupPosTrackHits", m_posTrackHits, "Positioned Track Hits Collection (output)");
   declareProperty("pileupCaloHits", m_caloHitsOut, "Calo Hit Collection (output)");
   declareProperty("pileupPosCaloHits", m_posCaloHits, "Positioned Calo Hits Collection (output)");
+  declareProperty("PileUpTool", m_pileUpTool);
 }
 
 StatusCode PileupMerge::initialize() {
+  currentEvent = 0;
   StatusCode sc = GaudiAlgorithm::initialize();
   m_reader.openFile(m_pileupFilename);
   m_store.setReader(&m_reader);
@@ -33,7 +35,7 @@ StatusCode PileupMerge::finalize() {
 
 StatusCode PileupMerge::execute() {
   unsigned nEvents = m_reader.getEntries();
-  unsigned currentEvent = 0;
+
 
   const fcc::TrackHitCollection* trackHitCollection;
   fcc::TrackHitCollection* hitCollOut = new fcc::TrackHitCollection();
@@ -53,7 +55,17 @@ StatusCode PileupMerge::execute() {
   const fcc::PositionedCaloHitCollection* posCaloHitCollection;
   fcc::PositionedCaloHitCollection* posCaloHitCollOut = new fcc::PositionedCaloHitCollection();
 
-  for(unsigned iev = 0; iev < m_numPileup; ++iev) {
+  const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();
+  for(unsigned iev = 0; iev < numPileup; ++iev) {
+
+    if ( m_randomizePileup == true ) {
+      if (m_flatDist() < 0.3) { // skip one in three events
+        ++currentEvent;
+      }
+    }
+    currentEvent = (currentEvent + 1) % nEvents; // start over from beginning if necessary
+    m_reader.goToEvent(currentEvent);
+  }
   
     bool mcParticleCollectionPresent = m_store.get(m_pileupGenParticlesBranchName, mcParticleCollection);
     if (mcParticleCollectionPresent) {
@@ -100,14 +112,6 @@ StatusCode PileupMerge::execute() {
 
     m_store.clear();
 
-    if ( m_randomizePileup == true ) {
-      if (m_flatDist() < 0.3) { // skip one in three events
-        ++currentEvent;
-      }
-    }
-    currentEvent = (currentEvent + 1) % nEvents; // start over from beginning if necessary
-    m_reader.goToEvent(currentEvent);
-  }
   m_trackHitsOut.put(hitCollOut);
   return StatusCode::SUCCESS;
 }

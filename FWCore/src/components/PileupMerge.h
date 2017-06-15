@@ -51,13 +51,15 @@ private:
 
 
   Gaudi::Property<std::string> m_pileupFilename{this, "pileupFilename", "min-bias-pool.root", "Name of File containing pileup events"}; 
-  Gaudi::Property<unsigned int> m_numPileup{this, "numPileup", 1000, "number of pileup events to merge"}; 
   Gaudi::Property<bool> m_randomizePileup{this, "randomizePileup", false, "flag to determine wether to randomly skip events when reading the pileup store"}; 
+  ToolHandle<IPileUpTool> m_pileUpTool{"ConstPileUp/PileUpTool", this};
 
   podio::EventStore m_store;
   podio::ROOTReader m_reader;
 
   Rndm::Numbers m_flatDist;
+
+  unsigned int currentEvent;
 
 };
 
