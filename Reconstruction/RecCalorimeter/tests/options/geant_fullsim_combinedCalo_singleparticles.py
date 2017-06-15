@@ -17,11 +17,7 @@ podioevent   = FCCDataSvc("EventDataSvc")
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-<<<<<<< HEAD
-                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
-=======
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
->>>>>>> upstream/master
                     OutputLevel = INFO)
 # Geant4 service                                                                                                                                                                         
 # Configures the Geant simulation: geometry, physics list and user actions
