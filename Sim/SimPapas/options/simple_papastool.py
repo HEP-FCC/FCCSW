@@ -26,24 +26,8 @@ from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, Pap
 # The Papas::Event is passed to each of the tools and new collections are then added into the papas::Event.
 # Thus subsequent tools can access previously made collections.
 # The papas::Event uses a short hand to label the collections that it contains:
-#   the code is a two letter string eg "es"
-#
-#   the first letter is the type of object contained in the collection
-#       e = ecal
-#       h = hcal
-#       t = track
-#       p = particle
-#       b = block
-#
-#  the second letter indicates a subtype eg
-#      s = simulated (for particles), smeared (for clusters/tracks) or simplified (for blocks)
-#      m = merged
-#      r = reconstructed (particles) or raw (blocks)
-#
-# tool arguments are either a two letter TypeAndSubtype, eg "es" ecal smeared
-#  or a single letter type specific subtype, eg particleSubtype="s"
-#
-
+# see https://github.com/alicerobson/FCCSW/blob/papas0.8.1/Sim/doc/FastSimulationUsingPapas.md
+# TODO update this link when pull request has gone through
 #read in pythia generated particles, write out reconstructed particles (fcc EDM format)
 papasalg = PapasAlg("papasalg",
                     tools=["PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
@@ -53,7 +37,9 @@ papasalg = PapasAlg("papasalg",
                            "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
                            "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
                            "PapasPFReconstructorTool/reconstructor", #reconstructs particles based on the blocks
-                           "PapasExportParticlesTool/exporter"]) #export papas reconstructed particles to fcc particles
+                           "PapasExportParticlesTool/exporter"],#export papas reconstructed particles to fcc particles
+                            seed = xDEADBEEF) #seed random generator
+
 #Papas importer
 importer = PapasImportParticlesTool("importer")
 importer.genparticles.Path='GenParticle' # name of the input pythia particles collection

@@ -32,7 +32,9 @@ public:
   virtual StatusCode finalize();
 
 private:
+  ///collection of papas blocks that will be filled by this tool
   papas::Blocks m_blocks;
+  /// Which subtype of block to use as the input, eg "r" for reconstructed
   Gaudi::Property<std::string> m_blockSubtype{this, "blockSubtype", "", "block subtype"};
 };
 

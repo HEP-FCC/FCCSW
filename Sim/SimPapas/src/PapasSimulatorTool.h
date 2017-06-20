@@ -39,12 +39,12 @@ public:
   virtual StatusCode finalize();
 
 private:
-  papas::Clusters m_ecals;
-  papas::Clusters m_hcals;
-  papas::Tracks m_tracks;
-  papas::Clusters m_smeared_ecals;
-  papas::Clusters m_smeared_hcals;
-  papas::Tracks m_smeared_tracks;
+  papas::Clusters m_ecalClusters;
+  papas::Clusters m_hcalClusters;
+  papas::Tracks m_trackClusters;
+  papas::Clusters m_smearedEcalClusters;
+  papas::Clusters m_smearedHcalClusters;
+  papas::Tracks m_smearedTracks;
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
 };  ///< Which particles to use*/
 

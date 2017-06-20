@@ -33,6 +33,7 @@ public:
 private:
   /// Handle for the genparticles to be written
   papas::Clusters m_merged_clusters;
+  /// Type and subtype of the clusters that are to be merged, eg "em" ecal merged
   Gaudi::Property<std::string> m_typeSubtype{this, "TypeAndSubtype", "", "type and subtype to merge"};
 };
 
