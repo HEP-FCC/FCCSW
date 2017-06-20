@@ -23,21 +23,21 @@ class PapasAlg : public GaudiAlgorithm {
 
 public:
   /// Constructor.
-  PapasAlg(const std::string& name, ISvcLocator* svcLoc);
+  PapasAlg(const std::string& name, ISvcLocator* svcLoc, seed = 0);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Execute: Applies the filter
+  /// Execute: runs the algorithm on a PapasEvent
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
 
 private:
-  /// Handle for the Papas History Collection
+  /// Stores the linkages between papas objects (eg clusters, tracks, particles)
   papas::Nodes m_history;
-  // DataHandle<papas::Nodes> m_papashistoryHandle{"History", Gaudi::DataHandle::Writer, this};  ///< History nodes
   std::vector<IPapasTool*> m_tools;      ///<vector of tools to be run
   std::vector<std::string> m_toolNames;  ///< names of tools to be run
-  long m_eventno;
+  long m_eventno; ///< the papas Event number, incremented for each event processed
+  int m_seed; ///<seed for random generator, default to 0 (no seed)
 };
 
 #endif  // PAPASALG_H

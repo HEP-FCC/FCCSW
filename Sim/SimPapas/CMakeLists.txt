@@ -6,7 +6,6 @@ gaudi_subdir(SimPapas v1r0)
 # this declaration will not be needed in the future
 gaudi_depends_on_subdirs(GaudiAlg)
 
-find_package(Delphes)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(ROOT COMPONENTS Physics EG)

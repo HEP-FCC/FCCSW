@@ -8,15 +8,12 @@ PapasBuildBlocksTool::PapasBuildBlocksTool(const std::string& aType, const std::
                                            const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IPapasTool>(this);
-  declareProperty("ecalSubtype", m_ecalSubtype, "Subtype of ecal clusters for block building");
-  declareProperty("hcalSubtype", m_hcalSubtype, "Subtype of ecal clusters for block building");
-  declareProperty("trackSubtype", m_trackSubtype, "Subtype of tracks for block building");
 }
 
 StatusCode PapasBuildBlocksTool::initialize() {
   // read and process a single event
   debug() << "PAPAS Blockbuilder options " << m_ecalSubtype << " + " << m_hcalSubtype << " + " << m_trackSubtype
-         << std::endl;
+         << endmsg;
   return GaudiTool::initialize();
 }
 
@@ -34,7 +31,7 @@ StatusCode PapasBuildBlocksTool::run(papas::Event& pevent) {
   pevent.extendHistory(history);
   // add outputs into papasEvent
   pevent.addCollectionToFolder(m_blocks);
-  debug() << "PAPAS Blocks " << std::endl << pevent.info() << std::endl;
+  debug() << "PAPAS Blocks " << std::endl << pevent.info() << endmsg;
   return StatusCode::SUCCESS;
 }
 
