@@ -33,7 +33,7 @@ private:
   DataHandle<fcc::ParticleCollection> m_particlesHandle{"recparticles", Gaudi::DataHandle::Writer, this};
   /// Particles type to be exported
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
-  fcc::ParticleCollection* m_particles;  /// mcparticles collection
+  //fcc::ParticleCollection* m_particles;  /// mcparticles collection
 };
 
 #endif  // SIM_PAPASPARTICLEEXPORTER_H

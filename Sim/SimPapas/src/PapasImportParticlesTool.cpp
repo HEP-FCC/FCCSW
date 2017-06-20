@@ -20,7 +20,6 @@ PapasImportParticlesTool::PapasImportParticlesTool(const std::string& aType, con
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IPapasTool>(this);
-  declareProperty("genparticles", m_iGenpHandle);
 }
 
 PapasImportParticlesTool::~PapasImportParticlesTool() {}
@@ -48,11 +47,11 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
   for (const auto& p : *ptcs) {
     sortPtcs.push_back(p);
   }
+  TLorentzVector tlv;
+  TLorentzVector tlv2;
   sortPtcs.sort([](const fcc::ConstMCParticle& a, const fcc::ConstMCParticle& b) {
     auto p4 = a.p4();
-    TLorentzVector tlv;
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
-    TLorentzVector tlv2;
     p4 = b.p4();
     tlv2.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
     return tlv.E() > tlv2.E();
@@ -86,6 +85,6 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
     }
   }
   pevent.addCollectionToFolder(m_particles);
-  debug() << "Make Papas Particles " << std::endl << pevent.info() << std::endl;
+  debug() << "Make Papas Particles " << std::endl << pevent.info() << << endmsg;
   return StatusCode::SUCCESS;
 }

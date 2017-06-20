@@ -9,12 +9,11 @@ PapasPFReconstructorTool::PapasPFReconstructorTool(const std::string& aType, con
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IPapasTool>(this);
-  declareProperty("blockSubtype", m_blockSubtype, "Blocks to use for reconstruction");
 }
 
 StatusCode PapasPFReconstructorTool::initialize() {
   // read and process a single event
-  debug() << "PAPAS PFRECONSTRUCTOR options " << m_blockSubtype << std::endl;
+  debug() << "PAPAS PFRECONSTRUCTOR options " << m_blockSubtype << endmsg;
   return GaudiTool::initialize();
 }
 
@@ -31,7 +30,7 @@ StatusCode PapasPFReconstructorTool::run(papas::Event& pevent) {
   pevent.extendHistory(history);
   // add outputs into papasEvent
   pevent.addCollectionToFolder(m_rec_particles);
-  debug() << "PAPAS Reconstructor" << std::endl << pevent.info() << std::endl;
+  debug() << "PAPAS Reconstructor" << std::endl << pevent.info() <<  endmsg;
   return StatusCode::SUCCESS;
 }
 

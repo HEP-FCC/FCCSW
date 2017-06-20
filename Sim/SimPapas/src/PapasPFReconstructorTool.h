@@ -35,9 +35,11 @@ public:
   virtual StatusCode finalize();
 
 private:
+  ///collection of papas reconstructed particles that will be created by this tool
   papas::Particles m_rec_particles;
+  ///Block type to use in reconstruction eg 's' for split blocks
   Gaudi::Property<std::string> m_blockSubtype{this, "blockSubtype", "", "block subtype"};
-  ///<Block type to use in reconstruction eg 's' for split blocks
+  
 };
 
 #endif  // SIM_PAPASPFRECONSTRUCTO_H

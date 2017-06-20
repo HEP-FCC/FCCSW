@@ -7,22 +7,20 @@
 #include <iostream>
 DECLARE_COMPONENT(PapasAlg)
 
-PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc, int seed = 0) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("tools", m_toolNames);
-  papas::PDebug::File("papaslog.log");
+  papas::PDebug::File("papaslog.log"); #todo make this able to use Gaudi logger
   m_eventno = 0;
+  m_seed = seed;
 }
-
 StatusCode PapasAlg::initialize() {
 
   for (auto& toolname : m_toolNames) {
     m_tools.push_back(tool<IPapasTool>(toolname));
   }
-  rootrandom::Random::seed(0xdeadbeef);
-  debug() << "debug papasalg";
-  info() << "info papasalg";
-  warning() << "warning papasalg";
-  error() << "error papasalg";
+  //allow the random generator to be seeded
+  if (m_seed!=0)
+    rootrandom::Random::seed(m_seed);
 #if not WITHSORT
   debug() << "Papas: no sorting" << std::endl;
 #endif

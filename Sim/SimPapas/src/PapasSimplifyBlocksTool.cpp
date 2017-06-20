@@ -16,7 +16,6 @@ PapasSimplifyBlocksTool::PapasSimplifyBlocksTool(const std::string& aType, const
                                                  const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IPapasTool>(this);
-  declareProperty("blockSubtype", m_blockSubtype, "subtype of blocks to be split");
 }
 
 StatusCode PapasSimplifyBlocksTool::clear() {
@@ -26,7 +25,7 @@ StatusCode PapasSimplifyBlocksTool::clear() {
 
 StatusCode PapasSimplifyBlocksTool::initialize() {
   // read and process a single event
-  debug() << "Block simplifier option " << m_blockSubtype << std::endl;
+  debug() << "Block simplifier option " << m_blockSubtype << endmsg;
   return GaudiTool::initialize();
 }
 
@@ -37,7 +36,7 @@ StatusCode PapasSimplifyBlocksTool::run(papas::Event& pevent) {
   pevent.extendHistory(history);
   // add outputs into papasEvent
   pevent.addCollectionToFolder(m_blocks);
-  debug() << "PAPAS Blocks Simplifier" << std::endl << pevent.info() << std::endl;
+  debug() << "PAPAS Blocks Simplifier" << std::endl << pevent.info() << endmsg;
   return StatusCode::SUCCESS;
 }
 

@@ -8,7 +8,6 @@ Contents
 -   [Installation Procedure](#installation-procedure)
 -   [What is Papas?](#what-is-papas?)
 -   [Running Papas in FCCSW](#running-papas-in-fccsw)
--   [Planned Work](#planned-work)
 
 Overview
 --------
@@ -74,24 +73,31 @@ Papas uses a Papas::Event to store the collections of particles, clusters, track
    the code is a two letter string eg "es"
 
 the first letter is the type of object contained in the collection
+
 ```
          e = ecal
          h = hcal
          t = track
          p = particle
-         b = block```
+         b = block
+```
+
 the second letter indicates a subtype eg
+
 ```
          s = simulated (for particles), smeared (for clusters/tracks) or simplified (for blocks)         m = merged
          r = reconstructed (particles) or raw (blocks)
 ```
+
  tool arguments are either a two letter TypeAndSubtype, eg "es" ecal smeared
   or a single letter type specific subtype, eg particleSubtype="s"
 
 for example:
+
 ```
 papasmergeecaltool = PapasMergeClustersTool("ecalmerge", TypeAndSubtype="es")
 ```
+
 would merge clusters of type 'es' = ecal smeared (and produce an output collection of type "em")
 
 
@@ -105,33 +111,31 @@ An annotated example of a Gaudi options file to run Papas can be found here:-
 The example can be run as follows:
 
 Generate some particles
+
 ```
 wget https://raw.githubusercontent.com/HEP-FCC/fcc-physics/master/pythia8/ee_ZH_Zmumu_Hbb.txt
 ```
 
 
 Generate ee to ZH events with Z to mumu and H to b bbar:
+
 ```
 fcc-pythia8-generate ee_ZH_Zmumu_Hbb.txt
 ```
+
 Run
+
 ```
 ./run gaudirun.py $FCCSWPATH/Sim/SimPapas/options/simple_papastool.py
 ```
 
 Verify that you have produced some particles in ROOT:
+
 ```
 root output.root
 events->Print()
 events->Draw("papasreconstructed.core.p4.px", "papasreconstructed.core.status==1")
 ```
 
-Planned Work
-------------
 
-The current PAPAS implementation provides a CMS detector.
-Use of other detector implementations will require code to be added to the Papas Library.ls
 
-Work to allow detector parameters to be passed to the CMS detector (and other future detector implementations) as part of the Gaudi run is underway.
-
-PAPAS produces other data such as Clusters and Tracks, plus history information that records the linkages between objects in the Simulation and Reconstruction. Future developments may allow these to be output for analysis. The Python version of Papas allows analysis using the History information.
