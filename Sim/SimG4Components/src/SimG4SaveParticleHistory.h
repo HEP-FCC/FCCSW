@@ -6,7 +6,9 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimG4Interface/ISimG4SaveOutputTool.h"
+#include "SimG4Common/EventInformation.h"
+#include "SimG4Interface/ISimG4SaveHistoryTool.h"
+
 class IGeoSvc;
 
 // datamodel
@@ -22,7 +24,7 @@ class MCParticleCollection;
  *  @author J. Lingemann
  */
 
-class SimG4SaveParticleHistory : public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveParticleHistory : public GaudiTool, virtual public ISimG4SaveHistoryTool {
 public:
   explicit SimG4SaveParticleHistory(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveParticleHistory() = default;
@@ -32,13 +34,17 @@ public:
    *   @param[in] aEvent The Geant Event conatining data to save.
    *   @return status code
    */
-  virtual StatusCode saveOutput(const G4Event& aEvent) final;
+  StatusCode saveOutput(const G4Event& aEvent) override final;
+
+  void reset() override final;
 
 private:
   /// Handle for collection of MC particles to create
-  DataHandle<fcc::MCParticleCollection> m_mcParticles;
+  DataHandle<fcc::MCParticleCollection> m_mcParticles{"sim/secondaries", Gaudi::DataHandle::Writer, this};
   /// Handle for the vertex collection to create
-  DataHandle<fcc::GenVertexCollection> m_genVertices;
+  DataHandle<fcc::GenVertexCollection> m_genVertices{"sim/secondaryVertices", Gaudi::DataHandle::Writer, this};
+  /// the actual history manager
+  sim::EventInformation m_history;
 };
 
 #endif /* SIMG4COMPONENTS_SIMG4SAVEPARTICLEHISTORY_H */

@@ -31,6 +31,10 @@ public:
    *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
   virtual G4VUserActionInitialization* userActionInitialization() final;
+
+private:
+  /// Set to true to save secondary particle info
+  Gaudi::Property<bool> m_enableHistory { this, "enableHistory", false, "Set to true to save secondary particle info" }
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

@@ -19,50 +19,14 @@ SimG4SaveParticleHistory::SimG4SaveParticleHistory(const std::string& aType, con
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareOutput("mcParticles", m_mcParticles, "sim/secondaries");
-  declareOutput("genVertices", m_genVertices, "sim/vertices");
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
+  declareProperty("mcParticles", m_mcParticles, "Handle to the secondary particles");
+  declareProperty("genVertices", m_genVertices, "Handle to the decay vertices");
 }
 
-StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& aEvent) {
+void SimG4SaveParticleHistory::reset() {
   auto edmParticles = m_mcParticles.createAndPut();
-  // this we'll need once we address the FIXME below (creating intermediate vertices to keep the history)
-  // auto edmVertices = m_genVertices.createAndPut();
-  auto nPrimVtcs = aEvent.GetNumberOfPrimaryVertex();
-  for (int iVtx = 0; iVtx < nPrimVtcs; ++iVtx) {
-    auto g4Vtx = aEvent.GetPrimaryVertex(iVtx);
-    auto g4Primary = g4Vtx->GetPrimary();
-    if (g4Primary == nullptr) {
-      continue;
-    }
-    // get user information to establish primary particle relation in EDM
-    auto userInfo = static_cast<sim::ParticleInformation*>(g4Primary->GetUserInformation());
-    const auto& edmPrimary = userInfo->mcParticle();
-    auto currDaughter = g4Primary->GetDaughter();
-    bool haveDaughters = currDaughter != nullptr;
-    std::cout << haveDaughters << std::endl;
-    // FIXME this just adds the last particle in the "history" probably need a couple of properties that allow to select
-    // what goes into the history and what doesn't
-    while (haveDaughters) {
-      auto nextDaughter = currDaughter->GetDaughter();
-      if (nextDaughter != nullptr) {
-        currDaughter = nextDaughter;
-      } else {
-        haveDaughters = false;
-      }
-    }
-    if (currDaughter != nullptr) {
-      auto particle = edmParticles->create();
-      particle.p4().px = currDaughter->GetPx() * sim::g42edm::energy;
-      particle.p4().py = currDaughter->GetPy() * sim::g42edm::energy;
-      particle.p4().pz = currDaughter->GetPz() * sim::g42edm::energy;
-      // TODO: set charge, status and position
-      particle.pdgId(currDaughter->GetPDGcode());
-      // create the link from which we can later construct the history
-      particle.startVertex(edmPrimary.endVertex());
-    }
-  }
-  return StatusCode::SUCCESS;
+  auto edmVertices = m_genVertices.createAndPut();
+  m_history.setCollections(edmVertices, edmParticles);
 }
+
+StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& /*aEvent*/) { return StatusCode::SUCCESS; }

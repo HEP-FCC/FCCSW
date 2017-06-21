@@ -10,22 +10,19 @@
  *  Heavily inspired by the HepMC MCTruth example in Geant:
  *  http://geant4.web.cern.ch/geant4/geant4_public/source/geant4/examples/extended/eventgenerator/HepMC/MCTruth/README
  *
- *  @author J. Lingemann (skeleton and simple implementation)
- *  @author N. Tehrani (actual selection logic)
+ *  @author J. Lingemann
  */
 
 namespace sim {
 class ParticleHistoryAction : public G4UserTrackingAction {
 public:
-  ParticleHistoryAction(ParticleHistoryManager& aHistoryMgr);
+  ParticleHistoryAction();
   virtual ~ParticleHistoryAction() = default;
 
-  void PreUserTrackingAction(const G4Track*);
-  void PostUserTrackingAction(const G4Track*);
+  void PreUserTrackingAction(const G4Track* aTrack);
+  void PostUserTrackingAction(const G4Track* aTrack);
 
-private:
-  /// Flag whether or not to store particle history
-  sim::ParticleHistoryManager& m_historyMgr;
+  bool selectSecondary(const G4Track& aTrack);
 };
 }
 
