@@ -25,19 +25,23 @@ public:
   PapasBuildBlocksTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Structures
+  /// Create any output structures needed.
   StatusCode createOutputStructures() { return SUCCESS; };
-  /// Execute:
+  /// Execute papas tool
   virtual StatusCode run(papas::Event& pevent) final;
-  /// empty class structures
+  /// Empty the class structures.
   virtual StatusCode clear();
   /// Finalize.
   virtual StatusCode finalize();
 
 private:
+  /// subtype for ecal clusters that are to be used in blockbuilding eg 'm' for merged
   Gaudi::Property<std::string> m_ecalSubtype{this, "ecalSubtype", "", "ecal subtype"};
+  /// subtype for hcal clusters that are to be used in blockbuilding eg 'm' for merged
   Gaudi::Property<std::string> m_hcalSubtype{this, "hcalSubtype", "", "hcal subtype"};
+  /// subtype for tracks that are to be used in blockbuilding eg 's' for smeared
   Gaudi::Property<std::string> m_trackSubtype{this, "trackSubtype", "", "track subtype"};
+  /// collection to store the blocks that are built by this tool
   papas::Blocks m_blocks;
 };
 

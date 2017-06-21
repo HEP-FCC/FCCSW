@@ -18,7 +18,10 @@ PapasSimulatorTool::PapasSimulatorTool(const std::string& aType, const std::stri
 
 PapasSimulatorTool::~PapasSimulatorTool() {}
 
-StatusCode PapasSimulatorTool::initialize() { return GaudiTool::initialize(); }
+StatusCode PapasSimulatorTool::initialize() {
+  debug() << "PAPAS simulator options:" << m_particleSubtype << endmsg;
+  return GaudiTool::initialize();
+}
 
 StatusCode PapasSimulatorTool::clear() {
   m_ecalClusters.clear();
@@ -39,8 +42,8 @@ StatusCode PapasSimulatorTool::run(papas::Event& pevent) {
 
   // run the simulator which will add information to the particles and fill the other collections
   std::string ptype = m_particleSubtype;
-  papas::Simulator(pevent, ptype.c_str()[0], detector, m_ecalClusters, m_hcalClusters, m_smearedEcalClusters, m_smearedHcalClusters, m_tracks,
-                   m_smearedTracks, history);
+  papas::Simulator(pevent, ptype.c_str()[0], detector, m_ecalClusters, m_hcalClusters, m_smearedEcalClusters,
+                   m_smearedHcalClusters, m_tracks, m_smearedTracks, history);
   pevent.extendHistory(history);
   // take the outputs and add these to the outgoing papasevent
   pevent.addCollectionToFolder(m_ecalClusters);
@@ -49,6 +52,5 @@ StatusCode PapasSimulatorTool::run(papas::Event& pevent) {
   pevent.addCollectionToFolder(m_smearedHcalClusters);
   pevent.addCollectionToFolder(m_tracks);
   pevent.addCollectionToFolder(m_smearedTracks);
-  debug() << "PAPAS Blocks Simulator" << std::endl << pevent.info() << endmsg;
   return StatusCode::SUCCESS;
 }

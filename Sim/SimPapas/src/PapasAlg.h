@@ -1,8 +1,11 @@
 #ifndef SIM_PAPASALG_H
 #define SIM_PAPASALG_H
 
-#include "FWCore/DataHandle.h"
+// Gaudi
 #include "GaudiAlg/GaudiAlgorithm.h"
+// FCCSW
+#include "FWCore/DataHandle.h"
+// papas
 #include "papas/datatypes/Event.h"
 #include "papas/detectors/CMS.h"
 
@@ -23,10 +26,10 @@ class PapasAlg : public GaudiAlgorithm {
 
 public:
   /// Constructor.
-  PapasAlg(const std::string& name, ISvcLocator* svcLoc, seed = 0);
+  PapasAlg(const std::string& name, ISvcLocator* svcLoc);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Execute: runs the algorithm on a PapasEvent
+  /// Execute: runs each of the tools on a PapasEvent.
   virtual StatusCode execute();
   /// Finalize.
   virtual StatusCode finalize();
@@ -36,8 +39,12 @@ private:
   papas::Nodes m_history;
   std::vector<IPapasTool*> m_tools;      ///<vector of tools to be run
   std::vector<std::string> m_toolNames;  ///< names of tools to be run
-  long m_eventno; ///< the papas Event number, incremented for each event processed
-  int m_seed; ///<seed for random generator, default to 0 (no seed)
+  long m_eventno;                        ///< the papas Event number, incremented for each event processed
+  ///<seed for random generator, default to 0 (no seed)
+  Gaudi::Property<long> m_seed{this, "seed", 0, "random seed"};
+  ///<seed for papas physics debug ouput default to "" no output
+  Gaudi::Property<std::string> m_physicsDebugFile{this, "physicsDebugFile", "",
+                                                  "name of optional file to output physics info"};
 };
 
 #endif  // PAPASALG_H

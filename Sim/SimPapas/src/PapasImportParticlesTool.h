@@ -26,11 +26,11 @@ public:
   virtual ~PapasImportParticlesTool();
   /// Structures
   StatusCode createOutputStructures() { return SUCCESS; };
-  /// Initialize.
+  /// Create any output structures needed.
   virtual StatusCode initialize();
-  /// empty class structures
+  /// empty class structures.
   virtual StatusCode clear();
-  /// Execute
+  /// Execute papas tool.
   virtual StatusCode run(papas::Event& papas) final;
   /// Finalize.
   virtual StatusCode finalize();
@@ -38,7 +38,7 @@ public:
 private:
   /// Handle for the ParticleCollection to be read
   DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
-  /// Collection of papas particles
+  /// Collection of papas particles that new particles will be added to
   papas::Particles m_particles;
 };
 
