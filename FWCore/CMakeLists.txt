@@ -15,7 +15,7 @@ gaudi_install_python_modules()
 gaudi_add_library(FWCore
 		  src/*.cpp
                   LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM PODIO
-                  INCLUDE_DIRS FCCEDM PODIO
+                  INCLUDE_DIRS FCCEDM PODIO Generation
                   PUBLIC_HEADERS FWCore)
 
 gaudi_add_module(FWCorePlugins
