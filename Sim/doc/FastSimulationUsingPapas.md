@@ -15,15 +15,6 @@ Overview
 This is a  description of the Papas interface in FCCSW. It describes the configuration file of FCCSW and properties
 that allow customisation of Papas.
 
-Introduction
-------------------
-
-**Related documentation can be found** for
-the **[FCCSW framework](https://github.com/HEP-FCC/FCCSW)** with
-**[Pythia](http://home.thep.lu.se/~torbjorn/pythia81html/Welcome.html)**
-generator, **[Papas](https://github.com/HEP-FCC/papas#papas-parametrized-particle-simulation)** simulation, and
-**[Heppy](https://github.com/cbernet/heppy)** analysis framework.
-
 The event generation (Pythia8) and the Papas simulation are handled by the FCCSW.
 Heppy analyses may then be run on the output Root file.
 

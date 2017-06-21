@@ -15,12 +15,12 @@
 class IPapasTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(IPapasTool, 1, 0);
-  
+
   /**  Create any output structures that are needed
    *   @return status code
    */
   virtual StatusCode createOutputStructures() = 0;
-  
+
   /**  Empty the tool storage structures ready for next event
    *   @return status code
    */

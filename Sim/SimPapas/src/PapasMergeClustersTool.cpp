@@ -12,8 +12,11 @@ PapasMergeClustersTool::PapasMergeClustersTool(const std::string& aType, const s
 }
 
 StatusCode PapasMergeClustersTool::initialize() {
-  // read and process a single event
-  debug() << "PAPAS merger options " << m_typeSubtype << std::endl;
+  debug() << "PAPAS merger options:" << m_typeSubtype << endmsg;
+  if (m_typeSubtype.length() != 2) {
+    error() << "Invalid selection of merged cluster type and subtype" << m_typeSubtype << endmsg;
+    return StatusCode::FAILURE;
+  }
   return GaudiTool::initialize();
 }
 
@@ -23,12 +26,12 @@ StatusCode PapasMergeClustersTool::clear() {
 }
 
 StatusCode PapasMergeClustersTool::run(papas::Event& pevent) {
+
   auto history = papas::Nodes();
   auto ruler = papas::EventRuler(pevent);
   papas::mergeClusters(pevent, m_typeSubtype, ruler, m_merged_clusters, history);
   pevent.extendHistory(history);
   pevent.addCollectionToFolder(m_merged_clusters);  // add outputs into papasEvent
-  debug() << "PAPAS merger: " << m_typeSubtype << std::endl << pevent.info() << << endmsg;
   return StatusCode::SUCCESS;
 }
 

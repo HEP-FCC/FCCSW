@@ -1,5 +1,6 @@
 #include "PapasImportParticlesTool.h"
 // FCCSW
+#include "SimG4Common/Units.h"
 #include "datamodel/GenVertex.h"
 #include "datamodel/LorentzVector.h"
 #include "datamodel/MCParticleCollection.h"
@@ -20,6 +21,7 @@ PapasImportParticlesTool::PapasImportParticlesTool(const std::string& aType, con
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IPapasTool>(this);
+  declareProperty("genparticles", m_iGenpHandle);
 }
 
 PapasImportParticlesTool::~PapasImportParticlesTool() {}
@@ -38,7 +40,6 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
   const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
   auto detector = papas::CMS();  // todo consider making this be passed as part of the papas tool interface
 
-  TLorentzVector tlv;
   int countp = 0;
 
   // First Sort fcc MCparticles in order of decreasing energy to match Python
@@ -49,7 +50,7 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
   }
   TLorentzVector tlv;
   TLorentzVector tlv2;
-  sortPtcs.sort([](const fcc::ConstMCParticle& a, const fcc::ConstMCParticle& b) {
+  sortPtcs.sort([&tlv, &tlv2](const fcc::ConstMCParticle& a, const fcc::ConstMCParticle& b) {
     auto p4 = a.p4();
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
     p4 = b.p4();
@@ -65,7 +66,9 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
     int pdgid = ptc.core().pdgId;
     TVector3 startVertex = TVector3(0, 0, 0);
     if (ptc.startVertex().isAvailable()) {
-      startVertex = TVector3(ptc.startVertex().x() * 1e-3, ptc.startVertex().y() * 1e-3, ptc.startVertex().z() * 1e-3);
+      startVertex =
+          TVector3(ptc.startVertex().x() * sim::edm2papas::length, ptc.startVertex().y() * sim::edm2papas::length,
+                   ptc.startVertex().z() * sim::edm2papas::length);
     }
     if (ptc.core().status == 1) {  // only stable ones
       if (tlv.Pt() > 1e-5 && (abs(pdgid) != 12) && (abs(pdgid) != 14) && (abs(pdgid) != 16)) {
@@ -85,6 +88,5 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
     }
   }
   pevent.addCollectionToFolder(m_particles);
-  debug() << "Make Papas Particles " << std::endl << pevent.info() << << endmsg;
   return StatusCode::SUCCESS;
 }
