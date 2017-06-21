@@ -24,8 +24,7 @@ StatusCode PapasSimplifyBlocksTool::clear() {
 }
 
 StatusCode PapasSimplifyBlocksTool::initialize() {
-  // read and process a single event
-  debug() << "Block simplifier option " << m_blockSubtype << endmsg;
+  debug() << "PAPAS block simplify options:" << m_blockSubtype << endmsg;
   return GaudiTool::initialize();
 }
 
@@ -36,7 +35,6 @@ StatusCode PapasSimplifyBlocksTool::run(papas::Event& pevent) {
   pevent.extendHistory(history);
   // add outputs into papasEvent
   pevent.addCollectionToFolder(m_blocks);
-  debug() << "PAPAS Blocks Simplifier" << std::endl << pevent.info() << endmsg;
   return StatusCode::SUCCESS;
 }
 

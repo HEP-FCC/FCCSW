@@ -22,9 +22,9 @@ public:
   PapasSimplifyBlocksTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Structures
+  /// Create any output structures needed.
   StatusCode createOutputStructures() { return SUCCESS; };
-  /// Execute.
+  /// Execute papas tool.
   virtual StatusCode run(papas::Event& pevent) final;
   /// empty class structures
   virtual StatusCode clear();
@@ -32,7 +32,7 @@ public:
   virtual StatusCode finalize();
 
 private:
-  ///collection of papas blocks that will be filled by this tool
+  /// collection of papas blocks that will be filled by this tool
   papas::Blocks m_blocks;
   /// Which subtype of block to use as the input, eg "r" for reconstructed
   Gaudi::Property<std::string> m_blockSubtype{this, "blockSubtype", "", "block subtype"};

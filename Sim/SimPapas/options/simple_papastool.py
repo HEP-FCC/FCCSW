@@ -37,17 +37,17 @@ papasalg = PapasAlg("papasalg",
                            "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
                            "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
                            "PapasPFReconstructorTool/reconstructor", #reconstructs particles based on the blocks
-                           "PapasExportParticlesTool/exporter"],#export papas reconstructed particles to fcc particles
-                            seed = xDEADBEEF) #seed random generator
+                           "PapasExportParticlesTool/exporter"], #export papas reconstructed particles to fcc particles
+                            seed = 0xdeadbeef,#seed random generator
+                            physicsDebugFile = 'papasPhysics.out') #write out papas physics to file
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")
-importer.genparticles.Path='GenParticle' # name of the input pythia particles collection
+importer.genparticles.Path='GenParticle' #name of the input pythia particles collection
 
 #Papas simulation
 #reads in papas particles and simulated true and smeared cluster and tracks
 papassimtool = PapasSimulatorTool("papassim", particleSubtype="s")
-
 #Papas Merge Clusters
 #takes smeared ecal and hcal clusters and merges overlapping clusters
 papasmergeecaltool = PapasMergeClustersTool("ecalmerge", TypeAndSubtype="es") #run merge on clusters of type "es" = ecal smeared
@@ -58,9 +58,9 @@ papasmergehcaltool = PapasMergeClustersTool("hcalmerge", TypeAndSubtype="hs") #r
 papasblockbuildertool = PapasBuildBlocksTool("blockbuilder",
                                              ecalSubtype="m", #use merged ecal clusters collection
                                               hcalSubtype="m", #use merged ecal clusters collection
-                                              trackSubtype = "s") #use smeared tracks collection
+                                              trackSubtype="s") #use smeared tracks collection
 #Papas simplify the blocks structures
-papasblocksimplifiertool = PapasSimplifyBlocksTool("blocksimplifier", blockSubtype = "r") #use the reconstucted blocks from previous step
+papasblocksimplifiertool = PapasSimplifyBlocksTool("blocksimplifier", blockSubtype="r") #use the reconstucted blocks from previous step
 
 #Papas Reconstruct particles from blocks
 papaspfreconstructortool = PapasPFReconstructorTool("reconstructor", blockSubtype ="s") #use blocks collection from block simplifier
@@ -84,5 +84,5 @@ ApplicationMgr(
     EvtMax=100,
     ## all services should be put here
     ExtSvc = [podioevent],
-    OutputLevel = INFO
+    OutputLevel = DEBUG
  )

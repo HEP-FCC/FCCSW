@@ -19,11 +19,11 @@ public:
   PapasExportParticlesTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// create outputs
+  /// Create any output structures needed.
   virtual StatusCode createOutputStructures();
-  /// Execute:
+  /// Execute papas tool.
   virtual StatusCode run(papas::Event& pevent);
-  /// Clear:
+  /// Clear data structures.
   virtual StatusCode clear() { return SUCCESS; };
   /// Finalize.
   virtual StatusCode finalize();
@@ -33,7 +33,8 @@ private:
   DataHandle<fcc::ParticleCollection> m_particlesHandle{"recparticles", Gaudi::DataHandle::Writer, this};
   /// Particles type to be exported
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
-  //fcc::ParticleCollection* m_particles;  /// mcparticles collection
+  /// pointer to the reconstructed particles collection
+  fcc::ParticleCollection* m_particles;  /// mcparticles collection
 };
 
 #endif  // SIM_PAPASPARTICLEEXPORTER_H

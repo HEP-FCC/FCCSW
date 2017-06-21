@@ -21,17 +21,17 @@ public:
   PapasMergeClustersTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// empty class structures
-  /// Structures
+  /// create any output structures needed
   StatusCode createOutputStructures() { return SUCCESS; };
+  /// Empty the class structures.
   virtual StatusCode clear();
-  /// Execute: Applies the filter
+  /// Execute papas tool
   virtual StatusCode run(papas::Event& pevent) final;
   /// Finalize.
   virtual StatusCode finalize();
 
 private:
-  /// Handle for the genparticles to be written
+  /// collection in which the merged clusters will be stored
   papas::Clusters m_merged_clusters;
   /// Type and subtype of the clusters that are to be merged, eg "em" ecal merged
   Gaudi::Property<std::string> m_typeSubtype{this, "TypeAndSubtype", "", "type and subtype to merge"};

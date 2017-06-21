@@ -11,9 +11,8 @@ PapasBuildBlocksTool::PapasBuildBlocksTool(const std::string& aType, const std::
 }
 
 StatusCode PapasBuildBlocksTool::initialize() {
-  // read and process a single event
-  debug() << "PAPAS Blockbuilder options " << m_ecalSubtype << " + " << m_hcalSubtype << " + " << m_trackSubtype
-         << endmsg;
+  debug() << "PAPAS block builder options:" << m_ecalSubtype << m_hcalSubtype << m_trackSubtype << endmsg;
+
   return GaudiTool::initialize();
 }
 
@@ -31,7 +30,6 @@ StatusCode PapasBuildBlocksTool::run(papas::Event& pevent) {
   pevent.extendHistory(history);
   // add outputs into papasEvent
   pevent.addCollectionToFolder(m_blocks);
-  debug() << "PAPAS Blocks " << std::endl << pevent.info() << endmsg;
   return StatusCode::SUCCESS;
 }
 

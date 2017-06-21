@@ -29,23 +29,30 @@ public:
   virtual ~PapasSimulatorTool();
   /// Initialize.
   virtual StatusCode initialize();
-  /// Structures
+  /// Create any output structures needed.
   StatusCode createOutputStructures() { return SUCCESS; };
   /// empty class structures
   virtual StatusCode clear();
-  /// Run
+  /// Execute the papas tool.
   virtual StatusCode run(papas::Event& papas) final;
   /// Finalize.
   virtual StatusCode finalize();
 
 private:
+  /// collection into which simulated Ecal clusters will be added
   papas::Clusters m_ecalClusters;
+  /// collection into which simulated Hcal clusters will be added
   papas::Clusters m_hcalClusters;
-  papas::Tracks m_trackClusters;
+  /// collection into which simulated tracks will be added
+  papas::Tracks m_tracks;
+  /// collection into which simulated smeared Ecal clusters will be added
   papas::Clusters m_smearedEcalClusters;
+  /// collection into which simulated smeared Hcal clusters will be added
   papas::Clusters m_smearedHcalClusters;
+  /// collection into which simulated smeared tracks will be added
   papas::Tracks m_smearedTracks;
+  /// subtype of particles that should be used in the simulation
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
-};  ///< Which particles to use*/
+};
 
 #endif  // SIM_PAPASSIMULATORTOOL_H

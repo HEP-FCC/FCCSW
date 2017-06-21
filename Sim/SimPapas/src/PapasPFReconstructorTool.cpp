@@ -13,12 +13,12 @@ PapasPFReconstructorTool::PapasPFReconstructorTool(const std::string& aType, con
 
 StatusCode PapasPFReconstructorTool::initialize() {
   // read and process a single event
-  debug() << "PAPAS PFRECONSTRUCTOR options " << m_blockSubtype << endmsg;
+  debug() << "PAPAS pfreconstructor options:" << m_blockSubtype << endmsg;
   return GaudiTool::initialize();
 }
 
 StatusCode PapasPFReconstructorTool::clear() {
-  m_rec_particles.clear();
+  m_recParticles.clear();
   return StatusCode::SUCCESS;
 }
 
@@ -26,11 +26,10 @@ StatusCode PapasPFReconstructorTool::run(papas::Event& pevent) {
   papas::Detector detector = papas::CMS();
   papas::Nodes history;
   std::string btype = m_blockSubtype;
-  papas::PFReconstructor(pevent, btype.c_str()[0], detector, m_rec_particles, history);
+  papas::PFReconstructor(pevent, btype.c_str()[0], detector, m_recParticles, history);
   pevent.extendHistory(history);
   // add outputs into papasEvent
-  pevent.addCollectionToFolder(m_rec_particles);
-  debug() << "PAPAS Reconstructor" << std::endl << pevent.info() <<  endmsg;
+  pevent.addCollectionToFolder(m_recParticles);
   return StatusCode::SUCCESS;
 }
 
