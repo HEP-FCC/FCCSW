@@ -33,6 +33,9 @@ private:
 
   std::vector<const fcc::MCParticleCollection*> m_MCParticleCollections;
   std::vector<const fcc::GenVertexCollection*> m_GenVertexCollections;
+
+  DataHandle<fcc::GenVertexCollection> m_vertOut{"allGenVertices", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::MCParticleCollection> m_partOut{"allGenParticles", Gaudi::DataHandle::Writer, this};
 };
 
 #endif // FWCORE_PILEUPPARTICLESMERGETOOL_H

@@ -37,6 +37,7 @@ StatusCode PileupParticlesMergeTool::readPileupCollection(podio::EventStore& sto
 }
 
 
+
 StatusCode PileupParticlesMergeTool::mergeCollections() {
 
   // ownership given to data service at end of execute
@@ -57,6 +58,8 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
     }
   }
 
+  m_vertOut.put(collVOut);
+  m_partOut.put(collPOut);
   return StatusCode::SUCCESS;
 }
 
