@@ -9,12 +9,27 @@
 
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
+from GaudiKernel import SystemOfUnits as units
 
-## read in generated particles from ROOT via podio
-podioevent   = FCCDataSvc("EventDataSvc", input="./ee_ZH_Zmumu_Hbb.root")
+### Example of pythia configuration file to generate events
+pythiafile="Sim/SimPapas/data/ee_ZH_Zmumu_Hbb.txt"
 
-from Configurables import PodioInput, ReadTestConsumer
-podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
+#### Data service
+podioevent = FCCDataSvc("EventDataSvc")
+
+from Configurables import  HepMCFileReader
+from Configurables import PythiaInterface, GenAlg
+### PYTHIA algorithm
+pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
+pythia8gen.hepmc.Path = "hepmcevent"
+
+from Configurables import HepMCToEDMConverter
+### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmcevent"
+hepmc_converter.genparticles.Path="GenParticle"
+hepmc_converter.genvertices.Path="Genvertex"
 
 from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
@@ -57,8 +72,8 @@ papasmergehcaltool = PapasMergeClustersTool("hcalmerge", TypeAndSubtype="hs") #r
 #Papas Construct Blocks of connected clusters and tracks
 papasblockbuildertool = PapasBuildBlocksTool("blockbuilder",
                                              ecalSubtype="m", #use merged ecal clusters collection
-                                              hcalSubtype="m", #use merged ecal clusters collection
-                                              trackSubtype="s") #use smeared tracks collection
+                                             hcalSubtype="m", #use merged ecal clusters collection
+                                             trackSubtype="s") #use smeared tracks collection
 #Papas simplify the blocks structures
 papasblocksimplifiertool = PapasSimplifyBlocksTool("blocksimplifier", blockSubtype="r") #use the reconstucted blocks from previous step
 
@@ -78,7 +93,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr(
     ## all algorithms should be put here
-    TopAlg=[podioinput, papasalg, out],
+    TopAlg=[pythia8gen, hepmc_converter, papasalg, out],
     EvtSel='NONE',
     ## number of events
     EvtMax=100,
