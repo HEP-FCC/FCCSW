@@ -4,7 +4,7 @@ from Gaudi.Configuration import *
 
 pileupFilename = "tracker_with_field.root"
 signalFilename = "output_geant_pgun_fullsim.root"
-signalCollections = ["allGenVertices", "allGenParticles"]
+signalCollections = ["allGenVertices", "allGenParticles", "hits", "positionedHits"]
 
 
 # Data service
@@ -26,6 +26,17 @@ particlemergetool.signalGenParticles.Path = "allGenParticles"
 particlemergetool.allGenParticles.Path = "overlaidGenParticles"
 particlemergetool.allGenVertices.Path = "overlaidGenVertices"
 
+from Configurables import PileupTrackHitsMergeTool
+trackhitsmergetool = PileupTrackHitsMergeTool("MyTrackHitsMergeTool")
+trackhitsmergetool.pileupTrackHitsBranch = "hits"
+trackhitsmergetool.pileupPositionedTrackHitsBranch = "positionedHits"
+
+trackhitsmergetool.signalTrackHits = "hits"
+trackhitsmergetool.signalPositionedTrackHits = "positionedHits"
+
+trackhitsmergetool.allTrackHits = "overlaidTrackHits"
+trackhitsmergetool.allPositionedTrackHits = "overlaidPositionedTrackHits"
+
 from Configurables import ConstPileUp
 
 pileuptool = ConstPileUp("MyPileupTool", numPileUpEvents=1)
@@ -35,7 +46,8 @@ from Configurables import PileupOverlayAlg
 overlay = PileupOverlayAlg()
 overlay.pileupFilename = pileupFilename
 overlay.randomizePileup = False
-overlay.mergeTools = ["PileupParticlesMergeTool/MyPileupParticlesMergeTool"]
+overlay.mergeTools = ["PileupParticlesMergeTool/MyPileupParticlesMergeTool",
+  "PileupTrackHitsMergeTool/MyTrackHitsMergeTool"]
 overlay.PileUpTool = pileuptool
 
 
