@@ -58,6 +58,15 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
 
+from Configurables import SimG4Alg, SimG4SaveCalHits
+saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"])
+saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
+saveecaltool.caloHits.Path = "ECalHits"
+
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"])
+savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
+savehcaltool.caloHits.Path = "HCalHits"
+
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
@@ -71,7 +80,9 @@ savetrackertool.trackHits.Path = "hits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits"],
+                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits",
+                      "SimG4SaveCalHits/saveECalHits",
+                      "SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)
 
 # PODIO algorithm
@@ -85,8 +96,8 @@ out.filename = "min_bias_pool.root"
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 20000,
+                EvtMax   = 20,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
  )
