@@ -40,4 +40,4 @@ gaudi_add_test(CheckMergeCollection
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
-               DEPENDS PileupOverlay)
+               DEPENDS Examples.PileupOverlay)
