@@ -15,6 +15,8 @@ public:
 
   virtual StatusCode mergeCollections() = 0;
 
+  virtual StatusCode readSignal() = 0;
+
 };
 
 

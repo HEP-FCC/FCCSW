@@ -26,16 +26,21 @@ public:
 
   virtual StatusCode mergeCollections() override final;
 
+  virtual StatusCode readSignal() override final;
+
 private:
 
-  Gaudi::Property<std::string> m_pileupGenParticlesBranchName{this, "genParticleBranch", "genParticles", ""}; 
+  Gaudi::Property<std::string> m_pileupGenParticlesBranchName{this, "genParticlesBranch", "genParticles", ""}; 
   Gaudi::Property<std::string> m_pileupGenVerticesBranchName{this, "genVerticesBranch", "genVertices", ""}; 
 
   std::vector<const fcc::MCParticleCollection*> m_MCParticleCollections;
   std::vector<const fcc::GenVertexCollection*> m_GenVertexCollections;
 
-  DataHandle<fcc::GenVertexCollection> m_vertOut{"allGenVertices", Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::MCParticleCollection> m_partOut{"allGenParticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::GenVertexCollection> m_vertOut{"overlay/allGenVertices", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::MCParticleCollection> m_partOut{"overlay/allGenParticles", Gaudi::DataHandle::Writer, this};
+
+  DataHandle<fcc::GenVertexCollection> m_vertIn{"overlay/signalGenVertices", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::MCParticleCollection> m_partIn{"overlay/signalGenParticles", Gaudi::DataHandle::Reader, this};
 };
 
 #endif // FWCORE_PILEUPPARTICLESMERGETOOL_H

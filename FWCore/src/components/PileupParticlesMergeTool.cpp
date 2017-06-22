@@ -11,7 +11,11 @@ DECLARE_TOOL_FACTORY(PileupParticlesMergeTool)
 PileupParticlesMergeTool::PileupParticlesMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent):
   GaudiTool(aType, aName, aParent) {
     declareInterface<IEDMMergeTool>(this);
-    };
+    declareProperty("signalGenVertices", m_vertIn);
+    declareProperty("signalGenParticles", m_partIn);
+    declareProperty("allGenParticles", m_partOut);
+    declareProperty("allGenVertices", m_vertOut);
+  }
 
 
 StatusCode PileupParticlesMergeTool::initialize() { return StatusCode::SUCCESS;}
@@ -25,20 +29,36 @@ StatusCode PileupParticlesMergeTool::readPileupCollection(podio::EventStore& sto
   bool mcParticleCollectionPresent = store.get(m_pileupGenParticlesBranchName, mcParticleCollection);
   if (mcParticleCollectionPresent) {
     m_MCParticleCollections.push_back(mcParticleCollection);
+  } else {
+    warning() << "No collection could be read from branch " << m_pileupGenParticlesBranchName << endmsg;
   }
 
   bool genVertexCollectionPresent = store.get(m_pileupGenVerticesBranchName, genVertexCollection);
   if (genVertexCollectionPresent) {
     m_GenVertexCollections.push_back(genVertexCollection);
+  } else {
+    warning() << "No collection could be read from branch " << m_pileupGenVerticesBranchName << endmsg;
   }
 
   
   return StatusCode::SUCCESS;
 }
 
+StatusCode PileupParticlesMergeTool::readSignal() {
+  auto collVSig = m_vertIn.get();
+  auto collPSig = m_partIn.get();
+
+  m_MCParticleCollections.push_back(collPSig);
+  m_GenVertexCollections.push_back(collVSig);
+
+  return StatusCode::SUCCESS;
+
+}
 
 
 StatusCode PileupParticlesMergeTool::mergeCollections() {
+
+  debug() << "merge collections ..." << endmsg;
 
   // ownership given to data service at end of execute
   fcc::MCParticleCollection* collPOut = new fcc::MCParticleCollection();
@@ -52,7 +72,7 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
 
   }
   for (auto mcPartColl: m_MCParticleCollections) {
-    // copy pileup particles
+    // copy particles
     for (const auto elem : *mcPartColl) {
       collPOut->push_back(elem.clone());
     }
@@ -60,6 +80,9 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
 
   m_vertOut.put(collVOut);
   m_partOut.put(collPOut);
+
+  m_MCParticleCollections.clear();
+  m_GenVertexCollections.clear();
   return StatusCode::SUCCESS;
 }
 
