@@ -64,6 +64,10 @@ gaudi_add_test(ExampleOptions
                FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
+gaudi_add_test(PileupOverlay
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/overlaySignalAndPileup.py
+               DEPENDS GeantFullSimTrackerHitsWithField GeantFullSimParticleGun)
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile
