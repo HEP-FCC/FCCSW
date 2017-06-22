@@ -61,16 +61,15 @@
   <readouts>
     <readout name="EMECPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-2.515"/>
-      <id>system:4,subsystem:1,type:3,layer:8,eta:10,phi:10</id>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10</id>
     </readout>
     <readout name="HECPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-2.515"/>
-      <id>system:4,subsystem:1,type:3,layer:8,eta:10,phi:10</id>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10</id>
     </readout>
   </readouts>
 
   <detectors>
-    <!-- positive side: cryostat -->
     <detector name="CalEndcapCryoFront_positive" type="SimpleCone">
       <dimensions rmin1="CryoEndcap_front_rmin1" rmax1="CryoEndcap_rmax"  rmin2="CryoEndcap_front_rmin2" rmax2="CryoEndcap_rmax"
                   dz="CryoThicknessFront/2." z_offset="CryoEndcap_z1+CryoThicknessFront/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
@@ -106,14 +105,14 @@
                   dz="(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2."
                   z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="LAr" phi0="0" deltaphi="360*deg"/>
     </detector>
-    <!-- electromagnetic calorimeter -->
+
     <detector name="EMEC" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="EMECPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="EMEC_rmin1"  rmin2="EMEC_rmin2" rmax="EMEC_rmax" dz="(EMEC_z2-EMEC_z1)/2." z_offset="EMEC_z1+(EMEC_z2-EMEC_z1)/2."/>
       <active thickness="EMEC_lAr_thickness">
         <material name="LAr"/>
       </active>
-      <passive sensitive="false">
+      <passive sensitive="true">
         <inner thickness="EMEC_Pb_thickness">
           <material name="Lead"/>
         </inner>
@@ -124,33 +123,33 @@
           <material name="lArCaloSteel"/>
         </outer>
       </passive>
-      <readout thickness="EMEC_readout_thickness" sensitive="false">
+      <readout thickness="EMEC_readout_thickness" sensitive="true">
         <material name="PCB"/>
       </readout>
     </detector>
-    <!-- hadronic calorimeter -->
+
     <detector name="HEC" type="CaloEndcapDiscs" id="HadronicEndCap_id" readout="HECPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="HEC_rmin1"  rmin2="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="HEC_z1+(HEC_z2-HEC_z1)/2."/>
       <active thickness="HEC_lAr_thickness">
         <material name="LAr"/>
       </active>
-      <passive  sensitive="false">
+      <passive sensitive="true">
         <inner thickness="HEC_Cu_thickness">
           <material name="Copper"/>
         </inner>
-        <glue thickness="0">
+        <glue thickness="0" sensitive="true">
           <material name="Copper"/>
         </glue>
-        <outer thickness="0">
+        <outer thickness="0" sensitive="true">
           <material name="Copper"/>
         </outer>
       </passive>
-      <readout thickness="HEC_readout_thickness" sensitive="false">
+      <readout thickness="HEC_readout_thickness" sensitive="true">
         <material name="PCB"/>
       </readout>
     </detector>
-    <!-- negative side: cryostat -->
+
     <detector name="CalEndcapCryoFront_negative" type="SimpleCone">
       <dimensions rmin2="CryoEndcap_front_rmin1" rmax2="CryoEndcap_rmax"  rmin1="CryoEndcap_front_rmin2" rmax1="CryoEndcap_rmax"
                   dz="CryoThicknessFront/2." z_offset="-(CryoEndcap_z1+CryoThicknessFront/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
