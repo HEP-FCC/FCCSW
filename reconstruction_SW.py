@@ -94,7 +94,7 @@ createEcalClusters = CreateCaloClustersSlidingWindow("CreateEcalClusters",
 createEcalClusters.clusters.Path = "EcalClusters"
 
 
-out = PodioOutput("out", filename = "~/FCCSW/condor/output_combCalo_reconstructionSW_"+str(particle)+str(energy)+"GeV_bfield"+str(bfield)+"_part"+str(i)+".root",
+out = PodioOutput("out", filename = "~/FCCSW/condor/output_combCalo_reconstructionSW_"+str(particleType)+str(energy)+"GeV_bfield"+str(bfield)+"_part"+str(i)+".root",
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *","drop ECalHits", "drop HCalHits"]
 
