@@ -61,11 +61,11 @@
   <readouts>
     <readout name="EMECPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-2.515"/>
-      <id>system:4,subsystem:1,type:3,layer:8,eta:10,phi:10</id>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10</id>
     </readout>
     <readout name="HECPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-2.515"/>
-      <id>system:4,subsystem:1,type:3,layer:8,eta:10,phi:10</id>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10</id>
     </readout>
   </readouts>
 
