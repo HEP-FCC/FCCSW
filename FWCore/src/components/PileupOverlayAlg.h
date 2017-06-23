@@ -1,7 +1,7 @@
 #ifndef PILEUPMERGE_H
 #define PILEUPMERGE_H
 
-#include "Generation/IPileUpTool.h"
+#include "FWCore/IPileUpTool.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/RndmGenerators.h"
 #include "FWCore/DataHandle.h"
