@@ -2,7 +2,7 @@
 from Gaudi.Configuration import *
 
 
-pileupFilename = "tracker_with_field.root"
+pileupFilenames = ["tracker_with_field.root"]
 signalFilename = "output_geant_pgun_fullsim.root"
 signalCollections = ["allGenVertices", "allGenParticles", "hits", "positionedHits"]
 
