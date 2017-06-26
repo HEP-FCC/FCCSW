@@ -11,10 +11,10 @@ DECLARE_TOOL_FACTORY(PileupTrackHitsMergeTool)
 PileupTrackHitsMergeTool::PileupTrackHitsMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent):
   GaudiTool(aType, aName, aParent) {
     declareInterface<IEDMMergeTool>(this);
-    declareProperty("signalTrackHits", m_TrackHitsIn);
-    declareProperty("signalPositionedTrackHits", m_PosTrackHitsIn);
-    declareProperty("allTrackHits", m_TrackHitsOut);
-    declareProperty("allPositionedTrackHits", m_PosTrackHitsOut);
+    declareProperty("signalTrackHits", m_TrackHitsSignal);
+    declareProperty("signalPositionedTrackHits", m_PosTrackHitsSignal);
+    declareProperty("mergedTrackHits", m_TrackHitsMerged);
+    declareProperty("mergedPositionedTrackHits", m_PosTrackHitsMerged);
   }
 
 
@@ -23,21 +23,26 @@ StatusCode PileupTrackHitsMergeTool::initialize() { return StatusCode::SUCCESS;}
 StatusCode PileupTrackHitsMergeTool::finalize() { return StatusCode::SUCCESS;}
 
 StatusCode PileupTrackHitsMergeTool::readPileupCollection(podio::EventStore& store) {
+  // local pointers, to be filled by the event store
   const fcc::TrackHitCollection* trackHitCollection;
   const fcc::PositionedTrackHitCollection* posTrackHitCollection;
 
+  // get collection address and store it in container
   bool trackHitCollectionPresent = store.get(m_pileupTrackHitsBranchName, trackHitCollection);
   if (trackHitCollectionPresent) {
     m_TrackHitCollections.push_back(trackHitCollection);
   } else {
     warning() << "No collection could be read from branch " << m_pileupTrackHitsBranchName << endmsg;
+    return StatusCode::FAILURE;
   }
 
+  /// as above, for the positioned collection
   bool posTrackHitCollectionPresent = store.get(m_pileupPosTrackHitsBranchName, posTrackHitCollection);
   if (posTrackHitCollectionPresent) {
     m_PosTrackHitCollections.push_back(posTrackHitCollection);
   } else {
     warning() << "No collection could be read from branch " << m_pileupPosTrackHitsBranchName << endmsg;
+    return StatusCode::FAILURE;
   }
 
   
@@ -45,9 +50,11 @@ StatusCode PileupTrackHitsMergeTool::readPileupCollection(podio::EventStore& sto
 }
 
 StatusCode PileupTrackHitsMergeTool::readSignal() {
+  // get collection from event sture
   auto collTrackHitsSig = m_TrackHitsIn.get();
   auto collPosTrackHitsSig = m_PosTrackHitsIn.get();
 
+  // store them in internal container
   m_TrackHitCollections.push_back(collTrackHitsSig);
   m_PosTrackHitCollections.push_back(collPosTrackHitsSig);
 
