@@ -44,7 +44,7 @@ pileuptool = ConstPileUp("MyPileupTool", numPileUpEvents=1)
 from Configurables import PileupOverlayAlg
 
 overlay = PileupOverlayAlg()
-overlay.pileupFilename = pileupFilename
+overlay.pileupFilenames = pileupFilenames
 overlay.randomizePileup = False
 overlay.mergeTools = ["PileupParticlesMergeTool/MyPileupParticlesMergeTool",
   "PileupTrackHitsMergeTool/MyTrackHitsMergeTool"]
