@@ -9,11 +9,11 @@
 #include "FWCore/IEDMMergeTool.h"
 
 namespace fcc {
-  class MCParticleCollection;
-  class GenVertexCollection;
+class MCParticleCollection;
+class GenVertexCollection;
 }
 
-class PileupParticlesMergeTool: public GaudiTool, virtual public IEDMMergeTool {
+class PileupParticlesMergeTool : public GaudiTool, virtual public IEDMMergeTool {
 public:
   explicit PileupParticlesMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~PileupParticlesMergeTool() = default;
@@ -29,9 +29,8 @@ public:
   virtual StatusCode readSignal() override final;
 
 private:
-
-  Gaudi::Property<std::string> m_pileupGenParticlesBranchName{this, "genParticlesBranch", "genParticles", ""}; 
-  Gaudi::Property<std::string> m_pileupGenVerticesBranchName{this, "genVerticesBranch", "genVertices", ""}; 
+  Gaudi::Property<std::string> m_pileupGenParticlesBranchName{this, "genParticlesBranch", "genParticles", ""};
+  Gaudi::Property<std::string> m_pileupGenVerticesBranchName{this, "genVerticesBranch", "genVertices", ""};
 
   std::vector<const fcc::MCParticleCollection*> m_MCParticleCollections;
   std::vector<const fcc::GenVertexCollection*> m_GenVertexCollections;
@@ -43,4 +42,4 @@ private:
   DataHandle<fcc::MCParticleCollection> m_partIn{"overlay/signalGenParticles", Gaudi::DataHandle::Reader, this};
 };
 
-#endif // FWCORE_PILEUPPARTICLESMERGETOOL_H
+#endif  // FWCORE_PILEUPPARTICLESMERGETOOL_H

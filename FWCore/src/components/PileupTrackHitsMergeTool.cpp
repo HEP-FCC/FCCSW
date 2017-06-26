@@ -1,26 +1,25 @@
 #include "PileupTrackHitsMergeTool.h"
 
-#include "podio/EventStore.h" 
+#include "podio/EventStore.h"
 
-#include "datamodel/TrackHitCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
-
+#include "datamodel/TrackHitCollection.h"
 
 DECLARE_TOOL_FACTORY(PileupTrackHitsMergeTool)
 
-PileupTrackHitsMergeTool::PileupTrackHitsMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent):
-  GaudiTool(aType, aName, aParent) {
-    declareInterface<IEDMMergeTool>(this);
-    declareProperty("signalTrackHits", m_TrackHitsSignal);
-    declareProperty("signalPositionedTrackHits", m_PosTrackHitsSignal);
-    declareProperty("mergedTrackHits", m_TrackHitsMerged);
-    declareProperty("mergedPositionedTrackHits", m_PosTrackHitsMerged);
-  }
+PileupTrackHitsMergeTool::PileupTrackHitsMergeTool(const std::string& aType, const std::string& aName,
+                                                   const IInterface* aParent)
+    : GaudiTool(aType, aName, aParent) {
+  declareInterface<IEDMMergeTool>(this);
+  declareProperty("signalTrackHits", m_TrackHitsSignal);
+  declareProperty("signalPositionedTrackHits", m_PosTrackHitsSignal);
+  declareProperty("mergedTrackHits", m_TrackHitsMerged);
+  declareProperty("mergedPositionedTrackHits", m_PosTrackHitsMerged);
+}
 
+StatusCode PileupTrackHitsMergeTool::initialize() { return StatusCode::SUCCESS; }
 
-StatusCode PileupTrackHitsMergeTool::initialize() { return StatusCode::SUCCESS;}
-
-StatusCode PileupTrackHitsMergeTool::finalize() { return StatusCode::SUCCESS;}
+StatusCode PileupTrackHitsMergeTool::finalize() { return StatusCode::SUCCESS; }
 
 StatusCode PileupTrackHitsMergeTool::readPileupCollection(podio::EventStore& store) {
   // local pointers, to be filled by the event store
@@ -45,7 +44,6 @@ StatusCode PileupTrackHitsMergeTool::readPileupCollection(podio::EventStore& sto
     return StatusCode::FAILURE;
   }
 
-  
   return StatusCode::SUCCESS;
 }
 
@@ -59,9 +57,7 @@ StatusCode PileupTrackHitsMergeTool::readSignal() {
   m_PosTrackHitCollections.push_back(collPosTrackHitsSig);
 
   return StatusCode::SUCCESS;
-
 }
-
 
 StatusCode PileupTrackHitsMergeTool::mergeCollections() {
 
@@ -71,14 +67,13 @@ StatusCode PileupTrackHitsMergeTool::mergeCollections() {
   fcc::TrackHitCollection* collTrackHitsOut = new fcc::TrackHitCollection();
   fcc::PositionedTrackHitCollection* collPosTrackHitsOut = new fcc::PositionedTrackHitCollection();
 
-  for (auto trackHitColl: m_TrackHitCollections) {
+  for (auto trackHitColl : m_TrackHitCollections) {
     // copy tracker hits
     for (const auto elem : *trackHitColl) {
       collTrackHitsOut->push_back(elem.clone());
     }
-
   }
-  for (auto posTrackHitColl: m_PosTrackHitCollections) {
+  for (auto posTrackHitColl : m_PosTrackHitCollections) {
     // copy positioned track hits
     for (const auto elem : *posTrackHitColl) {
       collPosTrackHitsOut->push_back(elem.clone());
@@ -92,5 +87,3 @@ StatusCode PileupTrackHitsMergeTool::mergeCollections() {
   m_PosTrackHitCollections.clear();
   return StatusCode::SUCCESS;
 }
-
-

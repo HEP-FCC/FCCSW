@@ -1,26 +1,25 @@
 #include "PileupParticlesMergeTool.h"
 
-#include "podio/EventStore.h" 
+#include "podio/EventStore.h"
 
-#include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
-
+#include "datamodel/MCParticleCollection.h"
 
 DECLARE_TOOL_FACTORY(PileupParticlesMergeTool)
 
-PileupParticlesMergeTool::PileupParticlesMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent):
-  GaudiTool(aType, aName, aParent) {
-    declareInterface<IEDMMergeTool>(this);
-    declareProperty("signalGenVertices", m_vertIn);
-    declareProperty("signalGenParticles", m_partIn);
-    declareProperty("allGenParticles", m_partOut);
-    declareProperty("allGenVertices", m_vertOut);
-  }
+PileupParticlesMergeTool::PileupParticlesMergeTool(const std::string& aType, const std::string& aName,
+                                                   const IInterface* aParent)
+    : GaudiTool(aType, aName, aParent) {
+  declareInterface<IEDMMergeTool>(this);
+  declareProperty("signalGenVertices", m_vertIn);
+  declareProperty("signalGenParticles", m_partIn);
+  declareProperty("allGenParticles", m_partOut);
+  declareProperty("allGenVertices", m_vertOut);
+}
 
+StatusCode PileupParticlesMergeTool::initialize() { return StatusCode::SUCCESS; }
 
-StatusCode PileupParticlesMergeTool::initialize() { return StatusCode::SUCCESS;}
-
-StatusCode PileupParticlesMergeTool::finalize() { return StatusCode::SUCCESS;}
+StatusCode PileupParticlesMergeTool::finalize() { return StatusCode::SUCCESS; }
 
 StatusCode PileupParticlesMergeTool::readPileupCollection(podio::EventStore& store) {
   const fcc::MCParticleCollection* mcParticleCollection;
@@ -40,7 +39,6 @@ StatusCode PileupParticlesMergeTool::readPileupCollection(podio::EventStore& sto
     warning() << "No collection could be read from branch " << m_pileupGenVerticesBranchName << endmsg;
   }
 
-  
   return StatusCode::SUCCESS;
 }
 
@@ -52,9 +50,7 @@ StatusCode PileupParticlesMergeTool::readSignal() {
   m_GenVertexCollections.push_back(collVSig);
 
   return StatusCode::SUCCESS;
-
 }
-
 
 StatusCode PileupParticlesMergeTool::mergeCollections() {
 
@@ -64,14 +60,13 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
   fcc::MCParticleCollection* collPOut = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* collVOut = new fcc::GenVertexCollection();
 
-  for (auto genVertexColl: m_GenVertexCollections) {
+  for (auto genVertexColl : m_GenVertexCollections) {
     // copy vertices
     for (const auto elem : *genVertexColl) {
       collVOut->push_back(elem.clone());
     }
-
   }
-  for (auto mcPartColl: m_MCParticleCollections) {
+  for (auto mcPartColl : m_MCParticleCollections) {
     // copy particles
     for (const auto elem : *mcPartColl) {
       collPOut->push_back(elem.clone());
@@ -85,5 +80,3 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
   m_GenVertexCollections.clear();
   return StatusCode::SUCCESS;
 }
-
-

@@ -9,11 +9,11 @@
 #include "FWCore/IEDMMergeTool.h"
 
 namespace fcc {
-  class CaloHitCollection;
-  class PositionedCaloHitCollection;
+class CaloHitCollection;
+class PositionedCaloHitCollection;
 }
 
-class PileupCaloHitsMergeTool: public GaudiTool, virtual public IEDMMergeTool {
+class PileupCaloHitsMergeTool : public GaudiTool, virtual public IEDMMergeTool {
 public:
   explicit PileupCaloHitsMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~PileupCaloHitsMergeTool() = default;
@@ -32,10 +32,13 @@ public:
   virtual StatusCode readSignal() override final;
 
 private:
-  /// Name of the branch from which to read pileup collection 
-  Gaudi::Property<std::string> m_pileupCaloHitsBranchName{this, "pileupCaloHitsBranch", "caloHits", "Name of the branch from which to read pileup collection"}; 
-  /// Name of the branch from which to read pileup collection 
-  Gaudi::Property<std::string> m_pileupPosCaloHitsBranchName{this, "pileupPositionedCaloHitsBranch", "positionedCaloHits", "Name of the branch from which to read pileup collection"};
+  /// Name of the branch from which to read pileup collection
+  Gaudi::Property<std::string> m_pileupCaloHitsBranchName{this, "pileupCaloHitsBranch", "caloHits",
+                                                          "Name of the branch from which to read pileup collection"};
+  /// Name of the branch from which to read pileup collection
+  Gaudi::Property<std::string> m_pileupPosCaloHitsBranchName{this, "pileupPositionedCaloHitsBranch",
+                                                             "positionedCaloHits",
+                                                             "Name of the branch from which to read pileup collection"};
 
   /// internal container to keep track of collections to be merged
   std::vector<const fcc::CaloHitCollection*> m_CaloHitCollections;
@@ -45,12 +48,14 @@ private:
   /// Output of this tool: merged collection
   DataHandle<fcc::CaloHitCollection> m_CaloHitsMerged{"overlay/caloHits", Gaudi::DataHandle::Writer, this};
   /// Output of this tool: merged collection
-  DataHandle<fcc::PositionedCaloHitCollection> m_PosCaloHitsMerged{"overlay/positionedCaloHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::PositionedCaloHitCollection> m_PosCaloHitsMerged{"overlay/positionedCaloHits",
+                                                                   Gaudi::DataHandle::Writer, this};
 
   /// input to this tool: signal collection
   DataHandle<fcc::CaloHitCollection> m_CaloHitsSignal{"overlay/signalCaloHits", Gaudi::DataHandle::Reader, this};
   /// input to this tool: signal collection
-  DataHandle<fcc::PositionedCaloHitCollection> m_PosCaloHitsSignal{"overlay/signalPositionedCaloHits", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::PositionedCaloHitCollection> m_PosCaloHitsSignal{"overlay/signalPositionedCaloHits",
+                                                                   Gaudi::DataHandle::Reader, this};
 };
 
-#endif // FWCORE_PILEUPCALOHITSMERGETOOL_H
+#endif  // FWCORE_PILEUPCALOHITSMERGETOOL_H
