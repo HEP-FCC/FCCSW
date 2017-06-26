@@ -13,8 +13,8 @@ PileupParticlesMergeTool::PileupParticlesMergeTool(const std::string& aType, con
   declareInterface<IEDMMergeTool>(this);
   declareProperty("signalGenVertices", m_vertIn);
   declareProperty("signalGenParticles", m_partIn);
-  declareProperty("allGenParticles", m_partOut);
-  declareProperty("allGenVertices", m_vertOut);
+  declareProperty("mergedGenParticles", m_partOut);
+  declareProperty("mergedGenVertices", m_vertOut);
 }
 
 StatusCode PileupParticlesMergeTool::initialize() { return StatusCode::SUCCESS; }

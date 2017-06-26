@@ -49,8 +49,8 @@ StatusCode PileupTrackHitsMergeTool::readPileupCollection(podio::EventStore& sto
 
 StatusCode PileupTrackHitsMergeTool::readSignal() {
   // get collection from event sture
-  auto collTrackHitsSig = m_TrackHitsIn.get();
-  auto collPosTrackHitsSig = m_PosTrackHitsIn.get();
+  auto collTrackHitsSig = m_TrackHitsSignal.get();
+  auto collPosTrackHitsSig = m_PosTrackHitsSignal.get();
 
   // store them in internal container
   m_TrackHitCollections.push_back(collTrackHitsSig);
@@ -64,24 +64,24 @@ StatusCode PileupTrackHitsMergeTool::mergeCollections() {
   debug() << "merge collections ..." << endmsg;
 
   // ownership given to data service at end of execute
-  fcc::TrackHitCollection* collTrackHitsOut = new fcc::TrackHitCollection();
-  fcc::PositionedTrackHitCollection* collPosTrackHitsOut = new fcc::PositionedTrackHitCollection();
+  fcc::TrackHitCollection* collTrackHitsMerged = new fcc::TrackHitCollection();
+  fcc::PositionedTrackHitCollection* collPosTrackHitsMerged = new fcc::PositionedTrackHitCollection();
 
   for (auto trackHitColl : m_TrackHitCollections) {
     // copy tracker hits
     for (const auto elem : *trackHitColl) {
-      collTrackHitsOut->push_back(elem.clone());
+      collTrackHitsMerged->push_back(elem.clone());
     }
   }
   for (auto posTrackHitColl : m_PosTrackHitCollections) {
     // copy positioned track hits
     for (const auto elem : *posTrackHitColl) {
-      collPosTrackHitsOut->push_back(elem.clone());
+      collPosTrackHitsMerged->push_back(elem.clone());
     }
   }
 
-  m_TrackHitsOut.put(collTrackHitsOut);
-  m_PosTrackHitsOut.put(collPosTrackHitsOut);
+  m_TrackHitsMerged.put(collTrackHitsMerged);
+  m_PosTrackHitsMerged.put(collPosTrackHitsMerged);
 
   m_TrackHitCollections.clear();
   m_PosTrackHitCollections.clear();

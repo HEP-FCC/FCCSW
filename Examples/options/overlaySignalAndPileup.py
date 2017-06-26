@@ -23,8 +23,8 @@ particlemergetool.genVerticesBranch = "allGenVertices"
 particlemergetool.signalGenVertices.Path = "allGenVertices"
 particlemergetool.signalGenParticles.Path = "allGenParticles"
 
-particlemergetool.allGenParticles.Path = "overlaidGenParticles"
-particlemergetool.allGenVertices.Path = "overlaidGenVertices"
+particlemergetool.mergedGenParticles.Path = "overlaidGenParticles"
+particlemergetool.mergedGenVertices.Path = "overlaidGenVertices"
 
 from Configurables import PileupTrackHitsMergeTool
 trackhitsmergetool = PileupTrackHitsMergeTool("MyTrackHitsMergeTool")
@@ -34,8 +34,8 @@ trackhitsmergetool.pileupPositionedTrackHitsBranch = "positionedHits"
 trackhitsmergetool.signalTrackHits = "hits"
 trackhitsmergetool.signalPositionedTrackHits = "positionedHits"
 
-trackhitsmergetool.allTrackHits = "overlaidTrackHits"
-trackhitsmergetool.allPositionedTrackHits = "overlaidPositionedTrackHits"
+trackhitsmergetool.mergedTrackHits = "overlaidTrackHits"
+trackhitsmergetool.mergedPositionedTrackHits = "overlaidPositionedTrackHits"
 
 from Configurables import ConstPileUp
 
