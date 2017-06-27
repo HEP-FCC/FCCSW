@@ -1,21 +1,30 @@
 #include "PapasAlg.h"
 
 #include "SimPapas/IPapasTool.h"
+#include "PapasDetInterface/IPapasDetSvc.h"
 #include "papas/utility/PDebug.h"
 #include "papas/utility/TRandom.h"
+#include "papas/detectors/Detector.h"
+
 
 #include <iostream>
 DECLARE_COMPONENT(PapasAlg)
 
 PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("tools", m_toolNames);
+  
   m_eventno = 0;
 }
 
 StatusCode PapasAlg::initialize() {
-
-  for (auto& toolname : m_toolNames) {
+    for (auto& toolname : m_toolNames) {
     m_tools.push_back(tool<IPapasTool>(toolname));
+  }
+  m_papasDetSvc = service("CMSDetSvc");
+  //, "m_cyl1" = 1.3, "m_cyl2" = 1.55
+  if (!m_papasDetSvc) {
+    error() << "Unable to locate Geant Simulation Service" << endmsg;
+    return StatusCode::FAILURE;
   }
   if (m_physicsDebugFile != "") {
     debug() << "Papas: physics output " << m_physicsDebugFile << endmsg;
@@ -39,6 +48,10 @@ StatusCode PapasAlg::execute() {
   pevent.setEventNo(m_eventno);
   papas::PDebug::write("Event: {}", m_eventno);
   m_eventno++;
+  
+  
+  //std::shared_ptr<papas::Detector> det;
+  auto det = m_papasDetSvc->detector();
 
   // run the tools
   try {
@@ -49,7 +62,7 @@ StatusCode PapasAlg::execute() {
     }
     for (auto tool : m_tools) {
       // run each tool
-      tool->run(pevent);
+      tool->run(pevent, det);
     }
     // summary details of what the event contains
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;

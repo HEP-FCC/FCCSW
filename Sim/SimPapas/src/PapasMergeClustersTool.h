@@ -26,7 +26,7 @@ public:
   /// Empty the class structures.
   virtual StatusCode clear();
   /// Execute papas tool
-  virtual StatusCode run(papas::Event& pevent) final;
+  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 

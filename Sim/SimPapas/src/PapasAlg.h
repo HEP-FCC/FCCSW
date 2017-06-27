@@ -11,6 +11,7 @@
 
 #include <string>
 class IPapasTool;
+class IPapasDetSvc;
 
 namespace fcc {
 class MCParticleCollection;
@@ -35,6 +36,8 @@ public:
   virtual StatusCode finalize();
 
 private:
+  /// Pointer to the interface of papas detector
+  SmartIF<IPapasDetSvc> m_papasDetSvc;
   /// Stores the linkages between papas objects (eg clusters, tracks, particles)
   papas::Nodes m_history;
   std::vector<IPapasTool*> m_tools;      ///<vector of tools to be run

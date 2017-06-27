@@ -22,11 +22,11 @@ StatusCode PapasPFReconstructorTool::clear() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PapasPFReconstructorTool::run(papas::Event& pevent) {
-  papas::Detector detector = papas::CMS();
+StatusCode PapasPFReconstructorTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
+  
   papas::Nodes history;
   std::string btype = m_blockSubtype;
-  papas::PFReconstructor(pevent, btype.c_str()[0], detector, m_recParticles, history);
+  papas::PFReconstructor(pevent, btype.c_str()[0], *spDetector.get(), m_recParticles, history);
   pevent.extendHistory(history);
   // add outputs into papasEvent
   pevent.addCollectionToFolder(m_recParticles);
