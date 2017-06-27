@@ -22,7 +22,7 @@ public:
   /// Create any output structures needed.
   virtual StatusCode createOutputStructures();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& pevent);
+  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector);
   /// Clear data structures.
   virtual StatusCode clear() { return SUCCESS; };
   /// Finalize.
@@ -35,6 +35,7 @@ private:
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
   /// pointer to the reconstructed particles collection
   fcc::ParticleCollection* m_particles;  /// mcparticles collection
+   /// pointer to papas detector
 };
 
 #endif  // SIM_PAPASPARTICLEEXPORTER_H

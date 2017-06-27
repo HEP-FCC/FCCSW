@@ -1,6 +1,7 @@
 #include "PapasBuildBlocksTool.h"
 
 #include "papas/reconstruction/BuildPFBlocks.h"
+#include "papas/detectors/Detector.h"
 
 DECLARE_TOOL_FACTORY(PapasBuildBlocksTool)
 
@@ -12,7 +13,6 @@ PapasBuildBlocksTool::PapasBuildBlocksTool(const std::string& aType, const std::
 
 StatusCode PapasBuildBlocksTool::initialize() {
   debug() << "PAPAS block builder options:" << m_ecalSubtype << m_hcalSubtype << m_trackSubtype << endmsg;
-
   return GaudiTool::initialize();
 }
 
@@ -21,8 +21,9 @@ StatusCode PapasBuildBlocksTool::clear() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PapasBuildBlocksTool::run(papas::Event& pevent) {
+StatusCode PapasBuildBlocksTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> det) {
   auto history = papas::Nodes();
+  (void)det;
   std::string etype = m_ecalSubtype;
   std::string htype = m_hcalSubtype;
   std::string ttype = m_trackSubtype;
