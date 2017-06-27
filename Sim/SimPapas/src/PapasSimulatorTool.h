@@ -34,7 +34,7 @@ public:
   /// empty class structures
   virtual StatusCode clear();
   /// Execute the papas tool.
-  virtual StatusCode run(papas::Event& papas) final;
+  virtual StatusCode run(papas::Event& papas, std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 

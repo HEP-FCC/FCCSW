@@ -26,7 +26,8 @@ PapasImportParticlesTool::PapasImportParticlesTool(const std::string& aType, con
 
 PapasImportParticlesTool::~PapasImportParticlesTool() {}
 
-StatusCode PapasImportParticlesTool::initialize() { return GaudiTool::initialize(); }
+StatusCode PapasImportParticlesTool::initialize() {
+  return GaudiTool::initialize(); }
 
 StatusCode PapasImportParticlesTool::clear() {
   m_particles.clear();
@@ -35,8 +36,8 @@ StatusCode PapasImportParticlesTool::clear() {
 
 StatusCode PapasImportParticlesTool::finalize() { return GaudiTool::finalize(); }
 
-StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
-
+StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
+  (void)spDetector;
   const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
   auto detector = papas::CMS();  // todo consider making this be passed as part of the papas tool interface
 

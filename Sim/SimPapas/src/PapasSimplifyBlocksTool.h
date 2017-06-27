@@ -25,7 +25,7 @@ public:
   /// Create any output structures needed.
   StatusCode createOutputStructures() { return SUCCESS; };
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& pevent) final;
+  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) final;
   /// empty class structures
   virtual StatusCode clear();
   /// Finalize.

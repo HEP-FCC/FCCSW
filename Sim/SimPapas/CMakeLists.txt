@@ -4,7 +4,7 @@
 gaudi_subdir(SimPapas v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Common)
+gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Common Sim/SimPapasDetector)
 
 find_package(Geant4)
 include(${Geant4_USE_FILE})
@@ -16,7 +16,7 @@ find_package(papas)
 
 gaudi_add_module(SimPapas
                  src/*.cpp
-                 INCLUDE_DIRS FWCore ROOT FCCEDM PODIO papas SimG4Common
+                 INCLUDE_DIRS FWCore ROOT FCCEDM PODIO papas SimG4Common SimPapasDetector
                  LINK_LIBRARIES GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
 
 include(CTest)

@@ -4,6 +4,7 @@
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
 #include "papas/datatypes/Event.h"
+#include "papas/detectors/Detector.h"
 
 /** @class IPapasTool IPapasTool.h
  *
@@ -30,6 +31,6 @@ public:
    *   @param[in] pEvent PapasEvent that contains collections of clusters, particles etc
    *   @return status code
    */
-  virtual StatusCode run(papas::Event& pEvent) = 0;
+  virtual StatusCode run(papas::Event& pEvent, std::shared_ptr<papas::Detector> det = nullptr) = 0;
 };
 #endif /* SIMPAPASINTERFACE_IPAPASTOOL_H */
