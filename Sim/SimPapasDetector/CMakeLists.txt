@@ -4,7 +4,6 @@
 gaudi_subdir(SimPapasDetector v1r0)
 gaudi_depends_on_subdirs(GaudiKernel
                          FWCore
-                         Sim/PapasDetInterface
                          )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom Tree)
@@ -17,7 +16,7 @@ gaudi_install_python_modules()
 
 gaudi_add_module(SimPapasDetector
                  src/*.cpp
-                 INCLUDE_DIRS GaudiKernel ROOT Geant4 FWCore papas PapasDetInterface
+                 INCLUDE_DIRS GaudiKernel ROOT Geant4 FWCore papas
                  LINK_LIBRARIES GaudiKernel ROOT Geant4 papas)
 
 

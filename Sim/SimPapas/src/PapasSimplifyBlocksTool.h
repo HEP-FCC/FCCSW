@@ -4,7 +4,7 @@
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiTool.h"
 #include "SimPapas/IPapasTool.h"
-
+// PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
 #include "papas/reconstruction/PFBlock.h"
 #include <string>

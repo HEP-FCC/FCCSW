@@ -19,6 +19,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import  HepMCFileReader
 from Configurables import PythiaInterface, GenAlg
+
 ### PYTHIA algorithm
 pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
 pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
@@ -34,6 +35,9 @@ hepmc_converter.genvertices.Path="Genvertex"
 from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
+from Configurables import CMSDetSvc
+
+cmsservice = CMSDetSvc("CMSDetSvc", innerEcalCylinder = 1.3, outerEcalCylinder = 1.55);
 
 #Notes:
 #
@@ -54,7 +58,8 @@ papasalg = PapasAlg("papasalg",
                            "PapasPFReconstructorTool/reconstructor", #reconstructs particles based on the blocks
                            "PapasExportParticlesTool/exporter"], #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
-                            physicsDebugFile = 'papasPhysics.out') #write out papas physics to file
+                            physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                            detService = "CMSDetSvc") #name of detector service
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")
@@ -96,8 +101,8 @@ ApplicationMgr(
     TopAlg=[pythia8gen, hepmc_converter, papasalg, out],
     EvtSel='NONE',
     ## number of events
-    EvtMax=100,
+    EvtMax=10,
     ## all services should be put here
-    ExtSvc = [podioevent],
+    ExtSvc = [podioevent, cmsservice],
     OutputLevel = DEBUG
  )

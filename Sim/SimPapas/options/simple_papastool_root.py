@@ -1,5 +1,6 @@
 ## Simple Papas Run
 ## Runs papas using as a sequence of tools
+## Gen particles are read in from a root file
 ## The reconstructed particles are written to a ROOT file
 
 #
@@ -11,33 +12,19 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 from GaudiKernel import SystemOfUnits as units
 
-### Example of pythia configuration file to generate events
-pythiafile="Sim/SimPapas/data/ee_ZH_Zmumu_Hbb.txt"
+## read in generated particles from ROOT via podio
+podioevent   = FCCDataSvc("EventDataSvc", input="./ee_ZH_Zmumu_Hbb.root")
 
-#### Data service
-podioevent = FCCDataSvc("EventDataSvc")
-
-from Configurables import  HepMCFileReader
-from Configurables import PythiaInterface, GenAlg
-
-### PYTHIA algorithm
-pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
-pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
-pythia8gen.hepmc.Path = "hepmcevent"
-
-from Configurables import HepMCToEDMConverter
-### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCToEDMConverter("Converter")
-hepmc_converter.hepmc.Path="hepmcevent"
-hepmc_converter.genparticles.Path="GenParticle"
-hepmc_converter.genvertices.Path="Genvertex"
+from Configurables import PodioInput, ReadTestConsumer
+podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
 
 from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
-from Configurables import CMSDetSvc
 
-cmsservice = CMSDetSvc("CMSDetSvc");
+#choose papas detector (here CMS)
+from Configurables import CMSDetSvc
+cmsservice = CMSDetSvc("CMSDetSvc", innerEcalCylinder = 1.3, outerEcalCylinder = 1.55);
 
 #Notes:
 #
@@ -58,8 +45,8 @@ papasalg = PapasAlg("papasalg",
                            "PapasPFReconstructorTool/reconstructor", #reconstructs particles based on the blocks
                            "PapasExportParticlesTool/exporter"], #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
-                            physicsDebugFile = 'papasPhysics.out') #write out papas physics to file
-
+                            physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                            detService = "CMSDetSvc") #name of detector service
 #Papas importer
 importer = PapasImportParticlesTool("importer")
 importer.genparticles.Path='GenParticle' #name of the input pythia particles collection
@@ -97,11 +84,11 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr(
     ## all algorithms should be put here
-    TopAlg=[pythia8gen, hepmc_converter, papasalg, out],
+    TopAlg=[podioinput, papasalg, out],
     EvtSel='NONE',
     ## number of events
-    EvtMax=2,
+    EvtMax=10,
     ## all services should be put here
-    ExtSvc = [podioevent, cmsservice],
+    ExtSvc = [podioevent],
     OutputLevel = DEBUG
  )

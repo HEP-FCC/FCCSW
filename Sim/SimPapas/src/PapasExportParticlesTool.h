@@ -1,9 +1,12 @@
 #ifndef SIM_PAPASEXPORTPARTICLES_H
 #define SIM_PAPASEXPORTPARTICLES_H
 
+// Gaudi
 #include "FWCore/DataHandle.h"
+// FCCSW
 #include "GaudiAlg/GaudiTool.h"
 #include "SimPapas/IPapasTool.h"
+// FCCEDM
 #include "datamodel/ParticleCollection.h"
 
 #include <string>

@@ -4,7 +4,8 @@
 #include "datamodel/LorentzVector.h"
 #include "datamodel/MCParticleCollection.h"
 // PAPAS
-#include "papas/detectors/CMS.h"
+#include "papas/detectors/Detector.h"
+#include "papas/detectors/Calorimeter.h"
 #include "papas/graphtools/DefinitionsNodes.h"
 #include "papas/simulation/Simulator.h"
 #include "papas/utility/PDebug.h"
@@ -36,10 +37,7 @@ StatusCode PapasSimulatorTool::clear() {
 StatusCode PapasSimulatorTool::finalize() { return GaudiTool::finalize(); }
 
 StatusCode PapasSimulatorTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
-
-  //auto detector = m_spDetector; //papas::CMS();  // todo consider making this be passed as part of the papas tool interface
   auto history = papas::Nodes();
-
   // run the simulator which will add information to the particles and fill the other collections
   std::string ptype = m_particleSubtype;
   papas::Simulator(pevent, ptype.c_str()[0], *spDetector.get(), m_ecalClusters, m_hcalClusters, m_smearedEcalClusters,

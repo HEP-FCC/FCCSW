@@ -4,7 +4,10 @@
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
 #include "papas/datatypes/Event.h"
-#include "papas/detectors/Detector.h"
+
+namespace papas {
+  class Detector;
+}
 
 /** @class IPapasTool IPapasTool.h
  *
