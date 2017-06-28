@@ -7,7 +7,6 @@
 #include "FWCore/DataHandle.h"
 // papas
 #include "papas/datatypes/Event.h"
-#include "papas/detectors/CMS.h"
 
 #include <string>
 class IPapasTool;
@@ -15,6 +14,9 @@ class IPapasDetSvc;
 
 namespace fcc {
 class MCParticleCollection;
+}
+namespace papas {
+  class Detector;
 }
 
 /** @class PapasAlg Sim/SimPapasInterface/src/PapasAlg.h PapasAlg.h
@@ -38,6 +40,7 @@ public:
 private:
   /// Pointer to the interface of papas detector
   SmartIF<IPapasDetSvc> m_papasDetSvc;
+  std::shared_ptr<papas::Detector> m_spDetector;
   /// Stores the linkages between papas objects (eg clusters, tracks, particles)
   papas::Nodes m_history;
   std::vector<IPapasTool*> m_tools;      ///<vector of tools to be run
@@ -48,6 +51,9 @@ private:
   ///<seed for papas physics debug ouput default to "" no output
   Gaudi::Property<std::string> m_physicsDebugFile{this, "physicsDebugFile", "",
                                                   "name of optional file to output physics info"};
+  Gaudi::Property<std::string> m_detServiceName{this, "detService", "",
+    "name of detector service"};
+
 };
 
 #endif  // PAPASALG_H

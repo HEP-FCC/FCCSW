@@ -41,4 +41,4 @@ private:
   Gaudi::Property<std::string> m_blockSubtype{this, "blockSubtype", "", "block subtype"};
 };
 
-#endif  // SIM_PAPASPFRECONSTRUCTO_H
+#endif  // SIM_PAPASPFRECONSTRUCTOR_H
