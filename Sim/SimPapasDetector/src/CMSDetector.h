@@ -2,7 +2,7 @@
 #define CMSDETECTOR_DETECTOR_H
 
 
-#include "IPapasDetSvc.h"
+#include "SimPapasDetector/IPapasDetSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
@@ -16,7 +16,6 @@
 
 namespace papas {
   class Detector;
-  class CMS;
 }
 
 
@@ -37,12 +36,9 @@ public:
 private:
   // Detector
   std::shared_ptr<papas::Detector> m_detector;
+  Gaudi::Property<double> m_cyl1{this, "innerEcalCylinder", 1.3, "Size  of CMS ECAL inner"};
+  Gaudi::Property<double> m_cyl2{this, "outerEcalCylinder", 1.55, "Size  of CMS ECAL inner"};
   
-  Gaudi::Property<double> m_cyl1{this, "innerEcalcCylinder", 1, "Size  of CMS ECAL inner"};
-  Gaudi::Property<double> m_cyl2{this, "outerEcalcCylinder", 1, "Size  of CMS ECAL inner"};
-  /// Geant4 commands to be executed after user initialization
-  
-
 };
 
 inline std::shared_ptr<papas::Detector> CMSDetSvc::detector() const { return m_detector; }

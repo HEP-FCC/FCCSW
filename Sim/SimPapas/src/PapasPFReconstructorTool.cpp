@@ -1,6 +1,6 @@
 #include "PapasPFReconstructorTool.h"
-
-#include "papas/detectors/CMS.h"
+// PAPAS
+#include "papas/detectors/Detector.h"
 #include "papas/reconstruction/PFReconstructor.h"
 
 DECLARE_TOOL_FACTORY(PapasPFReconstructorTool)
@@ -12,7 +12,6 @@ PapasPFReconstructorTool::PapasPFReconstructorTool(const std::string& aType, con
 }
 
 StatusCode PapasPFReconstructorTool::initialize() {
-  // read and process a single event
   debug() << "PAPAS pfreconstructor options:" << m_blockSubtype << endmsg;
   return GaudiTool::initialize();
 }
@@ -23,7 +22,6 @@ StatusCode PapasPFReconstructorTool::clear() {
 }
 
 StatusCode PapasPFReconstructorTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
-  
   papas::Nodes history;
   std::string btype = m_blockSubtype;
   papas::PFReconstructor(pevent, btype.c_str()[0], *spDetector.get(), m_recParticles, history);

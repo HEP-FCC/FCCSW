@@ -10,7 +10,7 @@
 
 // papas
 #include "papas/datatypes/DefinitionsCollections.h"
-#include "papas/detectors/Detector.h"
+
 namespace papas{
   class Detector;
 }
@@ -46,9 +46,6 @@ private:
   Gaudi::Property<std::string> m_trackSubtype{this, "trackSubtype", "", "track subtype"};
   /// collection to store the blocks that are built by this tool
   papas::Blocks m_blocks;
-   /// pointer to papas detector
-   //Gaudi::Property<papas::Detector> m_detector{this, "detector", 0, "papas detector"};
-   //std::shared_ptr<papas::Detector> m_spDetector;
 };
 
 #endif  // SIM_PAPASBLOCKBUILDER_H

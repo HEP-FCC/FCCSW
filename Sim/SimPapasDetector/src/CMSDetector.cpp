@@ -1,5 +1,4 @@
 #include "CMSDetector.h"
-
 #include "papas/detectors/CMS.h"
 
 DECLARE_SERVICE_FACTORY(CMSDetSvc)
@@ -8,10 +7,7 @@ CMSDetSvc::CMSDetSvc
 (const std::string& name, ISvcLocator* svc)
     : base_class(name, svc), m_detector(nullptr)
 {
-  //declareProperty("innerEcal", m_innerEcal, "Ecal inner cylinder");
-  //declareProperty("outerEcal", m_outerEcal, "Ecal inner cylinder");
-  }
-
+}
 
 StatusCode CMSDetSvc::initialize() {
   if (Service::initialize().isFailure()) {

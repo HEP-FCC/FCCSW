@@ -6,7 +6,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "SimPapas/IPapasTool.h"
-// papas
+// PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
 #include "papas/datatypes/Event.h"
 
