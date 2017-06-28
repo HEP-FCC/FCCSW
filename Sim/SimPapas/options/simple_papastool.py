@@ -55,8 +55,8 @@ papasalg = PapasAlg("papasalg",
                            "PapasMergeClustersTool/hcalmerge", #merged clusters HCAL
                            "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
                            "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
-                           "PapasPFReconstructorTool/reconstructor", #reconstructs particles based on the blocks
-                           "PapasExportParticlesTool/exporter"], #export papas reconstructed particles to fcc particles
+                           "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
+                    exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
                             physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
                             detService = "CMSDetSvc") #name of detector service

@@ -5,7 +5,7 @@
 #include "FWCore/DataHandle.h"
 // FCCSW
 #include "GaudiAlg/GaudiTool.h"
-#include "SimPapas/IPapasTool.h"
+#include "SimPapas/IPapasExportTool.h"
 // FCCEDM
 #include "datamodel/ParticleCollection.h"
 
@@ -16,7 +16,7 @@
  *  Takes papasparticles stored in the papas::Event and converts to MCParticles.
  *  @author A.J. Robson
  */
-class PapasExportParticlesTool : public GaudiTool, virtual public IPapasTool {
+class PapasExportParticlesTool : public GaudiTool, virtual public IPapasExportTool {
 public:
   /// Constructor.
   PapasExportParticlesTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
@@ -25,9 +25,7 @@ public:
   /// Create any output structures needed.
   virtual StatusCode createOutputStructures();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector);
-  /// Clear data structures.
-  virtual StatusCode clear() { return SUCCESS; };
+  virtual StatusCode run(papas::Event& pevent);
   /// Finalize.
   virtual StatusCode finalize();
 
@@ -38,7 +36,6 @@ private:
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
   /// pointer to the reconstructed particles collection
   fcc::ParticleCollection* m_particles;  /// mcparticles collection
-   /// pointer to papas detector
 };
 
 #endif  // SIM_PAPASPARTICLEEXPORTER_H
