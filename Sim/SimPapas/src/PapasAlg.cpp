@@ -1,8 +1,10 @@
 #include "PapasAlg.h"
-
+// FCCSW
 #include "SimPapasDetector/IPapasDetSvc.h"
 #include "SimPapas/IPapasTool.h"
+#include "SimPapas/IPapasExportTool.h"
 #include "papas/detectors/Detector.h"
+// PAPAS
 #include "papas/utility/PDebug.h"
 #include "papas/utility/TRandom.h"
 
@@ -11,6 +13,7 @@ DECLARE_COMPONENT(PapasAlg)
 
 PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("tools", m_toolNames);
+  declareProperty("exportTool", m_exportToolName);
   m_eventno = 0;
 }
 
@@ -18,6 +21,7 @@ StatusCode PapasAlg::initialize() {
   for (auto& toolname : m_toolNames) {
     m_tools.push_back(tool<IPapasTool>(toolname));
   }
+  m_exportTool =tool<IPapasExportTool>(m_exportToolName);
   m_papasDetSvc = service(m_detServiceName);
   if (!m_papasDetSvc) {
     error() << "Unable to locate Papas Detector Service " << m_detServiceName << endmsg;
@@ -50,15 +54,14 @@ StatusCode PapasAlg::execute() {
 
   // run the tools
   try {
-    for (auto tool : m_tools) {
-      // create outputs structure (eg for export tool) so that Gaudi does not fail later on
-      // at the data output stage (eg in the case where Papas does not finish simulation)
-      tool->createOutputStructures();
-    }
+    //needed so that PODIO can find structure even if run is abandoned
+    // and there are no particles created
+    m_exportTool->createOutputStructures();
     for (auto tool : m_tools) {
       // run each tool
       tool->run(pevent, m_spDetector);
     }
+    m_exportTool->run(pevent);
     // summary details of what the event contains
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;
     // remove all the data ready for the next event

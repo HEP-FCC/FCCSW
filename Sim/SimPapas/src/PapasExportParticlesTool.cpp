@@ -8,7 +8,7 @@ DECLARE_TOOL_FACTORY(PapasExportParticlesTool)
 PapasExportParticlesTool::PapasExportParticlesTool(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
-  declareInterface<IPapasTool>(this);
+  declareInterface<IPapasExportTool>(this);
   declareProperty("recparticles", m_particlesHandle);
 }
 
@@ -22,9 +22,8 @@ StatusCode PapasExportParticlesTool::createOutputStructures() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PapasExportParticlesTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
+StatusCode PapasExportParticlesTool::run(papas::Event& pevent) {
   // convert each papas particle into an MCParticle
-  (void) spDetector;
   std::string ptype = m_particleSubtype;
   for (const auto& pp : pevent.particles(ptype.c_str()[0])) {
     fcc::Particle ptc = m_particles->create();
