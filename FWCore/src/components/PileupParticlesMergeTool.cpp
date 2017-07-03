@@ -26,6 +26,7 @@ StatusCode PileupParticlesMergeTool::readPileupCollection(podio::EventStore& sto
   const fcc::GenVertexCollection* genVertexCollection;
 
   bool mcParticleCollectionPresent = store.get(m_pileupGenParticlesBranchName, mcParticleCollection);
+  debug() << "size of collection about to be read " << mcParticleCollection->size() << endmsg;
   if (mcParticleCollectionPresent) {
     m_MCParticleCollections.push_back(mcParticleCollection);
   } else {
@@ -54,7 +55,7 @@ StatusCode PileupParticlesMergeTool::readSignal() {
 
 StatusCode PileupParticlesMergeTool::mergeCollections() {
 
-  debug() << "merge collections ..." << endmsg;
+  debug() << "merge " << m_GenVertexCollections.size() << "  collections ..." << endmsg;
 
   // ownership given to data service at end of execute
   fcc::MCParticleCollection* collPOut = new fcc::MCParticleCollection();
@@ -62,6 +63,7 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
 
   for (auto genVertexColl : m_GenVertexCollections) {
     // copy vertices
+    debug() << " traverse collection of size " << genVertexColl->size() << endmsg;
     for (const auto elem : *genVertexColl) {
       collVOut->push_back(elem.clone());
     }
