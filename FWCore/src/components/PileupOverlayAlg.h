@@ -7,13 +7,12 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/RndmGenerators.h"
 
+#include "podio/EventStore.h"
+#include "podio/ROOTReader.h"
+
 // forward declarations
 class IEDMMergeTool;
 
-namespace podio {
-class EventStore;
-class ROOTReader;
-}
 
 /*** @class PileupOverlayAlg
  *  Algorithm for Pileup I/O and merging
@@ -56,10 +55,10 @@ private:
   /// list of filenames for the minimum bias pools
   Gaudi::Property<std::vector<std::string>> m_pileupFilenames{
       this, "pileupFilenames", {"min_bias_pool.root"}, "Name of File containing pileup events"};
-  /// list of stores for each minimum bias file
-  std::vector<podio::EventStore> m_stores;
-  /// list of readers for each minimum bias file
-  std::vector<podio::ROOTReader> m_readers;
+  /// store for the minimum bias file
+  podio::EventStore m_store;
+  /// reader for the minimum bias file
+  podio::ROOTReader m_reader;
 
   /// event index within current minimum bias pool
   unsigned int m_minBiasEventIndex;

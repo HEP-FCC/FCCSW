@@ -1,12 +1,10 @@
 #include "PileupOverlayAlg.h"
 
 #include "FWCore/IEDMMergeTool.h"
-#include "podio/EventStore.h"
-#include "podio/ROOTReader.h"
 
 DECLARE_ALGORITHM_FACTORY(PileupOverlayAlg)
 
-PileupOverlayAlg::PileupOverlayAlg(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+PileupOverlayAlg::PileupOverlayAlg(const std::string& aName, ISvcLocator* aSvcLoc) :GaudiAlgorithm(aName, aSvcLoc), m_store(), m_reader() {
   declareProperty("PileUpTool", m_pileUpTool);
 }
 
@@ -17,15 +15,8 @@ StatusCode PileupOverlayAlg::initialize() {
   }
   m_minBiasEventIndex = 0;
   StatusCode sc = GaudiAlgorithm::initialize();
-  m_pileupFileIndex = 0;
-  for (auto f : m_pileupFilenames) {
-    m_readers.push_back(podio::ROOTReader());
-    m_stores.push_back(podio::EventStore());
-    m_readers[m_pileupFileIndex].openFile(f);
-    m_stores[m_pileupFileIndex].setReader(&m_readers[m_pileupFileIndex]);
-    ++m_pileupFileIndex;
-  }
-  m_pileupFileIndex = 0;
+  m_reader.openFile(m_pileupFilenames[0]);
+  m_store.setReader(&m_reader);
   IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);
   sc = m_flatDist.initialize(randSvc, Rndm::Flat(0., 1.));
   return sc;
@@ -37,7 +28,7 @@ StatusCode PileupOverlayAlg::finalize() {
 }
 
 StatusCode PileupOverlayAlg::execute() {
-  unsigned nEvents = m_readers[m_pileupFileIndex].getEntries();
+  unsigned nEvents = m_reader.getEntries();
 
   for (auto& tool : m_mergeTools) {
     tool->readSignal();
@@ -53,17 +44,23 @@ StatusCode PileupOverlayAlg::execute() {
         ++m_minBiasEventIndex;
       }
     }
-    m_readers[m_pileupFileIndex].goToEvent(m_minBiasEventIndex);
+    m_reader.goToEvent(m_minBiasEventIndex);
 
-    debug() << "Reading in pileup event #" << m_minBiasEventIndex << " ..." << endmsg;
+    debug() << "Reading in pileup event #" << m_minBiasEventIndex << " from pool #" << m_pileupFileIndex <<  " ..." << endmsg;
     for (auto& tool : m_mergeTools) {
-      tool->readPileupCollection(m_stores[m_pileupFileIndex]);
+      tool->readPileupCollection(m_store);
     }
 
     m_minBiasEventIndex = (m_minBiasEventIndex + 1);
     if (m_minBiasEventIndex >= nEvents) {
       m_minBiasEventIndex = 0;
       m_pileupFileIndex = (m_pileupFileIndex + 1) % m_pileupFilenames.size();
+      m_store.clearCaches();
+      m_reader.closeFile();
+      debug() << "switching to pileup file " << m_pileupFilenames[m_pileupFileIndex] << endmsg;
+      m_reader.openFile(m_pileupFilenames[m_pileupFileIndex]);
+      nEvents = m_reader.getEntries();
+      
     }
   }
 
