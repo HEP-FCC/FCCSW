@@ -36,21 +36,14 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerConicalEndcap(DD4hep::Geomet
 
   // envelope volume for one of the endcaps, either forward or backward
   double envelopeThickness = 0.5 * (dimensions.zmax() - dimensions.zmin());
-  DD4hep::Geometry::Cone envelopeShape(
-      envelopeThickness + l_overlapMargin,
-      dimensions.rmin() - l_overlapMargin, 
-      dimensions.rmax() + l_overlapMargin, 
-      dimensions.rmin() - l_overlapMargin, 
-      dimensions.rmax() + l_overlapMargin 
-      );
+  DD4hep::Geometry::Tube envelopeShape(
+      dimensions.rmin() - l_overlapMargin, dimensions.rmax() + l_overlapMargin, envelopeThickness + l_overlapMargin);
   Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
   Component xDiscs = xmlElement.child(_Unicode(discs));
-  Component xFirstDisc = xDiscs.child(_Unicode(discZPls));
 
   l_overlapMargin *= 0.9;
-  double discThickness = 0.5 * (xFirstDisc.zmax() - xFirstDisc.zmin());
 
 
   unsigned int discCounter = 0;
@@ -60,16 +53,14 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerConicalEndcap(DD4hep::Geomet
   for (DD4hep::XML::Collection_t xDiscColl(xDiscs, _Unicode(discZPls)); nullptr != xDiscColl; ++xDiscColl) {
     Component xDisc = static_cast<Component>(xDiscColl);
     // create disc volume
+    double discThickness = 0.5 * (xDisc.zmax() - xDisc.zmin());
     DD4hep::Geometry::Tube discShape(xDisc.rmin() - l_overlapMargin, xDisc.rmax() + l_overlapMargin, discThickness + l_overlapMargin);
     Volume discVolume("disc", discShape, lcdd.air());
     currentZ = xDisc.z() - dimensions.zmin() - envelopeThickness;
     DetElement disc_det(worldDetElement, "disc" + std::to_string(discCounter), discCounter);
     // iterate over rings
     Component xCurrentRings = xDisc.child(_Unicode(rings)); 
-    unsigned int maxRings = xCurrentRings.repeat();
-    unsigned int ringCounter = 0;
-    for (DD4hep::XML::Collection_t xRingColl(xCurrentRings, _U(ring)); (nullptr != xRingColl) || ringCounter < maxRings; ++xRingColl, ++ringCounter) {
-      std::cout << "constructing ring no. " << ringCounter << " out of " << maxRings << std::endl;
+    for (DD4hep::XML::Collection_t xRingColl(xCurrentRings, _U(ring)); (nullptr != xRingColl); ++xRingColl) {
       Component xRing = static_cast<Component>(xRingColl);
       Component xRingModules = xRing.child(_Unicode(modules));
       Component xModuleOdd = xRingModules.child(_Unicode(moduleOdd));
@@ -104,13 +95,13 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerConicalEndcap(DD4hep::Geomet
           phi = 2 * dd4hep::pi * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
           lX = xModuleEven.X();
           lY = xModuleEven.Y();
-          lZ = xModuleEven.Z() - dimensions.zmin() - discThickness;
+          lZ = xModuleEven.Z() - xDisc.zmin() - discThickness;
           phiTilt = xModuleEven.attr<double>("phiTilt");
           thetaTilt = xModuleEven.attr<double>("thetaTilt");
         } else {
           lX = xModuleOdd.X();
           lY = xModuleOdd.Y();
-          lZ = xModuleOdd.Z() - dimensions.zmin() - discThickness;
+          lZ = xModuleOdd.Z() - xDisc.zmin() - discThickness;
           phiTilt = xModuleOdd.attr<double>("phiTilt");
           thetaTilt = xModuleOdd.attr<double>("thetaTilt");
         }
