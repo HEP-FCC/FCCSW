@@ -61,18 +61,40 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
   fcc::MCParticleCollection* collPOut = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* collVOut = new fcc::GenVertexCollection();
 
-  for (auto genVertexColl : m_GenVertexCollections) {
-    // copy vertices
+  // need to keep track of the accumulated length
+  // of collections already merged
+  unsigned int collectionOffset = 0;
+
+  // merge vertices
+  
+    for(auto genVertexColl: m_GenVertexCollections) {
     debug() << " traverse collection of size " << genVertexColl->size() << endmsg;
     for (const auto elem : *genVertexColl) {
       collVOut->push_back(elem.clone());
     }
   }
-  for (auto mcPartColl : m_MCParticleCollections) {
-    // copy particles
+  // merge particles, keeping the references up to date
+  for (unsigned int collCounter = 0; collCounter < m_MCParticleCollections.size(); ++collCounter) {
+    auto mcPartColl =  m_MCParticleCollections[collCounter];
     for (const auto elem : *mcPartColl) {
-      collPOut->push_back(elem.clone());
+      auto newPart = fcc::MCParticle(elem.core());
+      if (elem.startVertex().isAvailable()) {
+        // update reference: find new index in merged collection
+        // add offset since the signal particles are copied in new collection first
+        unsigned int newIdStart = elem.startVertex().getObjectID().index + collectionOffset;
+        // update startVertex
+        newPart.startVertex((*collVOut)[newIdStart]);
+      }
+      if (elem.endVertex().isAvailable()) {
+        // update reference: find new index in merged collection
+        // add offset since the signal particles are copied in new collection first
+        unsigned int newIdEnd = elem.endVertex().getObjectID().index + collectionOffset;
+        // update startVertex
+        newPart.endVertex((*collVOut)[newIdEnd]);
+      }
+      collPOut->push_back(newPart);
     }
+    collectionOffset += m_GenVertexCollections[collCounter]->size();
   }
 
   m_vertOut.put(collVOut);
