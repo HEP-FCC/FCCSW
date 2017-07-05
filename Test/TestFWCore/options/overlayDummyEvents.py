@@ -47,6 +47,7 @@ overlay.PileUpTool = pileuptool
 
 from Configurables import CreateExampleEventData
 producer = CreateExampleEventData()
+producer.magicNumberOffset = 300
 producer.trackhits.Path = "trackHits"
 producer.positionedtrackhits.Path = "positionedTrackHits"
 producer.calohits.Path = "caloHits"
@@ -61,7 +62,7 @@ producer.genvertices.Path = "genVertices"
 from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
+out.outputCommands = ["drop *", "keep overlaid*"]
 out.filename = "dummyEventDataOverlaid.root"
 
 # ApplicationMgr
