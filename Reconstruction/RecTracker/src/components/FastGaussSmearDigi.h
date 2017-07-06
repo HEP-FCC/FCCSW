@@ -20,13 +20,13 @@ class FastGaussSmearDigi : public GaudiAlgorithm {
 public:
   FastGaussSmearDigi(const std::string& name, ISvcLocator* svcLoc);
 
-  ~FastGaussSmearDigi();
+  ~FastGaussSmearDigi() = default;
 
-  StatusCode initialize();
+  StatusCode initialize() override final;
 
-  StatusCode execute();
+  StatusCode execute() override final;
 
-  StatusCode finalize();
+  StatusCode finalize() override final;
 
 private:
   /// Pointer to the geometry service

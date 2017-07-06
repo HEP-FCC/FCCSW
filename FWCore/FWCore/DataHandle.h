@@ -41,8 +41,8 @@ public:
 
 private:
   ServiceHandle<IDataProviderSvc> m_eds;
-  bool m_isGoodType;
-  bool m_isCollection;
+  bool m_isGoodType{false};
+  bool m_isCollection{false};
 };
 
 //---------------------------------------------------------------------------
