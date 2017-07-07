@@ -452,9 +452,7 @@ We provide an example configuration and plotting script for estimating the mater
 ./run python Examples/scripts/material_plots.py
 ~~~
 
-The configuration file `material_scan` allows to customize the binning of the material scan with `etaMax` and `etaBinning`. The scan is
-performed from `-etaMax` to `+etaMax` with a step-size of `etaBinning`. The detector which is scanned is optained from
-the `GeoSvc` and the corresponding detector description can be changed there as usual.
+The configuration file `material_scan` allows to customize the binning of the material scan with `etaMax` and `etaBinning`. The detector which is scanned is obtained from the `GeoSvc` and the corresponding detector description can be changed there as usual. The scan is performed from `-etaMax` to `+etaMax` with a step-size of `etaBinning`. It is also avereged over azimuthal angle, taking `nPhiTrials` random directions, set by default to 100. The start point of the direction is (0,0,0), whereas the end point is by default the end of the world volume. It may be changed to other volume border by specyfing the volume name in property `envelopeName`. If point (0,0,0) is not contained inside the envelope, the distance to the closest volume border is taken into account.
 
 The output of the first command is the ROOT file `DD4hep_material_scan.root` which contains a `TTree` that has 6 branches:
 

@@ -7,7 +7,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 # DD4hep geometry service
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml'
+                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_calibration.xml'
 ],
                     OutputLevel = INFO)
 
@@ -38,10 +38,10 @@ from Configurables import SamplingFractionInLayers
 hist = SamplingFractionInLayers("hists",
                                  energyAxis = 50,
                                  readoutName = "ECalHitsEta",
-                                 layerFieldName = "cell",
+                                 layerFieldName = "layer",
                                  activeFieldName = "type",
                                  activeFieldValue = 0,
-                                 numLayers = 33, # one more because index starts at 1 - layer 0 will be always empty
+                                 numLayers = 130,
                                  OutputLevel = INFO)
 hist.deposits.Path="ECalPositionedHits"
 

@@ -32,9 +32,8 @@
   <include ref="./FCChh_Solenoids.xml" />
   <include ref="./FCChh_Shielding.xml" />
 
-
   <include ref="../../DetFCChhTrackerTkLayout/compact/Tracker.xml" />
-  <include ref="../../DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml" />
+  <include ref="../../DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
 
   <!-->

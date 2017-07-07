@@ -44,8 +44,8 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     lLog << MSG::ERROR << "Overlap between active and passive cannot be more than half of passive plane!" << endmsg;
     incidentSvc->fireIncident(Incident("ECalConstruction", "GeometryFailure"));
   }
-  DD4hep::XML::DetElement cell = calo.child(_Unicode(cell));
-  uint numCells = cell.dimensions().repeat();
+  DD4hep::XML::DetElement layer = calo.child(_Unicode(layer));
+  uint numLayers = layer.dimensions().repeat();
 
   DD4hep::XML::DetElement readout = calo.child(_Unicode(readout));
   std::string readoutMaterial = readout.materialStr();
@@ -100,9 +100,9 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
        << " rmax (cm) = " << bathRmax << " thickness in front of ECal (cm) = " << caloDim.rmin() - cryoDim.rmin2()
        << " thickness behind ECal (cm) = " << cryoDim.rmax1() - caloDim.rmax() << endmsg;
 
-  // 3. Create the calorimeter by placing the passive material, trapezoid active cells, readout and again trapezoid
-  // active cells in the bath.
-  // sensitive detector for the cells
+  // 3. Create the calorimeter by placing the passive material, trapezoid active layers, readout and again trapezoid
+  // active layers in the bath.
+  // sensitive detector for the layers
   DD4hep::Geometry::SensitiveDetector sd = aSensDet;
   DD4hep::XML::Dimension sdType = xmlDetElem.child(_U(sensitive));
   sd.setType(sdType.typeStr());
@@ -129,7 +129,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   double offsetPassivePhi = caloDim.offset() + dPhi / 2.;
   double offsetReadoutPhi = caloDim.offset() + 0;
   lLog << MSG::INFO << "readout material = " << readoutMaterial
-       << " thickness of readout planes (cm) =  " << readoutThickness << " number of readout cells = " << numCells
+       << " thickness of readout planes (cm) =  " << readoutThickness << " number of readout layers = " << numLayers
        << endmsg;
   double Rmin = caloDim.rmin();
   double Rmax = caloDim.rmax();
@@ -150,54 +150,48 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   DD4hep::Geometry::Volume passiveGlueVol(passiveGlueMaterial + "_passive", passiveGlueShape,
                                           aLcdd.material(passiveGlueMaterial));
 
-  double cellHeight = planeLength / numCells;
-  double cellOffset = -planeLength / 2. + cellHeight / 2.;
+  double layerHeight = planeLength / numLayers;
+  double layerOffset = -planeLength / 2. + layerHeight / 2.;
   if (passiveInner.isSensitive()) {
     lLog << MSG::INFO << "Passive inner volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box cellPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), cellHeight / 2.);
-    DD4hep::Geometry::Volume cellPassiveInnerVol(passiveInnerMaterial, cellPassiveInnerShape,
-                                                 aLcdd.material(passiveInnerMaterial));
-    cellPassiveInnerVol.setSensitiveDetector(aSensDet);
-    for (uint iCell = 0; iCell < numCells; iCell++) {
-      std::cout << " Placing passive_inner cell " << iCell
-                << " inside active row at z = " << cellOffset + iCell * cellHeight << std::endl;
-      DD4hep::Geometry::PlacedVolume cellPassiveInnerPhysVol = passiveInnerVol.placeVolume(
-          cellPassiveInnerVol, DD4hep::Geometry::Position(0, 0, cellOffset + iCell * cellHeight));
-      cellPassiveInnerPhysVol.addPhysVolID("cell", iCell + 1);
-      DD4hep::Geometry::DetElement cellPassiveInnerDetElem("cell", iCell + 1);
-      cellPassiveInnerDetElem.setPlacement(cellPassiveInnerPhysVol);
+    DD4hep::Geometry::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight / 2.);
+    DD4hep::Geometry::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
+                                                  aLcdd.material(passiveInnerMaterial));
+    layerPassiveInnerVol.setSensitiveDetector(aSensDet);
+    for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+      DD4hep::Geometry::PlacedVolume layerPassiveInnerPhysVol = passiveInnerVol.placeVolume(
+          layerPassiveInnerVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      layerPassiveInnerPhysVol.addPhysVolID("layer", iLayer);
+      DD4hep::Geometry::DetElement layerPassiveInnerDetElem("layer", iLayer);
+      layerPassiveInnerDetElem.setPlacement(layerPassiveInnerPhysVol);
     }
   }
   if (passiveOuter.isSensitive()) {
     lLog << MSG::INFO << "Passive outer volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box cellPassiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), cellHeight / 2.);
-    DD4hep::Geometry::Volume cellPassiveOuterVol(passiveOuterMaterial, cellPassiveOuterShape,
-                                                 aLcdd.material(passiveOuterMaterial));
-    cellPassiveOuterVol.setSensitiveDetector(aSensDet);
-    for (uint iCell = 0; iCell < numCells; iCell++) {
-      std::cout << " Placing passive_outer cell " << iCell
-                << " inside active row at z = " << cellOffset + iCell * cellHeight << std::endl;
-      DD4hep::Geometry::PlacedVolume cellPassiveOuterPhysVol = passiveOuterVol.placeVolume(
-          cellPassiveOuterVol, DD4hep::Geometry::Position(0, 0, cellOffset + iCell * cellHeight));
-      cellPassiveOuterPhysVol.addPhysVolID("cell", iCell + 1);
-      DD4hep::Geometry::DetElement cellPassiveOuterDetElem("cell", iCell + 1);
-      cellPassiveOuterDetElem.setPlacement(cellPassiveOuterPhysVol);
+    DD4hep::Geometry::Box layerPassiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), layerHeight / 2.);
+    DD4hep::Geometry::Volume layerPassiveOuterVol(passiveOuterMaterial, layerPassiveOuterShape,
+                                                  aLcdd.material(passiveOuterMaterial));
+    layerPassiveOuterVol.setSensitiveDetector(aSensDet);
+    for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+      DD4hep::Geometry::PlacedVolume layerPassiveOuterPhysVol = passiveOuterVol.placeVolume(
+          layerPassiveOuterVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      layerPassiveOuterPhysVol.addPhysVolID("layer", iLayer);
+      DD4hep::Geometry::DetElement layerPassiveOuterDetElem("layer", iLayer);
+      layerPassiveOuterDetElem.setPlacement(layerPassiveOuterPhysVol);
     }
   }
   if (passiveGlue.isSensitive()) {
     lLog << MSG::INFO << "Passive glue volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box cellPassiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), cellHeight / 2.);
-    DD4hep::Geometry::Volume cellPassiveGlueVol(passiveGlueMaterial, cellPassiveGlueShape,
-                                                aLcdd.material(passiveGlueMaterial));
-    cellPassiveGlueVol.setSensitiveDetector(aSensDet);
-    for (uint iCell = 0; iCell < numCells; iCell++) {
-      std::cout << " Placing passive_glue cell " << iCell
-                << " inside active row at z = " << cellOffset + iCell * cellHeight << std::endl;
-      DD4hep::Geometry::PlacedVolume cellPassiveGluePhysVol = passiveGlueVol.placeVolume(
-          cellPassiveGlueVol, DD4hep::Geometry::Position(0, 0, cellOffset + iCell * cellHeight));
-      cellPassiveGluePhysVol.addPhysVolID("cell", iCell + 1);
-      DD4hep::Geometry::DetElement cellPassiveGlueDetElem("cell", iCell + 1);
-      cellPassiveGlueDetElem.setPlacement(cellPassiveGluePhysVol);
+    DD4hep::Geometry::Box layerPassiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), layerHeight / 2.);
+    DD4hep::Geometry::Volume layerPassiveGlueVol(passiveGlueMaterial, layerPassiveGlueShape,
+                                                 aLcdd.material(passiveGlueMaterial));
+    layerPassiveGlueVol.setSensitiveDetector(aSensDet);
+    for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+      DD4hep::Geometry::PlacedVolume layerPassiveGluePhysVol = passiveGlueVol.placeVolume(
+          layerPassiveGlueVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      layerPassiveGluePhysVol.addPhysVolID("layer", iLayer);
+      DD4hep::Geometry::DetElement layerPassiveGlueDetElem("layer", iLayer);
+      layerPassiveGlueDetElem.setPlacement(layerPassiveGluePhysVol);
     }
   }
 
@@ -228,24 +222,22 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   DD4hep::Geometry::Volume readoutVol(readoutMaterial, readoutShape, aLcdd.material(readoutMaterial));
   if (readout.isSensitive()) {
     lLog << MSG::INFO << "Readout volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box cellReadoutShape(readoutThickness / 2., caloDim.dz(), cellHeight / 2.);
-    DD4hep::Geometry::Volume cellReadoutVol(readoutMaterial, cellReadoutShape, aLcdd.material(readoutMaterial));
-    cellReadoutVol.setSensitiveDetector(aSensDet);
-    for (uint iCell = 0; iCell < numCells; iCell++) {
-      std::cout << " Placing readout cell " << iCell << " inside active row at z = " << cellOffset + iCell * cellHeight
-                << std::endl;
-      DD4hep::Geometry::PlacedVolume cellReadoutPhysVol =
-          readoutVol.placeVolume(cellReadoutVol, DD4hep::Geometry::Position(0, 0, cellOffset + iCell * cellHeight));
-      cellReadoutPhysVol.addPhysVolID("cell", iCell + 1);
-      DD4hep::Geometry::DetElement cellReadoutDetElem("cell", iCell + 1);
-      cellReadoutDetElem.setPlacement(cellReadoutPhysVol);
+    DD4hep::Geometry::Box layerReadoutShape(readoutThickness / 2., caloDim.dz(), layerHeight / 2.);
+    DD4hep::Geometry::Volume layerReadoutVol(readoutMaterial, layerReadoutShape, aLcdd.material(readoutMaterial));
+    layerReadoutVol.setSensitiveDetector(aSensDet);
+    for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+      DD4hep::Geometry::PlacedVolume layerReadoutPhysVol =
+          readoutVol.placeVolume(layerReadoutVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      layerReadoutPhysVol.addPhysVolID("layer", iLayer);
+      DD4hep::Geometry::DetElement layerReadoutDetElem("layer", iLayer);
+      layerReadoutDetElem.setPlacement(layerReadoutPhysVol);
     }
   }
 
   //////////////////////////////
   // ACTIVE
   //////////////////////////////
-  // thickness of active cells at inner radius and outer ( = distance between passive plane and readout plane)
+  // thickness of active layers at inner radius and outer ( = distance between passive plane and readout plane)
   // at inner radius: distance projected at plane perpendicular to readout plane
   double activeInThickness = Rmin * sin(dPhi / 2.) * cos(angle);
   activeInThickness -= passiveThickness * (0.5 - activePassiveOverlap);
@@ -262,13 +254,13 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   // correction to the active thickness
   activeOutThickness += 2. * correction * sin(dPhi / 4.);
   activeOutThickness -= passiveThickness * (0.5 - activePassiveOverlap);
-  // print the active cell dimensions
+  // print the active layer dimensions
   double activeInThicknessAfterSubtraction =
       2. * activeInThickness - readoutThickness - 2. * activePassiveOverlap * passiveThickness;
   double activeOutThicknessAfterSubtraction =
       2. * activeOutThickness - readoutThickness - 2. * activePassiveOverlap * passiveThickness;
   lLog << MSG::INFO << "active material = " << activeMaterial
-       << " active cells thickness at inner radius (cm) = " << activeInThicknessAfterSubtraction
+       << " active layers thickness at inner radius (cm) = " << activeInThicknessAfterSubtraction
        << " thickness at outer radious (cm) = " << activeOutThicknessAfterSubtraction << " making "
        << (activeOutThicknessAfterSubtraction - activeInThicknessAfterSubtraction) * 100 /
           activeInThicknessAfterSubtraction
@@ -277,7 +269,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
        << "active passive initial overlap (before subtraction) (cm) = " << passiveThickness * activePassiveOverlap
        << " = " << activePassiveOverlap * 100 << " %" << endmsg;
 
-  // creating shape for rows of cells (active material between two passive planes, with readout in the middle)
+  // creating shape for rows of layers (active material between two passive planes, with readout in the middle)
   // first define area between two passive planes, area can reach up to the symmetry axis of passive plane
   DD4hep::Geometry::Trapezoid activeOuterShape(activeInThickness, activeOutThickness, caloDim.dz(), caloDim.dz(),
                                                planeLength / 2.);
@@ -315,41 +307,39 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
                                     DD4hep::Geometry::Position(fabs(xprimB), 0, -fabs(zprimB))));
   DD4hep::Geometry::Volume activeVol("active", activeShape, aLcdd.material("Air"));
 
-  std::vector<DD4hep::Geometry::PlacedVolume> cellPhysVols;
-  // place cells within active volume
-  double cellIncrease = (activeOutThickness - activeInThickness) / numCells;
-  double cellInThickness = activeInThickness;
-  double cellOutThickness = activeInThickness + cellIncrease;
-  lLog << MSG::DEBUG << " number of cells = " << numCells << " cell height (cm) = " << cellHeight << endmsg;
-  for (uint iCell = 0; iCell < numCells; iCell++) {
-    DD4hep::Geometry::Trapezoid cellOuterShape(cellInThickness, cellOutThickness, caloDim.dz(), caloDim.dz(),
-                                               cellHeight / 2.);
-    DD4hep::Geometry::SubtractionSolid cellShapeNoReadout(cellOuterShape, readoutShape);
-    DD4hep::Geometry::SubtractionSolid cellShapeNoPassiveAbove(
-        cellShapeNoReadout, passiveShape,
+  std::vector<DD4hep::Geometry::PlacedVolume> layerPhysVols;
+  // place layers within active volume
+  double layerIncrease = (activeOutThickness - activeInThickness) / numLayers;
+  double layerInThickness = activeInThickness;
+  double layerOutThickness = activeInThickness + layerIncrease;
+  lLog << MSG::DEBUG << " number of layers = " << numLayers << " layer height (cm) = " << layerHeight << endmsg;
+  for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+    DD4hep::Geometry::Trapezoid layerOuterShape(layerInThickness, layerOutThickness, caloDim.dz(), caloDim.dz(),
+                                                layerHeight / 2.);
+    DD4hep::Geometry::SubtractionSolid layerShapeNoReadout(layerOuterShape, readoutShape);
+    DD4hep::Geometry::SubtractionSolid layerShapeNoPassiveAbove(
+        layerShapeNoReadout, passiveShape,
         DD4hep::Geometry::Transform3D(
             DD4hep::Geometry::RotationY(-dPhi / 2.),
-            DD4hep::Geometry::Position(-fabs(xprim), 0, fabs(zprim) - (cellOffset + iCell * cellHeight))));
+            DD4hep::Geometry::Position(-fabs(xprim), 0, fabs(zprim) - (layerOffset + iLayer * layerHeight))));
     // subtract passive volume below
-    DD4hep::Geometry::SubtractionSolid cellShape(
-        cellShapeNoPassiveAbove, passiveShape,
+    DD4hep::Geometry::SubtractionSolid layerShape(
+        layerShapeNoPassiveAbove, passiveShape,
         DD4hep::Geometry::Transform3D(
             DD4hep::Geometry::RotationY(dPhi / 2.),
-            DD4hep::Geometry::Position(fabs(xprimB), 0, -fabs(zprimB) - (cellOffset + iCell * cellHeight))));
-    DD4hep::Geometry::Volume cellVol("cell", cellShape, aLcdd.material(activeMaterial));
-    cellVol.setSensitiveDetector(aSensDet);
-    std::cout << " Placing cell " << iCell << " inside active row at z = " << cellOffset + iCell * cellHeight
-              << std::endl;  // z before rotation, afterwards it becomes R
-    cellPhysVols.push_back(
-        activeVol.placeVolume(cellVol, DD4hep::Geometry::Position(0, 0, cellOffset + iCell * cellHeight)));
-    cellPhysVols.back().addPhysVolID("cell", iCell + 1);
-    cellInThickness = cellOutThickness;
-    cellOutThickness = cellOutThickness + cellIncrease;
+            DD4hep::Geometry::Position(fabs(xprimB), 0, -fabs(zprimB) - (layerOffset + iLayer * layerHeight))));
+    DD4hep::Geometry::Volume layerVol("layer", layerShape, aLcdd.material(activeMaterial));
+    layerVol.setSensitiveDetector(aSensDet);
+    layerPhysVols.push_back(
+        activeVol.placeVolume(layerVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight)));
+    layerPhysVols.back().addPhysVolID("layer", iLayer);
+    layerInThickness = layerOutThickness;
+    layerOutThickness = layerOutThickness + layerIncrease;
   }
 
   DD4hep::Geometry::DetElement bathDetElem(caloDetElem, "bath", 1);
   std::vector<DD4hep::Geometry::PlacedVolume> activePhysVols;
-  // Next place elements: passive planes, readout planes and rows of cells
+  // Next place elements: passive planes, readout planes and rows of layers
   for (uint iPlane = 0; iPlane < numPlanes; iPlane++) {
     // first calculate positions of passive and readout planes
     // PASSIVE
@@ -370,9 +360,9 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
                                                                             phi - angle),
                                             DD4hep::Geometry::Position(xRotated, yRotated, 0));
     DD4hep::Geometry::PlacedVolume passivePhysVol = bathVol.placeVolume(passiveVol, transform);
-    passivePhysVol.addPhysVolID("module", iPlane + 1);
+    passivePhysVol.addPhysVolID("module", iPlane);
     passivePhysVol.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
-    DD4hep::Geometry::DetElement passiveDetElem(bathDetElem, "passive" + std::to_string(iPlane + 1), iPlane + 1);
+    DD4hep::Geometry::DetElement passiveDetElem(bathDetElem, "passive" + std::to_string(iPlane), iPlane);
     passiveDetElem.setPlacement(passivePhysVol);
 
     // READOUT
@@ -394,9 +384,9 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
                                         phiRead - angle),
         DD4hep::Geometry::Position(xRotatedRead, yRotatedRead, 0));
     DD4hep::Geometry::PlacedVolume readoutPhysVol = bathVol.placeVolume(readoutVol, transformRead);
-    readoutPhysVol.addPhysVolID("module", iPlane + 1);
+    readoutPhysVol.addPhysVolID("module", iPlane);
     readoutPhysVol.addPhysVolID("type", 2);  // 0 = active, 1 = passive, 2 = readout
-    DD4hep::Geometry::DetElement readoutDetElem(bathDetElem, "readout" + std::to_string(iPlane + 1), iPlane + 1);
+    DD4hep::Geometry::DetElement readoutDetElem(bathDetElem, "readout" + std::to_string(iPlane), iPlane);
     readoutDetElem.setPlacement(readoutPhysVol);
 
     // ACTIVE
@@ -405,7 +395,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     activePhysVols.push_back(bathVol.placeVolume(
         activeVol,
         DD4hep::Geometry::Transform3D(rotationActive, DD4hep::Geometry::Position(xRotatedRead, yRotatedRead, 0))));
-    activePhysVols.back().addPhysVolID("module", iPlane + 1);
+    activePhysVols.back().addPhysVolID("module", iPlane);
     activePhysVols.back().addPhysVolID("type", 0);  // 0 = active, 1 = passive, 2 = readout
   }
   DD4hep::Geometry::PlacedVolume bathPhysVol = envelopeVol.placeVolume(bathVol);
@@ -417,11 +407,11 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   bathDetElem.setPlacement(bathPhysVol);
 
   for (uint iPlane = 0; iPlane < numPlanes; iPlane++) {
-    DD4hep::Geometry::DetElement activeDetElem(bathDetElem, "active" + std::to_string(iPlane + 1), iPlane + 1);
+    DD4hep::Geometry::DetElement activeDetElem(bathDetElem, "active" + std::to_string(iPlane), iPlane);
     activeDetElem.setPlacement(activePhysVols[iPlane]);
-    for (uint iCell = 0; iCell < numCells; iCell++) {
-      DD4hep::Geometry::DetElement cellDetElem(activeDetElem, "cell" + std::to_string(iCell + 1), iCell + 1);
-      cellDetElem.setPlacement(cellPhysVols[iCell]);
+    for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+      DD4hep::Geometry::DetElement layerDetElem(activeDetElem, "layer" + std::to_string(iLayer), iLayer);
+      layerDetElem.setPlacement(layerPhysVols[iLayer]);
     }
   }
 

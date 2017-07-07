@@ -54,13 +54,13 @@
     <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell) -->
     <readout name="ECalHitsEta">
       <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.68024"/>
-      <id>system:4,cryo:1,module:11,type:3,subtype:3,cell:6,eta:9</id>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,layer:8,eta:9</id>
     </readout>
     <!-- readout for the reconstruction -->
     <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
     <readout name="ECalHitsPhiEta">
       <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="512" offset_eta="-1.68024" offset_phi="-pi+(pi/512.)"/>
-      <id>system:4,cryo:1,module:11,type:3,subtype:3,cell:6,eta:9,phi:10</id>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,layer:8,eta:9,phi:10</id>
     </readout>
   </readouts>
 
@@ -68,7 +68,7 @@
     <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalHitsEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
-      <cryostat name="ECAL_Cryo">
+      <cryostat name="ECAL_Cryo" sensitive="false">
         <material name="Aluminum"/>
 	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
       </cryostat>
@@ -93,9 +93,9 @@
         <readout thickness="readout_thickness" sensitive="true">
           <material name="PCB"/>
         </readout>
-        <cell>
-	       <dimensions repeat="32"/>
-        </cell>
+        <layer>
+	       <dimensions repeat="130"/>
+        </layer>
       </calorimeter>
     </detector>
   </detectors>
