@@ -6,7 +6,8 @@ gaudi_depends_on_subdirs(GaudiKernel
                          FWCore
                          )
 
-find_package(ROOT COMPONENTS MathCore GenVector Geom Tree)
+find_package(ROOT COMPONENTS MathCore GenVector Geom Tree  Physics EG)
+find_package(papas)
 find_package(papas)
 find_package(Geant4)
 include(${Geant4_USE_FILE})
