@@ -23,7 +23,7 @@
 
 namespace papas {
 
-Clic::Clic(double innerEcal, double outerEcal, double innerHcal,double outerHcal) : Detector() {
+Clic::Clic(double innerEcal, double outerEcal, double innerHcal, double outerHcal, std::shared_ptr<const Field> field) : Detector() {
   // ECAL detector Element
   PDebug::write("Detector: ecal inner {}, outer {}, hcal inner {} , outer{}", innerEcal, outerEcal, innerHcal, outerHcal);
   
@@ -33,7 +33,7 @@ Clic::Clic(double innerEcal, double outerEcal, double innerHcal,double outerHcal
   int nX0 = 23;  //CLIC CDR, page 70, value for CLIC_ILD
   int nLambdaI = 1;  //ibid
   
-  
+
   m_ecal = std::make_shared<const ClicECAL>(
       VolumeCylinder(Layer::kEcal, innerRadius+depth, innerZ + depth,innerRadius, innerZ),
       Material("Clic_ECAL",depth / nX0, depth / nLambdaI),
@@ -55,7 +55,7 @@ Clic::Clic(double innerEcal, double outerEcal, double innerHcal,double outerHcal
   m_tracker = std::make_shared<const ClicTracker>(VolumeCylinder(Layer::kTracker, 2.14, 2.6));
 
   // Field detector element
-  m_field = std::make_shared<const ClicField>(VolumeCylinder(Layer::kField, 3.5, 4.8), 2);
+  m_field = field;
   setupElements();  // sets up a list of all detector elements (m_elements) (needed for propagation)
 }
   double Clic::electronAcceptance(const Track& track) const {

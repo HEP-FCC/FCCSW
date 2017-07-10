@@ -1,4 +1,5 @@
-#include "ClicDetector.h"
+#include "ClicDetectorSvc.h"
+#include "ClicFieldSvc.h"
 #include "Clic.h"
 
 DECLARE_SERVICE_FACTORY(ClicDetSvc)
@@ -14,7 +15,8 @@ StatusCode ClicDetSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_detector = std::make_shared<papas::Clic>(m_cyl1, m_cyl2);
+  m_papasFieldSvc = service(m_fieldServiceName);
+  m_detector = std::make_shared<papas::Clic>(m_cyl1, m_cyl2, 2.4, 5.3, m_papasFieldSvc->field());
   return StatusCode::SUCCESS;
 }
 

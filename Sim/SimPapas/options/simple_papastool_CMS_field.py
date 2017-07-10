@@ -12,7 +12,8 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 from GaudiKernel import SystemOfUnits as units
 
 ## read in generated particles from ROOT via podio
-podioevent   = FCCDataSvc("EventDataSvc", input="./ee_Z_ddbar.root")
+#podioevent   = FCCDataSvc("EventDataSvc", input="./ee_Z_ddbar.root")
+podioevent   = FCCDataSvc("EventDataSvc", input="./ee_ZH_Zmumu_Hbb.root")
 
 from Configurables import PodioInput, ReadTestConsumer
 podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
@@ -22,11 +23,15 @@ from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
 
-from Configurables import ClicFieldSvc
-fieldsvc = ClicFieldSvc("ClicFieldSvc", field = 2); #todo add in remaining parameters
+from Configurables import CMSFieldSvc
+fieldsvc = CMSFieldSvc("CMSFieldSvc", field = 3.8); #todo add in remaining parameters
 
-from Configurables import ClicDetSvc
-detservice = ClicDetSvc("ClicDetSvc", innerEcalCylinder = 2.15, outerEcalCylinder = 2.4, fieldService = "ClicFieldSvc");
+#choose papas detector (here CMS)
+from Configurables import CMSDetSvc
+detservice = CMSDetSvc("CMSDetSvc", innerEcalCylinder = 1.3, outerEcalCylinder = 1.55, fieldService="CMSFieldSvc");
+#to come soon
+#detservice = CMSDetSvc("CMSDetSvc", ecalService = "CMSEcalSvc", hcalService = "CMSHcalSvc",
+#  trackerService = "CMSTrackerSvc", fieldService="CMSFieldSvc");
 
 #Notes:
 #
@@ -47,8 +52,8 @@ papasalg = PapasAlg("papasalg",
                            "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
                     exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
-                            physicsDebugFile = 'papasPhysicsdd.out', #write out papas physics to file
-                            detService = "ClicDetSvc") #name of detector service
+                            physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                            detService = "CMSDetSvc") #name of detector service
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")
