@@ -3,6 +3,7 @@
 
 
 #include "SimPapasDetector/IPapasDetSvc.h"
+#include "SimPapasDetector/IPapasFieldSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
@@ -36,8 +37,12 @@ public:
 private:
   // Detector
   std::shared_ptr<papas::Detector> m_detector;
-  Gaudi::Property<double> m_cyl1{this, "innerEcalCylinder", 1.3, "Size  of ECAL inner"};
-  Gaudi::Property<double> m_cyl2{this, "outerEcalCylinder", 1.55, "Size  of ECAL inner"};
+  /// Pointer to the interface of papas detector
+  SmartIF<IPapasFieldSvc> m_papasFieldSvc;
+  
+  Gaudi::Property<double> m_cyl1{this, "innerEcalCylinder", 2.15, "Radius ECAL inner"};
+  Gaudi::Property<double> m_cyl2{this, "outerEcalCylinder", 2.4, "Radius ECAL outer"};
+  Gaudi::Property<std::string> m_fieldServiceName{this, "fieldService", "", "Field service"};
   
 };
 
