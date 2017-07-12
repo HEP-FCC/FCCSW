@@ -34,7 +34,7 @@
     <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThicknessBack"/>
     <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
     <!-- thickness of active volume between two absorber plates, measuring perpendicular to the readout plate -->
-    <constant name="LAr_thickness" value="3.*mm"/>
+    <constant name="LAr_thickness" value="2.45*mm"/>
     <!-- passive layer consists of lead in the middle and steel on the outside, glued -->
     <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
     <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
@@ -79,7 +79,7 @@
           <overlap offset="0.5"/>
         </active>
         <passive>
-          <rotation angle="30*degree"/>
+          <rotation angle="50*degree"/>
 	       <inner thickness="Pb_thickness" sensitive="true">
             <material name="Lead"/>
           </inner>
