@@ -4,7 +4,8 @@
 
 DECLARE_ALGORITHM_FACTORY(PileupOverlayAlg)
 
-PileupOverlayAlg::PileupOverlayAlg(const std::string& aName, ISvcLocator* aSvcLoc) :GaudiAlgorithm(aName, aSvcLoc), m_store(), m_reader() {
+PileupOverlayAlg::PileupOverlayAlg(const std::string& aName, ISvcLocator* aSvcLoc)
+    : GaudiAlgorithm(aName, aSvcLoc), m_store(), m_reader() {
   declareProperty("PileUpTool", m_pileUpTool);
 }
 
@@ -46,7 +47,8 @@ StatusCode PileupOverlayAlg::execute() {
     }
     m_reader.goToEvent(m_minBiasEventIndex);
 
-    verbose() << "Reading in pileup event #" << m_minBiasEventIndex << " from pool #" << m_pileupFileIndex <<  " ..." << endmsg;
+    verbose() << "Reading in pileup event #" << m_minBiasEventIndex << " from pool #" << m_pileupFileIndex << " ..."
+              << endmsg;
     for (auto& tool : m_mergeTools) {
       tool->readPileupCollection(m_store);
     }
@@ -60,7 +62,6 @@ StatusCode PileupOverlayAlg::execute() {
       verbose() << "switching to pileup file " << m_pileupFilenames[m_pileupFileIndex] << endmsg;
       m_reader.openFile(m_pileupFilenames[m_pileupFileIndex]);
       nEvents = m_reader.getEntries();
-      
     }
   }
 

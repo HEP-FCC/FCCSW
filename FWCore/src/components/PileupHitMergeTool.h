@@ -13,7 +13,6 @@ class HitCollection;
 class PositionedHitCollection;
 }
 
-
 /** @class PileupHitMergeTool
  *
  * Implemenation of the MergeTool for *Hits and *PositionedHits, templated to give versions for Tracker / Calorimeter
@@ -42,11 +41,10 @@ public:
 private:
   /// Name of the branch from which to read pileup collection
   Gaudi::Property<std::string> m_pileupHitsBranchName{this, "pileupHitsBranch", "hits",
-                                                           "Name of the branch from which to read pileup collection"};
+                                                      "Name of the branch from which to read pileup collection"};
   /// Name of the branch from which to read pileup collection
-  Gaudi::Property<std::string> m_pileupPosHitsBranchName{
-      this, "pileupPositionedHitsBranch", "positionedHits",
-      "Name of the branch from which to read pileup collection"};
+  Gaudi::Property<std::string> m_pileupPosHitsBranchName{this, "pileupPositionedHitsBranch", "positionedHits",
+                                                         "Name of the branch from which to read pileup collection"};
 
   /// internal container to keep of collections to be merged
   std::vector<const Hits*> m_hitCollections;
@@ -56,14 +54,12 @@ private:
   /// Output of this tool: merged collection
   DataHandle<Hits> m_hitsMerged{"overlay/hits", Gaudi::DataHandle::Writer, this};
   /// Output of this tool: merged collection
-  DataHandle<PositionedHits> m_posHitsMerged{"overlay/positionedHits",
-                                                                     Gaudi::DataHandle::Writer, this};
+  DataHandle<PositionedHits> m_posHitsMerged{"overlay/positionedHits", Gaudi::DataHandle::Writer, this};
 
   /// input to this tool: signal collection
   DataHandle<Hits> m_hitsSignal{"overlay/signalHits", Gaudi::DataHandle::Reader, this};
   /// input to this tool: signal collection
-  DataHandle<PositionedHits> m_posHitsSignal{"overlay/signalPositionedHits",
-                                                                     Gaudi::DataHandle::Reader, this};
+  DataHandle<PositionedHits> m_posHitsSignal{"overlay/signalPositionedHits", Gaudi::DataHandle::Reader, this};
 };
 
 #endif  // FWCORE_PILEUPTRACKERHITSMERGETOOL_H

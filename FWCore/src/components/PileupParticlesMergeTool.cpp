@@ -66,8 +66,8 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
   unsigned int collectionOffset = 0;
 
   // merge vertices
-  
-    for(auto genVertexColl: m_GenVertexCollections) {
+
+  for (auto genVertexColl : m_GenVertexCollections) {
     debug() << " traverse collection of size " << genVertexColl->size() << endmsg;
     for (const auto elem : *genVertexColl) {
       collVOut->push_back(elem.clone());
@@ -75,7 +75,7 @@ StatusCode PileupParticlesMergeTool::mergeCollections() {
   }
   // merge particles, keeping the references up to date
   for (unsigned int collCounter = 0; collCounter < m_MCParticleCollections.size(); ++collCounter) {
-    auto mcPartColl =  m_MCParticleCollections[collCounter];
+    auto mcPartColl = m_MCParticleCollections[collCounter];
     for (const auto elem : *mcPartColl) {
       auto newPart = fcc::MCParticle(elem.core());
       if (elem.startVertex().isAvailable()) {

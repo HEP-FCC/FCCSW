@@ -13,6 +13,12 @@ class MCParticleCollection;
 class GenVertexCollection;
 }
 
+/** @class PileupParticlesMergeTool
+ *
+ * Implementation of the EDMMergeTool interface used for pileup overlay
+ * of generated particles. Keeps track of the association between particles and vertices.
+ */
+
 class PileupParticlesMergeTool : public GaudiTool, virtual public IEDMMergeTool {
 public:
   explicit PileupParticlesMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent);

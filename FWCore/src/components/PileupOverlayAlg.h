@@ -13,7 +13,6 @@
 // forward declarations
 class IEDMMergeTool;
 
-
 /*** @class PileupOverlayAlg
  *  Algorithm for Pileup I/O and merging
  *
@@ -40,9 +39,7 @@ private:
       this, "randomizePileup", false,
       "flag to determine whether to randomly skip events when reading the pileup store"};
   /// probability of skipping  next event in randomized read
-  Gaudi::Property<float> m_skipProbability{
-      this, "skipProbability", 0.5,
-      "Probability with which to skip next event"};
+  Gaudi::Property<float> m_skipProbability{this, "skipProbability", 0.5, "Probability with which to skip next event"};
   /// random number generator for randomizing pileup reads
   Rndm::Numbers m_flatDist;
   /// Pileup Tool to specify the number of minimum bias events

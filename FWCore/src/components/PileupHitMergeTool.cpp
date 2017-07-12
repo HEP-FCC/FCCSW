@@ -2,10 +2,10 @@
 
 #include "podio/EventStore.h"
 
+#include "datamodel/CaloHitCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
-#include "datamodel/PositionedCaloHitCollection.h"
-#include "datamodel/CaloHitCollection.h"
 
 typedef PileupHitMergeTool<fcc::CaloHitCollection, fcc::PositionedCaloHitCollection> PileupCaloHitMergeTool;
 typedef PileupHitMergeTool<fcc::TrackHitCollection, fcc::PositionedTrackHitCollection> PileupTrackHitMergeTool;
@@ -14,12 +14,9 @@ DECLARE_COMPONENT_WITH_ID(PileupTrackHitMergeTool, "PileupTrackHitMergeTool")
 DECLARE_TOOL_FACTORY(PileupCaloHitMergeTool)
 DECLARE_COMPONENT_WITH_ID(PileupCaloHitMergeTool, "PileupCaloHitMergeTool")
 
-
-
-
 template <class Hits, class PositionedHits>
 PileupHitMergeTool<Hits, PositionedHits>::PileupHitMergeTool(const std::string& aType, const std::string& aName,
-                                                   const IInterface* aParent)
+                                                             const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IEDMMergeTool>(this);
   declareProperty("signalHits", m_hitsSignal);
@@ -29,10 +26,14 @@ PileupHitMergeTool<Hits, PositionedHits>::PileupHitMergeTool(const std::string& 
 }
 
 template <class Hits, class PositionedHits>
-StatusCode PileupHitMergeTool<Hits, PositionedHits>::initialize() { return StatusCode::SUCCESS; }
+StatusCode PileupHitMergeTool<Hits, PositionedHits>::initialize() {
+  return StatusCode::SUCCESS;
+}
 
 template <class Hits, class PositionedHits>
-StatusCode PileupHitMergeTool<Hits, PositionedHits>::finalize() { return StatusCode::SUCCESS; }
+StatusCode PileupHitMergeTool<Hits, PositionedHits>::finalize() {
+  return StatusCode::SUCCESS;
+}
 
 template <class Hits, class PositionedHits>
 StatusCode PileupHitMergeTool<Hits, PositionedHits>::readPileupCollection(podio::EventStore& store) {
