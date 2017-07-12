@@ -76,7 +76,6 @@ StatusCode PileupHitMergeTool<Hits, PositionedHits>::readSignal() {
 
 template <class Hits, class PositionedHits>
 StatusCode PileupHitMergeTool<Hits, PositionedHits>::mergeCollections() {
-  debug() << "merge collections ..." << endmsg;
 
   // ownership given to data service at end of execute
   Hits* collHitsMerged = new Hits();

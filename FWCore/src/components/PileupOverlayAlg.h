@@ -22,7 +22,7 @@ class IEDMMergeTool;
  * It is thus flexible with regards to the data collection types, as everything is delegated to
  * tools with a very general interface. One thing this algorithm does do is keep track of the
  * number of pileup events (via the pileup tool) and the current position in the minimum bias pool
- * ( which can be randomized ).
+ * ( which can be randomized by skipping events with a probability that can be set in the options file ).
  *
  */
 

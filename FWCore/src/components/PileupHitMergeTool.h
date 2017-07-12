@@ -14,6 +14,12 @@ class PositionedHitCollection;
 }
 
 
+/** @class PileupHitMergeTool
+ *
+ * Implemenation of the MergeTool for *Hits and *PositionedHits, templated to give versions for Tracker / Calorimeter
+ *
+ */
+
 template <class Hits, class PositionedHits>
 class PileupHitMergeTool : public GaudiTool, virtual public IEDMMergeTool {
 public:
