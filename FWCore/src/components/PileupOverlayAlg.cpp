@@ -40,13 +40,13 @@ StatusCode PileupOverlayAlg::execute() {
     // introduce some randomness into min bias event selection
     // to avoid bias
     if (m_randomizePileup == true) {
-      if (m_flatDist() < 0.3) {  // skip one in three events
+      if (m_flatDist() < m_skipProbability) {
         ++m_minBiasEventIndex;
       }
     }
     m_reader.goToEvent(m_minBiasEventIndex);
 
-    debug() << "Reading in pileup event #" << m_minBiasEventIndex << " from pool #" << m_pileupFileIndex <<  " ..." << endmsg;
+    verbose() << "Reading in pileup event #" << m_minBiasEventIndex << " from pool #" << m_pileupFileIndex <<  " ..." << endmsg;
     for (auto& tool : m_mergeTools) {
       tool->readPileupCollection(m_store);
     }
@@ -57,7 +57,7 @@ StatusCode PileupOverlayAlg::execute() {
       m_pileupFileIndex = (m_pileupFileIndex + 1) % m_pileupFilenames.size();
       m_store.clearCaches();
       m_reader.closeFile();
-      debug() << "switching to pileup file " << m_pileupFilenames[m_pileupFileIndex] << endmsg;
+      verbose() << "switching to pileup file " << m_pileupFilenames[m_pileupFileIndex] << endmsg;
       m_reader.openFile(m_pileupFilenames[m_pileupFileIndex]);
       nEvents = m_reader.getEntries();
       
