@@ -3,7 +3,6 @@ from Gaudi.Configuration import *
 
 
 pileupFilenames = ["dummyEventData2.root", "dummyEventData1.root", "dummyEventData3.root"]
-#pileupFilenames = ["dummyEventData3.root"]
 
 # Data service
 from Configurables import FCCDataSvc
@@ -22,14 +21,14 @@ particlemergetool.signalGenVertices.Path = "genVertices"
 particlemergetool.mergedGenParticles.Path = "overlaidGenParticles"
 particlemergetool.mergedGenVertices.Path = "overlaidGenVertices"
 
-from Configurables import PileupTrackHitsMergeTool
-trackhitsmergetool = PileupTrackHitsMergeTool("MyTrackHitsMergeTool")
-trackhitsmergetool.pileupTrackHitsBranch = "trackHits"
-trackhitsmergetool.pileupPositionedTrackHitsBranch = "positionedTrackHits"
-trackhitsmergetool.signalTrackHits = "trackHits"
-trackhitsmergetool.signalPositionedTrackHits = "positionedTrackHits"
-trackhitsmergetool.mergedTrackHits = "overlaidTrackHits"
-trackhitsmergetool.mergedPositionedTrackHits = "overlaidPositionedTrackHits"
+from Configurables import PileupTrackHitMergeTool
+trackhitsmergetool = PileupTrackHitMergeTool("MyTrackHitsMergeTool")
+trackhitsmergetool.pileupHitsBranch = "trackHits"
+trackhitsmergetool.pileupPositionedHitsBranch = "positionedTrackHits"
+trackhitsmergetool.signalHits = "trackHits"
+trackhitsmergetool.signalPositionedHits = "positionedTrackHits"
+trackhitsmergetool.mergedHits = "overlaidTrackHits"
+trackhitsmergetool.mergedPositionedHits = "overlaidPositionedTrackHits"
 
 from Configurables import ConstPileUp
 
@@ -41,7 +40,7 @@ overlay = PileupOverlayAlg()
 overlay.pileupFilenames = pileupFilenames
 overlay.randomizePileup = False
 overlay.mergeTools = ["PileupParticlesMergeTool/MyPileupParticlesMergeTool",
-  "PileupTrackHitsMergeTool/MyTrackHitsMergeTool"]
+  "PileupTrackHitMergeTool/MyTrackHitsMergeTool"]
 overlay.PileUpTool = pileuptool
 
 
@@ -67,10 +66,9 @@ out.filename = "dummyEventDataOverlaid.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [producer, overlay,
-                   out],
+ApplicationMgr( TopAlg = [producer, overlay, out],
                 EvtSel = 'NONE',
-                EvtMax   = 300,
+                EvtMax = 300,
                 ExtSvc = [podioevent,],
-                OutputLevel=DEBUG
- )
+                OutputLevel=DEBUG,
+  )

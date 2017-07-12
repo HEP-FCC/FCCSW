@@ -26,16 +26,16 @@ particlemergetool.signalGenParticles.Path = "allGenParticles"
 particlemergetool.mergedGenParticles.Path = "overlaidGenParticles"
 particlemergetool.mergedGenVertices.Path = "overlaidGenVertices"
 
-from Configurables import PileupTrackHitsMergeTool
-trackhitsmergetool = PileupTrackHitsMergeTool("MyTrackHitsMergeTool")
-trackhitsmergetool.pileupTrackHitsBranch = "hits"
-trackhitsmergetool.pileupPositionedTrackHitsBranch = "positionedHits"
+from Configurables import PileupTrackHitMergeTool
+trackhitsmergetool = PileupTrackHitMergeTool("MyTrackHitMergeTool")
+trackhitsmergetool.pileupHitsBranch = "hits"
+trackhitsmergetool.pileupPositionedHitsBranch = "positionedHits"
 
-trackhitsmergetool.signalTrackHits = "hits"
-trackhitsmergetool.signalPositionedTrackHits = "positionedHits"
+trackhitsmergetool.signalHits = "hits"
+trackhitsmergetool.signalPositionedHits = "positionedHits"
 
-trackhitsmergetool.mergedTrackHits = "overlaidTrackHits"
-trackhitsmergetool.mergedPositionedTrackHits = "overlaidPositionedTrackHits"
+trackhitsmergetool.mergedHits = "overlaidTrackHits"
+trackhitsmergetool.mergedPositionedHits = "overlaidPositionedTrackHits"
 
 from Configurables import ConstPileUp
 
@@ -47,7 +47,7 @@ overlay = PileupOverlayAlg()
 overlay.pileupFilenames = pileupFilenames
 overlay.randomizePileup = False
 overlay.mergeTools = ["PileupParticlesMergeTool/MyPileupParticlesMergeTool",
-  "PileupTrackHitsMergeTool/MyTrackHitsMergeTool"]
+  "PileupTrackHitMergeTool/MyTrackHitMergeTool"]
 overlay.PileUpTool = pileuptool
 
 

@@ -9,14 +9,16 @@
 #include "FWCore/IEDMMergeTool.h"
 
 namespace fcc {
-class TrackHitCollection;
-class PositionedTrackHitCollection;
+class HitCollection;
+class PositionedHitCollection;
 }
 
-class PileupTrackHitsMergeTool : public GaudiTool, virtual public IEDMMergeTool {
+
+template <class Hits, class PositionedHits>
+class PileupHitMergeTool : public GaudiTool, virtual public IEDMMergeTool {
 public:
-  explicit PileupTrackHitsMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
-  virtual ~PileupTrackHitsMergeTool() = default;
+  explicit PileupHitMergeTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
+  virtual ~PileupHitMergeTool() = default;
 
   virtual StatusCode initialize() override final;
 
@@ -33,28 +35,28 @@ public:
 
 private:
   /// Name of the branch from which to read pileup collection
-  Gaudi::Property<std::string> m_pileupTrackHitsBranchName{this, "pileupTrackHitsBranch", "trackHits",
+  Gaudi::Property<std::string> m_pileupHitsBranchName{this, "pileupHitsBranch", "hits",
                                                            "Name of the branch from which to read pileup collection"};
   /// Name of the branch from which to read pileup collection
-  Gaudi::Property<std::string> m_pileupPosTrackHitsBranchName{
-      this, "pileupPositionedTrackHitsBranch", "positionedTrackHits",
+  Gaudi::Property<std::string> m_pileupPosHitsBranchName{
+      this, "pileupPositionedHitsBranch", "positionedHits",
       "Name of the branch from which to read pileup collection"};
 
-  /// internal container to keep track of collections to be merged
-  std::vector<const fcc::TrackHitCollection*> m_TrackHitCollections;
-  /// internal container to keep track of collections to be merged
-  std::vector<const fcc::PositionedTrackHitCollection*> m_PosTrackHitCollections;
+  /// internal container to keep of collections to be merged
+  std::vector<const Hits*> m_hitCollections;
+  /// internal container to keep of collections to be merged
+  std::vector<const PositionedHits*> m_posHitCollections;
 
   /// Output of this tool: merged collection
-  DataHandle<fcc::TrackHitCollection> m_TrackHitsMerged{"overlay/trackHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<Hits> m_hitsMerged{"overlay/hits", Gaudi::DataHandle::Writer, this};
   /// Output of this tool: merged collection
-  DataHandle<fcc::PositionedTrackHitCollection> m_PosTrackHitsMerged{"overlay/positionedTrackHits",
+  DataHandle<PositionedHits> m_posHitsMerged{"overlay/positionedHits",
                                                                      Gaudi::DataHandle::Writer, this};
 
   /// input to this tool: signal collection
-  DataHandle<fcc::TrackHitCollection> m_TrackHitsSignal{"overlay/signalTrackHits", Gaudi::DataHandle::Reader, this};
+  DataHandle<Hits> m_hitsSignal{"overlay/signalHits", Gaudi::DataHandle::Reader, this};
   /// input to this tool: signal collection
-  DataHandle<fcc::PositionedTrackHitCollection> m_PosTrackHitsSignal{"overlay/signalPositionedTrackHits",
+  DataHandle<PositionedHits> m_posHitsSignal{"overlay/signalPositionedHits",
                                                                      Gaudi::DataHandle::Reader, this};
 };
 
