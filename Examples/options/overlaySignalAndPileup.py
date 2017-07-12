@@ -19,10 +19,8 @@ from Configurables import PileupParticlesMergeTool
 particlemergetool = PileupParticlesMergeTool("MyPileupParticlesMergeTool")
 particlemergetool.genParticlesBranch = "allGenParticles"
 particlemergetool.genVerticesBranch = "allGenVertices"
-
 particlemergetool.signalGenVertices.Path = "allGenVertices"
 particlemergetool.signalGenParticles.Path = "allGenParticles"
-
 particlemergetool.mergedGenParticles.Path = "overlaidGenParticles"
 particlemergetool.mergedGenVertices.Path = "overlaidGenVertices"
 
@@ -30,10 +28,8 @@ from Configurables import PileupTrackHitMergeTool
 trackhitsmergetool = PileupTrackHitMergeTool("MyTrackHitMergeTool")
 trackhitsmergetool.pileupHitsBranch = "hits"
 trackhitsmergetool.pileupPositionedHitsBranch = "positionedHits"
-
 trackhitsmergetool.signalHits = "hits"
 trackhitsmergetool.signalPositionedHits = "positionedHits"
-
 trackhitsmergetool.mergedHits = "overlaidTrackHits"
 trackhitsmergetool.mergedPositionedHits = "overlaidPositionedTrackHits"
 
@@ -64,9 +60,9 @@ out.filename = "output_overlaid_with_pileup.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [podioinput, overlay, out],
-                EvtSel = 'NONE',
-                EvtMax   = 1,
-                ExtSvc = [podioevent,],
+ApplicationMgr( TopAlg=[podioinput, overlay, out],
+                EvtSel='NONE',
+                EvtMax=1,
+                ExtSvc=[podioevent,],
                 OutputLevel=DEBUG
  )
