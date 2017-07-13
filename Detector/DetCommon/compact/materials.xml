@@ -67,12 +67,6 @@
     <fraction n=".002" ref="C"/>
   </material>
 
-  <material name="ATLASSteel">
-    <D value="7.85" unit="g/cm3"/>
-    <fraction n="0.998" ref="Fe"/>
-    <fraction n=".002" ref="C"/>
-  </material>
-
   <material name="SiliconOxide">
     <D type="density" value="2.65" unit="g/cm3"/>
     <composite n="1" ref="Si"/>
@@ -167,15 +161,6 @@
   </material>
 
   <material name="LAr">
-    <D value="1.396" unit="g/cm3" />
-    <composite n="1" ref="Ar"/>
-  </material>
-  <material name="LArNonSensitive">
-    <D value="1.396" unit="g/cm3" />
-    <composite n="1" ref="Ar"/>
-  </material>
-
-  <material name="LAr2">
     <D value="1.396" unit="g/cm3" />
     <composite n="1" ref="Ar"/>
   </material>
