@@ -56,8 +56,8 @@
     <!-- Spacer plate -->
     <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Steel235" sensitive="false" vis="hcal_steel_vis" />
   </sequence_b>
-  <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="Steel235" sensitive="false" vis="hcal_end_plate_vis" />
-  <face_plate name="face_plate" thickness="BarHCal_face_plate_thickness" material="Steel235" sensitive="false" vis="hcal_face_plate_vis" />
+  <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="ATLASSteel" sensitive="false" vis="hcal_end_plate_vis" />
+  <face_plate name="face_plate" thickness="BarHCal_face_plate_thickness" material="ATLASSteel" sensitive="false" vis="hcal_face_plate_vis" />
   <plate_space name="plate_space" thickness="BarHCal_plate_space" material="Air" sensitive="false" vis="hcal_air_vis" />
-  <steel_support name="steel_support" thickness="BarHCal_steel_support_thickness" material="Steel235" sensitive="false" vis="hcal_steel_support_vis" />
+  <steel_support name="steel_support" thickness="BarHCal_steel_support_thickness" material="ATLASSteel" sensitive="false" vis="hcal_steel_support_vis" />
 </detector>

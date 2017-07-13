@@ -5,11 +5,14 @@
 
   <info name="FCC"
         title="Shielding in front of forward detectors"
-        author="J. Lingemann"
+        author="J. Lingemann, C Neubueser"
         url="no"
         status="development"
         version="1.0">
-    <comment>Approximate shielding for forward detectors</comment>
+    <comment>
+      Shielding for forward detectors
+      - updated to Ilaria's FLUKA implementation FCC week 2017
+    </comment>
   </info>
   <display>
     <vis name="ShieldingVis" r="0.7" g="0.7" b="0.7" alpha="0.8" showDaughters="false" visible="true"/>
@@ -17,29 +20,91 @@
   <detectors>
     <!-- End-caps -->
     <detector name="ShieldingLowerConePos" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="9400*mm"  material="Iron"/>
+      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="9400*mm"  material="SteelShielding"/>
     </detector>
-        <detector name="ShieldingUpperConePos" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="11000*mm"  material="Iron"/>
+    <detector name="ShieldingLowerConePos_polyLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2063.72*mm" rmax1="2063.72*mm + 5*cm" rmin2="2610.73*mm" rmax2="2610.73*mm + 5*cm" dz="1100*mm" z_offset="9400*mm"  material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingLowerConePos_leadLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2063.72*mm + 5*cm" rmax1="2063.72*mm + 5*cm + 1*cm" rmin2="2610.73*mm + 5*cm" rmax2="2610.73*mm + 5*cm + 1*cm" dz="1100*mm" z_offset="9400*mm"  material="Lead"/>
+    </detector>
+    <detector name="ShieldingUpperConePos" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="11000*mm"  material="SteelShielding"/>
+    </detector>
+    <detector name="ShieldingUpperConePos_polyLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2610.73*mm + 61.8*mm - 12.4*mm" rmax1="5000*mm + 5*cm" rmin2="2610.73*mm + 61.8*mm" rmax2="5000*mm + 5*cm" dz="25*mm" z_offset="10475*mm"  material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingUpperConePos_leadLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2610.73*mm + 61.8*mm - 14.9*mm" rmax1="5000*mm + 6*cm" rmin2="2610.73*mm + 61.8*mm - 12.4*mm" rmax2="5000*mm + 6*cm" dz="5*mm" z_offset="10445*mm"  material="Lead"/>
     </detector>
     <detector name="ShieldingUpperCylPos" type="SimpleCylinder"  vis="ShieldingVis">
-      <dimensions rmin="4000*mm" rmax="5000*mm" dz="2500*mm" phi0="0" deltaphi="360*deg" z_offset="14000*mm" material="Iron"/>
+      <dimensions rmin="4000*mm" rmax="5000*mm" dz="4000*mm" phi0="0" deltaphi="360*deg" z_offset="15500*mm" material="SteelShielding"/>
+    </detector>
+    <detector name="ShieldingUpperCylPos_polyLayer" type="SimpleCylinder"  vis="ShieldingVis">
+      <dimensions rmin="5000*mm" rmax="5050*mm" dz="4000*mm" phi0="0" deltaphi="360*deg" z_offset="15500*mm" material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingUpperCylPos_leadLayer" type="SimpleCylinder"  vis="ShieldingVis">
+      <dimensions rmin="5050*mm" rmax="5060*mm" dz="4000*mm + 50*mm" phi0="0" deltaphi="360*deg" z_offset="15500*mm" material="Lead"/>
     </detector>
     <detector name="ShieldingOuterCylPos" type="SimpleCylinder"  vis="ShieldingVis">
-      <dimensions rmin="3600*mm" rmax="5000*mm" dz="500*mm" phi0="0" deltaphi="360*deg" z_offset="17000*mm" material="Iron"/>
+      <dimensions rmin="97.2*mm" rmax="5000*mm" dz="50*mm" phi0="0" deltaphi="360*deg" z_offset="19550*mm" material="SteelShielding"/>
     </detector>
-
+    <detector name="ShieldingOuterCylPos_polyLayer" type="SimpleCylinder"  vis="ShieldingVis">
+      <dimensions rmin="97.2*mm" rmax="5000*mm" dz="30*mm" phi0="0" deltaphi="360*deg" z_offset="19630*mm" material="lithiatedPolyethylene"/>
+    </detector>
+    <!-- Layer in front of Forward Calorimeter -->
+    <detector name="ShieldingFrontCaloCylPos_1stAl" type="SimpleCylinder" vis="ShieldingVis">
+      <dimensions rmin="81.5*mm" rmax="3600*mm" dz="1*mm" phi0="0" deltaphi="360*deg" z_offset="16447*mm" material="Aluminum"/>
+    </detector>
+    <detector name="ShieldingFrontCaloCylPos_poly" type="SimpleCylinder" vis="ShieldingVis">
+      <dimensions rmin="81.6*mm" rmax="3600*mm" dz="25*mm" phi0="0" deltaphi="360*deg" z_offset="16473*mm" material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingFrontCaloCylPos_2ndAl" type="SimpleCylinder" vis="ShieldingVis">
+      <dimensions rmin="81.7*mm" rmax="3600*mm" dz="1*mm" phi0="0" deltaphi="360*deg" z_offset="16499*mm" material="Aluminum"/>
+    </detector>
+ 
     <detector name="ShieldingLowerConeNeg" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="-9400*mm" reflect="true"  material="Iron"/>
+      <dimensions rmin1="1371.9*mm" rmax1="2063.72*mm" rmin2="1735.5*mm" rmax2="2610.73*mm" dz="1100*mm" z_offset="-9400*mm" reflect="true"  material="SteelShielding"/>
     </detector>
-        <detector name="ShieldingUpperConeNeg" type="SimpleCone" vis="ShieldingVis">
-      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="-11000*mm" reflect="true"  material="Iron"/>
+    <detector name="ShieldingLowerConeNeg_polyLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2063.72*mm" rmax1="2063.72*mm + 5*cm" rmin2="2610.73*mm" rmax2="2610.73*mm + 5*cm" dz="1100*mm" z_offset="-9400*mm" reflect="true"  material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingLowerConeNeg_leadLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2063.72*mm + 5*cm" rmax1="2063.72*mm + 5*cm + 1*cm" rmin2="2610.73*mm + 5*cm" rmax2="2610.73*mm + 5*cm + 1*cm" dz="1100*mm" z_offset="-9400*mm" reflect="true"  material="Lead"/>
+    </detector>
+    <detector name="ShieldingUpperConeNeg" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="1735.5*mm" rmax1="5000*mm" rmin2="1900.8*mm" rmax2="5000*mm" dz="500*mm" z_offset="-11000*mm" reflect="true"  material="SteelShielding"/>
+    </detector>
+    <detector name="ShieldingUpperConeNeg_polyLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2610.73*mm + 61.8*mm - 12.4*mm" rmax1="5000*mm + 5*cm" rmin2="2610.73*mm + 61.8*mm" rmax2="5000*mm + 5*cm" dz="25*mm" z_offset="-10475*mm"  reflect="true" material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingUpperConeNeg_leadLayer" type="SimpleCone" vis="ShieldingVis">
+      <dimensions rmin1="2610.73*mm + 61.8*mm - 14.9*mm" rmax1="5000*mm + 6*cm" rmin2="2610.73*mm + 61.8*mm - 12.4*mm" rmax2="5000*mm + 6*cm" dz="5*mm" z_offset="-10445*mm"  reflect="true" material="Lead"/>
     </detector>
     <detector name="ShieldingUpperCylNeg" type="SimpleCylinder"  vis="ShieldingVis">
-      <dimensions rmin="4000*mm" rmax="5000*mm" dz="2500*mm" phi0="0" deltaphi="360*deg" z_offset="-14000*mm" material="Iron"/>
+      <dimensions rmin="4000*mm" rmax="5000*mm" dz="4000*mm" phi0="0" deltaphi="360*deg" z_offset="-15500*mm" material="SteelShielding"/>
+     </detector>
+   <detector name="ShieldingUpperCylNeg_polyLayer" type="SimpleCylinder"  vis="ShieldingVis">
+      <dimensions rmin="5000*mm" rmax="5050*mm" dz="4000*mm" phi0="0" deltaphi="360*deg" z_offset="-15500*mm" material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingUpperCylNeg_leadLayer" type="SimpleCylinder"  vis="ShieldingVis">
+      <dimensions rmin="5050*mm" rmax="5060*mm" dz="4000*mm + 50*mm" phi0="0" deltaphi="360*deg" z_offset="-15500*mm" material="Lead"/>
     </detector>
     <detector name="ShieldingOuterCylNeg" type="SimpleCylinder"  vis="ShieldingVis">
-      <dimensions rmin="3600*mm" rmax="5000*mm" dz="500*mm" phi0="0" deltaphi="360*deg" z_offset="-17000*mm" material="Iron"/>
+      <dimensions rmin="97.2*mm" rmax="5000*mm" dz="50*mm" phi0="0" deltaphi="360*deg" z_offset="-19550*mm" material="SteelShielding"/>
+    </detector>
+    <detector name="ShieldingOuterCylNeg_polyLayer" type="SimpleCylinder"  vis="ShieldingVis">
+      <dimensions rmin="97.2*mm" rmax="5000*mm" dz="30*mm" phi0="0" deltaphi="360*deg" z_offset="-19630*mm" material="lithiatedPolyethylene"/>
+    </detector>
+   <!-- Layer in front of Forward Calorimeter -->
+    <detector name="ShieldingFrontCaloCylNeg_1stAl" type="SimpleCylinder" vis="ShieldingVis">
+      <dimensions rmin="81.5*mm" rmax="3600*mm" dz="1*mm" phi0="0" deltaphi="360*deg" z_offset="-16447*mm" material="Aluminum"/>
+    </detector>
+    <detector name="ShieldingFrontCaloCylNeg_poly" type="SimpleCylinder" vis="ShieldingVis">
+      <dimensions rmin="81.6*mm" rmax="3600*mm" dz="25*mm" phi0="0" deltaphi="360*deg" z_offset="-16473*mm" material="lithiatedPolyethylene"/>
+    </detector>
+    <detector name="ShieldingFrontCaloCylNeg_2ndAl" type="SimpleCylinder" vis="ShieldingVis">
+      <dimensions rmin="81.7*mm" rmax="3600*mm" dz="1*mm" phi0="0" deltaphi="360*deg" z_offset="-16499*mm" material="Aluminum"/>
     </detector>
   </detectors>
 </lccdd>

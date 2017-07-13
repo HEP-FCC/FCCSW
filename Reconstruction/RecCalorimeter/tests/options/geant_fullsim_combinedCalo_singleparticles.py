@@ -18,6 +18,7 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml'],
                     OutputLevel = INFO)
 # Geant4 service                                                                                                                                                                         
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -51,6 +52,9 @@ saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = [ecalReadoutName]
 savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName],
                                 positionedCaloHits="HCalPositionedHits",
                                 caloHits="HCalHits")
+saveexthcaltool = SimG4SaveCalHits("saveExtHCalHits",readoutNames = [hcalReadoutName],
+                                positionedCaloHits="ExtHCalPositionedHits",
+                                caloHits="ExtHCalHits")
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")                                                                                                                                                     
 from Configurables import SimG4SingleParticleGeneratorTool
@@ -59,7 +63,7 @@ pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveE
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits"],
+                       outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits", "SimG4SaveCalHits/saveExtHCalHits"],
                        eventProvider=pgun,
                        OutputLevel=DEBUG)
 
@@ -71,9 +75,9 @@ calibEcells = CalibrateInLayersTool("Calibrate",
                                     readoutName = ecalReadoutName,
                                     layerFieldName = "cell")
 
-#Configure tools for calo reconstruction
+#Configure tools for calo reconstruction - Calibration to EM scale
 from Configurables import CalibrateCaloHitsTool
-calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="31")
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="34.5")
 
 from Configurables import CreateCaloCells
 createEcells = CreateCaloCells("CreateECaloCells",
@@ -91,6 +95,14 @@ createHcells = CreateCaloCells("CreateHCaloCells",
                                OutputLevel = DEBUG,
                                hits="HCalHits",
                                cells="HCalCells")
+
+createExtHcells = CreateCaloCells("CreateExtHCaloCells",
+                               doCellCalibration=True,
+                               calibTool=calibHcells,
+                               addCellNoise = False, filterCellNoise = False,
+                               OutputLevel = DEBUG,
+                               hits="ExtHCalHits",
+                               cells="ExtHCalCells")
 
 # additionally for HCal
 from Configurables import CreateVolumeCaloPositions
@@ -134,6 +146,7 @@ audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 createEcells.AuditExecute = True
 createHcells.AuditExecute = True
+createExtHcells.AuditExecute = True
 positions.AuditExecute = True
 resegment.AuditExecute = True
 positions2.AuditExecute = True
@@ -143,6 +156,7 @@ ApplicationMgr(
     TopAlg = [geantsim,
               createEcells,
               createHcells,
+              createExtHcells,
               positions,
               resegment,
               positions2,
