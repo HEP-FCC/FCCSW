@@ -103,11 +103,11 @@ void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geom
     DD4hep::Geometry::Volume passiveVol("passive", passiveShape, aLcdd.material(passiveMaterial));
     activeVol.setSensitiveDetector(sensDet);
     if (readout.isSensitive()) {
-      lLog << MSG::INFO << "Passive inner volume set as sensitive" << endmsg;
+      lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
       readoutVol.setSensitiveDetector(aSensDet);
     }
     if (passive.isSensitive()) {
-      lLog << MSG::INFO << "Passive volume set as sensitive" << endmsg;
+      lLog << MSG::DEBUG << "Passive volume set as sensitive" << endmsg;
       passiveVol.setSensitiveDetector(aSensDet);
     }
     // absorber may consist of inner and outer material
@@ -206,9 +206,9 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   DD4hep::Geometry::Volume envelopePositiveVol(nameDet + "_positive_vol", envelopePositive, aLcdd.material("Air"));
   DD4hep::Geometry::Volume envelopeNegativeVol(nameDet + "_negative_vol", envelopeNegative, aLcdd.material("Air"));
 
-  lLog << MSG::INFO << "Placing dector on the positive side: (cm) " << dim.z_offset() << endmsg;
+  lLog << MSG::DEBUG << "Placing dector on the positive side: (cm) " << dim.z_offset() << endmsg;
   buildOneEndcap(lLog, aLcdd, aSensDet, envelopePositiveVol, aXmlElement, 1);
-  lLog << MSG::INFO << "Placing dector on the negative side: (cm) " << -dim.z_offset() << endmsg;
+  lLog << MSG::DEBUG << "Placing dector on the negative side: (cm) " << -dim.z_offset() << endmsg;
   buildOneEndcap(lLog, aLcdd, aSensDet, envelopeNegativeVol, aXmlElement, -1);
 
   // Place the envelope

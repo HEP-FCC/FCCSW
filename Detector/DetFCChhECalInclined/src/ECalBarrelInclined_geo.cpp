@@ -153,7 +153,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   double layerHeight = planeLength / numLayers;
   double layerOffset = -planeLength / 2. + layerHeight / 2.;
   if (passiveInner.isSensitive()) {
-    lLog << MSG::INFO << "Passive inner volume set as sensitive" << endmsg;
+    lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
     DD4hep::Geometry::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight / 2.);
     DD4hep::Geometry::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
                                                   aLcdd.material(passiveInnerMaterial));
@@ -167,7 +167,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     }
   }
   if (passiveOuter.isSensitive()) {
-    lLog << MSG::INFO << "Passive outer volume set as sensitive" << endmsg;
+    lLog << MSG::DEBUG << "Passive outer volume set as sensitive" << endmsg;
     DD4hep::Geometry::Box layerPassiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), layerHeight / 2.);
     DD4hep::Geometry::Volume layerPassiveOuterVol(passiveOuterMaterial, layerPassiveOuterShape,
                                                   aLcdd.material(passiveOuterMaterial));
@@ -181,7 +181,7 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     }
   }
   if (passiveGlue.isSensitive()) {
-    lLog << MSG::INFO << "Passive glue volume set as sensitive" << endmsg;
+    lLog << MSG::DEBUG << "Passive glue volume set as sensitive" << endmsg;
     DD4hep::Geometry::Box layerPassiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), layerHeight / 2.);
     DD4hep::Geometry::Volume layerPassiveGlueVol(passiveGlueMaterial, layerPassiveGlueShape,
                                                  aLcdd.material(passiveGlueMaterial));
