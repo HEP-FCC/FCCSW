@@ -144,11 +144,11 @@ void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geom
           passiveGlueVol, DD4hep::Geometry::Position(0, 0, -passiveInnerThickness / 2. - passiveGlueThickness / 4.));
       DD4hep::Geometry::PlacedVolume passiveGluePhysVolAbove = passiveVol.placeVolume(
           passiveGlueVol, DD4hep::Geometry::Position(0, 0, passiveInnerThickness / 2. + passiveGlueThickness / 4.));
-      passiveInnerPhysVol.addPhysVolID("subtype", 2);
+      passiveInnerPhysVol.addPhysVolID("subtype", 0);
       passiveOuterPhysVolBelow.addPhysVolID("subtype", 1);
-      passiveOuterPhysVolAbove.addPhysVolID("subtype", 3);
-      passiveGluePhysVolBelow.addPhysVolID("subtype", 4);
-      passiveGluePhysVolAbove.addPhysVolID("subtype", 5);
+      passiveOuterPhysVolAbove.addPhysVolID("subtype", 2);
+      passiveGluePhysVolBelow.addPhysVolID("subtype", 3);
+      passiveGluePhysVolAbove.addPhysVolID("subtype", 4);
     }
     DD4hep::Geometry::PlacedVolume passivePhysVol =
         aEnvelope.placeVolume(passiveVol, DD4hep::Geometry::Position(0, 0, zOffset));
