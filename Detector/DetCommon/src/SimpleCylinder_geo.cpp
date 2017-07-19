@@ -6,20 +6,26 @@ namespace det {
   @author Clement Helsens
 **/
 static DD4hep::Geometry::Ref_t
-createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector) {
+createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector sensDet) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
   DD4hep::Geometry::DetElement cylinderDet(name, x_det.id());
-
+  
   DD4hep::Geometry::Volume experimentalHall = lcdd.pickMotherVolume(cylinderDet);
-
+  
   xml_comp_t cylinderDim(x_det.child(_U(dimensions)));
 
   DD4hep::Geometry::Tube cylinder(
-      cylinderDim.rmin(), cylinderDim.rmax(), cylinderDim.dz(), cylinderDim.phi0(), cylinderDim.deltaphi());
-
+				  cylinderDim.rmin(), cylinderDim.rmax(), cylinderDim.dz(), cylinderDim.phi0(), cylinderDim.deltaphi());
+  
   DD4hep::Geometry::Volume cylinderVol(
-      x_det.nameStr() + "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()));
+				       x_det.nameStr() + "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()));
+  
+  if (x_det.isSensitive()) {
+    DD4hep::XML::Dimension sdType(x_det.child(_U(sensitive)));
+    cylinderVol.setSensitiveDetector(sensDet);
+    sensDet.setType(sdType.typeStr());  
+  }
 
   DD4hep::Geometry::PlacedVolume cylinderPhys;
 
@@ -31,7 +37,7 @@ createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Se
   } else
     cylinderPhys = experimentalHall.placeVolume(cylinderVol);
 
-  cylinderPhys.addPhysVolID("system", x_det.id()).addPhysVolID("side", 0);
+  cylinderPhys.addPhysVolID("system", x_det.id());
 
   cylinderDet.setPlacement(cylinderPhys);
 
