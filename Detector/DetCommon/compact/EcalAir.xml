@@ -27,11 +27,11 @@
     <!-- Extended barrels (ECAL + HCAL) -->
     <detector name="ECalEnvelopeExtBarPos" type="SimpleCylinder"  vis="ECalEnvelopeEndcapVis">
         <comment>Envelope for ECal positive end-cap</comment>
-        <dimensions rmin="ExtBarCal_rmin1+EcalSpacer" rmax="ExtBarCal_rmax1" dz="ExtBarCal_dz" phi0="0" deltaphi="360*deg" z_offset="ExtBarCal_zOffset" material="Air"/>
+        <dimensions rmin="ExtBarCal_rmin1+EcalSpacer" rmax="ExtBarCal_rmax" dz="ExtBarCal_dz" phi0="0" deltaphi="360*deg" z_offset="ExtBarCal_zOffset" material="Air"/>
     </detector>
     <detector name="ECalEnvelopeExtBarNeg" type="SimpleCylinder"  vis="ECalEnvelopeExtBarVis">
         <comment>Envelope for ECal positive end-cap</comment>
-        <dimensions rmin="ExtBarCal_rmin1+EcalSpacer" rmax="ExtBarCal_rmax1" dz="ExtBarCal_dz" phi0="0" deltaphi="360*deg" z_offset="-ExtBarCal_zOffset" material="Air"/>
+        <dimensions rmin="ExtBarCal_rmin1+EcalSpacer" rmax="ExtBarCal_rmax" dz="ExtBarCal_dz" phi0="0" deltaphi="360*deg" z_offset="-ExtBarCal_zOffset" material="Air"/>
     </detector>
     <!-- Forward detectors (ECAL + HCAL) -->
     <detector name="ECalEnvelopeFwdPos" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
