@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="pre-calo-boundary"
+        title="pre-calo-boundary"
+        author="A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>
+    </comment>
+  </info>
+
+  <define>
+    <constant name="EndcapCryoThicknessFront" value="5*cm"/>
+    <constant name="EndcapBathThicknessFront" value="9*cm"/>
+    <constant name="BarrelAirThicknessFront" value="3*cm"/>
+    <constant name="BarrelCryoThicknessFront" value="5*cm"/>
+    <constant name="BarrelBathThicknessFront" value="9*cm"/>
+    <constant name="EndcapZBack" value="615*cm"/>
+    <constant name="BarrelAirThicknessBack" value="3*cm"/>
+    <constant name="BarrelCryoThicknessBack" value="5*cm"/>
+    <constant name="BarrelBathThicknessBack" value="9*cm"/>
+  </define>
+  <detectors>
+    <detector name="BoundaryPreECalCryo" type="SubtractedCylinder">
+      <dimensions rmin1="0" rmin2="0"
+                  rmax1="BarECal_rmin+0.001*mm" rmax2="BarECal_rmin"
+                  z1="ExtBarCal_zOffset - ExtBarCal_dz + 0.001*mm"
+                  z2="ExtBarCal_zOffset - ExtBarCal_dz"
+                  z_offset="0"
+                  material="Air"
+                  phi0="0"
+                  deltaphi="360*deg"/>
+    </detector>
+    <detector name="BoundaryPreECalDetector" type="SubtractedCylinder">
+      <dimensions rmin1="0" rmin2="0"
+                  rmax1="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+0.001*mm"
+                  rmax2="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront"
+                  z1="ExtBarCal_zOffset - ExtBarCal_dz+EndcapCryoThicknessFront+EndcapBathThicknessFront + 0.001*mm"
+                  z2="ExtBarCal_zOffset - ExtBarCal_dz+EndcapCryoThicknessFront+EndcapBathThicknessFront"
+                  z_offset="0"
+                  material="Air"
+                  phi0="0"
+                  deltaphi="360*deg"/>
+    </detector>
+    <detector name="BoundaryFirstLayerECalDetector" type="SubtractedCylinder">
+      <dimensions rmin1="0" rmin2="0"
+                  rmax1="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+2.125*cm+0.001*mm"
+                  rmax2="BarECal_rmin+BarrelAirThicknessFront+BarrelCryoThicknessFront+BarrelBathThicknessFront+2.125*cm"
+                  z1="ExtBarCal_zOffset - ExtBarCal_dz+EndcapCryoThicknessFront+EndcapBathThicknessFront + 0.001*mm"
+                  z2="ExtBarCal_zOffset - ExtBarCal_dz+EndcapCryoThicknessFront+EndcapBathThicknessFront"
+                  z_offset="0"
+                  material="Air"
+                  phi0="0"
+                  deltaphi="360*deg"/>
+    </detector>
+    <detector name="BoundaryPostECalDetector" type="SubtractedCylinder">
+      <dimensions rmin1="0" rmin2="0"
+                  rmax1="BarECal_rmax-BarrelAirThicknessBack-BarrelCryoThicknessBack-BarrelBathThicknessBack+0.001*mm"
+                  rmax2="BarECal_rmax-BarrelAirThicknessBack-BarrelCryoThicknessBack-BarrelBathThicknessBack"
+                  z1="EndcapZBack+0.001*mm"
+                  z2="EndcapZBack"
+                  z_offset="0"
+                  material="Air"
+                  phi0="0"
+                  deltaphi="360*deg"/>
+    </detector>
+    <!-- cuurently only for barrel -->
+    <detector name="BoundaryPreHCalDetector" type="SubtractedCylinder">
+      <dimensions rmin1="0" rmin2="0"
+                  rmax1="BarHCal_rmin+0.001*mm"
+                  rmax2="BarHCal_rmin"
+                  z1="BarHCal_dz+0.001*mm"
+                  z2="BarHCal_dz"
+                  z_offset="0"
+                  material="Air"
+                  phi0="0"
+                  deltaphi="360*deg"/>
+    </detector>
+  </detectors>
+
+</lccdd>

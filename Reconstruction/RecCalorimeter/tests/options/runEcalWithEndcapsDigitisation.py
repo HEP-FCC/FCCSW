@@ -4,7 +4,8 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                           'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml'],
+                                           'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
+                                           'file:Detector/DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml' ],
                     OutputLevel = INFO)
 
 from Configurables import SimG4Svc
@@ -14,29 +15,44 @@ from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGenerat
 saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsEta"])
 saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
 saveecaltool.caloHits.Path = "ECalHits"
+savecalendcaptool = SimG4SaveCalHits("saveCalEndcapHits", readoutNames = ["EMECPhiEta"])
+savecalendcaptool.positionedCaloHits.Path = "positionedCalEndcapHits"
+savecalendcaptool.caloHits.Path = "CalEndcapHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                                       particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = -1.5, etaMax = 1.5)
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs= ["SimG4SaveCalHits/saveECalHits"],
+                    outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveCalEndcapHits"],
                     eventProvider = pgun)
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateInLayersTool
-calibcells = CalibrateInLayersTool("Calibrate",
+calibcellsBarrel = CalibrateInLayersTool("CalibrateBarrel",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
                                    samplingFraction = [0.168] * 4 + [0.176] * 18 + [0.184] * 18 + [0.191] * 18 + [0.198] * 18 + [0.204] * 18 + [0.210] * 18 + [0.215] * 18,
                                    readoutName = "ECalHitsEta",
                                    layerFieldName = "layer")
+calibcellsEndcap = CalibrateInLayersTool("CalibrateEndcap",
+                                         # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
+                                    samplingFraction = [0.15] * 118,
+                                    readoutName = "EMECPhiEta",
+                                    layerFieldName = "layer")
 
 from Configurables import CreateCaloCells
-createcells = CreateCaloCells("CreateCaloCells",
-                              doCellCalibration=True,
-                              calibTool=calibcells,
-                              addCellNoise=False, filterCellNoise=False,
-                              OutputLevel=DEBUG)
-createcells.hits.Path="ECalHits"
-createcells.cells.Path="caloCells"
+createcellsBarrel = CreateCaloCells("CreateCaloCellsBarrel",
+                                    doCellCalibration=True,
+                                    calibTool=calibcellsBarrel,
+                                    addCellNoise=False, filterCellNoise=False,
+                                    OutputLevel=DEBUG)
+createcellsBarrel.hits.Path="ECalHits"
+createcellsBarrel.cells.Path="ECalCells"
+createcellsEndcap = CreateCaloCells("CreateCaloCellsEndcap",
+                                    doCellCalibration=True,
+                                    calibTool=calibcellsEndcap,
+                                    addCellNoise=False, filterCellNoise=False,
+                                    OutputLevel=DEBUG)
+createcellsEndcap.hits.Path="CalEndcapHits"
+createcellsEndcap.cells.Path="CalEndcapCells"
 
 out = PodioOutput("out", filename="output_ecalInclinedDigi_test.root",
                    OutputLevel=DEBUG)
@@ -48,12 +64,14 @@ chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
-createcells.AuditExecute = True
+createcellsBarrel.AuditExecute = True
+createcellsEndcap.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [geantsim,
-              createcells,
+              createcellsBarrel,
+              createcellsEndcap,
               out
               ],
     EvtSel = 'NONE',

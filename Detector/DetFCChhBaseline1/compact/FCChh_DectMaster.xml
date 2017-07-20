@@ -32,12 +32,12 @@
   <include ref="./FCChh_Solenoids.xml" />
   <include ref="./FCChh_Shielding.xml" />
 
-
   <include ref="../../DetFCChhTrackerTkLayout/compact/Tracker.xml" />
   <include ref="../../DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml" />
   <include ref="../../DetFCChhMuonSimple/compact/FCChh_MuonSystemSimple.xml" />
+  <!-- To uncomment once issue #227 is solved: <include ref="../../DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml" /> -->
 
   <!--
      These can be used as replacement if you want to use only a sub-set of detectors:
