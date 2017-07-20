@@ -13,7 +13,7 @@
         Dimensions for FCChhBaseline1: Design with Twin Solenoid, 6 T, 12 m bore, 10 Tm dipole
         Sources: FCC hadron detector meeting 31 Aug 2016 (excel table): https://indico.cern.ch/event/557687/
                  FCC hadron detector meeting 28 Sep 2016 (slides): https://indico.cern.ch/event/557688/
-                 Reference Geometry v7 (privately exchanged)
+                 Reference Geometry v7, can be found: /eos/experiment/fcc/hh/simulation/reference_geometry_5m_4T_v7.pdf
     </comment>
   </info>
 
@@ -98,14 +98,12 @@
     <!-- Extended barrel (EM EB + HEC)-->
     <constant name="ExtBarECal_id" value="6"/>
     <constant name="HadronicEndCap_id" value="7"/>
-    <!--constant name="ExtBarCal_rmin1" value="776*mm"/>
+    <constant name="ExtBarCal_rmin1" value="776*mm"/>
+    <constant name="ExtBarCal_rmax1" value="2700*mm"/>
     <constant name="ExtBarCal_rmin2" value="1272*mm"/>
-    <constant name="ExtBarCal_rmax" value="2700*mm"/-->
+    <constant name="ExtBarCal_rmax2" value="2700*mm"/>
     <constant name="ExtBarCal_dz" value="1500*mm"/>
     <constant name="ExtBarCal_zOffset" value="5300*mm + ExtBarCal_dz"/>
-    <constant name="ExtBarCal_rmin1" value="(ExtBarCal_zOffset - ExtBarCal_dz)* tan (2*atan(exp(-2.5))) - 0.1*m"/>
-    <constant name="ExtBarCal_rmin2" value="(ExtBarCal_zOffset + ExtBarCal_dz)* tan (2*atan(exp(-2.5))) - 0.1*m"/>
-    <constant name="ExtBarCal_rmax" value="2700*mm"/>
     <!-- HCal extended barrel (HCAL EB) -->
     <constant name="ExtBarHCal_id" value="9"/>
     <constant name="ExtBarHCal1_rmin" value="3500*mm"/>
@@ -114,7 +112,7 @@
     <constant name="ExtBarHCal2_rmax" value="4590*mm"/>
     <constant name="ExtBarHCal1_dz" value="150*mm"/>
     <constant name="ExtBarHCal1_zOffset" value="5000*mm + ExtBarHCal1_dz"/>
-    <constant name="ExtBarHCal2_dz" value="1600*mm"/> <!-- changed to increase HCAL EB by 50cm from 1350 to 1600 -->
+    <constant name="ExtBarHCal2_dz" value="1600*mm"/>
     <constant name="ExtBarHCal2_zOffset" value="ExtBarHCal1_zOffset + ExtBarHCal1_dz + ExtBarHCal2_dz"/>
     <!-- Forward calorimeters (EFCAL + HFCAL) -->
     <constant name="FwdECal_id" value="10"/>
@@ -140,8 +138,8 @@
     <constant name="EndCapMuon_rmax1" value="4750*mm"/>
     <constant name="EndCapMuon_rmin2" value="2724.47*mm"/>
     <constant name="EndCapMuon_rmax2" value="4750*mm"/>
-    <constant name="EndCapMuon_dz" value="500*mm"/> 
-    <constant name="EndCapMuon_zOffset" value="9500*mm"/> <!-- changed from 9750 to value in reference_geometry_5m_4T_v7.pdf -->
+    <constant name="EndCapMuon_dz" value="500*mm"/>
+    <constant name="EndCapMuon_zOffset" value="9500*mm"/>
 
     <!-- Muon system forward -->
     <constant name="FwdBarMuon_id" value="14"/>
@@ -154,8 +152,8 @@
     <constant name="FwdMuon_rmin" value="30*mm"/>
     <constant name="FwdMuon_rmax" value="7000*mm"/>
     <constant name="FwdMuon_dz" value="1500*mm"/>
-    <constant name="FwdMuon_zOffset" value="19700*mm + FwdMuon_dz"/> <!-- changed from 20500 to value in reference_geometry_5m_4T_v7.pdf -->
+    <constant name="FwdMuon_zOffset" value="19700*mm + FwdMuon_dz"/> 
 
- </define>
+  </define>
 
 </lccdd>
