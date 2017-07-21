@@ -54,11 +54,11 @@
     <readout name="ExtBarHCal_Readout">
       <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
      <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256" offset_phi="-pi+pi/256."/>
-     <id>system:4,module1_:8,module2_:8,row:9,layer:5,tile:2,eta:1,phi:10</id>
+     <id>system:4,subsystem:2,module1_:8,module2_:8,row:10,layer:5,tile:2,eta:1,phi:10</id>
     </readout>
     <readout name="ExtBarHCal_Readout_phieta">
      <segmentation type="GridPhiEta" grid_size_eta="0.01" offset_eta="-1.813" phi_bins="256" offset_phi="-pi+pi/256."/>
-     <id>system:4,module1_:8,module2_:8,row:9,layer:5,tile:2,eta:10,phi:10</id>
+     <id>system:4,subsystem:2,module1_:8,module2_:8,row:10,layer:5,tile:2,eta:10,phi:10</id>
     </readout>
   </readouts>
 
