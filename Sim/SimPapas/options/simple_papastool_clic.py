@@ -22,11 +22,18 @@ from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
 
-from Configurables import ClicFieldSvc
-fieldsvc = ClicFieldSvc("ClicFieldSvc", field = 2); #todo add in remaining parameters
+from Configurables import ClicFieldSvc, ClicTrackerSvc, ClicEcalSvc, ClicHcalSvc
+fieldsvc = ClicFieldSvc("ClicFieldSvc"); #todo add in remaining parameters
+ecalsvc = ClicEcalSvc("ClicEcalSvc", emin = [.5, .5]);
+hcalsvc = ClicHcalSvc("ClicHcalsvc");
+trackersvc = ClicTrackerSvc("ClicTrackerSvc");
 
 from Configurables import ClicDetSvc
-detservice = ClicDetSvc("ClicDetSvc", innerEcalCylinder = 2.15, outerEcalCylinder = 2.4, fieldService = "ClicFieldSvc");
+detservice = ClicDetSvc("ClicDetSvc",
+                        ecalService = "ClicEcalSvc",
+                        hcalService = "ClicHcalSvc",
+                        trackerService = "ClicTrackerSvc",
+                        fieldService = "ClicFieldSvc");
 
 #Notes:
 #

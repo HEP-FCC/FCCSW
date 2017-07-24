@@ -1,6 +1,10 @@
 #include "ClicDetectorSvc.h"
 #include "ClicFieldSvc.h"
-#include "Clic.h"
+#include "ClicEcalSvc.h"
+#include "ClicHcalSvc.h"
+#include "ClicTrackerSvc.h"
+
+#include "papas/detectors/clic/Clic.h"
 
 DECLARE_SERVICE_FACTORY(ClicDetSvc)
 
@@ -15,8 +19,14 @@ StatusCode ClicDetSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
+  m_papasEcalSvc = service(m_ecalServiceName);
+  m_papasHcalSvc = service(m_hcalServiceName);
+  m_papasTrackerSvc = service(m_trackerServiceName);
   m_papasFieldSvc = service(m_fieldServiceName);
-  m_detector = std::make_shared<papas::Clic>(m_cyl1, m_cyl2, 2.4, 5.3, m_papasFieldSvc->field());
+  m_detector = std::make_shared<papas::Clic>(m_papasEcalSvc->calorimeter(),
+                                             m_papasHcalSvc->calorimeter(),
+                                             m_papasTrackerSvc->tracker(),
+                                             m_papasFieldSvc->field());
   return StatusCode::SUCCESS;
 }
 
