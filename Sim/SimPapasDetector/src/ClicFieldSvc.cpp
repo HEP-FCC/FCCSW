@@ -1,5 +1,5 @@
 #include "ClicFieldSvc.h"
-#include "ClicField.h"
+#include "papas/detectors/clic/ClicField.h"
 #include "papas/detectors/VolumeCylinder.h"
 
 DECLARE_SERVICE_FACTORY(ClicFieldSvc)
@@ -15,9 +15,12 @@ StatusCode ClicFieldSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  auto vol =papas::VolumeCylinder(papas::Layer::kField, 2.4, 5.3); //to pass these pars also
-  m_field = std::make_shared<papas::ClicField>(std::move(vol), m_fieldMagnitude);
-  
+  //auto vol =papas::VolumeCylinder(papas::Layer::kField, 2.4, 5.3); //to pass these pars also
+  m_field = std::make_shared<papas::ClicField>(m_fieldMagnitude,
+                                               m_fieldRadius,
+                                               m_fieldZ,
+                                               m_fieldX0,
+    m_fieldLambdaI);
   return StatusCode::SUCCESS;
 }
 
