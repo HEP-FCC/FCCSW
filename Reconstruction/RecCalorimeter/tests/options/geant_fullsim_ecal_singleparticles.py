@@ -1,7 +1,7 @@
 # variables energy (energy in MeV!!!!), magnetic_field (0,1), num_events (number of events) to be defined before running
 energy = 50000
 magnetic_field = 0
-num_events = 1
+num_events = 10
 
 from Gaudi.Configuration import *
 

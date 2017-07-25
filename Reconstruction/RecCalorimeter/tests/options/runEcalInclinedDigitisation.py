@@ -57,7 +57,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 1,
+    EvtMax   = 5,
     ExtSvc = [podioevent, geoservice],
  )
 
