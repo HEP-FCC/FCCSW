@@ -6,9 +6,9 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
 
-/** @class DetetctorSvc DetetctorSvc.h DetetctorSvc/DetetctorSvc.h
+/** @class ClicFieldSvc ClicFieldSvc.h
  *
- *  This service provides the Papas Detector
+ *  This service provides the Papas Clic Field
  *  @author alice.robson@cern.ch
  */
 
@@ -19,7 +19,7 @@ class Field;
 class ClicFieldSvc : public extends1<Service, IPapasFieldSvc> {
 
 public:
-  /// Dfault constructor
+  /// Default constructor
   ClicFieldSvc(const std::string& name, ISvcLocator* svc);
   /// Default destructor
   virtual ~ClicFieldSvc() = default;
@@ -27,11 +27,11 @@ public:
   virtual StatusCode initialize() override final;
   /// Finalize function
   virtual StatusCode finalize() override final;
-  /// pointer to detector
+  /// pointer to field
   virtual std::shared_ptr<papas::Field> field() const;
 
 private:
-  // Detector
+  // Field
   std::shared_ptr<papas::Field> m_field;
   Gaudi::Property<double> m_fieldMagnitude{this, "magnitude", 2, "Field magnitude"};
   Gaudi::Property<double> m_fieldRadius{this, "radius", 3.5, "Field  radius"};

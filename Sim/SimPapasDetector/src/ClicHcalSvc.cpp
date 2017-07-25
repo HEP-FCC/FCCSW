@@ -15,9 +15,16 @@ StatusCode ClicHcalSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  //auto vol =papas::VolumeCylinder(papas::Layer::kHcal, 2.4, 5.3); //to pass these pars also
-  m_hcal = std::make_shared<papas::ClicHCAL>();
-  
+  m_hcal = std::make_shared<papas::ClicHCAL>(m_innerRadius,
+                                             m_innerZ,
+                                             m_outerRadius,
+                                             m_outerZ,
+                                             m_clusterSize,
+                                             m_eresBarrel,
+                                             m_X0,
+                                             m_lambdaI,
+                                             m_eResponse,
+                                             m_etaAcceptance);
   return StatusCode::SUCCESS;
 }
 
