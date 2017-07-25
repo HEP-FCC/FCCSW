@@ -15,10 +15,24 @@ StatusCode ClicTrackerSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  //auto vol =papas::VolumeCylinder(papas::Layer::kTracker, 2.4, 5.3); //to pass these pars also
-  m_tracker = std::make_shared<papas::ClicTracker>();
-  
+  std::map<int, std::pair<double, double>> resMap{{90, {8.2e-2, 9.1e-2}},
+    {80, {8.2e-4, 9.1e-3}},
+    {30, {9.9e-5, 3.8e-3}},
+    {20, {3.9e-5, 1.6e-3}},
+    {10, {2e-5, 7.2e-4}}};
+
+  m_tracker = std::make_shared<papas::ClicTracker>(m_radius,
+                                                   m_z,
+                                                   m_x0,
+                                                   m_lambdaI,
+                                                   m_thetaParam,
+                                                   resMap,
+                                                   m_ptThresholdLow,
+                                                   m_ptProbabilityLow,
+                                                   m_ptThresholdHigh,
+                                                   m_ptProbabilityHigh);
   return StatusCode::SUCCESS;
 }
 
 StatusCode ClicTrackerSvc::finalize() { return StatusCode::SUCCESS; }
+

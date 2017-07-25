@@ -6,7 +6,7 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
 
-/** @class DetetctorSvc DetetctorSvc.h DetetctorSvc/DetetctorSvc.h
+/** @class CliceEcalSvc
  *
  *  This service provides the Papas Detector
  *  @author alice.robson@cern.ch
@@ -19,7 +19,7 @@ class Calorimeter;
 class ClicEcalSvc : public extends1<Service, IPapasCalorimeterSvc> {
 
 public:
-  /// Dfault constructor
+  /// Default constructor
   ClicEcalSvc(const std::string& name, ISvcLocator* svc);
   /// Default destructor
   virtual ~ClicEcalSvc() = default;
@@ -27,11 +27,11 @@ public:
   virtual StatusCode initialize() override final;
   /// Finalize function
   virtual StatusCode finalize() override final;
-  /// pointer to detector
+  /// pointer to Ecal
   virtual std::shared_ptr<papas::Calorimeter> calorimeter() const;
 
 private:
-  // Detector
+  // ECAL
   std::shared_ptr<papas::Calorimeter> m_ecal;
   Gaudi::Property<double> m_innerRadius{this, "innerRadius", 2.15, "Ecal inner radius"};
   Gaudi::Property<double> m_innerZ{this, "innerZ", 2.6, "Ecal inner z"};
@@ -42,7 +42,7 @@ private:
   Gaudi::Property<std::vector<double>> m_emin {this, "emin",{0.5, 0.5}, "Ecal barrel and endcap emin"};
   Gaudi::Property<std::vector<double>> m_eresBarrel {this, "eresBarrel", {0.165, 0.010, 0.015}, "Ecal energy response parameters barrel"};
   Gaudi::Property<int> m_nX0{this, "x0", 23, "Ecal material number x0"};
-  Gaudi::Property<int> m_nLambdaI{this, "nLambdaI", 1, "Ecal material number LambdsI"};
+  Gaudi::Property<int> m_nLambdaI{this, "nLambdaI", 1, "Ecal material number LambdaI"};
   Gaudi::Property<double> m_eResponse{this, "eresponse", 1., "Ecal eresponse"};
 };
 
