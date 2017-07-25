@@ -1,4 +1,5 @@
 <detector id="ExtBarHCal_id" name="HCalExtBarrel" type="CaloExtBarrel" readout="ExtBarHCal_Readout" vis="extHcal_envelope">
+  <sensitive type="BirksLawCalorimeterSD"/>
   <dimensions rmin1="ExtBarHCal1_rmin" rmin2="ExtBarHCal2_rmin" rmax1="ExtBarHCal1_rmax" rmax2="ExtBarHCal2_rmax" width="ExtBarHCal1_dz" dz="ExtBarHCal2_dz" offset="ExtBarHCal1_zOffset" z_offset="ExtBarHCal2_zOffset"/>
   <layer_1 id="0" name="type_1" material="Air" vis="hcal_barrel_layer_vis">
     <dimensions
