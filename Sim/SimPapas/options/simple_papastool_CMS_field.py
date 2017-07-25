@@ -23,15 +23,18 @@ from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
 
-from Configurables import CMSFieldSvc
-fieldsvc = CMSFieldSvc("CMSFieldSvc", field = 3.8); #todo add in remaining parameters
+from Configurables import CMSFieldSvc, CMSTrackerSvc, CMSEcalSvc, CMSHcalSvc
+fieldsvc = CMSFieldSvc("CMSFieldSvc"); #todo add in remaining parameters
+ecalsvc = CMSEcalSvc("CMSEcalSvc");
+hcalsvc = CMSHcalSvc("CMSHcalsvc");
+trackersvc = CMSTrackerSvc("CMSTrackerSvc");
 
-#choose papas detector (here CMS)
 from Configurables import CMSDetSvc
-detservice = CMSDetSvc("CMSDetSvc", innerEcalCylinder = 1.3, outerEcalCylinder = 1.55, fieldService="CMSFieldSvc");
-#to come soon
-#detservice = CMSDetSvc("CMSDetSvc", ecalService = "CMSEcalSvc", hcalService = "CMSHcalSvc",
-#  trackerService = "CMSTrackerSvc", fieldService="CMSFieldSvc");
+detservice = CMSDetSvc("CMSDetSvc",
+                        ecalService = "CMSEcalSvc",
+                        hcalService = "CMSHcalSvc",
+                        trackerService = "CMSTrackerSvc",
+                        fieldService = "CMSFieldSvc");
 
 #Notes:
 #
@@ -52,7 +55,7 @@ papasalg = PapasAlg("papasalg",
                            "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
                     exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
-                            physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                            physicsDebugFile = 'papasPhysics2.out', #write out papas physics to file
                             detService = "CMSDetSvc") #name of detector service
 
 #Papas importer
