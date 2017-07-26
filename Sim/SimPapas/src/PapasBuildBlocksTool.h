@@ -28,8 +28,6 @@ public:
   /// Constructor.
   PapasBuildBlocksTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// Execute papas tool
   virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> det) final;
   /// Empty the class structures.

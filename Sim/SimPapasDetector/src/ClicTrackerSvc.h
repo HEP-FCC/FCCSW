@@ -7,7 +7,14 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
 
-//#include <map>
+
+#include "GaudiKernel/ParsersFactory.h"
+#include "GaudiKernel/StdArrayAsProperty.h"
+#include "GaudiKernel/Map.h"
+
+#include <map>
+#include <vector>
+#include <tuple>
 
 /** @class ClicTrackerrSvc
  *
@@ -42,13 +49,16 @@ private:
   Gaudi::Property<double> m_x0{this, "x0", 0.0, "tracker material x0"};
   Gaudi::Property<double> m_lambdaI{this, "lambdaI", 0.0, "Tracker material lambdaI"};
   Gaudi::Property<double> m_thetaParam{this, "thetapar", 0.8, "Tracker theta parameter"};
-  //Can't seem to pass this to a property
-  /*Gaudi::Property<std::map<int, std::pair<double, double>>> m_resMap{this, "resMap", {{90, {8.2e-2, 9.1e-2}},
-    {80, {8.2e-4, 9.1e-3}},
-    {30, {9.9e-5, 3.8e-3}},
-    {20, {3.9e-5, 1.6e-3}},
-    {10, {2e-5, 7.2e-4}}}, "Tracker res map"};*/
-    Gaudi::Property<double> m_ptThresholdLow{this, "ptThresholdLow", 0.4, "Tracker lower pt threshold"};
+  
+  //Really we want a map with int as an index but Gaudi does not appear to support this in combination
+  //with a pair, however it supports a map indexed by a string
+  //we will convert the string to an integer when we use it.
+  Gaudi::Property<std::map<std::string, std::pair<double, double>>> m_resMap{this, "resMap", {{"90", {8.2e-2, 9.1e-2}},
+    {"80", {8.2e-4, 9.1e-3}},
+    {"30", {9.9e-5, 3.8e-3}},
+    {"20", {3.9e-5, 1.6e-3}},
+    {"10", {2e-5, 7.2e-4}}}, "Tracker res map"};
+  Gaudi::Property<double> m_ptThresholdLow{this, "ptThresholdLow", 0.4, "Tracker lower pt threshold"};
   Gaudi::Property<double> m_ptProbabilityLow{this, "ptProbablityLow", 0.95, "Tracker lower pt probablility"};
   Gaudi::Property<double> m_ptThresholdHigh{this, "ptThresholdHigh", 2., "Tracker upper pt threshold"};
   Gaudi::Property<double> m_ptProbabilityHigh{this, "ptProbablityHigh", 0.99, "Tracker upper pt probablility"};

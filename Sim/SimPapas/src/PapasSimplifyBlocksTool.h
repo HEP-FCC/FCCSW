@@ -22,8 +22,6 @@ public:
   PapasSimplifyBlocksTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// Execute papas tool.
   virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) final;
   /// empty class structures

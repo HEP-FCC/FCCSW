@@ -35,6 +35,7 @@ detservice = ClicDetSvc("ClicDetSvc",
                         trackerService = "ClicTrackerSvc",
                         fieldService = "ClicFieldSvc");
 
+
 #Notes:
 #
 # The PapasAlg allows a configurable set of tools to be run (see below).

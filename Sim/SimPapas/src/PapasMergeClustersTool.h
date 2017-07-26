@@ -21,8 +21,6 @@ public:
   PapasMergeClustersTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// create any output structures needed
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// Empty the class structures.
   virtual StatusCode clear();
   /// Execute papas tool
