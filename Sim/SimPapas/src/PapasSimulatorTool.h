@@ -29,8 +29,6 @@ public:
   virtual ~PapasSimulatorTool();
   /// Initialize.
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// empty class structures
   virtual StatusCode clear();
   /// Execute the papas tool.

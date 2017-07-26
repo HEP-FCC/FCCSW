@@ -25,8 +25,6 @@ public:
   PapasPFReconstructorTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// empty class structures
   virtual StatusCode clear();
   /// Execute papas tool.

@@ -24,9 +24,7 @@ public:
   /// Constructor.
   PapasImportParticlesTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~PapasImportParticlesTool();
-  /// Structures
-  StatusCode createOutputStructures() { return SUCCESS; };
-  /// Create any output structures needed.
+  /// Initialise
   virtual StatusCode initialize();
   /// empty class structures.
   virtual StatusCode clear();

@@ -15,12 +15,14 @@ StatusCode ClicTrackerSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  std::map<int, std::pair<double, double>> resMap{{90, {8.2e-2, 9.1e-2}},
-    {80, {8.2e-4, 9.1e-3}},
-    {30, {9.9e-5, 3.8e-3}},
-    {20, {3.9e-5, 1.6e-3}},
-    {10, {2e-5, 7.2e-4}}};
-
+  //convert the gaudi property to what we actually require
+  std::map<int, std::pair<double, double>> resMap;
+  for (const auto v : m_resMap) {
+    resMap[std::stoi(v.first)] = v.second;
+  }
+  for (const auto v : resMap) {
+     debug() << v.first << v.second.first << v.second.second << std::endl;
+  }
   m_tracker = std::make_shared<papas::ClicTracker>(m_radius,
                                                    m_z,
                                                    m_x0,
