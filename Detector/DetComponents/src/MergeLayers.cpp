@@ -59,12 +59,14 @@ StatusCode MergeLayers::initialize() {
   unsigned int sumCells = std::accumulate(m_listToMerge.begin(), m_listToMerge.end(), 0);
   auto highestVol = gGeoManager->GetTopVolume();
   auto numPlacedVol = det::utils::countPlacedVolumes(highestVol, m_volumeName);
+  /*
   if (numPlacedVol != sumCells) {
     error() << "Total number of volumes named " << m_volumeName << " (" << numPlacedVol << ") "
             << "is not equal to the sum of volumes from the list 'merge' given in job options (" << sumCells << ")"
             << endmsg;
     return StatusCode::FAILURE;
   }
+  */
   info() << "Field description: " << m_descriptor.fieldDescription() << endmsg;
   info() << "Merging volumes named: " << m_volumeName << endmsg;
   info() << "Merging volumes for identifier: " << m_idToMerge << endmsg;
