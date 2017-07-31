@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_10events.root")
+podioevent = FCCDataSvc("EventDataSvc", input="output_ecalSim_e50GeV_1events.root")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
@@ -111,6 +111,6 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax = 10,
+    EvtMax = 1,
     ExtSvc = [podioevent, geoservice],
  )

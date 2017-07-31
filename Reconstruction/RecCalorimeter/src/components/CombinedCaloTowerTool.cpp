@@ -62,9 +62,6 @@ StatusCode CombinedCaloTowerTool::initialize() {
     error() << "There is no phi-eta segmentation in the hadronic calorimeter." << endmsg;
     return StatusCode::FAILURE;
   }
-  if( ! m_etaMax) {
-    warning() << "Undefined detector size in eta. In each event the cell collection will be searched for maximum eta." << endmsg;
-  }
   return StatusCode::SUCCESS;
 }
 
@@ -72,13 +69,24 @@ StatusCode CombinedCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
 tower CombinedCaloTowerTool::towersNumber() {
   // number of phi bins
-  m_nPhiTower = idPhi(2 * M_PI);
+  //m_nPhiTower = idPhi(2 * M_PI);
+
+  double m_phiMax = std::max(fabs(m_ecalSegmentation->offsetPhi()) + M_PI / (double)m_ecalSegmentation->phiBins(),
+			     fabs(m_hcalSegmentation->offsetPhi()) + M_PI / (double)m_hcalSegmentation->phiBins());
   // number of eta bins (if eta maximum is defined)
-  if( m_etaMax) {
-    m_nEtaTower = 2 * idEta(m_etaMax - m_deltaEtaTower / 2.) + 1;
-  } else {
-    m_nEtaTower = 0;
-  }
+  m_etaMax = std::max(fabs(m_ecalSegmentation->offsetEta()) + m_ecalSegmentation->gridSizeEta() * 0.5, 
+		      fabs(m_hcalSegmentation->offsetEta()) + m_hcalSegmentation->gridSizeEta() * 0.5);
+
+  // m_nEtaTower = 2 * idEta(m_etaMax - m_deltaEtaTower / 2.) + 1;
+  // number of phi bins
+  float epsilon = 0.0001;
+  m_nPhiTower = ceil(2 * (m_phiMax - epsilon) / m_deltaPhiTower);
+  // number of eta bins (if eta maximum is defined)
+  m_nEtaTower = ceil(2 * (m_etaMax - epsilon) / m_deltaEtaTower);
+
+  debug() << "etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
+  debug() << "phiMax " << M_PI << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower << endmsg;
+
   return {m_nEtaTower, m_nPhiTower};
 }
 
