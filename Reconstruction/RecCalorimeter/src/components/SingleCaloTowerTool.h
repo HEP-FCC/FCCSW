@@ -121,6 +121,10 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
+  /// Name of the fields describing the segmented volume                                                                                                                                                                           
+  Gaudi::Property<std::vector<std::string>> m_fieldNames{this, "fieldNames"};
+  /// Values of the fields describing the segmented volume                                                                                                                                                                             
+  Gaudi::Property<std::vector<int>> m_fieldValues{this, "fieldValues"};
   /// PhiEta segmentation (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
@@ -135,10 +139,13 @@ private:
   Gaudi::Property<float> m_deltaEtaTower{this, "deltaEtaTower", 0.01, "Size of the tower in eta"};
   /// Size of the tower in phi
   Gaudi::Property<float> m_deltaPhiTower{this, "deltaPhiTower", 0.01, "Size of the tower in phi"};
+  // Maximum layer (4 = first layer of 2cm length)
+  Gaudi::Property<float> m_maximumLayer{this, "maximumLayer", 4, "Maximum cell layer"};
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
   uint m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
   uint m_nPhiTower;
+
 };
 
 #endif /* RECCALORIMETER_SINGLECALOTOWERTOOL_H */

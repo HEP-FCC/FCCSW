@@ -68,6 +68,12 @@ tower SingleCaloTowerTool::towersNumber() {
 }
 
 uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
+  // Take readout bitfield decoder from GeoSvc                                                                                                                                                                       
+  auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  //if (m_fieldNames.size() != m_fieldValues.size()) {
+  //  error() << "Volume readout field descriptors (names and values) have different size." << endmsg;
+  //  return StatusCode::FAILURE;
+  //}
   // Get the input collection with cells from simulation + digitisation (after
   // calibration and with noise)
   const fcc::CaloHitCollection* cells = m_cells.get();
@@ -76,6 +82,7 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
   // borders of the cell in eta/phi
   float etaCellMin = 0, etaCellMax = 0;
   float phiCellMin = 0, phiCellMax = 0;
+  int layerCell = 0;
   // tower index of the borders of the cell
   int iPhiMin = 0, iPhiMax = 0;
   int iEtaMin = 0, iEtaMax = 0;
@@ -93,6 +100,8 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
     etaCellMax = m_segmentation->eta(cell.core().cellId) + m_segmentation->gridSizeEta() * 0.5;
     phiCellMin = m_segmentation->phi(cell.core().cellId) - M_PI / (double)m_segmentation->phiBins();
     phiCellMax = m_segmentation->phi(cell.core().cellId) + M_PI / (double)m_segmentation->phiBins();
+    decoder -> setValue(cell.core().cellId);
+    layerCell = (*decoder)["layer"].value();
     iEtaMin = idEta(etaCellMin + epsilon);
     iPhiMin = idPhi(phiCellMin + epsilon);
     iEtaMax = idEta(etaCellMax - epsilon);
@@ -143,8 +152,10 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
         } else {
           ratioPhi = fracPhiMiddle;
         }
-        aTowers[iEta][phiNeighbour(iPhi)] +=
+	if (layerCell <= m_maximumLayer){
+	  aTowers[iEta][phiNeighbour(iPhi)] +=
             cell.core().energy / cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
+	}
       }
     }
   }
