@@ -60,7 +60,7 @@ createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement, DD4hep::Geometry::Sen
     xml_comp_t layer = *it;
     Dimension layerDimension(layer.dimensions());
     numSequencesR += layerDimension.nModules();
-    for(unsigned int nLayer = 0; nLayer < layerDimension.nModules(); nLayer++){
+    for(int nLayer = 0; nLayer < layerDimension.nModules(); nLayer++){
       moduleDepth += layerDimension.dr();
       layerDepths.push_back(layerDimension.dr());
     }
