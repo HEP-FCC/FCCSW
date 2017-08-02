@@ -31,7 +31,7 @@ public:
   virtual std::shared_ptr<papas::Calorimeter> calorimeter() const;
 
 private:
-  // ECAL
+  ///< ECAL
   std::shared_ptr<papas::Calorimeter> m_ecal;
   Gaudi::Property<double> m_innerRadius{this, "innerRadius", 2.15, "Ecal inner radius"};
   Gaudi::Property<double> m_innerZ{this, "innerZ", 2.6, "Ecal inner z"};
