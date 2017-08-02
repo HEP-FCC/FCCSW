@@ -51,7 +51,7 @@ private:
   Gaudi::Property<double> m_thetaParam{this, "thetapar", 0.8, "Tracker theta parameter"};
   
   //Really we want a map with int as an index but Gaudi does not appear to support this in combination
-  //with a pair, however it supports a map indexed by a string
+  //with a pair, however it does support a map indexed by a string
   //we will convert the string to an integer when we use it.
   Gaudi::Property<std::map<std::string, std::pair<double, double>>> m_resMap{this, "resMap", {{"90", {8.2e-2, 9.1e-2}},
     {"80", {8.2e-4, 9.1e-3}},

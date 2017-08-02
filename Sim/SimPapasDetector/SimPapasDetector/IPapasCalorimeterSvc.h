@@ -14,7 +14,7 @@ class IPapasCalorimeterSvc : virtual public IService {
 public:
   // InterfaceID
   DeclareInterfaceID(IPapasCalorimeterSvc, 1, 0);
-  // return calorimeter
+  /// return calorimeter
   virtual std::shared_ptr<papas::Calorimeter> calorimeter() const = 0;
 };
 

@@ -19,14 +19,25 @@ StatusCode ClicDetSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_papasEcalSvc = service(m_ecalServiceName);
-  m_papasHcalSvc = service(m_hcalServiceName);
-  m_papasTrackerSvc = service(m_trackerServiceName);
-  m_papasFieldSvc = service(m_fieldServiceName);
-  m_detector = std::make_shared<papas::Clic>(m_papasEcalSvc->calorimeter(),
-                                             m_papasHcalSvc->calorimeter(),
-                                             m_papasTrackerSvc->tracker(),
-                                             m_papasFieldSvc->field());
+  /// Pointer to the interface of papas detector
+  SmartIF<IPapasFieldSvc> papasFieldSvc;
+  SmartIF<IPapasCalorimeterSvc> papasEcalSvc;
+  SmartIF<IPapasCalorimeterSvc> papasHcalSvc;
+  SmartIF<IPapasTrackerSvc> papasTrackerSvc;
+  papasEcalSvc = service(m_ecalServiceName);
+  papasHcalSvc = service(m_hcalServiceName);
+  papasTrackerSvc = service(m_trackerServiceName);
+  papasFieldSvc = service(m_fieldServiceName);
+  m_detector = std::make_shared<papas::Clic>(papasEcalSvc->calorimeter(),
+                                             papasHcalSvc->calorimeter(),
+                                             papasTrackerSvc->tracker(),
+                                             papasFieldSvc->field(),
+                                             m_electronAcceptanceMagnitude,
+                                             m_electronAcceptanceEta,
+                                             m_muonAcceptanceMagnitude,
+                                             m_muonAcceptanceTheta,
+                                             m_electronEnergyFactor,
+                                             m_muonResolution);
   return StatusCode::SUCCESS;
 }
 

@@ -39,9 +39,7 @@ public:
   virtual StatusCode finalize();
 
 private:
-  /// Pointer to the interface of papas detector
-  SmartIF<IPapasDetSvc> m_papasDetSvc;
-  std::shared_ptr<papas::Detector> m_spDetector;
+  std::shared_ptr<papas::Detector> m_spDetector; ///< papas detector
   /// Stores the linkages between papas objects (eg clusters, tracks, particles)
   papas::Nodes m_history;
   std::vector<IPapasTool*> m_tools;      ///< vector of tools to be run
