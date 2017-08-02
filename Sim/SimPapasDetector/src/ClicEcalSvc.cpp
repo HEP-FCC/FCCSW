@@ -11,7 +11,6 @@ StatusCode ClicEcalSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  // auto vol =papas::VolumeCylinder(papas::Layer::kEcal, 2.4, 5.3); //to pass these pars also
   m_ecal = std::make_shared<papas::ClicECAL>(m_innerRadius,
                                              m_innerZ,
                                              m_depth,
@@ -23,7 +22,6 @@ StatusCode ClicEcalSvc::initialize() {
                                              m_nX0,
                                              m_nLambdaI,
                                              m_eResponse);
-
   return StatusCode::SUCCESS;
 }
 

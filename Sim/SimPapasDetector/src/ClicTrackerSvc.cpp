@@ -20,9 +20,6 @@ StatusCode ClicTrackerSvc::initialize() {
   for (const auto v : m_resMap) {
     resMap[std::stoi(v.first)] = v.second;
   }
-  for (const auto v : resMap) {
-     debug() << v.first << v.second.first << v.second.second << std::endl;
-  }
   m_tracker = std::make_shared<papas::ClicTracker>(m_radius,
                                                    m_z,
                                                    m_x0,

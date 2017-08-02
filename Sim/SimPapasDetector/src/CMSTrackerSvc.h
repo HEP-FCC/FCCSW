@@ -33,7 +33,7 @@ public:
   virtual std::shared_ptr<papas::Tracker> tracker() const;
 
 private:
-  //Tracker
+  ///< Tracker
   std::shared_ptr<papas::Tracker> m_tracker;
   Gaudi::Property<double> m_radius{this, "radius", 1.29, "Tracker cylinder radius"};
   Gaudi::Property<double> m_z{this, "z", 1.99, "Tracker cylinder z"};

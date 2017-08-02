@@ -1,12 +1,10 @@
 #ifndef CLICHCALSVC_H
 #define CLICHCALSVC_H
 
-
 #include "SimPapasDetector/IPapasCalorimeterSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
-
 
 /** @class DetetctorSvc DetetctorSvc.h DetetctorSvc/DetetctorSvc.h
  *
@@ -15,9 +13,8 @@
  */
 
 namespace papas {
-  class Calorimeter;
+class Calorimeter;
 }
-
 
 class ClicHcalSvc : public extends1<Service, IPapasCalorimeterSvc> {
 
@@ -42,10 +39,11 @@ private:
   Gaudi::Property<double> m_outerRadius{this, "outerRadius", 4.8, "Hcal outer radius"};
   Gaudi::Property<double> m_outerZ{this, "outerZ", 5.3, "Hcal outer Z"};
   Gaudi::Property<double> m_clusterSize{this, "clusterSize", 0.25, "Hcal cluster size"};
-  Gaudi::Property<std::vector<double>> m_eresBarrel {this, "eresBarrel", {0.6, 0., 0.025}, "Hcal energy response parameters barrel"};
+  Gaudi::Property<std::vector<double>> m_eresBarrel{
+      this, "eresBarrel", {0.6, 0., 0.025}, "Hcal energy response parameters barrel"};
   Gaudi::Property<double> m_X0{this, "x0", 0.018, "Hcal material x0"};
   Gaudi::Property<double> m_lambdaI{this, "lambdaI", 0.17, "Hcal material lambdaI"};
-  Gaudi::Property<double> m_eResponse{this, "eResponse",1., "Hcal eresponse"};
+  Gaudi::Property<double> m_eResponse{this, "eResponse", 1., "Hcal eresponse"};
   Gaudi::Property<double> m_etaAcceptance{this, "etaAcceptance", 2.76, "Hcal eta acceptance"};
 };
 

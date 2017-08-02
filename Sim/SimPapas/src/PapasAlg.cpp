@@ -22,12 +22,13 @@ StatusCode PapasAlg::initialize() {
     m_tools.push_back(tool<IPapasTool>(toolname));
   }
   m_exportTool =tool<IPapasExportTool>(m_exportToolName);
-  m_papasDetSvc = service(m_detServiceName);
-  if (!m_papasDetSvc) {
+  SmartIF<IPapasDetSvc> papasDetSvc; //curiously does not work if joined with following line
+  papasDetSvc = service(m_detServiceName);
+  if (!papasDetSvc) {
     error() << "Unable to locate Papas Detector Service " << m_detServiceName << endmsg;
     return StatusCode::FAILURE;
   }
-  m_spDetector = m_papasDetSvc->detector();
+  m_spDetector = papasDetSvc->detector();
   
   if (m_physicsDebugFile != "") {
     debug() << "Papas: physics output " << m_physicsDebugFile << endmsg;
