@@ -1,7 +1,7 @@
 ################################################################################
-#Package : DetFCChhCalEndcapDiscs
+#Package : DetFCChhCalDiscs
 ################################################################################
-gaudi_subdir(DetFCChhCalEndcapDiscs v1r0)
+gaudi_subdir(DetFCChhCalDiscs v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel)
 
@@ -12,10 +12,10 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-gaudi_add_module(DetFCChhCalEndcapDiscs
+gaudi_add_module(DetFCChhCalDiscs
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT
                  LINK_LIBRARIES GaudiKernel DD4hep ROOT)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-dd4hep_generate_rootmap(DetFCChhCalEndcapDiscs)
+dd4hep_generate_rootmap(DetFCChhCalDiscs)

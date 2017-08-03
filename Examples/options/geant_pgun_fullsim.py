@@ -39,7 +39,8 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                         'file:Detector/DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = DEBUG)
 

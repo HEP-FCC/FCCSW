@@ -23,7 +23,8 @@ from Configurables import GeoSvc
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                         'file:Detector/DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml' ],
+                                         'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml' ],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool

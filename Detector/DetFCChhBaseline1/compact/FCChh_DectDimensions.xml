@@ -113,11 +113,11 @@
     <!-- Forward calorimeters (EFCAL + HFCAL) -->
     <constant name="FwdECal_id" value="10"/>
     <constant name="FwdHCal_id" value="11"/>
-    <constant name="FwdCal_rmin1" value="49.6*mm"/>
-    <constant name="FwdCal_rmin2" value="58.6*mm"/>
-    <constant name="FwdCal_rmax" value="3600*mm"/>
     <constant name="FwdCal_dz" value="1500*mm"/>
     <constant name="FwdCal_zOffset" value="16500*mm + FwdCal_dz"/>
+    <constant name="FwdCal_rmin1" value="(FwdCal_zOffset - FwdCal_dz) * tan (2*atan(exp(-6)))"/>
+    <constant name="FwdCal_rmin2" value="(FwdCal_zOffset + FwdCal_dz) * tan (2*atan(exp(-6)))"/>
+    <constant name="FwdCal_rmax" value="3600*mm"/>
 
     <!-- MUON SYSTEM DIMENSIONS -->
     <!-- Muon system barrel -->
