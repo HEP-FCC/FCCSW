@@ -43,6 +43,20 @@ StatusCode SingleCaloTowerTool::initialize() {
     error() << "There is no phi-eta segmentation." << endmsg;
     return StatusCode::FAILURE;
   }
+  // Take readout bitfield decoder from GeoSvc
+  m_decoder =
+      std::shared_ptr<DD4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+  // check if decoder contains "layer"
+  std::vector<std::string> fields;
+  for (uint itField = 0; itField < m_decoder->size(); itField++) {
+    fields.push_back((*m_decoder)[itField].name());
+  }
+  auto iter = std::find(fields.begin(), fields.end(), "layer");
+  if (iter == fields.end()) {
+    error() << "Readout does not contain field layer." << endmsg;
+    addLayerRestriction = false;
+  } else
+    addLayerRestriction = true;
   return StatusCode::SUCCESS;
 }
 
@@ -68,12 +82,6 @@ tower SingleCaloTowerTool::towersNumber() {
 }
 
 uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
-  // Take readout bitfield decoder from GeoSvc                                                                                                                                                                       
-  auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
-  //if (m_fieldNames.size() != m_fieldValues.size()) {
-  //  error() << "Volume readout field descriptors (names and values) have different size." << endmsg;
-  //  return StatusCode::FAILURE;
-  //}
   // Get the input collection with cells from simulation + digitisation (after
   // calibration and with noise)
   const fcc::CaloHitCollection* cells = m_cells.get();
@@ -100,8 +108,10 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
     etaCellMax = m_segmentation->eta(cell.core().cellId) + m_segmentation->gridSizeEta() * 0.5;
     phiCellMin = m_segmentation->phi(cell.core().cellId) - M_PI / (double)m_segmentation->phiBins();
     phiCellMax = m_segmentation->phi(cell.core().cellId) + M_PI / (double)m_segmentation->phiBins();
-    decoder -> setValue(cell.core().cellId);
-    layerCell = (*decoder)["layer"].value();
+    if (addLayerRestriction == true) {
+      m_decoder->setValue(cell.core().cellId);
+      layerCell = (*m_decoder)["layer"].value();
+    }
     iEtaMin = idEta(etaCellMin + epsilon);
     iPhiMin = idPhi(phiCellMin + epsilon);
     iEtaMax = idEta(etaCellMax - epsilon);
@@ -152,10 +162,14 @@ uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) 
         } else {
           ratioPhi = fracPhiMiddle;
         }
-	if (layerCell <= m_maximumLayer){
-	  aTowers[iEta][phiNeighbour(iPhi)] +=
-            cell.core().energy / cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
-	}
+        if (addLayerRestriction == true) {
+          if (layerCell <= m_maximumLayer) {
+            aTowers[iEta][phiNeighbour(iPhi)] +=
+                cell.core().energy / cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
+          }
+        } else
+          aTowers[iEta][phiNeighbour(iPhi)] +=
+              cell.core().energy / cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
       }
     }
   }

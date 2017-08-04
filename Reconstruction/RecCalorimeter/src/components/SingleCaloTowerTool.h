@@ -30,7 +30,7 @@ class Segmentation;
  *  A tower contains all cells within certain eta and phi (tower size: '\b
  * deltaEtaTower', '\b deltaPhiTower').
  *  Distance in r plays no role, however `\b radiusForPosition` needs to be
- *  defined (e.g. to inner radius of the detector) for the cluster position 
+ *  defined (e.g. to inner radius of the detector) for the cluster position
  *  calculation. By default the radius is equal to 1.
  *
  *  This tool creates towers from a single cell collection (from one
@@ -64,7 +64,7 @@ public:
    */
   virtual tower towersNumber() final;
   /**  Build calorimeter towers.
-   *   Tower is segmented in eta and phi, with the energy from all layers 
+   *   Tower is segmented in eta and phi, with the energy from all layers
    *   (no segmentation).
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
@@ -107,13 +107,14 @@ public:
    * the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct
    * neighbour of the last tower in phi with ID = m_nPhiTower - 1).
-   *   @param[in] aIPhi requested ID of a phi tower, 
+   *   @param[in] aIPhi requested ID of a phi tower,
    *   may be < 0 or >=m_nPhiTower
-   *   @return  ID of a tower - shifted and corrected 
+   *   @return  ID of a tower - shifted and corrected
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
-
+  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
+  
 private:
   /// Handle for calo cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_cells{"calo/cells", Gaudi::DataHandle::Reader, this};
@@ -137,11 +138,12 @@ private:
   Gaudi::Property<float> m_deltaPhiTower{this, "deltaPhiTower", 0.01, "Size of the tower in phi"};
   // Maximum layer (4 = first layer of 2cm length)
   Gaudi::Property<float> m_maximumLayer{this, "maximumLayer", 4, "Maximum cell layer"};
+  // Restrict tower building in r/layers 
+  bool addLayerRestriction = false;
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
   uint m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
   uint m_nPhiTower;
-
 };
 
 #endif /* RECCALORIMETER_SINGLECALOTOWERTOOL_H */
