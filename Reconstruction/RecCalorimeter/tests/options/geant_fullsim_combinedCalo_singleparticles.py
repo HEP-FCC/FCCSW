@@ -2,7 +2,7 @@ import os
 
 from GaudiKernel.SystemOfUnits import MeV,GeV
 
-#set these in the .sh script                                                                                                                                                                                                                
+#set these in the .sh script
 energy=100*GeV
 num_events=1
 magnetic_field=0
@@ -19,21 +19,21 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = INFO)
-# Geant4 service                                                                                                                                                                         
+# Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
-# range cut                                                                                                                                                                                                                        
+# range cut
 geantservice.g4PostInitCommands += ["/run/setCut 0.1 mm"]
 
-# Magnetic field                                                                                                                                                                                                                           
+# Magnetic field
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
 # common ECAL specific information
 # readout name
-ecalReadoutName = "ECalHitsEta"
+ecalReadoutName = "ECalBarrelEta"
 
 # common HCAL specific information
 # readout name
@@ -41,35 +41,35 @@ hcalReadoutName = "BarHCal_Readout"
 # new readout name
 newHcalReadoutName = hcalReadoutName + "_phieta"
 
-# Geant4 algorithm                                                                                                                                                                                                       
-# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools                                                                                                                                          
-# and a tool that saves the calorimeter hits                                                                                                                                                                                         
+# Geant4 algorithm
+# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
+# and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
-saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = [ecalReadoutName],
-                                positionedCaloHits = "ECalPositionedHits",
-                                caloHits = "ECalHits")
+saveecaltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = [ecalReadoutName],
+                                positionedCaloHits = "ECalBarrelPositionedHits",
+                                caloHits = "ECalBarrelHits")
 savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName],
                                 positionedCaloHits="HCalPositionedHits",
                                 caloHits="HCalHits")
 
-# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")                                                                                                                                                     
+# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                 particleName=particleType,energyMin=energy,energyMax=energy,etaMin=0.36,etaMax=0.36,
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits"],
+                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveHCalHits"],
                        eventProvider=pgun,
                        OutputLevel=DEBUG)
 
-# Configure tools for calo reconstruction                                                                                                                                                                    
+# Configure tools for calo reconstruction
 from Configurables import CalibrateInLayersTool
 calibEcells = CalibrateInLayersTool("Calibrate",
                                     # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                    samplingFraction = [0.168] * 4 + [0.176] * 4 + [0.184] * 4 + [0.191] * 4 + [0.198] * 4 + [0.204] * 4 + [0.210] * 4 + [0.215] * 4,
+                                    samplingFraction = [0.12125] * 4 + [0.14283] * 18 + [0.16354] * 18 + [0.17662] * 18 + [0.18867] * 18 + [0.19890] * 18 + [0.20637] * 18 + [0.20802] * 18,
                                     readoutName = ecalReadoutName,
-                                    layerFieldName = "cell")
+                                    layerFieldName = "layer")
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool
@@ -81,8 +81,8 @@ createEcells = CreateCaloCells("CreateECaloCells",
                                calibTool=calibEcells,
                                addCellNoise=False, filterCellNoise=False,
                                OutputLevel=DEBUG,
-                               hits="ECalHits",
-                               cells="ECalCells")
+                               hits="ECalBarrelHits",
+                               cells="ECalBarrelCells")
 
 createHcells = CreateCaloCells("CreateHCaloCells",
                                doCellCalibration=True,
@@ -118,10 +118,10 @@ positions2.positionedHits.Path = "newHCalPositions"
 
 # Ecal cell positions
 positionsEcal = CreateVolumeCaloPositions("positionsEcal", OutputLevel = VERBOSE)
-positionsEcal.hits.Path = "ECalCells"
-positionsEcal.positionedHits.Path = "ECalPositions"
+positionsEcal.hits.Path = "ECalBarrelCells"
+positionsEcal.positionedHits.Path = "ECalBarrelPositions"
 
-out = PodioOutput("out", 
+out = PodioOutput("out",
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 out.filename = "output_combCalo_"+str(particleType)+str(int(energy/GeV))+"GeV.root"
@@ -153,4 +153,3 @@ ApplicationMgr(
     EvtMax   = int(num_events),
     ExtSvc = [podioevent, geoservice, geantservice, audsvc],
  )
-

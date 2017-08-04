@@ -5,7 +5,8 @@ podioevent = FCCDataSvc("EventDataSvc")
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                           'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml' ],
+                                           'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
+                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml' ],
                     OutputLevel = INFO)
 
 from Configurables import SimG4Svc
@@ -18,11 +19,14 @@ saveecaltool.caloHits.Path = "ECalBarrelHits"
 savecalendcaptool = SimG4SaveCalHits("saveECalEndcapHits", readoutNames = ["EMECPhiEta"])
 savecalendcaptool.positionedCaloHits.Path = "ECalEndcapPositionedHits"
 savecalendcaptool.caloHits.Path = "ECalEndcapHits"
+savecalfwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = ["EMFwdPhiEta"])
+savecalfwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
+savecalfwdtool.caloHits.Path = "ECalFwdHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                                      particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = 2., etaMax = 2.)
+                                      particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = 4., etaMax = 4.)
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits"],
+                    outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", "SimG4SaveCalHits/saveECalFwdHits"],
                     eventProvider = pgun)
 
 #Configure tools for calo reconstruction
@@ -36,6 +40,11 @@ calibcellsEndcap = CalibrateInLayersTool("CalibrateEndcap",
                                          # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
                                     samplingFraction = [0.15] * 118,
                                     readoutName = "EMECPhiEta",
+                                    layerFieldName = "layer")
+calibcellsFwd = CalibrateInLayersTool("CalibrateFwd",
+                                         # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
+                                    samplingFraction = [0.00056] * 22,
+                                    readoutName = "EMFwdPhiEta",
                                     layerFieldName = "layer")
 
 from Configurables import CreateCaloCells
@@ -53,8 +62,15 @@ createcellsEndcap = CreateCaloCells("CreateCaloCellsEndcap",
                                     OutputLevel=DEBUG)
 createcellsEndcap.hits.Path="ECalEndcapHits"
 createcellsEndcap.cells.Path="ECalEndcapCells"
+createcellsFwd = CreateCaloCells("CreateCaloCellsFwd",
+                                    doCellCalibration=True,
+                                    calibTool=calibcellsFwd,
+                                    addCellNoise=False, filterCellNoise=False,
+                                    OutputLevel=DEBUG)
+createcellsFwd.hits.Path="ECalFwdHits"
+createcellsFwd.cells.Path="ECalFwdCells"
 
-out = PodioOutput("out", filename="output_ecalInclinedWithEndcapDigi_test.root",
+out = PodioOutput("out", filename="output_ecalInclinedWithEndcapandFwdDigi_test.root",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
@@ -72,6 +88,7 @@ ApplicationMgr(
     TopAlg = [geantsim,
               createcellsBarrel,
               createcellsEndcap,
+              createcellsFwd,
               out
               ],
     EvtSel = 'NONE',
