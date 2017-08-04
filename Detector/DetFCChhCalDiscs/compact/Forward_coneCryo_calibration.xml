@@ -22,10 +22,10 @@
     <constant name="CryoThicknessBack" value="100*mm"/>
     <constant name="CryoThicknessInner" value="20*mm"/>
     <constant name="CryoThicknessOuter" value="100*mm"/>
-    <constant name="CryoFwd_front_rmin1" value="FwdCal_rmin1"/>
-    <constant name="CryoFwd_front_rmin2" value="FwdCal_rmin1+CryoThicknessFront*tan(2*atan(exp(-6)))"/>
-    <constant name="CryoFwd_back_rmin1" value="FwdCal_rmin2-CryoThicknessBack*tan(2*atan(exp(-6)))"/>
-    <constant name="CryoFwd_back_rmin2" value="FwdCal_rmin2"/>
+    <constant name="CryoFwd_front_rmin1" value="FwdCal_active_rmin1-CryoThicknessInner"/>
+    <constant name="CryoFwd_front_rmin2" value="FwdCal_active_rmin1-CryoThicknessInner+CryoThicknessFront*tan(2*atan(exp(-6)))"/>
+    <constant name="CryoFwd_back_rmin1" value="FwdCal_active_rmin2-CryoThicknessInner-CryoThicknessBack*tan(2*atan(exp(-6)))"/>
+    <constant name="CryoFwd_back_rmin2" value="FwdCal_active_rmin2-CryoThicknessInner"/>
     <constant name="CryoFwd_rmax" value="FwdCal_rmax"/>
     <constant name="CryoFwd_z1" value="FwdCal_zOffset - FwdCal_dz"/>
     <constant name="CryoFwd_z2" value="FwdCal_zOffset + FwdCal_dz"/>
@@ -40,7 +40,7 @@
     <constant name="EMFWD_z1" value="CryoFwd_z1 + CryoThicknessFront + BathThicknessFront"/>
     <constant name="EMFWD_z2" value="17350*mm"/>
     <constant name="EMFWD_rmin1" value="CryoFwd_front_rmin2 + CryoThicknessInner + BathThicknessFront*tan(2*atan(exp(-6)))"/>
-    <constant name="EMFWD_rmin2" value="EMFWD_z2 * tan(2*atan(exp(-6))) - 2*cm + CryoThicknessInner"/>
+    <constant name="EMFWD_rmin2" value="EMFWD_z2 * tan(2*atan(exp(-6)))"/>
     <constant name="EMFWD_rmax" value="FwdCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
     <constant name="EMFWD_lAr_thickness" value="0.1*mm"/>
     <constant name="EMFWD_Cu_thickness" value="3*cm"/>
@@ -48,7 +48,7 @@
     <!-- hadronic calorimeter: HFWD -->
     <constant name="HFWD_z1" value="EMFWD_z2 + BathThicknessMiddle"/>
     <constant name="HFWD_z2" value="CryoFwd_z2 - CryoThicknessBack - BathThicknessBack"/>
-    <constant name="HFWD_rmin1" value="HFWD_z1*tan(2*atan(exp(-6))) - 2*cm + CryoThicknessInner"/>
+    <constant name="HFWD_rmin1" value="HFWD_z1*tan(2*atan(exp(-6)))"/>
     <constant name="HFWD_rmin2" value="CryoFwd_back_rmin1 + CryoThicknessInner - BathThicknessBack*tan(2*atan(exp(-6)))"/>
     <constant name="HFWD_rmax" value="FwdCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
     <constant name="HFWD_lAr_thickness" value="0.1*mm"/>
