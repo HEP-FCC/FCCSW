@@ -56,11 +56,11 @@
     <constant name="HFWD_readout_thickness" value="1.2*mm"/>
   </define>
   <readouts>
-    <readout name="EMfwdPhiEta">
+    <readout name="EMFwdPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
     </readout>
-    <readout name="HfwdPhiEta">
+    <readout name="HFwdPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
     </readout>
@@ -104,7 +104,7 @@
                   z_offset="CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2." material="LAr" phi0="0" deltaphi="360*deg"/>
     </detector>
     <!-- electromagnetic calorimeter -->
-    <detector name="EMFWD" type="CaloDiscs" id="FwdECal_id" readout="EMfwdPhiEta">
+    <detector name="EMFWD" type="CaloDiscs" id="FwdECal_id" readout="EMFwdPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="EMFWD_rmin1"  rmin2="EMFWD_rmin2" rmax="EMFWD_rmax" dz="(EMFWD_z2-EMFWD_z1)/2." z_offset="EMFWD_z1+(EMFWD_z2-EMFWD_z1)/2."/>
       <active thickness="EMFWD_lAr_thickness">
@@ -126,7 +126,7 @@
       </readout>
     </detector>
     <!-- hadronic calorimeter -->
-    <detector name="HFWD" type="CaloDiscs" id="FwdHCal_id" readout="HfwdPhiEta">
+    <detector name="HFWD" type="CaloDiscs" id="FwdHCal_id" readout="HFwdPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="HFWD_rmin1"  rmin2="HFWD_rmin2" rmax="HFWD_rmax" dz="(HFWD_z2-HFWD_z1)/2." z_offset="HFWD_z1+(HFWD_z2-HFWD_z1)/2."/>
       <active thickness="HFWD_lAr_thickness">
