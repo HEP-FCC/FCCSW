@@ -39,7 +39,8 @@ from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                         'file:Detector/DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = DEBUG)
 
@@ -59,20 +60,23 @@ savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["Track
 savetrackertool.positionedTrackHits.Path = "positionedHits"
 savetrackertool.trackHits.Path = "hits"
 # and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
-saveecaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
-saveecaltool.positionedCaloHits.Path = "positionedCaloHits"
-saveecaltool.caloHits.Path = "caloHits"
-saveendcaptool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
-saveendcaptool.positionedCaloHits.Path = "positionedCaloHits"
-saveendcaptool.caloHits.Path = "caloHits"
-savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
-savehcaltool.positionedCaloHits.Path = "positionedCaloHits"
-savehcaltool.caloHits.Path = "caloHits"
+saveecaltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = ["ECalBarrelEta"])
+saveecaltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
+saveecaltool.caloHits.Path = "ECalBarrelHits"
+saveendcaptool = SimG4SaveCalHits("saveECalEndcapHits", readoutNames = ["EMECPhiEta"])
+saveendcaptool.positionedCaloHits.Path = "ECalEndcapPositionedHits"
+saveendcaptool.caloHits.Path = "ECalEndcapHits"
+savefwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = ["EMFwdPhiEta"])
+savefwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
+savefwdtool.caloHits.Path = "ECalFwdHits"
+savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["BarHCal_Readout"])
+savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
+savehcaltool.caloHits.Path = "HCalHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveCalHits"],
+                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)
 
 from Configurables import PodioOutput

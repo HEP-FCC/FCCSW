@@ -6,7 +6,7 @@
 #include "GaudiKernel/ServiceHandle.h"
 
 namespace det {
-void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::SensitiveDetector& aSensDet,
+void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::SensitiveDetector& aSensDet,
                     DD4hep::Geometry::Volume& aEnvelope, DD4hep::XML::Handle_t& aXmlElement, int sign) {
 
   DD4hep::XML::Dimension dim(aXmlElement.child(_Unicode(dimensions)));
@@ -185,17 +185,17 @@ void buildOneEndcap(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geom
   return;
 }
 
-static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLcdd,
+static DD4hep::Geometry::Ref_t createCaloDiscs(DD4hep::Geometry::LCDD& aLcdd,
                                                      DD4hep::XML::Handle_t aXmlElement,
                                                      DD4hep::Geometry::SensitiveDetector aSensDet) {
-  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "CalEndcapConstruction");
-  MsgStream lLog(&(*msgSvc), "CalEndcapConstruction");
+  ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "CalDiscsConstruction");
+  MsgStream lLog(&(*msgSvc), "CalDiscsConstruction");
 
   DD4hep::XML::DetElement xmlDetElem = aXmlElement;
   std::string nameDet = xmlDetElem.nameStr();
   int idDet = xmlDetElem.id();
   DD4hep::XML::Dimension dim(xmlDetElem.dimensions());
-  DD4hep::Geometry::DetElement caloEndcapDetElem(nameDet, idDet);
+  DD4hep::Geometry::DetElement caloDetElem(nameDet, idDet);
 
   // Create air envelope for the whole endcap
   DD4hep::Geometry::Cone envelopePositive(dim.dz(), dim.rmin1(), dim.rmax(), dim.rmin2(), dim.rmax());
@@ -207,27 +207,27 @@ static DD4hep::Geometry::Ref_t createCaloEndcapDiscs(DD4hep::Geometry::LCDD& aLc
   DD4hep::Geometry::Volume envelopeNegativeVol(nameDet + "_negative_vol", envelopeNegative, aLcdd.material("Air"));
 
   lLog << MSG::DEBUG << "Placing dector on the positive side: (cm) " << dim.z_offset() << endmsg;
-  buildOneEndcap(lLog, aLcdd, aSensDet, envelopePositiveVol, aXmlElement, 1);
+  buildOneSide(lLog, aLcdd, aSensDet, envelopePositiveVol, aXmlElement, 1);
   lLog << MSG::DEBUG << "Placing dector on the negative side: (cm) " << -dim.z_offset() << endmsg;
-  buildOneEndcap(lLog, aLcdd, aSensDet, envelopeNegativeVol, aXmlElement, -1);
+  buildOneSide(lLog, aLcdd, aSensDet, envelopeNegativeVol, aXmlElement, -1);
 
   // Place the envelope
   DD4hep::Geometry::PlacedVolume envelopePositivePhysVol = envelopeVol.placeVolume(envelopePositiveVol);
   envelopePositivePhysVol.addPhysVolID("subsystem", 0);
-  DD4hep::Geometry::DetElement caloEndcapPositiveDetElem(caloEndcapDetElem, "positive", 0);
-  caloEndcapPositiveDetElem.setPlacement(envelopePositivePhysVol);
+  DD4hep::Geometry::DetElement caloPositiveDetElem(caloDetElem, "positive", 0);
+  caloPositiveDetElem.setPlacement(envelopePositivePhysVol);
   DD4hep::Geometry::PlacedVolume envelopeNegativePhysVol =
       envelopeVol.placeVolume(envelopeNegativeVol, DD4hep::Geometry::Position(0, 0, -2 * dim.z_offset()));
   envelopeNegativePhysVol.addPhysVolID("subsystem", 1);
-  DD4hep::Geometry::DetElement caloEndcapNegativeDetElem(caloEndcapDetElem, "negative", 0);
-  caloEndcapNegativeDetElem.setPlacement(envelopeNegativePhysVol);
-  DD4hep::Geometry::Volume motherVol = aLcdd.pickMotherVolume(caloEndcapDetElem);
+  DD4hep::Geometry::DetElement caloNegativeDetElem(caloDetElem, "negative", 0);
+  caloNegativeDetElem.setPlacement(envelopeNegativePhysVol);
+  DD4hep::Geometry::Volume motherVol = aLcdd.pickMotherVolume(caloDetElem);
   DD4hep::Geometry::PlacedVolume envelopePhysVol =
       motherVol.placeVolume(envelopeVol, DD4hep::Geometry::Position(0., 0., dim.z_offset()));
-  caloEndcapDetElem.setPlacement(envelopePhysVol);
+  caloDetElem.setPlacement(envelopePhysVol);
   envelopePhysVol.addPhysVolID("system", idDet);
-  return caloEndcapDetElem;
+  return caloDetElem;
 }
 }  // namespace det
 
-DECLARE_DETELEMENT(CaloEndcapDiscs, det::createCaloEndcapDiscs)
+DECLARE_DETELEMENT(CaloDiscs, det::createCaloDiscs)
