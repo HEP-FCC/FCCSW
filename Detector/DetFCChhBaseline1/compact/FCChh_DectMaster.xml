@@ -37,7 +37,8 @@
   <include ref="../../DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml" />
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml" />
-  <!-- To uncomment once issue #227 is solved: <include ref="../../DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml" /> -->
+  <!-- To uncomment once issue #227 is solved: <include ref="../../DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml" /> -->
+  <!-- To uncomment once issue #227 is solved: <include ref="../../DetFCChhCalDiscs/compact/Forward_coneCryo.xml" /> -->
   <include ref="../../DetFCChhMuonSimple/compact/FCChh_MuonSystemSimple.xml" />
 
   <!--

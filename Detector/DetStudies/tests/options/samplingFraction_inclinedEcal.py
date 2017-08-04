@@ -21,29 +21,29 @@ geantservice.g4PostInitCommands += ["/run/setCut 0.1 mm"]
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGeneratorTool
-saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsEta"])
-saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
-saveecaltool.caloHits.Path = "ECalHits"
+saveecaltool = SimG4SaveCalHits("saveECalBarrelHits",readoutNames = ["ECalBarrelEta"])
+saveecaltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
+saveecaltool.caloHits.Path = "ECalBarrelHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                                       particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = 0, etaMax = 0,
                                       OutputLevel = DEBUG)
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs= ["SimG4SaveCalHits/saveECalHits"],
+                    outputs= ["SimG4SaveCalHits/saveECalBarrelHits"],
                     eventProvider = pgun,
                     OutputLevel = DEBUG)
 
 from Configurables import SamplingFractionInLayers
 hist = SamplingFractionInLayers("hists",
                                  energyAxis = 50,
-                                 readoutName = "ECalHitsEta",
+                                 readoutName = "ECalBarrelEta",
                                  layerFieldName = "layer",
                                  activeFieldName = "type",
                                  activeFieldValue = 0,
                                  numLayers = 130,
                                  OutputLevel = INFO)
-hist.deposits.Path="ECalPositionedHits"
+hist.deposits.Path="ECalBarrelPositionedHits"
 
 THistSvc().Output = ["rec DATAFILE='histSF_inclined_e50GeV_eta0_1events.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
