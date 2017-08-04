@@ -63,9 +63,7 @@ def scan_dirs(directories):
             fnames.append(dirname)
         elif os.path.isdir(dirname):
             for root, dirs, files in os.walk(dirname):
-                for f in files:
-                    if os.path.splitext(f)[1] in common._SourceFilesExtensions:
-                        fnames += [os.path.join(root, f)]
+                fnames += [os.path.join(root, f) for f in files]
         else:
             raise ValueError("File / directory does not exist: " + dirname)
     return fnames
