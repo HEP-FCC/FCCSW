@@ -2,8 +2,8 @@ from ROOT import gSystem
 from EventStore import EventStore
 from numpy import testing
 
-centre_x = [1970.55, -676.869, 2139.19, -2029.88, -2238.6]
-centre_y = [1.54627, 2086.33, 693.37, 659.306, -3.59223]
+centre_x = [1977.25, -726.366, 2130.49, -2045.03, -2236.08]
+centre_y = [9.07315, 2114.81, 679.002, 652.057, -1.38118]
 centre_z = [0, 0, 0, 0, 0]
 
 if __name__ == "__main__":
