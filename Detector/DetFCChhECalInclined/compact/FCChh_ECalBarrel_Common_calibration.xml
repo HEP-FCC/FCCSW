@@ -93,9 +93,9 @@
         <readout thickness="readout_thickness" sensitive="true">
           <material name="PCB"/>
         </readout>
-        <layer>
-	       <dimensions repeat="130"/>
-        </layer>
+        <layers>
+	       <layer thickness="0.5*cm" repeat="130"/>
+        </layers>
       </calorimeter>
     </detector>
   </detectors>
