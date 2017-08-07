@@ -47,4 +47,4 @@ gaudi_add_test(CombinatorialTrackSeeding
 gaudi_add_test(ExtrapolationTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/extrapolationTest.py 
-               LD_PRELOAD+=build.$BINARY_TAG/lib/libActsLogger.so)
+               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libActsLogger.so)
