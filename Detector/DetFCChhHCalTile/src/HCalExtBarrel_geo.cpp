@@ -15,11 +15,11 @@ namespace det {
 void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::SensitiveDetector& aSensDet,
              DD4hep::Geometry::Volume& aEnvelope, DD4hep::Geometry::DetElement& aHCal,
              DD4hep::XML::Handle_t& aXmlElement, int sign) {
-  
+
   DD4hep::Geometry::SensitiveDetector sensDet = aSensDet;
   Dimension sensDetType = aXmlElement.child(_Unicode(sensitive));
   sensDet.setType(sensDetType.typeStr());
-  
+
   Dimension dimensions(aXmlElement.child(_Unicode(dimensions)));
   xml_comp_t xEndPlate = aXmlElement.child(_Unicode(end_plate));
   double dZEndPlate = xEndPlate.thickness() / 2.;
@@ -93,9 +93,8 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
        << " rings in Z, " << numSequencesR2 << " layers in Rho, "
        << layerDepths2.size() * numSequencesZ2 * numSequencesPhi << " tiles" << endmsg;
 
-  lLog << MSG::INFO << "total number of channels: "
-       << 2 * (numSequencesR2 * numSequencesZ2 * numSequencesPhi) +
-          2 * (numSequencesR1 * numSequencesZ1 * numSequencesPhi)
+  lLog << MSG::INFO << "number of channels: "
+       << (numSequencesR2 * numSequencesZ2 * numSequencesPhi) + (numSequencesR1 * numSequencesZ1 * numSequencesPhi)
        << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
@@ -240,7 +239,7 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
                        aLcdd.material(xComp.materialStr()));
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
-        tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
+        tiles.push_back(layerVolume.placeVolume(tileVol, offset));
         tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
@@ -296,7 +295,7 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
                        aLcdd.material(xComp.materialStr()));
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
-        tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
+        tiles.push_back(layerVolume.placeVolume(tileVol, offset));
         tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
@@ -347,7 +346,7 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
     DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
     // Fill vector for DetElements
     rows.push_back(ModuleVolume2.placeVolume(WedgeVolume2, wedgeOffset));
-    rows.back().addPhysVolID("row", idxZRow);
+    rows.back().addPhysVolID("row", (numSequencesZ1 + idxZRow));
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
@@ -365,14 +364,10 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
     // endplates
     // Placement within envelopeVolumeNeg and Pos (--> total offset in z later)
     // --> Offsets calculated relative to middle of envelope in z
-    DD4hep::Geometry::Position moduleOffset1(xPosModule1, yPosModule1,
-                                             sign * extBarrelOffset1); //(-dzDetector2 + 2 * dZEndPlate + space));  // extBarrelOffset1 ));
-    DD4hep::Geometry::Position supportOffset1(xPosSupport1, yPosSupport1,
-                                              sign * extBarrelOffset1); //(-dzDetector2 + 2 * dZEndPlate + space));
-    DD4hep::Geometry::Position moduleOffset2(xPosModule2, yPosModule2, 
-					     sign * extBarrelOffset2); //sign * (dzDetector1 - 2 * dZEndPlate - space));
-    DD4hep::Geometry::Position supportOffset2(xPosSupport2, yPosSupport2,
-                                              sign * extBarrelOffset2); //(dzDetector1 - 2 * dZEndPlate - space));
+    DD4hep::Geometry::Position moduleOffset1(xPosModule1, yPosModule1, sign * extBarrelOffset1);
+    DD4hep::Geometry::Position supportOffset1(xPosSupport1, yPosSupport1, sign * extBarrelOffset1);
+    DD4hep::Geometry::Position moduleOffset2(xPosModule2, yPosModule2, sign * extBarrelOffset2);
+    DD4hep::Geometry::Position supportOffset2(xPosSupport2, yPosSupport2, sign * extBarrelOffset2);
 
     // Placement around central Barrel
     DD4hep::Geometry::Transform3D trans1(
@@ -389,9 +384,11 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
 
     // Fill the vectors of DetElements
     modules1.push_back(aEnvelope.placeVolume(ModuleVolume1, trans1));
-    modules1.back().addPhysVolID("module1_", (idxPhi+1)*sign);
+    modules1.back().addPhysVolID("type", 1 - sign);  // First module type=0,2 in front of second +/-
+    modules1.back().addPhysVolID("module", idxPhi);
     modules2.push_back(aEnvelope.placeVolume(ModuleVolume2, trans2));
-    modules2.back().addPhysVolID("module2_", (idxPhi+1)*sign);
+    modules2.back().addPhysVolID("type", 2 - sign);  // Second module type=1,3 behind the first +/-
+    modules2.back().addPhysVolID("module", idxPhi);
 
     supports1.push_back(aEnvelope.placeVolume(SteelSupportVolume1, trans1S));
     supports2.push_back(aEnvelope.placeVolume(SteelSupportVolume2, trans2S));
@@ -403,16 +400,16 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
   lLog << MSG::DEBUG << "Layers in r :    " << layers.size() << std::endl;
   lLog << MSG::DEBUG << "Tiles in layers :" << tilesInLayers[1].size() << std::endl;
 
-  for (uint iPhi = 1; iPhi <= numSequencesPhi; iPhi++) {
-    int signedPhi = sign*iPhi;
+  for (uint iPhi = 0; iPhi < numSequencesPhi; iPhi++) {
+    int signedPhi = numSequencesPhi - sign * (iPhi + 1);
     DetElement moduleDet1(aHCal, DD4hep::XML::_toString(signedPhi, "module1_%d"), signedPhi);
-    moduleDet1.setPlacement(modules1[iPhi-1]);
+    moduleDet1.setPlacement(modules1[iPhi]);
     DetElement support1(aHCal, DD4hep::XML::_toString(signedPhi, "support1_%d"), signedPhi);
-    support1.setPlacement(supports1[iPhi-1]);
+    support1.setPlacement(supports1[iPhi]);
     DetElement moduleDet2(aHCal, DD4hep::XML::_toString(signedPhi, "module2_%d"), signedPhi);
-    moduleDet2.setPlacement(modules2[iPhi-1]);
+    moduleDet2.setPlacement(modules2[iPhi]);
     DetElement support2(aHCal, DD4hep::XML::_toString(signedPhi, "support2_%d"), signedPhi);
-    support2.setPlacement(supports2[iPhi-1]);
+    support2.setPlacement(supports2[iPhi]);
 
     for (uint iZ = 0; iZ < numSequencesZ1; iZ++) {
       DetElement wedgeDet(moduleDet1, DD4hep::XML::_toString(iZ, "row%d"), iZ);
@@ -429,11 +426,11 @@ void buildEB(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geometry::S
       }
     }
     for (uint iZ = numSequencesZ1; iZ < (numSequencesZ1 + numSequencesZ2); iZ++) {
-      DetElement wedgeDet(moduleDet2, DD4hep::XML::_toString(iZ, "row%d"), (iZ - numSequencesZ1));
+      DetElement wedgeDet(moduleDet2, DD4hep::XML::_toString(iZ, "row%d"), iZ);
       wedgeDet.setPlacement(rows[iZ]);
 
       for (uint iLayer = numSequencesR1; iLayer < (numSequencesR1 + numSequencesR2); iLayer++) {
-        DetElement layerDet(wedgeDet, DD4hep::XML::_toString(iLayer, "layer%d"), (iLayer - numSequencesR1));
+        DetElement layerDet(wedgeDet, DD4hep::XML::_toString(iLayer, "layer%d"), iLayer);
         layerDet.setPlacement(layers[iLayer]);
 
         for (uint iTile = 0; iTile < tilesInLayers[iLayer].size(); iTile++) {
@@ -462,10 +459,8 @@ static DD4hep::Geometry::Ref_t createHCalEB(DD4hep::Geometry::LCDD& lcdd, xml_h 
   // Make volume that envelopes the whole barrel; set material to air
   Dimension dimensions(xmlDet.dimensions());
 
-  DD4hep::Geometry::Tube envelope(dimensions.rmin2(), dimensions.rmax1(),
-				       (dimensions.z_offset() + dimensions.dz()) );
-  DD4hep::Geometry::Tube negative(dimensions.rmin2(), dimensions.rmax1(),
-				       (dimensions.offset() - dimensions.width()) );
+  DD4hep::Geometry::Tube envelope(dimensions.rmin2(), dimensions.rmax1(), (dimensions.z_offset() + dimensions.dz()));
+  DD4hep::Geometry::Tube negative(dimensions.rmin2(), dimensions.rmax1(), (dimensions.offset() - dimensions.width()));
   DD4hep::Geometry::SubtractionSolid envelopeShape(envelope, negative);
 
   Volume envelopeVolume(detName + "_volume", envelopeShape, lcdd.air());
@@ -481,8 +476,7 @@ static DD4hep::Geometry::Ref_t createHCalEB(DD4hep::Geometry::LCDD& lcdd, xml_h 
   // Place envelope volume
   Volume motherVol = lcdd.pickMotherVolume(hCalEB);
 
-  PlacedVolume placedHCal =
-    motherVol.placeVolume(envelopeVolume); 
+  PlacedVolume placedHCal = motherVol.placeVolume(envelopeVolume);
   placedHCal.addPhysVolID("system", xmlDet.id());
   hCalEB.setPlacement(placedHCal);
 
