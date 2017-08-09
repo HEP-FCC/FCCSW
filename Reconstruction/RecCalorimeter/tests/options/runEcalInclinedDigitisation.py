@@ -11,23 +11,23 @@ from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 geantservice.g4PostInitCommands  += ["/run/setCut 0.1 mm"]
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGeneratorTool
-saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsEta"])
-saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
-saveecaltool.caloHits.Path = "ECalHits"
+saveecaltool = SimG4SaveCalHits("saveECalBarrelHits",readoutNames = ["ECalBarrelEta"])
+saveecaltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
+saveecaltool.caloHits.Path = "ECalBarrelHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                                       particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = -1.5, etaMax = 1.5)
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs= ["SimG4SaveCalHits/saveECalHits"],
+                    outputs= ["SimG4SaveCalHits/saveECalBarrelHits"],
                     eventProvider = pgun)
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateInLayersTool
 calibcells = CalibrateInLayersTool("Calibrate",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                   samplingFraction = [0.168] * 4 + [0.176] * 4 + [0.184] * 4 + [0.191] * 4 + [0.198] * 4 + [0.204] * 4 + [0.210] * 4 + [0.215] * 4,
-                                   readoutName = "ECalHitsEta",
-                                   layerFieldName = "cell")
+                                   samplingFraction = [0.12125] * 4 + [0.14283] * 18 + [0.16354] * 18 + [0.17662] * 18 + [0.18867] * 18 + [0.19890] * 18 + [0.20637] * 18 + [0.20802] * 18,
+                                   readoutName = "ECalBarrelEta",
+                                   layerFieldName = "layer")
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
@@ -35,8 +35,8 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool=calibcells,
                               addCellNoise=False, filterCellNoise=False,
                               OutputLevel=DEBUG)
-createcells.hits.Path="ECalHits"
-createcells.cells.Path="caloCells"
+createcells.hits.Path="ECalBarrelHits"
+createcells.cells.Path="ECalBarrelCells"
 
 out = PodioOutput("out", filename="output_ecalInclinedDigi_test.root",
                    OutputLevel=DEBUG)

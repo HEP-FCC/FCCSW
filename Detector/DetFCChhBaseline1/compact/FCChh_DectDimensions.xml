@@ -92,15 +92,14 @@
     <constant name="BarHCal_rmin" value="2850*mm"/>
     <constant name="BarHCal_rmax" value="4890*mm"/>
     <constant name="BarHCal_dz" value="4600*mm"/>
-    <!-- Extended barrel (EM EB + HEC)-->
+    <!-- Calorimeter endcaps (EMEC + HEC)-->
     <constant name="ExtBarECal_id" value="6"/>
     <constant name="HadronicEndCap_id" value="7"/>
-    <constant name="ExtBarCal_rmin1" value="776*mm"/>
-    <constant name="ExtBarCal_rmax1" value="2700*mm"/>
-    <constant name="ExtBarCal_rmin2" value="1272*mm"/>
-    <constant name="ExtBarCal_rmax2" value="2700*mm"/>
     <constant name="ExtBarCal_dz" value="1500*mm"/>
     <constant name="ExtBarCal_zOffset" value="5300*mm + ExtBarCal_dz"/>
+    <constant name="ExtBarCal_rmin1" value="(ExtBarCal_zOffset - ExtBarCal_dz)* tan (2*atan(exp(-2.5))) - 0.1*m"/>
+    <constant name="ExtBarCal_rmin2" value="(ExtBarCal_zOffset + ExtBarCal_dz)* tan (2*atan(exp(-2.5))) - 0.1*m"/>
+    <constant name="ExtBarCal_rmax" value="2700*mm"/>
     <!-- HCal extended barrel (HCAL EB) -->
     <constant name="ExtBarHCal_id" value="9"/>
     <constant name="ExtBarHCal1_rmin" value="3500*mm"/>
@@ -111,14 +110,16 @@
     <constant name="ExtBarHCal1_zOffset" value="5000*mm + ExtBarHCal1_dz"/>
     <constant name="ExtBarHCal2_dz" value="1350*mm"/>
     <constant name="ExtBarHCal2_zOffset" value="ExtBarHCal1_zOffset + ExtBarHCal1_dz + ExtBarHCal2_dz"/>
-    <!-- Forward calorimeters (EFCAL + HFCAL) -->
+    <!-- Forward calorimeters (EMFWD + HFWD) -->
     <constant name="FwdECal_id" value="10"/>
     <constant name="FwdHCal_id" value="11"/>
-    <constant name="FwdCal_rmin1" value="49.6*mm"/>
-    <constant name="FwdCal_rmin2" value="58.6*mm"/>
-    <constant name="FwdCal_rmax" value="3600*mm"/>
     <constant name="FwdCal_dz" value="1500*mm"/>
     <constant name="FwdCal_zOffset" value="16500*mm + FwdCal_dz"/>
+    <constant name="FwdCal_rmin1" value="(FwdCal_zOffset - FwdCal_dz) * tan (2*atan(exp(-6.5)))"/>
+    <constant name="FwdCal_rmin2" value="(FwdCal_zOffset + FwdCal_dz) * tan (2*atan(exp(-6.5)))"/>
+    <constant name="FwdCal_active_rmin1" value="(FwdCal_zOffset - FwdCal_dz) * tan (2*atan(exp(-6)))"/>
+    <constant name="FwdCal_active_rmin2" value="(FwdCal_zOffset + FwdCal_dz) * tan (2*atan(exp(-6)))"/>
+    <constant name="FwdCal_rmax" value="3600*mm"/>
 
     <!-- MUON SYSTEM DIMENSIONS -->
     <!-- Muon system barrel -->
