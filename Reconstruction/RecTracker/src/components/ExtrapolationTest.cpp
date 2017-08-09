@@ -9,7 +9,6 @@
 
 #include "ACTS/Detector/TrackingGeometry.hpp"
 #include "ACTS/EventData/Measurement.hpp"
-#include "ACTS/Examples/BuildGenericDetector.hpp"
 #include "ACTS/Extrapolation/ExtrapolationCell.hpp"
 #include "ACTS/Extrapolation/ExtrapolationEngine.hpp"
 #include "ACTS/Extrapolation/IExtrapolationEngine.hpp"

@@ -42,7 +42,7 @@ private:
   ServiceHandle<ITrackingGeoSvc> m_trkGeoSvc;
 
   /// pointer to tracking geometry world
-  std::shared_ptr<Acts::TrackingGeometry> m_trkGeo;
+  std::shared_ptr<const Acts::TrackingGeometry> m_trkGeo;
   /// pointer to Acts extrapolation engine
   std::shared_ptr<const Acts::IExtrapolationEngine> m_exEngine;
 
