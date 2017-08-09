@@ -24,7 +24,7 @@ class DetModule : public IDetExtension {
 public:
   DetModule() {}
 
-  DetModule(const DetModule&, const DD4hep::Geometry::DetElement&) {}
+  DetModule(const DetModule&, const dd4hep::DetElement&) {}
 
   virtual ~DetModule() {}
 

@@ -3,16 +3,16 @@
 
 namespace {
 template <typename T>
-DD4hep::Geometry::SegmentationObject* create_segmentation(DD4hep::Geometry::BitField64* decoder) {
-  return new DD4hep::Geometry::SegmentationWrapper<T>(decoder);
+dd4hep::SegmentationObject* create_segmentation(dd4hep::BitField64* decoder) {
+  return new dd4hep::SegmentationWrapper<T>(decoder);
 }
 }
 
 #include "DetSegmentation/GridEta.h"
-DECLARE_SEGMENTATION(GridEta, create_segmentation<DD4hep::DDSegmentation::GridEta>)
+DECLARE_SEGMENTATION(GridEta, create_segmentation<dd4hep::DDSegmentation::GridEta>)
 
 #include "DetSegmentation/GridPhiEta.h"
-DECLARE_SEGMENTATION(GridPhiEta, create_segmentation<DD4hep::DDSegmentation::GridPhiEta>)
+DECLARE_SEGMENTATION(GridPhiEta, create_segmentation<dd4hep::DDSegmentation::GridPhiEta>)
 
 #include "DetSegmentation/GridRPhiEta.h"
-DECLARE_SEGMENTATION(GridRPhiEta, create_segmentation<DD4hep::DDSegmentation::GridRPhiEta>)
+DECLARE_SEGMENTATION(GridRPhiEta, create_segmentation<dd4hep::DDSegmentation::GridRPhiEta>)

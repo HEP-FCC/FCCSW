@@ -69,7 +69,7 @@ public:
   inline Position position(const CellID& id) const { return Position(access()->implementation->position(id)); }
 
   /// determine the cell ID based on the position
-  inline DD4hep::CellID cellID(const Position& local, const Position& global, const VolumeID& volID) const {
+  inline dd4hep::CellID cellID(const Position& local, const Position& global, const VolumeID& volID) const {
     return access()->implementation->cellID(local, global, volID);
   }
 

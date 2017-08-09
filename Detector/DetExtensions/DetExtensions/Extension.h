@@ -23,7 +23,7 @@ class DetExtension : public IDetExtension {
 
 public:
   DetExtension() {}
-  DetExtension(const DetExtension&, const DD4hep::Geometry::DetElement&) {}
+  DetExtension(const DetExtension&, const dd4hep::DetElement&) {}
   virtual ~DetExtension() {}
 };
 }

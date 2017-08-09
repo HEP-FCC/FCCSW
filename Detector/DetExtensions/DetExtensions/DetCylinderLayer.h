@@ -24,7 +24,7 @@ class DetCylinderLayer : public IDetExtension {
 public:
   DetCylinderLayer() {}
 
-  DetCylinderLayer(const DetCylinderLayer&, const DD4hep::Geometry::DetElement&) {}
+  DetCylinderLayer(const DetCylinderLayer&, const dd4hep::DetElement&) {}
 
   virtual ~DetCylinderLayer() {}
 

@@ -24,14 +24,14 @@ namespace Det {
 class DetSensComponent : public IDetExtension {
 
 public:
-  explicit DetSensComponent(const DD4hep::Geometry::Segmentation segmentation) : m_segmentation(segmentation) {}
-  DetSensComponent(const DetSensComponent&, const DD4hep::Geometry::DetElement&) {}
+  explicit DetSensComponent(const dd4hep::Segmentation segmentation) : m_segmentation(segmentation) {}
+  DetSensComponent(const DetSensComponent&, const dd4hep::DetElement&) {}
   virtual ~DetSensComponent() {}
-  const DD4hep::Geometry::Segmentation segmentation() { return (m_segmentation); }
+  const dd4hep::Segmentation segmentation() { return (m_segmentation); }
   virtual ExtensionType type() { return ExtensionType::SensComponent; }
 
 private:
-  const DD4hep::Geometry::Segmentation m_segmentation;
+  const dd4hep::Segmentation m_segmentation;
 };
 }
 

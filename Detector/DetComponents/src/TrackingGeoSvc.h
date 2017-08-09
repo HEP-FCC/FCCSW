@@ -8,7 +8,7 @@
 #include "GaudiKernel/Service.h"
 
 // DD4Hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // DetectorDescription
 #include "DetInterface/IGeoSvc.h"

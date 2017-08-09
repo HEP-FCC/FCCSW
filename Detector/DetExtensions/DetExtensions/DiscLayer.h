@@ -24,7 +24,7 @@ class DetDiscLayer : public IDetExtension {
 public:
   DetDiscLayer() {}
 
-  DetDiscLayer(const DetDiscLayer&, const DD4hep::Geometry::DetElement&) {}
+  DetDiscLayer(const DetDiscLayer&, const dd4hep::DetElement&) {}
 
   virtual ~DetDiscLayer() {}
 };

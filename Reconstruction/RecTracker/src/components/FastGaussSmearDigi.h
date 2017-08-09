@@ -34,8 +34,8 @@ private:
 
   float m_segGridSizeZ;
   float m_segGridSizeX;
-  DD4hep::DDSegmentation::BitField64* m_decoder;
-  DD4hep::Geometry::VolumeManager m_volman;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::VolumeManager m_volman;
 
   DataHandle<fcc::TrackHitCollection> m_trackHits{"trackHits", Gaudi::DataHandle::Reader, this};
   DataHandle<fcc::PositionedTrackHitCollection> m_smearedTrackHits{"smearedHits", Gaudi::DataHandle::Writer, this};

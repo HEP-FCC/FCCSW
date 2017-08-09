@@ -5,7 +5,7 @@
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
 #include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
@@ -39,7 +39,7 @@ StatusCode FastGaussSmearDigi::initialize() {
   auto lcdd = m_geoSvc->lcdd();
   auto readout = lcdd->readout(m_readoutName);
   m_decoder = readout.idSpec().decoder();
-  auto segmentationXZ = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXZ*>(readout.segmentation().segmentation());
+  auto segmentationXZ = dynamic_cast<dd4hep::DDSegmentation::CartesianGridXZ*>(readout.segmentation().segmentation());
   if (nullptr == segmentationXZ) {
     error() << "Could not retrieve segmentation!" << endmsg;
     return StatusCode::FAILURE;

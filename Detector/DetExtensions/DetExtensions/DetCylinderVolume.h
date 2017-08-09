@@ -23,7 +23,7 @@ class DetCylinderVolume : public IDetExtension {
 
 public:
   explicit DetCylinderVolume(int status) : m_status(status) {}
-  DetCylinderVolume(const DetCylinderVolume& volume, const DD4hep::Geometry::DetElement&) {
+  DetCylinderVolume(const DetCylinderVolume& volume, const dd4hep::DetElement&) {
     m_status = volume.m_status;
   }
   virtual ~DetCylinderVolume() {}

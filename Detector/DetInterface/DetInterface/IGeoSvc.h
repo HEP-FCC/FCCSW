@@ -13,7 +13,7 @@
 
 namespace DD4hep {
 namespace Geometry {
-class LCDD;
+class Detector;
 class DetElement;
 }
 }
@@ -26,8 +26,8 @@ public:
   /// InterfaceID
   DeclareInterfaceID(IGeoSvc, 1, 0);
   // receive DD4hep Geometry
-  virtual DD4hep::Geometry::DetElement getDD4HepGeo() = 0;
-  virtual DD4hep::Geometry::LCDD* lcdd() = 0;
+  virtual dd4hep::DetElement getDD4HepGeo() = 0;
+  virtual dd4hep::Detector* lcdd() = 0;
   // receive Geant4 Geometry
   virtual G4VUserDetectorConstruction* getGeant4Geo() = 0;
 

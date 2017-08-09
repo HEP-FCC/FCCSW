@@ -9,7 +9,7 @@
 #include "datamodel/PositionedCaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DDSegmentation/Segmentation.h"
 
 DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
@@ -39,7 +39,7 @@ StatusCode RedoSegmentation::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout, bitfield from GeoSvc
-  m_oldDecoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
+  m_oldDecoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
       m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder());
   // segmentation identifiers to be overwritten
   if (m_oldIdentifiers.size() == 0) {
@@ -93,7 +93,7 @@ StatusCode RedoSegmentation::execute() {
       debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
     }
     // factor 10 to convert mm to cm
-    DD4hep::DDSegmentation::Vector3D position(hit.position().x / 10, hit.position().y / 10, hit.position().z / 10);
+    dd4hep::DDSegmentation::Vector3D position(hit.position().x / 10, hit.position().y / 10, hit.position().z / 10);
     // first calculate proper segmentation fields
     uint64_t newcellId = m_segmentation->cellID(position, position, volumeID(hit.cellId()));
     m_segmentation->decoder()->setValue(newcellId);

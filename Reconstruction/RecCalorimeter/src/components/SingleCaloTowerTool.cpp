@@ -8,7 +8,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 DECLARE_TOOL_FACTORY(SingleCaloTowerTool)
@@ -37,7 +37,7 @@ StatusCode SingleCaloTowerTool::initialize() {
     return StatusCode::FAILURE;
   }
   // retrieve PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::GridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation." << endmsg;
