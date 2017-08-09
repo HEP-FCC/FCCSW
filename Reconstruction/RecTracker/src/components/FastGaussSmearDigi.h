@@ -1,6 +1,9 @@
 #ifndef RECTRACKER_FASTGAUSSSMEARDIGI_H
 #define RECTRACKER_FASTGAUSSSMEARDIGI_H
 
+#include "DD4hep/Detector.h"
+#include "DD4hep/BitField64.h"
+
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/RndmGenerators.h"
@@ -34,7 +37,7 @@ private:
 
   float m_segGridSizeZ;
   float m_segGridSizeX;
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::BitField64* m_decoder;
   dd4hep::VolumeManager m_volman;
 
   DataHandle<fcc::TrackHitCollection> m_trackHits{"trackHits", Gaudi::DataHandle::Reader, this};

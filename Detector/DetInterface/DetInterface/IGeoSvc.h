@@ -11,11 +11,9 @@
 
 #include "GaudiKernel/IService.h"
 
-namespace DD4hep {
-namespace Geometry {
+namespace dd4hep {
 class Detector;
 class DetElement;
-}
 }
 
 class G4VUserDetectorConstruction;

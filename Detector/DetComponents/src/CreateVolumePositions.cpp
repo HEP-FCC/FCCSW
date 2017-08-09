@@ -51,7 +51,7 @@ StatusCode CreateVolumePositions<Hits, PositionedHit>::execute() {
   for (const auto& cell : *hits) {
     cellid = cell.core().cellId;
     auto detelement = volman.lookupDetElement(cellid);
-    const auto& transformMatrix = detelement.worldTransformation();
+    const auto& transformMatrix = detelement.nominal().worldTransformation();
     double outGlobal[3];
     double inLocal[] = {0, 0, 0};
     transformMatrix.LocalToMaster(inLocal, outGlobal);

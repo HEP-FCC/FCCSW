@@ -27,7 +27,7 @@ SimpleTrackerSD::~SimpleTrackerSD() {}
 void SimpleTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
-  m_trackerCollection = new G4THitsCollection<dd4hep::Simulation::Geant4Hit>(SensitiveDetectorName, collectionName[0]);
+  m_trackerCollection = new G4THitsCollection<dd4hep::sim::Geant4Hit>(SensitiveDetectorName, collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_trackerCollection),
                                       m_trackerCollection);
 }
@@ -37,15 +37,15 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   G4double edep = aStep->GetTotalEnergyDeposit();
   if (edep == 0.) return false;
 
-  // as in dd4hep::Simulation::Geant4GenericSD<Tracker>
+  // as in dd4hep::sim::Geant4GenericSD<Tracker>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
-  dd4hep::Simulation::Position position(prePos.x(), prePos.y(), prePos.z());
+  dd4hep::Position position(prePos.x(), prePos.y(), prePos.z());
   CLHEP::Hep3Vector direction = postPos - prePos;
   // create a hit and add it to collection
   const G4Track* track = aStep->GetTrack();
   // deleted in ~G4Event
-  auto hit = new dd4hep::Simulation::Geant4TrackerHit(
+  auto hit = new dd4hep::sim::Geant4TrackerHit(
       track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(), edep, track->GetGlobalTime());
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;

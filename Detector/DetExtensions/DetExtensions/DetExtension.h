@@ -11,7 +11,7 @@
 
 #include "DetExtensions/IDetExtension.h"
 
-namespace DD4hep {
+namespace dd4hep {
 namespace Geometry {
 class DetElement;
 }

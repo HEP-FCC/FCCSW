@@ -12,7 +12,7 @@
  *
  *  Sensitive detector for tracker. It takes middle position between G4Step::GetPreStepPoint()
  *  and G4Step::GetPostStepPoint() to calculate the cell ID (from segmentation) and to store in cluster.
- *  It is based on dd4hep::Simulation::Geant4GenericSD<Tracker> (and is meant to be identical).
+ *  It is based on dd4hep::sim::Geant4GenericSD<Tracker> (and is meant to be identical).
  *
  *  @author    Anna Zaborowska
  */
@@ -45,7 +45,7 @@ public:
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<dd4hep::Simulation::Geant4Hit>* m_trackerCollection;
+  G4THitsCollection<dd4hep::sim::Geant4Hit>* m_trackerCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };

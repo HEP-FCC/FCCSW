@@ -15,7 +15,7 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 class Segmentation;
 }

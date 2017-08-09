@@ -9,6 +9,7 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Printout.h"
 #include "DDRec/MaterialManager.h"
+#include "DDSurfaces/Vector3D.h"
 
 #include "TFile.h"
 #include "TMath.h"
@@ -58,7 +59,7 @@ StatusCode MaterialScan::initialize() {
   tree->Branch("material", &materialPtr);
 
   auto lcdd = m_geoSvc->lcdd();
-  dd4hep::DDRec::MaterialManager matMgr;
+  dd4hep::rec::MaterialManager matMgr;
   DDSurfaces::Vector3D beginning(0, 0, 0);
   auto boundaryVol = lcdd->detector(m_envelopeName).volume()->GetShape();
   std::array<Double_t, 3> pos = {0, 0, 0};
@@ -87,7 +88,7 @@ StatusCode MaterialScan::initialize() {
         DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
         debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
                 << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
-        const dd4hep::DDRec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
+        const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
         for (unsigned i = 0, n = materials.size(); i < n; ++i) {
           phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
         }

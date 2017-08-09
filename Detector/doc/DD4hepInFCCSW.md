@@ -249,8 +249,8 @@ As mentioned above, you may want to define your own sensitive detector. For spec
 2. Factory method (of SD) for DD4hep
 
 In order to use the common methods to store your information in the EDM output (at the end of simulation), we advise to use the DD4hep hits classes:
-* [*dd4hep::Simulation::Geant4TrackerHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
-* [*dd4hep::Simulation::Geant4CalorimeterHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
+* [*dd4hep::sim::Geant4TrackerHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
+* [*dd4hep::sim::Geant4CalorimeterHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
 
 If those classes are not sufficient, you'll need to create your own hit class implementation and the corresponding tools to translate your hit collections to FCC-EDM.
 
@@ -259,7 +259,7 @@ If those classes are not sufficient, you'll need to create your own hit class im
 
 - Implementation of G4VSensitiveDetector class, e.g. `det::SimpleCalorimeterSD`:
   *  `::Initialize(..)` - create the hit collection
-  *  `::ProcessHits(..)` - add entries to the hit collection with position, cellId, energy deposit, time, ... Hit base class used in the collection is already implemented in DD4hep `dd4hep::Simulation::Geant4CalorimeterHit`.
+  *  `::ProcessHits(..)` - add entries to the hit collection with position, cellId, energy deposit, time, ... Hit base class used in the collection is already implemented in DD4hep `dd4hep::sim::Geant4CalorimeterHit`.
 
    There is a method to retrieve the cell identification based on the DD4hep segmentation (`det::segmentation::cellID(dd4hep::Segmentation, const G4Step&)`).
 
@@ -274,7 +274,7 @@ public:
   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<dd4hep::Simulation::Geant4CalorimeterHit>* calorimeterCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* calorimeterCollection;
 };
 }
 ~~~
@@ -283,7 +283,7 @@ private:
   Any other sensitive detector may be added in the same way.
 
 ~~~{.cpp}
-namespace DD4hep {
+namespace dd4hep {
 namespace Simulation {
 // Factory method to create an instance of SimpleCalorimeterSD
 static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDetectorName,
@@ -295,7 +295,7 @@ static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDe
 }
 }
 }
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,dd4hep::Simulation::create_simple_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,dd4hep::sim::create_simple_calorimeter_sd)
 ~~~
 
   **Note** that the name we put in the `DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR` macro corresponds to the type `SimpleCalorimeterSD` in the xml-description, this creates the link between the factory method and the xml-description.

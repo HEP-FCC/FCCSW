@@ -60,7 +60,7 @@ public:
 
 private:
   /// Collection of calorimeter hits that get registered in G4Event and deleted in ~G4Event
-  G4THitsCollection<dd4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };

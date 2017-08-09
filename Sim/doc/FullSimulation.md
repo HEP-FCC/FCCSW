@@ -175,7 +175,7 @@ Sim/SimG4Components/tests/options/
 ~~~
 
 #### GDML example
-There is a possibility to create the detector with GDML instead of DD4hep. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `dd4hep::Simulation::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
+There is a possibility to create the detector with GDML instead of DD4hep. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `dd4hep::sim::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
 Simple example:
 
 ~~~{.sh}
@@ -240,7 +240,7 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
     dd4hep::SensitiveDetector::setType("SimpleCalorimeterSD");
     ~~~
 
-    This way the hits collection are created automatically and are filled whenever a particle traverses a sensitive material. Hits are be stored in either `dd4hep::Simulation::Geant4TrackerHit` or `dd4hep::Simulation::Geant4CalorimeterHit`. See more on the current implementations of the sensitive detector types in the [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md#using-an-existing-sensitive-detector-definition).
+    This way the hits collection are created automatically and are filled whenever a particle traverses a sensitive material. Hits are be stored in either `dd4hep::sim::Geant4TrackerHit` or `dd4hep::sim::Geant4CalorimeterHit`. See more on the current implementations of the sensitive detector types in the [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md#using-an-existing-sensitive-detector-definition).
 
 ### Physics List
 

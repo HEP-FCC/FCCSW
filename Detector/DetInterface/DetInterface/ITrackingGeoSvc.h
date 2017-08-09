@@ -18,7 +18,7 @@ public:
   // InterfaceID
   DeclareInterfaceID(ITrackingGeoSvc, 1, 0);
   // receive Reconstruction geometry
-  virtual std::shared_ptr<Acts::TrackingGeometry> trackingGeometry() const = 0;
+  virtual std::shared_ptr<const Acts::TrackingGeometry> trackingGeometry() const = 0;
 };
 
 #endif  // ITRACKINGGEOSVC_H

@@ -46,7 +46,7 @@ public:
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<dd4hep::Simulation::Geant4Hit>* m_trackerCollection;
+  G4THitsCollection<dd4hep::sim::Geant4Hit>* m_trackerCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };

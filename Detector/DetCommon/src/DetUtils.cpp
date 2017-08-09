@@ -33,8 +33,8 @@ double getAttrValueWithFallback(const dd4hep::xml::Component& node, const std::s
 }
 
 uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint) {
-  dd4hep::Simulation::Geant4VolumeManager volMgr = dd4hep::Simulation::Geant4Mapping::instance().volumeManager();
-  dd4hep::VolumeManager::VolumeID volID = volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
+  dd4hep::sim::Geant4VolumeManager volMgr = dd4hep::sim::Geant4Mapping::instance().volumeManager();
+  dd4hep::VolumeID volID = volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
   if (aSeg.isValid()) {
     G4ThreeVector global;
     if (aPreStepPoint) {
@@ -46,7 +46,7 @@ uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPre
         aStep.GetPreStepPoint()->GetTouchable()->GetHistory()->GetTopTransform().TransformPoint(global);
     dd4hep::Position loc(local.x() * MM_2_CM, local.y() * MM_2_CM, local.z() * MM_2_CM);
     dd4hep::Position glob(global.x() * MM_2_CM, global.y() * MM_2_CM, global.z() * MM_2_CM);
-    dd4hep::VolumeManager::VolumeID cID = aSeg.cellID(loc, glob, volID);
+    dd4hep::VolumeID cID = aSeg.cellID(loc, glob, volID);
     return cID;
   }
   return volID;
@@ -91,7 +91,7 @@ std::vector<std::pair<int, int>> bitfieldExtremes(dd4hep::DDSegmentation::BitFie
 
 CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId) {
   dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
-  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  auto pvol = volMgr.lookupVolumePlacement(aVolumeId);
   auto solid = pvol.volume().solid();
   // get the envelope of the shape
   TGeoBBox* box = (dynamic_cast<TGeoBBox*>(solid.ptr()));
@@ -127,7 +127,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentati
 
 CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
-  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  auto pvol = volMgr.lookupVolumePlacement(aVolumeId);
   auto solid = pvol.volume().solid();
   // get the envelope of the shape
   TGeoConeSeg* tube = (dynamic_cast<TGeoConeSeg*>(solid.ptr()));

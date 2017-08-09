@@ -11,7 +11,7 @@
 class IGeoSvc;
 
 // DD4hep
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 class BitField64;
 }

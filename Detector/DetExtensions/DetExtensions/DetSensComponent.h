@@ -12,7 +12,7 @@
 #include "DetExtensions/IDetExtension.h"
 #include <memory>
 
-namespace DD4hep {
+namespace dd4hep {
 namespace Geometry {
 class DetElement;
 class Segmentation;

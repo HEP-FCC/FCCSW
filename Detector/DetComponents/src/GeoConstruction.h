@@ -7,10 +7,8 @@
 // Geant4
 #include "G4VUserDetectorConstruction.hh"
 
-namespace DD4hep {
-namespace Geometry {
+namespace dd4hep {
 class Detector;
-}
 }
 /** @class GeoConstruction DetectorDescription/DetDesServices/src/GeoConstruction.h GeoConstruction.h
  *

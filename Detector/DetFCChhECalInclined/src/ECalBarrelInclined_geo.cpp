@@ -1,4 +1,5 @@
 #include "DD4hep/DetFactoryHelper.h"
+#include "DD4hep/Handle.h"
 
 // Gaudi
 #include "GaudiKernel/IIncidentSvc.h"
@@ -8,7 +9,7 @@
 #include "GaudiKernel/ServiceHandle.h"
 
 namespace det {
-static dd4hep::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
+static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
                                                         dd4hep::xml::Handle_t aXmlElement,
                                                         dd4hep::SensitiveDetector aSensDet) {
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "ECalConstruction");

@@ -1,4 +1,6 @@
 // DD4hep includes
+#include "DD4hep/Detector.h"
+#include "DD4hep/DetElement.h"
 #include "DD4hep/DetFactoryHelper.h"
 
 // Gaudi

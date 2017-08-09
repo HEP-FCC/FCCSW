@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace DD4hep {
+namespace dd4hep {
   namespace DDSegmentation {
     class BitField64;
   }

@@ -1,5 +1,5 @@
 #include "DD4hep/Factories.h"
-#include "DD4hep/objects/SegmentationsInterna.h"
+#include "DD4hep/detail/SegmentationsInterna.h"
 
 namespace {
 template <typename T>

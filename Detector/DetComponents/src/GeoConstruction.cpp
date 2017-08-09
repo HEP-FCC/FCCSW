@@ -14,16 +14,17 @@
 #include "G4VSensitiveDetector.hh"
 
 namespace det {
+  
 GeoConstruction::GeoConstruction(dd4hep::Detector& lcdd) : m_lcdd(lcdd) {}
 
 GeoConstruction::~GeoConstruction() {}
 
-// method borrowed from dd4hep::Simulation::Geant4DetectorSensitivesConstruction
+// method borrowed from dd4hep::sim::Geant4DetectorSensitivesConstruction
 //                             ::constructSensitives(Geant4DetectorConstructionContext* ctxt)
 void GeoConstruction::ConstructSDandField() {
-  typedef dd4hep::GeoHandlerTypes::SensitiveVolumes _SV;
-  typedef dd4hep::GeoHandlerTypes::ConstVolumeSet VolSet;
-  dd4hep::Simulation::Geant4GeometryInfo* p = dd4hep::Simulation::Geant4Mapping::instance().ptr();
+      typedef std::set<const TGeoVolume*> VolSet;
+      typedef std::map<dd4hep::SensitiveDetector, VolSet> _SV;
+  dd4hep::sim::Geant4GeometryInfo* p = dd4hep::sim::Geant4Mapping::instance().ptr();
   _SV& vols = p->sensitives;
 
   for (_SV::const_iterator iv = vols.begin(); iv != vols.end(); ++iv) {
@@ -62,12 +63,12 @@ void GeoConstruction::ConstructSDandField() {
   }
 }
 
-// method borrowed from dd4hep::Simulation::Geant4DetectorConstruction::Construct()
+// method borrowed from dd4hep::sim::Geant4DetectorConstruction::Construct()
 G4VPhysicalVolume* GeoConstruction::Construct() {
-  dd4hep::Simulation::Geant4Mapping& g4map = dd4hep::Simulation::Geant4Mapping::instance();
+  dd4hep::sim::Geant4Mapping& g4map = dd4hep::sim::Geant4Mapping::instance();
   dd4hep::DetElement world = m_lcdd.world();
-  dd4hep::Simulation::Geant4Converter conv(m_lcdd, dd4hep::INFO);
-  dd4hep::Simulation::Geant4GeometryInfo* geo_info = conv.create(world).detach();
+  dd4hep::sim::Geant4Converter conv(m_lcdd, dd4hep::INFO);
+  dd4hep::sim::Geant4GeometryInfo* geo_info = conv.create(world).detach();
   g4map.attach(geo_info);
   // All volumes are deleted in ~G4PhysicalVolumeStore()
   G4VPhysicalVolume* m_world = geo_info->world();

@@ -6,15 +6,13 @@
 
 // DD4hep
 #include "DD4hep/Segmentations.h"
-#include "DD4hep/objects/SegmentationsInterna.h"
+#include "DD4hep/detail/SegmentationsInterna.h"
 
 /// Namespace for the AIDA detector description toolkit
-namespace DD4hep {
+namespace dd4hep {
 
 /// Namespace for base segmentations
 
-/// Namespace for the geometry part of the AIDA detector description toolkit
-namespace Geometry {
 
 // Forward declarations
 class Segmentation;
@@ -47,7 +45,7 @@ typedef Handle<SegmentationWrapper<DDSegmentation::GridEta>> GridEtaHandle;
 class GridEta : public GridEtaHandle {
 public:
   /// Defintiion of the basic handled object
-  typedef GridEtaHandle::Implementation Object;
+  typedef GridEtaHandle::Object Object;
 
 public:
   /// Default constructor
@@ -101,6 +99,5 @@ public:
   }
 };
 
-} /* End namespace Geometry              */
-} /* End namespace DD4hep                */
+} /* End namespace dd4hep                */
 #endif  // DD4HEP_DDCORE_GRIDETA_H

@@ -1,8 +1,7 @@
 #include "DD4hep/DetFactoryHelper.h"
 
 using namespace std;
-using namespace DD4hep
-using namespace dd4hep::Geometry;
+using namespace dd4hep;
 
 /**
   Simple cylinder using Tube to be used to define cylinder composed of 1 single material

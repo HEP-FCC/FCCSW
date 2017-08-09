@@ -8,8 +8,8 @@
 #include "DetSensitive/SimpleCalorimeterSD.h"
 #include "DetSensitive/SimpleTrackerSD.h"
 
-namespace DD4hep {
-namespace Simulation {
+namespace dd4hep {
+namespace sim {
 
 // All G4VSensitiveDetector are deleted by ~G4SDManager called by ~G4RunManagerKernel
 // Factory method to create an instance of SimpleTrackerSD
@@ -55,9 +55,9 @@ static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDe
 }
 }
 }
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD, dd4hep::Simulation::create_simple_tracker_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MiddleStepTrackerSD, dd4hep::Simulation::create_middle_step_tracker_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD, dd4hep::Simulation::create_simple_calorimeter_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(BirksLawCalorimeterSD, dd4hep::Simulation::create_birks_law_calorimeter_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD, dd4hep::Simulation::create_aggregate_calorimeter_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GflashCalorimeterSD, dd4hep::Simulation::create_gflash_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD, dd4hep::sim::create_simple_tracker_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MiddleStepTrackerSD, dd4hep::sim::create_middle_step_tracker_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD, dd4hep::sim::create_simple_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(BirksLawCalorimeterSD, dd4hep::sim::create_birks_law_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD, dd4hep::sim::create_aggregate_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GflashCalorimeterSD, dd4hep::sim::create_gflash_calorimeter_sd)
