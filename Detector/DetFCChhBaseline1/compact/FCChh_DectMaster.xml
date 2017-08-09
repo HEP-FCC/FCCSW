@@ -28,10 +28,9 @@
   <!-- Including the sub-detectors / volume definitions -->
   <!-- To be used in case you are not using the tkLayout tracker (which contains the beamtube)
   <include ref="./FCChh_BeamTube.xml" />
-  --> 
+  -->
   <include ref="./FCChh_Solenoids.xml" />
   <include ref="./FCChh_Shielding.xml" />
-
 
   <include ref="../../DetFCChhTrackerTkLayout/compact/Tracker.xml" />
   <include ref="../../DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml" />
@@ -47,5 +46,5 @@
     <include ref="./FCChh_ECalAir.xml" />
     <include ref="../../DetCommon/compact/HcalAir.xml" />
     <include ref="./FCChh_MuonAir.xml" />
-    -->
+-->
 </lccdd>
