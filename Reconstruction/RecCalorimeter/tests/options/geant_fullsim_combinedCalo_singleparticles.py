@@ -1,22 +1,12 @@
 import os
-import numpy as np
 
-#loads array of random seeds from file                                                                                                         
-seed_array = np.loadtxt('condor/seeds.txt',dtype='int',delimiter=',')
+from GaudiKernel.SystemOfUnits import MeV,GeV
 
-#set these in the .sh script                                                                                                                   
-energy=100
-num_events=10
-magnetic_field=1
-i=1
-particle=0
-
+#set these in the .sh script
+energy=100*GeV
+num_events=1
+magnetic_field=0
 particleType = "pi-"
-if particle==0:
-    particleType = "e-"
-if particle==2:
-    particleType = "mu-"
-print particleType
 
 from Gaudi.Configuration import *
 
@@ -31,14 +21,10 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = INFO)
 
-# Geant4 service                   
+# Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
-
-#Setting random seeds for Geant4 simulations
-geantservice.g4PreInitCommands += ["/random/setSeeds "+str(seed_array[i-1])+" 0"]
-#since the loop to generate the subjobs begins with 1, we need (i-1) to index
 
 # range cut                                                                                    
 geantservice.g4PreInitCommands += ["/run/setCut 0.1 mm"]
@@ -50,45 +36,53 @@ if magnetic_field==1:
 else:
     field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
-# Geant4 algorithm
-# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools                                   
-# and a tool that saves the calorimeter hits
 
-from Configurables import SimG4Alg, SimG4SaveCalHits
-saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHitsEta"],
-                                positionedCaloHits = "ECalPositionedHits",
-                                caloHits = "ECalHits")
-savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"],
-                                positionedCaloHits="HCalPositionedHits",
-                                caloHits="HCalHits")
-
-# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-from Configurables import SimG4SingleParticleGeneratorTool
-pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName=particleType,energyMin=energy*1000,energyMax=energy*1000,etaMin=0.0,etaMax=0.0,
-                OutputLevel =DEBUG)
-
-geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalHits", "SimG4SaveCalHits/saveHCalHits"],
-                       eventProvider=pgun,
-                       OutputLevel=INFO)
+# Magnetic field
+from Configurables import SimG4ConstantMagneticFieldTool
+field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
 
 # common ECAL specific information
 # readout name
-ecalReadoutName = "ECalHitsEta"
+ecalReadoutName = "ECalBarrelEta"
 # common HCAL specific information
 # readout name
 hcalReadoutName = "BarHCal_Readout"
 # readout name
 newHcalReadoutName = hcalReadoutName + "_phieta"
 
-# Configure tools for calo reconstruction                                       
-#from Configurables import CalibrateInLayersTool
-#calibEcells = CalibrateInLayersTool("Calibrate",
+# Geant4 algorithm
+# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools                                   
+# and a tool that saves the calorimeter hits
+
+# Geant4 algorithm
+# Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
+# and a tool that saves the calorimeter hits
+from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
+saveecaltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = [ecalReadoutName],
+                                positionedCaloHits = "ECalBarrelPositionedHits",
+                                caloHits = "ECalBarrelHits")
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName],
+                                positionedCaloHits="HCalPositionedHits",
+                                caloHits="HCalHits")
+
+# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
+from Configurables import SimG4SingleParticleGeneratorTool
+pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
+                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=0.0,etaMax=0.0,
+                OutputLevel =DEBUG)
+
+geantsim = SimG4Alg("SimG4Alg",
+                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveHCalHits"],
+                       eventProvider=pgun,
+                       OutputLevel=INFO)
+
+# Configure tools for calo reconstruction
+from Configurables import CalibrateInLayersTool
+calibEcells = CalibrateInLayersTool("Calibrate",
                                     # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-#                                    samplingFraction = [0.152422337199] * 4 + [0.171224643325] * 18 + [0.17584501478] * 18 + [0.18025181064] * 18 + [0.186098100471] * 18 + [0.190591655433] * 18 + [0.193360990074] * 18 + [0.191570316922] * 18,
-#                                    readoutName = ecalReadoutName,
-#                                    layerFieldName = "layer")
+                                    samplingFraction = [0.12125] * 4 + [0.14283] * 18 + [0.16354] * 18 + [0.17662] * 18 + [0.18867] * 18 + [0.19890] * 18 + [0.20637] * 18 + [0.20802] * 18,
+                                    readoutName = ecalReadoutName,
+                                    layerFieldName = "layer")
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool
@@ -100,8 +94,8 @@ createEcells = CreateCaloCells("CreateECaloCells",
 #                               calibTool=calibEcells,
                                addCellNoise=False, filterCellNoise=False,
                                OutputLevel=INFO,
-                               hits="ECalHits",
-                               cells="ECalCells")
+                               hits="ECalBarrelHits",
+                               cells="ECalBarrelCells")
 
 createHcells = CreateCaloCells("CreateHCaloCells",
                                doCellCalibration=True,
@@ -133,13 +127,12 @@ resegment = RedoSegmentation("ReSegmentation",
 
 # Ecal cell positions
 positionsEcal = CreateVolumeCaloPositions("positionsEcal", OutputLevel = INFO)
-positionsEcal.hits.Path = "ECalCells"
-positionsEcal.positionedHits.Path = "ECalPositions"
+positionsEcal.hits.Path = "ECalBarrelCells"
+positionsEcal.positionedHits.Path = "ECalBarrelPositions"
 
-out = PodioOutput("out", 
+out = PodioOutput("out",
                   OutputLevel=DEBUG)
-out.outputCommands = ["keep *", "drop ECalHits", "drop ECalPositionedHits", "drop HCalHits", "drop HCalPositionedHits", "drop HCalCells", "drop HCalPositions", "drop ECalCells"]
-#out.outputCommands = ["keep *", "drop ECalHits", "drop ECalPositionedHits", "drop ECalCells"]    
+out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop ECalBarrelPositionedHits", "drop HCalHits", "drop HCalPositionedHits", "drop HCalCells", "drop HCalPositions", "drop ECalCells"]
 out.filename = "output.root"
 
 #CPU information
@@ -167,4 +160,3 @@ ApplicationMgr(
     EvtMax   = int(num_events),
     ExtSvc = [geoservice, podioevent, geantservice, audsvc],
  )
-

@@ -23,7 +23,8 @@ from Configurables import GeoSvc
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                         'file:Detector/DetFCChhCalEndcapDiscs/compact/Endcaps_coneCryo.xml' ],
+                                         'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml' ],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
@@ -32,7 +33,7 @@ from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4PrimariesFromEdmTool
 # first, create a tool that saves the calorimeter hits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalHitsPhiEta"])
+saveecaltool = SimG4SaveCalHits("saveECalHits", readoutNames = ["ECalBarrelPhiEta"])
 saveecaltool.positionedCaloHits.Path = "positionedCaloHits"
 saveecaltool.caloHits.Path = "caloHits"
 savecalendcaptool = SimG4SaveCalHits("saveCalEndcapHits", readoutNames = ["EMECPhiEta"])

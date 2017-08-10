@@ -35,7 +35,7 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits
-savetool = SimG4SaveCalHits("saveHits",readoutNames = ["ECalHitsEta"])
+savetool = SimG4SaveCalHits("saveHits",readoutNames = ["ECalBarrelEta"])
 savetool.positionedCaloHits.Path = "PositionedHits"
 savetool.caloHits.Path = "Hits"
 

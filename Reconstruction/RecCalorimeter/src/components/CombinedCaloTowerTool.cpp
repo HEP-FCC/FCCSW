@@ -30,31 +30,13 @@ StatusCode CombinedCaloTowerTool::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  // check if readouts exist & retrieve PhiEta segmentation
-  //if (m_ecalCells.getCollectionName()!="") {
-  if (m_geoSvc->lcdd()->readouts().find(m_ecalReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
-    error() << "Readout <<" << m_ecalReadoutName << ">> does not exist." << endmsg;
-    return StatusCode::FAILURE;
-  }
-  m_ecalSegmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-									 m_geoSvc->lcdd()->readout(m_ecalReadoutName).segmentation().segmentation());
-  if (m_ecalSegmentation == nullptr) {
-    error() << "There is no phi-eta segmentation in the electromagnetic calorimeter." << endmsg;
-    return StatusCode::FAILURE;
-  }
-  //}
-  //if (m_hcalCells!="") {
-  if (m_geoSvc->lcdd()->readouts().find(m_hcalReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
-    error() << "Readout <<" << m_hcalReadoutName << ">> does not exist." << endmsg;
-    return StatusCode::FAILURE;
-  }
-  m_hcalSegmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-									 m_geoSvc->lcdd()->readout(m_hcalReadoutName).segmentation().segmentation());
-  if (m_hcalSegmentation == nullptr) {
-    error() << "There is no phi-eta segmentation in the hadronic calorimeter." << endmsg;
-    return StatusCode::FAILURE;
-  }
-    //}
+
+  // check if readouts exist & retrieve PhiEta segmentations
+  // if readout does not exist, reconstruction without this calorimeter part will be performed
+  info() << "Retrieving Ecal segmentation" << endmsg;
+  m_ecalSegmentation = retrieveSegmentation(m_ecalReadoutName);
+  info() << "Retrieving Hcal segmentation" << endmsg;
+  m_hcalSegmentation = retrieveSegmentation(m_hcalReadoutName);
 
   return StatusCode::SUCCESS;
 }
@@ -67,14 +49,14 @@ tower CombinedCaloTowerTool::towersNumber() {
   std::vector<double> listEtaMax;
   listPhiMax.reserve(10);
   listEtaMax.reserve(10);
-  //if (m_ecalCells!="") {
-  listPhiMax.push_back(fabs(m_ecalSegmentation->offsetPhi()) + M_PI);
-  listEtaMax.push_back(fabs(m_ecalSegmentation->offsetEta()) + m_ecalSegmentation->gridSizeEta() * 0.5);
-    //}
-  //if (m_hcalCells!="") {
-  listPhiMax.push_back(fabs(m_hcalSegmentation->offsetPhi()) + M_PI);
-  listEtaMax.push_back(fabs(m_hcalSegmentation->offsetEta()) + m_hcalSegmentation->gridSizeEta() * 0.5);
-  //}
+  if (m_ecalSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_ecalSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_ecalSegmentation->offsetEta()) + m_ecalSegmentation->gridSizeEta() * 0.5);
+  }
+  if (m_hcalSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_hcalSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_hcalSegmentation->offsetEta()) + m_hcalSegmentation->gridSizeEta() * 0.5);
+  }
   
   //Maximum eta & phi of the calorimeter system
   m_phiMax = *std::max_element(listPhiMax.begin(), listPhiMax.end());
@@ -98,19 +80,25 @@ tower CombinedCaloTowerTool::towersNumber() {
 }
 
 uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
+  uint totalNumberOfCells = 0;
   // 1. ECAL
   // Get the input collection with cells from simulation + digitisation (after calibration and with noise)
   const fcc::CaloHitCollection* ecalCells = m_ecalCells.get();
   debug() << "Input cell collection size (electromagnetic calorimeter): " << ecalCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  CellsIntoTowers(aTowers, ecalCells, m_ecalSegmentation);
-
+  if (m_ecalSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, ecalCells, m_ecalSegmentation);
+    totalNumberOfCells += ecalCells->size();
+  }
+  // 2. HCAL
   const fcc::CaloHitCollection* hcalCells = m_hcalCells.get();
   debug() << "Input cell collection size (hadronic calorimeter): " << hcalCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  CellsIntoTowers(aTowers, hcalCells, m_hcalSegmentation);
- 
-  return ecalCells->size() + hcalCells->size();
+  if (m_hcalSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, hcalCells, m_hcalSegmentation);
+    totalNumberOfCells += hcalCells->size();
+  }
+  return totalNumberOfCells;
 }
 
 uint CombinedCaloTowerTool::idEta(float aEta) const {
@@ -222,3 +210,20 @@ void CombinedCaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTo
     }
   }
 }
+
+DD4hep::DDSegmentation::GridPhiEta* CombinedCaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
+  DD4hep::DDSegmentation::GridPhiEta* segmentation = nullptr;
+  if (m_geoSvc->lcdd()->readouts().find(aReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
+    info() << "Readout does not exist! Please check if it is correct. Processing without it." << endmsg;
+  }
+  else {
+    info() << "Readout " << aReadoutName << "found." << endmsg;
+    segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+								     m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
+    if (segmentation == nullptr) {
+      error() << "There is no phi-eta segmentation for the readout " << aReadoutName << " defined." << endmsg;
+    }
+  }
+  return segmentation;
+}
+

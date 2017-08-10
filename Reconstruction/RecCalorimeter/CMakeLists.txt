@@ -57,6 +57,10 @@ gaudi_add_test(ECalWithEndcapDigitisation
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/runEcalWithEndcapsDigitisation.py)
 
+gaudi_add_test(ECalWithEndcapAndFwdDigitisation
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/runEcalWithEndcapsAndFwdDigitisation.py)
+
 gaudi_add_test(simulateHCal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/geant_fullsim_hcal_singleparticles.py)

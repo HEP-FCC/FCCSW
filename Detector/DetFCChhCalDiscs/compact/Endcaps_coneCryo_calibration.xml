@@ -106,7 +106,7 @@
                   z_offset="CryoEndcap_z1+CryoThicknessFront+(CryoEndcap_z2-CryoEndcap_z1-CryoThicknessFront-CryoThicknessBack)/2." material="LAr" phi0="0" deltaphi="360*deg"/>
     </detector>
 
-    <detector name="EMEC" type="CaloEndcapDiscs" id="ExtBarECal_id" readout="EMECPhiEta">
+    <detector name="EMEC" type="CaloDiscs" id="ExtBarECal_id" readout="EMECPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="EMEC_rmin1"  rmin2="EMEC_rmin2" rmax="EMEC_rmax" dz="(EMEC_z2-EMEC_z1)/2." z_offset="EMEC_z1+(EMEC_z2-EMEC_z1)/2."/>
       <active thickness="EMEC_lAr_thickness">
@@ -128,7 +128,7 @@
       </readout>
     </detector>
 
-    <detector name="HEC" type="CaloEndcapDiscs" id="HadronicEndCap_id" readout="HECPhiEta">
+    <detector name="HEC" type="CaloDiscs" id="HadronicEndCap_id" readout="HECPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="HEC_rmin1"  rmin2="HEC_rmin2" rmax="HEC_rmax" dz="(HEC_z2-HEC_z1)/2." z_offset="HEC_z1+(HEC_z2-HEC_z1)/2."/>
       <active thickness="HEC_lAr_thickness">

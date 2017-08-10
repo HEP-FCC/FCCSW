@@ -103,6 +103,8 @@ public:
    *   @param[in] aSegmentation Segmentation of the calorimeter
    */
   void CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells, DD4hep::DDSegmentation::GridPhiEta* aSegmentation);
+  DD4hep::DDSegmentation::GridPhiEta* retrieveSegmentation(std::string aReadoutName);
+
 private:
   /// Handle for electromagnetic calorimeter cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_ecalCells{"ecalCells", Gaudi::DataHandle::Reader, this};
