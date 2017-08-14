@@ -45,7 +45,19 @@ createcellsBarrel = CreateCaloCells("CreateCaloCellsBarrel",
                                     addCellNoise=False, filterCellNoise=False,
                                     OutputLevel=DEBUG)
 createcellsBarrel.hits.Path="ECalBarrelHits"
-createcellsBarrel.cells.Path="ECalBarrelCells"
+createcellsBarrel.cells.Path="ECalBarrelCellsNoPhi"
+# Retrieve phi positions from centres of cells
+from Configurables import CreateVolumeCaloPositions
+positionsEcalBarrel = CreateVolumeCaloPositions("positionsEcalBarrel", OutputLevel = INFO)
+positionsEcalBarrel.hits.Path = "ECalBarrelCellsNoPhi"
+positionsEcalBarrel.positionedHits.Path = "ECalBarrelPositions"
+from Configurables import RedoSegmentation
+resegmentEcal = RedoSegmentation("ReSegmentationEcalBarrel",
+                             oldReadoutName = 'ECalBarrelEta',
+                             oldSegmentationIds = ['eta'],
+                             newReadoutName = 'ECalBarrelPhiEta')
+resegmentEcal.inhits.Path = "ECalBarrelPositions"
+resegmentEcal.outhits.Path = "ECalBarrelCells"
 createcellsEndcap = CreateCaloCells("CreateCaloCellsEndcap",
                                     doCellCalibration=True,
                                     calibTool=calibcellsEndcap,
@@ -65,12 +77,16 @@ audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 createcellsBarrel.AuditExecute = True
+positionsEcalBarrel.AuditExecute = True
+resegmentEcal.AuditExecute = True
 createcellsEndcap.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [geantsim,
               createcellsBarrel,
+              positionsEcalBarrel,
+              resegmentEcal,
               createcellsEndcap,
               out
               ],

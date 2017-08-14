@@ -36,7 +36,20 @@ createcells = CreateCaloCells("CreateCaloCells",
                               addCellNoise=False, filterCellNoise=False,
                               OutputLevel=DEBUG)
 createcells.hits.Path="ECalBarrelHits"
-createcells.cells.Path="ECalBarrelCells"
+createcells.cells.Path="ECalBarrelCellsNoPhi"
+# Retrieve phi positions from centres of cells
+from Configurables import CreateVolumeCaloPositions
+positionsEcalBarrel = CreateVolumeCaloPositions("positionsEcalBarrel", OutputLevel = INFO)
+positionsEcalBarrel.hits.Path = "ECalBarrelCellsNoPhi"
+positionsEcalBarrel.positionedHits.Path = "ECalBarrelPositions"
+from Configurables import RedoSegmentation
+resegmentEcal = RedoSegmentation("ReSegmentationEcalBarrel",
+                             oldReadoutName = 'ECalBarrelEta',
+                             oldSegmentationIds = ['eta'],
+                             newReadoutName = 'ECalBarrelPhiEta')
+resegmentEcal.inhits.Path = "ECalBarrelPositions"
+resegmentEcal.outhits.Path = "ECalBarrelCells"
+
 
 out = PodioOutput("out", filename="output_ecalInclinedDigi_test.root",
                    OutputLevel=DEBUG)
@@ -49,11 +62,15 @@ audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 createcells.AuditExecute = True
+positionsEcalBarrel.AuditExecute = True
+resegmentEcal.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [geantsim,
               createcells,
+              positionsEcalBarrel,
+              resegmentEcal,
               out
               ],
     EvtSel = 'NONE',
