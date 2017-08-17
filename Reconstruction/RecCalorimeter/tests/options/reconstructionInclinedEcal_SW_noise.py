@@ -25,17 +25,15 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 
 # common ECAL specific information
 # readout name
-ecalReadoutName = "ECalHitsEta"
-ecalReadoutNamePhiEta = "ECalHitsPhiEta"
+ecalReadoutName = "ECalBarrelEta"
+ecalReadoutNamePhiEta = "ECalBarrelPhiEta"
 # active material identifier name
 ecalIdentifierName = "layer"
 # active material volume name
 ecalVolumeName = "layer"
 # ECAL bitfield names & values
-ecalFieldNames=["system"]
-ecalFieldValues=[5]
-#ecalFieldNames=["system"]                                                                                                                           
-#ecalFieldValues=[5]
+ecalFieldNames=["system","cryo","type","subtype"]
+ecalFieldValues=[5,0,0,0]
 # Number of layers to be merged in each layer
 ecalNumberOfLayersToMerge=[4] + [18] * 7      
 # number of ECAL layers
@@ -86,6 +84,7 @@ noiseEcells = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
                                          addPileup = False,
                                          activeFieldName = "layer",
                                          numRadialLayers = 8,
+                                         readoutName = ecalReadoutNamePhiEta,
                                          noiseFileName="/afs/cern.ch/user/n/novaj/public/fcc_elecNoise_fcc_inclined.root")
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   readoutName = ecalReadoutNamePhiEta,

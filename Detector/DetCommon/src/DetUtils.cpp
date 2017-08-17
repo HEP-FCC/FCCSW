@@ -1,3 +1,4 @@
+
 #include "DetCommon/DetUtils.h"
 
 // DD4hep
@@ -139,8 +140,6 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
 }
 
 std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
-  // get half-widths,
-  auto tubeSizes = tubeDimensions(aVolumeId);
   // get segmentation number of bins in phi
   uint phiCellNumber = aSeg.phiBins();
   // get segmentation cell width in eta
