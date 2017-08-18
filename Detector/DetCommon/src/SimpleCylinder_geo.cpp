@@ -6,7 +6,7 @@ namespace det {
   @author Clement Helsens
 **/
 static DD4hep::Geometry::Ref_t
-createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector) {
+createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector sensDet) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
   DD4hep::Geometry::DetElement cylinderDet(name, x_det.id());
@@ -21,6 +21,12 @@ createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Se
   DD4hep::Geometry::Volume cylinderVol(
       x_det.nameStr() + "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()));
 
+  if (x_det.isSensitive()) {
+    DD4hep::XML::Dimension sdType(x_det.child(_U(sensitive)));
+    cylinderVol.setSensitiveDetector(sensDet);
+    sensDet.setType(sdType.typeStr());
+  }
+
   DD4hep::Geometry::PlacedVolume cylinderPhys;
 
   double zoff = cylinderDim.z_offset();
@@ -31,7 +37,7 @@ createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Se
   } else
     cylinderPhys = experimentalHall.placeVolume(cylinderVol);
 
-  cylinderPhys.addPhysVolID("system", x_det.id()).addPhysVolID("side", 0);
+  cylinderPhys.addPhysVolID("system", x_det.id());
 
   cylinderDet.setPlacement(cylinderPhys);
 
