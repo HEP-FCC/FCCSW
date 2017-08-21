@@ -25,7 +25,7 @@ geantsim = SimG4Alg("SimG4Alg",
 from Configurables import CalibrateInLayersTool
 calibcells = CalibrateInLayersTool("Calibrate",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                   samplingFraction = [0.12125] * 4 + [0.14283] * 18 + [0.16354] * 18 + [0.17662] * 18 + [0.18867] * 18 + [0.19890] * 18 + [0.20637] * 18 + [0.20802] * 18,
+                                   samplingFraction = [0.12125] + [0.14283] + [0.16354] + [0.17662] + [0.18867] + [0.19890] + [0.20637] + [0.20802],
                                    readoutName = "ECalBarrelEta",
                                    layerFieldName = "layer")
 
@@ -36,7 +36,20 @@ createcells = CreateCaloCells("CreateCaloCells",
                               addCellNoise=False, filterCellNoise=False,
                               OutputLevel=DEBUG)
 createcells.hits.Path="ECalBarrelHits"
-createcells.cells.Path="ECalBarrelCells"
+createcells.cells.Path="ECalBarrelCellsNoPhi"
+# Retrieve phi positions from centres of cells
+from Configurables import CreateVolumeCaloPositions
+positionsEcalBarrel = CreateVolumeCaloPositions("positionsEcalBarrel", OutputLevel = INFO)
+positionsEcalBarrel.hits.Path = "ECalBarrelCellsNoPhi"
+positionsEcalBarrel.positionedHits.Path = "ECalBarrelPositions"
+from Configurables import RedoSegmentation
+resegmentEcal = RedoSegmentation("ReSegmentationEcalBarrel",
+                             oldReadoutName = 'ECalBarrelEta',
+                             oldSegmentationIds = ['eta'],
+                             newReadoutName = 'ECalBarrelPhiEta')
+resegmentEcal.inhits.Path = "ECalBarrelPositions"
+resegmentEcal.outhits.Path = "ECalBarrelCells"
+
 
 out = PodioOutput("out", filename="output_ecalInclinedDigi_test.root",
                    OutputLevel=DEBUG)
@@ -49,11 +62,15 @@ audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 createcells.AuditExecute = True
+positionsEcalBarrel.AuditExecute = True
+resegmentEcal.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [geantsim,
               createcells,
+              positionsEcalBarrel,
+              resegmentEcal,
               out
               ],
     EvtSel = 'NONE',

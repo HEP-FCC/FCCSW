@@ -44,8 +44,19 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
     lLog << MSG::ERROR << "Overlap between active and passive cannot be more than half of passive plane!" << endmsg;
     incidentSvc->fireIncident(Incident("ECalConstruction", "GeometryFailure"));
   }
-  DD4hep::XML::DetElement layer = calo.child(_Unicode(layer));
-  uint numLayers = layer.dimensions().repeat();
+  DD4hep::XML::DetElement layers = calo.child(_Unicode(layers));
+  uint numLayers = 0;
+  std::vector<double> layerHeight;
+  double layersTotalHeight = 0;
+  for (DD4hep::XML::Collection_t layer_coll(layers, _Unicode(layer)); layer_coll; ++layer_coll) {
+    DD4hep::XML::Component layer = layer_coll;
+    numLayers += layer.repeat();
+    for (int iLay = 0; iLay < layer.repeat(); iLay++) {
+      layerHeight.push_back(layer.thickness());
+    }
+    layersTotalHeight += layer.repeat() * layer.thickness();
+  }
+  lLog << MSG::DEBUG << "Number of layers: " << numLayers << " total thickness " << layersTotalHeight << endmsg;
 
   DD4hep::XML::DetElement readout = calo.child(_Unicode(readout));
   std::string readoutMaterial = readout.materialStr();
@@ -150,48 +161,67 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   DD4hep::Geometry::Volume passiveGlueVol(passiveGlueMaterial + "_passive", passiveGlueShape,
                                           aLcdd.material(passiveGlueMaterial));
 
-  double layerHeight = planeLength / numLayers;
-  double layerOffset = -planeLength / 2. + layerHeight / 2.;
+  // rescale layer thicknesses
+  double scaleLayerThickness = planeLength / layersTotalHeight;
+  layersTotalHeight = 0;
+  for (uint iLay = 0; iLay < numLayers; iLay++) {
+    layerHeight[iLay] *= scaleLayerThickness;
+    layersTotalHeight += layerHeight[iLay];
+    lLog << MSG::DEBUG << "Thickness of layer " << iLay << " : " << layerHeight[iLay] << endmsg;
+  }
+  double layerFirstOffset = -planeLength / 2. + layerHeight[0] / 2.;
   if (passiveInner.isSensitive()) {
     lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight / 2.);
-    DD4hep::Geometry::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
-                                                  aLcdd.material(passiveInnerMaterial));
-    layerPassiveInnerVol.setSensitiveDetector(aSensDet);
+    double layerOffset = layerFirstOffset;
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
-      DD4hep::Geometry::PlacedVolume layerPassiveInnerPhysVol = passiveInnerVol.placeVolume(
-          layerPassiveInnerVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      DD4hep::Geometry::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight[iLayer] / 2.);
+      DD4hep::Geometry::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
+                                                    aLcdd.material(passiveInnerMaterial));
+      layerPassiveInnerVol.setSensitiveDetector(aSensDet);
+      DD4hep::Geometry::PlacedVolume layerPassiveInnerPhysVol =
+          passiveInnerVol.placeVolume(layerPassiveInnerVol, DD4hep::Geometry::Position(0, 0, layerOffset));
       layerPassiveInnerPhysVol.addPhysVolID("layer", iLayer);
       DD4hep::Geometry::DetElement layerPassiveInnerDetElem("layer", iLayer);
       layerPassiveInnerDetElem.setPlacement(layerPassiveInnerPhysVol);
+      if (iLayer != numLayers - 1) {
+        layerOffset += layerHeight[iLayer] / 2. + layerHeight[iLayer + 1] / 2.;
+      }
     }
   }
   if (passiveOuter.isSensitive()) {
     lLog << MSG::DEBUG << "Passive outer volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box layerPassiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), layerHeight / 2.);
-    DD4hep::Geometry::Volume layerPassiveOuterVol(passiveOuterMaterial, layerPassiveOuterShape,
-                                                  aLcdd.material(passiveOuterMaterial));
-    layerPassiveOuterVol.setSensitiveDetector(aSensDet);
+    double layerOffset = layerFirstOffset;
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
-      DD4hep::Geometry::PlacedVolume layerPassiveOuterPhysVol = passiveOuterVol.placeVolume(
-          layerPassiveOuterVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      DD4hep::Geometry::Box layerPassiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), layerHeight[iLayer] / 2.);
+      DD4hep::Geometry::Volume layerPassiveOuterVol(passiveOuterMaterial, layerPassiveOuterShape,
+                                                    aLcdd.material(passiveOuterMaterial));
+      layerPassiveOuterVol.setSensitiveDetector(aSensDet);
+      DD4hep::Geometry::PlacedVolume layerPassiveOuterPhysVol =
+          passiveOuterVol.placeVolume(layerPassiveOuterVol, DD4hep::Geometry::Position(0, 0, layerOffset));
       layerPassiveOuterPhysVol.addPhysVolID("layer", iLayer);
       DD4hep::Geometry::DetElement layerPassiveOuterDetElem("layer", iLayer);
       layerPassiveOuterDetElem.setPlacement(layerPassiveOuterPhysVol);
+      if (iLayer != numLayers - 1) {
+        layerOffset += layerHeight[iLayer] / 2. + layerHeight[iLayer + 1] / 2.;
+      }
     }
   }
   if (passiveGlue.isSensitive()) {
     lLog << MSG::DEBUG << "Passive glue volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box layerPassiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), layerHeight / 2.);
-    DD4hep::Geometry::Volume layerPassiveGlueVol(passiveGlueMaterial, layerPassiveGlueShape,
-                                                 aLcdd.material(passiveGlueMaterial));
-    layerPassiveGlueVol.setSensitiveDetector(aSensDet);
+    double layerOffset = layerFirstOffset;
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
-      DD4hep::Geometry::PlacedVolume layerPassiveGluePhysVol = passiveGlueVol.placeVolume(
-          layerPassiveGlueVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+      DD4hep::Geometry::Box layerPassiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), layerHeight[iLayer] / 2.);
+      DD4hep::Geometry::Volume layerPassiveGlueVol(passiveGlueMaterial, layerPassiveGlueShape,
+                                                   aLcdd.material(passiveGlueMaterial));
+      layerPassiveGlueVol.setSensitiveDetector(aSensDet);
+      DD4hep::Geometry::PlacedVolume layerPassiveGluePhysVol =
+          passiveGlueVol.placeVolume(layerPassiveGlueVol, DD4hep::Geometry::Position(0, 0, layerOffset));
       layerPassiveGluePhysVol.addPhysVolID("layer", iLayer);
       DD4hep::Geometry::DetElement layerPassiveGlueDetElem("layer", iLayer);
       layerPassiveGlueDetElem.setPlacement(layerPassiveGluePhysVol);
+      if (iLayer != numLayers - 1) {
+        layerOffset += layerHeight[iLayer] / 2. + layerHeight[iLayer + 1] / 2.;
+      }
     }
   }
 
@@ -222,15 +252,19 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
   DD4hep::Geometry::Volume readoutVol(readoutMaterial, readoutShape, aLcdd.material(readoutMaterial));
   if (readout.isSensitive()) {
     lLog << MSG::INFO << "Readout volume set as sensitive" << endmsg;
-    DD4hep::Geometry::Box layerReadoutShape(readoutThickness / 2., caloDim.dz(), layerHeight / 2.);
-    DD4hep::Geometry::Volume layerReadoutVol(readoutMaterial, layerReadoutShape, aLcdd.material(readoutMaterial));
-    layerReadoutVol.setSensitiveDetector(aSensDet);
+    double layerOffset = layerFirstOffset;
     for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+      DD4hep::Geometry::Box layerReadoutShape(readoutThickness / 2., caloDim.dz(), layerHeight[iLayer] / 2.);
+      DD4hep::Geometry::Volume layerReadoutVol(readoutMaterial, layerReadoutShape, aLcdd.material(readoutMaterial));
+      layerReadoutVol.setSensitiveDetector(aSensDet);
       DD4hep::Geometry::PlacedVolume layerReadoutPhysVol =
-          readoutVol.placeVolume(layerReadoutVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight));
+          readoutVol.placeVolume(layerReadoutVol, DD4hep::Geometry::Position(0, 0, layerOffset));
       layerReadoutPhysVol.addPhysVolID("layer", iLayer);
       DD4hep::Geometry::DetElement layerReadoutDetElem("layer", iLayer);
       layerReadoutDetElem.setPlacement(layerReadoutPhysVol);
+      if (iLayer != numLayers - 1) {
+        layerOffset += layerHeight[iLayer] / 2. + layerHeight[iLayer + 1] / 2.;
+      }
     }
   }
 
@@ -309,32 +343,38 @@ static DD4hep::Geometry::Ref_t createECalBarrelInclined(DD4hep::Geometry::LCDD& 
 
   std::vector<DD4hep::Geometry::PlacedVolume> layerPhysVols;
   // place layers within active volume
-  double layerIncrease = (activeOutThickness - activeInThickness) / numLayers;
-  double layerInThickness = activeInThickness;
-  double layerOutThickness = activeInThickness + layerIncrease;
-  lLog << MSG::DEBUG << " number of layers = " << numLayers << " layer height (cm) = " << layerHeight << endmsg;
+  std::vector<double> layerInThickness;
+  std::vector<double> layerOutThickness;
+  double layerIncreasePerUnitThickness = (activeOutThickness - activeInThickness) / layersTotalHeight;
+  for (uint iLay = 0; iLay < numLayers; iLay++) {
+    if (iLay == 0) {
+      layerInThickness.push_back(activeInThickness);
+    } else {
+      layerInThickness.push_back(layerOutThickness[iLay - 1]);
+    }
+    layerOutThickness.push_back(layerInThickness[iLay] + layerIncreasePerUnitThickness * layerHeight[iLay]);
+  }
+  double layerOffset = layerFirstOffset;
   for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
-    DD4hep::Geometry::Trapezoid layerOuterShape(layerInThickness, layerOutThickness, caloDim.dz(), caloDim.dz(),
-                                                layerHeight / 2.);
+    DD4hep::Geometry::Trapezoid layerOuterShape(layerInThickness[iLayer], layerOutThickness[iLayer], caloDim.dz(),
+                                                caloDim.dz(), layerHeight[iLayer] / 2.);
     DD4hep::Geometry::SubtractionSolid layerShapeNoReadout(layerOuterShape, readoutShape);
     DD4hep::Geometry::SubtractionSolid layerShapeNoPassiveAbove(
         layerShapeNoReadout, passiveShape,
-        DD4hep::Geometry::Transform3D(
-            DD4hep::Geometry::RotationY(-dPhi / 2.),
-            DD4hep::Geometry::Position(-fabs(xprim), 0, fabs(zprim) - (layerOffset + iLayer * layerHeight))));
+        DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationY(-dPhi / 2.),
+                                      DD4hep::Geometry::Position(-fabs(xprim), 0, fabs(zprim) - layerOffset)));
     // subtract passive volume below
     DD4hep::Geometry::SubtractionSolid layerShape(
         layerShapeNoPassiveAbove, passiveShape,
-        DD4hep::Geometry::Transform3D(
-            DD4hep::Geometry::RotationY(dPhi / 2.),
-            DD4hep::Geometry::Position(fabs(xprimB), 0, -fabs(zprimB) - (layerOffset + iLayer * layerHeight))));
+        DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationY(dPhi / 2.),
+                                      DD4hep::Geometry::Position(fabs(xprimB), 0, -fabs(zprimB) - layerOffset)));
     DD4hep::Geometry::Volume layerVol("layer", layerShape, aLcdd.material(activeMaterial));
     layerVol.setSensitiveDetector(aSensDet);
-    layerPhysVols.push_back(
-        activeVol.placeVolume(layerVol, DD4hep::Geometry::Position(0, 0, layerOffset + iLayer * layerHeight)));
+    layerPhysVols.push_back(activeVol.placeVolume(layerVol, DD4hep::Geometry::Position(0, 0, layerOffset)));
     layerPhysVols.back().addPhysVolID("layer", iLayer);
-    layerInThickness = layerOutThickness;
-    layerOutThickness = layerOutThickness + layerIncrease;
+    if (iLayer != numLayers - 1) {
+      layerOffset += layerHeight[iLayer] / 2. + layerHeight[iLayer + 1] / 2.;
+    }
   }
 
   DD4hep::Geometry::DetElement bathDetElem(caloDetElem, "bath", 1);

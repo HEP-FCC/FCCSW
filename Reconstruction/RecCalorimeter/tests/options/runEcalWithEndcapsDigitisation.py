@@ -29,7 +29,7 @@ geantsim = SimG4Alg("SimG4Alg",
 from Configurables import CalibrateInLayersTool
 calibcellsBarrel = CalibrateInLayersTool("CalibrateBarrel",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                   samplingFraction = [0.12125] * 4 + [0.14283] * 18 + [0.16354] * 18 + [0.17662] * 18 + [0.18867] * 18 + [0.19890] * 18 + [0.20637] * 18 + [0.20802] * 18,
+                                   samplingFraction = [0.12125] + [0.14283] + [0.16354] + [0.17662] + [0.18867] + [0.19890] + [0.20637] + [0.20802],
                                    readoutName = "ECalBarrelEta",
                                    layerFieldName = "layer")
 calibcellsEndcap = CalibrateInLayersTool("CalibrateEndcap",
@@ -45,7 +45,19 @@ createcellsBarrel = CreateCaloCells("CreateCaloCellsBarrel",
                                     addCellNoise=False, filterCellNoise=False,
                                     OutputLevel=DEBUG)
 createcellsBarrel.hits.Path="ECalBarrelHits"
-createcellsBarrel.cells.Path="ECalBarrelCells"
+createcellsBarrel.cells.Path="ECalBarrelCellsNoPhi"
+# Retrieve phi positions from centres of cells
+from Configurables import CreateVolumeCaloPositions
+positionsEcalBarrel = CreateVolumeCaloPositions("positionsEcalBarrel", OutputLevel = INFO)
+positionsEcalBarrel.hits.Path = "ECalBarrelCellsNoPhi"
+positionsEcalBarrel.positionedHits.Path = "ECalBarrelPositions"
+from Configurables import RedoSegmentation
+resegmentEcal = RedoSegmentation("ReSegmentationEcalBarrel",
+                             oldReadoutName = 'ECalBarrelEta',
+                             oldSegmentationIds = ['eta'],
+                             newReadoutName = 'ECalBarrelPhiEta')
+resegmentEcal.inhits.Path = "ECalBarrelPositions"
+resegmentEcal.outhits.Path = "ECalBarrelCells"
 createcellsEndcap = CreateCaloCells("CreateCaloCellsEndcap",
                                     doCellCalibration=True,
                                     calibTool=calibcellsEndcap,
@@ -65,12 +77,16 @@ audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 createcellsBarrel.AuditExecute = True
+positionsEcalBarrel.AuditExecute = True
+resegmentEcal.AuditExecute = True
 createcellsEndcap.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [geantsim,
               createcellsBarrel,
+              positionsEcalBarrel,
+              resegmentEcal,
               createcellsEndcap,
               out
               ],

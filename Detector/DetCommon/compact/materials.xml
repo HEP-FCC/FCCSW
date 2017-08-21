@@ -165,11 +165,6 @@
     <composite n="1" ref="Ar"/>
   </material>
 
- <material name="LAr2">
-    <D value="1.396" unit="g/cm3" />
-    <composite n="1" ref="Ar"/>
-  </material>
-
   <!-- from  DD4hep/examples/SimpleDetector/compact/materials.xml -->
   <material name="PCB" state="solid">
     <D unit="g/cm3" value="1.7"/>
@@ -178,6 +173,32 @@
     <fraction n="0.278042" ref="C"/>
     <fraction n="0.0684428" ref="H"/>
     <fraction n="0.0671091" ref="Br"/>
+  </material>
+
+ <!-- Steel for shielding -->
+  <!-- from FLUKA simulations (M.I.Besana) -->
+  <material name="SteelShielding">
+    <D value="7.9" unit="g/cm3" />
+    <fraction n="0.6868" ref="Fe"/>
+    <fraction n="0.17" ref="Cr" />
+    <fraction n="0.032" ref="Mo" />
+    <fraction n="0.11" ref="Ni" />
+    <fraction n="2.E-4" ref="C" />
+    <fraction n="0.001" ref="N" />
+  </material>
+
+  <material name="H_CH2">
+    <D value="15.0345" unit="g/mol" />
+    <fraction n="0.201125" ref="H" />
+    <fraction n="0.798875" ref="C" />
+  </material>
+
+  <material name="lithiatedPolyethylene">
+    <D value="1." unit="g/cm3" />
+    <fraction n="0.12935" ref="H_CH2"/>
+    <fraction n="0.77065" ref="C" />
+    <fraction n="0.026750" ref="Lithium" />
+    <fraction n="0.07324" ref="Fluorine" />
   </material>
 
   <!-- prepreg glue (C5H8O4Si) between steel and lead in absorber of EM calo -->
