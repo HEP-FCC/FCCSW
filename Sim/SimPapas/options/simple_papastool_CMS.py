@@ -19,10 +19,6 @@ from Configurables import PodioInput, ReadTestConsumer
 podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
 
 
-from Configurables import PapasAlg, PapasImportParticlesTool
-from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
-from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
-
 from Configurables import CMSFieldSvc, CMSTrackerSvc, CMSEcalSvc, CMSHcalSvc
 fieldsvc = CMSFieldSvc("CMSFieldSvc"); #todo add in remaining parameters
 ecalsvc = CMSEcalSvc("CMSEcalSvc");
@@ -35,6 +31,12 @@ detservice = CMSDetSvc("CMSDetSvc",
                         hcalService = "CMSHcalSvc",
                         trackerService = "CMSTrackerSvc",
                         fieldService = "CMSFieldSvc");
+
+
+
+from Configurables import PapasAlg, PapasImportParticlesTool
+from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
+from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
 
 #Notes:
 #
