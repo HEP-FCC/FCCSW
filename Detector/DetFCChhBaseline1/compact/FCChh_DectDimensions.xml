@@ -13,7 +13,7 @@
         Dimensions for FCChhBaseline1: Design with Twin Solenoid, 6 T, 12 m bore, 10 Tm dipole
         Sources: FCC hadron detector meeting 31 Aug 2016 (excel table): https://indico.cern.ch/event/557687/
                  FCC hadron detector meeting 28 Sep 2016 (slides): https://indico.cern.ch/event/557688/
-                 Reference Geometry v7 (privately exchanged)
+                 Reference Geometry v7, can be found: /eos/experiment/fcc/hh/simulation/reference_geometry_5m_4T_v7.pdf
     </comment>
   </info>
 
@@ -42,6 +42,7 @@
     <constant name="BarSolenoidCryo2_rmin" value="6250*mm"/>
     <constant name="BarSolenoidCryo2_rmax" value="6305*mm"/>
     <constant name="BarSolenoidCryoFlange_dz" value="53.5*mm"/>
+    <constant name="BarSolenoidCryoFlange_offset" value="BarSolenoidCryo_dz-BarSolenoidCryoFlange_dz"/>
 
     <!-- Forward Solenoids -->
     <constant name="FwdSolenoid_dz" value="1700*mm"/>
@@ -55,6 +56,8 @@
     <constant name="FwdSolenoidCryo2_rmax" value="3560*mm"/>
     <constant name="FwdSolenoidCryoFlange1_dz" value="35*mm"/>
     <constant name="FwdSolenoidCryoFlange2_dz" value="100*mm"/>
+    <constant name="FwdSolenoidCryoFlange1_offset" value="FwdSolenoid_zOffset-FwdSolenoidCryo_dz+FwdSolenoidCryoFlange1_dz"/>
+    <constant name="FwdSolenoidCryoFlange2_offset" value="FwdSolenoid_zOffset+FwdSolenoidCryo_dz-FwdSolenoidCryoFlange2_dz"/>
 
     <!-- TRACKER DIMENSIONS -->
     <constant name="Tracker_rmin" value="23.28*mm"/>
@@ -108,7 +111,7 @@
     <constant name="ExtBarHCal2_rmax" value="4590*mm"/>
     <constant name="ExtBarHCal1_dz" value="150*mm"/>
     <constant name="ExtBarHCal1_zOffset" value="5000*mm + ExtBarHCal1_dz"/>
-    <constant name="ExtBarHCal2_dz" value="1350*mm"/>
+    <constant name="ExtBarHCal2_dz" value="1600*mm"/>
     <constant name="ExtBarHCal2_zOffset" value="ExtBarHCal1_zOffset + ExtBarHCal1_dz + ExtBarHCal2_dz"/>
     <!-- Forward calorimeters (EMFWD + HFWD) -->
     <constant name="FwdECal_id" value="10"/>
@@ -137,7 +140,7 @@
     <constant name="EndCapMuon_rmin2" value="2724.47*mm"/>
     <constant name="EndCapMuon_rmax2" value="4750*mm"/>
     <constant name="EndCapMuon_dz" value="500*mm"/>
-    <constant name="EndCapMuon_zOffset" value="9750*mm"/>
+    <constant name="EndCapMuon_zOffset" value="9500*mm"/>
 
     <!-- Muon system forward -->
     <constant name="FwdBarMuon_id" value="14"/>
@@ -150,7 +153,7 @@
     <constant name="FwdMuon_rmin" value="30*mm"/>
     <constant name="FwdMuon_rmax" value="7000*mm"/>
     <constant name="FwdMuon_dz" value="1500*mm"/>
-    <constant name="FwdMuon_zOffset" value="20500*mm + FwdMuon_dz"/>
+    <constant name="FwdMuon_zOffset" value="19700*mm + FwdMuon_dz"/> 
 
   </define>
 
