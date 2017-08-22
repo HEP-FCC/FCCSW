@@ -57,11 +57,11 @@
   </define>
   <readouts>
     <readout name="EMFwdPhiEta">
-      <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
+      <segmentation type="GridPhiEta" phi_bins="256" offset_phi="-pi+(pi/256.)" grid_size_eta="0.025" offset_eta="-5.9975"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
     </readout>
     <readout name="HFwdPhiEta">
-      <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
+      <segmentation type="GridPhiEta" phi_bins="128" offset_phi="-pi+(pi/128.)" grid_size_eta="0.05" offset_eta="-5.985"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
     </readout>
   </readouts>

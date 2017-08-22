@@ -106,20 +106,32 @@ public:
   DD4hep::DDSegmentation::GridPhiEta* retrieveSegmentation(std::string aReadoutName);
 
 private:
-  /// Handle for electromagnetic calorimeter cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_ecalCells{"ecalCells", Gaudi::DataHandle::Reader, this};
-  /// Handle for hadronic calorimeter cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_hcalCells{"hcalCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for electromagnetic barrel cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_ecalBarrelCells{"ecalBarrelCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for endcap calorimeter cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_calEndcapCells{"calEndcapCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for forward calorimeter cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_calFwdCells{"calFwdCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for hadronic barrel cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_hcalBarrelCells{"hcalBarrelCells", Gaudi::DataHandle::Reader, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Name of the electromagnetic calorimeter readout
-  Gaudi::Property<std::string> m_ecalReadoutName{this, "ecalReadoutName", "", "name of the ecal readout"};
-  /// Name of thehadronic calorimeter readout
-  Gaudi::Property<std::string> m_hcalReadoutName{this, "hcalReadoutName", "", "name of the hcal readout"};
-  /// PhiEta segmentation of the electromagnetic detector (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_ecalSegmentation;
-  /// PhiEta segmentation of the hadronic detector (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_hcalSegmentation;
+  /// Name of the electromagnetic barrel readout
+  Gaudi::Property<std::string> m_ecalBarrelReadoutName{this, "ecalBarrelReadoutName", "", "name of the ecal barrel readout"};
+  /// Name of the endcap calorimeter readout
+  Gaudi::Property<std::string> m_calEndcapReadoutName{this, "calEndcapReadoutName", "", "name of the calo endcap readout"};
+  /// Name of the forward calorimeter readout
+  Gaudi::Property<std::string> m_calFwdReadoutName{this, "calFwdReadoutName", "", "name of the fwd calo readout"};
+  /// Name of the hadronic barrel readout
+  Gaudi::Property<std::string> m_hcalBarrelReadoutName{this, "hcalBarrelReadoutName", "", "name of the hcal barrel readout"};
+  /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_ecalBarrelSegmentation;
+ /// PhiEta segmentation of the endcap calorimeter (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_calEndcapSegmentation;
+ /// PhiEta segmentation of the forward calorimeter (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_calFwdSegmentation;
+  /// PhiEta segmentation of the hadronic barrel (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_hcalBarrelSegmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
   Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
       "Radius used to calculate cluster position from eta and phi (in mm)"};

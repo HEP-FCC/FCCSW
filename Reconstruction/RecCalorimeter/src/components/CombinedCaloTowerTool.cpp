@@ -15,8 +15,10 @@ DECLARE_TOOL_FACTORY(CombinedCaloTowerTool)
 
 CombinedCaloTowerTool::CombinedCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
-  declareProperty("ecalCells", m_ecalCells, "");
-  declareProperty("hcalCells", m_hcalCells, "");
+  declareProperty("ecalBarrelCells", m_ecalBarrelCells, "");
+  declareProperty("calEndcapCells", m_calEndcapCells, "");
+  declareProperty("calFwdCells", m_calFwdCells, "");
+  declareProperty("hcalBarrelCells", m_hcalBarrelCells, "");
   declareInterface<ITowerTool>(this);
 }
 
@@ -33,10 +35,14 @@ StatusCode CombinedCaloTowerTool::initialize() {
 
   // check if readouts exist & retrieve PhiEta segmentations
   // if readout does not exist, reconstruction without this calorimeter part will be performed
-  info() << "Retrieving Ecal segmentation" << endmsg;
-  m_ecalSegmentation = retrieveSegmentation(m_ecalReadoutName);
-  info() << "Retrieving Hcal segmentation" << endmsg;
-  m_hcalSegmentation = retrieveSegmentation(m_hcalReadoutName);
+  info() << "Retrieving Ecal barrel segmentation" << endmsg;
+  m_ecalBarrelSegmentation = retrieveSegmentation(m_ecalBarrelReadoutName);
+  info() << "Retrieving endcap calorimeter segmentation" << endmsg;
+  m_calEndcapSegmentation = retrieveSegmentation(m_calEndcapReadoutName);
+  info() << "Retrieving forward calorimeter segmentation" << endmsg;
+  m_calFwdSegmentation = retrieveSegmentation(m_calFwdReadoutName);
+  info() << "Retrieving Hcal barrel segmentation" << endmsg;
+  m_hcalBarrelSegmentation = retrieveSegmentation(m_hcalBarrelReadoutName);
 
   return StatusCode::SUCCESS;
 }
@@ -49,13 +55,21 @@ tower CombinedCaloTowerTool::towersNumber() {
   std::vector<double> listEtaMax;
   listPhiMax.reserve(10);
   listEtaMax.reserve(10);
-  if (m_ecalSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_ecalSegmentation->offsetPhi()) + M_PI);
-    listEtaMax.push_back(fabs(m_ecalSegmentation->offsetEta()) + m_ecalSegmentation->gridSizeEta() * 0.5);
+  if (m_ecalBarrelSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_ecalBarrelSegmentation->offsetEta()) + m_ecalBarrelSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_hcalSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_hcalSegmentation->offsetPhi()) + M_PI);
-    listEtaMax.push_back(fabs(m_hcalSegmentation->offsetEta()) + m_hcalSegmentation->gridSizeEta() * 0.5);
+  if (m_calEndcapSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_calEndcapSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_calEndcapSegmentation->offsetEta()) + m_calEndcapSegmentation->gridSizeEta() * 0.5);
+  }
+  if (m_calFwdSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_calFwdSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_calFwdSegmentation->offsetEta()) + m_calFwdSegmentation->gridSizeEta() * 0.5);
+  }
+  if (m_hcalBarrelSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_hcalBarrelSegmentation->offsetEta()) + m_hcalBarrelSegmentation->gridSizeEta() * 0.5);
   }
   
   //Maximum eta & phi of the calorimeter system
@@ -81,23 +95,44 @@ tower CombinedCaloTowerTool::towersNumber() {
 
 uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   uint totalNumberOfCells = 0;
-  // 1. ECAL
-  // Get the input collection with cells from simulation + digitisation (after calibration and with noise)
-  const fcc::CaloHitCollection* ecalCells = m_ecalCells.get();
-  debug() << "Input cell collection size (electromagnetic calorimeter): " << ecalCells->size() << endmsg;
+
+  // 1. ECAL barrel
+  // Get the input collection with calorimeter cells
+  const fcc::CaloHitCollection* ecalBarrelCells = m_ecalBarrelCells.get();
+  debug() << "Input Ecal barrel cell collection size: " << ecalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_ecalSegmentation!=nullptr) {
-    CellsIntoTowers(aTowers, ecalCells, m_ecalSegmentation);
-    totalNumberOfCells += ecalCells->size();
+  if (m_ecalBarrelSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, ecalBarrelCells, m_ecalBarrelSegmentation);
+    totalNumberOfCells += ecalBarrelCells->size();
   }
-  // 2. HCAL
-  const fcc::CaloHitCollection* hcalCells = m_hcalCells.get();
-  debug() << "Input cell collection size (hadronic calorimeter): " << hcalCells->size() << endmsg;
+
+  // 2. Endcap calorimeter
+  const fcc::CaloHitCollection* calEndcapCells = m_calEndcapCells.get();
+  debug() << "Input calorimeter endcap cell collection size: " << calEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_hcalSegmentation!=nullptr) {
-    CellsIntoTowers(aTowers, hcalCells, m_hcalSegmentation);
-    totalNumberOfCells += hcalCells->size();
+  if (m_calEndcapSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, calEndcapCells, m_calEndcapSegmentation);
+    totalNumberOfCells += calEndcapCells->size();
   }
+
+  // 3. Forward calorimeter
+  const fcc::CaloHitCollection* calFwdCells = m_calFwdCells.get();
+  debug() << "Input forward calorimeter cell collection size: " << calFwdCells->size() << endmsg;
+  // Loop over a collection of calorimeter cells and build calo towers
+  if (m_calFwdSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, calFwdCells, m_calFwdSegmentation);
+    totalNumberOfCells += calFwdCells->size();
+  }
+
+  // 4. HCAL barrel
+  const fcc::CaloHitCollection* hcalBarrelCells = m_hcalBarrelCells.get();
+  debug() << "Input hadronic barrel cell collection size: " << hcalBarrelCells->size() << endmsg;
+  // Loop over a collection of calorimeter cells and build calo towers
+  if (m_hcalBarrelSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, hcalBarrelCells, m_hcalBarrelSegmentation);
+    totalNumberOfCells += hcalBarrelCells->size();
+  }
+
   return totalNumberOfCells;
 }
 
@@ -217,7 +252,7 @@ DD4hep::DDSegmentation::GridPhiEta* CombinedCaloTowerTool::retrieveSegmentation(
     info() << "Readout does not exist! Please check if it is correct. Processing without it." << endmsg;
   }
   else {
-    info() << "Readout " << aReadoutName << "found." << endmsg;
+    info() << "Readout " << aReadoutName << " found." << endmsg;
     segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
 								     m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
     if (segmentation == nullptr) {
