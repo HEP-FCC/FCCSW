@@ -19,6 +19,7 @@ CombinedCaloTowerTool::CombinedCaloTowerTool(const std::string& type, const std:
   declareProperty("calEndcapCells", m_calEndcapCells, "");
   declareProperty("calFwdCells", m_calFwdCells, "");
   declareProperty("hcalBarrelCells", m_hcalBarrelCells, "");
+  declareProperty("hcalExtBarrelCells", m_hcalExtBarrelCells, "");
   declareInterface<ITowerTool>(this);
 }
 
@@ -43,6 +44,8 @@ StatusCode CombinedCaloTowerTool::initialize() {
   m_calFwdSegmentation = retrieveSegmentation(m_calFwdReadoutName);
   info() << "Retrieving Hcal barrel segmentation" << endmsg;
   m_hcalBarrelSegmentation = retrieveSegmentation(m_hcalBarrelReadoutName);
+  info() << "Retrieving Hcal extended barrel segmentation" << endmsg;
+  m_hcalExtBarrelSegmentation = retrieveSegmentation(m_hcalExtBarrelReadoutName);
 
   return StatusCode::SUCCESS;
 }
@@ -71,7 +74,11 @@ tower CombinedCaloTowerTool::towersNumber() {
     listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) + M_PI);
     listEtaMax.push_back(fabs(m_hcalBarrelSegmentation->offsetEta()) + m_hcalBarrelSegmentation->gridSizeEta() * 0.5);
   }
-  
+  if (m_hcalExtBarrelSegmentation!=nullptr) {
+    listPhiMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetPhi()) + M_PI);
+    listEtaMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetEta()) + m_hcalExtBarrelSegmentation->gridSizeEta() * 0.5);
+  }
+
   //Maximum eta & phi of the calorimeter system
   m_phiMax = *std::max_element(listPhiMax.begin(), listPhiMax.end());
   m_etaMax = *std::max_element(listEtaMax.begin(), listEtaMax.end());
@@ -131,6 +138,15 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   if (m_hcalBarrelSegmentation!=nullptr) {
     CellsIntoTowers(aTowers, hcalBarrelCells, m_hcalBarrelSegmentation);
     totalNumberOfCells += hcalBarrelCells->size();
+  }
+
+  // 4. HCAL extended barrel
+  const fcc::CaloHitCollection* hcalExtBarrelCells = m_hcalExtBarrelCells.get();
+  debug() << "Input hadronic extended barrel cell collection size: " << hcalExtBarrelCells->size() << endmsg;
+  // Loop over a collection of calorimeter cells and build calo towers
+  if (m_hcalExtBarrelSegmentation!=nullptr) {
+    CellsIntoTowers(aTowers, hcalExtBarrelCells, m_hcalExtBarrelSegmentation);
+    totalNumberOfCells += hcalExtBarrelCells->size();
   }
 
   return totalNumberOfCells;
