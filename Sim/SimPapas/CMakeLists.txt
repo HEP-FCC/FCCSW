@@ -14,10 +14,19 @@ find_package(PODIO)
 find_package(ROOT COMPONENTS Tree Physics EG)
 find_package(papas)
 
+gaudi_add_library(PapasUtils
+                 src/lib/*.cpp
+                 INCLUDE_DIRS FWCore papas 
+                 LINK_LIBRARIES GaudiAlgLib papas
+                 PUBLIC_HEADERS SimPapas)
+
+
 gaudi_add_module(SimPapas
                  src/*.cpp
                  INCLUDE_DIRS FWCore ROOT FCCEDM PODIO papas SimG4Common SimPapasDetector
                  LINK_LIBRARIES GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
+
+gaudi_install_headers(SimPapas)
 
 include(CTest)
 gaudi_add_test(simple_papastool

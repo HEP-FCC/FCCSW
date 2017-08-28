@@ -55,10 +55,11 @@ papasalg = PapasAlg("papasalg",
                            "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
                            "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
                            "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
-                    exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
+                            exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
                             physicsDebugFile = 'papasPhysics2.out', #write out papas physics to file
-                            detService = "CMSDetSvc") #name of detector service
+                            detService = "CMSDetSvc", #name of detector service
+                            )
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")

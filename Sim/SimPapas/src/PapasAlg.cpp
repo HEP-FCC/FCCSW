@@ -7,6 +7,7 @@
 // PAPAS
 #include "papas/utility/PDebug.h"
 #include "papas/utility/TRandom.h"
+#include "papas/utility/Logger.h"
 
 #include <iostream>
 DECLARE_COMPONENT(PapasAlg)
@@ -42,6 +43,10 @@ StatusCode PapasAlg::initialize() {
 #if not WITHSORT
   debug() << "Papas: no sorting" << endmsg;
 #endif
+  
+  //setup the papas logger
+  papaslog::papaslogger = papaslog::getDefaultLogger("Papas LOG",
+                                                     papaslog::Logging::ERROR); //second value is dummy & not used at present
   return StatusCode::SUCCESS;
 }
 
