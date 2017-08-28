@@ -10,10 +10,39 @@
 
 class GaudiFilterPolicy : public papaslog::Logging::OutputFilterPolicy {
 public:
-  GaudiFilterPolicy(IMessageSvc* owner) : m_messenger(owner), m_currentLevel(m_messenger.currentLevel()) {}
+  GaudiFilterPolicy(IMessageSvc* owner ) : m_messenger(owner), m_currentLevel(m_messenger.currentLevel()) {
+     }
   
   bool doPrint(const papaslog::Logging::Level& lvl) const {
-    MSG::Level l = MSG::VERBOSE;
+    return true;
+    /*MSG::Level l = MSG::VERBOSE;
+    MSG::Level cl = m_currentLevel;*/
+    /*"switch (cl) {
+      case MSG::VERBOSE:
+      
+        std::cout << "verb" << l ;
+        break;
+      case MSG::DEBUG:
+        std::cout << "debug";
+        break;
+      case MSG::INFO:
+        std::cout << "info";
+        break;
+      case MSG::WARNING:
+        std::cout << "warn";
+        break;
+      case MSG::ERROR:
+        std::cout << "error";
+        break;
+      case MSG::FATAL:
+        std::cout << "fatal" << l ;
+        break;
+      default:
+        std::cout << "  NOT SET  " << l ;
+        cl = MSG::DEBUG;
+    */
+    /*
+    
     switch (lvl) {
       case papaslog::Logging::VERBOSE:
         l = MSG::VERBOSE;
@@ -32,10 +61,15 @@ public:
         break;
       case papaslog::Logging::FATAL:
         l = MSG::FATAL;
-        break;
+                break;
     }
-    MSG::Level cl = m_currentLevel;
-    return l < cl;
+    return true;
+    // << cl<< "level=" << l <<" p="<< lvl << "PAPASALICE"<< endmsg;
+   if (cl <= l )
+     std::cout << "true";
+    //std::cout << " XXXXXXXdoprint" << cl << " " << l<< endmsg;;
+    return cl <= l;
+    //return true;*/
   }
   
 private:
@@ -69,7 +103,6 @@ public:
         l = MSG::FATAL;
         break;
     }
-    
     m_messenger << l << input.str() << endmsg;
   }
   
