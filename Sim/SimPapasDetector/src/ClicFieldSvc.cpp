@@ -11,7 +11,7 @@ StatusCode ClicFieldSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_field = std::make_shared<papas::ClicField>(m_fieldMagnitude, m_fieldRadius, m_fieldZ, m_fieldX0, m_fieldLambdaI);
+  m_field = std::make_shared<papas::ClicField>(m_fieldMagnitude, m_fieldRadius, m_fieldZ);
   return StatusCode::SUCCESS;
 }
 
