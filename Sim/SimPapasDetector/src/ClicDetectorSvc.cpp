@@ -36,7 +36,6 @@ StatusCode ClicDetSvc::initialize() {
                                              m_electronAcceptanceEta,
                                              m_muonAcceptanceMagnitude,
                                              m_muonAcceptanceTheta,
-                                             m_electronEnergyFactor,
                                              m_muonResolution);
   return StatusCode::SUCCESS;
 }

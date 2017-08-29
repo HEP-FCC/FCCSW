@@ -38,8 +38,6 @@ private:
   Gaudi::Property<double> m_fieldMagnitude{this, "magnitude", 3.8, "Field magnitude"};
   Gaudi::Property<double> m_fieldRadius{this, "radius", 2.9, "Field  radius"};
   Gaudi::Property<double> m_fieldZ{this, "z", 3.6, "Field z"};
-  Gaudi::Property<double> m_fieldX0{this, "x0", 0., "Field x0"};
-  Gaudi::Property<double> m_fieldLambdaI{this, "lambdaI", 0., "Field lambdaI"};
 };
 
 inline std::shared_ptr<papas::Field> CMSFieldSvc::field() const { return m_field; }

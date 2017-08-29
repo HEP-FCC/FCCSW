@@ -47,7 +47,6 @@ private:
   Gaudi::Property<double> m_electronAcceptanceEta{this, "electronAcceptanceEta", 2.5, "electron acceptance eta"};
   Gaudi::Property<double> m_muonAcceptanceMagnitude{this, "muonAcceptanceMagnitude", 7.5,"muon acceptance magnitude"};
   Gaudi::Property<double> m_muonAcceptanceTheta{this, "muonAcceptanceTheta", 80, "muon acceptance theta"};
-  Gaudi::Property<double> m_electronEnergyFactor{this, "electronEnergyFactor", 0.1, "electron energy factor"};
   Gaudi::Property<double> m_muonResolution{this, "muonResolution", 0.02, "Moun resolution"};
   
 };
