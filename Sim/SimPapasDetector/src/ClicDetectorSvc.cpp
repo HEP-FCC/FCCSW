@@ -34,6 +34,7 @@ StatusCode ClicDetSvc::initialize() {
                                              papasFieldSvc->field(),
                                              m_electronAcceptanceMagnitude,
                                              m_electronAcceptanceEta,
+                                             m_electronAcceptanceEfficiency,
                                              m_muonAcceptanceMagnitude,
                                              m_muonAcceptanceTheta,
                                              m_muonResolution);
