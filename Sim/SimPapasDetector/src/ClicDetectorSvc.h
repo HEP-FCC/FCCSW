@@ -45,6 +45,7 @@ private:
   Gaudi::Property<std::string> m_fieldServiceName{this, "fieldService", "", "Field service"};
   Gaudi::Property<double> m_electronAcceptanceMagnitude{this, "electronAcceptanceMagnitude", 5., "electron acceptance magnitude"};
   Gaudi::Property<double> m_electronAcceptanceEta{this, "electronAcceptanceEta", 2.5, "electron acceptance eta"};
+  Gaudi::Property<double> m_electronAcceptanceEfficiency{this, "electronAcceptanceEfficiency", 0.95, "electron acceptance efficiency"};
   Gaudi::Property<double> m_muonAcceptanceMagnitude{this, "muonAcceptanceMagnitude", 7.5,"muon acceptance magnitude"};
   Gaudi::Property<double> m_muonAcceptanceTheta{this, "muonAcceptanceTheta", 80, "muon acceptance theta"};
   Gaudi::Property<double> m_muonResolution{this, "muonResolution", 0.02, "Moun resolution"};
