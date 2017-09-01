@@ -200,7 +200,7 @@ Any communication with the Geant Run Manager is handled by this service:
   - [passing an event to `G4EventManager`](#event-processing)
   - [retrieving a simulated event (with hits collections and other information)](#output)
 
-Additionally, the simulation service takes the random number generator seeds from Gaudi service `RndmGenSvc`. If user wants to set the simulation seeds manually, flag `rndmFromGaudi` needs to be set to `false`.
+Additionally, the simulation service takes the random number generator seeds from Gaudi service `RndmGenSvc`. If a user wants to set the simulation seeds manually, the flag `randomNumbersFromGaudi` needs to be set to `false`.
 
 
 ### Geometry construction

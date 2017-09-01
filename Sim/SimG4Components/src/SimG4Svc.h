@@ -81,8 +81,8 @@ private:
   /// to be deleted once the ToolHandleArray<ISimG4RegionTool> m_regionTools is in place
   Gaudi::Property<std::vector<std::string>> m_regionToolNames{
       this, "regions", {}, "Names of the tools that create regions and fast simulation models"};
-  /// Flag if random numbers engine and seeds should be taken from Gaudi (default: true)
-  Gaudi::Property<bool> m_rndmFromGaudi{this, "rndmFromGaudi", true, "If random numbers should be taken from Gaudi"};
+  /// Flag whether random numbers seeds should be taken from Gaudi (default: true)
+  Gaudi::Property<bool> m_rndmFromGaudi{this, "randomNumbersFromGaudi", true, "Whether random numbers should be taken from Gaudi"};
 
   /// Run Manager
   sim::RunManager m_runManager;
