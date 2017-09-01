@@ -1,8 +1,8 @@
 #include "SimG4Svc.h"
 
 // Gaudi
-#include "GaudiKernel/IToolSvc.h"
 #include "GaudiKernel/IRndmEngine.h"
+#include "GaudiKernel/IToolSvc.h"
 
 // Geant
 #include "G4Event.hh"
@@ -60,7 +60,7 @@ StatusCode SimG4Svc::initialize() {
   m_runManager.SetUserInitialization(m_detectorTool->detectorConstruction());
 
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
-  for (auto command: m_g4PreInitCommands) {
+  for (auto command : m_g4PreInitCommands) {
     UImanager->ApplyCommand(command);
   }
 
@@ -80,18 +80,19 @@ StatusCode SimG4Svc::initialize() {
     tool->create();
   }
 
-  for (auto command: m_g4PostInitCommands) {
+  for (auto command : m_g4PostInitCommands) {
     UImanager->ApplyCommand(command);
   }
 
   // configure the random service
   if (m_rndmFromGaudi) {
-     std::vector<long> seedsVec;
-     m_randSvc->engine()->seeds(seedsVec);
-     long seedsList[] = {seedsVec[0],seedsVec[1]};
-     CLHEP::HepRandom::setTheSeeds(seedsList);
+    std::vector<long> seedsVec;
+    m_randSvc->engine()->seeds(seedsVec);
+    long seedsList[] = {seedsVec[0], seedsVec[1]};
+    CLHEP::HepRandom::setTheSeeds(seedsList);
   }
-  info() << "Random numbers seeds: " << CLHEP::HepRandom::getTheSeeds()[0] << "\t" << CLHEP::HepRandom::getTheSeeds()[1] << endmsg;
+  info() << "Random numbers seeds: " << CLHEP::HepRandom::getTheSeeds()[0] << "\t" << CLHEP::HepRandom::getTheSeeds()[1]
+         << endmsg;
 
   if (!m_runManager.start()) {
     error() << "Unable to initialize GEANT correctly." << endmsg;
