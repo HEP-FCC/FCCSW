@@ -44,7 +44,7 @@ private:
   papas::Nodes m_history;
   std::vector<IPapasTool*> m_tools;       ///< vector of tools to be run
   IPapasExportTool* m_exportTool;         ///< export tool to be run
-  std::vector<std::string> m_toolNa mes;  ///< names of tools to be run
+  std::vector<std::string> m_toolNames;   ///< names of tools to be run
   std::string m_exportToolName;           ///< name of export tool to be run
   long m_eventno;                         ///< the papas Event number, incremented for each event processed
   ///<seed for random generator, default to 0 (no seed)

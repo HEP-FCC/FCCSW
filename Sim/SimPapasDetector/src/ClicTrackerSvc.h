@@ -45,7 +45,7 @@ private:
   Gaudi::Property<double> m_z{this, "z", 2.6, "Tracker cylinder z"};
   Gaudi::Property<double> m_x0{this, "x0", 0.0, "tracker material x0"};
   Gaudi::Property<double> m_lambdaI{this, "lambdaI", 0.0, "Tracker material lambdaI"};
-  Gaudi::Property<double> m_thetaParam{this, "thetapar", 0.8, "Tracker theta parameter"};
+  Gaudi::Property<double> m_thetaParam{this, "thetapar", 80, "Tracker theta parameter"};
 
   // Really we want a map with int as an index but Gaudi does not appear to support this in combination
   // with a pair, however it does support a map indexed by a string
