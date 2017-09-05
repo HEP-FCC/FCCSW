@@ -14,7 +14,7 @@ class IPapasDetSvc : virtual public IService {
 public:
   // InterfaceID
   DeclareInterfaceID(IPapasDetSvc, 1, 0);
-  // return the detectors service
+  // return the detector service
   virtual std::shared_ptr<papas::Detector> detector() const = 0;
 };
 

@@ -1,10 +1,10 @@
-## Simple Papas Run
+## Simple Papas Run for CMS
 ## Runs papas using as a sequence of tools
 ## The reconstructed particles are written to a ROOT file
 
 #
 #  To run PapasTools
-#  > ./run gaudirun.py Sim/SimPapas/options/simple_papastool.py
+#  > ./run gaudirun.py Sim/SimPapas/options/simple_papastool_CMS.py
 #
 
 from Gaudi.Configuration import *
@@ -12,12 +12,10 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 from GaudiKernel import SystemOfUnits as units
 
 ## read in generated particles from ROOT via podio
-#podioevent   = FCCDataSvc("EventDataSvc", input="./ee_Z_ddbar.root")
 podioevent   = FCCDataSvc("EventDataSvc", input="./ee_ZH_Zmumu_Hbb.root")
 
 from Configurables import PodioInput, ReadTestConsumer
 podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
-
 
 from Configurables import CMSFieldSvc, CMSTrackerSvc, CMSEcalSvc, CMSHcalSvc
 fieldsvc = CMSFieldSvc("CMSFieldSvc"); #todo add in remaining parameters
@@ -31,8 +29,6 @@ detservice = CMSDetSvc("CMSDetSvc",
                         hcalService = "CMSHcalSvc",
                         trackerService = "CMSTrackerSvc",
                         fieldService = "CMSFieldSvc");
-
-
 
 from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool

@@ -8,13 +8,13 @@ namespace papas {
 }
 
 /** @author: Alice Robson
- *  Service for the papas calorimeters *
+ *  Service for the papas calorimeters
  */
 class IPapasCalorimeterSvc : virtual public IService {
 public:
   // InterfaceID
   DeclareInterfaceID(IPapasCalorimeterSvc, 1, 0);
-  /// return calorimeter
+  /// return the calorimeter
   virtual std::shared_ptr<papas::Calorimeter> calorimeter() const = 0;
 };
 

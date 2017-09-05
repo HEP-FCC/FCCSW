@@ -1,10 +1,10 @@
-## Simple Papas Run
+## Simple Papas Run for CLIC
 ## Runs papas using as a sequence of tools
 ## The reconstructed particles are written to a ROOT file
 
 #
 #  To run PapasTools
-#  > ./run gaudirun.py Sim/SimPapas/options/simple_papastool.py
+#  > ./run gaudirun.py Sim/SimPapas/options/simple_papastool_clic.py
 #
 
 from Gaudi.Configuration import *
@@ -23,7 +23,7 @@ from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuild
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
 
 from Configurables import ClicFieldSvc, ClicTrackerSvc, ClicEcalSvc, ClicHcalSvc
-fieldsvc = ClicFieldSvc("ClicFieldSvc"); #todo add in remaining parameters
+fieldsvc = ClicFieldSvc("ClicFieldSvc"); #todo add in more parameters
 ecalsvc = ClicEcalSvc("ClicEcalSvc", emin = [.5, .5]);
 hcalsvc = ClicHcalSvc("ClicHcalsvc");
 trackersvc = ClicTrackerSvc("ClicTrackerSvc");
@@ -34,7 +34,6 @@ detservice = ClicDetSvc("ClicDetSvc",
                         hcalService = "ClicHcalSvc",
                         trackerService = "ClicTrackerSvc",
                         fieldService = "ClicFieldSvc");
-
 
 #Notes:
 #
@@ -54,9 +53,9 @@ papasalg = PapasAlg("papasalg",
                            "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
                            "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
                     exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
-                            seed = 0xdeadbeef,#seed random generator
-                            physicsDebugFile = 'papasPhysicsdd.out', #write out papas physics to file
-                            detService = "ClicDetSvc") #name of detector service
+                    seed = 0xdeadbeef,#seed random generator
+                    physicsDebugFile = 'papasPhysicsdd.out', #write out papas physics to file
+                    detService = "ClicDetSvc") #name of detector service
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")

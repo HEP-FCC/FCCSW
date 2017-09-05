@@ -15,7 +15,7 @@ StatusCode ClicTrackerSvc::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  //convert the gaudi property to what we actually require
+  //convert the gaudi property to what we actually require (cannot set this directly as its not supported)
   std::map<int, std::pair<double, double>> resMap;
   for (const auto v : m_resMap) {
     resMap[std::stoi(v.first)] = v.second;

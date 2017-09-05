@@ -1,14 +1,10 @@
 #include "CMSTrackerSvc.h"
-#include "papas/detectors/cms/CMSTracker.h"
 #include "papas/detectors/VolumeCylinder.h"
+#include "papas/detectors/cms/CMSTracker.h"
 
 DECLARE_SERVICE_FACTORY(CMSTrackerSvc)
 
-CMSTrackerSvc::CMSTrackerSvc
-(const std::string& name, ISvcLocator* svc)
-    : base_class(name, svc), m_tracker(nullptr)
-{
-}
+CMSTrackerSvc::CMSTrackerSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_tracker(nullptr) {}
 
 StatusCode CMSTrackerSvc::initialize() {
   if (Service::initialize().isFailure()) {
