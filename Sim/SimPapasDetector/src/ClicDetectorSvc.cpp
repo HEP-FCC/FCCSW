@@ -1,6 +1,6 @@
 #include "ClicDetectorSvc.h"
-#include "ClicFieldSvc.h"
 #include "ClicEcalSvc.h"
+#include "ClicFieldSvc.h"
 #include "ClicHcalSvc.h"
 #include "ClicTrackerSvc.h"
 
@@ -8,11 +8,7 @@
 
 DECLARE_SERVICE_FACTORY(ClicDetSvc)
 
-ClicDetSvc::ClicDetSvc
-(const std::string& name, ISvcLocator* svc)
-    : base_class(name, svc), m_detector(nullptr)
-{
-}
+ClicDetSvc::ClicDetSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_detector(nullptr) {}
 
 StatusCode ClicDetSvc::initialize() {
   if (Service::initialize().isFailure()) {

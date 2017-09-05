@@ -6,7 +6,7 @@
 #include "papas/datatypes/Event.h"
 
 namespace papas {
-  class Detector;
+class Detector;
 }
 
 /** @class IPapasTool IPapasTool.h

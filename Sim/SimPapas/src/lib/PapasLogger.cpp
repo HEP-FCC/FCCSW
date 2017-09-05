@@ -11,6 +11,6 @@ std::shared_ptr<const Logger> getDefaultLogger(const std::string& name, const Lo
   using namespace Logging;
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", name);
   return std::make_shared<const papaslog::Logger>(std::make_shared<GaudiPrintPolicy>(&(*msgSvc)),
-                                        std::make_shared<GaudiFilterPolicy>(&(*msgSvc)));
+                                                  std::make_shared<GaudiFilterPolicy>(&(*msgSvc)));
 }
 }

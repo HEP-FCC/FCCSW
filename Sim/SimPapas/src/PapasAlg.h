@@ -42,12 +42,11 @@ private:
   std::shared_ptr<papas::Detector> m_spDetector;  ///< papas detector
   /// Stores the linkages between papas objects (eg clusters, tracks, particles)
   papas::Nodes m_history;
-  std::vector<IPapasTool*> m_tools;      ///< vector of tools to be run
-  IPapasExportTool* m_exportTool;        ///< export tool to be run
-  std::vector<std::string> m_toolNa
-  mes;  ///< names of tools to be run
-  std::string m_exportToolName;          ///< name of export tool to be run
-  long m_eventno;                        ///< the papas Event number, incremented for each event processed
+  std::vector<IPapasTool*> m_tools;       ///< vector of tools to be run
+  IPapasExportTool* m_exportTool;         ///< export tool to be run
+  std::vector<std::string> m_toolNa mes;  ///< names of tools to be run
+  std::string m_exportToolName;           ///< name of export tool to be run
+  long m_eventno;                         ///< the papas Event number, incremented for each event processed
   ///<seed for random generator, default to 0 (no seed)
   Gaudi::Property<long> m_seed{this, "seed", 0, "random seed"};
   ///<seed for papas physics debug ouput default to "" no output

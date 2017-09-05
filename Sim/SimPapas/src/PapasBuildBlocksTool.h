@@ -11,8 +11,8 @@
 // papas
 #include "papas/datatypes/DefinitionsCollections.h"
 
-namespace papas{
-  class Detector;
+namespace papas {
+class Detector;
 }
 #include <string>
 
