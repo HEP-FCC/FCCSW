@@ -46,11 +46,17 @@ private:
   Gaudi::Property<double> m_ptAcceptance{this, "ptAcceptance", 0.2, "Ecal pt acceptance"};
   Gaudi::Property<double> m_etaEndcapMin{this, "etaEndcapMin", 1.479, "Ecal eta endcap min"};
   Gaudi::Property<double> m_etaEndcapMax{this, "etaEndcapMax", 3., "Ecal eta endcap max"};
-  Gaudi::Property<std::vector<double>> m_emin {this, "emin",{0.3, 1}, "Ecal barrel and endcap emin"};
-  Gaudi::Property<std::vector<std::vector<double>>> m_eres {this, "eres", {{4.22163e-02, 1.55903e-01, 7.14166e-03}, {-2.08048e-01, 3.25097e-01, 7.34244e-03}}, "Ecal energy resolution parameters"};
-  Gaudi::Property<std::vector<std::vector<double>>> m_eresp {this, "eresp",  {{1.00071, -9.04973, -2.48554}, {9.95665e-01, -3.31774, -2.11123}}, "Ecal energy response parameters"};
-
-  
+  Gaudi::Property<std::vector<double>> m_emin{this, "emin", {0.3, 1}, "Ecal barrel and endcap emin"};
+  Gaudi::Property<std::vector<std::vector<double>>> m_eres{
+      this,
+      "eres",
+      {{4.22163e-02, 1.55903e-01, 7.14166e-03}, {-2.08048e-01, 3.25097e-01, 7.34244e-03}},
+      "Ecal energy resolution parameters"};
+  Gaudi::Property<std::vector<std::vector<double>>> m_eresp{
+      this,
+      "eresp",
+      {{1.00071, -9.04973, -2.48554}, {9.95665e-01, -3.31774, -2.11123}},
+      "Ecal energy response parameters"};
 };
 
 inline std::shared_ptr<papas::Calorimeter> CMSEcalSvc::calorimeter() const { return m_ecal; }

@@ -4,7 +4,7 @@
 #include "GaudiKernel/IService.h"
 
 namespace papas {
-  class Tracker;
+class Tracker;
 }
 
 /** @author: Alice Robson

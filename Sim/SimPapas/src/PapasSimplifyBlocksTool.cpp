@@ -29,7 +29,7 @@ StatusCode PapasSimplifyBlocksTool::initialize() {
 }
 
 StatusCode PapasSimplifyBlocksTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
-  (void)spDetector; //avoid warning
+  (void)spDetector;  // avoid warning
   auto history = papas::Nodes();
   std::string btype = m_blockSubtype;
   papas::simplifyPFBlocks(pevent, btype.c_str()[0], m_blocks, history);

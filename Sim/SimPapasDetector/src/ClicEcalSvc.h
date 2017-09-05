@@ -39,8 +39,9 @@ private:
   Gaudi::Property<double> m_clusterSizePhoton{this, "clusterSizePhoton", .015, "Ecal cluster size Photon"};
   Gaudi::Property<double> m_clusterSize{this, "clusterSize", 0.045, "Ecal cluster size"};
   Gaudi::Property<double> m_etaAcceptance{this, "etaAcceptance", 2.76, "Ecal eta acceptance"};
-  Gaudi::Property<std::vector<double>> m_emin {this, "emin",{0.5, 0.5}, "Ecal barrel and endcap emin"};
-  Gaudi::Property<std::vector<double>> m_eresBarrel {this, "eresBarrel", {0.165, 0.010, 0.015}, "Ecal energy response parameters barrel"};
+  Gaudi::Property<std::vector<double>> m_emin{this, "emin", {0.5, 0.5}, "Ecal barrel and endcap emin"};
+  Gaudi::Property<std::vector<double>> m_eresBarrel{
+      this, "eresBarrel", {0.165, 0.010, 0.015}, "Ecal energy response parameters barrel"};
   Gaudi::Property<int> m_nX0{this, "x0", 23, "Ecal material number x0"};
   Gaudi::Property<int> m_nLambdaI{this, "nLambdaI", 1, "Ecal material number LambdaI"};
   Gaudi::Property<double> m_eResponse{this, "eresponse", 1., "Ecal eresponse"};

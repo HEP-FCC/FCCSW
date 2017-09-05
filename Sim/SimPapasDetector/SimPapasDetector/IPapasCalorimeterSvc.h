@@ -4,7 +4,7 @@
 #include "GaudiKernel/IService.h"
 
 namespace papas {
-  class Calorimeter;
+class Calorimeter;
 }
 
 /** @author: Alice Robson

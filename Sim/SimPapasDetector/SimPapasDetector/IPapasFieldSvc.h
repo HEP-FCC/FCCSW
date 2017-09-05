@@ -4,7 +4,7 @@
 #include "GaudiKernel/IService.h"
 
 namespace papas {
-  class Field;
+class Field;
 }
 
 /** @author: Alice Robson

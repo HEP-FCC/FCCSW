@@ -1,12 +1,10 @@
 #ifndef CMSFIELDSVC_H
 #define CMSFIELDSVC_H
 
-
 #include "SimPapasDetector/IPapasFieldSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
-
 
 /** @class CMSFieldSvc CMSFieldSvc.h
 *
@@ -15,11 +13,11 @@
 */
 
 namespace papas {
-  class Field;
+class Field;
 }
 
 class CMSFieldSvc : public extends1<Service, IPapasFieldSvc> {
-  
+
 public:
   /// Default constructor
   CMSFieldSvc(const std::string& name, ISvcLocator* svc);
@@ -31,7 +29,7 @@ public:
   virtual StatusCode finalize() override final;
   /// pointer to field
   virtual std::shared_ptr<papas::Field> field() const;
-  
+
 private:
   // Detector
   std::shared_ptr<papas::Field> m_field;

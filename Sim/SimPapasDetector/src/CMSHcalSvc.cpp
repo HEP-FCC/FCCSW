@@ -1,15 +1,11 @@
 #include "CMSHcalSvc.h"
 
-#include "papas/detectors/cms/CMSHcal.h"
 #include "papas/detectors/VolumeCylinder.h"
+#include "papas/detectors/cms/CMSHcal.h"
 
 DECLARE_SERVICE_FACTORY(CMSHcalSvc)
 
-CMSHcalSvc::CMSHcalSvc
-(const std::string& name, ISvcLocator* svc)
-    : base_class(name, svc), m_hcal(nullptr)
-{
-}
+CMSHcalSvc::CMSHcalSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_hcal(nullptr) {}
 
 StatusCode CMSHcalSvc::initialize() {
   if (Service::initialize().isFailure()) {

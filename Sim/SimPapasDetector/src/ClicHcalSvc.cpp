@@ -1,14 +1,10 @@
 #include "ClicHcalSvc.h"
-#include "papas/detectors/clic/ClicHcal.h"
 #include "papas/detectors/VolumeCylinder.h"
+#include "papas/detectors/clic/ClicHcal.h"
 
 DECLARE_SERVICE_FACTORY(ClicHcalSvc)
 
-ClicHcalSvc::ClicHcalSvc
-(const std::string& name, ISvcLocator* svc)
-    : base_class(name, svc), m_hcal(nullptr)
-{
-}
+ClicHcalSvc::ClicHcalSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_hcal(nullptr) {}
 
 StatusCode ClicHcalSvc::initialize() {
   if (Service::initialize().isFailure()) {

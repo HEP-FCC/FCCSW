@@ -4,7 +4,7 @@
 #include "GaudiKernel/IService.h"
 
 namespace papas {
-  class Detector;
+class Detector;
 }
 
 /** @author: Alice Robson

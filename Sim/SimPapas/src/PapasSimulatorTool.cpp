@@ -4,8 +4,8 @@
 #include "datamodel/LorentzVector.h"
 #include "datamodel/MCParticleCollection.h"
 // PAPAS
-#include "papas/detectors/Detector.h"
 #include "papas/detectors/Calorimeter.h"
+#include "papas/detectors/Detector.h"
 #include "papas/graphtools/DefinitionsNodes.h"
 #include "papas/simulation/Simulator.h"
 #include "papas/utility/PDebug.h"
