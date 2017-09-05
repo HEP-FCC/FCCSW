@@ -1,13 +1,13 @@
 #include "PapasAlg.h"
 // FCCSW
-#include "SimPapasDetector/IPapasDetSvc.h"
-#include "SimPapas/IPapasTool.h"
 #include "SimPapas/IPapasExportTool.h"
+#include "SimPapas/IPapasTool.h"
+#include "SimPapasDetector/IPapasDetSvc.h"
 #include "papas/detectors/Detector.h"
 // PAPAS
+#include "papas/utility/Logger.h"
 #include "papas/utility/PDebug.h"
 #include "papas/utility/TRandom.h"
-#include "papas/utility/Logger.h"
 
 #include <iostream>
 DECLARE_COMPONENT(PapasAlg)
@@ -22,20 +22,21 @@ StatusCode PapasAlg::initialize() {
   for (auto& toolname : m_toolNames) {
     m_tools.push_back(tool<IPapasTool>(toolname));
   }
-  m_exportTool =tool<IPapasExportTool>(m_exportToolName);
-  SmartIF<IPapasDetSvc> papasDetSvc; //curiously does not work if joined with following line
+  m_exportTool = tool<IPapasExportTool>(m_exportToolName);
+  SmartIF<IPapasDetSvc> papasDetSvc;  // curiously does not work if joined with following line
   papasDetSvc = service(m_detServiceName);
   if (!papasDetSvc) {
     error() << "Unable to locate Papas Detector Service " << m_detServiceName << endmsg;
     return StatusCode::FAILURE;
   }
   m_spDetector = papasDetSvc->detector();
-  
+
   if (m_physicsDebugFile != "") {
     debug() << "Papas: physics output " << m_physicsDebugFile << endmsg;
     papas::PDebug::File(m_physicsDebugFile);
   }
   // allow the random generator to be seeded
+  // todo make this use a Gaudi seed.
   if (m_seed != 0) {
     debug() << "Papas: set seed " << m_seed << endmsg;
     rootrandom::Random::seed(m_seed);
@@ -43,10 +44,11 @@ StatusCode PapasAlg::initialize() {
 #if not WITHSORT
   debug() << "Papas: no sorting" << endmsg;
 #endif
-  
-  //setup the papas logger
-  papaslog::papaslogger = papaslog::getDefaultLogger("Papas LOG",
-                                                     papaslog::Logging::ERROR); //second value is dummy & not used at present
+
+  // setup the papas logger (ATS fashion)
+  papaslog::papaslogger =
+      papaslog::getDefaultLogger("PapasAlg",
+                                 papaslog::Logging::ERROR);  // nb second value is dummy & not used at present
   return StatusCode::SUCCESS;
 }
 
@@ -60,9 +62,10 @@ StatusCode PapasAlg::execute() {
 
   // run the tools
   try {
-    //needed so that PODIO can find structure even if run is abandoned
+    // needed so that PODIO can find structure even if run is abandoned
     // and there are no particles created
     m_exportTool->createOutputStructures();
+    // now do the real work
     for (auto tool : m_tools) {
       // run each tool
       tool->run(pevent, m_spDetector);

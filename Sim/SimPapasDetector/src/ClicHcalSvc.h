@@ -32,7 +32,6 @@ public:
 
 private:
   // HCAL
-  std::vector<double> eresBarrelHCAL{0.6, 0., 0.025};
   std::shared_ptr<papas::Calorimeter> m_hcal;
   Gaudi::Property<double> m_innerRadius{this, "innerRadius", 2.4, "Hcal inner radius"};
   Gaudi::Property<double> m_innerZ{this, "innerZ", 2.85, "Hcal inner z"};
