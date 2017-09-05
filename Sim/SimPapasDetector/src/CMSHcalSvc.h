@@ -18,7 +18,6 @@ namespace papas {
   class Calorimeter;
 }
 
-
 class CMSHcalSvc : public extends1<Service, IPapasCalorimeterSvc> {
 
 public:

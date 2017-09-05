@@ -11,7 +11,7 @@ namespace papas {
 
 /** @class IPapasTool IPapasTool.h
  *
- *  Interface for a tool to run under Papas
+ *  Interface for a data export tool to run under Papas
  *
  *  @author A. Robson
  */

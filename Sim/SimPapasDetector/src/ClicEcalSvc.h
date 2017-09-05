@@ -8,7 +8,7 @@
 
 /** @class CliceEcalSvc
  *
- *  This service provides the Papas Detector
+ *  This service provides the Papas ECAL
  *  @author alice.robson@cern.ch
  */
 

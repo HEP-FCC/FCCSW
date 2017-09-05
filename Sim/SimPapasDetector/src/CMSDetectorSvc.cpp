@@ -1,6 +1,6 @@
 #include "CMSDetectorSvc.h"
-#include "CMSFieldSvc.h"
 #include "CMSEcalSvc.h"
+#include "CMSFieldSvc.h"
 #include "CMSHcalSvc.h"
 #include "CMSTrackerSvc.h"
 
@@ -8,11 +8,7 @@
 
 DECLARE_SERVICE_FACTORY(CMSDetSvc)
 
-CMSDetSvc::CMSDetSvc
-(const std::string& name, ISvcLocator* svc)
-: base_class(name, svc), m_detector(nullptr)
-{
-}
+CMSDetSvc::CMSDetSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_detector(nullptr) {}
 
 StatusCode CMSDetSvc::initialize() {
   if (Service::initialize().isFailure()) {

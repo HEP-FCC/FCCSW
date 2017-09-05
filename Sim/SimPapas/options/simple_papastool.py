@@ -19,7 +19,6 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import  HepMCFileReader
 from Configurables import PythiaInterface, GenAlg
-
 ### PYTHIA algorithm
 pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
 pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
