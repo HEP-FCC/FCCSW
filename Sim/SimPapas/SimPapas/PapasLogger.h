@@ -15,9 +15,9 @@
 class GaudiFilterPolicy : public papaslog::Logging::OutputFilterPolicy {
 public:
   GaudiFilterPolicy(IMessageSvc* owner)
-      : m_messenger(owner, "PapasAlg"),
-        m_currentLevel(m_messenger.currentLevel()){},
-        bool doPrint(const papaslog::Logging::Level& lvl) const {
+      : m_messenger(owner),
+        m_currentLevel(m_messenger.currentLevel()){}
+  bool doPrint(const papaslog::Logging::Level& lvl) const {
     return true;
   }
 
@@ -28,7 +28,7 @@ private:
 
 class GaudiPrintPolicy : public papaslog::Logging::OutputPrintPolicy {
 public:
-  GaudiPrintPolicy(IMessageSvc* owner) : m_messenger(owner, "PapasAlg") {}
+  GaudiPrintPolicy(IMessageSvc* owner) : m_messenger(owner) {}
 
   void flush(const papaslog::Logging::Level& lvl, const std::ostringstream& input) {
     MSG::Level l = MSG::VERBOSE;
