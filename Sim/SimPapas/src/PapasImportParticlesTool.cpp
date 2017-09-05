@@ -25,8 +25,7 @@ PapasImportParticlesTool::PapasImportParticlesTool(const std::string& aType, con
 
 PapasImportParticlesTool::~PapasImportParticlesTool() {}
 
-StatusCode PapasImportParticlesTool::initialize() {
-  return GaudiTool::initialize(); }
+StatusCode PapasImportParticlesTool::initialize() { return GaudiTool::initialize(); }
 
 StatusCode PapasImportParticlesTool::clear() {
   m_particles.clear();
@@ -38,7 +37,7 @@ StatusCode PapasImportParticlesTool::finalize() { return GaudiTool::finalize(); 
 StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
   (void)spDetector;
   const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
-   int countp = 0;
+  int countp = 0;
 
   // First Sort fcc MCparticles in order of decreasing energy to match Python
   // Sort is required when run in PDebug mode. TODO: make this configurable .
@@ -76,8 +75,8 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::shared_ptr<p
         if (fabs(particle.charge()) < 0.5) {
           ppath = std::make_shared<papas::Path>(papas::Path(particle.p4(), particle.startVertex(), particle.charge()));
         } else {
-          ppath = std::make_shared<papas::Helix>(
-              papas::Helix(particle.p4(), particle.startVertex(), particle.charge(), spDetector->field()->getMagnitude()));
+          ppath = std::make_shared<papas::Helix>(papas::Helix(particle.p4(), particle.startVertex(), particle.charge(),
+                                                              spDetector->field()->getMagnitude()));
         }
         particle.setPath(ppath);
         m_particles.emplace(particle.id(), particle);

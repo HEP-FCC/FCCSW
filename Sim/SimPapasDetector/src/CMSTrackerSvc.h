@@ -6,7 +6,6 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
 
-
 /** @class CMSTrackerSvc
  *
  *  This service provides the Papas CMS tracker
@@ -14,9 +13,8 @@
  */
 
 namespace papas {
-  class Tracker;
+class Tracker;
 }
-
 
 class CMSTrackerSvc : public extends1<Service, IPapasTrackerSvc> {
 
@@ -45,7 +43,7 @@ private:
   Gaudi::Property<double> m_ptProbabilityLow{this, "ptProbablityLow", 0.95, "Tracker lower pt probablility"};
   Gaudi::Property<double> m_ptThresholdHigh{this, "etaThresholdHigh", 2.5, "Tracker upper pt threshold"};
   Gaudi::Property<double> m_ptProbabilityHigh{this, "ptProbablityHigh", 0.9, "Tracker upper pt probablility"};
-  };
+};
 
 inline std::shared_ptr<papas::Tracker> CMSTrackerSvc::tracker() const { return m_tracker; }
 
