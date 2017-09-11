@@ -3,9 +3,9 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <info name="FCChh_DECalBarrel_Mockup"
+  <info name="FCChh_DECalBarrel_50Layers_2.1mmW_50umPixels_18umThick_TRKR0.3X0"
     title="DECal Barrel Calorimeter"
-    author="A.Dell'Acqua"
+    author="T. Price"
     url="no"
     status="development"
     version="$Id:??$">
@@ -13,12 +13,10 @@
   </info>
 
   <define>
-    <constant name="BarECalOuterSpacer" value="100*mm"/>
-    <constant name="BarECalThickness" value="200*mm"/>    
+    <constant name="BarECalOuterSpacer" value="100*mm"/>  
     <!-- calorimeter volume -->
     <!-- have removed the cryostat as we do not need it! -->
     <constant name="EMBarrel_rmin" value="BarECal_rmin+BarECalOuterSpacer"/>
-    <!--constant name="EMBarrel_rmin" value="BarECal_rmax-BarECalOuterSpacer-BarECalThickness"/-->
     <constant name="EMBarrel_rmax" value="BarECal_rmax-BarECalOuterSpacer"/>
     <constant name="EMBarrel_dz" value="BarECal_dz"/>
 
@@ -34,8 +32,7 @@
     <readout name="BarDECal_Readout">
       <!-- layer:7 gives 7 bits (max 128 layers) -->
       <!-- x, y segmentation -24 to allow 16777216 pixels -->
-      <segmentation type="CartesianGridXYZ" grid_size_x="0.05*mm" grid_size_y="0.05*mm" grid_size_z="0.05*mm"/>
-      <!--segmentation type="CartesianGridXYZ" grid_size_x="0.3*mm" grid_size_y="0.3*mm" grid_size_z="0.3*mm"/-->
+      <segmentation type="CartesianGridXYZ" grid_size_x="0.1*mm" grid_size_y="0.1*mm" grid_size_z="0.1*mm"/>
       <id>system:3,active:1,EM_barrel:1,layer:6,x:-17,y:-17,z:-19</id>
     </readout>
 
@@ -54,7 +51,17 @@
 
 
   <detectors>
-    <include ref="./FCChh_DECalDefinition_50Layers_2.1mmW.xml" />
+    <detector id="5" name="ECalBarrel" type="EmCaloDigiBarrel" readout="BarDECal_Readout">
+      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" vis="ecal_envelope"/>  
+      <calorimeter id="1" name="EM_barrel" >
+        <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" vis="ecal_volume" />
+        <active_layers thickness="0.018*mm" material="Silicon" nSamplings="50"/>
+        <substrate_layers thickness="0.450*mm" material="Silcion"/>
+        <passive_layers thickness="2.1*mm" material="Tungsten" />
+        <between_layers thickness="0*mm" material="Air" />
+        <tracker thickness="0.0*cm" material="Silicon" />
+      </calorimeter>
+    </detector>
   </detectors>
 </lccdd>
 
