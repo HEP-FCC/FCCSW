@@ -2,7 +2,7 @@ FCCSW Simulation Documentation
 ==
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/geant_fullsim.py
+./run fccrun.py Examples/options/geant_fullsim.py
 ~~~
 
 1. Reading a generated event from HepMC file (example from Pythia)
@@ -34,29 +34,29 @@ Different event generators are used in verious examples. Please consult them for
 - particle gun (default):
 
   ~~~{.sh}
-  ./run gaudirun.py Examples/options/geant_pgun_fullsim.py
+  ./run fccrun.py Examples/options/geant_pgun_fullsim.py
   ~~~
 
   or in case of e.g. geantino, the particle gun from Geant4 may be used (it skips the generation in EDM):
 
   ~~~{.sh}
-  ./run gaudirun.py Examples/options/geant_fullsim_pgun_geantino.py
+  ./run fccrun.py Examples/options/geant_fullsim_pgun_geantino.py
   ~~~
 
 - using Pythia8:
 
   ~~~{.sh}
-  ./run gaudirun.py Examples/options/simple_pythia.py
+  ./run fccrun.py Examples/options/simple_pythia.py
   ~~~
 
 - reading from HepMC file:
 
   ~~~{.sh}
-  ./run gaudirun.py Examples/options/geant_fullsim.py
+  ./run fccrun.py Examples/options/geant_fullsim.py
   ~~~
 
 - reading from EDM file:
 
   ~~~{.sh}
-  ./run gaudirun.py Examples/options/read_podio_input.py
+  ./run fccrun.py Examples/options/read_podio_input.py
   ~~~
