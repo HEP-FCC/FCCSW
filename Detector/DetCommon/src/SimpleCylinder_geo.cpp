@@ -21,6 +21,12 @@ createSimpleCylinder(dd4hep::Detector& lcdd, xml_h e, dd4hep::SensitiveDetector)
   dd4hep::Volume cylinderVol(
       x_det.nameStr() + "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()));
 
+  if (x_det.isSensitive()) {
+    dd4hep::xml::Dimension sdType(x_det.child(_U(sensitive)));
+    cylinderVol.setSensitiveDetector(sensDet);
+    sensDet.setType(sdType.typeStr());
+  }
+
   dd4hep::PlacedVolume cylinderPhys;
 
   double zoff = cylinderDim.z_offset();
@@ -31,7 +37,7 @@ createSimpleCylinder(dd4hep::Detector& lcdd, xml_h e, dd4hep::SensitiveDetector)
   } else
     cylinderPhys = experimentalHall.placeVolume(cylinderVol);
 
-  cylinderPhys.addPhysVolID("system", x_det.id()).addPhysVolID("side", 0);
+  cylinderPhys.addPhysVolID("system", x_det.id());
 
   cylinderDet.setPlacement(cylinderPhys);
 
