@@ -32,39 +32,73 @@ StatusCode HepMCToEDMConverter::execute() {
       HepMC::Units::conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
   double hepmc2EdmEnergy =
       HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
+  
+  // bookkeeping of particle / vertex relations
+  std::unordered_map<const HepMC::GenVertex*, fcc::GenVertex> hepmcToEdmVertexMap;
+  HepMC::FourVector tmp; /// temp variable for the transfer of position / momentom
+  // iterate over particles in event
+  for (auto particle_i = event->particles_begin(); particle_i != event->particles_end(); ++particle_i) {
 
-  // currently only final state particles converted (no EndVertex as they didn't decay)
-  // TODO add translation of decayed particles
-  HepMC::FourVector tmp;
-  for (auto vertex_i = event->vertices_begin(); vertex_i != event->vertices_end(); ++vertex_i) {
-    tmp = (*vertex_i)->position();
-    auto vertex = vertices->create();
-    auto& position = vertex.position();
-    position.x = tmp.x() * hepmc2EdmLength;
-    position.y = tmp.y() * hepmc2EdmLength;
-    position.z = tmp.z() * hepmc2EdmLength;
-    vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
-
-    for (auto particle_i = (*vertex_i)->particles_begin(HepMC::children);
-         particle_i != (*vertex_i)->particles_end(HepMC::children);
-         ++particle_i) {
-      // take only final state particles
+    // if there is a list of statuses to filter: filter by status
+    if (m_hepmcStatusList.size() > 0) {
       if(std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) != m_hepmcStatusList.end()) continue;
-
-      tmp = (*particle_i)->momentum();
-      fcc::MCParticle particle = particles->create();
-      particle.pdgId((*particle_i)->pdg_id());
-      const ParticleProperty* particleProperty = m_ppSvc->find((*particle_i)->pdg_id());
-      particle.status((*particle_i)->status());
-      particle.charge(particleProperty->charge());
-      auto& p4 = particle.p4();
-      p4.px = tmp.px() * hepmc2EdmEnergy;
-      p4.py = tmp.py() * hepmc2EdmEnergy;
-      p4.pz = tmp.pz() * hepmc2EdmEnergy;
-      p4.mass = (*particle_i)->generated_mass() * hepmc2EdmEnergy;
-      particle.startVertex(vertex);
     }
-  }
+    // create edm 
+    fcc::MCParticle particle = particles->create();
+    // set mcparticle data members
+    particle.pdgId((*particle_i)->pdg_id());
+    particle.status((*particle_i)->status());
+    /// lookup charge in particle properties
+    const ParticleProperty* particleProperty = m_ppSvc->find((*particle_i)->pdg_id());
+    particle.charge(particleProperty->charge());
+    auto& p4 = particle.p4();
+    tmp = (*particle_i)->momentum();
+    p4.px = tmp.px() * hepmc2EdmEnergy;
+    p4.py = tmp.py() * hepmc2EdmEnergy;
+    p4.pz = tmp.pz() * hepmc2EdmEnergy;
+    p4.mass = (*particle_i)->generated_mass() * hepmc2EdmEnergy;
+
+    /// create production vertex, if it has not already been created and logged in the map
+    HepMC::GenVertex* productionVertex = (*particle_i)->production_vertex();
+    if (nullptr != productionVertex) {
+      if (hepmcToEdmVertexMap.find(productionVertex) != hepmcToEdmVertexMap.end()) {
+        // vertex already in map, no need to create a new one
+        particle.startVertex(hepmcToEdmVertexMap[productionVertex]);
+      } else {
+        tmp = productionVertex->position();
+        auto vertex = vertices->create();
+        auto& position = vertex.position();
+        position.x = tmp.x() * hepmc2EdmLength;
+        position.y = tmp.y() * hepmc2EdmLength;
+        position.z = tmp.z() * hepmc2EdmLength;
+        vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
+        // add vertex to map for further particles
+        hepmcToEdmVertexMap.insert({productionVertex, vertex});
+        particle.startVertex(vertex);
+      }
+    }
+
+    /// create decay vertex, if it has not already been created and logged in the map
+    HepMC::GenVertex* decayVertex = (*particle_i)->end_vertex();
+    if (nullptr != decayVertex) {
+      if (hepmcToEdmVertexMap.find(decayVertex) != hepmcToEdmVertexMap.end()) {
+        // vertex already in map, no need to create a new one
+        particle.endVertex(hepmcToEdmVertexMap[productionVertex]);
+      } else {
+        tmp = decayVertex->position();
+        auto vertex = vertices->create();
+        auto& position = vertex.position();
+        position.x = tmp.x() * hepmc2EdmLength;
+        position.y = tmp.y() * hepmc2EdmLength;
+        position.z = tmp.z() * hepmc2EdmLength;
+        vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
+        // add vertex to map for further particles
+        hepmcToEdmVertexMap.insert({decayVertex, vertex});
+        particle.endVertex(vertex);
+      }
+    }
+
+  } // partice loop
 
   m_genphandle.put(particles);
   m_genvhandle.put(vertices);
