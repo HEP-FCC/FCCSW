@@ -9,7 +9,7 @@ namespace papas {
 class Detector;
 }
 
-/** @class IPapasTool IPapasTool.h
+/** @class IPapasExportTool IPapasExportTool.h
  *
  *  Interface for a data export tool to run under Papas
  *

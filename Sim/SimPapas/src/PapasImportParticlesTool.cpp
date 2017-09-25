@@ -34,29 +34,43 @@ StatusCode PapasImportParticlesTool::clear() {
 
 StatusCode PapasImportParticlesTool::finalize() { return GaudiTool::finalize(); }
 
-StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
-  (void)spDetector;
+StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::unordered_map<papas::Identifier, int>& links, std::shared_ptr<papas::Detector> spDetector) {
   const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
   int countp = 0;
 
   // First Sort fcc MCparticles in order of decreasing energy to match Python
   // Sort is required when run in PDebug mode. TODO: make this configurable .
   std::list<fcc::ConstMCParticle> sortPtcs;
+  std::list<int> orderSortPtcs;
+  int n=0;
   for (const auto& p : *ptcs) {
+    orderSortPtcs.push_back(n);
+    n++;
     sortPtcs.push_back(p);
   }
   TLorentzVector tlv;
   TLorentzVector tlv2;
-  sortPtcs.sort([&tlv, &tlv2](const fcc::ConstMCParticle& a, const fcc::ConstMCParticle& b) {
+  
+  orderSortPtcs.sort([&tlv, &tlv2, &sortPtcs](int a, int b) {
+    auto p4 = sortPtcs[a].p4();
+    tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
+    p4 = sortPtcs[b].p4();
+    tlv2.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
+    return tlv.E() > tlv2.E();
+  });
+  
+  /*sortPtcs.sort([&tlv, &tlv2](const fcc::ConstMCParticle& a, const fcc::ConstMCParticle& b) {
     auto p4 = a.p4();
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
     p4 = b.p4();
     tlv2.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
     return tlv.E() > tlv2.E();
-  });
+  });*/
 
   // Now construct the papas Particles (providing they are stable)
-  for (const auto& ptc : sortPtcs) {
+  for (int index : orderSortPtcs) {
+    std::cout <<index <<std::endl;
+    auto ptc =sortPtcs[index];
     countp += 1;
     auto p4 = ptc.core().p4;
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
@@ -81,9 +95,13 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::shared_ptr<p
         particle.setPath(ppath);
         m_particles.emplace(particle.id(), particle);
         papas::PDebug::write("Made {}", particle);
+        std::cout << "link" << particle.id() << " = " <<index <<std::endl;
+
+        links.emplace(particle.id(), index);
       }
     }
   }
+  std::cout << links.length() ;
   pevent.addCollectionToFolder(m_particles);
   return StatusCode::SUCCESS;
 }
