@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimPapas/IPapasTool.h"
+#include "SimPapas/IPapasImportTool.h"
 // PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
 
@@ -19,7 +19,7 @@ class MCParticleCollection;
  *  @author A.J. Robson
  */
 
-class PapasImportParticlesTool : public GaudiTool, virtual public IPapasTool {
+class PapasImportParticlesTool : public GaudiTool, virtual public IPapasImportTool {
 public:
   /// Constructor.
   PapasImportParticlesTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
@@ -29,7 +29,7 @@ public:
   /// empty class structures.
   virtual StatusCode clear();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& papas, std::shared_ptr<papas::Detector> spDetector) final;
+  virtual StatusCode run(papas::Event& papas, std::unordered_map<papas::Identifier, int>& links, std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 

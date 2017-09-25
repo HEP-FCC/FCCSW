@@ -14,6 +14,7 @@ DECLARE_COMPONENT(PapasAlg)
 
 PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("tools", m_toolNames);
+  declareProperty("importTool", m_importToolName);
   declareProperty("exportTool", m_exportToolName);
   m_eventno = 0;
 }
@@ -22,6 +23,7 @@ StatusCode PapasAlg::initialize() {
   for (auto& toolname : m_toolNames) {
     m_tools.push_back(tool<IPapasTool>(toolname));
   }
+  m_importTool = tool<IPapasImportTool>(m_importToolName);
   m_exportTool = tool<IPapasExportTool>(m_exportToolName);
   SmartIF<IPapasDetSvc> papasDetSvc;  // curiously does not work if joined with following line
   papasDetSvc = service(m_detServiceName);
@@ -65,6 +67,8 @@ StatusCode PapasAlg::execute() {
     // needed so that PODIO can find structure even if run is abandoned
     // and there are no particles created
     m_exportTool->createOutputStructures();
+    //import
+    m_importTool->run(pevent,m_importParticleLinks, m_spDetector);
     // now do the real work
     for (auto tool : m_tools) {
       // run each tool
@@ -74,6 +78,7 @@ StatusCode PapasAlg::execute() {
     // summary details of what the event contains
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;
     // remove all the data ready for the next event
+    m_inportTool->clear();
     for (auto tool : m_tools) {
       tool->clear();
     }
@@ -81,6 +86,7 @@ StatusCode PapasAlg::execute() {
     // in case of problems
     warning() << "Event :" << m_eventno << "Exception was thrown from gaudi papas tool" << message << endmsg;
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;
+    m_inportTool->clear();
     for (auto tool : m_tools) {
       tool->clear();
     }
