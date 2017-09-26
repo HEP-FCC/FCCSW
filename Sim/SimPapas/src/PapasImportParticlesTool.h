@@ -8,6 +8,8 @@
 #include "SimPapas/IPapasImportTool.h"
 // PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
+#include "papas/datatypes/Definitions.h"
+#include <unordered_map>
 
 namespace fcc {
 class MCParticleCollection;

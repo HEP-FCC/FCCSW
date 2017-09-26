@@ -8,6 +8,8 @@
 #include "SimPapas/IPapasExportTool.h"
 // FCCEDM
 #include "datamodel/ParticleCollection.h"
+#include "datamodel/ParticleMCParticleAssociationCollection.h"
+#include "datamodel/MCParticleCollection.h"
 
 #include <string>
 
@@ -25,17 +27,23 @@ public:
   /// Create any output structures needed.
   virtual StatusCode createOutputStructures();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& pevent);
+  virtual StatusCode run(papas::Event& pevent, std::unordered_map<papas::Identifier, int>& links);
   /// Finalize.
   virtual StatusCode finalize();
 
 private:
   /// handle for reconstructed particles collection
   DataHandle<fcc::ParticleCollection> m_particlesHandle{"recparticles", Gaudi::DataHandle::Writer, this};
+  /// Handle for the ParticleCollection to be associated with
+  DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
+  /// Handle for the ParticleMCParticlAdssociationCollection to be written
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_associationHandle{"particleMCparticleAssociations", Gaudi::DataHandle::Writer, this};
+  
   /// Particles type to be exported
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
   /// pointer to the reconstructed particles collection
   fcc::ParticleCollection* m_particles;  /// mcparticles collection
+  fcc::ParticleMCParticleAssociationCollection* m_particleMCParticleAssociations;  /// mcparticles collection
 };
 
 #endif  // SIM_PAPASPARTICLEEXPORTER_H

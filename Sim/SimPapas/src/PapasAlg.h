@@ -7,6 +7,7 @@
 #include "FWCore/DataHandle.h"
 // papas
 #include "papas/datatypes/Event.h"
+#include "papas/datatypes/Definitions.h"
 
 #include <string>
 class IPapasTool;
@@ -19,7 +20,6 @@ class MCParticleCollection;
 }
 namespace papas {
 class Detector;
-  class Identifier;
 }
 
 /** @class PapasAlg Sim/SimPapasInterface/src/PapasAlg.h PapasAlg.h
