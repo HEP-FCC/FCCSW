@@ -3,7 +3,10 @@
 
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
+
+#define WITHSORT 1
 #include "papas/datatypes/Event.h"
+#include "papas/datatypes/Definitions.h"
 
 namespace papas {
 class Detector;
@@ -29,6 +32,6 @@ public:
    *   @param[in] pEvent PapasEvent that contains collections of clusters, particles etc
    *   @return status code
    */
-  virtual StatusCode run(papas::Event& pEvent) = 0;
+  virtual StatusCode run(papas::Event& pEvent, std::unordered_map<papas::Identifier, int>& links) = 0;
 };
 #endif /* SIMPAPASINTERFACE_IPAPASEXPORTTOOL_H */

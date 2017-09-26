@@ -1,6 +1,7 @@
 #include "PapasAlg.h"
 // FCCSW
 #include "SimPapas/IPapasExportTool.h"
+#include "SimPapas/IPapasImportTool.h"
 #include "SimPapas/IPapasTool.h"
 #include "SimPapasDetector/IPapasDetSvc.h"
 #include "papas/detectors/Detector.h"
@@ -10,6 +11,7 @@
 #include "papas/utility/TRandom.h"
 
 #include <iostream>
+#define WITHSORT 1
 DECLARE_COMPONENT(PapasAlg)
 
 PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
@@ -68,25 +70,28 @@ StatusCode PapasAlg::execute() {
     // and there are no particles created
     m_exportTool->createOutputStructures();
     //import
-    m_importTool->run(pevent,m_importParticleLinks, m_spDetector);
+    m_importTool->run(pevent, m_importParticleLinks, m_spDetector);
     // now do the real work
     for (auto tool : m_tools) {
       // run each tool
       tool->run(pevent, m_spDetector);
     }
-    m_exportTool->run(pevent);
+    m_exportTool->run(pevent, m_importParticleLinks);
     // summary details of what the event contains
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;
     // remove all the data ready for the next event
-    m_inportTool->clear();
+    m_importTool->clear();
+    m_importParticleLinks.clear();
     for (auto tool : m_tools) {
       tool->clear();
     }
+    m_exportParticleLinks.clear();
+
   } catch (std::string message) {
     // in case of problems
     warning() << "Event :" << m_eventno << "Exception was thrown from gaudi papas tool" << message << endmsg;
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;
-    m_inportTool->clear();
+    m_importTool->clear();
     for (auto tool : m_tools) {
       tool->clear();
     }

@@ -4,6 +4,9 @@
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
 #include "papas/datatypes/Event.h"
+// Papas
+#define WITHSORT 1
+#include "papas/datatypes/Definitions.h"
 
 namespace papas {
 class Detector;
@@ -29,6 +32,6 @@ public:
    *   @param[in] pEvent PapasEvent that contains collections of clusters, particles etc
    *   @return status code
    */
-  virtual StatusCode run(papas::Event& pEvent,  unordered_map<papas::Identifier, int>& links, int>std::shared_ptr<papas::Detector> det = nullptr ) = 0;
+  virtual StatusCode run(papas::Event& pEvent,  std::unordered_map<papas::Identifier, int>& links, std::shared_ptr<papas::Detector> det = nullptr ) = 0;
 };
 #endif /* SIMPAPASINTERFACE_IPAPASIMPORTTOOL_H */

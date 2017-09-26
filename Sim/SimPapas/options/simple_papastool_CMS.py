@@ -44,14 +44,15 @@ from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, Pap
 # TODO update this link when pull request has gone through
 #read in pythia generated particles, write out reconstructed particles (fcc EDM format)
 papasalg = PapasAlg("papasalg",
-                    tools=["PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
+                    tools=[
                            "PapasSimulatorTool/papassim", #simulates smeared clusters and tracks
                            "PapasMergeClustersTool/ecalmerge", #merges clusters ECAL
                            "PapasMergeClustersTool/hcalmerge", #merged clusters HCAL
                            "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
                            "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
                            "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
-                            exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
+                    importTool ="PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
+                    exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                             seed = 0xdeadbeef,#seed random generator
                             physicsDebugFile = 'papasPhysics2.out', #write out papas physics to file
                             detService = "CMSDetSvc", #name of detector service
@@ -84,6 +85,8 @@ papaspfreconstructortool = PapasPFReconstructorTool("reconstructor", blockSubtyp
 #export reconstructed particles to root file
 papasexportparticlestool = PapasExportParticlesTool("exporter", particleSubtype="r") #use the reconstructed particles as input
 papasexportparticlestool.recparticles.Path='papasreconstructed' #name of output reconstructed particles in fcc format
+papasexportparticlestool.particleMCparticleAssociations.Path='papasParticleLinks' #link from gen to reconstructed particles
+papasexportparticlestool.genparticles.Path='GenParticle'
 
 #output fcc particles to root
 from Configurables import PodioOutput
