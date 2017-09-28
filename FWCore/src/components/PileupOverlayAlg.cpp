@@ -2,6 +2,9 @@
 
 #include "FWCore/IEDMMergeTool.h"
 
+
+
+
 DECLARE_ALGORITHM_FACTORY(PileupOverlayAlg)
 
 PileupOverlayAlg::PileupOverlayAlg(const std::string& aName, ISvcLocator* aSvcLoc)
@@ -16,10 +19,15 @@ StatusCode PileupOverlayAlg::initialize() {
   }
   m_minBiasEventIndex = 0;
   StatusCode sc = GaudiAlgorithm::initialize();
-  m_reader.openFile(m_pileupFilenames[0]);
-  m_store.setReader(&m_reader);
   IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);
   sc = m_flatDist.initialize(randSvc, Rndm::Flat(0., 1.));
+
+  m_pileupFileIndex = 0;
+  if (m_doShuffleInputFiles) {
+    m_pileupFileIndex = static_cast<unsigned int>(m_flatDist() * m_pileupFilenames.size());
+  }
+  m_reader.openFile(m_pileupFilenames[m_pileupFileIndex]);
+  m_store.setReader(&m_reader);
   return sc;
 }
 
@@ -56,7 +64,11 @@ StatusCode PileupOverlayAlg::execute() {
     m_minBiasEventIndex = (m_minBiasEventIndex + 1);
     if (m_minBiasEventIndex >= nEvents) {
       m_minBiasEventIndex = 0;
-      m_pileupFileIndex = (m_pileupFileIndex + 1) % m_pileupFilenames.size();
+      if (m_doShuffleInputFiles) {
+        m_pileupFileIndex = static_cast<unsigned int>(m_flatDist() * m_pileupFilenames.size());
+      } else {
+        m_pileupFileIndex = (m_pileupFileIndex + 1) % m_pileupFilenames.size();
+      }
       m_store.clearCaches();
       m_reader.closeFile();
       verbose() << "switching to pileup file " << m_pileupFilenames[m_pileupFileIndex] << endmsg;
