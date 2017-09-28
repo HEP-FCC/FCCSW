@@ -12,7 +12,8 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 from GaudiKernel import SystemOfUnits as units
 
 ## read in generated particles from ROOT via podio
-podioevent   = FCCDataSvc("EventDataSvc", input="./ee_ZH_Zmumu_Hbb.root")
+#podioevent   = FCCDataSvc("EventDataSvc", input="./ee_ZH_Zmumu_Hbb.root")
+podioevent   = FCCDataSvc("EventDataSvc", input="./ee_Z_bbbar.root")
 
 from Configurables import PodioInput, ReadTestConsumer
 podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
@@ -53,10 +54,10 @@ papasalg = PapasAlg("papasalg",
                            "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
                     importTool ="PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
                     exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
-                            seed = 0xdeadbeef,#seed random generator
-                            physicsDebugFile = 'papasPhysics2.out', #write out papas physics to file
-                            detService = "CMSDetSvc", #name of detector service
-                            )
+                    seed = 0xdeadbeef,#seed random generator
+                    physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                    detService = "CMSDetSvc", #name of detector service
+                    )
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")
@@ -84,8 +85,8 @@ papaspfreconstructortool = PapasPFReconstructorTool("reconstructor", blockSubtyp
 
 #export reconstructed particles to root file
 papasexportparticlestool = PapasExportParticlesTool("exporter", particleSubtype="r") #use the reconstructed particles as input
-papasexportparticlestool.recparticles.Path='papasreconstructed' #name of output reconstructed particles in fcc format
-papasexportparticlestool.particleMCparticleAssociations.Path='papasParticleLinks' #link from gen to reconstructed particles
+papasexportparticlestool.recparticles.Path='RecParticle' #name of output reconstructed particles in fcc format
+papasexportparticlestool.particleMCparticleAssociations.Path='ParticleLinks' #link from gen to reconstructed particles
 papasexportparticlestool.genparticles.Path='GenParticle'
 
 #output fcc particles to root
@@ -100,7 +101,7 @@ ApplicationMgr(
     TopAlg=[podioinput, papasalg, out],
     EvtSel='NONE',
     ## number of events
-    EvtMax=10,
+    EvtMax=100,
     ## all services should be put here
     ExtSvc = [podioevent, detservice],
     OutputLevel = DEBUG
