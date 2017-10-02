@@ -69,7 +69,7 @@ StatusCode PapasAlg::execute() {
     // needed so that PODIO can find structure even if run is abandoned
     // and there are no particles created
     m_exportTool->createOutputStructures();
-    //import
+    //import to create SimParticles and links between Sim and GenParticles
     m_importTool->run(pevent, m_importParticleLinks, m_spDetector);
     // now do the real work
     for (auto tool : m_tools) {
@@ -85,8 +85,6 @@ StatusCode PapasAlg::execute() {
     for (auto tool : m_tools) {
       tool->clear();
     }
-    m_exportParticleLinks.clear();
-
   } catch (std::string message) {
     // in case of problems
     warning() << "Event :" << m_eventno << "Exception was thrown from gaudi papas tool" << message << endmsg;

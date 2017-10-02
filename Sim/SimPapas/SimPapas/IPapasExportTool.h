@@ -3,6 +3,7 @@
 
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
+// Papas
 #include "papas/datatypes/Event.h"
 #include "papas/datatypes/Definitions.h"
 #define WITHSORT 1

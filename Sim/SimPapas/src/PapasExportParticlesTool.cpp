@@ -35,7 +35,7 @@ StatusCode PapasExportParticlesTool::run(papas::Event& pevent, std::unordered_ma
   papas::HistoryHelper history(pevent);
   
   //put the original gen particles into a vector so they can be used to
-  //make the association with the reconstructed particle
+  //make the link association with the reconstructed particle
   const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
   std::vector<fcc::ConstMCParticle> vecPtcs;
   for (const auto& p : *ptcs) {
@@ -54,51 +54,22 @@ StatusCode PapasExportParticlesTool::run(papas::Event& pevent, std::unordered_ma
     ptc.core().status = 1;
     ptc.core().charge = pp.second.charge();
     
-    auto simIds = history.linkedIds(pp.second.id(),"ps");
+    // Use the links stored during import together with the history information
+    // To link the reconstructed particle to the simulated particle
+    // and then the simulated particle to the Generated Particle.
+    auto simIds = history.linkedIds(pp.second.id(),"ps"); //find linked SimParticles
     for (const auto& s: simIds){
-      auto search = links.find(s);
+      auto search = links.find(s); //find linked GenParticle index
       if(search != links.end()) {
-        const auto& genParticle= vecPtcs[search->second];
+        const auto& genParticle= vecPtcs[search->second]; // find linked GenParticle
         fcc::ParticleMCParticleAssociation assoc = m_particleMCParticleAssociations->create();
-        assoc.sim(genParticle);
+        assoc.sim(genParticle);  //set up association
         assoc.rec(ptc);
       }
       else {
         warning() << "Associated simulated particle was not found." << endmsg;
       }
     }
-    /*//now use papas history to see which papas sim particles are linked to the papas rec particle
-    const auto& hist = pevent.history();
-    const auto& startnode = hist.at(pp.second.id());
-    DAG::BFSRecurseVisitor<papas::PFNode> bfs;
-    const auto& nodes = bfs.traverseNodes(startnode, DAG::enumVisitType::UNDIRECTED);
-#if WITHSORT
-    debug() << "Papas: sorting" << endmsg;
-    auto simIds = history.linkedIds(pp.second.id());
-#endif
-    //std::unordered_set<papas::Identifier> simIds = history.linkedIds(pp.second.id());
-    for (const auto& n: nodes) {
-      if (papas::IdCoder::typeAndSubtype(n->value())=="ps") {
-        //use the links information to find the relevant gen particle
-        //and create the association
-        auto search = links.find(n->value());
-        if(search != links.end()) {
-          const auto& genParticle= vecPtcs[search->second];
-          fcc::ParticleMCParticleAssociation assoc = m_particleMCParticleAssociations->create();
-          assoc.sim(genParticle);
-          assoc.rec(ptc);
-        }
-        else {
-          warning() << "Associated simulated particle was not found." << endmsg;
-        }
-      }
-    }*/
-    /*auto ids = history.linkedIds(pp.second.id(),"ps", DAG::enumVisitType::UNDIRECTED);
-    std::cout << ids.size() <<"ONE";
-    
-    
-    
-    }*/
   }
   return StatusCode::SUCCESS;
 }
