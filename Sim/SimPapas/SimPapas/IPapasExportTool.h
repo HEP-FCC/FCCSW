@@ -4,9 +4,10 @@
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
 // Papas
+#define WITHSORT 1
 #include "papas/datatypes/Event.h"
 #include "papas/datatypes/Definitions.h"
-#define WITHSORT 1
+
 namespace papas {
 class Detector;
 }
