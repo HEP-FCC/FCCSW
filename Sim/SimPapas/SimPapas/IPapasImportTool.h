@@ -1,11 +1,13 @@
 #ifndef SIMPAPAS_IPAPASIMPORTTOOL_H
 #define SIMPAPAS_IPAPASIMPORTTOOL_H
 
+
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
-#include "papas/datatypes/Event.h"
+
 // Papas
 #define WITHSORT 1
+#include "papas/datatypes/Event.h"
 #include "papas/datatypes/Definitions.h"
 
 namespace papas {
