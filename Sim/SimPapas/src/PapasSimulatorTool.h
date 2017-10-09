@@ -16,9 +16,10 @@ class MCParticleCollection;
 
 /** @class PapasSimulatorTool Sim/SimPapas/src/PapasSimulatorTool.h PapasSimulatorTool.h
  *
- *  Runs the papas simulation algorithm. This creates a list of particles from Pythia generated particles.
- *  It then creates particle-flow-simulated true and smeared clusters and tracks. All of these
- *  collections are appended to the papasevent.
+ *  Runs the papas simulation algorithm. This takes a collection of papas simulated particles
+ *  and simulates the interaction of these particles in the detector to produce true and smeared
+ *  clusters and tracks, that will be used in the particle flow reconstruction.
+ *  The collections of true and smeared clusters and tracks will be appended to the papasevent.
  *  @author A.J. Robson
  */
 

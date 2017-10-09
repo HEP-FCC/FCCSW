@@ -70,18 +70,18 @@ StatusCode PapasAlg::execute() {
     // and there are no particles created
     m_exportTool->createOutputStructures();
     //import to create SimParticles and links between Sim and GenParticles
-    m_importTool->run(pevent, m_importParticleLinks, m_spDetector);
+    m_importTool->run(pevent, m_particleLinks, m_spDetector);
     // now do the real work
     for (auto tool : m_tools) {
       // run each tool
       tool->run(pevent, m_spDetector);
     }
-    m_exportTool->run(pevent, m_importParticleLinks);
+    m_exportTool->run(pevent, m_particleLinks);
     // summary details of what the event contains
     debug() << "PAPAS event contains " << std::endl << pevent.info() << endmsg;
     // remove all the data ready for the next event
     m_importTool->clear();
-    m_importParticleLinks.clear();
+    m_particleLinks.clear();
     for (auto tool : m_tools) {
       tool->clear();
     }

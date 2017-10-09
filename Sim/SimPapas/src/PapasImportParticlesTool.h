@@ -37,7 +37,7 @@ public:
 
 private:
   /// Handle for the ParticleCollection to be read
-  DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
   /// Collection of papas particles that new particles will be added to
   papas::Particles m_particles;
 };
