@@ -47,7 +47,7 @@ StatusCode SimG4SaveTrajectory::saveOutput(const G4Event& aEvent) {
       auto trajectoryPoint = theTrajectory->GetPoint(pointIndex)->GetPosition();
       fcc::TrackHit edmHit = edmHits->create();
       fcc::BareHit& edmHitCore = edmHit.core();
-      edmHitCore.bits = theTrajectory.GetTrackID();
+      edmHitCore.bits = theTrajectory->GetTrackID();
       edmHitCore.cellId = 0;
       edmHitCore.energy = 0;
       edmHitCore.time = 0;
