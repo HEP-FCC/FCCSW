@@ -14,17 +14,14 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-// DD4hep
-#include "DDG4/Geant4Hits.h"
-
 DECLARE_TOOL_FACTORY(SimG4SaveTrajectory)
 
 SimG4SaveTrajectory::SimG4SaveTrajectory(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("trajectoryPoints", m_positionedTrackHits, "Handle for tracker hits");
-  declareProperty("trajectory", m_trackHits, "Handle for tracker hits including position information");
+  declareProperty("trajectoryPoints", m_positionedTrackHits, "Handle for trajectory hits");
+  declareProperty("trajectory", m_trackHits, "Handle for trajectory hits including position");
 }
 
 SimG4SaveTrajectory::~SimG4SaveTrajectory() {}
@@ -39,6 +36,7 @@ StatusCode SimG4SaveTrajectory::initialize() {
 StatusCode SimG4SaveTrajectory::finalize() { return GaudiTool::finalize(); }
 
 StatusCode SimG4SaveTrajectory::saveOutput(const G4Event& aEvent) {
+  // one collection for all the 
   auto edmPositions = m_positionedTrackHits.createAndPut();
   auto edmHits = m_trackHits.createAndPut();
 
@@ -49,6 +47,7 @@ StatusCode SimG4SaveTrajectory::saveOutput(const G4Event& aEvent) {
       auto trajectoryPoint = theTrajectory->GetPoint(pointIndex)->GetPosition();
       fcc::TrackHit edmHit = edmHits->create();
       fcc::BareHit& edmHitCore = edmHit.core();
+      edmHitCore.bits = theTrajectory.GetTrackID();
       edmHitCore.cellId = 0;
       edmHitCore.energy = 0;
       edmHitCore.time = 0;
