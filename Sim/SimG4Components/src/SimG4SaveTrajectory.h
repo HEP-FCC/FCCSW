@@ -17,8 +17,9 @@ class PositionedTrackHitCollection;
 
 /** @class SimG4SaveTrajectory SimG4Components/src/SimG4SaveTrajectory.h SimG4SaveTrajectory.h
  *
+ * Tool to save Geant4 Trajectory data. Requires Geant to be run with the command "/tracking/storeTrajectory 1".
+ *  Note that access to trajectories is expensive, so this tool should only be used for debugging and visualisation.
  *
- *  @author vavolkl
  */
 
 class SimG4SaveTrajectory : public GaudiTool, virtual public ISimG4SaveOutputTool {
@@ -42,7 +43,7 @@ public:
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for tracker hits including position information
+  /// Handle for trajectory hits including position information
   DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trajectory",
                                                                       Gaudi::DataHandle::Writer, this};
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/trajectoryPoints",
