@@ -33,9 +33,9 @@ public:
 
 private:
   /// handle for reconstructed particles collection
-  DataHandle<fcc::ParticleCollection> m_particlesHandle{"recparticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::ParticleCollection> m_recParticlesHandle{"recparticles", Gaudi::DataHandle::Writer, this};
   /// Handle for the ParticleCollection to be associated with
-  DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the ParticleMCParticlAdssociationCollection to be written
   DataHandle<fcc::ParticleMCParticleAssociationCollection> m_associationHandle{"particleMCparticleAssociations", Gaudi::DataHandle::Writer, this};
   

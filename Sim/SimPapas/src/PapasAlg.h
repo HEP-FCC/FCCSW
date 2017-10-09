@@ -50,7 +50,7 @@ private:
   std::vector<std::string> m_toolNames;   ///< names of tools to be run
   std::string m_importToolName;           ///< name of import tool to be run
   std::string m_exportToolName;           ///< name of export tool to be run
-  std::unordered_map<papas::Identifier, int> m_importParticleLinks; ///< map to contain links between GenParticles and SimParticles
+  std::unordered_map<papas::Identifier, int> m_particleLinks; ///< map to contain links between GenParticles and SimParticles
   long m_eventno;                         ///< the papas Event number, incremented for each event processed
   ///<seed for random generator, default to 0 (no seed)
   Gaudi::Property<long> m_seed{this, "seed", 0, "random seed"};

@@ -13,8 +13,8 @@ PapasExportParticlesTool::PapasExportParticlesTool(const std::string& aType, con
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IPapasExportTool>(this);
-  declareProperty("recparticles", m_particlesHandle);
-  declareProperty("genparticles", m_iGenpHandle);
+  declareProperty("recparticles", m_recParticlesHandle);
+  declareProperty("genparticles", m_genParticlesHandle);
   declareProperty("particleMCparticleAssociations", m_associationHandle);
 }
 
@@ -24,7 +24,7 @@ StatusCode PapasExportParticlesTool::initialize() {
 }
 
 StatusCode PapasExportParticlesTool::createOutputStructures() {
-  m_particles = m_particlesHandle.createAndPut();
+  m_particles = m_recParticlesHandle.createAndPut();
   m_particleMCParticleAssociations = m_associationHandle.createAndPut();
   return StatusCode::SUCCESS;
 }
@@ -36,11 +36,7 @@ StatusCode PapasExportParticlesTool::run(papas::Event& pevent, std::unordered_ma
   
   //put the original gen particles into a vector so they can be used to
   //make the link association with the reconstructed particle
-  const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
-  std::vector<fcc::ConstMCParticle> vecPtcs;
-  for (const auto& p : *ptcs) {
-     vecPtcs.push_back(p);
-  }
+  const fcc::MCParticleCollection* ptcs = m_genParticlesHandle.get();
   
   for (const auto& pp : pevent.particles(ptype.c_str()[0])) {
     //make a fcc:Particle corresponding to the reconstructed particle
@@ -61,7 +57,7 @@ StatusCode PapasExportParticlesTool::run(papas::Event& pevent, std::unordered_ma
     for (const auto& s: simIds){
       auto search = links.find(s); //find linked GenParticle index
       if(search != links.end()) {
-        const auto& genParticle= vecPtcs[search->second]; // find linked GenParticle
+        const auto& genParticle= (*ptcs)[search->second]; // find linked GenParticle
         fcc::ParticleMCParticleAssociation assoc = m_particleMCParticleAssociations->create();
         assoc.sim(genParticle);  //set up association
         assoc.rec(ptc);
