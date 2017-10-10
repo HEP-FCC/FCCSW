@@ -7,6 +7,7 @@
 #include "datamodel/MCParticleCollection.h"
 
 #include "Generation/Units.h"
+#include "HepPDT/ParticleID.hh"
 
 DECLARE_COMPONENT(HepMCToEDMConverter)
 

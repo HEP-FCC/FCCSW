@@ -2,6 +2,9 @@
 #include "DetCommon/DetUtils.h"
 #include "DD4hep/DetFactoryHelper.h"
 
+#include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
+#include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
+
 
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
@@ -16,7 +19,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   // shorthands
   DD4hep::XML::DetElement xmlDet = static_cast<DD4hep::XML::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
-  double l_overlapMargin = 0.00001;
+  double l_overlapMargin = 0.01;
 
   // get sensitive detector type from xml
   DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
@@ -25,6 +28,11 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   // definition of top volume
   std::string detName = xmlDet.nameStr();
   DetElement worldDetElement(detName, xmlDet.id());
+
+  Acts::ActsExtension::Config actsBarrelConfig;
+  actsBarrelConfig.isEndcap             = true;
+  Acts::ActsExtension* worldDetExt = new Acts::ActsExtension(actsBarrelConfig);
+  worldDetElement.addExtension<Acts::IActsExtension>(worldDetExt);
 
   // envelope volume for one of the endcaps, either forward or backward
   double envelopeThickness = 0.5 * (dimensions.zmax() - dimensions.zmin());
@@ -42,7 +50,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   double discThickness = 0.5 * (xFirstDisc.zmax() - xFirstDisc.zmin());
   DD4hep::Geometry::Tube discShape(dimensions.rmin() - l_overlapMargin, dimensions.rmax() + l_overlapMargin, discThickness + l_overlapMargin);
   Volume discVolume("disc", discShape, lcdd.air());
-  discVolume.setVisAttributes(lcdd.invisible());
 
 
   unsigned int discCounter = 0;
@@ -73,12 +80,13 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
                                                            0.5 * xComp.thickness(),
                                                            0.5 * xSensorProperties.attr<double>("sensorLength")),
                                lcdd.material(xComp.materialStr()));
+      componentVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRing.attr<int>("nModules");
+      double phi = 0;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
         double lX = 0;
         double lY = 0;
         double lZ = 0;
-        double phi = 0;
         double phiTilt = 0;
         double thetaTilt = 0;
         if (0 == phiIndex % 2) {
@@ -126,6 +134,14 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   PlacedVolume placedDiscVolume = envelopeVolume.placeVolume(discVolume, DD4hep::Geometry::Position(0, 0, currentZ));
   placedDiscVolume.addPhysVolID("disc", discCounter);
   ++discCounter;
+  Acts::ActsExtension::Config layConfig;
+  // the local coordinate systems of modules in dd4hep and acts differ
+  // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
+  layConfig.axes = "XZY"; // correct translation of local x axis in dd4hep to local x axis in acts
+  layConfig.isLayer = true;
+  Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
+  disc_det.addExtension<Acts::IActsExtension>(detlayer);
+ 
   disc_det.setPlacement(placedDiscVolume);
   }
 

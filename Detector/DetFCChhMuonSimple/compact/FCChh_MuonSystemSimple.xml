@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Simple tag layer in muon system"
+        author="C. Neubueser"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Simple Muon System usable for muon/punch-through tag</comment>
+  </info>
+  <display>
+    <vis name="MuonEnvelopeVis" r="0.87" g="0.5" b="0.0" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeEndcapVis" r="0.91" g="0.64" b="0.29" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeFwdVis" r="0.90" g="0.72" b="0.48" a="0.2" showDaughters="false" visible="true"/>
+  </display>
+  <define>
+    <constant name="MuonSpacer" value="30*mm/2." />
+  </define>
+
+  <readouts>
+    <readout name="Muons_Readout">
+      <!-- Introduce a segmentation in eta and phi -->
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="256"/>
+      <id>system:7,eta:9,phi:-10</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <!-- Barrel -->
+    <detector id="12" name="MuonEnvelope" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon Barrel</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="BarMuon_rmax2" rmax="BarMuon_rmax2+MuonSpacer" dz="BarMuon_z2-MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Aluminum"/>
+    </detector>
+    <detector id="60" name="MuonEnvelopeExtBarrelPos" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon extended Barrel</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="BarMuon_rmin1" rmax="BarMuon_rmax1" dz="MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="BarMuon_z2" material="Aluminum"/>
+    </detector>
+    <detector id="124" name="MuonEnvelopeExtBarrelNeg" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon extended Barrel</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="BarMuon_rmin1" rmax="BarMuon_rmax1" dz="MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="-BarMuon_z2" material="Aluminum"/>
+    </detector>
+    <!-- End-caps -->
+    <detector id="61" name="MuonEnvelopeEndcapPos" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeEndcapVis">
+      <comment>Envelope for Muon positive end-cap</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="EndCapMuon_rmin1" rmax="EndCapMuon_rmax2" dz="MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="EndCapMuon_zOffset-EndCapMuon_dz" material="Aluminum"/>
+    </detector>
+    <detector id="125" name="MuonEnvelopeEndcapNeg" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeEndcapVis">
+      <comment>Envelope for Muon positive end-cap</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="EndCapMuon_rmin1" rmax="EndCapMuon_rmax2" dz="MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="-EndCapMuon_zOffset+EndCapMuon_dz" material="Aluminum"/>
+    </detector>
+    <!-- Forward -->
+    <detector id="63" name="MuonEnvelopeFwdPos" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeFwdVis">
+      <comment>Envelope for forward Muon positive</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="FwdMuon_zOffset-FwdMuon_dz" material="Aluminum"/>
+    </detector>
+    <detector id="127" name="MuonEnvelopeFwdNeg" type="SimpleCylinder" sensitive="true" readout="Muons_Readout" vis="MuonEnvelopeFwdVis">
+      <comment>Envelope for forward Muon positive</comment>
+      <sensitive type="SimpleTrackerSD"/>
+      <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="MuonSpacer" phi0="0" deltaphi="360*deg" z_offset="-FwdMuon_zOffset+FwdMuon_dz" material="Aluminum"/>
+    </detector>
+  </detectors>
+</lccdd>

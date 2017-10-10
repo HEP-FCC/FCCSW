@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCChh_CaloFwd_Discs"
+        title="Forward Calorimeter"
+        author="M.Aleksa,J.Faltova,A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>
+      Liquid argon calorimeter design for forward region.
+      Both parts are immersed in the same cryostat.
+      Absorbers have shape of simple discs.
+    </comment>
+  </info>
+
+  <define>
+    <!-- cryostat, common for EMFWD and HFWD -->
+    <constant name="CryoThicknessFront" value="50*mm"/>
+    <constant name="CryoThicknessBack" value="100*mm"/>
+    <constant name="CryoThicknessInner" value="20*mm"/>
+    <constant name="CryoThicknessOuter" value="100*mm"/>
+    <constant name="CryoFwd_front_rmin1" value="FwdCal_active_rmin1-CryoThicknessInner"/>
+    <constant name="CryoFwd_front_rmin2" value="FwdCal_active_rmin1-CryoThicknessInner+CryoThicknessFront*tan(2*atan(exp(-6)))"/>
+    <constant name="CryoFwd_back_rmin1" value="FwdCal_active_rmin2-CryoThicknessInner-CryoThicknessBack*tan(2*atan(exp(-6)))"/>
+    <constant name="CryoFwd_back_rmin2" value="FwdCal_active_rmin2-CryoThicknessInner"/>
+    <constant name="CryoFwd_rmax" value="FwdCal_rmax"/>
+    <constant name="CryoFwd_z1" value="FwdCal_zOffset - FwdCal_dz"/>
+    <constant name="CryoFwd_z2" value="FwdCal_zOffset + FwdCal_dz"/>
+    <constant name="CryoFwd_dz" value="FwdCal_dz"/>
+    <constant name="CryoFwd_zOffset" value="FwdCal_zOffset"/>
+    <!-- space between the cryostat and calorimeter -->
+    <constant name="BathThicknessFront" value="90*mm"/>
+    <constant name="BathThicknessBack" value="50*mm"/>
+    <constant name="BathThicknessOuter" value="50*mm"/>
+    <constant name="BathThicknessMiddle" value="50*mm"/> <!-- in between of EMFWD and HFWD -->
+    <!-- electromegnetic calorimeter: EMFWD -->
+    <constant name="EMFWD_z1" value="CryoFwd_z1 + CryoThicknessFront + BathThicknessFront"/>
+    <constant name="EMFWD_z2" value="17350*mm"/>
+    <constant name="EMFWD_rmin1" value="CryoFwd_front_rmin2 + CryoThicknessInner + BathThicknessFront*tan(2*atan(exp(-6)))"/>
+    <constant name="EMFWD_rmin2" value="EMFWD_z2 * tan(2*atan(exp(-6)))"/>
+    <constant name="EMFWD_rmax" value="FwdCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
+    <constant name="EMFWD_lAr_thickness" value="0.1*mm"/>
+    <constant name="EMFWD_Cu_thickness" value="3*cm"/>
+    <constant name="EMFWD_readout_thickness" value="1.2*mm"/>
+    <!-- hadronic calorimeter: HFWD -->
+    <constant name="HFWD_z1" value="EMFWD_z2 + BathThicknessMiddle"/>
+    <constant name="HFWD_z2" value="CryoFwd_z2 - CryoThicknessBack - BathThicknessBack"/>
+    <constant name="HFWD_rmin1" value="HFWD_z1*tan(2*atan(exp(-6)))"/>
+    <constant name="HFWD_rmin2" value="CryoFwd_back_rmin1 + CryoThicknessInner - BathThicknessBack*tan(2*atan(exp(-6)))"/>
+    <constant name="HFWD_rmax" value="FwdCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
+    <constant name="HFWD_lAr_thickness" value="0.1*mm"/>
+    <constant name="HFWD_Cu_thickness" value="4.*cm"/>
+    <constant name="HFWD_readout_thickness" value="1.2*mm"/>
+  </define>
+  <readouts>
+    <readout name="EMFwdPhiEta">
+      <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
+    </readout>
+    <readout name="HFwdPhiEta">
+      <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <!-- positive side: cryostat -->
+    <detector name="CalFwdCryoFront_positive" type="SimpleCone">
+      <dimensions rmin1="CryoFwd_front_rmin1" rmax1="CryoFwd_rmax"  rmin2="CryoFwd_front_rmin2" rmax2="CryoFwd_rmax"
+                  dz="CryoThicknessFront/2." z_offset="CryoFwd_z1+CryoThicknessFront/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdCryoBack_positive" type="SimpleCone">
+      <dimensions rmin1="CryoFwd_back_rmin1" rmax1="CryoFwd_rmax" rmin2="CryoFwd_back_rmin2" rmax2="CryoFwd_rmax"
+                  dz="CryoThicknessBack/2." z_offset="CryoFwd_z2-CryoThicknessBack/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdCryoOuter_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoFwd_rmax-CryoThicknessOuter" rmax="CryoFwd_rmax"
+                  dz="(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdCryoInner_positive" type="SimpleCone">
+      <dimensions rmin1="CryoFwd_front_rmin2" rmax1="CryoFwd_front_rmin2+CryoThicknessInner" rmin2="CryoFwd_back_rmin1" rmax2="CryoFwd_back_rmin1+CryoThicknessInner"
+                  dz="(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2." material="Aluminum"/>
+    </detector>
+    <detector name="CalFwdBathFront_positive" type="SimpleCone">
+      <dimensions rmin1="CryoFwd_front_rmin2+CryoThicknessInner" rmax1="EMFWD_rmax" rmin2="EMFWD_rmin1" rmax2="EMFWD_rmax"
+                  dz="BathThicknessFront/2." z_offset="EMFWD_z1-BathThicknessFront/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdBathMiddle_positive" type="SimpleCone">
+      <dimensions rmin1="EMFWD_rmin2" rmax1="EMFWD_rmax" rmin2="HFWD_rmin1" rmax2="EMFWD_rmax"
+                  dz="BathThicknessMiddle/2." z_offset="EMFWD_z2+BathThicknessMiddle/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdBathBack_positive" type="SimpleCone">
+      <dimensions rmin1="HFWD_rmin2" rmax1="HFWD_rmax" rmin2="CryoFwd_back_rmin1+CryoThicknessInner" rmax2="HFWD_rmax"
+                  dz="BathThicknessBack/2." z_offset="HFWD_z2+BathThicknessBack/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdBathOuter_positive" type="SimpleCylinder">
+      <dimensions rmin="CryoFwd_rmax-CryoThicknessOuter-BathThicknessOuter" rmax="CryoFwd_rmax-CryoThicknessOuter"
+                  dz="(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2." material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <!-- electromagnetic calorimeter -->
+    <detector name="EMFWD" type="CaloDiscs" id="FwdECal_id" readout="EMFwdPhiEta">
+      <sensitive type="SimpleCalorimeterSD"/>
+      <dimensions rmin1="EMFWD_rmin1"  rmin2="EMFWD_rmin2" rmax="EMFWD_rmax" dz="(EMFWD_z2-EMFWD_z1)/2." z_offset="EMFWD_z1+(EMFWD_z2-EMFWD_z1)/2."/>
+      <active thickness="EMFWD_lAr_thickness">
+        <material name="LAr"/>
+      </active>
+      <passive  sensitive="true">
+        <inner thickness="EMFWD_Cu_thickness">
+          <material name="Copper"/>
+        </inner>
+        <glue thickness="0">
+          <material name="Copper"/>
+        </glue>
+        <outer thickness="0">
+          <material name="Copper"/>
+        </outer>
+      </passive>
+      <readout thickness="EMFWD_readout_thickness" sensitive="true">
+        <material name="PCB"/>
+      </readout>
+    </detector>
+    <!-- hadronic calorimeter -->
+    <detector name="HFWD" type="CaloDiscs" id="FwdHCal_id" readout="HFwdPhiEta">
+      <sensitive type="SimpleCalorimeterSD"/>
+      <dimensions rmin1="HFWD_rmin1"  rmin2="HFWD_rmin2" rmax="HFWD_rmax" dz="(HFWD_z2-HFWD_z1)/2." z_offset="HFWD_z1+(HFWD_z2-HFWD_z1)/2."/>
+      <active thickness="HFWD_lAr_thickness">
+        <material name="LAr"/>
+      </active>
+      <passive  sensitive="true">
+        <inner thickness="HFWD_Cu_thickness">
+          <material name="Copper"/>
+        </inner>
+        <glue thickness="0">
+          <material name="Copper"/>
+        </glue>
+        <outer thickness="0">
+          <material name="Copper"/>
+        </outer>
+      </passive>
+      <readout thickness="HFWD_readout_thickness" sensitive="true">
+        <material name="PCB"/>
+      </readout>
+    </detector>
+    negative side: cryostat
+    <detector name="CalFwdCryoFront_negative" type="SimpleCone">
+      <dimensions rmin2="CryoFwd_front_rmin1" rmax2="CryoFwd_rmax"  rmin1="CryoFwd_front_rmin2" rmax1="CryoFwd_rmax"
+                  dz="CryoThicknessFront/2." z_offset="-(CryoFwd_z1+CryoThicknessFront/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdCryoBack_negative" type="SimpleCone">
+      <dimensions rmin2="CryoFwd_back_rmin1" rmax2="CryoFwd_rmax" rmin1="CryoFwd_back_rmin2" rmax1="CryoFwd_rmax"
+                  dz="CryoThicknessBack/2." z_offset="-(CryoFwd_z2-CryoThicknessBack/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdCryoOuter_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoFwd_rmax-CryoThicknessOuter" rmax="CryoFwd_rmax"
+                  dz="(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="-(CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="Aluminum" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdCryoInner_negative" type="SimpleCone">
+      <dimensions rmin2="CryoFwd_front_rmin2" rmax2="CryoFwd_front_rmin2+CryoThicknessInner" rmin1="CryoFwd_back_rmin1" rmax1="CryoFwd_back_rmin1+CryoThicknessInner"
+                  dz="(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="-(CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="Aluminum"/>
+    </detector>
+    <detector name="CalFwdBathFront_negative" type="SimpleCone">
+      <dimensions rmin2="CryoFwd_front_rmin2+CryoThicknessInner" rmax2="EMFWD_rmax" rmin1="EMFWD_rmin1" rmax1="EMFWD_rmax"
+                  dz="BathThicknessFront/2." z_offset="-(EMFWD_z1-BathThicknessFront/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdBathMiddle_negative" type="SimpleCone">
+      <dimensions rmin2="EMFWD_rmin2" rmax2="EMFWD_rmax" rmin1="HFWD_rmin1" rmax1="EMFWD_rmax"
+                  dz="BathThicknessMiddle/2." z_offset="-(EMFWD_z2+BathThicknessMiddle/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdBathBack_negative" type="SimpleCone">
+      <dimensions rmin2="HFWD_rmin2" rmax2="HFWD_rmax" rmin1="CryoFwd_back_rmin1+CryoThicknessInner" rmax1="HFWD_rmax"
+                  dz="BathThicknessBack/2." z_offset="-(HFWD_z2+BathThicknessBack/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+    <detector name="CalFwdBathOuter_negative" type="SimpleCylinder">
+      <dimensions rmin="CryoFwd_rmax-CryoThicknessOuter-BathThicknessOuter" rmax="CryoFwd_rmax-CryoThicknessOuter"
+                  dz="(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2."
+                  z_offset="-(CryoFwd_z1+CryoThicknessFront+(CryoFwd_z2-CryoFwd_z1-CryoThicknessFront-CryoThicknessBack)/2.)" material="LAr" phi0="0" deltaphi="360*deg"/>
+    </detector>
+
+  </detectors>
+
+</lccdd>
