@@ -18,7 +18,6 @@ HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* s
 }
 
 StatusCode HepMCToEDMConverter::initialize() { 
-  m_ppSvc = svc<IParticlePropertySvc>("ParticlePropertySvc", true);
   return GaudiAlgorithm::initialize();
    }
 
@@ -50,8 +49,9 @@ StatusCode HepMCToEDMConverter::execute() {
     particle.pdgId((*particle_i)->pdg_id());
     particle.status((*particle_i)->status());
     /// lookup charge in particle properties
-    const ParticleProperty* particleProperty = m_ppSvc->find((*particle_i)->pdg_id());
-    particle.charge(particleProperty->charge());
+    HepPDT::ParticleID particleID((*particle_i)->pdg_id());
+    particle.charge(particleID.charge());
+
     auto& p4 = particle.p4();
     tmp = (*particle_i)->momentum();
     p4.px = tmp.px() * hepmc2EdmEnergy;
@@ -107,5 +107,4 @@ StatusCode HepMCToEDMConverter::execute() {
 }
 
 StatusCode HepMCToEDMConverter::finalize() {
-   release(m_ppSvc);
    return GaudiAlgorithm::finalize(); }
