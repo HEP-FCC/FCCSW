@@ -1,39 +1,11 @@
-## Simple Papas Run for CLIC
+## Configuratin for Papas Gaudi components
 ## Runs papas using as a sequence of tools
-## The reconstructed particles are written to a ROOT file
-
-#
-#  To run PapasTools
-#  > ./run gaudirun.py Sim/SimPapas/options/simple_papastool_clic.py
-#
 
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
-from GaudiKernel import SystemOfUnits as units
-
-## read in generated particles from ROOT via podio
-podioevent   = FCCDataSvc("EventDataSvc", input="./ee_Z_ddbar.root")
-
-from Configurables import PodioInput, ReadTestConsumer
-podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
-
 
 from Configurables import PapasAlg, PapasImportParticlesTool
 from Configurables import PapasSimulatorTool, PapasMergeClustersTool, PapasBuildBlocksTool
 from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, PapasExportParticlesTool
-
-from Configurables import ClicFieldSvc, ClicTrackerSvc, ClicEcalSvc, ClicHcalSvc
-fieldsvc = ClicFieldSvc("ClicFieldSvc"); #todo add in more parameters
-ecalsvc = ClicEcalSvc("ClicEcalSvc", emin = [.5, .5]);
-hcalsvc = ClicHcalSvc("ClicHcalsvc");
-trackersvc = ClicTrackerSvc("ClicTrackerSvc");
-
-from Configurables import ClicDetSvc
-detservice = ClicDetSvc("ClicDetSvc",
-                        ecalService = "ClicEcalSvc",
-                        hcalService = "ClicHcalSvc",
-                        trackerService = "ClicTrackerSvc",
-                        fieldService = "ClicFieldSvc");
 
 #Notes:
 #
@@ -45,7 +17,8 @@ detservice = ClicDetSvc("ClicDetSvc",
 # TODO update this link when pull request has gone through
 #read in pythia generated particles, write out reconstructed particles (fcc EDM format)
 papasalg = PapasAlg("papasalg",
-                    tools=["PapasSimulatorTool/papassim", #simulates smeared clusters and tracks
+                    tools=[
+                           "PapasSimulatorTool/papassim", #simulates smeared clusters and tracks
                            "PapasMergeClustersTool/ecalmerge", #merges clusters ECAL
                            "PapasMergeClustersTool/hcalmerge", #merged clusters HCAL
                            "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
@@ -54,8 +27,9 @@ papasalg = PapasAlg("papasalg",
                     importTool ="PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
                     exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                     seed = 0xdeadbeef,#seed random generator
-                    physicsDebugFile = 'papasPhysicsClic.out', #write out papas physics to file
-                    detService = "ClicDetSvc") #name of detector service
+                    physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                    detService = "PapasDetSvc", #name of detector service
+                    )
 
 #Papas importer
 importer = PapasImportParticlesTool("importer")
@@ -87,20 +61,4 @@ papasexportparticlestool.recparticles.Path='RecParticle' #name of output reconst
 papasexportparticlestool.particleMCparticleAssociations.Path='ParticleLinks' #link from gen to reconstructed particles
 papasexportparticlestool.genparticles.Path='GenParticle'
 
-#output fcc particles to root
-from Configurables import PodioOutput
-out = PodioOutput("out",
-                  OutputLevel=INFO)
-out.outputCommands = ["keep *"]
 
-from Configurables import ApplicationMgr
-ApplicationMgr(
-    ## all algorithms should be put here
-    TopAlg=[podioinput, papasalg, out],
-    EvtSel='NONE',
-    ## number of events
-    EvtMax=10,
-    ## all services should be put here
-    ExtSvc = [podioevent, detservice],
-    OutputLevel = DEBUG
- )

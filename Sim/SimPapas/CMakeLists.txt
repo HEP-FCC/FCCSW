@@ -27,6 +27,8 @@ gaudi_add_module(SimPapas
                  LINK_LIBRARIES GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
 
 gaudi_install_headers(SimPapas)
+gaudi_install_python_modules()
+
 
 include(CTest)
 gaudi_add_test(simple_papastool
