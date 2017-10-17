@@ -1,7 +1,7 @@
 #ifndef CLICTRACKERSVC_H
 #define CLICTRACKERSVC_H
 
-#include "SimPapasDetector/IPapasTrackerSvc.h"
+#include "SimPapas/IPapasTrackerSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"

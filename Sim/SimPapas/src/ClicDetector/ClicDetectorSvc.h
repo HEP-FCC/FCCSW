@@ -1,10 +1,10 @@
 #ifndef CLICDETECTOR_DETECTOR_H
 #define CLICDETECTOR_DETECTOR_H
 
-#include "SimPapasDetector/IPapasCalorimeterSvc.h"
-#include "SimPapasDetector/IPapasDetSvc.h"
-#include "SimPapasDetector/IPapasFieldSvc.h"
-#include "SimPapasDetector/IPapasTrackerSvc.h"
+#include "SimPapas/IPapasCalorimeterSvc.h"
+#include "SimPapas/IPapasDetSvc.h"
+#include "SimPapas/IPapasFieldSvc.h"
+#include "SimPapas/IPapasTrackerSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
