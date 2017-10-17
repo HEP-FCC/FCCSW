@@ -1,7 +1,7 @@
 #ifndef CMSTRACKERSVC_H
 #define CMSTRACKERSVC_H
 
-#include "SimPapasDetector/IPapasTrackerSvc.h"
+#include "SimPapas/IPapasTrackerSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"

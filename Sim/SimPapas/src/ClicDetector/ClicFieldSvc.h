@@ -1,7 +1,7 @@
 #ifndef CLICFIELDSVC_H
 #define CLICFIELDSVC_H
 
-#include "SimPapasDetector/IPapasFieldSvc.h"
+#include "SimPapas/IPapasFieldSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"

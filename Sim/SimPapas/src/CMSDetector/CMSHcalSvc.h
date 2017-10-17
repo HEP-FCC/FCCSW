@@ -1,7 +1,7 @@
 #ifndef CMSHCALSVC_H
 #define CMSHCALSVC_H
 
-#include "SimPapasDetector/IPapasCalorimeterSvc.h"
+#include "SimPapas/IPapasCalorimeterSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"

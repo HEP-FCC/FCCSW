@@ -3,7 +3,7 @@
 #include "SimPapas/IPapasExportTool.h"
 #include "SimPapas/IPapasImportTool.h"
 #include "SimPapas/IPapasTool.h"
-#include "SimPapasDetector/IPapasDetSvc.h"
+#include "SimPapas/IPapasDetSvc.h"
 #include "papas/detectors/Detector.h"
 // PAPAS
 #include "papas/utility/Logger.h"

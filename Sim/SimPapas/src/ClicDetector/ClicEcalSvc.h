@@ -1,7 +1,7 @@
 #ifndef CLICECALSVC_H
 #define CLICECALSVC_H
 
-#include "SimPapasDetector/IPapasCalorimeterSvc.h"
+#include "SimPapas/IPapasCalorimeterSvc.h"
 
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
