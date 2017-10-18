@@ -31,8 +31,6 @@ class Segmentation;
  *  Distance in r plays no role, however `\b radiusForPosition` needs to be defined
  *  (e.g. to inner radius of the detector) for the cluster position calculation. By default the radius is equal to 1.
  *
- *  This tool creates towers for a combined calorimetry, so based on two cell collections (from electromagnetic and hadronic calorimeters).
- *
  *  For more explanation please [see reconstruction documentation](@ref md_reconstruction_doc_reccalorimeter).
  *
  *  @author Anna Zaborowska

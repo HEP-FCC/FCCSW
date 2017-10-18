@@ -52,7 +52,7 @@ calEndcapReadoutName = "EMECPhiEta"
 calFwdReadoutName = "EMFwdPhiEta"
 # HCAL readouts
 hcalReadoutName = "BarHCal_Readout"
-newHcalReadoutName = hcalReadoutName + "_phieta_offset"
+newHcalReadoutName = hcalReadoutName + "_phieta"
 extHcalReadoutName = "ExtBarHCal_Readout"
 newExtHcalReadoutName = extHcalReadoutName + "_phieta"
 

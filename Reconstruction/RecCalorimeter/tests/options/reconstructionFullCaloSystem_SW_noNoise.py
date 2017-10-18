@@ -9,7 +9,7 @@ hcalExtBarrelCellsName = "newExtHCalCells"
 ecalBarrelReadoutName = "ECalBarrelPhiEta"
 calEndcapReadoutName = "EMECPhiEta"
 calFwdReadoutName = "EMFwdPhiEta"
-hcalBarrelReadoutName = "BarHCal_Readout_phieta_offset"
+hcalBarrelReadoutName = "BarHCal_Readout_phieta"
 hcalExtBarrelReadoutName = "ExtBarHCal_Readout_phieta"
 # Number of events
 numEvents = 5
@@ -75,7 +75,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  nEtaFinal = finE, nPhiFinal = finP,
                                                  energyThreshold = threshold,
                                                  OutputLevel = DEBUG)
-createMoreCollClusters.clusters.Path = "CaloClusters"
+createClusters.clusters.Path = "CaloClusters"
 
 out = PodioOutput("out", filename="output_allCalo_reco.root",
                    OutputLevel=DEBUG)
