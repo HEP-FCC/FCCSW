@@ -1,0 +1,67 @@
+<detector id="ExtBarHCal_id" name="HCalExtBarrel" type="CaloExtBarrel" readout="ExtBarHCal_Readout" vis="extHcal_envelope">
+  <sensitive type="BirksLawCalorimeterSD"/>
+  <dimensions rmin1="ExtBarHCal1_rmin" rmin2="ExtBarHCal2_rmin" rmax1="ExtBarHCal1_rmax" rmax2="ExtBarHCal2_rmax" width="ExtBarHCal1_dz" dz="ExtBarHCal2_dz" offset="ExtBarHCal1_zOffset" z_offset="ExtBarHCal2_zOffset"/>
+  <layer_1 id="0" name="type_1" material="Air" vis="exthcal_barrel_layer_vis">
+    <dimensions
+       dr="BarHCal_module_drho_1"
+       nmodules="BarHCal1_n_layers_1"
+       nModules="BarHCal2_n_layers_1"
+       />
+  </layer_1>
+  <layer_2 id="1" name="type_2" material="Air" vis="exthcal_barrel_layer_vis">
+    <dimensions
+       dr="BarHCal_module_drho_2"
+       nmodules="BarHCal1_n_layers_2"
+       nModules="BarHCal2_n_layers_2"
+       />
+  </layer_2>
+  <layer_3 id="2" name="type_3" material="Air" vis="exthcal_barrel_layer_vis">
+    <dimensions
+       dr="BarHCal_module_drho_3"
+       nmodules="BarHCal1_n_layers_3"
+       nModules="BarHCal2_n_layers_3"
+       />
+  </layer_3>
+  <sequence_a id="3" name="sequence_1" material="Air" vis="exthcal_barrel_seq1_vis">
+    <dimensions
+      dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
+      phiBins="BarHCal_n_phi_modules"
+      x="BarHCAL_module_spacing_phi"
+    />
+    <!-- Master plate -->
+    <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
+    <!-- Spacer plate -->
+    <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_vis" />
+    <!-- Master plate -->
+    <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
+    <!-- Air -->
+    <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="extHcal_air_vis" />
+    <!-- Scintillator plate -->
+    <module_component thickness="BarHCal_scintillator_thickness" y_offset="0" material="Polystyrene" sensitive="true" vis="extHcal_polystyrene_vis" />
+    <!-- Air -->
+    <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="extHcal_air_vis" />
+  </sequence_a>
+  <sequence_b id="4" name="sequence_2" material="Air" vis="extHcal_barrel_seq2_vis">
+    <dimensions
+      dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
+      phiBins="BarHCal_n_phi_modules"
+      x="BarHCAL_module_spacing_phi"
+    />
+    <!-- Master plate -->
+    <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
+    <!-- Air -->
+    <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="extHcal_air_vis" />
+    <!-- Scintillator plate -->
+    <module_component thickness="BarHCal_scintillator_thickness" y_offset="0" material="Polystyrene" sensitive="true" vis="extHcal_polystyrene_vis" />
+    <!-- Air -->
+    <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="extHcal_air_vis" />
+    <!-- Master plate -->
+    <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
+    <!-- Spacer plate -->
+    <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Steel235" sensitive="false" vis="extHcal_steel_vis" />
+  </sequence_b>
+  <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="Steel235" sensitive="false" vis="extHcal_end_plate_vis" />
+  <face_plate name="face_plate" thickness="BarHCal_face_plate_thickness" material="Steel235" sensitive="false" vis="extHcal_face_plate_vis" />
+  <plate_space name="plate_space" thickness="BarHCal_plate_space" material="Air" sensitive="false" vis="extHcal_air_vis" />
+  <steel_support name="steel_support" thickness="BarHCal_steel_support_thickness" material="Steel235" sensitive="false" vis="extHcal_steel_support_vis" />
+</detector>

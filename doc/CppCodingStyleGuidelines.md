@@ -47,7 +47,7 @@ Some basic formatting checks can be done with the `checkformat` script which cal
 - Show diff only:
 
 ~~~
-./checkformat.sh Examples/src/CreateSampleJet.cpp Examples/src/CreateSampleJet.h
+./checkformat Examples/src/CreateSampleJet.cpp Examples/src/CreateSampleJet.h
 ~~~
 
   It will display a diff in case of mismatches between the format defined in a FCCSW format file that is automatically created for you (`.clang-format`).
@@ -55,7 +55,7 @@ Some basic formatting checks can be done with the `checkformat` script which cal
 - Apply changes in-place:
 
 ~~~
-./checkformat.sh -i Examples/src/CreateSampleJet.cpp Examples/src/CreateSampleJet.h
+./checkformat -i Examples/src/CreateSampleJet.cpp Examples/src/CreateSampleJet.h
 ~~~
 
   All mismatches between the format and the implementation / header files are applied in place. **This will override your files. Make sure you commit your changes first, then use the formatter and amend the changes to your commit after checking everything still compiles and tests.**

@@ -8,7 +8,7 @@ namespace det {
   @author Clement Helsens
 **/
 static DD4hep::Geometry::Ref_t
-createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector) {
+createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector sensDet) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
   DD4hep::Geometry::DetElement coneDet(name, x_det.id());
@@ -19,6 +19,12 @@ createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Sensit
   DD4hep::Geometry::Cone cone(coneDim.dz(), coneDim.rmin1(), coneDim.rmax1(), coneDim.rmin2(), coneDim.rmax2());
 
   DD4hep::Geometry::Volume coneVol(x_det.nameStr() + "_SimpleCone", cone, lcdd.material(coneDim.materialStr()));
+
+  if (x_det.isSensitive()) {
+    DD4hep::XML::Dimension sdType(x_det.child(_U(sensitive)));
+    coneVol.setSensitiveDetector(sensDet);
+    sensDet.setType(sdType.typeStr());  
+  }
 
   DD4hep::Geometry::PlacedVolume conePhys;
 
@@ -36,7 +42,7 @@ createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Sensit
   } else
     conePhys = experimentalHall.placeVolume(coneVol);
 
-  conePhys.addPhysVolID("system", x_det.id()).addPhysVolID("side", 0);
+  conePhys.addPhysVolID("system", x_det.id());
 
   coneDet.setPlacement(conePhys);
 
