@@ -39,14 +39,8 @@ createdummycells = CreateDummyCellsCollection("CreateDummyCells")
 createdummycells.cells.Path = "DummyCaloCells"
 
 #Create calo clusters
-from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool, CombinedCaloTowerTool
+from Configurables import CreateCaloClustersSlidingWindow, CombinedCaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
-
-towersEcal = SingleCaloTowerTool("towersEcal",
-                                 deltaEtaTower = 0.01, deltaPhiTower = 2*pi/704.,
-                                 readoutName = ecalBarrelReadoutName,
-                                 OutputLevel = DEBUG)
-towersEcal.cells.Path = ecalBarrelCellsName
 
 towers = CombinedCaloTowerTool("towers",
                                deltaEtaTower = 0.01, deltaPhiTower = 2*pi/704.,
@@ -55,15 +49,14 @@ towers = CombinedCaloTowerTool("towers",
                                hcalExtBarrelReadoutName = hcalExtBarrelReadoutName,
                                calEndcapReadoutName = calEndcapReadoutName,
                                calFwdReadoutName = calFwdReadoutName,
-#                               hcalReadoutName = "",
                                OutputLevel = DEBUG)
 towers.ecalBarrelCells.Path = ecalBarrelCellsName
 towers.calEndcapCells.Path = calEndcapCellsName
 towers.calFwdCells.Path = calFwdCellsName
 towers.hcalBarrelCells.Path = hcalBarrelCellsName
 towers.hcalExtBarrelCells.Path = hcalExtBarrelCellsName
-#towers.hcalCells.Path = "DummyCaloCells"
 
+# Cluster variables
 windE = 9
 windP = 17
 posE = 5
@@ -72,28 +65,17 @@ dupE = 7
 dupP = 13
 finE = 9
 finP = 17
-thresholdE = 12
-thresholdH = 5
-createOneCollClusters = CreateCaloClustersSlidingWindow("CreateOneCollClusters",
-                                                 towerTool = towersEcal,
-                                                 nEtaWindow = windE, nPhiWindow = windP,
-                                                 nEtaPosition = posE, nPhiPosition = posP,
-                                                 nEtaDuplicates = dupE, nPhiDuplicates = dupP,
-                                                 nEtaFinal = finE, nPhiFinal = finP,
-                                                 energyThreshold = thresholdE,
-                                                 OutputLevel = DEBUG)
-createOneCollClusters.clusters.Path = "OneCollClusters"
+threshold = 12
 
-
-createMoreCollClusters = CreateCaloClustersSlidingWindow("CreateMoreCollClusters",
+createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  towerTool = towers,
                                                  nEtaWindow = windE, nPhiWindow = windP,
                                                  nEtaPosition = posE, nPhiPosition = posP,
                                                  nEtaDuplicates = dupE, nPhiDuplicates = dupP,
                                                  nEtaFinal = finE, nPhiFinal = finP,
-                                                 energyThreshold = thresholdE,
+                                                 energyThreshold = threshold,
                                                  OutputLevel = DEBUG)
-createMoreCollClusters.clusters.Path = "MoreCollClusters"
+createMoreCollClusters.clusters.Path = "CaloClusters"
 
 out = PodioOutput("out", filename="output_allCalo_reco.root",
                    OutputLevel=DEBUG)
@@ -105,15 +87,13 @@ chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
-createOneCollClusters.AuditExecute = True
-createMoreCollClusters.AuditExecute = True
+createClusters.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
               createdummycells,
-              createOneCollClusters,
-              createMoreCollClusters,
+              createClusters,
               out
               ],
     EvtSel = 'NONE',
