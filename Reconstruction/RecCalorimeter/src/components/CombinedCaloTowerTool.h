@@ -5,9 +5,9 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
+#include "DetSegmentation/GridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITowerTool.h"
-#include "DetSegmentation/GridPhiEta.h"
 
 class IGeoSvc;
 
@@ -22,10 +22,13 @@ class Segmentation;
 }
 }
 
-/** @class CombinedCaloTowerTool Reconstruction/RecCalorimeter/src/components/CombinedCaloTowerTool.h CombinedCaloTowerTool.h
+/** @class CombinedCaloTowerTool Reconstruction/RecCalorimeter/src/components/CombinedCaloTowerTool.h
+ * CombinedCaloTowerTool.h
  *
  *  Tool building the calorimeter towers for the sliding window algorithm.
- *  This tool runs over all calorimeter systems (ECAL barrel, HCAL barrel + extended barrel, calorimeter endcaps, forward calorimeters). If not all systems are available or not wanted to be used, create an empty collection using CreateDummyCellsCollection algorithm.
+ *  This tool runs over all calorimeter systems (ECAL barrel, HCAL barrel + extended barrel, calorimeter endcaps,
+ * forward calorimeters). If not all systems are available or not wanted to be used, create an empty collection using
+ * CreateDummyCellsCollection algorithm.
  *  Towers are built of cells in eta-phi, summed over all radial layers.
  *  A tower contains all cells within certain eta and phi (tower size: '\b deltaEtaTower', '\b deltaPhiTower').
  *  Distance in r plays no role, however `\b radiusForPosition` needs to be defined
@@ -50,8 +53,10 @@ public:
    */
   virtual StatusCode finalize() final;
   /**  Find number of calorimeter towers.
-   *   Number of towers in phi is calculated from full azimuthal angle (2 pi) and the size of tower in phi ('\b deltaPhiTower').
-   *   Number of towers in eta is calculated from maximum detector eta ('\b etaMax`) and the size of tower in eta ('\b deltaEtaTower').
+   *   Number of towers in phi is calculated from full azimuthal angle (2 pi) and the size of tower in phi ('\b
+   * deltaPhiTower').
+   *   Number of towers in eta is calculated from maximum detector eta ('\b etaMax`) and the size of tower in eta ('\b
+   * deltaEtaTower').
    *   @return Array containing number of towers in eta and phi.
    */
   virtual tower towersNumber() final;
@@ -60,7 +65,7 @@ public:
    *   @param[out] aTowers Calorimeter towers.
    *   @return Size of the cell collection.
    */
-  virtual uint buildTowers(std::vector<std::vector<float>> & aTowers) final;
+  virtual uint buildTowers(std::vector<std::vector<float>>& aTowers) final;
 
   /**  Get the radius for the position calculation.
    *   @return Radius
@@ -90,9 +95,9 @@ public:
    * the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct
    * neighbour of the last tower in phi with ID = m_nPhiTower - 1).
-   *   @param[in] aIPhi requested ID of a phi tower, 
+   *   @param[in] aIPhi requested ID of a phi tower,
    *   may be < 0 or >=m_nPhiTower
-   *   @return  ID of a tower - shifted and corrected 
+   *   @return  ID of a tower - shifted and corrected
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
@@ -101,7 +106,8 @@ public:
    *   @param[in] aCells Calorimeter cells collection.
    *   @param[in] aSegmentation Segmentation of the calorimeter
    */
-  void CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells, DD4hep::DDSegmentation::GridPhiEta* aSegmentation);
+  void CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells,
+                       DD4hep::DDSegmentation::GridPhiEta* aSegmentation);
   DD4hep::DDSegmentation::GridPhiEta* retrieveSegmentation(std::string aReadoutName);
 
 private:
@@ -118,20 +124,24 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic barrel readout
-  Gaudi::Property<std::string> m_ecalBarrelReadoutName{this, "ecalBarrelReadoutName", "", "name of the ecal barrel readout"};
+  Gaudi::Property<std::string> m_ecalBarrelReadoutName{this, "ecalBarrelReadoutName", "",
+                                                       "name of the ecal barrel readout"};
   /// Name of the endcap calorimeter readout
-  Gaudi::Property<std::string> m_calEndcapReadoutName{this, "calEndcapReadoutName", "", "name of the calo endcap readout"};
+  Gaudi::Property<std::string> m_calEndcapReadoutName{this, "calEndcapReadoutName", "",
+                                                      "name of the calo endcap readout"};
   /// Name of the forward calorimeter readout
   Gaudi::Property<std::string> m_calFwdReadoutName{this, "calFwdReadoutName", "", "name of the fwd calo readout"};
   /// Name of the hadronic barrel readout
-  Gaudi::Property<std::string> m_hcalBarrelReadoutName{this, "hcalBarrelReadoutName", "", "name of the hcal barrel readout"};
+  Gaudi::Property<std::string> m_hcalBarrelReadoutName{this, "hcalBarrelReadoutName", "",
+                                                       "name of the hcal barrel readout"};
   /// Name of the hadronic extended barrel readout
-  Gaudi::Property<std::string> m_hcalExtBarrelReadoutName{this, "hcalExtBarrelReadoutName", "", "name of the hcal extended barrel readout"};
+  Gaudi::Property<std::string> m_hcalExtBarrelReadoutName{this, "hcalExtBarrelReadoutName", "",
+                                                          "name of the hcal extended barrel readout"};
   /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_ecalBarrelSegmentation;
- /// PhiEta segmentation of the endcap calorimeter (owned by DD4hep)
+  /// PhiEta segmentation of the endcap calorimeter (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_calEndcapSegmentation;
- /// PhiEta segmentation of the forward calorimeter (owned by DD4hep)
+  /// PhiEta segmentation of the forward calorimeter (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_calFwdSegmentation;
   /// PhiEta segmentation of the hadronic barrel (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_hcalBarrelSegmentation;
@@ -139,7 +149,7 @@ private:
   DD4hep::DDSegmentation::GridPhiEta* m_hcalExtBarrelSegmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
   Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
-      "Radius used to calculate cluster position from eta and phi (in mm)"};
+                                   "Radius used to calculate cluster position from eta and phi (in mm)"};
   /// Maximum eta of detector
   float m_etaMax;
   /// Maximum phi of the detector

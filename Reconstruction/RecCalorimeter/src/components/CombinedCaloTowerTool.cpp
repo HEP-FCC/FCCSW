@@ -4,8 +4,8 @@
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
+#include "datamodel/CaloHitCollection.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
@@ -53,33 +53,34 @@ StatusCode CombinedCaloTowerTool::initialize() {
 StatusCode CombinedCaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
 tower CombinedCaloTowerTool::towersNumber() {
-  
+
   std::vector<double> listPhiMax;
   std::vector<double> listEtaMax;
   listPhiMax.reserve(10);
   listEtaMax.reserve(10);
-  if (m_ecalBarrelSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) + M_PI);
+  if (m_ecalBarrelSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) + M_PI / (double)m_ecalBarrelSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_ecalBarrelSegmentation->offsetEta()) + m_ecalBarrelSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_calEndcapSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_calEndcapSegmentation->offsetPhi()) + M_PI);
+  if (m_calEndcapSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_calEndcapSegmentation->offsetPhi()) + M_PI / (double)m_calEndcapSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_calEndcapSegmentation->offsetEta()) + m_calEndcapSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_calFwdSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_calFwdSegmentation->offsetPhi()) + M_PI);
+  if (m_calFwdSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_calFwdSegmentation->offsetPhi()) + M_PI / (double)m_calFwdSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_calFwdSegmentation->offsetEta()) + m_calFwdSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_hcalBarrelSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) + M_PI);
+  if (m_hcalBarrelSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) + M_PI / (double)m_hcalBarrelSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_hcalBarrelSegmentation->offsetEta()) + m_hcalBarrelSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_hcalExtBarrelSegmentation!=nullptr) {
-    listPhiMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetPhi()) + M_PI);
-    listEtaMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetEta()) + m_hcalExtBarrelSegmentation->gridSizeEta() * 0.5);
+  if (m_hcalExtBarrelSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetPhi()) + M_PI / (double)m_hcalExtBarrelSegmentation->phiBins());
+    listEtaMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetEta()) +
+                         m_hcalExtBarrelSegmentation->gridSizeEta() * 0.5);
   }
 
-  //Maximum eta & phi of the calorimeter system
+  // Maximum eta & phi of the calorimeter system
   m_phiMax = *std::max_element(listPhiMax.begin(), listPhiMax.end());
   m_etaMax = *std::max_element(listEtaMax.begin(), listEtaMax.end());
   debug() << "Detector limits: phiMax " << m_phiMax << " etaMax " << m_etaMax << endmsg;
@@ -90,14 +91,13 @@ tower CombinedCaloTowerTool::towersNumber() {
   m_nPhiTower = ceil(2 * (m_phiMax - epsilon) / m_deltaPhiTower);
   // number of eta bins (if eta maximum is defined)
   m_nEtaTower = ceil(2 * (m_etaMax - epsilon) / m_deltaEtaTower);
-  debug() << "etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
-  debug() << "phiMax " << M_PI << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower << endmsg;
+  debug() << "Towers: etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
+  debug() << "Towers: phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower << endmsg;
 
   tower total;
   total.eta = m_nEtaTower;
   total.phi = m_nPhiTower;
   return total;
-
 }
 
 uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
@@ -108,7 +108,7 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   const fcc::CaloHitCollection* ecalBarrelCells = m_ecalBarrelCells.get();
   debug() << "Input Ecal barrel cell collection size: " << ecalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_ecalBarrelSegmentation!=nullptr) {
+  if (m_ecalBarrelSegmentation != nullptr) {
     CellsIntoTowers(aTowers, ecalBarrelCells, m_ecalBarrelSegmentation);
     totalNumberOfCells += ecalBarrelCells->size();
   }
@@ -117,7 +117,7 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   const fcc::CaloHitCollection* calEndcapCells = m_calEndcapCells.get();
   debug() << "Input calorimeter endcap cell collection size: " << calEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_calEndcapSegmentation!=nullptr) {
+  if (m_calEndcapSegmentation != nullptr) {
     CellsIntoTowers(aTowers, calEndcapCells, m_calEndcapSegmentation);
     totalNumberOfCells += calEndcapCells->size();
   }
@@ -126,7 +126,7 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   const fcc::CaloHitCollection* calFwdCells = m_calFwdCells.get();
   debug() << "Input forward calorimeter cell collection size: " << calFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_calFwdSegmentation!=nullptr) {
+  if (m_calFwdSegmentation != nullptr) {
     CellsIntoTowers(aTowers, calFwdCells, m_calFwdSegmentation);
     totalNumberOfCells += calFwdCells->size();
   }
@@ -135,7 +135,7 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   const fcc::CaloHitCollection* hcalBarrelCells = m_hcalBarrelCells.get();
   debug() << "Input hadronic barrel cell collection size: " << hcalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_hcalBarrelSegmentation!=nullptr) {
+  if (m_hcalBarrelSegmentation != nullptr) {
     CellsIntoTowers(aTowers, hcalBarrelCells, m_hcalBarrelSegmentation);
     totalNumberOfCells += hcalBarrelCells->size();
   }
@@ -144,7 +144,7 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   const fcc::CaloHitCollection* hcalExtBarrelCells = m_hcalExtBarrelCells.get();
   debug() << "Input hadronic extended barrel cell collection size: " << hcalExtBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_hcalExtBarrelSegmentation!=nullptr) {
+  if (m_hcalExtBarrelSegmentation != nullptr) {
     CellsIntoTowers(aTowers, hcalExtBarrelCells, m_hcalExtBarrelSegmentation);
     totalNumberOfCells += hcalExtBarrelCells->size();
   }
@@ -183,7 +183,9 @@ uint CombinedCaloTowerTool::phiNeighbour(int aIPhi) const {
 
 float CombinedCaloTowerTool::radiusForPosition() const { return m_radius; }
 
-void CombinedCaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells, DD4hep::DDSegmentation::GridPhiEta* aSegmentation) {
+void CombinedCaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
+                                            const fcc::CaloHitCollection* aCells,
+                                            DD4hep::DDSegmentation::GridPhiEta* aSegmentation) {
   // Loop over a collection of calorimeter cells and build calo towers
   // borders of the cell in eta/phi
   float etaCellMin = 0, etaCellMax = 0;
@@ -266,15 +268,13 @@ DD4hep::DDSegmentation::GridPhiEta* CombinedCaloTowerTool::retrieveSegmentation(
   DD4hep::DDSegmentation::GridPhiEta* segmentation = nullptr;
   if (m_geoSvc->lcdd()->readouts().find(aReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
     info() << "Readout does not exist! Please check if it is correct. Processing without it." << endmsg;
-  }
-  else {
+  } else {
     info() << "Readout " << aReadoutName << " found." << endmsg;
     segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-								     m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
+        m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
     if (segmentation == nullptr) {
       error() << "There is no phi-eta segmentation for the readout " << aReadoutName << " defined." << endmsg;
     }
   }
   return segmentation;
 }
-
