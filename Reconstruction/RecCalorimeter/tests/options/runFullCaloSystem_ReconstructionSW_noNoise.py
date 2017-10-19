@@ -12,12 +12,12 @@ calFwdReadoutName = "EMFwdPhiEta"
 hcalBarrelReadoutName = "BarHCal_Readout_phieta"
 hcalExtBarrelReadoutName = "ExtBarHCal_Readout_phieta"
 # Number of events
-numEvents = 5
+num_events = 3
 
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent = FCCDataSvc("EventDataSvc", input="output.root")
+podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader", collections = [ecalBarrelCellsName, calEndcapCellsName, calFwdCellsName, hcalBarrelCellsName, hcalExtBarrelCellsName], OutputLevel = DEBUG)
@@ -32,11 +32,6 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'
                                            ],
                     OutputLevel = INFO)
-
-
-from Configurables import CreateDummyCellsCollection
-createdummycells = CreateDummyCellsCollection("CreateDummyCells")
-createdummycells.cells.Path = "DummyCaloCells"
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CombinedCaloTowerTool
@@ -92,12 +87,11 @@ out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              createdummycells,
               createClusters,
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = numEvents,
+    EvtMax   = num_events,
     ExtSvc = [podioevent, geoservice],
  )
 

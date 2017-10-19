@@ -3,9 +3,8 @@ import os
 from GaudiKernel.SystemOfUnits import MeV,GeV
 
 # simulations setup
-energy=100*GeV
-eta=0.5
-num_events=5
+energy=50*GeV
+num_events=3
 magnetic_field=1
 particleType="e-"
 
@@ -77,7 +76,7 @@ saveexthcaltool.caloHits.Path = "ExtHCalHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=eta,etaMax=eta,
+                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=-5.0,etaMax=5.0,
                 OutputLevel = INFO)
 
 geantsim = SimG4Alg("SimG4Alg",
@@ -215,7 +214,7 @@ resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
 out = PodioOutput("out", 
                   OutputLevel=INFO)
 out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop ECalBarrelPositionedHits", "drop HCalHits", "drop HCalPositionedHits", "drop HCalCells", "drop ExtHCalHits", "drop ExtHCalPositionedHits", "drop ExtHCalCells", "drop ECalBarrelCellsStep1", "drop CalEndcapHits", "drop CalEndcapPositionedHits", "drop CalFwdHits", "drop CalFwdPositionedHits"]
-out.filename = "output.root"
+out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
