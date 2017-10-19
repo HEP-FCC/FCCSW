@@ -10,9 +10,19 @@
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 from GaudiKernel import SystemOfUnits as units
+import argparse
+recoparser = argparse.ArgumentParser()
+recoparser.add_argument('-r','--rootfile', type=str, default=None, help='rootfile')
+recoargs, _ = recoparser.parse_known_args()
+rootfile = recoargs.rootfile
+print "=================================="
+print "rootfile = ", rootfile
+print "=================================="
+
+
 
 ## read in generated particles from ROOT via podio
-podioevent   = FCCDataSvc("EventDataSvc", input="./ee_Z_ddbar.root")
+podioevent   = FCCDataSvc("EventDataSvc", input=rootfile) #"Sim/SimPapas/data/ee_Z_ddbar.root")
 
 from Configurables import PodioInput, ReadTestConsumer
 podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)

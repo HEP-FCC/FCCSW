@@ -1,4 +1,7 @@
 #include "PapasAlg.h"
+
+
+#include "GaudiKernel/EventContext.h"
 // FCCSW
 #include "SimPapas/IPapasExportTool.h"
 #include "SimPapas/IPapasImportTool.h"
@@ -11,7 +14,6 @@
 #include "papas/utility/TRandom.h"
 
 #include <iostream>
-#define WITHSORT 1
 DECLARE_COMPONENT(PapasAlg)
 
 PapasAlg::PapasAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
@@ -60,9 +62,11 @@ StatusCode PapasAlg::execute() {
   // setup new papas Event and history
   m_history.clear();
   papas::Event pevent(m_history);
+  //pick up the Gaudi event number
+  auto context = getContext();
+  m_eventno =  context.evt();
   pevent.setEventNo(m_eventno);
   papas::PDebug::write("Event: {}", m_eventno);
-  m_eventno++;
 
   // run the tools
   try {

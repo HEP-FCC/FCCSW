@@ -12,7 +12,7 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 from GaudiKernel import SystemOfUnits as units
 
 ### Example of pythia configuration file to generate events
-pythiafile="Sim/SimPapas/data/ee_ZH_Zmumu_Hbb.txt"
+pythiafile="Test/TestGeneration/data/ee_ZH_Zmumu_Hbb.txt"
 
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
