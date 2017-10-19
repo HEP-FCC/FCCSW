@@ -22,7 +22,7 @@ StatusCode PapasBuildBlocksTool::clear() {
 
 StatusCode PapasBuildBlocksTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> det) {
   auto history = papas::Nodes();
-  (void)det;  // avoid warning message
+  (void)det;  // suppresses warning message from unused parameter
   std::string etype = m_ecalSubtype;
   std::string htype = m_hcalSubtype;
   std::string ttype = m_trackSubtype;

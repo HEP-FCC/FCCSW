@@ -27,7 +27,7 @@ papasalg = PapasAlg("papasalg",
                     importTool ="PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
                     exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
                     seed = 0xdeadbeef,#seed random generator
-                    physicsDebugFile = 'papasPhysics.out', #write out papas physics to file
+                    physicsDebugFile = 'papasPhysics.txt', #write out papas physics to file
                     detService = "PapasDetSvc", #name of detector service
                     )
 

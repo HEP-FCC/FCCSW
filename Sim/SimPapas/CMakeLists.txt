@@ -47,4 +47,9 @@ include(CTest)
 gaudi_add_test(simple_papastool
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/simple_papastool.py)
-
+gaudi_add_test(simple_papas_CLIC
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND /bin/bash Sim/SimPapas/scripts/pdebug_CLIC.sh)
+gaudi_add_test(simple_papas_CMS
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND /bin/bash Sim/SimPapas/scripts/pdebug_CMS.sh)
