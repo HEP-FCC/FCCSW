@@ -114,7 +114,11 @@ if [[ "$unamestr" == 'Linux' ]]; then
                 export FCCPHYSICS=$FCCSWPATH/fcc-physics/0.2.1/$BINARY_TAG
             fi
             if [ -z "$FCCPAPASCPP" ]; then
-                export FCCPAPASCPP=$FCCSWPATH/papas/1.1.0/$BINARY_TAG
+                if [ -d "$FCCSWPATH/papas/1.1.1/" ]; then
+                    export FCCPAPASCPP=$FCCSWPATH/papas/1.1.1/$BINARY_TAG
+                elif [ -d "$FCCSWPATH/papas/1.1.0/" ]; then
+                    export FCCPAPASCPP=$FCCSWPATH/papas/1.1.0/$BINARY_TAG
+                fi
             fi
             export DELPHES_DIR=$FCCSWPATH/delphes/3.4.1/$BINARY_TAG
             export PYTHIA8_DIR=$LCGPATH

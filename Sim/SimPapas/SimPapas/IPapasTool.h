@@ -5,6 +5,7 @@
 #include "GaudiKernel/IAlgTool.h"
 // Papas
 #define WITHSORT 1
+#define PAPASWITHSORT 1
 #include "papas/datatypes/Event.h"
 
 namespace papas {
