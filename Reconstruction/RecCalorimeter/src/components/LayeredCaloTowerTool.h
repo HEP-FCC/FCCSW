@@ -146,9 +146,9 @@ private:
   // Restrict tower building in layers if bitfield: layer exists
   bool addLayerRestriction = false;
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
-  uint m_nEtaTower;
+  int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
-  uint m_nPhiTower;
+  int m_nPhiTower;
 };
 
 #endif /* RECCALORIMETER_LAYEREDCALOTOWERTOOL_H */
