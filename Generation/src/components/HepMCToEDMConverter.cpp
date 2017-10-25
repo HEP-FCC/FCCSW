@@ -84,7 +84,7 @@ StatusCode HepMCToEDMConverter::execute() {
     if (nullptr != decayVertex) {
       if (hepmcToEdmVertexMap.find(decayVertex) != hepmcToEdmVertexMap.end()) {
         // vertex already in map, no need to create a new one
-        particle.endVertex(hepmcToEdmVertexMap[productionVertex]);
+        particle.endVertex(hepmcToEdmVertexMap[decayVertex]);
       } else {
         tmp = decayVertex->position();
         auto vertex = vertices->create();
