@@ -50,7 +50,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   double discThickness = 0.5 * (xFirstDisc.zmax() - xFirstDisc.zmin());
   DD4hep::Geometry::Tube discShape(dimensions.rmin() - l_overlapMargin, dimensions.rmax() + l_overlapMargin, discThickness + l_overlapMargin);
   Volume discVolume("disc", discShape, lcdd.air());
-  discVolume.setVisAttributes(lcdd.invisible());
 
 
   unsigned int discCounter = 0;
@@ -81,12 +80,13 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
                                                            0.5 * xComp.thickness(),
                                                            0.5 * xSensorProperties.attr<double>("sensorLength")),
                                lcdd.material(xComp.materialStr()));
+      componentVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRing.attr<int>("nModules");
+      double phi = 0;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
         double lX = 0;
         double lY = 0;
         double lZ = 0;
-        double phi = 0;
         double phiTilt = 0;
         double thetaTilt = 0;
         if (0 == phiIndex % 2) {
