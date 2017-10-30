@@ -75,6 +75,7 @@ StatusCode PileupOverlayAlg::execute() {
       m_reader.openFile(m_pileupFilenames[m_pileupFileIndex]);
       nEvents = m_reader.getEntries();
     }
+    m_store.clearCaches();
   }
 
   for (auto& tool : m_mergeTools) {
