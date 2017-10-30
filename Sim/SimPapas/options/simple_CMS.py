@@ -29,7 +29,7 @@ from Configurables import PodioInput, ReadTestConsumer
 podioinput = PodioInput("PodioReader", collections=["GenVertex", "GenParticle"], OutputLevel=DEBUG)
 
 from  CMS_detector_cfg import detservice
-from papas_cfg import papasalg
+from papas_cfg import papasalg_pdebug
 
 #output fcc particles to root
 from Configurables import PodioOutput
@@ -40,7 +40,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr(
     ## all algorithms should be put here
-    TopAlg=[podioinput, papasalg, out],
+    TopAlg=[podioinput, papasalg_pdebug, out],
     EvtSel='NONE',
     ## number of events
     EvtMax=10,

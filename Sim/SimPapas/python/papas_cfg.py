@@ -17,6 +17,21 @@ from Configurables import PapasSimplifyBlocksTool, PapasPFReconstructorTool, Pap
 # TODO update this link when pull request has gone through
 #read in pythia generated particles, write out reconstructed particles (fcc EDM format)
 papasalg = PapasAlg("papasalg",
+                         tools=[
+                                "PapasSimulatorTool/papassim", #simulates smeared clusters and tracks
+                                "PapasMergeClustersTool/ecalmerge", #merges clusters ECAL
+                                "PapasMergeClustersTool/hcalmerge", #merged clusters HCAL
+                                "PapasBuildBlocksTool/blockbuilder", #build blocks of linked clusters and tracks
+                                "PapasSimplifyBlocksTool/blocksimplifier", #simplifies the blocks
+                                "PapasPFReconstructorTool/reconstructor"], #reconstructs particles based on the blocks
+                         importTool ="PapasImportParticlesTool/importer", #reads in gen_particles and creates papas particles.
+                         exportTool ="PapasExportParticlesTool/exporter", #export papas reconstructed particles to fcc particles
+                         seed = 0xdeadbeef,#seed random generator
+                         physicsDebugFile = "", #no phyics debug output
+                         detService = "PapasDetSvc", #name of detector service
+                         )
+
+papasalg_pdebug = PapasAlg("papasalg_pdebug",
                     tools=[
                            "PapasSimulatorTool/papassim", #simulates smeared clusters and tracks
                            "PapasMergeClustersTool/ecalmerge", #merges clusters ECAL
