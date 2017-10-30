@@ -114,8 +114,8 @@ if [[ "$unamestr" == 'Linux' ]]; then
                 export FCCPHYSICS=$FCCSWPATH/fcc-physics/0.2.1/$BINARY_TAG
             fi
             if [ -z "$FCCPAPASCPP" ]; then
-                if [ -d "$FCCSWPATH/papas/1.1.1/" ]; then
-                    export FCCPAPASCPP=$FCCSWPATH/papas/1.1.1/$BINARY_TAG
+                if [ -d "$FCCSWPATH/papas/1.2.0/" ]; then
+                    export FCCPAPASCPP=$FCCSWPATH/papas/1.2.0/$BINARY_TAG
                 elif [ -d "$FCCSWPATH/papas/1.1.0/" ]; then
                     export FCCPAPASCPP=$FCCSWPATH/papas/1.1.0/$BINARY_TAG
                 fi
