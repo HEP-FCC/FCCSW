@@ -89,12 +89,11 @@ StatusCode SamplingFractionInLayers::execute() {
 
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
+    decoder->setValue(hit.core().cellId);
     sumElayers[(*decoder)[m_layerFieldName]] += hit.core().energy;
     // check if energy was deposited in the calorimeter (active/passive material)
-    // layers are numbered starting from 1, layer == 0 is cryostat/bath
-    if ((*decoder)[m_layerFieldName] > 0) {
+    if ((*decoder)[m_layerFieldName] >= m_firstLayerId) {
       sumE += hit.core().energy;
-      decoder->setValue(hit.core().cellId);
       // active material of calorimeter
       if ((*decoder)[m_activeFieldName] == m_activeFieldValue) {
         sumEactive += hit.core().energy;
@@ -111,8 +110,8 @@ StatusCode SamplingFractionInLayers::execute() {
   for (uint i = 0; i < m_numLayers; i++) {
     m_totalEnLayers[i]->Fill(sumElayers[i]);
     m_activeEnLayers[i]->Fill(sumEactiveLayers[i]);
-    if (i == 0) {
-      debug() << "total energy deposited in cryostat and bath = " << sumElayers[i] << endmsg;
+    if (i < m_firstLayerId) {
+      debug() << "total energy deposited outside the calorimeter detector = " << sumElayers[i] << endmsg;
     } else {
       debug() << "total energy in layer " << i << " = " << sumElayers[i] << " active = " << sumEactiveLayers[i]
               << endmsg;

@@ -63,7 +63,7 @@ StatusCode CreateVolumePositions<Hits, PositionedHit>::execute() {
     auto positionedHit = edmPositionedHitCollection->create(edmPos, cell.core());
 
     // Debug information about volume position
-    debug() << "Hit energy" << cell.core().energy << "\tcellID " << cellid << endmsg;
+    debug() << "Hit energy (GeV) : " << cell.core().energy << "\tcellID " << cellid << endmsg;
     debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
             << outGlobal[2] / dd4hep::mm << endmsg;
   }
