@@ -47,7 +47,7 @@ StatusCode PapasAlg::initialize() {
     debug() << "Papas: set seed " << m_seed << endmsg;
     rootrandom::Random::seed(m_seed);
   }
-#if not (WITHSORT or PAPASWITHSORT )
+#if not ( PAPASWITHSORT )
   debug() << "Papas: no sorting" << endmsg;
 #endif
 
