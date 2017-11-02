@@ -79,7 +79,7 @@ calibEcells = CalibrateInLayersTool("Calibrate",
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool
-calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="34.5 ")
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
 
 from Configurables import CreateCaloCells
 createEcells = CreateCaloCells("CreateECaloCells",
