@@ -10,7 +10,7 @@
 class IGeoSvc;
 namespace DD4hep {
 namespace DDSegmentation {
-    class Segmentation;
+class Segmentation;
 }
 }
 
@@ -47,7 +47,7 @@ private:
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
-   /// Handle for hits (input collection with cellID)
+  /// Handle for hits (input collection with cellID)
   DataHandle<Hits> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
   /// Handle for positioned hits (output collection)
   DataHandle<PositionedHit> m_positionedHits{"hits/positionedHits", Gaudi::DataHandle::Writer, this};
