@@ -67,17 +67,11 @@ createcells = CreateCaloCells("CreateCaloCells",
                               noiseTool = noise,
                               OutputLevel = DEBUG)
 createcells.hits.Path="mergedECalHits"
-createcells.cells.Path="caloCells"
+createcells.cells.Path="ecalBarrelCells"
 
-from Configurables import CreateDummyCellsCollection
-createdummycellsEndcap = CreateDummyCellsCollection("CreateDummyCellsEndcap")
-createdummycellsEndcap.cells.Path = "DummyCaloEndcapCells"
-createdummycellsFwd = CreateDummyCellsCollection("CreateDummyCellsFwd")
-createdummycellsFwd.cells.Path = "DummyCaloFwdCells"
-createdummycellsHcalB = CreateDummyCellsCollection("CreateDummyCellsHcalB")
-createdummycellsHcalB.cells.Path = "DummyCaloHcalBCells"
-createdummycellsHcalExtB = CreateDummyCellsCollection("CreateDummyCellsHcalExtB")
-createdummycellsHcalExtB.cells.Path = "DummyCaloHcalExtBCells"
+from Configurables import CreateEmptyCaloCellsCollection
+createemptycells = CreateEmptyCaloCellsCollection("CreateEmptyCaloCells")
+createemptycells.cells.Path = "emptyCaloCells"
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CombinedCaloTowerTool
@@ -85,16 +79,20 @@ from GaudiKernel.PhysicalConstants import pi
 towers = CombinedCaloTowerTool("towers",
                                deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                                ecalBarrelReadoutName = ecalReadoutName,
+                               ecalEndcapReadoutName = "",
+                               ecalFwdReadoutName = "",
                                hcalBarrelReadoutName = "",
                                hcalExtBarrelReadoutName = "",
-                               calEndcapReadoutName = "",
-                               calFwdReadoutName = "",
+                               hcalEndcapReadoutName = "",
+                               hcalFwdReadoutName = "",
                                OutputLevel = DEBUG)
-towers.ecalBarrelCells.Path = "caloCells"
-towers.calEndcapCells.Path = "DummyCaloEndcapCells"
-towers.calFwdCells.Path = "DummyCaloFwdCells"
-towers.hcalBarrelCells.Path = "DummyCaloHcalBCells"
-towers.hcalExtBarrelCells.Path = "DummyCaloHcalExtBCells"
+towers.ecalBarrelCells.Path = "ecalBarrelCells"
+towers.ecalEndcapCells.Path = "emptyCaloCells"
+towers.ecalFwdCells.Path = "emptyCaloCells"
+towers.hcalBarrelCells.Path = "emptyCaloCells"
+towers.hcalExtBarrelCells.Path = "emptyCaloCells"
+towers.hcalEndcapCells.Path = "emptyCaloCells"
+towers.hcalFwdCells.Path = "emptyCaloCells"
 
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
@@ -125,10 +123,7 @@ ApplicationMgr(
     TopAlg = [podioinput,
               mergelayers,
               createcells,
-              createdummycellsEndcap,
-              createdummycellsFwd,
-              createdummycellsHcalB,
-              createdummycellsHcalExtB,
+              createemptycells,
               createclusters,
               out
               ],

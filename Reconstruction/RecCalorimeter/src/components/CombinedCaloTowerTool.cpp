@@ -16,10 +16,12 @@ DECLARE_TOOL_FACTORY(CombinedCaloTowerTool)
 CombinedCaloTowerTool::CombinedCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareProperty("ecalBarrelCells", m_ecalBarrelCells, "");
-  declareProperty("calEndcapCells", m_calEndcapCells, "");
-  declareProperty("calFwdCells", m_calFwdCells, "");
+  declareProperty("ecalEndcapCells", m_ecalEndcapCells, "");
+  declareProperty("ecalFwdCells", m_ecalFwdCells, "");
   declareProperty("hcalBarrelCells", m_hcalBarrelCells, "");
   declareProperty("hcalExtBarrelCells", m_hcalExtBarrelCells, "");
+  declareProperty("hcalEndcapCells", m_hcalEndcapCells, "");
+  declareProperty("hcalFwdCells", m_hcalFwdCells, "");
   declareInterface<ITowerTool>(this);
 }
 
@@ -38,14 +40,18 @@ StatusCode CombinedCaloTowerTool::initialize() {
   // if readout does not exist, reconstruction without this calorimeter part will be performed
   info() << "Retrieving Ecal barrel segmentation" << endmsg;
   m_ecalBarrelSegmentation = retrieveSegmentation(m_ecalBarrelReadoutName);
-  info() << "Retrieving endcap calorimeter segmentation" << endmsg;
-  m_calEndcapSegmentation = retrieveSegmentation(m_calEndcapReadoutName);
-  info() << "Retrieving forward calorimeter segmentation" << endmsg;
-  m_calFwdSegmentation = retrieveSegmentation(m_calFwdReadoutName);
+  info() << "Retrieving Ecal endcap segmentation" << endmsg;
+  m_ecalEndcapSegmentation = retrieveSegmentation(m_ecalEndcapReadoutName);
+  info() << "Retrieving Ecal forward segmentation" << endmsg;
+  m_ecalFwdSegmentation = retrieveSegmentation(m_ecalFwdReadoutName);
   info() << "Retrieving Hcal barrel segmentation" << endmsg;
   m_hcalBarrelSegmentation = retrieveSegmentation(m_hcalBarrelReadoutName);
   info() << "Retrieving Hcal extended barrel segmentation" << endmsg;
   m_hcalExtBarrelSegmentation = retrieveSegmentation(m_hcalExtBarrelReadoutName);
+  info() << "Retrieving Hcal endcap segmentation" << endmsg;
+  m_hcalEndcapSegmentation = retrieveSegmentation(m_hcalEndcapReadoutName);
+  info() << "Retrieving Hcal forward segmentation" << endmsg;
+  m_hcalFwdSegmentation = retrieveSegmentation(m_hcalFwdReadoutName);
 
   return StatusCode::SUCCESS;
 }
@@ -56,19 +62,19 @@ tower CombinedCaloTowerTool::towersNumber() {
 
   std::vector<double> listPhiMax;
   std::vector<double> listEtaMax;
-  listPhiMax.reserve(10);
-  listEtaMax.reserve(10);
+  listPhiMax.reserve(7);
+  listEtaMax.reserve(7);
   if (m_ecalBarrelSegmentation != nullptr) {
     listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) + M_PI / (double)m_ecalBarrelSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_ecalBarrelSegmentation->offsetEta()) + m_ecalBarrelSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_calEndcapSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_calEndcapSegmentation->offsetPhi()) + M_PI / (double)m_calEndcapSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_calEndcapSegmentation->offsetEta()) + m_calEndcapSegmentation->gridSizeEta() * 0.5);
+  if (m_ecalEndcapSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_ecalEndcapSegmentation->offsetPhi()) + M_PI / (double)m_ecalEndcapSegmentation->phiBins());
+    listEtaMax.push_back(fabs(m_ecalEndcapSegmentation->offsetEta()) + m_ecalEndcapSegmentation->gridSizeEta() * 0.5);
   }
-  if (m_calFwdSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_calFwdSegmentation->offsetPhi()) + M_PI / (double)m_calFwdSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_calFwdSegmentation->offsetEta()) + m_calFwdSegmentation->gridSizeEta() * 0.5);
+  if (m_ecalFwdSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_ecalFwdSegmentation->offsetPhi()) + M_PI / (double)m_ecalFwdSegmentation->phiBins());
+    listEtaMax.push_back(fabs(m_ecalFwdSegmentation->offsetEta()) + m_ecalFwdSegmentation->gridSizeEta() * 0.5);
   }
   if (m_hcalBarrelSegmentation != nullptr) {
     listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) + M_PI / (double)m_hcalBarrelSegmentation->phiBins());
@@ -79,15 +85,24 @@ tower CombinedCaloTowerTool::towersNumber() {
     listEtaMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetEta()) +
                          m_hcalExtBarrelSegmentation->gridSizeEta() * 0.5);
   }
+  if (m_hcalEndcapSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_hcalEndcapSegmentation->offsetPhi()) + M_PI / (double)m_hcalEndcapSegmentation->phiBins());
+    listEtaMax.push_back(fabs(m_hcalEndcapSegmentation->offsetEta()) + m_hcalEndcapSegmentation->gridSizeEta() * 0.5);
+  }
+  if (m_hcalFwdSegmentation != nullptr) {
+    listPhiMax.push_back(fabs(m_hcalFwdSegmentation->offsetPhi()) + M_PI / (double)m_hcalFwdSegmentation->phiBins());
+    listEtaMax.push_back(fabs(m_hcalFwdSegmentation->offsetEta()) + m_hcalFwdSegmentation->gridSizeEta() * 0.5);
+  }
+
 
   // Maximum eta & phi of the calorimeter system
   m_phiMax = *std::max_element(listPhiMax.begin(), listPhiMax.end());
   m_etaMax = *std::max_element(listEtaMax.begin(), listEtaMax.end());
   debug() << "Detector limits: phiMax " << m_phiMax << " etaMax " << m_etaMax << endmsg;
 
-  // m_nEtaTower = 2 * idEta(m_etaMax - m_deltaEtaTower / 2.) + 1;
-  // number of phi bins
+  // very small number (epsilon) substructed from the edges to ensure correct division
   float epsilon = 0.0001;
+  // number of phi bins
   m_nPhiTower = ceil(2 * (m_phiMax - epsilon) / m_deltaPhiTower);
   // number of eta bins (if eta maximum is defined)
   m_nEtaTower = ceil(2 * (m_etaMax - epsilon) / m_deltaEtaTower);
@@ -113,22 +128,22 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
     totalNumberOfCells += ecalBarrelCells->size();
   }
 
-  // 2. Endcap calorimeter
-  const fcc::CaloHitCollection* calEndcapCells = m_calEndcapCells.get();
-  debug() << "Input calorimeter endcap cell collection size: " << calEndcapCells->size() << endmsg;
+  // 2. ECAL endcap calorimeter
+  const fcc::CaloHitCollection* ecalEndcapCells = m_ecalEndcapCells.get();
+  debug() << "Input Ecal endcap cell collection size: " << ecalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_calEndcapSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, calEndcapCells, m_calEndcapSegmentation);
-    totalNumberOfCells += calEndcapCells->size();
+  if (m_ecalEndcapSegmentation != nullptr) {
+    CellsIntoTowers(aTowers, ecalEndcapCells, m_ecalEndcapSegmentation);
+    totalNumberOfCells += ecalEndcapCells->size();
   }
 
-  // 3. Forward calorimeter
-  const fcc::CaloHitCollection* calFwdCells = m_calFwdCells.get();
-  debug() << "Input forward calorimeter cell collection size: " << calFwdCells->size() << endmsg;
+  // 3. ECAL forward calorimeter
+  const fcc::CaloHitCollection* ecalFwdCells = m_ecalFwdCells.get();
+  debug() << "Input Ecal forward cell collection size: " << ecalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
-  if (m_calFwdSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, calFwdCells, m_calFwdSegmentation);
-    totalNumberOfCells += calFwdCells->size();
+  if (m_ecalFwdSegmentation != nullptr) {
+    CellsIntoTowers(aTowers, ecalFwdCells, m_ecalFwdSegmentation);
+    totalNumberOfCells += ecalFwdCells->size();
   }
 
   // 4. HCAL barrel
@@ -140,13 +155,31 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
     totalNumberOfCells += hcalBarrelCells->size();
   }
 
-  // 4. HCAL extended barrel
+  // 5. HCAL extended barrel
   const fcc::CaloHitCollection* hcalExtBarrelCells = m_hcalExtBarrelCells.get();
   debug() << "Input hadronic extended barrel cell collection size: " << hcalExtBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_hcalExtBarrelSegmentation != nullptr) {
     CellsIntoTowers(aTowers, hcalExtBarrelCells, m_hcalExtBarrelSegmentation);
     totalNumberOfCells += hcalExtBarrelCells->size();
+  }
+
+  // 6. HCAL endcap calorimeter                                                                                                              
+  const fcc::CaloHitCollection* hcalEndcapCells = m_hcalEndcapCells.get();
+  debug() << "Input Hcal endcap cell collection size: " << hcalEndcapCells->size() << endmsg;
+  // Loop over a collection of calorimeter cells and build calo towers
+  if (m_hcalEndcapSegmentation != nullptr) {
+    CellsIntoTowers(aTowers, hcalEndcapCells, m_hcalEndcapSegmentation);
+    totalNumberOfCells += hcalEndcapCells->size();
+  }
+
+  // 7. HCAL forward calorimeter
+  const fcc::CaloHitCollection* hcalFwdCells = m_hcalFwdCells.get();
+  debug() << "Input Hcal forward cell collection size: " << hcalFwdCells->size() << endmsg;
+  // Loop over a collection of calorimeter cells and build calo towers
+  if (m_hcalFwdSegmentation != nullptr) {
+    CellsIntoTowers(aTowers, hcalFwdCells, m_hcalFwdSegmentation);
+    totalNumberOfCells += hcalFwdCells->size();
   }
 
   return totalNumberOfCells;

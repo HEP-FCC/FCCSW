@@ -140,16 +140,20 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
 
 std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
   // get half-widths,
-  
   auto tubeSizes = tubeDimensions(aVolumeId);
   // get segmentation number of bins in phi
   uint phiCellNumber = aSeg.phiBins();
   // get segmentation cell width in eta
   double etaCellSize = aSeg.gridSizeEta();
   // eta segmentation calculate maximum eta from the inner radius, offset is taken into account
+  /*
   double maxEta = CLHEP::Hep3Vector(tubeSizes.x(), 0, tubeSizes.z()).eta() + fabs(aSeg.offsetEta() - etaCellSize * 0.5);
-  double minEta = - CLHEP::Hep3Vector(tubeSizes.x(), 0, tubeSizes.z()).eta() + fabs(aSeg.offsetEta() - etaCellSize * 0.5);
-  uint cellsEta = ceil( ( maxEta - minEta) / etaCellSize) - 1;  
+  double minEta = - ( CLHEP::Hep3Vector(tubeSizes.x(), 0, tubeSizes.z()).eta() + fabs(aSeg.offsetEta() - etaCellSize * 0.5) ); 
+  uint cellsEta = ceil( (maxEta - minEta) / etaCellSize) - 1;  
+  */
+  // eta segmentation calculate maximum eta from the inner radius (no offset is taken into account)
+  double maxEta = CLHEP::Hep3Vector(tubeSizes.x(), 0, tubeSizes.z()).eta();
+  uint cellsEta = ceil((maxEta - etaCellSize / 2.) / etaCellSize) * 2 + 1;
   return {phiCellNumber, cellsEta};
 }
 

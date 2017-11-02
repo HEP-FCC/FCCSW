@@ -1,16 +1,20 @@
 # Setup
 # Names of cells collections
 ecalBarrelCellsName = "ECalBarrelCells"
-calEndcapCellsName = "CalEndcapCells"
-calFwdCellsName = "CalFwdCells"
+ecalEndcapCellsName = "ECalEndcapCells"
+ecalFwdCellsName = "ECalFwdCells"
 hcalBarrelCellsName = "newHCalCells"
 hcalExtBarrelCellsName = "newExtHCalCells"
+hcalEndcapCellsName = "HCalEndcapCells"
+hcalFwdCellsName = "HCalFwdCells"
 # Readouts
 ecalBarrelReadoutName = "ECalBarrelPhiEta"
-calEndcapReadoutName = "EMECPhiEta"
-calFwdReadoutName = "EMFwdPhiEta"
+ecalEndcapReadoutName = "EMECPhiEta"
+ecalFwdReadoutName = "EMFwdPhiEta"
 hcalBarrelReadoutName = "BarHCal_Readout_phieta"
 hcalExtBarrelReadoutName = "ExtBarHCal_Readout_phieta"
+hcalEndcapReadoutName = "HECPhiEta"
+hcalFwdReadoutName = "HFwdPhiEta"
 # Number of events
 num_events = 3
 
@@ -20,7 +24,10 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", collections = [ecalBarrelCellsName, calEndcapCellsName, calFwdCellsName, hcalBarrelCellsName, hcalExtBarrelCellsName], OutputLevel = DEBUG)
+podioinput = PodioInput("PodioReader", 
+                        collections = [ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName, 
+                                       hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName], 
+                        OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -40,16 +47,20 @@ from GaudiKernel.PhysicalConstants import pi
 towers = CombinedCaloTowerTool("towers",
                                deltaEtaTower = 0.01, deltaPhiTower = 2*pi/704.,
                                ecalBarrelReadoutName = ecalBarrelReadoutName,
+                               ecalEndcapReadoutName = ecalEndcapReadoutName,
+                               ecalFwdReadoutName = ecalFwdReadoutName,
                                hcalBarrelReadoutName = hcalBarrelReadoutName,
                                hcalExtBarrelReadoutName = hcalExtBarrelReadoutName,
-                               calEndcapReadoutName = calEndcapReadoutName,
-                               calFwdReadoutName = calFwdReadoutName,
+                               hcalEndcapReadoutName = hcalEndcapReadoutName,
+                               hcalFwdReadoutName = hcalFwdReadoutName,
                                OutputLevel = DEBUG)
 towers.ecalBarrelCells.Path = ecalBarrelCellsName
-towers.calEndcapCells.Path = calEndcapCellsName
-towers.calFwdCells.Path = calFwdCellsName
+towers.ecalEndcapCells.Path = ecalEndcapCellsName
+towers.ecalFwdCells.Path = ecalFwdCellsName
 towers.hcalBarrelCells.Path = hcalBarrelCellsName
 towers.hcalExtBarrelCells.Path = hcalExtBarrelCellsName
+towers.hcalEndcapCells.Path = hcalEndcapCellsName
+towers.hcalFwdCells.Path = hcalFwdCellsName
 
 # Cluster variables
 windE = 9

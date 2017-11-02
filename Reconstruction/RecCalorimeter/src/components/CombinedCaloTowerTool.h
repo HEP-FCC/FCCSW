@@ -108,45 +108,62 @@ public:
    */
   void CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells,
                        DD4hep::DDSegmentation::GridPhiEta* aSegmentation);
+  /**  Check if the readout name exists. If so, it returns the eta-phi segmentation.
+   *   @param[in] aReadoutName Readout name to be retrieved
+   */
   DD4hep::DDSegmentation::GridPhiEta* retrieveSegmentation(std::string aReadoutName);
 
 private:
   /// Handle for electromagnetic barrel cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_ecalBarrelCells{"ecalBarrelCells", Gaudi::DataHandle::Reader, this};
-  /// Handle for endcap calorimeter cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_calEndcapCells{"calEndcapCells", Gaudi::DataHandle::Reader, this};
-  /// Handle for forward calorimeter cells (input collection)
-  DataHandle<fcc::CaloHitCollection> m_calFwdCells{"calFwdCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for ecal endcap calorimeter cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_ecalEndcapCells{"ecalEndcapCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for ecal forward calorimeter cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_ecalFwdCells{"ecalFwdCells", Gaudi::DataHandle::Reader, this};
   /// Handle for hadronic barrel cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_hcalBarrelCells{"hcalBarrelCells", Gaudi::DataHandle::Reader, this};
   /// Handle for hadronic extended barrel cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_hcalExtBarrelCells{"hcalExtBarrelCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for hcal endcap calorimeter cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_hcalEndcapCells{"hcalEndcapCells", Gaudi::DataHandle::Reader, this};
+  /// Handle for hcal forward calorimeter cells (input collection)
+  DataHandle<fcc::CaloHitCollection> m_hcalFwdCells{"hcalFwdCells", Gaudi::DataHandle::Reader, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic barrel readout
   Gaudi::Property<std::string> m_ecalBarrelReadoutName{this, "ecalBarrelReadoutName", "",
                                                        "name of the ecal barrel readout"};
-  /// Name of the endcap calorimeter readout
-  Gaudi::Property<std::string> m_calEndcapReadoutName{this, "calEndcapReadoutName", "",
-                                                      "name of the calo endcap readout"};
-  /// Name of the forward calorimeter readout
-  Gaudi::Property<std::string> m_calFwdReadoutName{this, "calFwdReadoutName", "", "name of the fwd calo readout"};
+  /// Name of the ecal endcap calorimeter readout
+  Gaudi::Property<std::string> m_ecalEndcapReadoutName{this, "ecalEndcapReadoutName", "",
+                                                      "name of the ecal endcap readout"};
+  /// Name of the ecal forward calorimeter readout
+  Gaudi::Property<std::string> m_ecalFwdReadoutName{this, "ecalFwdReadoutName", "", "name of the ecal fwd readout"};
   /// Name of the hadronic barrel readout
   Gaudi::Property<std::string> m_hcalBarrelReadoutName{this, "hcalBarrelReadoutName", "",
                                                        "name of the hcal barrel readout"};
   /// Name of the hadronic extended barrel readout
   Gaudi::Property<std::string> m_hcalExtBarrelReadoutName{this, "hcalExtBarrelReadoutName", "",
                                                           "name of the hcal extended barrel readout"};
+  /// Name of the hcal endcap calorimeter readout
+  Gaudi::Property<std::string> m_hcalEndcapReadoutName{this, "hcalEndcapReadoutName", "",
+                                                       "name of the hcal endcap readout"};
+  /// Name of the hcal forward calorimeter readout
+  Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "", 
+                                                    "name of the hcal fwd readout"};
   /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_ecalBarrelSegmentation;
-  /// PhiEta segmentation of the endcap calorimeter (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_calEndcapSegmentation;
-  /// PhiEta segmentation of the forward calorimeter (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_calFwdSegmentation;
+  /// PhiEta segmentation of the ecal endcap calorimeter (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_ecalEndcapSegmentation;
+  /// PhiEta segmentation of the ecal forward calorimeter (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_ecalFwdSegmentation;
   /// PhiEta segmentation of the hadronic barrel (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_hcalBarrelSegmentation;
   /// PhiEta segmentation of the hadronic extended barrel (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_hcalExtBarrelSegmentation;
+  /// PhiEta segmentation of the hcal endcap calorimeter (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_hcalEndcapSegmentation;
+  /// PhiEta segmentation of the hcal forward calorimeter (owned by DD4hep)
+  DD4hep::DDSegmentation::GridPhiEta* m_hcalFwdSegmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
   Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
                                    "Radius used to calculate cluster position from eta and phi (in mm)"};

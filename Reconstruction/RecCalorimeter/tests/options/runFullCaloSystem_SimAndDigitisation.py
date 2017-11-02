@@ -47,40 +47,50 @@ else:
 # ECAL readouts
 ecalBarrelReadoutName = "ECalBarrelEta"
 ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
-calEndcapReadoutName = "EMECPhiEta"
-calFwdReadoutName = "EMFwdPhiEta"
+ecalEndcapReadoutName = "EMECPhiEta"
+ecalFwdReadoutName = "EMFwdPhiEta"
 # HCAL readouts
 hcalReadoutName = "BarHCal_Readout"
 newHcalReadoutName = hcalReadoutName + "_phieta"
 extHcalReadoutName = "ExtBarHCal_Readout"
 newExtHcalReadoutName = extHcalReadoutName + "_phieta"
+hcalEndcapReadoutName = "HECPhiEta"
+hcalFwdReadoutName = "HFwdPhiEta"
 
 from Configurables import SimG4Alg, SimG4SaveCalHits
 saveecalbarreltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = [ecalBarrelReadoutName])
 saveecalbarreltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
 saveecalbarreltool.caloHits.Path = "ECalBarrelHits"
-savecalendcaptool = SimG4SaveCalHits("saveCalEndcapHits", readoutNames = [calEndcapReadoutName])
-savecalendcaptool.positionedCaloHits.Path = "CalEndcapPositionedHits"
-savecalendcaptool.caloHits.Path = "CalEndcapHits"
-savecalfwdtool = SimG4SaveCalHits("saveCalFwdHits", readoutNames = [calFwdReadoutName])
-savecalfwdtool.positionedCaloHits.Path = "CalFwdPositionedHits"
-savecalfwdtool.caloHits.Path = "CalFwdHits"
+saveecalendcaptool = SimG4SaveCalHits("saveECalEndcapHits", readoutNames = [ecalEndcapReadoutName])
+saveecalendcaptool.positionedCaloHits.Path = "ECalEndcapPositionedHits"
+saveecalendcaptool.caloHits.Path = "ECalEndcapHits"
+saveecalfwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = [ecalFwdReadoutName])
+saveecalfwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
+saveecalfwdtool.caloHits.Path = "ECalFwdHits"
 savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName])
 savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
 savehcaltool.caloHits.Path = "HCalHits"
 saveexthcaltool = SimG4SaveCalHits("saveExtHCalHits",readoutNames = [extHcalReadoutName])
 saveexthcaltool.positionedCaloHits.Path = "ExtHCalPositionedHits"
 saveexthcaltool.caloHits.Path = "ExtHCalHits"
-
+savehcalendcaptool = SimG4SaveCalHits("saveHCalEndcapHits", readoutNames = [hcalEndcapReadoutName])
+savehcalendcaptool.positionedCaloHits.Path = "HCalEndcapPositionedHits"
+savehcalendcaptool.caloHits.Path = "HCalEndcapHits"
+savehcalfwdtool = SimG4SaveCalHits("saveHCalFwdHits", readoutNames = [hcalFwdReadoutName])
+savehcalfwdtool.positionedCaloHits.Path = "HCalFwdPositionedHits"
+savehcalfwdtool.caloHits.Path = "HCalFwdHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                 particleName=particleType,energyMin=energy,energyMax=energy,etaMin=-5.0,etaMax=5.0,
-                OutputLevel = INFO)
+                OutputLevel = DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveCalEndcapHits", "SimG4SaveCalHits/saveCalFwdHits", "SimG4SaveCalHits/saveHCalHits", "SimG4SaveCalHits/saveExtHCalHits"],
+                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", 
+                                 "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits", 
+                                 "SimG4SaveCalHits/saveExtHCalHits", "SimG4SaveCalHits/saveHCalEndcapHits", 
+                                 "SimG4SaveCalHits/saveHCalFwdHits"],
                        eventProvider=pgun,
                        OutputLevel=INFO)
 
@@ -95,17 +105,25 @@ calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel",
                                    samplingFraction = [0.12125] + [0.14283] + [0.16354] + [0.17662] + [0.18867] + [0.19890] + [0.20637] + [0.20802],
                                    readoutName = ecalBarrelReadoutName,
                                    layerFieldName = "layer")
-calibEndcap = CalibrateInLayersTool("CalibrateEndcap",
+calibEcalEndcap = CalibrateInLayersTool("CalibrateEcalEndcap",
                                     # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                    # HEC -> extrapolation from Ecal EC (0.15 * active / passive thickness)
-                                    samplingFraction = [0.15] * 118 + [0.03] * 78,
-                                    readoutName = calEndcapReadoutName,
+                                    samplingFraction = [0.15] * 119, 
+                                    readoutName = ecalEndcapReadoutName,
                                     layerFieldName = "layer")
-calibFwd = CalibrateInLayersTool("CalibrateFwd",
+calibEcalFwd = CalibrateInLayersTool("CalibrateEcalFwd",
                                  # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                 # HFCAL -> extrapolation from EFCAL (0.00056 * active / passive thickness)                
-                                 samplingFraction = [0.00056] * 22 + [0.0004] * 47,
-                                 readoutName = calFwdReadoutName,
+                                 samplingFraction = [0.00056] * 23,
+                                 readoutName = ecalFwdReadoutName,
+                                 layerFieldName = "layer")
+calibHcalEndcap = CalibrateInLayersTool("CalibrateHcalEndcap",
+                                    # HEC -> extrapolation from Ecal EC (0.15 * active / passive thickness)                                  
+                                    samplingFraction = [0.03] * 79,
+                                    readoutName = hcalEndcapReadoutName,
+                                    layerFieldName = "layer")
+calibHcalFwd = CalibrateInLayersTool("CalibrateHcalFwd",
+                                 # HFCAL -> extrapolation from EFCAL (0.00056 * active / passive thickness)
+                                 samplingFraction = [0.0004] * 48,
+                                 readoutName = hcalFwdReadoutName,
                                  layerFieldName = "layer")
 
 # Create cells in ECal barrel
@@ -129,8 +147,6 @@ from Configurables import RedoSegmentation
 resegmentEcalBarrel = RedoSegmentation("ReSegmentationEcal",
                              # old bitfield (readout)
                              oldReadoutName = ecalBarrelReadoutName,
-                             # specify which fields are going to be altered (deleted/rewritten)
-                             oldSegmentationIds = ["module"],
                              # new bitfield (readout), with new segmentation
                              newReadoutName = ecalBarrelReadoutNamePhiEta,
                              OutputLevel = INFO,
@@ -138,23 +154,23 @@ resegmentEcalBarrel = RedoSegmentation("ReSegmentationEcal",
                              outhits = "ECalBarrelCells")
 
 
-# Create cells in endcaps
-createEndcapCells = CreateCaloCells("CreateEndcapCaloCells",
+# Create Ecal cells in endcaps
+createEcalEndcapCells = CreateCaloCells("CreateEcalEndcapCaloCells",
                                     doCellCalibration=True,
-                                    calibTool=calibEndcap,
+                                    calibTool=calibEcalEndcap,
                                     addCellNoise=False, filterCellNoise=False,
                                     OutputLevel=INFO)
-createEndcapCells.hits.Path="CalEndcapHits"
-createEndcapCells.cells.Path="CalEndcapCells"
+createEcalEndcapCells.hits.Path="ECalEndcapHits"
+createEcalEndcapCells.cells.Path="ECalEndcapCells"
 
-# Create cells in forward
-createFwdCells = CreateCaloCells("CreateFwdCaloCells",
+# Create Ecal cells in forward
+createEcalFwdCells = CreateCaloCells("CreateEcalFwdCaloCells",
                                  doCellCalibration=True,
-                                 calibTool=calibFwd,
+                                 calibTool=calibEcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createFwdCells.hits.Path="CalFwdHits"
-createFwdCells.cells.Path="CalFwdCells"
+createEcalFwdCells.hits.Path="ECalFwdHits"
+createEcalFwdCells.cells.Path="ECalFwdCells"
 
 # Create cells in HCal
 # 1. step - merge hits into cells with the default readout
@@ -211,9 +227,29 @@ resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
                                 inhits = "ExtHCalPositions",
                                 outhits = "newExtHCalCells")
 
+
+# Create Hcal cells in endcaps
+createHcalEndcapCells = CreateCaloCells("CreateHcalEndcapCaloCells",
+                                    doCellCalibration=True,
+                                    calibTool=calibHcalEndcap,
+                                    addCellNoise=False, filterCellNoise=False,
+                                    OutputLevel=INFO)
+createHcalEndcapCells.hits.Path="HCalEndcapHits"
+createHcalEndcapCells.cells.Path="HCalEndcapCells"
+
+# Create Hcal cells in forward
+createHcalFwdCells = CreateCaloCells("CreateHcalFwdCaloCells",
+                                 doCellCalibration=True,
+                                 calibTool=calibHcalFwd,
+                                 addCellNoise=False, filterCellNoise=False,
+                                 OutputLevel=INFO)
+createHcalFwdCells.hits.Path="HCalFwdHits"
+createHcalFwdCells.cells.Path="HCalFwdCells"
+
 out = PodioOutput("out", 
                   OutputLevel=INFO)
-out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop ECalBarrelPositionedHits", "drop HCalHits", "drop HCalPositionedHits", "drop HCalCells", "drop ExtHCalHits", "drop ExtHCalPositionedHits", "drop ExtHCalCells", "drop ECalBarrelCellsStep1", "drop CalEndcapHits", "drop CalEndcapPositionedHits", "drop CalFwdHits", "drop CalFwdPositionedHits"]
+#out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapsCells", "keep ECalFwdCells", "keep newHCalCells", "keep newExtHCalCells", "keep HCalEndcapsCells", "keep HCalFwdCells"]
+out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop ECalBarrelPositionedHits", "drop HCalHits", "drop HCalPositionedHits", "drop HCalCells", "drop ExtHCalHits", "drop ExtHCalPositionedHits", "drop ExtHCalCells", "drop ECalBarrelCellsStep1", "drop ECalEndcapHits", "drop ECalEndcapPositionedHits", "drop ECalFwdHits", "drop ECalFwdPositionedHits"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
@@ -225,14 +261,16 @@ geantsim.AuditExecute = True
 createEcalBarrelCells.AuditExecute = True
 positionsEcalBarrel.AuditExecute = True
 resegmentEcalBarrel.AuditExecute = True
-createEndcapCells.AuditExecute = True
-createFwdCells.AuditExecute = True
+createEcalEndcapCells.AuditExecute = True
+createEcalFwdCells.AuditExecute = True
 createHcalCells.AuditExecute = True
 positionsHcal.AuditExecute = True
 resegmentHcal.AuditExecute = True
 createExtHcalCells.AuditExecute = True
 positionsExtHcal.AuditExecute = True
 resegmentExtHcal.AuditExecute = True
+createHcalEndcapCells.AuditExecute = True
+createHcalFwdCells.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
@@ -240,14 +278,16 @@ ApplicationMgr(
               createEcalBarrelCells,
               positionsEcalBarrel,
               resegmentEcalBarrel,
-              createEndcapCells,
-              createFwdCells,
+              createEcalEndcapCells,
+              createEcalFwdCells,
               createHcalCells,
               positionsHcal,
               resegmentHcal,
               createExtHcalCells,
               positionsExtHcal,
               resegmentExtHcal,
+              createHcalEndcapCells,
+              createHcalFwdCells,
               out
               ],
     EvtSel = 'NONE',
