@@ -6,7 +6,9 @@
 #include "GaudiKernel/ServiceHandle.h"
 
 // FCCSW
+#include "DetSegmentation/GridPhiEta.h"
 #include "FWCore/DataHandle.h"
+
 class IGeoSvc;
 namespace DD4hep {
 namespace DDSegmentation {
@@ -45,12 +47,14 @@ public:
 private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
-  /// Name of the electromagnetic calorimeter readout
+  /// Name of the calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
   /// Handle for hits (input collection with cellID)
   DataHandle<Hits> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
   /// Handle for positioned hits (output collection)
   DataHandle<PositionedHit> m_positionedHits{"hits/positionedHits", Gaudi::DataHandle::Writer, this};
+  /// Get PhiEta segmentation
+  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
 };
 
 #endif /* DETCOMPONENTS_CREATECELLPOSITIONS_H */

@@ -8,6 +8,7 @@
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
 #include "DD4hep/Volumes.h"
+#include "DDSegmentation/Segmentation.h"
 #include "TGeoManager.h"
 
 // EDM
@@ -33,6 +34,13 @@ CreateCellPositions<Hits, PositionedHit>::CreateCellPositions(const std::string&
 
 template <class Hits, class PositionedHit>
 StatusCode CreateCellPositions<Hits, PositionedHit>::initialize() {
+  // get PhiEta segmentation
+  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+								     m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if (m_segmentation == nullptr) {
+    error() << "There is no phi-eta segmentation!!!!" << endmsg;
+    return StatusCode::FAILURE;
+  }
   return GaudiAlgorithm::initialize();
 }
 
@@ -48,8 +56,7 @@ StatusCode CreateCellPositions<Hits, PositionedHit>::execute() {
 
   uint64_t cellid = 0;
   DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
-  auto readout = m_geoSvc->lcdd()->readout(m_readoutName);
-
+  
   // Loop though hits, retrieve volume position from cellID
   for (const auto& cell : *hits) {
     cellid = cell.core().cellId;
@@ -64,16 +71,9 @@ StatusCode CreateCellPositions<Hits, PositionedHit>::execute() {
     debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
             << outGlobal[2] / dd4hep::mm << endmsg;
 
-    // get PhiEta segmentation
-    DD4hep::DDSegmentation::GridPhiEta* segmentation;
-    segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-        m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
-    if (segmentation == nullptr) {
-      error() << "There is no phi-eta segmentation!!!!" << endmsg;
-      return StatusCode::FAILURE;
-    }
+    
     // global cartesian coordinates calculated from r,phi,eta, for r=1
-    auto inSeg = segmentation->position(cellid);
+    auto inSeg = m_segmentation->position(cellid);
     // correction of extracted coordinates by retrieved radius of volumes
     double radius = std::sqrt(std::pow(outGlobal[0], 2) + std::pow(outGlobal[1], 2));
     DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
@@ -81,12 +81,12 @@ StatusCode CreateCellPositions<Hits, PositionedHit>::execute() {
     // inc case of calo discs
     if (radius == 0 && outGlobal[2] != 0) {
       debug() << "x and y positons of the volume is 0, cell positions are created for calo discs!" << endmsg;
-      double eta = segmentation->eta(cellid);
+      double eta = m_segmentation->eta(cellid);
       radius = outGlobal[2] / std::sinh(eta);
       outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
     }
     // in case that no eta segmentation is used (case of TileCal), original volume position is used in z
-    if (segmentation->gridSizeEta() > 10) {
+    if (m_segmentation->gridSizeEta() > 10) {
       debug() << "grid size in eta > 10, no eta segmentaion used! Cell position.z is volumes position.z" << endmsg;
       outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
     }
