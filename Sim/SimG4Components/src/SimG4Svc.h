@@ -14,6 +14,11 @@
 #include "GaudiKernel/Service.h"
 #include "GaudiKernel/ToolHandle.h"
 
+#include "G4UIsession.hh"
+#include "G4UIterminal.hh"
+#include "G4VisExecutive.hh"
+#include "G4VisManager.hh"
+
 /** @class SimG4Svc SimG4Components/SimG4Components/SimG4Svc.h SimG4Svc.h
  *
  *  Main Geant simulation service.
@@ -83,6 +88,10 @@ private:
 
   /// Run Manager
   sim::RunManager m_runManager;
+
+  std::unique_ptr<G4VisManager> visManager = std::make_unique<G4VisExecutive>();
+  // Define UI terminal for interactive mode
+  std::unique_ptr<G4UIsession> session = std::make_unique<G4UIterminal>();
 };
 
 #endif /* SIMG4COMPONENTS_G4SIMSVC_H */
