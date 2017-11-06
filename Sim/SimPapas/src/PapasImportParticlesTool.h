@@ -7,8 +7,8 @@
 #include "FWCore/DataHandle.h"
 #include "SimPapas/IPapasImportTool.h"
 // PAPAS
-#include "papas/datatypes/DefinitionsCollections.h"
 #include "papas/datatypes/Definitions.h"
+#include "papas/datatypes/DefinitionsCollections.h"
 #include <unordered_map>
 
 namespace fcc {
@@ -31,7 +31,8 @@ public:
   /// empty class structures.
   virtual StatusCode clear();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& papas, std::unordered_map<papas::Identifier, int>& links, std::shared_ptr<papas::Detector> spDetector) final;
+  virtual StatusCode run(papas::Event& papas, std::unordered_map<papas::Identifier, int>& links,
+                         std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 

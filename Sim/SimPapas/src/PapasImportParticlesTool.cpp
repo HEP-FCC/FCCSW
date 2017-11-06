@@ -5,8 +5,8 @@
 #include "datamodel/LorentzVector.h"
 #include "datamodel/MCParticleCollection.h"
 // PAPAS
-#include "papas/datatypes/IdCoder.h"
 #include "papas/datatypes/Helix.h"
+#include "papas/datatypes/IdCoder.h"
 #include "papas/datatypes/Particle.h"
 #include "papas/datatypes/Path.h"
 #include "papas/detectors/Detector.h"
@@ -14,7 +14,6 @@
 #include "papas/graphtools/DefinitionsNodes.h"
 #include "papas/simulation/Simulator.h"
 #include "papas/utility/PDebug.h"
-
 
 DECLARE_TOOL_FACTORY(PapasImportParticlesTool)
 
@@ -36,21 +35,22 @@ StatusCode PapasImportParticlesTool::clear() {
 
 StatusCode PapasImportParticlesTool::finalize() { return GaudiTool::finalize(); }
 
-StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::unordered_map<papas::Identifier, int>& links, std::shared_ptr<papas::Detector> spDetector) {
-  const fcc::MCParticleCollection* ptcs =  m_genParticlesHandle.get();
+StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::unordered_map<papas::Identifier, int>& links,
+                                         std::shared_ptr<papas::Detector> spDetector) {
+  const fcc::MCParticleCollection* ptcs = m_genParticlesHandle.get();
   int countp = 0;
 
   // We need to know the sorted order of fcc MCparticles by decreasing energy to match Python
   // Sort is required when run in PDebug mode. TODO: make this configurable .
   std::vector<fcc::ConstMCParticle> vecPtcs;
-  std::list<int> orderPtcs; // will contain the GenParticle index for the sorted Genparticles
-  for (int n =0; n< (*ptcs).size(); n++) {
+  std::list<int> orderPtcs;  // will contain the GenParticle index for the sorted Genparticles
+  for (int n = 0; n < (*ptcs).size(); n++) {
     orderPtcs.push_back(n);
   }
   TLorentzVector tlv;
   TLorentzVector tlv2;
-  
-  //order the list of the indices so as to correspond to GenParticles in decreasing order of energy
+
+  // order the list of the indices so as to correspond to GenParticles in decreasing order of energy
   orderPtcs.sort([&tlv, &tlv2, ptcs](int a, int b) {
     auto p4 = (*ptcs)[a].p4();
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
@@ -58,11 +58,11 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::unordered_ma
     tlv2.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
     return tlv.E() > tlv2.E();
   });
-  
+
   // Now construct papas simulated Particles from the genParticles (providing genParticles are stable)
   // making sure to create the Simulted particles in order of decreasing energy
   for (int index : orderPtcs) {
-    auto ptc =(*ptcs)[index];
+    auto ptc = (*ptcs)[index];
     countp += 1;
     auto p4 = ptc.core().p4;
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);

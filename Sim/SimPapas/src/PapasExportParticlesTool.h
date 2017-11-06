@@ -7,9 +7,9 @@
 #include "GaudiAlg/GaudiTool.h"
 #include "SimPapas/IPapasExportTool.h"
 // FCCEDM
+#include "datamodel/MCParticleCollection.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
-#include "datamodel/MCParticleCollection.h"
 
 #include <string>
 
@@ -37,12 +37,13 @@ private:
   /// Handle for the ParticleCollection to be associated with
   DataHandle<fcc::MCParticleCollection> m_genParticlesHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the ParticleMCParticlAdssociationCollection to be written
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_associationHandle{"particleMCparticleAssociations", Gaudi::DataHandle::Writer, this};
-  
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_associationHandle{"particleMCparticleAssociations",
+                                                                               Gaudi::DataHandle::Writer, this};
+
   /// Particles type to be exported
   Gaudi::Property<std::string> m_particleSubtype{this, "particleSubtype", "", "particle subtype"};
   /// pointer to the reconstructed particles collection
-  fcc::ParticleCollection* m_particles;  /// mcparticles collection
+  fcc::ParticleCollection* m_particles;                                            /// mcparticles collection
   fcc::ParticleMCParticleAssociationCollection* m_particleMCParticleAssociations;  /// mcparticles collection
 };
 

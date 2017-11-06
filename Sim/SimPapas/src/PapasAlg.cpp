@@ -1,12 +1,11 @@
 #include "PapasAlg.h"
 
-
 #include "GaudiKernel/EventContext.h"
 // FCCSW
+#include "SimPapas/IPapasDetSvc.h"
 #include "SimPapas/IPapasExportTool.h"
 #include "SimPapas/IPapasImportTool.h"
 #include "SimPapas/IPapasTool.h"
-#include "SimPapas/IPapasDetSvc.h"
 #include "papas/detectors/Detector.h"
 // PAPAS
 #include "papas/utility/Logger.h"
@@ -47,7 +46,7 @@ StatusCode PapasAlg::initialize() {
     debug() << "Papas: set seed " << m_seed << endmsg;
     rootrandom::Random::seed(m_seed);
   }
-#if not ( PAPASWITHSORT )
+#if not(PAPASWITHSORT)
   debug() << "Papas: no sorting" << endmsg;
 #endif
 
@@ -62,9 +61,9 @@ StatusCode PapasAlg::execute() {
   // setup new papas Event and history
   m_history.clear();
   papas::Event pevent(m_history);
-  //pick up the Gaudi event number
+  // pick up the Gaudi event number
   auto context = getContext();
-  m_eventno =  context.evt();
+  m_eventno = context.evt();
   pevent.setEventNo(m_eventno);
   papas::PDebug::write("Event: {}", m_eventno);
 
@@ -73,7 +72,7 @@ StatusCode PapasAlg::execute() {
     // needed so that PODIO can find structure even if run is abandoned
     // and there are no particles created
     m_exportTool->createOutputStructures();
-    //import to create SimParticles and links between Sim and GenParticles
+    // import to create SimParticles and links between Sim and GenParticles
     m_importTool->run(pevent, m_particleLinks, m_spDetector);
     // now do the real work
     for (auto tool : m_tools) {
