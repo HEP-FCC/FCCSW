@@ -100,12 +100,12 @@ Example script which runs ECAL reconstruction can be found for three cases: [wit
 
 First, prepare the input file. Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmentation usage):
 ~~~{.sh}
-./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/geant_fullsim_ecal_singleparticles.py
+./run fccrun.py Reconstruction/RecCalorimeter/tests/options/geant_fullsim_ecal_singleparticles.py
 ~~~
 
 Now, we can run the reconstruction:
 ~~~{.sh}
-./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionWithoutNoise.py
-./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionFlatNoise.py
-./run gaudirun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
+./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionWithoutNoise.py
+./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionFlatNoise.py
+./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
 ~~~
