@@ -74,9 +74,9 @@ createemptycells = CreateEmptyCaloCellsCollection("CreateEmptyCaloCells")
 createemptycells.cells.Path = "emptyCaloCells"
 
 #Create calo clusters
-from Configurables import CreateCaloClustersSlidingWindow, CombinedCaloTowerTool
+from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
-towers = CombinedCaloTowerTool("towers",
+towers = CaloTowerTool("towers",
                                deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                                ecalBarrelReadoutName = ecalReadoutName,
                                ecalEndcapReadoutName = "",

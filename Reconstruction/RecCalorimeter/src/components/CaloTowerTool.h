@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_COMBINEDCALOTOWERTOOL_H
-#define RECCALORIMETER_COMBINEDCALOTOWERTOOL_H
+#ifndef RECCALORIMETER_CALOTOWERTOOL_H
+#define RECCALORIMETER_CALOTOWERTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -22,8 +22,8 @@ class Segmentation;
 }
 }
 
-/** @class CombinedCaloTowerTool Reconstruction/RecCalorimeter/src/components/CombinedCaloTowerTool.h
- * CombinedCaloTowerTool.h
+/** @class CaloTowerTool Reconstruction/RecCalorimeter/src/components/CaloTowerTool.h
+ * CaloTowerTool.h
  *
  *  Tool building the calorimeter towers for the sliding window algorithm.
  *  This tool runs over all calorimeter systems (ECAL barrel, HCAL barrel + extended barrel, calorimeter endcaps,
@@ -40,10 +40,10 @@ class Segmentation;
  *  @author Jana Faltova
  */
 
-class CombinedCaloTowerTool : public GaudiTool, virtual public ITowerTool {
+class CaloTowerTool : public GaudiTool, virtual public ITowerTool {
 public:
-  CombinedCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent);
-  virtual ~CombinedCaloTowerTool() = default;
+  CaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent);
+  virtual ~CaloTowerTool() = default;
   /**  Initialize.
    *   @return status code
    */
@@ -181,4 +181,4 @@ private:
   int m_nPhiTower;
 };
 
-#endif /* RECCALORIMETER_COMBINEDCALOTOWERTOOL_H */
+#endif /* RECCALORIMETER_CALOTOWERTOOL_H */

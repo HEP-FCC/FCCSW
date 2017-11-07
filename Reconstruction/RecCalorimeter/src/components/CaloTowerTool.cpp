@@ -1,4 +1,4 @@
-#include "CombinedCaloTowerTool.h"
+#include "CaloTowerTool.h"
 
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
@@ -11,9 +11,9 @@
 #include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_TOOL_FACTORY(CombinedCaloTowerTool)
+DECLARE_TOOL_FACTORY(CaloTowerTool)
 
-CombinedCaloTowerTool::CombinedCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
+CaloTowerTool::CaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareProperty("ecalBarrelCells", m_ecalBarrelCells, "");
   declareProperty("ecalEndcapCells", m_ecalEndcapCells, "");
@@ -25,7 +25,7 @@ CombinedCaloTowerTool::CombinedCaloTowerTool(const std::string& type, const std:
   declareInterface<ITowerTool>(this);
 }
 
-StatusCode CombinedCaloTowerTool::initialize() {
+StatusCode CaloTowerTool::initialize() {
   if (GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
@@ -56,9 +56,9 @@ StatusCode CombinedCaloTowerTool::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode CombinedCaloTowerTool::finalize() { return GaudiTool::finalize(); }
+StatusCode CaloTowerTool::finalize() { return GaudiTool::finalize(); }
 
-tower CombinedCaloTowerTool::towersNumber() {
+tower CaloTowerTool::towersNumber() {
 
   std::vector<double> listPhiMax;
   std::vector<double> listEtaMax;
@@ -115,7 +115,7 @@ tower CombinedCaloTowerTool::towersNumber() {
   return total;
 }
 
-uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
+uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   uint totalNumberOfCells = 0;
 
   // 1. ECAL barrel
@@ -185,27 +185,27 @@ uint CombinedCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers
   return totalNumberOfCells;
 }
 
-uint CombinedCaloTowerTool::idEta(float aEta) const {
+uint CaloTowerTool::idEta(float aEta) const {
   uint id = floor((aEta + m_etaMax) / m_deltaEtaTower);
   return id;
 }
 
-uint CombinedCaloTowerTool::idPhi(float aPhi) const {
+uint CaloTowerTool::idPhi(float aPhi) const {
   uint id = floor((aPhi + m_phiMax) / m_deltaPhiTower);
   return id;
 }
 
-float CombinedCaloTowerTool::eta(int aIdEta) const {
+float CaloTowerTool::eta(int aIdEta) const {
   // middle of the tower
   return ((aIdEta + 0.5) * m_deltaEtaTower - m_etaMax);
 }
 
-float CombinedCaloTowerTool::phi(int aIdPhi) const {
+float CaloTowerTool::phi(int aIdPhi) const {
   // middle of the tower
   return ((aIdPhi + 0.5) * m_deltaPhiTower - m_phiMax);
 }
 
-uint CombinedCaloTowerTool::phiNeighbour(int aIPhi) const {
+uint CaloTowerTool::phiNeighbour(int aIPhi) const {
   if (aIPhi < 0) {
     return m_nPhiTower + aIPhi;
   } else if (aIPhi >= m_nPhiTower) {
@@ -214,9 +214,9 @@ uint CombinedCaloTowerTool::phiNeighbour(int aIPhi) const {
   return aIPhi;
 }
 
-float CombinedCaloTowerTool::radiusForPosition() const { return m_radius; }
+float CaloTowerTool::radiusForPosition() const { return m_radius; }
 
-void CombinedCaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
+void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
                                             const fcc::CaloHitCollection* aCells,
                                             DD4hep::DDSegmentation::GridPhiEta* aSegmentation) {
   // Loop over a collection of calorimeter cells and build calo towers
@@ -297,7 +297,7 @@ void CombinedCaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTo
   }
 }
 
-DD4hep::DDSegmentation::GridPhiEta* CombinedCaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
+DD4hep::DDSegmentation::GridPhiEta* CaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
   DD4hep::DDSegmentation::GridPhiEta* segmentation = nullptr;
   if (m_geoSvc->lcdd()->readouts().find(aReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
     info() << "Readout does not exist! Please check if it is correct. Processing without it." << endmsg;

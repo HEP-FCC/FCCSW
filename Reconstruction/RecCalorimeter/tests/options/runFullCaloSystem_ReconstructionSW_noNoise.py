@@ -41,10 +41,10 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = INFO)
 
 #Create calo clusters
-from Configurables import CreateCaloClustersSlidingWindow, CombinedCaloTowerTool
+from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
 
-towers = CombinedCaloTowerTool("towers",
+towers = CaloTowerTool("towers",
                                deltaEtaTower = 0.01, deltaPhiTower = 2*pi/704.,
                                ecalBarrelReadoutName = ecalBarrelReadoutName,
                                ecalEndcapReadoutName = ecalEndcapReadoutName,
