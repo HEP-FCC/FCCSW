@@ -38,12 +38,12 @@
     <constant name="BathThicknessMiddle" value="50*mm"/> <!-- in between of EMFWD and HFWD -->
     <!-- electromegnetic calorimeter: EMFWD -->
     <constant name="EMFWD_z1" value="CryoFwd_z1 + CryoThicknessFront + BathThicknessFront"/>
-    <constant name="EMFWD_z2" value="17350*mm"/>
+    <constant name="EMFWD_z2" value="17120*mm"/>
     <constant name="EMFWD_rmin1" value="CryoFwd_front_rmin2 + CryoThicknessInner + BathThicknessFront*tan(2*atan(exp(-6)))"/>
     <constant name="EMFWD_rmin2" value="EMFWD_z2 * tan(2*atan(exp(-6)))"/>
     <constant name="EMFWD_rmax" value="FwdCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
-    <constant name="EMFWD_lAr_thickness" value="0.1*mm"/>
-    <constant name="EMFWD_Cu_thickness" value="3*cm"/>
+    <constant name="EMFWD_lAr_thickness" value="0.2*mm"/>
+    <constant name="EMFWD_Cu_thickness" value="10*mm"/>
     <constant name="EMFWD_readout_thickness" value="1.2*mm"/>
     <!-- hadronic calorimeter: HFWD -->
     <constant name="HFWD_z1" value="EMFWD_z2 + BathThicknessMiddle"/>
@@ -51,7 +51,7 @@
     <constant name="HFWD_rmin1" value="HFWD_z1*tan(2*atan(exp(-6)))"/>
     <constant name="HFWD_rmin2" value="CryoFwd_back_rmin1 + CryoThicknessInner - BathThicknessBack*tan(2*atan(exp(-6)))"/>
     <constant name="HFWD_rmax" value="FwdCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
-    <constant name="HFWD_lAr_thickness" value="0.1*mm"/>
+    <constant name="HFWD_lAr_thickness" value="0.2*mm"/>
     <constant name="HFWD_Cu_thickness" value="4.*cm"/>
     <constant name="HFWD_readout_thickness" value="1.2*mm"/>
   </define>

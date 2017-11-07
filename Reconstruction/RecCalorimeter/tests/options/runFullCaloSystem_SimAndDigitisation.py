@@ -56,6 +56,13 @@ extHcalReadoutName = "ExtBarHCal_Readout"
 newExtHcalReadoutName = extHcalReadoutName + "_phieta"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
+# layers to be merged in endcaps & forward calo
+ecalEndcapNumberOfLayersToMerge = [26]*5+[27]
+ecalFwdNumberOfLayersToMerge = [7]*5+[8]
+hcalEndcapNumberOfLayersToMerge = [13]+[14]*5
+hcalFwdNumberOfLayersToMerge = [8]+[9]*5
+identifierName = "layer"
+volumeName = "layer"
 
 from Configurables import SimG4Alg, SimG4SaveCalHits
 saveecalbarreltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = [ecalBarrelReadoutName])
@@ -105,26 +112,12 @@ calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel",
                                    samplingFraction = [0.12125] + [0.14283] + [0.16354] + [0.17662] + [0.18867] + [0.19890] + [0.20637] + [0.20802],
                                    readoutName = ecalBarrelReadoutName,
                                    layerFieldName = "layer")
-calibEcalEndcap = CalibrateInLayersTool("CalibrateEcalEndcap",
-                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                    samplingFraction = [0.15] * 119, 
-                                    readoutName = ecalEndcapReadoutName,
-                                    layerFieldName = "layer")
-calibEcalFwd = CalibrateInLayersTool("CalibrateEcalFwd",
-                                 # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                 samplingFraction = [0.00056] * 23,
-                                 readoutName = ecalFwdReadoutName,
-                                 layerFieldName = "layer")
-calibHcalEndcap = CalibrateInLayersTool("CalibrateHcalEndcap",
-                                    # HEC -> extrapolation from Ecal EC (0.15 * active / passive thickness)                                  
-                                    samplingFraction = [0.03] * 79,
-                                    readoutName = hcalEndcapReadoutName,
-                                    layerFieldName = "layer")
-calibHcalFwd = CalibrateInLayersTool("CalibrateHcalFwd",
-                                 # HFCAL -> extrapolation from EFCAL (0.00056 * active / passive thickness)
-                                 samplingFraction = [0.0004] * 48,
-                                 readoutName = hcalFwdReadoutName,
-                                 layerFieldName = "layer")
+
+calibEcalEndcap = CalibrateCaloHitsTool("CalibrateECalEndcap", invSamplingFraction="13.89")
+calibEcalFwd = CalibrateCaloHitsTool("CalibrateECalFwd", invSamplingFraction="303.03")
+#invSamplingFractionHEC is approx. invSamplingFractionEMEC * passiveThickness_HEC / activeThickness_HEC
+calibHcalEndcap = CalibrateCaloHitsTool("CalibrateHCalEndcap", invSamplingFraction="34.72")
+calibHcalFwd = CalibrateCaloHitsTool("CalibrateHCalFwd", invSamplingFraction="30303.")
 
 # Create cells in ECal barrel
 # 1. step - merge hits into cells with default Eta segmentation
@@ -155,21 +148,48 @@ resegmentEcalBarrel = RedoSegmentation("ReSegmentationEcal",
 
 
 # Create Ecal cells in endcaps
+# 1. step - merge layer IDs
+# 2. step - create cells
+from Configurables import MergeLayers
+mergelayersEcalEndcap = MergeLayers("MergeLayersEcalEndcap",
+                   # take the bitfield description from the geometry service
+                   readout = ecalEndcapReadoutName,
+                   # cells in which field should be merged
+                   identifier = identifierName,
+                   volumeName = volumeName,
+                   # how many cells to merge
+                   merge = ecalEndcapNumberOfLayersToMerge,
+                   OutputLevel = INFO)
+mergelayersEcalEndcap.inhits.Path = "ECalEndcapHits"
+mergelayersEcalEndcap.outhits.Path = "mergedECalEndcapHits"
+
 createEcalEndcapCells = CreateCaloCells("CreateEcalEndcapCaloCells",
                                     doCellCalibration=True,
                                     calibTool=calibEcalEndcap,
                                     addCellNoise=False, filterCellNoise=False,
                                     OutputLevel=INFO)
-createEcalEndcapCells.hits.Path="ECalEndcapHits"
+createEcalEndcapCells.hits.Path="mergedECalEndcapHits"
 createEcalEndcapCells.cells.Path="ECalEndcapCells"
 
 # Create Ecal cells in forward
+mergelayersEcalFwd = MergeLayers("MergeLayersEcalFwd",
+                   # take the bitfield description from the geometry service
+                   readout = ecalFwdReadoutName,
+                   # cells in which field should be merged
+                   identifier = identifierName,
+                   volumeName = volumeName,
+                   # how many cells to merge
+                   merge = ecalFwdNumberOfLayersToMerge,
+                   OutputLevel = INFO)
+mergelayersEcalFwd.inhits.Path = "ECalFwdHits"
+mergelayersEcalFwd.outhits.Path = "mergedECalFwdHits"
+
 createEcalFwdCells = CreateCaloCells("CreateEcalFwdCaloCells",
                                  doCellCalibration=True,
                                  calibTool=calibEcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createEcalFwdCells.hits.Path="ECalFwdHits"
+createEcalFwdCells.hits.Path="mergedECalFwdHits"
 createEcalFwdCells.cells.Path="ECalFwdCells"
 
 # Create cells in HCal
@@ -229,27 +249,50 @@ resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
 
 
 # Create Hcal cells in endcaps
+mergelayersHcalEndcap = MergeLayers("MergeLayersHcalEndcap",
+                   # take the bitfield description from the geometry service
+                   readout = hcalEndcapReadoutName,
+                   # cells in which field should be merged
+                   identifier = identifierName,
+                   volumeName = volumeName,
+                   # how many cells to merge
+                   merge = hcalEndcapNumberOfLayersToMerge,
+                   OutputLevel = INFO)
+mergelayersHcalEndcap.inhits.Path = "HCalEndcapHits"
+mergelayersHcalEndcap.outhits.Path = "mergedHCalEndcapHits"
+
 createHcalEndcapCells = CreateCaloCells("CreateHcalEndcapCaloCells",
                                     doCellCalibration=True,
                                     calibTool=calibHcalEndcap,
                                     addCellNoise=False, filterCellNoise=False,
                                     OutputLevel=INFO)
-createHcalEndcapCells.hits.Path="HCalEndcapHits"
+createHcalEndcapCells.hits.Path="mergedHCalEndcapHits"
 createHcalEndcapCells.cells.Path="HCalEndcapCells"
 
 # Create Hcal cells in forward
+mergelayersHcalFwd = MergeLayers("MergeLayersHcalFwd",
+                   # take the bitfield description from the geometry service 
+                   readout = hcalFwdReadoutName,
+                   # cells in which field should be merged
+                   identifier = identifierName,
+                   volumeName = volumeName,
+                   # how many cells to merge
+                   merge = hcalFwdNumberOfLayersToMerge,
+                   OutputLevel = INFO)
+mergelayersHcalFwd.inhits.Path = "HCalFwdHits"
+mergelayersHcalFwd.outhits.Path = "mergedHCalFwdHits"
+
 createHcalFwdCells = CreateCaloCells("CreateHcalFwdCaloCells",
                                  doCellCalibration=True,
                                  calibTool=calibHcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createHcalFwdCells.hits.Path="HCalFwdHits"
+createHcalFwdCells.hits.Path="mergedHCalFwdHits"
 createHcalFwdCells.cells.Path="HCalFwdCells"
 
 out = PodioOutput("out", 
                   OutputLevel=INFO)
-#out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapsCells", "keep ECalFwdCells", "keep newHCalCells", "keep newExtHCalCells", "keep HCalEndcapsCells", "keep HCalFwdCells"]
-out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop ECalBarrelPositionedHits", "drop HCalHits", "drop HCalPositionedHits", "drop HCalCells", "drop ExtHCalHits", "drop ExtHCalPositionedHits", "drop ExtHCalCells", "drop ECalBarrelCellsStep1", "drop ECalEndcapHits", "drop ECalEndcapPositionedHits", "drop ECalFwdHits", "drop ECalFwdPositionedHits"]
+out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep newHCalCells", "keep newExtHCalCells", "keep HCalEndcapCells", "keep HCalFwdCells"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
@@ -278,7 +321,9 @@ ApplicationMgr(
               createEcalBarrelCells,
               positionsEcalBarrel,
               resegmentEcalBarrel,
+              mergelayersEcalEndcap,
               createEcalEndcapCells,
+              mergelayersEcalFwd,
               createEcalFwdCells,
               createHcalCells,
               positionsHcal,
@@ -286,7 +331,9 @@ ApplicationMgr(
               createExtHcalCells,
               positionsExtHcal,
               resegmentExtHcal,
+              mergelayersHcalEndcap,
               createHcalEndcapCells,
+              mergelayersHcalFwd,
               createHcalFwdCells,
               out
               ],
