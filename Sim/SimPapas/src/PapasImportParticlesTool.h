@@ -5,9 +5,11 @@
 #include "GaudiAlg/GaudiTool.h"
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "SimPapas/IPapasTool.h"
-// papas
+#include "SimPapas/IPapasImportTool.h"
+// PAPAS
+#include "papas/datatypes/Definitions.h"
 #include "papas/datatypes/DefinitionsCollections.h"
+#include <unordered_map>
 
 namespace fcc {
 class MCParticleCollection;
@@ -19,25 +21,24 @@ class MCParticleCollection;
  *  @author A.J. Robson
  */
 
-class PapasImportParticlesTool : public GaudiTool, virtual public IPapasTool {
+class PapasImportParticlesTool : public GaudiTool, virtual public IPapasImportTool {
 public:
   /// Constructor.
   PapasImportParticlesTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~PapasImportParticlesTool();
-  /// Structures
-  StatusCode createOutputStructures() { return SUCCESS; };
-  /// Create any output structures needed.
+  /// Initialise
   virtual StatusCode initialize();
   /// empty class structures.
   virtual StatusCode clear();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& papas) final;
+  virtual StatusCode run(papas::Event& papas, std::unordered_map<papas::Identifier, int>& links,
+                         std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 
 private:
   /// Handle for the ParticleCollection to be read
-  DataHandle<fcc::MCParticleCollection> m_iGenpHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle{"MCparticles", Gaudi::DataHandle::Reader, this};
   /// Collection of papas particles that new particles will be added to
   papas::Particles m_particles;
 };
