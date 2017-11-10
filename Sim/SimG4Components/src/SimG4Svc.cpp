@@ -66,8 +66,11 @@ StatusCode SimG4Svc::initialize() {
   m_runManager.Initialize();
 
   if (m_interactiveMode) {
-    visManager->Initialize();
-    session->SessionStart();
+    m_visManager = std::make_unique<G4VisExecutive>();
+    m_visManager->Initialize();
+
+    m_session = std::make_unique<G4UIterminal>();
+    m_session->SessionStart();
   }
 
   // Attach user actions

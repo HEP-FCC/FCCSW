@@ -89,9 +89,9 @@ private:
   /// Run Manager
   sim::RunManager m_runManager;
 
-  std::unique_ptr<G4VisManager> visManager = std::make_unique<G4VisExecutive>();
+  std::unique_ptr<G4VisManager> m_visManager{nullptr};
   // Define UI terminal for interactive mode
-  std::unique_ptr<G4UIsession> session = std::make_unique<G4UIterminal>();
+  std::unique_ptr<G4UIsession> m_session{nullptr};
 };
 
 #endif /* SIMG4COMPONENTS_G4SIMSVC_H */
