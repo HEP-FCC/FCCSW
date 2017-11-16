@@ -12,7 +12,6 @@ PapasBuildBlocksTool::PapasBuildBlocksTool(const std::string& aType, const std::
 
 StatusCode PapasBuildBlocksTool::initialize() {
   debug() << "PAPAS block builder options:" << m_ecalSubtype << m_hcalSubtype << m_trackSubtype << endmsg;
-
   return GaudiTool::initialize();
 }
 
@@ -21,8 +20,9 @@ StatusCode PapasBuildBlocksTool::clear() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PapasBuildBlocksTool::run(papas::Event& pevent) {
+StatusCode PapasBuildBlocksTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> det) {
   auto history = papas::Nodes();
+  (void)det;  // suppresses warning message from unused parameter
   std::string etype = m_ecalSubtype;
   std::string htype = m_hcalSubtype;
   std::string ttype = m_trackSubtype;
