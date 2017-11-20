@@ -25,12 +25,10 @@ public:
   PapasPFReconstructorTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// empty class structures
   virtual StatusCode clear();
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& pevent) final;
+  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 
@@ -41,4 +39,4 @@ private:
   Gaudi::Property<std::string> m_blockSubtype{this, "blockSubtype", "", "block subtype"};
 };
 
-#endif  // SIM_PAPASPFRECONSTRUCTO_H
+#endif  // SIM_PAPASPFRECONSTRUCTOR_H
