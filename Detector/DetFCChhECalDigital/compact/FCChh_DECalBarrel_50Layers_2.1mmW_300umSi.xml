@@ -41,6 +41,13 @@
       <id>system:3,active:1,EM_barrel:1,layer:6,x:-18,y:-18,z:-17</id>
     </readout>
 
+ <readout name="BarDECal_Pads">
+      <!-- layer:7 gives 7 bits (max 128 layers) -->
+      <!-- x, y segmentation -24 to allow 16777216 pixels -->
+      <segmentation type="CartesianGridXYZ" grid_size_x="5*mm" grid_size_y="5*mm" grid_size_z="5*mm"/>
+      <id>system:3,active:1,EM_barrel:1,layer:6,x:-17,y:-17,z:-19</id>
+    </readout>
+
   </readouts>
 
 

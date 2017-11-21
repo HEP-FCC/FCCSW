@@ -1,5 +1,5 @@
-#ifndef DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H
-#define DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H
+#ifndef DETSTUDIES_DECALLONGITUDINALTEST_H
+#define DETSTUDIES_DECALLONGITUDINALTEST_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -7,16 +7,18 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+#include "TH2F.h"
 class IGeoSvc;
 
 // datamodel
 namespace fcc {
 class PositionedCaloHitCollection;
+class CaloHitCollection;
 }
 
 class TH1F;
 class ITHistSvc;
-/** @class SamplingFractionInLayers SamplingFractionInLayers.h
+/** @class DECalLongitudinalTest DECalLongitudinalTest.h
  *
  *  Histograms of energy deposited in active material and total energy deposited in the calorimeter.
  *  Passive material needs to be marked as sensitive. It needs to be divided into layers (cells) as active material.
@@ -27,10 +29,10 @@ class ITHistSvc;
  *  @author Anna Zaborowska
  */
 
-class SamplingFractionInLayers : public GaudiAlgorithm {
+class DECalLongitudinalTest : public GaudiAlgorithm {
 public:
-  explicit SamplingFractionInLayers(const std::string&, ISvcLocator*);
-  virtual ~SamplingFractionInLayers();
+  explicit DECalLongitudinalTest(const std::string&, ISvcLocator*);
+  virtual ~DECalLongitudinalTest();
   /**  Initialize.
    *   @return status code
    */
@@ -51,32 +53,23 @@ private:
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the energy deposits
   DataHandle<fcc::PositionedCaloHitCollection> m_deposits{"rec/caloHits", Gaudi::DataHandle::Reader, this};
-  /// Name of the active field
-  Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "", "Identifier of active material"};
-  /// Value of the active material
-  Gaudi::Property<int> m_activeFieldValue{this, "activeFieldValue", 0, "Value of identifier for active material"};
   /// Name of the layer/cell field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
   /// Number of layers/cells
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers"};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
-  // Maximum energy for the axis range
-  Gaudi::Property<double> m_energy{this, "energyAxis", 500, "Maximum energy for axis range"};
+
   // Histograms of total deposited energy within layer
-  // Layers are numbered starting at 1. Layer 0 includes total energy deposited in cryostat and bath (in front and
-  // behind calo)
-  std::vector<TH1F*> m_totalEnLayers;
-  // Histogram of total deposited energy in the calorimeter (in active and passive material, excluding cryostat and
-  // bath)
-  TH1F* m_totalEnergy;
-  // Histograms of energy deposited in the active material within layer
-  std::vector<TH1F*> m_activeEnLayers;
-  // Histogram of energy deposited in the active material of the calorimeter
-  TH1F* m_totalActiveEnergy;
-  // Histograms of sampling fraction (active/total energy) calculated within layer
-  std::vector<TH1F*> m_sfLayers;
-  // Histogram of sampling fraction (active/total energy) calculated for the calorimeter (excluding cryostat and bath)
-  TH1F* m_sf;
+  // Histograms for the number of hits per layer
+  std::vector<TH1F*> m_totalHitsLayers;
+  // Histogram of total hits in the calorimeter
+  TH1F* m_totalHits;
+  // Histogram of number of hits per layer in single histogram
+  TH1F* m_totalHitsVsLayer;
+
+  TH2F* m_XYEvent0;
+  TH2F* m_EtaPhiEvent0;
+  TH1F* m_EtaPhiSeparation;  
 };
-#endif /* DETSTUDIES_SAMPLINGFRACTIONINLAYERS_H */
+#endif /* DETSTUDIES_DECALLONGITUDINALTEST_H */

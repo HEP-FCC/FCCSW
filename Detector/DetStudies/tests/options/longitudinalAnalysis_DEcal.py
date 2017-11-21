@@ -2,7 +2,12 @@ from Gaudi.Configuration import *
 
 # Data service
 from Configurables import FCCDataSvc
-inputfile = "/afs/cern.ch/work/t/toprice/private/FCC/FCCSW/batch/XYZ/50Layers_2.1mmW_1mmAir_50umPixels_18umThick_FCCSW0.8pre/500GeV_BFIELD4T_ETAMIN-0.001_ETAMAX0.001/output_500GeV_BFIELD4T.root"
+batch_dir = "/eos/user/t/toprice/private/FCC/FCCSW/v8.0/XYZ/"
+fccsw_version = "FCCSW0.8"
+det_config = "50Layers_2.1mmW_50umPixels_18umThick_TRKR0.3X0"
+run_config = "100GeV_BFIELD4T_ETAMIN-0.001_ETAMAX0.001"
+file = "output_100GeV_BFIELD4T_0.root"
+inputfile = batch_dir+"/"+det_config+"_"+fccsw_version+"/"+run_config+"/"+file
 podiosvc   = FCCDataSvc("EventDataSvc", input=inputfile)
 
 
@@ -26,7 +31,7 @@ hist = DECalLongitudinalTest("hists",
                                  OutputLevel = DEBUG)
 hist.deposits.Path="positionedCaloHits"
 
-THistSvc().Output = ["rec DATAFILE='hist_test.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"_"+fccsw_version+"/"+run_config+"/hist_test.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=False

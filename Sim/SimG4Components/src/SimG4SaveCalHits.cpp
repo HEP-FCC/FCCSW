@@ -69,6 +69,13 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
           auto edmHit = edmHits->create();
           auto& edmHitCore = edmHit.core();
           edmHitCore.cellId = hit->cellID;
+          // added by Tony Price for timing
+          auto contributions = hit->truth;
+          if(contributions.size()>0) {
+            // for now just get the first entry
+            // for DECAL SD this is overwritten with particles per pixel
+            edmHitCore.time = hit->truth[0].time; 
+          }
           edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
           auto position = fcc::Point();
           position.x = hit->position.x() * sim::g42edm::length;

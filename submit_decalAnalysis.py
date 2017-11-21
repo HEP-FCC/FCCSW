@@ -9,19 +9,11 @@ print 'START'
 print   
 ########   YOU ONLY NEED TO FILL THE AREA BELOW   #########
 ########   customization  area #########
-CONFIG="50Layers_2.1mmW_50umPixels_18umThick"
+CONFIG="50Layers_2.1mmW"
 FCCSW_VERSION="FCCSW0.8"
-ENERGIES = ["0"]#"10","20","50","100","200","300","400","500","1000"]
-#ENERGIES = ["200","300","400","500","1000" ] # number of jobs to be submitted
-#ENERGIES = ["30","40","60","70","80","90"] # number of jobs to be submitted
-#ENERGIES = ["1000" ] # number of jobs to be submitted
 BFIELD = "4"
-EVENTS = 10000
-ETAMIN = -0.001
-ETAMAX = 0.001
-NRUNS = 400
 FCCSW_DIR = "/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/"
-queue = "8nh"
+queue = "1nh"
 ########   customization end   #########
 
 path = os.getcwd()
@@ -29,20 +21,20 @@ path = os.getcwd()
 ##### loop for creating and sending jobs #####
 #e = 100
 CONFIGS = os.listdir(FCCSW_DIR+"/batch_eos/")
-CONFIGS = [ c for c in CONFIGS if CONFIG in c ]
+CONFIGS = [ c for c in CONFIGS if CONFIG in c and "300" not in c and "Pixels" not in c]
 #for e in ENERGIES:
 for CONFIG in CONFIGS:
    print CONFIG
-   for e in ENERGIES:
+   for RUNCONFIG in os.listdir(FCCSW_DIR+"/batch_eos/"+CONFIG):
      ##### creates directory and file list for job #######
-     RUNCONFIG=str(e)+"GeV_BFIELD"+str(BFIELD)+"T_ETAMIN"+str(ETAMIN)+"_ETAMAX"+str(ETAMAX)
+     #RUNCONFIG=str(e)+"GeV_BFIELD"+str(BFIELD)+"T_ETAMIN"+str(ETAMIN)+"_ETAMAX"+str(ETAMAX)
    #  dir="batch_eos/"+CONFIG+"_"+FCCSW_VERSION+"/"+RUNCONFIG
      dir="batch_eos/"+CONFIG+"/"+RUNCONFIG
      print dir
 
      if os.path.isdir(dir):
 
-       files = [ f for f in os.listdir(dir) if "output" in f and "500" in f] 
+       files = [ f for f in os.listdir(dir) if "output" in f] 
        print files
 
        os.chdir(dir)
@@ -61,6 +53,7 @@ for CONFIG in CONFIGS:
           N = f[f.find("4T")+3:f.find(".root")]
           if len(N) == 0:
             N = 0
+            continue
           print f
           
           with open('analyse'+str(N)+'.sh', 'w') as fout:

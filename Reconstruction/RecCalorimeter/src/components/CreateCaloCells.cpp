@@ -76,7 +76,7 @@ StatusCode CreateCaloCells::execute() {
   // If running with noise map already was prepared. Otherwise it is being
   // created below
   for (const auto& hit : *hits) {
-    m_cellsMap[hit.core().cellId] += hit.core().energy;
+    m_cellsMap[hit.core().cellId] += 1;//hit.core().energy;
   }
   debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;
 

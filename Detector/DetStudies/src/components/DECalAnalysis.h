@@ -10,6 +10,7 @@
 #include "TH2F.h"
 #include "TTree.h"
 #include "TF1.h"
+#include "TProfile.h"
 
 class IGeoSvc;
 
@@ -98,20 +99,31 @@ private:
   TH2F* m_EtaPhiEvent0;
   TH1F* m_EtaPhiSeparation; 
 
+  TProfile* m_particlesPerPixel;
+
   // Histogram of the number of hits in the layer with most hits
   TH1F* m_hitsInMaxLayer;
   // Histogram of the layer with maximum hits
   TH1F* m_maxLayer;
+
+  // calibration factors to compensate non linearity
+  float m_calP0, m_calP1, m_calP2;
+  TF1* m_calFit;
 
   TTree* m_treeInfo;
   int m_treeEvtNumber;
 
   int m_nEventsFilled;
   int m_truthEnergy;
+  float m_calPixels;
   int m_sumPixels;
   std::vector<int> m_sumPixelsLayers;
+  std::vector<float> m_sumParticlesLayers;
   int m_sumPads;
   std::vector<int> m_sumPadsLayers;
+
+  float m_sumEnergyDep;
+  float m_sumParticles;
 
   std::vector<double> m_meanEta;
   std::vector<double> m_meanPhi;

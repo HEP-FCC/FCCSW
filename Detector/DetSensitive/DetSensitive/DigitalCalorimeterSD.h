@@ -3,7 +3,8 @@
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
-#include "DDSegmentation/Segmentation.h"
+//#include "DDSegmentation/Segmentation.h"
+#include "DD4hep/objects/SegmentationsInterna.h"
 
 // Geant
 #include "G4VSensitiveDetector.hh"
@@ -186,6 +187,7 @@ private:
   std::ofstream m_padMultiplicityFile;
 
   bool m_headerPrinted;
+  bool m_countParticlesPerPixel;
   int m_incidentParticles;
 
   std::map<uint64_t, int> m_CellIDsMaskedFromPreviousEvent;

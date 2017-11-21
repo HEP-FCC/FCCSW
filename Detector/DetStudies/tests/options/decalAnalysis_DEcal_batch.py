@@ -56,6 +56,7 @@ hist.pads.Path="newCaloCells"
 hist.truth.Path="GenParticles"
 
 
+
 #THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"_"+fccsw_version+"/"+run_config+"/<OUTPUT>' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"/"+run_config+"/analysis_"+file+"' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=False
@@ -77,7 +78,7 @@ podioout.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [podioinput, resegment, createcells,hist],# podioout],
+ApplicationMgr( TopAlg = [podioinput, resegment, createcells, hist, podioout],
                 EvtSel = 'NONE',
                # EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc

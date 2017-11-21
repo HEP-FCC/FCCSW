@@ -31,6 +31,11 @@ DECalAnalysis::DECalAnalysis(const std::string& aName, ISvcLocator* aSvcLoc)
   declareProperty("pixels", m_deposits, "Energy deposits in sampling calorimeter (input)");
   declareProperty("pads", m_pads, "Energy deposits in Pad mode (input)");
   declareProperty("truth", m_truth, "Generated particle truth");
+
+  m_calP0 = 239.74;
+  m_calP1 = 99.1602;
+  m_calP2 = -0.0143;
+
 }
 DECalAnalysis::~DECalAnalysis() {}
 
@@ -46,17 +51,24 @@ StatusCode DECalAnalysis::initialize() {
   
   m_sumPixelsLayers.assign(m_numLayers+1,0);
   m_sumPadsLayers.assign(m_numLayers+1,0);
+  m_sumParticlesLayers.assign(m_numLayers+1,0);
 
   m_treeInfo = new TTree("decal_info", "for Kostas");
   m_treeInfo->Branch("event_number", &m_treeEvtNumber);
   m_treeInfo->Branch("truth_energy", &m_truthEnergy);
+  m_treeInfo->Branch("edep_tot", &m_sumEnergyDep);
+  m_treeInfo->Branch("pixels_cal", &m_calPixels);
   m_treeInfo->Branch("pixels_tot", &m_sumPixels);
+  m_treeInfo->Branch("particles_tot", &m_sumParticles);
   for(uint l(0); l<m_numLayers+1; l++) {
     m_treeInfo->Branch(Form("pixels_l%i", l), &m_sumPixelsLayers[l]);
   }
   m_treeInfo->Branch("pads_tot", &m_sumPads);
   for(uint l(0); l<m_numLayers+1; l++) {
     m_treeInfo->Branch(Form("pads_l%i", l), &m_sumPadsLayers[l]);
+  }
+  for(uint l(0); l<m_numLayers+1; l++) {
+    m_treeInfo->Branch(Form("particles_l%i", l), &m_sumParticlesLayers[l]);
   }
  /* m_treeInfo->Branch("fit_E0", &m_fitE0);
   m_treeInfo->Branch("fit_a", &m_fita);
@@ -69,6 +81,13 @@ StatusCode DECalAnalysis::initialize() {
 	return StatusCode::FAILURE;
   }
   // create histograms
+  m_particlesPerPixel = new TProfile("decal_ParticlesPerPixel", "Particles Per Pixels; Layer Number; Particles / Pixel", m_numLayers+1, -0.5, m_numLayers+0.5);
+  if (m_histSvc->regHist("/rec/profile_test", m_particlesPerPixel).isFailure()) {
+    error() << "Couldn't register histogram" << endmsg;
+    return StatusCode::FAILURE;
+  }
+
+
   m_totalHits = new TH1F("decal_totalHits", "Total hits in an event", 15000, 0, 150000);
   if (m_histSvc->regHist("/rec/decal_hits", m_totalHits).isFailure()) {
     error() << "Couldn't register histogram" << endmsg;
@@ -167,6 +186,11 @@ StatusCode DECalAnalysis::initialize() {
 
   m_nEventsFilled = 0;
 
+  m_calFit = new TF1("calFit", "pol2", 0,3000);
+  m_calFit->SetParameter("p0", m_calP0);
+  m_calFit->SetParameter("p1", m_calP1);
+  m_calFit->SetParameter("p2", m_calP2);
+
 /*  m_fitLongProfile = new TF1("longEnergyDepFit",FitLongProfile , 0.5, 50.0, 3);
 	m_fitLongProfile->SetParameter(0, 3);
   m_fitLongProfile->SetParName(0, "E_0");
@@ -206,26 +230,49 @@ StatusCode DECalAnalysis::execute() {
 
   // set some variables to hold information for an event
   m_sumPixels = 0.;
+  m_sumParticles = 0.;
   m_sumPixelsLayers.assign(m_numLayers+1, 0);
+  m_sumParticlesLayers.assign(m_numLayers+1, 0);
   m_meanEta.assign(m_numLayers+1, 0);
   m_meanPhi.assign(m_numLayers+1, 0);
+
+  m_sumEnergyDep = 0;
 
   bool fillXY = true;
   if (m_XYEvent0->GetEntries()>0) {
     fillXY = false;
   }
 
+  int isdigital = 0, notdigital = 0;
+
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
     decoder->setValue(hit.core().cellId);
+    int digital = (*decoder)["digital"];
+    if(digital==1) {
+      isdigital++;
+    }
+    if(digital==0) {
+      notdigital++;
+      continue;
+    }
+//    std::cout << digital << std::endl;
     int layer = (*decoder)[m_layerFieldName];
     m_sumPixelsLayers[layer] += 1;
+    
     // check if energy was deposited in the calorimeter (active/passive material)
     // layers are numbered starting from 1, layer == 0 is cryostat/bath
     if (layer > 0) {
       m_sumPixels++;
-      decoder->setValue(hit.core().cellId);     
-     
+      decoder->setValue(hit.core().cellId);  
+      int layer = (*decoder)[m_layerFieldName];
+      // get the energy deposited in the active area
+      double edep = hit.core().energy;
+      m_sumEnergyDep += edep;
+      double particles = hit.core().time; // I overwrite now the time for number of particles
+      m_sumParticles += particles;
+      m_sumParticlesLayers[layer] += particles; // call this particles for DEcal as changed SD readout to pass nparticles / pixel not enerrgy dep / pixel 
+      m_particlesPerPixel->Fill(layer, particles);
       // calculate eta and phi
       double r = TMath::Sqrt(hit.position().x*hit.position().x + hit.position().y*hit.position().y + hit.position().z*hit.position().z);
       double theta = TMath::ACos(hit.position().z/r);
@@ -237,6 +284,12 @@ StatusCode DECalAnalysis::execute() {
       
     }
   }
+
+  std::cout << "isdigital = " << isdigital << std::endl;
+  std::cout << "notdigital = " << notdigital << std::endl;
+/*
+  m_calPixels = m_calFit->GetX(m_sumPixels);
+  //std::cout << "#### " << m_sumPixels << " " << m_calPixels << std::endl;
 
   // loop through eta and phi and calculate the mean
   for(uint l(1); l<m_numLayers+1; l++) {
@@ -283,7 +336,7 @@ StatusCode DECalAnalysis::execute() {
     m_fwhm = half_highx-half_lowx;
     m_rising50->Fill(half_lowx);
     m_rising80->Fill(->GetX(fitMax*0.8, 0, m_fitLongProfile->GetX(fitMax)));
-  }*/
+  }
 
   // Fill histograms
   m_totalHits->Fill(m_sumPixels);
@@ -330,7 +383,7 @@ StatusCode DECalAnalysis::execute() {
 
   m_totalPads->Fill(m_sumPads);
   m_totalPadsAbovePixelThreshold->Fill(totalPadsAbovePixelThreshold);
-
+*/
   if(m_sumPixels>0 || m_sumPads>0) {
     m_treeInfo->Fill();
   }

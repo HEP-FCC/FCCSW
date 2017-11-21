@@ -1,18 +1,23 @@
-from ROOT import TH1F, TTree, TChain, TFile
+from ROOT import TH1F, TTree, TChain, TFile, TGraphErrors, TF1
+import numpy as np
 import os
+from array import array
 
 FCCSW_DIR = "/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/"
 ETAMIN = -0.001
 ETAMAX = 0.001
 
-CONFIGS = [ c for c in os.listdir(FCCSW_DIR+"/batch_eos/") if "50Layers_2.1mmW_50umPixels_18umThick" in c]
+CONFIGS = [ c for c in os.listdir(FCCSW_DIR+"/batch_eos/") if "50Layers_2.1mmW" in c and "Pixels" not in c]
 print CONFIGS
+
+PIXELS = {}
+PIXELS_SIGMA = {}
 
 for CONFIG in CONFIGS:
    print CONFIG
  
    RUNCONFIGS = [ e for e in os.listdir(FCCSW_DIR+"/batch_eos/"+CONFIG)  ]
-   for RUNCONFIG in RUNCONFIGS[1:]:
+   for RUNCONFIG in RUNCONFIGS:
      #print "\t",RUNCONFIG
 
      dir="batch_eos/"+CONFIG+"/"+RUNCONFIG+"/"
@@ -40,4 +45,16 @@ for CONFIG in CONFIGS:
      sigma = temp_hist.GetRMS()
      if mean > 0:
        print energy, mean, sigma, sigma/mean
+       PIXELS[str(energy)] = mean
+       PIXELS_SIGMA[str(energy)] = sigma / np.sqrt(chain.GetEntries())
 
+print PIXELS
+lin_plot = TGraphErrors(len(PIXELS),   array("d",[float(x) for x in PIXELS.keys()]),  
+                                      array("d",[float(y) for y in PIXELS.values()]), 
+                                      array("d",[float(0.1) for xe in PIXELS.keys()]),
+                                      array("d",[float(ye) for ye in PIXELS_SIGMA.values()]))
+
+fit = TF1("fit", "pol2", 0, 1000)
+lin_plot.Fit(fit)
+lin_plot.Draw("ape")
+closeInput = raw_input("Press ENTER to exit") 
