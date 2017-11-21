@@ -145,17 +145,21 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   disc_det.setPlacement(placedDiscVolume);
   }
 
-  // top of the hierarchy
-  Volume motherVol = lcdd.pickMotherVolume(worldDetElement);
+  DD4hep::Geometry::Assembly bothEndcaps("bothEndcapsEnvelope");
+
+
   DD4hep::Geometry::Translation3D envelopeTranslation(0, 0, dimensions.zmin() + envelopeThickness);
-  double envelopeNegRotAngle = 0;
-  if (dimensions.reflect()) {
-    envelopeNegRotAngle = dd4hep::pi;
-  }
-  DD4hep::Geometry::RotationX envelopeNegRotation(envelopeNegRotAngle);
-  PlacedVolume placedEnvelopeVolume = motherVol.placeVolume(envelopeVolume, envelopeNegRotation * envelopeTranslation);
-  placedEnvelopeVolume.addPhysVolID("system", xmlDet.id());
-  worldDetElement.setPlacement(placedEnvelopeVolume);
+
+  DD4hep::Geometry::RotationX envelopeNegRotation(dd4hep::pi);
+  DD4hep::Geometry::RotationX envelopePosRotation(0.);
+  PlacedVolume placedEnvelopeVolume = bothEndcaps.placeVolume(envelopeVolume, envelopePosRotation * envelopeTranslation);
+  PlacedVolume placedNegEnvelopeVolume = bothEndcaps.placeVolume(envelopeVolume, envelopeNegRotation * envelopeTranslation);
+  placedEnvelopeVolume.addPhysVolID("posneg", 0);
+  placedNegEnvelopeVolume.addPhysVolID("posneg", 1);
+  // top of the hierarchy
+  PlacedVolume  mplv = lcdd.pickMotherVolume(worldDetElement).placeVolume(bothEndcaps);
+  worldDetElement.setPlacement(mplv);
+  mplv.addPhysVolID("system", xmlDet.id());
   return worldDetElement;
 }
 }  // namespace det

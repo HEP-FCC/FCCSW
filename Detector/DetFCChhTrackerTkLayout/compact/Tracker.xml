@@ -10,7 +10,7 @@
         </readout>
         <readout name="TrackerEndcapReadout">
             <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
-            <id>system:5,disc:5,component:18,x:-15,z:-15</id>
+            <id>system:5,posneg:1,disc:5,component:17,x:-15,z:-15</id>
         </readout>
     </readouts>
     <include ref="FCChh_v3.03_Definitions.xml"/>
