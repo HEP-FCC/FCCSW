@@ -1,5 +1,5 @@
 #include "PapasMergeClustersTool.h"
-
+// PAPAS
 #include "papas/graphtools/EventRuler.h"
 #include "papas/reconstruction/MergeClusters.h"
 
@@ -25,8 +25,8 @@ StatusCode PapasMergeClustersTool::clear() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PapasMergeClustersTool::run(papas::Event& pevent) {
-
+StatusCode PapasMergeClustersTool::run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) {
+  (void)spDetector;
   auto history = papas::Nodes();
   auto ruler = papas::EventRuler(pevent);
   papas::mergeClusters(pevent, m_typeSubtype, ruler, m_merged_clusters, history);

@@ -6,7 +6,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "SimPapas/IPapasTool.h"
-// papas
+// PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
 #include "papas/datatypes/Event.h"
 
@@ -16,9 +16,10 @@ class MCParticleCollection;
 
 /** @class PapasSimulatorTool Sim/SimPapas/src/PapasSimulatorTool.h PapasSimulatorTool.h
  *
- *  Runs the papas simulation algorithm. This creates a list of particles from Pythia generated particles.
- *  It then creates particle flow simulated and true and smeared clusters and tracks. All of these
- *  collections are appended to the papasevent.
+ *  Runs the papas simulation algorithm. This takes a collection of papas simulated particles
+ *  and simulates the interaction of these particles in the detector to produce true and smeared
+ *  clusters and tracks, that will be used in the particle flow reconstruction.
+ *  The collections of true and smeared clusters and tracks will be appended to the papasevent.
  *  @author A.J. Robson
  */
 
@@ -29,12 +30,10 @@ public:
   virtual ~PapasSimulatorTool();
   /// Initialize.
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// empty class structures
   virtual StatusCode clear();
   /// Execute the papas tool.
-  virtual StatusCode run(papas::Event& papas) final;
+  virtual StatusCode run(papas::Event& papas, std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 
