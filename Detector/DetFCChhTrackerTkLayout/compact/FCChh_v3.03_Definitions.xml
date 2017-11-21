@@ -1,6 +1,6 @@
 <detectors>
     <detector name="InnerBRL_0" id="BarTrackerInner_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
-        <dimensions rmin="23.283*mm" rmax="152.256*mm" zmin="-820.000*mm" zmax="820.000*mm"/>
+        <dimensions rmin="23.283*mm" rmax="409.734*mm" zmin="-820.000*mm" zmax="820.000*mm"/>
         <sensitive type="SimpleTrackerSD"/>
         <layers repeat="4">
             <layer id="1" radius="25.000*mm" rmin="23.283*mm" rmax="27.473*mm" bigDelta="1.000*mm" phi0="1.570796*rad">
@@ -419,12 +419,6 @@
                     </rodEven>
                 </rods>
             </layer>
-        </layers>
-    </detector>
-    <detector name="InnerBRL_1" id="BarTrackerInner_id + 16" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
-        <dimensions rmin="261.066*mm" rmax="409.734*mm" zmin="-820.000*mm" zmax="820.000*mm"/>
-        <sensitive type="SimpleTrackerSD"/>
-        <layers repeat="2">
             <layer id="1" radius="270.000*mm" rmin="261.066*mm" rmax="280.106*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
                 <rods repeat="34" smallDelta="2.500*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="17">
                     <rodOdd id="1">
@@ -1724,8 +1718,8 @@
             </discZPls>
         </discs>
     </detector>
-    <detector name="FwdIECAPpos" id="29" type="TkLayoutConicalEcapTracker" readout="TrackerEndcapReadout">
-        <dimensions rmin="25.000*mm" rmax="1321.527*mm" zmin="6241.066*mm" zmax="8759.293*mm" reflect="false"/>
+    <detector name="FwdIECAPpos" id="29" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
+        <dimensions rmin="25.000*mm" rmax="1550.163*mm" zmin="6241.066*mm" zmax="16009.294*mm" reflect="false"/>
         <sensitive type="SimpleTrackerSD"/>
         <discs repeat="6">
             <discZPls id="1" z="6250.000*mm" zmin="6241.066*mm" zmax="6258.934*mm" rmin="25.000*mm" rmax="918.570*mm" bigDelta="5.000*mm">
@@ -2301,12 +2295,6 @@
                     </ring>
                 </rings>
             </discZPls>
-        </discs>
-    </detector>
-    <detector name="FwdECAPpos" id="27" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
-        <dimensions rmin="49.500*mm" rmax="1550.163*mm" zmin="9990.707*mm" zmax="16009.294*mm" reflect="false"/>
-        <sensitive type="SimpleTrackerSD"/>
-        <discs repeat="12">
             <discZPls id="1" z="10000.000*mm" zmin="9990.707*mm" zmax="10009.293*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
                 <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
                     <ring id="1" phi0="0.000000*rad" nModules="12">
@@ -2567,19 +2555,24 @@
                 </rings>
             </discZPls>
             <discZPls id="2" z="10985.605*mm" zmin="10976.312*mm" zmax="10994.899*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
-                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm"/>
+                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
+                </rings>
             </discZPls>
             <discZPls id="3" z="12068.353*mm" zmin="12059.059*mm" zmax="12077.646*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
-                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm"/>
+                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
+                </rings>
             </discZPls>
             <discZPls id="4" z="13257.816*mm" zmin="13248.523*mm" zmax="13267.110*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
-                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm"/>
+                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
+                </rings>
             </discZPls>
             <discZPls id="5" z="14564.514*mm" zmin="14555.220*mm" zmax="14573.807*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
-                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm"/>
+                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
+                </rings>
             </discZPls>
             <discZPls id="6" z="16000.000*mm" zmin="15990.707*mm" zmax="16009.294*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
-                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm"/>
+                <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
+                </rings>
             </discZPls>
         </discs>
     </detector>
