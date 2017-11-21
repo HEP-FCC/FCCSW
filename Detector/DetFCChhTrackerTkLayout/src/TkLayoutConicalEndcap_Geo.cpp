@@ -160,6 +160,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerConicalEndcap(DD4hep::Geomet
   PlacedVolume  mplv = lcdd.pickMotherVolume(worldDetElement).placeVolume(bothEndcaps);
   worldDetElement.setPlacement(mplv);
   mplv.addPhysVolID("system", xmlDet.id());
+  woldDetElement.setType("compound");
   return worldDetElement;
 
 }
