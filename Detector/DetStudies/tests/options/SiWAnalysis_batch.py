@@ -31,6 +31,10 @@ resegment = RedoSegmentation("ReSegmentation",
                              oldSegmentationIds = ["x","y","z"],
                              # new bitfield (readout), with new segmentation
                              newReadoutName="BarDECal_Pads",
+                             # field in the segmentation that holds digital readout information ("") = default
+                             digitalBitName="digital",
+                             # split on the digital field. 0 = analogue, 1 = digital
+                             digitalFlag=0,
                              OutputLevel = INFO)
 # clusters are needed, with deposit position and cellID in bits
 resegment.inhits.Path = "positionedCaloHits"

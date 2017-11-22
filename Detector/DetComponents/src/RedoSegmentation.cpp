@@ -17,6 +17,7 @@ DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
 RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection with old segmentation (input)");
   declareProperty("outhits", m_outHits, "Hit collection with modified segmentation (output)");
+  
 }
 
 RedoSegmentation::~RedoSegmentation() {}
@@ -84,11 +85,26 @@ StatusCode RedoSegmentation::execute() {
   // cellID contains the volumeID that needs to be copied to the new id
   uint64_t oldid = 0;
   uint debugIter = 0;
+  
   for (const auto& hit : *inHits) {
+    
+// By Tony 22/11/2017
+    // move the Decoder early on so could separate digital flag from SiW Calo work.
+    // if it doesnt match the type we want then it continues
+    m_oldDecoder->setValue(hit.cellId());
+    // if the string is empty (default value) ignore this to ensure any segmentation without "digital" field still works
+    if(m_digitalBitName != "") {
+      int digital = (*m_oldDecoder)[m_digitalBitName];
+      // if the digital flag does not match the equest in digitalType then continue
+      if(digital != m_digitalFlag) {
+        continue;
+      }
+    }
+
     fcc::CaloHit newHit = outHits->create();
     newHit.energy(hit.energy());
     newHit.time(hit.time());
-    m_oldDecoder->setValue(hit.cellId());
+    
     if (debugIter < m_debugPrint) {
       debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
     }

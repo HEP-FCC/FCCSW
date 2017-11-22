@@ -9,7 +9,7 @@ print 'START'
 print   
 ########   YOU ONLY NEED TO FILL THE AREA BELOW   #########
 ########   customization  area #########
-CONFIG="50Layers_3.4mmPb_450um"
+CONFIG="50Layers_2.1mmW_450um"
 FCCSW_VERSION="FCCSW0.8"
 BFIELD = "4"
 FCCSW_DIR = "/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/"
