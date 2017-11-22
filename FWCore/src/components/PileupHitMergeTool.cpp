@@ -82,11 +82,15 @@ StatusCode PileupHitMergeTool<Hits, PositionedHits>::mergeCollections() {
   Hits* collHitsMerged = new Hits();
   PositionedHits* collPosHitsMerged = new PositionedHits();
 
+  unsigned int collectionCounter = 0;
   for (auto hitColl : m_hitCollections) {
     // copy hits
     for (const auto elem : *hitColl) {
+      auto clon = elem.clone()
+      clon.bits += collectionCounter * 2 << 32; // add pileup vertex counter with an offset
       collHitsMerged->push_back(elem.clone());
     }
+    ++collectionCounter;
   }
   for (auto posHitColl : m_posHitCollections) {
     // copy positioned hits
