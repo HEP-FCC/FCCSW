@@ -86,9 +86,9 @@ StatusCode PileupHitMergeTool<Hits, PositionedHits>::mergeCollections() {
   for (auto hitColl : m_hitCollections) {
     // copy hits
     for (const auto elem : *hitColl) {
-      auto clon = elem.clone()
-      clon.bits += collectionCounter * 2 << 32; // add pileup vertex counter with an offset
-      collHitsMerged->push_back(elem.clone());
+      auto clon = elem.clone();
+      clon.bits(clon.bits() + collectionCounter * (2 << 20)); // add pileup vertex counter with an offset
+      collHitsMerged->push_back(clon);
     }
     ++collectionCounter;
   }
