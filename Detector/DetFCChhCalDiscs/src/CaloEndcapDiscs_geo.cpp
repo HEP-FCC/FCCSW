@@ -54,8 +54,6 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
        << "\nThickness of absorber discs (cm) = " << passiveThickness
        << "\nThickness of readout disc placed in between absorber plates (cm) = " << readoutThickness
        << "\nNumber of absorber/readout discs: " << numDiscs
-    // + 1 to add the first active layer in between the first readout disc and the first absorber
-       << "\nNumber of active layers: " << numDiscs + 1
        << "\nMargin outside first readout disc and last absorber disc, filled with non-sensitive active medium (cm) = "
        << marginOutside << endmsg;
   lLog << MSG::INFO << "Detector length: (cm) " << length << endmsg;
