@@ -40,9 +40,7 @@ StatusCode HepMCToEDMConverter::execute() {
   for (auto particle_i = event->particles_begin(); particle_i != event->particles_end(); ++particle_i) {
 
     // if there is a list of statuses to filter: filter by status
-    if (m_hepmcStatusList.size() > 0) {
-      if(std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) != m_hepmcStatusList.end()) continue;
-    }
+    if(std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) == m_hepmcStatusList.end() && m_hepmcStatusList.size() > 0) continue;
     // create edm 
     fcc::MCParticle particle = particles->create();
     // set mcparticle data members
@@ -99,7 +97,7 @@ StatusCode HepMCToEDMConverter::execute() {
       }
     }
 
-  } // partice loop
+  } // particle loop
 
   m_genphandle.put(particles);
   m_genvhandle.put(vertices);
