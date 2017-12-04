@@ -64,6 +64,15 @@ gaudi_add_test(ExampleOptions
                FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
+gaudi_add_test(PileupOverlay
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/overlaySignalAndPileup.py
+               DEPENDS GeantFullSimTrackerHitsWithField GeantFullSimParticleGun)
+gaudi_add_test(CheckMergeCollection
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
+               DEPENDS PileupOverlay)
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile

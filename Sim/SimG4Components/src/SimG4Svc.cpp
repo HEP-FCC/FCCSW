@@ -9,6 +9,11 @@
 #include "G4UImanager.hh"
 #include "G4VModularPhysicsList.hh"
 
+#include "G4UIsession.hh"
+#include "G4UIterminal.hh"
+#include "G4VisExecutive.hh"
+#include "G4VisManager.hh"
+
 DECLARE_SERVICE_FACTORY(SimG4Svc)
 
 SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL) : base_class(aName, aSL) {
@@ -65,6 +70,15 @@ StatusCode SimG4Svc::initialize() {
   }
 
   m_runManager.Initialize();
+
+  if (m_interactiveMode) {
+    m_visManager = std::make_unique<G4VisExecutive>();
+    m_visManager->Initialize();
+
+    m_session = std::make_unique<G4UIterminal>();
+    m_session->SessionStart();
+  }
+
   // Attach user actions
   m_runManager.SetUserInitialization(m_actionsTool->userActionInitialization());
   // Create regions
@@ -79,7 +93,6 @@ StatusCode SimG4Svc::initialize() {
   for (auto& tool : m_regionTools) {
     tool->create();
   }
-
   for (auto command : m_g4PostInitCommands) {
     UImanager->ApplyCommand(command);
   }

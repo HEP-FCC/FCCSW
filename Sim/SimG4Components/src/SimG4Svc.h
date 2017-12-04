@@ -15,6 +15,11 @@
 #include "GaudiKernel/Service.h"
 #include "GaudiKernel/ToolHandle.h"
 
+#include "G4UIsession.hh"
+#include "G4UIterminal.hh"
+#include "G4VisExecutive.hh"
+#include "G4VisManager.hh"
+
 /** @class SimG4Svc SimG4Components/SimG4Components/SimG4Svc.h SimG4Svc.h
  *
  *  Main Geant simulation service.
@@ -84,8 +89,14 @@ private:
   /// Flag whether random numbers seeds should be taken from Gaudi (default: true)
   Gaudi::Property<bool> m_rndmFromGaudi{this, "randomNumbersFromGaudi", true, "Whether random numbers should be taken from Gaudi"};
 
+  Gaudi::Property<bool> m_interactiveMode{this, "InteractiveMode", false, "Enter the interactive mode"};
+
   /// Run Manager
   sim::RunManager m_runManager;
+
+  std::unique_ptr<G4VisManager> m_visManager{nullptr};
+  // Define UI terminal for interactive mode
+  std::unique_ptr<G4UIsession> m_session{nullptr};
 };
 
 #endif /* SIMG4COMPONENTS_G4SIMSVC_H */
