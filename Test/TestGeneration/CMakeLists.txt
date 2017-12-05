@@ -27,5 +27,5 @@ gaudi_add_test(HepMCGraphCheck
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python Test/TestGeneration/tests/scripts/check_particle_graph.py
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS TestGeneration.HepMCGraphProducer
+               DEPENDS HepMCGraphProducer
                )
