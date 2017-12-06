@@ -1,6 +1,7 @@
 #include "SimG4Svc.h"
 
 // Gaudi
+#include "GaudiKernel/IRndmEngine.h"
 #include "GaudiKernel/IToolSvc.h"
 
 // Geant
@@ -33,6 +34,11 @@ StatusCode SimG4Svc::initialize() {
   m_toolSvc = service("ToolSvc");
   if (!m_toolSvc) {
     error() << "Unable to locate Tool Service" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  m_randSvc = service("RndmGenSvc");
+  if (!m_randSvc) {
+    error() << "Unable to locate RndmGen Service" << endmsg;
     return StatusCode::FAILURE;
   }
   if (!m_detectorTool.retrieve()) {
@@ -90,6 +96,16 @@ StatusCode SimG4Svc::initialize() {
   for (auto command : m_g4PostInitCommands) {
     UImanager->ApplyCommand(command);
   }
+
+  // configure the random service
+  if (m_rndmFromGaudi) {
+    std::vector<long> seedsVec;
+    m_randSvc->engine()->seeds(seedsVec);
+    long seedsList[] = {seedsVec[0], seedsVec[1]};
+    CLHEP::HepRandom::setTheSeeds(seedsList);
+  }
+  info() << "Random numbers seeds: " << CLHEP::HepRandom::getTheSeeds()[0] << "\t" << CLHEP::HepRandom::getTheSeeds()[1]
+         << endmsg;
 
   if (!m_runManager.start()) {
     error() << "Unable to initialize GEANT correctly." << endmsg;
