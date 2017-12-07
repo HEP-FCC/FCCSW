@@ -103,12 +103,8 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
     DD4hep::Geometry::Volume passiveVol("passive", passiveShape, aLcdd.material(passiveMaterial));
     activeVol.setSensitiveDetector(sensDet);
     if (readout.isSensitive()) {
-      lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
+      lLog << MSG::DEBUG << "Readout volume set as sensitive" << endmsg;
       readoutVol.setSensitiveDetector(aSensDet);
-    }
-    if (passive.isSensitive()) {
-      lLog << MSG::DEBUG << "Passive volume set as sensitive" << endmsg;
-      passiveVol.setSensitiveDetector(aSensDet);
     }
     // absorber may consist of inner and outer material
     if (passiveInnerThickness < passiveThickness) {
@@ -150,6 +146,10 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
       passiveGluePhysVolBelow.addPhysVolID("subtype", 3);
       passiveGluePhysVolAbove.addPhysVolID("subtype", 4);
     }
+    else if (passive.isSensitive()) {
+        lLog << MSG::INFO << "Passive volume set as sensitive" << endmsg;
+        passiveVol.setSensitiveDetector(aSensDet);
+    }
     DD4hep::Geometry::PlacedVolume passivePhysVol =
         aEnvelope.placeVolume(passiveVol, DD4hep::Geometry::Position(0, 0, zOffset));
     passivePhysVol.addPhysVolID("layer", iDiscs);
@@ -174,12 +174,12 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
       DD4hep::Geometry::PlacedVolume passivePhysVolPost =
           aEnvelope.placeVolume(passiveVol, DD4hep::Geometry::Position(0, 0, zOffset));
       passivePhysVolPost.addPhysVolID("layer", iDiscs + 1);
-      passivePhysVolPost.addPhysVolID("type", 2);  // 0 = active, 1 = passive, 2 = readout
+      passivePhysVolPost.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
       lLog << MSG::DEBUG << "Placing last passive disc at z= " << zOffset << endmsg;
     }
     for (uint iActive = 0; iActive < activePhysVols.size(); iActive++) {
-      activePhysVols[iActive].addPhysVolID("layer", iActive + 1);  // +1 because first active is placed before that loop
-      activePhysVols[iActive].addPhysVolID("type", 0);             // 0 = active, 1 = passive, 2 = readout
+      activePhysVols[iActive].addPhysVolID("layer", iActive);
+      activePhysVols[iActive].addPhysVolID("type", 0);        // 0 = active, 1 = passive, 2 = readout
     }
   }
   return;
