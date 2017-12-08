@@ -135,7 +135,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
             if (xComp.isSensitive()) {
               placedComponentVolume.addPhysVolID("component", compCounter);
               componentVolume.setSensitiveDetector(sensDet);
-              DetElement moduleDetElement(discDetElementVec.back(), "posComp" + std::to_string(compCounter), compCounter);
+              DetElement moduleDetElement(discDetElementVec.back(), "comp" + std::to_string(compCounter), compCounter);
               moduleDetElement.setPlacement(placedComponentVolume);
               ++compCounter;
             }
@@ -176,7 +176,6 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   PlacedVolume mplv = lcdd.pickMotherVolume(worldDetElement).placeVolume(bothEndcaps);
   worldDetElement.setPlacement(mplv);
   mplv.addPhysVolID("system", xmlDet.id());
-  worldDetElement.setType("compound");
   return worldDetElement;
 }
 }  // namespace det
