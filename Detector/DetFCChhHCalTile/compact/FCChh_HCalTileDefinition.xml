@@ -1,4 +1,5 @@
 <detector id="BarHCal_id" name="HCalBarrel" type="CaloBarrel" readout="BarHCal_Readout" vis="hcal_envelope">
+  <sensitive type="BirksLawCalorimeterSD"/>
   <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmax" dz="BarHCal_dz"/>
   <layer_1 id="0" name="type_1" material="Air" vis="hcal_barrel_layer_vis">
     <dimensions

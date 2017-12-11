@@ -59,6 +59,8 @@ private:
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
   /// Number of layers/cells
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers"};
+  /// Id of the first layer
+  Gaudi::Property<uint> m_firstLayerId{this, "firstLayerId", 0, "ID of first layer"};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   // Maximum energy for the axis range
