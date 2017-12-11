@@ -29,10 +29,10 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   DetElement worldDetElement(detName, xmlDet.id());
   DetElement posEcapDetElement(worldDetElement, "posEndcap", 0);
 
-  Acts::ActsExtension::Config actsBarrelConfig;
-  actsBarrelConfig.isEndcap = true;
-  Acts::ActsExtension* worldDetExt = new Acts::ActsExtension(actsBarrelConfig);
-  worldDetElement.addExtension<Acts::IActsExtension>(worldDetExt);
+  Acts::ActsExtension::Config actsEcapConfig;
+  actsEcapConfig.isEndcap = true;
+  Acts::ActsExtension* ecapDetExt = new Acts::ActsExtension(actsEcapConfig);
+  posEcapDetElement.addExtension<Acts::IActsExtension>(ecapDetExt);
 
 
   DD4hep::Geometry::Assembly envelopeVolume("endcapEnvelope");
