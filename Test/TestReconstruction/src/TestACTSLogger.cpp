@@ -24,10 +24,9 @@ StatusCode TestACTSLogger::initialize() {
         = Acts::getDefaultLogger("TestLoggerInfo", Acts::Logging::INFO);
 
           ACTS_LOCAL_LOGGER(testLoggerInfo);
-
           ACTS_INFO("TESTING INFO LOGGING LEVEL");
-          ACTS_VERBOSE("TESTING INFO DEBUG LEVEL");
-          ACTS_DEBUG("TESTING INFO VERBOSE LEVEL");
+          ACTS_VERBOSE("TESTING DEBUG LOGGING LEVEL");
+          ACTS_DEBUG("TESTING VERBOSE LOGGING LEVEL");
   }
 
   {
@@ -37,8 +36,8 @@ StatusCode TestACTSLogger::initialize() {
 
           ACTS_LOCAL_LOGGER(testLoggerVerbose);
           ACTS_INFO("TESTING INFO LOGGING LEVEL");
-          ACTS_VERBOSE("TESTING INFO DEBUG LEVEL");
-          ACTS_DEBUG("TESTING INFO VERBOSE LEVEL");
+          ACTS_VERBOSE("TESTING DEBUG LOGGING LEVEL");
+          ACTS_DEBUG("TESTING VERBOSE LOGGING LEVEL");
   }
 
 
