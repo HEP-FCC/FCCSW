@@ -10,9 +10,10 @@
 
 class GaudiFilterPolicy : public Acts::Logging::OutputFilterPolicy {
 public:
-  GaudiFilterPolicy(IMessageSvc* owner) : m_messenger(owner), m_currentLevel(m_messenger.currentLevel()) {}
+  GaudiFilterPolicy(IMessageSvc* owner) : m_owner(owner) {}
 
   bool doPrint(const Acts::Logging::Level& lvl) const {
+    
     MSG::Level l = MSG::VERBOSE;
     switch (lvl) {
     case Acts::Logging::VERBOSE:
@@ -34,18 +35,22 @@ public:
       l = MSG::FATAL;
       break;
     }
-    MSG::Level cl = m_currentLevel;
-    return l < cl;
+
+    return l >= m_owner->outputLevel();
   }
 
 private:
-  MsgStream m_messenger;
-  MSG::Level m_currentLevel;
+  IMessageSvc* m_owner;
 };
 
 class GaudiPrintPolicy : public Acts::Logging::OutputPrintPolicy {
 public:
   GaudiPrintPolicy(IMessageSvc* owner) : m_messenger(owner) {}
+
+  void setName(std::string name) {
+    m_name = name;
+
+  }
 
   void flush(const Acts::Logging::Level& lvl, const std::ostringstream& input) {
     MSG::Level l = MSG::VERBOSE;
@@ -70,11 +75,13 @@ public:
       break;
     }
 
-    m_messenger << l << input.str() << endmsg;
+    m_messenger << l << m_name << "\t" << input.str() << endmsg;
   }
 
 private:
+  IMessageSvc* m_owner;
   MsgStream m_messenger;
+  std::string m_name;
 };
 
 #endif  // RECTRACKER_ACTSLOGGER_H
