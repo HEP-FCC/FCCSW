@@ -1,5 +1,5 @@
 <detectors>
-    <detector name="InnerBRL_0" id="BarTrackerInner_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
+    <detector name="InnerBRL" id="BarTrackerInner_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
         <dimensions rmin="23.283*mm" rmax="409.734*mm" zmin="-820.000*mm" zmax="820.000*mm"/>
         <sensitive type="SimpleTrackerSD"/>
         <layers repeat="4">
@@ -557,7 +557,7 @@
             </layer>
         </layers>
     </detector>
-    <detector name="InnerECAPpos" id="EndCapTrackerInner_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
+    <detector name="InnerECAP" id="EndCapTrackerInner_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
         <dimensions rmin="25.000*mm" rmax="403.728*mm" zmin="941.066*mm" zmax="2258.934*mm" reflect="false"/>
         <sensitive type="SimpleTrackerSD"/>
         <discs repeat="10">
@@ -1421,7 +1421,7 @@
             </layer>
         </layers>
     </detector>
-    <detector name="OuterECAPpos" id="EndCapTrackerOuter_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
+    <detector name="OuterECAP" id="EndCapTrackerOuter_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
         <dimensions rmin="25.000*mm" rmax="1549.268*mm" zmin="2615.706*mm" zmax="5009.294*mm" reflect="false"/>
         <sensitive type="SimpleTrackerSD"/>
         <discs repeat="12">
@@ -1718,7 +1718,7 @@
             </discZPls>
         </discs>
     </detector>
-    <detector name="FwdIECAPpos" id="29" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
+    <detector name="FwdECAP" id="FwdTracker_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
         <dimensions rmin="25.000*mm" rmax="1550.163*mm" zmin="6241.066*mm" zmax="16009.294*mm" reflect="false"/>
         <sensitive type="SimpleTrackerSD"/>
         <discs repeat="6">
