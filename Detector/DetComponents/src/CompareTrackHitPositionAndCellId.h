@@ -15,7 +15,6 @@ class TrackHitCollection;
 class PositionedTrackHitCollection;
 }
 
-
 class CompareTrackHitPositionAndCellId : public GaudiAlgorithm {
 public:
   CompareTrackHitPositionAndCellId(const std::string& name, ISvcLocator* svcLoc);
