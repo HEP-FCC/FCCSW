@@ -1,5 +1,8 @@
 #include "CompareTrackHitPositionAndCellId.h"
 
+#include "GaudiKernel/SystemOfUnits.h"
+
+
 // FCCSW
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
@@ -56,8 +59,10 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
   const fcc::PositionedTrackHitCollection* hits = m_positionedTrackHits.get();
   double fcc_l1 = 0;
   double fcc_l2 = 0;
-  double l_tolerance = 10;
-  for (auto hit : (*hits)) {
+  // expect position from cellID to deviate at most two cell sizes from true energy deposit
+  // use largest cell for simplicity 
+  double l_tolerance = 1 * Gaudi::Units::mm;
+    for (auto hit : (*hits)) {
     long long int theCellId = hit.core().cellId;
     debug() << theCellId << endmsg;
     m_decoderBarrel->setValue(theCellId);
@@ -65,8 +70,9 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
     if (system_id == 0 || system_id == 1) {
 
       auto detelement = volman.lookupDetElement(theCellId);
+      debug() << "volIDfromDetElement: " << detelement.volumeID() << endmsg;
       const auto& transformMatrix = detelement.worldTransformation();
-      double outGlobal[3];
+      double outGlobal[3] {0,0,0};
       fcc_l1 = (*m_decoderBarrel)["x"] * l_segGridSizeXBarrel;
       fcc_l2 = (*m_decoderBarrel)["z"] * l_segGridSizeZBarrel;
       double inLocal[] = {fcc_l1, 0, fcc_l2};
@@ -84,16 +90,16 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
       debug() << endmsg;
 
       debug() << "Hit with Cell Id: " << theCellId << endmsg;
-      debug() << "position: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z
+      debug() << "PositionedHit [mm]: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z
               << endmsg;
-      debug() << "position: x: " << edmPos.x << "\t y: " << edmPos.y << "\t z: " << edmPos.z << endmsg;
+      debug() << "CellId       [mm]: x: " << edmPos.x << "\t y: " << edmPos.y << "\t z: " << edmPos.z << endmsg;
       if ((abs(edmPos.x - hit.position().x) > l_tolerance) || (abs(edmPos.y - hit.position().y) > l_tolerance) ||
           (abs(edmPos.z - hit.position().z) > l_tolerance)) {
         error() << "positionedHit and position from CellId are not compatible!" << endmsg;
         return StatusCode::FAILURE;
       }
 
-    } else if (system_id == 2 || system_id == 3 || system_id == 29) {
+    } else if (system_id == 2 || system_id == 3 || system_id == 4) {
       m_decoderEndcap->setValue(theCellId);
       int posneg_id = (*m_decoderEndcap)["posneg"];
       debug() << "\t posneg " << posneg_id;
@@ -103,8 +109,9 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
       debug() << "\t module " << module_id;
       debug() << endmsg;
       auto detelement = volman.lookupDetElement((*m_decoderEndcap).getValue());
+      debug() << "volId from Detelement: " << detelement.volumeID() << endmsg;
       const auto& transformMatrix = detelement.worldTransformation();
-      double outGlobal[3];
+      double outGlobal[3] {0, 0, 0};
       fcc_l1 = (*m_decoderEndcap)["x"] * l_segGridSizeXEndcap;
       fcc_l2 = (*m_decoderEndcap)["z"] * l_segGridSizeZEndcap;
       double inLocal[] = {fcc_l1, 0, fcc_l2};
@@ -114,12 +121,12 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
       edmPos.y = outGlobal[1] / dd4hep::mm;
       edmPos.z = outGlobal[2] / dd4hep::mm;
 
-      debug() << "position: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z
+      debug() << "Positioned Hit [mm]: x: " << hit.position().x << "\t y: " << hit.position().y << "\t z: " << hit.position().z
               << endmsg;
-      debug() << "position: x: " << edmPos.x << "\t y: " << edmPos.y << "\t z: " << edmPos.z << endmsg;
+      debug() << "CellID        [mm]: x: " << edmPos.x << "\t y: " << edmPos.y << "\t z: " << edmPos.z << endmsg;
 
       if ((abs(edmPos.x - hit.position().x) > l_tolerance) || (abs(edmPos.y - hit.position().y) > l_tolerance) ||
-          (abs(edmPos.z - hit.position().z) > l_tolerance)) {
+          (abs(edmPos.z - hit.position().z) > 1. /*mm*/)) {
         error() << "positionedHit and position from CellId are not compatible!" << endmsg;
         return StatusCode::FAILURE;
       }
