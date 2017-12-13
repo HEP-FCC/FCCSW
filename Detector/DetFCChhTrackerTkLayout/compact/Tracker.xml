@@ -26,5 +26,8 @@
             <composite name="OuterBRL"/>
             <composite name="OuterECAP"/>
         </detector>
+        <detector id="103" name="FCChhFwdEcap" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="FwdECAP"/>
+        </detector>
     </detectors>
 </lccdd>
