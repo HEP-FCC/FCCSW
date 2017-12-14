@@ -24,7 +24,7 @@
     <readout name="Muons_Readout">
       <!-- Introduce a segmentation in eta and phi -->
       <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="256"/>
-      <id>system:7,eta:9,phi:-10</id>
+      <id>${Muons_ReadoutID}</id>
     </readout>
   </readouts>
 
