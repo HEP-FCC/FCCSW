@@ -36,21 +36,20 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
   if (edep == 0.) return false;
-
+  // get track
+  const G4Track* track = aStep->GetTrack();
   // as in DD4hep::Simulation::Geant4GenericSD<Tracker>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-  CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
   DD4hep::Simulation::Position position(prePos.x(), prePos.y(), prePos.z());
-  CLHEP::Hep3Vector direction = postPos - prePos;
+  CLHEP::Hep3Vector momentum = aStep->GetPreStepPoint()->GetMomentum();
   // create a hit and add it to collection
-  const G4Track* track = aStep->GetTrack();
   // deleted in ~G4Event
   auto hit = new DD4hep::Simulation::Geant4TrackerHit(
       track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(), edep, track->GetGlobalTime());
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
   hit->position = position;
-  hit->momentum = direction;
+  hit->momentum = momentum;
   m_trackerCollection->insert(hit);
   return true;
 }

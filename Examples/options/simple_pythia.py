@@ -44,6 +44,7 @@ from Configurables import HepMCToEDMConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmcevent"
+hepmc_converter.hepmcStatusList = [] # convert particles with all statuses
 hepmc_converter.genparticles.Path="all_genparticles"
 hepmc_converter.genvertices.Path="all_genvertices"
 
