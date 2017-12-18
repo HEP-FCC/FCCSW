@@ -8,14 +8,13 @@ using DD4hep::Geometry::PlacedVolume;
 using DD4hep::Geometry::Tube;
 using DD4hep::Geometry::DetElement;
 
-
-static DD4hep::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector ) {
+static DD4hep::Ref_t create_element(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector) {
   xml_det_t x_det = e;
   std::string det_name = x_det.nameStr();
   // Make DetElement
   DetElement beamtube(det_name, x_det.id());
- Acts::ActsExtension::Config volConfig;
-  volConfig.isBeampipe           = true;
+  Acts::ActsExtension::Config volConfig;
+  volConfig.isBeampipe = true;
   Acts::ActsExtension* detvolume = new Acts::ActsExtension(volConfig);
   beamtube.addExtension<Acts::IActsExtension>(detvolume);
   DD4hep::XML::Dimension x_det_dim(x_det.dimensions());
