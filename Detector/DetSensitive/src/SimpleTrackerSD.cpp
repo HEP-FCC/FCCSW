@@ -38,8 +38,6 @@ bool SimpleTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   if (edep == 0.) return false;
   // get track
   const G4Track* track = aStep->GetTrack();
-  // check if particle is still alive - we do not want to write out a hit of a dead particle
-  if (track->GetTrackStatus() != fAlive) return false;
   // as in DD4hep::Simulation::Geant4GenericSD<Tracker>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   DD4hep::Simulation::Position position(prePos.x(), prePos.y(), prePos.z());
