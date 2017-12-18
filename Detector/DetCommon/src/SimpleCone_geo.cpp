@@ -8,7 +8,7 @@ namespace det {
   @author Clement Helsens
 **/
 static dd4hep::Ref_t
-createSimpleCone(dd4hep::Detector& lcdd, xml_h e, dd4hep::SensitiveDetector) {
+createSimpleCone(dd4hep::Detector& lcdd, xml_h e, dd4hep::SensitiveDetector sensDet) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
   dd4hep::DetElement coneDet(name, x_det.id());

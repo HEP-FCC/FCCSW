@@ -180,7 +180,7 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
                                                     aLcdd.material(passiveInnerMaterial));
       layerPassiveInnerVol.setSensitiveDetector(aSensDet);
       dd4hep::PlacedVolume layerPassiveInnerPhysVol =
-          passiveInnerVol.placeVolume(layerPassiveInnerVol, DD4hep::Geometry::Position(0, 0, layerOffset));
+          passiveInnerVol.placeVolume(layerPassiveInnerVol, dd4hep::Position(0, 0, layerOffset));
       layerPassiveInnerPhysVol.addPhysVolID("layer", iLayer);
       dd4hep::DetElement layerPassiveInnerDetElem("layer", iLayer);
       layerPassiveInnerDetElem.setPlacement(layerPassiveInnerPhysVol);
@@ -198,7 +198,7 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
                                                     aLcdd.material(passiveOuterMaterial));
       layerPassiveOuterVol.setSensitiveDetector(aSensDet);
       dd4hep::PlacedVolume layerPassiveOuterPhysVol =
-          passiveOuterVol.placeVolume(layerPassiveOuterVol, DD4hep::Geometry::Position(0, 0, layerOffset));
+          passiveOuterVol.placeVolume(layerPassiveOuterVol, dd4hep::Position(0, 0, layerOffset));
       layerPassiveOuterPhysVol.addPhysVolID("layer", iLayer);
       dd4hep::DetElement layerPassiveOuterDetElem("layer", iLayer);
       layerPassiveOuterDetElem.setPlacement(layerPassiveOuterPhysVol);
@@ -216,7 +216,7 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
                                                    aLcdd.material(passiveGlueMaterial));
       layerPassiveGlueVol.setSensitiveDetector(aSensDet);
       dd4hep::PlacedVolume layerPassiveGluePhysVol =
-          passiveGlueVol.placeVolume(layerPassiveGlueVol, DD4hep::Geometry::Position(0, 0, layerOffset));
+          passiveGlueVol.placeVolume(layerPassiveGlueVol, dd4hep::Position(0, 0, layerOffset));
       layerPassiveGluePhysVol.addPhysVolID("layer", iLayer);
       dd4hep::DetElement layerPassiveGlueDetElem("layer", iLayer);
       layerPassiveGlueDetElem.setPlacement(layerPassiveGluePhysVol);
@@ -259,7 +259,7 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
       dd4hep::Volume layerReadoutVol(readoutMaterial, layerReadoutShape, aLcdd.material(readoutMaterial));
       layerReadoutVol.setSensitiveDetector(aSensDet);
       dd4hep::PlacedVolume layerReadoutPhysVol =
-          readoutVol.placeVolume(layerReadoutVol, DD4hep::Geometry::Position(0, 0, layerOffset));
+          readoutVol.placeVolume(layerReadoutVol, dd4hep::Position(0, 0, layerOffset));
       layerReadoutPhysVol.addPhysVolID("layer", iLayer);
       dd4hep::DetElement layerReadoutDetElem("layer", iLayer);
       layerReadoutDetElem.setPlacement(layerReadoutPhysVol);
