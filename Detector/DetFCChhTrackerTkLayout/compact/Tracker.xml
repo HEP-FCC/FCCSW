@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
-    <info name="TkLayoutTracker" title="TkLayoutTracker" author="Unknown author" url="http://fcc-tklayout.web.cern.ch/fcc-tklayout" status="optimization" version="FCChh_Option3">
-        <comment>The tracker geometry as designed and optimized by tkLayout software - design version: FCChh_Option3</comment>
+    <info name="TkLayoutTracker" title="TkLayoutTracker" author="Z.Drasal" url="http://fcc-tklayout.web.cern.ch/fcc-tklayout" status="optimization" version="FCChh_v3.03">
+        <comment>The tracker geometry as designed and optimized by tkLayout software - design version: FCChh_v3.03</comment>
     </info>
     <readouts>
         <readout name="TrackerBarrelReadout">
@@ -13,7 +13,7 @@
             <id>system:5,disc:5,component:18,x:-15,z:-15</id>
         </readout>
     </readouts>
-    <include ref="FCChh_Option3_Definitions.xml"/>
+    <include ref="FCChh_v3.03_Definitions.xml"/>
     <detectors>
         <detector id="0" name="beampipe" type="BeamTube">
             <dimensions rmin="CentralBeamTube_rmin" rmax="CentralBeamTube_rmax" z="CentralBeamTube_dz" material="Beryllium" vis="violet"/>
@@ -31,6 +31,5 @@
             <composite name="OuterECAPpos"/>
             <composite name="OuterECAPneg"/>
         </detector>
-        -->
     </detectors>
 </lccdd>

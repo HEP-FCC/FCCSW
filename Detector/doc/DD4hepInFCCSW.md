@@ -448,7 +448,7 @@ The final sub-directory `DetCommon` includes descriptions and macros that should
 We provide an example configuration and plotting script for estimating the material budget as a function of eta.
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/material_scan.py
+./run fccrun.py Examples/options/material_scan.py
 ./run python Examples/scripts/material_plots.py
 ~~~
 

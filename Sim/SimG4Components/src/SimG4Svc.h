@@ -14,6 +14,11 @@
 #include "GaudiKernel/Service.h"
 #include "GaudiKernel/ToolHandle.h"
 
+#include "G4UIsession.hh"
+#include "G4UIterminal.hh"
+#include "G4VisExecutive.hh"
+#include "G4VisManager.hh"
+
 /** @class SimG4Svc SimG4Components/SimG4Components/SimG4Svc.h SimG4Svc.h
  *
  *  Main Geant simulation service.
@@ -66,9 +71,11 @@ private:
   /// Handle for the magnetic field initialization
   ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool{"SimG4ConstantMagneticFieldTool", this, true};
   /// Geant4 commands to be executed before user initialization
-  Gaudi::Property<std::vector<std::string>> m_g4PreInitCommands{this, "g4PreInitCommands", {}, "Geant4 commands to be executed before user initialization"};
+  Gaudi::Property<std::vector<std::string>> m_g4PreInitCommands{
+      this, "g4PreInitCommands", {}, "Geant4 commands to be executed before user initialization"};
   /// Geant4 commands to be executed after user initialization
-  Gaudi::Property<std::vector<std::string>> m_g4PostInitCommands{this, "g4PostInitCommands", {}, "Geant4 commands to be executed after user initialization"};
+  Gaudi::Property<std::vector<std::string>> m_g4PostInitCommands{
+      this, "g4PostInitCommands", {}, "Geant4 commands to be executed after user initialization"};
   /// Handles to the tools creating regions and fast simulation models
   /// to be replaced with the ToolHandleArray<ISimG4RegionTool> m_regionTools
   std::vector<ISimG4RegionTool*> m_regionTools;
@@ -77,8 +84,14 @@ private:
   Gaudi::Property<std::vector<std::string>> m_regionToolNames{
       this, "regions", {}, "Names of the tools that create regions and fast simulation models"};
 
+  Gaudi::Property<bool> m_interactiveMode{this, "InteractiveMode", false, "Enter the interactive mode"};
+
   /// Run Manager
   sim::RunManager m_runManager;
+
+  std::unique_ptr<G4VisManager> m_visManager{nullptr};
+  // Define UI terminal for interactive mode
+  std::unique_ptr<G4UIsession> m_session{nullptr};
 };
 
 #endif /* SIMG4COMPONENTS_G4SIMSVC_H */

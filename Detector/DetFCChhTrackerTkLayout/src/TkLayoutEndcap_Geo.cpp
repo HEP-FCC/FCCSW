@@ -50,7 +50,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
   double discThickness = 0.5 * (xFirstDisc.zmax() - xFirstDisc.zmin());
   dd4hep::Tube discShape(dimensions.rmin() - l_overlapMargin, dimensions.rmax() + l_overlapMargin, discThickness + l_overlapMargin);
   Volume discVolume("disc", discShape, lcdd.air());
-  discVolume.setVisAttributes(lcdd.invisible());
 
 
   unsigned int discCounter = 0;
@@ -81,6 +80,7 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
                                                            0.5 * xComp.thickness(),
                                                            0.5 * xSensorProperties.attr<double>("sensorLength")),
                                lcdd.material(xComp.materialStr()));
+      componentVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRing.attr<int>("nModules");
       double phi = 0;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {

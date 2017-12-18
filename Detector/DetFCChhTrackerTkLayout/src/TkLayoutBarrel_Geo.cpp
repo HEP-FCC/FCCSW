@@ -55,7 +55,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
     dd4hep::xml::Component xModulesOdd = xRodOdd.child("modules");
     dd4hep::Tube layerShape(xLayer.rmin(), xLayer.rmax(), dimensions.zmax());
     Volume layerVolume("layer", layerShape, lcdd.material("Air"));
-    layerVolume.setVisAttributes(lcdd.invisible());
+    //layerVolume.setVisAttributes(lcdd.invisible());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", layerCounter);
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
@@ -81,6 +81,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
                                                   0.5 * xModuleComponentOdd.thickness(),
                                                   0.5 * xModulePropertiesOdd.attr<double>("modLength")),
                             lcdd.material(xModuleComponentOdd.materialStr()));
+      moduleVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRods.repeat();
       dd4hep::xml::Handle_t currentComp;
       for (unsigned int phiIndex = 0; phiIndex < nPhi; ++phiIndex) {
