@@ -86,8 +86,19 @@ StatusCode PileupHitMergeTool<Hits, PositionedHits>::mergeCollections() {
   for (auto hitColl : m_hitCollections) {
     // copy hits
     for (const auto elem : *hitColl) {
+
       auto clon = elem.clone();
-      clon.bits(clon.bits() + collectionCounter * (2 << 20)); // add pileup vertex counter with an offset
+      // add pileup vertex counter with an offset
+      // i.e. for the signal event, 'bits' is just the trackID taken from geant
+      // for the n-th pileup event, 'bits' is the trackID + n * offset
+      // offset needs to be big enough to ensure uniqueness of trackID
+      if (elem.bits() > m_trackIDCollectionOffset) {
+        error() << "Event contains too many tracks to guarantee a unique trackID";
+        error() << " The offset width or trackID field size needs to be adjusted!" << endmsg;
+        return StatusCode::FAILURE;
+      }
+
+      clon.bits(clon.bits() + collectionCounter * m_trackIDCollectionOffset);
       collHitsMerged->push_back(clon);
     }
     ++collectionCounter;
