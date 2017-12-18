@@ -15,6 +15,12 @@ class TrackHitCollection;
 class PositionedTrackHitCollection;
 }
 
+/** @class CompareTrackHitPositionAndCellId
+ *
+ * Algorithm testing the VolumeManager and position resolution of CellIDs
+ * This test is specific to the Track Detector, but it can be used for all 
+ * PositionedHits if the readout is updated.
+ */
 class CompareTrackHitPositionAndCellId : public GaudiAlgorithm {
 public:
   CompareTrackHitPositionAndCellId(const std::string& name, ISvcLocator* svcLoc);
