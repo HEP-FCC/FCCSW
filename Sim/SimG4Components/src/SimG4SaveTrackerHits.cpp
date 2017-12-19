@@ -70,6 +70,7 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
           fcc::BareHit& edmHitCore = edmHit.core();
           edmHitCore.cellId = hit->cellID;
           edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
+          edmHitCore.bits = hit->truth.trackID;
           edmHitCore.time = hit->truth.time;
           auto position = fcc::Point();
           position.x = hit->position.x() * sim::g42edm::length;

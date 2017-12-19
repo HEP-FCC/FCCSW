@@ -5,6 +5,7 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/Units.h"
+#include "GaudiKernel/IParticlePropertySvc.h"
 
 namespace fcc {
 class MCParticleCollection;
@@ -25,6 +26,9 @@ public:
   virtual StatusCode finalize();
 
 private:
+  /// list of hepmc statuses that will be converted. 
+  /// If emtpy, all particles will be converted. 
+  Gaudi::Property<std::vector<unsigned int>> m_hepmcStatusList{this, "hepmcStatusList", {1}, "list of hepmc statuses to keep. An empty list means all statuses will be kept"};
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle{"hepmc", Gaudi::DataHandle::Reader, this};
   /// Handle for the genparticles to be written

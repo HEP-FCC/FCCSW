@@ -44,9 +44,6 @@ gaudi_add_test(ReadFullSimTrackerHits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/read_podio_input.py
                DEPENDS GeantFullSimTrackerHitsWithField)
-gaudi_add_test(GeantFullSimWithGeantino
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/geant_fullsim_pgun_geantino.py)
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_pgun_fullsim.py)
