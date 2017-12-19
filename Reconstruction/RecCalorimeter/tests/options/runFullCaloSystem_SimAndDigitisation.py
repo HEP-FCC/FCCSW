@@ -123,7 +123,7 @@ calibHcalFwd = CalibrateCaloHitsTool("CalibrateHCalFwd", invSamplingFraction="30
 # 1. step - merge hits into cells with default Eta segmentation
 # 2. step - rewrite the cellId using the Phi-Eta segmentation
 from Configurables import CreateCaloCells
-createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
+createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
                                doCellCalibration=True,
                                calibTool = calibEcalBarrel,
                                addCellNoise=False, filterCellNoise=False,
@@ -140,12 +140,19 @@ from Configurables import RedoSegmentation
 resegmentEcalBarrel = RedoSegmentation("ReSegmentationEcal",
                              # old bitfield (readout)
                              oldReadoutName = ecalBarrelReadoutName,
+                             # specify which fields are going to be altered (deleted/rewritten)
+                             oldSegmentationIds = ["module"],
                              # new bitfield (readout), with new segmentation
                              newReadoutName = ecalBarrelReadoutNamePhiEta,
                              OutputLevel = INFO,
                              inhits = "ECalBarrelPositions",
-                             outhits = "ECalBarrelCells")
-
+                             outhits = "ECalBarrelCellsStep2")
+createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
+                               doCellCalibration=False,
+                               addCellNoise=False, filterCellNoise=False,
+                               OutputLevel=INFO,
+                               hits="ECalBarrelCellsStep2",
+                               cells="ECalBarrelCells")
 
 # Create Ecal cells in endcaps
 # 1. step - merge layer IDs
@@ -301,9 +308,10 @@ chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
-createEcalBarrelCells.AuditExecute = True
+createEcalBarrelCellsStep1.AuditExecute = True
 positionsEcalBarrel.AuditExecute = True
 resegmentEcalBarrel.AuditExecute = True
+createEcalBarrelCells.AuditExecute = True
 createEcalEndcapCells.AuditExecute = True
 createEcalFwdCells.AuditExecute = True
 createHcalCells.AuditExecute = True
@@ -318,9 +326,10 @@ out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [geantsim,
-              createEcalBarrelCells,
+              createEcalBarrelCellsStep1,
               positionsEcalBarrel,
               resegmentEcalBarrel,
+              createEcalBarrelCells,
               mergelayersEcalEndcap,
               createEcalEndcapCells,
               mergelayersEcalFwd,
