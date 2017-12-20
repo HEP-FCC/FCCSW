@@ -71,7 +71,7 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
 
       auto detelement = volman.lookupDetElement(theCellId);
       debug() << "volIDfromDetElement: " << detelement.volumeID() << endmsg;
-      const auto& transformMatrix = detelement.worldTransformation();
+      const auto& transformMatrix = detelement.nominal().worldTransformation();
       double outGlobal[3] {0,0,0};
       fcc_l1 = (*m_decoderBarrel)["x"] * l_segGridSizeXBarrel;
       fcc_l2 = (*m_decoderBarrel)["z"] * l_segGridSizeZBarrel;
@@ -110,7 +110,7 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
       debug() << endmsg;
       auto detelement = volman.lookupDetElement((*m_decoderEndcap).getValue());
       debug() << "volId from Detelement: " << detelement.volumeID() << endmsg;
-      const auto& transformMatrix = detelement.worldTransformation();
+      const auto& transformMatrix = detelement.nominal().worldTransformation();
       double outGlobal[3] {0, 0, 0};
       fcc_l1 = (*m_decoderEndcap)["x"] * l_segGridSizeXEndcap;
       fcc_l2 = (*m_decoderEndcap)["z"] * l_segGridSizeZEndcap;

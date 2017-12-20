@@ -51,7 +51,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
   std::vector<DetElement> discDetElementVec;
   /// iterate over discs
   for (dd4hep::xml::Collection_t xDiscColl(xDiscs, _Unicode(discZPls)); nullptr != xDiscColl; ++xDiscColl) {
-  for (dd4hep::xml::Collection_t xDiscColl(xDiscs, _Unicode(discZPls)); nullptr != xDiscColl; ++xDiscColl) {
     Component xDisc = static_cast<Component>(xDiscColl);
     Component xCurrentRings = xDisc.child(_Unicode(rings));
     // create disc volume
