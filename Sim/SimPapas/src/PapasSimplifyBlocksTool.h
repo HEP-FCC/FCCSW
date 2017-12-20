@@ -4,7 +4,7 @@
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiTool.h"
 #include "SimPapas/IPapasTool.h"
-
+// PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
 #include "papas/reconstruction/PFBlock.h"
 #include <string>
@@ -22,10 +22,8 @@ public:
   PapasSimplifyBlocksTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// Create any output structures needed.
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// Execute papas tool.
-  virtual StatusCode run(papas::Event& pevent) final;
+  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) final;
   /// empty class structures
   virtual StatusCode clear();
   /// Finalize.

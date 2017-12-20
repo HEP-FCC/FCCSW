@@ -16,7 +16,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import SimG4Svc
 # giving the names of tools will initialize the tools of that type
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
+geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4GeantinoDeposits", actions="SimG4FullSimActions")
 
 #geantservice.g4PostInitCommands  += ["/tracking/verbose 1"]
 
@@ -35,6 +35,11 @@ geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveTrackerHits/saveTrackerHits" ],
                     eventProvider=pgun)
 
+from Configurables import CompareTrackHitPositionAndCellId
+comparison = CompareTrackHitPositionAndCellId()
+comparison.hits.Path = "hits"
+comparison.positionedHits.Path="positionedHits"
+
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
@@ -43,9 +48,9 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, out],
+ApplicationMgr( TopAlg = [geantsim, comparison, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10000,
+                EvtMax   = 1000,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG

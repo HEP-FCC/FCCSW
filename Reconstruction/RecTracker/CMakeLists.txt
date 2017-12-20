@@ -44,7 +44,8 @@ gaudi_add_test(CombinatorialTrackSeeding
 			         FRAMEWORK options/combinatorialTrackSeedingTest.py
 			         DEPENDS Examples.GeantFullSimTrackerHits)
 
-gaudi_add_test(ExtrapolationTest
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/extrapolationTest.py 
-               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libActsLogger.so)
+# TODO: to be re-enabled once ACTS DD4hepPlugin is up to date
+#gaudi_add_test(ExtrapolationTest
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#			         FRAMEWORK options/extrapolationTest.py
+#               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libActsLogger.so)

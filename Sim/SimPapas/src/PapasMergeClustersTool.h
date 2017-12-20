@@ -4,7 +4,7 @@
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiTool.h"
 #include "SimPapas/IPapasTool.h"
-
+// PAPAS
 #include "papas/datatypes/DefinitionsCollections.h"
 
 #include <string>
@@ -21,12 +21,10 @@ public:
   PapasMergeClustersTool(const std::string& aType, const std::string& aName, const IInterface* aParent);
   /// Initialize.
   virtual StatusCode initialize();
-  /// create any output structures needed
-  StatusCode createOutputStructures() { return SUCCESS; };
   /// Empty the class structures.
   virtual StatusCode clear();
   /// Execute papas tool
-  virtual StatusCode run(papas::Event& pevent) final;
+  virtual StatusCode run(papas::Event& pevent, std::shared_ptr<papas::Detector> spDetector) final;
   /// Finalize.
   virtual StatusCode finalize();
 

@@ -1,7 +1,7 @@
 #ifndef GENERATION_POISSONPILEUP_H
 #define GENERATION_POISSONPILEUP_H
 
-#include "Generation/IPileUpTool.h"
+#include "FWCore/IPileUpTool.h"
 
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
