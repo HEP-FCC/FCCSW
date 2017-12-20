@@ -25,7 +25,7 @@ StatusCode GeoSvc::initialize() {
   StatusCode sc = Service::initialize();
   if (!sc.isSuccess()) return sc;
   uint printoutLevel = msgLevel();
-  DD4hep::setPrintLevel(DD4hep::PrintLevel(printoutLevel));
+  dd4hep::setPrintLevel(dd4hep::PrintLevel(printoutLevel));
   m_incidentSvc->addListener(this, "GeometryFailure");
   if (buildDD4HepGeo().isFailure())
     m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;
