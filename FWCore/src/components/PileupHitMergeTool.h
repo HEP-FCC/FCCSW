@@ -16,6 +16,9 @@ class PositionedHitCollection;
 /** @class PileupHitMergeTool
  *
  * Implemenation of the MergeTool for *Hits and *PositionedHits, templated to give versions for Tracker / Calorimeter
+ * While merging, this algorithm tries to keep the trackIDs unique by adding the pileup event number with an offset.
+ * This should be transparent, but the trackIDs will be non-consecutive.
+ *
  *
  */
 
@@ -60,6 +63,9 @@ private:
   DataHandle<Hits> m_hitsSignal{"overlay/signalHits", Gaudi::DataHandle::Reader, this};
   /// input to this tool: signal collection
   DataHandle<PositionedHits> m_posHitsSignal{"overlay/signalPositionedHits", Gaudi::DataHandle::Reader, this};
+
+  /// offset with which the pileup event number is added to the trackID 
+  const unsigned int m_trackIDCollectionOffset = 2 << 20;
 };
 
 #endif  // FWCORE_PILEUPTRACKERHITSMERGETOOL_H

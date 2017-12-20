@@ -35,6 +35,11 @@ geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveTrackerHits/saveTrackerHits" ],
                     eventProvider=pgun)
 
+from Configurables import CompareTrackHitPositionAndCellId
+comparison = CompareTrackHitPositionAndCellId()
+comparison.hits.Path = "hits"
+comparison.positionedHits.Path="positionedHits"
+
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
@@ -43,9 +48,9 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, out],
+ApplicationMgr( TopAlg = [geantsim, comparison, out],
                 EvtSel = 'NONE',
-                EvtMax   = 10000,
+                EvtMax   = 1000,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=DEBUG

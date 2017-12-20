@@ -54,6 +54,8 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
        << "\nThickness of absorber discs (cm) = " << passiveThickness
        << "\nThickness of readout disc placed in between absorber plates (cm) = " << readoutThickness
        << "\nNumber of absorber/readout discs: " << numDiscs
+       // + 1 to add the first active layer in between the first readout disc and the first absorber
+       << "\nNumber of active layers: " << numDiscs + 1
        << "\nMargin outside first readout disc and last absorber disc, filled with non-sensitive active medium (cm) = "
        << marginOutside << endmsg;
   lLog << MSG::INFO << "Detector length: (cm) " << length << endmsg;
@@ -103,12 +105,8 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
     dd4hep::Volume passiveVol("passive", passiveShape, aLcdd.material(passiveMaterial));
     activeVol.setSensitiveDetector(sensDet);
     if (readout.isSensitive()) {
-      lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
+      lLog << MSG::DEBUG << "Readout volume set as sensitive" << endmsg;
       readoutVol.setSensitiveDetector(aSensDet);
-    }
-    if (passive.isSensitive()) {
-      lLog << MSG::DEBUG << "Passive volume set as sensitive" << endmsg;
-      passiveVol.setSensitiveDetector(aSensDet);
     }
     // absorber may consist of inner and outer material
     if (passiveInnerThickness < passiveThickness) {
@@ -149,6 +147,9 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
       passiveOuterPhysVolAbove.addPhysVolID("subtype", 2);
       passiveGluePhysVolBelow.addPhysVolID("subtype", 3);
       passiveGluePhysVolAbove.addPhysVolID("subtype", 4);
+    } else if (passive.isSensitive()) {
+      lLog << MSG::INFO << "Passive volume set as sensitive" << endmsg;
+      passiveVol.setSensitiveDetector(aSensDet);
     }
     dd4hep::PlacedVolume passivePhysVol =
         aEnvelope.placeVolume(passiveVol, dd4hep::Position(0, 0, zOffset));
@@ -174,12 +175,12 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
       dd4hep::PlacedVolume passivePhysVolPost =
           aEnvelope.placeVolume(passiveVol, dd4hep::Position(0, 0, zOffset));
       passivePhysVolPost.addPhysVolID("layer", iDiscs + 1);
-      passivePhysVolPost.addPhysVolID("type", 2);  // 0 = active, 1 = passive, 2 = readout
+      passivePhysVolPost.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
       lLog << MSG::DEBUG << "Placing last passive disc at z= " << zOffset << endmsg;
     }
     for (uint iActive = 0; iActive < activePhysVols.size(); iActive++) {
-      activePhysVols[iActive].addPhysVolID("layer", iActive + 1);  // +1 because first active is placed before that loop
-      activePhysVols[iActive].addPhysVolID("type", 0);             // 0 = active, 1 = passive, 2 = readout
+      activePhysVols[iActive].addPhysVolID("layer", iActive);
+      activePhysVols[iActive].addPhysVolID("type", 0);  // 0 = active, 1 = passive, 2 = readout
     }
   }
   return;
