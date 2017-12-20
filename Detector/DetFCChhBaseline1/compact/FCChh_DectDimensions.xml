@@ -150,7 +150,7 @@
     <constant name="FwdBarMuon_zOffset" value="14000*mm + FwdBarMuon_dz"/>
 
     <constant name="FwdMuon_id" value="15"/>
-    <constant name="FwdMuon_rmin" value="30*mm"/>
+    <constant name="FwdMuon_rmin" value="62.3*mm"/>
     <constant name="FwdMuon_rmax" value="7000*mm"/>
     <constant name="FwdMuon_dz" value="1500*mm"/>
     <constant name="FwdMuon_zOffset" value="19700*mm + FwdMuon_dz"/> 
