@@ -6,11 +6,11 @@
 
 // Geant
 #include "G4Event.hh"
+#include "G4HadronicProcessStore.hh"
 #include "G4UImanager.hh"
-#include "G4VModularPhysicsList.hh"
-
 #include "G4UIsession.hh"
 #include "G4UIterminal.hh"
+#include "G4VModularPhysicsList.hh"
 #include "G4VisExecutive.hh"
 #include "G4VisManager.hh"
 
@@ -81,6 +81,11 @@ StatusCode SimG4Svc::initialize() {
 
   // Attach user actions
   m_runManager.SetUserInitialization(m_actionsTool->userActionInitialization());
+  if (!msgLevel(MSG::DEBUG)) {
+    G4HadronicProcessStore::Instance()->SetVerbose(0);
+    UImanager->ApplyCommand("/run/verbose 0");
+    UImanager->ApplyCommand("/process/em/verbose 0");
+  }
   // Create regions
   for (auto& toolname : m_regionToolNames) {
     ISimG4RegionTool* tool = nullptr;
