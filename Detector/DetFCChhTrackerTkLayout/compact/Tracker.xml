@@ -15,9 +15,11 @@
     </readouts>
     <include ref="FCChh_v3.03_Definitions.xml"/>
     <detectors>
+        <!-- To be used if you are using ACTS (instead of the full beampipe in DectMaster
         <detector id="0" name="beampipe" type="BeamTube">
             <dimensions rmin="CentralBeamTube_rmin" rmax="CentralBeamTube_rmax" z="CentralBeamTube_dz" material="Beryllium" vis="violet"/>
         </detector>
+        -->
         <detector id="101" name="FCChhInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
             <composite name="InnerBRL"/>
             <composite name="InnerECAP"/>

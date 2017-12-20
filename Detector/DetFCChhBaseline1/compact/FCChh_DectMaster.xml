@@ -26,9 +26,7 @@
   <include ref="./FCChh_Visualisation.xml" />
 
   <!-- Including the sub-detectors / volume definitions -->
-  <!-- To be used in case you are not using the tkLayout tracker (which contains the beamtube)
   <include ref="./FCChh_BeamTube.xml" />
-  -->
   <include ref="./FCChh_Solenoids.xml" />
   <include ref="./FCChh_Shielding.xml" />
 
