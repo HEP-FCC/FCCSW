@@ -39,15 +39,15 @@
     <constant name="BathThicknessMiddle" value="50*mm"/> <!-- in between of EMEC and HEC -->
     <!-- electromegnetic calorimeter: EMEC -->
     <constant name="EMEC_z1" value="CryoEndcap_z1 + CryoThicknessFront + BathThicknessFront"/>
-    <constant name="EMEC_z2" value="6150*mm"/>
+    <constant name="EMEC_z2" value="6020*mm"/>
     <constant name="EMEC_rmin1" value="CryoEndcap_front_rmin2 + CryoThicknessInner + BathThicknessFront*tan(2*atan(exp(-2.5)))"/>
     <constant name="EMEC_rmin2" value="EMEC_z2*tan(2*atan(exp(-2.5))) - 10*cm + CryoThicknessInner"/>
     <constant name="EMEC_rmax" value="ExtBarCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
-    <constant name="EMEC_lAr_thickness" value="3.*mm"/>
-    <constant name="EMEC_Pb_thickness" value="1.5*mm*2./2.16"/>
-    <constant name="EMEC_steel_thickness" value="0.4*mm*2./2.16"/>
-    <constant name="EMEC_glue_thickness" value="0.26*mm*2./2.16"/>
-    <constant name="EMEC_readout_thickness" value="1*mm"/>
+    <constant name="EMEC_lAr_thickness" value="1.*mm"/>
+    <constant name="EMEC_Pb_thickness" value="1.5*mm*1.5/2.16"/>
+    <constant name="EMEC_steel_thickness" value="0.4*mm*1.5/2.16"/>
+    <constant name="EMEC_glue_thickness" value="0.26*mm*1.5/2.16"/>
+    <constant name="EMEC_readout_thickness" value="1.2*mm"/>
     <!-- hadronic calorimeter: HEC -->
     <constant name="HEC_z1" value="EMEC_z2 + BathThicknessMiddle"/>
     <constant name="HEC_z2" value="CryoEndcap_z2 - CryoThicknessBack - BathThicknessBack"/>
@@ -56,15 +56,15 @@
     <constant name="HEC_rmax" value="ExtBarCal_rmax - CryoThicknessOuter - BathThicknessOuter"/>
     <constant name="HEC_lAr_thickness" value="4.*mm"/>
     <constant name="HEC_Cu_thickness" value="2.*cm"/>
-    <constant name="HEC_readout_thickness" value="1*mm"/>
+    <constant name="HEC_readout_thickness" value="1.2*mm"/>
   </define>
   <readouts>
     <readout name="EMECPhiEta">
-      <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-2.515"/>
+      <segmentation type="GridPhiEta" phi_bins="704" offset_phi="-pi+(pi/704.)" grid_size_eta="0.01" offset_eta="-2.515"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10</id>
     </readout>
     <readout name="HECPhiEta">
-      <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-2.515"/>
+      <segmentation type="GridPhiEta" phi_bins="256" offset_phi="-pi+(pi/256.)" grid_size_eta="0.025" offset_eta="-2.5075"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10</id>
     </readout>
   </readouts>

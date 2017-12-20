@@ -84,4 +84,4 @@ private:
   dd4hep::DDSegmentation::GridPhiEta* m_segmentation;
 };
 
-#endif /* RECCALORIMETER_NOISECALOCELLSCOMPLEXTOOL_H */
+#endif /* RECCALORIMETER_NOISECALOCELLSFROMFILETOOL_H */

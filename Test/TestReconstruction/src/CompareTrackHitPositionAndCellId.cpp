@@ -8,7 +8,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 #include "TGeoManager.h"
@@ -37,7 +37,7 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
   auto readoutEndcap = lcdd->readout("TrackerEndcapReadout");
   auto m_decoderEndcap = readoutEndcap.idSpec().decoder();
   auto segmentationXZ =
-      dynamic_cast<DD4hep::DDSegmentation::CartesianGridXZ*>(readoutBarrel.segmentation().segmentation());
+      dynamic_cast<dd4hep::DDSegmentation::CartesianGridXZ*>(readoutBarrel.segmentation().segmentation());
   if (nullptr == segmentationXZ) {
     error() << "Could not retrieve segmentation!" << endmsg;
     return StatusCode::FAILURE;
@@ -45,7 +45,7 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
   double l_segGridSizeXBarrel = segmentationXZ->gridSizeX();
   double l_segGridSizeZBarrel = segmentationXZ->gridSizeZ();
 
-  segmentationXZ = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXZ*>(readoutEndcap.segmentation().segmentation());
+  segmentationXZ = dynamic_cast<dd4hep::DDSegmentation::CartesianGridXZ*>(readoutEndcap.segmentation().segmentation());
   if (nullptr == segmentationXZ) {
     error() << "Could not retrieve segmentation!" << endmsg;
     return StatusCode::FAILURE;
@@ -54,7 +54,7 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
   double l_segGridSizeZEndcap = segmentationXZ->gridSizeZ();
   std::cout << l_segGridSizeXBarrel << std::endl;
 
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
+  dd4hep::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
 
   const fcc::PositionedTrackHitCollection* hits = m_positionedTrackHits.get();
   double fcc_l1 = 0;

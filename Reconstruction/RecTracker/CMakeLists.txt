@@ -18,13 +18,21 @@ find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
 gaudi_install_headers(RecTracker)
 gaudi_add_library(TrackingUtils
                  src/lib/*.cpp
-                 INCLUDE_DIRS DD4hep  FWCore  FCCEDM PODIO  DetInterface RecInterface SimG4Interface ROOT
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
+                 INCLUDE_DIRS DD4hep HepMC  FWCore  FCCEDM PODIO  DetInterface RecInterface SimG4Interface ROOT
+                 LINK_LIBRARIES GaudiAlgLib FCCEDM PODIO HepMC DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
                  PUBLIC_HEADERS RecTracker) 
+
 gaudi_add_module(RecTracker
                  src/components/*.cpp
                  INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface DD4hep ROOT RecInterface TrackingUtils ACTS
                  LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ${DD4hep_COMPONENT_LIBRARIES} TrackingUtils ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
+
+
+gaudi_add_library(ActsLogger
+                 src/lib/ACTSLogger.cpp
+                 INCLUDE_DIRS ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface RecInterface ACTS
+                 NO_PUBLIC_HEADERS
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ${DD4hep_COMPONENT_LIBRARIES} ACTS::ACTSCore ACTS::ACTSDD4hepPlugin) 
 
 include(CTest)
 
@@ -41,4 +49,5 @@ gaudi_add_test(CombinatorialTrackSeeding
 # TODO: to be re-enabled once ACTS DD4hepPlugin is up to date
 #gaudi_add_test(ExtrapolationTest
 #               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-#			         FRAMEWORK options/extrapolationTest.py)
+#			         FRAMEWORK options/extrapolationTest.py
+#               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libActsLogger.so)

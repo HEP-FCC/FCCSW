@@ -38,7 +38,8 @@ void CalibrateInLayersTool::calibrate(std::unordered_map<uint64_t, double>& aHit
     } else {
       p.second /= m_samplingFraction[m_samplingFraction.size() - 1];
       warning() << "Size of sampling fraction values is smaller than the number of existing layers."
-                << " Taking the sampling fraction for last layer." << endmsg;
+                << " Taking the sampling fraction for last layer."
+                << " Layer ID: " << layer << endmsg;
     }
   });
 }
