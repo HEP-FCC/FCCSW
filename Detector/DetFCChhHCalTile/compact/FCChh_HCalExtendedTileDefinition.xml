@@ -31,7 +31,7 @@
     <!-- Master plate -->
     <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
     <!-- Spacer plate -->
-    <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_vis" />
+    <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0" material="Pb" sensitive="false" vis="extHcal_steel_vis" />
     <!-- Master plate -->
     <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
     <!-- Air -->
@@ -58,7 +58,7 @@
     <!-- Master plate -->
     <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="extHcal_steel_master_vis" />
     <!-- Spacer plate -->
-    <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Steel235" sensitive="false" vis="extHcal_steel_vis" />
+    <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Pb" sensitive="false" vis="extHcal_steel_vis" />
   </sequence_b>
   <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="Steel235" sensitive="false" vis="extHcal_end_plate_vis" />
   <face_plate name="face_plate" thickness="BarHCal_face_plate_thickness" material="Steel235" sensitive="false" vis="extHcal_face_plate_vis" />
