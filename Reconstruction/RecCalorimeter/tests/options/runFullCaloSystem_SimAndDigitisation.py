@@ -104,7 +104,7 @@ geantsim = SimG4Alg("SimG4Alg",
 #Configure tools for calo reconstruction
 # EM scale calibration
 from Configurables import CalibrateCaloHitsTool
-calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="34.5")
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.66")
 
 from Configurables import CalibrateInLayersTool
 calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel",
