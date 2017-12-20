@@ -174,8 +174,8 @@
     <!-- Calo endcaps and fwd -->
     <constant name="CalEndCapID" type="string" value="system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10"/>
     <constant name="CalFwdID" type="string" value="system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10"/>
-    !-- Muon system -->
-    <constant name="Muons_Readout" type="string" value="system:4,eta:9,phi:-10"/>
+    <!-- Muon system -->
+    <constant name="Muons_ReadoutID" type="string" value="system:4,eta:9,phi:-10"/>
   </define>
 
 </lccdd>
