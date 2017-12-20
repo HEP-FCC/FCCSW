@@ -58,11 +58,11 @@
   <readouts>
     <readout name="EMFwdPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
-      <id>${CalEndCapID}</id>
+      <id>${CalFwdID}</id>
     </readout>
     <readout name="HFwdPhiEta">
       <segmentation type="GridPhiEta" phi_bins="512" offset_phi="-pi+(pi/512.)" grid_size_eta="0.01" offset_eta="-6.005"/>
-      <id>${CalEndCapID}</id>
+      <id>${CalFwdID}</id>
     </readout>
   </readouts>
 

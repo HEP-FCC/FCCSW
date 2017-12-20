@@ -164,15 +164,16 @@
     <constant name="TrackerEndcapReadoutID" type="string" value="system:4,posneg:1,disc:5,component:17,x:-15,z:-15"/>
     <!-- Ecal -->
     <constant name="ECalBarrelEtaID" type="string" value="system:4,cryo:1,module:11,type:3,subtype:3,layer:8,eta:9"/>
-    <constant name="ECalBarrelPhiEtaID" type="string" value="system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10<"/>
+    <constant name="ECalBarrelPhiEtaID" type="string" value="system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10"/>
     <!-- Hcal -->
     <constant name="BarHCal_ReadoutID" type="string" value="system:4,module:7,row:9,layer:5,tile:2,eta:1,phi:10"/>
     <constant name="BarHCal_Readout_phietaID" type="string" value="system:4,module:7,row:9,layer:5,tile:2,eta:9,phi:10"/>
     <!-- Ext barrel Hcal -->
     <constant name="ExtBarHCal_ReadoutID" type="string" value="system:4,type:2,module:9,row:8,layer:4,tile:2,eta:1,phi:10"/>
     <constant name="ExtBarHCal_Readout_phietaID" type="string" value="system:4,type:2,module:9,row:8,layer:4,tile:2,eta:10,phi:10"/>
-    <!-- Calo endcaps -->
+    <!-- Calo endcaps and fwd -->
     <constant name="CalEndCapID" type="string" value="system:4,subsystem:1,type:3,subtype:3,layer:8,eta:10,phi:10"/>
+    <constant name="CalFwdID" type="string" value="system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10"/>
     !-- Muon system -->
     <constant name="Muons_Readout" type="string" value="system:4,eta:9,phi:-10"/>
   </define>
