@@ -15,8 +15,8 @@
 
 namespace det {
 FullParticleAbsSD::FullParticleAbsSD(const std::string& aDetectorName,
-                                         const std::string& aReadoutName,
-                                         const DD4hep::Geometry::Segmentation& aSeg)
+                                     const std::string& aReadoutName,
+                                     const DD4hep::Geometry::Segmentation& aSeg)
     : G4VSensitiveDetector(aDetectorName), m_calorimeterCollection(nullptr), m_seg(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
@@ -36,7 +36,7 @@ void FullParticleAbsSD::Initialize(G4HCofThisEvent* aHitsCollections) {
 bool FullParticleAbsSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-  G4Track *aTrack = aStep->GetTrack();
+  G4Track* aTrack = aStep->GetTrack();
   G4double kineticEnergy = aTrack->GetKineticEnergy();
   DD4hep::Simulation::Position pos(prePos.x(), prePos.y(), prePos.z());
   auto hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);

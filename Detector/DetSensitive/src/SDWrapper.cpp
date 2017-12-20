@@ -3,11 +3,11 @@
 
 #include "DetSensitive/AggregateCalorimeterSD.h"
 #include "DetSensitive/BirksLawCalorimeterSD.h"
+#include "DetSensitive/FullParticleAbsSD.h"
 #include "DetSensitive/GflashCalorimeterSD.h"
 #include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
 #include "DetSensitive/SimpleTrackerSD.h"
-#include "DetSensitive/FullParticleAbsSD.h"
 
 namespace DD4hep {
 namespace Simulation {
@@ -54,9 +54,9 @@ static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDe
   return new det::GflashCalorimeterSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
-  // Factory method to create an instance of FullParticleAbsSD
-  static G4VSensitiveDetector* create_full_particle_absorbtion_sd(const std::string& aDetectorName,
-							   DD4hep::Geometry::LCDD& aLcdd) {
+// Factory method to create an instance of FullParticleAbsSD
+static G4VSensitiveDetector* create_full_particle_absorbtion_sd(const std::string& aDetectorName,
+                                                                DD4hep::Geometry::LCDD& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::FullParticleAbsSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
