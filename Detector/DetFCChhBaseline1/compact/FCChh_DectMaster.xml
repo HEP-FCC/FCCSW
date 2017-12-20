@@ -38,7 +38,7 @@
   <include ref="../../DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml" />
   <!-- To uncomment once issue #227 is solved: <include ref="../../DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml" /> -->
   <!-- To uncomment once issue #227 is solved: <include ref="../../DetFCChhCalDiscs/compact/Forward_coneCryo.xml" /> -->
-  <include ref="../../DetFCChhMuonSimple/compact/FCChh_MuonSystemSimple.xml" />
+  <include ref="../../DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml" />
 
   <!--
     These can be used as replacement if you want to use only a sub-set of detectors:
