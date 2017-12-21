@@ -9,11 +9,10 @@
 #include "G4THitsCollection.hh"
 #include "G4VSensitiveDetector.hh"
 
-/** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
+/** FullParticleAbsD DetectorDescription/DetSensitive/src/FullParticleAbsSD.h FullParticleAbsSD.h
  *
- *  Simple sensitive detector to fully stop the incoming particles.
- *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
- *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
+ *  Sensitive detector to fully stop the incoming particles.
+ *  The position of the hit is set to G4Step::GetPreStepPoint() position.
  *  New hit is created for each incoming particle, the energy is stored and the track is removed.
  *  No timing information is saved.
  *

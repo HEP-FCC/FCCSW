@@ -34,7 +34,6 @@ void FullParticleAbsSD::Initialize(G4HCofThisEvent* aHitsCollections) {
 }
 
 bool FullParticleAbsSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
-  // as in DD4hep::Simulation::Geant4GenericSD<Calorimeter>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   G4Track* aTrack = aStep->GetTrack();
   G4double kineticEnergy = aTrack->GetKineticEnergy();
