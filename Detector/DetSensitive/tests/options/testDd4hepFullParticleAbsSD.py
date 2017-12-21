@@ -11,7 +11,7 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PhiMax = 1.6) # rad
 gen = GenAlg("ParticleGun", SignalProvider=pgun)
 gen.hepmc.Path = "hepmc"
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
+ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter("Converter")
@@ -24,7 +24,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetSensitive/tests/compact/Box_dd4hepStopParticleSD.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:compact/Box_dd4hepStopParticleSD.xml'], OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc",
