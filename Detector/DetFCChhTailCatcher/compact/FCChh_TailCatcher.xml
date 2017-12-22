@@ -23,8 +23,8 @@
   <readouts>
     <readout name="Muons_Readout">
       <!-- Introduce a segmentation in eta and phi -->
-      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="256"/>
-      <id>system:7,eta:9,phi:-10</id>
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" offset_eta="-6.45" phi_bins="256" offset_phi="-pi+(pi/256.)"/>
+      <id>system:7,eta:11,phi:8</id>
     </readout>
   </readouts>
 
