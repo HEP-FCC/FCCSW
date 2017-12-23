@@ -56,7 +56,7 @@ static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDe
 }
 // Factory method to create an instance of FullParticleAbsorptionSD
 static G4VSensitiveDetector* create_full_particle_absorbtion_sd(const std::string& aDetectorName,
-                                                                DD4hep::Geometry::LCDD& aLcdd) {
+                                                                dd4hep::Detector& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::FullParticleAbsorptionSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
