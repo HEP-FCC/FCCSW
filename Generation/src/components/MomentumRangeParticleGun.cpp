@@ -9,6 +9,8 @@
 #include "GaudiKernel/SystemOfUnits.h"
 
 #include "HepMC/GenEvent.h"
+#include "HepPDT/ParticleID.hh"
+#include "Pythia8/ParticleData.h"
 
 DECLARE_TOOL_FACTORY(MomentumRangeParticleGun)
 
@@ -45,11 +47,13 @@ StatusCode MomentumRangeParticleGun::initialize() {
 
   // setup particle information
   m_masses.clear();
+  auto pd = Pythia8::ParticleData();
 
   info() << "Particle type chosen randomly from :";
   PIDs::iterator icode;
   for (icode = m_pdgCodes.begin(); icode != m_pdgCodes.end(); ++icode) {
     info() << " " << *icode;
+    m_masses.push_back(pd.m0(*icode));
   }
 
   info() << endmsg;
@@ -96,7 +100,7 @@ void MomentumRangeParticleGun::generateParticle(Gaudi::LorentzVector& momentum,
 
   pdgId = m_pdgCodes[currentType];
 
-  debug() << " -> " << m_names[currentType] << endmsg << "   P   = " << momentum << endmsg;
+  debug() << " -> " << pdgId << endmsg << "   P   = " << momentum << endmsg;
 }
 
 StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
