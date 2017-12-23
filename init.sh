@@ -2,6 +2,20 @@
 # set FCCSWBASEDIR to the directory containing this script
 
 #TEMPORARY, pending installation
+# Add the passed value only to path if it's not already in there. 
+function add_to_path { 
+    if [ -z "$1" ] || [[ "$1" == "/lib" ]]; then 
+        return 
+    fi 
+    path_name=${1} 
+    eval path_value=\$$path_name 
+    path_prefix=${2} 
+    case ":$path_value:" in 
+      *":$path_prefix:"*) :;;        # already there 
+      *) path_value=${path_prefix}:${path_value};; # or prepend path 
+    esac 
+    eval export ${path_name}=${path_value} 
+} 
 
 export FCCSWBASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source /cvmfs/sft.cern.ch/lcg/views/LCG_92/x86_64-slc6-gcc62-opt/setup.sh
