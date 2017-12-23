@@ -1,5 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
 
+set(LCG_releases_base  /cvmfs/sft.cern.ch/lcg/releases)
+
 option(SAS "Whether to run static code analysis with SAS." OFF)
 if (SAS)
     find_package(sas)
@@ -22,4 +24,4 @@ install(FILES ${CMAKE_BINARY_DIR}/fccrun
         RENAME run)
 
 gaudi_project(FCCSW HEAD
-              USE Gaudi v28r2 )
+              USE Gaudi v30r1 )
