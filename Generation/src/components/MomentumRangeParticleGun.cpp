@@ -3,7 +3,6 @@
 #include <cmath>
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
-#include "GaudiKernel/IParticlePropertySvc.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/ParticleProperty.h"
 #include "GaudiKernel/PhysicalConstants.h"
@@ -35,7 +34,6 @@ StatusCode MomentumRangeParticleGun::initialize() {
 
   // Get the mass of the particle to be generated
   //
-  IParticlePropertySvc* ppSvc = svc<IParticlePropertySvc>("ParticlePropertySvc", true);
 
   // check momentum and angles
   if ((m_minMom > m_maxMom) || (m_minTheta > m_maxTheta) || (m_minPhi > m_maxPhi))
@@ -51,10 +49,7 @@ StatusCode MomentumRangeParticleGun::initialize() {
   info() << "Particle type chosen randomly from :";
   PIDs::iterator icode;
   for (icode = m_pdgCodes.begin(); icode != m_pdgCodes.end(); ++icode) {
-    const ParticleProperty* particle = ppSvc->findByPythiaID(*icode);
-    m_masses.push_back((particle->mass()));
-    m_names.push_back(particle->particle());
-    info() << " " << particle->particle();
+    info() << " " << *icode;
   }
 
   info() << endmsg;
@@ -66,7 +61,6 @@ StatusCode MomentumRangeParticleGun::initialize() {
   info() << "Phi range: " << m_minPhi / Gaudi::Units::rad << " rad <-> " << m_maxPhi / Gaudi::Units::rad << " rad"
          << endmsg;
 
-  release(ppSvc);
 
   return sc;
 }
