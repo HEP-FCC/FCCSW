@@ -149,18 +149,6 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
   double planeLength = -Rmin * cos(angle) + sqrt(pow(Rmax, 2) - pow(Rmin * sin(angle), 2));
   lLog << MSG::INFO << "thickness of calorimeter (cm) = " << dR
        << " length of passive or readout planes (cm) =  " << planeLength << endmsg;
-  dd4hep::Box passiveShape(passiveThickness / 2., caloDim.dz(), planeLength / 2.);
-  dd4hep::Box passiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), planeLength / 2.);
-  dd4hep::Box passiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), planeLength / 2.);
-  dd4hep::Box passiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), planeLength / 2.);
-  // passive volume consists of inner part and two outer, joind by glue
-  dd4hep::Volume passiveVol("passive", passiveShape, aLcdd.material("Air"));
-  dd4hep::Volume passiveInnerVol(passiveInnerMaterial + "_passive", passiveInnerShape,
-                                           aLcdd.material(passiveInnerMaterial));
-  dd4hep::Volume passiveOuterVol(passiveOuterMaterial + "_passive", passiveOuterShape,
-                                           aLcdd.material(passiveOuterMaterial));
-  dd4hep::Volume passiveGlueVol(passiveGlueMaterial + "_passive", passiveGlueShape,
-                                          aLcdd.material(passiveGlueMaterial));
 
   // rescale layer thicknesses
   double scaleLayerThickness = planeLength / layersTotalHeight;
@@ -171,10 +159,29 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
     lLog << MSG::DEBUG << "Thickness of layer " << iLay << " : " << layerHeight[iLay] << endmsg;
   }
   double layerFirstOffset = -planeLength / 2. + layerHeight[0] / 2.;
+
+  dd4hep::Box passiveShape(passiveThickness / 2., caloDim.dz(), planeLength / 2.);
+  // inner layer is not in the first calo layer (to sample more uniformly in the layer where upstream correction is
+  // applied)
+  dd4hep::Box passiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), planeLength / 2. - layerHeight[0] / 2.);
+  dd4hep::Box passiveInnerShapeFirstLayer(passiveInnerThickness / 2., caloDim.dz(), layerHeight[0] / 2.);
+  dd4hep::Box passiveOuterShape(passiveOuterThickness / 4., caloDim.dz(), planeLength / 2.);
+  dd4hep::Box passiveGlueShape(passiveGlueThickness / 4., caloDim.dz(), planeLength / 2.);
+  // passive volume consists of inner part and two outer, joind by glue
+  dd4hep::Volume passiveVol("passive", passiveShape, aLcdd.material("Air"));
+  dd4hep::Volume passiveInnerVol(passiveInnerMaterial + "_passive", passiveInnerShape,
+                                           aLcdd.material(passiveInnerMaterial));
+  dd4hep::Volume passiveInnerVolFirstLayer(activeMaterial + "_passive", passiveInnerShapeFirstLayer,
+                                                     aLcdd.material(activeMaterial));
+  dd4hep::Volume passiveOuterVol(passiveOuterMaterial + "_passive", passiveOuterShape,
+                                           aLcdd.material(passiveOuterMaterial));
+  dd4hep::Volume passiveGlueVol(passiveGlueMaterial + "_passive", passiveGlueShape,
+                                          aLcdd.material(passiveGlueMaterial));
+
   if (passiveInner.isSensitive()) {
     lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
     double layerOffset = layerFirstOffset;
-    for (uint iLayer = 0; iLayer < numLayers; iLayer++) {
+    for (uint iLayer = 1; iLayer < numLayers; iLayer++) {
       dd4hep::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight[iLayer] / 2.);
       dd4hep::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
                                                     aLcdd.material(passiveInnerMaterial));
@@ -227,7 +234,9 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
   }
 
   dd4hep::PlacedVolume passiveInnerPhysVol =
-      passiveVol.placeVolume(passiveInnerVol, dd4hep::Position(0, 0, 0));
+      passiveVol.placeVolume(passiveInnerVol, dd4hep::Position(0, 0, layerHeight[0] / 2.));
+  dd4hep::PlacedVolume passiveInnerPhysVolFirstLayer =
+      passiveVol.placeVolume(passiveInnerVolFirstLayer, dd4hep::Position(0, 0, layerFirstOffset));
   dd4hep::PlacedVolume passiveOuterPhysVolBelow = passiveVol.placeVolume(
       passiveOuterVol,
       dd4hep::Position(passiveInnerThickness / 2. + passiveGlueThickness / 2. + passiveOuterThickness / 4., 0,
@@ -241,10 +250,17 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
   dd4hep::PlacedVolume passiveGluePhysVolAbove = passiveVol.placeVolume(
       passiveGlueVol, dd4hep::Position(passiveInnerThickness / 2. + passiveGlueThickness / 4., 0, 0));
   passiveInnerPhysVol.addPhysVolID("subtype", 0);
+  passiveInnerPhysVolFirstLayer.addPhysVolID("subtype", 0);
   passiveOuterPhysVolBelow.addPhysVolID("subtype", 1);
   passiveOuterPhysVolAbove.addPhysVolID("subtype", 2);
   passiveGluePhysVolBelow.addPhysVolID("subtype", 3);
   passiveGluePhysVolAbove.addPhysVolID("subtype", 4);
+  if (passiveInner.isSensitive()) {
+    passiveInnerVolFirstLayer.setSensitiveDetector(aSensDet);
+    passiveInnerPhysVolFirstLayer.addPhysVolID("layer", 0);
+    dd4hep::DetElement passiveInnerDetElemFirstLayer("layer", 0);
+    passiveInnerDetElemFirstLayer.setPlacement(passiveInnerPhysVolFirstLayer);
+  }
 
   //////////////////////////////
   // READOUT PLANES
