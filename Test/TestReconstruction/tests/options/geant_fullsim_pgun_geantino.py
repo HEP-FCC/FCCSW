@@ -9,7 +9,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 from Configurables import GeoSvc, SimG4SingleParticleGeneratorTool
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
   'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
-                    OutputLevel = DEBUG)
+                    OutputLevel = INFO)
 
 
 # Geant4 service
