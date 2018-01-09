@@ -32,7 +32,7 @@ gaudi_add_test(EcalReconstructionNoiseFromFile
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                DEPENDS simulateECalSimple
                FRAMEWORK tests/options/runEcalSimple_ReconstructionSW_noiseFromFile.py
-               PASSREGEX "Number of segmentation cells in (phi,eta): [629, 331, 0]" )
+               PASSREGEX "Number of segmentation cells in \\(phi,eta\\): \\[629, 331, 0\\]" )
 
 gaudi_add_test(EcalReconstructionCheckNumClusters
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
@@ -67,4 +67,4 @@ gaudi_add_test(reconstructionFullCaloSystemWithNoise
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                 DEPENDS simulateFullCaloSystem
                 FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py
-                PASSREGEX "Number of segmentation cells in (phi,eta): [704, 335, 0]")
+                PASSREGEX "Number of segmentation cells in \\(phi,eta\\): \\[704, 335, 0\\]")

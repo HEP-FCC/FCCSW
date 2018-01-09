@@ -24,20 +24,19 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", 
-                        collections = [ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName, 
-                                       hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName], 
+podioinput = PodioInput("PodioReader",
+                        collections = [ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName,
+                                       hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName],
                         OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                           # 'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
+                                           'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                           # 'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml',
-                                           # 'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
+                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml',
+                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                           # 'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'
-                                           ],
+                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'],
                     OutputLevel = INFO)
 
 
@@ -46,6 +45,7 @@ ecalEndcapNoisePath = "/afs/cern.ch/user/n/novaj/public/elecNoise_emec_6layers.r
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
 
+# add noise, create all existing cells in detector
 from Configurables import NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool,CreateCaloCells
 noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
                                          readoutName = ecalBarrelReadoutName,
@@ -54,53 +54,44 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
                                          activeFieldName = "layer",
                                          addPileup = False,
                                          numRadialLayers = 8, OutputLevel=DEBUG)
-
-# add noise, create all existing cells in detector
 barrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                          readoutName = ecalBarrelReadoutName,
                                          activeVolumeName = "LAr_sensitive",
                                          activeFieldName = "layer",
                                          fieldNames = ["system"],
                                          fieldValues = [5],
-                                         activeVolumesNumber = 8, OutputLevel=DEBUG)
+                                         activeVolumesNumber = 8)
 createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                         geometryTool = barrelGeometry,
                                         doCellCalibration=False, # already calibrated
                                         addCellNoise=True, filterCellNoise=False,
                                         noiseTool = noiseBarrel,
                                         hits=ecalBarrelCellsName,
-                                        cells=ecalBarrelCellsName+"noise", OutputLevel=DEBUG)
-
-from Configurables import NoiseCaloCellsFlatTool
-noiseEndcap = NoiseCaloCellsFlatTool("HCalNoise")
-# noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap",
-#                                          readoutName = ecalEndcapReadoutName,
-#                                          noiseFileName = ecalEndcapNoisePath,
-#                                          elecNoiseHistoName = ecalEndcapNoiseHistName,
-#                                          activeFieldName = "layer",
-#                                          addPileup = False,
-#                                          numRadialLayers = 6, OutputLevel=DEBUG)
+                                        cells=ecalBarrelCellsName+"Noise", OutputLevel=DEBUG)
 
 # add noise, create all existing cells in detector
+# currently only positive side!
+noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap",
+                                                 readoutName = ecalEndcapReadoutName,
+                                                 noiseFileName = ecalEndcapNoisePath,
+                                                 elecNoiseHistoName = ecalEndcapNoiseHistName,
+                                                 activeFieldName = "layer",
+                                                 addPileup = False,
+                                                 numRadialLayers = 6)
 endcapGeometry = TubeLayerPhiEtaCaloTool("EcalEndcapGeo",
-                                         readoutName = ecalEndcapReadoutName,
-                                         activeVolumeName = "layerEnvelope",
-                                         activeFieldName = "layer",
-                                         activeVolumesNumber = 6,
-                                         # activeFieldAdditionalName = "sublayer",
-                                         # activeFieldAdditionalValues = [0,], # we want the first 
-                                         fieldNames = ["system"],
-                                         fieldValues = [6],
-                                         # sideVolumeFieldName = "subsystem", # name by which the sides of the detector are recognised (positive/negative)
-                                         # sideVolumeFieldValues = [0,1],
-                                         OutputLevel=DEBUG)
+                                                 readoutName = ecalEndcapReadoutName,
+                                                 activeVolumeName = "layerEnvelope",
+                                                 activeFieldName = "layer",
+                                                 activeVolumesNumber = 6,
+                                                 fieldNames = ["system"],
+                                                 fieldValues = [6])
 createEcalEndcapCells = CreateCaloCells("CreateECalEndcapCells",
-                                        geometryTool = endcapGeometry,
-                                        doCellCalibration=False, # already calibrated
-                                        addCellNoise=True, filterCellNoise=False,
-                                        noiseTool = noiseEndcap,
-                                        hits=ecalEndcapCellsName,
-                                        cells=ecalEndcapCellsName+"noise", OutputLevel=DEBUG)
+                                                geometryTool = endcapGeometry,
+                                                doCellCalibration=False, # already calibrated
+                                                addCellNoise=True, filterCellNoise=False,
+                                                noiseTool = noiseEndcap,
+                                                hits=ecalEndcapCellsName,
+                                                cells=ecalEndcapCellsName+"Noise")
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
@@ -116,8 +107,8 @@ towers = CaloTowerTool("towers",
                                hcalEndcapReadoutName = hcalEndcapReadoutName,
                                hcalFwdReadoutName = hcalFwdReadoutName,
                                OutputLevel = DEBUG)
-towers.ecalBarrelCells.Path = ecalBarrelCellsName+"noise"
-towers.ecalEndcapCells.Path = ecalEndcapCellsName
+towers.ecalBarrelCells.Path = ecalBarrelCellsName + "Noise"
+towers.ecalEndcapCells.Path = ecalEndcapCellsName + "Noise"
 towers.ecalFwdCells.Path = ecalFwdCellsName
 towers.hcalBarrelCells.Path = hcalBarrelCellsName
 towers.hcalExtBarrelCells.Path = hcalExtBarrelCellsName
@@ -144,8 +135,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
 
-out = PodioOutput("out", filename="output_allCalo_reco_noise.root",
-                   OutputLevel=DEBUG)
+out = PodioOutput("out", filename="output_allCalo_reco_noise.root")
 out.outputCommands = ["keep *"]
 
 #CPU information
@@ -161,11 +151,9 @@ ApplicationMgr(
     TopAlg = [podioinput,
               createEcalBarrelCells,
               createEcalEndcapCells,
-              #createClusters,
+              createClusters,
               out
               ],
     EvtSel = 'NONE',
     EvtMax   = num_events,
-    ExtSvc = [podioevent, geoservice],
-    OutputLevel = DEBUG),
-
+    ExtSvc = [podioevent, geoservice])
