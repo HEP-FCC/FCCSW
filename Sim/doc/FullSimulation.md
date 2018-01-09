@@ -77,15 +77,16 @@ Simulation package contains following directories:
 ## Example
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/geant_fullsim.py
+./run fccrun.py Examples/options/geant_fullsim.py
 ~~~
 
 The configuration file (`Examples/options/geant_fullsim.py`) contains:
   * reading an event from a HepMC file
 
     ~~~{.py}
-    from Configurables import HepMCReader
-    reader = HepMCReader("Reader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+    from Configurables import HepMCFileReader, GenAlg
+    readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+    reader = GenAlg("Reader", SignalProvider=readertool)
     reader.hepmc.Path = "hepmc"
     ~~~
 
@@ -178,7 +179,7 @@ There is a possibility to create the detector with GDML instead of DD4hep. In th
 Simple example:
 
 ~~~{.sh}
-./run gaudirun.py Sim/SimG4Components/tests/options/geant_fullsim_gdml.py
+./run fccrun.py Sim/SimG4Components/tests/options/geant_fullsim_gdml.py
 ~~~
 
 
@@ -198,6 +199,8 @@ Any communication with the Geant Run Manager is handled by this service:
 - simulation:
   - [passing an event to `G4EventManager`](#event-processing)
   - [retrieving a simulated event (with hits collections and other information)](#output)
+
+Additionally, the simulation service takes the random number generator seeds from Gaudi service `RndmGenSvc`. If a user wants to set the simulation seeds manually, the flag `randomNumbersFromGaudi` needs to be set to `false`.
 
 
 ### Geometry construction

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+  <info name="FCChh_HCalExtendedBarrel_TileCal"
+    title="Extended Barrel Calorimeter"
+    author="C. Neubueser"
+    url="no"
+    status="development"
+    version="1.0">
+    <comment>HCal layout based on ATLAS HCal, with realistic longitudinal segmentation and steel support</comment>
+  </info>
+  <define>
+    <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
+    <!-- tile dimensions -->
+    <constant name="BarHCal_n_phi_modules" value="128"/>
+    <constant name="BarHCal1_n_layers_1" value="1"/>
+    <constant name="BarHCal1_n_layers_2" value="0"/>
+    <constant name="BarHCal1_n_layers_3" value="3"/>
+    <constant name="BarHCal2_n_layers_1" value="2"/>
+    <constant name="BarHCal2_n_layers_2" value="2"/>
+    <constant name="BarHCal2_n_layers_3" value="4"/>
+    <constant name="BarHCal_module_drho_1" value="100*mm"/>
+    <constant name="BarHCal_module_drho_2" value="150*mm"/>
+    <constant name="BarHCal_module_drho_3" value="250*mm"/>
+    <constant name="BarHCAL_module_spacing_phi" value="1*mm"/>
+    <!-- component dimensions -->
+    <constant name="BarHCal_master_plate_thickness" value="5*mm" />
+    <constant name="BarHCal_spacer_plate_thickness" value="4*mm" />
+    <constant name="BarHCal_air_space_thickness" value="0.5*mm" />
+    <constant name="BarHCal_scintillator_thickness" value="3*mm" />
+    <!-- face and end-plate dimensions -->
+    <constant name="BarHCal_steel_support_thickness" value="212*mm" />
+    <constant name="BarHCal_end_plate_thickness" value="5*mm" />
+    <constant name="BarHCal_face_plate_thickness" value="10*mm" />
+    <constant name="BarHCal_plate_space" value="0.5*mm" />
+  </define>
+
+  <display>
+    <vis name="extHcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="extHcal_steel_master_vis" r="0.6" g="0.6" b="0.6" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="extHcal_steel_support_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="extHcal_face_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="extHcal_end_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="extHcal_polystyrene_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="extHcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
+    <vis name="extHcal_barrel_seq1_vis" r="0.1" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
+    <vis name="extHcal_barrel_seq2_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
+    <vis name="extHcal_barrel_layer_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
+    <vis name="extHcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" />
+  </display>
+
+  <readouts>
+    <readout name="ExtBarHCal_Readout">
+      <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
+     <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256" offset_phi="-pi+pi/256."/>
+     <id>system:4,type:2,module:9,row:8,layer:4,tile:2,eta:1,phi:10</id>
+    </readout>
+    <readout name="ExtBarHCal_Readout_phieta">
+     <segmentation type="GridPhiEta" grid_size_eta="0.01" offset_eta="-1.813" phi_bins="256" offset_phi="-pi+pi/256."/>
+     <id>system:4,type:2,module:9,row:8,layer:4,tile:2,eta:10,phi:10</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <include ref="FCChh_HCalExtendedTileDefinition.xml" />
+  </detectors>
+</lccdd>

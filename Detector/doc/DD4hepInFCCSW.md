@@ -448,13 +448,11 @@ The final sub-directory `DetCommon` includes descriptions and macros that should
 We provide an example configuration and plotting script for estimating the material budget as a function of eta.
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/material_scan.py
+./run fccrun.py Examples/options/material_scan.py
 ./run python Examples/scripts/material_plots.py
 ~~~
 
-The configuration file `material_scan` allows to customize the binning of the material scan with `etaMax` and `etaBinning`. The scan is
-performed from `-etaMax` to `+etaMax` with a step-size of `etaBinning`. The detector which is scanned is optained from
-the `GeoSvc` and the corresponding detector description can be changed there as usual.
+The configuration file `material_scan` allows to customise the binning of the material scan with `etaMax` and `etaBinning`. The detector which is scanned is obtained from the `GeoSvc` and the corresponding detector description can be changed there as usual. The scan is performed from `-etaMax` to `+etaMax` with a step-size of `etaBinning`. It is also averaged over azimuthal angle, taking `nPhiTrials` random directions, set by default to 100. The start point of the direction is (0,0,0), whereas the end point is by default the end of the world volume. It may be changed to other volume border by specifying the volume name in property `envelopeName`. If point (0,0,0) is not contained inside the envelope, the distance to the closest volume border is taken into account.
 
 The output of the first command is the ROOT file `DD4hep_material_scan.root` which contains a `TTree` that has 6 branches:
 
@@ -472,6 +470,6 @@ The script sums up all materials that have the same name in the eta bin and disc
 Troubleshooting
 ---
 
-* Overlapping volumes may lead to some hard-to-detect errors. If a daughter volume is completely outside the parent volume, an error is reported during the conversion to Geant4 geometry description (`PANIC! - Overlapping daughter with mother volume.`). But sometimes overlaps errors are silent, yet result in sensitive detectors not registering any hits. The test suite therefore includes a check on overlaps, which should be fixed. To manually run the check, do `./run gaudirun.py Examples/options/printOverlaps.py` or use the `checkOverlaps.py` script from DD4hep.
+* Overlapping volumes may lead to some hard-to-detect errors. If a daughter volume is completely outside the parent volume, an error is reported during the conversion to Geant4 geometry description (`PANIC! - Overlapping daughter with mother volume.`). But sometimes overlaps errors are silent, yet result in sensitive detectors not registering any hits. The test suite therefore includes a check on overlaps in `FCChh_DectMaster.xml`, which should be fixed. It is located under ` Test/TestGeometry/tests/options/geant_overlap_test_fcchh.py`, if it is needed to be run manually. A second test is provided by the ROOT geometry package. It can be run via the `checkOverlaps.py` script from DD4hep. With the command line option `-o s` it uses sampling to check for overlaps, but ignores extrusions of daughter volumes. Without this option, it is vice-versa, so it is recommended to run it in both modes. Note that the sampling does not work correctly if several xml files are used for the detector description. It is best to add your detector to the master xml file.
 * It is an error to declare a volume as well as one of its daughters sensitive. This is reported somewhat confusingly as `populate: Severe error: Duplicated Volume entry: 1A [THIS SHOULD NEVER HAPPEN]` but is in fact an issue with the sensitive detector.
 

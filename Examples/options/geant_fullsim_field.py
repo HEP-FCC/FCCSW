@@ -5,13 +5,13 @@ from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun
-# Particle Gun using MomentumRangeParticleGun tool and FlatSmearVertex
+from Configurables import GenAlg, MomentumRangeParticleGun
+## Particle Gun using MomentumRangeParticleGun tool and FlatSmearVertex
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
 pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13])
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun_tool, VertexSmearingToolPGun="FlatSmearVertex")
+gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
@@ -24,13 +24,12 @@ ppservice = Gaudi__ParticlePropertySvc(
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
-                    OutputLevel=DEBUG)
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
+                    OutputLevel = DEBUG)
 
-from Configurables import HepMCConverter
-# Reads an HepMC::GenEvent from the data service and writes a collection
-# of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+from Configurables import HepMCToEDMConverter
+## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"
@@ -71,6 +70,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+out.filename = "tracker_with_field.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr

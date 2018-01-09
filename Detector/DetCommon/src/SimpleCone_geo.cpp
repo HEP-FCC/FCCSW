@@ -1,12 +1,14 @@
 #include "DD4hep/DetFactoryHelper.h"
 
+#include "DetCommon/DetUtils.h"
+
 namespace det {
 /**
   Simple cone using dimensions to be used to define cone composed of 1 single material
   @author Clement Helsens
 **/
 static DD4hep::Geometry::Ref_t
-createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector) {
+createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector sensDet) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
   DD4hep::Geometry::DetElement coneDet(name, x_det.id());
@@ -18,17 +20,29 @@ createSimpleCone(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::Sensit
 
   DD4hep::Geometry::Volume coneVol(x_det.nameStr() + "_SimpleCone", cone, lcdd.material(coneDim.materialStr()));
 
+  if (x_det.isSensitive()) {
+    DD4hep::XML::Dimension sdType(x_det.child(_U(sensitive)));
+    coneVol.setSensitiveDetector(sensDet);
+    sensDet.setType(sdType.typeStr());  
+  }
+
   DD4hep::Geometry::PlacedVolume conePhys;
 
   double zoff = coneDim.z_offset();
   if (fabs(zoff) > 0.000000000001) {
+    double reflectionAngle = 0.;
+    if (coneDim.hasAttr(_Unicode(reflect))) {
+      if (coneDim.reflect()) {
+        reflectionAngle = M_PI;
+        }
+    }
     DD4hep::Geometry::Position trans(0., 0., zoff);
     conePhys =
-        experimentalHall.placeVolume(coneVol, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
+        experimentalHall.placeVolume(coneVol, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationX(reflectionAngle), trans));
   } else
     conePhys = experimentalHall.placeVolume(coneVol);
 
-  conePhys.addPhysVolID("system", x_det.id()).addPhysVolID("side", 0);
+  conePhys.addPhysVolID("system", x_det.id());
 
   coneDet.setPlacement(conePhys);
 

@@ -5,6 +5,7 @@
 ### | ---------------------------------------------------- | ---------------------------------- | --------------------- | ------------------------------------- | ----------------------------------------------- |
 ### | generate Pythia events and save them to HepMC file   | convert `HepMC::GenEvent` to EDM   | filter MC Particles   | use sample jet clustering algorithm   | write the EDM output to ROOT file using PODIO   |
 
+from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
 ### Example of pythia configuration file to generate events
@@ -16,21 +17,34 @@ from Configurables import FCCDataSvc
 #### Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import ConstPileUp
+from Configurables import ConstPileUp, HepMCFileReader, GaussSmearVertex
 
-pileuptool = ConstPileUp(numPileUpEvents=2, filename="Generation/data/Pythia_minbias_pp_100TeV.cmd")
+smeartool = GaussSmearVertex(
+     xVertexMean=0. * units.mm,
+     xVertexSigma=0.5 * units.mm,
+     yVertexMean=0 * units.mm,
+     yVertexSigma=0.5 * units.mm,
+     zVertexMean=0* units.mm,
+     zVertexSigma=70*units.mm,
+     tVertexMean = 0 * units.picosecond,
+     tVertexSigma = 30 * units.picosecond)
 
-from Configurables import PythiaInterface
+pileuptool = ConstPileUp(numPileUpEvents=2)
+pileupreader = HepMCFileReader(Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+
+from Configurables import PythiaInterface, GenAlg
 ### PYTHIA algorithm
-pythia8gen = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pileupreader, VertexSmearingTool=smeartool)
 pythia8gen.PileUpTool = pileuptool
 pythia8gen.hepmc.Path = "hepmcevent"
 
 
-from Configurables import HepMCConverter
+from Configurables import HepMCToEDMConverter
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-hepmc_converter = HepMCConverter("Converter")
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmcevent"
+hepmc_converter.hepmcStatusList = [] # convert particles with all statuses
 hepmc_converter.genparticles.Path="all_genparticles"
 hepmc_converter.genvertices.Path="all_genvertices"
 
@@ -56,6 +70,6 @@ ApplicationMgr( TopAlg=[ pythia8gen, hepmc_converter, genfilter, genjet_clusteri
                 EvtSel='NONE',
                 EvtMax=2,
                 ExtSvc=[podioevent],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
 )
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCChh_ECalBarrel_Inclined"
+        title="Inclined ECal Barrel Calorimeter"
+        author="M.Aleksa,J.Faltova,A.Zaborowska"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>
+      Liquid argon / lead EM calorimeter design.
+      Passive plate inlcude lead in the middle, with steal on both sides, glued together.
+      Passive plates are inclined by a certain angle from the radial direction. The barrel is filled with liquid argon.
+      It includes cryostat.
+      This file is used in the calculation of the sampling fraction that corrects energy for the energy depoisted in the absorber.
+      Calculation of the sampling fraction can be done as both passive and active material is sensitive.
+    </comment>
+  </info>
+
+  <define>
+    <include ref="FCChh_ECalBarrel_CrystatThickness.xml" />
+    <constant name="CryoThicknessFront" value="CommonCryoThicknessFront"/>
+    <constant name="CryoThicknessBack" value="CommonCryoThicknessBack"/>
+    <constant name="CryoThicknessSide" value="CommonCryoThicknessSide"/>
+  </define>
+
+  <include ref="./FCChh_ECalBarrel_Common_calibration.xml" />
+
+</lccdd>

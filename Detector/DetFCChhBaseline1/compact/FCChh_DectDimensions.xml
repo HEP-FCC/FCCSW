@@ -13,7 +13,7 @@
         Dimensions for FCChhBaseline1: Design with Twin Solenoid, 6 T, 12 m bore, 10 Tm dipole
         Sources: FCC hadron detector meeting 31 Aug 2016 (excel table): https://indico.cern.ch/event/557687/
                  FCC hadron detector meeting 28 Sep 2016 (slides): https://indico.cern.ch/event/557688/
-                 Reference Geometry v7 (privately exchanged)
+                 Reference Geometry v7, can be found: /eos/experiment/fcc/hh/simulation/reference_geometry_5m_4T_v7.pdf
     </comment>
   </info>
 
@@ -42,6 +42,7 @@
     <constant name="BarSolenoidCryo2_rmin" value="6250*mm"/>
     <constant name="BarSolenoidCryo2_rmax" value="6305*mm"/>
     <constant name="BarSolenoidCryoFlange_dz" value="53.5*mm"/>
+    <constant name="BarSolenoidCryoFlange_offset" value="BarSolenoidCryo_dz-BarSolenoidCryoFlange_dz"/>
 
     <!-- Forward Solenoids -->
     <constant name="FwdSolenoid_dz" value="1700*mm"/>
@@ -55,6 +56,8 @@
     <constant name="FwdSolenoidCryo2_rmax" value="3560*mm"/>
     <constant name="FwdSolenoidCryoFlange1_dz" value="35*mm"/>
     <constant name="FwdSolenoidCryoFlange2_dz" value="100*mm"/>
+    <constant name="FwdSolenoidCryoFlange1_offset" value="FwdSolenoid_zOffset-FwdSolenoidCryo_dz+FwdSolenoidCryoFlange1_dz"/>
+    <constant name="FwdSolenoidCryoFlange2_offset" value="FwdSolenoid_zOffset+FwdSolenoidCryo_dz-FwdSolenoidCryoFlange2_dz"/>
 
     <!-- TRACKER DIMENSIONS -->
     <constant name="Tracker_rmin" value="23.28*mm"/>
@@ -92,15 +95,14 @@
     <constant name="BarHCal_rmin" value="2850*mm"/>
     <constant name="BarHCal_rmax" value="4890*mm"/>
     <constant name="BarHCal_dz" value="4600*mm"/>
-    <!-- Extended barrel (EM EB + HEC)-->
+    <!-- Calorimeter endcaps (EMEC + HEC)-->
     <constant name="ExtBarECal_id" value="6"/>
     <constant name="HadronicEndCap_id" value="7"/>
-    <constant name="ExtBarCal_rmin1" value="776*mm"/>
-    <constant name="ExtBarCal_rmax1" value="2700*mm"/>
-    <constant name="ExtBarCal_rmin2" value="1272*mm"/>
-    <constant name="ExtBarCal_rmax2" value="2700*mm"/>
     <constant name="ExtBarCal_dz" value="1500*mm"/>
     <constant name="ExtBarCal_zOffset" value="5300*mm + ExtBarCal_dz"/>
+    <constant name="ExtBarCal_rmin1" value="(ExtBarCal_zOffset - ExtBarCal_dz)* tan (2*atan(exp(-2.5))) - 0.1*m"/>
+    <constant name="ExtBarCal_rmin2" value="(ExtBarCal_zOffset + ExtBarCal_dz)* tan (2*atan(exp(-2.5))) - 0.1*m"/>
+    <constant name="ExtBarCal_rmax" value="2700*mm"/>
     <!-- HCal extended barrel (HCAL EB) -->
     <constant name="ExtBarHCal_id" value="9"/>
     <constant name="ExtBarHCal1_rmin" value="3500*mm"/>
@@ -109,16 +111,18 @@
     <constant name="ExtBarHCal2_rmax" value="4590*mm"/>
     <constant name="ExtBarHCal1_dz" value="150*mm"/>
     <constant name="ExtBarHCal1_zOffset" value="5000*mm + ExtBarHCal1_dz"/>
-    <constant name="ExtBarHCal2_dz" value="1350*mm"/>
+    <constant name="ExtBarHCal2_dz" value="1600*mm"/>
     <constant name="ExtBarHCal2_zOffset" value="ExtBarHCal1_zOffset + ExtBarHCal1_dz + ExtBarHCal2_dz"/>
-    <!-- Forward calorimeters (EFCAL + HFCAL) -->
+    <!-- Forward calorimeters (EMFWD + HFWD) -->
     <constant name="FwdECal_id" value="10"/>
     <constant name="FwdHCal_id" value="11"/>
-    <constant name="FwdCal_rmin1" value="49.6*mm"/>
-    <constant name="FwdCal_rmin2" value="58.6*mm"/>
-    <constant name="FwdCal_rmax" value="3600*mm"/>
     <constant name="FwdCal_dz" value="1500*mm"/>
     <constant name="FwdCal_zOffset" value="16500*mm + FwdCal_dz"/>
+    <constant name="FwdCal_rmin1" value="(FwdCal_zOffset - FwdCal_dz) * tan (2*atan(exp(-6.5)))"/>
+    <constant name="FwdCal_rmin2" value="(FwdCal_zOffset + FwdCal_dz) * tan (2*atan(exp(-6.5)))"/>
+    <constant name="FwdCal_active_rmin1" value="(FwdCal_zOffset - FwdCal_dz) * tan (2*atan(exp(-6)))"/>
+    <constant name="FwdCal_active_rmin2" value="(FwdCal_zOffset + FwdCal_dz) * tan (2*atan(exp(-6)))"/>
+    <constant name="FwdCal_rmax" value="3600*mm"/>
 
     <!-- MUON SYSTEM DIMENSIONS -->
     <!-- Muon system barrel -->
@@ -136,7 +140,7 @@
     <constant name="EndCapMuon_rmin2" value="2724.47*mm"/>
     <constant name="EndCapMuon_rmax2" value="4750*mm"/>
     <constant name="EndCapMuon_dz" value="500*mm"/>
-    <constant name="EndCapMuon_zOffset" value="9750*mm"/>
+    <constant name="EndCapMuon_zOffset" value="9500*mm"/>
 
     <!-- Muon system forward -->
     <constant name="FwdBarMuon_id" value="14"/>
@@ -146,10 +150,10 @@
     <constant name="FwdBarMuon_zOffset" value="14000*mm + FwdBarMuon_dz"/>
 
     <constant name="FwdMuon_id" value="15"/>
-    <constant name="FwdMuon_rmin" value="30*mm"/>
+    <constant name="FwdMuon_rmin" value="62.3*mm"/>
     <constant name="FwdMuon_rmax" value="7000*mm"/>
     <constant name="FwdMuon_dz" value="1500*mm"/>
-    <constant name="FwdMuon_zOffset" value="20500*mm + FwdMuon_dz"/>
+    <constant name="FwdMuon_zOffset" value="19700*mm + FwdMuon_dz"/> 
 
   </define>
 

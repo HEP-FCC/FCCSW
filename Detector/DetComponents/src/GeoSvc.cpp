@@ -10,18 +10,23 @@
 #include "GaudiKernel/Service.h"
 #include "GeoConstruction.h"
 
+#include "DD4hep/Printout.h"
+
 using namespace Gaudi;
 
 DECLARE_COMPONENT(GeoSvc)
 
 GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc)
-    : base_class(name, svc), m_dd4hepgeo(0), m_geant4geo(0), m_log(msgSvc(), name) {}
+: base_class(name, svc), m_incidentSvc("IncidentSvc", "GeoSvc"), m_dd4hepgeo(0), m_geant4geo(0), m_log(msgSvc(), name), m_failureFlag(false) {}
 
 GeoSvc::~GeoSvc() { m_dd4hepgeo->destroyInstance(); }
 
 StatusCode GeoSvc::initialize() {
   StatusCode sc = Service::initialize();
   if (!sc.isSuccess()) return sc;
+  uint printoutLevel = msgLevel();
+  DD4hep::setPrintLevel(DD4hep::PrintLevel(printoutLevel));
+  m_incidentSvc->addListener(this, "GeometryFailure");
   if (buildDD4HepGeo().isFailure())
     m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;
   else
@@ -31,7 +36,9 @@ StatusCode GeoSvc::initialize() {
     m_log << MSG::ERROR << "Could not build Geant4 geometry" << endmsg;
   else
     m_log << MSG::INFO << "Geant4 geometry SUCCESSFULLY built" << endmsg;
-
+  if (m_failureFlag) {
+    return StatusCode::FAILURE;
+  }
   return StatusCode::SUCCESS;
 }
 
@@ -67,3 +74,10 @@ StatusCode GeoSvc::buildGeant4Geo() {
 }
 
 G4VUserDetectorConstruction* GeoSvc::getGeant4Geo() { return (m_geant4geo.get()); }
+
+void GeoSvc::handle(const Incident& inc) {
+  error() << "Handling incident '" << inc.type() << "'" << endmsg;
+  if (!inc.type().compare("GeometryFailure")) {
+    m_failureFlag = true;
+  }
+}

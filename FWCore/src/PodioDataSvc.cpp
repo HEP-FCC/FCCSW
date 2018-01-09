@@ -76,7 +76,7 @@ void PodioDataSvc::setCollectionIDs(podio::CollectionIDTable* collectionIds) {
 
 /// Standard Constructor
 PodioDataSvc::PodioDataSvc(const std::string& name, ISvcLocator* svc)
-    : DataSvc(name, svc), m_eventMax(-1), m_collectionIDs(new podio::CollectionIDTable()) {}
+    : DataSvc(name, svc), m_collectionIDs(new podio::CollectionIDTable()) {}
 
 /// Standard Destructor
 PodioDataSvc::~PodioDataSvc() {}

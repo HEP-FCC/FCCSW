@@ -104,6 +104,15 @@ out_names = {
     # Jets output tool
     "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetsFlavorTagged": "jetsFlavor",
               "jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"},
+    # FatJets output tool
+    "fatjets": {"jets": "fatjets", "jetConstituents": "fatjetParts", 
+                "jetsOneSubJettinessTagged": "jetsOneSubJettiness", 
+                "jetsTwoSubJettinessTagged": "jetsTwoSubJettiness", 
+                "jetsThreeSubJettinessTagged": "jetsThreeSubJettiness",
+                "subjetsTrimmingTagged": "subjetsTrimmingTagged", "subjetsTrimming": "subjetsTrimming", 
+                "subjetsPruningTagged": "subjetsPruningTagged", "subjetsPruning": "subjetsPruning", 
+                "subjetsSoftDropTagged": "subjetsSoftDropTagged", "subjetsSoftDrop": "subjetsSoftDrop", 
+                },
     # Missing transverse energy output tool
     "met": {"missingEt": "met"}
     }
@@ -142,14 +151,19 @@ apply_paths(genJetSaveTool, out_names["genJets"])
 jetSaveTool = DelphesSaveJets("jets", delphesArrayName="JetEnergyScale/jets")
 apply_paths(jetSaveTool, out_names["jets"])
 
+fatjetSaveTool = DelphesSaveJets("fatjets", delphesArrayName="FatJetFinder/jets", saveSubstructure=True)
+apply_paths(fatjetSaveTool, out_names["fatjets"])
+
 metSaveTool = DelphesSaveMet("met", delphesMETArrayName="MissingET/momentum", delphesSHTArrayName="ScalarHT/energy")
 apply_paths(metSaveTool, out_names["met"])
 
 ## Pythia generator
 from Configurables import PythiaInterface
 
-pythia8gen = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
+pythia8gentool = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 ## Write the HepMC::GenEvent to the data service
+from Configurables import GenAlg
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
 pythia8gen.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
@@ -166,14 +180,15 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveNeutralParticles/pfneutrals",
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
-                                        "DelphesSaveMet/met"])
+                                        "DelphesSaveJets/fatjets",                                        
+					"DelphesSaveMet/met"])
 delphessim.hepmc.Path                = "hepmc"
 delphessim.genParticles.Path        = "skimmedGenParticles"
 delphessim.mcEventWeights.Path      = "mcEventWeights"
 
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.genparticles.Path="genParticles"
 hepmc_converter.genvertices.Path="genVertices"
