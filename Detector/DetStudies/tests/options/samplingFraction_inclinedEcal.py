@@ -41,7 +41,7 @@ hist = SamplingFractionInLayers("hists",
                                  layerFieldName = "layer",
                                  activeFieldName = "type",
                                  activeFieldValue = 0,
-                                 numLayers = 130,
+                                 numLayers = 8,
                                  OutputLevel = INFO)
 hist.deposits.Path="ECalBarrelPositionedHits"
 

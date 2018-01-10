@@ -46,9 +46,9 @@ public:
   virtual StatusCode finalize() final;
   private:
   // Energy range in the histogram axis
-  Gaudi::Property<double> m_energy{this, "energyMax", 100, "Max energy for the axis of plot"};
+  Gaudi::Property<double> m_energy{this, "energyAxis", 100, "Max energy for the axis of plot"};
   // Phi in the histogram axis
-  Gaudi::Property<double> m_phi{this, "phiMax", M_PI, "Max azimuthal angle for the axis of plot"};
+  Gaudi::Property<double> m_phi{this, "phiAxis", M_PI, "Max azimuthal angle for the axis of plot"};
   /// Handle for the energy deposits
   DataHandle<fcc::CaloHitCollection> m_deposits{"det/caloDeposits", Gaudi::DataHandle::Reader, this};
   /// Handle for the particle

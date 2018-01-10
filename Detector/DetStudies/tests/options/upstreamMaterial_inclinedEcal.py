@@ -44,8 +44,8 @@ createcellsBarrel.cells.Path="ECalBarrelCells"
 
 from Configurables import UpstreamMaterial
 hist = UpstreamMaterial("histsPresampler",
-                        energyMax=50,
-                        phiMax=0.1,
+                        energyAxis=50,
+                        phiAxis=0.1,
                         readoutName = "ECalBarrelEta",
                         layerFieldName = "layer",
                         numLayers = 8,
