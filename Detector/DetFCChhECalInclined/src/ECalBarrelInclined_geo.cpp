@@ -103,16 +103,19 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
     if (cryoFrontSensitive) {
       cryoFrontVol.setSensitiveDetector(aSensDet);
       cryoFrontPhysVol.addPhysVolID("cryo", 1);
+      cryoFrontPhysVol.addPhysVolID("type", 1);
       lLog << MSG::INFO << "Cryostat front volume set as sensitive" << endmsg;
     }
     if (cryoBackSensitive) {
       cryoBackVol.setSensitiveDetector(aSensDet);
-      cryoBackPhysVol.addPhysVolID("cryo", 2);
+      cryoBackPhysVol.addPhysVolID("cryo", 1);
+      cryoBackPhysVol.addPhysVolID("type", 2);
       lLog << MSG::INFO << "Cryostat back volume set as sensitive" << endmsg;
     }
     if (cryoSideSensitive) {
       cryoSideVol.setSensitiveDetector(aSensDet);
-      cryoSidePhysVol.addPhysVolID("cryo", 3);
+      cryoSidePhysVol.addPhysVolID("cryo", 1);
+      cryoSidePhysVol.addPhysVolID("type", 3);
       lLog << MSG::INFO << "Cryostat front volume set as sensitive" << endmsg;
     }
     dd4hep::DetElement cryoFrontDetElem(caloDetElem, "cryo_front", 0);
@@ -132,12 +135,14 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
     dd4hep::PlacedVolume servicesBackPhysVol = envelopeVol.placeVolume(servicesBackVol);
     if (cryoFrontSensitive) {
       servicesFrontVol.setSensitiveDetector(aSensDet);
-      servicesFrontPhysVol.addPhysVolID("cryo", 4);
+      servicesFrontPhysVol.addPhysVolID("cryo", 1);
+      servicesFrontPhysVol.addPhysVolID("type", 4);
       lLog << MSG::INFO << "Services front volume set as sensitive" << endmsg;
     }
     if (cryoBackSensitive) {
       servicesBackVol.setSensitiveDetector(aSensDet);
-      servicesBackPhysVol.addPhysVolID("cryo", 5);
+      servicesBackPhysVol.addPhysVolID("cryo", 1);
+      servicesBackPhysVol.addPhysVolID("type", 5);
       lLog << MSG::INFO << "Services back volume set as sensitive" << endmsg;
     }
     dd4hep::DetElement servicesFrontDetElem(caloDetElem, "services_front", 0);

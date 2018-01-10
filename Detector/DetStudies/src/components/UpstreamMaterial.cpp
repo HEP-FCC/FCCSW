@@ -45,15 +45,14 @@ StatusCode UpstreamMaterial::initialize() {
     error() << "Unable to locate Histogram Service" << endmsg;
     return StatusCode::FAILURE;
   }
-  int num_layers = m_numLayers;
-  for(int i = 0; i < num_layers; i++) {
-    m_cellEnergyPhi.push_back( new TH1F(("presamplerEnergy_phi"+std::to_string(i)).c_str(), ("Energy deposited in layer "+std::to_string(i)).c_str(), 100, -10 * 0.00360895, 10 * 0.00360895) );
-    if (m_histSvc->regHist("/rec/presamplerEnergy_phi"+std::to_string(i), m_cellEnergyPhi.back()).isFailure()) {
+  for(uint i = 0; i < m_numLayers; i++) {
+    m_cellEnergyPhi.push_back( new TH1F(("upstreamEnergy_phi"+std::to_string(i)).c_str(), ("Energy deposited in layer "+std::to_string(i)).c_str(), 1000, - m_phi, m_phi) );
+    if (m_histSvc->regHist("/det/upstreamEnergy_phi"+std::to_string(i), m_cellEnergyPhi.back()).isFailure()) {
       error() << "Couldn't register histogram" << endmsg;
       return StatusCode::FAILURE;
     }
-    m_upstreamEnergyCellEnergy2D.push_back( new TH2F(("upstreamEnergy_presamplerEnergy2D"+std::to_string(i)).c_str(), ("2D Upstream energy vs energy deposited in layer "+std::to_string(i)).c_str(), 4000, 0, m_energy, 1000, 0, m_energy / 5. ));
-    if (m_histSvc->regHist("/rec/upstreamEnergy_presamplerEnergy2D"+std::to_string(i), m_upstreamEnergyCellEnergy2D.back()).isFailure()) {
+    m_upstreamEnergyCellEnergy.push_back( new TH2F(("upstreamEnergy_presamplerEnergy"+std::to_string(i)).c_str(), ("Upstream energy vs energy deposited in layer "+std::to_string(i)).c_str(), 4000, 0, m_energy, 4000, 0, m_energy ));
+    if (m_histSvc->regHist("/det/upstreamEnergy_presamplerEnergy"+std::to_string(i), m_upstreamEnergyCellEnergy.back()).isFailure()) {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
     }
@@ -64,16 +63,17 @@ StatusCode UpstreamMaterial::initialize() {
 StatusCode UpstreamMaterial::execute() {
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   double sumEupstream = 0.;
-  double integralEcells = 0;
   std::vector<double> sumEcells;
   sumEcells.assign(m_numLayers, 0);
 
+  // first check MC phi angle
   const auto particle = m_particle.get();
   double phi = 0;
   for(const auto& part : *particle) {
     phi = atan2(part.core().p4.py, part.core().p4.px);
   }
 
+  // get the energy deposited in the cryostat and in the detector (each layer)
   const auto deposits = m_deposits.get();
    for(const auto& hit : *deposits) {
      decoder->setValue(hit.core().cellId);
@@ -84,11 +84,11 @@ StatusCode UpstreamMaterial::execute() {
      }
    }
   for(uint i = 0; i < m_numLayers; i++) {
+    // calibrate the energy in the detector
     sumEcells[i] /= m_samplingFraction[i];
-    integralEcells += sumEcells[i];
-    m_cellEnergyPhi[i]->Fill(phi, integralEcells);
-    m_upstreamEnergyCellEnergy2D[i]->Fill(integralEcells, sumEupstream);
-    verbose() << "total E in cell "<< i << " = " << sumEcells[i] <<"\t up to current cell = " << integralEcells << "\t upstream = " << sumEupstream << endmsg;
+    m_cellEnergyPhi[i]->Fill(phi, sumEcells[i]);
+    m_upstreamEnergyCellEnergy[i]->Fill(sumEcells[i], sumEupstream);
+    verbose() << "Energy deposited in layer "<< i << " = " << sumEcells[i] <<"\t energy deposited in the cryostat = " << sumEupstream << endmsg;
   }
   return StatusCode::SUCCESS;
 }

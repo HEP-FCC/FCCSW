@@ -1,5 +1,5 @@
-#ifndef DETECTORDETSTUDIES_H
-#define DETECTORDETSTUDIES_H
+#ifndef DETSTUDIES_UPSTREAMMATERIAL_H
+#define DETSTUDIES_UPSTREAMMATERIAL_H
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -20,7 +20,10 @@ class ITHistSvc;
 
 /** @class UpstreamMaterial UpstreamMaterial.h
  *
- *  Collects all the energy deposited in some
+ *  Histograms of energy deposited in the dead material of the the calorimeter.
+ *  Cryostat material needs to be marked as sensitive (and therefore ID 'cryo'==1).
+ *  Dependence of the energy deposited in the dead material on the energy deposited in each calorimeter layer is plotted.
+ *  Dependence of the energy deposited in the dead material on the azimuthal angle of the incoming particle (MC truth) is plotted.
  *
  *  @author Anna Zaborowska
  */
@@ -42,7 +45,10 @@ public:
    */
   virtual StatusCode finalize() final;
   private:
-  Gaudi::Property<double> m_energy{this, "energy", 20, "Max energy for the axis of plot"};
+  // Energy range in the histogram axis
+  Gaudi::Property<double> m_energy{this, "energyMax", 100, "Max energy for the axis of plot"};
+  // Phi in the histogram axis
+  Gaudi::Property<double> m_phi{this, "phiMax", M_PI, "Max azimuthal angle for the axis of plot"};
   /// Handle for the energy deposits
   DataHandle<fcc::CaloHitCollection> m_deposits{"det/caloDeposits", Gaudi::DataHandle::Reader, this};
   /// Handle for the particle
@@ -51,7 +57,7 @@ public:
   SmartIF<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  std::vector<TH2F*> m_upstreamEnergyCellEnergy2D;
+  std::vector<TH2F*> m_upstreamEnergyCellEnergy;
   std::vector<TH1F*> m_cellEnergyPhi;
   /// Name of the active field
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "active", "Name of active field"};
@@ -67,4 +73,4 @@ public:
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the readout"};
 };
-#endif /* DETSTUDIES_CALOSIMRESOLUTION_H */
+#endif /* DETSTUDIES_UPSTREAMMATERIAL_H */
