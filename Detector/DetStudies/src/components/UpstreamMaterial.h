@@ -22,13 +22,15 @@ class ITHistSvc;
  *
  *  Histograms of energy deposited in the dead material of the the calorimeter.
  *  Cryostat material needs to be marked as sensitive (and therefore ID 'cryo'==1).
- *  Dependence of the energy deposited in the dead material on the energy deposited in each calorimeter layer is plotted.
- *  Dependence of the energy deposited in the dead material on the azimuthal angle of the incoming particle (MC truth) is plotted.
+ *  Dependence of the energy deposited in the dead material on the energy deposited in each calorimeter layer is
+ * plotted.
+ *  Dependence of the energy deposited in the dead material on the azimuthal angle of the incoming particle (MC truth)
+ * is plotted.
  *
  *  @author Anna Zaborowska
  */
 
-class UpstreamMaterial: public GaudiAlgorithm {
+class UpstreamMaterial : public GaudiAlgorithm {
 public:
   explicit UpstreamMaterial(const std::string&, ISvcLocator*);
   virtual ~UpstreamMaterial();
@@ -44,7 +46,8 @@ public:
    *   @return status code
    */
   virtual StatusCode finalize() final;
-  private:
+
+private:
   // Energy range in the histogram axis
   Gaudi::Property<double> m_energy{this, "energyAxis", 100, "Max energy for the axis of plot"};
   // Phi in the histogram axis
