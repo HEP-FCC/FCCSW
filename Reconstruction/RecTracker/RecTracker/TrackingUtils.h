@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace DD4hep {
+namespace dd4hep {
   namespace DDSegmentation {
     class BitField64;
   }
@@ -16,7 +16,7 @@ namespace fcc {
 
 namespace rec {
 /// fill vector with hits ordered according to the CellIdOrder struct
-void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits, DD4hep::DDSegmentation::BitField64* decoder);
+void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits, dd4hep::DDSegmentation::BitField64* decoder);
 
 }
 #endif

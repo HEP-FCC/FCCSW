@@ -1,6 +1,6 @@
 #include "DetSegmentation/GridRPhiEta.h"
 
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 
 /// default constructor using an encoding string

@@ -31,7 +31,7 @@ To first order two files are involved to describe a detector in DD4hep.
 Constructing Detector Geometry
 --
 
-Similarly to Geant4 itself, DD4hep tries to re-use detector elements without having to keep every instance in memory. I.e. many `DD4hep::Geometry::PlacedVolume` are used that refer to one `DD4hep::Geometry::Volume`. To exploit this feature as much as possible:
+Similarly to Geant4 itself, DD4hep tries to re-use detector elements without having to keep every instance in memory. I.e. many `dd4hep::PlacedVolume` are used that refer to one `dd4hep::Volume`. To exploit this feature as much as possible:
 
 - Come up with the largest component that is repeatable (e.g. a detector wedge)
   - Usually this component is similar or equal to the components that are built when physically building the detector
@@ -88,30 +88,30 @@ Imagine we want to create a simple cone with a radius of 1 m and a length of 1 m
 
 ~~~{.cpp}
 namespace detector {
-static DD4hep::Geometry::Ref_t createElement(
-  DD4hep::Geometry::LCDD& lcdd,                 // dd4hep's main detector description interface
+static dd4hep::Ref_t createElement(
+  dd4hep::Detector& lcdd,                 // dd4hep's main detector description interface
   xml_h xmlElement,                             // the xml-tree that describes this detector
-  DD4hep::Geometry::SensitiveDetector sensDet   // dd4hep's interface to the sensitive detector
+  dd4hep::SensitiveDetector sensDet   // dd4hep's interface to the sensitive detector
   ) {
     // Get the detector description from the xml-tree
     xml_det_t    x_det = xml_h;
     std::string  name  = x_det.nameStr();
     // Create the detector element
-    DD4hep::Geometry::DetElement   coneDet( name, x_det.id() );
+    dd4hep::DetElement   coneDet( name, x_det.id() );
     // Get the world volume
-    DD4hep::Geometry::Volume experimentalHall =  lcdd.pickMotherVolume( coneDet );  // gets the containing volume (i.e. the world volume in this case)
+    dd4hep::Volume experimentalHall =  lcdd.pickMotherVolume( coneDet );  // gets the containing volume (i.e. the world volume in this case)
     // Get the dimensions defined in the xml-tree
     xml_comp_t  coneDim ( x_det.child( _U(dimensions) ) );
     // Create the cone
-    DD4hep::Geometry::Cone cone( coneDim.dz(), coneDim.rmin1(), coneDim.rmax1(), coneDim.rmin2(), coneDim.rmax2());
+    dd4hep::Cone cone( coneDim.dz(), coneDim.rmin1(), coneDim.rmax1(), coneDim.rmin2(), coneDim.rmax2());
     // Create the volume corresponding to the cone
-    DD4hep::Geometry::Volume coneVol( x_det.nameStr()+ "_SimpleCone", cone, lcdd.material(coneDim.materialStr()) );
+    dd4hep::Volume coneVol( x_det.nameStr()+ "_SimpleCone", cone, lcdd.material(coneDim.materialStr()) );
     // Create the placed volume
-    DD4hep::Geometry::PlacedVolume conePhys;
+    dd4hep::PlacedVolume conePhys;
     // And place it in the world
     conePhys = experimentalHall.placeVolume( coneVol, // the volume to be placed
-                                              DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), // any rotation to be done
-                                              DD4hep::Geometry::Position trans(0., 0., 0. ) )); // the position where to place it
+                                              dd4hep::Transform3D(dd4hep::RotationZ(0.), // any rotation to be done
+                                              dd4hep::Position trans(0., 0., 0. ) )); // the position where to place it
     // connect placed volume and physical volume
     coneDet.setPlacement( conePhys );
 }
@@ -163,8 +163,8 @@ If you need to create your own custom SDs, see [User-defined Sensitive Detectors
 - The factory method should then contain (corresponding to the first case):
 
 ~~~{.cpp}
-DD4hep::Geometry::SensitiveDetector sd = aSensDet;
-DD4hep::XML::Dimension sdTyp = x_det.child(_U(sensitive)); // retrieve the type
+dd4hep::SensitiveDetector sd = aSensDet;
+dd4hep::xml::Dimension sdTyp = x_det.child(_U(sensitive)); // retrieve the type
 detVol.setSensitiveDetector(aSensDet);                     // set the type
 if ( x_det.isSensitive() ) {
   sd.setType(sdTyp.typeStr());                             // set for the whole detector
@@ -174,7 +174,7 @@ if ( x_det.isSensitive() ) {
   or (corresponding to the second case)
 
 ~~~{.cpp}
-DD4hep::Geometry::SensitiveDetector aSensDet
+dd4hep::SensitiveDetector aSensDet
 aSensDet.setType("SimpleTrackerSD");       // this could also be retrieved from xml like above
 if (xComp.isSensitive()) {
   modCompVol.setSensitiveDetector(aSensDet); // only set for certain components
@@ -219,16 +219,16 @@ In order to recognise where the energy was deposited, the sensitive volume has *
 ~~~{.cpp}
 // imagine the rest as above
 conePhys = experimentalHall.placeVolume( coneVol, // the volume to be placed
-                                          DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), // any rotation to be done
-                                          DD4hep::Geometry::Position trans(0., 0., 0. ) )); // the position where to place it
+                                          dd4hep::Transform3D(dd4hep::RotationZ(0.), // any rotation to be done
+                                          dd4hep::Position trans(0., 0., 0. ) )); // the position where to place it
 
 // Add the ID for our sub detector, using the ID number given in the xml
 conePhys.addPhysVolID( "system", x_det.id() );
 // connect placed volume and physical volume
 coneDet.setPlacement( conePhys );
 // Here you define your volume (skipping how to get dimensions, see above):
-DD4hep::Geometry::Box module( ... );
-DD4hep::Geometry::Volume moduleVol( ... );
+dd4hep::Box module( ... );
+dd4hep::Volume moduleVol( ... );
 // Now we place the module:
 for (int iMod = 0; iMod < 80; ++iMod) {
   // skipping rotation and position here, but placing it somewhere:
@@ -249,8 +249,8 @@ As mentioned above, you may want to define your own sensitive detector. For spec
 2. Factory method (of SD) for DD4hep
 
 In order to use the common methods to store your information in the EDM output (at the end of simulation), we advise to use the DD4hep hits classes:
-* [*DD4hep::Simulation::Geant4TrackerHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
-* [*DD4hep::Simulation::Geant4CalorimeterHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
+* [*dd4hep::sim::Geant4TrackerHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
+* [*dd4hep::sim::Geant4CalorimeterHit*](https://svnsrv.desy.de/viewvc/aidasoft/DD4hep/trunk/DDG4/include/DDG4/Geant4Hits.h?revision=1822&view=markup&pathrev=2132)
 
 If those classes are not sufficient, you'll need to create your own hit class implementation and the corresponding tools to translate your hit collections to FCC-EDM.
 
@@ -259,22 +259,22 @@ If those classes are not sufficient, you'll need to create your own hit class im
 
 - Implementation of G4VSensitiveDetector class, e.g. `det::SimpleCalorimeterSD`:
   *  `::Initialize(..)` - create the hit collection
-  *  `::ProcessHits(..)` - add entries to the hit collection with position, cellId, energy deposit, time, ... Hit base class used in the collection is already implemented in DD4hep `DD4hep::Simulation::Geant4CalorimeterHit`.
+  *  `::ProcessHits(..)` - add entries to the hit collection with position, cellId, energy deposit, time, ... Hit base class used in the collection is already implemented in DD4hep `dd4hep::sim::Geant4CalorimeterHit`.
 
-   There is a method to retrieve the cell identification based on the DD4hep segmentation (`det::segmentation::cellID(DD4hep::Geometry::Segmentation, const G4Step&)`).
+   There is a method to retrieve the cell identification based on the DD4hep segmentation (`det::segmentation::cellID(dd4hep::Segmentation, const G4Step&)`).
 
 ~~~{.cpp}
 namespace det {
 class SimpleCalorimeterSD : public G4VSensitiveDetector {
 public:
-  SimpleCalorimeterSD(std::string aDetectorName, std::string aReadoutName, DD4hep::Geometry::Segmentation aSeg);
+  SimpleCalorimeterSD(std::string aDetectorName, std::string aReadoutName, dd4hep::Segmentation aSeg);
   /// Destructor
   ~SimpleCalorimeterSD();
   virtual void Initialize(G4HCofThisEvent* aHitsCollections) final;
   virtual bool ProcessHits(G4Step* aStep, G4TouchableHistory*) final;
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* calorimeterCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* calorimeterCollection;
 };
 }
 ~~~
@@ -283,11 +283,11 @@ private:
   Any other sensitive detector may be added in the same way.
 
 ~~~{.cpp}
-namespace DD4hep {
+namespace dd4hep {
 namespace Simulation {
 // Factory method to create an instance of SimpleCalorimeterSD
 static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDetectorName,
-                                                          DD4hep::Geometry::LCDD& aLcdd) {
+                                                          dd4hep::Detector& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::SimpleCalorimeterSD(aDetectorName,
                                       readoutName,
@@ -295,7 +295,7 @@ static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDe
 }
 }
 }
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,DD4hep::Simulation::create_simple_calorimeter_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD,dd4hep::sim::create_simple_calorimeter_sd)
 ~~~
 
   **Note** that the name we put in the `DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR` macro corresponds to the type `SimpleCalorimeterSD` in the xml-description, this creates the link between the factory method and the xml-description.

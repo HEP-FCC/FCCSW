@@ -21,9 +21,9 @@
 
 #include "FCCEventHandler.h"
 
-using DD4hep::DDEveParticleActor;
-using DD4hep::DDEveHitActor;
-using DD4hep::DDEveHit;
+using dd4hep::DDEveParticleActor;
+using dd4hep::DDEveHitActor;
+using dd4hep::DDEveHit;
 
 static void* _createFCCEventHandler(const char*) {
   vis::FCCEventHandler* h = new vis::FCCEventHandler();
@@ -49,7 +49,7 @@ long FCCEventHandler::numEvents() const {
 }
 
 /// Access to the collection type by name
-DD4hep::EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& cl) const {
+dd4hep::EventHandler::CollectionType FCCEventHandler::collectionType(const std::string& cl) const {
   if (cl == "caloPositionedHits")
     return CALO_HIT_COLLECTION;
   else if (cl == "positionedHits")

@@ -23,12 +23,12 @@ gaudi_add_module(DetComponents
                  LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
 
 include(CTest)
-gaudi_add_test(RedoSegmentationXYZ
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/options/redoSegmentationXYZ.py)
-gaudi_add_test(RedoSegmentationPhiEta
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK tests/options/redoSegmentationPhiEta.py)
+#gaudi_add_test(RedoSegmentationXYZ
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#               FRAMEWORK tests/options/redoSegmentationXYZ.py)
+#gaudi_add_test(RedoSegmentationPhiEta
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#               FRAMEWORK tests/options/redoSegmentationPhiEta.py)
 gaudi_add_test(MergeCells
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/mergeCells.py)

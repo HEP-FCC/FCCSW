@@ -1,7 +1,7 @@
 #ifndef TESTGEOMETRY_CALORIMETERSD_H
 #define TESTGEOMETRY_CALORIMETERSD_H
 
-#include "TestGeometry/TestCalorimeterHit.h"
+#include "TestGeometryLib/TestCalorimeterHit.h"
 
 #include "G4VSensitiveDetector.hh"
 class G4Step;

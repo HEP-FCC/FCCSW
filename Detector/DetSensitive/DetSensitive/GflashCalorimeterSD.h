@@ -30,7 +30,7 @@ public:
    */
   GflashCalorimeterSD(const std::string& aDetectorName,
                       const std::string& aReadoutName,
-                      const DD4hep::Geometry::Segmentation& aSeg);
+                      const dd4hep::Segmentation& aSeg);
   /// Destructor
   ~GflashCalorimeterSD();
   /** Initialization.
@@ -60,9 +60,9 @@ public:
 
 private:
   /// Collection of calorimeter hits that get registered in G4Event and deleted in ~G4Event
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
-  DD4hep::Geometry::Segmentation m_seg;
+  dd4hep::Segmentation m_seg;
 };
 }
 

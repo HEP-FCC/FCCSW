@@ -2,7 +2,7 @@
 
 // FCCSW
 #include "SimG4Common/Units.h"
-#include "TestGeometry/TestCalorimeterHit.h"
+#include "TestGeometryLib/TestCalorimeterHit.h"
 
 // Geant4
 #include "G4Event.hh"

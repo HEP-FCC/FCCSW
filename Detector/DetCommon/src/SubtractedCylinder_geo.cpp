@@ -7,24 +7,24 @@ rmin1, rmax1, z1 dimensions of the enveloping cylinder
 rmin2, rmax2, z2 dimensions of the cylinder to be subtracted
 @author: Joschka Lingemann
 */
-static DD4hep::Geometry::Ref_t createSubtractedCylinder(DD4hep::Geometry::LCDD& lcdd,
-                                                        DD4hep::XML::Handle_t xmlElement,
-                                                        DD4hep::Geometry::SensitiveDetector /*sensDet*/) {
-  DD4hep::XML::DetElement xmlDet = static_cast<DD4hep::XML::DetElement>(xmlElement);
+static dd4hep::Ref_t createSubtractedCylinder(dd4hep::Detector& lcdd,
+                                                        dd4hep::xml::Handle_t xmlElement,
+                                                        dd4hep::SensitiveDetector /*sensDet*/) {
+  dd4hep::xml::DetElement xmlDet = static_cast<dd4hep::xml::DetElement>(xmlElement);
   std::string name = xmlDet.nameStr();
-  DD4hep::Geometry::DetElement detElement(name, xmlDet.id());
-  DD4hep::Geometry::Volume experimentalHall = lcdd.pickMotherVolume(detElement);
+  dd4hep::DetElement detElement(name, xmlDet.id());
+  dd4hep::Volume experimentalHall = lcdd.pickMotherVolume(detElement);
 
   xml_comp_t dimensions(xmlDet.dimensions());
-  DD4hep::Geometry::Tube envelope(dimensions.rmin1(), dimensions.rmax1(), dimensions.z1());
-  DD4hep::Geometry::Tube negative(dimensions.rmin2(), dimensions.rmax2(), dimensions.z2());
+  dd4hep::Tube envelope(dimensions.rmin1(), dimensions.rmax1(), dimensions.z1());
+  dd4hep::Tube negative(dimensions.rmin2(), dimensions.rmax2(), dimensions.z2());
 
-  DD4hep::Geometry::SubtractionSolid finalShape(envelope, negative);
-  DD4hep::Geometry::Volume cylVolume(name, finalShape, lcdd.material(dimensions.materialStr()));
+  dd4hep::SubtractionSolid finalShape(envelope, negative);
+  dd4hep::Volume cylVolume(name, finalShape, lcdd.material(dimensions.materialStr()));
 
-  DD4hep::Geometry::Position trans(0., 0., dimensions.z_offset());
-  DD4hep::Geometry::PlacedVolume conePhys =
-      experimentalHall.placeVolume(cylVolume, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
+  dd4hep::Position trans(0., 0., dimensions.z_offset());
+  dd4hep::PlacedVolume conePhys =
+      experimentalHall.placeVolume(cylVolume, dd4hep::Transform3D(dd4hep::RotationZ(0.), trans));
 
   conePhys.addPhysVolID("system", xmlDet.id());
   detElement.setPlacement(conePhys);
