@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="../../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../../DetCommon/compact/materials.xml"/>
+  </includes>
+
+  <info name="Box"
+        title="Box"
+        author="Anna"
+        url="no"
+        version="1"
+        status="development">
+    <comment>Simple box to test the sensitive detector</comment>
+  </info>
+
+  <define>
+    <constant name="world_size" value="5.*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+    <constant name="box_x" value="0.51*m"/> <!-- WARNING: half length -->
+    <constant name="box_y" value="0.51*m"/> <!-- WARNING: half length -->
+    <constant name="box_z" value="0.51*m"/> <!-- WARNING: half length -->
+  </define>
+
+  <display>
+    <vis name="BoxVis" r="0.5" g="0.0" b="0.5" alpha="0.2" showDaugthers="true" visible="false" />
+        <vis name="comp0" r="0." g="0." b="1.0" alpha="0.6" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  </display>
+
+  <readouts>
+    <readout name="Hits">
+      <segmentation type="CartesianGridXYZ" grid_size_x="2*cm" grid_size_y="2.*cm" grid_size_z="2.*cm"/>
+      <id>z:-6,y:-6,x:-6,system:1</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="0" name="BoxECal" type="SimpleBox" readout="Hits" sensitive="true">
+      <material name="AluminumOxide"/>
+      <sensitive type="FullParticleAbsorptionSD"/>
+      <dimensions x="box_x" y="box_y" z="box_z"/>
+      <position   x="0"     y="0"     z="box_z"/>
+      <rotation   x="0"     y="0"     z="0"/>
+    </detector>
+  </detectors>
+
+</lccdd>
