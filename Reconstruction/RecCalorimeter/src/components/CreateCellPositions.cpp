@@ -39,7 +39,7 @@ StatusCode CreateCellPositions::execute() {
   auto edmPositionedHitCollection = m_positionedHits.createAndPut();
 
   m_cellPositionsTool->getPositions(*hits, *edmPositionedHitCollection);
-  
+
   debug() << "Output positions collection size: " << edmPositionedHitCollection->size() << endmsg;
   return StatusCode::SUCCESS;
 }

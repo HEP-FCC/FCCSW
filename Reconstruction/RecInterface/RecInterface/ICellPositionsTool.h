@@ -5,8 +5,8 @@
 #include "GaudiKernel/IAlgTool.h"
 
 namespace fcc {
-  class CaloHitCollection;
-  class PositionedCaloHitCollection;
+class CaloHitCollection;
+class PositionedCaloHitCollection;
 }
 
 /** @class ICellPositionsTool
