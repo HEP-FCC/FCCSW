@@ -1,22 +1,22 @@
 #ifndef DETCOMPONENTS_CREATECELLPOSITIONS_H
 #define DETCOMPONENTS_CREATECELLPOSITIONS_H
 
-// GAUDI
-#include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/ServiceHandle.h"
-
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
 #include "FWCore/DataHandle.h"
+#include "RecInterface/ICellPositionsTool.h"
+
+// Gaudi
+#include "GaudiAlg/GaudiAlgorithm.h"
+#include "GaudiKernel/ToolHandle.h"
+
+#include "datamodel/CaloHit.h"
+#include "datamodel/PositionedCaloHit.h"
+#include "datamodel/CaloHitCollection.h"
+#include "datamodel/PositionedCaloHitCollection.h"
 
 class IGeoSvc;
-namespace DD4hep {
-namespace DDSegmentation {
-class Segmentation;
-}
-}
 
-/** @class CreateCellPositions DetComponents/src/CreateCellPositions.h CreateCellPositions.h
+/** @class CreateCellPositions Reconstruction/RecCalorimeter/src/components/CreateCellPositions.h CreateCellPositions.h
  *
  *  Retrieve positions of the cells from cell ID.
  *  This algorithm saves the centre position of the volume. The segmentation of volume is taken into account.
@@ -27,8 +27,8 @@ class Segmentation;
  *
  */
 
-template <class Hits, class PositionedHit>
 class CreateCellPositions : public GaudiAlgorithm {
+
 public:
   CreateCellPositions(const std::string& name, ISvcLocator* svcLoc);
   /**  Initialize.
@@ -45,16 +45,10 @@ public:
   StatusCode finalize();
 
 private:
-  /// Pointer to the geometry service
-  ServiceHandle<IGeoSvc> m_geoSvc;
-  /// Name of the calorimeter readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
-  /// Handle for hits (input collection with cellID)
-  DataHandle<Hits> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
-  /// Handle for positioned hits (output collection)
-  DataHandle<PositionedHit> m_positionedHits{"hits/positionedHits", Gaudi::DataHandle::Writer, this};
-  /// Get PhiEta segmentation
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  /// Handle for tool to get positions
+  ToolHandle<ICellPositionsTool> m_cellPositionsTool;
+  /// Output collection
+  DataHandle<fcc::PositionedCaloHitCollection> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
 };
 
 #endif /* DETCOMPONENTS_CREATECELLPOSITIONS_H */
