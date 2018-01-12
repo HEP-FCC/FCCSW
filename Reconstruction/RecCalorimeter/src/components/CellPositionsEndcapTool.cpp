@@ -53,6 +53,14 @@ void CellPositionsEndcapTool::getPositions(const fcc::CaloHitCollection& aCells,
   // Loop through cell collection
   for (const auto& cell : aCells) {
     auto cellid = cell.core().cellId;
+    m_decoder->setValue(cellid);
+    subsystem = (*m_decoder)["subsystem"].value();
+    // for in negtive z positioned cells retrieve cellIds on positive side
+    // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
+    if (subsystem == 1) {
+      (*m_decoder)["subsystem"] = 0;
+      cellid = m_decoder->getValue();
+    }
     // layers have been merged
     // --> for new z position, use mean positons of the originally merged layers
     m_decoder->setValue(cellid);
@@ -85,16 +93,9 @@ void CellPositionsEndcapTool::getPositions(const fcc::CaloHitCollection& aCells,
     // global cartesian coordinates calculated from r,phi,eta, for r=1
     DD4hep::Geometry::Position outPos(inSeg.x() * radius, inSeg.y() * radius, meanLayerPositionZ);
 
-    // for in negtive z positioned cells retrieve layer positions from the positive side
     // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
-    m_decoder->setValue(cellid);
-    subsystem = (*m_decoder)["subsystem"].value();
     if (subsystem == 1) {
-      (*m_decoder)["subsystem"] = 0;
-      auto newCellid = m_decoder->getValue();
-      auto negSeg = m_segmentation->position(newCellid);
-      eta = m_segmentation->eta(newCellid);
-      outPos.SetCoordinates(negSeg.x() * radius, negSeg.y() * radius, -meanLayerPositionZ);
+      outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -meanLayerPositionZ);
     }
 
     auto edmPos = fcc::Point();
