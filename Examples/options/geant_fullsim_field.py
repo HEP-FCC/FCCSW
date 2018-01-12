@@ -24,7 +24,7 @@ ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticleProperties
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
   'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
-                    OutputLevel = DEBUG)
+                    OutputLevel = INFO)
 
 from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles

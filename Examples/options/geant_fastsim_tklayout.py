@@ -20,7 +20,8 @@ hepmc_converter.genvertices.Path="allGenVertices"
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml'])
+                                         'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml'],
+                                         OutputLevel=INFO)
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions

@@ -29,7 +29,8 @@ from Configurables import GeoSvc
 ## parse the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml',
-                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml'])
+                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml'],
+                                        OutputLevel=INFO )
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
