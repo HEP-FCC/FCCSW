@@ -7,10 +7,12 @@
 #include "SimG4Interface/ISimG4ParticleHistory.h"
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
 
-
 // Geant
 class G4Event;
 
+namespace sim {
+class EventInformation;
+}
 
 /** @class ISimG4SaveHistoryTool SimG4Interface/SimG4Interface/ISimG4SaveHistoryTool.h ISimG4SaveHistoryTool.h
  *
@@ -25,6 +27,6 @@ public:
   DeclareInterfaceID(ISimG4SaveHistoryTool, 1, 0);
 
   // This resets the particle history
-  virtual void reset() = 0;
+  virtual void reset(sim::EventInformation* history) = 0;
 };
 #endif /* SIMG4INTERFACE_ISIMG4SAVEHISTORYTOOL_H */

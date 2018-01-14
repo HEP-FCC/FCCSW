@@ -10,7 +10,7 @@ from Configurables import GenAlg, MomentumRangeParticleGun
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
-pgun_tool = MomentumRangeParticleGun(PdgCodes=[13, -13])
+pgun_tool = MomentumRangeParticleGun(PdgCodes=[13])
 gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
@@ -25,7 +25,7 @@ ppservice = Gaudi__ParticlePropertySvc(
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
   'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
-                    OutputLevel = DEBUG)
+                    OutputLevel = INFO)
 
 from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
@@ -36,10 +36,12 @@ hepmc_converter.genvertices.Path="allGenVertices"
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from Configurables import SimG4Svc
+from Configurables import SimG4Svc, SimG4FullSimActions
+actions = SimG4FullSimActions()
+actions.enableHistory=True
 # giving the names of tools will initialize the tools of that type
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
-                        physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
+                        physicslist="SimG4FtfpBert", actions=actions)
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool(
@@ -57,12 +59,16 @@ savetrackertool.positionedTrackHits.Path = "positionedHits"
 savetrackertool.trackHits.Path = "hits"
 
 savehisttool = SimG4SaveParticleHistory("saveHistory")
+savehisttool.mcParticles.Path = "simParticles"
+savehisttool.genVertices.Path = "simVertices"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/saveTrackerHits",
-                             "SimG4SaveParticleHistory/saveHistory"],
+                             #"SimG4SaveParticleHistory/saveHistory",
+                             ],
+                    saveHistoryTool=savehisttool,
                     eventProvider=particle_converter)
 
 # PODIO algorithm

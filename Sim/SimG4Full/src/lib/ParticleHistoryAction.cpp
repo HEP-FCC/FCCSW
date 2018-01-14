@@ -2,8 +2,8 @@
 
 #include "SimG4Common/EventInformation.h"
 
-#include "G4LorentzVector.hh"
 #include "G4EventManager.hh"
+#include "G4LorentzVector.hh"
 
 namespace sim {
 
@@ -21,9 +21,9 @@ void ParticleHistoryAction::PostUserTrackingAction(const G4Track* aTrack) {
   }
 }
 
-bool selectSecondary(const G4Track& aTrack) {
+bool ParticleHistoryAction::selectSecondary(const G4Track& aTrack) {
   G4LorentzVector p4(aTrack.GetMomentum(), aTrack.GetTotalEnergy());
-  if (p4.e() < 5.0) { // this value is very arbitrary
+  if (p4.e() < 5.0) {  // this value is very arbitrary
     return false;
   }
   return true;

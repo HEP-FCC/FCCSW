@@ -4,8 +4,8 @@
 
 #include "SimG4Common/Units.h"
 
-#include "datamodel/MCParticleCollection.h"
 #include "datamodel/GenVertexCollection.h"
+#include "datamodel/MCParticleCollection.h"
 
 namespace sim {
 EventInformation::EventInformation() : m_genVertices(nullptr), m_mcParticles(nullptr) {}
@@ -25,11 +25,14 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   } else {
     mass = sqrt(mass);
   }
+  size_t g4ID = aSecondary->GetTrackID();
 
   edmParticle.p4().px = g4mom.x() * sim::g42edm::energy;
   edmParticle.p4().py = g4mom.y() * sim::g42edm::energy;
   edmParticle.p4().pz = g4mom.z() * sim::g42edm::energy;
   edmParticle.p4().mass = mass * sim::g42edm::energy;
+  edmParticle.core().bits = g4ID;
+  edmParticle.core().pdgId = aSecondary->GetDynamicParticle()->GetDefinition()->GetPDGEncoding();
 
   auto g4EndPos = aSecondary->GetPosition();
   auto edmEndVertex = m_genVertices->create();
@@ -38,7 +41,6 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   edmEndVertex.z(g4EndPos.z() * sim::g42edm::length);
   edmEndVertex.ctau(aSecondary->GetGlobalTime() * sim::g42edm::length);
 
-  size_t g4ID = aSecondary->GetTrackID();
   size_t edmVtxId = edmEndVertex.getObjectID().index;
   m_g4IdToEndVertexMap[g4ID] = edmVtxId;
 
@@ -57,6 +59,5 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
     edmStartVertex.z(g4StartPos.z() * sim::g42edm::length);
     edmStartVertex.ctau(aSecondary->GetGlobalTime() - aSecondary->GetLocalTime() * sim::g42edm::length);
   }
-
 }
 }

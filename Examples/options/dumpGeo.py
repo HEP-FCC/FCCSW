@@ -2,7 +2,7 @@ import os
 from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../Detector/DetSensitive/tests/compact/Box_simpleTrackerSD.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:../Detector/DetSensitive/tests/compact/Box_simpleTrackerSD.xml'], OutputLevel = INFO)
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc",

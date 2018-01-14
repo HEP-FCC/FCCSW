@@ -23,10 +23,14 @@ SimG4SaveParticleHistory::SimG4SaveParticleHistory(const std::string& aType, con
   declareProperty("genVertices", m_genVertices, "Handle to the decay vertices");
 }
 
-void SimG4SaveParticleHistory::reset() {
-  auto edmParticles = m_mcParticles.createAndPut();
-  auto edmVertices = m_genVertices.createAndPut();
-  m_history.setCollections(edmVertices, edmParticles);
+void SimG4SaveParticleHistory::reset(sim::EventInformation* history) {
+  m_mcParticleColl = m_mcParticles.createAndPut();
+  m_genVertexColl = m_genVertices.createAndPut();
+  history->setCollections(m_genVertexColl, m_mcParticleColl);
 }
 
-StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& /*aEvent*/) { return StatusCode::SUCCESS; }
+StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& /*aEvent*/) {
+  debug() << "Saved " << m_mcParticleColl->size() << " particles from Geant4 history." << endmsg;
+
+  return StatusCode::SUCCESS;
+}

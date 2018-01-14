@@ -19,12 +19,6 @@ public:
   /// Create all user actions.
   virtual void Build() const final;
 
-protected:
-  /** Initializes G4UserTrackingActions
-    * @out outAction the initialized user action
-    */
-  virtual SetUserAction(G4UserTrackingAction* outAction) const;
-
 private:
   /// Flag whether or not to store particle history
   bool m_enableHistory;

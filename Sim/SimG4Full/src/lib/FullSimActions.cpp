@@ -1,15 +1,15 @@
 #include "SimG4Full/FullSimActions.h"
+#include "SimG4Full/ParticleHistoryAction.h"
+#include <iostream>
 
 namespace sim {
-FullSimActions::FullSimActions(bool enableHistory) : m_enableHistory(enableHistory), G4VUserActionInitialization() {}
+FullSimActions::FullSimActions(bool enableHistory) : G4VUserActionInitialization(), m_enableHistory(enableHistory) {}
 
 FullSimActions::~FullSimActions() {}
 
-void FullSimActions::Build() const {}
-
-virtual SetUserAction(G4UserTrackingAction* outAction) const {
+void FullSimActions::Build() const {
   if (m_enableHistory) {
-    outAction = new ParticleHistoryAction;
+    SetUserAction(new ParticleHistoryAction());
   }
 }
 }

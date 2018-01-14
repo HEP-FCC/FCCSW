@@ -3,6 +3,7 @@
 
 #include "G4VUserEventInformation.hh"
 
+#include <iostream>
 #include <map>
 
 class G4Track;

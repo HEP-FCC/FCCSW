@@ -1,8 +1,9 @@
 #include "SimG4Alg.h"
 
 // FCCSW
-#include "SimG4Interface/ISimG4Svc.h"
+#include "SimG4Common/EventInformation.h"
 #include "SimG4Interface/ISimG4SaveHistoryTool.h"
+#include "SimG4Interface/ISimG4Svc.h"
 
 // Geant
 #include "G4Event.hh"
@@ -44,16 +45,25 @@ StatusCode SimG4Alg::initialize() {
 StatusCode SimG4Alg::execute() {
   // first translate the event
   G4Event* event = m_eventTool->g4Event();
+  auto eventInfo = new sim::EventInformation();
+  // here the event takes ownership of the event information
+  event->SetUserInformation(eventInfo);
 
   if (!event) {
     error() << "Unable to retrieve G4Event from " << m_eventTool << endmsg;
     return StatusCode::FAILURE;
+  }
+  if (m_saveHistory) {
+    m_historyTool->reset(eventInfo);
   }
   m_geantSvc->processEvent(*event);
   G4Event* constevent;
   m_geantSvc->retrieveEvent(constevent);
   for (auto& tool : m_saveTools) {
     tool->saveOutput(*constevent);
+  }
+  if (m_saveHistory) {
+    m_historyTool->saveOutput(*constevent);
   }
   m_geantSvc->terminateEvent();
   return StatusCode::SUCCESS;

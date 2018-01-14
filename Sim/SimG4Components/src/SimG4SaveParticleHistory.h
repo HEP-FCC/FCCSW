@@ -17,6 +17,10 @@ class GenVertexCollection;
 class MCParticleCollection;
 }
 
+namespace sim {
+class EventInformation;
+}
+
 /** @class SimG4SaveParticleHistory SimG4Components/src/SimG4SaveParticleHistory.h SimG4SaveParticleHistory.h
  *
  *  This tool allows to save the particle history of particles decaying during the simulation
@@ -36,15 +40,16 @@ public:
    */
   StatusCode saveOutput(const G4Event& aEvent) override final;
 
-  void reset() override final;
+  void reset(sim::EventInformation* history) override final;
 
 private:
   /// Handle for collection of MC particles to create
   DataHandle<fcc::MCParticleCollection> m_mcParticles{"sim/secondaries", Gaudi::DataHandle::Writer, this};
   /// Handle for the vertex collection to create
   DataHandle<fcc::GenVertexCollection> m_genVertices{"sim/secondaryVertices", Gaudi::DataHandle::Writer, this};
-  /// the actual history manager
-  sim::EventInformation m_history;
+  fcc::GenVertexCollection* m_genVertexColl;
+  /// Pointer to the particle collection, ownership should be handled in a algorithm / tool
+  fcc::MCParticleCollection* m_mcParticleColl;
 };
 
 #endif /* SIMG4COMPONENTS_SIMG4SAVEPARTICLEHISTORY_H */

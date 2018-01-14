@@ -123,9 +123,6 @@ StatusCode SimG4Svc::initialize() {
 }
 
 StatusCode SimG4Svc::processEvent(G4Event& aEvent) {
-  auto eventInfo = new sim::EventInformation();
-  // here the event takes ownership of the event information
-  aEvent.SetUserInformation(eventInfo);
   bool status = m_runManager.processEvent(aEvent);
   if (!status) {
     error() << "Unable to process event in Geant" << endmsg;

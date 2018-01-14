@@ -34,7 +34,7 @@ public:
 
 private:
   /// Set to true to save secondary particle info
-  Gaudi::Property<bool> m_enableHistory { this, "enableHistory", false, "Set to true to save secondary particle info" }
+  Gaudi::Property<bool> m_enableHistory{this, "enableHistory", false, "Set to true to save secondary particle info"};
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */
