@@ -9,6 +9,9 @@
 #include "GeoSvc.h"
 #include "GaudiKernel/Service.h"
 #include "GeoConstruction.h"
+#include "TGeoManager.h"
+
+#include "DD4hep/Printout.h"
 
 using namespace Gaudi;
 
@@ -22,6 +25,12 @@ GeoSvc::~GeoSvc() { m_dd4hepgeo->destroyInstance(); }
 StatusCode GeoSvc::initialize() {
   StatusCode sc = Service::initialize();
   if (!sc.isSuccess()) return sc;
+  // Turn off TGeo printouts if appropriate for the msg level
+  if (msgLevel() >= MSG::INFO) {
+    TGeoManager::SetVerboseLevel(0);
+  }
+  uint printoutLevel = msgLevel();
+  DD4hep::setPrintLevel(DD4hep::PrintLevel(printoutLevel));
   m_incidentSvc->addListener(this, "GeometryFailure");
   if (buildDD4HepGeo().isFailure())
     m_log << MSG::ERROR << "Could not build DD4Hep geometry" << endmsg;

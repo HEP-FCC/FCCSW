@@ -2,13 +2,8 @@ from ROOT import gSystem
 from EventStore import EventStore
 
 gSystem.Load("libdatamodelDict")
-storeWithNoise = EventStore(['output_ecalReco_flatNoise_test.root'])
-storeNoNoise = EventStore(['output_ecalReco_noNoise_test.root'])
+store = EventStore(['output_ecalReco_noiseFromFile_test.root'])
 
-for event in storeWithNoise:
-    clusters = event.get('caloClusters')
-    assert(len(clusters) == 1)
-
-for event in storeNoNoise:
+for event in store:
     clusters = event.get('caloClusters')
     assert(len(clusters) == 1)
