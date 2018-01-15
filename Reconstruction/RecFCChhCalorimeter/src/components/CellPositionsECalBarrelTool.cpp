@@ -1,19 +1,20 @@
-#include "CellPositionsForwardTool.h"
+#include "CellPositionsECalBarrelTool.h"
 
 // EDM
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsForwardTool)
+DECLARE_TOOL_FACTORY(CellPositionsECalBTool)
 
-CellPositionsForwardTool::CellPositionsForwardTool(const std::string& type, const std::string& name,
-                                                   const IInterface* parent)
+CellPositionsECalBTool::CellPositionsECalBTool(const std::string& type, const std::string& name,
+                                               const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
+  declareProperty("layerRadii", m_layerRadius, "Radii of layers");
   declareProperty("readoutName", m_readoutName);
 }
 
-StatusCode CellPositionsForwardTool::initialize() {
+StatusCode CellPositionsECalBTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
   m_geoSvc = service("GeoSvc");
@@ -39,49 +40,25 @@ StatusCode CellPositionsForwardTool::initialize() {
   if (iter == fields.end()) {
     error() << "Readout does not contain field: 'layer'" << endmsg;
   }
+  info() << "Layer radii : " << m_layerRadius << endmsg;
   return sc;
 }
 
-void CellPositionsForwardTool::getPositions(const fcc::CaloHitCollection& aCells,
-                                            fcc::PositionedCaloHitCollection& outputColl) {
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
-  int subsystem;
+void CellPositionsECalBTool::getPositions(const fcc::CaloHitCollection& aCells,
+                                          fcc::PositionedCaloHitCollection& outputColl) {
+  int layer;
   double radius;
-
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
     auto cellid = cell.core().cellId;
     m_decoder->setValue(cellid);
-    // for in negtive z positioned cells retrieve cellIds on positive side
-    // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
-    subsystem = (*m_decoder)["subsystem"].value();
-    // for in negtive z positioned cells retrieve layer positions from the positive side
-    if (subsystem == 1) {
-      (*m_decoder)["subsystem"] = 0;
-      cellid = m_decoder->getValue();
-    }
-    const auto& transformMatrix = volman.worldTransformation(cellid);
-    double outGlobal[3];
-    double inLocal[] = {0, 0, 0};
-    transformMatrix.LocalToMaster(inLocal, outGlobal);
-
-    debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
-            << outGlobal[2] / dd4hep::mm << endmsg;
-
-    // radius calculated from segmenation + z postion of volumes
+    layer = (*m_decoder)["layer"].value();
+    radius = m_layerRadius[layer];
+    // global cartesian coordinates calculated only from segmentation
+    // from r,phi,eta, for r=1
     auto inSeg = m_segmentation->position(cellid);
-    double eta = m_segmentation->eta(cellid);
-    radius = outGlobal[2] / std::sinh(eta);
-    debug() << "Radius : " << radius << endmsg;
-
-    DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
-
-    // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
-    if (subsystem == 1) {
-      outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -outGlobal[2]);
-    }
-
+    DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
     edmPos.y = outSeg.y() / dd4hep::mm;
@@ -92,9 +69,10 @@ void CellPositionsForwardTool::getPositions(const fcc::CaloHitCollection& aCells
     // Debug information about cell position
     debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cellid << endmsg;
     debug() << "Position of cell (mm) : \t" << outSeg.x() / dd4hep::mm << "\t" << outSeg.y() / dd4hep::mm << "\t"
-            << outSeg.z() / dd4hep::mm << endmsg;
+            << outSeg.z() / dd4hep::mm << "\n"
+            << endmsg;
   }
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-StatusCode CellPositionsForwardTool::finalize() { return GaudiTool::finalize(); }
+StatusCode CellPositionsECalBTool::finalize() { return GaudiTool::finalize(); }

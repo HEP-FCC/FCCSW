@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_CELLPOSITIONSFORWARDTOOL_H
-#define RECCALORIMETER_CELLPOSITIONSFORWARDTOOL_H
+#ifndef RECCALORIMETER_CELLPOSITIONSCALODISCSTOOL_H
+#define RECCALORIMETER_CELLPOSITIONSCALODISCSTOOL_H
 
 // GAUDI
 #include "GaudiAlg/GaudiTool.h"
@@ -26,14 +26,15 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsForwardTool
+/** @class CellPositionsCaloDiscsTool
  *
  */
 
-class CellPositionsForwardTool : public GaudiTool, virtual public ICellPositionsTool {
+class CellPositionsCaloDiscsTool : public GaudiTool, virtual public ICellPositionsTool {
+
 public:
-  CellPositionsForwardTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~CellPositionsForwardTool() = default;
+  CellPositionsCaloDiscsTool(const std::string& type, const std::string& name, const IInterface* parent);
+  ~CellPositionsCaloDiscsTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
@@ -44,7 +45,9 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
+  /// Array of merged layers in EC
+  Gaudi::Property<std::vector<int>> m_mergedLayers{this, "mergedLayers", {}, "array of merged layers"};
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   DD4hep::DDSegmentation::BitField64* m_decoder;
 };
-#endif /* RECCALORIMETER_CELLPOSITIONSFORWARDTOOL_H */
+#endif /* RECCALORIMETER_CELLPOSITIONSCALODISCSTOOL_H */
