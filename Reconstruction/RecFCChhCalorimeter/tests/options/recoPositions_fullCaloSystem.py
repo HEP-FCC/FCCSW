@@ -21,12 +21,14 @@ ecalBarrelLayerRadii = [193.0] + [198.5] + [207.5] + [216.5] + [225.5] + [234.5]
 # layers to be merged in endcaps, field name of the readout
 ecalEndcapNumberOfLayersToMerge = [2] + [2] + [4]*38
 hcalEndcapNumberOfLayersToMerge = [2] + [4]*20
+# Number of events
+num_events = 3
 
-podioevent = FCCDataSvc("EventDataSvc", input="/eos/experiment/fcc/hh/simulation/samples/v01/singlePart/pim/bFieldOn/eta0/100GeV/simu/output_condor_novaj_201801061004386054.root")
+podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root")
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", collections = ["ECalBarrelCells", "HCalBarrelCells", "HCalExtBarrelCells", "ECalEndcapCells", "HCalEndcapCells", "ECalFwdCells", "HCalFwdCells", "TailCatcherCells", "GenParticles", "GenVertices"], OutputLevel = DEBUG)
+podioinput = PodioInput("PodioReader", collections = ["ECalBarrelCells", "HCalBarrelCells", "HCalExtBarrelCells", "ECalEndcapCells", "HCalEndcapCells", "ECalFwdCells", "HCalFwdCells", "TailCatcherCells"], OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
 detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -36,9 +38,7 @@ detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster
                   'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                   'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
                   'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                  'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml',
-                  'file:Detector/DetFCChhBaseline1/compact/FCChh_Solenoids.xml',
-                  'file:Detector/DetFCChhBaseline1/compact/FCChh_Shielding.xml']
+                  'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml']
 
 geoservice = GeoSvc("GeoSvc", detectors = detectors_to_use, OutputLevel = WARNING)
 
