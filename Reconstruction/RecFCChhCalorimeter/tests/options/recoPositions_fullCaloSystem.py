@@ -43,31 +43,31 @@ detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster
 geoservice = GeoSvc("GeoSvc", detectors = detectors_to_use, OutputLevel = WARNING)
 
 #Configure tools for calo cell positions
-from Configurables import CellPositionsECalBTool, CellPositionsHCalBTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool 
-ECalBcells = CellPositionsECalBTool("CellPositionsECalB", 
-                                    readoutName = ecalBarrelReadoutNamePhiEta, 
-                                    layerRadii = ecalBarrelLayerRadii, 
-                                    OutputLevel = INFO)
+from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool 
+ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
+                                         readoutName = ecalBarrelReadoutNamePhiEta, 
+                                         layerRadii = ecalBarrelLayerRadii, 
+                                         OutputLevel = INFO)
 EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC", 
-                                    readoutName = ecalEndcapReadoutName, 
-                                    mergedLayers = ecalEndcapNumberOfLayersToMerge, 
-                                    OutputLevel = INFO)
-ECalFwdcells = CellPositionsCaloDiscsTool("CellPositionsECalFwd", 
-                                        readoutName = ecalFwdReadoutName, 
-                                        OutputLevel = INFO)
-HCalBcells = CellPositionsHCalBTool("CellPositionsHCalB", 
-                                    readoutName = hcalBarrelReadoutName, 
-                                    OutputLevel = INFO)
-HCalExtBcells = CellPositionsHCalBTool("CellPositionsHCalExtB", 
-                                       readoutName = hcalExtBarrelReadoutName, 
+                                       readoutName = ecalEndcapReadoutName, 
+                                       mergedLayers = ecalEndcapNumberOfLayersToMerge, 
                                        OutputLevel = INFO)
+ECalFwdcells = CellPositionsCaloDiscsTool("CellPositionsECalFwd", 
+                                          readoutName = ecalFwdReadoutName, 
+                                          OutputLevel = INFO)
+HCalBcells = CellPositionsHCalBarrelTool("CellPositionsHCalBarrel", 
+                                         readoutName = hcalBarrelReadoutName, 
+                                         OutputLevel = INFO)
+HCalExtBcells = CellPositionsHCalBarrelTool("CellPositionsHCalExtBarrel", 
+                                            readoutName = hcalExtBarrelReadoutName, 
+                                            OutputLevel = INFO)
 HECcells = CellPositionsCaloDiscsTool("CellPositionsHEC", 
-                                   readoutName = hcalEndcapReadoutName, 
-                                   mergedLayers = hcalEndcapNumberOfLayersToMerge, 
-                                   OutputLevel = INFO)
+                                      readoutName = hcalEndcapReadoutName, 
+                                      mergedLayers = hcalEndcapNumberOfLayersToMerge, 
+                                      OutputLevel = INFO)
 HCalFwdcells = CellPositionsCaloDiscsTool("CellPositionsHCalFwd", 
-                                        readoutName = hcalFwdReadoutName, 
-                                        OutputLevel = INFO)
+                                          readoutName = hcalFwdReadoutName, 
+                                          OutputLevel = INFO)
 TailCatchercells = CellPositionsTailCatcherTool("CellPositionsTailCatcher", 
                                                 readoutName = tailCatcherReadoutName, 
                                                 centralRadius = 901.5,

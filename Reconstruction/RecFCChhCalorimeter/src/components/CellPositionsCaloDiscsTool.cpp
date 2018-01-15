@@ -6,8 +6,8 @@
 DECLARE_TOOL_FACTORY(CellPositionsCaloDiscsTool)
 
 CellPositionsCaloDiscsTool::CellPositionsCaloDiscsTool(const std::string& type, const std::string& name,
-						       const IInterface* parent)
-: GaudiTool(type, name, parent) {
+                                                       const IInterface* parent)
+    : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
   declareProperty("mergedLayers", m_mergedLayers, "array of merged layers");
   declareProperty("readoutName", m_readoutName);
@@ -23,7 +23,7 @@ StatusCode CellPositionsCaloDiscsTool::initialize() {
   }
   // get PhiEta segmentation
   m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-								     m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
@@ -44,7 +44,7 @@ StatusCode CellPositionsCaloDiscsTool::initialize() {
 }
 
 void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCells,
-					      fcc::PositionedCaloHitCollection& outputColl) {
+                                              fcc::PositionedCaloHitCollection& outputColl) {
   int layer, subsystem;
   double radius;
   DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
@@ -64,13 +64,13 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
     DD4hep::Geometry::Position outPos;
 
     // Check if layers have been merged
-    if (m_mergedLayers.size() == 0){
+    if (m_mergedLayers.size() == 0) {
       const auto& transformMatrix = volman.worldTransformation(cellid);
       double outGlobal[3];
       double inLocal[] = {0, 0, 0};
       transformMatrix.LocalToMaster(inLocal, outGlobal);
-      debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
-	      << outGlobal[2] / dd4hep::mm << endmsg;
+      debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm
+              << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
       // radius calculated from segmenation + z postion of volumes
       auto inSeg = m_segmentation->position(cellid);
       double eta = m_segmentation->eta(cellid);
@@ -79,10 +79,9 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
       outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
       // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
       if (subsystem == 1) {
-	outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -outGlobal[2]);
+        outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -outGlobal[2]);
       }
-    }
-    else{
+    } else {
       // layers have been merged
       // --> for new z position, use mean positons of the originally merged layers
       m_decoder->setValue(cellid);
@@ -90,7 +89,7 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
       debug() << "new layer : " << layer << endmsg;
       int oldLayersMin = 0;
       for (int iLayer = 0; iLayer < layer; iLayer++) {
-	oldLayersMin += m_mergedLayers[iLayer];
+        oldLayersMin += m_mergedLayers[iLayer];
       }
       int oldLayersMax = oldLayersMin + m_mergedLayers[layer] - 1;
       (*m_decoder)["layer"] = oldLayersMin;
@@ -114,7 +113,7 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
       outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, meanLayerPositionZ);
       // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
       if (subsystem == 1) {
-	outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -meanLayerPositionZ);
+        outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -meanLayerPositionZ);
       }
     }
     auto edmPos = fcc::Point();
