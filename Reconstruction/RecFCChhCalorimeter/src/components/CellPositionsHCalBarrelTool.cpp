@@ -3,16 +3,16 @@
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsHCalBTool)
+DECLARE_TOOL_FACTORY(CellPositionsHCalBarrelTool)
 
-CellPositionsHCalBTool::CellPositionsHCalBTool(const std::string& type, const std::string& name,
+CellPositionsHCalBarrelTool::CellPositionsHCalBarrelTool(const std::string& type, const std::string& name,
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
   declareProperty("readoutName", m_readoutName);
 }
 
-StatusCode CellPositionsHCalBTool::initialize() {
+StatusCode CellPositionsHCalBarrelTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
   m_geoSvc = service("GeoSvc");
@@ -41,7 +41,7 @@ StatusCode CellPositionsHCalBTool::initialize() {
   return sc;
 }
 
-void CellPositionsHCalBTool::getPositions(const fcc::CaloHitCollection& aCells,
+void CellPositionsHCalBarrelTool::getPositions(const fcc::CaloHitCollection& aCells,
                                           fcc::PositionedCaloHitCollection& outputColl) {
   double radius;
   DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
@@ -75,4 +75,4 @@ void CellPositionsHCalBTool::getPositions(const fcc::CaloHitCollection& aCells,
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-StatusCode CellPositionsHCalBTool::finalize() { return GaudiTool::finalize(); }
+StatusCode CellPositionsHCalBarrelTool::finalize() { return GaudiTool::finalize(); }

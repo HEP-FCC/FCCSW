@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_CELLPOSITIONSHCALBTOOL_H
-#define RECCALORIMETER_CELLPOSITIONSHCALBTOOL_H
+#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H
+#define RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H
 
 // GAUDI
 #include "GaudiAlg/GaudiTool.h"
@@ -26,14 +26,14 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsHCalBTool
+/** @class CellPositionsHCalBarrelTool
  *
  */
 
-class CellPositionsHCalBTool : public GaudiTool, virtual public ICellPositionsTool {
+class CellPositionsHCalBarrelTool : public GaudiTool, virtual public ICellPositionsTool {
 public:
-  CellPositionsHCalBTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~CellPositionsHCalBTool() = default;
+  CellPositionsHCalBarrelTool(const std::string& type, const std::string& name, const IInterface* parent);
+  ~CellPositionsHCalBarrelTool() = default;
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
 
@@ -47,4 +47,4 @@ private:
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   DD4hep::DDSegmentation::BitField64* m_decoder;
 };
-#endif /* RECCALORIMETER_CELLPOSITIONSHCALBTOOL_H */
+#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H */

@@ -4,9 +4,9 @@
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsECalBTool)
+DECLARE_TOOL_FACTORY(CellPositionsECalBarrelTool)
 
-CellPositionsECalBTool::CellPositionsECalBTool(const std::string& type, const std::string& name,
+CellPositionsECalBarrelTool::CellPositionsECalBarrelTool(const std::string& type, const std::string& name,
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
@@ -14,7 +14,7 @@ CellPositionsECalBTool::CellPositionsECalBTool(const std::string& type, const st
   declareProperty("readoutName", m_readoutName);
 }
 
-StatusCode CellPositionsECalBTool::initialize() {
+StatusCode CellPositionsECalBarrelTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
   m_geoSvc = service("GeoSvc");
@@ -44,7 +44,7 @@ StatusCode CellPositionsECalBTool::initialize() {
   return sc;
 }
 
-void CellPositionsECalBTool::getPositions(const fcc::CaloHitCollection& aCells,
+void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCells,
                                           fcc::PositionedCaloHitCollection& outputColl) {
   int layer;
   double radius;
@@ -75,4 +75,4 @@ void CellPositionsECalBTool::getPositions(const fcc::CaloHitCollection& aCells,
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-StatusCode CellPositionsECalBTool::finalize() { return GaudiTool::finalize(); }
+StatusCode CellPositionsECalBarrelTool::finalize() { return GaudiTool::finalize(); }
