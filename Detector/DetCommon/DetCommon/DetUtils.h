@@ -47,12 +47,15 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep,
  *   @param[in] aFieldNames Names of the fields for which neighbours are found.
  *   @param[in] aFieldExtremes Minimal and maximal values for the fields.
  *   @param[in] aCellId ID of cell.
+ *   @param[in] aSteps defines the bit range for which neighbours are looked for 
  *   return Vector of neighbours.
  */
 std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
-                                 uint64_t aCellId);
+                                 uint64_t aCellId,
+				 int aSteps
+				 );
 
 /** Get minimal and maximal values that can be decoded in the fields of the bitfield.
  *   @param[in] aDecoder Handle to the bitfield decoder.
