@@ -14,8 +14,7 @@
 
 DECLARE_TOOL_FACTORY(ReadNoiseFromFileTool)
 
-ReadNoiseFromFileTool::ReadNoiseFromFileTool(const std::string& type, const std::string& name,
-					     const IInterface* parent)
+ReadNoiseFromFileTool::ReadNoiseFromFileTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<IReadNoiseFileTool>(this);
 }
