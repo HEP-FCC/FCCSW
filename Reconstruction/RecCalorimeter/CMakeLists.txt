@@ -60,3 +60,8 @@ gaudi_add_test(reconstructionFullCaloSystem
 	       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 	       DEPENDS simulateFullCaloSystem
 	       FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noNoise.py)
+
+gaudi_add_test(reconstructionTopoClusters
+	       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+	       DEPENDS simulateFullCaloSystem
+	       FRAMEWORK tests/options/runTopoClusterReconstruction_Barrel.py)
