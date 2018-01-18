@@ -66,7 +66,7 @@ void GeoConstruction::ConstructSDandField() {
 G4VPhysicalVolume* GeoConstruction::Construct() {
   DD4hep::Simulation::Geant4Mapping& g4map = DD4hep::Simulation::Geant4Mapping::instance();
   DD4hep::Geometry::DetElement world = m_lcdd.world();
-  DD4hep::Simulation::Geant4Converter conv(m_lcdd, DD4hep::INFO);
+  DD4hep::Simulation::Geant4Converter conv(m_lcdd, DD4hep::DEBUG);
   DD4hep::Simulation::Geant4GeometryInfo* geo_info = conv.create(world).detach();
   g4map.attach(geo_info);
   // All volumes are deleted in ~G4PhysicalVolumeStore()

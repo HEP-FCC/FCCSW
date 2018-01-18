@@ -6,9 +6,9 @@
 #include "datamodel/MCParticleCollection.h"
 // PAPAS
 #include "papas/datatypes/Helix.h"
+#include "papas/datatypes/IdCoder.h"
 #include "papas/datatypes/Particle.h"
 #include "papas/datatypes/Path.h"
-#include "papas/detectors/CMS.h"
 #include "papas/detectors/Detector.h"
 #include "papas/detectors/Field.h"
 #include "papas/graphtools/DefinitionsNodes.h"
@@ -20,8 +20,8 @@ DECLARE_TOOL_FACTORY(PapasImportParticlesTool)
 PapasImportParticlesTool::PapasImportParticlesTool(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
-  declareInterface<IPapasTool>(this);
-  declareProperty("genparticles", m_iGenpHandle);
+  declareInterface<IPapasImportTool>(this);
+  declareProperty("genparticles", m_genParticlesHandle);
 }
 
 PapasImportParticlesTool::~PapasImportParticlesTool() {}
@@ -35,31 +35,34 @@ StatusCode PapasImportParticlesTool::clear() {
 
 StatusCode PapasImportParticlesTool::finalize() { return GaudiTool::finalize(); }
 
-StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
-
-  const fcc::MCParticleCollection* ptcs = m_iGenpHandle.get();
-  auto detector = papas::CMS();  // todo consider making this be passed as part of the papas tool interface
-
+StatusCode PapasImportParticlesTool::run(papas::Event& pevent, std::unordered_map<papas::Identifier, int>& links,
+                                         std::shared_ptr<papas::Detector> spDetector) {
+  const fcc::MCParticleCollection* ptcs = m_genParticlesHandle.get();
   int countp = 0;
 
-  // First Sort fcc MCparticles in order of decreasing energy to match Python
+  // We need to know the sorted order of fcc MCparticles by decreasing energy to match Python
   // Sort is required when run in PDebug mode. TODO: make this configurable .
-  std::list<fcc::ConstMCParticle> sortPtcs;
-  for (const auto& p : *ptcs) {
-    sortPtcs.push_back(p);
+  std::vector<fcc::ConstMCParticle> vecPtcs;
+  std::list<int> orderPtcs;  // will contain the GenParticle index for the sorted Genparticles
+  for (int n = 0; n < (*ptcs).size(); n++) {
+    orderPtcs.push_back(n);
   }
   TLorentzVector tlv;
   TLorentzVector tlv2;
-  sortPtcs.sort([&tlv, &tlv2](const fcc::ConstMCParticle& a, const fcc::ConstMCParticle& b) {
-    auto p4 = a.p4();
+
+  // order the list of the indices so as to correspond to GenParticles in decreasing order of energy
+  orderPtcs.sort([&tlv, &tlv2, ptcs](int a, int b) {
+    auto p4 = (*ptcs)[a].p4();
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
-    p4 = b.p4();
+    p4 = (*ptcs)[b].p4();
     tlv2.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
     return tlv.E() > tlv2.E();
   });
 
-  // Now construct the papas Particles (providing they are stable)
-  for (const auto& ptc : sortPtcs) {
+  // Now construct papas simulated Particles from the genParticles (providing genParticles are stable)
+  // making sure to create the Simulted particles in order of decreasing energy
+  for (int index : orderPtcs) {
+    auto ptc = (*ptcs)[index];
     countp += 1;
     auto p4 = ptc.core().p4;
     tlv.SetXYZM(p4.px, p4.py, p4.pz, p4.mass);
@@ -78,12 +81,14 @@ StatusCode PapasImportParticlesTool::run(papas::Event& pevent) {
         if (fabs(particle.charge()) < 0.5) {
           ppath = std::make_shared<papas::Path>(papas::Path(particle.p4(), particle.startVertex(), particle.charge()));
         } else {
-          ppath = std::make_shared<papas::Helix>(
-              papas::Helix(particle.p4(), particle.startVertex(), particle.charge(), detector.field()->getMagnitude()));
+          ppath = std::make_shared<papas::Helix>(papas::Helix(particle.p4(), particle.startVertex(), particle.charge(),
+                                                              spDetector->field()->getMagnitude()));
         }
         particle.setPath(ppath);
         m_particles.emplace(particle.id(), particle);
         papas::PDebug::write("Made {}", particle);
+        // Store the link between the GenParticle and the Papas Sim Particle
+        links.emplace(particle.id(), index);
       }
     }
   }

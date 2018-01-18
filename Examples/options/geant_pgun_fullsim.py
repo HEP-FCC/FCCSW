@@ -42,7 +42,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
                                          'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
                                          'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
-                    OutputLevel = DEBUG)
+                    OutputLevel = INFO)
 
 from Configurables import SimG4Svc
 ## Geant4 service
@@ -83,6 +83,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+out.filename = "output_geant_pgun_fullsim.root"
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],

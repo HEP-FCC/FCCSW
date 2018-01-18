@@ -53,3 +53,6 @@ gaudi_add_test(InternalCalorimeterSD
 gaudi_add_test(ExternalCalorimeterSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
                FRAMEWORK tests/options/testSimpleCaloSD.py)
+gaudi_add_test(FullParticleAbsorptionSD
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
+               FRAMEWORK tests/options/testDd4hepFullParticleAbsorptionSD.py)
