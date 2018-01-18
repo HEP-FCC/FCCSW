@@ -43,22 +43,10 @@ StatusCode CellPositionsHCalBarrelTool::initialize() {
 
 void CellPositionsHCalBarrelTool::getPositions(const fcc::CaloHitCollection& aCells,
                                           fcc::PositionedCaloHitCollection& outputColl) {
-  double radius;
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto cellid = cell.core().cellId;
-    // global cartesian coordinates calculated from r,phi,eta, for r=1
-    auto inSeg = m_segmentation->position(cellid);
-    auto detelement = volman.lookupDetElement(cellid);
-    const auto& transform = detelement.worldTransformation();
-    double global[3];
-    double local[3] = {0, 0, 0};
-    transform.LocalToMaster(local, global);
-    radius = std::sqrt(std::pow(global[0], 2) + std::pow(global[1], 2));
-    debug() << "no eta segmentaion used! Cell position.z is volumes position.z" << endmsg;
-    DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, global[2]);
+    auto outSeg = CellPositionsHCalBarrelTool::getXYZPosition(cell);
 
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
@@ -68,11 +56,30 @@ void CellPositionsHCalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
     auto positionedHit = outputColl.create(edmPos, cell.core());
 
     // Debug information about cell position
-    debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cellid << endmsg;
+    debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cell.core().cellId << endmsg;
     debug() << "Position of cell (mm) : \t" << outSeg.x() / dd4hep::mm << "\t" << outSeg.y() / dd4hep::mm << "\t"
             << outSeg.z() / dd4hep::mm << endmsg;
   }
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
+}
+
+DD4hep::Geometry::Position CellPositionsHCalBarrelTool::getXYZPosition(const fcc::CaloHit& aCell) const {
+  double radius;
+  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
+  
+  auto cellid = aCell.core().cellId;
+  // global cartesian coordinates calculated from r,phi,eta, for r=1
+  auto inSeg = m_segmentation->position(cellid);
+  auto detelement = volman.lookupDetElement(cellid);
+  const auto& transform = detelement.worldTransformation();
+  double global[3];
+  double local[3] = {0, 0, 0};
+  transform.LocalToMaster(local, global);
+  radius = std::sqrt(std::pow(global[0], 2) + std::pow(global[1], 2));
+  debug() << "no eta segmentaion used! Cell position.z is volumes position.z" << endmsg;
+  DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, global[2]);
+  
+  return outSeg;  
 }
 
 StatusCode CellPositionsHCalBarrelTool::finalize() { return GaudiTool::finalize(); }

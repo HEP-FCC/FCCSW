@@ -34,10 +34,14 @@ class CellPositionsTailCatcherTool : public GaudiTool, virtual public ICellPosit
 public:
   CellPositionsTailCatcherTool(const std::string& type, const std::string& name, const IInterface* parent);
   ~CellPositionsTailCatcherTool() = default;
+
   virtual StatusCode initialize() final;
+
   virtual StatusCode finalize() final;
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) final;
+
+  virtual DD4hep::Geometry::Position getXYZPosition(const fcc::CaloHit& aCell) const final;
 
 private:
   /// Pointer to the geometry service

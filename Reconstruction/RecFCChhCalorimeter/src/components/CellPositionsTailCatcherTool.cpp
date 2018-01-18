@@ -45,32 +45,10 @@ StatusCode CellPositionsTailCatcherTool::initialize() {
 
 void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aCells,
                                                 fcc::PositionedCaloHitCollection& outputColl) {
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
-  double radius;
-
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto cellid = cell.core().cellId;
-    const auto& transformMatrix = volman.worldTransformation(cellid);
-    double outGlobal[3];
-    double inLocal[] = {0, 0, 0};
-    transformMatrix.LocalToMaster(inLocal, outGlobal);
-
-    debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
-            << outGlobal[2] / dd4hep::mm << endmsg;
-
-    // radius calculated from segmenation + z postion of volumes
-    auto inSeg = m_segmentation->position(cellid);
-    double eta = m_segmentation->eta(cellid);
-    radius = outGlobal[2] / std::sinh(eta);
-    debug() << "Radius : " << radius << endmsg;
-    DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
-
-    if (outGlobal[2] == 0) {     // central tail catcher
-      radius = m_centralRadius;  // 901.5cm
-      outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
-    }
+    auto outSeg = CellPositionsTailCatcherTool::getXYZPosition(cell);
 
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
@@ -81,11 +59,38 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
     ;
 
     // Debug information about cell position
-    debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cellid << endmsg;
+    debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cell.core().cellId << endmsg;
     debug() << "Position of cell (mm) : \t" << outSeg.x() / dd4hep::mm << "\t" << outSeg.y() / dd4hep::mm << "\t"
             << outSeg.z() / dd4hep::mm << endmsg;
   }
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
+}
+
+DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const fcc::CaloHit& aCell) const {
+  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
+  double radius;
+  
+  auto cellid = aCell.core().cellId;
+  const auto& transformMatrix = volman.worldTransformation(cellid);
+  double outGlobal[3];
+  double inLocal[] = {0, 0, 0};
+  transformMatrix.LocalToMaster(inLocal, outGlobal);
+  
+  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
+	  << outGlobal[2] / dd4hep::mm << endmsg;
+  
+  // radius calculated from segmenation + z postion of volumes
+  auto inSeg = m_segmentation->position(cellid);
+  double eta = m_segmentation->eta(cellid);
+  radius = outGlobal[2] / std::sinh(eta);
+  debug() << "Radius : " << radius << endmsg;
+  DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
+  
+  if (outGlobal[2] == 0) {     // central tail catcher
+    radius = m_centralRadius;  // 901.5cm
+    outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
+  }
+  return outSeg; 
 }
 
 StatusCode CellPositionsTailCatcherTool::finalize() { return GaudiTool::finalize(); }

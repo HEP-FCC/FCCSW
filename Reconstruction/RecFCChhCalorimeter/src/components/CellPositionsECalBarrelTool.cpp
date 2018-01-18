@@ -46,19 +46,11 @@ StatusCode CellPositionsECalBarrelTool::initialize() {
 
 void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCells,
                                           fcc::PositionedCaloHitCollection& outputColl) {
-  int layer;
-  double radius;
+
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto cellid = cell.core().cellId;
-    m_decoder->setValue(cellid);
-    layer = (*m_decoder)["layer"].value();
-    radius = m_layerRadius[layer];
-    // global cartesian coordinates calculated only from segmentation
-    // from r,phi,eta, for r=1
-    auto inSeg = m_segmentation->position(cellid);
-    DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
+    auto outSeg = CellPositionsECalBarrelTool::getXYZPosition(cell);
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
     edmPos.y = outSeg.y() / dd4hep::mm;
@@ -67,12 +59,27 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
     auto positionedHit = outputColl.create(edmPos, cell.core());
 
     // Debug information about cell position
-    debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cellid << endmsg;
+    debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cell.core().cellId << endmsg;
     debug() << "Position of cell (mm) : \t" << outSeg.x() / dd4hep::mm << "\t" << outSeg.y() / dd4hep::mm << "\t"
             << outSeg.z() / dd4hep::mm << "\n"
             << endmsg;
   }
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
+}
+
+DD4hep::Geometry::Position CellPositionsECalBarrelTool::getXYZPosition(const fcc::CaloHit& aCell) const {
+  int layer;
+  double radius;
+  auto cellid = aCell.core().cellId;
+  m_decoder->setValue(cellid);
+  layer = (*m_decoder)["layer"].value();
+  radius = m_layerRadius[layer];
+  // global cartesian coordinates calculated only from segmentation
+  // from r,phi,eta, for r=1
+  auto inSeg = m_segmentation->position(cellid);
+  DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
+ 
+  return outSeg;
 }
 
 StatusCode CellPositionsECalBarrelTool::finalize() { return GaudiTool::finalize(); }

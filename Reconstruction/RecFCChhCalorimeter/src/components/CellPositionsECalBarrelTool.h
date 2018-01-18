@@ -34,11 +34,15 @@ class CellPositionsECalBarrelTool : public GaudiTool, virtual public ICellPositi
 public:
   CellPositionsECalBarrelTool(const std::string& type, const std::string& name, const IInterface* parent);
   ~CellPositionsECalBarrelTool() = default;
+
   virtual StatusCode initialize() final;
+
   virtual StatusCode finalize() final;
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) final;
 
+  virtual DD4hep::Geometry::Position getXYZPosition(const fcc::CaloHit& aCell) const final;
+  
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
