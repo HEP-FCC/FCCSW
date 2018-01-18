@@ -56,8 +56,7 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
                                  uint64_t aCellId,
-				 int aSteps
-				 ) {
+				 int aSteps = 1) {
   std::vector<uint64_t> neighbours;
   aDecoder.setValue(aCellId);
   for (uint itField = 0; itField < aFieldNames.size(); itField++) {
