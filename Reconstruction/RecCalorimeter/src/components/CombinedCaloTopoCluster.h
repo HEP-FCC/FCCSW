@@ -87,10 +87,12 @@ private:
   DataHandle<fcc::CaloHitCollection> m_ECalCells{"ECalCells", Gaudi::DataHandle::Reader, this};
   /// Handle for hadronic calorimeter cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_HCalCells{"HCalCells", Gaudi::DataHandle::Reader, this};
-  // Pre-cluster collection
+  // Cluster collection
   DataHandle<fcc::CaloClusterCollection> m_clusterCollection{"calo/clusters", Gaudi::DataHandle::Writer, this};
-  // Pre-cluster cells collection
-  DataHandle<fcc::CaloHitCollection> m_clusterCellsCollection{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
+  // Cluster cells in ECal collection
+  DataHandle<fcc::CaloHitCollection> m_clusterECalCellsCollection{"calo/clusterCellsECal", Gaudi::DataHandle::Writer, this};
+  // Cluster cells in HCal collection
+  DataHandle<fcc::CaloHitCollection> m_clusterHCalCellsCollection{"calo/clusterCellsHCal", Gaudi::DataHandle::Writer, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout

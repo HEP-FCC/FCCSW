@@ -35,7 +35,8 @@ CombinedCaloTopoCluster::CombinedCaloTopoCluster(const std::string& name, ISvcLo
   declareProperty("positionsToolHCal", m_cellPositionsToolHCal, "Handle for tool to retrieve cell positions in HCal");
   declareProperty("neighboursRange", m_range);
   declareProperty("clusters", m_clusterCollection, "Handle for calo clusters (output collection)");
-  declareProperty("clusterCells", m_clusterCellsCollection, "Handle for calo clusters (output collection)");
+  declareProperty("clusterCellsECal", m_clusterECalCellsCollection, "Handle for ECal clusters (output collection)");
+  declareProperty("clusterCellsHCal", m_clusterHCalCellsCollection, "Handle for HCal clusters (output collection)");
 }
 
 StatusCode CombinedCaloTopoCluster::initialize() {
@@ -124,9 +125,10 @@ StatusCode CombinedCaloTopoCluster::execute() {
   m_firstSeedsECal.clear();
   m_firstSeedsHCal.clear();
  
-  // Create an output collection
+  // Create output collections
   auto edmClusters = m_clusterCollection.createAndPut();
-  fcc::CaloHitCollection* edmClusterCells = new fcc::CaloHitCollection();
+  fcc::CaloHitCollection* edmClusterCellsECal = new fcc::CaloHitCollection();
+  fcc::CaloHitCollection* edmClusterCellsHCal = new fcc::CaloHitCollection();
 
   const fcc::CaloHitCollection* ECalCells = m_ECalCells.get();
   const fcc::CaloHitCollection* HCalCells = m_HCalCells.get();
@@ -212,7 +214,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
     int numCellsLastLayer = 0;
     for (auto cell : i.second) {
       energy += cell.energy();
-      fcc::CaloHit newCell = edmClusterCells->create();
+      fcc::CaloHit newCell = edmClusterCellsECal->create();
       newCell.core().cellId = cell.cellId();
       newCell.core().energy = cell.energy();
       newCell.core().time = cell.time();
@@ -242,8 +244,8 @@ StatusCode CombinedCaloTopoCluster::execute() {
     if (clusterToBeMerged) {
       meanEtaLastLayer = meanEtaLastLayer / numCellsLastLayer;
       meanPhiLastLayer = meanPhiLastLayer / numCellsLastLayer;
-      double etaMin = meanEtaLastLayer - 2. * std::abs(m_HCalSegmentation->gridSizeEta());
-      double etaMax = meanEtaLastLayer + 2. * std::abs(m_HCalSegmentation->gridSizeEta());
+      double etaMin = meanEtaLastLayer - 2. * 0.025;
+      double etaMax = meanEtaLastLayer + 2. * 0.025;
       double phiMin = meanPhiLastLayer - 2. * std::abs(m_HCalSegmentation->gridSizePhi());
       double phiMax = meanPhiLastLayer + 2. * std::abs(m_HCalSegmentation->gridSizePhi());
       debug() << "Eta-/+rms:     " << etaMin << "/" << etaMax << endmsg;
@@ -254,6 +256,8 @@ StatusCode CombinedCaloTopoCluster::execute() {
       edmClusters->push_back(cluster);
     }
   }
+  m_clusterECalCellsCollection.put(edmClusterCellsECal);
+
   info() << "Clusters in ECal to be merged with HCal:     " << mergeClustersEtaMap.size() << endmsg;
   info() << "Total energy of clusters in ECal:            " << checkTotEnergy << endmsg;
   info() << "Leftover cells in ECal:                      " << m_allCellsECal.size() << endmsg;
@@ -281,7 +285,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
     int numCellsFirstLayer = 0;
     for (auto cell : i.second) {
       energy += cell.energy();
-      fcc::CaloHit newCell = edmClusterCells->create();
+      fcc::CaloHit newCell = edmClusterCellsHCal->create();
       newCell.core().cellId = cell.cellId();
       newCell.core().energy = cell.energy();
       newCell.core().time = cell.time();
@@ -305,7 +309,8 @@ StatusCode CombinedCaloTopoCluster::execute() {
     clusterCore.position.x = posX / energy;
     clusterCore.position.y = posY / energy;
     clusterCore.position.z = posZ / energy;
-    debug() << "Cluster energy:     " << clusterCore.energy << endmsg;
+    debug() << "Cluster energy:       " << clusterCore.energy << endmsg;
+    debug() << "Cluster position:     " << clusterCore.position.x << ", " << clusterCore.position.y << ", " << clusterCore.position.z << endmsg;
 
     // Check if this cluster is a canditate to be merged with one in the ECal
     if (clusterToBeMerged) {
@@ -352,6 +357,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
     checkTotEnergy += clusterCore.energy;
     edmClusters->push_back(cluster);
   }
+  m_clusterHCalCellsCollection.put(edmClusterCellsHCal);
   info() << "Leftover ECal clusters :                " << mergeClustersPhiMap.size() << endmsg;
   // Add to edm the ECal cluster without partner in HCal
   for (auto const& i : mergeClustersPhiMap) {
@@ -362,7 +368,6 @@ StatusCode CombinedCaloTopoCluster::execute() {
   info() << "Total energy merged into clusters :     " << checkTotEnergy << endmsg;
   info() << "Leftover cells in HCal :                " << m_allCellsHCal.size() << endmsg;
 
-  m_clusterCellsCollection.put(edmClusterCells);
   info() << "Number of total reconstructed clusters: " << edmClusters->size() << endmsg;
 
  return StatusCode::SUCCESS;

@@ -83,15 +83,15 @@ positionsHcalBarrel = CreateCellPositions("positionsHcalBarrel",
 # Resegment the cellIDs
 from Configurables import RedoSegmentation
 resegmentHcal = RedoSegmentation("ReSegmentationHcal",
-                             # old bitfield (readout)
-                             oldReadoutName = hcalBarrelReadoutName,
-                             # # specify which fields are going to be altered (deleted/rewritten)
-                             # oldSegmentationIds = ["eta","phi"],
-                             # new bitfield (readout), with new segmentation
-                             newReadoutName = hcalBarrelReadoutNamePhiEta,
-                             OutputLevel = INFO,
-                             inhits = "HCalBarrelCellPositions",
-                             outhits = "newHCalBarrelCells")
+                                 # old bitfield (readout)
+                                 oldReadoutName = hcalBarrelReadoutName,
+                                 # # specify which fields are going to be altered (deleted/rewritten)
+                                 oldSegmentationIds = ["row","tile","eta"],
+                                 # new bitfield (readout), with new segmentation
+                                 newReadoutName = hcalBarrelReadoutNamePhiEta,
+                                 OutputLevel = INFO,
+                                 inhits = "HCalBarrelCellPositions",
+                                 outhits = "newHCalBarrelCells")
 # Merge cells according to CellId
 from Configurables import CreateCaloCells
 createNewHcells = CreateCaloCells("CreateNewHCaloCells",
@@ -105,24 +105,27 @@ createNewHcells = CreateCaloCells("CreateNewHCaloCells",
 from Configurables import CombinedCaloTopoCluster
 createTopoClusters = CombinedCaloTopoCluster("CreateTopoClusters",
                                              ECalCells = "ECalBarrelCells",
-                                             HCalCells = "HCalBarrelCellsAfterResegmentation",
+                                             HCalCells = "HCalBarrelCells",
                                              ECalReadoutName = ecalBarrelReadoutNamePhiEta,
-                                             HCalReadoutName = hcalBarrelReadoutNamePhiEta,
+                                             HCalReadoutName = hcalBarrelReadoutName,
+                                             fieldsForNeighboursECal = ["layer","eta","phi"],
+                                             fieldsForNeighboursHCal = ["layer","row","phi"],
                                              noiseAddedECal = False,
                                              noiseAddedHCal = False,
 #                                             noiseToolECal = noiseToolECal,
 #                                             noiseToolHCal = noiseToolHCal,
                                              positionsToolECal = ECalBcells,
-                                             positionsToolHCal = HCalBcellsPhiEta,
+                                             positionsToolHCal = HCalBcells,
                                              neighboursRange = 2,
                                              lastECalLayer = 7,
                                              OutputLevel = INFO)
 createTopoClusters.clusters.Path = "caloClustersBarrel"
-createTopoClusters.clusterCells.Path = "caloClusterBarrelCells"
+createTopoClusters.clusterCellsECal.Path = "caloClusterBarrelECalCells"
+createTopoClusters.clusterCellsHCal.Path = "caloClusterBarrelHCalCells"
 
 out = PodioOutput("out", filename = "output_testTopoClusters_e50GeV_ev1.root",
                   OutputLevel=DEBUG)
-out.outputCommands = ["drop *", "keep caloClustersBarrel", "keep caloClusterBarrelCells"]
+out.outputCommands = ["drop *", "keep caloClustersBarrel", "keep caloClusterBarreECallCells", "keep caloClusterBarreHCallCells"]
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -145,6 +148,6 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 1,
+    EvtMax   = 3,
     ExtSvc = [geoservice, podioevent, audsvc],
 )
