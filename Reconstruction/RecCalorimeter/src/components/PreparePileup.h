@@ -23,16 +23,18 @@ class ITHistSvc;
  *
  *  Algorithm for calculating pileup noise per cell.
  *  Tube geometry with PhiEta segmentation expected.
+ * 
+ *  TODO: extend to calculate noise per cluster.
  *
  *  Flow of the program:
  *  1/ Create a map of empty cells (m_geoTool)
  *  2/ Merge pileup signal events with empty cells
- *  3/ Fill per cell - energy, |eta| in TH2 histogram
+ *  3/ Fill histograms - energy, |eta| in TH2 histogram
  *
  *  Tools called:
  *    - TubeLayerPhiEtaCaloTool
  *
- *  @author Jana Faltova
+ *  @author Jana Faltova, Anna Zaborowska
  *  @date   2018-01
  *
  */
@@ -51,6 +53,7 @@ public:
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
   
 private:
+  /// Handle for geometry tool (used to prepare map of all existing cellIDs for the system)
   ToolHandle<ICalorimeterTool> m_geoTool{"TubeLayerPhiEtaCaloTool", this};
 
   /// Handle for calo hits (input collection)
@@ -63,14 +66,14 @@ private:
   SmartIF<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// histogram with abs(eta) on x-axis and energy per cell on y-axis
+  /// 2D histogram with abs(eta) on x-axis and energy per cell on y-axis
   std::vector<TH2F*> m_energyVsAbsEta;
 
-  /// Maximum energy in the m_energyVsAbsEta histogram 
+  /// Maximum energy in the m_energyVsAbsEta histogram, in GeV 
   Gaudi::Property<uint> m_maxEnergy{this, "maxEnergy", 20., "Maximum energy in the pile-up plot"};
-  /// Name of the cells/layer field
+  /// Name of the layer field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "layer", "Name of layer"};
-  /// Number of layers/cells cells
+  /// Number of layers
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers"};
    /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the readout"};

@@ -56,6 +56,8 @@ StatusCode PreparePileup::initialize() {
     error() << "Unable to locate Histogram Service" << endmsg;
     return StatusCode::FAILURE;
   }
+  // Prepare histograms - 2D histograms per layer, abs(eta) on x-axis, energy in cell on y-axis
+  // TODO: add similar histogram with energy in a cluster
   for (uint i = 0; i < m_numLayers; i++) {
     m_energyVsAbsEta.push_back(
 			    new TH2F(("energyVsAbsEta" + std::to_string(i)).c_str(),
@@ -69,8 +71,7 @@ StatusCode PreparePileup::initialize() {
     }
   }
     
-  // Initialization of tools
-  // Geometry settings
+  // Initialization of geometry tool
   if (!m_geoTool.retrieve()) {
     error() << "Unable to retrieve the geometry tool!!!" << endmsg;
     return StatusCode::FAILURE;
@@ -105,7 +106,15 @@ StatusCode PreparePileup::execute() {
     double cellEnergy = cell.second;
     uint64_t cellId = cell.first;
     m_decoder->setValue(cellId);
-    int layerId = (*m_decoder)[m_layerFieldName];
+    uint layerId = (*m_decoder)[m_layerFieldName];
+    if (layerId>=m_numLayers) {
+      layerId = m_numLayers-1;
+      warning() << "Layer id of the cell "<< layerId 
+		<< " is larger than number of layers in the histogram: "
+		<< m_numLayers
+		<< ". Filling the last histogram." << endmsg;
+
+    }
     double cellEta = m_segmentation->eta(cellId);
     m_energyVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
   }
