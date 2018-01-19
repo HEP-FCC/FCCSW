@@ -74,6 +74,9 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  // Decoder
+  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
+
 };
 
 #endif /* RECCALORIMETER_READNOISEFROMFILETOOL_H */

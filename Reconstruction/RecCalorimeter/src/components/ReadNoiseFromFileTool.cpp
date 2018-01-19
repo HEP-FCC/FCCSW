@@ -48,6 +48,9 @@ StatusCode ReadNoiseFromFileTool::initialize() {
     return StatusCode::FAILURE;
   }
 
+  // Take readout bitfield decoder from GeoSvc
+  m_decoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
+								  m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
   debug() << "Filter noise threshold: " << m_filterThreshold << "*sigma" << endmsg;
 
   StatusCode sc = GaudiTool::initialize();
@@ -120,10 +123,8 @@ double ReadNoiseFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
 
   // Get cell coordinates: eta and radial layer
   double cellEta = m_segmentation->eta(aCellId);
-  // Take readout, bitfield from GeoSvc
-  auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
-  decoder->setValue(aCellId);
-  unsigned cellLayer = (*decoder)[m_activeFieldName];
+  m_decoder->setValue(aCellId);
+  unsigned cellLayer = (*m_decoder)[m_activeFieldName];
 
   // All histograms have same binning, all bins with same size
   // Using the histogram in the first layer to get the bin size
