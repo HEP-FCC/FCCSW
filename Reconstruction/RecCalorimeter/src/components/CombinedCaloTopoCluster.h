@@ -117,14 +117,6 @@ private:
   // Range for neighbours to be found
   int m_range;
 
-  /// all active Cells
-  std::map<uint64_t, fcc::CaloHit> m_allCellsECal;
-  std::map<uint64_t, fcc::CaloHit> m_allCellsHCal;
-
-  /// First list of CaloCells above seeding threshold
-  std::vector<fcc::CaloHit> firstSeedsECal;
-  std::vector<fcc::CaloHit> firstSeedsHCal;
-
   /// THRESHOLD FOR RECO WITHOUT NOISE
   /// Seed threshold ECal
   Gaudi::Property<double> m_seedThr_ECal{this, "seedThresholdECal", (7.5 / 4.), "seed threshold estimate [MeV]"};
@@ -151,6 +143,18 @@ private:
 
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoderECal;
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoderHCal;
+
+  /// all active Cells
+  std::map<uint64_t, fcc::CaloHit> m_allCellsECal;
+  std::map<uint64_t, fcc::CaloHit> m_allCellsHCal;
+
+  // Map of cellIDs to vector of neighbouring cell ids
+  std::unordered_map<uint64_t, std::vector<uint64_t>> m_neighboursMapECal;
+  std::unordered_map<uint64_t, std::vector<uint64_t>> m_neighboursMapHCal;
+
+  /// First list of CaloCells above seeding threshold
+  std::vector<fcc::CaloHit> m_firstSeedsECal;
+  std::vector<fcc::CaloHit> m_firstSeedsHCal;
 };
 
 #endif /* RECCALORIMETER_COMBINEDCALOTOPOCLUSTER_H */
