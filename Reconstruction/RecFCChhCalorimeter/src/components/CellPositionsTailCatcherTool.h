@@ -52,5 +52,6 @@ private:
   Gaudi::Property<double> m_centralRadius{this, "centralRadius", {}, "radius in cm"};
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   DD4hep::DDSegmentation::BitField64* m_decoder;
+  DD4hep::Geometry::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSTAILCATCHERTOOL_H */

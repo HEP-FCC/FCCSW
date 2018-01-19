@@ -31,6 +31,7 @@ StatusCode CellPositionsTailCatcherTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_volman = m_geoSvc->lcdd()->volumeManager();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -67,11 +68,10 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
 }
 
 DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const fcc::CaloHit& aCell) const {
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
   double radius;
   
   auto cellid = aCell.core().cellId;
-  const auto& transformMatrix = volman.worldTransformation(cellid);
+  const auto& transformMatrix = m_volman.worldTransformation(cellid);
   double outGlobal[3];
   double inLocal[] = {0, 0, 0};
   transformMatrix.LocalToMaster(inLocal, outGlobal);

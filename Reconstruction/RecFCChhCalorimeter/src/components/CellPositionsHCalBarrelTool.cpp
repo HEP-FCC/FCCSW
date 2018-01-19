@@ -29,6 +29,7 @@ StatusCode CellPositionsHCalBarrelTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_volman = m_geoSvc->lcdd()->volumeManager();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -65,12 +66,11 @@ void CellPositionsHCalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
 
 DD4hep::Geometry::Position CellPositionsHCalBarrelTool::getXYZPosition(const fcc::CaloHit& aCell) const {
   double radius;
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
   
   auto cellid = aCell.core().cellId;
   // global cartesian coordinates calculated from r,phi,eta, for r=1
   auto inSeg = m_segmentation->position(cellid);
-  auto detelement = volman.lookupDetElement(cellid);
+  auto detelement = m_volman.lookupDetElement(cellid);
   const auto& transform = detelement.worldTransformation();
   double global[3];
   double local[3] = {0, 0, 0};

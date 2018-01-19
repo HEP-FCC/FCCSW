@@ -30,6 +30,7 @@ StatusCode CellPositionsCaloDiscsTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_volman = m_geoSvc->lcdd()->volumeManager();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -66,7 +67,6 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
 DD4hep::Geometry::Position CellPositionsCaloDiscsTool::getXYZPosition(const fcc::CaloHit& aCell) const {
   int layer, subsystem;
   double radius;
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
   
   auto cellid = aCell.core().cellId;
   m_decoder->setValue(cellid);
@@ -81,7 +81,7 @@ DD4hep::Geometry::Position CellPositionsCaloDiscsTool::getXYZPosition(const fcc:
   
   // Check if layers have been merged
   if (m_mergedLayers.size() == 0) {
-    const auto& transformMatrix = volman.worldTransformation(cellid);
+    const auto& transformMatrix = m_volman.worldTransformation(cellid);
     double outGlobal[3];
     double inLocal[] = {0, 0, 0};
     transformMatrix.LocalToMaster(inLocal, outGlobal);
@@ -114,8 +114,8 @@ DD4hep::Geometry::Position CellPositionsCaloDiscsTool::getXYZPosition(const fcc:
     auto maxCellId = m_decoder->getValue();
     debug() << "old min layer : " << oldLayersMin << endmsg;
     debug() << "old max layer : " << oldLayersMax << endmsg;
-    const auto& transformMatrixMin = volman.worldTransformation(minCellId);
-    const auto& transformMatrixMax = volman.worldTransformation(maxCellId);
+    const auto& transformMatrixMin = m_volman.worldTransformation(minCellId);
+    const auto& transformMatrixMax = m_volman.worldTransformation(maxCellId);
     double inLocal[3] = {0, 0, 0};
     double outGlobalMin[3];
     double outGlobalMax[3];
