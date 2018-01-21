@@ -11,7 +11,7 @@
 
 #include "DetExtensions/IDetExtension.h"
 
-namespace DD4hep {
+namespace dd4hep {
 namespace Geometry {
 class DetElement;
 }
@@ -24,7 +24,7 @@ class DetModule : public IDetExtension {
 public:
   DetModule() {}
 
-  DetModule(const DetModule&, const DD4hep::Geometry::DetElement&) {}
+  DetModule(const DetModule&, const dd4hep::DetElement&) {}
 
   virtual ~DetModule() {}
 

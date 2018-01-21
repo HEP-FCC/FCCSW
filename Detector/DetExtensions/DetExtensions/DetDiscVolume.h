@@ -11,7 +11,7 @@
 
 #include "DetExtensions/IDetExtension.h"
 
-namespace DD4hep {
+namespace dd4hep {
 namespace Geometry {
 class DetElement;
 }
@@ -23,7 +23,7 @@ class DetDiscVolume : public IDetExtension {
 
 public:
   explicit DetDiscVolume(int status) : m_status(status) {}
-  DetDiscVolume(const DetDiscVolume& volume, const DD4hep::Geometry::DetElement&) { m_status = volume.m_status; }
+  DetDiscVolume(const DetDiscVolume& volume, const dd4hep::DetElement&) { m_status = volume.m_status; }
   virtual ~DetDiscVolume() {}
   int status() { return m_status; }
   virtual ExtensionType type() { return ExtensionType::DiscVolume; }

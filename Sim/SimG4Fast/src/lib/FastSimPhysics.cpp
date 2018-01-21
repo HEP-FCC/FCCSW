@@ -19,6 +19,7 @@ void FastSimPhysics::ConstructParticle() {}
 
 void FastSimPhysics::ConstructProcess() {
   G4FastSimulationManagerProcess* fastSimProcess = new G4FastSimulationManagerProcess("G4FSMP");
+  auto aParticleIterator = GetParticleIterator();
   aParticleIterator->reset();
   // Fast simulation manager process is available for all the particles
   while ((*aParticleIterator)()) {

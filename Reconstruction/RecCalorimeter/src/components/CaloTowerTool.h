@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITowerTool.h"
 
@@ -16,7 +16,7 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 class Segmentation;
 }
@@ -107,11 +107,11 @@ public:
    *   @param[in] aSegmentation Segmentation of the calorimeter
    */
   void CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells,
-                       DD4hep::DDSegmentation::GridPhiEta* aSegmentation);
+                       dd4hep::DDSegmentation::FCCSWGridPhiEta* aSegmentation);
   /**  Check if the readout name exists. If so, it returns the eta-phi segmentation.
    *   @param[in] aReadoutName Readout name to be retrieved
    */
-  DD4hep::DDSegmentation::GridPhiEta* retrieveSegmentation(std::string aReadoutName);
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* retrieveSegmentation(std::string aReadoutName);
 
 private:
   /// Handle for electromagnetic barrel cells (input collection)
@@ -151,19 +151,19 @@ private:
   Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "", 
                                                     "name of the hcal fwd readout"};
   /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_ecalBarrelSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalBarrelSegmentation;
   /// PhiEta segmentation of the ecal endcap calorimeter (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_ecalEndcapSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalEndcapSegmentation;
   /// PhiEta segmentation of the ecal forward calorimeter (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_ecalFwdSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalFwdSegmentation;
   /// PhiEta segmentation of the hadronic barrel (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_hcalBarrelSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalBarrelSegmentation;
   /// PhiEta segmentation of the hadronic extended barrel (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_hcalExtBarrelSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalExtBarrelSegmentation;
   /// PhiEta segmentation of the hcal endcap calorimeter (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_hcalEndcapSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalEndcapSegmentation;
   /// PhiEta segmentation of the hcal forward calorimeter (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_hcalFwdSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalFwdSegmentation;
   /// Radius used to calculate cluster position from eta and phi (in mm)
   Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
                                    "Radius used to calculate cluster position from eta and phi (in mm)"};

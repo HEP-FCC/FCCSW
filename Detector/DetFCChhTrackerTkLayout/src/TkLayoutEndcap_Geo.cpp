@@ -5,24 +5,25 @@
 #include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
 #include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
 
-using DD4hep::Geometry::Volume;
-using DD4hep::Geometry::DetElement;
-using DD4hep::XML::Dimension;
-using DD4hep::XML::Component;
-using DD4hep::Geometry::PlacedVolume;
+
+using dd4hep::Volume;
+using dd4hep::DetElement;
+using dd4hep::xml::Dimension;
+using dd4hep::xml::Component;
+using dd4hep::PlacedVolume;
 
 namespace det {
-static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCDD& lcdd,
-                                                                  DD4hep::XML::Handle_t xmlElement,
-                                                                  DD4hep::Geometry::SensitiveDetector sensDet) {
+static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
+                                                           dd4hep::xml::Handle_t xmlElement,
+                                                           dd4hep::SensitiveDetector sensDet) {
   // shorthands
-  DD4hep::XML::DetElement xmlDet = static_cast<DD4hep::XML::DetElement>(xmlElement);
+  dd4hep::xml::DetElement xmlDet = static_cast<dd4hep::xml::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
   double l_overlapMargin = 0.01;
 
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive)); // retrieve the type
-  sensDet.setType(sdTyp.typeStr()); // set for the whole detector
+  dd4hep::xml::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
+  sensDet.setType(sdTyp.typeStr());  // set for the whole detector
 
   // definition of top volume
   std::string detName = xmlDet.nameStr();
@@ -34,8 +35,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   Acts::ActsExtension* ecapDetExt = new Acts::ActsExtension(actsEcapConfig);
   posEcapDetElement.addExtension<Acts::IActsExtension>(ecapDetExt);
 
-
-  DD4hep::Geometry::Assembly envelopeVolume("endcapEnvelope");
+  dd4hep::Assembly envelopeVolume("endcapEnvelope");
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
   Component xDiscs = xmlElement.child(_Unicode(discs));
@@ -50,14 +50,14 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   std::vector<Volume> discVolumeVec;
   std::vector<DetElement> discDetElementVec;
   /// iterate over discs
-  for (DD4hep::XML::Collection_t xDiscColl(xDiscs, _Unicode(discZPls)); nullptr != xDiscColl; ++xDiscColl) {
+  for (dd4hep::xml::Collection_t xDiscColl(xDiscs, _Unicode(discZPls)); nullptr != xDiscColl; ++xDiscColl) {
     Component xDisc = static_cast<Component>(xDiscColl);
     Component xCurrentRings = xDisc.child(_Unicode(rings));
     // create disc volume
     double discThickness = 0.5 * (xDisc.zmax() - xDisc.zmin());
     currentZ = xDisc.z() - dimensions.zmin() - envelopeThickness;
     if(xCurrentRings.hasChild(_Unicode(ring))) { // we have information to construct a new volume
-      DD4hep::Geometry::Tube discShape(
+      dd4hep::Tube discShape(
           xDisc.rmin() - l_overlapMargin, xDisc.rmax() + l_overlapMargin, discThickness + l_overlapMargin);
 
       discVolumeVec.emplace_back("disc", discShape, lcdd.air());
@@ -70,7 +70,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
       Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
       discDetElementVec.back().addExtension<Acts::IActsExtension>(detlayer);
       // iterate over rings
-      for (DD4hep::XML::Collection_t xRingColl(xCurrentRings, _U(ring)); (nullptr != xRingColl); ++xRingColl) {
+      for (dd4hep::xml::Collection_t xRingColl(xCurrentRings, _U(ring)); (nullptr != xRingColl); ++xRingColl) {
         Component xRing = static_cast<Component>(xRingColl);
         Component xRingModules = xRing.child(_Unicode(modules));
         Component xModuleOdd = xRingModules.child(_Unicode(moduleOdd));
@@ -81,11 +81,11 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
 
         // place components in module
         double integratedCompThickness = 0.;
-        for (DD4hep::XML::Collection_t xCompColl(xModulePropertiesComp, _U(component)); nullptr != xCompColl;
+        for (dd4hep::xml::Collection_t xCompColl(xModulePropertiesComp, _U(component)); nullptr != xCompColl;
              ++xCompColl) {
           Component xComp = static_cast<Component>(xCompColl);
           Volume componentVolume("component",
-                                 DD4hep::Geometry::Trapezoid(0.5 * xModuleProperties.attr<double>("modWidthMin"),
+                                 dd4hep::Trapezoid(0.5 * xModuleProperties.attr<double>("modWidthMin"),
                                                              0.5 * xModuleProperties.attr<double>("modWidthMax"),
                                                              0.5 * xComp.thickness(),
                                                              0.5 * xComp.thickness(),
@@ -118,19 +118,19 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
             }
             // position module in the x-y plane, smaller end inward
             // and incorporate phi tilt if any
-            DD4hep::Geometry::RotationY lRotation1(M_PI * 0.5);
-            DD4hep::Geometry::RotationX lRotation2(M_PI * 0.5 + phiTilt);
+            dd4hep::RotationY lRotation1(M_PI * 0.5);
+            dd4hep::RotationX lRotation2(M_PI * 0.5 + phiTilt);
             // align radially
             double componentOffset =
                 integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness") + 0.5 * xComp.thickness();
-            DD4hep::Geometry::RotationZ lRotation3(atan2(lY, lX));
+            dd4hep::RotationZ lRotation3(atan2(lY, lX));
             // theta tilt, if any -- note the different convention between
             // tklayout and here, thus the subtraction of pi / 2
-            DD4hep::Geometry::RotationY lRotation4(thetaTilt - M_PI * 0.5);
-            DD4hep::Geometry::RotationZ lRotation_PhiPos(phi);
+            dd4hep::RotationY lRotation4(thetaTilt - M_PI * 0.5);
+            dd4hep::RotationZ lRotation_PhiPos(phi);
             // position in  disk
-            DD4hep::Geometry::Translation3D lTranslation(lX, lY, lZ + componentOffset);
-            DD4hep::Geometry::Transform3D myTrafo(lRotation4 * lRotation3 * lRotation2 * lRotation1, lTranslation);
+            dd4hep::Translation3D lTranslation(lX, lY, lZ + componentOffset);
+            dd4hep::Transform3D myTrafo(lRotation4 * lRotation3 * lRotation2 * lRotation1, lTranslation);
             PlacedVolume placedComponentVolume = discVolumeVec.back().placeVolume(componentVolume, lRotation_PhiPos * myTrafo);
             if (xComp.isSensitive()) {
               placedComponentVolume.addPhysVolID("component", compCounter);
@@ -148,19 +148,19 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
       posEcapDetElement.add(discDetElementVec.back());
 
     }
-    PlacedVolume placedDiscVolume = envelopeVolume.placeVolume(discVolumeVec.back(), DD4hep::Geometry::Position(0, 0, currentZ));
+    PlacedVolume placedDiscVolume = envelopeVolume.placeVolume(discVolumeVec.back(), dd4hep::Position(0, 0, currentZ));
     placedDiscVolume.addPhysVolID("disc", discCounter);
     ++discCounter;
 
     discDetElementVec.back().setPlacement(placedDiscVolume);
   }
 
-  DD4hep::Geometry::Assembly bothEndcaps("bothEndcapsEnvelope");
+  dd4hep::Assembly bothEndcaps("bothEndcapsEnvelope");
 
-  DD4hep::Geometry::Translation3D envelopeTranslation(0, 0, dimensions.zmin() + envelopeThickness);
+  dd4hep::Translation3D envelopeTranslation(0, 0, dimensions.zmin() + envelopeThickness);
 
-  DD4hep::Geometry::RotationX envelopeNegRotation(dd4hep::pi);
-  DD4hep::Geometry::RotationX envelopePosRotation(0.);
+  dd4hep::RotationX envelopeNegRotation(dd4hep::pi);
+  dd4hep::RotationX envelopePosRotation(0.);
   PlacedVolume placedEnvelopeVolume =
       bothEndcaps.placeVolume(envelopeVolume, envelopePosRotation * envelopeTranslation);
   PlacedVolume placedNegEnvelopeVolume =

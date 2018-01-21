@@ -11,7 +11,7 @@
 
 #include "DetExtensions/IDetExtension.h"
 
-namespace DD4hep {
+namespace dd4hep {
 namespace Geometry {
 class DetElement;
 }
@@ -24,7 +24,7 @@ class DetCylinderLayer : public IDetExtension {
 public:
   DetCylinderLayer() {}
 
-  DetCylinderLayer(const DetCylinderLayer&, const DD4hep::Geometry::DetElement&) {}
+  DetCylinderLayer(const DetCylinderLayer&, const dd4hep::DetElement&) {}
 
   virtual ~DetCylinderLayer() {}
 

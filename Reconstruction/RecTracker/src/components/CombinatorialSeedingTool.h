@@ -2,10 +2,12 @@
 #define RECTRACKER_COMBINATORIALSEEDINGTOOL_H
 
 // from Gaudi
+//#include "DDSegmentation/BitField64.h"
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 #include "RecInterface/ITrackSeedingTool.h"
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
@@ -17,11 +19,6 @@
 
 class IGeoSvc;
 
-namespace DD4hep {
-namespace DDSegmentation {
-class BitField64;
-}
-}
 
 class CombinatorialSeedingTool : public GaudiTool, virtual public ITrackSeedingTool {
 public:
@@ -35,8 +32,8 @@ public:
                                const fcc::PositionedTrackHitCollection* theHits, std::pair<int, int> sIndex);
 
 private:
-  ServiceHandle<IGeoSvc> m_geoSvc;
-  DD4hep::DDSegmentation::BitField64* m_decoder;
+  SmartIF<IGeoSvc> m_geoSvc;
+  //DDSegmentation::BitField64* m_decoder;
   /// system and layer ids for the inner barrel layer to be used for seeding
   Gaudi::Property<std::pair<int, int>> m_seedingLayerIndices0{this, "seedingLayerIndices0", {0, 0}};
   /// system and layer ids for the middle barrel layer to be used for seeding

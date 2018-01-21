@@ -1,6 +1,7 @@
 #include "PapasAlg.h"
 
 #include "GaudiKernel/EventContext.h"
+#include "GaudiKernel/ThreadLocalContext.h"
 // FCCSW
 #include "SimPapas/IPapasDetSvc.h"
 #include "SimPapas/IPapasExportTool.h"
@@ -62,8 +63,7 @@ StatusCode PapasAlg::execute() {
   m_history.clear();
   papas::Event pevent(m_history);
   // pick up the Gaudi event number
-  auto context = getContext();
-  m_eventno = context.evt();
+  m_eventno = Gaudi::Hive::currentContext().evt();
   pevent.setEventNo(m_eventno);
   papas::PDebug::write("Event: {}", m_eventno);
 

@@ -16,7 +16,7 @@
 namespace det {
 FullParticleAbsorptionSD::FullParticleAbsorptionSD(const std::string& aDetectorName,
                                      const std::string& aReadoutName,
-                                     const DD4hep::Geometry::Segmentation& aSeg)
+                                     const dd4hep::Segmentation& aSeg)
     : G4VSensitiveDetector(aDetectorName), m_calorimeterCollection(nullptr), m_seg(aSeg) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
@@ -28,7 +28,7 @@ void FullParticleAbsorptionSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   m_calorimeterCollection =
-      new G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName, collectionName[0]);
+      new G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName, collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection),
                                       m_calorimeterCollection);
 }
@@ -37,8 +37,8 @@ bool FullParticleAbsorptionSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   G4Track* aTrack = aStep->GetTrack();
   G4double kineticEnergy = aTrack->GetKineticEnergy();
-  DD4hep::Simulation::Position pos(prePos.x(), prePos.y(), prePos.z());
-  auto hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
+  dd4hep::Position pos(prePos.x(), prePos.y(), prePos.z());
+  auto hit = new dd4hep::sim::Geant4CalorimeterHit(pos);
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = kineticEnergy;
   m_calorimeterCollection->insert(hit);
