@@ -50,11 +50,11 @@ gaudi_add_test(TestGFlashHomoCalo
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                FRAMEWORK tests/options/gflash_test_pbwo4.py)
 # Test the detector baselines:
-gaudi_add_test(OverlapCheckExtrusionsMaterialFCChh
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND python ${DD4hep_ROOT}/python/checkOverlaps.py -c Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml
-               PASSREGEX "Number of illegal overlaps/extrusions : 0" )
-gaudi_add_test(OverlapCheckSamplingMaterialFCChh
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND python ${DD4hep_ROOT}/python/checkOverlaps.py -c Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml -o s
-               PASSREGEX "Number of illegal overlaps/extrusions : 0" )
+#gaudi_add_test(OverlapCheckExtrusionsMaterialFCChh
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#               COMMAND python ${DD4hep_ROOT}/python/checkOverlaps.py -c Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml
+#               FAILREGEX "Overlap is detected" )
+#gaudi_add_test(OverlapCheckSamplingMaterialFCChh
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#               COMMAND python ${DD4hep_ROOT}/python/checkOverlaps.py -c Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml -o s
+#               FAILREGEX "Overlap is detected" )

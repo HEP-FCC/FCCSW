@@ -10,7 +10,7 @@ geantservice = SimG4Svc("SimG4Svc",
                         detector='SimG4DD4hepDetector',
                         physicslist="SimG4FtfpBert",
                         actions="SimG4FullSimActions",
-                        g4PostInitCommands=['/geometry/test/recursion_depth 3',  '/geometry/test/run'])
+                        g4PostInitCommands=['/geometry/test/recursion_depth 2',  '/geometry/test/run'])
 
 ApplicationMgr(TopAlg=[],
                EvtSel='NONE',
