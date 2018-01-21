@@ -54,7 +54,7 @@
     <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell) -->
     <readout name="ECalBarrelEta">
       <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.68024"/>
-      <id>system:4,cryo:1,module:11,type:3,subtype:3,layer:8,eta:9</id>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
     </readout>
     <!-- readout for the reconstruction -->
     <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
