@@ -68,11 +68,35 @@ std::vector<std::pair<int, int>> bitfieldExtremes(DD4hep::DDSegmentation::BitFie
  */
 CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId);
 
-/** Get the dimensions of a tube (TGeoTube).
+/** Get the dimensions of a tube (TGeoConeSeg).
  *   @param[in] aVolumeId The volume ID.
  *   return Dimensions of the tube (rmin, rmax, z(half-length)).
  */
-CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId);
+ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId);
+
+/** Get the dimensions of a cone (TGeoCone).
+ *   @param[in] aVolumeId The volume ID.
+ *   return Dimensions of the cone (rmin, rmax, z(half-length)).
+ */
+ CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId);
+
+/** Get the extrema in pseudorapidity of a tube or cone volume.
+ *   @param[in] aVolumeId The volume ID.
+ *   return Pseudorapidity extrema (eta_min, eta_max).
+ */
+ std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId);
+
+/** Get the extrema in pseudorapidity of an envelope.
+ *   @param[in] aVolumeId The volume ID.
+ *   return Pseudorapidity extrema (eta_min, eta_max).
+ */
+ std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId);
+
+/** Get the extrema in pseudorapidity of a volume. First try to match tube or cone, if it fails use an envelope shape.
+ *   @param[in] aVolumeId The volume ID.
+ *   return Pseudorapidity extrema (eta_min, eta_max).
+ */
+ std::array<double, 2> volumeEtaExtremes(uint64_t aVolumeId);
 
 /** Get the number of cells for the volume and a given Cartesian XY segmentation.
  *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.
@@ -99,9 +123,9 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
  *   @warning No offset in segmentation is currently taken into account.
  *   @param[in] aVolumeId The volume for which the cells are counted.
  *   @param[in] aSeg Handle to the segmentation of the volume.
- *   return Array of the number of cells in (phi, eta).
+ *   return Array of the number of cells in (phi, eta) and the minimum eta ID.
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg);
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg);
 
 /** Get the number of cells for the volume and a given R-phi segmentation.
  *   It is assumed that the volume has a cylindrical shape - TGeoTube (and full azimuthal coverage)
