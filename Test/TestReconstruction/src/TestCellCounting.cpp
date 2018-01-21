@@ -3,7 +3,7 @@
 // FCCSW
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 
 // datamodel
 #include "datamodel/CaloHitCollection.h"
@@ -74,7 +74,7 @@ StatusCode TestCellCounting::initialize() {
     info() << "Number of segmentation cells in (r,phi): " << det::utils::numberOfCells(m_volumeId, *segmentationRPhi)
            << endmsg;
   }
-  auto segmentationPhiEta = dynamic_cast<dd4hep::DDSegmentation::GridPhiEta*>(
+  auto segmentationPhiEta = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (segmentationPhiEta == nullptr) {
     info() << "There is no phi-eta segmentation." << endmsg;

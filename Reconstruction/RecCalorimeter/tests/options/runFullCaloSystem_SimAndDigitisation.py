@@ -4,7 +4,7 @@ from GaudiKernel.SystemOfUnits import MeV,GeV
 
 # simulations setup
 energy=50*GeV
-num_events=3
+num_events=1
 magnetic_field=1
 particleType="e-"
 

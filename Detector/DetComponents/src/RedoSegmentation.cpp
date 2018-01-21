@@ -39,8 +39,8 @@ StatusCode RedoSegmentation::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout, bitfield from GeoSvc
-  m_oldDecoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
-      m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder());
+  m_oldDecoder = /*std::shared_ptr<dd4hep::DDSegmentation::BitField64>(*/
+      m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder();
   // segmentation identifiers to be overwritten
   if (m_oldIdentifiers.size() == 0) {
     // it is not an error, maybe no segmentation was used previously
@@ -111,7 +111,9 @@ StatusCode RedoSegmentation::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode RedoSegmentation::finalize() { return GaudiAlgorithm::finalize(); }
+StatusCode RedoSegmentation::finalize() {
+  info() << "RedoSegmentation finalize! " << endmsg;
+   return GaudiAlgorithm::finalize(); }
 
 uint64_t RedoSegmentation::volumeID(uint64_t aCellId) const {
   m_oldDecoder->setValue(aCellId);
