@@ -75,7 +75,6 @@ private:
   /// Name of the new detector readout
   Gaudi::Property<std::string> m_newReadoutName{this, "newReadoutName", "", "Name of the new detector readout"};
   /// Old bitfield decoder
-  //std::unique_ptr<dd4hep::DDSegmentation::BitField64> m_oldDecoder;
   dd4hep::DDSegmentation::BitField64* m_oldDecoder;
   /// Segmentation fields that are going to be replaced by the new segmentation
   Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{
