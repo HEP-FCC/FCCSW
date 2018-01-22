@@ -76,6 +76,6 @@ ApplicationMgr(
               pileupEcalBarrel
               ],
     EvtSel = 'NONE',
-    EvtMax = 1,
+    EvtMax = -1,
     ExtSvc = [podioevent, geoservice],
  )

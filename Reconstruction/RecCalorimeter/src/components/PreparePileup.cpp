@@ -69,20 +69,33 @@ StatusCode PreparePileup::initialize() {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
     }
+    m_energyAllEventsVsAbsEta.push_back(
+					new TH2F(("energyAllEventsVsAbsEta" + std::to_string(i)).c_str(),
+						 ("sum of energy per cell in all events vs fabs cell eta in layer " + std::to_string(i)).c_str(),
+						 60, 0, 6.0, 5000, -1, m_maxEnergy*20) );
+    if (m_histSvc
+	->regHist("/rec/energyAllEventsVsAbsEta" + std::to_string(i), m_energyAllEventsVsAbsEta.back())
+	.isFailure()) {
+      error() << "Couldn't register hist" << endmsg;
+      return StatusCode::FAILURE;
+    }
   }
-    
+ 
   // Initialization of geometry tool
   if (!m_geoTool.retrieve()) {
     error() << "Unable to retrieve the geometry tool!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  // Prepare map of all existing cells in calorimeter to add noise to all
+  // Prepare map of all existing cells in calorimeter to add minimum bias signal
   StatusCode sc_prepareCells = m_geoTool->prepareEmptyCells(m_cellsMap);
   if (sc_prepareCells.isFailure()) {
     error() << "Unable to create empty cells!" << endmsg;
     return StatusCode::FAILURE;
   }
-  debug() << "Number of empty cells: " << m_cellsMap.size() << endmsg;  
+  info() << "Number of empty cells: " << m_cellsMap.size() << endmsg;  
+
+  //StatusCode sc_prepareCellsTwo = m_geoTool->prepareEmptyCells(m_sumEnergyCellsMap);
+  m_sumEnergyCellsMap = m_cellsMap;
 
   return StatusCode::SUCCESS;
 }
@@ -98,6 +111,7 @@ StatusCode PreparePileup::execute() {
   // Merge signal events with empty cells
   for (const auto& hit : *hits) {
     m_cellsMap[hit.core().cellId] += hit.core().energy;
+    m_sumEnergyCellsMap[hit.core().cellId] += hit.core().energy;
   }
   debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;
 
@@ -122,4 +136,25 @@ StatusCode PreparePileup::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode PreparePileup::finalize() { return GaudiAlgorithm::finalize(); }
+StatusCode PreparePileup::finalize() { 
+
+  //Fill 2D histogram per layer (sum of energy in all events per cell)
+  for (const auto& cell : m_sumEnergyCellsMap) {
+    double cellEnergy = cell.second;
+    uint64_t cellId = cell.first;
+    m_decoder->setValue(cellId);
+    uint layerId = (*m_decoder)[m_layerFieldName];
+    if (layerId>=m_numLayers) {
+      layerId = m_numLayers-1;
+      warning() << "Layer id of the cell "<< layerId
+                << " is larger than number of layers in the histogram: "
+                << m_numLayers
+                << ". Filling the last histogram." << endmsg;
+
+    }
+    double cellEta = m_segmentation->eta(cellId);
+    m_energyAllEventsVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
+  }
+
+return GaudiAlgorithm::finalize(); 
+}

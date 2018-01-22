@@ -61,13 +61,17 @@ private:
 
   /// Map of cell IDs (corresponding to DD4hep IDs) and energy
   std::unordered_map<uint64_t, double> m_cellsMap;
+  /// Sum of energy in each cell per file
+  std::unordered_map<uint64_t, double> m_sumEnergyCellsMap;
 
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// 2D histogram with abs(eta) on x-axis and energy per cell on y-axis
+  /// 2D histogram with abs(eta) on x-axis and energy per cell per event on y-axis
   std::vector<TH2F*> m_energyVsAbsEta;
+  /// 2D histogram with abs(eta) on x-axis and energy per cell per file on y-axis
+  std::vector<TH2F*> m_energyAllEventsVsAbsEta;
 
   /// Maximum energy in the m_energyVsAbsEta histogram, in GeV 
   Gaudi::Property<uint> m_maxEnergy{this, "maxEnergy", 20., "Maximum energy in the pile-up plot"};
