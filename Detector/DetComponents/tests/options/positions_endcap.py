@@ -33,7 +33,7 @@ from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
 out = PodioOutput("out")
 out.outputCommands = ["keep *"]
-out.filename = "positions_ecalNegativeEndcapSim.root"
+out.filename = "positions_ecalEndcapSim.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr

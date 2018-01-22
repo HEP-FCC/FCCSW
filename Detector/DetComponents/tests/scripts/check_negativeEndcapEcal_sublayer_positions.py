@@ -27,6 +27,8 @@ if __name__ == "__main__":
             z = pos.position().z
             cellId = pos.core().cellId
             layerId = sublayer(cellId)
+            # - 1 because the ID starts form ID=1
+            layerId -= 1
             # detector begins at 5300, cryostat thickness of 50, bath of 90, margin 1.65, readout 1.2  => 5442.85
             if layerId == 0:
                 # first active half-disc

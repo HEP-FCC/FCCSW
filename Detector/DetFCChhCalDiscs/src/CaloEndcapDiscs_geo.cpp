@@ -152,7 +152,7 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
   activeVolPre.setSensitiveDetector(sensDet);
   DD4hep::Geometry::PlacedVolume readoutPhysVolPre =
       layerEnvelopeVols[0].placeVolume(readoutVolPre, DD4hep::Geometry::Position(0, 0, zOffset));
-  readoutPhysVolPre.addPhysVolID("sublayer", 1);
+  readoutPhysVolPre.addPhysVolID("sublayer", 1); // 1 to start numbering at ID=1
   readoutPhysVolPre.addPhysVolID("type", 2);  // 0 = active, 1 = passive, 2 = readout
   std::vector<DD4hep::Geometry::PlacedVolume> activePhysVols;
   activePhysVols.reserve(numDiscs);
@@ -164,8 +164,6 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
   zOffset += sign * (readoutThickness / 2. + activeThickness / 2. + passiveThickness / 2.);
   // envelopes:
   uint iPlaceHere = 0;
-  uint subLayerIdPassive = 1;
-  uint subLayerIdReadout = 2;
   // Loop placing readout, active and passive discs
   for (uint iDiscs = 0; iDiscs < numDiscs - 1; iDiscs++) {
     // first figure out into which envelope passive, active and reaout discs go
@@ -174,11 +172,6 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
     if ((iDiscs + 1) >= layerHeightAccumulative[iPlaceHere]) {
       iPlaceHere++;
       zOffset = sign * (-layerThickness[iPlaceHere] / 2 + passiveThickness / 2.);
-      subLayerIdPassive = 1;
-      subLayerIdReadout = 1;
-    } else {
-      subLayerIdReadout++;
-      subLayerIdPassive++;
     }
     lLog << MSG::DEBUG << "Placing iDiscs " << iDiscs << " inside envelope # " << iPlaceHere << endmsg;
 
@@ -242,13 +235,13 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
     }
     DD4hep::Geometry::PlacedVolume passivePhysVol =
         layerEnvelopeVols[iPlaceHere].placeVolume(passiveVol, DD4hep::Geometry::Position(0, 0, zOffset));
-    passivePhysVol.addPhysVolID("sublayer", subLayerIdPassive);
+    passivePhysVol.addPhysVolID("sublayer", iDiscs + 1); // +1 to start numbering at ID=1
     passivePhysVol.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
     DD4hep::Geometry::PlacedVolume readoutPhysVol = layerEnvelopeVols[iPlaceHere].placeVolume(
         readoutVol,
         DD4hep::Geometry::Position(0, 0, zOffset +
                                        sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.)));
-    readoutPhysVol.addPhysVolID("sublayer", subLayerIdReadout);  // +1 because first readout is placed before that loop
+    readoutPhysVol.addPhysVolID("sublayer", iDiscs + 1 + 1);  // +1 because first readout is placed before that loop
     readoutPhysVol.addPhysVolID("type", 2);                      // 0 = active, 1 = passive, 2 = readout
     activePhysVols.push_back(layerEnvelopeVols[iPlaceHere].placeVolume(
         activeVol,
@@ -264,22 +257,18 @@ void buildOneSide(MsgStream& lLog, DD4hep::Geometry::LCDD& aLcdd, DD4hep::Geomet
       // it is placed in the last readout-layer envelope
       DD4hep::Geometry::PlacedVolume passivePhysVolPost = layerEnvelopeVols[layerEnvelopeVols.size() - 1].placeVolume(
           passiveVol, DD4hep::Geometry::Position(0, 0, zOffset));
-      passivePhysVolPost.addPhysVolID("sublayer", subLayerIdPassive + 1);
+      passivePhysVolPost.addPhysVolID("sublayer", iDiscs + 1 + 1);
       passivePhysVolPost.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
       lLog << MSG::DEBUG << "Placing last passive disc at z= " << zOffset << endmsg;
     }
   }
 
   iPlaceHere = 0;
-  uint subLayerIdActive = 1;
   for (uint iActive = 0; iActive < activePhysVols.size(); iActive++) {
     if (iActive >= layerHeightAccumulative[iPlaceHere]) {
       iPlaceHere++;
-      subLayerIdActive = 1;
-    } else {
-      subLayerIdActive++;
     }
-    activePhysVols[iActive].addPhysVolID("sublayer", subLayerIdActive);
+    activePhysVols[iActive].addPhysVolID("sublayer", iActive + 1);
     activePhysVols[iActive].addPhysVolID("type", 0);  // 0 = active, 1 = passive, 2 = readout
     DD4hep::Geometry::DetElement activeDetElem(layerEnvelopeDetElems[iPlaceHere], "active" + std::to_string(iActive),
                                                iActive);
