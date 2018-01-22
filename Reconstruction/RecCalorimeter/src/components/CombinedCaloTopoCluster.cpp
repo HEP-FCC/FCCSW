@@ -105,10 +105,8 @@ StatusCode CombinedCaloTopoCluster::initialize() {
   }
 
   // Take readout bitfield decoder from GeoSvc
-  m_decoderECal = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-								      m_geoSvc->lcdd()->readout(m_ECalReadoutName).segmentation().segmentation()->decoder());
-  m_decoderHCal = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-								      m_geoSvc->lcdd()->readout(m_HCalReadoutName).segmentation().segmentation()->decoder());
+  m_decoderECal = m_geoSvc->lcdd()->readout(m_ECalReadoutName).segmentation().segmentation()->decoder();
+  m_decoderHCal = m_geoSvc->lcdd()->readout(m_HCalReadoutName).segmentation().segmentation()->decoder();
 
   m_fieldExtremesECal = det::utils::bitfieldExtremes((*m_decoderECal), m_fieldNamesECal);
   m_fieldExtremesHCal = det::utils::bitfieldExtremes((*m_decoderHCal), m_fieldNamesHCal);
@@ -339,13 +337,13 @@ StatusCode CombinedCaloTopoCluster::execute() {
             // Energy weighted positions and energy sum
             clusterCore.position.x = ((clusterCore.position.x * clusterCore.energy) +
                                       (clusterECalEta.first.core().position.x * clusterECalEta.first.core().energy)) /
-	      2.;
+	      (clusterCore.energy + clusterECalEta.first.core().energy);
             clusterCore.position.y = ((clusterCore.position.y * clusterCore.energy) +
                                       (clusterECalEta.first.core().position.y * clusterECalEta.first.core().energy)) /
-	      2.;
+	      (clusterCore.energy + clusterECalEta.first.core().energy);
             clusterCore.position.z = ((clusterCore.position.z * clusterCore.energy) +
                                       (clusterECalEta.first.core().position.z * clusterECalEta.first.core().energy)) /
-	      2.;
+	      (clusterCore.energy + clusterECalEta.first.core().energy);
             clusterCore.energy = clusterCore.energy + clusterECalEta.first.core().energy;
             // Erase the ECal cluster from maps
             mergeClustersPhiMap.erase(clusterECalEta.first);
@@ -499,14 +497,9 @@ void CombinedCaloTopoCluster::buildingProtoCluster(double neighbourThr,
         for (auto& id : N2[it - 1]) {
           N2[it] = CombinedCaloTopoCluster::searchForNeighbours(id, clusterId, neighboursMap, neighbourThr, allCells,
                                                                 clusterOfCell, preClusterCollection);
-          if (N2[it].size() == 0) {  // try with neighbour threshold=0
-            double thr = 0.;
-            N2[it] = CombinedCaloTopoCluster::searchForNeighbours(id, clusterId, neighboursMap, thr, allCells,
-                                                                  clusterOfCell, preClusterCollection);
-            if (N2[it].size() == 0) break;
-          }
-          debug() << "Found " << N2[it].size() << " more neighbours.." << endmsg;
-        }
+	  if (N2[it].size() == 0) break;
+	}
+	debug() << "Found " << N2[it].size() << " more neighbours.." << endmsg;
       }
     }
   }

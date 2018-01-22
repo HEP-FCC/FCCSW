@@ -69,9 +69,9 @@ public:
   /** Search for neighbours and add them to lists
     */
   std::vector<uint64_t> searchForNeighboursWNoise(
-      const uint64_t id, uint& clusterNum, const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
-      double threshold, std::map<uint64_t, fcc::CaloHit>& allCells, std::map<uint64_t, uint>& clusterOfCell,
-      std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection, IReadNoiseFileTool& aNoiseTool);
+						  const uint64_t id, uint& clusterNum, const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
+						  double threshold, std::map<uint64_t, fcc::CaloHit>& allCells, std::map<uint64_t, uint>& clusterOfCell,
+						  std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection, IReadNoiseFileTool& aNoiseTool);
   std::vector<uint64_t> searchForNeighbours(const uint64_t id, uint& clusterNum,
                                             const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
                                             double threshold, std::map<uint64_t, fcc::CaloHit>& allCells,
@@ -143,8 +143,8 @@ private:
   std::vector<std::pair<int, int>> m_fieldExtremesECal;
   std::vector<std::pair<int, int>> m_fieldExtremesHCal;
 
-  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoderECal;
-  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoderHCal;
+  DD4hep::DDSegmentation::BitField64* m_decoderECal;
+  DD4hep::DDSegmentation::BitField64* m_decoderHCal;
 
   /// all active Cells
   std::map<uint64_t, fcc::CaloHit> m_allCellsECal;
