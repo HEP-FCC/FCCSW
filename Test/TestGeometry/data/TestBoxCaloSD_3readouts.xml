@@ -42,7 +42,7 @@
       <id>system:1,x:-4,y:-4,z:-4</id>
     </readout>
     <readout name="ECalHitsPhiEta">
-      <segmentation type="GridPhiEta" grid_size_eta="0.1" phi_bins="100"/>
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.1" phi_bins="100"/>
       <id>phi:-8,eta:-8,system:1</id>
     </readout>
   </readouts>

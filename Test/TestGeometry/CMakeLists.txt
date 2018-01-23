@@ -3,28 +3,18 @@
 ################################################################################
 gaudi_subdir(TestGeometry v1r0)
 
-gaudi_depends_on_subdirs(GaudiKernel FWCore Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
+gaudi_depends_on_subdirs(GaudiKernel FWCore Test/TestGeometryLib Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
 
 find_package(Geant4)
-include(${Geant4_USE_FILE})
-find_package(DD4hep)
+#include(${Geant4_USE_FILE})
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-gaudi_install_headers(TestGeometry)
 
-gaudi_add_library(TestGeometry
-		  src/lib/*.cpp
-		  INCLUDE_DIRS Geant4 ROOT TestGeometry DD4hep
-		  LINK_LIBRARIES GaudiKernel Geant4 ROOT DD4hep
-        PUBLIC_HEADERS TestGeometry)
-
-gaudi_add_module(TestGeometryPlugins
+gaudi_add_module(TestGeometry
                  src/components/*.cpp
-                 INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometry
-                 LINK_LIBRARIES GaudiKernel FWCore Geant4 DetCommon TestGeometry)
+                 INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometryLib
+                 LINK_LIBRARIES GaudiKernel FWCore Geant4 DetCommon TestGeometryLib)
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-dd4hep_generate_rootmap(TestGeometry)
 
 include(CTest)
 gaudi_add_test(GeantOverlapTestFCChhMaster
@@ -59,12 +49,3 @@ gaudi_add_test(CmpRandomCellIDDd4hepSegmentationwithVolumes
 gaudi_add_test(TestGFlashHomoCalo
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                FRAMEWORK tests/options/gflash_test_pbwo4.py)
-# Test the detector baselines:
-gaudi_add_test(OverlapCheckExtrusionsMaterialFCChh
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND python ${DD4hep_ROOT}/python/checkOverlaps.py -c Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml
-               PASSREGEX "Number of illegal overlaps/extrusions : 0" )
-gaudi_add_test(OverlapCheckSamplingMaterialFCChh
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND python ${DD4hep_ROOT}/python/checkOverlaps.py -c Detector/DetFCChhBaseline1/compact/FCChh_DectMasterMaterial.xml -o s
-               PASSREGEX "Number of illegal overlaps/extrusions : 0" )

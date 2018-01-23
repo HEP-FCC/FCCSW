@@ -9,7 +9,6 @@
 
 #include "ACTS/Detector/TrackingGeometry.hpp"
 #include "ACTS/EventData/Measurement.hpp"
-#include "ACTS/Examples/BuildGenericDetector.hpp"
 #include "ACTS/Extrapolation/ExtrapolationCell.hpp"
 #include "ACTS/Extrapolation/ExtrapolationEngine.hpp"
 #include "ACTS/Extrapolation/IExtrapolationEngine.hpp"
@@ -28,7 +27,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
 #include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"

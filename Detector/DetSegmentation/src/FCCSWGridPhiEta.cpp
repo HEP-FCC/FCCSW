@@ -1,12 +1,12 @@
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 
 /// default constructor using an encoding string
-GridPhiEta::GridPhiEta(const std::string& cellEncoding) : GridEta(cellEncoding) {
+FCCSWGridPhiEta::FCCSWGridPhiEta(const std::string& cellEncoding) : GridEta(cellEncoding) {
   // define type and description
-  _type = "GridPhiEta";
+  _type = "FCCSWGridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
 
   // register all necessary parameters (additional to those registered in GridEta)
@@ -15,9 +15,9 @@ GridPhiEta::GridPhiEta(const std::string& cellEncoding) : GridEta(cellEncoding) 
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
-GridPhiEta::GridPhiEta(BitField64* decoder) : GridEta(decoder) {
+FCCSWGridPhiEta::FCCSWGridPhiEta(BitField64* decoder) : GridEta(decoder) {
   // define type and description
-  _type = "GridPhiEta";
+  _type = "FCCSWGridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
 
   // register all necessary parameters (additional to those registered in GridEta)
@@ -27,13 +27,13 @@ GridPhiEta::GridPhiEta(BitField64* decoder) : GridEta(decoder) {
 }
 
 /// determine the local based on the cell ID
-Vector3D GridPhiEta::position(const CellID& cID) const {
+Vector3D FCCSWGridPhiEta::position(const CellID& cID) const {
   _decoder->setValue(cID);
   return positionFromREtaPhi(1.0, eta(), phi());
 }
 
 /// determine the cell ID based on the position
-CellID GridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition,
+CellID FCCSWGridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition,
                           const VolumeID& vID) const {
   _decoder->setValue(vID);
   double lEta = etaFromXYZ(globalPosition);
@@ -44,13 +44,13 @@ CellID GridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& g
 }
 
 /// determine the azimuthal angle phi based on the current cell ID
-double GridPhiEta::phi() const {
+double FCCSWGridPhiEta::phi() const {
   CellID phiValue = (*_decoder)[m_phiID].value();
   return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
 }
 
 /// determine the azimuthal angle phi based on the cell ID
-double GridPhiEta::phi(const CellID& cID) const {
+double FCCSWGridPhiEta::phi(const CellID& cID) const {
   _decoder->setValue(cID);
   CellID phiValue = (*_decoder)[m_phiID].value();
   return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);

@@ -11,7 +11,7 @@
 class IGeoSvc;
 
 // DD4hep
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 class BitField64;
 }
@@ -54,7 +54,7 @@ private:
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readout", "", "Name of the detector readout"};
   /// Pointer to the bitfield decoder
-  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
   /// Names of the fields for which neighbours are found
   std::vector<std::string> m_fieldNames;
   /// Minimal and maximal values of the fields for which neighbours are found

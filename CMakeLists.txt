@@ -22,4 +22,4 @@ install(FILES ${CMAKE_BINARY_DIR}/fccrun
         RENAME run)
 
 gaudi_project(FCCSW HEAD
-              USE Gaudi v28r2 )
+              USE Gaudi v29r2 )
