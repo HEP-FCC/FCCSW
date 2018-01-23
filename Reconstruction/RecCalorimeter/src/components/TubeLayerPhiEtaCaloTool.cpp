@@ -1,7 +1,7 @@
 #include "TubeLayerPhiEtaCaloTool.h"
 
 // segm
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
@@ -48,16 +48,16 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
   info() << "Number of active layers " << numLayers << endmsg;
 
   // get PhiEta segmentation
-  DD4hep::DDSegmentation::GridPhiEta* segmentation;
-  segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation;
+  segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  info() << "GridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
+  info() << "FCCSWGridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
          << endmsg;
-  info() << "GridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
+  info() << "FCCSWGridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
          << segmentation->offsetPhi() << endmsg;
 
   // Take readout bitfield decoder from GeoSvc

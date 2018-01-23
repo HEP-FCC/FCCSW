@@ -48,8 +48,8 @@ StatusCode InspectHitsCollectionsTool::finalize() { return GaudiTool::finalize()
 StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  DD4hep::Simulation::Geant4TrackerHit* hitT;
-  DD4hep::Simulation::Geant4CalorimeterHit* hitC;
+  dd4hep::sim::Geant4TrackerHit* hitT;
+  dd4hep::sim::Geant4CalorimeterHit* hitC;
   info() << "Obtaining hits collections that are stored in this event:" << endmsg;
   if (collections != nullptr) {
     for (int iter_coll = 0; iter_coll < collections->GetNumberOfCollections(); iter_coll++) {
@@ -60,13 +60,13 @@ StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
         size_t n_hit = collect->GetSize();
         auto decoder = m_geoSvc->lcdd()->readout(collect->GetName()).idSpec().decoder();
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
-          hitT = dynamic_cast<DD4hep::Simulation::Geant4TrackerHit*>(collect->GetHit(iter_hit));
+          hitT = dynamic_cast<dd4hep::sim::Geant4TrackerHit*>(collect->GetHit(iter_hit));
           if (hitT) {
             decoder->setValue(hitT->cellID);
             debug() << "hit Edep: " << hitT->energyDeposit << "\tcellID: " << hitT->cellID << "\t"
                     << decoder->valueString() << endmsg;
           } else {
-            hitC = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
+            hitC = dynamic_cast<dd4hep::sim::Geant4CalorimeterHit*>(collect->GetHit(iter_hit));
             if (hitC) {
               decoder->setValue(hitC->cellID);
               debug() << "hit Edep: " << hitC->energyDeposit << "\tcellID: " << hitC->cellID << "\t"

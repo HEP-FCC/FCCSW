@@ -1,4 +1,4 @@
 #include "DetSegmentation/GridEtaHandle.h"
-#include "DD4hep/Handle.inl"
+#include "DD4hep/detail/Handle.inl"
 
-DD4HEP_INSTANTIATE_HANDLE_UNNAMED(DD4hep::DDSegmentation::GridEta);
+DD4HEP_INSTANTIATE_HANDLE_UNNAMED(dd4hep::DDSegmentation::GridEta);

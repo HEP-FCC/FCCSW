@@ -1,4 +1,4 @@
-#include "TestGeometry/TestKillProcess.h"
+#include "TestGeometryLib/TestKillProcess.h"
 
 namespace test {
 
