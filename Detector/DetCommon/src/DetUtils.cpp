@@ -55,19 +55,22 @@ uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPre
 std::vector<uint64_t> neighbours(dd4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
-                                 uint64_t aCellId) {
+                                 uint64_t aCellId,
+				 int aSteps = 1) {
   std::vector<uint64_t> neighbours;
   aDecoder.setValue(aCellId);
   for (uint itField = 0; itField < aFieldNames.size(); itField++) {
     const auto& field = aFieldNames[itField];
     int id = aDecoder[field];
-    if (id > aFieldExtremes[itField].first) {
-      aDecoder[field] = id - 1;
-      neighbours.emplace_back(aDecoder.getValue());
-    }
-    if (id < aFieldExtremes[itField].second) {
-      aDecoder[field] = id + 1;
-      neighbours.emplace_back(aDecoder.getValue());
+    for (int step=1; step<=aSteps; step++) {
+      if (id > aFieldExtremes[itField].first + step) {
+	aDecoder[field] = id - step;
+	neighbours.emplace_back(aDecoder.getValue());
+      }
+      if(id < aFieldExtremes[itField].second - step){
+     	aDecoder[field] = id + step;
+	neighbours.emplace_back(aDecoder.getValue());
+      }
     }
     aDecoder[field] = id;
   }

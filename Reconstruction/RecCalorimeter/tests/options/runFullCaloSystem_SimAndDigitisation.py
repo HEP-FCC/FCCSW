@@ -21,7 +21,8 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'
+                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
+                                           'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml'
                                            ],
                     OutputLevel = INFO)
 
@@ -56,11 +57,11 @@ extHcalReadoutName = "ExtBarHCal_Readout"
 newExtHcalReadoutName = extHcalReadoutName + "_phieta"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
+# Tail Catcher readout
+tailCatcherReadoutName = "Muons_Readout"
 # layers to be merged in endcaps & forward calo
-ecalEndcapNumberOfLayersToMerge = [26]*5+[27]
-ecalFwdNumberOfLayersToMerge = [7]*5+[8]
-hcalEndcapNumberOfLayersToMerge = [13]+[14]*5
-hcalFwdNumberOfLayersToMerge = [8]+[9]*5
+ecalEndcapNumberOfLayersToMerge = [2] + [2] + [4]*38
+hcalEndcapNumberOfLayersToMerge = [2] + [4]*20
 identifierName = "layer"
 volumeName = "layer"
 
@@ -86,6 +87,9 @@ savehcalendcaptool.caloHits.Path = "HCalEndcapHits"
 savehcalfwdtool = SimG4SaveCalHits("saveHCalFwdHits", readoutNames = [hcalFwdReadoutName])
 savehcalfwdtool.positionedCaloHits.Path = "HCalFwdPositionedHits"
 savehcalfwdtool.caloHits.Path = "HCalFwdHits"
+savetailcatchertool = SimG4SaveCalHits("saveTailCatcherHits", readoutNames = [tailCatcherReadoutName])
+savetailcatchertool.positionedCaloHits = "TailCatcherPositionedHits"
+savetailcatchertool.caloHits = "TailCatcherHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
@@ -97,7 +101,7 @@ geantsim = SimG4Alg("SimG4Alg",
                        outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", 
                                  "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits", 
                                  "SimG4SaveCalHits/saveExtHCalHits", "SimG4SaveCalHits/saveHCalEndcapHits", 
-                                 "SimG4SaveCalHits/saveHCalFwdHits"],
+                                 "SimG4SaveCalHits/saveHCalFwdHits", "SimG4SaveCalHits/saveTailCatcherHits"],
                        eventProvider=pgun,
                        OutputLevel=INFO)
 
@@ -178,25 +182,12 @@ createEcalEndcapCells = CreateCaloCells("CreateEcalEndcapCaloCells",
 createEcalEndcapCells.hits.Path="mergedECalEndcapHits"
 createEcalEndcapCells.cells.Path="ECalEndcapCells"
 
-# Create Ecal cells in forward
-mergelayersEcalFwd = MergeLayers("MergeLayersEcalFwd",
-                   # take the bitfield description from the geometry service
-                   readout = ecalFwdReadoutName,
-                   # cells in which field should be merged
-                   identifier = identifierName,
-                   volumeName = volumeName,
-                   # how many cells to merge
-                   merge = ecalFwdNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayersEcalFwd.inhits.Path = "ECalFwdHits"
-mergelayersEcalFwd.outhits.Path = "mergedECalFwdHits"
-
 createEcalFwdCells = CreateCaloCells("CreateEcalFwdCaloCells",
                                  doCellCalibration=True,
                                  calibTool=calibEcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createEcalFwdCells.hits.Path="mergedECalFwdHits"
+createEcalFwdCells.hits.Path="ECalFwdHits"
 createEcalFwdCells.cells.Path="ECalFwdCells"
 
 # Create cells in HCal
@@ -208,26 +199,7 @@ createHcalCells = CreateCaloCells("CreateHCaloCells",
                                addCellNoise = False, filterCellNoise = False,
                                OutputLevel = INFO,
                                hits="HCalHits",
-                               cells="HCalCells")
-
-# additionally for HCal
-positionsHcal = CreateVolumeCaloPositions("positionsHcal", OutputLevel = INFO)
-positionsHcal.hits.Path = "HCalCells"
-positionsHcal.positionedHits.Path = "HCalPositions"
-
-from Configurables import RedoSegmentation
-resegmentHcal = RedoSegmentation("ReSegmentationHcal",
-                             # old bitfield (readout)
-                             oldReadoutName = hcalReadoutName,
-                             # # specify which fields are going to be altered (deleted/rewritten)
-                             oldSegmentationIds = ["eta","phi"],
-                             # new bitfield (readout), with new segmentation
-                             newReadoutName = newHcalReadoutName,
-                             debugPrint = 10,
-                             OutputLevel = INFO,
-                             inhits = "HCalPositions",
-                             outhits = "newHCalCells")
-
+                               cells="HCalBarrelCells")
 
 # Hcal extended barrel cells
 createExtHcalCells = CreateCaloCells("CreateExtHcalCaloCells",
@@ -236,24 +208,7 @@ createExtHcalCells = CreateCaloCells("CreateExtHcalCaloCells",
                                   addCellNoise = False, filterCellNoise = False,
                                   OutputLevel = INFO,
                                   hits="ExtHCalHits",
-                                  cells="ExtHCalCells")
-
-positionsExtHcal = CreateVolumeCaloPositions("positionsExtHcal", OutputLevel = INFO)
-positionsExtHcal.hits.Path = "ExtHCalCells"
-positionsExtHcal.positionedHits.Path = "ExtHCalPositions"
-
-resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
-                                # old bitfield (readout)
-                                oldReadoutName = extHcalReadoutName,
-                                # specify which fields are going to be altered (deleted/rewritten)
-                                oldSegmentationIds = ["eta","phi"],
-                                # new bitfield (readout), with new segmentation
-                                newReadoutName = newExtHcalReadoutName,
-                                debugPrint = 10,
-                                OutputLevel = INFO,
-                                inhits = "ExtHCalPositions",
-                                outhits = "newExtHCalCells")
-
+                                  cells="HCalExtBarrelCells")
 
 # Create Hcal cells in endcaps
 mergelayersHcalEndcap = MergeLayers("MergeLayersHcalEndcap",
@@ -276,30 +231,25 @@ createHcalEndcapCells = CreateCaloCells("CreateHcalEndcapCaloCells",
 createHcalEndcapCells.hits.Path="mergedHCalEndcapHits"
 createHcalEndcapCells.cells.Path="HCalEndcapCells"
 
-# Create Hcal cells in forward
-mergelayersHcalFwd = MergeLayers("MergeLayersHcalFwd",
-                   # take the bitfield description from the geometry service 
-                   readout = hcalFwdReadoutName,
-                   # cells in which field should be merged
-                   identifier = identifierName,
-                   volumeName = volumeName,
-                   # how many cells to merge
-                   merge = hcalFwdNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayersHcalFwd.inhits.Path = "HCalFwdHits"
-mergelayersHcalFwd.outhits.Path = "mergedHCalFwdHits"
-
 createHcalFwdCells = CreateCaloCells("CreateHcalFwdCaloCells",
                                  doCellCalibration=True,
                                  calibTool=calibHcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createHcalFwdCells.hits.Path="mergedHCalFwdHits"
+createHcalFwdCells.hits.Path="HCalFwdHits"
 createHcalFwdCells.cells.Path="HCalFwdCells"
+
+# -> Tail Catcher
+createTailCatcherCells = CreateCaloCells("CreateTailCatcherCells",
+                                         doCellCalibration=False,
+                                         addCellNoise = False, filterCellNoise = False,
+                                         OutputLevel = INFO,
+                                         hits="TailCatcherHits",
+                                         cells="TailCatcherCells")
 
 out = PodioOutput("out", 
                   OutputLevel=INFO)
-out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep newHCalCells", "keep newExtHCalCells", "keep HCalEndcapCells", "keep HCalFwdCells"]
+out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep TailCatcherCells"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
@@ -315,13 +265,10 @@ createEcalBarrelCells.AuditExecute = True
 createEcalEndcapCells.AuditExecute = True
 createEcalFwdCells.AuditExecute = True
 createHcalCells.AuditExecute = True
-positionsHcal.AuditExecute = True
-resegmentHcal.AuditExecute = True
 createExtHcalCells.AuditExecute = True
-positionsExtHcal.AuditExecute = True
-resegmentExtHcal.AuditExecute = True
 createHcalEndcapCells.AuditExecute = True
 createHcalFwdCells.AuditExecute = True
+createTailCatcherCells.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
@@ -332,18 +279,13 @@ ApplicationMgr(
               createEcalBarrelCells,
               mergelayersEcalEndcap,
               createEcalEndcapCells,
-              mergelayersEcalFwd,
               createEcalFwdCells,
               createHcalCells,
-              positionsHcal,
-              resegmentHcal,
               createExtHcalCells,
-              positionsExtHcal,
-              resegmentExtHcal,
               mergelayersHcalEndcap,
               createHcalEndcapCells,
-              mergelayersHcalFwd,
               createHcalFwdCells,
+              createTailCatcherCells,
               out
               ],
     EvtSel = 'NONE',
