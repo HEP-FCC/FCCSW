@@ -97,13 +97,15 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
   for (uint itField = 0; itField < aFieldNames.size(); itField++) {
     const auto& field = aFieldNames[itField];
     int id = aDecoder[field];
-    if (id > aFieldExtremes[itField].first) {
-      aDecoder[field] = id - 1;
-      neighbours.emplace_back(aDecoder.getValue());
-    }
-    if (id < aFieldExtremes[itField].second) {
-      aDecoder[field] = id + 1;
-      neighbours.emplace_back(aDecoder.getValue());
+    for (int step=1; step<=aSteps; step++) {
+      if (id > aFieldExtremes[itField].first + 1) {
+	aDecoder[field] = id - step;
+	neighbours.emplace_back(aDecoder.getValue());
+      }
+      if(id < aFieldExtremes[itField].second - 1){
+     	aDecoder[field] = id + step;
+	neighbours.emplace_back(aDecoder.getValue());
+      }
     }
     aDecoder[field] = id;
   }
