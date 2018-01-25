@@ -33,7 +33,7 @@ public:
 
 private:
   /// Name 
-  Gaudi::Property<std::string> m_readoutName{this, "fileName", "/afs/cern.ch/user/a/azaborow/public/ECal/neighbours/neighbours_map.root"};
+  Gaudi::Property<std::string> m_fileName{this, "fileName", "/afs/cern.ch/user/a/azaborow/public/ECal/neighbours/neighbours_map.root"};
   std::unordered_map<uint64_t, std::vector<uint64_t>> m_map;
 };
 

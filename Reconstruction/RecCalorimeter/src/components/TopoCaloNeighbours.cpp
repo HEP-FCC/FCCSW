@@ -15,21 +15,16 @@ TopoCaloNeighbours::TopoCaloNeighbours(const std::string& type, const std::strin
 StatusCode TopoCaloNeighbours::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  TFile file("neighbours_map.root","READ");
+  TFile file(m_fileName.value().c_str(),"READ");
   TTree* tree = nullptr;
   file.GetObject("neighbours",tree);
-  uint64_t readCellId;
-  std::vector<uint64_t> readNeighbours;
-  TBranch* branchCellId = nullptr;
-  TBranch* branchNeighbours = nullptr;
-  tree->SetBranchAddress("cellId",&readCellId,&branchCellId);
-  tree->SetBranchAddress("neighbours",&readNeighbours,&branchNeighbours);
-
+  ULong64_t readCellId;
+  std::vector<uint64_t>* readNeighbours = nullptr;
+  tree->SetBranchAddress("cellId",&readCellId);
+  tree->SetBranchAddress("neighbours",&readNeighbours);
   for (uint i = 0; i < tree->GetEntries(); i++) {
-      Long64_t tentry = tree->LoadTree(i);
-      branchCellId->GetEntry(tentry);
-      branchNeighbours->GetEntry(tentry);
-      m_map.insert(std::pair<uint64_t, std::vector<uint64_t>>(readCellId, readNeighbours));
+      tree->GetEntry(i);
+      m_map.insert(std::pair<uint64_t, std::vector<uint64_t>>(readCellId, *readNeighbours));
   }
   std::vector<int> counterL;
   counterL.assign(40,0);
@@ -42,8 +37,7 @@ StatusCode TopoCaloNeighbours::initialize() {
     }
   }
   delete tree;
-  delete branchNeighbours;
-  delete branchCellId;
+  delete readNeighbours;
   return sc;
 }
 
