@@ -75,6 +75,8 @@ private:
 
   /// Maximum energy in the m_energyVsAbsEta histogram, in GeV 
   Gaudi::Property<uint> m_maxEnergy{this, "maxEnergy", 20., "Maximum energy in the pile-up plot"};
+  /// Name of the pileup histograms
+  Gaudi::Property<std::string> m_histogramName{this, "histogramName", "energyVsAbsEta", "Name of 2D histogram"};
   /// Name of the layer field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "layer", "Name of layer"};
   /// Number of layers

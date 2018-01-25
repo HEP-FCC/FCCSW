@@ -33,6 +33,8 @@ geoservice = GeoSvc("GeoSvc", detectors = [ 'file:Detector/DetFCChhBaseline1/com
 # Pileup in ECal Barrel
 # readout name
 ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
+hcalBarrelReadoutNamePhiEta = "BarHCal_Readout_phieta"
+
 # geometry tool
 from Configurables import TubeLayerPhiEtaCaloTool
 ecalBarrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
@@ -42,6 +44,16 @@ ecalBarrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                              fieldNames = ["system"],
                                              fieldValues = [5],
                                              activeVolumesNumber = 8)
+
+from Configurables import TubeLayerPhiEtaCaloTool
+hcalBarrelGeometry = TubeLayerPhiEtaCaloTool("HcalBarrelGeo",
+                                             readoutName = hcalBarrelReadoutNamePhiEta,
+                                             activeVolumeName = "layer",
+                                             activeFieldName = "layer",
+                                             fieldNames = ["system"],
+                                             fieldValues = [8],
+                                             activeVolumesNumber = 10)
+
 # call pileup tool
 # prepare TH2 histogram with pileup per abs(eta)
 from Configurables import PreparePileup
@@ -49,10 +61,20 @@ pileupEcalBarrel = PreparePileup("PreparePileupEcalBarrel",
                        geometryTool = ecalBarrelGeometry,
                        readoutName = ecalBarrelReadoutNamePhiEta,
                        layerFieldName = "layer",
+                       histogramName = "ecalBarrelEnergyVsAbsEta",
                        numLayers = 8)
 pileupEcalBarrel.hits.Path="ECalBarrelCells"
 
-THistSvc().Output = ["rec DATAFILE='pileupEcalBarrel.root' TYP='ROOT' OPT='RECREATE'"]
+from Configurables import PreparePileup
+pileupHcalBarrel = PreparePileup("PreparePileupHcalBarrel",
+                       geometryTool = hcalBarrelGeometry,
+                       readoutName = hcalBarrelReadoutNamePhiEta,
+                       layerFieldName = "layer",
+                       histogramName ="hcalBarrelEnergyVsAbsEta",
+                       numLayers = 10)
+pileupHcalBarrel.hits.Path="HCalBarrelCells"
+
+THistSvc().Output = ["rec DATAFILE='pileupCalBarrel.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
@@ -68,14 +90,15 @@ chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
-pileupEcalBarrel.AuditExecute = True
+#pileupEcalBarrel.AuditExecute = True
 #out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              pileupEcalBarrel
+              pileupEcalBarrel,
+              pileupHcalBarrel,
               ],
     EvtSel = 'NONE',
-    EvtMax = -1,
+    EvtMax = 10,
     ExtSvc = [podioevent, geoservice],
  )

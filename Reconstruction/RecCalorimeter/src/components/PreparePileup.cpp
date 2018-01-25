@@ -60,21 +60,21 @@ StatusCode PreparePileup::initialize() {
   // TODO: add similar histogram with energy in a cluster
   for (uint i = 0; i < m_numLayers; i++) {
     m_energyVsAbsEta.push_back(
-			    new TH2F(("energyVsAbsEta" + std::to_string(i)).c_str(),
+			    new TH2F((m_histogramName + std::to_string(i)).c_str(),
 				     ("energy per cell vs fabs cell eta in layer " + std::to_string(i)).c_str(),
 				     60, 0, 6.0, 5000, -1, m_maxEnergy) );
     if (m_histSvc
-	->regHist("/rec/energyVsAbsEta" + std::to_string(i), m_energyVsAbsEta.back())
+	->regHist("/rec/" + m_histogramName + std::to_string(i), m_energyVsAbsEta.back())
 	.isFailure()) {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
     }
     m_energyAllEventsVsAbsEta.push_back(
-					new TH2F(("energyAllEventsVsAbsEta" + std::to_string(i)).c_str(),
+					new TH2F((m_histogramName + std::to_string(i) + "AllEvents").c_str(),
 						 ("sum of energy per cell in all events vs fabs cell eta in layer " + std::to_string(i)).c_str(),
 						 60, 0, 6.0, 5000, -1, m_maxEnergy*20) );
     if (m_histSvc
-	->regHist("/rec/energyAllEventsVsAbsEta" + std::to_string(i), m_energyAllEventsVsAbsEta.back())
+	->regHist("/rec/" + m_histogramName + std::to_string(i) + "AllEvents", m_energyAllEventsVsAbsEta.back())
 	.isFailure()) {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
