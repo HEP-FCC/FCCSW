@@ -41,18 +41,24 @@ double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::s
  */
 
 uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
+ 
+std::vector<std::vector<uint>>  combinations(int N, int K);
 
+std::vector<std::vector<int>> permutations(int K);
+ 
 /**  Get neighbours in many dimensions.
  *   @param[in] aDecoder Handle to the bitfield decoder.
  *   @param[in] aFieldNames Names of the fields for which neighbours are found.
  *   @param[in] aFieldExtremes Minimal and maximal values for the fields.
  *   @param[in] aCellId ID of cell.
+ *   @param[in] aDiagonal If diagonal neighbours should be included (all combinations of fields).
  *   return Vector of neighbours.
  */
 std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
-                                 uint64_t aCellId);
+                                 uint64_t aCellId,
+				 bool aDiagonal = true);
 
 /** Get minimal and maximal values that can be decoded in the fields of the bitfield.
  *   @param[in] aDecoder Handle to the bitfield decoder.
