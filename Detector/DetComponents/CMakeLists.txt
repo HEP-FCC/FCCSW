@@ -46,3 +46,22 @@ gaudi_add_test(positionsInclinedEcalCheck
 gaudi_add_test(positionsTracker
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/positions_tracker.py)
+gaudi_add_test(positionsPositiveCaloEndcap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/positions_endcap.py)
+gaudi_add_test(positionsPositiveCaloEndcapCheck
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Detector/DetComponents/tests/scripts/check_endcapEcal_sublayer_positions.py
+               DEPENDS positionsPositiveCaloEndcap)
+gaudi_add_test(positionsNegativeCaloEndcap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/positions_negativeEndcap.py)
+gaudi_add_test(positionsNegativeCaloEndcapCheck
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Detector/DetComponents/tests/scripts/check_negativeEndcapEcal_sublayer_positions.py
+               DEPENDS positionsNegativeCaloEndcap)
+gaudi_add_test(RewriteBiftield
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/rewriteBitfield.py)

@@ -9,6 +9,7 @@
 
 // ROOT
 #include "TGeoBBox.h"
+//#include "TGeoConeSeg.h"
 
 namespace det {
 namespace utils {
@@ -132,6 +133,7 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
   auto pvol = volMgr.lookupPlacement(aVolumeId);
   auto solid = pvol.volume().solid();
+
   // get the envelope of the shape
   TGeoConeSeg* tube = (dynamic_cast<TGeoConeSeg*>(solid.ptr()));
   if (tube == nullptr) {
@@ -141,17 +143,102 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   return CLHEP::Hep3Vector(tube->GetRmin1(), tube->GetRmax1(), tube->GetDZ());
 }
 
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
-  // get half-widths,
-  auto tubeSizes = tubeDimensions(aVolumeId);
+CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId) {
+  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  auto solid = pvol.volume().solid();
+  // get the envelope of the shape
+  TGeoCone* cone = (dynamic_cast<TGeoCone*>(solid.ptr()));
+  if (cone == nullptr) {
+    return CLHEP::Hep3Vector(0, 0, 0);
+  }
+  // get half-widths
+  return CLHEP::Hep3Vector(cone->GetRmin1(), cone->GetRmax1(), cone->GetDZ());
+}
+
+std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId) {
+  auto sizes = tubeDimensions(aVolumeId);
+  if(sizes.mag() == 0) {
+    // if it is not a cylinder maybe it is a cone (same calculation for extremes)
+    sizes = coneDimensions(aVolumeId);
+    if(sizes.mag() == 0) {
+      return {0, 0};
+    }
+  }
+  // eta segmentation calculate maximum eta from the inner radius (no offset is taken into account)
+  double maxEta = 0;
+  double minEta = 0;
+  // check if it is a cylinder centred at z=0
+  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  auto detelement = volMgr.lookupDetElement(aVolumeId);
+  const auto& transformMatrix = detelement.worldTransformation();
+  double outGlobal[3];
+  double inLocal[] = {0, 0, 0}; // to get middle of the volume
+  transformMatrix.LocalToMaster(inLocal, outGlobal);
+  if (outGlobal[2] < 1e-10) {
+    // this assumes cylinder centred at z=0
+    maxEta = CLHEP::Hep3Vector(sizes.x(), 0, sizes.z()).eta();
+    minEta = - maxEta;
+  } else {
+    maxEta = CLHEP::Hep3Vector(sizes.x(), 0, std::max(sizes.z() + outGlobal[2], - sizes.z() + outGlobal[2]) ).eta();
+    minEta = CLHEP::Hep3Vector(sizes.y(), 0, std::min(sizes.z() + outGlobal[2], - sizes.z() + outGlobal[2]) ).eta();
+  }
+  return {minEta, maxEta};
+}
+
+std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
+  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  auto detelement = volMgr.lookupDetElement(aVolumeId);
+  const auto& transformMatrix = detelement.worldTransformation();
+  // calculate values of eta in all possible corners of the envelope
+  auto dim = envelopeDimensions(aVolumeId);
+  double minEta = 0;
+  double maxEta = 0;
+  for (uint i = 0; i < 8; i++) {
+    // coefficients to get all combinations of corners
+    int iX =-1 + 2 * ((i/2)%2);
+    int iY =-1 + 2 * (i%2);
+    int iZ = -1 + 2 * (i/4);
+    double outDimGlobal[3];
+    double inDimLocal[] = { iX * dim.x(), iY * dim.y(), iZ * dim.z()};
+    transformMatrix.LocalToMaster(inDimLocal, outDimGlobal);
+    double eta = CLHEP::Hep3Vector( outDimGlobal[0], outDimGlobal[1], outDimGlobal[2]).eta();
+    if (i == 0) {
+      minEta = eta;
+      maxEta = eta;
+    }
+    if (eta < minEta) {
+      minEta = eta;
+    }
+    if (eta > maxEta) {
+      maxEta = eta;
+    }
+  }
+  return {minEta, maxEta};
+}
+
+std::array<double, 2> volumeEtaExtremes(uint64_t aVolumeId) {
+  // try if volume is a cylinder/disc
+  auto etaExtremes = tubeEtaExtremes(aVolumeId);
+  if (etaExtremes[0] != 0 or etaExtremes[1] != 0) {
+    return etaExtremes;
+  } else {
+    return envelopeEtaExtremes(aVolumeId);
+  }
+}
+
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
   // get segmentation number of bins in phi
   uint phiCellNumber = aSeg.phiBins();
   // get segmentation cell width in eta
   double etaCellSize = aSeg.gridSizeEta();
-  // eta segmentation calculate maximum eta from the inner radius (no offset is taken into account)
-  double maxEta = CLHEP::Hep3Vector(tubeSizes.x(), 0, tubeSizes.z()).eta();
-  uint cellsEta = ceil((maxEta - etaCellSize / 2.) / etaCellSize) * 2 + 1;
-  return {phiCellNumber, cellsEta};
+  // get min and max eta of the volume
+  auto etaExtremes = volumeEtaExtremes(aVolumeId);
+  // calculate the number of eta volumes
+  // max - min = full eta range, - size = not counting the middle cell centred at 0, + 1 to account for that cell
+  uint cellsEta = ceil(( etaExtremes[1] - etaExtremes[0] - etaCellSize ) / 2 / etaCellSize) * 2 + 1;
+  uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize)) - 1;
+  return {phiCellNumber, cellsEta, minEtaID};
 }
 
 std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg) {
