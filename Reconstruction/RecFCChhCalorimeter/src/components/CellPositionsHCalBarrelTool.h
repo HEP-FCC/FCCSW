@@ -41,7 +41,7 @@ public:
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) final;
 
-  virtual DD4hep::Geometry::Position getXYZPosition(const fcc::CaloHit& aCell) const final;
+  virtual DD4hep::Geometry::Position getXYZPosition(const uint64_t& aCellId) const final;
 
 private:
   /// Pointer to the geometry service
