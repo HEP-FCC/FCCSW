@@ -218,7 +218,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
       newCell.core().time = cell.time();
       cluster.addhits(newCell);
       m_allCellsECal.erase(cell.cellId());
-      DD4hep::Geometry::Position posCell = m_cellPositionsToolECal->getXYZPosition(cell);
+      DD4hep::Geometry::Position posCell = m_cellPositionsToolECal->getXYZPosition(cell.cellId());
       posX += posCell.X() * cell.energy();
       posY += posCell.Y() * cell.energy();
       posZ += posCell.Z() * cell.energy();
@@ -287,7 +287,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
       newCell.core().cellId = cell.cellId();
       newCell.core().energy = cell.energy();
       newCell.core().time = cell.time();
-      DD4hep::Geometry::Position posCell = m_cellPositionsToolHCal->getXYZPosition(cell);
+      DD4hep::Geometry::Position posCell = m_cellPositionsToolHCal->getXYZPosition(cell.cellId());
       posX += posCell.X() * cell.energy();
       posY += posCell.Y() * cell.energy();
       posZ += posCell.Z() * cell.energy();
@@ -375,7 +375,7 @@ void CombinedCaloTopoCluster::findingSeedsWNoise(const fcc::CaloHitCollection* c
                                                  double threshold,
                                                  std::vector<fcc::CaloHit>& seeds,
                                                  std::map<uint64_t, fcc::CaloHit>& allCells,
-                                                 IReadNoiseFileTool& aNoiseTool) {
+                                                 INoiseConstTool& aNoiseTool) {
   for (const auto& cell : *cells) {
     allCells[cell.cellId()] = cell;
     // retrieve the noise const assigned to cell
@@ -406,7 +406,7 @@ void CombinedCaloTopoCluster::buildingProtoClusterWNoise(
 							 std::vector<fcc::CaloHit>& seeds,
 							 std::map<uint64_t, fcc::CaloHit>& allCells,
 							 std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection,
-							 IReadNoiseFileTool& aNoiseTool) {
+							 INoiseConstTool& aNoiseTool) {
   // Map of cellIds to clusterIds
   std::map<uint64_t, uint> clusterOfCell;
   // New seed list for neighbours of original seeds
@@ -514,7 +514,7 @@ CombinedCaloTopoCluster::searchForNeighboursWNoise(const uint64_t id,
                                                    std::map<uint64_t, fcc::CaloHit>& allCells,
                                                    std::map<uint64_t, uint>& clusterOfCell,
                                                    std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection,
-                                                   IReadNoiseFileTool& aNoiseTool) {
+                                                   INoiseConstTool& aNoiseTool) {
   // Fill vector to be returned, next ids for which neighbours are found
   std::vector<uint64_t> addedNeighbourIds;
   auto search = neighboursMap.find(id);
