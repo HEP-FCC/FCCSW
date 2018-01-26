@@ -31,6 +31,7 @@ StatusCode CellPositionsTailCatcherTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_volman = m_geoSvc->lcdd()->volumeManager();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -48,7 +49,7 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outSeg = CellPositionsTailCatcherTool::getXYZPosition(cell);
+    auto outSeg = CellPositionsTailCatcherTool::getXYZPosition(cell.core().cellId);
 
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
@@ -66,12 +67,10 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const fcc::CaloHit& aCell) const {
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
+DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const uint64_t& aCellId) const {
   double radius;
-  
-  auto cellid = aCell.core().cellId;
-  const auto& transformMatrix = volman.worldTransformation(cellid);
+
+  const auto& transformMatrix = m_volman.worldTransformation(aCellId);
   double outGlobal[3];
   double inLocal[] = {0, 0, 0};
   transformMatrix.LocalToMaster(inLocal, outGlobal);
@@ -80,8 +79,8 @@ DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const fc
 	  << outGlobal[2] / dd4hep::mm << endmsg;
   
   // radius calculated from segmenation + z postion of volumes
-  auto inSeg = m_segmentation->position(cellid);
-  double eta = m_segmentation->eta(cellid);
+  auto inSeg = m_segmentation->position(aCellId);
+  double eta = m_segmentation->eta(aCellId);
   radius = outGlobal[2] / std::sinh(eta);
   debug() << "Radius : " << radius << endmsg;
   DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);

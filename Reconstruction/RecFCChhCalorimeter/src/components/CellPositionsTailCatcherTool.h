@@ -41,7 +41,7 @@ public:
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) final;
 
-  virtual DD4hep::Geometry::Position getXYZPosition(const fcc::CaloHit& aCell) const final;
+  virtual DD4hep::Geometry::Position getXYZPosition(const uint64_t& aCellId) const final;
 
 private:
   /// Pointer to the geometry service
@@ -52,5 +52,6 @@ private:
   Gaudi::Property<double> m_centralRadius{this, "centralRadius", {}, "radius in cm"};
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   DD4hep::DDSegmentation::BitField64* m_decoder;
+  DD4hep::Geometry::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSTAILCATCHERTOOL_H */

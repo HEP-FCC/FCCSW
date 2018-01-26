@@ -50,7 +50,7 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outSeg = CellPositionsECalBarrelTool::getXYZPosition(cell);
+    auto outSeg = CellPositionsECalBarrelTool::getXYZPosition(cell.core().cellId);
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
     edmPos.y = outSeg.y() / dd4hep::mm;
@@ -67,16 +67,15 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsECalBarrelTool::getXYZPosition(const fcc::CaloHit& aCell) const {
+DD4hep::Geometry::Position CellPositionsECalBarrelTool::getXYZPosition(const uint64_t& aCellId) const {
   int layer;
   double radius;
-  auto cellid = aCell.core().cellId;
-  m_decoder->setValue(cellid);
+  m_decoder->setValue(aCellId);
   layer = (*m_decoder)["layer"].value();
   radius = m_layerRadius[layer];
   // global cartesian coordinates calculated only from segmentation
   // from r,phi,eta, for r=1
-  auto inSeg = m_segmentation->position(cellid);
+  auto inSeg = m_segmentation->position(aCellId);
   DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
  
   return outSeg;
