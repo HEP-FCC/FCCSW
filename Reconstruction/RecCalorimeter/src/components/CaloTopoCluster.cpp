@@ -109,6 +109,7 @@ StatusCode CaloTopoCluster::execute() {
       auto newCell = edmClusterCells->create(); //m_inputTool->cellByCellId(cellId);
       newCell.energy( m_allCells[cellId] );
       newCell.cellId( cellId );
+      newCell.bits( pair.second );
       energy += newCell.energy();
       // get cell position by cellID
       DD4hep::Geometry::Position posCell = m_cellPositionsTool->getXYZPosition(cellId);
