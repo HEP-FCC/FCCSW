@@ -12,6 +12,7 @@
 #include "RecInterface/ICellPositionsTool.h"
 #include "RecInterface/INoiseConstTool.h"
 #include "RecInterface/ITopoClusterInputTool.h"
+#include "RecInterface/ICaloReadNeighboursMap.h"
 
 class IGeoSvc;
 
@@ -49,23 +50,19 @@ class CaloTopoCluster : public GaudiAlgorithm {
    */
   virtual void findingSeeds(const std::map<uint64_t, double>& allCells,
 			    int nSigma,
-			    std::vector<std::pair<uint64_t, double> >& seeds,
-			    INoiseConstTool& aNoiseTool);
+			    std::vector<std::pair<uint64_t, double> >& seeds);
   /** Build proto-clusters
    */
   virtual void buildingProtoCluster(int nSigma,
-				    const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
 				    std::vector<std::pair<uint64_t, double> >& seeds, 
 				    std::map<uint64_t, double>& allCells,
-				    std::map<uint, std::vector<uint64_t> >& preClusterCollection,
-				    INoiseConstTool& aNoiseTool);
+				    std::map<uint, std::vector<std::pair<uint64_t, uint> >>& preClusterCollection);
  
   /** Search for neighbours and add them to lists
    */
   std::vector<uint64_t> searchForNeighbours(
-					    const uint64_t id, uint& clusterNum, const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
-					    int nSigma, const std::map<uint64_t, double>& allCells, std::map<uint64_t, uint>& clusterOfCell,
-					    std::map<uint, std::vector<uint64_t>>& preClusterCollection, INoiseConstTool& aNoiseTool);
+					    const uint64_t id, uint& clusterNum, int nSigma, const std::map<uint64_t, double>& allCells, std::map<uint64_t, uint>& clusterOfCell,
+					    std::map<uint, std::vector<std::pair<uint64_t, uint> >>& preClusterCollection);
   StatusCode execute();
 
   StatusCode finalize();
@@ -83,25 +80,20 @@ class CaloTopoCluster : public GaudiAlgorithm {
   ToolHandle<ITopoClusterInputTool> m_inputTool{"TopoClusterInput", this};
   /// Handle for the cells noise tool
   ToolHandle<INoiseConstTool> m_noiseTool{"ReadNoiseFromFileTool", this};
+  /// Handle for neighbours tool
+  ToolHandle<ICaloReadNeighboursMap> m_neighboursTool{"TopoCaloNeighbours", this};
   /// Handle for tool to get positions
   ToolHandle<ICellPositionsTool> m_cellPositionsTool{"CellPositionsBarrelTool", this};
   /// PhiEta segmentation of the detector (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_Segmentation;
-  /// Name of the bit-fields searching for neighbours
-  Gaudi::Property<std::vector<std::string>> m_fieldNames{
-    this, "fieldsForNeighbours", {"layer", "phi", "eta"}, "dimensions to look for neighbours"};
- 
+
   int m_range;
   /// Seed threshold
   int m_seedSigma = 4;
   int m_neighbourSigma = 2;
-  Gaudi::Property<int> m_lastLayer{this, "lastLayer", 7, "last layer"};
-  std::vector<std::pair<int, int>> m_fieldExtremes;
   DD4hep::DDSegmentation::BitField64* m_decoder;
   /// all active Cells
   std::map<uint64_t, double> m_allCells;
-  // Map of cellIDs to vector of neighbouring cell ids
-  std::unordered_map<uint64_t, std::vector<uint64_t>> m_neighboursMap;
   /// First list of CaloCells above seeding threshold
   std::vector<std::pair<uint64_t, double> > m_firstSeeds;
 };

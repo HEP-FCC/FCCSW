@@ -35,8 +35,6 @@ StatusCode CaloTopoClusterInputTool::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
- 
-  m_inputMap.clear();
   m_decoder = m_geoSvc->lcdd()->readout(m_ecalBarrelReadoutName).segmentation().segmentation()->decoder();
   
   return StatusCode::SUCCESS;
@@ -45,6 +43,7 @@ StatusCode CaloTopoClusterInputTool::initialize() {
 StatusCode CaloTopoClusterInputTool::finalize() { return GaudiTool::finalize(); }
 
 std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
+  m_inputMap.clear();
   uint totalNumberOfCells = 0;
 
   // 1. ECAL barrel
