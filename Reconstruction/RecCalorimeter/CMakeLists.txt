@@ -55,7 +55,6 @@ gaudi_add_test(HcalDigitisationFlatNoise
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                DEPENDS simulateHCal
                FRAMEWORK tests/options/runHcalDigitisationFlatNoise.py)
-
 gaudi_add_test(simulateFullCaloSystem
 	       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 	       FRAMEWORK tests/options/runFullCaloSystem_SimAndDigitisation.py)
