@@ -67,7 +67,7 @@ std::vector<std::vector<uint>> combinations(int N, int K) {
     }
     indexes.push_back(tmp);
   } while (std::prev_permutation(bitmask.begin(), bitmask.end()));
-  return indexes;
+  return std::move(indexes);
 }
 
 std::vector<std::vector<int>> permutations(int K) {
@@ -85,26 +85,40 @@ std::vector<std::vector<int>> permutations(int K) {
     }
     indexes.push_back(tmp);
   }
-  return indexes;
+  return std::move(indexes);
+}
+
+int cyclicNeighbour(int aCyclicId, std::pair<int, int> aFieldExtremes) {
+  if (aCyclicId < aFieldExtremes.first) {
+    return aFieldExtremes.second + aCyclicId;
+  } else if (aCyclicId >= aFieldExtremes.second) {
+    return aCyclicId % aFieldExtremes.second;
+  }
+  return aCyclicId;
 }
 
 std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes, uint64_t aCellId,
-                                 bool aDiagonal) {
+                                 const std::vector<bool>& aFieldCyclic, bool aDiagonal) {
   std::vector<uint64_t> neighbours;
   aDecoder.setValue(aCellId);
   for (uint itField = 0; itField < aFieldNames.size(); itField++) {
     const auto& field = aFieldNames[itField];
     int id = aDecoder[field];
-    for (int step=1; step<=aSteps; step++) {
-      if (id > aFieldExtremes[itField].first + 1) {
-	aDecoder[field] = id - step;
-	neighbours.emplace_back(aDecoder.getValue());
+    if (aFieldCyclic[itField]) {
+      aDecoder[field] = cyclicNeighbour(id - 1, aFieldExtremes[itField]);
+      neighbours.emplace_back(aDecoder.getValue());
+      aDecoder[field] = cyclicNeighbour(id + 1, aFieldExtremes[itField]);
+      neighbours.emplace_back(aDecoder.getValue());
+    } else {
+      if (id > aFieldExtremes[itField].first) {
+        aDecoder[field] = id - 1;
+        neighbours.emplace_back(aDecoder.getValue());
       }
-      if(id < aFieldExtremes[itField].second - 1){
-     	aDecoder[field] = id + step;
-	neighbours.emplace_back(aDecoder.getValue());
+      if (id < aFieldExtremes[itField].second) {
+        aDecoder[field] = id + 1;
+        neighbours.emplace_back(aDecoder.getValue());
       }
     }
     aDecoder[field] = id;
@@ -120,66 +134,36 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
       // get all combinations for a given length
       const auto& indexes = combinations(aFieldNames.size(), iLength);
       for (uint iComb = 0; iComb < indexes.size(); iComb++) {
-        // std::cout << " Combination: " << std::endl;
-        //   for(uint iField = 0; iField < indexes[iComb].size(); iField++) {
-        //     std::cout << indexes[iComb][iField] << " ";
-        //   }
-        //   std::cout << std::endl;
         // for current combination get all permutations of +- 1 operation on IDs
         const auto& calculation = permutations(iLength);
-        // std::cout << " Do calculations: " << std::endl;
         // do the increase/decrease of bitfield
         for (uint iCalc = 0; iCalc < calculation.size(); iCalc++) {
           // set new Ids for each field combination
           bool add = true;
           for (uint iField = 0; iField < indexes[iComb].size(); iField++) {
-            // std::cout << calculation[iCalc][iField] << " on " << aFieldNames[indexes[iComb][iField]] << " ";
-            if ((calculation[iCalc][iField] > 0 &&
-                 fieldIds[indexes[iComb][iField]] < aFieldExtremes[indexes[iComb][iField]].second) ||
-                (calculation[iCalc][iField] < 0 &&
-                 fieldIds[indexes[iComb][iField]] > aFieldExtremes[indexes[iComb][iField]].first)) {
+            if (aFieldCyclic[indexes[iComb][iField]]) {
+              aDecoder[aFieldNames[indexes[iComb][iField]]] =
+                  cyclicNeighbour(fieldIds[indexes[iComb][iField]] + calculation[iCalc][iField],
+                                  aFieldExtremes[indexes[iComb][iField]]);
+            } else if ((calculation[iCalc][iField] > 0 &&
+                        fieldIds[indexes[iComb][iField]] < aFieldExtremes[indexes[iComb][iField]].second) ||
+                       (calculation[iCalc][iField] < 0 &&
+                        fieldIds[indexes[iComb][iField]] > aFieldExtremes[indexes[iComb][iField]].first)) {
               aDecoder[aFieldNames[indexes[iComb][iField]]] =
                   fieldIds[indexes[iComb][iField]] + calculation[iCalc][iField];
             } else {
               add = false;
-              // 	std::cout << " ======UNABLE TO DO OPERATION " << calculation[iCalc][iField] << " ON FIELD " <<
-              // aFieldNames[indexes[iComb][iField]]<<
-              // 	  " with ID " << fieldIds[indexes[iComb][iField]] << std::endl;
             }
           }
-          // std::cout << std::endl;
           // add new cellId to neighbours (unless it's beyond extrema)
           if (add) {
             neighbours.emplace_back(aDecoder.getValue());
-            // std::cout << "     -> ADDING NEIGHBOUR   ";
-            // for(uint iField = 0; iField < indexes[iComb].size(); iField++) {
-            // 	std::cout << aDecoder[aFieldNames[indexes[iComb][iField]]] << " ";
-            // }
-            // std::cout << std::endl;
           }
           // reset ids
-          // for(uint iField = 0; iField < indexes[iComb].size(); iField++) {
-          //   std::cout << fieldIds[indexes[iComb][iField]] << " ";
-          // }
-          // std::cout << "     ->    ";
-          // for(uint iField = 0; iField < indexes[iComb].size(); iField++) {
-          //   std::cout << aDecoder[aFieldNames[indexes[iComb][iField]]] << " ";
-          // }
-          // std::cout << std::endl;
           for (uint iField = 0; iField < indexes[iComb].size(); iField++) {
             aDecoder[aFieldNames[indexes[iComb][iField]]] = fieldIds[indexes[iComb][iField]];
           }
-          // for(uint iField = 0; iField < indexes[iComb].size(); iField++) {
-          //   std::cout << fieldIds[indexes[iComb][iField]] << " ";
-          // }
-          // std::cout << "     ->    ";
-          // for(uint iField = 0; iField < indexes[iComb].size(); iField++) {
-          //   std::cout << aDecoder[aFieldNames[indexes[iComb][iField]]] << " ";
-          // }
-          // std::cout << std::endl;
         }
-        // std::cout << " ======================= " << std::endl;
-        // std::cout << std::endl;
       }
     }
   }
