@@ -10,7 +10,7 @@
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/ICellPositionsTool.h"
-#include "RecInterface/IReadNoiseFileTool.h"
+#include "RecInterface/INoiseConstTool.h"
 
 class IGeoSvc;
 
@@ -50,7 +50,7 @@ public:
                                   double threshold,
                                   std::vector<fcc::CaloHit>& seeds,
                                   std::map<uint64_t, fcc::CaloHit>& allCells,
-                                  IReadNoiseFileTool& aNoiseTool);
+                                  INoiseConstTool& aNoiseTool);
   virtual void findingSeeds(const fcc::CaloHitCollection* cells,
                             double threshold,
                             std::vector<fcc::CaloHit>& seeds,
@@ -61,7 +61,7 @@ public:
                                           const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
                                           std::vector<fcc::CaloHit>& seeds, std::map<uint64_t, fcc::CaloHit>& allCells,
                                           std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection,
-                                          IReadNoiseFileTool& aNoiseTool);
+                                          INoiseConstTool& aNoiseTool);
   virtual void buildingProtoCluster(double neighbourThr,
                                     const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
                                     std::vector<fcc::CaloHit>& seeds, std::map<uint64_t, fcc::CaloHit>& allCells,
@@ -71,7 +71,7 @@ public:
   std::vector<uint64_t> searchForNeighboursWNoise(
 						  const uint64_t id, uint& clusterNum, const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
 						  double threshold, std::map<uint64_t, fcc::CaloHit>& allCells, std::map<uint64_t, uint>& clusterOfCell,
-						  std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection, IReadNoiseFileTool& aNoiseTool);
+						  std::map<uint, std::vector<fcc::CaloHit>>& preClusterCollection, INoiseConstTool& aNoiseTool);
   std::vector<uint64_t> searchForNeighbours(const uint64_t id, uint& clusterNum,
                                             const std::unordered_map<uint64_t, std::vector<uint64_t>> neighboursMap,
                                             double threshold, std::map<uint64_t, fcc::CaloHit>& allCells,
@@ -100,9 +100,9 @@ private:
   /// Name of the hadronic calorimeter readout
   Gaudi::Property<std::string> m_HCalReadoutName{this, "HCalReadoutName", "name of the HCal readout"};
   /// Handle for the ECal cells noise tool
-  ToolHandle<IReadNoiseFileTool> m_noiseToolECal{"ReadNoiseFromFileTool", this};
+  ToolHandle<INoiseConstTool> m_noiseToolECal{"ReadNoiseFromFileTool", this};
   /// Handle for the HCal cells noise tool
-  ToolHandle<IReadNoiseFileTool> m_noiseToolHCal{"ReadNoiseFromFileTool", this};
+  ToolHandle<INoiseConstTool> m_noiseToolHCal{"ReadNoiseFromFileTool", this};
   /// Noise added to electromagnetic calorimeter
   Gaudi::Property<bool> m_noiseECal{this, "noiseAddedECal", false, "noise has been added, thresholds adjusted"};
   /// Noise added to hadronic calorimeter

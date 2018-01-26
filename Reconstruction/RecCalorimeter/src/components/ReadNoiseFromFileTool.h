@@ -3,12 +3,10 @@
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
-#include "GaudiKernel/RndmGenerators.h"
-class IRndmGenSvc;
 
 // FCCSW
 #include "DetSegmentation/GridPhiEta.h"
-#include "RecInterface/IReadNoiseFileTool.h"
+#include "RecInterface/INoiseConstTool.h"
 class IGeoSvc;
 
 // Root
@@ -24,7 +22,7 @@ class TH1F;
  *
  */
 
-class ReadNoiseFromFileTool : public GaudiTool, virtual public IReadNoiseFileTool {
+class ReadNoiseFromFileTool : public GaudiTool, virtual public INoiseConstTool {
 public:
   ReadNoiseFromFileTool(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~ReadNoiseFromFileTool() = default;
@@ -64,11 +62,6 @@ private:
   std::vector<TH1F> m_histoPileupConst;
   /// Histograms with electronics noise constants (index in array - radial layer)
   std::vector<TH1F> m_histoElecNoiseConst;
-
-  /// Random Number Service
-  IRndmGenSvc* m_randSvc;
-  /// Gaussian random number generator used for the generation of random noise hits
-  Rndm::Numbers m_gauss;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

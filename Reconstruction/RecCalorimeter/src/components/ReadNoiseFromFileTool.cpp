@@ -16,7 +16,7 @@ DECLARE_TOOL_FACTORY(ReadNoiseFromFileTool)
 
 ReadNoiseFromFileTool::ReadNoiseFromFileTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
-  declareInterface<IReadNoiseFileTool>(this);
+  declareInterface<INoiseConstTool>(this);
 }
 
 StatusCode ReadNoiseFromFileTool::initialize() {
@@ -27,13 +27,6 @@ StatusCode ReadNoiseFromFileTool::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-
-  // Initialize random service
-  if (service("RndmGenSvc", m_randSvc).isFailure()) {
-    error() << "Couldn't get RndmGenSvc!!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(0., 1.));
 
   // open and check file, read the histograms with noise constants
   if (ReadNoiseFromFileTool::initNoiseFromFile().isFailure()) {
