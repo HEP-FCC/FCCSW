@@ -7,7 +7,7 @@ gaudi_subdir(RecCalorimeter v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Detector/DetSegmentation Detector/DetCommon Reconstruction/RecInterface)
 
 find_package(FastJet)
-find_package(ROOT COMPONENTS Physics)
+find_package(ROOT COMPONENTS Physics Tree)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(HepMC)
@@ -31,7 +31,8 @@ gaudi_add_test(simulateECalSimple
 gaudi_add_test(EcalReconstructionNoiseFromFile
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                DEPENDS simulateECalSimple
-               FRAMEWORK tests/options/runEcalSimple_ReconstructionSW_noiseFromFile.py)
+               FRAMEWORK tests/options/runEcalSimple_ReconstructionSW_noiseFromFile.py
+               PASSREGEX "Number of segmentation cells in \\(phi,eta\\): \\[629, 331, 0\\]" )
 
 gaudi_add_test(EcalReconstructionCheckNumClusters
                ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
@@ -53,15 +54,16 @@ gaudi_add_test(HcalDigitisationFlatNoise
                DEPENDS simulateHCal
                FRAMEWORK tests/options/runHcalDigitisationFlatNoise.py)
 gaudi_add_test(simulateFullCaloSystem
-	       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-	       FRAMEWORK tests/options/runFullCaloSystem_SimAndDigitisation.py)
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/runFullCaloSystem_SimAndDigitisation.py)
 
 gaudi_add_test(reconstructionFullCaloSystem
-	       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-	       DEPENDS simulateFullCaloSystem
-	       FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noNoise.py)
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS simulateFullCaloSystem
+                FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noNoise.py)
 
-gaudi_add_test(reconstructionTopoClusters
-	       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-	       DEPENDS simulateFullCaloSystem
-	       FRAMEWORK tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_noNoise.py)
+gaudi_add_test(reconstructionFullCaloSystemWithNoise
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS simulateFullCaloSystem
+                FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py
+                PASSREGEX "Number of segmentation cells in \\(phi,eta\\): \\[704, 335, 0\\]")
