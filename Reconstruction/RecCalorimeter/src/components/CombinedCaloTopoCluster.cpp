@@ -136,7 +136,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
   for (const auto& itCells : *ECalCells) {
     uint64_t cellID = itCells.cellId();
     std::vector<uint64_t> NeighboursVec =
-      det::utils::neighbours(*m_decoderECal, m_fieldNamesECal, m_fieldExtremesECal, cellID, m_range);
+      det::utils::neighbours(*m_decoderECal, m_fieldNamesECal, m_fieldExtremesECal, cellID);
     m_neighboursMapECal.emplace(cellID, NeighboursVec);
     numN_ECal = NeighboursVec.size();
   }
@@ -146,7 +146,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
   for (const auto& itCells : *HCalCells) {
     uint64_t cellID = itCells.cellId();
     std::vector<uint64_t> NeighboursVec =
-      det::utils::neighbours(*m_decoderHCal, m_fieldNamesHCal, m_fieldExtremesHCal, cellID, m_range);
+      det::utils::neighbours(*m_decoderHCal, m_fieldNamesHCal, m_fieldExtremesHCal, cellID);
     m_neighboursMapHCal.emplace(cellID, NeighboursVec);
     numN_HCal = NeighboursVec.size();
   }

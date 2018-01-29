@@ -45,7 +45,7 @@ StatusCode TestNeighbours::execute() {
   for (const auto& hit : *inHits) {
     debug() << "cell ID = " << hit.cellId() << endmsg;
     debug() << "energy  = " << hit.energy() << endmsg;
-    for (auto& id : det::utils::neighbours(*m_decoder, m_fieldNames, m_fieldExtremes, hit.cellId(), m_steps)) {
+    for (auto& id : det::utils::neighbours(*m_decoder, m_fieldNames, m_fieldExtremes, hit.cellId())) {
       // warning: returned neigbour may not exist!
       // it is possible to decode such a cellID, but maybe it is already outside the detector
       // proper use should include the check on the number of cells, see TestCellCounting
