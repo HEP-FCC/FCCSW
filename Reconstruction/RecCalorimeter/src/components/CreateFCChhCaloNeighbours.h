@@ -3,9 +3,7 @@
 
 // Gaudi
 #include "GaudiKernel/Service.h"
-#include "GaudiKernel/ToolHandle.h"
 #include "RecInterface/ICaloCreateMap.h"
-#include "RecInterface/ICaloReadNeighboursMap.h"
 class IGeoSvc;
 
 /** @class CreateFCChhCaloNeighbours
@@ -33,19 +31,15 @@ public:
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Pointer to the tool service
-  SmartIF<IToolSvc> m_toolSvc;
-  /// Handle for the detector construction tool
-  ToolHandle<ICaloReadNeighboursMap> m_tool{"tool", this, true};
   /// Names of the detector readout
   Gaudi::Property<std::vector<std::string>> m_readoutNamesSegmented{this, "readoutNamesPhiEta", {"ECalBarrelPhiEta"}};
   Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"BarHCal_Readout"}};
   /// Name of the fields describing the segmented volume
   Gaudi::Property<std::vector<std::string>> m_fieldNamesSegmented{this, "systemNamesPhiEta", {"system"}};
-  Gaudi::Property<std::vector<std::string>> m_fieldNamesNested{this, "systemNamesNested", {"system"}};
+  Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested", "system"};
   /// Values of the fields describing the segmented volume
   Gaudi::Property<std::vector<int>> m_fieldValuesSegmented{this, "systemValuesPhiEta", {5}};
-  Gaudi::Property<std::vector<int>> m_fieldValuesNested{this, "systemValuesNested", {6}};
+  Gaudi::Property<int> m_fieldValueNested{this, "systemValueNested", 6};
   /// Names of the active volume in geometry (e.g. layer)
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesSegmented{this, "activeFieldNamesPhiEta", {"layer"}};
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesNested{
@@ -56,6 +50,11 @@ private:
       this,
       "activeVolumeNamesNested",
       {"layerVolume", "moduleVolume", "wedgeVolume"}};  // to find out number of volumes
+  Gaudi::Property<bool> m_connectBarrels{this, "connectBarrels", false};
+  Gaudi::Property<double> m_hCalZSize{this, "hCalZsize", 19.2}; // 18
+  Gaudi::Property<double> m_hCalZOffset{this, "hCalZoffset", -4896.0}; // -4590
+  Gaudi::Property<double> m_hCalRinner{this, "hCalRinner", 1920}; // 2850
+  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI / 2.};
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONEIGHBOURS_H */
