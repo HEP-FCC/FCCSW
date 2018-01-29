@@ -91,8 +91,8 @@ std::vector<std::vector<int>> permutations(int K) {
 int cyclicNeighbour(int aCyclicId, std::pair<int, int> aFieldExtremes) {
   if (aCyclicId < aFieldExtremes.first) {
     return aFieldExtremes.second + aCyclicId;
-  } else if (aCyclicId >= aFieldExtremes.second) {
-    return aCyclicId % aFieldExtremes.second;
+  } else if (aCyclicId > aFieldExtremes.second) {
+    return aCyclicId % (aFieldExtremes.second + 1);
   }
   return aCyclicId;
 }
