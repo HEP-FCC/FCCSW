@@ -8,25 +8,25 @@
 // FCCSW
 #include "DetSegmentation/GridPhiEta.h"
 #include "FWCore/DataHandle.h"
+#include "RecInterface/ICaloReadNeighboursMap.h"
 #include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/ICellPositionsTool.h"
 #include "RecInterface/INoiseConstTool.h"
 #include "RecInterface/ITopoClusterInputTool.h"
-#include "RecInterface/ICaloReadNeighboursMap.h"
 
 class IGeoSvc;
 
 // datamodel
 namespace fcc {
-  class CaloHit;
-  class CaloHitCollection;
-  class CaloClusterCollection;
+class CaloHit;
+class CaloHitCollection;
+class CaloClusterCollection;
 }
 
 namespace DD4hep {
-  namespace DDSegmentation {
-    class Segmentation;
-  }
+namespace DDSegmentation {
+class Segmentation;
+}
 }
 
 /** @class CaloTopoClusterAlgorithm Reconstruction/RecCalorimeter/src/components/CaloTopoCluster.h
@@ -38,7 +38,7 @@ namespace DD4hep {
  */
 
 class CaloTopoCluster : public GaudiAlgorithm {
- public:
+public:
   CaloTopoCluster(const std::string& name, ISvcLocator* svcLoc);
 
   StatusCode initialize();
@@ -48,26 +48,26 @@ class CaloTopoCluster : public GaudiAlgorithm {
    * (1.5 and 3.5MeV/cell for E and HCAL, electronic noise only), (2.5 and 100MeV/cell for E and HCAL, added pile-up).
    *   @return list of seed cells to build proto-clusters.
    */
-  virtual void findingSeeds(const std::map<uint64_t, double>& allCells,
-			    int nSigma,
-			    std::vector<std::pair<uint64_t, double> >& seeds);
+  virtual void
+  findingSeeds(const std::map<uint64_t, double>& allCells, int nSigma, std::vector<std::pair<uint64_t, double>>& seeds);
   /** Build proto-clusters
    */
   virtual void buildingProtoCluster(int nSigma,
-				    std::vector<std::pair<uint64_t, double> >& seeds, 
-				    std::map<uint64_t, double>& allCells,
-				    std::map<uint, std::vector<std::pair<uint64_t, uint> >>& preClusterCollection);
- 
+                                    std::vector<std::pair<uint64_t, double>>& seeds,
+                                    std::map<uint64_t, double>& allCells,
+                                    std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection);
+
   /** Search for neighbours and add them to lists
    */
-  std::vector<std::pair<uint64_t,uint> > searchForNeighbours(
-					    const uint64_t id, uint& clusterID, int nSigma, const std::map<uint64_t, double>& allCells, std::map<uint64_t, uint>& clusterOfCell,
-					    std::map<uint, std::vector<std::pair<uint64_t, uint> >>& preClusterCollection);
+  std::vector<std::pair<uint64_t, uint>>
+  searchForNeighbours(const uint64_t id, uint& clusterID, int nSigma, const std::map<uint64_t, double>& allCells,
+                      std::map<uint64_t, uint>& clusterOfCell,
+                      std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection);
   StatusCode execute();
 
   StatusCode finalize();
 
- private:
+private:
   // Cluster collection
   DataHandle<fcc::CaloClusterCollection> m_clusterCollection{"calo/clusters", Gaudi::DataHandle::Writer, this};
   // Cluster cells in collection
@@ -95,6 +95,6 @@ class CaloTopoCluster : public GaudiAlgorithm {
   /// all active Cells
   std::map<uint64_t, double> m_allCells;
   /// First list of CaloCells above seeding threshold
-  std::vector<std::pair<uint64_t, double> > m_firstSeeds;
+  std::vector<std::pair<uint64_t, double>> m_firstSeeds;
 };
 #endif /* RECCALORIMETER_CALOTOPOCLUSTER_H */

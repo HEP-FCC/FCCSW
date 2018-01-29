@@ -24,9 +24,9 @@ StatusCode ConstNoiseTool::initialize() {
   // set for ECalBarrel system:5
   // set for HCalBarrel system:6
   // set for HCalExtBarrel system:7
-  m_systemNoiseConstMap.emplace(5, 7.5/4.);
-  m_systemNoiseConstMap.emplace(6, 11.5/4.);
-  m_systemNoiseConstMap.emplace(7, 11.5/4.);
+  m_systemNoiseConstMap.emplace(5, 7.5 / 4.);
+  m_systemNoiseConstMap.emplace(6, 11.5 / 4.);
+  m_systemNoiseConstMap.emplace(7, 11.5 / 4.);
 
   // Get GeoSvc
   m_geoSvc = service("GeoSvc");
@@ -44,7 +44,7 @@ StatusCode ConstNoiseTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-								  m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
+      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
 
@@ -59,17 +59,14 @@ StatusCode ConstNoiseTool::finalize() {
 double ConstNoiseTool::getNoiseConstantPerCell(int64_t aCellId) {
 
   double Noise = 0.;
-  
+
   // Get cells global coordinate "system"
   m_decoder->setValue(aCellId);
   unsigned cellSystem = (*m_decoder)[m_systemFieldName];
-  //for (auto& aSystemId: m_systemNoiseConstMap){
-  //if (aSystemId.first == cellSystem){
-  // cell noise in system 
+  // cell noise in system
   if (m_systemNoiseConstMap[cellSystem])
     Noise = m_systemNoiseConstMap[cellSystem];
-  //  }
-  else 
+  else
     warning() << "No noise constants set for this subsystem! Noise of cell set to 0. " << endmsg;
   return Noise;
 }
