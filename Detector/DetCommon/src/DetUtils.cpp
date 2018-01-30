@@ -53,27 +53,119 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep,
   return volID;
 }
 
+std::vector<std::vector<uint>> combinations(int N, int K) {
+  std::vector<std::vector<uint>> indexes;
+  std::string bitmask(K, 1);  // K leading 1's
+  bitmask.resize(N, 0);       // N-K trailing 0's
+  // permute bitmask
+  do {
+    std::vector<uint> tmp;
+    for (int i = 0; i < N; ++i) {  // [0..N-1] integers
+      if (bitmask[i]) {
+        tmp.push_back(i);
+      }
+    }
+    indexes.push_back(tmp);
+  } while (std::prev_permutation(bitmask.begin(), bitmask.end()));
+  return std::move(indexes);
+}
+
+std::vector<std::vector<int>> permutations(int K) {
+  std::vector<std::vector<int>> indexes;
+  int N = pow(2, K);  // number of permutations with repetition of 2 numbers (0,1)
+  for (int i = 0; i < N; i++) {
+    // permutation = binary representation of i
+    std::vector<int> tmp;
+    tmp.assign(K, 0);
+    uint res = i;
+    // dec -> bin
+    for (int j = 0; j < K; j++) {
+      tmp[K - 1 - j] = -1 + 2 * (res % 2);
+      res = floor(res / 2);
+    }
+    indexes.push_back(tmp);
+  }
+  return std::move(indexes);
+}
+
+int cyclicNeighbour(int aCyclicId, std::pair<int, int> aFieldExtremes) {
+  if (aCyclicId < aFieldExtremes.first) {
+    return aFieldExtremes.second + aCyclicId;
+  } else if (aCyclicId > aFieldExtremes.second) {
+    return aCyclicId % (aFieldExtremes.second + 1);
+  }
+  return aCyclicId;
+}
+
 std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
-                                 const std::vector<std::pair<int, int>>& aFieldExtremes,
-                                 uint64_t aCellId,
-				 int aSteps = 1) {
+                                 const std::vector<std::pair<int, int>>& aFieldExtremes, uint64_t aCellId,
+                                 const std::vector<bool>& aFieldCyclic, bool aDiagonal) {
   std::vector<uint64_t> neighbours;
   aDecoder.setValue(aCellId);
   for (uint itField = 0; itField < aFieldNames.size(); itField++) {
     const auto& field = aFieldNames[itField];
     int id = aDecoder[field];
-    for (int step=1; step<=aSteps; step++) {
-      if (id > aFieldExtremes[itField].first + step) {
-	aDecoder[field] = id - step;
-	neighbours.emplace_back(aDecoder.getValue());
+    if (aFieldCyclic[itField]) {
+      aDecoder[field] = cyclicNeighbour(id - 1, aFieldExtremes[itField]);
+      neighbours.emplace_back(aDecoder.getValue());
+      aDecoder[field] = cyclicNeighbour(id + 1, aFieldExtremes[itField]);
+      neighbours.emplace_back(aDecoder.getValue());
+    } else {
+      if (id > aFieldExtremes[itField].first) {
+        aDecoder[field] = id - 1;
+        neighbours.emplace_back(aDecoder.getValue());
       }
-      if(id < aFieldExtremes[itField].second - step){
-     	aDecoder[field] = id + step;
-	neighbours.emplace_back(aDecoder.getValue());
+      if (id < aFieldExtremes[itField].second) {
+        aDecoder[field] = id + 1;
+        neighbours.emplace_back(aDecoder.getValue());
       }
     }
     aDecoder[field] = id;
+  }
+  if (aDiagonal) {
+    std::vector<int> fieldIds;  // initial IDs
+    fieldIds.assign(aFieldNames.size(), 0);
+    // for each field get current Id
+    for (uint iField = 0; iField < aFieldNames.size(); iField++) {
+      fieldIds[iField] = aDecoder[aFieldNames[iField]];
+    }
+    for (uint iLength = aFieldNames.size(); iLength > 1; iLength--) {
+      // get all combinations for a given length
+      const auto& indexes = combinations(aFieldNames.size(), iLength);
+      for (uint iComb = 0; iComb < indexes.size(); iComb++) {
+        // for current combination get all permutations of +- 1 operation on IDs
+        const auto& calculation = permutations(iLength);
+        // do the increase/decrease of bitfield
+        for (uint iCalc = 0; iCalc < calculation.size(); iCalc++) {
+          // set new Ids for each field combination
+          bool add = true;
+          for (uint iField = 0; iField < indexes[iComb].size(); iField++) {
+            if (aFieldCyclic[indexes[iComb][iField]]) {
+              aDecoder[aFieldNames[indexes[iComb][iField]]] =
+                  cyclicNeighbour(fieldIds[indexes[iComb][iField]] + calculation[iCalc][iField],
+                                  aFieldExtremes[indexes[iComb][iField]]);
+            } else if ((calculation[iCalc][iField] > 0 &&
+                        fieldIds[indexes[iComb][iField]] < aFieldExtremes[indexes[iComb][iField]].second) ||
+                       (calculation[iCalc][iField] < 0 &&
+                        fieldIds[indexes[iComb][iField]] > aFieldExtremes[indexes[iComb][iField]].first)) {
+              aDecoder[aFieldNames[indexes[iComb][iField]]] =
+                  fieldIds[indexes[iComb][iField]] + calculation[iCalc][iField];
+            } else {
+              add = false;
+            }
+          }
+          // add new cellId to neighbours (unless it's beyond extrema)
+          if (add) {
+            neighbours.emplace_back(aDecoder.getValue());
+          }
+          // reset ids
+          for (uint iField = 0; iField < indexes[iComb].size(); iField++) {
+            aDecoder[aFieldNames[indexes[iComb][iField]]] = fieldIds[indexes[iComb][iField]];
+          }
+        }
+      }
+    }
   }
   return std::move(neighbours);
 }
@@ -156,12 +248,12 @@ CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId) {
   return CLHEP::Hep3Vector(cone->GetRmin1(), cone->GetRmax1(), cone->GetDZ());
 }
 
-std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId) {
+std::array<double, 2> tubeEtaExtremes(uint64_t aVolumeId) {
   auto sizes = tubeDimensions(aVolumeId);
-  if(sizes.mag() == 0) {
+  if (sizes.mag() == 0) {
     // if it is not a cylinder maybe it is a cone (same calculation for extremes)
     sizes = coneDimensions(aVolumeId);
-    if(sizes.mag() == 0) {
+    if (sizes.mag() == 0) {
       return {0, 0};
     }
   }
@@ -173,20 +265,20 @@ std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId) {
   auto detelement = volMgr.lookupDetElement(aVolumeId);
   const auto& transformMatrix = detelement.worldTransformation();
   double outGlobal[3];
-  double inLocal[] = {0, 0, 0}; // to get middle of the volume
+  double inLocal[] = {0, 0, 0};  // to get middle of the volume
   transformMatrix.LocalToMaster(inLocal, outGlobal);
   if (outGlobal[2] < 1e-10) {
     // this assumes cylinder centred at z=0
     maxEta = CLHEP::Hep3Vector(sizes.x(), 0, sizes.z()).eta();
-    minEta = - maxEta;
+    minEta = -maxEta;
   } else {
-    maxEta = CLHEP::Hep3Vector(sizes.x(), 0, std::max(sizes.z() + outGlobal[2], - sizes.z() + outGlobal[2]) ).eta();
-    minEta = CLHEP::Hep3Vector(sizes.y(), 0, std::min(sizes.z() + outGlobal[2], - sizes.z() + outGlobal[2]) ).eta();
+    maxEta = CLHEP::Hep3Vector(sizes.x(), 0, std::max(sizes.z() + outGlobal[2], -sizes.z() + outGlobal[2])).eta();
+    minEta = CLHEP::Hep3Vector(sizes.y(), 0, std::min(sizes.z() + outGlobal[2], -sizes.z() + outGlobal[2])).eta();
   }
   return {minEta, maxEta};
 }
 
-std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
+std::array<double, 2> envelopeEtaExtremes(uint64_t aVolumeId) {
   DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
   auto detelement = volMgr.lookupDetElement(aVolumeId);
   const auto& transformMatrix = detelement.worldTransformation();
@@ -196,13 +288,13 @@ std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
   double maxEta = 0;
   for (uint i = 0; i < 8; i++) {
     // coefficients to get all combinations of corners
-    int iX =-1 + 2 * ((i/2)%2);
-    int iY =-1 + 2 * (i%2);
-    int iZ = -1 + 2 * (i/4);
+    int iX = -1 + 2 * ((i / 2) % 2);
+    int iY = -1 + 2 * (i % 2);
+    int iZ = -1 + 2 * (i / 4);
     double outDimGlobal[3];
-    double inDimLocal[] = { iX * dim.x(), iY * dim.y(), iZ * dim.z()};
+    double inDimLocal[] = {iX * dim.x(), iY * dim.y(), iZ * dim.z()};
     transformMatrix.LocalToMaster(inDimLocal, outDimGlobal);
-    double eta = CLHEP::Hep3Vector( outDimGlobal[0], outDimGlobal[1], outDimGlobal[2]).eta();
+    double eta = CLHEP::Hep3Vector(outDimGlobal[0], outDimGlobal[1], outDimGlobal[2]).eta();
     if (i == 0) {
       minEta = eta;
       maxEta = eta;
@@ -236,7 +328,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   auto etaExtremes = volumeEtaExtremes(aVolumeId);
   // calculate the number of eta volumes
   // max - min = full eta range, - size = not counting the middle cell centred at 0, + 1 to account for that cell
-  uint cellsEta = ceil(( etaExtremes[1] - etaExtremes[0] - etaCellSize ) / 2 / etaCellSize) * 2 + 1;
+  uint cellsEta = ceil((etaExtremes[1] - etaExtremes[0] - etaCellSize) / 2 / etaCellSize) * 2 + 1;
   uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize)) - 1;
   return {phiCellNumber, cellsEta, minEtaID};
 }

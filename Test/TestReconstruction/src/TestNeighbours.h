@@ -59,7 +59,5 @@ private:
   std::vector<std::string> m_fieldNames;
   /// Minimal and maximal values of the fields for which neighbours are found
   std::vector<std::pair<int, int>> m_fieldExtremes;
-  /// Defines how many steps
-  Gaudi::Property<int> m_steps{this, "range", {1}, "Defines the range to look for neighbours"};
 };
 #endif /* TESTRECONSTRUCTION_TESTNEIGHBOURS_H */

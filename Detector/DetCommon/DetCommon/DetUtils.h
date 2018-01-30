@@ -42,20 +42,25 @@ double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::s
 
 uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
 
+std::vector<std::vector<uint>> combinations(int N, int K);
+
+std::vector<std::vector<int>> permutations(int K);
+int cyclicNeighbour(int aCyclicId, std::pair<int, int> aFieldExtremes);
+
 /**  Get neighbours in many dimensions.
  *   @param[in] aDecoder Handle to the bitfield decoder.
  *   @param[in] aFieldNames Names of the fields for which neighbours are found.
  *   @param[in] aFieldExtremes Minimal and maximal values for the fields.
  *   @param[in] aCellId ID of cell.
- *   @param[in] aSteps defines the bit range for which neighbours are looked for 
+ *   @param[in] aDiagonal If diagonal neighbours should be included (all combinations of fields).
  *   return Vector of neighbours.
  */
 std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
                                  uint64_t aCellId,
-				 int aSteps
-				 );
+                                 const std::vector<bool>& aFieldCyclic = {false, false, false, false},
+                                 bool aDiagonal = true);
 
 /** Get minimal and maximal values that can be decoded in the fields of the bitfield.
  *   @param[in] aDecoder Handle to the bitfield decoder.
@@ -75,31 +80,31 @@ CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId);
  *   @param[in] aVolumeId The volume ID.
  *   return Dimensions of the tube (rmin, rmax, z(half-length)).
  */
- CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId);
+CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId);
 
 /** Get the dimensions of a cone (TGeoCone).
  *   @param[in] aVolumeId The volume ID.
  *   return Dimensions of the cone (rmin, rmax, z(half-length)).
  */
- CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId);
+CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId);
 
 /** Get the extrema in pseudorapidity of a tube or cone volume.
  *   @param[in] aVolumeId The volume ID.
  *   return Pseudorapidity extrema (eta_min, eta_max).
  */
- std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId);
+std::array<double, 2> tubeEtaExtremes(uint64_t aVolumeId);
 
 /** Get the extrema in pseudorapidity of an envelope.
  *   @param[in] aVolumeId The volume ID.
  *   return Pseudorapidity extrema (eta_min, eta_max).
  */
- std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId);
+std::array<double, 2> envelopeEtaExtremes(uint64_t aVolumeId);
 
 /** Get the extrema in pseudorapidity of a volume. First try to match tube or cone, if it fails use an envelope shape.
  *   @param[in] aVolumeId The volume ID.
  *   return Pseudorapidity extrema (eta_min, eta_max).
  */
- std::array<double, 2> volumeEtaExtremes(uint64_t aVolumeId);
+std::array<double, 2> volumeEtaExtremes(uint64_t aVolumeId);
 
 /** Get the number of cells for the volume and a given Cartesian XY segmentation.
  *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.
