@@ -62,6 +62,6 @@ gaudi_add_test(positionsNegativeCaloEndcapCheck
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python Detector/DetComponents/tests/scripts/check_negativeEndcapEcal_sublayer_positions.py
                DEPENDS positionsNegativeCaloEndcap)
-gaudi_add_test(RewriteBiftield
+gaudi_add_test(RewriteBitfield
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/rewriteBitfield.py)
