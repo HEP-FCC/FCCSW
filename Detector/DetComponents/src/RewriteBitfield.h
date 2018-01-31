@@ -60,8 +60,6 @@ private:
   DataHandle<fcc::CaloHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Handle for the EDM hits to be written
   DataHandle<fcc::CaloHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer, this};
-  /// New segmentation
-  DD4hep::DDSegmentation::Segmentation* m_segmentation;
   /// Name of the detector readout used in simulation
   Gaudi::Property<std::string> m_oldReadoutName{this, "oldReadoutName", "",
                                                 "Name of the detector readout used in simulation"};
@@ -69,6 +67,8 @@ private:
   Gaudi::Property<std::string> m_newReadoutName{this, "newReadoutName", "", "Name of the new detector readout"};
   /// Old bitfield decoder
   std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_oldDecoder;
+  /// New bitfield decoder
+  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_newDecoder;
   /// Segmentation fields that are going to be removed from the readout
   Gaudi::Property<std::vector<std::string>> m_oldIdentifiers{
       this, "removeIds", {}, "Segmentation fields that are going to be removed"};
