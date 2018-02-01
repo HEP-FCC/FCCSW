@@ -207,7 +207,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second - 1));
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[2])->second - 1));
     // for layer 0 of HCal barrel
-    if (m_fieldNameNested == "system" && m_fieldValuesNested[iSys] == 6) {
+    if (m_fieldNameNested == "system" && m_fieldValuesNested[iSys] == 8) {
       extremaHCalFirstLayerPhi =
           std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second - 1);
       extremaHCalFirstLayerZ =

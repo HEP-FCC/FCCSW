@@ -50,7 +50,7 @@ private:
   /// Name of the field describing the nested volume
   Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested", "system"};
   /// Values of the fields describing the nested volume
-  Gaudi::Property<std::vector<int>> m_fieldValuesNested{this, "systemValuesNested", {6}};
+  Gaudi::Property<std::vector<int>> m_fieldValuesNested{this, "systemValuesNested", {8}};
   /// Names of the active volume in geometry: along radial axis, azimuthal angle, and along z axis
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesNested{
       this, "activeFieldNamesNested", {"layer", "module", "row"}};
