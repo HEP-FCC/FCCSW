@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H
-#define RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H
+#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H
+#define RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H
 
 // GAUDI
 #include "GaudiAlg/GaudiTool.h"
@@ -26,14 +26,14 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsHCalBarrelTool
+/** @class CellPositionsHCalBarrelNoSegTool
  *
  */
 
-class CellPositionsHCalBarrelTool : public GaudiTool, virtual public ICellPositionsTool {
+class CellPositionsHCalBarrelNoSegTool : public GaudiTool, virtual public ICellPositionsTool {
 public:
-  CellPositionsHCalBarrelTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~CellPositionsHCalBarrelTool() = default;
+  CellPositionsHCalBarrelNoSegTool(const std::string& type, const std::string& name, const IInterface* parent);
+  ~CellPositionsHCalBarrelNoSegTool() = default;
 
   virtual StatusCode initialize() final;
 
@@ -51,10 +51,8 @@ private:
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
 
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
-
   DD4hep::DDSegmentation::BitField64* m_decoder;
 
   DD4hep::Geometry::VolumeManager m_volman;
 };
-#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H */
+#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H */

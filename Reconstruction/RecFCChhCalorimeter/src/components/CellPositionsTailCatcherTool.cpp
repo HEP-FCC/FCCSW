@@ -49,7 +49,7 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outSeg = CellPositionsTailCatcherTool::getXYZPosition(cell.core().cellId);
+    auto outSeg = CellPositionsTailCatcherTool::xyzPosition(cell.core().cellId);
 
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
@@ -67,7 +67,7 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const uint64_t& aCellId) const {
+DD4hep::Geometry::Position CellPositionsTailCatcherTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
 
   const auto& transformMatrix = m_volman.worldTransformation(aCellId);
@@ -90,6 +90,10 @@ DD4hep::Geometry::Position CellPositionsTailCatcherTool::getXYZPosition(const ui
     outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
   }
   return outSeg; 
+}
+
+int CellPositionsTailCatcherTool::layerId(const uint64_t& aCellId) {
+  return 0;
 }
 
 StatusCode CellPositionsTailCatcherTool::finalize() { return GaudiTool::finalize(); }

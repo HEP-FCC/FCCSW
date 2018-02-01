@@ -26,7 +26,9 @@ public:
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) = 0;
 
-  virtual DD4hep::Geometry::Position getXYZPosition(const uint64_t& aCellId) const = 0;
+  virtual DD4hep::Geometry::Position xyzPosition(const uint64_t& aCellId) const = 0;
+
+  virtual int layerId(const uint64_t& aCellId) = 0;
 };
 
 #endif /* RECINTERFACE_ICELLPOSITIONSTOOL_H */

@@ -10,7 +10,6 @@ CellPositionsECalBarrelTool::CellPositionsECalBarrelTool(const std::string& type
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
-  declareProperty("layerRadii", m_layerRadius, "Radii of layers");
   declareProperty("readoutName", m_readoutName);
 }
 
@@ -31,6 +30,7 @@ StatusCode CellPositionsECalBarrelTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_volman = m_geoSvc->lcdd()->volumeManager();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -40,7 +40,6 @@ StatusCode CellPositionsECalBarrelTool::initialize() {
   if (iter == fields.end()) {
     error() << "Readout does not contain field: 'layer'" << endmsg;
   }
-  info() << "Layer radii : " << m_layerRadius << endmsg;
   return sc;
 }
 
@@ -50,7 +49,7 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outSeg = CellPositionsECalBarrelTool::getXYZPosition(cell.core().cellId);
+    auto outSeg = CellPositionsECalBarrelTool::xyzPosition(cell.core().cellId);
     auto edmPos = fcc::Point();
     edmPos.x = outSeg.x() / dd4hep::mm;
     edmPos.y = outSeg.y() / dd4hep::mm;
@@ -67,18 +66,33 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsECalBarrelTool::getXYZPosition(const uint64_t& aCellId) const {
-  int layer;
+DD4hep::Geometry::Position CellPositionsECalBarrelTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
   m_decoder->setValue(aCellId);
-  layer = (*m_decoder)["layer"].value();
-  radius = m_layerRadius[layer];
-  // global cartesian coordinates calculated only from segmentation
-  // from r,phi,eta, for r=1
+  (*m_decoder)["phi"] = 0;
+  (*m_decoder)["eta"] = 0;
+  auto volumeId = m_decoder->getValue();
+  auto detelement = m_volman.lookupDetElement(volumeId);
+  const auto& transformMatrix = detelement.worldTransformation();
+  double outGlobal[3];
+  double inLocal[] = {0, 0, 0};
+  transformMatrix.LocalToMaster(inLocal, outGlobal);
+  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm
+	  << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
+  // radius calculated from segmenation + z postion of volumes
   auto inSeg = m_segmentation->position(aCellId);
+  double eta = m_segmentation->eta(aCellId);
+  radius = std::sqrt(std::pow(outGlobal[0], 2) + std::pow(outGlobal[1], 2));
   DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
  
   return outSeg;
+}
+
+int CellPositionsECalBarrelTool::layerId(const uint64_t& aCellId) {
+  int layer;
+  m_decoder->setValue(aCellId);
+  layer = (*m_decoder)["layer"].value();
+  return layer;
 }
 
 StatusCode CellPositionsECalBarrelTool::finalize() { return GaudiTool::finalize(); }

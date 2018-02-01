@@ -42,15 +42,15 @@ public:
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) final;
 
-  virtual DD4hep::Geometry::Position getXYZPosition(const uint64_t& aCellId) const final;
+  virtual DD4hep::Geometry::Position xyzPosition(const uint64_t& aCellId) const final;
+
+  virtual int layerId(const uint64_t& aCellId) final;
 
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
-  /// Array of merged layers in EC
-  Gaudi::Property<std::vector<int>> m_mergedLayers{this, "mergedLayers", {}, "array of merged layers"};
   DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
   DD4hep::DDSegmentation::BitField64* m_decoder;
   DD4hep::Geometry::VolumeManager m_volman;

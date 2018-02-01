@@ -9,7 +9,6 @@ CellPositionsCaloDiscsTool::CellPositionsCaloDiscsTool(const std::string& type, 
                                                        const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
-  declareProperty("mergedLayers", m_mergedLayers, "array of merged layers");
   declareProperty("readoutName", m_readoutName);
 }
 
@@ -40,7 +39,6 @@ StatusCode CellPositionsCaloDiscsTool::initialize() {
   if (iter == fields.end()) {
     error() << "Readout does not contain field: 'layer'" << endmsg;
   }
-  info() << "Layers' merged : " << m_mergedLayers << endmsg;
   return sc;
 }
 
@@ -49,7 +47,7 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outPos = CellPositionsCaloDiscsTool::getXYZPosition(cell.core().cellId);
+    auto outPos = CellPositionsCaloDiscsTool::xyzPosition(cell.core().cellId);
 
     auto edmPos = fcc::Point();
     edmPos.x = outPos.x() / dd4hep::mm;
@@ -64,75 +62,36 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsCaloDiscsTool::getXYZPosition(const uint64_t& aCellId) const {
-  int layer, subsystem;
+DD4hep::Geometry::Position CellPositionsCaloDiscsTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
   
-  auto cellId = aCellId;
   m_decoder->setValue(aCellId);
-  subsystem = (*m_decoder)["subsystem"].value();
-  // for in negtive z positioned cells retrieve cellIds on positive side
-  // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
-  if (subsystem == 1) {
-    (*m_decoder)["subsystem"] = 0;
-    cellId = m_decoder->getValue();
-  }
-  DD4hep::Geometry::Position outPos;
-  
-  // Check if layers have been merged
-  if (m_mergedLayers.size() == 0) {
-    const auto& transformMatrix = m_volman.worldTransformation(cellId);
-    double outGlobal[3];
-    double inLocal[] = {0, 0, 0};
-    transformMatrix.LocalToMaster(inLocal, outGlobal);
-    debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm
-	    << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
-      // radius calculated from segmenation + z postion of volumes
-    auto inSeg = m_segmentation->position(cellId);
-    double eta = m_segmentation->eta(cellId);
-    radius = outGlobal[2] / std::sinh(eta);
-    debug() << "Radius : " << radius << endmsg;
-    outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
-    // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
-    if (subsystem == 1) {
-      outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -outGlobal[2]);
-    }
-  } else {
-    // layers have been merged
-    // --> for new z position, use mean positons of the originally merged layers
-    m_decoder->setValue(cellId);
-    layer = (*m_decoder)["layer"].value();
-    debug() << "new layer : " << layer << endmsg;
-    int oldLayersMin = 0;
-    for (int iLayer = 0; iLayer < layer; iLayer++) {
-      oldLayersMin += m_mergedLayers[iLayer];
-    }
-    int oldLayersMax = oldLayersMin + m_mergedLayers[layer] - 1;
-    (*m_decoder)["layer"] = oldLayersMin;
-    auto minCellId = m_decoder->getValue();
-    (*m_decoder)["layer"] = oldLayersMax;
-    auto maxCellId = m_decoder->getValue();
-    debug() << "old min layer : " << oldLayersMin << endmsg;
-    debug() << "old max layer : " << oldLayersMax << endmsg;
-    const auto& transformMatrixMin = m_volman.worldTransformation(minCellId);
-    const auto& transformMatrixMax = m_volman.worldTransformation(maxCellId);
-    double inLocal[3] = {0, 0, 0};
-    double outGlobalMin[3];
-    double outGlobalMax[3];
-    transformMatrixMin.LocalToMaster(inLocal, outGlobalMin);
-    transformMatrixMax.LocalToMaster(inLocal, outGlobalMax);
-    double meanLayerPositionZ = (outGlobalMin[2] + outGlobalMax[2]) / 2.;
-    auto inSeg = m_segmentation->position(cellId);
-    double eta = m_segmentation->eta(cellId);
-    radius = meanLayerPositionZ / std::sinh(eta);
-    // global cartesian coordinates calculated from r,phi,eta, for r=1
-    outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, meanLayerPositionZ);
-    // !!! THIS HAS TO BE CHANGED WITH UPDATED CALDISCS GEOMETRY !!!
-    if (subsystem == 1) {
-      outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, -meanLayerPositionZ);
-    }
-  }
+  (*m_decoder)["phi"] = 0;
+  (*m_decoder)["eta"] = 0;
+  auto volumeId = m_decoder->getValue();
+  DD4hep::Geometry::Position outPos;  
+  auto detelement = m_volman.lookupDetElement(volumeId);
+  const auto& transformMatrix = detelement.worldTransformation(); //m_volman.worldTransformation(volumeId);
+  double outGlobal[3];
+  double inLocal[] = {0, 0, 0};
+  transformMatrix.LocalToMaster(inLocal, outGlobal);
+  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm
+	  << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
+  // radius calculated from segmenation + z postion of volumes
+  auto inSeg = m_segmentation->position(aCellId);
+  double eta = m_segmentation->eta(aCellId);
+  radius = outGlobal[2] / std::sinh(eta);
+  debug() << "Radius : " << radius << endmsg;
+  outPos.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
+
   return outPos;
+}
+
+int CellPositionsCaloDiscsTool::layerId(const uint64_t& aCellId) {
+  int layer;
+  m_decoder->setValue(aCellId);
+  layer = (*m_decoder)["layer"].value();
+  return layer;
 }
 
 StatusCode CellPositionsCaloDiscsTool::finalize() { return GaudiTool::finalize(); }

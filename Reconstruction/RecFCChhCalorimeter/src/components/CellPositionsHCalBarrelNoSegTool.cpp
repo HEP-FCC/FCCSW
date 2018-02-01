@@ -1,31 +1,24 @@
-#include "CellPositionsHCalBarrelTool.h"
+#include "CellPositionsHCalBarrelNoSegTool.h"
 
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsHCalBarrelTool)
+DECLARE_TOOL_FACTORY(CellPositionsHCalBarrelNoSegTool)
 
-CellPositionsHCalBarrelTool::CellPositionsHCalBarrelTool(const std::string& type, const std::string& name,
+CellPositionsHCalBarrelNoSegTool::CellPositionsHCalBarrelNoSegTool(const std::string& type, const std::string& name,
                                                const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
   declareProperty("readoutName", m_readoutName);
 }
 
-StatusCode CellPositionsHCalBarrelTool::initialize() {
+StatusCode CellPositionsHCalBarrelNoSegTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
   m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry service." << endmsg;
     return StatusCode::FAILURE;
-  }
-  // get PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
-  if (m_segmentation == nullptr) {
-    error() << "There is no phi-eta segmentation!!!!" << endmsg;
-    // return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
@@ -42,17 +35,17 @@ StatusCode CellPositionsHCalBarrelTool::initialize() {
   return sc;
 }
 
-void CellPositionsHCalBarrelTool::getPositions(const fcc::CaloHitCollection& aCells,
+void CellPositionsHCalBarrelNoSegTool::getPositions(const fcc::CaloHitCollection& aCells,
                                           fcc::PositionedCaloHitCollection& outputColl) {
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outSeg = CellPositionsHCalBarrelTool::xyzPosition(cell.core().cellId);
+    auto outPos = CellPositionsHCalBarrelNoSegTool::xyzPosition(cell.core().cellId);
 
     auto edmPos = fcc::Point();
-    edmPos.x = outSeg.x() / dd4hep::mm;
-    edmPos.y = outSeg.y() / dd4hep::mm;
-    edmPos.z = outSeg.z() / dd4hep::mm;
+    edmPos.x = outPos.x() / dd4hep::mm;
+    edmPos.y = outPos.y() / dd4hep::mm;
+    edmPos.z = outPos.z() / dd4hep::mm;
 
     auto positionedHit = outputColl.create(edmPos, cell.core());
 
@@ -64,7 +57,7 @@ void CellPositionsHCalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsHCalBarrelTool::xyzPosition(const uint64_t& aCellId) const {
+DD4hep::Geometry::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
   m_decoder->setValue(aCellId);
   (*m_decoder)["phi"] = 0;
@@ -77,20 +70,15 @@ DD4hep::Geometry::Position CellPositionsHCalBarrelTool::xyzPosition(const uint64
   double global[3];
   double local[3] = {0, 0, 0};
   transform.LocalToMaster(local, global);
-  
-  // global cartesian coordinates calculated from r,phi,eta, for r=1
-  auto inSeg = m_segmentation->position(aCellId);
-  radius = std::sqrt(std::pow(global[0], 2) + std::pow(global[1], 2));
-  debug() << "no eta segmentaion used! Cell position.z is volumes position.z" << endmsg;
-  DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, global[2]);
+  DD4hep::Geometry::Position outSeg(global[0],global[1],global[2]);
   return outSeg;  
 }
 
-int CellPositionsHCalBarrelTool::layerId(const uint64_t& aCellId) {
+int CellPositionsHCalBarrelNoSegTool::layerId(const uint64_t& aCellId) {
   int layer;
   m_decoder->setValue(aCellId);
   layer = (*m_decoder)["layer"].value();
   return layer;
 }
 
-StatusCode CellPositionsHCalBarrelTool::finalize() { return GaudiTool::finalize(); }
+StatusCode CellPositionsHCalBarrelNoSegTool::finalize() { return GaudiTool::finalize(); }
