@@ -7,8 +7,8 @@
 
 namespace det {
 void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector& aSensDet,
-                  dd4hep::Volume& aEnvelope, dd4hep::DetElement& aEnvelopeDetElem,
-                  dd4hep::xml::Handle_t& aXmlElement, int sign) {
+                  dd4hep::Volume& aEnvelope, dd4hep::DetElement& aEnvelopeDetElem, dd4hep::xml::Handle_t& aXmlElement,
+                  int sign) {
 
   dd4hep::xml::Dimension dim(aXmlElement.child(_Unicode(dimensions)));
 
@@ -113,11 +113,10 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
   lLog << MSG::DEBUG << "z offse envelope: (cm) " << zOffsetEnvelope << endmsg;
   for (uint iLayer = 0; iLayer < layerHeight.size(); iLayer++) {
     dd4hep::Cone layerEnvelope(layerThickness[iLayer], layerRmin[iLayer], dim.rmax(), layerRmin[iLayer + 1],
-                                         dim.rmax());
+                               dim.rmax());
     layerEnvelopeVols.emplace_back("layerEnvelope", layerEnvelope, aLcdd.material(activeMaterial));
-    dd4hep::PlacedVolume layerEnvelopePhysVol =
-        aEnvelope.placeVolume(layerEnvelopeVols.back(),
-                              dd4hep::Position(0, 0, zOffsetEnvelope + sign * (layerThickness[iLayer] / 2.)));
+    dd4hep::PlacedVolume layerEnvelopePhysVol = aEnvelope.placeVolume(
+        layerEnvelopeVols.back(), dd4hep::Position(0, 0, zOffsetEnvelope + sign * (layerThickness[iLayer] / 2.)));
     layerEnvelopePhysVol.addPhysVolID("layer", iLayer);
     layerEnvelopeDetElems.push_back(dd4hep::DetElement(aEnvelopeDetElem, "layer" + std::to_string(iLayer), iLayer));
     layerEnvelopeDetElems.back().setPlacement(layerEnvelopePhysVol);
@@ -149,9 +148,10 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
   }
   dd4hep::Volume activeVolPre("activePre", activeShapePre, aLcdd.material(activeMaterial));
   activeVolPre.setSensitiveDetector(sensDet);
-  dd4hep::PlacedVolume readoutPhysVolPre = layerEnvelopeVols[0].placeVolume(readoutVolPre, dd4hep::Position(0, 0, zOffset));
-  readoutPhysVolPre.addPhysVolID("sublayer", 1); // 1 to start numbering at ID=1
-  readoutPhysVolPre.addPhysVolID("type", 2);  // 0 = active, 1 = passive, 2 = readout
+  dd4hep::PlacedVolume readoutPhysVolPre =
+      layerEnvelopeVols[0].placeVolume(readoutVolPre, dd4hep::Position(0, 0, zOffset));
+  readoutPhysVolPre.addPhysVolID("sublayer", 1);  // 1 to start numbering at ID=1
+  readoutPhysVolPre.addPhysVolID("type", 2);      // 0 = active, 1 = passive, 2 = readout
   std::vector<dd4hep::PlacedVolume> activePhysVols;
   activePhysVols.reserve(numDiscs);
   activePhysVols.push_back(layerEnvelopeVols[0].placeVolume(
@@ -175,8 +175,7 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
 
     nonAbsorberRmin += dR2;
     // readout and active discs have the same radius, but different thickness
-    dd4hep::Tube activeShapeBeforeSubtraction(nonAbsorberRmin, rMax,
-                                                        activeThickness / 2. + readoutThickness / 2.);
+    dd4hep::Tube activeShapeBeforeSubtraction(nonAbsorberRmin, rMax, activeThickness / 2. + readoutThickness / 2.);
     dd4hep::Tube readoutShape(nonAbsorberRmin, rMax, readoutThickness / 2.);
     dd4hep::SubtractionSolid activeShape(activeShapeBeforeSubtraction, readoutShape);
     dd4hep::Tube passiveShape(nonAbsorberRmin + dR1, rMax, passiveThickness / 2.);
@@ -196,11 +195,11 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
       dd4hep::Tube passiveOuterShape(nonAbsorberRmin + dR1, rMax, passiveOuterThickness / 4.);
       // create volumes
       dd4hep::Volume passiveInnerVol(passiveInnerMaterial + "_passive", passiveInnerShape,
-                                               aLcdd.material(passiveInnerMaterial));
+                                     aLcdd.material(passiveInnerMaterial));
       dd4hep::Volume passiveOuterVol(passiveOuterMaterial + "_passive", passiveOuterShape,
-                                               aLcdd.material(passiveOuterMaterial));
+                                     aLcdd.material(passiveOuterMaterial));
       dd4hep::Volume passiveGlueVol(passiveGlueMaterial + "_passive", passiveGlueShape,
-                                              aLcdd.material(passiveGlueMaterial));
+                                    aLcdd.material(passiveGlueMaterial));
       if (passive.isSensitive()) {
         lLog << MSG::INFO << "Passive volumes (inner, outer, glue) set as sensitive" << endmsg;
         passiveInnerVol.setSensitiveDetector(aSensDet);
@@ -208,16 +207,13 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
         passiveGlueVol.setSensitiveDetector(aSensDet);
       }
       // place volumes
-      dd4hep::PlacedVolume passiveInnerPhysVol =
-          passiveVol.placeVolume(passiveInnerVol, dd4hep::Position(0, 0, 0));
+      dd4hep::PlacedVolume passiveInnerPhysVol = passiveVol.placeVolume(passiveInnerVol, dd4hep::Position(0, 0, 0));
       dd4hep::PlacedVolume passiveOuterPhysVolBelow = passiveVol.placeVolume(
           passiveOuterVol,
-          dd4hep::Position(0, 0, passiveInnerThickness / 2. + passiveGlueThickness / 2. +
-                                         passiveOuterThickness / 4.));
+          dd4hep::Position(0, 0, passiveInnerThickness / 2. + passiveGlueThickness / 2. + passiveOuterThickness / 4.));
       dd4hep::PlacedVolume passiveOuterPhysVolAbove = passiveVol.placeVolume(
           passiveOuterVol,
-          dd4hep::Position(0, 0, -passiveInnerThickness / 2. - passiveGlueThickness / 2. -
-                                         passiveOuterThickness / 4.));
+          dd4hep::Position(0, 0, -passiveInnerThickness / 2. - passiveGlueThickness / 2. - passiveOuterThickness / 4.));
       dd4hep::PlacedVolume passiveGluePhysVolBelow = passiveVol.placeVolume(
           passiveGlueVol, dd4hep::Position(0, 0, -passiveInnerThickness / 2. - passiveGlueThickness / 4.));
       dd4hep::PlacedVolume passiveGluePhysVolAbove = passiveVol.placeVolume(
@@ -231,17 +227,21 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
       lLog << MSG::INFO << "Passive volume set as sensitive" << endmsg;
       passiveVol.setSensitiveDetector(aSensDet);
     }
-    dd4hep::PlacedVolume passivePhysVol = layerEnvelopeVols[iPlaceHere].placeVolume(passiveVol, dd4hep::Position(0, 0, zOffset));
-    passivePhysVol.addPhysVolID("sublayer", iDiscs + 1); // +1 to start numbering at ID=1
-    passivePhysVol.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
+    dd4hep::PlacedVolume passivePhysVol =
+        layerEnvelopeVols[iPlaceHere].placeVolume(passiveVol, dd4hep::Position(0, 0, zOffset));
+    passivePhysVol.addPhysVolID("sublayer", iDiscs + 1);  // +1 to start numbering at ID=1
+    passivePhysVol.addPhysVolID("type", 1);               // 0 = active, 1 = passive, 2 = readout
     dd4hep::PlacedVolume readoutPhysVol = layerEnvelopeVols[iPlaceHere].placeVolume(
-        readoutVol, dd4hep::Position(0, 0, zOffset +sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.)));
-    readoutPhysVol.addPhysVolID("sublayer", iDiscs + 1 + 1);  // +1 because first readout is placed before that loop
-    readoutPhysVol.addPhysVolID("type", 2);                      // 0 = active, 1 = passive, 2 = readout
+        readoutVol, dd4hep::Position(
+                        0, 0, zOffset + sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.)));
+    readoutPhysVol.addPhysVolID(
+        "sublayer",
+        iDiscs + 1 + 1);  // +1 to start numbering at ID=1 and +1 because first readout is placed before that loop
+    readoutPhysVol.addPhysVolID("type", 2);  // 0 = active, 1 = passive, 2 = readout
     activePhysVols.push_back(layerEnvelopeVols[iPlaceHere].placeVolume(
         activeVol,
-        dd4hep::Position(0, 0, zOffset +
-                                       sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.))));
+        dd4hep::Position(0, 0,
+                         zOffset + sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.))));
     lLog << MSG::DEBUG << "Placing passive at z= " << zOffset
          << " readout at z= " << zOffset + sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.)
          << " active at " << zOffset + sign * (passiveThickness / 2. + activeThickness / 2. + readoutThickness / 2.)
@@ -250,8 +250,8 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
     if (iDiscs == numDiscs - 2) {
       // finish detector with the last disc of abosrber (for GND layer)
       // it is placed in the last readout-layer envelope
-      dd4hep::PlacedVolume passivePhysVolPost = layerEnvelopeVols[layerEnvelopeVols.size() - 1].placeVolume(
-          passiveVol, dd4hep::Position(0, 0, zOffset));
+      dd4hep::PlacedVolume passivePhysVolPost =
+          layerEnvelopeVols[layerEnvelopeVols.size() - 1].placeVolume(passiveVol, dd4hep::Position(0, 0, zOffset));
       passivePhysVolPost.addPhysVolID("sublayer", iDiscs + 1 + 1);
       passivePhysVolPost.addPhysVolID("type", 1);  // 0 = active, 1 = passive, 2 = readout
       lLog << MSG::DEBUG << "Placing last passive disc at z= " << zOffset << endmsg;
@@ -265,16 +265,14 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
     }
     activePhysVols[iActive].addPhysVolID("sublayer", iActive + 1);
     activePhysVols[iActive].addPhysVolID("type", 0);  // 0 = active, 1 = passive, 2 = readout
-    dd4hep::DetElement activeDetElem(layerEnvelopeDetElems[iPlaceHere], "active" + std::to_string(iActive),
-                                               iActive);
+    dd4hep::DetElement activeDetElem(layerEnvelopeDetElems[iPlaceHere], "active" + std::to_string(iActive), iActive);
     activeDetElem.setPlacement(activePhysVols[iActive]);
   }
   return;
 }
 
-static dd4hep::Ref_t createCaloDiscs(dd4hep::Detector& aLcdd,
-                                     dd4hep::xml::Handle_t aXmlElement,
-                                     dd4hep::SensitiveDetector aSensDet) {
+static dd4hep::Ref_t
+createCaloDiscs(dd4hep::Detector& aLcdd, dd4hep::xml::Handle_t aXmlElement, dd4hep::SensitiveDetector aSensDet) {
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "CalDiscsConstruction");
   MsgStream lLog(&(*msgSvc), "CalDiscsConstruction");
 
@@ -287,8 +285,7 @@ static dd4hep::Ref_t createCaloDiscs(dd4hep::Detector& aLcdd,
   // Create air envelope for the whole endcap
   dd4hep::Cone envelopePositive(dim.dz(), dim.rmin1(), dim.rmax(), dim.rmin2(), dim.rmax());
   dd4hep::Cone envelopeNegative(dim.dz(), dim.rmin2(), dim.rmax(), dim.rmin1(), dim.rmax());
-  dd4hep::UnionSolid envelopeShape(envelopePositive, envelopeNegative,
-                                   dd4hep::Position(0, 0, -2 * dim.z_offset()));
+  dd4hep::UnionSolid envelopeShape(envelopePositive, envelopeNegative, dd4hep::Position(0, 0, -2 * dim.z_offset()));
   dd4hep::Volume envelopeVol(nameDet + "_vol", envelopeShape, aLcdd.material("Air"));
   dd4hep::Volume envelopePositiveVol(nameDet + "_positive_vol", envelopePositive, aLcdd.material("Air"));
   dd4hep::Volume envelopeNegativeVol(nameDet + "_negative_vol", envelopeNegative, aLcdd.material("Air"));
@@ -306,7 +303,7 @@ static dd4hep::Ref_t createCaloDiscs(dd4hep::Detector& aLcdd,
   envelopePositivePhysVol.addPhysVolID("subsystem", 0);
   caloPositiveDetElem.setPlacement(envelopePositivePhysVol);
   dd4hep::PlacedVolume envelopeNegativePhysVol =
-    envelopeVol.placeVolume(envelopeNegativeVol, dd4hep::Position(0, 0, -2 * dim.z_offset()));
+      envelopeVol.placeVolume(envelopeNegativeVol, dd4hep::Position(0, 0, -2 * dim.z_offset()));
   envelopeNegativePhysVol.addPhysVolID("subsystem", 1);
 
   caloNegativeDetElem.setPlacement(envelopeNegativePhysVol);
