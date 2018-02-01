@@ -81,7 +81,6 @@ DD4hep::Geometry::Position CellPositionsECalBarrelTool::xyzPosition(const uint64
 	  << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
   // radius calculated from segmenation + z postion of volumes
   auto inSeg = m_segmentation->position(aCellId);
-  double eta = m_segmentation->eta(aCellId);
   radius = std::sqrt(std::pow(outGlobal[0], 2) + std::pow(outGlobal[1], 2));
   DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
  

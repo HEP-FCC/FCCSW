@@ -218,7 +218,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
       newCell.core().time = cell.time();
       cluster.addhits(newCell);
       m_allCellsECal.erase(cell.cellId());
-      DD4hep::Geometry::Position posCell = m_cellPositionsToolECal->getXYZPosition(cell.cellId());
+      DD4hep::Geometry::Position posCell = m_cellPositionsToolECal->xyzPosition(cell.cellId());
       posX += posCell.X() * cell.energy();
       posY += posCell.Y() * cell.energy();
       posZ += posCell.Z() * cell.energy();
@@ -287,7 +287,7 @@ StatusCode CombinedCaloTopoCluster::execute() {
       newCell.core().cellId = cell.cellId();
       newCell.core().energy = cell.energy();
       newCell.core().time = cell.time();
-      DD4hep::Geometry::Position posCell = m_cellPositionsToolHCal->getXYZPosition(cell.cellId());
+      DD4hep::Geometry::Position posCell = m_cellPositionsToolHCal->xyzPosition(cell.cellId());
       posX += posCell.X() * cell.energy();
       posY += posCell.Y() * cell.energy();
       posZ += posCell.Z() * cell.energy();

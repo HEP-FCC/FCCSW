@@ -27,8 +27,13 @@ CaloTopoCluster::CaloTopoCluster(const std::string& name, ISvcLocator* svcLoc) :
   declareProperty("TopoClusterInput", m_inputTool, "Handle for input map of cells");
   declareProperty("noiseTool", m_noiseTool, "Handle for the cells noise tool");
   declareProperty("neigboursTool", m_neighboursTool, "Handle for tool to retrieve cell neighbours");
-  declareProperty("positionsTool", m_cellPositionsTool, "Handle for tool to retrieve cell positions");
-  declareProperty("neighboursRange", m_range);
+  declareProperty("positionsECalBarrelTool", m_cellPositionsECalBarrelTool, "Handle for tool to retrieve cell positions in ECal Barrel");
+  declareProperty("positionsHCalBarrelTool", m_cellPositionsHCalBarrelTool, "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
+  declareProperty("positionsHCalExtBarrelTool", m_cellPositionsHCalExtBarrelTool, "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
+  declareProperty("positionsEMECTool", m_cellPositionsEMECTool, "Handle for tool to retrieve cell positions in EMEC");
+  declareProperty("positionsHECTool", m_cellPositionsHECTool, "Handle for tool to retrieve cell positions in HEC");
+  declareProperty("positionsEMFwdTool", m_cellPositionsEMFwdTool, "Handle for tool to retrieve cell positions EM Fwd");
+  declareProperty("positionsHFwdTool", m_cellPositionsHFwdTool, "Handle for tool to retrieve cell positions Had Fwd");
   declareProperty("clusters", m_clusterCollection, "Handle for calo clusters (output collection)");
   declareProperty("clusterCells", m_clusterCellsCollection, "Handle for clusters (output collection)");
 }
@@ -44,13 +49,6 @@ StatusCode CaloTopoCluster::initialize() {
     error() << "Unable to retrieve the topo cluster input tool!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  // retrieve PhiEta segmentation
-  m_Segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
-      m_geoSvc->lcdd()->readout(m_ReadoutName).segmentation().segmentation());
-  if (m_Segmentation == nullptr) {
-    error() << "There is no phi-eta segmentation in the electromagnetic calorimeter." << endmsg;
-    return StatusCode::FAILURE;
-  }
   if (!m_neighboursTool.retrieve()) {
     error() << "Unable to retrieve the cells neighbours tool!!!" << endmsg;
     return StatusCode::FAILURE;
@@ -59,13 +57,16 @@ StatusCode CaloTopoCluster::initialize() {
     error() << "Unable to retrieve the cells noise tool!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  // Check if cell position tool available
-  if (!m_cellPositionsTool.retrieve()) {
-    error() << "Unable to retrieve the cell positions tool!!!" << endmsg;
+  // Check if cell position ECal Barrel tool available
+  if (!m_cellPositionsECalBarrelTool.retrieve()) {
+    error() << "Unable to retrieve ECal Barrel cell positions tool!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  // Take readout bitfield decoder from GeoSvc
-  m_decoder = m_geoSvc->lcdd()->readout(m_ReadoutName).segmentation().segmentation()->decoder();
+  // Check if cell position HCal Barrel tool available
+  if (!m_cellPositionsHCalBarrelTool.retrieve()) {
+    error() << "Unable to retrieve HCal Barrel cell positions tool!!!" << endmsg;
+    return StatusCode::FAILURE;
+  }
   return StatusCode::SUCCESS;
 }
 
@@ -93,7 +94,7 @@ StatusCode CaloTopoCluster::execute() {
             });
 
   std::map<uint, std::vector<std::pair<uint64_t, uint>>> preClusterCollection;
-  CaloTopoCluster::buildingProtoCluster(m_neighbourSigma, m_firstSeeds, m_allCells, preClusterCollection);
+  CaloTopoCluster::buildingProtoCluster(m_neighbourSigma, m_lastNeighbourSigma, m_firstSeeds, m_allCells, preClusterCollection);
   // Build Clusters in edm
   info() << "Building " << preClusterCollection.size() << " cluster." << endmsg;
   double checkTotEnergy = 0.;
@@ -107,13 +108,34 @@ StatusCode CaloTopoCluster::execute() {
     for (auto pair : i.second) {
       auto cellId = pair.first;
       // get CaloHit by cellID
-      auto newCell = edmClusterCells->create();  // m_inputTool->cellByCellId(cellId);
+      auto newCell = edmClusterCells->create();
       newCell.energy(m_allCells[cellId]);
       newCell.cellId(cellId);
       newCell.bits(pair.second);
       energy += newCell.energy();
+      
       // get cell position by cellID
-      DD4hep::Geometry::Position posCell = m_cellPositionsTool->getXYZPosition(cellId);
+      // identify calo system
+      m_decoder->setValue(cellId);
+      auto systemId = (*m_decoder)["system"].value();
+      DD4hep::Geometry::Position posCell;
+      if ( systemId == 5 ) // ECAL BARREL system id
+	posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
+      else if ( systemId == 8 ) // HCAL BARREL system id 
+	posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
+      else if ( systemId == 9 ) // HCAL EXT BARREL system id
+	posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
+      else if ( systemId == 6 ) // EMEC system id
+	posCell = m_cellPositionsEMECTool->xyzPosition(cellId);
+      else if ( systemId == 7 ) // HEC system id
+	posCell = m_cellPositionsHECTool->xyzPosition(cellId);
+      else if ( systemId == 10 ) // EMFWD system id
+	posCell = m_cellPositionsEMFwdTool->xyzPosition(cellId);
+      else if ( systemId == 11) // HFWD system id
+	posCell = m_cellPositionsHFwdTool->xyzPosition(cellId);
+      else 
+	warning() << "No cell positions tool found for system id " << systemId << ". " << endmsg;
+	
       posX += posCell.X() * newCell.energy();
       posY += posCell.Y() * newCell.energy();
       posZ += posCell.Z() * newCell.energy();
@@ -141,7 +163,7 @@ void CaloTopoCluster::findingSeeds(const std::map<uint64_t, double>& cells,
                                    std::vector<std::pair<uint64_t, double>>& seeds) {
   for (const auto& cell : cells) {
     // retrieve the noise const assigned to cell
-    double threshold = m_noiseTool->getNoiseConstantPerCell(cell.first) * nSigma;
+    double threshold = m_noiseTool->getNoiseConstantPerCell(cell.first) / dd4hep::MeV * nSigma;
     debug() << "seed threshold  = " << threshold << "MeV " << endmsg;
     if (abs(cell.second) / dd4hep::MeV > threshold) {  // seed threshold is set to 4*Sigma
       seeds.emplace_back(cell.first, cell.second);
@@ -151,6 +173,7 @@ void CaloTopoCluster::findingSeeds(const std::map<uint64_t, double>& cells,
 
 void CaloTopoCluster::buildingProtoCluster(
     int nSigma,
+    int lastNSigma,
     std::vector<std::pair<uint64_t, double>>& seeds,
     std::map<uint64_t, double>& allCells,
     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection) {
@@ -195,7 +218,7 @@ void CaloTopoCluster::buildingProtoCluster(
       }
       // last try without condition on neighbours
       for (auto& id : N2[it]) {
-        N2[it + 1] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, 0., allCells, clusterOfCell,
+        N2[it + 1] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, lastNSigma, allCells, clusterOfCell,
                                                           preClusterCollection);
       }
     }
@@ -214,9 +237,8 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
   // Retrieve cellIds of neighbours
   auto neighboursVec = m_neighboursTool->neighbours(id);
   if (neighboursVec.size() == 0) {
-    warning() << "No neighbours for cellID found! " << endmsg;
-    addedNeighbourIds.resize(0);
-    return addedNeighbourIds;
+    error() << "No neighbours for cellID found! " << endmsg;
+    //addedNeighbourIds.resize(0);
   } else {
 
     debug() << "For cluster: " << clusterID << endmsg;
@@ -236,7 +258,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
         if (nSigma == 0)  // no condition to be checked for neighbour
           validatedNeighbour = true;
         else {
-          // retrieve the cell noise level
+          // retrieve the cell noise level [GeV]
           double thr = nSigma * m_noiseTool->getNoiseConstantPerCell(neighbouringCellId);
           if (abs(neighbouringCellEnergy) >= thr)
             validatedNeighbour = true;
@@ -284,8 +306,8 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
         break;
       }
     }
-    return addedNeighbourIds;
   }
+  return addedNeighbourIds;
 }
 
 StatusCode CaloTopoCluster::finalize() { return GaudiAlgorithm::finalize(); }

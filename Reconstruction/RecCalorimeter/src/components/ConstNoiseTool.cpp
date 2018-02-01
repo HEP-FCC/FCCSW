@@ -20,13 +20,13 @@ ConstNoiseTool::ConstNoiseTool(const std::string& type, const std::string& name,
 }
 
 StatusCode ConstNoiseTool::initialize() {
-  /// Noise estimates from Atlas
+  /// Noise estimates from Atlas [GeV]
   // set for ECalBarrel system:5
   // set for HCalBarrel system:6
   // set for HCalExtBarrel system:7
-  m_systemNoiseConstMap.emplace(5, 7.5 / 4.);
-  m_systemNoiseConstMap.emplace(6, 11.5 / 4.);
-  m_systemNoiseConstMap.emplace(7, 11.5 / 4.);
+  m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
+  m_systemNoiseConstMap.emplace(8, 0.0115 / 4.);
+  m_systemNoiseConstMap.emplace(9, 0.0115 / 4.);
 
   // Get GeoSvc
   m_geoSvc = service("GeoSvc");
@@ -44,7 +44,7 @@ StatusCode ConstNoiseTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
+								  m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
 

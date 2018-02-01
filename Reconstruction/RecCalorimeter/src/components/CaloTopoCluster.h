@@ -53,6 +53,7 @@ public:
   /** Build proto-clusters
    */
   virtual void buildingProtoCluster(int nSigma,
+				    int lastNSigma,
                                     std::vector<std::pair<uint64_t, double>>& seeds,
                                     std::map<uint64_t, double>& allCells,
                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection);
@@ -74,24 +75,36 @@ private:
   DataHandle<fcc::CaloHitCollection> m_clusterCellsCollection{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Name of the calorimeter readout
-  Gaudi::Property<std::string> m_ReadoutName{this, "ReadoutName", "name of the readout"};
-  /// Handle for the input tool
+   /// Handle for the input tool
   ToolHandle<ITopoClusterInputTool> m_inputTool{"TopoClusterInput", this};
   /// Handle for the cells noise tool
   ToolHandle<INoiseConstTool> m_noiseTool{"ReadNoiseFromFileTool", this};
   /// Handle for neighbours tool
   ToolHandle<ICaloReadNeighboursMap> m_neighboursTool{"TopoCaloNeighbours", this};
-  /// Handle for tool to get positions
-  ToolHandle<ICellPositionsTool> m_cellPositionsTool{"CellPositionsBarrelTool", this};
+  /// Handle for tool to get positions in ECal Barrel
+  ToolHandle<ICellPositionsTool> m_cellPositionsECalBarrelTool{"CellPositionsECalBarrelTool", this};
+  /// Handle for tool to get positions in HCal Barrel and Ext Barrel, no Segmentation
+  ToolHandle<ICellPositionsTool> m_cellPositionsHCalBarrelTool{"CellPositionsHCalBarrelNoSegTool", this};
+  /// Handle for tool to get positions in HCal Barrel and Ext Barrel, no Segmentation
+  ToolHandle<ICellPositionsTool> m_cellPositionsHCalExtBarrelTool{"CellPositionsHCalBarrelNoSegTool", this};
+  /// Handle for tool to get positions in Calo Discs
+  ToolHandle<ICellPositionsTool> m_cellPositionsEMECTool{"CellPositionsCaloDiscsTool", this};
+  /// Handle for tool to get positions in Calo Discs
+  ToolHandle<ICellPositionsTool> m_cellPositionsHECTool{"CellPositionsCaloDiscsTool", this};
+  /// Handle for tool to get positions in Calo Discs
+  ToolHandle<ICellPositionsTool> m_cellPositionsEMFwdTool{"CellPositionsCaloDiscsTool", this};
+  /// Handle for tool to get positions in Calo Discs
+  ToolHandle<ICellPositionsTool> m_cellPositionsHFwdTool{"CellPositionsCaloDiscsTool", this};
   /// PhiEta segmentation of the detector (owned by DD4hep)
   DD4hep::DDSegmentation::GridPhiEta* m_Segmentation;
+  /// Seed threshold in sigma
+  Gaudi::Property<int> m_seedSigma{this, "seedSigma", 4, "number of sigma in noise threshold"};
+  /// Neighbour threshold in sigma
+  Gaudi::Property<int> m_neighbourSigma{this, "neighbourSigma", 2, "number of sigma in noise threshold"};
+  /// Last neighbour threshold in sigma
+  Gaudi::Property<int> m_lastNeighbourSigma{this, "lastNeighbourSigma", 0, "number of sigma in noise threshold"};
 
-  int m_range;
-  /// Seed threshold
-  int m_seedSigma = 4;
-  int m_neighbourSigma = 2;
-  DD4hep::DDSegmentation::BitField64* m_decoder;
+  DD4hep::DDSegmentation::BitField64* m_decoder = new DD4hep::DDSegmentation::BitField64("system:4");
   /// all active Cells
   std::map<uint64_t, double> m_allCells;
   /// First list of CaloCells above seeding threshold

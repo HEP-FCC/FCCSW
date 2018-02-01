@@ -51,21 +51,15 @@ void CellPositionsHCalBarrelNoSegTool::getPositions(const fcc::CaloHitCollection
 
     // Debug information about cell position
     debug() << "Cell energy (GeV) : " << cell.core().energy << "\tcellID " << cell.core().cellId << endmsg;
-    debug() << "Position of cell (mm) : \t" << outSeg.x() / dd4hep::mm << "\t" << outSeg.y() / dd4hep::mm << "\t"
-            << outSeg.z() / dd4hep::mm << endmsg;
+    debug() << "Position of cell (mm) : \t" << outPos.x() / dd4hep::mm << "\t" << outPos.y() / dd4hep::mm << "\t"
+            << outPos.z() / dd4hep::mm << endmsg;
   }
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
 DD4hep::Geometry::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& aCellId) const {
-  double radius;
-  m_decoder->setValue(aCellId);
-  (*m_decoder)["phi"] = 0;
-  (*m_decoder)["eta"] = 0;
-  auto volumeId = m_decoder->getValue();
-  
   // global cartesian coordinates calculated from r,phi,eta, for r=1
-  auto detelement = m_volman.lookupDetElement(volumeId);
+  auto detelement = m_volman.lookupDetElement(aCellId);
   const auto& transform = detelement.worldTransformation();
   double global[3];
   double local[3] = {0, 0, 0};
