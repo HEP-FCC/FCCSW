@@ -121,7 +121,8 @@
         <!-- thickness of a readout layer (how many 'unit layers' are merged together creating one readout) -->
         <!-- unit layer = absorber|half-active|readout|half-active -->
         <!-- with an exception of the inner-most unit layer (ID 0) which = readout|active -->
-        <layer thickness="1" repeat="156"/>
+        <layer thickness="2" repeat="2"/>
+        <layer thickness="4" repeat="38"/>
       </layers>
       <active thickness="EMEC_lAr_thickness">
         <material name="LAr"/>
@@ -149,7 +150,8 @@
         <!-- thickness of a readout layer (how many 'unit layers' are merged together creating one readout) -->
         <!-- unit layer = absorber|active|readout|active -->
         <!-- with an exception of the inner-most unit layer (ID 0) which = readout|active -->
-        <layer thickness="1" repeat="82"/>
+        <layer thickness="2" repeat="1"/>
+        <layer thickness="4" repeat="20"/>
       </layers>
       <active thickness="HEC_lAr_thickness">
         <material name="LAr"/>
