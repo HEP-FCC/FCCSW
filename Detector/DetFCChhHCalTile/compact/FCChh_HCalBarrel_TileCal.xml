@@ -56,7 +56,6 @@
      <id>system:4,module:7,row:9,layer:5,tile:2,eta:1,phi:10</id>
     </readout>
     <readout name="HCalBarrel">
-     <!--segmentation type="NoSegmentation"/-->
      <id>system:4,module:7,row:9,layer:5</id>
     </readout>
   </readouts>
