@@ -219,10 +219,11 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
     double zOffset = -dzDetector + dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
-    lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
+    lLog << MSG::DEBUG << "dz of wedges       = " << dy0 << endmsg;
+    lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << endmsg;
 
     if ((-dzDetector + zOffset) >= dzDetector) {
-      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << std::endl;
+      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << endmsg;
     }
     DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
     // Fill vector for DetElements
@@ -236,6 +237,8 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);
     double xPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * sin(phi);
+    lLog << MSG::DEBUG << "module width in phi   = " << dphi << endmsg;
+    lLog << MSG::DEBUG << "phi offset of modules = " << phi << endmsg;
 
     DD4hep::Geometry::Position moduleOffset(xPosModule, yPosModule, 0);
     DD4hep::Geometry::Position supportOffset(xPosSupport, yPosSupport, 0);
