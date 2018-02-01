@@ -8,7 +8,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 DECLARE_TOOL_FACTORY(CaloTowerTool)
@@ -218,7 +218,7 @@ float CaloTowerTool::radiusForPosition() const { return m_radius; }
 
 void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
                                             const fcc::CaloHitCollection* aCells,
-                                            DD4hep::DDSegmentation::GridPhiEta* aSegmentation) {
+                                            dd4hep::DDSegmentation::FCCSWGridPhiEta* aSegmentation) {
   // Loop over a collection of calorimeter cells and build calo towers
   // borders of the cell in eta/phi
   float etaCellMin = 0, etaCellMax = 0;
@@ -297,13 +297,13 @@ void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
   }
 }
 
-DD4hep::DDSegmentation::GridPhiEta* CaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
-  DD4hep::DDSegmentation::GridPhiEta* segmentation = nullptr;
+dd4hep::DDSegmentation::FCCSWGridPhiEta* CaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation = nullptr;
   if (m_geoSvc->lcdd()->readouts().find(aReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
     info() << "Readout does not exist! Please check if it is correct. Processing without it." << endmsg;
   } else {
     info() << "Readout " << aReadoutName << " found." << endmsg;
-    segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+    segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
         m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
     if (segmentation == nullptr) {
       error() << "There is no phi-eta segmentation for the readout " << aReadoutName << " defined." << endmsg;

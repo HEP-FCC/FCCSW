@@ -1,7 +1,7 @@
-#include "TestGeometry/GdmlDetectorConstruction.h"
+#include "TestGeometryLib/GdmlDetectorConstruction.h"
 
 // FCCSW
-#include "TestGeometry/TestCalorimeterSD.h"
+#include "TestGeometryLib/TestCalorimeterSD.h"
 
 // Geant4
 #include "G4SDManager.hh"

@@ -2,19 +2,17 @@
 #define DD4HEP_DDCORE_GRIDPHIETA_H 1
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 
 // DD4hep
 #include "DD4hep/Segmentations.h"
-#include "DD4hep/objects/SegmentationsInterna.h"
+#include "DD4hep/detail/SegmentationsInterna.h"
 
 /// Namespace for the AIDA detector description toolkit
-namespace DD4hep {
+namespace dd4hep {
 
 /// Namespace for base segmentations
 
-/// Namespace for the geometry part of the AIDA detector description toolkit
-namespace Geometry {
 
 // Forward declarations
 class Segmentation;
@@ -22,7 +20,7 @@ template <typename T>
 class SegmentationWrapper;
 
 /// We need some abbreviation to make the code more readable.
-typedef Handle<SegmentationWrapper<DDSegmentation::GridPhiEta>> GridPhiEtaHandle;
+typedef Handle<SegmentationWrapper<DDSegmentation::FCCSWGridPhiEta>> FCCSWGridPhiEtaHandle;
 
 /// Implementation class for the grid phi-eta segmentation.
 /**
@@ -44,32 +42,32 @@ typedef Handle<SegmentationWrapper<DDSegmentation::GridPhiEta>> GridPhiEtaHandle
  *  \author  A. Zaborowska
  *  \version 1.0
  */
-class GridPhiEta : public GridPhiEtaHandle {
+class FCCSWGridPhiEta : public FCCSWGridPhiEtaHandle {
 public:
   /// Defintiion of the basic handled object
-  typedef GridPhiEtaHandle::Implementation Object;
+  typedef FCCSWGridPhiEtaHandle::Object Object;
 
 public:
   /// Default constructor
-  GridPhiEta() = default;
+  FCCSWGridPhiEta() = default;
   /// Copy constructor
-  GridPhiEta(const GridPhiEta& e) = default;
+  FCCSWGridPhiEta(const FCCSWGridPhiEta& e) = default;
   /// Copy Constructor from segmentation base object
-  GridPhiEta(const Segmentation& e) : Handle<Object>(e) {}
+  FCCSWGridPhiEta(const Segmentation& e) : Handle<Object>(e) {}
   /// Copy constructor from handle
-  GridPhiEta(const Handle<Object>& e) : Handle<Object>(e) {}
+  FCCSWGridPhiEta(const Handle<Object>& e) : Handle<Object>(e) {}
   /// Copy constructor from other polymorph/equivalent handle
   template <typename Q>
-  GridPhiEta(const Handle<Q>& e) : Handle<Object>(e) {}
+  FCCSWGridPhiEta(const Handle<Q>& e) : Handle<Object>(e) {}
   /// Assignment operator
-  GridPhiEta& operator=(const GridPhiEta& seg) = default;
+  FCCSWGridPhiEta& operator=(const FCCSWGridPhiEta& seg) = default;
   /// Equality operator
-  bool operator==(const GridPhiEta& seg) const { return m_element == seg.m_element; }
+  bool operator==(const FCCSWGridPhiEta& seg) const { return m_element == seg.m_element; }
   /// determine the position based on the cell ID
   inline Position position(const CellID& id) const { return Position(access()->implementation->position(id)); }
 
   /// determine the cell ID based on the position
-  inline DD4hep::CellID cellID(const Position& local, const Position& global, const VolumeID& volID) const {
+  inline dd4hep::CellID cellID(const Position& local, const Position& global, const VolumeID& volID) const {
     return access()->implementation->cellID(local, global, volID);
   }
 
@@ -117,6 +115,5 @@ public:
   }
 };
 
-} /* End namespace Geometry              */
-} /* End namespace DD4hep                */
+} /* End namespace dd4hep                */
 #endif  // DD4HEP_DDCORE_GRIDPHIETA_H

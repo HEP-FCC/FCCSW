@@ -1,7 +1,7 @@
 #include "SimG4GdmlTestDetector.h"
 
 // FCCSW
-#include "TestGeometry/GdmlDetectorConstruction.h"
+#include "TestGeometryLib/GdmlDetectorConstruction.h"
 
 // Geant4
 #include "G4VUserDetectorConstruction.hh"

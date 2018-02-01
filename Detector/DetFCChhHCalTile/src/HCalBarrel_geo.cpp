@@ -6,15 +6,14 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/ServiceHandle.h"
 
-using DD4hep::Geometry::Volume;
-using DD4hep::Geometry::DetElement;
-using DD4hep::XML::Dimension;
-using DD4hep::Geometry::PlacedVolume;
+using dd4hep::Volume;
+using dd4hep::DetElement;
+using dd4hep::xml::Dimension;
+using dd4hep::PlacedVolume;
 
 namespace det {
 
-static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement,
-                                          DD4hep::Geometry::SensitiveDetector sensDet) {
+static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep::SensitiveDetector sensDet) {
   // Get the Gaudi message service and message stream:
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "HCalConstruction");
   MsgStream lLog(&(*msgSvc), "HCalConstruction");
@@ -82,30 +81,30 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   double dzDetector = (numSequencesZ * dzSequence) / 2 + dZEndPlate + space;
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
 
-  DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
+  dd4hep::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
   Volume envelopeVolume("envelopeVolume", envelopeShape, lcdd.air());
   envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
 
   // Add structural support made of steel inside of HCal
   DetElement facePlate(hCal, "FacePlate", 0);
-  DD4hep::Geometry::Tube facePlateShape(dimensions.rmin(), sensitiveBarrelRmin, (dzDetector - dZEndPlate - space));
+  dd4hep::Tube facePlateShape(dimensions.rmin(), sensitiveBarrelRmin, (dzDetector - dZEndPlate - space));
   Volume facePlateVol("facePlate", facePlateShape, lcdd.material(xFacePlate.materialStr()));
   facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
   PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
   facePlate.setPlacement(placedFacePlate);
 
   // Add structural support made of steel at both ends of HCal
-  DD4hep::Geometry::Tube endPlateShape(dimensions.rmin(), (dimensions.rmax() - dSteelSupport), dZEndPlate / 2);
+  dd4hep::Tube endPlateShape(dimensions.rmin(), (dimensions.rmax() - dSteelSupport), dZEndPlate / 2);
   Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
   endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
 
   DetElement endPlatePos(hCal, "endPlatePos", 0);
-  DD4hep::Geometry::Position posOffset(0, 0, dzDetector - (dZEndPlate / 2));
+  dd4hep::Position posOffset(0, 0, dzDetector - (dZEndPlate / 2));
   PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
   endPlatePos.setPlacement(placedEndPlatePos);
 
   DetElement endPlateNeg(hCal, "endPlateNeg", 1);
-  DD4hep::Geometry::Position negOffset(0, 0, -dzDetector + (dZEndPlate / 2));
+  dd4hep::Position negOffset(0, 0, -dzDetector + (dZEndPlate / 2));
   PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
   endPlateNeg.setPlacement(placedEndPlateNeg);
 
@@ -129,25 +128,24 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   double dzSupport = dSteelSupport / 2;
 
   // DetElement vectors for placement in loop at the end
-  std::vector<DD4hep::Geometry::PlacedVolume> supports;
+  std::vector<dd4hep::PlacedVolume> supports;
   supports.reserve(numSequencesPhi);
-  std::vector<DD4hep::Geometry::PlacedVolume> modules;
+  std::vector<dd4hep::PlacedVolume> modules;
   modules.reserve(numSequencesPhi);
-  std::vector<DD4hep::Geometry::PlacedVolume> rows;
+  std::vector<dd4hep::PlacedVolume> rows;
   rows.reserve(numSequencesZ);
-  std::vector<DD4hep::Geometry::PlacedVolume> layers;
+  std::vector<dd4hep::PlacedVolume> layers;
   layers.reserve(layerDepths.size());
-  std::vector<std::vector<DD4hep::Geometry::PlacedVolume>> tilesInLayers;
+  std::vector<std::vector<dd4hep::PlacedVolume>> tilesInLayers;
   tilesInLayers.reserve(layerDepths.size());
 
   // First we construct one wedge:
-  Volume wedgeVolume("wedgeVolume", DD4hep::Geometry::Trapezoid(dx1Module, dx2Module, dy0, dy0, dzModule),
-                     lcdd.material("Air"));
+  Volume wedgeVolume("wedgeVolume", dd4hep::Trapezoid(dx1Module, dx2Module, dy0, dy0, dzModule), lcdd.material("Air"));
   double layerR = 0.;
 
   // Placement of subWedges in Wedge
   for (unsigned int idxLayer = 0; idxLayer < layerDepths.size(); ++idxLayer) {
-    auto layerName = DD4hep::XML::_toString(idxLayer, "layer%d");
+    auto layerName = dd4hep::xml::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
 
     // get length of layer in rho
@@ -162,7 +160,7 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
 
     layerR += layerDepths.at(idxLayer);
 
-    Volume layerVolume("layerVolume", DD4hep::Geometry::Trapezoid(dx1, dx2, dy0, dy0, dz0), lcdd.material("Air"));
+    Volume layerVolume("layerVolume", dd4hep::Trapezoid(dx1, dx2, dy0, dy0, dz0), lcdd.material("Air"));
     layerVolume.setVisAttributes(lcdd.invisible());
     unsigned int idxSubMod = 0;
     unsigned int idxActMod = 0;
@@ -175,23 +173,23 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
       sequenceIdx = 0;
     }
     // layer middle offset
-    DD4hep::Geometry::Position modOffset(0, 0, rMiddle);
+    dd4hep::Position modOffset(0, 0, rMiddle);
     layers.push_back(wedgeVolume.placeVolume(layerVolume, modOffset));
     layers.back().addPhysVolID("layer", idxLayer);
 
-    std::vector<DD4hep::Geometry::PlacedVolume> tiles;
+    std::vector<dd4hep::PlacedVolume> tiles;
     // Filling of the subWedge with coponents (submodules)
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _Unicode(module_component)); xCompColl;
          ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
       double dyComp = xComp.thickness() * 0.5;
-      Volume modCompVol("modCompVolume", DD4hep::Geometry::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+      Volume modCompVol("modCompVolume", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                         lcdd.material(xComp.materialStr()));
       modCompVol.setVisAttributes(lcdd, xComp.visStr());
-      DD4hep::Geometry::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);
+      dd4hep::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);
 
       if (xComp.isSensitive()) {
-        Volume tileVol("tileVolume", DD4hep::Geometry::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+        Volume tileVol("tileVolume", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                        lcdd.material(xComp.materialStr()));
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolume.placeVolume(tileVol, offset));
@@ -207,14 +205,14 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   }
 
   Volume moduleVolume("moduleVolume",
-                      DD4hep::Geometry::Trapezoid(dx1Module, dx2Module, (dzDetector - dZEndPlate - space),
-                                                  (dzDetector - dZEndPlate - space), dzModule),
+                      dd4hep::Trapezoid(dx1Module, dx2Module, (dzDetector - dZEndPlate - space),
+                                        (dzDetector - dZEndPlate - space), dzModule),
                       lcdd.material("Air"));
   moduleVolume.setVisAttributes(lcdd.invisible());
 
   Volume steelSupportVolume("steelSupportVolume",
-                            DD4hep::Geometry::Trapezoid(dx1Support, dx2Support, (dzDetector - dZEndPlate - space),
-                                                        (dzDetector - dZEndPlate - space), dzSupport),
+                            dd4hep::Trapezoid(dx1Support, dx2Support, (dzDetector - dZEndPlate - space),
+                                              (dzDetector - dZEndPlate - space), dzSupport),
                             lcdd.material(xSteelSupport.materialStr()));
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
@@ -224,7 +222,7 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
     if ((-dzDetector + zOffset) >= dzDetector) {
       lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << std::endl;
     }
-    DD4hep::Geometry::Position wedgeOffset(0, zOffset, 0);
+    dd4hep::Position wedgeOffset(0, zOffset, 0);
     // Fill vector for DetElements
     rows.push_back(moduleVolume.placeVolume(wedgeVolume, wedgeOffset));
     rows.back().addPhysVolID("row", idxZRow);
@@ -237,14 +235,12 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);
     double xPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * sin(phi);
 
-    DD4hep::Geometry::Position moduleOffset(xPosModule, yPosModule, 0);
-    DD4hep::Geometry::Position supportOffset(xPosSupport, yPosSupport, 0);
+    dd4hep::Position moduleOffset(xPosModule, yPosModule, 0);
+    dd4hep::Position supportOffset(xPosSupport, yPosSupport, 0);
 
-    DD4hep::Geometry::Transform3D trans(
-        DD4hep::Geometry::RotationX(-0.5 * dd4hep::pi) * DD4hep::Geometry::RotationY(phi), moduleOffset);
+    dd4hep::Transform3D trans(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset);
 
-    DD4hep::Geometry::Transform3D transS(
-        DD4hep::Geometry::RotationX(-0.5 * dd4hep::pi) * DD4hep::Geometry::RotationY(phi), supportOffset);
+    dd4hep::Transform3D transS(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset);
     // Fill the vectors of DetElements
     modules.push_back(envelopeVolume.placeVolume(moduleVolume, trans));
     modules.back().addPhysVolID("module", idxPhi);
@@ -259,21 +255,21 @@ static DD4hep::Geometry::Ref_t createHCal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   lLog << MSG::DEBUG << "Tiles in layers :" << tilesInLayers[1].size() << std::endl;
 
   for (uint iPhi = 0; iPhi < numSequencesPhi; iPhi++) {
-    DetElement moduleDet(hCal, DD4hep::XML::_toString(iPhi, "module%d"), iPhi);
+    DetElement moduleDet(hCal, dd4hep::xml::_toString(iPhi, "module%d"), iPhi);
     moduleDet.setPlacement(modules[iPhi]);
-    DetElement support(hCal, DD4hep::XML::_toString(iPhi, "support%d"), iPhi);
+    DetElement support(hCal, dd4hep::xml::_toString(iPhi, "support%d"), iPhi);
     support.setPlacement(supports[iPhi]);
 
     for (uint iZ = 0; iZ < numSequencesZ; iZ++) {
-      DetElement wedgeDet(moduleDet, DD4hep::XML::_toString(iZ, "row%d"), iZ);
+      DetElement wedgeDet(moduleDet, dd4hep::xml::_toString(iZ, "row%d"), iZ);
       wedgeDet.setPlacement(rows[iZ]);
 
       for (uint iLayer = 0; iLayer < numSequencesR; iLayer++) {
-        DetElement layerDet(wedgeDet, DD4hep::XML::_toString(iLayer, "layer%d"), iLayer);
+        DetElement layerDet(wedgeDet, dd4hep::xml::_toString(iLayer, "layer%d"), iLayer);
         layerDet.setPlacement(layers[iLayer]);
 
         for (uint iTile = 0; iTile < tilesInLayers[iLayer].size(); iTile++) {
-          DetElement tileDet(layerDet, DD4hep::XML::_toString(iTile, "tile%d"), iTile);
+          DetElement tileDet(layerDet, dd4hep::xml::_toString(iTile, "tile%d"), iTile);
           tileDet.setPlacement(tilesInLayers[iLayer][iTile]);
         }
       }

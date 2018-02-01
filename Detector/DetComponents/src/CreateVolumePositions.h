@@ -13,7 +13,7 @@ class IGeoSvc;
  *
  *  Retrieve positions of the volumes from cell ID.
  *  This algorithm saves the centre position of the volume. No segmentation of volume is taken into account.
- *  Transformation matrix from global coordinates to local is taken from DD4hep::Geometry::DetElement.
+ *  Transformation matrix from global coordinates to local is taken from dd4hep::DetElement.
  *  Full hierarchy of DetElements (for each sensitive volume) is required.
  *
  *  @author Anna Zaborowska

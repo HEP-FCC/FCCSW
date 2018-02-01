@@ -2,7 +2,7 @@
 #define DETCOMMON_DETUTILS_H
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
@@ -26,11 +26,11 @@
  e.g. returns <layer name="2"/> when called with (detector, "layer", "name", "1") */
 namespace det {
 namespace utils {
-DD4hep::XML::Component getNodeByStrAttr(const DD4hep::XML::Handle_t& mother, const std::string& nodeName,
+dd4hep::xml::Component getNodeByStrAttr(const dd4hep::xml::Handle_t& mother, const std::string& nodeName,
                                         const std::string& attrName, const std::string& attrValue);
 
 /// try to get attribute with double value, return defaultValue if attribute not found
-double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::string& attrName,
+double getAttrValueWithFallback(const dd4hep::xml::Component& node, const std::string& attrName,
                                 const double& defaultValue);
 
 /** Retrieves the cellID based on the position of the step and the detector segmentation.
@@ -40,7 +40,7 @@ double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::s
  *         or the middle of the step.
  */
 
-uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
+uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
 
 /**  Get neighbours in many dimensions.
  *   @param[in] aDecoder Handle to the bitfield decoder.
@@ -49,7 +49,7 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep,
  *   @param[in] aCellId ID of cell.
  *   return Vector of neighbours.
  */
-std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
+std::vector<uint64_t> neighbours(dd4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
                                  uint64_t aCellId);
@@ -59,7 +59,7 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
  *   @param[in] aFieldNames Names of the fields for which extremes are found.
  *   return Vector of pairs (min,max)
  */
-std::vector<std::pair<int, int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder,
+std::vector<std::pair<int, int>> bitfieldExtremes(dd4hep::DDSegmentation::BitField64& aDecoder,
                                                   const std::vector<std::string>& aFieldNames);
 
 /** Get the half widths of the box envelope (TGeoBBox).
@@ -105,7 +105,7 @@ CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId);
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (X, Y).
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXY& aSeg);
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::CartesianGridXY& aSeg);
 
 /** Get the number of cells for the volume and a given Cartesian XYZ segmentation.
  *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.
@@ -114,7 +114,7 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (X, Y, Z).
  */
-std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg);
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::CartesianGridXYZ& aSeg);
 
 /** Get the number of cells for the volume and a given Phi-Eta segmentation.
  *   It is assumed that the volume has a cylindrical shape (and full azimuthal coverage)
@@ -125,7 +125,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (phi, eta) and the minimum eta ID.
  */
-std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg);
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::FCCSWGridPhiEta& aSeg);
 
 /** Get the number of cells for the volume and a given R-phi segmentation.
  *   It is assumed that the volume has a cylindrical shape - TGeoTube (and full azimuthal coverage)
@@ -136,7 +136,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (r, phi).
  */
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg);
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::PolarGridRPhi& aSeg);
 
 /** Get the number of the volumes containing a given name.
  *   For an example see: Test/TestReconstruction/tests/options/testcellcountingXYZ.py.

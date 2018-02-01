@@ -8,7 +8,7 @@
 #include "GaudiKernel/Service.h"
 
 // DD4Hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // DetectorDescription
 #include "DetInterface/IGeoSvc.h"
@@ -20,10 +20,8 @@
  *  @author julia.hrdinka@cern.ch
  */
 
-namespace DD4hep {
-namespace Geometry {
+namespace dd4hep {
 class DetElement;
-}
 }
 
 namespace Acts {
@@ -42,15 +40,15 @@ public:
   /// Finalize function
   virtual StatusCode finalize() override final;
   // receive DD4hep Geometry
-  virtual std::shared_ptr<Acts::TrackingGeometry> trackingGeometry() const;
+  virtual std::shared_ptr<const Acts::TrackingGeometry> trackingGeometry() const;
 
 private:
   // Tracking  Geometry
-  std::shared_ptr<Acts::TrackingGeometry> m_trackingGeo;
+  std::shared_ptr<const Acts::TrackingGeometry> m_trackingGeo;
   /// Handle to the FCC geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
 };
 
-inline std::shared_ptr<Acts::TrackingGeometry> TrackingGeoSvc::trackingGeometry() const { return m_trackingGeo; }
+inline std::shared_ptr<const Acts::TrackingGeometry> TrackingGeoSvc::trackingGeometry() const { return m_trackingGeo; }
 
 #endif  // TRACKINGSVC_TRACKINGSVC_H

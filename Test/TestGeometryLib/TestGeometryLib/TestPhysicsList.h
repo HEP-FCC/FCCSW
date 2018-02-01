@@ -1,7 +1,7 @@
 #ifndef TESTGEOMETRY_PHYSICSLIST_H
 #define TESTGEOMETRY_PHYSICSLIST_H
 
-#include "TestGeometry/TestKillProcess.h"
+#include "TestGeometryLib/TestKillProcess.h"
 
 // Geant
 #include "G4VModularPhysicsList.hh"

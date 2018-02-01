@@ -10,10 +10,9 @@
 #include "XML/Layering.h"
 
 using namespace std;
-using namespace DD4hep;
-using namespace DD4hep::Geometry;
+using namespace dd4hep;
 
-static Ref_t create_detector(LCDD& lcdd, xml_h e, SensitiveDetector /*sens*/) {
+static Ref_t create_detector(Detector& lcdd, xml_h e, SensitiveDetector /*sens*/) {
   xml_det_t x_det = e;
   string det_name = x_det.nameStr();
   string det_type = x_det.typeStr();

@@ -34,7 +34,7 @@
   <readouts>
     <readout name="ECalHitsPhiEta">
       <!-- offset == middle of the lowest eta/phi cell -->
-      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="629" offset_eta="-1.666" offset_phi="-pi+(pi/629.)"/>
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="629" offset_eta="-1.666" offset_phi="-pi+(pi/629.)"/>
       <!-- using only non-negative identifiers -->
       <id>system:4,ECAL_Cryo:1,bath:1,EM_barrel:1,active_layer:9,eta:9,phi:10</id>
     </readout>

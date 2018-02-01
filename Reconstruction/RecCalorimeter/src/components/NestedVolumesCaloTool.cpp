@@ -1,7 +1,7 @@
 #include "NestedVolumesCaloTool.h"
 
 // segm
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
