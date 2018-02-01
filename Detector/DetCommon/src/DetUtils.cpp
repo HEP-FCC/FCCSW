@@ -9,7 +9,6 @@
 
 // ROOT
 #include "TGeoBBox.h"
-//#include "TGeoConeSeg.h"
 
 namespace det {
 namespace utils {
