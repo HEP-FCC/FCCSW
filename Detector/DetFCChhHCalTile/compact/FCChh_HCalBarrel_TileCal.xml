@@ -52,7 +52,7 @@
   <readouts>
     <readout name="BarHCal_Readout">
       <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
-     <segmentation type="GridPhiEta" grid_size_eta="100" phi_bins="256" offset_phi="-pi+(pi/256.)"/>
+     <segmentation type="FCCSWGridPhiEta" grid_size_eta="100" phi_bins="256" offset_phi="-pi+(pi/256.)"/>
      <id>system:4,module:7,row:9,layer:5,tile:2,eta:1,phi:10</id>
     </readout>
     <readout name="HCalBarrel">
