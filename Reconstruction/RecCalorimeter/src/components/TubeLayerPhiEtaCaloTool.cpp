@@ -75,6 +75,8 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
       (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
     }
     (*decoder)[m_activeFieldName] = ilayer;
+    (*decoder)["eta"] = 0;
+    (*decoder)["phi"] = 0;
     uint64_t volumeId = decoder->getValue();
 
     // Get number of segmentation cells within the active volume
