@@ -7,10 +7,9 @@
 DECLARE_TOOL_FACTORY(CellPositionsECalBarrelTool)
 
 CellPositionsECalBarrelTool::CellPositionsECalBarrelTool(const std::string& type, const std::string& name,
-                                               const IInterface* parent)
+                                                         const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
-  declareProperty("readoutName", m_readoutName);
 }
 
 StatusCode CellPositionsECalBarrelTool::initialize() {
@@ -22,7 +21,7 @@ StatusCode CellPositionsECalBarrelTool::initialize() {
     return StatusCode::FAILURE;
   }
   // get PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
@@ -44,7 +43,7 @@ StatusCode CellPositionsECalBarrelTool::initialize() {
 }
 
 void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCells,
-                                          fcc::PositionedCaloHitCollection& outputColl) {
+                                               fcc::PositionedCaloHitCollection& outputColl) {
 
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
@@ -66,24 +65,24 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsECalBarrelTool::xyzPosition(const uint64_t& aCellId) const {
+dd4hep::Position CellPositionsECalBarrelTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
   m_decoder->setValue(aCellId);
   (*m_decoder)["phi"] = 0;
   (*m_decoder)["eta"] = 0;
   auto volumeId = m_decoder->getValue();
   auto detelement = m_volman.lookupDetElement(volumeId);
-  const auto& transformMatrix = detelement.worldTransformation();
+  const auto& transformMatrix = detelement.nominal().worldTransformation();
   double outGlobal[3];
   double inLocal[] = {0, 0, 0};
   transformMatrix.LocalToMaster(inLocal, outGlobal);
-  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm
-	  << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
+  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
+          << outGlobal[2] / dd4hep::mm << endmsg;
   // radius calculated from segmenation + z postion of volumes
   auto inSeg = m_segmentation->position(aCellId);
   radius = std::sqrt(std::pow(outGlobal[0], 2) + std::pow(outGlobal[1], 2));
-  DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
- 
+  dd4hep::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
+
   return outSeg;
 }
 

@@ -6,10 +6,9 @@
 DECLARE_TOOL_FACTORY(CellPositionsHCalBarrelNoSegTool)
 
 CellPositionsHCalBarrelNoSegTool::CellPositionsHCalBarrelNoSegTool(const std::string& type, const std::string& name,
-                                               const IInterface* parent)
+                                                                   const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
-  declareProperty("readoutName", m_readoutName);
 }
 
 StatusCode CellPositionsHCalBarrelNoSegTool::initialize() {
@@ -36,7 +35,7 @@ StatusCode CellPositionsHCalBarrelNoSegTool::initialize() {
 }
 
 void CellPositionsHCalBarrelNoSegTool::getPositions(const fcc::CaloHitCollection& aCells,
-                                          fcc::PositionedCaloHitCollection& outputColl) {
+                                                    fcc::PositionedCaloHitCollection& outputColl) {
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
@@ -57,15 +56,15 @@ void CellPositionsHCalBarrelNoSegTool::getPositions(const fcc::CaloHitCollection
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& aCellId) const {
+dd4hep::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& aCellId) const {
   // global cartesian coordinates calculated from r,phi,eta, for r=1
   auto detelement = m_volman.lookupDetElement(aCellId);
-  const auto& transform = detelement.worldTransformation();
+  const auto& transform = detelement.nominal().worldTransformation();
   double global[3];
   double local[3] = {0, 0, 0};
   transform.LocalToMaster(local, global);
-  DD4hep::Geometry::Position outSeg(global[0],global[1],global[2]);
-  return outSeg;  
+  dd4hep::Position outSeg(global[0], global[1], global[2]);
+  return outSeg;
 }
 
 int CellPositionsHCalBarrelNoSegTool::layerId(const uint64_t& aCellId) {

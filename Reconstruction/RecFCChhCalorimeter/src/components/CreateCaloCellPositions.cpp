@@ -5,7 +5,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // EDM
 #include "datamodel/CaloHitCollection.h"
@@ -15,11 +15,15 @@
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCellPositions)
 
-CreateCaloCellPositions::CreateCaloCellPositions(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+CreateCaloCellPositions::CreateCaloCellPositions(const std::string& name, ISvcLocator* svcLoc)
+    : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hit collection (input)");
-  declareProperty("positionsECalBarrelTool", m_cellPositionsECalBarrelTool, "Handle for tool to retrieve cell positions in ECal Barrel");
-  declareProperty("positionsHCalBarrelTool", m_cellPositionsHCalBarrelTool, "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
-  declareProperty("positionsHCalExtBarrelTool", m_cellPositionsHCalExtBarrelTool, "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
+  declareProperty("positionsECalBarrelTool", m_cellPositionsECalBarrelTool,
+                  "Handle for tool to retrieve cell positions in ECal Barrel");
+  declareProperty("positionsHCalBarrelTool", m_cellPositionsHCalBarrelTool,
+                  "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
+  declareProperty("positionsHCalExtBarrelTool", m_cellPositionsHCalExtBarrelTool,
+                  "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
   declareProperty("positionsEMECTool", m_cellPositionsEMECTool, "Handle for tool to retrieve cell positions in EMEC");
   declareProperty("positionsHECTool", m_cellPositionsHECTool, "Handle for tool to retrieve cell positions in HEC");
   declareProperty("positionsEMFwdTool", m_cellPositionsEMFwdTool, "Handle for tool to retrieve cell positions EM Fwd");
@@ -68,29 +72,29 @@ StatusCode CreateCaloCellPositions::execute() {
   debug() << "Input hit collection size: " << hits->size() << endmsg;
   // Initialize output collection
   auto edmPositionedHitCollection = m_positionedHits.createAndPut();
- 
+
   for (const auto& hit : *hits) {
     auto cellId = hit.core().cellId;
     // identify calo system
     m_decoder->setValue(cellId);
     auto systemId = (*m_decoder)["system"].value();
-    DD4hep::Geometry::Position posCell;
-    
-    if ( systemId == 5 ) // ECAL BARREL system id
+    dd4hep::Position posCell;
+
+    if (systemId == 5)  // ECAL BARREL system id
       posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
-    else if ( systemId == 8 ) // HCAL BARREL system id 
+    else if (systemId == 8)  // HCAL BARREL system id
       posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
-    else if ( systemId == 9 ) // HCAL EXT BARREL system id
+    else if (systemId == 9)  // HCAL EXT BARREL system id
       posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
-    else if ( systemId == 6 ) // EMEC system id
+    else if (systemId == 6)  // EMEC system id
       posCell = m_cellPositionsEMECTool->xyzPosition(cellId);
-    else if ( systemId == 7 ) // HEC system id
+    else if (systemId == 7)  // HEC system id
       posCell = m_cellPositionsHECTool->xyzPosition(cellId);
-    else if ( systemId == 10 ) // EMFWD system id
-      posCell =  m_cellPositionsEMFwdTool->xyzPosition(cellId);
-    else if ( systemId == 11) // HFWD system id
+    else if (systemId == 10)  // EMFWD system id
+      posCell = m_cellPositionsEMFwdTool->xyzPosition(cellId);
+    else if (systemId == 11)  // HFWD system id
       posCell = m_cellPositionsHFwdTool->xyzPosition(cellId);
-    
+
     auto edmPos = fcc::Point();
     edmPos.x = posCell.x() / dd4hep::mm;
     edmPos.y = posCell.y() / dd4hep::mm;
@@ -103,7 +107,7 @@ StatusCode CreateCaloCellPositions::execute() {
     debug() << "Position of cell (mm) : \t" << posCell.x() / dd4hep::mm << "\t" << posCell.y() / dd4hep::mm << "\t"
             << posCell.z() / dd4hep::mm << endmsg;
   }
-  
+
   debug() << "Output positions collection size: " << edmPositionedHitCollection->size() << endmsg;
   return StatusCode::SUCCESS;
 }

@@ -16,11 +16,6 @@ hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Tail Catcher readout
 tailCatcherReadoutName = "Muons_Readout"
-# layer radii needed for cell positions after re-segmentation 
-ecalBarrelLayerRadii = [193.0] + [198.5] + [207.5] + [216.5] + [225.5] + [234.5] + [243.5] + [252.5];
-# layers to be merged in endcaps, field name of the readout
-ecalEndcapNumberOfLayersToMerge = [2] + [2] + [4]*38
-hcalEndcapNumberOfLayersToMerge = [2] + [4]*20
 # Number of events
 num_events = 3
 
@@ -89,7 +84,6 @@ createNewExtHcells = CreateCaloCells("CreateNewExtHCaloCells",
 from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelTool, CellPositionsHCalBarrelNoSegTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool 
 ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
                                          readoutName = ecalBarrelReadoutNamePhiEta, 
-                                         layerRadii = ecalBarrelLayerRadii, 
                                          OutputLevel = INFO)
 EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC", 
                                        readoutName = ecalEndcapReadoutName, 
@@ -106,7 +100,7 @@ HCalExtBcells = CellPositionsHCalBarrelTool("CellPositionsHCalExtBarrel",
 HCalBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalBarrelVols", 
                                                  readoutName = hcalBarrelReadoutVolume, 
                                                  OutputLevel = INFO)
-HCalExtBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalExtBarrel", 
+HCalExtBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalExtBarrelVols", 
                                                     readoutName = hcalExtBarrelReadoutVolume, 
                                                     OutputLevel = INFO)
 HECcells = CellPositionsCaloDiscsTool("CellPositionsHEC", 
@@ -175,7 +169,7 @@ positionsTailCatcher = CreateCellPositions("positionsTailCatcher",
 
 out = PodioOutput("out", OutputLevel=DEBUG)
 out.filename = "~/FCCSW/digi_cellPostions_pim_100GeV.root"
-out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCellsVol","drop HCalBarrelCells", "drop HCalExtBarrelCellsVol", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells", "drop TailCatcherCells"]
+out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCellsVol","drop HCalBarrelCellsForTopo","drop HCalBarrelCells","drop HCalExtBarrelCellsForTopo", "drop HCalExtBarrelCellsVol", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells", "drop TailCatcherCells"]
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -185,11 +179,15 @@ audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
 rewrite.AuditExecute = True
 rewriteExt.AuditExecute = True
+createNewHcells.AuditExecute = True
+createNewExtHcells.AuditExecute = True
 positionsEcalBarrel.AuditExecute = True
 positionsEcalEndcap.AuditExecute = True
 positionsEcalFwd.AuditExecute = True
 positionsHcalBarrel.AuditExecute = True
 positionsHcalExtBarrel.AuditExecute = True
+positionsHcalBarrelVol.AuditExecute = True
+positionsHcalExtBarrelVol.AuditExecute = True
 positionsHcalEndcap.AuditExecute = True
 positionsHcalFwd.AuditExecute = True
 positionsTailCatcher.AuditExecute = True
@@ -200,12 +198,14 @@ TopAlg = [    podioinput,
               rewrite,
               rewriteExt,
               createNewHcells,
-              createNewExtHcells
+              createNewExtHcells,
               positionsEcalBarrel,
               positionsEcalEndcap,
               positionsEcalFwd, 
               positionsHcalBarrel, 
-              positionsHcalExtBarrel, 
+              positionsHcalExtBarrel,
+              positionsHcalBarrelVol,
+              positionsHcalExtBarrelVol,
               positionsHcalEndcap, 
               positionsHcalFwd,
               positionsTailCatcher,
