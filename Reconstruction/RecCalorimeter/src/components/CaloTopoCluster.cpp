@@ -27,9 +27,12 @@ CaloTopoCluster::CaloTopoCluster(const std::string& name, ISvcLocator* svcLoc) :
   declareProperty("TopoClusterInput", m_inputTool, "Handle for input map of cells");
   declareProperty("noiseTool", m_noiseTool, "Handle for the cells noise tool");
   declareProperty("neigboursTool", m_neighboursTool, "Handle for tool to retrieve cell neighbours");
-  declareProperty("positionsECalBarrelTool", m_cellPositionsECalBarrelTool, "Handle for tool to retrieve cell positions in ECal Barrel");
-  declareProperty("positionsHCalBarrelTool", m_cellPositionsHCalBarrelTool, "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
-  declareProperty("positionsHCalExtBarrelTool", m_cellPositionsHCalExtBarrelTool, "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
+  declareProperty("positionsECalBarrelTool", m_cellPositionsECalBarrelTool,
+                  "Handle for tool to retrieve cell positions in ECal Barrel");
+  declareProperty("positionsHCalBarrelTool", m_cellPositionsHCalBarrelTool,
+                  "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
+  declareProperty("positionsHCalExtBarrelTool", m_cellPositionsHCalExtBarrelTool,
+                  "Handle for tool to retrieve cell positions in HCal Barrel and ext Barrel");
   declareProperty("positionsEMECTool", m_cellPositionsEMECTool, "Handle for tool to retrieve cell positions in EMEC");
   declareProperty("positionsHECTool", m_cellPositionsHECTool, "Handle for tool to retrieve cell positions in HEC");
   declareProperty("positionsEMFwdTool", m_cellPositionsEMFwdTool, "Handle for tool to retrieve cell positions EM Fwd");
@@ -94,7 +97,8 @@ StatusCode CaloTopoCluster::execute() {
             });
 
   std::map<uint, std::vector<std::pair<uint64_t, uint>>> preClusterCollection;
-  CaloTopoCluster::buildingProtoCluster(m_neighbourSigma, m_lastNeighbourSigma, m_firstSeeds, m_allCells, preClusterCollection);
+  CaloTopoCluster::buildingProtoCluster(m_neighbourSigma, m_lastNeighbourSigma, m_firstSeeds, m_allCells,
+                                        preClusterCollection);
   // Build Clusters in edm
   info() << "Building " << preClusterCollection.size() << " cluster." << endmsg;
   double checkTotEnergy = 0.;
@@ -113,29 +117,29 @@ StatusCode CaloTopoCluster::execute() {
       newCell.cellId(cellId);
       newCell.bits(pair.second);
       energy += newCell.energy();
-      
+
       // get cell position by cellID
       // identify calo system
       m_decoder->setValue(cellId);
       auto systemId = (*m_decoder)["system"].value();
       DD4hep::Geometry::Position posCell;
-      if ( systemId == 5 ) // ECAL BARREL system id
-	posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
-      else if ( systemId == 8 ) // HCAL BARREL system id 
-	posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
-      else if ( systemId == 9 ) // HCAL EXT BARREL system id
-	posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
-      else if ( systemId == 6 ) // EMEC system id
-	posCell = m_cellPositionsEMECTool->xyzPosition(cellId);
-      else if ( systemId == 7 ) // HEC system id
-	posCell = m_cellPositionsHECTool->xyzPosition(cellId);
-      else if ( systemId == 10 ) // EMFWD system id
-	posCell = m_cellPositionsEMFwdTool->xyzPosition(cellId);
-      else if ( systemId == 11) // HFWD system id
-	posCell = m_cellPositionsHFwdTool->xyzPosition(cellId);
-      else 
-	warning() << "No cell positions tool found for system id " << systemId << ". " << endmsg;
-	
+      if (systemId == 5)  // ECAL BARREL system id
+        posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
+      else if (systemId == 8)  // HCAL BARREL system id
+        posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
+      else if (systemId == 9)  // HCAL EXT BARREL system id
+        posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
+      else if (systemId == 6)  // EMEC system id
+        posCell = m_cellPositionsEMECTool->xyzPosition(cellId);
+      else if (systemId == 7)  // HEC system id
+        posCell = m_cellPositionsHECTool->xyzPosition(cellId);
+      else if (systemId == 10)  // EMFWD system id
+        posCell = m_cellPositionsEMFwdTool->xyzPosition(cellId);
+      else if (systemId == 11)  // HFWD system id
+        posCell = m_cellPositionsHFwdTool->xyzPosition(cellId);
+      else
+        warning() << "No cell positions tool found for system id " << systemId << ". " << endmsg;
+
       posX += posCell.X() * newCell.energy();
       posY += posCell.Y() * newCell.energy();
       posZ += posCell.Z() * newCell.energy();
@@ -238,7 +242,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
   auto neighboursVec = m_neighboursTool->neighbours(id);
   if (neighboursVec.size() == 0) {
     error() << "No neighbours for cellID found! " << endmsg;
-    //addedNeighbourIds.resize(0);
+    addedNeighbourIds.resize(0);
   } else {
 
     debug() << "For cluster: " << clusterID << endmsg;
