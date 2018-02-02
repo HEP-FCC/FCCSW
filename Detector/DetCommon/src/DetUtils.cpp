@@ -9,7 +9,6 @@
 
 // ROOT
 #include "TGeoBBox.h"
-//#include "TGeoConeSeg.h"
 
 namespace det {
 namespace utils {
@@ -140,14 +139,9 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   return CLHEP::Hep3Vector(tube->GetRmin1(), tube->GetRmax1(), tube->GetDZ());
 }
 
-<<<<<<< HEAD
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::FCCSWGridPhiEta& aSeg) {
-  // get half-widths,
-  auto tubeSizes = tubeDimensions(aVolumeId);
-=======
 CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId) {
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
-  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
+  auto pvol = volMgr.lookupVolumePlacement(aVolumeId);
   auto solid = pvol.volume().solid();
   // get the envelope of the shape
   TGeoCone* cone = (dynamic_cast<TGeoCone*>(solid.ptr()));
@@ -171,9 +165,9 @@ std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId) {
   double maxEta = 0;
   double minEta = 0;
   // check if it is a cylinder centred at z=0
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
   auto detelement = volMgr.lookupDetElement(aVolumeId);
-  const auto& transformMatrix = detelement.worldTransformation();
+  const auto& transformMatrix = detelement.nominal().worldTransformation();
   double outGlobal[3];
   double inLocal[] = {0, 0, 0}; // to get middle of the volume
   transformMatrix.LocalToMaster(inLocal, outGlobal);
@@ -189,9 +183,9 @@ std::array<double, 2> tubeEtaExtremes (uint64_t aVolumeId) {
 }
 
 std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
   auto detelement = volMgr.lookupDetElement(aVolumeId);
-  const auto& transformMatrix = detelement.worldTransformation();
+  const auto& transformMatrix = detelement.nominal().worldTransformation();
   // calculate values of eta in all possible corners of the envelope
   auto dim = envelopeDimensions(aVolumeId);
   double minEta = 0;
@@ -229,8 +223,7 @@ std::array<double, 2> volumeEtaExtremes(uint64_t aVolumeId) {
   }
 }
 
-std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
->>>>>>> Anna/noise
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::FCCSWGridPhiEta& aSeg) {
   // get segmentation number of bins in phi
   uint phiCellNumber = aSeg.phiBins();
   // get segmentation cell width in eta

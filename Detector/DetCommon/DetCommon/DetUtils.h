@@ -125,7 +125,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentati
  *   @param[in] aSeg Handle to the segmentation of the volume.
  *   return Array of the number of cells in (phi, eta) and the minimum eta ID.
  */
-std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg);
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::FCCSWGridPhiEta& aSeg);
 
 /** Get the number of cells for the volume and a given R-phi segmentation.
  *   It is assumed that the volume has a cylindrical shape - TGeoTube (and full azimuthal coverage)

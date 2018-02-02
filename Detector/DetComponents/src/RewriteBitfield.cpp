@@ -7,7 +7,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DDSegmentation/Segmentation.h"
 
 DECLARE_ALGORITHM_FACTORY(RewriteBitfield)
@@ -37,7 +37,7 @@ StatusCode RewriteBitfield::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout, bitfield from GeoSvc
-  m_oldDecoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
+  m_oldDecoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
       m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder());
   // segmentation identifiers to be overwritten
   if (m_oldIdentifiers.size() == 0) {
@@ -52,12 +52,11 @@ StatusCode RewriteBitfield::initialize() {
       m_detectorIdentifiers.push_back(field);
     }
   }
-  // Take new segmentation from geometry service
-  m_segmentation = m_geoSvc->lcdd()->readout(m_newReadoutName).segmentation().segmentation();
-  // check if detector identifiers (old and new) agree
   std::vector<std::string> newFields;
-  for (uint itField = 0; itField < m_segmentation->decoder()->size(); itField++) {
-    newFields.push_back((*m_segmentation->decoder())[itField].name());
+  m_newDecoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
+      m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder());
+  for (uint itField = 0; itField < m_newDecoder->size(); itField++) {
+    newFields.push_back((*m_newDecoder)[itField].name());
   }
   for (const auto& detectorField : m_detectorIdentifiers) {
     auto iter = std::find(newFields.begin(), newFields.end(), detectorField);
@@ -69,7 +68,7 @@ StatusCode RewriteBitfield::initialize() {
   }
   info() << "Rewritting the readout bitfield." << endmsg;
   info() << "Old bitfield:\t" << m_oldDecoder->fieldDescription() << endmsg;
-  info() << "New bitfield:\t" << m_segmentation->decoder()->fieldDescription() << endmsg;
+  info() << "New bitfield:\t" << m_newDecoder->fieldDescription() << endmsg;
 
   return StatusCode::SUCCESS;
 }
@@ -92,11 +91,11 @@ StatusCode RewriteBitfield::execute() {
     // now rewrite all fields except for those to be removed
     for (const auto& detectorField : m_detectorIdentifiers) {
       oldid = (*m_oldDecoder)[detectorField];
-      (*m_segmentation->decoder())[detectorField] = oldid;
+      (*m_newDecoder)[detectorField] = oldid;
     }
-    newHit.cellId(m_segmentation->decoder()->getValue());
+    newHit.cellId(m_newDecoder->getValue());
     if (debugIter < m_debugPrint) {
-      debug() << "NEW: " << m_segmentation->decoder()->valueString() << endmsg;
+      debug() << "NEW: " << m_newDecoder->valueString() << endmsg;
       debugIter++;
     }
   }
