@@ -81,12 +81,12 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
 
     // Get number of segmentation cells within the active volume
     auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
-    debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
+    debug() << "Segmentation cells  (Nphi, Neta, minEta): " << numCells << endmsg;
     // Loop over segmenation cells
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
       for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
         (*decoder)["phi"] = iphi;
-        (*decoder)["eta"] = ieta;
+        (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
         uint64_t cellId = decoder->getValue();
         aCells.insert(std::pair<uint64_t, double>(cellId, 0));
       }
