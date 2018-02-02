@@ -233,7 +233,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentati
   // calculate the number of eta volumes
   // max - min = full eta range, - size = not counting the middle cell centred at 0, + 1 to account for that cell
   uint cellsEta = ceil(( etaExtremes[1] - etaExtremes[0] - etaCellSize ) / 2 / etaCellSize) * 2 + 1;
-  uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize)) - 1;
+  uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize));
   return {phiCellNumber, cellsEta, minEtaID};
 }
 
