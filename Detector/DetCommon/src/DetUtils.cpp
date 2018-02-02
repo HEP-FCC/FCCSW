@@ -131,12 +131,12 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   auto solid = pvol.volume().solid();
 
   // get the envelope of the shape
-  TGeoConeSeg* tube = (dynamic_cast<TGeoConeSeg*>(solid.ptr()));
+  TGeoTubeSeg* tube = (dynamic_cast<TGeoTubeSeg*>(solid.ptr()));
   if (tube == nullptr) {
     return CLHEP::Hep3Vector(0, 0, 0);
   }
   // get half-widths
-  return CLHEP::Hep3Vector(tube->GetRmin1(), tube->GetRmax1(), tube->GetDZ());
+  return CLHEP::Hep3Vector(tube->GetRmin(), tube->GetRmax(), tube->GetDZ());
 }
 
 CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId) {
