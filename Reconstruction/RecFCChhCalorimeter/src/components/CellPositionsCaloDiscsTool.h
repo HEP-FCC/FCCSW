@@ -8,12 +8,11 @@
 // FCCSW
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICellPositionsTool.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
 #include "DD4hep/Volumes.h"
 #include "DDSegmentation/Segmentation.h"
@@ -42,7 +41,7 @@ public:
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) final;
 
-  virtual DD4hep::Geometry::Position xyzPosition(const uint64_t& aCellId) const final;
+  virtual dd4hep::Position xyzPosition(const uint64_t& aCellId) const final;
 
   virtual int layerId(const uint64_t& aCellId) final;
 
@@ -51,8 +50,8 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
-  DD4hep::DDSegmentation::BitField64* m_decoder;
-  DD4hep::Geometry::VolumeManager m_volman;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSCALODISCSTOOL_H */

@@ -7,7 +7,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DDSegmentation/Segmentation.h"
 
 DECLARE_ALGORITHM_FACTORY(RewriteBitfield)
@@ -37,8 +37,7 @@ StatusCode RewriteBitfield::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout, bitfield from GeoSvc
-  m_oldDecoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-								     m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder());
+  m_oldDecoder = m_geoSvc->lcdd()->readout(m_oldReadoutName).idSpec().decoder();
   // segmentation identifiers to be overwritten
   if (m_oldIdentifiers.size() == 0) {
     // it is not an error, maybe no segmentation was used previously
@@ -53,8 +52,12 @@ StatusCode RewriteBitfield::initialize() {
     }
   }
   std::vector<std::string> newFields;
+<<<<<<< HEAD
   m_newDecoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
 								     m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder());
+=======
+  m_newDecoder =  m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder();
+>>>>>>> CaloCellPositions
   for (uint itField = 0; itField < m_newDecoder->size(); itField++) {
     newFields.push_back((*m_newDecoder)[itField].name());
   }

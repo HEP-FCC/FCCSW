@@ -10,8 +10,6 @@ CellPositionsTailCatcherTool::CellPositionsTailCatcherTool(const std::string& ty
                                                            const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
-  declareProperty("readoutName", m_readoutName);
-  declareProperty("centralRadius", m_centralRadius);
 }
 
 StatusCode CellPositionsTailCatcherTool::initialize() {
@@ -23,7 +21,7 @@ StatusCode CellPositionsTailCatcherTool::initialize() {
     return StatusCode::FAILURE;
   }
   // get PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
@@ -67,33 +65,32 @@ void CellPositionsTailCatcherTool::getPositions(const fcc::CaloHitCollection& aC
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsTailCatcherTool::xyzPosition(const uint64_t& aCellId) const {
+dd4hep::Position CellPositionsTailCatcherTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
 
-  const auto& transformMatrix = m_volman.worldTransformation(aCellId);
+  auto detelement = m_volman.lookupDetElement(aCellId);
+  const auto& transformMatrix = detelement.nominal().worldTransformation();
   double outGlobal[3];
   double inLocal[] = {0, 0, 0};
   transformMatrix.LocalToMaster(inLocal, outGlobal);
-  
+
   debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
-	  << outGlobal[2] / dd4hep::mm << endmsg;
-  
+          << outGlobal[2] / dd4hep::mm << endmsg;
+
   // radius calculated from segmenation + z postion of volumes
   auto inSeg = m_segmentation->position(aCellId);
   double eta = m_segmentation->eta(aCellId);
   radius = outGlobal[2] / std::sinh(eta);
   debug() << "Radius : " << radius << endmsg;
-  DD4hep::Geometry::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
-  
+  dd4hep::Position outSeg(inSeg.x() * radius, inSeg.y() * radius, outGlobal[2]);
+
   if (outGlobal[2] == 0) {     // central tail catcher
     radius = m_centralRadius;  // 901.5cm
     outSeg.SetCoordinates(inSeg.x() * radius, inSeg.y() * radius, inSeg.z() * radius);
   }
-  return outSeg; 
+  return outSeg;
 }
 
-int CellPositionsTailCatcherTool::layerId(const uint64_t& aCellId) {
-  return 0;
-}
+int CellPositionsTailCatcherTool::layerId(const uint64_t& aCellId) { return 0; }
 
 StatusCode CellPositionsTailCatcherTool::finalize() { return GaudiTool::finalize(); }

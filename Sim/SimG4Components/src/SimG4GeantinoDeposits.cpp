@@ -10,6 +10,7 @@
 #include "G4ProcessType.hh"
 
 
+
 class GeantinoEnergyDepositProcess: public G4VContinuousProcess {
   public:
   GeantinoEnergyDepositProcess(const G4String& processName="GeantinoDepositProcess",
@@ -41,6 +42,7 @@ class GeantinoEnergyDepositProcess: public G4VContinuousProcess {
 
 class GeantinoEnergyDepositList : public G4VModularPhysicsList {
   void ConstructProcess() {
+    auto theParticleIterator = GetParticleIterator();
     theParticleIterator->reset();
       while( (*theParticleIterator)() ){
         G4ParticleDefinition* particle = theParticleIterator->value();

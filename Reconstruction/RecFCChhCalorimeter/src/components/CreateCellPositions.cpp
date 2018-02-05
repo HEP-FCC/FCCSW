@@ -5,7 +5,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // EDM
 #include "datamodel/CaloHitCollection.h"

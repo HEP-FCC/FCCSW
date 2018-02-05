@@ -9,7 +9,6 @@ CellPositionsCaloDiscsTool::CellPositionsCaloDiscsTool(const std::string& type, 
                                                        const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
-  declareProperty("readoutName", m_readoutName);
 }
 
 StatusCode CellPositionsCaloDiscsTool::initialize() {
@@ -21,7 +20,7 @@ StatusCode CellPositionsCaloDiscsTool::initialize() {
     return StatusCode::FAILURE;
   }
   // get PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
@@ -62,21 +61,20 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-DD4hep::Geometry::Position CellPositionsCaloDiscsTool::xyzPosition(const uint64_t& aCellId) const {
+dd4hep::Position CellPositionsCaloDiscsTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
-  
   m_decoder->setValue(aCellId);
   (*m_decoder)["phi"] = 0;
   (*m_decoder)["eta"] = 0;
   auto volumeId = m_decoder->getValue();
-  DD4hep::Geometry::Position outPos;  
+  dd4hep::Position outPos;
   auto detelement = m_volman.lookupDetElement(volumeId);
-  const auto& transformMatrix = detelement.worldTransformation(); //m_volman.worldTransformation(volumeId);
+  const auto& transformMatrix = detelement.nominal().worldTransformation();  // m_volman.worldTransformation(volumeId);
   double outGlobal[3];
   double inLocal[] = {0, 0, 0};
   transformMatrix.LocalToMaster(inLocal, outGlobal);
-  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm
-	  << "\t" << outGlobal[2] / dd4hep::mm << endmsg;
+  debug() << "Position of volume (mm) : \t" << outGlobal[0] / dd4hep::mm << "\t" << outGlobal[1] / dd4hep::mm << "\t"
+          << outGlobal[2] / dd4hep::mm << endmsg;
   // radius calculated from segmenation + z postion of volumes
   auto inSeg = m_segmentation->position(aCellId);
   double eta = m_segmentation->eta(aCellId);

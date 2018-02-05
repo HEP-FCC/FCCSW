@@ -35,7 +35,7 @@
 
   <readouts>
     <readout name="ECalHits">
-      <segmentation type="GridPhiEta" grid_size_eta="deta" phi_bins="phiBins"/>
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="deta" phi_bins="phiBins"/>
       <id>eta:-9,phi:-17,system:1</id>
     </readout>
   </readouts>

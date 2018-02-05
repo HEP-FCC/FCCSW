@@ -18,8 +18,10 @@ find_package(GaudiProject)
 configure_file(cmake/fccrun.in ${CMAKE_BINARY_DIR}/fccrun)
 install(FILES ${CMAKE_BINARY_DIR}/fccrun
         DESTINATION .
-        PERMISSIONS WORLD_EXECUTE WORLD_READ
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+                    GROUP_EXECUTE GROUP_READ
+                    WORLD_EXECUTE WORLD_READ
         RENAME run)
 
 gaudi_project(FCCSW HEAD
-              USE Gaudi v28r2 )
+              USE Gaudi v29r2 )

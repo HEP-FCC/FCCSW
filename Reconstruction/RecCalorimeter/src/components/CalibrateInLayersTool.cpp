@@ -4,7 +4,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 DECLARE_TOOL_FACTORY(CalibrateInLayersTool)

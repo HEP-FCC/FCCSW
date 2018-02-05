@@ -16,7 +16,8 @@
 
 class IGeoSvc;
 
-/** @class CreateCaloCellPositions Reconstruction/RecCalorimeter/src/components/CreateCaloCellPositions.h CreateCaloCellPositions.h
+/** @class CreateCaloCellPositions Reconstruction/RecCalorimeter/src/components/CreateCaloCellPositions.h
+ * CreateCaloCellPositions.h
  *
  *  Retrieve positions of the cells from cell ID.
  *  This algorithm saves the centre position of the volume. Defined for all Calo-Subsystems within tools.
@@ -58,7 +59,7 @@ private:
   /// Handle for tool to get positions in Calo Discs
   ToolHandle<ICellPositionsTool> m_cellPositionsHFwdTool{"CellPositionsCaloDiscsTool", this};
   /// Decoder for system ID
-  DD4hep::DDSegmentation::BitField64* m_decoder = new DD4hep::DDSegmentation::BitField64("system:4");
+  dd4hep::DDSegmentation::BitField64* m_decoder = new dd4hep::DDSegmentation::BitField64("system:4");
   /// Input collection
   DataHandle<fcc::CaloHitCollection> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
   /// Output collection

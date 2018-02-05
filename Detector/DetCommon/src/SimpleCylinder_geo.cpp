@@ -5,35 +5,35 @@ namespace det {
   Simple cylinder using Tube to be used to define cylinder composed of 1 single material
   @author Clement Helsens
 **/
-static DD4hep::Geometry::Ref_t
-createSimpleCylinder(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector sensDet) {
+static dd4hep::Ref_t
+createSimpleCylinder(dd4hep::Detector& lcdd, xml_h e, dd4hep::SensitiveDetector sensDet) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
-  DD4hep::Geometry::DetElement cylinderDet(name, x_det.id());
+  dd4hep::DetElement cylinderDet(name, x_det.id());
 
-  DD4hep::Geometry::Volume experimentalHall = lcdd.pickMotherVolume(cylinderDet);
+  dd4hep::Volume experimentalHall = lcdd.pickMotherVolume(cylinderDet);
 
   xml_comp_t cylinderDim(x_det.child(_U(dimensions)));
 
-  DD4hep::Geometry::Tube cylinder(
+  dd4hep::Tube cylinder(
       cylinderDim.rmin(), cylinderDim.rmax(), cylinderDim.dz(), cylinderDim.phi0(), cylinderDim.deltaphi());
 
-  DD4hep::Geometry::Volume cylinderVol(
+  dd4hep::Volume cylinderVol(
       x_det.nameStr() + "_SimpleCylinder", cylinder, lcdd.material(cylinderDim.materialStr()));
 
   if (x_det.isSensitive()) {
-    DD4hep::XML::Dimension sdType(x_det.child(_U(sensitive)));
+    dd4hep::xml::Dimension sdType(x_det.child(_U(sensitive)));
     cylinderVol.setSensitiveDetector(sensDet);
     sensDet.setType(sdType.typeStr());
   }
 
-  DD4hep::Geometry::PlacedVolume cylinderPhys;
+  dd4hep::PlacedVolume cylinderPhys;
 
   double zoff = cylinderDim.z_offset();
   if (fabs(zoff) > 0.000000000001) {
-    DD4hep::Geometry::Position trans(0., 0., zoff);
+    dd4hep::Position trans(0., 0., zoff);
     cylinderPhys = experimentalHall.placeVolume(cylinderVol,
-                                                DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
+                                                dd4hep::Transform3D(dd4hep::RotationZ(0.), trans));
   } else
     cylinderPhys = experimentalHall.placeVolume(cylinderVol);
 

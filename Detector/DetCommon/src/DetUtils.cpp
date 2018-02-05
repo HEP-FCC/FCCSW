@@ -9,22 +9,21 @@
 
 // ROOT
 #include "TGeoBBox.h"
-//#include "TGeoConeSeg.h"
 
 namespace det {
 namespace utils {
-DD4hep::XML::Component getNodeByStrAttr(const DD4hep::XML::Handle_t& mother, const std::string& nodeName,
+dd4hep::xml::Component getNodeByStrAttr(const dd4hep::xml::Handle_t& mother, const std::string& nodeName,
                                         const std::string& attrName, const std::string& attrValue) {
-  for (DD4hep::XML::Collection_t xCompColl(mother, nodeName.c_str()); nullptr != xCompColl; ++xCompColl) {
+  for (dd4hep::xml::Collection_t xCompColl(mother, nodeName.c_str()); nullptr != xCompColl; ++xCompColl) {
     if (xCompColl.attr<std::string>(attrName.c_str()) == attrValue) {
-      return static_cast<DD4hep::XML::Component>(xCompColl);
+      return static_cast<dd4hep::xml::Component>(xCompColl);
     }
   }
   // in case there was no xml daughter with matching name
-  return DD4hep::XML::Component(nullptr);
+  return dd4hep::xml::Component(nullptr);
 }
 
-double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::string& attrName,
+double getAttrValueWithFallback(const dd4hep::xml::Component& node, const std::string& attrName,
                                 const double& defaultValue) {
   if (node.hasAttr(_Unicode(attrName.c_str()))) {
     return node.attr<double>(attrName.c_str());
@@ -33,9 +32,9 @@ double getAttrValueWithFallback(const DD4hep::XML::Component& node, const std::s
   }
 }
 
-uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint) {
-  DD4hep::Simulation::Geant4VolumeManager volMgr = DD4hep::Simulation::Geant4Mapping::instance().volumeManager();
-  DD4hep::Geometry::VolumeManager::VolumeID volID = volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
+uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint) {
+  dd4hep::sim::Geant4VolumeManager volMgr = dd4hep::sim::Geant4Mapping::instance().volumeManager();
+  dd4hep::VolumeID volID = volMgr.volumeID(aStep.GetPreStepPoint()->GetTouchable());
   if (aSeg.isValid()) {
     G4ThreeVector global;
     if (aPreStepPoint) {
@@ -45,9 +44,9 @@ uint64_t cellID(const DD4hep::Geometry::Segmentation& aSeg, const G4Step& aStep,
     }
     G4ThreeVector local =
         aStep.GetPreStepPoint()->GetTouchable()->GetHistory()->GetTopTransform().TransformPoint(global);
-    DD4hep::Geometry::Position loc(local.x() * MM_2_CM, local.y() * MM_2_CM, local.z() * MM_2_CM);
-    DD4hep::Geometry::Position glob(global.x() * MM_2_CM, global.y() * MM_2_CM, global.z() * MM_2_CM);
-    DD4hep::Geometry::VolumeManager::VolumeID cID = aSeg.cellID(loc, glob, volID);
+    dd4hep::Position loc(local.x() * MM_2_CM, local.y() * MM_2_CM, local.z() * MM_2_CM);
+    dd4hep::Position glob(global.x() * MM_2_CM, global.y() * MM_2_CM, global.z() * MM_2_CM);
+    dd4hep::VolumeID cID = aSeg.cellID(loc, glob, volID);
     return cID;
   }
   return volID;
@@ -170,7 +169,7 @@ std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
   return std::move(neighbours);
 }
 
-std::vector<std::pair<int, int>> bitfieldExtremes(DD4hep::DDSegmentation::BitField64& aDecoder,
+std::vector<std::pair<int, int>> bitfieldExtremes(dd4hep::DDSegmentation::BitField64& aDecoder,
                                                   const std::vector<std::string>& aFieldNames) {
   std::vector<std::pair<int, int>> extremes;
   int width = 0;
@@ -186,8 +185,8 @@ std::vector<std::pair<int, int>> bitfieldExtremes(DD4hep::DDSegmentation::BitFie
 }
 
 CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId) {
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
-  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
+  auto pvol = volMgr.lookupVolumePlacement(aVolumeId);
   auto solid = pvol.volume().solid();
   // get the envelope of the shape
   TGeoBBox* box = (dynamic_cast<TGeoBBox*>(solid.ptr()));
@@ -195,7 +194,7 @@ CLHEP::Hep3Vector envelopeDimensions(uint64_t aVolumeId) {
   return CLHEP::Hep3Vector(box->GetDX(), box->GetDY(), box->GetDZ());
 }
 
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXY& aSeg) {
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::CartesianGridXY& aSeg) {
   // // get half-widths
   auto halfSizes = envelopeDimensions(aVolumeId);
   // get segmentation cell widths
@@ -207,7 +206,7 @@ std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   return {cellsX, cellsY};
 }
 
-std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::CartesianGridXYZ& aSeg) {
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::CartesianGridXYZ& aSeg) {
   // // get half-widths
   auto halfSizes = envelopeDimensions(aVolumeId);
   // get segmentation cell widths
@@ -222,8 +221,8 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
 }
 
 CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
-  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
+  auto pvol = volMgr.lookupVolumePlacement(aVolumeId);
   auto solid = pvol.volume().solid();
 
   // get the envelope of the shape
@@ -236,8 +235,8 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
 }
 
 CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId) {
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
-  auto pvol = volMgr.lookupPlacement(aVolumeId);
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
+  auto pvol = volMgr.lookupVolumePlacement(aVolumeId);
   auto solid = pvol.volume().solid();
   // get the envelope of the shape
   TGeoCone* cone = (dynamic_cast<TGeoCone*>(solid.ptr()));
@@ -261,9 +260,9 @@ std::array<double, 2> tubeEtaExtremes(uint64_t aVolumeId) {
   double maxEta = 0;
   double minEta = 0;
   // check if it is a cylinder centred at z=0
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
   auto detelement = volMgr.lookupDetElement(aVolumeId);
-  const auto& transformMatrix = detelement.worldTransformation();
+  const auto& transformMatrix = detelement.nominal().worldTransformation();
   double outGlobal[3];
   double inLocal[] = {0, 0, 0};  // to get middle of the volume
   transformMatrix.LocalToMaster(inLocal, outGlobal);
@@ -278,10 +277,15 @@ std::array<double, 2> tubeEtaExtremes(uint64_t aVolumeId) {
   return {minEta, maxEta};
 }
 
+<<<<<<< HEAD
 std::array<double, 2> envelopeEtaExtremes(uint64_t aVolumeId) {
   DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
+=======
+std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
+  dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
+>>>>>>> CaloCellPositions
   auto detelement = volMgr.lookupDetElement(aVolumeId);
-  const auto& transformMatrix = detelement.worldTransformation();
+  const auto& transformMatrix = detelement.nominal().worldTransformation();
   // calculate values of eta in all possible corners of the envelope
   auto dim = envelopeDimensions(aVolumeId);
   double minEta = 0;
@@ -319,7 +323,7 @@ std::array<double, 2> volumeEtaExtremes(uint64_t aVolumeId) {
   }
 }
 
-std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::GridPhiEta& aSeg) {
+std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::FCCSWGridPhiEta& aSeg) {
   // get segmentation number of bins in phi
   uint phiCellNumber = aSeg.phiBins();
   // get segmentation cell width in eta
@@ -333,7 +337,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentati
   return {phiCellNumber, cellsEta, minEtaID};
 }
 
-std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const DD4hep::DDSegmentation::PolarGridRPhi& aSeg) {
+std::array<uint, 2> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentation::PolarGridRPhi& aSeg) {
   // get half-widths,
   auto tubeSizes = tubeDimensions(aVolumeId);
   // get segmentation cell width

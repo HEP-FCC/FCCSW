@@ -16,11 +16,14 @@ hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Tail Catcher readout
 tailCatcherReadoutName = "Muons_Readout"
+<<<<<<< HEAD
 # layer radii needed for cell positions after re-segmentation 
 ecalBarrelLayerRadii = [193.0] + [198.5] + [207.5] + [216.5] + [225.5] + [234.5] + [243.5] + [252.5];
 # layers to be merged in endcaps, field name of the readout
 ecalEndcapNumberOfLayersToMerge = [2] + [2] + [4]*38
 hcalEndcapNumberOfLayersToMerge = [2] + [4]*20
+=======
+>>>>>>> CaloCellPositions
 # Number of events
 num_events = 3
 
@@ -89,7 +92,10 @@ createNewExtHcells = CreateCaloCells("CreateNewExtHCaloCells",
 from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelTool, CellPositionsHCalBarrelNoSegTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool 
 ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
                                          readoutName = ecalBarrelReadoutNamePhiEta, 
+<<<<<<< HEAD
                                          layerRadii = ecalBarrelLayerRadii, 
+=======
+>>>>>>> CaloCellPositions
                                          OutputLevel = INFO)
 EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC", 
                                        readoutName = ecalEndcapReadoutName, 
@@ -106,7 +112,11 @@ HCalExtBcells = CellPositionsHCalBarrelTool("CellPositionsHCalExtBarrel",
 HCalBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalBarrelVols", 
                                                  readoutName = hcalBarrelReadoutVolume, 
                                                  OutputLevel = INFO)
+<<<<<<< HEAD
 HCalExtBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalExtBarrel", 
+=======
+HCalExtBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalExtBarrelVols", 
+>>>>>>> CaloCellPositions
                                                     readoutName = hcalExtBarrelReadoutVolume, 
                                                     OutputLevel = INFO)
 HECcells = CellPositionsCaloDiscsTool("CellPositionsHEC", 
@@ -175,7 +185,11 @@ positionsTailCatcher = CreateCellPositions("positionsTailCatcher",
 
 out = PodioOutput("out", OutputLevel=DEBUG)
 out.filename = "~/FCCSW/digi_cellPostions_pim_100GeV.root"
+<<<<<<< HEAD
 out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCellsVol","drop HCalBarrelCells", "drop HCalExtBarrelCellsVol", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells", "drop TailCatcherCells"]
+=======
+out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCellsVol","drop HCalBarrelCellsForTopo","drop HCalBarrelCells","drop HCalExtBarrelCellsForTopo", "drop HCalExtBarrelCellsVol", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells", "drop TailCatcherCells"]
+>>>>>>> CaloCellPositions
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -185,11 +199,21 @@ audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
 rewrite.AuditExecute = True
 rewriteExt.AuditExecute = True
+<<<<<<< HEAD
+=======
+createNewHcells.AuditExecute = True
+createNewExtHcells.AuditExecute = True
+>>>>>>> CaloCellPositions
 positionsEcalBarrel.AuditExecute = True
 positionsEcalEndcap.AuditExecute = True
 positionsEcalFwd.AuditExecute = True
 positionsHcalBarrel.AuditExecute = True
 positionsHcalExtBarrel.AuditExecute = True
+<<<<<<< HEAD
+=======
+positionsHcalBarrelVol.AuditExecute = True
+positionsHcalExtBarrelVol.AuditExecute = True
+>>>>>>> CaloCellPositions
 positionsHcalEndcap.AuditExecute = True
 positionsHcalFwd.AuditExecute = True
 positionsTailCatcher.AuditExecute = True
@@ -200,12 +224,22 @@ TopAlg = [    podioinput,
               rewrite,
               rewriteExt,
               createNewHcells,
+<<<<<<< HEAD
               createNewExtHcells
+=======
+              createNewExtHcells,
+>>>>>>> CaloCellPositions
               positionsEcalBarrel,
               positionsEcalEndcap,
               positionsEcalFwd, 
               positionsHcalBarrel, 
+<<<<<<< HEAD
               positionsHcalExtBarrel, 
+=======
+              positionsHcalExtBarrel,
+              positionsHcalBarrelVol,
+              positionsHcalExtBarrelVol,
+>>>>>>> CaloCellPositions
               positionsHcalEndcap, 
               positionsHcalFwd,
               positionsTailCatcher,

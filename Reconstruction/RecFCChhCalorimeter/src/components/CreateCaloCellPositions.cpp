@@ -5,7 +5,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // EDM
 #include "datamodel/CaloHitCollection.h"
@@ -78,8 +78,7 @@ StatusCode CreateCaloCellPositions::execute() {
     // identify calo system
     m_decoder->setValue(cellId);
     auto systemId = (*m_decoder)["system"].value();
-    DD4hep::Geometry::Position posCell;
-    debug() << "Cells system id: " << systemId << endmsg;
+    dd4hep::Position posCell;
 
     if (systemId == 5)  // ECAL BARREL system id
       posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);

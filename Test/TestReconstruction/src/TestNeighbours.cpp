@@ -8,7 +8,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 DECLARE_ALGORITHM_FACTORY(TestNeighbours)
 
@@ -28,8 +28,7 @@ StatusCode TestNeighbours::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_decoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder();
   m_fieldNames = {"x", "y", "z"};
   info() << "Bitfield: " << m_decoder->fieldDescription() << endmsg;
   // get the minimal and maximal value that can be decoded in the bitfield
