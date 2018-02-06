@@ -43,8 +43,7 @@ StatusCode ConstNoiseTool::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
-  m_decoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
-								  m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
 
