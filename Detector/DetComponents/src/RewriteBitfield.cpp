@@ -52,12 +52,7 @@ StatusCode RewriteBitfield::initialize() {
     }
   }
   std::vector<std::string> newFields;
-<<<<<<< HEAD
-  m_newDecoder = std::shared_ptr<DD4hep::DDSegmentation::BitField64>(
-								     m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder());
-=======
   m_newDecoder =  m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder();
->>>>>>> CaloCellPositions
   for (uint itField = 0; itField < m_newDecoder->size(); itField++) {
     newFields.push_back((*m_newDecoder)[itField].name());
   }

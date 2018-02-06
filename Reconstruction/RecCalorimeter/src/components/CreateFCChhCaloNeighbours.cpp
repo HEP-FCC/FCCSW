@@ -1,6 +1,6 @@
 #include "CreateFCChhCaloNeighbours.h"
 
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
@@ -39,7 +39,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
   double eCalEtaSize = 0;
   double eCalPhiOffset = 0;
   double eCalPhiSize = 0;
-  DD4hep::DDSegmentation::BitField64* decoderECalBarrel = nullptr;
+  dd4hep::DDSegmentation::BitField64* decoderECalBarrel = nullptr;
 
   for (uint iSys = 0; iSys < m_readoutNamesSegmented.size(); iSys++) {
     // Check if readouts exist
@@ -49,8 +49,8 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       return StatusCode::FAILURE;
     }
     // get PhiEta segmentation
-    DD4hep::DDSegmentation::GridPhiEta* segmentation;
-    segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+    dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation;
+    segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
         m_geoSvc->lcdd()->readout(m_readoutNamesSegmented[iSys]).segmentation().segmentation());
     if (segmentation == nullptr) {
       error() << "There is no phi-eta segmentation!!!!" << endmsg;
@@ -89,19 +89,19 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
       debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
       extrema[1] = std::make_pair(0, numCells[0] - 1);
-      extrema[2] = std::make_pair(numCells[2], numCells[1] - 1);
+      extrema[2] = std::make_pair(numCells[2], numCells[1] + numCells[2] - 1);
       // for layer N-1 of ECal barrel,  will be used for volume connecting
       if (ilayer == (m_activeVolumesNumbersSegmented[iSys] - 1) && m_fieldNamesSegmented[iSys] == "system" &&
           m_fieldValuesSegmented[iSys] == 5) {
         eCalLastLayer = m_activeVolumesNumbersSegmented[iSys] - 1;
         extremaECalLastLayerPhi = std::make_pair(0, numCells[0] - 1);
-        extremaECalLastLayerEta = std::make_pair(numCells[2], numCells[1] - 1);
+        extremaECalLastLayerEta = std::make_pair(numCells[2], numCells[1] + numCells[2] - 1);
       }
       // Loop over segmenation cells
       for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
-        for (unsigned int ieta = numCells[2]; ieta < numCells[1]; ieta++) {
+        for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
           (*decoder)["phi"] = iphi;
-          (*decoder)["eta"] = ieta;
+          (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
           uint64_t cellId = decoder->getValue();
           map.insert(std::pair<uint64_t, std::vector<uint64_t>>(
               cellId, det::utils::neighbours(*decoder, {m_activeFieldNamesSegmented[iSys], "phi", "eta"}, extrema,
@@ -130,7 +130,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
   // will be used for volume connecting
   std::pair<int, int> extremaHCalFirstLayerPhi;
   std::pair<int, int> extremaHCalFirstLayerZ;
-  DD4hep::DDSegmentation::BitField64* decoderHCalBarrel = nullptr;
+  dd4hep::DDSegmentation::BitField64* decoderHCalBarrel = nullptr;
 
   for (uint iSys = 0; iSys < m_readoutNamesNested.size(); iSys++) {
     // Sanity check
@@ -146,7 +146,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     }
     auto decoder = m_geoSvc->lcdd()->readout(m_readoutNamesNested[iSys]).idSpec().decoder();
     // will be used for volume connecting
-    if (m_fieldNameNested == "system" && m_fieldValuesNested[iSys] == 6) {
+    if (m_fieldNameNested == "system" && m_fieldValuesNested[iSys] == 8) {
       decoderHCalBarrel = decoder;
     }
     // Get VolumeID
@@ -248,7 +248,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
   ///      BARREL: connection ECAL + HCAL        ///
   /////////////////////////////////////////////////
   if (m_connectBarrels) {
-    // first check if ECAL barrel (system==5) and HCal barrel (system==6) are configured
+    // first check if ECAL barrel (system==5) and HCal barrel (system==8) are configured
     if (decoderECalBarrel == nullptr || decoderHCalBarrel == nullptr) {
       error() << "ECAL barrel and/or HCal barrel are not configured correctly!" << endmsg;
       return StatusCode::FAILURE;

@@ -5,7 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "RecInterface/INoiseConstTool.h"
 class IGeoSvc;
 
@@ -66,9 +66,9 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   // Decoder
-  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
+  std::shared_ptr<dd4hep::DDSegmentation::BitField64> m_decoder;
 
 };
 

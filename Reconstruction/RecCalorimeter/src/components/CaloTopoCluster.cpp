@@ -12,7 +12,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 #include <algorithm>
@@ -122,7 +122,7 @@ StatusCode CaloTopoCluster::execute() {
       // identify calo system
       m_decoder->setValue(cellId);
       auto systemId = (*m_decoder)["system"].value();
-      DD4hep::Geometry::Position posCell;
+      dd4hep::Position posCell;
       if (systemId == 5)  // ECAL BARREL system id
         posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
       else if (systemId == 8)  // HCAL BARREL system id

@@ -6,7 +6,6 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICaloReadNeighboursMap.h"
 #include "RecInterface/ICalorimeterTool.h"
@@ -95,8 +94,6 @@ private:
   ToolHandle<ICellPositionsTool> m_cellPositionsEMFwdTool{"CellPositionsCaloDiscsTool", this};
   /// Handle for tool to get positions in Calo Discs
   ToolHandle<ICellPositionsTool> m_cellPositionsHFwdTool{"CellPositionsCaloDiscsTool", this};
-  /// PhiEta segmentation of the detector (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_Segmentation;
   /// Seed threshold in sigma
   Gaudi::Property<int> m_seedSigma{this, "seedSigma", 4, "number of sigma in noise threshold"};
   /// Neighbour threshold in sigma
@@ -104,7 +101,7 @@ private:
   /// Last neighbour threshold in sigma
   Gaudi::Property<int> m_lastNeighbourSigma{this, "lastNeighbourSigma", 0, "number of sigma in noise threshold"};
 
-  DD4hep::DDSegmentation::BitField64* m_decoder = new DD4hep::DDSegmentation::BitField64("system:4");
+  dd4hep::DDSegmentation::BitField64* m_decoder = new dd4hep::DDSegmentation::BitField64("system:4");
   /// all active Cells
   std::map<uint64_t, double> m_allCells;
   /// First list of CaloCells above seeding threshold

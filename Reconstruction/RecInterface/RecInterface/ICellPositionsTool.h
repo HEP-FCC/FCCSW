@@ -5,11 +5,7 @@
 #include "GaudiKernel/IAlgTool.h"
 
 //DD4hep
-<<<<<<< HEAD
-#include "DD4hep/LCDD.h"
-=======
 #include "DD4hep/Detector.h"
->>>>>>> CaloCellPositions
 
 namespace fcc {
 class CaloHit;
@@ -30,11 +26,7 @@ public:
 
   virtual void getPositions(const fcc::CaloHitCollection& aCells, fcc::PositionedCaloHitCollection& outputColl) = 0;
 
-<<<<<<< HEAD
-  virtual DD4hep::Geometry::Position xyzPosition(const uint64_t& aCellId) const = 0;
-=======
   virtual dd4hep::Position xyzPosition(const uint64_t& aCellId) const = 0;
->>>>>>> CaloCellPositions
 
   virtual int layerId(const uint64_t& aCellId) = 0;
 };

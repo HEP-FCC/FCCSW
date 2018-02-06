@@ -4,7 +4,7 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITopoClusterInputTool.h"
 
@@ -96,7 +96,7 @@ private:
                                                     "name of the hcal fwd readout"};
 
   std::map<uint64_t, double> m_inputMap; 
-  DD4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
 };
 
 #endif /* RECCALORIMETER_CALOTOPOCLUSTERINPUTTOOL_H */

@@ -9,6 +9,7 @@
 
 // ROOT
 #include "TGeoBBox.h"
+//#include "TGeoConeSeg.h"
 
 namespace det {
 namespace utils {
@@ -96,7 +97,7 @@ int cyclicNeighbour(int aCyclicId, std::pair<int, int> aFieldExtremes) {
   return aCyclicId;
 }
 
-std::vector<uint64_t> neighbours(DD4hep::DDSegmentation::BitField64& aDecoder,
+std::vector<uint64_t> neighbours(dd4hep::DDSegmentation::BitField64& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes, uint64_t aCellId,
                                  const std::vector<bool>& aFieldCyclic, bool aDiagonal) {
@@ -277,13 +278,8 @@ std::array<double, 2> tubeEtaExtremes(uint64_t aVolumeId) {
   return {minEta, maxEta};
 }
 
-<<<<<<< HEAD
 std::array<double, 2> envelopeEtaExtremes(uint64_t aVolumeId) {
-  DD4hep::Geometry::VolumeManager volMgr = DD4hep::Geometry::LCDD::getInstance().volumeManager();
-=======
-std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
   dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
->>>>>>> CaloCellPositions
   auto detelement = volMgr.lookupDetElement(aVolumeId);
   const auto& transformMatrix = detelement.nominal().worldTransformation();
   // calculate values of eta in all possible corners of the envelope
@@ -333,7 +329,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentati
   // calculate the number of eta volumes
   // max - min = full eta range, - size = not counting the middle cell centred at 0, + 1 to account for that cell
   uint cellsEta = ceil((etaExtremes[1] - etaExtremes[0] - etaCellSize) / 2 / etaCellSize) * 2 + 1;
-  uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize)) - 1;
+  uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize));
   return {phiCellNumber, cellsEta, minEtaID};
 }
 
