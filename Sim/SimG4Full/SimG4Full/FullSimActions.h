@@ -14,7 +14,7 @@
 namespace sim {
 class FullSimActions : public G4VUserActionInitialization {
 public:
-  FullSimActions(bool enableHistory);
+  FullSimActions(bool enableHistory, double energyCut);
   virtual ~FullSimActions();
   /// Create all user actions.
   virtual void Build() const final;
@@ -22,6 +22,7 @@ public:
 private:
   /// Flag whether or not to store particle history
   bool m_enableHistory;
+  double m_energyCut;
 };
 }
 

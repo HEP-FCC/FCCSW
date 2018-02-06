@@ -7,7 +7,7 @@
 
 namespace sim {
 
-ParticleHistoryAction::ParticleHistoryAction() {}
+ParticleHistoryAction::ParticleHistoryAction(double energyCut): m_energyCut(energyCut) {}
 
 void ParticleHistoryAction::PreUserTrackingAction(const G4Track* aTrack) {}
 
@@ -16,14 +16,14 @@ void ParticleHistoryAction::PostUserTrackingAction(const G4Track* aTrack) {
   auto evtinfo = dynamic_cast<sim::EventInformation*>(g4EvtMgr->GetUserInformation());
   G4LorentzVector prodPos(aTrack->GetGlobalTime() - aTrack->GetLocalTime(), aTrack->GetVertexPosition());
   G4LorentzVector endPos(aTrack->GetGlobalTime(), aTrack->GetPosition());
-  if (selectSecondary(*aTrack)) {
+  if (selectSecondary(*aTrack, m_energyCut)) {
     evtinfo->addParticle(aTrack);
   }
 }
 
-bool ParticleHistoryAction::selectSecondary(const G4Track& aTrack) {
+bool ParticleHistoryAction::selectSecondary(const G4Track& aTrack, double energyCut) {
   G4LorentzVector p4(aTrack.GetMomentum(), aTrack.GetTotalEnergy());
-  if (p4.e() < 5.0) {  // this value is very arbitrary
+  if (p4.e() < energyCut) { 
     return false;
   }
   return true;

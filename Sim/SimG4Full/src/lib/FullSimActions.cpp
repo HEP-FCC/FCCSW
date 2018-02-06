@@ -3,13 +3,13 @@
 #include <iostream>
 
 namespace sim {
-FullSimActions::FullSimActions(bool enableHistory) : G4VUserActionInitialization(), m_enableHistory(enableHistory) {}
+FullSimActions::FullSimActions(bool enableHistory, double energyCut) : G4VUserActionInitialization(), m_enableHistory(enableHistory), m_energyCut(energyCut) {}
 
 FullSimActions::~FullSimActions() {}
 
 void FullSimActions::Build() const {
   if (m_enableHistory) {
-    SetUserAction(new ParticleHistoryAction());
+    SetUserAction(new ParticleHistoryAction(m_energyCut));
   }
 }
 }

@@ -16,13 +16,15 @@
 namespace sim {
 class ParticleHistoryAction : public G4UserTrackingAction {
 public:
-  ParticleHistoryAction();
+  ParticleHistoryAction(double energyCut);
   virtual ~ParticleHistoryAction() = default;
 
   void PreUserTrackingAction(const G4Track* aTrack);
   void PostUserTrackingAction(const G4Track* aTrack);
 
-  bool selectSecondary(const G4Track& aTrack);
+  bool selectSecondary(const G4Track& aTrack, double energyCut);
+private:
+  double m_energyCut;
 };
 }
 
