@@ -33,6 +33,7 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   edmParticle.p4().mass = mass * sim::g42edm::energy;
   edmParticle.core().bits = g4ID;
   edmParticle.core().pdgId = aSecondary->GetDynamicParticle()->GetDefinition()->GetPDGEncoding();
+  edmParticle.core().status = 1;
 
   auto g4EndPos = aSecondary->GetPosition();
   auto edmEndVertex = m_genVertices->create();
