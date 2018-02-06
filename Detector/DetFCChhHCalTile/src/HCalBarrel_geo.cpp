@@ -217,15 +217,16 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
     double zOffset = -dzDetector + dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
-    lLog << MSG::DEBUG << "dz of wedges       = " << dy0 << endmsg;
-    lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << endmsg;
+    unsigned int seqId = idxZRow % 2;
+    lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
 
     if ((-dzDetector + zOffset) >= dzDetector) {
-      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << endmsg;
+      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << std::endl;
     }
     dd4hep::Position wedgeOffset(0, zOffset, 0);
+    dd4hep::Transform3D rotate(dd4hep::RotationY(seqId*-0.5 * dd4hep::pi), wedgeOffset);
     // Fill vector for DetElements
-    rows.push_back(moduleVolume.placeVolume(wedgeVolume, wedgeOffset));
+    rows.push_back(moduleVolume.placeVolume(wedgeVolume, rotate));
     rows.back().addPhysVolID("row", idxZRow);
   }
 
@@ -235,8 +236,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);
     double xPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * sin(phi);
-    lLog << MSG::DEBUG << "module width in phi   = " << dphi << endmsg;
-    lLog << MSG::DEBUG << "phi offset of modules = " << phi << endmsg;
 
     dd4hep::Position moduleOffset(xPosModule, yPosModule, 0);
     dd4hep::Position supportOffset(xPosSupport, yPosSupport, 0);
