@@ -151,8 +151,9 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
         (m_histoElecNoiseConst.at(index).GetBinLowEdge(Nbins) + m_histoElecNoiseConst.at(index).GetBinWidth(Nbins) -
          m_histoElecNoiseConst.at(index).GetBinLowEdge(1)) /
         Nbins;
+    double etaFirtsBin = m_histoElecNoiseConst.at(index).GetBinLowEdge(1);
     // find the eta bin for the cell
-    int ibin = floor(fabs(cellEta) / deltaEtaBin) + 1;
+    int ibin = floor((fabs(cellEta) - etaFirtsBin) / deltaEtaBin) + 1;
     if (ibin > Nbins) {
       error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins
               << endmsg;
