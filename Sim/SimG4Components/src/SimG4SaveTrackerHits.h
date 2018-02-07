@@ -56,8 +56,9 @@ private:
   /// Handle for tracker hits including position information
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits",
                                                                       Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::DigiTrackHitAssociationCollection> m_digiTrackHits{"hits/digiTrackerHits",
-                                                                      Gaudi::DataHandle::Writer, this};
+  /// Handle for positioned track hits including digitization information
+  DataHandle<fcc::DigiTrackHitAssociationCollection> m_digiTrackHits{"hits/digiTrackerHits", Gaudi::DataHandle::Writer,
+                                                                     this};
   /// Name of the readouts (hits collections) to save
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
