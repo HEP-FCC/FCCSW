@@ -33,7 +33,6 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   edmParticle.p4().mass = mass * sim::g42edm::energy;
   edmParticle.core().bits = g4ID;
   edmParticle.core().pdgId = aSecondary->GetDynamicParticle()->GetDefinition()->GetPDGEncoding();
-  edmParticle.core().status = 1;
 
   auto g4EndPos = aSecondary->GetPosition();
   auto edmEndVertex = m_genVertices->create();
@@ -47,18 +46,21 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
 
   size_t motherID = aSecondary->GetParentID();
   if (motherID) {  // the particle is not a primary
+    edmParticle.core().status = 201; // FCC convention for status of secondary sim particle
     auto parentVtxId = m_g4IdToEndVertexMap.find(motherID);
     if (parentVtxId != m_g4IdToEndVertexMap.end()) {
       auto prodVertex = m_genVertices->at(parentVtxId->second);
       edmParticle.startVertex(prodVertex);
     }
   } else {
+    edmParticle.core().status = 1;
     auto g4StartPos = aSecondary->GetVertexPosition();
     auto edmStartVertex = m_genVertices->create();
     edmStartVertex.x(g4StartPos.x() * sim::g42edm::length);
     edmStartVertex.y(g4StartPos.y() * sim::g42edm::length);
     edmStartVertex.z(g4StartPos.z() * sim::g42edm::length);
     edmStartVertex.ctau(aSecondary->GetGlobalTime() - aSecondary->GetLocalTime() * sim::g42edm::length);
+    edmParticle.startVertex(edmStartVertex);
   }
 }
 }
