@@ -51,8 +51,8 @@ ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
 ecalEndcapReadoutName = "EMECPhiEta"
 ecalFwdReadoutName = "EMFwdPhiEta"
 # HCAL readouts
-hcalReadoutName = "BarHCal_Readout"
-extHcalReadoutName = "ExtBarHCal_Readout"
+hcalReadoutName = "HCalBarrel"
+extHcalReadoutName = "HCalExtBarrel"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Tail Catcher readout

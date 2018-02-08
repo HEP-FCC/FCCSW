@@ -193,7 +193,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
                        lcdd.material(xComp.materialStr()));
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolume.placeVolume(tileVol, offset));
-        tiles.back().addPhysVolID("tile", idxActMod);
+	//   tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
@@ -217,16 +217,16 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
     double zOffset = -dzDetector + dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
-    unsigned int seqId = idxZRow % 2;
+    //unsigned int seqId = idxZRow % 3;
     lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
 
     if ((-dzDetector + zOffset) >= dzDetector) {
       lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << std::endl;
     }
     dd4hep::Position wedgeOffset(0, zOffset, 0);
-    dd4hep::Transform3D rotate(dd4hep::RotationY(seqId*-0.5 * dd4hep::pi), wedgeOffset);
+    // dd4hep::Transform3D rotate(dd4hep::RotationY(seqId*-0.5 * dd4hep::pi), wedgeOffset);
     // Fill vector for DetElements
-    rows.push_back(moduleVolume.placeVolume(wedgeVolume, rotate));
+    rows.push_back(moduleVolume.placeVolume(wedgeVolume, wedgeOffset));
     rows.back().addPhysVolID("row", idxZRow);
   }
 
@@ -241,13 +241,11 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     dd4hep::Position supportOffset(xPosSupport, yPosSupport, 0);
 
     dd4hep::Transform3D trans(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset);
-
     dd4hep::Transform3D transS(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset);
     // Fill the vectors of DetElements
     modules.push_back(envelopeVolume.placeVolume(moduleVolume, trans));
     modules.back().addPhysVolID("module", idxPhi);
     supports.push_back(envelopeVolume.placeVolume(steelSupportVolume, transS));
-    //    }
   }
 
   // Placement of DetElements

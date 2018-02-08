@@ -240,7 +240,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolume.placeVolume(tileVol, offset));
-        tiles.back().addPhysVolID("tile", idxActMod);
+	//     tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
@@ -296,7 +296,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolume.placeVolume(tileVol, offset));
-        tiles.back().addPhysVolID("tile", idxActMod);
+	//       tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
