@@ -52,7 +52,7 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
                                          elecNoiseHistoName = ecalBarrelNoiseHistName,
                                          activeFieldName = "layer",
                                          addPileup = False,
-                                         numRadialLayers = 8, OutputLevel=DEBUG)
+                                         numRadialLayers = 8)
 barrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                          readoutName = ecalBarrelReadoutName,
                                          activeVolumeName = "LAr_sensitive",
@@ -66,7 +66,8 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                         addCellNoise=True, filterCellNoise=False,
                                         noiseTool = noiseBarrel,
                                         hits=ecalBarrelCellsName,
-                                        cells=ecalBarrelCellsName+"Noise")
+                                        cells=ecalBarrelCellsName+"Noise",
+                                        OutputLevel=DEBUG)
 
 # add noise, create all existing cells in detector
 # currently only positive side!
