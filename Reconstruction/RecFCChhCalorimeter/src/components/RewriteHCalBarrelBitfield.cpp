@@ -80,7 +80,7 @@ StatusCode RewriteHCalBarrelBitfield::execute() {
   // cellID contains the volumeID that needs to be copied to the new id
   uint64_t oldid = 0;
   uint debugIter = 0;
-  uint offsetPhiIds = 3*256/4.+1; 
+  //uint offsetPhiIds = 64; 
   m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_oldReadoutName).segmentation().segmentation());
 
@@ -89,6 +89,7 @@ StatusCode RewriteHCalBarrelBitfield::execute() {
     newHit.energy(hit.energy());
     newHit.time(hit.time());
     m_oldDecoder->setValue(hit.cellId());
+        
     auto inSegPhi = m_segmentation->phi(hit.cellId());
     if (debugIter < m_debugPrint) {
       debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
@@ -100,9 +101,13 @@ StatusCode RewriteHCalBarrelBitfield::execute() {
       if (detectorField == "module"){
 	// get phi id
 	auto phiId = (*m_oldDecoder)["phi"];
-	uint newModuleId = abs(phiId - offsetPhiIds);
+	//auto div = phiId-offsetPhiIds;
+	//if (div < 0){
+	//  div = 192 + phiId;
+	//}
+	uint newModuleId = phiId;
 	(*m_newDecoder)[detectorField] = newModuleId;
-	if( (inSegPhi<0.025 && inSegPhi>0.025) || (inSegPhi > (M_PI/2.-0.025)&&inSegPhi<(M_PI/2.+0.025)) || (inSegPhi > (M_PI-0.025)&&inSegPhi<(M_PI+0.025)) || (inSegPhi > (-M_PI/2.-0.025)&&inSegPhi<(-M_PI/2.+0.025))){
+	if (debugIter < m_debugPrint) {
 	  info() << "Phi of Cell   : " << inSegPhi << endmsg;
 	  info() << "old module id : " << oldid << endmsg;
 	  info() << "old phi    id : " << phiId << endmsg;
