@@ -30,9 +30,9 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
   dd4hep::xml::Dimension cryoDim(cryostat.dimensions());
   double cryoThicknessFront = cryoDim.rmin2() - cryoDim.rmin1();
   double cryoThicknessBack = cryoDim.rmax2() - cryoDim.rmax1();
-  DD4hep::XML::DetElement cryoFront = cryostat.child(_Unicode(front));
-  DD4hep::XML::DetElement cryoBack = cryostat.child(_Unicode(back));
-  DD4hep::XML::DetElement cryoSide = cryostat.child(_Unicode(side));
+  dd4hep::xml::DetElement cryoFront = cryostat.child(_Unicode(front));
+  dd4hep::xml::DetElement cryoBack = cryostat.child(_Unicode(back));
+  dd4hep::xml::DetElement cryoSide = cryostat.child(_Unicode(side));
   bool cryoFrontSensitive = cryoFront.isSensitive();
   bool cryoBackSensitive = cryoBack.isSensitive();
   bool cryoSideSensitive = cryoSide.isSensitive();
