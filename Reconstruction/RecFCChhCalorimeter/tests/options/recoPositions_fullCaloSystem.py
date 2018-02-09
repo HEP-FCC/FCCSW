@@ -108,7 +108,7 @@ positionsTailCatcher = CreateCellPositions("positionsTailCatcher",
                                           OutputLevel = INFO)
 
 out = PodioOutput("out", OutputLevel=DEBUG)
-out.filename = "~/FCCSW/digi_cellPostions_50GeVelectrons.root"
+out.filename = "~/FCCSW/digi_cellPositions_50GeVelectrons.root"
 out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCells", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells", "drop TailCatcherCells"]
 
 #CPU information
