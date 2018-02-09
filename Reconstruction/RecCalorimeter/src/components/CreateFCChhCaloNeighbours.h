@@ -46,7 +46,7 @@ private:
   Gaudi::Property<std::vector<unsigned int>> m_activeVolumesNumbersSegmented{this, "activeVolumesNumbers", {8}};
 
   /// Names of the detector readout for volumes with nested volume structure and no segmentation
-  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"BarHCal_Readout"}};
+  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"HCalBarrel"}};
   /// Name of the field describing the nested volume
   Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested", "system"};
   /// Values of the fields describing the nested volume

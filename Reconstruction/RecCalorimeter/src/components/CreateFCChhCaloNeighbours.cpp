@@ -334,7 +334,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     }
   }
 
-  TFile file("neighbours_map.root", "RECREATE");
+  TFile file("neighbours_map_segHcal.root", "RECREATE");
   file.cd();
   TTree tree("neighbours", "Tree with map of neighbours");
   uint64_t saveCellId;
