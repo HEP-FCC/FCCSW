@@ -231,7 +231,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-    double phi = - idxPhi * dphi - 0.5*dd4hep::pi;  // modules placed following phi-eta segmentation
+    double phi = - dphi * 0.5 - idxPhi * dphi - 0.5*dd4hep::pi;  // modules placed following phi-eta segmentation
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);
@@ -242,6 +242,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
     dd4hep::Transform3D trans(dd4hep::RotationX(-0.5*dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset);
     dd4hep::Transform3D transS(dd4hep::RotationX(-0.5*dd4hep::pi) * dd4hep::RotationY(phi), supportOffset);
+
     // Fill the vectors of DetElements
     modules.push_back(envelopeVolume.placeVolume(moduleVolume, trans));
     modules.back().addPhysVolID("module", idxPhi);
