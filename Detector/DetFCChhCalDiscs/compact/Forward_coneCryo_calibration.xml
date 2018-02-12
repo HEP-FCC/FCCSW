@@ -58,9 +58,17 @@
   <readouts>
     <readout name="EMFwdPhiEta">
       <segmentation type="FCCSWGridPhiEta" phi_bins="256" offset_phi="-pi+(pi/256.)" grid_size_eta="0.025" offset_eta="-5.9975"/>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,sublayer:8,eta:11,phi:10</id>
+    </readout>
+    <readout name="EMFwdPhiEtaReco">
+      <segmentation type="FCCSWGridPhiEta" phi_bins="256" offset_phi="-pi+(pi/256.)" grid_size_eta="0.025" offset_eta="-5.9975"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
     </readout>
     <readout name="HFwdPhiEta">
+      <segmentation type="FCCSWGridPhiEta" phi_bins="128" offset_phi="-pi+(pi/128.)" grid_size_eta="0.05" offset_eta="-5.985"/>
+      <id>system:4,subsystem:1,type:3,subtype:3,layer:8,sublayer:8,eta:11,phi:10</id>
+    </readout>
+    <readout name="HFwdPhiEtaReco">
       <segmentation type="FCCSWGridPhiEta" phi_bins="128" offset_phi="-pi+(pi/128.)" grid_size_eta="0.05" offset_eta="-5.985"/>
       <id>system:4,subsystem:1,type:3,subtype:3,layer:8,eta:11,phi:10</id>
     </readout>
@@ -107,6 +115,12 @@
     <detector name="EMFWD" type="CaloDiscs" id="FwdECal_id" readout="EMFwdPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="EMFWD_rmin1"  rmin2="EMFWD_rmin2" rmax="EMFWD_rmax" dz="(EMFWD_z2-EMFWD_z1)/2." z_offset="EMFWD_z1+(EMFWD_z2-EMFWD_z1)/2."/>
+      <layers>
+        <!-- thickness of a readout layer (how many 'unit layers' are merged together creating one readout) -->
+        <!-- unit layer = absorber|active|readout|active -->
+        <!-- with an exception of the inner-most unit layer (ID 0) which = readout|active -->
+        <layer thickness="1" repeat="42"/>
+      </layers>
       <active thickness="EMFWD_lAr_thickness">
         <material name="LAr"/>
       </active>
@@ -129,6 +143,12 @@
     <detector name="HFWD" type="CaloDiscs" id="FwdHCal_id" readout="HFwdPhiEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin1="HFWD_rmin1"  rmin2="HFWD_rmin2" rmax="HFWD_rmax" dz="(HFWD_z2-HFWD_z1)/2." z_offset="HFWD_z1+(HFWD_z2-HFWD_z1)/2."/>
+      <layers>
+        <!-- thickness of a readout layer (how many 'unit layers' are merged together creating one readout) -->
+        <!-- unit layer = absorber|active|readout|active -->
+        <!-- with an exception of the inner-most unit layer (ID 0) which = readout|active -->
+        <layer thickness="1" repeat="52"/>
+      </layers>
       <active thickness="HFWD_lAr_thickness">
         <material name="LAr"/>
       </active>
