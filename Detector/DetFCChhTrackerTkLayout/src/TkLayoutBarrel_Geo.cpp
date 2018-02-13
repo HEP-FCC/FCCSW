@@ -1,10 +1,9 @@
 
 #include "DetCommon/DetUtils.h"
-
+#include "DetCommon/DigiModuleHelper.h"
 
 #include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
 #include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
-
 
 #include "DD4hep/DetFactoryHelper.h"
 
@@ -15,8 +14,8 @@ using dd4hep::PlacedVolume;
 
 namespace det {
 static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
-                                                           dd4hep::xml::Handle_t xmlElement,
-                                                           dd4hep::SensitiveDetector sensDet) {
+                                                 dd4hep::xml::Handle_t xmlElement,
+                                                 dd4hep::SensitiveDetector sensDet) {
   // shorthands
   dd4hep::xml::DetElement xmlDet = static_cast<dd4hep::xml::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
@@ -34,8 +33,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
   // detElement owns extension
   Acts::ActsExtension* detWorldExt = new Acts::ActsExtension(barrelConfig);
   topDetElement.addExtension<Acts::IActsExtension>(detWorldExt);
-  dd4hep::Tube topVolumeShape(
-      dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
+  dd4hep::Tube topVolumeShape(dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
   topVolume.setVisAttributes(lcdd.invisible());
 
@@ -56,7 +54,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
     dd4hep::xml::Component xModulePropertiesOdd = rodLists[0].child("moduleProperties");
     dd4hep::Tube layerShape(xLayer.rmin(), xLayer.rmax(), dimensions.zmax());
     Volume layerVolume("layer", layerShape, lcdd.material("Air"));
-    //layerVolume.setVisAttributes(lcdd.invisible());
+    // layerVolume.setVisAttributes(lcdd.invisible());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", layerCounter);
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
@@ -64,7 +62,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
     layConfig.isLayer = true;
     // the local coordinate systems of modules in dd4hep and acts differ
     // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
-    layConfig.axes = "XzY"; // correct translation of local x axis in dd4hep to local x axis in acts
+    layConfig.axes = "XzY";  // correct translation of local x axis in dd4hep to local x axis in acts
     // detElement owns extension
     Acts::ActsExtension* layerExtension = new Acts::ActsExtension(layConfig);
     lay_det.addExtension<Acts::IActsExtension>(layerExtension);
@@ -77,41 +75,54 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
          nullptr != xModuleComponentOddColl;
          ++xModuleComponentOddColl) {
       dd4hep::xml::Component xModuleComponentOdd = static_cast<dd4hep::xml::Component>(xModuleComponentOddColl);
+      auto moduleWidth = 0.5 * xModulePropertiesOdd.attr<double>("modWidth");
+      auto moduleThickness = 0.5 * xModuleComponentOdd.thickness();
+      auto moduleLength = 0.5 * xModulePropertiesOdd.attr<double>("modLength");
       moduleVolume = Volume("module",
-                            dd4hep::Box(0.5 * xModulePropertiesOdd.attr<double>("modWidth"),
-                                                  0.5 * xModuleComponentOdd.thickness(),
-                                                  0.5 * xModulePropertiesOdd.attr<double>("modLength")),
+                            dd4hep::Box(moduleWidth, moduleThickness, moduleLength),
                             lcdd.material(xModuleComponentOdd.materialStr()));
+
+      // Create digitization module
+      auto digiModule = det::utils::rectangleDigiModuleXZ(
+          moduleWidth, moduleLength, moduleThickness, sensDet.readout().segmentation());
+
       moduleVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRods.repeat();
       for (unsigned int phiIndex = 0; phiIndex < nPhi; phiIndex += 2) {
         double lX = 0;
         double lY = 0;
         double lZ = 0;
-        //for (std::string rodListName: {"rodOdd", "rodEven", "rodEvenTilted", "rodOddTilted"}) {
-        for (auto currentComp: rodLists) {
-          //auto currentComp = xRods.child(rodListName.c_str(), false);
+        // for (std::string rodListName: {"rodOdd", "rodEven", "rodEvenTilted", "rodOddTilted"}) {
+        for (auto currentComp : rodLists) {
+          // auto currentComp = xRods.child(rodListName.c_str(), false);
           if (currentComp.ptr()) {
 
             phi = 2 * M_PI * static_cast<double>(phiIndex) / static_cast<double>(nPhi);
-            for (dd4hep::xml::Collection_t xModuleColl(currentComp.child(_Unicode(modules)), _U(module)); nullptr != xModuleColl; ++xModuleColl) {
+            for (dd4hep::xml::Collection_t xModuleColl(currentComp.child(_Unicode(modules)), _U(module));
+                 nullptr != xModuleColl;
+                 ++xModuleColl) {
               dd4hep::xml::Component xModule = static_cast<dd4hep::xml::Component>(xModuleColl);
               double currentPhi = atan2(xModule.Y(), xModule.X());
-              double componentOffset =  integratedModuleComponentThickness - 0.5 * xModulePropertiesOdd.attr<double>("modThickness") + 0.5 * xModuleComponentOdd.thickness();
-              dd4hep::Translation3D offsetOnly (cos(currentPhi) * componentOffset, sin(currentPhi) * componentOffset, 0);
-              lX = xModule.X();// + cos(currentPhi) * componentOffset;
-              lY = xModule.Y();// + sin(currentPhi) * componentOffset;
+              double componentOffset = integratedModuleComponentThickness -
+                  0.5 * xModulePropertiesOdd.attr<double>("modThickness") + 0.5 * xModuleComponentOdd.thickness();
+              dd4hep::Translation3D offsetOnly(cos(currentPhi) * componentOffset, sin(currentPhi) * componentOffset, 0);
+              lX = xModule.X();  // + cos(currentPhi) * componentOffset;
+              lY = xModule.Y();  // + sin(currentPhi) * componentOffset;
               lZ = xModule.Z();
               dd4hep::Translation3D moduleOffset(lX, lY, lZ);
-              dd4hep::Transform3D lTrafo(dd4hep::RotationZ(atan2(lY,  lX) + 0.5 * M_PI), moduleOffset);
+              dd4hep::Transform3D lTrafo(dd4hep::RotationZ(atan2(lY, lX) + 0.5 * M_PI), moduleOffset);
               dd4hep::RotationZ lRotation(phi);
               double thetaTilt = xModule.attr<double>("thetaTilt");
               dd4hep::RotationX lRotation_thetaTilt(-1 * thetaTilt);
-              PlacedVolume placedModuleVolume = layerVolume.placeVolume(moduleVolume, lRotation * lTrafo * lRotation_thetaTilt * offsetOnly);
+              PlacedVolume placedModuleVolume =
+                  layerVolume.placeVolume(moduleVolume, lRotation * lTrafo * lRotation_thetaTilt * offsetOnly);
               if (xModuleComponentOdd.isSensitive()) {
                 placedModuleVolume.addPhysVolID("module", moduleCounter);
                 moduleVolume.setSensitiveDetector(sensDet);
                 DetElement mod_det(lay_det, "module" + std::to_string(moduleCounter), moduleCounter);
+                // add digiModule to extension
+                auto extension = new Acts::ActsExtension(digiModule);
+                mod_det.addExtension<Acts::IActsExtension>(extension);
                 mod_det.setPlacement(placedModuleVolume);
                 ++moduleCounter;
               }
