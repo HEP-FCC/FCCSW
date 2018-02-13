@@ -4,7 +4,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICalorimeterTool.h"
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 class IGeoSvc;
 
 // Gaudi
@@ -50,7 +50,7 @@ public:
 
   StatusCode finalize();
 
-  std::shared_ptr<DD4hep::DDSegmentation::BitField64> m_decoder;
+  std::shared_ptr<dd4hep::DDSegmentation::BitField64> m_decoder;
   
 private:
   /// Handle for geometry tool (used to prepare map of all existing cellIDs for the system)
@@ -84,7 +84,7 @@ private:
    /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the readout"};
   /// PhiEta segmentation (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
 };
 
 #endif /* RECCALORIMETER_PREPAREPILEUP_H */

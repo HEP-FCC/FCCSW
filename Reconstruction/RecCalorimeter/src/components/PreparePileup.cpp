@@ -4,8 +4,10 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+//#include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
+#include "DD4hep/Detector.h"
+#include "DDSegmentation/Segmentation.h"
 
 // our EDM
 #include "datamodel/CaloHit.h"
@@ -41,7 +43,7 @@ StatusCode PreparePileup::initialize() {
     return StatusCode::FAILURE;
   }
   // retrieve PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation." << endmsg;
@@ -49,7 +51,7 @@ StatusCode PreparePileup::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder =
-    std::shared_ptr<DD4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+    std::shared_ptr<dd4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
   // Histogram service
   m_histSvc = service("THistSvc");
   if (!m_histSvc) {

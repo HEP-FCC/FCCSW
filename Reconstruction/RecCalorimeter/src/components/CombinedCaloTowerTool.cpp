@@ -8,8 +8,10 @@
 #include "datamodel/CaloHit.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+//#include "DD4hep/LCDD.h"
 #include "DD4hep/Readout.h"
+#include "DD4hep/Detector.h"
+#include "DDSegmentation/Segmentation.h"
 
 DECLARE_TOOL_FACTORY(CombinedCaloTowerTool)
 
@@ -50,13 +52,13 @@ StatusCode CombinedCaloTowerTool::initialize() {
     return StatusCode::FAILURE;
   }
   // retrieve PhiEta segmentation
-  m_ecalSegmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_ecalSegmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_ecalReadoutName).segmentation().segmentation());
   if (m_ecalSegmentation == nullptr) {
     error() << "There is no phi-eta segmentation in the electromagnetic calorimeter." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_hcalSegmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_hcalSegmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_hcalReadoutName).segmentation().segmentation());
   if (m_hcalSegmentation == nullptr) {
     error() << "There is no phi-eta segmentation in the hadronic calorimeter." << endmsg;

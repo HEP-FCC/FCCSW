@@ -7,7 +7,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITowerTool.h"
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 
 class IGeoSvc;
 
@@ -16,7 +16,7 @@ namespace fcc {
 class CaloHitCollection;
 }
 
-namespace DD4hep {
+namespace dd4hep {
 namespace DDSegmentation {
 class Segmentation;
 }
@@ -114,9 +114,9 @@ private:
   /// Name of thehadronic calorimeter readout
   Gaudi::Property<std::string> m_hcalReadoutName{this, "readoutName", "hcalReadoutName", "name of the hcal readout"};
   /// PhiEta segmentation of the electromagnetic detector (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_ecalSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalSegmentation;
   /// PhiEta segmentation of the hadronic detector (owned by DD4hep)
-  DD4hep::DDSegmentation::GridPhiEta* m_hcalSegmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalSegmentation;
   /// Radius used to calculate cluster position from eta and phi
   double m_radius;
   /// Maximum eta of detector
