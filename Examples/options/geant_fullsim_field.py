@@ -66,9 +66,8 @@ particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/saveTrackerHits",
-                             #"SimG4SaveParticleHistory/saveHistory",
+                             "SimG4SaveParticleHistory/saveHistory",
                              ],
-                    saveHistoryTool=savehisttool,
                     eventProvider=particle_converter)
 
 # PODIO algorithm

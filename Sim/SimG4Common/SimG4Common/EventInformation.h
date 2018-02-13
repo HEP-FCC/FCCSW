@@ -29,8 +29,7 @@ public:
   /// Destructor
   virtual ~EventInformation() = default;
 
-  /// Set the collections to store the secondaries from the current event, ownership is _not_ transfered
-  void setCollections(fcc::GenVertexCollection* genVertices, fcc::MCParticleCollection* mcParticles);
+  void setCollections(fcc::GenVertexCollection*& genVertices, fcc::MCParticleCollection*& mcParticles);
   /// Add a particle to be tracked in the EDM collections
   void addParticle(const G4Track* aSecondary);
 

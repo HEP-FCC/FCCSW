@@ -65,9 +65,5 @@ private:
   Gaudi::Property<std::vector<std::string>> m_saveToolNames{this, "outputs", {}, "Names for the saving tools"};
   /// Handle for tool that creates the G4Event
   ToolHandle<ISimG4EventProviderTool> m_eventTool{"SimG4PrimariesFromEdmTool", this};
-  /// Handle for tool that can save the mc truth history
-  ToolHandle<ISimG4SaveHistoryTool> m_historyTool{"", this};
-  /// Flag that keeps track whether history saving is enabled (if a tool is specified)
-  bool m_saveHistory{true};
 };
 #endif /* SIMG4COMPONENTS_G4SIMALG_H */

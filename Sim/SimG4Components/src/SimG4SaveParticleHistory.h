@@ -7,7 +7,7 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "SimG4Common/EventInformation.h"
-#include "SimG4Interface/ISimG4SaveHistoryTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 
 class IGeoSvc;
 
@@ -28,7 +28,7 @@ class EventInformation;
  *  @author J. Lingemann
  */
 
-class SimG4SaveParticleHistory : public GaudiTool, virtual public ISimG4SaveHistoryTool {
+class SimG4SaveParticleHistory : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
   explicit SimG4SaveParticleHistory(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveParticleHistory() = default;
@@ -40,13 +40,12 @@ public:
    */
   StatusCode saveOutput(const G4Event& aEvent) override final;
 
-  void reset(sim::EventInformation* history) override final;
-
 private:
   /// Handle for collection of MC particles to create
   DataHandle<fcc::MCParticleCollection> m_mcParticles{"sim/secondaries", Gaudi::DataHandle::Writer, this};
   /// Handle for the vertex collection to create
   DataHandle<fcc::GenVertexCollection> m_genVertices{"sim/secondaryVertices", Gaudi::DataHandle::Writer, this};
+  /// Pointer to the vertex collection, ownership should be handled in a algorithm / tool
   fcc::GenVertexCollection* m_genVertexColl;
   /// Pointer to the particle collection, ownership should be handled in a algorithm / tool
   fcc::MCParticleCollection* m_mcParticleColl;

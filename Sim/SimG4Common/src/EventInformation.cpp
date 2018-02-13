@@ -8,11 +8,15 @@
 #include "datamodel/MCParticleCollection.h"
 
 namespace sim {
-EventInformation::EventInformation() : m_genVertices(nullptr), m_mcParticles(nullptr) {}
+EventInformation::EventInformation() { 
+  m_genVertices = new fcc::GenVertexCollection();
+  m_mcParticles = new fcc::MCParticleCollection();
+}
 
-void EventInformation::setCollections(fcc::GenVertexCollection* genVertices, fcc::MCParticleCollection* mcParticles) {
-  m_genVertices = genVertices;
-  m_mcParticles = mcParticles;
+void EventInformation::setCollections(fcc::GenVertexCollection*& genVertices, fcc::MCParticleCollection*& mcParticles) {
+  // ownership is transferred here - to SaveTool which is supposed to put it in the event store
+  genVertices = m_genVertices;
+  mcParticles = m_mcParticles;
 }
 
 void EventInformation::addParticle(const G4Track* aSecondary) {
