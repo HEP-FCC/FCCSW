@@ -26,6 +26,8 @@ SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::
   declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
   declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
   declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
+  declareProperty("digiHits", m_digiTrackHitsAssociation,
+                  "Handle for tracker hits including position information and digitization information");
 }
 
 SimG4SaveTrackerHits::~SimG4SaveTrackerHits() {}
@@ -67,8 +69,8 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
       collect = collections->GetHC(iter_coll);
       if (std::find(m_readoutNames.begin(), m_readoutNames.end(), collect->GetName()) != m_readoutNames.end()) {
         size_t n_hit = collect->GetSize();
-        info() << "\t" << n_hit << " hits are stored in a tracker collection #" << iter_coll << ": "
-               << collect->GetName() << endmsg;
+        debug() << "\t" << n_hit << " hits are stored in a tracker collection #" << iter_coll << ": "
+                << collect->GetName() << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
           hit = dynamic_cast<fcc::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
           fcc::TrackHit edmHit = edmHits->create();
