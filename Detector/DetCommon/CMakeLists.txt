@@ -12,11 +12,14 @@ include(${Geant4_USE_FILE})
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
+find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
+
 gaudi_install_headers(DetCommon)
 gaudi_add_library(DetCommon
                  src/*.cpp
-                 INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetSegmentation
+
+                 INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation ACTS
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetSegmentation ACTS::ACTSCore
                  PUBLIC_HEADERS DetCommon)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION Detector/DetCommon)

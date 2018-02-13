@@ -12,12 +12,14 @@ include(DD4hep)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
+find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
+
 gaudi_install_headers(DetSensitive)
 
 gaudi_add_library(DetSensitive
                   src/*.cpp
-                  INCLUDE_DIRS Geant4 DD4hep ROOT DetCommon
-                  LINK_LIBRARIES GaudiKernel DetCommon Geant4 DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
+                  INCLUDE_DIRS Geant4 DD4hep ROOT DetCommon ACTS
+                  LINK_LIBRARIES GaudiKernel DetCommon Geant4 DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES} ACTS::ACTSCore
                   PUBLIC_HEADERS DetSensitive)
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )

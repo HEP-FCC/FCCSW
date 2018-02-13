@@ -12,7 +12,7 @@ include(${Geant4_USE_FILE})
 
 gaudi_add_module(TestTestPlugins
                  src/*.cpp
-                 INCLUDE_DIRS FWCore DetInterface TrackingUtils Geant4 DetCommon DetSegmentation GaudiKernel ACTS::ACTSCore
+                 INCLUDE_DIRS FWCore DetInterface TrackingUtils Geant4 DetCommon DetSegmentation GaudiKernel ACTS
                  LINK_LIBRARIES GaudiAlgLib FWCore Geant4 TrackingUtils DetCommon DetSegmentation ACTS::ACTSCore)
 
 include(CTest)
