@@ -1,7 +1,7 @@
 #include "TubeLayerPhiEtaCaloTool.h"
 
 // segm
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
@@ -48,16 +48,16 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
   info() << "Number of active layers " << numLayers << endmsg;
 
   // get PhiEta segmentation
-  DD4hep::DDSegmentation::GridPhiEta* segmentation;
-  segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation;
+  segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  info() << "GridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
+  info() << "FCCSWGridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
          << endmsg;
-  info() << "GridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
+  info() << "FCCSWGridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
          << segmentation->offsetPhi() << endmsg;
 
   // Take readout bitfield decoder from GeoSvc
@@ -81,12 +81,12 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
 
     // Get number of segmentation cells within the active volume
     auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
-    debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
+    debug() << "Segmentation cells  (Nphi, Neta, minEta): " << numCells << endmsg;
     // Loop over segmenation cells
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
       for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
         (*decoder)["phi"] = iphi;
-        (*decoder)["eta"] = ieta;
+        (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
         uint64_t cellId = decoder->getValue();
         aCells.insert(std::pair<uint64_t, double>(cellId, 0));
       }

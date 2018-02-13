@@ -1,4 +1,4 @@
-#include "TestGeometry/TestPhysicsList.h"
+#include "TestGeometryLib/TestPhysicsList.h"
 
 // Geant4
 #include "G4Electron.hh"

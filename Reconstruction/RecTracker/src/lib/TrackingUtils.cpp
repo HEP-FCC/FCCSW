@@ -1,9 +1,7 @@
 
 #include "RecTracker/TrackingUtils.h"
 
-#include "DD4hep/LCDD.h"
-#include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
+#include "DD4hep/Detector.h"
 #include "DDSegmentation/BitField64.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 
@@ -17,7 +15,7 @@ namespace rec {
 // For use with standard sorting algorithms
 // compares the system fields of the hits first, then the layer field
 struct CellIdOrder {
-  CellIdOrder(DD4hep::DDSegmentation::BitField64* dec) : m_decoder(dec) {}
+  CellIdOrder(dd4hep::DDSegmentation::BitField64* dec) : m_decoder(dec) {}
 
   bool operator()(const fcc::TrackHit& h1, const fcc::TrackHit& h2) {
     m_decoder->setValue(h1.cellId());
@@ -32,12 +30,12 @@ struct CellIdOrder {
   }
 
 private:
-  DD4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
 };
 
 /// fill vector with hits ordered according to the CellIdOrder struct
 void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits,
-                   DD4hep::DDSegmentation::BitField64* decoder) {
+                   dd4hep::DDSegmentation::BitField64* decoder) {
   sortedHits.reserve(unsortedHits->size());
   for (const auto& hit : *unsortedHits) {
     sortedHits.push_back(hit);

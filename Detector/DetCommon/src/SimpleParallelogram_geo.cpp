@@ -5,13 +5,13 @@ namespace det {
   Simple parallelogram using dimensions to be used to define cone composed of 1 single material
   @author Clement Helsens
 **/
-static DD4hep::Geometry::Ref_t
-createSimpleParallelogram(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometry::SensitiveDetector) {
+static dd4hep::Ref_t
+createSimpleParallelogram(dd4hep::Detector& lcdd, xml_h e, dd4hep::SensitiveDetector) {
   xml_det_t x_det = e;
   std::string name = x_det.nameStr();
-  DD4hep::Geometry::DetElement parallelogramDet(name, x_det.id());
+  dd4hep::DetElement parallelogramDet(name, x_det.id());
 
-  DD4hep::Geometry::Volume experimentalHall = lcdd.pickMotherVolume(parallelogramDet);
+  dd4hep::Volume experimentalHall = lcdd.pickMotherVolume(parallelogramDet);
 
   xml_comp_t parallelogramDim(x_det.child(_U(dimensions)));
   /// correct implementation but bug in the xml parser??
@@ -33,19 +33,19 @@ createSimpleParallelogram(DD4hep::Geometry::LCDD& lcdd, xml_h e, DD4hep::Geometr
                                                       parallelogramDim.x1() + parallelogramDim.dx(),
                                                       parallelogramDim.y1()};
 
-  DD4hep::Geometry::EightPointSolid parallelogram(parallelogramDim.dz(), parallelogramPoints.data());
+  dd4hep::EightPointSolid parallelogram(parallelogramDim.dz(), parallelogramPoints.data());
 
-  DD4hep::Geometry::Volume parallelogramVol(
+  dd4hep::Volume parallelogramVol(
       x_det.nameStr() + "_SimpleParallelogram", parallelogram, lcdd.material(parallelogramDim.materialStr()));
 
-  DD4hep::Geometry::PlacedVolume parallelogramPhys;
+  dd4hep::PlacedVolume parallelogramPhys;
 
   double zoff = parallelogramDim.z_offset();
 
   if (fabs(zoff) > 0.000000000001) {
-    DD4hep::Geometry::Position trans(0., 0., zoff);
+    dd4hep::Position trans(0., 0., zoff);
     parallelogramPhys = experimentalHall.placeVolume(
-        parallelogramVol, DD4hep::Geometry::Transform3D(DD4hep::Geometry::RotationZ(0.), trans));
+        parallelogramVol, dd4hep::Transform3D(dd4hep::RotationZ(0.), trans));
   } else
     parallelogramPhys = experimentalHall.placeVolume(parallelogramVol);
 

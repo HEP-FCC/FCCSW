@@ -1,4 +1,4 @@
-#include "TestGeometry/TestCalorimeterHit.h"
+#include "TestGeometryLib/TestCalorimeterHit.h"
 
 namespace test {
 G4ThreadLocal G4Allocator<TestCalorimeterHit>* TestCalorimeterHitAllocator;

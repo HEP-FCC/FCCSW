@@ -1,5 +1,5 @@
-#include "TestGeometry/TestCalorimeterSD.h"
-#include "TestGeometry/TestCalorimeterHit.h"
+#include "TestGeometryLib/TestCalorimeterSD.h"
+#include "TestGeometryLib/TestCalorimeterHit.h"
 
 #include "G4HCofThisEvent.hh"
 #include "G4SDManager.hh"

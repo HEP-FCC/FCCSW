@@ -5,7 +5,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
 #include "TGeoManager.h"
 
@@ -45,13 +45,13 @@ StatusCode CreateVolumePositions<Hits, PositionedHit>::execute() {
   auto edmPositionedHitCollection = m_positionedHits.createAndPut();
 
   uint64_t cellid = 0;
-  DD4hep::Geometry::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
+  dd4hep::VolumeManager volman = m_geoSvc->lcdd()->volumeManager();
 
   // Loop though hits, retrieve volume position from cellID
   for (const auto& cell : *hits) {
     cellid = cell.core().cellId;
     auto detelement = volman.lookupDetElement(cellid);
-    const auto& transformMatrix = detelement.worldTransformation();
+    const auto& transformMatrix = detelement.nominal().worldTransformation();
     double outGlobal[3];
     double inLocal[] = {0, 0, 0};
     transformMatrix.LocalToMaster(inLocal, outGlobal);

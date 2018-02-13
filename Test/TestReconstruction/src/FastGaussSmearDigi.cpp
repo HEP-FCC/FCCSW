@@ -1,15 +1,13 @@
 
 #include "DetInterface/IGeoSvc.h"
+#include "DD4hep/Detector.h"
+#include "DDSegmentation/BitField64.h"
+#include "DDSegmentation/CartesianGridXZ.h"
 
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-#include "DD4hep/LCDD.h"
-#include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
-#include "DDSegmentation/BitField64.h"
-#include "DDSegmentation/CartesianGridXZ.h"
 
 #include <cmath>
 #include <random>
@@ -36,22 +34,22 @@ StatusCode FastGaussSmearDigi::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
 
+  return sc;
+}
+
+StatusCode FastGaussSmearDigi::execute() {
+
   auto lcdd = m_geoSvc->lcdd();
   auto readout = lcdd->readout(m_readoutName);
-  m_decoder = readout.idSpec().decoder();
-  auto segmentationXZ = dynamic_cast<DD4hep::DDSegmentation::CartesianGridXZ*>(readout.segmentation().segmentation());
+  auto m_decoder = readout.idSpec().decoder();
+  auto segmentationXZ = dynamic_cast<dd4hep::DDSegmentation::CartesianGridXZ*>(readout.segmentation().segmentation());
   if (nullptr == segmentationXZ) {
     error() << "Could not retrieve segmentation!" << endmsg;
     return StatusCode::FAILURE;
   }
   m_segGridSizeX = segmentationXZ->gridSizeX();
   m_segGridSizeZ = segmentationXZ->gridSizeZ();
-  m_volman = lcdd->volumeManager();
-  return sc;
-}
-
-StatusCode FastGaussSmearDigi::execute() {
-
+  auto m_volman = lcdd->volumeManager();
   // get hits from event store
   const fcc::TrackHitCollection* hits = m_trackHits.get();
   std::vector<fcc::TrackHit> sortedHits;
@@ -69,7 +67,7 @@ StatusCode FastGaussSmearDigi::execute() {
     std::array<double, 3> globalPos = {0, 0, 0};
     // direct lookup of transformation in the volume manager is broken in dd4hep
     auto detelement = m_volman.lookupDetElement(m_decoder->getValue());
-    const auto& localToGlobal = detelement.worldTransformation();
+    const auto& localToGlobal = detelement.nominal().worldTransformation();
     localToGlobal.LocalToMaster(localPos.data(), globalPos.data());
     auto position = fcc::Point();
     // default dd4hep units differ from fcc ones

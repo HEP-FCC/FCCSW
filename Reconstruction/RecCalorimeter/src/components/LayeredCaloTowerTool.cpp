@@ -8,7 +8,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 DECLARE_TOOL_FACTORY(LayeredCaloTowerTool)
@@ -37,7 +37,7 @@ StatusCode LayeredCaloTowerTool::initialize() {
     return StatusCode::FAILURE;
   }
   // retrieve PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation." << endmsg;
@@ -45,7 +45,7 @@ StatusCode LayeredCaloTowerTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder =
-      std::shared_ptr<DD4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+      std::shared_ptr<dd4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {

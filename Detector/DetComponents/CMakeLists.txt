@@ -7,8 +7,7 @@ gaudi_depends_on_subdirs(GaudiKernel
                          FWCore
                          Detector/DetInterface
                          Detector/DetSegmentation
-                         Detector/DetCommon
-                         Detector/DetExtensions)
+                         Detector/DetCommon)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom Tree)
 
@@ -19,7 +18,7 @@ find_package(Geant4)
 include(${Geant4_USE_FILE})
 gaudi_add_module(DetComponents
                  src/*.cpp
-                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetExtensions DetSegmentation DetCommon ACTS
+                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetSegmentation DetCommon ACTS
                  LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
 
 include(CTest)
@@ -46,3 +45,22 @@ gaudi_add_test(positionsInclinedEcalCheck
 gaudi_add_test(positionsTracker
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/positions_tracker.py)
+gaudi_add_test(positionsPositiveCaloEndcap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/positions_endcap.py)
+gaudi_add_test(positionsPositiveCaloEndcapCheck
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Detector/DetComponents/tests/scripts/check_endcapEcal_sublayer_positions.py
+               DEPENDS positionsPositiveCaloEndcap)
+gaudi_add_test(positionsNegativeCaloEndcap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/positions_negativeEndcap.py)
+gaudi_add_test(positionsNegativeCaloEndcapCheck
+               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               COMMAND python Detector/DetComponents/tests/scripts/check_negativeEndcapEcal_sublayer_positions.py
+               DEPENDS positionsNegativeCaloEndcap)
+gaudi_add_test(RewriteBitfield
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/rewriteBitfield.py)

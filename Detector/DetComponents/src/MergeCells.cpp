@@ -7,7 +7,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
@@ -40,7 +40,7 @@ StatusCode MergeCells::initialize() {
   // check if identifier exists in the decoder
   auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
                                    m_descriptor.fields().end(),
-                                   [this](const std::pair<std::string, DD4hep::Geometry::IDDescriptor::Field>& field) {
+                                   [this](const std::pair<std::string, dd4hep::BitFieldValue*>& field) {
                                      return bool(field.first.compare(m_idToMerge) == 0);
                                    });
   if (itIdentifier == m_descriptor.fields().end()) {
