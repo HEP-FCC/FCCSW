@@ -53,13 +53,13 @@
     <!-- readout for the simulation -->
     <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell) -->
     <readout name="ECalBarrelEta">
-      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.68024"/>
+      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.8"/>
       <id>system:4,cryo:1,module:11,type:3,subtype:3,layer:8,eta:9</id>
     </readout>
     <!-- readout for the reconstruction -->
     <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
     <readout name="ECalBarrelPhiEta">
-      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.68024" offset_phi="-pi+(pi/704.)"/>
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.8" offset_phi="-pi+(pi/704.)"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
     </readout>
   </readouts>
@@ -68,9 +68,12 @@
     <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalBarrelEta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
-      <cryostat name="ECAL_Cryo" sensitive="false">
+      <cryostat name="ECAL_Cryo">
         <material name="Aluminum"/>
-	     <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
+	<dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
+	<front sensitive="false"/> <!-- inner wall of the cryostat -->
+	<side sensitive="false"/> <!-- both sides of the cryostat -->
+	<back sensitive="false"/> <!-- outer wall of the cryostat -->
       </cryostat>
       <calorimeter name="EM_barrel">
 	     <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-50/180*pi"/>
