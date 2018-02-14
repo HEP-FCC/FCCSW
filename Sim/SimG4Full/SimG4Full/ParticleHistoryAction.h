@@ -20,10 +20,12 @@ public:
   virtual ~ParticleHistoryAction() = default;
 
   void PreUserTrackingAction(const G4Track* aTrack);
+  /// particles are saved here, after geant4 is done simulating the track
   void PostUserTrackingAction(const G4Track* aTrack);
 
-  bool selectSecondary(const G4Track& aTrack, double energyCut);
+  bool selectSecondary(const G4Track& aTrack, double aEnergyCut);
 private:
+  /// energy threshold for secondaries to be saved
   double m_energyCut;
 };
 }

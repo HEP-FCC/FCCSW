@@ -28,17 +28,17 @@ public:
   EventInformation();
   /// Destructor
   virtual ~EventInformation() = default;
-
-  void setCollections(fcc::GenVertexCollection*& genVertices, fcc::MCParticleCollection*& mcParticles);
+  /// set external pointers to point at the particle and vertex collections
+  void setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMcParticleCollection);
   /// Add a particle to be tracked in the EDM collections
   void addParticle(const G4Track* aSecondary);
 
   void Print() const {};
 
 private:
-  /// Pointer to the vertex collection, ownership should be handled in a algorithm / tool
+  /// Pointer to the vertex collection, ownership is intended to be transfered to SaveTool
   fcc::GenVertexCollection* m_genVertices;
-  /// Pointer to the particle collection, ownership should be handled in a algorithm / tool
+  /// Pointer to the particle collection, ownership is intended to be transfered to SaveTool
   fcc::MCParticleCollection* m_mcParticles;
   /// Map to get the edm end vertex id from a Geant4 unique particle ID
   std::map<size_t, size_t> m_g4IdToEndVertexMap;

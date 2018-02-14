@@ -26,6 +26,7 @@ class EventInformation;
  *  This tool allows to save the particle history of particles decaying during the simulation
  *
  *  @author J. Lingemann
+ *  @author V. Volkl
  */
 
 class SimG4SaveParticleHistory : public GaudiTool, virtual public ISimG4SaveOutputTool {

@@ -13,10 +13,10 @@ EventInformation::EventInformation() {
   m_mcParticles = new fcc::MCParticleCollection();
 }
 
-void EventInformation::setCollections(fcc::GenVertexCollection*& genVertices, fcc::MCParticleCollection*& mcParticles) {
+void EventInformation::setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMCParticleCollection) {
   // ownership is transferred here - to SaveTool which is supposed to put it in the event store
-  genVertices = m_genVertices;
-  mcParticles = m_mcParticles;
+  aGenVertexCollection = m_genVertices;
+  aMCParticleCollection = m_mcParticles;
 }
 
 void EventInformation::addParticle(const G4Track* aSecondary) {
@@ -24,11 +24,7 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   auto g4mom = aSecondary->GetMomentum();
   auto g4energy = aSecondary->GetTotalEnergy();
   float mass = g4energy * g4energy - g4mom.mag2();
-  if (mass < 0) {
-    mass = sqrt(-mass);
-  } else {
-    mass = sqrt(mass);
-  }
+  mass = sqrt(fabs(mass));
   size_t g4ID = aSecondary->GetTrackID();
 
   edmParticle.p4().px = g4mom.x() * sim::g42edm::energy;

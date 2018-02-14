@@ -8,7 +8,6 @@ DECLARE_COMPONENT(SimG4FullSimActions)
 SimG4FullSimActions::SimG4FullSimActions(const std::string& type, const std::string& name, const IInterface* parent)
     : AlgTool(type, name, parent) {
   declareInterface<ISimG4ActionTool>(this);
-  declareProperty("energyCut", m_energyCut);
 }
 
 SimG4FullSimActions::~SimG4FullSimActions() {}

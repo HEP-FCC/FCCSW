@@ -22,6 +22,7 @@ public:
 private:
   /// Flag whether or not to store particle history
   bool m_enableHistory;
+  /// energy threshold for secondaries to be saved
   double m_energyCut;
 };
 }

@@ -12,7 +12,6 @@
 // Forward declarations:
 // Interfaces
 class ISimG4Svc;
-class ISimG4SaveHistoryTool;
 
 // datamodel
 namespace fcc {

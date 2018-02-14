@@ -1,8 +1,5 @@
 #include "SimG4Svc.h"
 
-// FCCSW
-#include "SimG4Common/EventInformation.h"
-
 // Gaudi
 #include "GaudiKernel/IRndmEngine.h"
 #include "GaudiKernel/IToolSvc.h"

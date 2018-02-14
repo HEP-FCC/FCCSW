@@ -1,12 +1,10 @@
 #include "SimG4Alg.h"
 
 // FCCSW
-#include "SimG4Common/EventInformation.h"
 #include "SimG4Interface/ISimG4Svc.h"
 
 // Geant
 #include "G4Event.hh"
-#include "G4EventManager.hh"
 
 DECLARE_ALGORITHM_FACTORY(SimG4Alg)
 
