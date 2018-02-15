@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace sim {
-FullSimActions::FullSimActions(bool enableHistory, double energyCut)
+FullSimActions::FullSimActions(bool enableHistory, double aEnergyCut)
     : G4VUserActionInitialization(), m_enableHistory(enableHistory), m_energyCut(aEnergyCut) {}
 
 FullSimActions::~FullSimActions() {}
