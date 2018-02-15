@@ -18,6 +18,7 @@ public:
 
   /// EventInformation data structure is created here
   virtual void  BeginOfEventAction ( const G4Event *anEvent);
+  /// empty action 
   virtual void  EndOfEventAction (const G4Event *anEvent);
 
 };

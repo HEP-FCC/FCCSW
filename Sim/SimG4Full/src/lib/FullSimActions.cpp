@@ -5,7 +5,7 @@
 
 namespace sim {
 FullSimActions::FullSimActions(bool enableHistory, double energyCut)
-    : G4VUserActionInitialization(), m_enableHistory(enableHistory), m_energyCut(energyCut) {}
+    : G4VUserActionInitialization(), m_enableHistory(enableHistory), m_energyCut(aEnergyCut) {}
 
 FullSimActions::~FullSimActions() {}
 

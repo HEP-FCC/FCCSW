@@ -28,7 +28,10 @@ public:
   EventInformation();
   /// Destructor
   virtual ~EventInformation() = default;
-  /// set external pointers to point at the particle and vertex collections
+  /** Set external pointers to point at the particle and vertex collections.
+   * @param[in] aGenVertexCollection  pointer to a collection that should take ownership of the particles saved here
+   * @param[in] aMCParticleCollection  pointer to a collection that should take ownership of the particles saved here
+   */
   void setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMcParticleCollection);
   /// Add a particle to be tracked in the EDM collections
   void addParticle(const G4Track* aSecondary);
