@@ -3,6 +3,8 @@
 ################################################################################
 gaudi_subdir(TestGeneration v1r0)
 
+find_package(HepMC)
+
 gaudi_depends_on_subdirs(GaudiAlg GaudiKernel FWCore Generation)
 
 gaudi_add_module(TestGenerationPlugins
