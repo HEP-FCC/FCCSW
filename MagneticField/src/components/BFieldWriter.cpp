@@ -40,8 +40,6 @@ StatusCode BFieldWriter::initialize() {
     double By;
     outputTree->Branch("By", &By);
 
-    /// @todo check if bins != 0
-    /// @todo units of input!! & output
     // the step sizes
     double stepX = fabs(m_rMax - m_rMin) / m_rBins;
     double stepY = fabs(m_rMax - m_rMin) / m_rBins;
@@ -77,9 +75,7 @@ StatusCode BFieldWriter::initialize() {
     double Br;
     outputTree->Branch("Br", &Br);
 
-    /// @todo check if bins != 0
-    /// @todo units of input!! & output
-    // the step sizes
+        // the step sizes
     double stepR = fabs(m_rMax - m_rMin) / m_rBins;
     double stepZ = fabs(m_zMax - m_zMin) / m_zBins;
     double stepPhi = (2. * M_PI) / m_phiBins;
