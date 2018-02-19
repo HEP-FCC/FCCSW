@@ -24,3 +24,20 @@ gaudi_add_module(TestMagneticField
                  src/components/*.cpp
                  INCLUDE_DIRS GaudiKernel ROOT ACTS Math MagneticField SimG4Common SimG4Interface Geant4
                  LINK_LIBRARIES GaudiKernel ROOT ACTS::ACTSCore SimG4Common Geant4)
+                 
+include(CTest)
+gaudi_add_test(TestBFieldG4
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/testBFieldG4.py)
+               
+gaudi_add_test(TestBFieldSymmetry
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/testBFieldSymmetry.py)
+               
+gaudi_add_test(TestBFieldValue
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/testBFieldValue.py)
+               
+gaudi_add_test(TestBFieldValueTxt
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/testBFieldValue_txt.py)
