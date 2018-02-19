@@ -10,6 +10,7 @@
 
 /** @class ConstPtParticleGun ConstPtParticleGun.h "ConstPtParticleGun.h"
  *
+ *  Particle gun, that, given a list of pt's  and an eta range, creates the desired four-momenta.
  */
 class ConstPtParticleGun : public GaudiTool, virtual public IParticleGunTool {
 
@@ -32,9 +33,10 @@ public:
 
 private:
   /// Minimum momentum (Set by options)
-  Gaudi::Property<std::vector<double>> m_ptList{this, "PtList", {100.0 * Gaudi::Units::GeV}, "List of transverse momenta to generate"};
+  Gaudi::Property<std::vector<double>> m_ptList{
+      this, "PtList", {100.0 * Gaudi::Units::GeV}, "List of transverse momenta to generate"};
   /// Minimum theta angle (Set by options)
-  Gaudi::Property<double> m_minEta{this, "EtaMin", -3.5 , "Minimal eta"};
+  Gaudi::Property<double> m_minEta{this, "EtaMin", -3.5, "Minimal eta"};
   /// Minimum phi angle (Set by options)
   Gaudi::Property<double> m_minPhi{this, "PhiMin", 0. * Gaudi::Units::rad, "Minimal phi"};
 
@@ -43,8 +45,6 @@ private:
   /// Maximum phi angle (Set by options)
   Gaudi::Property<double> m_maxPhi{this, "PhiMax", Gaudi::Units::twopi* Gaudi::Units::rad, "Maximal phi"};
 
-  /// Momentum range
-  double m_deltaMom;
   /// Eta range
   double m_deltaEta;
   /// Phi range

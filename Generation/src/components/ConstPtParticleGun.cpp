@@ -15,9 +15,7 @@
 DECLARE_TOOL_FACTORY(ConstPtParticleGun)
 
 /// Constructor
-ConstPtParticleGun::ConstPtParticleGun(const std::string& type,
-                                                   const std::string& name,
-                                                   const IInterface* parent)
+ConstPtParticleGun::ConstPtParticleGun(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<IParticleGunTool>(this);
 }
@@ -34,12 +32,8 @@ StatusCode ConstPtParticleGun::initialize() {
   sc = m_flatGenerator.initialize(randSvc, Rndm::Flat(0., 1.));
   if (!sc.isSuccess()) return Error("Cannot initialize flat generator");
 
-  // Get the mass of the particle to be generated
-  //
-
   // check momentum and angles
-  if ((m_minEta > m_maxEta) || (m_minPhi > m_maxPhi))
-    return Error("Incorrect values for theta or phi!");
+  if ((m_minEta > m_maxEta) || (m_minPhi > m_maxPhi)) return Error("Incorrect values for eta or phi!");
 
   m_deltaPhi = m_maxPhi - m_minPhi;
   m_deltaEta = m_maxEta - m_minEta;
@@ -57,25 +51,20 @@ StatusCode ConstPtParticleGun::initialize() {
 
   info() << endmsg;
 
-  info() << "Eta range: " << m_minEta << "  <-> " << m_maxEta 
-         << endmsg;
+  info() << "Eta range: " << m_minEta << "  <-> " << m_maxEta << endmsg;
   info() << "Phi range: " << m_minPhi / Gaudi::Units::rad << " rad <-> " << m_maxPhi / Gaudi::Units::rad << " rad"
          << endmsg;
-
 
   return sc;
 }
 
 /// Generate the particles
-void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum,
-                                                Gaudi::LorentzVector& origin,
-                                                int& pdgId) {
+void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum, Gaudi::LorentzVector& origin, int& pdgId) {
 
   origin.SetCoordinates(0., 0., 0., 0.);
   double px(0.), py(0.), pz(0.);
 
-  // Generate values for energy, theta and phi
-  //
+  // Generate values for eta  and phi
   double phi = m_minPhi + m_flatGenerator() * (m_deltaPhi);
   double eta = m_minEta + m_flatGenerator() * (m_deltaEta);
 
@@ -91,7 +80,7 @@ void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum,
   // protect against funnies
   if (currentType >= m_pdgCodes.size()) currentType = 0;
 
-   momentum.SetPx(px);
+  momentum.SetPx(px);
   momentum.SetPy(py);
   momentum.SetPz(pz);
   momentum.SetE(std::sqrt(m_masses[currentType] * m_masses[currentType] + momentum.P2()));
