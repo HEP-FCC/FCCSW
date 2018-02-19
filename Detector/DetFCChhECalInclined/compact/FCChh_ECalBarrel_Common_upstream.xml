@@ -18,6 +18,9 @@
       The calorimeter is divided into 0.5 cm layers, making the simulation flexible for the design studies.
       Current study considers layer size const in eta: 2cm + 7 x 9cm.
       Definition of sizes, visualization settings and readout are specified.
+      This file is used in the calculation of the energy deposited in the upstream material (cryostat in front of the detector).
+      Cryostat volume can be distinguished by ID: 'cryostat'==1 and 'type'==1 (cryo front) or 2 (cryo back) or 3 (cryo sides)
+      or 4 (LAr bath front) or 5 (LAr bath back).
     </comment>
   </info>
 
@@ -53,13 +56,13 @@
     <!-- readout for the simulation -->
     <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell) -->
     <readout name="ECalBarrelEta">
-      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.68024"/>
-      <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
+      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.7723"/>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,layer:8,eta:9</id>
     </readout>
     <!-- readout for the reconstruction -->
     <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
     <readout name="ECalBarrelPhiEta">
-      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.68024" offset_phi="-pi+(pi/704.)"/>
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.7723" offset_phi="-pi+(pi/704.)"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
     </readout>
   </readouts>
@@ -71,7 +74,7 @@
       <cryostat name="ECAL_Cryo">
         <material name="Aluminum"/>
 	<dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
-	<front sensitive="false"/> <!-- inner wall of the cryostat -->
+	<front sensitive="true"/>  <!-- inner wall of the cryostat -->
 	<side sensitive="false"/> <!-- both sides of the cryostat -->
 	<back sensitive="false"/> <!-- outer wall of the cryostat -->
       </cryostat>
