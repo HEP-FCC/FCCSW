@@ -10,7 +10,9 @@
 #include "tricktrack/HitChainMaker.h"
 #include "tricktrack/HitDoublets.h"
 #include "tricktrack/SpacePoint.h"
-using Hit = tricktrack::SpacePoint<size_t>; 
+#include "tricktrack/TTPoint.h"
+//using Hit = tricktrack::SpacePoint<size_t>; 
+using Hit = tricktrack::TTPoint; 
 
 namespace fcc {
 class TrackHitCollection;

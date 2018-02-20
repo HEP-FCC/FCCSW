@@ -90,7 +90,7 @@ l_true_pts = []
 
 # main event loop
 for i, store in enumerate(events):
-    if i == 1:
+    if i < args.nevents:
       print "event ", i
       #if i > args.nevents:
       #  break
@@ -118,8 +118,8 @@ for i, store in enumerate(events):
       print "processing tracks ..."
       tracks = store.get('tracks')
       for t in tracks:
+            print "\t track ID: ", t.bits()
             if t.bits() == 1:
-              print "\t track ID: ", t.bits()
               pos = []
               ids = []
               ts = t.states(0)
@@ -136,20 +136,18 @@ for i, store in enumerate(events):
               print "\ttrack covariances: ", trackcov
               l_dpts.append(np.sqrt(trackcov[2]))
               
-            pos = []
-            ids = []
-            if plot_tracks:
-              #pos2 = helix(trackparams)
-              for j in range(t.hits_size()):
-                cor = t.hits(j).position()
-                pos.append([cor.x, cor.y, cor.z])
-              pos = np.array(pos)
-              plt.figure("xy")
-              plt.plot(pos[:,0],pos[:,1], '--', color="black")
-              #plt.plot(pos2[:,0],pos2[:,1], '-', lw=3, color="blue", alpha=0.5)
-              plt.figure("rz")
-              plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), '--', color="black")
-              #plt.plot(pos2[:,2], np.sqrt(pos2[:,0]**2 + pos2[:,1]**2), '--', color="blue", alpha=0.5)
+              if plot_tracks:
+                pos2 = helix(trackparams)
+                for j in range(t.hits_size()):
+                  cor = t.hits(j).position()
+                  pos.append([cor.x, cor.y, cor.z])
+                pos = np.array(pos)
+                plt.figure("xy")
+                plt.plot(pos[:,0],pos[:,1], '--', color="black")
+                #plt.plot(pos2[:,0],pos2[:,1], '-', lw=3, color="blue", alpha=0.5)
+                plt.figure("rz")
+                plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), '--', color="black")
+                #plt.plot(pos2[:,2], np.sqrt(pos2[:,0]**2 + pos2[:,1]**2), '--', color="blue", alpha=0.5)
 
       if plot_tracks:
         plt.figure("xy")
@@ -180,8 +178,7 @@ for i, store in enumerate(events):
         ids = []
         for c in hits:
             cor = c.position()
-            if -200 < cor.z < 200:
-              pos.append([cor.x, cor.y, cor.z])
+            pos.append([cor.x, cor.y, cor.z])
             print cor.x, cor.y, cor.z, c.time()
             ids.append([c.bits()])
         pos = np.array(pos)
@@ -209,29 +206,40 @@ if plot_tracks:
   plt.savefig("tt_rz.pdf")
 
 
-if False:
-  etas = np.array(l_etas)
-  dpts = np.array(l_dpts)
-  pts = np.array(l_pts)
-  colors = {1.: "black", 2: "darkblue", 5.: "blue", 100.: "green", 1000: "magenta", 10000.: "darkgreen", 10.: "red"}
-  for e in np.unique(l_true_pts):
-    print "pT: ", e
-    i = np.array(l_true_pts) == e
-    e = int(e)
-    plt.figure("pt_res")
-    plt.semilogy(etas[i], np.abs(pts[i]), 'o', label=e, color=colors[e])
-    plt.semilogy(etas[i], np.abs(dpts[i]), 'd', color=colors[e])
-    plt.figure("pt_res_div")
-    plt.semilogy(etas[i], np.abs(dpts[i]) / np.abs(pts[i]) * 100, 'o', label=e, color=colors[e])
-
+etas = np.array(l_etas)
+dpts = np.array(l_dpts)
+pts = np.array(l_pts)
+colors = {1.: "black", 2: "darkblue", 5.: "blue", 100.: "green", 1000: "magenta", 10000.: "darkgreen", 10.: "red"}
+for e in np.unique(l_true_pts):
+  print "pT: ", e
+  i = np.array(l_true_pts) == e
+  e = int(e)
   plt.figure("pt_res")
-  plt.xlabel(r"$\eta$")
-
-  plt.legend(loc="best", title="Pt [GeV]")
+  plt.semilogy(etas[i], np.abs(pts[i]), 'o', label=e, color=colors[e])
+  plt.semilogy(etas[i], np.abs(dpts[i]), 'd', color=colors[e])
   plt.figure("pt_res_div")
-  plt.xlabel(r"$\eta$")
-  plt.ylabel(r"$\frac {\delta p_T} {p_T} [\%] $")
-  plt.title(r"Track resolution for const Pt across $\eta$")
-  plt.legend(loc="best", title="Pt [GeV]")
-  plt.savefig("tricktrack_singleparticle_res.png")
+  plt.semilogy(etas[i], np.abs(dpts[i]) / np.abs(pts[i]) * 100, 'o', label=e, color=colors[e])
+  if e > 100:
+    plt.figure("pt_pull")
+    pull = (pts[i] + e)  / dpts[i]
+    plt.hist(pull, color=colors[e], histtype="step")
+
+plt.figure("pt_res")
+plt.xlabel(r"$\eta$")
+
+plt.legend(loc="best", title="Pt [GeV]")
+plt.figure("pt_res_div")
+plt.xlabel(r"$\eta$")
+plt.ylabel(r"$\frac {\delta p_T} {p_T} [\%] $")
+plt.title(r"Track resolution for const Pt across $\eta$")
+plt.legend(loc="best", title="Pt [GeV]")
+plt.savefig("tricktrack_singleparticle_res.png")
+
+plt.figure("pt_pull")
+plt.yscale('log', nonposy='clip')
+plt.legend(loc="best", title="Pt [GeV]")
+plt.xlabel(r"$\eta$")
+plt.title("pull of p_t")
+plt.savefig("pull2.png")
+
 plt.show()

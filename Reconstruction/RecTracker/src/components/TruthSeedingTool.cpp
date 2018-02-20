@@ -30,10 +30,13 @@ StatusCode TruthSeedingTool::initialize() {
 std::multimap<unsigned int, unsigned int>
 TruthSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHits) {
 
+  // map trackId -> hitIndex
   std::multimap<unsigned int, unsigned int> theSeeds;
 
-  unsigned int hitCounter = 0;
+  unsigned int hitCounter = 0; // serves as index of hits in collection
   for (auto hit : *theHits) {
+      // use mc-truth information (track-id saved in "bits" member) to label tracks
+      // unfortunately not available for real data ...
       theSeeds.insert(std::pair<unsigned int, unsigned int>(hit.bits(), hitCounter));
     ++hitCounter;
     }

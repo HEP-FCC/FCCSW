@@ -6,11 +6,6 @@
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackStateCollection.h"
 
-#include "DD4hep/Detector.h"
-#include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
-#include "DDSegmentation/BitField64.h"
-#include "DDSegmentation/CartesianGridXZ.h"
 
 // TrickTrack headers
 #include "tricktrack/HitChainMaker.h"
@@ -43,8 +38,8 @@ StatusCode DoubletCreationTool::initialize() {
   auto doublets = new HitDoublets<Hit>(theInnerHits, theOuterHits);
 
   // brute force doublet creation
-  for (int i = 0; i < theInnerHits.size(); ++i) {
-    for(int j = 0; j < theOuterHits.size(); ++j) {
+  for (unsigned int i = 0; i < theInnerHits.size(); ++i) {
+    for( unsigned int j = 0; j < theOuterHits.size(); ++j) {
         // @todo: very ad-hoc
         if ((std::fmod(std::abs(theOuterHits[j].phi() - theInnerHits[i].phi()), 2* M_PI)) < 0.3) {
         if (std::abs(theOuterHits[j].z() - theInnerHits[i].z()) < 50) {

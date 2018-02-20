@@ -11,10 +11,10 @@
 #include "tricktrack/CMGraph.h"
 
 
-class BarrelLayerGraphTool : public GaudiTool, virtual public ILayerGraphTool {
+class BarrelLayerGraphTool4 : public GaudiTool, virtual public ILayerGraphTool {
 public:
-  BarrelLayerGraphTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~BarrelLayerGraphTool() = default;
+  BarrelLayerGraphTool4(const std::string& type, const std::string& name, const IInterface* parent);
+  ~BarrelLayerGraphTool4() = default;
   virtual StatusCode initialize() override final;
   virtual StatusCode finalize() override final;
   virtual tricktrack::CMGraph getGraph() override final;

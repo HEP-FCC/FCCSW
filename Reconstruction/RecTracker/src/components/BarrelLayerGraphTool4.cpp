@@ -1,19 +1,19 @@
-#include "BarrelLayerGraphTool.h"
+#include "BarrelLayerGraphTool4.h"
 
 #include "RecInterface/ILayerGraphTool.h"
 
 // TrickTrack headers
 #include "tricktrack/CMGraph.h"
 
-DECLARE_TOOL_FACTORY(BarrelLayerGraphTool)
+DECLARE_TOOL_FACTORY(BarrelLayerGraphTool4)
 
-BarrelLayerGraphTool::BarrelLayerGraphTool(const std::string& type, const std::string& name,
+BarrelLayerGraphTool4::BarrelLayerGraphTool4(const std::string& type, const std::string& name,
                                                    const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ILayerGraphTool>(this);
 }
 
-StatusCode BarrelLayerGraphTool::initialize() {
+StatusCode BarrelLayerGraphTool4::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) {
     return sc;
@@ -21,16 +21,20 @@ StatusCode BarrelLayerGraphTool::initialize() {
   return sc;
 }
 
-StatusCode BarrelLayerGraphTool::finalize() { return GaudiTool::finalize(); }
+StatusCode BarrelLayerGraphTool4::finalize() { return GaudiTool::finalize(); }
 
-tricktrack::CMGraph BarrelLayerGraphTool::getGraph() {
+/// Construct and return the layergraph for the Cellular automaton,
+// for the inner four barrel layers only
+// the interface to the layer graph is likely to be changed
+tricktrack::CMGraph BarrelLayerGraphTool4::getGraph() {
   
   auto g = tricktrack::CMGraph();
 
-  auto l1 = tricktrack::CMLayer("innerLayer", 10);
-  auto l2 = tricktrack::CMLayer("middleLayer", 10);
-  auto l3 = tricktrack::CMLayer("outerLayer", 10);
-  auto l4 = tricktrack::CMLayer("outermostLayer", 10);
+  constexpr unsigned int numberOfHits = 1000; // used to resize vector "isOuterHitOfCell""
+  auto l1 = tricktrack::CMLayer("innerLayer", numberOfHits);
+  auto l2 = tricktrack::CMLayer("middleLayer", numberOfHits);
+  auto l3 = tricktrack::CMLayer("outerLayer", numberOfHits);
+  auto l4 = tricktrack::CMLayer("outermostLayer", numberOfHits);
 
   auto lp1 = tricktrack::CMLayerPair(0, 1);
   auto lp2 = tricktrack::CMLayerPair(1, 2);

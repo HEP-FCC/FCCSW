@@ -6,7 +6,7 @@ from Gaudi.Configuration import *
 from FWCore.joboptions import parse_standard_job_options
 args = parse_standard_job_options()
 
-inputfile = "muons_for_seeding.root"
+inputfile = "muons_for_seeding_single.root"
 if args.inputfile:
   inputfile = args.inputfile
 
@@ -53,15 +53,9 @@ doublet_tool = DoubletCreationTool()
 from Configurables import TrickTrackSeedingTool
 tricktrack_seed_tool = TrickTrackSeedingTool()
 tricktrack_seed_tool.LayerGraphTool = layergraphtool
-tricktrack_seed_tool.deltaZ=360
-tricktrack_seed_tool.deltaT=1e12
-tricktrack_seed_tool.deltaPhi=0.1
-
-tricktrack_seed_tool.ptMin = 0.0
-tricktrack_seed_tool.phiCut = 0.2
-tricktrack_seed_tool.thetaCut = 0.000002
-tricktrack_seed_tool.hardPtCut= 0.0
-tricktrack_seed_tool.regionOriginRadius= 0.00001
+tricktrack_seed_tool.deltaZ=36
+tricktrack_seed_tool.deltaT=13
+tricktrack_seed_tool.deltaPhi=0.4
 
 # Alternative: TruthSeeding
 from Configurables import TruthSeedingTool
@@ -71,12 +65,12 @@ from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
 RecTrackAlg.Errors = True
 RecTrackAlg.hitRes = 5*1e-9
-RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
+RecTrackAlg.TrackSeedingTool = truth_seeds #tricktrack_seed_tool
 RecTrackAlg.positionedTrackHits.Path = "positionedHits"
 
 
 # PODIO algorithm
-outputfile = "tricktrack_seeding_example.root"
+outputfile = "single_particle_resolutions.root"
 if args.outputfile:
   outputfile = args.outputfile
 from Configurables import PodioOutput

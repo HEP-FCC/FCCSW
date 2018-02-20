@@ -12,16 +12,13 @@ from Configurables import GenAlg, ConstPtParticleGun
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
-from Configurables import ConstPileUp, GaussSmearVertex
-smeartool = GaussSmearVertex("smeartoolname")
+from Configurables import ConstPileUp
 
-smeartool.tVertexSigma = 150*units.cm
+pileuptool = ConstPileUp(numPileUpEvents=0)
+pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=0, EtaMax=5, PtList=[1*units.GeV, 2*units.GeV,5 * units.GeV,10*units.GeV, 100*units.GeV, 1000*units.GeV, 10000*units.GeV])
+#pgun_tool2 = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.3, EtaMax=0.3, PtList=[5 * units.GeV,10*units.GeV, 100*units.GeV])
 
-pileuptool = ConstPileUp(numPileUpEvents=4)
-pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.5, EtaMax=0.5, PtList=[ 100*units.GeV])
-pgun_tool2 = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.5, EtaMax=0.5, PtList=[ 100*units.GeV])
-
-gen = GenAlg("ParticleGun", PileUpTool=pileuptool, SignalProvider=pgun_tool, PileUpProvider=pgun_tool2, VertexSmearingTool=smeartool)
+gen = GenAlg("ParticleGun", PileUpTool=pileuptool, SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
 from Configurables import Gaudi__ParticlePropertySvc
@@ -90,13 +87,13 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "muons_for_seeding.root"
+out.filename = "muons_for_seeding_single.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
 ApplicationMgr(TopAlg=[gen, hepmc_converter, geantsim, out],
                EvtSel='NONE',
-               EvtMax=100,
+               EvtMax=5000,
                # order is important, as GeoSvc is needed by SimG4Svc
                ExtSvc=[ppservice, podioevent, geoservice, geantservice],
                OutputLevel=DEBUG

@@ -16,6 +16,8 @@
 
 #include "tricktrack/SpacePoint.h"
 #include "tricktrack/CMGraph.h"
+#include "tricktrack/FKDTree.h"
+#include "tricktrack/TTPoint.h"
 #include "tricktrack/TrackingRegion.h"
 #include "tricktrack/HitChainMaker.h"
 
@@ -33,20 +35,16 @@ public:
   virtual StatusCode finalize() override final;
 
   virtual std::multimap<unsigned int, unsigned int> findSeeds(const fcc::PositionedTrackHitCollection* theHits) override final;
-  void createBarrelSpacePoints(std::vector<tricktrack::SpacePoint<size_t>>& thePoints, std::map<int, unsigned long int>&,
+  void createBarrelSpacePoints(std::vector<tricktrack::TTPoint>& thePoints,
                                const fcc::PositionedTrackHitCollection* theHits, std::pair<int, int> sIndex, int trackCutoff);
+tricktrack::HitDoublets<Hit>*   findDoublets( std::vector<tricktrack::TTPoint> theInnerHits,  std::vector<tricktrack::TTPoint> theOuterHits);
+//void createKDTree( std::vector<Hit>& thePoints, std::pair<int, int> sIndex);
+void findDoublets(tricktrack::HitDoublets<Hit>* doublets, std::vector<tricktrack::TTPoint> theInnerHits,  tricktrack::FKDTree<double, 4> theOuterTree, std::vector<tricktrack::TTPoint> theOuterHits);
+
 
 private:
   /// system and layer ids for the inner barrel layer to be used for seeding
-  Gaudi::Property<std::pair<int, int>> m_seedingLayerIndices0{this, "seedingLayerIndices0", {0, 0}};
-  /// system and layer ids for the middle barrel layer to be used for seeding
-  Gaudi::Property<std::pair<int, int>> m_seedingLayerIndices1{this, "seedingLayerIndices1", {0, 1}};
-  /// system and layer ids for the outer barrel layer to be used for seeding
-  Gaudi::Property<std::pair<int, int>> m_seedingLayerIndices2{this, "seedingLayerIndices2", {0, 2}};
-  /// system and layer ids for the outer barrel layer to be used for seeding
-  Gaudi::Property<std::pair<int, int>> m_seedingLayerIndices3{this, "seedingLayerIndices3", {0, 3}};
-  /// readout used for the barrel seeding layers
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "TrackerBarrelReadout"};
+  Gaudi::Property<std::vector<std::pair<int, int>>> m_seedingLayerIndices{this, "seedingLayerIndices", {{0, 0}, {0,1}, {0,2},{0,3},{0,4}}};
   /// Parameter for TrickTrack's TrackingRegion
   /// coordinate of the center of the luminous region
   Gaudi::Property<double> m_regionOriginX {this, "regionOriginX", 0};
@@ -66,13 +64,24 @@ private:
   /// Parameter for TrickTrack's cell connection
   Gaudi::Property<double> m_hardPtCut {this, "hardPtCut", 0.0};
 
+  /// Parameter for TrickTrack's doublet creation
+  Gaudi::Property<double> m_deltaPhi {this, "deltaPhi", 0.3};
+  /// Parameter for TrickTrack's doublet creation
+  Gaudi::Property<double> m_deltaRho {this, "deltaRho", 1000};
+  /// Parameter for TrickTrack's doublet creation
+  Gaudi::Property<double> m_deltaZ {this, "deltaZ", 150};
+  /// Parameter for TrickTrack's doublet creation
+  Gaudi::Property<double> m_deltaT {this, "deltaT", 1050.};
+
   ToolHandle<ILayerGraphTool> m_layerGraphTool;
   ToolHandle<IDoubletCreationTool> m_doubletCreationTool;
   ToolHandle<IHitFilterTool> m_hitFilterTool;
 
-  std::unique_ptr<tricktrack::HitChainMaker<tricktrack::SpacePoint<size_t>>> m_automaton;
+  std::unique_ptr<tricktrack::HitChainMaker<tricktrack::TTPoint>> m_automaton;
   std::unique_ptr<tricktrack::TrackingRegion> m_trackingRegion;
   tricktrack::CMGraph m_layerGraph;
+  std::map<std::pair<int, int>, tricktrack::FKDTree<double, 4>> m_hitTrees;
+
 };
 
 #endif /* RECTRACKER_TRICKTRACKSEEDINGTOOL_H */
