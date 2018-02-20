@@ -241,6 +241,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
       double localX = 0, localY = 0;
       // go through the merged cells to calculate the averaged local position of the cluster
       double norm = 0;
+      // calculate time of cluster (mean of all cells)
+      double clusterTime = 0.;
       for (auto& cell : cells) {
         actsDigiCells.push_back(cell);
         // get center position of the current cell
@@ -261,13 +263,16 @@ StatusCode GeometricTrackerDigitizer::execute() {
         outHit = cell.trackHit;
         outHit.core().cellId = hitCellID;
         outHit.core().energy = cell.data;
+        // calculate mean of time
+        clusterTime += outHit.core().time;
         // @todo not working yet
-        trackCluster.addhits(std::move(fcc::ConstTrackHit(outHit)));
+        //    trackCluster.addhits(fcc::ConstTrackHit(outHit));
       }
       // divide by the total path - analog clustering
       if (norm > 0) {
         localX /= norm;
         localY /= norm;
+        clusterTime /= cells.size();
       }
       /// ----------- Create unique global channel identifier -----------
       // local position of merged cluster
@@ -291,7 +296,6 @@ StatusCode GeometricTrackerDigitizer::execute() {
       auto pCluster = Acts::PlanarModuleCluster(hitSurface, Identifier(geoID.value()), std::move(cov), localX, localY,
                                                 std::move(actsDigiCells));
       planarClusters.push_back(pCluster);
-
       // translate to fcc edm
       auto position = fcc::Point();
       position.x = globalPosition.x();
@@ -299,9 +303,9 @@ StatusCode GeometricTrackerDigitizer::execute() {
       position.z = globalPosition.z();
       // save position in cluster
       trackCluster.core().position = position;
-      //@todo fill
-      // trackCluster.energy =
-      // trackCluster.time =
+      // calculate total energy deposited in cluster (sum up energy of all cells)
+      trackCluster.core().energy = norm;
+      trackCluster.core().time = clusterTime;
     }
   }
   m_clustersPerEvent.push_back(planarClusters);
