@@ -65,6 +65,8 @@ truth_seeds = TruthSeedingTool()
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
+RecTrackAlg.Errors = True
+RecTrackAlg.hitRes = 5*1e-9
 RecTrackAlg.TrackSeedingTool = truth_seeds#tricktrack_seed_tool
 RecTrackAlg.positionedTrackHits.Path = "positionedHits"
 

@@ -15,7 +15,7 @@ from Configurables import GenAlg, ConstPtParticleGun
 from Configurables import ConstPileUp
 
 pileuptool = ConstPileUp(numPileUpEvents=0)
-pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.0, EtaMin=-0.3, EtaMax=0.3, PtList=[5 * units.GeV,10*units.GeV, 100*units.GeV])
+pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=0, EtaMax=5, PtList=[1*units.GeV, 2*units.GeV,5 * units.GeV,10*units.GeV, 100*units.GeV, 1000*units.GeV, 10000*units.GeV])
 #pgun_tool2 = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.3, EtaMax=0.3, PtList=[5 * units.GeV,10*units.GeV, 100*units.GeV])
 
 gen = GenAlg("ParticleGun", PileUpTool=pileuptool, SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
@@ -93,7 +93,7 @@ out.filename = "muons_for_seeding.root"
 from Configurables import ApplicationMgr
 ApplicationMgr(TopAlg=[gen, hepmc_converter, geantsim, out],
                EvtSel='NONE',
-               EvtMax=200,
+               EvtMax=5000,
                # order is important, as GeoSvc is needed by SimG4Svc
                ExtSvc=[ppservice, podioevent, geoservice, geantservice],
                OutputLevel=DEBUG

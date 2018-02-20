@@ -42,7 +42,8 @@ private:
   DataHandle<fcc::TrackCollection> m_tracks{"tracks", Gaudi::DataHandle::Writer, this};
   DataHandle<fcc::TrackStateCollection> m_trackStates{"trackStates", Gaudi::DataHandle::Writer, this};
   /// Handle to Track Seeding Tool that does the work
-  Gaudi::Property<double> m_Bz{this, "Bz", 0.04, "Field strength along Z"};
+  Gaudi::Property<double> m_Bz{this, "Bz", 4., "Field strength along Z"};
+  Gaudi::Property<double> m_hitRes{this, "hitRes", 0.1, "Resolution of local hit coordinates"};
   Gaudi::Property<bool> m_calcErrors{this, "Errors",  false,"flag to to toggle error calculation"};
   Gaudi::Property<bool> m_calcMultipleScattering{this, "MultipleScatteringErrors", false, "flag to toggle estimation of multiple scattering errors"};
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool{"CombinatorialSeedingTool/CombinatorialSeedingTool", this};

@@ -49,7 +49,7 @@ StatusCode RecTrackAlg::execute() {
   auto it1 = seedmap.begin();
   auto it2 = seedmap.begin();
   auto end = seedmap.end();
-  constexpr unsigned int nhits = 3;
+  constexpr unsigned int nhits = 8;
 
   for (it1 = seedmap.begin(), it2 = it1, end = seedmap.end(); it1 != end; it1 = it2) {
     tricktrack::Matrix3xNd riemannHits = tricktrack::Matrix3xNd::Zero(3,nhits);
@@ -61,19 +61,45 @@ StatusCode RecTrackAlg::execute() {
     for ( ; it2 != end && (*it2).first == (*it1).first; ++it2) {
       debug() << " \t found trackseed: " << (*it2).first << "\t" << (*it2).second << endmsg;
       auto pos = (*hits)[(*it2).second].position();
+      if (hitCounter < nhits) {
       riemannHits.col(hitCounter) << pos.x, pos.y, pos.z;
       track.addhits((*hits)[(*it2).second]);
+      }
       hitCounter++;
       }
-    tricktrack::Matrix3Nd hits_cov = tricktrack::Matrix3Nd::Random(3*nhits,3*nhits);
+
+    std::cout << "riemannHits" << std::endl;
+    std::cout << riemannHits << std::endl;
+    auto hitDim  = std::min(hitCounter, nhits);
+    auto resizedHits = riemannHits.block(0,0,3,hitDim);
+    std::cout << "resizedHits" << std::endl;
+    std::cout << resizedHits << std::endl;
+    tricktrack::Matrix3Nd hits_cov = m_hitRes*tricktrack::Matrix3Nd::Identity(3*hitDim,3*hitDim);
+
+    if (track.bits() == 1) {
 
     constexpr int c_speed = 299792458;
     const double B_field = m_Bz * c_speed / pow(10, 9) / 100; // conversion to GeV / cm / c
-    auto h = tricktrack::Helix_fit(riemannHits, hits_cov, B_field, m_calcErrors, m_calcMultipleScattering);
-    debug() << "Fit parameters: " <<  h.par << "\t"
+    auto h = tricktrack::Helix_fit(resizedHits, hits_cov, B_field, m_calcErrors, m_calcMultipleScattering);
+    debug() << "#### Fit parameters: ### " << endmsg <<   h.par 
+            << "########################" << endmsg 
      << "charge " << h.q << "\t" 
      << "chi_2 circle " << h.chi2_circle << "\t"
      << "chi_2 line " << h.chi2_line << endmsg;
+     debug() << "### Fit covariance: ###" << endmsg;
+     auto upperCov = h.cov.triangularView<Eigen::Upper>();
+     std::cout << Eigen::MatrixXd(upperCov) << std::endl;
+     unsigned int coeffCounter = 0;
+     std::array<float, 15> fitcov;
+     for (unsigned int i = 0; i < 5; ++i) {
+       for (unsigned int j = i; j < 5; ++j) {
+         debug() << j << "\t" << i <<  "\t" <<  h.cov(j, i) << endmsg;
+         fitcov[coeffCounter] = h.cov(j, i);
+         coeffCounter++;
+       }
+     }
+     debug() << "#######################" << endmsg;
+    trackState.cov(fitcov);
     trackState.phi(h.par(0));
     trackState.d0(h.par(1));
     trackState.qOverP(h.q / h.par(2)); // fit outputs pT
@@ -81,6 +107,7 @@ StatusCode RecTrackAlg::execute() {
     trackState.z0(h.par(4));
     track.addstates(trackState);
     }
+  }
 
   return StatusCode::SUCCESS;
 }
