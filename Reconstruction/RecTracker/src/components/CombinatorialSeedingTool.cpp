@@ -8,13 +8,6 @@
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackStateCollection.h"
 
-//#include "DD4hep/Volumes.h"
-//#include "DDRec/API/IDDecoder.h"
-//#//include "DDSegmentation/BitField64.h"
-//#include "DD4hep/BitField64.h"
-//#include "DDSegmentation/CartesianGridXZ.h"
-#include "DDG4/Geant4Hits.h"
-
 #include "ACTS/Seeding/BarrelSeedFinder.hpp"
 #include "ACTS/Seeding/SpacePoint.hpp"
 #include "ACTS/Seeding/TrackSeed.hpp"
@@ -34,10 +27,6 @@ StatusCode CombinatorialSeedingTool::initialize() {
   if (sc.isFailure()) {
     return sc;
   }
-  //m_geoSvc = service("GeoSvc");
-  //auto lcdd = m_geoSvc->lcdd();
-  //auto readouts = lcdd->readouts();
-  //m_decoder = readout.idSpec().decoder();
   return sc;
 }
 
@@ -46,12 +35,7 @@ void CombinatorialSeedingTool::createBarrelSpacePoints(Acts::Seeding::BarrelSpac
                                                        std::pair<int, int> sIndex) {
   size_t hitCounter = 0;
   for (auto hit : *theHits) {
-  //  m_decoder->setValue(hit.core().cellId);
-  //  if ((*m_decoder)["system"] == sIndex.first) {
-  //    if ((*m_decoder)["layer"] == sIndex.second) {
         thePoints.points.emplace_back(hit.position().x, hit.position().y, hit.position().z, hitCounter);
-    //  }
-   // }
     ++hitCounter;
   }
 }

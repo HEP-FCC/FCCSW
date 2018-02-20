@@ -1,8 +1,8 @@
 #!/bin/bash
 FILE="compare.out"
 PHYSICS="papasPhysics.txt" #do not change
-MATCHPHYSICS=$FCCPAPASCPP/data/required_clic_physics_dd.txt
-ROOTFILE=$FCCPAPASCPP/data/ee_Z_ddbar.root
+MATCHPHYSICS=$FCCVIEW/data/required_clic_physics_dd.txt
+ROOTFILE=$FCCVIEW/data/ee_Z_ddbar.root
 if [ -f $FILE ]
 then
   rm $FILE

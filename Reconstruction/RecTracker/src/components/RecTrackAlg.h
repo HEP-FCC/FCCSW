@@ -14,20 +14,20 @@ class ITrackSeedingTool;
 
 namespace fcc {
 class TrackHitCollection;
+class TrackCollection;
+class TrackStateCollection;
 class PositionedTrackHitCollection;
 }
 
 
-/*** @class CombinatorialSeedingTest 
+/*** @class RecTrackAlg 
  *
- *  Algorithm that only calls the Combinatorial Seeding tool
- *  for testing purposes and pints a debug statement.
  */
-class CombinatorialSeedingTest : public GaudiAlgorithm {
+class RecTrackAlg : public GaudiAlgorithm {
 public:
-  CombinatorialSeedingTest(const std::string& name, ISvcLocator* svcLoc);
+  RecTrackAlg(const std::string& name, ISvcLocator* svcLoc);
 
-  ~CombinatorialSeedingTest() = default;
+  ~RecTrackAlg() = default;
 
   StatusCode initialize() override final;
 
@@ -39,7 +39,12 @@ private:
   /// TrackHits as Input to the track seeding
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"positionedTrackHits", Gaudi::DataHandle::Reader,
                                                                       this};
+  DataHandle<fcc::TrackCollection> m_tracks{"tracks", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::TrackStateCollection> m_trackStates{"trackStates", Gaudi::DataHandle::Writer, this};
   /// Handle to Track Seeding Tool that does the work
+  Gaudi::Property<double> m_Bz{this, "Bz", 0.04, "Field strength along Z"};
+  Gaudi::Property<bool> m_calcErrors{this, "Errors",  false,"flag to to toggle error calculation"};
+  Gaudi::Property<bool> m_calcMultipleScattering{this, "MultipleScatteringErrors", false, "flag to toggle estimation of multiple scattering errors"};
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool{"CombinatorialSeedingTool/CombinatorialSeedingTool", this};
 };
 
