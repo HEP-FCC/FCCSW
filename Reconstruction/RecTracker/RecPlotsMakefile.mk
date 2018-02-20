@@ -1,4 +1,13 @@
-
+############################
+# FCC Track Reco Plots Makefile
+# run from FCCSW directory
+# with 
+#
+# make -f Reconstruction/RecTracker/RecPlotsMakeFile.mk plots
+#
+#
+#
+###########################
 .PHONY: all
 all: plots
 
