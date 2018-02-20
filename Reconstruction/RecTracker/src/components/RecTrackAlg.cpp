@@ -67,7 +67,9 @@ StatusCode RecTrackAlg::execute() {
       }
     tricktrack::Matrix3Nd hits_cov = tricktrack::Matrix3Nd::Random(3*nhits,3*nhits);
 
-    auto h = tricktrack::Helix_fit(riemannHits, hits_cov, m_Bz, m_calcErrors, m_calcMultipleScattering);
+    constexpr int c_speed = 299792458;
+    const double B_field = m_Bz * c_speed / pow(10, 9) / 100; // conversion to GeV / cm / c
+    auto h = tricktrack::Helix_fit(riemannHits, hits_cov, B_field, m_calcErrors, m_calcMultipleScattering);
     debug() << "Fit parameters: " <<  h.par << "\t"
      << "charge " << h.q << "\t" 
      << "chi_2 circle " << h.chi2_circle << "\t"
