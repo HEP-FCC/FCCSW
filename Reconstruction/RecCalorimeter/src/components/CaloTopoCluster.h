@@ -8,9 +8,9 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICaloReadNeighboursMap.h"
+#include "RecInterface/ICaloReadCellNoiseMap.h"
 #include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/ICellPositionsTool.h"
-#include "RecInterface/INoiseConstTool.h"
 #include "RecInterface/ITopoClusterInputTool.h"
 
 class IGeoSvc;
@@ -77,7 +77,7 @@ private:
    /// Handle for the input tool
   ToolHandle<ITopoClusterInputTool> m_inputTool{"TopoClusterInput", this};
   /// Handle for the cells noise tool
-  ToolHandle<INoiseConstTool> m_noiseTool{"ReadNoiseFromFileTool", this};
+  ToolHandle<ICaloReadCellNoiseMap> m_noiseTool{"TopoCaloNoisyCells", this};
   /// Handle for neighbours tool
   ToolHandle<ICaloReadNeighboursMap> m_neighboursTool{"TopoCaloNeighbours", this};
   /// Handle for tool to get positions in ECal Barrel

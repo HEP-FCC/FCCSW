@@ -167,7 +167,7 @@ void CaloTopoCluster::findingSeeds(const std::map<uint64_t, double>& cells,
                                    std::vector<std::pair<uint64_t, double>>& seeds) {
   for (const auto& cell : cells) {
     // retrieve the noise const assigned to cell
-    double threshold = m_noiseTool->getNoiseConstantPerCell(cell.first) / dd4hep::MeV * nSigma;
+    double threshold = m_noiseTool->noise(cell.first) / dd4hep::MeV * nSigma;
     debug() << "seed threshold  = " << threshold << "MeV " << endmsg;
     if (abs(cell.second) / dd4hep::MeV > threshold) {  // seed threshold is set to 4*Sigma
       seeds.emplace_back(cell.first, cell.second);
@@ -263,7 +263,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
           validatedNeighbour = true;
         else {
           // retrieve the cell noise level [GeV]
-          double thr = nSigma * m_noiseTool->getNoiseConstantPerCell(neighbouringCellId);
+          double thr = nSigma * m_noiseTool->noise(neighbouringCellId);
           if (abs(neighbouringCellEnergy) >= thr)
             validatedNeighbour = true;
           else
