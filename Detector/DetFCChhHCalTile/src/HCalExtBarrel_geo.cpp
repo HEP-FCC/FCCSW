@@ -191,9 +191,9 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   tilesInLayers.reserve(layerDepths1.size() + layerDepths2.size());
 
   // First we construct base wedges:
-  Volume WedgeVolume1("WedgeVolume1", dd4hep::Trapezoid(dx1Module1, dx2Module1, dy0, dy0, dzModule1),
+  Volume WedgeVolume1("WedgeVolumeEB", dd4hep::Trapezoid(dx1Module1, dx2Module1, dy0, dy0, dzModule1),
                       aLcdd.material("Air"));
-  Volume WedgeVolume2("WedgeVolume2", dd4hep::Trapezoid(dx1Module2, dx2Module2, dy0, dy0, dzModule2),
+  Volume WedgeVolume2("WedgeVolumeEB", dd4hep::Trapezoid(dx1Module2, dx2Module2, dy0, dy0, dzModule2),
                       aLcdd.material("Air"));
   double layerR = 0.;
   // Placement of subWedges in Wedge
@@ -212,15 +212,15 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
 
     layerR += layerDepths1.at(idxLayer);
 
-    Volume layerVolume("layerVolume", dd4hep::Trapezoid(dx1, dx2, dy0, dy0, dz0), aLcdd.material("Air"));
-    layerVolume.setVisAttributes(aLcdd.invisible());
+    Volume layerVolumeEB("layerVolumeEB", dd4hep::Trapezoid(dx1, dx2, dy0, dy0, dz0), aLcdd.material("Air"));
+    layerVolumeEB.setVisAttributes(aLcdd.invisible());
     unsigned int idxSubMod = 0;
     unsigned int idxActMod = 0;
     double modCompZOffset = -sequenceDimensions.dz() * 0.5;
 
     // layer middle offset
     dd4hep::Position modOffset(0, 0, rMiddle);
-    layers.push_back(WedgeVolume1.placeVolume(layerVolume, modOffset));
+    layers.push_back(WedgeVolume1.placeVolume(layerVolumeEB, modOffset));
     layers.back().addPhysVolID("layer", idxLayer);
 
     std::vector<dd4hep::PlacedVolume> tiles;
@@ -229,21 +229,21 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
          ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
       double dyComp = xComp.thickness() * 0.5;
-      Volume modCompVol("modCompVolume", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+      Volume modCompVol("modCompVolumeEB", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                         aLcdd.material(xComp.materialStr()));
       modCompVol.setVisAttributes(aLcdd, xComp.visStr());
       dd4hep::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);
 
       if (xComp.isSensitive()) {
-        Volume tileVol("tileVolume", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+        Volume tileVol("tileVolumeEB", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                        aLcdd.material(xComp.materialStr()));
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
-        tiles.push_back(layerVolume.placeVolume(tileVol, offset));
+        tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
 	//     tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
-        tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
+        tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
       }
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
@@ -268,15 +268,15 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
 
     layerR += layerDepths2.at(idxLayer);
 
-    Volume layerVolume("layerVolume", dd4hep::Trapezoid(dx1, dx2, dy0, dy0, dz0), aLcdd.material("Air"));
-    layerVolume.setVisAttributes(aLcdd.invisible());
+    Volume layerVolumeEB("layerVolumeEB", dd4hep::Trapezoid(dx1, dx2, dy0, dy0, dz0), aLcdd.material("Air"));
+    layerVolumeEB.setVisAttributes(aLcdd.invisible());
     unsigned int idxSubMod = 0;
     unsigned int idxActMod = 0;
     double modCompZOffset = -sequenceDimensions.dz() * 0.5;
 
     // layer middle offset
     dd4hep::Position modOffset(0, 0, rMiddle);
-    layers.push_back(WedgeVolume2.placeVolume(layerVolume, modOffset));
+    layers.push_back(WedgeVolume2.placeVolume(layerVolumeEB, modOffset));
     layers.back().addPhysVolID("layer", idxLayer);
 
     std::vector<dd4hep::PlacedVolume> tiles;
@@ -285,21 +285,21 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
          ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
       double dyComp = xComp.thickness() * 0.5;
-      Volume modCompVol("modCompVolume", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+      Volume modCompVol("modCompVolumeEB", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                         aLcdd.material(xComp.materialStr()));
       modCompVol.setVisAttributes(aLcdd, xComp.visStr());
       dd4hep::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);
 
       if (xComp.isSensitive()) {
-        Volume tileVol("tileVolume", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
+        Volume tileVol("tileVolumeEB", dd4hep::Trapezoid(dx1, dx2, dyComp, dyComp, dz0),
                        aLcdd.material(xComp.materialStr()));
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
-        tiles.push_back(layerVolume.placeVolume(tileVol, offset));
+        tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
 	//       tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
-        tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
+        tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
       }
       modCompZOffset += xComp.thickness() + xComp.y_offset();
     }
@@ -307,28 +307,28 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
     tilesInLayers.push_back(tiles);
   }
 
-  Volume ModuleVolume1("ModuleVolume1",
+  Volume ModuleVolume1("ModuleVolumeEB",
                        dd4hep::Trapezoid(dx1Module1, dx2Module1, (dzDetector1 - 2 * dZEndPlate - space),
-                                                   (dzDetector1 - 2 * dZEndPlate - space), dzModule1),
+					 (dzDetector1 - 2 * dZEndPlate - space), dzModule1),
                        aLcdd.material("Air"));
-
-  Volume ModuleVolume2("ModuleVolume2",
+  
+  Volume ModuleVolume2("ModuleVolumeEB",
                        dd4hep::Trapezoid(dx1Module2, dx2Module2, (dzDetector2 - 2 * dZEndPlate - space),
-                                                   (dzDetector2 - 2 * dZEndPlate - space), dzModule2),
+					 (dzDetector2 - 2 * dZEndPlate - space), dzModule2),
                        aLcdd.material("Air"));
-
+  
   Volume SteelSupportVolume1("SteelSupportVolume1",
                              dd4hep::Trapezoid(dx1Support1, dx2Support1,
-                                                         (dzDetector1 - 2 * dZEndPlate - space),
-                                                         (dzDetector1 - 2 * dZEndPlate - space), dzSupport),
+					       (dzDetector1 - 2 * dZEndPlate - space),
+					       (dzDetector1 - 2 * dZEndPlate - space), dzSupport),
                              aLcdd.material(xSteelSupport.materialStr()));
-
+  
   Volume SteelSupportVolume2("SteelSupportVolume2",
                              dd4hep::Trapezoid(dx1Support2, dx2Support2,
-                                                         (dzDetector2 - 2 * dZEndPlate - space),
-                                                         (dzDetector2 - 2 * dZEndPlate - space), dzSupport),
+					       (dzDetector2 - 2 * dZEndPlate - space),
+					       (dzDetector2 - 2 * dZEndPlate - space), dzSupport),
                              aLcdd.material(xSteelSupport.materialStr()));
-
+  
   // Placement of rings
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ1; ++idxZRow) {
     double zOffset = -dzDetector1 + 2 * dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
@@ -350,7 +350,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-    double phi = 0.5 * dphi + idxPhi * dphi;  // 0.5*dphi for middle of module
+    double phi = - dphi * 0.5 - idxPhi * dphi - 0.5*dd4hep::pi;  // modules placed following phi-eta segmentation
     double yPosModule1 = (sensitiveBarrel1Rmin + dzModule1) * cos(phi);
     double xPosModule1 = (sensitiveBarrel1Rmin + dzModule1) * sin(phi);
     double yPosSupport1 = (sensitiveBarrel1Rmin + 2 * dzModule1 + dzSupport) * cos(phi);
@@ -412,30 +412,30 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
     support2.setPlacement(supports2[iPhi]);
 
     for (uint iZ = 0; iZ < numSequencesZ1; iZ++) {
-      DetElement wedgeDet(moduleDet1, dd4hep::xml::_toString(iZ, "row%d"), iZ);
-      wedgeDet.setPlacement(rows[iZ]);
+      DetElement wedgeEBDet(moduleDet1, dd4hep::xml::_toString(iZ, "EBrow%d"), iZ);
+      wedgeEBDet.setPlacement(rows[iZ]);
 
       for (uint iLayer = 0; iLayer < numSequencesR1; iLayer++) {
-        DetElement layerDet(wedgeDet, dd4hep::xml::_toString(iLayer, "layer%d"), iLayer);
-        layerDet.setPlacement(layers[iLayer]);
+        DetElement layerEBDet(wedgeEBDet, dd4hep::xml::_toString(iLayer, "EBlayer%d"), iLayer);
+        layerEBDet.setPlacement(layers[iLayer]);
 
         for (uint iTile = 0; iTile < tilesInLayers[iLayer].size(); iTile++) {
-          DetElement tileDet(layerDet, dd4hep::xml::_toString(iTile, "tile%d"), iTile);
-          tileDet.setPlacement(tilesInLayers[iLayer][iTile]);
+          DetElement tileEBDet(layerEBDet, dd4hep::xml::_toString(iTile, "EBtile%d"), iTile);
+          tileEBDet.setPlacement(tilesInLayers[iLayer][iTile]);
         }
       }
     }
     for (uint iZ = numSequencesZ1; iZ < (numSequencesZ1 + numSequencesZ2); iZ++) {
-      DetElement wedgeDet(moduleDet2, dd4hep::xml::_toString(iZ, "row%d"), iZ);
-      wedgeDet.setPlacement(rows[iZ]);
+      DetElement wedgeEBDet(moduleDet2, dd4hep::xml::_toString(iZ, "EBrow%d"), iZ);
+      wedgeEBDet.setPlacement(rows[iZ]);
 
       for (uint iLayer = numSequencesR1; iLayer < (numSequencesR1 + numSequencesR2); iLayer++) {
-        DetElement layerDet(wedgeDet, dd4hep::xml::_toString(iLayer, "layer%d"), iLayer);
-        layerDet.setPlacement(layers[iLayer]);
+        DetElement layerEBDet(wedgeEBDet, dd4hep::xml::_toString(iLayer, "EBlayer%d"), iLayer);
+        layerEBDet.setPlacement(layers[iLayer]);
 
         for (uint iTile = 0; iTile < tilesInLayers[iLayer].size(); iTile++) {
-          DetElement tileDet(layerDet, dd4hep::xml::_toString(iTile, "tile%d"), iTile);
-          tileDet.setPlacement(tilesInLayers[iLayer][iTile]);
+          DetElement tileEBDet(layerEBDet, dd4hep::xml::_toString(iTile, "EBtile%d"), iTile);
+          tileEBDet.setPlacement(tilesInLayers[iLayer][iTile]);
         }
       }
     }

@@ -50,7 +50,7 @@
   </display>
 
   <readouts>
-    <readout name="HCalBarrel">
+    <readout name="HCalBarrelReadout">
       <!-- Introduce a segmentation in phi to devide HCAL modules, check for advantages of finer granularity -->
      <id>system:4,module:8,row:9,layer:5</id>
     </readout>
