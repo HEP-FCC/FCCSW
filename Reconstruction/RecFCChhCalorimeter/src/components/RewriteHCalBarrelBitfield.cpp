@@ -101,17 +101,13 @@ StatusCode RewriteHCalBarrelBitfield::execute() {
       if (detectorField == "module"){
 	// get phi id
 	auto phiId = (*m_oldDecoder)["phi"];
-	//auto div = phiId-offsetPhiIds;
-	//if (div < 0){
-	//  div = 192 + phiId;
-	//}
 	uint newModuleId = phiId;
 	(*m_newDecoder)[detectorField] = newModuleId;
 	if (debugIter < m_debugPrint) {
-	  info() << "Phi of Cell   : " << inSegPhi << endmsg;
-	  info() << "old module id : " << oldid << endmsg;
-	  info() << "old phi    id : " << phiId << endmsg;
-	  info() << "new module id : " << newModuleId << endmsg;
+	  debug() << "Phi of Cell   : " << inSegPhi << endmsg;
+	  debug() << "old module id : " << oldid << endmsg;
+	  debug() << "old phi    id : " << phiId << endmsg;
+	  debug() << "new module id : " << newModuleId << endmsg;
 	}
       }else{ 
 	(*m_newDecoder)[detectorField] = oldid;

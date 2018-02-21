@@ -64,6 +64,9 @@ dd4hep::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& a
   double local[3] = {0, 0, 0};
   transform.LocalToMaster(local, global);
   dd4hep::Position outSeg(global[0], global[1], global[2]);
+  // check phi posiitons of modules                                                                                                                                                                                                           
+  m_decoder->setValue(aCellId);
+
   return outSeg;
 }
 

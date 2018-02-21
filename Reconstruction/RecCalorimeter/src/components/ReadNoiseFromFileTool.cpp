@@ -42,8 +42,7 @@ StatusCode ReadNoiseFromFileTool::initialize() {
   }
 
   // Take readout bitfield decoder from GeoSvc
-  m_decoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
-								  m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder());
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation()->decoder();
   debug() << "Filter noise threshold: " << m_filterThreshold << "*sigma" << endmsg;
 
   StatusCode sc = GaudiTool::initialize();
@@ -109,7 +108,7 @@ StatusCode ReadNoiseFromFileTool::initNoiseFromFile() {
   return StatusCode::SUCCESS;
 }
 
-double ReadNoiseFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
+double ReadNoiseFromFileTool::getNoiseConstantPerCell(uint64_t aCellId) {
 
   double elecNoise = 0.;
   double pileupNoise = 0.;

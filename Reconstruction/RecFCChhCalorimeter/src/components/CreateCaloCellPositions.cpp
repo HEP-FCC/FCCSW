@@ -34,35 +34,6 @@ CreateCaloCellPositions::CreateCaloCellPositions(const std::string& name, ISvcLo
 StatusCode CreateCaloCellPositions::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
-  if (!m_cellPositionsECalBarrelTool.retrieve()) {
-    error() << "Unable to retrieve the ECal cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if (!m_cellPositionsHCalBarrelTool.retrieve()) {
-    error() << "Unable to retrieve the HCal cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if (!m_cellPositionsHCalExtBarrelTool.retrieve()) {
-    error() << "Unable to retrieve the HCal Ext Barrel cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if (!m_cellPositionsEMECTool.retrieve()) {
-    error() << "Unable to retrieve the EMEC cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if (!m_cellPositionsHECTool.retrieve()) {
-    error() << "Unable to retrieve the HEC cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if (!m_cellPositionsEMFwdTool.retrieve()) {
-    error() << "Unable to retrieve the EMFwd cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if (!m_cellPositionsHFwdTool.retrieve()) {
-    error() << "Unable to retrieve the HFwd cell positions tool!!!" << endmsg;
-    return StatusCode::FAILURE;
-  }
-
   return StatusCode::SUCCESS;
 }
 

@@ -34,7 +34,7 @@ public:
   /// Open file and read noise histograms in the memory
   StatusCode initNoiseFromFile();
   /// Find the appropriate noise constant from the histogram
-  double getNoiseConstantPerCell(int64_t aCellID);
+  double getNoiseConstantPerCell(uint64_t aCellID);
 
 private:
   /// Add pileup contribution to the electronics noise? (only if read from file)
@@ -68,7 +68,7 @@ private:
   /// PhiEta segmentation
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   // Decoder
-  std::shared_ptr<dd4hep::DDSegmentation::BitField64> m_decoder;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
 
 };
 
