@@ -31,22 +31,16 @@ public:
   virtual StatusCode finalize() final;
 
   /// Find the appropriate noise constant from the histogram
-  double getNoiseConstantPerCell(int64_t aCellID);
+  double getNoiseConstantPerCell(uint64_t aCellID);
 
 private:
-  /// Name of the detector readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
-  /// Name of active layers for sampling calorimeter
-  Gaudi::Property<std::string> m_systemFieldName{this, "systemFieldName", "system",
-      "Name of field describing detector system"};
   std::map<uint,double> m_systemNoiseConstMap;
-  
+  /// noise level in HCal
+  double m_addedHcalBarrelNoise = 0.;
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// PhiEta segmentation
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   // Decoder
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::DDSegmentation::BitField64* m_decoder = new dd4hep::DDSegmentation::BitField64("system:4");
 
 };
 

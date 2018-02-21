@@ -15,7 +15,7 @@ class INoiseConstTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(INoiseConstTool, 1, 0);
 
-  virtual double getNoiseConstantPerCell(int64_t aCellID) = 0;
+  virtual double getNoiseConstantPerCell(uint64_t aCellID) = 0;
 };
 
 #endif /* RECINTERFACE_INOISECONSTTOOL_H */
