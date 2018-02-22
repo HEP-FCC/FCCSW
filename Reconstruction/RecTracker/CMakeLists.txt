@@ -10,7 +10,7 @@ find_package(Geant4)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(HepMC)
-find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
+find_package(DD4hep COMPONENTS DDSegmentation REQUIRED)
 find_package(tricktrack)
 find_package(ROOT REQUIRED COMPONENTS Geom)
 find_package(ACTS COMPONENTS Core  TGeoPlugin DD4hepPlugin)
@@ -46,14 +46,14 @@ gaudi_add_test(CombinatorialTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/combinatorialTrackSeedingTest.py)
 
-gaudi_add_test(GeantFullSimWithGeantino
+gaudi_add_test(MuonsForSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/geant_fullsim_pgun_geantino.py)
+               FRAMEWORK options/muons_for_seeding.py)
 
 gaudi_add_test(TrickTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/TrickTrackSeedingTest.py
-			         DEPENDS GeantFullSimWithGeantino)
+			         DEPENDS MuonsForSeeding)
 
 
 # TODO: to be re-enabled once ACTS DD4hepPlugin is up to date
