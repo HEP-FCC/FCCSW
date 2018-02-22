@@ -65,11 +65,13 @@ tower CaloTowerTool::towersNumber() {
   listPhiMax.reserve(7);
   listEtaMax.reserve(7);
   if (m_ecalBarrelSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) + M_PI / (double)m_ecalBarrelSegmentation->phiBins());
+    listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) +
+                         M_PI / (double)m_ecalBarrelSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_ecalBarrelSegmentation->offsetEta()) + m_ecalBarrelSegmentation->gridSizeEta() * 0.5);
   }
   if (m_ecalEndcapSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_ecalEndcapSegmentation->offsetPhi()) + M_PI / (double)m_ecalEndcapSegmentation->phiBins());
+    listPhiMax.push_back(fabs(m_ecalEndcapSegmentation->offsetPhi()) +
+                         M_PI / (double)m_ecalEndcapSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_ecalEndcapSegmentation->offsetEta()) + m_ecalEndcapSegmentation->gridSizeEta() * 0.5);
   }
   if (m_ecalFwdSegmentation != nullptr) {
@@ -77,23 +79,25 @@ tower CaloTowerTool::towersNumber() {
     listEtaMax.push_back(fabs(m_ecalFwdSegmentation->offsetEta()) + m_ecalFwdSegmentation->gridSizeEta() * 0.5);
   }
   if (m_hcalBarrelSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) + M_PI / (double)m_hcalBarrelSegmentation->phiBins());
+    listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) +
+                         M_PI / (double)m_hcalBarrelSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_hcalBarrelSegmentation->offsetEta()) + m_hcalBarrelSegmentation->gridSizeEta() * 0.5);
   }
   if (m_hcalExtBarrelSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetPhi()) + M_PI / (double)m_hcalExtBarrelSegmentation->phiBins());
+    listPhiMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetPhi()) +
+                         M_PI / (double)m_hcalExtBarrelSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetEta()) +
                          m_hcalExtBarrelSegmentation->gridSizeEta() * 0.5);
   }
   if (m_hcalEndcapSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalEndcapSegmentation->offsetPhi()) + M_PI / (double)m_hcalEndcapSegmentation->phiBins());
+    listPhiMax.push_back(fabs(m_hcalEndcapSegmentation->offsetPhi()) +
+                         M_PI / (double)m_hcalEndcapSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_hcalEndcapSegmentation->offsetEta()) + m_hcalEndcapSegmentation->gridSizeEta() * 0.5);
   }
   if (m_hcalFwdSegmentation != nullptr) {
     listPhiMax.push_back(fabs(m_hcalFwdSegmentation->offsetPhi()) + M_PI / (double)m_hcalFwdSegmentation->phiBins());
     listEtaMax.push_back(fabs(m_hcalFwdSegmentation->offsetEta()) + m_hcalFwdSegmentation->gridSizeEta() * 0.5);
   }
-
 
   // Maximum eta & phi of the calorimeter system
   m_phiMax = *std::max_element(listPhiMax.begin(), listPhiMax.end());
@@ -106,8 +110,10 @@ tower CaloTowerTool::towersNumber() {
   m_nPhiTower = ceil(2 * (m_phiMax - epsilon) / m_deltaPhiTower);
   // number of eta bins (if eta maximum is defined)
   m_nEtaTower = ceil(2 * (m_etaMax - epsilon) / m_deltaEtaTower);
-  debug() << "Towers: etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower << endmsg;
-  debug() << "Towers: phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower << endmsg;
+  debug() << "Towers: etaMax " << m_etaMax << ", deltaEtaTower " << m_deltaEtaTower << ", nEtaTower " << m_nEtaTower
+          << endmsg;
+  debug() << "Towers: phiMax " << m_phiMax << ", deltaPhiTower " << m_deltaPhiTower << ", nPhiTower " << m_nPhiTower
+          << endmsg;
 
   tower total;
   total.eta = m_nEtaTower;
@@ -117,7 +123,9 @@ tower CaloTowerTool::towersNumber() {
 
 uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   uint totalNumberOfCells = 0;
-
+  for (auto& towerInMap : m_cellsInTowers) {
+    towerInMap.second.clear();
+  }
   // 1. ECAL barrel
   // Get the input collection with calorimeter cells
   const fcc::CaloHitCollection* ecalBarrelCells = m_ecalBarrelCells.get();
@@ -164,7 +172,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
     totalNumberOfCells += hcalExtBarrelCells->size();
   }
 
-  // 6. HCAL endcap calorimeter                                                                                                              
+  // 6. HCAL endcap calorimeter
   const fcc::CaloHitCollection* hcalEndcapCells = m_hcalEndcapCells.get();
   debug() << "Input Hcal endcap cell collection size: " << hcalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
@@ -217,8 +225,8 @@ uint CaloTowerTool::phiNeighbour(int aIPhi) const {
 float CaloTowerTool::radiusForPosition() const { return m_radius; }
 
 void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
-                                            const fcc::CaloHitCollection* aCells,
-                                            dd4hep::DDSegmentation::FCCSWGridPhiEta* aSegmentation) {
+                                    const fcc::CaloHitCollection* aCells,
+                                    dd4hep::DDSegmentation::FCCSWGridPhiEta* aSegmentation) {
   // Loop over a collection of calorimeter cells and build calo towers
   // borders of the cell in eta/phi
   float etaCellMin = 0, etaCellMax = 0;
@@ -292,6 +300,7 @@ void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
         }
         aTowers[iEta][phiNeighbour(iPhi)] +=
             cell.core().energy / cosh(aSegmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
+        m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))].push_back(cell);
       }
     }
   }
@@ -310,4 +319,17 @@ dd4hep::DDSegmentation::FCCSWGridPhiEta* CaloTowerTool::retrieveSegmentation(std
     }
   }
   return segmentation;
+}
+
+void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
+  int etaId = idEta(eta);
+  int phiId = idPhi(phi);
+  for (int iEta = etaId - halfEtaFin; iEta <= etaId + halfEtaFin; iEta++) {
+    for (int iPhi = phiId - halfPhiFin; iPhi <= phiId + halfPhiFin; iPhi++) {
+      for (const auto& cell : m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))]) {
+        aEdmCluster.addhits(cell);
+      }
+    }
+  }
+  return;
 }

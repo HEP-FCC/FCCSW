@@ -14,6 +14,7 @@ class IGeoSvc;
 // datamodel
 namespace fcc {
 class CaloHitCollection;
+class CaloHit;
 }
 
 namespace dd4hep {
@@ -78,8 +79,7 @@ public:
   virtual uint idEta(float aEta) const final;
   /**  Get the tower IDs in phi.
    *   @param[in] aPhi Position of the calorimeter cell in phi
-   *   @return ID (phi) of a tower
-   */
+   *   @return ID (phi) of a tower   */
   virtual uint idPhi(float aPhi) const final;
   /**  Get the eta position of the centre of the tower.
    *   @param[in] aIdEta ID (eta) of a tower
@@ -112,6 +112,15 @@ public:
    *   @param[in] aReadoutName Readout name to be retrieved
    */
   dd4hep::DDSegmentation::FCCSWGridPhiEta* retrieveSegmentation(std::string aReadoutName);
+  /**  Find cells belonging to a cluster.
+   *   @param[in] aEta Position of the middle tower of a cluster in eta
+   *   @param[in] aPhi Position of the middle tower of a cluster in phi
+   *   @param[in] aHalfEtaFinal Half size of cluster in eta (in units of tower size). Cluster size is 2*aHalfEtaFinal+1
+   *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
+   *   @param[out] aEdmCluster Cluster where cells are attached to
+   */
+  virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                           fcc::CaloCluster& aEdmCluster) final;
 
 private:
   /// Handle for electromagnetic barrel cells (input collection)
@@ -135,7 +144,7 @@ private:
                                                        "name of the ecal barrel readout"};
   /// Name of the ecal endcap calorimeter readout
   Gaudi::Property<std::string> m_ecalEndcapReadoutName{this, "ecalEndcapReadoutName", "",
-                                                      "name of the ecal endcap readout"};
+                                                       "name of the ecal endcap readout"};
   /// Name of the ecal forward calorimeter readout
   Gaudi::Property<std::string> m_ecalFwdReadoutName{this, "ecalFwdReadoutName", "", "name of the ecal fwd readout"};
   /// Name of the hadronic barrel readout
@@ -148,8 +157,7 @@ private:
   Gaudi::Property<std::string> m_hcalEndcapReadoutName{this, "hcalEndcapReadoutName", "",
                                                        "name of the hcal endcap readout"};
   /// Name of the hcal forward calorimeter readout
-  Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "", 
-                                                    "name of the hcal fwd readout"};
+  Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "", "name of the hcal fwd readout"};
   /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalBarrelSegmentation;
   /// PhiEta segmentation of the ecal endcap calorimeter (owned by DD4hep)
@@ -179,6 +187,9 @@ private:
   int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)
   int m_nPhiTower;
+  /// map to cells contained within a tower so they can be attached to a reconstructed cluster (note that fraction of
+  /// their energy assigned to a cluster is not acknowledged)
+  std::map<std::pair<uint, uint>, std::vector<fcc::ConstCaloHit>> m_cellsInTowers;
 };
 
 #endif /* RECCALORIMETER_CALOTOWERTOOL_H */

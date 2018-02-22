@@ -209,3 +209,16 @@ uint LayeredCaloTowerTool::phiNeighbour(int aIPhi) const {
 }
 
 float LayeredCaloTowerTool::radiusForPosition() const { return m_radius; }
+
+void LayeredCaloTowerTool::attachCells(
+    float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
+  const fcc::CaloHitCollection* cells = m_cells.get();
+  for (const auto& cell : *cells) {
+    float etaCell = m_segmentation->eta(cell.core().cellId);
+    float phiCell = m_segmentation->phi(cell.core().cellId);
+    if ((abs(idEta(etaCell) - idEta(eta)) <= halfEtaFin) && (abs(idPhi(phiCell) - idPhi(phi)) <= halfPhiFin)) {
+      aEdmCluster.addhits(cell);
+    }
+  }
+  return;
+}

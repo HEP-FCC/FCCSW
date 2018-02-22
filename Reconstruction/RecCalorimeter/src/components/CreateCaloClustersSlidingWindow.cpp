@@ -247,9 +247,11 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
                (abs(idPhiClShare - idPhiCl) > m_nPhiTower - m_nPhiFinal))) {
             // add energy in shared towers to sumEnergySharing[][]
             for (int iEta = std::max(idEtaCl, idEtaClShare) - halfEtaFin;
-                 iEta <= std::min(idEtaCl, idEtaClShare) + halfEtaFin; iEta++) {
+                 iEta <= std::min(idEtaCl, idEtaClShare) + halfEtaFin;
+                 iEta++) {
               for (int iPhi = std::max(idPhiCl, idPhiClShare) - halfPhiFin;
-                   iEta <= std::min(idPhiCl, idPhiClShare) + halfPhiFin; iPhi++) {
+                   iEta <= std::min(idPhiCl, idPhiClShare) + halfPhiFin;
+                   iPhi++) {
                 if (iEta >= 0 && iEta < m_nEtaTower) {  // check if we are not outside of map in eta
                   sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] +=
                       m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));
@@ -279,9 +281,10 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       edmClusterCore.position.y = radius * sin(clu.phi);
       edmClusterCore.position.z = radius * sinh(clu.eta);
       edmClusterCore.energy = clusterEnergy;
+      m_towerTool->attachCells(clu.eta, clu.phi, halfEtaWin, halfPhiWin, edmCluster);
       debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x
               << " y: " << edmClusterCore.position.y << " z: " << edmClusterCore.position.z
-              << " energy: " << edmClusterCore.energy << endmsg;
+              << " energy: " << edmClusterCore.energy << " contains: " << edmCluster.hits_size() << " cells" << endmsg;
     }
   }
   return StatusCode::SUCCESS;
