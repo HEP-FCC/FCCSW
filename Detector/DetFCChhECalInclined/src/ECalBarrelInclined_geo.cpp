@@ -225,7 +225,8 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
 
   if (passiveInner.isSensitive()) {
     lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
-    double layerOffset = layerFirstOffset;
+    // inner part starts at second layer
+    double layerOffset = layerFirstOffset + layerHeight[0] / 2. + layerHeight[1] / 2.;
     for (uint iLayer = 1; iLayer < numLayers; iLayer++) {
       dd4hep::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight[iLayer] / 2.);
       dd4hep::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
