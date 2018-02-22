@@ -42,13 +42,15 @@ gaudi_add_test(FastDigiTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/fastDigiTest.py)
 
-gaudi_add_test(CombinatorialTrackSeeding
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/combinatorialTrackSeedingTest.py)
 
 gaudi_add_test(MuonsForSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/muons_for_seeding.py)
+
+gaudi_add_test(CombinatorialTrackSeeding
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			         FRAMEWORK options/CombinatorialSeedingTest.py
+			         DEPENDS MuonsForSeeding)
 
 gaudi_add_test(TrickTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
