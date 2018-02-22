@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 
 class G4Track;
 namespace fcc {
@@ -28,11 +29,10 @@ public:
   EventInformation();
   /// Destructor
   virtual ~EventInformation() = default;
-  /** Set external pointers to point at the particle and vertex collections.
-   * @param[in] aGenVertexCollection  pointer to a collection that should take ownership of the particles saved here
-   * @param[in] aMCParticleCollection  pointer to a collection that should take ownership of the particles saved here
-   */
-  void setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMcParticleCollection);
+  /// release the Vertex collection held by this class
+  std::unique_ptr<fcc::GenVertexCollection> releaseVertexCollection();
+  /// release the Particle collection held bt this class
+  std::unique_ptr<fcc::MCParticleCollection> releaseParticleCollection();
   /// Add a particle to be tracked in the EDM collections
   void addParticle(const G4Track* aSecondary);
 
@@ -40,9 +40,9 @@ public:
 
 private:
   /// Pointer to the vertex collection, ownership is intended to be transfered to SaveTool
-  fcc::GenVertexCollection* m_genVertices;
+  std::unique_ptr<fcc::GenVertexCollection> m_genVertices;
   /// Pointer to the particle collection, ownership is intended to be transfered to SaveTool
-  fcc::MCParticleCollection* m_mcParticles;
+  std::unique_ptr<fcc::MCParticleCollection> m_mcParticles;
   /// Map to get the edm end vertex id from a Geant4 unique particle ID
   std::map<size_t, size_t> m_g4IdToEndVertexMap;
 };

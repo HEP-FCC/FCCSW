@@ -9,14 +9,16 @@
 
 namespace sim {
 EventInformation::EventInformation() { 
-  m_genVertices = new fcc::GenVertexCollection();
-  m_mcParticles = new fcc::MCParticleCollection();
+  m_genVertices = std::make_unique<fcc::GenVertexCollection>();
+  m_mcParticles = std::make_unique<fcc::MCParticleCollection>();
 }
 
-void EventInformation::setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMCParticleCollection) {
-  // ownership is transferred here - to SaveTool which is supposed to put it in the event store
-  aGenVertexCollection = m_genVertices;
-  aMCParticleCollection = m_mcParticles;
+std::unique_ptr<fcc::GenVertexCollection> EventInformation::releaseVertexCollection() {
+  return std::move(m_genVertices);
+}
+
+std::unique_ptr<fcc::MCParticleCollection> EventInformation::releaseParticleCollection() {
+  return std::move(m_mcParticles);
 }
 
 void EventInformation::addParticle(const G4Track* aSecondary) {
