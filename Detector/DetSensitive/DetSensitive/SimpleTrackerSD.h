@@ -8,6 +8,14 @@
 #include "G4THitsCollection.hh"
 #include "G4VSensitiveDetector.hh"
 
+namespace fcc {
+
+  class Geant4PreDigiTrackHit;
+
+}
+
+
+
 /** SimpleTrackerSD DetectorDescription/DetSensitive/src/SimpleTrackerSD.h SimpleTrackerSD.h
  *
  *  Simple sensitive detector for tracker.
@@ -46,7 +54,7 @@ public:
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<dd4hep::sim::Geant4Hit>* m_trackerCollection;
+  G4THitsCollection<fcc::Geant4PreDigiTrackHit>* m_trackerCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };
