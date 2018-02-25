@@ -24,6 +24,7 @@ SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::
     : GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
+  declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
   declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
 }
 

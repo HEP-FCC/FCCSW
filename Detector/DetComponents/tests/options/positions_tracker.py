@@ -18,6 +18,7 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits
 savetool = SimG4SaveTrackerHits("saveHits", readoutNames = ["TrackerBarrelReadout"])
 savetool.positionedTrackHits.Path = "PositionedHits"
 savetool.trackHits.Path = "Hits"
+savetool.digiTrackHits.Path = "digiHits"
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
                                       particleName = "mu-", energyMin = 1000, energyMax = 1000, etaMin = 0, etaMax = 0,
