@@ -110,6 +110,9 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   }
   totalNumberOfCells += hcalFwdCells->size();
   
+  if (totalNumberOfCells != m_inputMap.size())
+    error() << "Map size != total number of cells! " << endmsg;
+
   return m_inputMap;
 }
 

@@ -179,7 +179,7 @@ void CaloTopoCluster::buildingProtoCluster(
     int nSigma,
     int lastNSigma,
     std::vector<std::pair<uint64_t, double>>& seeds,
-    std::map<uint64_t, double>& allCells,
+    const std::map<uint64_t, double>& allCells,
     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection) {
   // Map of cellIds to clusterIds
   std::map<uint64_t, uint> clusterOfCell;
@@ -256,15 +256,14 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
       // If cell is hit.. and is not assigned to a cluster
       if (itAllCells != allCells.end() && itAllUsedCells == clusterOfCell.end()) {
         debug() << "Found neighbour with CellID: " << neighbourID << endmsg;
-        auto neighbouringCellId = itAllCells->first;
         auto neighbouringCellEnergy = itAllCells->second;
         bool validatedNeighbour = false;
         if (nSigma == 0)  // no condition to be checked for neighbour
           validatedNeighbour = true;
         else {
           // retrieve the cell noise level [GeV]
-          double thr = nSigma * m_noiseTool->noise(neighbouringCellId);
-          if (abs(neighbouringCellEnergy) >= thr)
+          double thr = nSigma * m_noiseTool->noise(neighbourID);
+          if (abs(neighbouringCellEnergy) > thr)
             validatedNeighbour = true;
           else
             validatedNeighbour = false;
@@ -274,7 +273,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
           // retrieve the cell
           // add neighbour to cells for cluster
           // set Bits to 1 for neighbour cell
-          preClusterCollection[clusterID].push_back(std::make_pair(neighbouringCellId, 1));
+          preClusterCollection[clusterID].push_back(std::make_pair(neighbourID, 1));
           clusterOfCell[neighbourID] = clusterID;
           addedNeighbourIds.push_back(std::make_pair(neighbourID, clusterID));
         }

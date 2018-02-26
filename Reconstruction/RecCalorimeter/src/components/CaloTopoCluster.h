@@ -54,7 +54,7 @@ public:
   virtual void buildingProtoCluster(int nSigma,
 				    int lastNSigma,
                                     std::vector<std::pair<uint64_t, double>>& seeds,
-                                    std::map<uint64_t, double>& allCells,
+                                    const std::map<uint64_t, double>& allCells,
                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection);
 
   /** Search for neighbours and add them to lists
