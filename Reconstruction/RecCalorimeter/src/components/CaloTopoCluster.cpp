@@ -113,10 +113,10 @@ StatusCode CaloTopoCluster::execute() {
       auto cellId = pair.first;
       // get CaloHit by cellID
       auto newCell = edmClusterCells->create();
-      newCell.energy(m_allCells[cellId]);
-      newCell.cellId(cellId);
-      newCell.bits(pair.second);
-      energy += newCell.energy();
+      newCell.core().energy = m_allCells[cellId];
+      newCell.core().cellId = cellId;
+      newCell.core().bits = pair.second;
+      energy += newCell.core().energy;
 
       // get cell position by cellID
       // identify calo system
@@ -140,9 +140,9 @@ StatusCode CaloTopoCluster::execute() {
       else
         warning() << "No cell positions tool found for system id " << systemId << ". " << endmsg;
 
-      posX += posCell.X() * newCell.energy();
-      posY += posCell.Y() * newCell.energy();
-      posZ += posCell.Z() * newCell.energy();
+      posX += posCell.X() * newCell.core().energy;
+      posY += posCell.Y() * newCell.core().energy;
+      posZ += posCell.Z() * newCell.core().energy;
       // edmClusterCells->push_back(newCell);
       cluster.addhits(newCell);
       m_allCells.erase(cellId);
