@@ -296,7 +296,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
             if (j.first == i.first) found = true;
           }
           if (!found) {
-            preClusterCollection[clusterIDToMerge].push_back(std::make_pair(i.first, 2));
+            preClusterCollection[clusterIDToMerge].push_back(std::make_pair(i.first, i.second));
           }
         }
         preClusterCollection.erase(clusterID);
