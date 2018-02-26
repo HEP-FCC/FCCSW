@@ -43,6 +43,10 @@ GeometricTrackerDigitizer::GeometricTrackerDigitizer(const std::string& name, IS
   declareProperty("digiTrackHitAssociation", m_digiTrackHitAssociation, "Handle for input digiTrackHitAssociation");
   declareProperty("trackClusters", m_trackClusters, "Handle for output clusters");
   declareProperty("clusterTrackHits", m_trackHits, "Handle for output hits belonging to the clusters");
+  declareProperty("singleTrackClusters", m_singleTrackClusters,
+                  "Handle for single particle output clusters [optional]");
+  declareProperty("singleClusterTrackHits", m_singleTrackHits,
+                  "Handle for output hits belonging to the single particle clusters [optional]");
 }
 
 StatusCode GeometricTrackerDigitizer::initialize() {
@@ -108,6 +112,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackHits = m_trackHits.createAndPut();
   // prepare the output clusters
   auto trackClusters = m_trackClusters.createAndPut();
+  // possible outout of single particle clusters
+  auto singleTrackClusters = m_singleTrackClusters.createAndPut();
   // the cells to be used
   std::map<size_t, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
   // go through hits
@@ -160,13 +166,26 @@ StatusCode GeometricTrackerDigitizer::execute() {
       fcc::Vector3D localDirection = (postStepPosition - globalIntersection).unit();
       fcc::Vector2D localIntersection(0., 0.);
       hitSurface.globalToLocal(globalIntersection, localDirection, localIntersection);
+      localDirection = (hitSurface.transform().inverse()) * localDirection;
       // calculate the digitization steps
       std::vector<Acts::DigitizationStep> dSteps =
           m_moduleStepper->cellSteps(*hitDigitizationModule, localIntersection, localDirection.unit());
       // everything under threshold or edge effects
       if (!dSteps.size()) continue;
+      // possible single particle cluster
+      fcc::TrackCluster singleTrackCluster;
+      // (1) calculate position of the single particle cluster
+      double localX = 0, localY = 0;
+      // go through the merged cells to calculate the averaged local position of the cluster
+      double norm = 0;
+      // calculate time of cluster (mean of all cells)
+      double clusterTime = 0.;
       // loop over the steps
       for (auto dStep : dSteps) {
+        // smeared, passed and taken
+        // create digitization cell
+        fcc::TrackHit trackHit;
+        trackHit.core(hit.hit().core());
         // smear the path length with (1 +/- epsilon)
         double sLength =
             (m_smearParameter != 0.) ? (dStep.stepLength * (1. + m_smearParameter * m_gauss())) : dStep.stepLength;
@@ -174,17 +193,40 @@ StatusCode GeometricTrackerDigitizer::execute() {
         double wLength = (m_analogReadout) ? sLength : 1.;
         // check if it falls below threshold
         if (m_cutParameter != 0. && sLength < m_cutParameter * thickness) continue;
-        // smeared, passed and taken
-        // create digitization cell
-        fcc::TrackHit trackHit;
-        trackHit.core(hit.hit().core());
-        auto digiCell =
-            sim::FCCDigitizationCell(std::move(trackHit), dStep.stepCell.channel0, dStep.stepCell.channel1, wLength);
+        // check if single particle cluster parameters should be calculated
+        if (m_singleParticleClusters) {
+          // calculate position of hit (for digital readout data==1)
+          localX += wLength * dStep.stepCellCenter.x();
+          localY += wLength * dStep.stepCellCenter.y();
+          norm += wLength;
+          clusterTime += trackHit.core().time;
+          // @todo not working yet
+          // singleTrackCluster.addhits(trackHit);
+        }
+        auto digiCell = sim::FCCDigitizationCell(trackHit, dStep.stepCell.channel0, dStep.stepCell.channel1, wLength);
         // push back used cells per surface
         cellsPerSurface[surfaceID].push_back(std::move(digiCell));
       }  // dSteps
-    }    // if hitDigitizationModule
-  }      // hits
+      if (m_singleParticleClusters) {
+        // local position of single particle cluster
+        fcc::Vector2D localPosition(localX, localY);
+        // calculate global position of the cluster
+        fcc::Vector3D globalPosition(0., 0., 0.);
+        hitSurface.localToGlobal(localPosition, fcc::Vector3D(0., 0., 0.), globalPosition);
+        // translate to fcc edm
+        auto position = fcc::Point();
+        position.x = globalPosition.x();
+        position.y = globalPosition.y();
+        position.z = globalPosition.z();
+        // save position in single particle track cluster
+        singleTrackCluster.core().position = position;
+        // calculate total energy deposited in cluster (sum up energy of all cells)
+        singleTrackCluster.core().energy = norm;
+        singleTrackCluster.core().time = clusterTime;
+        singleTrackClusters->push_back(singleTrackCluster);
+      }
+    }  // if hitDigitizationModule
+  }    // hits
 
   // Now create clusters for cells per surface
   for (auto& surf : cellsPerSurface) {
@@ -266,7 +308,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
         // calculate mean of time
         clusterTime += outHit.core().time;
         // @todo not working yet
-        //    trackCluster.addhits(fcc::ConstTrackHit(outHit));
+        // trackCluster.addhits(outHit);
       }
       // divide by the total path - analog clustering
       if (norm > 0) {
@@ -302,6 +344,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
       position.y = globalPosition.y();
       position.z = globalPosition.z();
       // save position in cluster
+      //@ todo      set cellID
       trackCluster.core().position = position;
       // calculate total energy deposited in cluster (sum up energy of all cells)
       trackCluster.core().energy = norm;
@@ -490,7 +533,7 @@ GeometricTrackerDigitizer::createClusters(const std::vector<sim::FCCDigitization
 }
 
 StatusCode GeometricTrackerDigitizer::finalize() {
-  digi::writePlanarClusters(m_clustersPerEvent);
+  if (m_writeActsClusters) digi::writePlanarClusters(m_clustersPerEvent);
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }
