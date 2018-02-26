@@ -46,7 +46,7 @@ private:
   Gaudi::Property<std::vector<unsigned int>> m_activeVolumesNumbersSegmented{this, "activeVolumesNumbers", {8}};
 
   /// Names of the detector readout for volumes with nested volume structure and no segmentation
-  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"HCalBarrel"}};
+  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"HCalBarrelReadout"}};
   /// Name of the field describing the nested volume
   Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested", "system"};
   /// Values of the fields describing the nested volume
@@ -69,7 +69,7 @@ private:
   // For combination of barrels: HCal inner radius for calculation of eta from z
   Gaudi::Property<double> m_hCalRinner{this, "hCalRinner", 2850};
   // For combination of barrels: offset of HCal modules in phi (lower edge)
-  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI / 2.};
+  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI};
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONEIGHBOURS_H */

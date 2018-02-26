@@ -83,7 +83,9 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           (*decoder)["phi"] = iphi;
           (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
           uint64_t cellId = decoder->getValue();
-	  double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
+	  // double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
+	  // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
+	  double noise = 0.0075/4.;
           map.insert(std::pair<uint64_t,double>(cellId, noise));
 	}
       }
@@ -174,14 +176,16 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           (*decoder)[m_activeFieldNamesNested[1]] = iphi;
           (*decoder)[m_activeFieldNamesNested[2]] = iz;
           uint64_t volumeId = decoder->getValue();
-	  double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId); 
+	  // double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId); 
+	  // use constant noise level in hcal 0.0115 / 4.
+	  double noise = 0.0115/4.;
 	  map.insert(std::pair<uint64_t,double>(volumeId, noise));
         }
       }
     }
   }
 
-  TFile file("cellNoise_map_segHcal.root", "RECREATE");
+  TFile file("cellNoise_map_segHcal_constNoiseLevel.root", "RECREATE");
   file.cd();
   TTree tree("noisyCells", "Tree with map of noise per cell");
   uint64_t saveCellId;
