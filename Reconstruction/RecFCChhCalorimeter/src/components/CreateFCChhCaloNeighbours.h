@@ -69,7 +69,7 @@ private:
   // For combination of barrels: HCal inner radius for calculation of eta from z
   Gaudi::Property<double> m_hCalRinner{this, "hCalRinner", 2850};
   // For combination of barrels: offset of HCal modules in phi (lower edge)
-  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI};
+  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI + 2*M_PI/256.};
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONEIGHBOURS_H */

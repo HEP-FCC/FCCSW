@@ -11,7 +11,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compa
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import CreateFCChhCaloNeighbours
-neighbours = CreateFCChhCaloNeighbours("neighbours", OutputLevel=VERBOSE,  connectBarrels=True, hCalRinner=2750)
+neighbours = CreateFCChhCaloNeighbours("neighbours", OutputLevel=VERBOSE,  connectBarrels=True, hCalRinner=2850)
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
