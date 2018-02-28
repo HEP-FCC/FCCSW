@@ -35,6 +35,8 @@ private:
   /// Minimum momentum (Set by options)
   Gaudi::Property<std::vector<double>> m_ptList{
       this, "PtList", {100.0 * Gaudi::Units::GeV}, "List of transverse momenta to generate"};
+  Gaudi::Property<std::vector<double>> m_etaList{
+      this, "EtaList", {}, "List of eta values to generate"};
   /// Minimum theta angle (Set by options)
   Gaudi::Property<double> m_minEta{this, "EtaMin", -3.5, "Minimal eta"};
   /// Minimum phi angle (Set by options)
