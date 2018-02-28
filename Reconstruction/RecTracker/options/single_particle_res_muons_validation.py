@@ -12,23 +12,15 @@ from Configurables import GenAlg, ConstPtParticleGun
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 
-from Configurables import ConstPileUp, GaussSmearVertex
-smeartool = GaussSmearVertex("smeartoolname")
+from Configurables import ConstPileUp
 
-smeartool.tVertexSigma = 150*units.cm
+pileuptool = ConstPileUp(numPileUpEvents=0)
+pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.0, EtaList=[1,4], PtList=[100*units.GeV])
+#pgun_tool2 = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.3, EtaMax=0.3, PtList=[5 * units.GeV,10*units.GeV, 100*units.GeV])
 
-pileuptool = ConstPileUp(numPileUpEvents=4)
-pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.5, EtaMax=0.5, PtList=[ 100*units.GeV])
-pgun_tool2 = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5, EtaMin=-0.5, EtaMax=0.5, PtList=[ 100*units.GeV])
-
-gen = GenAlg("ParticleGun", PileUpTool=pileuptool, SignalProvider=pgun_tool, PileUpProvider=pgun_tool2, VertexSmearingTool=smeartool)
+gen = GenAlg("ParticleGun", PileUpTool=pileuptool, SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-# Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc(
-    "ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
 
 # DD4hep geometry service
 # Parses the given xml file
@@ -46,14 +38,14 @@ hepmc_converter.genvertices.Path="allGenVertices"
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
-from configurables import simg4svc, simg4fullsimactions
-actions = simg4fullsimactions()
-actions.enablehistory=true
+from Configurables import SimG4Svc, SimG4FullSimActions
+actions = SimG4FullSimActions()
+actions.enableHistory=True
 # giving the names of tools will initialize the tools of that type
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
                         physicslist="SimG4FtfpBert", actions=actions)
 
-#geantservice.g4PostInitCommands  += ["/tracking/storeTrajectory 1"]
+geantservice.g4PostInitCommands  += ["/tracking/storeTrajectory 1"]
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool(
     "SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
@@ -80,7 +72,7 @@ particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/saveTrackerHits",
-                             #"SimG4SaveTrajectory/saveTrajectory",
+                             "SimG4SaveTrajectory/saveTrajectory",
                              "SimG4SaveParticleHistory/saveHistory"
                              ],
                     eventProvider=particle_converter)
@@ -90,14 +82,14 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "muons_for_seeding.root"
+out.filename = "muons_for_seeding_single_validation.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
 ApplicationMgr(TopAlg=[gen, hepmc_converter, geantsim, out],
                EvtSel='NONE',
-               EvtMax=10000,
+               EvtMax=150,
                # order is important, as GeoSvc is needed by SimG4Svc
-               ExtSvc=[ppservice, podioevent, geoservice, geantservice],
+               ExtSvc=[podioevent, geoservice, geantservice],
                OutputLevel=DEBUG
                )

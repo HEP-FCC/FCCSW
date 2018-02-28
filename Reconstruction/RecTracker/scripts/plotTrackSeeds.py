@@ -5,6 +5,7 @@ import ROOT
 import argparse
 from EventStore import EventStore
 import numpy as np
+
 import matplotlib.pyplot as plt
 
 # matplotlib customization
@@ -20,11 +21,12 @@ matplotlib.use("TkAgg")
 # command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", help="edm file to read")
-parser.add_argument("--track_plots", help="create real space plots of tracks")
+parser.add_argument("--track_plots", help="create real space plots of tracks", type=int, default=1)
 parser.add_argument("--nevents", help="max number of events to process", type=int, default=1000)
 args = parser.parse_args()
 
 plot_tracks = args.track_plots
+print 
 
 def Particle2Track(p, vertex, charge=1., B=4.):
     pT = np.sqrt(p[0]**2 + p[1]**2)
@@ -90,7 +92,7 @@ l_true_pts = []
 
 # main event loop
 for i, store in enumerate(events):
-    if i == 1:
+    if i == plot_tracks:
       print "event ", i
       #if i > args.nevents:
       #  break
@@ -116,29 +118,11 @@ for i, store in enumerate(events):
           print "\tsim calculated particle: ", cmom
 
       print "processing tracks ..."
+      
       tracks = store.get('tracks')
-      for t in tracks:
-            if t.bits() == 1:
-              print "\t track ID: ", t.bits()
+      if plot_tracks:
+        for t in tracks:
               pos = []
-              ids = []
-              ts = t.states(0)
-              trackparams = [
-                ts.d0(),
-                ts.z0(),
-                ts.phi(),
-                ts.theta(),
-                ts.qOverP() * -10,
-                ]
-              l_pts.append(1./trackparams[-1])
-              print "\ttrack parameters: ", trackparams
-              trackcov = [ts.cov()[0], ts.cov()[5], ts.cov()[9], ts.cov()[12], ts.cov()[14]] 
-              print "\ttrack covariances: ", trackcov
-              l_dpts.append(np.sqrt(trackcov[2]))
-              
-            pos = []
-            ids = []
-            if plot_tracks:
               #pos2 = helix(trackparams)
               for j in range(t.hits_size()):
                 cor = t.hits(j).position()
@@ -153,39 +137,31 @@ for i, store in enumerate(events):
 
       if plot_tracks:
         plt.figure("xy")
-        pos3 = helix(cpar)
-        #plt.plot(pos3[:,0],pos3[:,1], '-', lw=1,  color="red", alpha=.5)
-        plt.figure("rz")
-        #plt.plot(pos3[:,2], np.sqrt(pos3[:,0]**2 + pos3[:,1]**2), '--', lw=2, color="red", alpha=0.7)
-        pos = []
-        ids = []
         print "processing trajectories ..."
         clusters = store.get('trajectoryPoints')
-        print clusters    
+        pos = []
         for c in clusters:
-            if c.bits() < 100:
               cor = c.position()
-              pos.append([cor.x, cor.y, cor.z])
-              ids.append([c.bits()])
+              pos.append([cor.x, cor.y, cor.z, c.bits()])
         pos = np.array(pos)
-        ids = np.array(ids)
+        p = pos
+        #for ids in np.unique(pos[:,3]):
+        #  p = pos[(pos[:,3] == ids) ]
+        p =  p[(np.linalg.norm(p[:,:2], axis=1) < 150)]
+        p = p[np.abs(p[:,2]) < 150] 
         plt.figure("xy")
-        plt.plot(pos[:,0],pos[:,1], '-', color="green", alpha=0.3)
+        plt.plot(p[:,0],p[:,1], '-', color="green", alpha=0.3)
         plt.figure("rz")
-        plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), '-', color="green", alpha=0.3)
+        plt.plot(p[:,2], np.sqrt(p[:,0]**2 + p[:,1]**2), '-', color="green", alpha=0.3)
 
         print "processing hits ..."
         hits = store.get('positionedHits')
         pos = []
-        ids = []
         for c in hits:
             cor = c.position()
-            if -200 < cor.z < 200:
+            if np.abs(cor.z) < 200:
               pos.append([cor.x, cor.y, cor.z])
-            print cor.x, cor.y, cor.z, c.time()
-            ids.append([c.bits()])
         pos = np.array(pos)
-        ids = np.array(ids)
         plt.figure("xy")
         plt.plot(pos[:,0],pos[:,1], 'o', color="midnightblue")
         plt.figure("rz")
@@ -194,8 +170,8 @@ for i, store in enumerate(events):
 
 if plot_tracks:
   plt.figure("xy")
-  plt.xlim(0, 150)
-  plt.ylim(0,150)
+  plt.xlim(-150, 150)
+  plt.ylim(-150,150)
   plt.xlabel("x [mm]")
   plt.ylabel("y [mm]")
   plt.savefig("tt_xy.png")

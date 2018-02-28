@@ -27,9 +27,6 @@ DoubletCreationTool::DoubletCreationTool(const std::string& type, const std::str
 
 StatusCode DoubletCreationTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
-  if (sc.isFailure()) {
-    return sc;
-  }
   return sc;
 }
 

@@ -17,9 +17,6 @@ FastHitFilterTool::FastHitFilterTool(const std::string& type, const std::string&
 
 StatusCode FastHitFilterTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
-  if (sc.isFailure()) {
-    return sc;
-  }
   return sc;
 }
 

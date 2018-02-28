@@ -17,7 +17,10 @@
 #include "tricktrack/TTPoint.h"
 
 //using Hit = tricktrack::SpacePoint<size_t>; 
+
+
 using Hit = tricktrack::TTPoint; 
+
 using namespace tricktrack;
 
 
@@ -75,10 +78,11 @@ void TrickTrackSeedingTool::findDoublets(tricktrack::HitDoublets<Hit>* doublets,
     TTPoint minPoint(currentRho - m_deltaRho, currentPhi - m_deltaPhi, currentZ - m_deltaZ, currentT - m_deltaT,0);
     TTPoint maxPoint(currentRho + m_deltaRho, currentPhi + m_deltaPhi,  currentZ + m_deltaZ, currentT + m_deltaT,0);
 
-    std::vector<unsigned int> result;
-    theOuterTree.search(minPoint, maxPoint, result);
+    //std::vector<unsigned int> result;
+    //theOuterTree.search(minPoint, maxPoint, result);
     for(unsigned int j = 0; j < theOuterHits.size(); ++j) {
-      if ((std::fmod(std::abs(theOuterHits[j].phi() - theInnerHits[i].phi()), 2* M_PI)) < m_deltaPhi) {
+      //if ((std::abs(std::fmod(theOuterHits[j].phi() - theInnerHits[i].phi(), 2* M_PI))) < m_deltaPhi) {
+      if ((M_PI - std::abs(std::abs(theOuterHits[j].phi() - theInnerHits[i].phi()) - M_PI)) < m_deltaPhi) {
         if (std::abs(theOuterHits[j].z() - theInnerHits[i].z()) < m_deltaZ) {
           if (std::abs(theOuterHits[j].t() - theInnerHits[i].t()) < m_deltaT) {
             doublets->add(i, j);
@@ -94,11 +98,16 @@ void TrickTrackSeedingTool::createBarrelSpacePoints(std::vector<Hit>& thePoints,
                                                        std::pair<int, int> sIndex,
                                                        int) {
   size_t hitCounter = 0;
+  std::set<int> trackIdsInThisLayer;
   for (auto hit : *theHits) {
     if (m_hitFilterTool->filter(hit.core())) {
+        auto result = trackIdsInThisLayer.insert(hit.core().bits);
+        if (result.second) {
+        std::cout << "layer " << sIndex.second << "\thit id: " << hit.core().bits << std::endl;
         thePoints.emplace_back(std::sqrt(std::pow(hit.position().x,2) + std::pow(hit.position().y,2)), // hit r
         std::atan2(hit.position().y, hit.position().x), // hit phi 
         hit.position().z, hit.core().time, hitCounter);
+        }
 
       }
         ++hitCounter;
@@ -114,7 +123,7 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
   unsigned int numLayers = m_layerGraph.theLayers.size(); 
 
   // create tracking region with parameters relevant to seed filters
-  m_trackingRegion = std::make_unique<tricktrack::TrackingRegion>(m_regionOriginX, m_regionOriginY, m_regionOriginRadius, m_ptMin);
+  m_trackingRegion = std::make_unique<tricktrack::TrackingRegion>(m_ptMin, m_regionOriginX, m_regionOriginY, m_regionOriginRadius);
   debug() << "Create automaton ..." << endmsg;
   m_automaton = std::make_unique<HitChainMaker<Hit>>(m_layerGraph);
 
@@ -146,6 +155,10 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
     findDoublets(doubletsOnLayerPair, layerPoints[innerLayerIndex], layerTrees[outerLayerIndex], layerPoints[outerLayerIndex]);
 
     doublets.push_back(doubletsOnLayerPair);
+    for (int ii = 0; ii < doublets.back()->size(); ++ii) {
+      std::cout << "doublet trackids " << (*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::inner).identifier()].core().bits <<
+      "\t" << (*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::outer).identifier()].core().bits << std::endl;
+    }
     debug() << "found "  << doublets.back()->size() << " doublets on layers  " << innerLayerIndex << " and " << outerLayerIndex  << endmsg;
   }
 

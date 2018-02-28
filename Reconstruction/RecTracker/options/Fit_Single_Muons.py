@@ -18,12 +18,12 @@ podioinput = PodioInput("PodioReader",
                         collections=[
                                       "allGenParticles",
                                       "allGenVertices",
-                                      "simParticles", 
-                                      "simVertices", 
+                                      #"simParticles", 
+                                      #"simVertices", 
                                       "hits", 
                                       "positionedHits", 
-                                      "trajectory", 
-                                      "trajectoryPoints",
+                                      #"trajectory", 
+                                      #"trajectoryPoints",
                                       ], 
                           OutputLevel=DEBUG,
                           )
@@ -64,7 +64,8 @@ truth_seeds = TruthSeedingTool()
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
 RecTrackAlg.Errors = True
-RecTrackAlg.hitRes = 5*1e-9
+#RecTrackAlg.MultipleScatteringErrors = True
+RecTrackAlg.hitRes = 1 * 1e-6
 RecTrackAlg.TrackSeedingTool = truth_seeds #tricktrack_seed_tool
 RecTrackAlg.positionedTrackHits.Path = "positionedHits"
 

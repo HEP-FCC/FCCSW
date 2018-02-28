@@ -19,8 +19,7 @@ class TrackStateCollection;
 class PositionedTrackHitCollection;
 }
 
-
-/*** @class RecTrackAlg 
+/*** @class RecTrackAlg
  *
  */
 class RecTrackAlg : public GaudiAlgorithm {
@@ -44,8 +43,11 @@ private:
   /// Handle to Track Seeding Tool that does the work
   Gaudi::Property<double> m_Bz{this, "Bz", 4., "Field strength along Z"};
   Gaudi::Property<double> m_hitRes{this, "hitRes", 0.1, "Resolution of local hit coordinates"};
-  Gaudi::Property<bool> m_calcErrors{this, "Errors",  false,"flag to to toggle error calculation"};
-  Gaudi::Property<bool> m_calcMultipleScattering{this, "MultipleScatteringErrors", false, "flag to toggle estimation of multiple scattering errors"};
+  Gaudi::Property<bool> m_doFit{this, "doFit", true, "flag to actually perform the fit"};
+  Gaudi::Property<bool> m_calcErrors{this, "calcErrors", true, "flag to actually calculate errors"};
+  Gaudi::Property<bool> m_fitOnlyPrimary{this, "fitOnlyPrimary", false, "flag to only fit the particle with trackID 1"};
+  Gaudi::Property<bool> m_calcMultipleScattering{this, "MultipleScatteringErrors", false,
+                                                 "flag to toggle estimation of multiple scattering errors"};
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool{"CombinatorialSeedingTool/CombinatorialSeedingTool", this};
 };
 

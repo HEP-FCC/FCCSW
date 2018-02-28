@@ -21,11 +21,6 @@ pgun_tool = ConstPtParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants.pi*0.5
 gen = GenAlg("ParticleGun", PileUpTool=pileuptool, SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-# Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc(
-    "ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
 
 # DD4hep geometry service
 # Parses the given xml file
@@ -50,7 +45,7 @@ actions.enableHistory=True
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
                         physicslist="SimG4FtfpBert", actions=actions)
 
-geantservice.g4PostInitCommands  += ["/tracking/storeTrajectory 1"]
+#geantservice.g4PostInitCommands  += ["/tracking/storeTrajectory 1"]
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool(
     "SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
@@ -77,7 +72,7 @@ particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/saveTrackerHits",
-                             "SimG4SaveTrajectory/saveTrajectory",
+                             #"SimG4SaveTrajectory/saveTrajectory",
                              "SimG4SaveParticleHistory/saveHistory"
                              ],
                     eventProvider=particle_converter)
@@ -93,8 +88,8 @@ out.filename = "muons_for_seeding_single.root"
 from Configurables import ApplicationMgr
 ApplicationMgr(TopAlg=[gen, hepmc_converter, geantsim, out],
                EvtSel='NONE',
-               EvtMax=5000,
+               EvtMax=10000,
                # order is important, as GeoSvc is needed by SimG4Svc
-               ExtSvc=[ppservice, podioevent, geoservice, geantservice],
+               ExtSvc=[podioevent, geoservice, geantservice],
                OutputLevel=DEBUG
                )

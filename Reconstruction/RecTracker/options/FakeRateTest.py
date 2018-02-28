@@ -6,7 +6,7 @@ from Gaudi.Configuration import *
 from FWCore.joboptions import parse_standard_job_options
 args = parse_standard_job_options()
 
-inputfile = "muons_for_seeding.root"
+inputfile = "geantinosForSeeding_ntracks_barrelOnly.root"
 if args.inputfile:
   inputfile = args.inputfile
 
@@ -53,15 +53,15 @@ doublet_tool = DoubletCreationTool()
 from Configurables import TrickTrackSeedingTool
 tricktrack_seed_tool = TrickTrackSeedingTool()
 tricktrack_seed_tool.LayerGraphTool = layergraphtool
-tricktrack_seed_tool.deltaZ=360
-tricktrack_seed_tool.deltaT=1.
-tricktrack_seed_tool.deltaPhi=0.4
+tricktrack_seed_tool.deltaZ=95
+tricktrack_seed_tool.deltaT=100.
+tricktrack_seed_tool.deltaPhi=1
 
-#tricktrack_seed_tool.ptMin = 0.0
-#tricktrack_seed_tool.phiCut = 0.2
-#tricktrack_seed_tool.thetaCut = 0.000002
-#tricktrack_seed_tool.hardPtCut= 0.0
-#tricktrack_seed_tool.regionOriginRadius= 0.00001
+tricktrack_seed_tool.ptMin = 0
+tricktrack_seed_tool.phiCut = 2
+tricktrack_seed_tool.thetaCut = 1
+#tricktrack_seed_tool.hardPtCut= 20
+tricktrack_seed_tool.regionOriginRadius= 300
 
 # Alternative: TruthSeeding
 from Configurables import TruthSeedingTool
@@ -69,14 +69,15 @@ truth_seeds = TruthSeedingTool()
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-RecTrackAlg.Errors = True
-RecTrackAlg.hitRes = 5*1e-9
+RecTrackAlg.doFit=True
+#RecTrackAlg.hitRes = 5*1e-9
+#RecTrackAlg.calcErrors = True
 RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
 RecTrackAlg.positionedTrackHits.Path = "positionedHits"
 
 
 # PODIO algorithm
-outputfile = "tricktrack_seeding_example_min_bias.root"
+outputfile = "fakeratetest_ntracks.root"
 if args.outputfile:
   outputfile = args.outputfile
 from Configurables import PodioOutput
@@ -87,7 +88,7 @@ out.outputCommands = ["keep *"]
 
 
 # get number of events from arguments
-nEvents = 2
+nEvents = 1000
 if args.nevents:
     nEvents = args.nevents
 
