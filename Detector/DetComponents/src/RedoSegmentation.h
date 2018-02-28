@@ -84,7 +84,5 @@ private:
   /// Limit of debug printing
   Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Limit of debug printing"};
 
-  Gaudi::Property<std::string> m_digitalBitName{this, "digitalBitName", "", "Field name for extracting DECal digital hits"};
-  Gaudi::Property<uint> m_digitalFlag{this, "digitalFlag", 0, "Set to 1 to extract digital, 0 for analogue output"};
 };
 #endif /* DETCOMPONENTS_REDOSEGMENTATION_H */

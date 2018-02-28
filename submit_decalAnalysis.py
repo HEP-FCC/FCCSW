@@ -9,7 +9,7 @@ print 'START'
 print   
 ########   YOU ONLY NEED TO FILL THE AREA BELOW   #########
 ########   customization  area #########
-CONFIG="50Layers_2.1mmW"
+CONFIG="30Layers_3.5mmW_50umPixels_18umThick_RRB_modules"
 FCCSW_VERSION="FCCSW0.8"
 BFIELD = "4"
 FCCSW_DIR = "/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/"
@@ -21,7 +21,7 @@ path = os.getcwd()
 ##### loop for creating and sending jobs #####
 #e = 100
 CONFIGS = os.listdir(FCCSW_DIR+"/batch_eos/")
-CONFIGS = [ c for c in CONFIGS if CONFIG in c and "300" not in c and "Pixels" not in c]
+CONFIGS = [ c for c in CONFIGS if CONFIG in c and "300" not in c]# and "Pixels" not in c]
 #for e in ENERGIES:
 for CONFIG in CONFIGS:
    print CONFIG
@@ -34,7 +34,7 @@ for CONFIG in CONFIGS:
 
      if os.path.isdir(dir):
 
-       files = [ f for f in os.listdir(dir) if "output" in f] 
+       files = [ f for f in os.listdir(dir) if "output" in f and "_0.root" in f]
        print files
 
        os.chdir(dir)

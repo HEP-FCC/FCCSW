@@ -29,7 +29,7 @@ RESOLUTION_SIGMA = {}
 LINEARITY = {}
 LINEARITY_SIGMA = {}
 
-CONFIGS = ["50Layers_2.1mmW_FCCSW0.8"] #[ c for c in os.listdir(FCCSW_DIR+"/batch_eos/") if "50Layers_2.1mmW_50umPixels_18umThick" in c and "Edep" not in c]
+CONFIGS = ["30Layers_3.5mmW_50umPixels_18umThick_RRB_modules_FCCSW0.8"] #[ c for c in os.listdir(FCCSW_DIR+"/batch_eos/") if "50Layers_2.1mmW_50umPixels_18umThick" in c and "Edep" not in c]
 print CONFIGS
 
 for CONFIG in CONFIGS:
@@ -50,7 +50,7 @@ for CONFIG in CONFIGS:
 
      if os.path.isdir(dir):
 
-       FILES = [f for f in os.listdir(dir) if  "analysis_"  in f and "root.root" not in f]
+       FILES = [f for f in os.listdir(dir) if  "digital_"  in f and "root.root" not in f]
        for f in FILES:
           temp_file = TFile(dir+f)
           if temp_file.IsZombie():

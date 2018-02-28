@@ -248,14 +248,7 @@ StatusCode DECalAnalysis::execute() {
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
     decoder->setValue(hit.core().cellId);
-    int digital = (*decoder)["digital"];
-    if(digital==1) {
-      isdigital++;
-    }
-    if(digital==0) {
-      notdigital++;
-      continue;
-    }
+    
 //    std::cout << digital << std::endl;
     int layer = (*decoder)[m_layerFieldName];
     m_sumPixelsLayers[layer] += 1;

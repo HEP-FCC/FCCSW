@@ -23,6 +23,23 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:/afs/cern.ch/user/t/toprice/priv
 ],
                     OutputLevel = INFO)
 
+
+from Configurables import FilterSiliconEcalHits
+filtered = FilterSiliconEcalHits("FilterSiEcal",
+                            readoutName = "BarDECal_Readout",
+                            digitalFlag = 1)
+filtered.deposits.Path="positionedCaloHits"
+filtered.filtered.Path="filteredCaloHits"                        
+
+# add a processor which generates noise hits
+# input - noise level
+#       - threshold level
+#       - segmentation name
+
+# add a processor which adds noise event in to genuine hits
+# take input of noise hits and genuine hits
+# output a combination for the event
+
 from Configurables import RedoSegmentation
 resegment = RedoSegmentation("ReSegmentation",
                              # old bitfield (readout)
@@ -33,13 +50,13 @@ resegment = RedoSegmentation("ReSegmentation",
                              newReadoutName="BarDECal_Pads",
                              OutputLevel = INFO)
 # clusters are needed, with deposit position and cellID in bits
-resegment.inhits.Path = "positionedCaloHits"
+resegment.inhits.Path = "filteredCaloHits"
 resegment.outhits.Path = "newCaloHits"
 
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
                               doCellCalibration = False,
-                              addCellNoise = False, filterCellNoise = False,
+                              addCellNoise = False, filterCellNoise = False, sumPixelsPerCell = False,
                               OutputLevel = INFO)
 createcells.hits.Path="newCaloHits"
 createcells.cells.Path="newCaloCells"
@@ -51,14 +68,12 @@ hist = DECalAnalysis("DECalAnalysis",
                                  layerFieldName = "layer",
                                  numLayers = 50, # one more because index starts at 1 - layer 0 will be always empty
                                  OutputLevel = INFO)
-hist.pixels.Path="positionedCaloHits"
+hist.pixels.Path="filteredCaloHits"
 hist.pads.Path="newCaloCells"
 hist.truth.Path="GenParticles"
 
-
-
 #THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"_"+fccsw_version+"/"+run_config+"/<OUTPUT>' TYP='ROOT' OPT='RECREATE'"]
-THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"/"+run_config+"/analysis_"+file+"' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"/"+run_config+"/digital_"+file+"' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=False
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
@@ -73,16 +88,15 @@ hist.AuditExecute = True
 
 from Configurables import FCCDataSvc, PodioOutput
 #podiosvc = FCCDataSvc("EventDataSvc")
-podioout = PodioOutput("out", filename=batch_dir+"/"+det_config+"/"+run_config+"/redoSegmentation_"+file)
+podioout = PodioOutput("out", filename=batch_dir+"/"+det_config+"/"+run_config+"/digital_podio_"+file)
 podioout.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [podioinput, resegment, createcells, hist, podioout],
+ApplicationMgr( TopAlg = [podioinput, filtered, resegment, createcells,hist, podioout],
                 EvtSel = 'NONE',
-               # EvtMax = 10,
+                # EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podiosvc,geoservice, audsvc],
                 OutputLevel = INFO
-
 )

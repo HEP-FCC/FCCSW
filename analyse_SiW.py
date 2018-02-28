@@ -12,7 +12,7 @@ RESOLUTION_SIGMA = {}
 LINEARITY = {}
 LINEARITY_SIGMA = {}
 
-CONFIGS = [ c for c in os.listdir(FCCSW_DIR+"/batch_eos/") if "50Layers_3.4mmPb" in c and "Pixels" not in c]
+CONFIGS = [ c for c in os.listdir(FCCSW_DIR+"/batch_eos/") if "30Layers" in c and "RRB" in c]
 print CONFIGS
 
 for CONFIG in CONFIGS:
@@ -49,14 +49,14 @@ for CONFIG in CONFIGS:
 
 
        truth_energy = float(RUNCONFIG[:RUNCONFIG.find("GeV")])
-       temp_edep = TH1F("edep_"+str(truth_energy)+"GeV", "Energy deposited per event; Energy Deposited [keV]; Count", 2000, 0, 500000)
+       temp_edep = TH1F("edep_"+str(truth_energy)+"GeV", "Energy deposited per event; Energy Deposited [keV]; Count", 400, 0, 20)
 
        for i in np.arange(0,chain.GetEntries()):
 
           chain.GetEntry(i)
           temp_edep.Fill(chain.edep_tot);
 
-       gaus = TF1("gaus","gaus",0,500000)
+       gaus = TF1("gaus","gaus",0,20)
        temp_edep.Fit("gaus", "NQR")
        mean = gaus.GetParameter(1)
        sigma = gaus.GetParameter(2)
@@ -84,7 +84,7 @@ for CONFIG in CONFIGS:
 
    c_res = TCanvas("Resolution")
 
-   fit_min = 0
+   fit_min = 50
    fit_max = 1000
    fit = TF1("fit", "[0]/sqrt(x)+[1]", fit_min, fit_max)
    

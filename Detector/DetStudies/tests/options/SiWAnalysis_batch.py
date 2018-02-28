@@ -23,6 +23,14 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:/afs/cern.ch/user/t/toprice/priv
 ],
                     OutputLevel = INFO)
 
+
+from Configurables import FilterSiliconEcalHits
+filtered = FilterSiliconEcalHits("FilterSiEcal",
+                            readoutName = "BarDECal_Readout",
+                            digitalFlag = 0)
+filtered.deposits.Path="positionedCaloHits"
+filtered.filtered.Path="filteredCaloHits"   
+
 from Configurables import RedoSegmentation
 resegment = RedoSegmentation("ReSegmentation",
                              # old bitfield (readout)
@@ -31,13 +39,10 @@ resegment = RedoSegmentation("ReSegmentation",
                              oldSegmentationIds = ["x","y","z"],
                              # new bitfield (readout), with new segmentation
                              newReadoutName="BarDECal_Pads",
-                             # field in the segmentation that holds digital readout information ("") = default
-                             digitalBitName="digital",
-                             # split on the digital field. 0 = analogue, 1 = digital
-                             digitalFlag=0,
+                             
                              OutputLevel = INFO)
 # clusters are needed, with deposit position and cellID in bits
-resegment.inhits.Path = "positionedCaloHits"
+resegment.inhits.Path = "filteredCaloHits"
 resegment.outhits.Path = "newCaloHits"
 
 from Configurables import CreateCaloCells
@@ -76,12 +81,12 @@ hist.AuditExecute = True
 
 from Configurables import FCCDataSvc, PodioOutput
 #podiosvc = FCCDataSvc("EventDataSvc")
-podioout = PodioOutput("out", filename=batch_dir+"/"+det_config+"/"+run_config+"/redoSegmentation_"+file)
+podioout = PodioOutput("out", filename=batch_dir+"/"+det_config+"/"+run_config+"/analogue_podio_"+file)
 podioout.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [podioinput, resegment, createcells, hist],#, podioout],
+ApplicationMgr( TopAlg = [podioinput, filtered, resegment, createcells, hist, podioout],
                 EvtSel = 'NONE',
                # EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc

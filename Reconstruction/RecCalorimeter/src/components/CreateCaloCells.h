@@ -64,10 +64,13 @@ private:
   /// Save only cells with energy above threshold?
   Gaudi::Property<bool> m_filterCellNoise{this, "filterCellNoise", false,
                                           "Save only cells with energy above threshold?"};
+  /// Add energy deposit or sum number of pixels in the cell (DECal)
+  Gaudi::Property<bool> m_sumPixelsPerCell{this, "sumPixelsPerCell", false, 
+                                        "Sum the number of pixels in the cell rather than energy?"};
   /// Handle for calo hits (input collection)
   DataHandle<fcc::CaloHitCollection> m_hits{"hits", Gaudi::DataHandle::Reader, this};
   /// Handle for calo cells (output collection)
-  DataHandle<fcc::CaloHitCollection> m_cells{"cells", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::CaloHitCollection> m_cells{"cellsm", Gaudi::DataHandle::Writer, this};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
   /// Name of active volumes

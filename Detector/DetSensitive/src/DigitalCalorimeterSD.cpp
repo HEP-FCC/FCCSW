@@ -4,6 +4,7 @@
 #include "DDSegmentation/BitField64.h"
 #include "DetCommon/DetUtils.h"
 #include "DDSegmentation/Segmentation.h"
+#include "DDSegmentation/CartesianGridXYZ.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -185,7 +186,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
   }
 
   // apply a threshold of 480 electrons to each cell
-  double threshold = 480*0.0000036; // 480 electrons in MeV which should be default value
+  double threshold = 0.0; //480*0.0000036; // 480 electrons in MeV which should be default value
   int pixelsOverThreshold = 0;
   int pixelsOverThresholdPerLayer[50];
   std::vector<int> mipsPerPixel[50];
@@ -204,7 +205,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
     }
     
     // if the energy deposited in the cellID is gtreather than threshold then do something
-    if((*it).second.second->energyDeposit>threshold) {      
+    if((*it).second.second->energyDeposit>=threshold) {      
       pixelsOverThreshold++;
       // insert the collection to G4 so can be passed on later
       digi = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*> ((*it).second.second);

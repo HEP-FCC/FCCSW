@@ -109,15 +109,7 @@ StatusCode SiWAnalysis::execute() {
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
     decoder->setValue(hit.core().cellId);
-    int digital = (*decoder)["digital"];
-    if(digital==0) {
-      notdigital++;
-
-    }
-    if(digital==1) {
-      isdigital++;
-      continue;
-    }
+    
 
     int layer = (*decoder)[m_layerFieldName];
     
@@ -133,8 +125,6 @@ StatusCode SiWAnalysis::execute() {
     }
   }
 
-  std::cout << "isdigital = " << isdigital << std::endl;
-  std::cout << "notdigital = " << notdigital << std::endl;
 /*
   m_calPixels = m_calFit->GetX(m_sumPixels);
   //std::cout << "#### " << m_sumPixels << " " << m_calPixels << std::endl;
