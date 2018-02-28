@@ -3,6 +3,8 @@
 
 // Gaudi
 #include "GaudiKernel/AlgTool.h"
+#include "GaudiKernel/SystemOfUnits.h"
+
 
 // FCCSW
 #include "SimG4Interface/ISimG4ActionTool.h"
@@ -31,6 +33,11 @@ public:
    *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
   virtual G4VUserActionInitialization* userActionInitialization() final;
+
+private:
+  /// Set to true to save secondary particle info
+  Gaudi::Property<bool> m_enableHistory{this, "enableHistory", false, "Set to true to save secondary particle info"};
+  Gaudi::Property<double> m_energyCut{this, "energyCut", 0.5 * Gaudi::Units::GeV, "minimum energy for secondaries to be saved"};
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

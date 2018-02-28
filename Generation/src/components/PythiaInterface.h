@@ -21,7 +21,7 @@ class amcnlo_unitarised_interface;
 
 // Forward FCC EDM
 namespace fcc {
-class FloatCollection;
+class FloatValueCollection;
 }
 
 class PythiaInterface : public GaudiTool, virtual public IHepMCProviderTool {
@@ -43,10 +43,8 @@ private:
   std::unique_ptr<Pythia8::SlowJet> m_slowJet{nullptr};
   // Tool to smear vertices
   ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
-  // Output handle for HepMC event
-  DataHandle<HepMC::GenEvent> m_hepmchandle{"HepMC", Gaudi::DataHandle::Reader, this};
   // Output handle for ME/PS matching variables
-  DataHandle<fcc::FloatCollection> m_handleMePsMatchingVars{"mePsMatchingVars", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::FloatValueCollection> m_handleMePsMatchingVars{"mePsMatchingVars", Gaudi::DataHandle::Writer, this};
 
   int m_nAbort{0};
   int m_iAbort{0};

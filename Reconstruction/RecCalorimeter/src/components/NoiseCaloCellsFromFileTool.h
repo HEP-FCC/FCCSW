@@ -7,7 +7,7 @@
 class IRndmGenSvc;
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "RecInterface/INoiseCaloCellsTool.h"
 class IGeoSvc;
 
@@ -60,7 +60,7 @@ private:
   /// Name of pileup histogram
   Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "h_pileup_layer", "Name of pileup histogram"};
   /// Name of electronics noise histogram
-  Gaudi::Property<std::string> m_elecNoiseHistoName{"elecNoiseHistoName", "h_elecNoise_layer",
+  Gaudi::Property<std::string> m_elecNoiseHistoName{this, "elecNoiseHistoName", "h_elecNoise_layer",
                                                     "Name of electronics noise histogram"};
   /// Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)
   Gaudi::Property<double> m_filterThreshold{
@@ -81,7 +81,7 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
-  DD4hep::DDSegmentation::GridPhiEta* m_segmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
 };
 
-#endif /* RECCALORIMETER_NOISECALOCELLSCOMPLEXTOOL_H */
+#endif /* RECCALORIMETER_NOISECALOCELLSFROMFILETOOL_H */

@@ -11,7 +11,8 @@ class IGeoSvc;
 
 #include <vector>
 
-/** @class CalibrateInLayersTool Reconstruction/RecCalorimeter/src/components/CalibrateInLayersTool.h CalibrateInLayersTool.h
+/** @class CalibrateInLayersTool Reconstruction/RecCalorimeter/src/components/CalibrateInLayersTool.h
+ * CalibrateInLayersTool.h
  *
  *  Tool for energy calibration to the electromagnetic scale.
  *  Geant4 energy deposits calibration in sampling calorimeters.
@@ -49,6 +50,8 @@ private:
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   /// Name of the cells/layer field
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
+  /// Id of the first layer (current design starts layer ids at 1)
+  Gaudi::Property<uint> m_firstLayerId{this, "firstLayerId", 0, "ID of first layer"};
   /// Values of sampling fraction
   Gaudi::Property<std::vector<double>> m_samplingFraction{
       this, "samplingFraction", {}, "Values of sampling fraction per layer"};

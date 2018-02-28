@@ -8,7 +8,7 @@
 #include "datamodel/CaloHitCollection.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // ROOT
 #include "TGeoManager.h"
@@ -47,21 +47,11 @@ StatusCode MergeLayers::initialize() {
   // check if identifier exists in the decoder
   auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
                                    m_descriptor.fields().end(),
-                                   [this](const std::pair<std::string, DD4hep::Geometry::IDDescriptor::Field>& field) {
+                                   [this](const std::pair<std::string, dd4hep::BitFieldValue*>& field) {
                                      return bool(field.first.compare(m_idToMerge) == 0);
                                    });
   if (itIdentifier == m_descriptor.fields().end()) {
     error() << "Identifier <<" << m_idToMerge << ">> does not exist in the readout <<" << m_readoutName << ">>"
-            << endmsg;
-    return StatusCode::FAILURE;
-  }
-  // check sizes of new volumes in the list - it must sum to the total number of volumes
-  unsigned int sumCells = std::accumulate(m_listToMerge.begin(), m_listToMerge.end(), 0);
-  auto highestVol = gGeoManager->GetTopVolume();
-  auto numPlacedVol = det::utils::countPlacedVolumes(highestVol, m_volumeName);
-  if (numPlacedVol != sumCells) {
-    error() << "Total number of volumes named " << m_volumeName << " (" << numPlacedVol << ") "
-            << "is not equal to the sum of volumes from the list 'merge' given in job options (" << sumCells << ")"
             << endmsg;
     return StatusCode::FAILURE;
   }

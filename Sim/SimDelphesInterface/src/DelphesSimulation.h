@@ -25,7 +25,7 @@ class ExRootTreeWriter;
 namespace fcc {
 class MCParticleCollection;
 class GenVertexCollection;
-class FloatCollection;
+class FloatValueCollection;
 }
 
 // Forward ROOT
@@ -90,7 +90,7 @@ private:
   DataHandle<HepMC::GenEvent> m_hepmcHandle{"hepmc", Gaudi::DataHandle::Reader, this};
 
   // Handle for the generated or reconstructed objects to be written out
-  DataHandle<fcc::FloatCollection> m_handleMCEventWeights{"mcEventWeights", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::FloatValueCollection> m_handleMCEventWeights{"mcEventWeights", Gaudi::DataHandle::Writer, this};
   DataHandle<fcc::MCParticleCollection> m_handleGenParticles{"genParticles", Gaudi::DataHandle::Writer, this};
   int m_eventCounter{0};
 

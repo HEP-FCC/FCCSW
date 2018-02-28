@@ -11,8 +11,14 @@
 #include "SimG4Interface/ISimG4Svc.h"
 
 // Gaudi
+#include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/Service.h"
 #include "GaudiKernel/ToolHandle.h"
+
+#include "G4UIsession.hh"
+#include "G4UIterminal.hh"
+#include "G4VisExecutive.hh"
+#include "G4VisManager.hh"
 
 /** @class SimG4Svc SimG4Components/SimG4Components/SimG4Svc.h SimG4Svc.h
  *
@@ -57,6 +63,8 @@ public:
 private:
   /// Pointer to the tool service
   SmartIF<IToolSvc> m_toolSvc;
+  /// Pointer to the random numbers service
+  SmartIF<IRndmGenSvc> m_randSvc;
   /// Handle for the detector construction tool
   ToolHandle<ISimG4DetectorConstruction> m_detectorTool{"SimG4DD4hepDetector", this, true};
   /// Handle for the Geant physics list tool
@@ -65,8 +73,12 @@ private:
   ToolHandle<ISimG4ActionTool> m_actionsTool{"SimG4FullSimActions", this, true};
   /// Handle for the magnetic field initialization
   ToolHandle<ISimG4MagneticFieldTool> m_magneticFieldTool{"SimG4ConstantMagneticFieldTool", this, true};
-  /// Geant4 commands to be executed
-  Gaudi::Property<std::vector<std::string>> m_g4Commands{this, "G4commands", {}, "Geant4 commands to be executed"};
+  /// Geant4 commands to be executed before user initialization
+  Gaudi::Property<std::vector<std::string>> m_g4PreInitCommands{
+      this, "g4PreInitCommands", {}, "Geant4 commands to be executed before user initialization"};
+  /// Geant4 commands to be executed after user initialization
+  Gaudi::Property<std::vector<std::string>> m_g4PostInitCommands{
+      this, "g4PostInitCommands", {}, "Geant4 commands to be executed after user initialization"};
   /// Handles to the tools creating regions and fast simulation models
   /// to be replaced with the ToolHandleArray<ISimG4RegionTool> m_regionTools
   std::vector<ISimG4RegionTool*> m_regionTools;
@@ -74,9 +86,17 @@ private:
   /// to be deleted once the ToolHandleArray<ISimG4RegionTool> m_regionTools is in place
   Gaudi::Property<std::vector<std::string>> m_regionToolNames{
       this, "regions", {}, "Names of the tools that create regions and fast simulation models"};
+  /// Flag whether random numbers seeds should be taken from Gaudi (default: true)
+  Gaudi::Property<bool> m_rndmFromGaudi{this, "randomNumbersFromGaudi", true, "Whether random numbers should be taken from Gaudi"};
+
+  Gaudi::Property<bool> m_interactiveMode{this, "InteractiveMode", false, "Enter the interactive mode"};
 
   /// Run Manager
   sim::RunManager m_runManager;
+
+  std::unique_ptr<G4VisManager> m_visManager{nullptr};
+  // Define UI terminal for interactive mode
+  std::unique_ptr<G4UIsession> m_session{nullptr};
 };
 
 #endif /* SIMG4COMPONENTS_G4SIMSVC_H */

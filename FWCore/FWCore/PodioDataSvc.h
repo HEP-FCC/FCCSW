@@ -56,9 +56,9 @@ private:
   /// PODIO EventStore, used to initialise collections
   podio::EventStore m_provider;
   /// Counter of the event number
-  int m_eventNum;
+  int m_eventNum{0};
   /// Number of events in the file / to process
-  int m_eventMax;
+  int m_eventMax{-1};
 
   SmartIF<IConversionSvc> m_cnvSvc;
 

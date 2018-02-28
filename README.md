@@ -33,7 +33,12 @@ Test
 ----
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/example_options.py
+./run fccrun.py Examples/options/example_options.py
+~~~
+
+you can also sepcify some options like number of events and output file
+~~~{.sh}
+./run fccrun.py Examples/options/example_options.py --outputfile=my_own_output.root --nevents=1000
 ~~~
 
 You should see an HepMC printout. More tests can be executed with

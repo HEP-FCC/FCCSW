@@ -1,4 +1,6 @@
 // DD4hep includes
+#include "DD4hep/Detector.h"
+#include "DD4hep/DetElement.h"
 #include "DD4hep/DetFactoryHelper.h"
 
 // Gaudi
@@ -6,15 +8,15 @@
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/ServiceHandle.h"
 
-using DD4hep::Geometry::Volume;
-using DD4hep::Geometry::DetElement;
-using DD4hep::XML::Dimension;
-using DD4hep::Geometry::PlacedVolume;
+using dd4hep::Volume;
+using dd4hep::DetElement;
+using dd4hep::xml::Dimension;
+using dd4hep::PlacedVolume;
 
 namespace det {
 
-static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xmlElement,
-                                          DD4hep::Geometry::SensitiveDetector sensDet) {
+static dd4hep::Ref_t createECal(dd4hep::Detector& lcdd, xml_h xmlElement,
+                                          dd4hep::SensitiveDetector sensDet) {
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "ECalConstruction");
   MsgStream lLog(&(*msgSvc), "ECalConstruction");
 
@@ -25,7 +27,7 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
 
   // Make volume that envelopes the whole barrel; set material to air
   Dimension dimensions(xmlDet.dimensions());
-  DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
+  dd4hep::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
   Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   // Invisibility seems to be broken in visualisation tags, have to hardcode that
   envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
@@ -42,9 +44,9 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   double activeThickness = active.thickness();
 
   xml_comp_t passive = calo.child(_Unicode(passive_layers));
-  DD4hep::XML::DetElement passiveInner = passive.child(_Unicode(inner));
-  DD4hep::XML::DetElement passiveOuter = passive.child(_Unicode(outer));
-  DD4hep::XML::DetElement passiveGlue = passive.child(_Unicode(glue));
+  dd4hep::xml::DetElement passiveInner = passive.child(_Unicode(inner));
+  dd4hep::xml::DetElement passiveOuter = passive.child(_Unicode(outer));
+  dd4hep::xml::DetElement passiveGlue = passive.child(_Unicode(glue));
   std::string passiveInnerMaterial = passiveInner.materialStr();
   std::string passiveOuterMaterial = passiveOuter.materialStr();
   std::string passiveGlueMaterial = passiveGlue.materialStr();
@@ -58,7 +60,7 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   DetElement caloBath(eCal, activeMaterial + "_notSensitive", 0);
   if (cryoThickness > 0) {
     // Step 1 : cryostat
-    DD4hep::Geometry::Tube cryoShape(cryoDim.rmin(), cryoDim.rmax(), cryoDim.dz());
+    dd4hep::Tube cryoShape(cryoDim.rmin(), cryoDim.rmax(), cryoDim.dz());
     lLog << MSG::DEBUG << "ECAL cryostat: rmin " << cryoDim.rmin() << " rmax " << cryoDim.rmax() << endmsg;
     Volume cryoVol(cryostat.nameStr(), cryoShape, lcdd.material(cryostat.materialStr()));
     PlacedVolume placedCryo = envelopeVolume.placeVolume(cryoVol);
@@ -66,7 +68,7 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
     DetElement cryo(eCal, cryostat.nameStr(), 0);
     cryo.setPlacement(placedCryo);
     // Step 2 : fill cryostat with active medium
-    DD4hep::Geometry::Tube bathShape(cryoDim.rmin() + cryoThickness, cryoDim.rmax() - cryoThickness,
+    dd4hep::Tube bathShape(cryoDim.rmin() + cryoThickness, cryoDim.rmax() - cryoThickness,
                                      cryoDim.dz() - cryoThickness);
     lLog << MSG::DEBUG << "ECAL " << activeMaterial << " bath: rmin " << cryoDim.rmin() + cryoThickness << " rmax "
          << cryoDim.rmax() - cryoThickness << endmsg;
@@ -83,8 +85,8 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
        << endmsg;
 
   // set the sensitive detector type to the DD4hep calorimeter
-  DD4hep::Geometry::SensitiveDetector sd = sensDet;
-  DD4hep::XML::Dimension sdType = xmlDet.child(_U(sensitive));
+  dd4hep::SensitiveDetector sd = sensDet;
+  dd4hep::xml::Dimension sdType = xmlDet.child(_U(sensitive));
   sd.setType(sdType.typeStr());
 
   double glueThickness = passiveGlueThickness / 2.;
@@ -95,16 +97,16 @@ static DD4hep::Geometry::Ref_t createECal(DD4hep::Geometry::LCDD& lcdd, xml_h xm
   // loop on the sensitive layers
   for (int i = 0; i < activeSamples; i++) {
     double layerRadius = caloDim.rmin() + passiveThickness + i * (passiveThickness + activeThickness);
-    DD4hep::Geometry::Tube outerShape1(layerRadius - passiveThickness, layerRadius - passiveThickness + outerThickness,
+    dd4hep::Tube outerShape1(layerRadius - passiveThickness, layerRadius - passiveThickness + outerThickness,
                                        caloDim.dz());
-    DD4hep::Geometry::Tube glueShape1(layerRadius - passiveThickness + outerThickness,
+    dd4hep::Tube glueShape1(layerRadius - passiveThickness + outerThickness,
                                       layerRadius - passiveThickness + outerThickness + glueThickness, caloDim.dz());
-    DD4hep::Geometry::Tube innerShape(layerRadius - passiveThickness + outerThickness + glueThickness,
+    dd4hep::Tube innerShape(layerRadius - passiveThickness + outerThickness + glueThickness,
                                       layerRadius - outerThickness - glueThickness, caloDim.dz());
-    DD4hep::Geometry::Tube glueShape2(layerRadius - outerThickness - glueThickness, layerRadius - outerThickness,
+    dd4hep::Tube glueShape2(layerRadius - outerThickness - glueThickness, layerRadius - outerThickness,
                                       caloDim.dz());
-    DD4hep::Geometry::Tube outerShape2(layerRadius - outerThickness, layerRadius, caloDim.dz());
-    DD4hep::Geometry::Tube layerShape(layerRadius, layerRadius + activeThickness, caloDim.dz());
+    dd4hep::Tube outerShape2(layerRadius - outerThickness, layerRadius, caloDim.dz());
+    dd4hep::Tube layerShape(layerRadius, layerRadius + activeThickness, caloDim.dz());
     Volume layerVol(activeMaterial + "_sensitive", layerShape, lcdd.material(activeMaterial));
     Volume outerVol1(passiveOuterMaterial + "_below", outerShape1, lcdd.material(passiveOuterMaterial));
     Volume outerVol2(passiveOuterMaterial + "_above", outerShape2, lcdd.material(passiveOuterMaterial));
