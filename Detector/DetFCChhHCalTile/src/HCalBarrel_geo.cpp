@@ -231,7 +231,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-    double phi = - dphi*1.5 - idxPhi * dphi - 0.5*dd4hep::pi;  // modules placed following phi-eta segmentation
+    double phi = - 0.5*dd4hep::pi - dphi*0.5 - idxPhi * dphi;  // modules placed following phi-eta segmentation with offset: -pi 
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);

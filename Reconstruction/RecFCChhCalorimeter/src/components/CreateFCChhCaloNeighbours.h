@@ -61,7 +61,7 @@ private:
       {"layerVolume", "moduleVolume", "wedgeVolume"}};  // to find out number of volumes
 
   // For combination of barrels: flag if ECal and HCal barrels should be merged
-  Gaudi::Property<bool> m_connectBarrels{this, "connectBarrels", false};
+  Gaudi::Property<bool> m_connectBarrels{this, "connectBarrels", true};
   // For combination of barrels: size of HCal cell along z axis
   Gaudi::Property<double> m_hCalZSize{this, "hCalZsize", 18};
   // For combination of barrels: offset of HCal detector in z (lower edge)
@@ -69,7 +69,7 @@ private:
   // For combination of barrels: HCal inner radius for calculation of eta from z
   Gaudi::Property<double> m_hCalRinner{this, "hCalRinner", 2850};
   // For combination of barrels: offset of HCal modules in phi (lower edge)
-  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI + 2*M_PI/256.};
+  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", - M_PI};
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONEIGHBOURS_H */
