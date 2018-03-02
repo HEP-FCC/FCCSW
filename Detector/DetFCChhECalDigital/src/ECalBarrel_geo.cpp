@@ -15,25 +15,25 @@
 /*ROBBIE
 using namespace std;
 using namespace dd4hep;
-using namespace dd4hep::detail;*/
-using DD4hep::Geometry::Volume;
-using DD4hep::Geometry::DetElement;
-using DD4hep::XML::Dimension;
-using DD4hep::Geometry::PlacedVolume;
-using DD4hep::Geometry::Trapezoid;
-using DD4hep::_toString;
-using DD4hep::Geometry::Position;
-using DD4hep::Geometry::Box;
-using DD4hep::Geometry::Transform3D;
-using DD4hep::Geometry::RotationZYX;
-using DD4hep::Geometry::Translation3D;
-
+using namespace dd4hep::detail;
+using dd4hep::Geometry::Volume;
+using dd4hep::Geometry::DetElement;
+using dd4hep::XML::Dimension;
+using dd4hep::Geometry::PlacedVolume;
+using dd4hep::Geometry::Trapezoid;
+using dd4hep::_toString;
+using dd4hep::Geometry::Position;
+using dd4hep::Geometry::Box;
+using dd4hep::Geometry::Transform3D;
+using dd4hep::Geometry::RotationZYX;
+using dd4hep::Geometry::Translation3D;
+*/
 
 
 namespace det {
 
-static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xmlElement,
-        DD4hep::Geometry::SensitiveDetector sensDet)
+static dd4hep::detail::Ref_t createECal (dd4hep::Detector& lcdd,dd4hep::xml::Handle_t xmlElement,
+        dd4hep::SensitiveDetector sensDet)
 {
 
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "DECalConstruction");
@@ -45,36 +45,38 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   
   // Getting the detectors various values from the xml file
   
-  xml_det_t xmlDet = xmlElement;
+  dd4hep::xml::DetElement xmlDet = xmlElement;
   std::string detName = xmlDet.nameStr();
   //Make DetElement
-  DetElement eCal(detName, xmlDet.id());
+  dd4hep::DetElement eCal(detName, xmlDet.id());
 
 
   
-  xml_comp_t calo = xmlElement.child(_Unicode(calorimeter));
-  Dimension calo_dims(calo.dimensions());
+  dd4hep::xml::DetElement calo = xmlElement.child(_Unicode(calorimeter));
+  dd4hep::xml::Dimension calo_dims(calo.dimensions());
   std::string calo_name=calo.nameStr();
   double calo_id=calo.id();
 
-  xml_comp_t trkr = calo.child("tracker");
+  dd4hep::xml::DetElement trkr = calo.child("tracker");
   std::string trkr_mat = trkr.materialStr();
   double trkr_tck = trkr.thickness();
 
-  xml_comp_t active = calo.child("active_layers");
+  dd4hep::xml::DetElement active = calo.child("active_layers");
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
-  int active_samples=active.attr<int>("nSamplings");
-  
-  xml_comp_t substrate = calo.child("substrate_layers");
+  //int active_samples=active.attr<int>("nSamplings");
+  // need to fix line above as no longer supported
+  int active_samples = 50;
+
+  dd4hep::xml::DetElement substrate = calo.child("substrate_layers");
   std::string substrate_mat=substrate.materialStr();
   double substrate_tck=substrate.thickness();
 
-  xml_comp_t passive = calo.child("passive_layers");
+  dd4hep::xml::DetElement passive = calo.child("passive_layers");
   std::string passive_mat=passive.materialStr();
   double passive_tck=passive.thickness();
 
-  xml_comp_t padding = calo.child("between_layers");
+  dd4hep::xml::DetElement padding = calo.child("between_layers");
   std::string padding_mat=padding.materialStr();
   double padding_tck=padding.thickness();
 
@@ -103,22 +105,22 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
   lLog << MSG::INFO << "nModules = " << nModules << endmsg;
 
    // Make volume that envelopes the whole barrel; set material to air
-  Dimension dimensions(xmlDet.dimensions());
-  DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
+  dd4hep::xml::Dimension dimensions(xmlDet.dimensions());
+  dd4hep::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dimensions.dz());
   //DD4hep::Geometry::Tube envelopeShape(dimensions.rmin(), dimensions.rmin()+calo_tck, dimensions.dz());
-  Volume envelopeVolume(detName, envelopeShape, lcdd.air());
+  dd4hep::Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   // Invisibility seems to be broken in visualisation tags, have to hardcode that
   std::cout << "dimensions.visStr() = " << dimensions.visStr()<< std::endl;
   envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
 
   // create a lump of air the entire size of the barrel ECAL (Cylindrical)
   // place it within the ECAL envelope
-  DetElement caloDet(calo_name, calo_id);
-  DD4hep::Geometry::Tube caloShape(calo_dims.rmin() , /*calo_dims.rmin()+calo_tck*/calo_dims.rmax(), calo_dims.dz());
+  dd4hep::DetElement caloDet(calo_name, calo_id);
+  dd4hep::Tube caloShape(calo_dims.rmin() , /*calo_dims.rmin()+calo_tck*/calo_dims.rmax(), calo_dims.dz());
   lLog << MSG::INFO/*DEBUG*/ << "ECAL: Building the calorimeter from " << calo_dims.rmin() << " to " <<   /*calo_dims.rmin()+calo_tck*/calo_dims.rmax() << endmsg;
-  Volume caloVolume(padding_mat, caloShape, lcdd.material(padding_mat));
+  dd4hep::Volume caloVolume(padding_mat, caloShape, lcdd.material(padding_mat));
   lLog << MSG::DEBUG << "ECAL: Filling the calorimeter volume with " << padding_mat << endmsg;  
-  PlacedVolume placedCalo = envelopeVolume.placeVolume(caloVolume);
+  dd4hep::PlacedVolume placedCalo = envelopeVolume.placeVolume(caloVolume);
   placedCalo.addPhysVolID("EM_barrel", calo_id);
   caloDet.setPlacement(placedCalo);
 
@@ -127,11 +129,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 
   // if we add material for the tracker then it needs to be placed first
   if(trkr_tck > 0.0) {
-    DetElement trkrLayer(trkr_mat, 0);
-    DD4hep::Geometry::Tube trkrShape(calo_dims.rmin(), calo_dims.rmin()+trkr_tck, calo_dims.dz());
+    dd4hep::DetElement trkrLayer(trkr_mat, 0);
+    dd4hep::Tube trkrShape(calo_dims.rmin(), calo_dims.rmin()+trkr_tck, calo_dims.dz());
     lLog << MSG::DEBUG << "TRKR: Tracker from " << calo_dims.rmin() << " to " << calo_dims.rmin()+trkr_tck  << endmsg;
-    Volume trkrVolume(trkr_mat, trkrShape, lcdd.material(trkr_mat));
-    PlacedVolume placedTrkrLayer = caloVolume.placeVolume(trkrVolume);
+    dd4hep::Volume trkrVolume(trkr_mat, trkrShape, lcdd.material(trkr_mat));
+    dd4hep::PlacedVolume placedTrkrLayer = caloVolume.placeVolume(trkrVolume);
     //placedTrkrLayer.addPhysVolID("trkr", 0);
     //placedTrkrLayer.addPhysVolID("layer", 0);
     trkrLayer.setPlacement(placedTrkrLayer);
@@ -172,11 +174,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	  // 1) place the epitaxial layer
 	  double layer_rmin=calo_dims.rmin()+(i*module_tck) + trkr_tck; // thick last part adds on the tracker material infront
 	  double layer_rmax=layer_rmin+active_tck;
-	  DetElement epiLayer(active_mat+"_sensitive", i+1);
-	  DD4hep::Geometry::Tube epiShape(layer_rmin , layer_rmax, calo_dims.dz());
+	  dd4hep::DetElement epiLayer(active_mat+"_sensitive", i+1);
+	  dd4hep::Tube epiShape(layer_rmin , layer_rmax, calo_dims.dz());
 	  lLog << MSG::DEBUG << "\tEpitaxial from " << layer_rmin << " to " <<  layer_rmax << endmsg;
-	  Volume epiVolume(active_mat+"_sensitive", epiShape, lcdd.material(active_mat));
-	  PlacedVolume placedEpiLayer = caloVolume.placeVolume(epiVolume);
+	  dd4hep::Volume epiVolume(active_mat+"_sensitive", epiShape, lcdd.material(active_mat));
+	  dd4hep::PlacedVolume placedEpiLayer = caloVolume.placeVolume(epiVolume);
 	  placedEpiLayer.addPhysVolID("layer", i+1);
 	  placedEpiLayer.addPhysVolID("digital", 1);
 	  l++;
@@ -186,11 +188,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	  // 2) place the substrate
 	  layer_rmin = layer_rmax;
 	  layer_rmax = layer_rmin+substrate_tck;
-	  DetElement subLayer(substrate_mat+"_substrate", i+1);
-	  DD4hep::Geometry::Tube subShape(layer_rmin , layer_rmax, calo_dims.dz());
+	  dd4hep::DetElement subLayer(substrate_mat+"_substrate", i+1);
+	  dd4hep::Tube subShape(layer_rmin , layer_rmax, calo_dims.dz());
 	  lLog << MSG::DEBUG << "\tSubstrate from " << layer_rmin << " to " <<  layer_rmax << endmsg;
-	  Volume subVolume(substrate_mat+"_substrate", subShape, lcdd.material(active_mat));
-	  PlacedVolume placedSubLayer = caloVolume.placeVolume(subVolume);
+	  dd4hep::Volume subVolume(substrate_mat+"_substrate", subShape, lcdd.material(active_mat));
+	  dd4hep::PlacedVolume placedSubLayer = caloVolume.placeVolume(subVolume);
 	  placedSubLayer.addPhysVolID("layer", 1+i);
 	  placedSubLayer.addPhysVolID("digital", 0);
 	  subLayer.setPlacement(placedSubLayer);
@@ -205,11 +207,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	    layer_rmin = layer_rmax;
 	  }
 	  layer_rmax = layer_rmin+passive_tck;
-	  DetElement passiveLayer(passive_mat+"_passive", i+1);
-	  DD4hep::Geometry::Tube passiveShape(layer_rmin , layer_rmax, calo_dims.dz());
+	  dd4hep::DetElement passiveLayer(passive_mat+"_passive", i+1);
+	  dd4hep::Tube passiveShape(layer_rmin , layer_rmax, calo_dims.dz());
 	  lLog << MSG::DEBUG << "\t" << passive_mat << " from " << layer_rmin << " to " <<  layer_rmax << endmsg;
-	  Volume passiveVolume(passive_mat, passiveShape, lcdd.material(passive_mat));
-	  PlacedVolume placedPassiveLayer = caloVolume.placeVolume(passiveVolume);
+	  dd4hep::Volume passiveVolume(passive_mat, passiveShape, lcdd.material(passive_mat));
+	  dd4hep::PlacedVolume placedPassiveLayer = caloVolume.placeVolume(passiveVolume);
 	  passiveLayer.setPlacement(placedPassiveLayer);   
 	  
 	  // 4) the air volume alread exists so don't do anything
@@ -218,7 +220,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	}
     }
   //END OF TONY'S STUFF
-
+  
   else if (testing == 1) {
     double hphi = M_PI/nStaves;
     double rmin = calo_dims.rmin();
@@ -254,21 +256,21 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	    double l_dim_x = (s_pos_r * (std::tan(hphi))) - nudge_gap;//72.0;
 
 	    // EPI
-	    std::string epi_name = _toString(layernum, "epi%d");
-	    Box epi_box(l_dim_x, module_dz/2, active_tck/2);
-	    lLog << MSG::INFO << "EPI BOX LENGTH" << 2*epi_box.x() << endmsg;
+	    std::string epi_name = dd4hep::xml::_toString(layernum, "epi%d");
+	    dd4hep::Box epi_box(l_dim_x, module_dz/2, active_tck/2);
 	    lLog << MSG::INFO << "This means that the epitaxial layer exists between " << epi_box.x() << " and " << -epi_box.x() << " in the x direction" << endmsg;
-	    Volume epi_vol(epi_name, epi_box, lcdd.material(active_mat));
-	    DetElement epi_slice(epi_name, layernum);
+	    dd4hep::Volume epi_vol(epi_name, epi_box, lcdd.material(active_mat));
+	    dd4hep::DetElement epi_slice(epi_name, layernum);
 	    lLog << MSG::INFO << "Epitaxial thickness is " << active_tck << endmsg;
 	    
 	    double mod_y_off = s_pos_r + (0.5*active_tck);
 	    double m_pos_x = -mod_y_off*std::sin(phi);
 	    double m_pos_y = mod_y_off*std::cos(phi);
 
-	    Transform3D epi_tr(RotationZYX(0, phi, M_PI*0.5), Translation3D(-m_pos_x, -m_pos_y, module_z));
-	    PlacedVolume epi_phv = caloVolume.placeVolume(epi_vol, epi_tr);
-	    
+	
+	    dd4hep::Transform3D epi_tr(dd4hep::RotationZYX(0, phi, M_PI*0.5), dd4hep::Translation3D(-m_pos_x, -m_pos_y, module_z));
+	    dd4hep::PlacedVolume epi_phv = caloVolume.placeVolume(epi_vol, epi_tr); 
+	
 	    lLog << MSG::INFO << "The EPI has been placed at (" << -m_pos_x << ", " << -m_pos_y << ", " << module_z << ")" << endmsg;
 	    lLog << MSG::INFO << "That means its ends are at (" << -m_pos_x+((epi_box.x())*(std::cos(phi))) << ", " << -m_pos_y+((epi_box.x())*(std::sin(phi))) << ")  and  (" << -m_pos_x-((epi_box.x())*(std::cos(phi))) << ", " << -m_pos_y-((epi_box.x())*(std::sin(phi))) << ")" << endmsg;
 	    lLog << MSG::INFO << "In z, the EPI lies between " << module_z - (epi_box.y()) << " and " << module_z + (epi_box.y()) << endmsg;
@@ -287,20 +289,20 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 
 
 	    //SUBSTRATE
-	    std::string sub_name = _toString(layernum, "sub%d");
-	    Box sub_box(l_dim_x, module_dz/2, substrate_tck/2);
+	    dd4hep::Box sub_box(l_dim_x, module_dz/2, substrate_tck/2);
+	    std::string sub_name = dd4hep::xml::_toString(layernum, "sub%d");
 	    lLog << MSG::INFO << "SUB BOX LENGTH" << 2*sub_box.x() << endmsg;
 	    lLog << MSG::INFO << "This means that the substrate layer exists between " << sub_box.x() << " and " << -sub_box.x() << " in the x direction" << endmsg;
-	    Volume sub_vol(sub_name, sub_box, lcdd.material(active_mat));
-	    DetElement sub_slice(sub_name, layernum);
+	    dd4hep::Volume sub_vol(sub_name, sub_box, lcdd.material(active_mat));
+	    dd4hep::DetElement sub_slice(sub_name, layernum);
 	    lLog << MSG::INFO << "Substrate thickness is " << substrate_tck << endmsg;
 	    
 	    mod_y_off = s_pos_r + (0.5*substrate_tck);
 	    m_pos_x = -mod_y_off*std::sin(phi);
 	    m_pos_y = mod_y_off*std::cos(phi);
 
-	    Transform3D sub_tr(RotationZYX(0, phi, M_PI*0.5), Translation3D(-m_pos_x, -m_pos_y, module_z));
-	    PlacedVolume sub_phv = caloVolume.placeVolume(sub_vol, sub_tr);
+	    dd4hep::Transform3D sub_tr(dd4hep::RotationZYX(0, phi, M_PI*0.5), dd4hep::Translation3D(-m_pos_x, -m_pos_y, module_z));
+	    dd4hep::PlacedVolume sub_phv = caloVolume.placeVolume(sub_vol, sub_tr);
 	    
 	    sub_phv.addPhysVolID("digital", 0);
 	    sub_phv.addPhysVolID("layer", layernum);
@@ -321,20 +323,20 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	    
 	    
 	    //PASSIVE
-	    std::string pas_name = _toString(layernum, "passive%d");
-	    Box pas_box(l_dim_x, module_dz/2, passive_tck/2);
+	    std::string pas_name = dd4hep::xml::_toString(layernum, "passive%d");
+	    dd4hep::Box pas_box(l_dim_x, module_dz/2, passive_tck/2);
 	    lLog << MSG::INFO << "PAS BOX LENGTH" << 2*pas_box.x() << endmsg;
 	    lLog << MSG::INFO << "This means that the passive layer exists between " << pas_box.x() << " and " << -pas_box.x() << " in the x direction" << endmsg;
-	    Volume pas_vol(pas_name, pas_box, lcdd.material(passive_mat));
-	    DetElement pas_slice(pas_name, layernum);
+	    dd4hep::Volume pas_vol(pas_name, pas_box, lcdd.material(passive_mat));
+	    dd4hep::DetElement pas_slice(pas_name, layernum);
 	    lLog << MSG::INFO << "Passive thickness is " << passive_tck << endmsg;
 
 	    mod_y_off = s_pos_r + (0.5*passive_tck);
 	    m_pos_x = -mod_y_off*std::sin(phi);
 	    m_pos_y = mod_y_off*std::cos(phi);
 	    
-	    Transform3D pas_tr(RotationZYX(0, phi, M_PI*0.5), Translation3D(-m_pos_x, -m_pos_y, module_z));
-	    PlacedVolume pas_phv = caloVolume.placeVolume(pas_vol, pas_tr);
+	    dd4hep::Transform3D pas_tr(dd4hep::RotationZYX(0, phi, M_PI*0.5), dd4hep::Translation3D(-m_pos_x, -m_pos_y, module_z));
+	    dd4hep::PlacedVolume pas_phv = caloVolume.placeVolume(pas_vol, pas_tr);
 	    
 	    pas_slice.setPlacement(pas_phv);
 	    s_pos_r += passive_tck + nudge_gap;
@@ -376,7 +378,7 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
       lLog << MSG::INFO << "Trapezoid has thickness " <<  2*trd_y << " and depth " << 2*trd_z1 << " which should be the same as " << 2*trd_z2 << endmsg;
       
       //ROBBIE Create the trapezium volume using the variables above
-      Trapezoid trd(trd_x_short,
+      dd4hep::Trapezoid trd(trd_x_short,
 		    trd_x_long,
 		    trd_z1,
 		    trd_z2,
@@ -434,9 +436,9 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	  double s_pos_z = -trd_y;
 	  
 	  // recalculate per stave...
-	  std::string stave_name = _toString(stavenum, "stave%d");
-	  Volume trap_vol(stave_name, trd, lcdd.air());
-	  DetElement stave_det(stave_name, stavenum);
+	  std::string stave_name = dd4hep::xml::_toString(stavenum, "stave%d");
+	  dd4hep::Volume trap_vol(stave_name, trd, lcdd.air());
+	  dd4hep::DetElement stave_det(stave_name, stavenum);
 	  l_dim_x = trd_x_long/2;
 	  lLog << MSG::INFO << "l_dim_x is starting at" << l_dim_x << " which should be similar to either " << rmin * std::tan(hphi) << " or " << rmax * std::tan(hphi) << endmsg;
 	  //ROBBIE Ideally we would like to be able to add the stave number volume ID directly to the stave. For now, it's added to each slice in turn, inside the loop below.
@@ -461,15 +463,15 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	  //ROBBIE 1) Place the epitaxial slice
 
        	  //double s_pos_z = -(l_thickness/2);
-	  std::string epi_name = _toString(layernum, "epi%d");
-	  Box epi_box(l_dim_x*2, trd_z1, active_tck/2);
+	  std::string epi_name = dd4hep::xml::_toString(layernum, "epi%d");
+	  dd4hep::Box epi_box(l_dim_x*2, trd_z1, active_tck/2);
 	  lLog << MSG::INFO << "EPI BOX LENGTH" << 2*epi_box.x() << endmsg;
 	  lLog << MSG::INFO << "This means that the epitaxial layer exists between " << epi_box.x() << " and " << -epi_box.x() << " in the x direction" << endmsg;
-	  Volume epi_vol(epi_name, epi_box, lcdd.material(active_mat));
-	  DetElement epi_slice(stave_det, epi_name, layernum);
+	  dd4hep::Volume epi_vol(epi_name, epi_box, lcdd.material(active_mat));
+	  dd4hep::DetElement epi_slice(stave_det, epi_name, layernum);
 	  //lLog << MSG::INFO << "epi_name is " << epi_name << endmsg;
 	  lLog << MSG::INFO << "Epitaxial thickness is " << active_tck << endmsg;
-	  PlacedVolume epi_phv = trap_vol.placeVolume(epi_vol, Position(0, 0, /*l_pos_z + l_thickness/2 +*/ s_pos_z + active_tck/2));
+	  dd4hep::PlacedVolume epi_phv = trap_vol.placeVolume(epi_vol, dd4hep::Position(0, 0, /*l_pos_z + l_thickness/2 +*/ s_pos_z + active_tck/2));
 	  lLog << MSG::INFO << "Placing Epitaxial slice at 0, 0, " << /*l_pos_z + l_thickness/2 +*/ s_pos_z + active_tck/2 << endmsg;
 	  lLog << MSG::INFO << "This EPI exists between " << /*l_pos_z + l_thickness/2 +*/ s_pos_z << " and " << /*l_pos_z + l_thickness/2 +*/ s_pos_z + active_tck << " in the z direction." << endmsg;
 	  epi_phv.addPhysVolID("digital", 1);
@@ -488,13 +490,13 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	  	  
 	  //ROBBIE 2) Place the substrate
 
-	  std::string sub_name = _toString(layernum, "sub%d");
-	  Box sub_box(l_dim_x*2, trd_z1, substrate_tck/2);
-	  Volume sub_vol(sub_name, sub_box, lcdd.material(active_mat));
-	  DetElement sub_slice(stave_det, sub_name, layernum);
+	  std::string sub_name = dd4hep::xml::_toString(layernum, "sub%d");
+	  dd4hep::Box sub_box(l_dim_x*2, trd_z1, substrate_tck/2);
+	  dd4hep::Volume sub_vol(sub_name, sub_box, lcdd.material(active_mat));
+	  dd4hep::DetElement sub_slice(stave_det, sub_name, layernum);
 	  //lLog << MSG::INFO << "sub_name is " << sub_name << endmsg;
 	  lLog << MSG::INFO << "Substrate thickness is " << substrate_tck << endmsg;
-	  PlacedVolume sub_phv = trap_vol.placeVolume(sub_vol, Position(0, 0, /*l_pos_z + l_thickness/2 +*/ s_pos_z + substrate_tck/2));
+	  dd4hep::PlacedVolume sub_phv = trap_vol.placeVolume(sub_vol, dd4hep::Position(0, 0, /*l_pos_z + l_thickness/2 +*/ s_pos_z + substrate_tck/2));
 	  lLog << MSG::INFO << "Placing Substrate slice at 0, 0, " << /*l_pos_z + l_thickness/2 +*/ s_pos_z + substrate_tck/2 << endmsg;
 	  lLog << MSG::INFO << "This SUB exists between " << /*l_pos_z + l_thickness/2 +*/ s_pos_z << " and " << /*l_pos_z + l_thickness/2 +*/ s_pos_z + substrate_tck << " in the z direction." << endmsg;
 	  sub_phv.addPhysVolID("digital", 0);
@@ -514,12 +516,12 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	    s_pos_z -= padding_tck;
 	    }
 	  
-	  std::string pas_name = _toString(layernum, "passive%d");
-	  Box pas_box(l_dim_x*2, trd_z1, passive_tck/2);
-	  Volume pas_vol(pas_name, pas_box, lcdd.material(passive_mat));
-	  DetElement pas_slice(stave_det, pas_name, layernum);
+	  std::string pas_name = dd4hep::xml::_toString(layernum, "passive%d");
+	  dd4hep::Box pas_box(l_dim_x*2, trd_z1, passive_tck/2);
+	  dd4hep::Volume pas_vol(pas_name, pas_box, lcdd.material(passive_mat));
+	  dd4hep::DetElement pas_slice(stave_det, pas_name, layernum);
 	  lLog << MSG::INFO << "Passive thickness is " << passive_tck << endmsg;
-	  PlacedVolume pas_phv = trap_vol.placeVolume(pas_vol, Position(0, 0, s_pos_z + passive_tck/2));
+	  dd4hep::PlacedVolume pas_phv = trap_vol.placeVolume(pas_vol, dd4hep::Position(0, 0, s_pos_z + passive_tck/2));
 	  lLog << MSG::INFO << "Placing Passive slice at 0, 0, " << /*l_pos_z + l_thickness/2 +*/ s_pos_z + passive_tck/2 << endmsg;
 	  lLog << MSG::INFO << "This PAS exists between " << /*l_pos_z + l_thickness/2 +*/ s_pos_z << " and " << /*l_pos_z + l_thickness/2 +*/ s_pos_z + passive_tck << " in the z direction." << endmsg;
 	  pas_slice.setPlacement(pas_phv);
@@ -571,11 +573,11 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 	  
 	  lLog << MSG::INFO << "m_pos_x is -mod_y_off*sin(phi) = -" << mod_y_off << "sin(" << phi << ") = " << m_pos_x << endmsg;
 	  lLog << MSG::INFO << "m_pos_y is mod_y_off*cos(phi) = " << mod_y_off << "cos(" << phi << ") = " << m_pos_y << endmsg;
-	  Transform3D tr(RotationZYX(0, /*3.0*M_PI + */phi, M_PI*0.5), Translation3D(-m_pos_x, -m_pos_y, 0));
+	  dd4hep::Transform3D tr(dd4hep::RotationZYX(0, /*3.0*M_PI + */phi, M_PI*0.5), dd4hep::Translation3D(-m_pos_x, -m_pos_y, 0));
 	  lLog << MSG::INFO << "Placing stave with rotation " << phi << " and position " << -m_pos_x << ", " << -m_pos_y << ", 0" << endmsg;
 	  
 	  //Place the staves:
-	  PlacedVolume pv = caloVolume.placeVolume(trap_vol, tr);
+	  dd4hep::PlacedVolume pv = caloVolume.placeVolume(trap_vol, tr);
 	  //pv.addPhysVolID("stave", stavenum);
 	  double not_phi = (M_PI/2) - phi;
 	  double not_rmax = mod_y_off + (2*trd_y);
@@ -599,8 +601,8 @@ static DD4hep::Geometry::Ref_t createECal (DD4hep::Geometry::LCDD& lcdd,xml_h xm
 
   
   //Place envelope (or barrel) volume
-  Volume motherVol = lcdd.pickMotherVolume(eCal);
-  PlacedVolume placedECal = motherVol.placeVolume(envelopeVolume);
+  dd4hep::Volume motherVol = lcdd.pickMotherVolume(eCal);
+  dd4hep::PlacedVolume placedECal = motherVol.placeVolume(envelopeVolume);
   placedECal.addPhysVolID("system", eCal.id());
   eCal.setPlacement(placedECal);
   return eCal;
