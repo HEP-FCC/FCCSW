@@ -102,6 +102,7 @@ StatusCode CaloTopoCluster::execute() {
   // Build Clusters in edm
   info() << "Building " << preClusterCollection.size() << " cluster." << endmsg;
   double checkTotEnergy = 0.;
+  int clusterWithMixedCells=0;
   for (auto i : preClusterCollection) {
     fcc::CaloCluster cluster;
     auto& clusterCore = cluster.core();
@@ -109,6 +110,8 @@ StatusCode CaloTopoCluster::execute() {
     double posY = 0.;
     double posZ = 0.;
     double energy = 0.;
+    int system =0;
+
     for (auto pair : i.second) {
       auto cellId = pair.first;
       // get CaloHit by cellID
@@ -122,6 +125,9 @@ StatusCode CaloTopoCluster::execute() {
       // identify calo system
       m_decoder->setValue(cellId);
       auto systemId = (*m_decoder)["system"].value();
+      if (system != systemId && system !=0)
+	clusterWithMixedCells++;
+      system = systemId;
       dd4hep::Position posCell;
       if (systemId == 5)  // ECAL BARREL system id
         posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
@@ -157,8 +163,9 @@ StatusCode CaloTopoCluster::execute() {
     edmClusters->push_back(cluster);
   }
   m_clusterCellsCollection.put(edmClusterCells);
-  info() << "Total energy of clusters:            " << checkTotEnergy << endmsg;
-  info() << "Leftover cells :                      " << m_allCells.size() << endmsg;
+  info() << "Number of clusters will cells in E and HCal:        " << clusterWithMixedCells << endmsg;
+  info() << "Total energy of clusters:                                      " << checkTotEnergy << endmsg;
+  info() << "Leftover cells :                                                     " << m_allCells.size() << endmsg;
   return StatusCode::SUCCESS;
 }
 
@@ -181,21 +188,21 @@ void CaloTopoCluster::buildingProtoCluster(
     std::vector<std::pair<uint64_t, double>>& seeds,
     const std::map<uint64_t, double>& allCells,
     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection) {
-  // Map of cellIds to clusterIds
-  std::map<uint64_t, uint> clusterOfCell;
-
-  // Loop over every seed in Calo to create first cluster
-  uint iSeeds = 0;
-  debug() << "seeds to loop over : " << seeds.size() << endmsg;
-  for (auto& itSeed : seeds) {
-    iSeeds++;
-    debug() << "Seed num: " << iSeeds << endmsg;
-    // auto seedCell = *itSeed;
-    auto seedId = itSeed.first;
-    debug() << "Seeds Cell id :          " << seedId << endmsg;
-    auto cellInCluster = clusterOfCell.find(seedId);
-    if (cellInCluster != clusterOfCell.end()) {
-      debug() << "Seed is already assigned to another cluster!" << endmsg;
+      // Map of cellIds to clusterIds
+      std::map<uint64_t, uint> clusterOfCell;
+      
+      // Loop over every seed in Calo to create first cluster
+      uint iSeeds = 0;
+      debug() << "seeds to loop over : " << seeds.size() << endmsg;
+      for (auto& itSeed : seeds) {
+	iSeeds++;
+	debug() << "Seed num: " << iSeeds << endmsg;
+	// auto seedCell = *itSeed;
+	auto seedId = itSeed.first;
+	debug() << "Seeds Cell id :          " << seedId << endmsg;
+	auto cellInCluster = clusterOfCell.find(seedId);
+	if (cellInCluster != clusterOfCell.end()) {
+	  debug() << "Seed is already assigned to another cluster!" << endmsg;
       continue;
     } else {
       // new cluster starts with seed
@@ -204,7 +211,7 @@ void CaloTopoCluster::buildingProtoCluster(
       uint clusterId = iSeeds;
       clusterOfCell[seedId] = clusterId;
 
-      std::vector<std::vector<std::pair<uint64_t, uint>>> N2(1000);
+      std::vector<std::vector<std::pair<uint64_t, uint>>> N2(100000);
       auto N1 = CaloTopoCluster::searchForNeighbours(seedId, clusterId, nSigma, allCells, clusterOfCell,
                                                      preClusterCollection);
       // first loop over seeds neighbours

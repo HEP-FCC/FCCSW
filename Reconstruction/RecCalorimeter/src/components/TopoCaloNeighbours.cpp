@@ -27,7 +27,7 @@ StatusCode TopoCaloNeighbours::initialize() {
       m_map.insert(std::pair<uint64_t, std::vector<uint64_t>>(readCellId, *readNeighbours));
   }
   std::vector<int> counterL;
-  counterL.assign(40,0);
+  counterL.assign(100,0);
   for(const auto& item: m_map) {
     counterL[item.second.size()] ++;
   }
