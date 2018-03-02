@@ -9,6 +9,7 @@
 #include "G4FieldManager.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
+#include "G4MagIntegratorDriver.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
 #include "G4ClassicalRK4.hh"
