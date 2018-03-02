@@ -272,20 +272,28 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       if (fabs(lowZ) < 1e-3) {
         lowEta = 0;
       } else {
-        lowEta = lowZ / fabs(lowZ) * (-log(fabs(tan(atan(m_hCalRinner / lowZ) / 2))));
+        lowEta = lowZ / fabs(lowZ) * (-log(fabs(tan(atan(m_hCalRinner / lowZ) / 2.)))); // theta = atan(m_hCalRinner / lowZ)
       }
       if (fabs(highZ) < 1e-3) {
         highEta = 0;
       } else {
-        highEta = highZ / fabs(highZ) * (-log(fabs(tan(atan(m_hCalRinner / highZ) / 2))));
+        highEta = highZ / fabs(highZ) * (-log(fabs(tan(atan(m_hCalRinner / highZ) / 2.))));
       }
-      int lowId = floor((lowEta + 0.5 * eCalEtaSize - eCalEtaOffset) / eCalEtaSize);
+      info() << "HCal z id  : " << iZ << endmsg; 
+      info() << "HCal eta range  : " <<  lowEta << " -  "<<  highEta <<endmsg; 
+      int lowId = floor((lowEta - 0.5 * eCalEtaSize - eCalEtaOffset) / eCalEtaSize);
       int highId = floor((highEta + 0.5 * eCalEtaSize - eCalEtaOffset) / eCalEtaSize);
+      info() << "ECal eta range  : " <<  lowId * eCalEtaSize + eCalEtaOffset<< " -  "<<  highId * eCalEtaSize + eCalEtaOffset <<endmsg; 
       std::vector<uint> neighbours;
       for (int idEtaToAdd = lowId; idEtaToAdd <= highId; idEtaToAdd++) {
         if (idEtaToAdd >= extremaECalLastLayerEta.first && idEtaToAdd <= extremaECalLastLayerEta.second) {
           neighbours.push_back(idEtaToAdd);
         }
+      }
+      debug() << "HCal z id  : " << iZ << endmsg; 
+      info() << "Found ECal Neighbours in eta : " << neighbours.size() << endmsg;
+      for (auto id : neighbours){
+	debug() << "ECal Neighbours id : " << id << endmsg;
       }
       etaNeighbours.insert(std::pair<uint, std::vector<uint>>(iZ, neighbours));
     }
@@ -293,16 +301,25 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     for (int iPhi = 0; iPhi < extremaHCalFirstLayerPhi.second + 1; iPhi++) {
       double lowPhi = m_hCalPhiOffset + iPhi * hCalPhiSize;
       double highPhi = m_hCalPhiOffset + (iPhi + 1) * hCalPhiSize;
-      int lowId = floor((lowPhi + 0.5 * eCalPhiSize - eCalPhiOffset) / eCalPhiSize);
+      info() << "HCal phi range  : " <<  lowPhi << " -  "<<  highPhi <<endmsg; 
+      int lowId = floor((lowPhi - 0.5 * eCalPhiSize - eCalPhiOffset) / eCalPhiSize);
       int highId = floor((highPhi + 0.5 * eCalPhiSize - eCalPhiOffset) / eCalPhiSize);
+      info() << "ECal phi range  : " << lowId* eCalPhiSize + eCalPhiOffset<< " -  "<<  highId* eCalPhiSize + eCalPhiOffset <<endmsg; 
       std::vector<uint> neighbours;
       for (int idPhiToAdd = lowId; idPhiToAdd <= highId; idPhiToAdd++) {
         neighbours.push_back(det::utils::cyclicNeighbour(idPhiToAdd, extremaECalLastLayerPhi));
       }
+      debug() << "HCal phi id  : " << iPhi << endmsg; 
+      info() << "Found ECal Neighbours in phi : " << neighbours.size() << endmsg;
+      for (auto id : neighbours){
+	debug() << "ECal Neighbours id : " << id << endmsg;
+      }
       phiNeighbours.insert(std::pair<uint, std::vector<uint>>(iPhi, neighbours));
     }
     // add neighbours to both ecal cell and hcal cell
+    (*decoderECalBarrel)["system"] = 5;
     (*decoderECalBarrel)[m_activeFieldNamesSegmented[0]] = eCalLastLayer;
+    (*decoderHCalBarrel)["system"] = 8;
     (*decoderHCalBarrel)[m_activeFieldNamesNested[0]] = 0;
     for (auto iZ : etaNeighbours) {
       (*decoderHCalBarrel)[m_activeFieldNamesNested[2]] = iZ.first;
