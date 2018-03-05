@@ -12,9 +12,8 @@ using dd4hep::xml::Dimension;
 using dd4hep::PlacedVolume;
 
 namespace det {
-void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector& aSensDet,
-             dd4hep::Volume& aEnvelope, dd4hep::DetElement& aHCal,
-             dd4hep::xml::Handle_t& aXmlElement, int sign) {
+void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector& aSensDet, dd4hep::Volume& aEnvelope,
+             dd4hep::DetElement& aHCal, dd4hep::xml::Handle_t& aXmlElement, int sign) {
 
   dd4hep::SensitiveDetector sensDet = aSensDet;
   Dimension sensDetType = aXmlElement.child(_Unicode(sensitive));
@@ -109,7 +108,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   // Add structural support made of steel inside of HCal
   DetElement facePlate1(aHCal, "FacePlate_" + std::to_string(1 * sign), 0);
   dd4hep::Tube facePlateShape1(dimensions.rmin1(), (sensitiveBarrel1Rmin - space),
-                                         (dzDetector1 - 2 * dZEndPlate - space));
+                               (dzDetector1 - 2 * dZEndPlate - space));
   Volume facePlateVol1("facePlateVol1", facePlateShape1, aLcdd.material(xFacePlate.materialStr()));
   facePlateVol1.setVisAttributes(aLcdd, xFacePlate.visStr());
   dd4hep::Position offsetFace1(0, 0, sign * extBarrelOffset1);
@@ -117,7 +116,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   // Faceplate for 2nd part of extended Barrel
   DetElement facePlate2(aHCal, "FacePlate_" + std::to_string(2 * sign), 0);
   dd4hep::Tube facePlateShape2(dimensions.rmin2(), (sensitiveBarrel2Rmin - space),
-                                         (dzDetector2 - 2 * dZEndPlate - space));
+                               (dzDetector2 - 2 * dZEndPlate - space));
   Volume facePlateVol2("facePlateVol2", facePlateShape2, aLcdd.material(xFacePlate.materialStr()));
   facePlateVol2.setVisAttributes(aLcdd, xFacePlate.visStr());
   dd4hep::Position offsetFace2(0, 0, sign * extBarrelOffset2);
@@ -240,7 +239,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
-	//     tiles.back().addPhysVolID("tile", idxActMod);
+        //     tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
@@ -296,7 +295,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
-	//       tiles.back().addPhysVolID("tile", idxActMod);
+        //       tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
@@ -309,26 +308,24 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
 
   Volume ModuleVolume1("ModuleVolumeEB",
                        dd4hep::Trapezoid(dx1Module1, dx2Module1, (dzDetector1 - 2 * dZEndPlate - space),
-					 (dzDetector1 - 2 * dZEndPlate - space), dzModule1),
+                                         (dzDetector1 - 2 * dZEndPlate - space), dzModule1),
                        aLcdd.material("Air"));
-  
+
   Volume ModuleVolume2("ModuleVolumeEB",
                        dd4hep::Trapezoid(dx1Module2, dx2Module2, (dzDetector2 - 2 * dZEndPlate - space),
-					 (dzDetector2 - 2 * dZEndPlate - space), dzModule2),
+                                         (dzDetector2 - 2 * dZEndPlate - space), dzModule2),
                        aLcdd.material("Air"));
-  
+
   Volume SteelSupportVolume1("SteelSupportVolume1",
-                             dd4hep::Trapezoid(dx1Support1, dx2Support1,
-					       (dzDetector1 - 2 * dZEndPlate - space),
-					       (dzDetector1 - 2 * dZEndPlate - space), dzSupport),
+                             dd4hep::Trapezoid(dx1Support1, dx2Support1, (dzDetector1 - 2 * dZEndPlate - space),
+                                               (dzDetector1 - 2 * dZEndPlate - space), dzSupport),
                              aLcdd.material(xSteelSupport.materialStr()));
-  
+
   Volume SteelSupportVolume2("SteelSupportVolume2",
-                             dd4hep::Trapezoid(dx1Support2, dx2Support2,
-					       (dzDetector2 - 2 * dZEndPlate - space),
-					       (dzDetector2 - 2 * dZEndPlate - space), dzSupport),
+                             dd4hep::Trapezoid(dx1Support2, dx2Support2, (dzDetector2 - 2 * dZEndPlate - space),
+                                               (dzDetector2 - 2 * dZEndPlate - space), dzSupport),
                              aLcdd.material(xSteelSupport.materialStr()));
-  
+
   // Placement of rings
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ1; ++idxZRow) {
     double zOffset = -dzDetector1 + 2 * dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
@@ -350,7 +347,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-    double phi = - dphi * 0.5 - idxPhi * dphi - 0.5*dd4hep::pi;  // modules placed following phi-eta segmentation
+    double phi = -dphi * 0.5 - idxPhi * dphi - 0.5 * dd4hep::pi;  // modules placed following phi-eta segmentation
     double yPosModule1 = (sensitiveBarrel1Rmin + dzModule1) * cos(phi);
     double xPosModule1 = (sensitiveBarrel1Rmin + dzModule1) * sin(phi);
     double yPosSupport1 = (sensitiveBarrel1Rmin + 2 * dzModule1 + dzSupport) * cos(phi);
@@ -370,17 +367,13 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
     dd4hep::Position supportOffset2(xPosSupport2, yPosSupport2, sign * extBarrelOffset2);
 
     // Placement around central Barrel
-    dd4hep::Transform3D trans1(
-        dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset1);
+    dd4hep::Transform3D trans1(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset1);
 
-    dd4hep::Transform3D trans1S(
-        dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset1);
+    dd4hep::Transform3D trans1S(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset1);
 
-    dd4hep::Transform3D trans2(
-        dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset2);
+    dd4hep::Transform3D trans2(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset2);
 
-    dd4hep::Transform3D trans2S(
-        dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset2);
+    dd4hep::Transform3D trans2S(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset2);
 
     // Fill the vectors of DetElements
     modules1.push_back(aEnvelope.placeVolume(ModuleVolume1, trans1));
@@ -443,8 +436,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   return;
 }
 
-static dd4hep::Ref_t createHCalEB(dd4hep::Detector& lcdd, xml_h xmlElement,
-                                            dd4hep::SensitiveDetector sensDet) {
+static dd4hep::Ref_t createHCalEB(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep::SensitiveDetector sensDet) {
 
   // Get the Gaudi message service and message stream:
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "ExtHCalConstruction");

@@ -7,8 +7,8 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
-#include "RecInterface/ICaloReadNeighboursMap.h"
 #include "RecInterface/ICaloReadCellNoiseMap.h"
+#include "RecInterface/ICaloReadNeighboursMap.h"
 #include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/ICellPositionsTool.h"
 #include "RecInterface/ITopoClusterInputTool.h"
@@ -47,12 +47,12 @@ public:
    * (1.5 and 3.5MeV/cell for E and HCAL, electronic noise only), (2.5 and 100MeV/cell for E and HCAL, added pile-up).
    *   @return list of seed cells to build proto-clusters.
    */
-  virtual void
-  findingSeeds(const std::map<uint64_t, double>& allCells, int nSigma, std::vector<std::pair<uint64_t, double>>& seeds);
+  virtual void findingSeeds(const std::map<uint64_t, double>& allCells, int nSigma,
+                            std::vector<std::pair<uint64_t, double>>& seeds);
   /** Build proto-clusters
    */
   virtual void buildingProtoCluster(int nSigma,
-				    int lastNSigma,
+                                    int lastNSigma,
                                     std::vector<std::pair<uint64_t, double>>& seeds,
                                     const std::map<uint64_t, double>& allCells,
                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection);
@@ -74,7 +74,7 @@ private:
   DataHandle<fcc::CaloHitCollection> m_clusterCellsCollection{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-   /// Handle for the input tool
+  /// Handle for the input tool
   ToolHandle<ITopoClusterInputTool> m_inputTool{"TopoClusterInput", this};
   /// Handle for the cells noise tool
   ToolHandle<ICaloReadCellNoiseMap> m_noiseTool{"TopoCaloNoisyCells", this};

@@ -102,7 +102,7 @@ StatusCode CaloTopoCluster::execute() {
   // Build Clusters in edm
   info() << "Building " << preClusterCollection.size() << " cluster." << endmsg;
   double checkTotEnergy = 0.;
-  int clusterWithMixedCells=0;
+  int clusterWithMixedCells = 0;
   for (auto i : preClusterCollection) {
     fcc::CaloCluster cluster;
     auto& clusterCore = cluster.core();
@@ -110,7 +110,7 @@ StatusCode CaloTopoCluster::execute() {
     double posY = 0.;
     double posZ = 0.;
     double energy = 0.;
-    int system =0;
+    int system = 0;
 
     for (auto pair : i.second) {
       auto cellId = pair.first;
@@ -125,8 +125,7 @@ StatusCode CaloTopoCluster::execute() {
       // identify calo system
       m_decoder->setValue(cellId);
       auto systemId = (*m_decoder)["system"].value();
-      if (system != systemId && system !=0)
-	clusterWithMixedCells++;
+      if (system != systemId && system != 0) clusterWithMixedCells++;
       system = systemId;
       dd4hep::Position posCell;
       if (systemId == 5)  // ECAL BARREL system id
@@ -188,21 +187,21 @@ void CaloTopoCluster::buildingProtoCluster(
     std::vector<std::pair<uint64_t, double>>& seeds,
     const std::map<uint64_t, double>& allCells,
     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection) {
-      // Map of cellIds to clusterIds
-      std::map<uint64_t, uint> clusterOfCell;
-      
-      // Loop over every seed in Calo to create first cluster
-      uint iSeeds = 0;
-      debug() << "seeds to loop over : " << seeds.size() << endmsg;
-      for (auto& itSeed : seeds) {
-	iSeeds++;
-	debug() << "Seed num: " << iSeeds << endmsg;
-	// auto seedCell = *itSeed;
-	auto seedId = itSeed.first;
-	debug() << "Seeds Cell id :          " << seedId << endmsg;
-	auto cellInCluster = clusterOfCell.find(seedId);
-	if (cellInCluster != clusterOfCell.end()) {
-	  debug() << "Seed is already assigned to another cluster!" << endmsg;
+  // Map of cellIds to clusterIds
+  std::map<uint64_t, uint> clusterOfCell;
+
+  // Loop over every seed in Calo to create first cluster
+  uint iSeeds = 0;
+  debug() << "seeds to loop over : " << seeds.size() << endmsg;
+  for (auto& itSeed : seeds) {
+    iSeeds++;
+    debug() << "Seed num: " << iSeeds << endmsg;
+    // auto seedCell = *itSeed;
+    auto seedId = itSeed.first;
+    debug() << "Seeds Cell id :          " << seedId << endmsg;
+    auto cellInCluster = clusterOfCell.find(seedId);
+    if (cellInCluster != clusterOfCell.end()) {
+      debug() << "Seed is already assigned to another cluster!" << endmsg;
       continue;
     } else {
       // new cluster starts with seed

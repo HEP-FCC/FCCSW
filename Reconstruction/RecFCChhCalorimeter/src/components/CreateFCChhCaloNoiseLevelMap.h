@@ -61,12 +61,12 @@ private:
   /// Names of the active volume in geometry: along radial axis, azimuthal angle, and along z axis
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesNested{
       this, "activeFieldNamesNested", {"layer", "module", "row"}};
-  /// Names of the nested volumes - to retrieve the number of active volumes, need to correspond to m_activeFieldNamesNested
+  /// Names of the nested volumes - to retrieve the number of active volumes, need to correspond to
+  /// m_activeFieldNamesNested
   Gaudi::Property<std::vector<std::string>> m_activeVolumeNamesNested{
       this,
       "activeVolumeNamesNested",
       {"layerVolume", "moduleVolume", "wedgeVolume"}};  // to find out number of volumes
-
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONOISELEVELMAP_H */

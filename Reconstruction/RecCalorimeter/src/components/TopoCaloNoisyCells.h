@@ -32,8 +32,9 @@ public:
   virtual double noise(uint64_t aCellId) final;
 
 private:
-  /// Name 
-  Gaudi::Property<std::string> m_fileName{this, "fileName", "/afs/cern.ch/user/c/cneubuse/public/FCChh/cellNoise_map_segHcal.root"};
+  /// Name
+  Gaudi::Property<std::string> m_fileName{this, "fileName",
+                                          "/afs/cern.ch/user/c/cneubuse/public/FCChh/cellNoise_map_segHcal.root"};
   std::unordered_map<uint64_t, double> m_map;
 };
 

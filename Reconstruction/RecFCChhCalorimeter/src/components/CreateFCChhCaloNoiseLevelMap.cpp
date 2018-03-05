@@ -10,7 +10,7 @@
 DECLARE_SERVICE_FACTORY(CreateFCChhCaloNoiseLevelMap)
 
 CreateFCChhCaloNoiseLevelMap::CreateFCChhCaloNoiseLevelMap(const std::string& aName, ISvcLocator* aSL)
-    : base_class(aName, aSL) {  
+    : base_class(aName, aSL) {
   declareProperty("ECalBarrelNoiseTool", m_ecalBarrelNoiseTool, "Handle for the cells noise tool of Barrel ECal");
   declareProperty("HCalBarrelNoiseTool", m_hcalBarrelNoiseTool, "Handle for the cells noise tool of Barrel HCal");
 }
@@ -30,7 +30,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     return StatusCode::FAILURE;
   }
 
-  std::unordered_map<uint64_t,double> map;
+  std::unordered_map<uint64_t, double> map;
 
   //////////////////////////////////
   /// SEGMENTED ETA-PHI VOLUMES  ///
@@ -57,7 +57,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
            << segmentation->offsetPhi() << endmsg;
 
     auto decoder = m_geoSvc->lcdd()->readout(m_readoutNamesSegmented[iSys]).idSpec().decoder();
-    
+
     // Loop over all cells in the calorimeter and retrieve existing cellIDs
     // Loop over active layers
     std::vector<std::pair<int, int>> extrema;
@@ -71,7 +71,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
       (*decoder)["eta"] = 0;
       (*decoder)["phi"] = 0;
       uint64_t volumeId = decoder->getValue();
-      
+
       // Get number of segmentation cells within the active volume
       auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
       debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
@@ -81,13 +81,13 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
       for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
         for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
           (*decoder)["phi"] = iphi;
-          (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
+          (*decoder)["eta"] = ieta + numCells[2];  // start from the minimum existing eta cell in this layer
           uint64_t cellId = decoder->getValue();
-	  // double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
-	  // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
-	  double noise = 0.0075/4.;
-          map.insert(std::pair<uint64_t,double>(cellId, noise));
-	}
+          // double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
+          // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
+          double noise = 0.0075 / 4.;
+          map.insert(std::pair<uint64_t, double>(cellId, noise));
+        }
       }
     }
   }
@@ -108,7 +108,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
       return StatusCode::FAILURE;
     }
     auto decoder = m_geoSvc->lcdd()->readout(m_readoutNamesNested[iSys]).idSpec().decoder();
-    
+
     // Get VolumeID
     (*decoder)[m_fieldNameNested] = m_fieldValuesNested[iSys];
     // Get the total number of given hierarchy of active volumes
@@ -166,7 +166,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[0])->second - 1));
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second - 1));
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[2])->second - 1));
-    
+
     for (unsigned int ilayer = 0; ilayer < activeVolumesNumbersNested.find(m_activeFieldNamesNested[0])->second;
          ilayer++) {
       for (unsigned int iphi = 0; iphi < activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second; iphi++) {
@@ -176,10 +176,10 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           (*decoder)[m_activeFieldNamesNested[1]] = iphi;
           (*decoder)[m_activeFieldNamesNested[2]] = iz;
           uint64_t volumeId = decoder->getValue();
-	  // double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId); 
-	  // use constant noise level in hcal 0.0115 / 4.
-	  double noise = 0.0115/4.;
-	  map.insert(std::pair<uint64_t,double>(volumeId, noise));
+          // double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId);
+          // use constant noise level in hcal 0.0115 / 4.
+          double noise = 0.0115 / 4.;
+          map.insert(std::pair<uint64_t, double>(volumeId, noise));
         }
       }
     }
@@ -199,7 +199,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
   }
   file.Write();
   file.Close();
-  
+
   return StatusCode::SUCCESS;
 }
 
