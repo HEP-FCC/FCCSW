@@ -71,3 +71,8 @@ gaudi_add_test(reconstructionFullCaloSystemWithNoise
                 DEPENDS simulateFullCaloSystem
                 FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py
                 PASSREGEX "Segmentation cells  \\(Nphi, Neta, minEta\\): \\[704, 335, 1\\]")
+
+gaudi_add_test(recTopoClustersBarrelCaloSystem
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS simulateFullCaloSystem
+                FRAMEWORK tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_noNoise.py)

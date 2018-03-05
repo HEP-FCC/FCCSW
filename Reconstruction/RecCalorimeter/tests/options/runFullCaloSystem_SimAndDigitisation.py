@@ -51,8 +51,8 @@ ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
 ecalEndcapReadoutName = "EMECPhiEta"
 ecalFwdReadoutName = "EMFwdPhiEta"
 # HCAL readouts
-hcalReadoutName = "HCalBarrel"
-extHcalReadoutName = "HCalExtBarrel"
+hcalReadoutName = "HCalBarrelReadout"
+extHcalReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Tail Catcher readout
@@ -247,7 +247,7 @@ createTailCatcherCells = CreateCaloCells("CreateTailCatcherCells",
 
 out = PodioOutput("out", 
                   OutputLevel=INFO)
-out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep TailCatcherCells"]
+out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep TailCatcherCells", "keep GenParticles","keep GenVertices"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
