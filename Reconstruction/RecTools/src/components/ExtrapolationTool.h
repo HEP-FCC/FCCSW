@@ -12,8 +12,8 @@
 /** @class ExtrapolationTool
  *
  *  Realisation of the extrapolation tool to extrapolate a track described
- * by vertex, momentum & charge through the tracking geometry. It internally
- * uses the ACTS <a
+ * by vertex, momentum & charge through the tracking geometry, taking the given magnetic field into account. It
+ * internally uses the ACTS <a
  * href="http://acts.web.cern.ch/ACTS/latest/doc/classActs_1_1ExtrapolationEngine.html">ExtrapolationEngine</a>
  * and returns a <a
  * href="http://acts.web.cern.ch/ACTS/latest/doc/classActs_1_1ExtrapolationCell.html</a>.

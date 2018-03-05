@@ -123,7 +123,7 @@ ExtrapolationTool::extrapolate(const fcc::Vector3D& vertex, const fcc::Vector3D&
   double z0 = 0.;
   double phi = momentum.phi();
   double theta = momentum.theta();
-  double qop = 0.2;  //(momentum.mag() != 0.) ? charge / momentum.mag() : 0.;
+  double qop = (momentum.mag() != 0.) ? charge / momentum.mag() : 0.;
   // parameters
   Acts::ActsVectorD<5> pars;
   pars << d0, z0, phi, theta, qop;
