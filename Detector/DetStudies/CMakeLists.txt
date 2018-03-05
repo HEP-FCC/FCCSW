@@ -22,3 +22,7 @@ include(CTest)
 gaudi_add_test(samplingFractionInclinedEcal
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/samplingFraction_inclinedEcal.py)
+
+gaudi_add_test(upstreamMaterialInclinedEcal
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/upstreamMaterial_inclinedEcal.py)

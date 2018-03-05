@@ -1,4 +1,4 @@
-#include "MomentumRangeParticleGun.h"
+#include "ConstPtParticleGun.h"
 
 #include <cmath>
 
@@ -12,21 +12,19 @@
 #include "HepPDT/ParticleID.hh"
 #include "Pythia8/ParticleData.h"
 
-DECLARE_TOOL_FACTORY(MomentumRangeParticleGun)
+DECLARE_TOOL_FACTORY(ConstPtParticleGun)
 
 /// Constructor
-MomentumRangeParticleGun::MomentumRangeParticleGun(const std::string& type,
-                                                   const std::string& name,
-                                                   const IInterface* parent)
+ConstPtParticleGun::ConstPtParticleGun(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<IParticleGunTool>(this);
 }
 
 /// Destructor
-MomentumRangeParticleGun::~MomentumRangeParticleGun() {}
+ConstPtParticleGun::~ConstPtParticleGun() {}
 
 /// Initialize Particle Gun parameters
-StatusCode MomentumRangeParticleGun::initialize() {
+StatusCode ConstPtParticleGun::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (!sc.isSuccess()) return sc;
 
@@ -34,16 +32,11 @@ StatusCode MomentumRangeParticleGun::initialize() {
   sc = m_flatGenerator.initialize(randSvc, Rndm::Flat(0., 1.));
   if (!sc.isSuccess()) return Error("Cannot initialize flat generator");
 
-  // Get the mass of the particle to be generated
-  //
-
   // check momentum and angles
-  if ((m_minMom > m_maxMom) || (m_minTheta > m_maxTheta) || (m_minPhi > m_maxPhi))
-    return Error("Incorrect values for momentum, theta or phi!");
+  if ((m_minEta > m_maxEta) || (m_minPhi > m_maxPhi)) return Error("Incorrect values for eta or phi!");
 
-  m_deltaMom = m_maxMom - m_minMom;
   m_deltaPhi = m_maxPhi - m_minPhi;
-  m_deltaTheta = m_maxTheta - m_minTheta;
+  m_deltaEta = m_maxEta - m_minEta;
 
   // setup particle information
   m_masses.clear();
@@ -58,35 +51,29 @@ StatusCode MomentumRangeParticleGun::initialize() {
 
   info() << endmsg;
 
-  info() << "Momentum range: " << m_minMom / Gaudi::Units::GeV << " GeV <-> " << m_maxMom / Gaudi::Units::GeV << " GeV"
-         << endmsg;
-  info() << "Theta range: " << m_minTheta / Gaudi::Units::rad << " rad <-> " << m_maxTheta / Gaudi::Units::rad << " rad"
-         << endmsg;
+  info() << "Eta range: " << m_minEta << "  <-> " << m_maxEta << endmsg;
   info() << "Phi range: " << m_minPhi / Gaudi::Units::rad << " rad <-> " << m_maxPhi / Gaudi::Units::rad << " rad"
          << endmsg;
-
 
   return sc;
 }
 
 /// Generate the particles
-void MomentumRangeParticleGun::generateParticle(Gaudi::LorentzVector& momentum,
-                                                Gaudi::LorentzVector& origin,
-                                                int& pdgId) {
+void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum, Gaudi::LorentzVector& origin, int& pdgId) {
 
   origin.SetCoordinates(0., 0., 0., 0.);
   double px(0.), py(0.), pz(0.);
 
-  // Generate values for energy, theta and phi
-  double p = m_minMom + m_flatGenerator() * (m_deltaMom);
-  double theta = m_minTheta + m_flatGenerator() * (m_deltaTheta);
+  // Generate values for eta  and phi
   double phi = m_minPhi + m_flatGenerator() * (m_deltaPhi);
+  double eta = m_minEta + m_flatGenerator() * (m_deltaEta);
 
   // Transform to x,y,z coordinates
-  double pt = p * sin(theta);
+  int randIndex = m_flatGenerator() * m_ptList.size();
+  double pt = m_ptList[randIndex];
   px = pt * cos(phi);
   py = pt * sin(phi);
-  pz = p * cos(theta);
+  pz = pt * sinh(eta);
 
   // randomly choose a particle type
   unsigned int currentType = (unsigned int)(m_pdgCodes.size() * m_flatGenerator());
@@ -103,7 +90,7 @@ void MomentumRangeParticleGun::generateParticle(Gaudi::LorentzVector& momentum,
   debug() << " -> " << pdgId << endmsg << "   P   = " << momentum << endmsg;
 }
 
-StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
+StatusCode ConstPtParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
   Gaudi::LorentzVector theFourMomentum;
   Gaudi::LorentzVector origin;
   // note: pgdid is set in function generateParticle

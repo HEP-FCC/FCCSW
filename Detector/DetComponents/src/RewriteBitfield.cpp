@@ -52,7 +52,7 @@ StatusCode RewriteBitfield::initialize() {
     }
   }
   std::vector<std::string> newFields;
-  m_newDecoder =  m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder();
+  m_newDecoder = m_geoSvc->lcdd()->readout(m_newReadoutName).idSpec().decoder();
   for (uint itField = 0; itField < m_newDecoder->size(); itField++) {
     newFields.push_back((*m_newDecoder)[itField].name());
   }

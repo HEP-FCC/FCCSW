@@ -26,8 +26,7 @@ podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader",
                         collections = [ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName,
-                                       hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName],
-                        OutputLevel = DEBUG)
+                                       hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName])
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -37,11 +36,11 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
                                            'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'],
-                    OutputLevel = INFO)
+                    OutputLevel = WARNING)
 
 
-ecalBarrelNoisePath = "/afs/cern.ch/user/a/azaborow/public/FCCSW/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
-ecalEndcapNoisePath = "/afs/cern.ch/user/n/novaj/public/elecNoise_emec_6layers.root"
+ecalBarrelNoisePath = "/eos/project/f/fccsw-web/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
+ecalEndcapNoisePath = "/eos/project/f/fccsw-web/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
 
@@ -53,7 +52,7 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
                                          elecNoiseHistoName = ecalBarrelNoiseHistName,
                                          activeFieldName = "layer",
                                          addPileup = False,
-                                         numRadialLayers = 8, OutputLevel=DEBUG)
+                                         numRadialLayers = 8)
 barrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                          readoutName = ecalBarrelReadoutName,
                                          activeVolumeName = "LAr_sensitive",
@@ -67,7 +66,8 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                         addCellNoise=True, filterCellNoise=False,
                                         noiseTool = noiseBarrel,
                                         hits=ecalBarrelCellsName,
-                                        cells=ecalBarrelCellsName+"Noise", OutputLevel=DEBUG)
+                                        cells=ecalBarrelCellsName+"Noise",
+                                        OutputLevel=DEBUG)
 
 # add noise, create all existing cells in detector
 # currently only positive side!

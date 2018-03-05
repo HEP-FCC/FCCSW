@@ -9,7 +9,6 @@
 
 // ROOT
 #include "TGeoBBox.h"
-//#include "TGeoConeSeg.h"
 
 namespace det {
 namespace utils {
@@ -227,12 +226,12 @@ CLHEP::Hep3Vector tubeDimensions(uint64_t aVolumeId) {
   auto solid = pvol.volume().solid();
 
   // get the envelope of the shape
-  TGeoConeSeg* tube = (dynamic_cast<TGeoConeSeg*>(solid.ptr()));
+  TGeoTubeSeg* tube = (dynamic_cast<TGeoTubeSeg*>(solid.ptr()));
   if (tube == nullptr) {
     return CLHEP::Hep3Vector(0, 0, 0);
   }
   // get half-widths
-  return CLHEP::Hep3Vector(tube->GetRmin1(), tube->GetRmax1(), tube->GetDZ());
+  return CLHEP::Hep3Vector(tube->GetRmin(), tube->GetRmax(), tube->GetDZ());
 }
 
 CLHEP::Hep3Vector coneDimensions(uint64_t aVolumeId) {
@@ -278,7 +277,7 @@ std::array<double, 2> tubeEtaExtremes(uint64_t aVolumeId) {
   return {minEta, maxEta};
 }
 
-std::array<double, 2> envelopeEtaExtremes(uint64_t aVolumeId) {
+std::array<double, 2> envelopeEtaExtremes (uint64_t aVolumeId) {
   dd4hep::VolumeManager volMgr = dd4hep::Detector::getInstance().volumeManager();
   auto detelement = volMgr.lookupDetElement(aVolumeId);
   const auto& transformMatrix = detelement.nominal().worldTransformation();
@@ -328,7 +327,7 @@ std::array<uint, 3> numberOfCells(uint64_t aVolumeId, const dd4hep::DDSegmentati
   auto etaExtremes = volumeEtaExtremes(aVolumeId);
   // calculate the number of eta volumes
   // max - min = full eta range, - size = not counting the middle cell centred at 0, + 1 to account for that cell
-  uint cellsEta = ceil((etaExtremes[1] - etaExtremes[0] - etaCellSize) / 2 / etaCellSize) * 2 + 1;
+  uint cellsEta = ceil(( etaExtremes[1] - etaExtremes[0] - etaCellSize ) / 2 / etaCellSize) * 2 + 1;
   uint minEtaID = int(floor((etaExtremes[0] + 0.5 * etaCellSize - aSeg.offsetEta()) / etaCellSize));
   return {phiCellNumber, cellsEta, minEtaID};
 }
