@@ -21,10 +21,9 @@
  * The user can decide whether analogue or digital readout should be simulated and can set smear and cut paameters and
  * the hit inefficiency. Especially in the FCChh environment we do expect to also have merged clusters which are not
  * only
- * created by one single particle. The user can decide if the mergin of clusters should happen, if hit cells share a
+ * created by one single particle. The user can decide if the merging of clusters should happen, if hit cells share a
  * common edge (default) or even if they already share a common corner.
- * For analysis reasons one can also write out the single particle clusters and the Acts clusters (Turned off per
- * default).
+ * For analysis reasons one can also write out the single particle clusters (Turned off per default).
  *
  *  @author Julia Hrdinka
  *  @date   2017-04
@@ -99,10 +98,6 @@ private:
   Gaudi::Property<bool> m_singleParticleClusters{
       this, "singleParticleClusters", false,
       "This flag should be turned on case single particle clusters should be written to the edm."};
-  /// flag indicating if acts planarclusters should be written out (for studies)
-  Gaudi::Property<bool> m_writeActsClusters{
-      this, "singleParticleClusters", false,
-      "This flag should be turned on in case the Acts::PlanarClusters should be written out."};
   /// The volume manager
   dd4hep::VolumeManager m_volumeManager;
   /// The planar module stepper needed to step thorugh the module

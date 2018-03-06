@@ -111,6 +111,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackClusters = m_trackClusters.createAndPut();
   // possible outout of single particle clusters
   auto singleTrackClusters = m_singleTrackClusters.createAndPut();
+  // possible outout of single particle clusters
+  auto singleTrackHits = m_singleTrackHits.createAndPut();
   // the cells to be used
   std::map<size_t, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
   // go through hits
@@ -181,7 +183,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
       for (auto dStep : dSteps) {
         // smeared, passed and taken
         // create digitization cell
-        fcc::TrackHit trackHit;
+        fcc::TrackHit trackHit = singleTrackHits->create();
         trackHit.core(hit.hit().core());
         // smear the path length with (1 +/- epsilon)
         double sLength =
