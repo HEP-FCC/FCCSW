@@ -22,8 +22,8 @@ podioinput = PodioInput("PodioReader",
                                       "simVertices", 
                                       "hits", 
                                       "positionedHits", 
-                                      "trajectory", 
-                                      "trajectoryPoints",
+                                      #"trajectory",
+                                      #"trajectoryPoints",
                                       ], 
                           OutputLevel=DEBUG,
                           )
@@ -44,8 +44,8 @@ geoservice = GeoSvc("GeoSvc",
 from Configurables import FastHitFilterTool
 hitfiltertool = FastHitFilterTool("FastHitFilterTool")
 
-from Configurables import BarrelLayerGraphTool4
-layergraphtool = BarrelLayerGraphTool4()
+from Configurables import FullInnerLayerGraphTool
+layergraphtool = FullInnerLayerGraphTool()
 
 from Configurables import DoubletCreationTool
 doublet_tool = DoubletCreationTool()
@@ -53,14 +53,15 @@ doublet_tool = DoubletCreationTool()
 from Configurables import TrickTrackSeedingTool
 tricktrack_seed_tool = TrickTrackSeedingTool()
 tricktrack_seed_tool.LayerGraphTool = layergraphtool
-tricktrack_seed_tool.deltaZ=360
-tricktrack_seed_tool.deltaT=1.
-tricktrack_seed_tool.deltaPhi=0.4
+tricktrack_seed_tool.deltaZ=560
+tricktrack_seed_tool.deltaT=100000000.
+tricktrack_seed_tool.deltaPhi=0.6
+tricktrack_seed_tool.seedingLayerIndices = [[0, 0], [0,1], [0,2], [0,3], [2,0], [2,2], [2,4], [2,6], [2,1],[2,3],[2,5],[2,7],[2,9],[2,8]]
 
-#tricktrack_seed_tool.ptMin = 0.0
-#tricktrack_seed_tool.phiCut = 0.2
-#tricktrack_seed_tool.thetaCut = 0.000002
-#tricktrack_seed_tool.hardPtCut= 0.0
+#tricktrack_seed_tool.ptMin = 2.
+#tricktrack_seed_tool.phiCut = 2
+#tricktrack_seed_tool.thetaCut = 2.
+#tricktrack_seed_tool.hardPtCut= 100.0
 #tricktrack_seed_tool.regionOriginRadius= 0.00001
 
 # Alternative: TruthSeeding
@@ -69,7 +70,8 @@ truth_seeds = TruthSeedingTool()
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-RecTrackAlg.Errors = True
+RecTrackAlg.doFit = False
+RecTrackAlg.calcErrors = True
 RecTrackAlg.hitRes = 5*1e-9
 RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
 RecTrackAlg.positionedTrackHits.Path = "positionedHits"
