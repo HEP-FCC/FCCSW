@@ -15,11 +15,11 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 
 # common HCAL specific information
 # readout name
-hcalReadoutName = "BarHCal_Readout"
+hcalReadoutName = "HCalBarrelReadout"
 # active material identifier name
-hcalIdentifierName = ["module", "row", "layer", "tile"]
+hcalIdentifierName = ["module", "row", "layer"]
 # active material volume name
-hcalVolumeName = ["moduleVolume", "wedgeVolume", "layerVolume", "modCompVolume"]
+hcalVolumeName = ["moduleVolume", "wedgeVolume", "layerVolume"]
 # ECAL bitfield names & values
 hcalFieldNames=["system"]
 hcalFieldValues=[8]
