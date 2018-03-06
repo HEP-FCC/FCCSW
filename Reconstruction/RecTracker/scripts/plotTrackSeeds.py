@@ -8,26 +8,25 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-# matplotlib customization
-#from matplotlib import rc
-#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-## for Palatino and other serif fonts use:
-#rc('font',**{'family':'serif','serif':['Palatino']})
-#rc('text', usetex=True)
-
-# only backend that will work with LCG
-matplotlib.use("TkAgg")
 
 # command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", help="edm file to read")
-parser.add_argument("--track_plots", help="create real space plots of tracks", type=int, default=1)
+parser.add_argument("--no_process_hits", action="store_true", help="process hits from edm file")
+parser.add_argument("--no_process_tracks", action="store_true", help="process tracks from edm file")
+parser.add_argument("--no_process_genparticles", action="store_true", help="process genparticles from edm file")
+parser.add_argument("--no_process_trajectories", action="store_true", help="process trajectores from edm file")
+parser.add_argument("--plot_event", help="event for which to create plot", type=int, default=0)
+parser.add_argument("--rCut", help="rcut determining whether hits are drawn", type=float, default=500)
+parser.add_argument("--zCut", help="zcut determining whether hits are drawn", type=float, default=1000)
+parser.add_argument("--rlimlow", help="event for which to create plot", type=float, default=0)
+parser.add_argument("--rlimhigh", help="event for which to create plot", type=float, default=450)
+parser.add_argument("--zlimlow", help="event for which to create plot", type=float, default=-2000)
+parser.add_argument("--zlimhigh", help="event for which to create plot", type=float, default=2000)
 parser.add_argument("--nevents", help="max number of events to process", type=int, default=1000)
 args = parser.parse_args()
 
-plot_tracks = args.track_plots
-print 
-
+#TODO
 def Particle2Track(p, vertex, charge=1., B=4.):
     pT = np.sqrt(p[0]**2 + p[1]**2)
     pX = p[0]
@@ -41,6 +40,7 @@ def Particle2Track(p, vertex, charge=1., B=4.):
     z0 = vertex[2] 
     return [d0, z0, phi0, cotTheta, q_pT]
 
+#TODO
 def Track2Particle(params):
     d0, z0, phi0, cotTheta, q_pT = params
     charge = np.sign(q_pT)
@@ -50,6 +50,7 @@ def Track2Particle(params):
     p = [pT*np.cos(phi0), pT*np.sin(phi0), pZ]
     return [p, vertex]
 
+#TODO
 def helix(params, time_points=(0,2,2000), B=4.):
   path_points = np.linspace(*time_points)
   d0, z0, phi0, cotTheta, q_pT = params
@@ -70,72 +71,58 @@ def helix(params, time_points=(0,2,2000), B=4.):
 
 
 # plot detector cartoon 
-if plot_tracks:
-  
-  plt.figure("xy")
-  ax = plt.gca()
-  for r in [25, 60, 100, 150]:
-    ax.add_artist(plt.Circle((0,0), r,fill=False, color="red", alpha=0.4, lw=6 ))
-  plt.figure("rz")
-  ax = plt.gca()
-  for z in [25, 60, 100, 150]:
-    ax.add_artist(plt.Rectangle((-150,z - 3), 300, 5 ,fill=True, color="red", alpha=0.4, lw=0 ))
-
+plt.figure("xy")
+ax = plt.gca()
+for r in [25, 60, 100, 150]:
+  ax.add_artist(plt.Circle((0,0), r,fill=False, color="red", alpha=0.4, lw=6 ))
+plt.figure("rz")
+ax = plt.gca()
+for z in [25, 60, 100, 150]:
+  ax.add_artist(plt.Rectangle((-850,z - 3), 1700, 5 ,fill=True, color="red", alpha=0.4, lw=0 ))
+for z in [950, 1178, 1462, 1813, -950, -1178, -1462, -1813]: 
+  ax.add_artist(plt.Rectangle((z - 3, 25), 10, 400 ,fill=True, color="red", alpha=0.4, lw=0 ))
 events = EventStore([args.filename])
 print len(events),  " events in rootfile ", args.filename
 
-# lists to hold event data
-l_etas = []
-l_pts = []
-l_dpts = []
-l_true_pts = []
 
 # main event loop
-for i, store in enumerate(events):
-    if i == plot_tracks:
+for i, store in enumerate([events[args.plot_event]]):
       print "event ", i
-      #if i > args.nevents:
-      #  break
-      genparticles = store.get("allGenParticles")
-      print "processing allGenParticles ..."
-      for t in genparticles:
-          momentum = [t.core().p4.px, t.core().p4.py, t.core().p4.pz, t.core().p4.mass]
-          tm = ROOT.TLorentzVector(*momentum)
-          print "\t sim Eta:", tm.Eta() 
-          l_etas.append(tm.Eta())
-          l_true_pts.append(np.rint(tm.Pt()))
-          vertex = [0,0,0]
-          print "\tsim trackID: ", t.core().bits, "sim pdgId: ", t.core().pdgId, "momentum: ", [t.core().p4.px, t.core().p4.py, t.core().p4.pz]
-          print "\tsim phi: ", np.arctan(t.core().p4.py / t.core().p4.px)
-          print "\tsim cottheta: ", t.core().p4.pz / np.sqrt(t.core().p4.px**2 +  t.core().p4.py**2)
-          print "\tsim q_pT: ", 1. / np.sqrt(t.core().p4.px**2 +  t.core().p4.py**2)
-          charge = 1
-          if t.core().charge == -1:
-            charge = -1
-          cpar = Particle2Track(momentum, vertex, charge=charge)
-          print "\tsim calculated params:", cpar
-          cmom = Track2Particle(cpar)
-          print "\tsim calculated particle: ", cmom
+      if not args.no_process_genparticles:
+        genparticles = store.get("allGenParticles")
+        print "processing allGenParticles ..."
+        for p in genparticles:
+            momentum = [p.core().p4.px, p.core().p4.py, p.core().p4.pz, p.core().p4.mass]
+            pm = ROOT.TLorentzVector(*momentum)
+            print "\t sim Eta:", pm.Eta() 
+            vertex = [0,0,0]
+            print "\tsim trackID: ", p.core().bits, "sim pdgId: ", p.core().pdgId, "momentum: ", [p.core().p4.px, p.core().p4.py, p.core().p4.pz]
+            print "\tsim phi: ", np.arctan(p.core().p4.py / p.core().p4.px)
+            print "\tsim cottheta: ", p.core().p4.pz / np.sqrt(p.core().p4.px**2 +  p.core().p4.py**2)
+            print "\tsim q_pT: ", 1. / np.sqrt(p.core().p4.px**2 +  p.core().p4.py**2)
+            charge = 1
+            cpar = Particle2Track(momentum, vertex, charge=charge)
+            print "\tsim calculated params:", cpar
+            cmom = Track2Particle(cpar)
+            print "\tsim calculated particle: ", cmom
 
-      print "processing tracks ..."
-      
-      tracks = store.get('tracks')
-      if plot_tracks:
+      if not args.no_process_tracks:
+        print "processing tracks ..."
+        tracks = store.get('tracks')
+        trackCounter = 0
         for t in tracks:
               pos = []
-              #pos2 = helix(trackparams)
               for j in range(t.hits_size()):
                 cor = t.hits(j).position()
                 pos.append([cor.x, cor.y, cor.z])
               pos = np.array(pos)
               plt.figure("xy")
-              plt.plot(pos[:,0],pos[:,1], '--', color="black")
-              #plt.plot(pos2[:,0],pos2[:,1], '-', lw=3, color="blue", alpha=0.5)
+              plt.plot(pos[:,0],pos[:,1], '--', color="black", label="Track Seed" if trackCounter == 0 else None)
               plt.figure("rz")
-              plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), '--', color="black")
-              #plt.plot(pos2[:,2], np.sqrt(pos2[:,0]**2 + pos2[:,1]**2), '--', color="blue", alpha=0.5)
+              plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), '--', color="black", label="Track Seed" if trackCounter == 0 else None)
+              trackCounter +=1
 
-      if plot_tracks:
+      if not args.no_process_trajectories:
         plt.figure("xy")
         print "processing trajectories ..."
         clusters = store.get('trajectoryPoints')
@@ -143,71 +130,44 @@ for i, store in enumerate(events):
         for c in clusters:
               cor = c.position()
               pos.append([cor.x, cor.y, cor.z, c.bits()])
-        pos = np.array(pos)
-        p = pos
-        #for ids in np.unique(pos[:,3]):
-        #  p = pos[(pos[:,3] == ids) ]
-        p =  p[(np.linalg.norm(p[:,:2], axis=1) < 150)]
-        p = p[np.abs(p[:,2]) < 150] 
+        p = np.array(pos)
+        p =  p[(np.linalg.norm(p[:,:2], axis=1) < args.rCut)]
+        p = p[np.abs(p[:,2]) < args.zCut] 
         plt.figure("xy")
-        plt.plot(p[:,0],p[:,1], '-', color="green", alpha=0.3)
+        plt.plot(p[:,0],p[:,1], '-', color="green", alpha=0.3, label="MCTruth trajectory")
         plt.figure("rz")
-        plt.plot(p[:,2], np.sqrt(p[:,0]**2 + p[:,1]**2), '-', color="green", alpha=0.3)
+        plt.plot(p[:,2], np.sqrt(p[:,0]**2 + p[:,1]**2), '-', color="green", alpha=0.3, label="MCTruth trajectory")
 
+      if not args.no_process_hits:
         print "processing hits ..."
         hits = store.get('positionedHits')
         pos = []
         for c in hits:
             cor = c.position()
-            if np.abs(cor.z) < 200:
+            if np.abs(cor.z) < args.zCut:
               pos.append([cor.x, cor.y, cor.z])
-        pos = np.array(pos)
+        p = np.array(pos)
+        p =  p[(np.linalg.norm(p[:,:2], axis=1) < args.rCut)]
         plt.figure("xy")
-        plt.plot(pos[:,0],pos[:,1], 'o', color="midnightblue")
+        plt.plot(p[:,0],p[:,1], 'o', color="midnightblue", label="Tracker Hit")
         plt.figure("rz")
-        plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), 'o', color="midnightblue")
+        plt.plot(p[:,2], np.sqrt(p[:,0]**2 + p[:,1]**2), 'o', color="midnightblue", label="Tracker Hit")
 
 
-if plot_tracks:
-  plt.figure("xy")
-  plt.xlim(-150, 150)
-  plt.ylim(-150,150)
-  plt.xlabel("x [mm]")
-  plt.ylabel("y [mm]")
-  plt.savefig("tt_xy.png")
-  plt.savefig("tt_xy.pdf")
-  plt.figure("rz")
-  plt.xlim(-150, 150)
-  plt.ylim(0,150)
-  plt.xlabel("z [mm]")
-  plt.ylabel("r [mm]")
-  plt.savefig("tt_rz.png")
-  plt.savefig("tt_rz.pdf")
+f = args.filename.replace(".root", "") + "_event_" + str(args.plot_event) + "_trackDisplay"
+plt.figure("xy")
+plt.xlim(-1* args.rlimhigh, args.rlimhigh)
+plt.ylim(-1* args.rlimhigh, args.rlimhigh)
+plt.xlabel("x [mm]")
+plt.ylabel("y [mm]")
+plt.legend(loc="best")
+plt.savefig(f + "_xy.png")
+plt.figure("rz")
+plt.xlim(-1* args.zlimhigh, args.zlimhigh)
+plt.ylim(args.rlimlow, args.rlimhigh)
+plt.xlabel("z [mm]")
+plt.ylabel("r [mm]")
+plt.legend(loc="best")
+plt.savefig(f + "_rz.png")
 
 
-if False:
-  etas = np.array(l_etas)
-  dpts = np.array(l_dpts)
-  pts = np.array(l_pts)
-  colors = {1.: "black", 2: "darkblue", 5.: "blue", 100.: "green", 1000: "magenta", 10000.: "darkgreen", 10.: "red"}
-  for e in np.unique(l_true_pts):
-    print "pT: ", e
-    i = np.array(l_true_pts) == e
-    e = int(e)
-    plt.figure("pt_res")
-    plt.semilogy(etas[i], np.abs(pts[i]), 'o', label=e, color=colors[e])
-    plt.semilogy(etas[i], np.abs(dpts[i]), 'd', color=colors[e])
-    plt.figure("pt_res_div")
-    plt.semilogy(etas[i], np.abs(dpts[i]) / np.abs(pts[i]) * 100, 'o', label=e, color=colors[e])
-
-  plt.figure("pt_res")
-  plt.xlabel(r"$\eta$")
-
-  plt.legend(loc="best", title="Pt [GeV]")
-  plt.figure("pt_res_div")
-  plt.xlabel(r"$\eta$")
-  plt.ylabel(r"$\frac {\delta p_T} {p_T} [\%] $")
-  plt.title(r"Track resolution for const Pt across $\eta$")
-  plt.legend(loc="best", title="Pt [GeV]")
-  plt.savefig("tricktrack_singleparticle_res.png")
-plt.show()
