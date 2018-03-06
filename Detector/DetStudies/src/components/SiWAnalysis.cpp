@@ -18,7 +18,7 @@
 #include "string"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 DECLARE_ALGORITHM_FACTORY(SiWAnalysis)
@@ -124,11 +124,6 @@ StatusCode SiWAnalysis::execute() {
       
     }
   }
-
-/*
-  m_calPixels = m_calFit->GetX(m_sumPixels);
-  //std::cout << "#### " << m_sumPixels << " " << m_calPixels << std::endl;
-*/
 
 // Fill histograms
   m_totalEdep->Fill(m_sumEnergyDep);

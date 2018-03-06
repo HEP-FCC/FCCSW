@@ -49,13 +49,11 @@ static G4VSensitiveDetector* create_aggregate_calorimeter_sd(const std::string& 
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of DigitalCalorimeterSD
-static G4VSensitiveDetector* create_digital_calorimeter_sd(
-    const std::string& aDetectorName,
-    DD4hep::Geometry::LCDD& aLcdd)  {
+static G4VSensitiveDetector* create_digital_calorimeter_sd(const std::string& aDetectorName,
+    							dd4hep::Detector& aLcdd)  {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
-  return new det::DigitalCalorimeterSD(aDetectorName,
-    readoutName,
-    aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
+  return new det::DigitalCalorimeterSD(
+	aDetectorName,readoutName,aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of GflashCalorimeterSD
 static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDetectorName,

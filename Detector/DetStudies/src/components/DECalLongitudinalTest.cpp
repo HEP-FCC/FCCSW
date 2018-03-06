@@ -15,7 +15,7 @@
 #include "TMath.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
 DECLARE_ALGORITHM_FACTORY(DECalLongitudinalTest)
@@ -65,7 +65,6 @@ StatusCode DECalLongitudinalTest::initialize() {
     return StatusCode::FAILURE;
   }
 
-  //m_EtaPhiEvent0 = new TH2F("decal_EtaPhiEvent0", "Eta Phi Positions for Event 0", 222, -0.004, 0.002, 222, -0.8305,-0.8245);
   m_EtaPhiEvent0 = new TH2F("decal_EtaPhiEvent0", "Eta Phi Positions for Event 0", 2000, -0.04, 0.02, 2000, -4,4);
   if (m_histSvc->regHist("/rec/decal_EtaPhiEvent0", m_EtaPhiEvent0).isFailure()) {
     error() << "Couldn't register histogram" << endmsg;
@@ -102,8 +101,7 @@ StatusCode DECalLongitudinalTest::execute() {
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
     decoder->setValue(hit.core().cellId);
-    //debug() << "(*decoder)[m_layerFieldName] = " << (*decoder)[m_layerFieldName] << endmsg;
-    sumHitslayers[(*decoder)[m_layerFieldName]] += 1; //hit.core().energy;
+    sumHitslayers[(*decoder)[m_layerFieldName]] += 1;
     // check if energy was deposited in the calorimeter (active/passive material)
     // layers are numbered starting from 1, layer == 0 is cryostat/bath
     std::cout << (*decoder)[m_layerFieldName] << std::endl;
@@ -127,10 +125,8 @@ StatusCode DECalLongitudinalTest::execute() {
 
   // Fill histograms
   m_totalHits->Fill(sumHits);
-  //debug() << "total hits in event = " << sumHits << endmsg;
   for (uint i = 1; i < m_numLayers; i++) {
     m_totalHitsLayers[i]->Fill(sumHitslayers[i]);
-    //debug() << "total hits in layer " << i << " = " << sumHitslayers[i] << endmsg;
   }
   return StatusCode::SUCCESS;
 }
@@ -141,7 +137,6 @@ StatusCode DECalLongitudinalTest::finalize() {
   // count from 1 to avoid the hits in the Trkr volume
   for (uint i = 1; i < m_numLayers; i++) {
       m_totalHitsVsLayer->SetBinContent(i+1,m_totalHitsLayers[i]->GetMean());
-    //debug() << "total hits in layer " << i << " = " << sumHitslayers[i] << endmsg;
   }
 
 return GaudiAlgorithm::finalize(); }

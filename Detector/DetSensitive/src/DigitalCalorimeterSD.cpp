@@ -26,7 +26,7 @@
 namespace det {
 DigitalCalorimeterSD::DigitalCalorimeterSD(const std::string& aDetectorName,
   const std::string& aReadoutName,
-  const DD4hep::Geometry::Segmentation& aSeg)
+  const dd4hep::Segmentation& aSeg)
   : G4VSensitiveDetector(aDetectorName), m_seg(aSeg), m_calorimeterCollection(nullptr) {
   // name of the collection of hits is determined byt the readout name (from XML)
   collectionName.insert(aReadoutName);
@@ -44,12 +44,12 @@ void DigitalCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections)
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   m_calorimeterCollection = new G4THitsCollection
-    <DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName,collectionName[0]);
+    <dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName,collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection), m_calorimeterCollection);
 
   //this collection is just a temp and not added to the HitsCollection just used to store raw hits before summing together
   m_tempCollection = new G4THitsCollection
-    <DD4hep::Simulation::Geant4CalorimeterHit>(SensitiveDetectorName,"temp");
+    <dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName,"temp");
 
   // m_pixelsOverThresholdFile.open("pixelsOverThreshold.txt", std::ios_base::app);.
 
@@ -98,8 +98,8 @@ bool DigitalCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
     }  
   }
 
-  DD4hep::Simulation::Position pos(prePos.x(), prePos.y(), prePos.z());
-  auto hit = new DD4hep::Simulation::Geant4CalorimeterHit(pos);
+  dd4hep::Position pos(prePos.x(), prePos.y(), prePos.z());
+  auto hit = new dd4hep::sim::Geant4CalorimeterHit(pos);
   //hit->cellID  = segmentation::cellID(m_seg, *aStep);
   hit->cellID  = utils::cellID(m_seg, *aStep);
 
@@ -126,14 +126,14 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
   // map.first = cellID
   // map.second.first = number of particles into the cell
   // map.second.second = total energy deposited in the cell
-  std::map<uint64_t, std::pair<int, DD4hep::Simulation::Geant4CalorimeterHit*> > counter;
-  DD4hep::Simulation::Geant4CalorimeterHit* hit = nullptr;
+  std::map<uint64_t, std::pair<int, dd4hep::sim::Geant4CalorimeterHit*> > counter;
+  dd4hep::sim::Geant4CalorimeterHit* hit = nullptr;
 
-  std::cout << "####" <<  m_seg->type() << std::endl;
+  //std::cout << "####" <<  m_seg->type() << std::endl;
 
   // loop through all of the hits in an event and sum the energy deposited per cell
   for(int i=0; i<nHits; i++) {
-    hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*> (m_tempCollection->GetHit(i));
+    hit = dynamic_cast<dd4hep::sim::Geant4CalorimeterHit*> (m_tempCollection->GetHit(i));
 
     // this bit of code allows us to check that is incident and that we should count as new particles
     // we then make the value of energy +ve again for ease of adding
@@ -155,7 +155,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
     // if useMask=false then IsAllowedCellID always returns true
     if(IsAllowedCellID(cellID)){  
 
-      std::map<uint64_t, std::pair<int, DD4hep::Simulation::Geant4CalorimeterHit*> >::iterator it = counter.find(cellID);
+      std::map<uint64_t, std::pair<int, dd4hep::sim::Geant4CalorimeterHit*> >::iterator it = counter.find(cellID);
 
       if(counter.find(cellID) != counter.end()) {
         
@@ -171,7 +171,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
         if(isIncident) {
           nparts = 1;
         }
-        std::pair<int, DD4hep::Simulation::Geant4CalorimeterHit*> info = std::make_pair(nparts, hit);
+        std::pair<int, dd4hep::sim::Geant4CalorimeterHit*> info = std::make_pair(nparts, hit);
         counter[cellID] = info;
       }
     }
@@ -180,7 +180,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
   // now loop through all the hits and check the Mask. Cannot do it before as may cut out multiple hits to cells
   bool useMask = false;
   for(int i=0; i<nHits && useMask; i++) {
-    hit = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*> (m_tempCollection->GetHit(i));
+    hit = dynamic_cast<dd4hep::sim::Geant4CalorimeterHit*> (m_tempCollection->GetHit(i));
     uint64_t cellID = hit->cellID;  
     AddCellIDMask(cellID);
   }
@@ -195,8 +195,8 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
     mipsPerPixel[n].clear();
   }
 
-  DD4hep::Simulation::Geant4CalorimeterHit* digi = nullptr;
-  std::map<uint64_t, std::pair<int, DD4hep::Simulation::Geant4CalorimeterHit*> >::iterator it;
+  dd4hep::sim::Geant4CalorimeterHit* digi = nullptr;
+  std::map<uint64_t, std::pair<int, dd4hep::sim::Geant4CalorimeterHit*> >::iterator it;
   std::map<Strixel, int> StrixelHitCounter;
   for(it=counter.begin(); it!=counter.end(); it++)
 	{
@@ -208,10 +208,10 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
     if((*it).second.second->energyDeposit>=threshold) {      
       pixelsOverThreshold++;
       // insert the collection to G4 so can be passed on later
-      digi = dynamic_cast<DD4hep::Simulation::Geant4CalorimeterHit*> ((*it).second.second);
+      digi = dynamic_cast<dd4hep::sim::Geant4CalorimeterHit*> ((*it).second.second);
       // this line overwrites the time parameter with the number of particles per pixel
-      std::vector<DD4hep::Simulation::Geant4Hit::MonteCarloContrib> conts;     
-      DD4hep::Simulation::Geant4Hit::MonteCarloContrib cont(0,0,0,0);
+      std::vector<dd4hep::sim::Geant4Hit::MonteCarloContrib> conts;     
+      dd4hep::sim::Geant4Hit::MonteCarloContrib cont(0,0,0,0);
 
       if(m_countParticlesPerPixel) {
         //digi->energyDeposit = (*it).second.first; // overwrite the energy deposit with the number of mips in the cell
@@ -232,7 +232,7 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
   // below this point is DECal chip specific where the readout is reconfidured
   // not needed for the analogue SiW
 
- /* int strixelHits = StrixelHitCounter.size();
+  int strixelHits = StrixelHitCounter.size();
   int strixelPixelHits_3 = 0;
   int strixelPixelHits_7 = 0;  
   int strixelPixelHits_15 = 0;
@@ -344,10 +344,10 @@ void DigitalCalorimeterSD::EndOfEvent(G4HCofThisEvent*) {
 //  std::cout << "Total number of unique pads = " << PadHitCounter.size() << std::endl << std::endl;
 
 
-  std::cout << m_incidentParticles << "\t" << counter.size() << "\t" << pixelsOverThreshold << "\t" << strixelHits << "\t" << strixelPixelHits_3 << "\t" << strixelPixelHits_7 << "\t" << strixelPixelHits_15 << "\t" << strixelPixelHits_31 << "\t" << PadHitCounter.size() << std::endl;
+  std::cout << "Counters\t"<< m_incidentParticles << "\t" << counter.size() << "\t" << pixelsOverThreshold << "\t" << strixelHits << "\t" << strixelPixelHits_3 << "\t" << strixelPixelHits_7 << "\t" << strixelPixelHits_15 << "\t" << strixelPixelHits_31 << "\t" << PadHitCounter.size() << std::endl;
 
  
-*/
+
 
 
 }

@@ -3,8 +3,8 @@
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
-//#include "DDSegmentation/Segmentation.h"
-#include "DD4hep/objects/SegmentationsInterna.h"
+#include "DDSegmentation/Segmentation.h"
+//#include "DD4hep/objects/SegmentationsInterna.h"
 
 // Geant
 #include "G4VSensitiveDetector.hh"
@@ -144,7 +144,7 @@ class DigitalCalorimeterSD : public G4VSensitiveDetector
    */
   DigitalCalorimeterSD(const std::string& aDetectorName,
     const std::string& aReadoutName,
-    const DD4hep::Geometry::Segmentation& aSeg);
+    const dd4hep::Segmentation& aSeg);
   /// Destructor
   virtual ~DigitalCalorimeterSD();
   /** Initialization.
@@ -169,10 +169,10 @@ class DigitalCalorimeterSD : public G4VSensitiveDetector
 
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_tempCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_tempCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
-  DD4hep::Geometry::Segmentation m_seg;
+  dd4hep::Segmentation m_seg;
 
   std::string m_pixelsOverThresholdFileName;
   std::ofstream m_pixelsOverThresholdFile;
