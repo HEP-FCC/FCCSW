@@ -137,7 +137,7 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
     m_hitFilterTool->setIds(m_seedingLayerIndices[layerCounter].first, m_seedingLayerIndices[layerCounter].second);
     createBarrelSpacePoints(layerPoints.back(), theHits, m_seedingLayerIndices[layerCounter], 0 /* debug parameter, currently unused */);
     debug() << "found " << layerPoints.back().size() << " points on Layer " << endmsg;
-    layerTrees.back().build(layerPoints.back());
+    //layerTrees.back().build(layerPoints.back());
   }
 
   std::vector<HitDoublets<Hit>*> doublets;
