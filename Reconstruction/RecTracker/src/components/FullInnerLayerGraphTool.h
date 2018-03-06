@@ -1,5 +1,5 @@
-#ifndef RECTRACKER_BARRELLAYERGRAPHTOOL_H
-#define RECTRACKER_BARRELLAYERGRAPHTOOL_H
+#ifndef RECTRACKER_FULLINNERLAYERGRAPHTOOL_H
+#define RECTRACKER_FULLINNERLAYERGRAPHTOOL_H
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
@@ -11,13 +11,13 @@
 #include "tricktrack/CMGraph.h"
 
 
-class BarrelLayerGraphTool : public GaudiTool, virtual public ILayerGraphTool {
+class FullInnerLayerGraphTool : public GaudiTool, virtual public ILayerGraphTool {
 public:
-  BarrelLayerGraphTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~BarrelLayerGraphTool() = default;
+  FullInnerLayerGraphTool(const std::string& type, const std::string& name, const IInterface* parent);
+  ~FullInnerLayerGraphTool() = default;
   virtual StatusCode initialize() override final;
   virtual StatusCode finalize() override final;
   virtual tricktrack::CMGraph getGraph() override final;
 };
 
-#endif /* RECTRACKER_BARRELLAYERGRAPHTOOL_H */
+#endif /* RECTRACKER_FULLINNERLAYERGRAPHTOOL_H */
