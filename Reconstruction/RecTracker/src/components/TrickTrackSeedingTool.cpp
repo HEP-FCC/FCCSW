@@ -16,14 +16,8 @@
 #include "tricktrack/FKDPoint.h"
 #include "tricktrack/TTPoint.h"
 
-//using Hit = tricktrack::SpacePoint<size_t>; 
-
-
 using Hit = tricktrack::TTPoint; 
-
 using namespace tricktrack;
-
-
 
 DECLARE_TOOL_FACTORY(TrickTrackSeedingTool)
 
@@ -155,11 +149,18 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
     findDoublets(doubletsOnLayerPair, layerPoints[innerLayerIndex], layerTrees[outerLayerIndex], layerPoints[outerLayerIndex]);
 
     doublets.push_back(doubletsOnLayerPair);
+    unsigned int numGoodDoublets = 0;
+    unsigned int numBadDoublets = 0;
     for (int ii = 0; ii < doublets.back()->size(); ++ii) {
       std::cout << "doublet trackids " << (*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::inner).identifier()].core().bits <<
       "\t" << (*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::outer).identifier()].core().bits << std::endl;
+      if ((*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::inner).identifier()].core().bits == (*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::outer).identifier()].core().bits) {
+        numGoodDoublets++;
+      } else {
+        numBadDoublets++;
+      }
     }
-    debug() << "found "  << doublets.back()->size() << " doublets on layers  " << innerLayerIndex << " and " << outerLayerIndex  << endmsg;
+    debug() << "found "  << doublets.back()->size() << "/" << numGoodDoublets << "/" << numBadDoublets << "  (total/good/bad) doublets on layers  " << innerLayerIndex << " and " << outerLayerIndex  << endmsg;
   }
 
   debug() << "Create and connect cells ..."  << endmsg;
