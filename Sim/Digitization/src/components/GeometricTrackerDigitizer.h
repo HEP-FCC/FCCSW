@@ -33,10 +33,6 @@
 namespace Acts {
 class PlanarModuleStepper;
 class DetectorElementBase;
-class PlanarModuleCluster;
-class DigitizationModule;
-class Surface;
-class DigitizationCell;
 }
 
 namespace fcc {
@@ -119,8 +115,6 @@ private:
   Rndm::Numbers m_gauss;
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
-  /// Planar clusters per event - used for analysis
-  std::vector<std::vector<Acts::PlanarModuleCluster>> m_clustersPerEvent;
 
   /// Private method collecting all hits of the current event per surface
   /// @param hits Collection of track hits + digi information
