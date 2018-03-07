@@ -17,23 +17,26 @@ DECLARE_TOOL_FACTORY(ConstNoiseTool)
 ConstNoiseTool::ConstNoiseTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<INoiseConstTool>(this);
-  declareProperty("noiseInHCalBarrel", m_addedHcalBarrelNoise, "Electronic noise constant in HCalBarrel");
 }
 
 StatusCode ConstNoiseTool::initialize() {
   /// Noise estimates from Atlas [GeV]
   // set for ECalBarrel system:5
-  // set for HCalBarrel system:6
-  // set for HCalExtBarrel system:7
-  m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
-  m_systemNoiseConstMap.emplace(8, 0.0115 / 4.);
-  m_systemNoiseConstMap.emplace(9, 0.0115 / 4.);
-  // if noise in HCal is added following Gaussian distribution with sigma = m_addedHcalBarrelNoise [GeV]
-  if (m_addedHcalBarrelNoise > 0){
-    m_systemNoiseConstMap.erase(8);
-    m_systemNoiseConstMap.emplace(8, m_addedHcalBarrelNoise);
-  }
-  
+  // set for ECalEndcap system:6
+  // set for HCalEndcap system:7
+  // set for HCalBarrel system:8
+  // set for HCalExtBarrel system:9
+  // set for ECalFwd system:10
+  // set for HCalFwd system:11
+
+  m_systemNoiseConstMap.emplace(5, 0.0075 /4. );
+  m_systemNoiseConstMap.emplace(6, 0.0075 /4.  );
+  m_systemNoiseConstMap.emplace(7, 0.0075 /4. );
+  m_systemNoiseConstMap.emplace(8, 0.0115/4. );
+  m_systemNoiseConstMap.emplace(9, 0.0115/4. );
+  m_systemNoiseConstMap.emplace(10,0.0075/4. );
+  m_systemNoiseConstMap.emplace(11,0.0075/4. );
+
   // Get GeoSvc
   m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
@@ -56,7 +59,6 @@ StatusCode ConstNoiseTool::finalize() {
 double ConstNoiseTool::getNoiseConstantPerCell(uint64_t aCellId) {
 
   double Noise = 0.;
-
   // Get cells global coordinate "system"
   m_decoder->setValue(aCellId);
   unsigned cellSystem = (*m_decoder)["system"];

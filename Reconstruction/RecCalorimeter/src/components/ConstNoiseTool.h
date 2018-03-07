@@ -35,8 +35,7 @@ public:
 
 private:
   std::map<uint,double> m_systemNoiseConstMap;
-  /// noise level in HCal
-  double m_addedHcalBarrelNoise = 0.;
+
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   // Decoder
