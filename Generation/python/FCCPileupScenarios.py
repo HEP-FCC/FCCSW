@@ -15,9 +15,9 @@ _CommonFCCPileupConf = {
           "yVertexMean": 0 * units.mm,
           "yVertexSigma": 0.5 * units.mm,
           "zVertexMean": 0 * units.mm,
-          "zVertexSigma": 70 * units.mm,
+          "zVertexSigma": 40 * units.mm,
           "tVertexMean": 0 * units.picosecond,
-          "tVertexSigma": 120 * units.picosecond,
+          "tVertexSigma": 180 * units.picosecond,
            }
 
 
