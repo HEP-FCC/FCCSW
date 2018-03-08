@@ -48,10 +48,10 @@ StatusCode GaussSmearVertex::initialize() {
 /// Smearing function
 StatusCode GaussSmearVertex::smearVertex(HepMC::GenEvent& theEvent) {
 
-  double dx = m_gaussDist() * sqrt(m_xsig) + m_xmean;
-  double dy = m_gaussDist() * sqrt(m_ysig) + m_ymean;
-  double dz = m_gaussDist() * sqrt(m_zsig) + m_zmean;
-  double dt = m_gaussDist() * sqrt(m_tsig) + m_tmean;
+  double dx = m_gaussDist() * m_xsig + m_xmean;
+  double dy = m_gaussDist() * m_ysig + m_ymean;
+  double dz = m_gaussDist() * m_zsig + m_zmean;
+  double dt = m_gaussDist() * m_tsig + m_tmean;
 
   Gaudi::LorentzVector dpos(dx, dy, dz, dt);
 
