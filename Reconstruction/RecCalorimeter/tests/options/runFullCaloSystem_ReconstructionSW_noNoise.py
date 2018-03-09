@@ -40,6 +40,10 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            ],
                     OutputLevel = INFO)
 
+from Configurables import CreateEmptyCaloCellsCollection
+createemptycells = CreateEmptyCaloCellsCollection("CreateEmptyCaloCells")
+createemptycells.cells.Path = "emptyCaloCells"
+
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
 from GaudiKernel.PhysicalConstants import pi
@@ -49,16 +53,16 @@ towers = CaloTowerTool("towers",
                                ecalBarrelReadoutName = ecalBarrelReadoutName,
                                ecalEndcapReadoutName = ecalEndcapReadoutName,
                                ecalFwdReadoutName = ecalFwdReadoutName,
-                               hcalBarrelReadoutName = hcalBarrelReadoutName,
-                               hcalExtBarrelReadoutName = hcalExtBarrelReadoutName,
+                               hcalBarrelReadoutName = ecalBarrelReadoutName,
+                               hcalExtBarrelReadoutName = ecalBarrelReadoutName,
                                hcalEndcapReadoutName = hcalEndcapReadoutName,
                                hcalFwdReadoutName = hcalFwdReadoutName,
                                OutputLevel = DEBUG)
 towers.ecalBarrelCells.Path = ecalBarrelCellsName
 towers.ecalEndcapCells.Path = ecalEndcapCellsName
 towers.ecalFwdCells.Path = ecalFwdCellsName
-towers.hcalBarrelCells.Path = hcalBarrelCellsName
-towers.hcalExtBarrelCells.Path = hcalExtBarrelCellsName
+towers.hcalBarrelCells.Path = "emptyCaloCells"
+towers.hcalExtBarrelCells.Path = "emptyCaloCells"
 towers.hcalEndcapCells.Path = hcalEndcapCellsName
 towers.hcalFwdCells.Path = hcalFwdCellsName
 
@@ -98,6 +102,7 @@ out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
+              createemptycells,
               createClusters,
               out
               ],
