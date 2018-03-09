@@ -459,12 +459,15 @@ GeometricTrackerDigitizer::createClusters(const std::vector<sim::FCCDigitization
 
   // loop through cells and set the edges
   for (auto cellA = std::begin(cells); cellA != (std::end(cells) - 1); cellA++) {
+    auto indexA = std::distance(cells.begin(), cellA);
     for (auto cellB = (cellA + 1); cellB != std::end(cells); cellB++) {
+      auto indexB = std::distance(cells.begin(), cellB);
       // the channels
       auto c0A = cellA->channel0;
       auto c1A = cellA->channel1;
       auto c0B = cellB->channel0;
       auto c1B = cellB->channel1;
+
       // the conditions
       bool isNeighbour0 = (c0A == (c0B - 1) || c0A == (c0B + 1));
       bool isSameChannel0 = (c0A == c0B);
@@ -475,20 +478,19 @@ GeometricTrackerDigitizer::createClusters(const std::vector<sim::FCCDigitization
       if (commonCorner) {
         // 8cell
         if ((isNeighbour0 || isSameChannel0) && (isNeighbour1 || isSameChannel1)) {
-          auto indexA = std::distance(cells.begin(), cellA);
-          add_edge(indexA, indexA + 1, graph);
+          add_edge(indexA, indexB, graph);
         }
       } else {
         // 4cell
         if ((isNeighbour0 && isSameChannel1) || (isNeighbour1 && isSameChannel0)) {
-          auto indexA = std::distance(cells.begin(), cellA);
-          add_edge(indexA, indexA + 1, graph);
+          add_edge(indexA, indexB, graph);
         }
       }
     }  // cellsB
   }    // cellsA
 
   std::vector<size_t> component(num_vertices(graph));
+  size_t num = connected_components(graph, &component[0]);
   // copy the component map
   std::vector<size_t> keys = component;
   // sort
