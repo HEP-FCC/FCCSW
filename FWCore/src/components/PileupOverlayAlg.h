@@ -57,6 +57,8 @@ private:
   Gaudi::Property<std::vector<std::string>> m_pileupFilenames{
       this, "pileupFilenames", {"min_bias_pool.root"}, "Name of File containing pileup events"};
   Gaudi::Property<bool> m_doShuffleInputFiles{this, "doShuffleInputFiles", false, "Shuffle list of input files for additional randomization"};
+
+  Gaudi::Property<bool> m_noSignal{this, "noSignal", false, "Set to true if you don't want to provide a signal collection"};
   /// store for the minimum bias file
   podio::EventStore m_store;
   /// reader for the minimum bias file
