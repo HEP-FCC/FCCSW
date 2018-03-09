@@ -10,11 +10,8 @@
 
 namespace fcc {
 
-  class Geant4PreDigiTrackHit;
-
+class Geant4PreDigiTrackHit;
 }
-
-
 
 /** SimpleTrackerSD DetectorDescription/DetSensitive/src/SimpleTrackerSD.h SimpleTrackerSD.h
  *
@@ -33,9 +30,7 @@ public:
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleTrackerSD(const std::string& aDetectorName,
-                  const std::string& aReadoutName,
-                  const dd4hep::Segmentation& aSeg);
+  SimpleTrackerSD(const std::string& aDetectorName, const std::string& aReadoutName, const dd4hep::Segmentation& aSeg);
   /// Destructor
   virtual ~SimpleTrackerSD();
   /** Initialization.
