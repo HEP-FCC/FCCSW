@@ -40,15 +40,16 @@ public:
   virtual StatusCode initialize() final override;
   /// Finalize function
   virtual StatusCode finalize() final override;
-  /// @copydoc IBFieldSvc::getField(const fcc::Vector3D)
-  virtual fcc::Vector3D getField(const fcc::Vector3D& position) const final override;
-  /// @copydoc IBFieldSvc::getFieldCell(const fcc::Vector3D&)
-  virtual Acts::concept::AnyFieldCell<> getFieldCell(const fcc::Vector3D& position) const final override;
-  /// @copydoc IBFieldSvc::getField(const fcc::Vector3D&,fcc::Vector3D)
-  virtual fcc::Vector3D getFieldGradient(const fcc::Vector3D& pos, fcc::MatrixD<3, 3>& deriv) const final override;
-  /// @copydoc IBFieldSvc::getField(const fcc::Vector3D&)
+  /// @copydoc IBFieldSvc::getField(const Acts::Vector3D)
+  virtual Acts::Vector3D getField(const Acts::Vector3D& position) const final override;
+  /// @copydoc IBFieldSvc::getFieldCell(const Acts::Vector3D&)
+  virtual Acts::concept::AnyFieldCell<> getFieldCell(const Acts::Vector3D& position) const final override;
+  /// @copydoc IBFieldSvc::getField(const Acts::Vector3D&,Acts::Vector3D)
+  virtual Acts::Vector3D getFieldGradient(const Acts::Vector3D& pos,
+                                          Acts::ActsMatrixD<3, 3>& deriv) const final override;
+  /// @copydoc IBFieldSvc::getField(const Acts::Vector3D&)
   /// @note The method will always return true for the constant B-Field
-  virtual bool isInside(const fcc::Vector3D& position) const final override;
+  virtual bool isInside(const Acts::Vector3D& position) const final override;
 
 private:
   /// unique pointer to the internally used Acts::InterpolatedBField

@@ -105,15 +105,16 @@ StatusCode InterpolatedBFieldSvc::initialize() {
   return StatusCode::SUCCESS;
 }
 
-fcc::Vector3D InterpolatedBFieldSvc::getField(const fcc::Vector3D& position) const {
+Acts::Vector3D InterpolatedBFieldSvc::getField(const Acts::Vector3D& position) const {
   return m_actsBField->getField(position);
 }
 
-Acts::concept::AnyFieldCell<> InterpolatedBFieldSvc::getFieldCell(const fcc::Vector3D& position) const {
+Acts::concept::AnyFieldCell<> InterpolatedBFieldSvc::getFieldCell(const Acts::Vector3D& position) const {
   return m_actsBField->getFieldCell(position);
 }
 
-fcc::Vector3D InterpolatedBFieldSvc::getFieldGradient(const fcc::Vector3D& pos, fcc::MatrixD<3, 3>& deriv) const {
+Acts::Vector3D InterpolatedBFieldSvc::getFieldGradient(const Acts::Vector3D& pos,
+                                                       Acts::ActsMatrixD<3, 3>& deriv) const {
   return m_actsBField->getFieldGradient(pos, deriv);
 }
 
@@ -131,7 +132,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
   std::vector<double> rPos;
   std::vector<double> zPos;
   // components of magnetic field on grid points
-  std::vector<fcc::Vector2D> bField;
+  std::vector<Acts::Vector2D> bField;
   // reserve estimated size
   rPos.reserve(nPoints);
   zPos.reserve(nPoints);
@@ -149,7 +150,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
     tmp >> r >> z >> br >> bz;
     rPos.push_back(r);
     zPos.push_back(z);
-    bField.push_back(fcc::Vector2D(br, bz));
+    bField.push_back(Acts::Vector2D(br, bz));
   }
   map_file.close();
   /// [2] use helper function in core
@@ -169,7 +170,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
   std::vector<double> yPos;
   std::vector<double> zPos;
   // components of magnetic field on grid points
-  std::vector<fcc::Vector3D> bField;
+  std::vector<Acts::Vector3D> bField;
   // reserve estimated size
   xPos.reserve(nPoints);
   yPos.reserve(nPoints);
@@ -189,14 +190,14 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
     xPos.push_back(x);
     yPos.push_back(y);
     zPos.push_back(z);
-    bField.push_back(fcc::Vector3D(bx, by, bz));
+    bField.push_back(Acts::Vector3D(bx, by, bz));
   }
   map_file.close();
 
   return fieldMapperXYZ(localToGlobalBin, xPos, yPos, zPos, bField, lengthUnit, BFieldUnit, firstOctant);
 }
 
-bool InterpolatedBFieldSvc::isInside(const fcc::Vector3D& position) const { return m_actsBField->isInside(position); }
+bool InterpolatedBFieldSvc::isInside(const Acts::Vector3D& position) const { return m_actsBField->isInside(position); }
 
 Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMapperRZ_root(
     std::function<size_t(std::array<size_t, 2> binsRZ, std::array<size_t, 2> nBinsRZ)> localToGlobalBin,
@@ -210,7 +211,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
   std::vector<double> rPos;
   std::vector<double> zPos;
   // components of magnetic field on grid points
-  std::vector<fcc::Vector2D> bField;
+  std::vector<Acts::Vector2D> bField;
   // [1] Read in file and fill values
   debug() << "Opening file: " << fieldMapFile << endmsg;
   std::unique_ptr<TFile> inputFile(TFile::Open(fieldMapFile.c_str()));
@@ -235,7 +236,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
     tree->GetEvent(i);
     rPos.push_back(r);
     zPos.push_back(z);
-    bField.push_back(fcc::Vector2D(Br, Bz));
+    bField.push_back(Acts::Vector2D(Br, Bz));
   }
   inputFile->Close();
   /// [2] use helper function in core
@@ -255,7 +256,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
   std::vector<double> yPos;
   std::vector<double> zPos;
   // components of magnetic field on grid points
-  std::vector<fcc::Vector3D> bField;
+  std::vector<Acts::Vector3D> bField;
   // [1] Read in file and fill values
   debug() << "Opening file: " << fieldMapFile << endmsg;
   std::unique_ptr<TFile> inputFile(TFile::Open(fieldMapFile.c_str()));
@@ -284,7 +285,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
     xPos.push_back(x);
     yPos.push_back(y);
     zPos.push_back(z);
-    bField.push_back(fcc::Vector3D(Bx, By, Bz));
+    bField.push_back(Acts::Vector3D(Bx, By, Bz));
   }
   inputFile->Close();
 
@@ -297,7 +298,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
         rPos,
     std::vector<double>
         zPos,
-    std::vector<fcc::Vector2D>
+    std::vector<Acts::Vector2D>
         bField,
     double lengthUnit,
     double BFieldUnit,
@@ -338,7 +339,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
   Acts::detail::EquidistantAxis zAxis(zMin * lengthUnit, zMax * lengthUnit, nBinsZ);
 
   // Create the grid
-  typedef Acts::detail::Grid<fcc::Vector2D, Acts::detail::EquidistantAxis, Acts::detail::EquidistantAxis> Grid_t;
+  typedef Acts::detail::Grid<Acts::Vector2D, Acts::detail::EquidistantAxis, Acts::detail::EquidistantAxis> Grid_t;
   Grid_t grid(std::make_tuple(std::move(rAxis), std::move(zAxis)));
   // [2] Set the bField values
 
@@ -364,12 +365,12 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
   }
   // [3] Create the transformation for the position
   // map (x,y,z) -> (r,z)
-  auto transformPos = [](const fcc::Vector3D& pos) { return fcc::Vector2D(pos.perp(), pos.z()); };
+  auto transformPos = [](const Acts::Vector3D& pos) { return Acts::Vector2D(pos.perp(), pos.z()); };
 
   // [4] Create the transformation for the bfield
   // map (Br,Bz) -> (Bx,By,Bz)
-  auto transformBField = [](const fcc::Vector2D& field, const fcc::Vector3D& pos) {
-    return fcc::Vector3D(field.x() * cos(pos.phi()), field.x() * sin(pos.phi()), field.y());
+  auto transformBField = [](const Acts::Vector2D& field, const Acts::Vector3D& pos) {
+    return Acts::Vector3D(field.x() * cos(pos.phi()), field.x() * sin(pos.phi()), field.y());
   };
 
   // [5] Create the mapper & BField Service
@@ -385,7 +386,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
         yPos,
     std::vector<double>
         zPos,
-    std::vector<fcc::Vector3D>
+    std::vector<Acts::Vector3D>
         bField,
     double lengthUnit,
     double BFieldUnit,
@@ -442,7 +443,7 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
   Acts::detail::EquidistantAxis yAxis(yMin * lengthUnit, yMax * lengthUnit, nBinsY);
   Acts::detail::EquidistantAxis zAxis(zMin * lengthUnit, zMax * lengthUnit, nBinsZ);
   // Create the grid
-  typedef Acts::detail::Grid<fcc::Vector3D, Acts::detail::EquidistantAxis, Acts::detail::EquidistantAxis,
+  typedef Acts::detail::Grid<Acts::Vector3D, Acts::detail::EquidistantAxis, Acts::detail::EquidistantAxis,
                              Acts::detail::EquidistantAxis>
       Grid_t;
   Grid_t grid(std::make_tuple(std::move(xAxis), std::move(yAxis), std::move(zAxis)));
@@ -475,10 +476,10 @@ Acts::InterpolatedBFieldMap::FieldMapper<3, 3> InterpolatedBFieldSvc::fieldMappe
   }
   // [3] Create the transformation for the position
   // map (x,y,z) -> (r,z)
-  auto transformPos = [](const fcc::Vector3D& pos) { return pos; };
+  auto transformPos = [](const Acts::Vector3D& pos) { return pos; };
   // [4] Create the transformation for the bfield
   // map (Bx,By,Bz) -> (Bx,By,Bz)
-  auto transformBField = [](const fcc::Vector3D& field, const fcc::Vector3D& /*pos*/) { return field; };
+  auto transformBField = [](const Acts::Vector3D& field, const Acts::Vector3D& /*pos*/) { return field; };
 
   // [5] Create the mapper & BField Service
   // create field mapping

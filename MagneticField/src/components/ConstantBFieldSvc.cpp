@@ -1,6 +1,6 @@
+#include "ConstantBFieldSvc.h"
 #include "ACTS/MagneticField/ConstantBField.hpp"
 #include "ACTS/Utilities/Units.hpp"
-#include "ConstantBFieldSvc.h"
 
 DECLARE_SERVICE_FACTORY(ConstantBFieldSvc)
 
@@ -16,9 +16,9 @@ StatusCode ConstantBFieldSvc::initialize() {
   }
   // set the constant magnetic field of the ACTS magnetic field service
   if (m_bFieldValuesXYZ.size() == 3) {
-    fcc::Vector3D bFieldValues(m_bFieldValuesXYZ[0] * Acts::units::_T,
-                               m_bFieldValuesXYZ[1] * Acts::units::_T,
-                               m_bFieldValuesXYZ[2] * Acts::units::_T);
+    Acts::Vector3D bFieldValues(m_bFieldValuesXYZ[0] * Acts::units::_T,
+                                m_bFieldValuesXYZ[1] * Acts::units::_T,
+                                m_bFieldValuesXYZ[2] * Acts::units::_T);
     m_actsBField = std::make_unique<Acts::ConstantBField>(bFieldValues);
   } else {
     error() << "Unable to initialize ConstantBFieldSvc: input for BFieldValues "
@@ -29,20 +29,20 @@ StatusCode ConstantBFieldSvc::initialize() {
   return StatusCode::SUCCESS;
 }
 
-fcc::Vector3D ConstantBFieldSvc::getField(const fcc::Vector3D& position) const {
+Acts::Vector3D ConstantBFieldSvc::getField(const Acts::Vector3D& position) const {
   return m_actsBField->getField(position);
 }
 
-Acts::concept::AnyFieldCell<> ConstantBFieldSvc::getFieldCell(const fcc::Vector3D& position) const {
+Acts::concept::AnyFieldCell<> ConstantBFieldSvc::getFieldCell(const Acts::Vector3D& position) const {
   return m_actsBField->getFieldCell(position);
 }
 
-fcc::Vector3D ConstantBFieldSvc::getFieldGradient(const fcc::Vector3D& pos, fcc::MatrixD<3, 3>& deriv) const {
+Acts::Vector3D ConstantBFieldSvc::getFieldGradient(const Acts::Vector3D& pos, Acts::ActsMatrixD<3, 3>& deriv) const {
   return m_actsBField->getFieldGradient(pos, deriv);
 }
 
-bool ConstantBFieldSvc::isInside(const fcc::Vector3D& position) const { return m_actsBField->isInside(position); }
+bool ConstantBFieldSvc::isInside(const Acts::Vector3D& position) const { return m_actsBField->isInside(position); }
 
-void ConstantBFieldSvc::setField(const fcc::Vector3D& fieldVector) { return m_actsBField->setField(fieldVector); }
+void ConstantBFieldSvc::setField(const Acts::Vector3D& fieldVector) { return m_actsBField->setField(fieldVector); }
 
 StatusCode ConstantBFieldSvc::finalize() { return StatusCode::SUCCESS; }

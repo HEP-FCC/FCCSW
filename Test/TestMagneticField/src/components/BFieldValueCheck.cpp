@@ -30,7 +30,7 @@ StatusCode BFieldValueCheck::initialize() {
   std::vector<double> rPos;
   std::vector<double> zPos;
   // components of magnetic field on grid points
-  std::vector<fcc::Vector2D> bField;
+  std::vector<Acts::Vector2D> bField;
   // [1] Read in file and fill values
   debug() << "Opening file: " << m_fieldMapFile << endmsg;
   std::unique_ptr<TFile> inputFile(TFile::Open(m_fieldMapFile.value().c_str()));
@@ -56,7 +56,7 @@ StatusCode BFieldValueCheck::initialize() {
     tree->GetEvent(i);
     rPos.push_back(r * Acts::units::_mm * m_lengthScalor);
     zPos.push_back(z * Acts::units::_mm * m_lengthScalor);
-    bField.push_back(fcc::Vector2D(Br * Acts::units::_T * m_lengthScalor, Bz * Acts::units::_T * m_bFieldScalor));
+    bField.push_back(Acts::Vector2D(Br * Acts::units::_T * m_lengthScalor, Bz * Acts::units::_T * m_bFieldScalor));
   }
   inputFile->Close();
 
@@ -70,9 +70,9 @@ StatusCode BFieldValueCheck::initialize() {
   // Now loop through values and check if values are correct
   for (size_t i = 0; i < rPos.size(); i++) {
     // create position from r and z value
-    fcc::Vector3D pos(rPos.at(i), 0., zPos.at(i));
+    Acts::Vector3D pos(rPos.at(i), 0., zPos.at(i));
     // the read in bField
-    fcc::Vector3D bFieldVec(bField.at(i).x(), 0., bField.at(i).y());
+    Acts::Vector3D bFieldVec(bField.at(i).x(), 0., bField.at(i).y());
     // the reference bField value
     auto refBField = m_bFieldSvc->getField(pos);
     // check r value

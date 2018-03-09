@@ -13,6 +13,7 @@
 #define MAGNETICFIELD_IBFIELDSVC_H
 
 #include "ACTS/MagneticField/concept/AnyFieldLookup.hpp"
+#include "ACTS/Utilities/Definitions.hpp"
 #include "GaudiKernel/IService.h"
 #include "Math/Math.h"
 
@@ -25,13 +26,13 @@ public:
   ///
   /// @param [in] pos global position
   /// @return magnetic field vector at given position
-  virtual fcc::Vector3D getField(const fcc::Vector3D& position) const = 0;
+  virtual Acts::Vector3D getField(const Acts::Vector3D& position) const = 0;
 
   /// @brief retrieve field cell for given position
   ///
   /// @param [in] position global 3D position
   /// @return field cell containing the given global position
-  virtual Acts::concept::AnyFieldCell<> getFieldCell(const fcc::Vector3D& position) const = 0;
+  virtual Acts::concept::AnyFieldCell<> getFieldCell(const Acts::Vector3D& position) const = 0;
 
   /// @brief retrieve magnetic field value
   ///
@@ -41,14 +42,14 @@ public:
   ///
   /// @note currently the derivative is not calculated
   /// @todo return derivative
-  virtual fcc::Vector3D getFieldGradient(const fcc::Vector3D& pos, fcc::MatrixD<3, 3>& deriv) const = 0;
+  virtual Acts::Vector3D getFieldGradient(const Acts::Vector3D& pos, Acts::ActsMatrixD<3, 3>& deriv) const = 0;
 
   // @brief check whether given 3D position is inside look-up domain
   ///
   /// @param [in] position global 3D position
   /// @return @c true if position is inside the defined look-up grid,
   ///         otherwise @c false
-  virtual bool isInside(const fcc::Vector3D& position) const = 0;
+  virtual bool isInside(const Acts::Vector3D& position) const = 0;
   /// virtual desctructor
   virtual ~IBFieldSvc() {}
 };
