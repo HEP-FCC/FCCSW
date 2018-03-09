@@ -193,7 +193,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
                        lcdd.material(xComp.materialStr()));
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolume.placeVolume(tileVol, offset));
-        //   tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolume.placeVolume(modCompVol, offset));

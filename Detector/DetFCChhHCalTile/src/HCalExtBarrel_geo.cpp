@@ -239,7 +239,6 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
-        //     tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
