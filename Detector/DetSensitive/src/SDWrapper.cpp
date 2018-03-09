@@ -5,6 +5,7 @@
 #include "DetSensitive/BirksLawCalorimeterSD.h"
 #include "DetSensitive/FullParticleAbsorptionSD.h"
 #include "DetSensitive/GflashCalorimeterSD.h"
+#include "DetSensitive/DigitalCalorimeterSD.h"
 #include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
 #include "DetSensitive/SimpleTrackerSD.h"
@@ -47,6 +48,13 @@ static G4VSensitiveDetector* create_aggregate_calorimeter_sd(const std::string& 
   return new det::AggregateCalorimeterSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
+// Factory method to create an instance of DigitalCalorimeterSD
+static G4VSensitiveDetector* create_digital_calorimeter_sd(const std::string& aDetectorName,
+    							dd4hep::Detector& aLcdd)  {
+  std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
+  return new det::DigitalCalorimeterSD(
+	aDetectorName,readoutName,aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
+}
 // Factory method to create an instance of GflashCalorimeterSD
 static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDetectorName,
                                                           dd4hep::Detector& aLcdd) {
@@ -70,3 +78,4 @@ DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(BirksLawCalorimeterSD, dd4hep::sim::cre
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD, dd4hep::sim::create_aggregate_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(GflashCalorimeterSD, dd4hep::sim::create_gflash_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(FullParticleAbsorptionSD, dd4hep::sim::create_full_particle_absorbtion_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(DigitalCalorimeterSD, dd4hep::sim::create_digital_calorimeter_sd)

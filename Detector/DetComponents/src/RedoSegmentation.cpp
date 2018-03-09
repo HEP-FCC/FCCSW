@@ -17,6 +17,7 @@ DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
 RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection with old segmentation (input)");
   declareProperty("outhits", m_outHits, "Hit collection with modified segmentation (output)");
+  
 }
 
 RedoSegmentation::~RedoSegmentation() {}
@@ -83,11 +84,17 @@ StatusCode RedoSegmentation::execute() {
   // cellID contains the volumeID that needs to be copied to the new id
   uint64_t oldid = 0;
   uint debugIter = 0;
+
+  int nhits = 0;
+  
   for (const auto& hit : *inHits) {
+    
     fcc::CaloHit newHit = outHits->create();
     newHit.energy(hit.energy());
     newHit.time(hit.time());
-    m_oldDecoder->setValue(hit.cellId());
+
+    nhits++;
+    
     if (debugIter < m_debugPrint) {
       debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
     }
@@ -107,6 +114,7 @@ StatusCode RedoSegmentation::execute() {
       debugIter++;
     }
   }
+  info() << "nhits = " << nhits << endmsg;
   return StatusCode::SUCCESS;
 }
 

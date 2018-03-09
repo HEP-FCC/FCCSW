@@ -83,5 +83,6 @@ private:
   std::vector<std::string> m_detectorIdentifiers;
   /// Limit of debug printing
   Gaudi::Property<uint> m_debugPrint{this, "debugPrint", 10, "Limit of debug printing"};
+
 };
 #endif /* DETCOMPONENTS_REDOSEGMENTATION_H */
