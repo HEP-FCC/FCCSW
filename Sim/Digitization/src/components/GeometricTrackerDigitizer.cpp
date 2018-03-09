@@ -410,7 +410,8 @@ const fcc::DigiTrackHitAssociationCollection GeometricTrackerDigitizer::mergeHit
       // access the surface corresponding to the detector element
       const Acts::Surface& hitSurface = hitDetElement->surface();
       fcc::Vector3D dir = (postPosition - position).unit();
-      auto intersection = hitSurface.intersectionEstimate(position, dir, false, true);
+      auto intersection =
+          hitSurface.intersectionEstimate(position, dir, false, Acts::BoundaryCheck(true, true, 10e-5, 10e-5));
       // if intersection is !valid (e.g. in case of 0 steplength) continuw
       if (!intersection.valid) continue;
       // set position to be exactly on the surface (makes digitzation more accurate)
