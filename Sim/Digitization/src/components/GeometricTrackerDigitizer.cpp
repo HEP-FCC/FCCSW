@@ -491,7 +491,7 @@ GeometricTrackerDigitizer::createClusters(const std::vector<sim::FCCDigitization
   }    // cellsA
 
   std::vector<size_t> component(num_vertices(graph));
-  size_t num = connected_components(graph, &component[0]);
+  connected_components(graph, &component[0]);
   // copy the component map
   std::vector<size_t> keys = component;
   // sort
