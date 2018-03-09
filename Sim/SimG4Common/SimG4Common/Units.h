@@ -3,6 +3,8 @@
 
 // Geant4
 #include "G4SystemOfUnits.hh"
+// Acts
+#include "ACTS/Utilities/Units.hpp"
 
 /** Conversion between units.
  *
@@ -38,6 +40,10 @@ namespace edm2papas {
 // FIXME: these should be a constexpr, but CLHEP is only const
 const double length = edmdefault::length / CLHEP::m;
 const double energy = edmdefault::energy / CLHEP::GeV;
+}
+namespace edm2acts {
+const double length = edmdefault::length / Acts::units::_mm;
+const double energy = edmdefault::energy / Acts::units::_GeV;
 }
 }
 #endif /* SIMG4COMMON_UNITS_H */
