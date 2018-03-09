@@ -165,7 +165,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
       fcc::Vector3D localDirection = (postStepPosition - globalIntersection).unit();
       fcc::Vector2D localIntersection(0., 0.);
       hitSurface.globalToLocal(globalIntersection, localDirection, localIntersection);
-      localDirection = (hitSurface.transform().inverse()) * localDirection;
+      localDirection = hitSurface.transform().inverse().linear() * localDirection;
       // calculate the digitization steps
       std::vector<Acts::DigitizationStep> dSteps =
           m_moduleStepper->cellSteps(*hitDigitizationModule, localIntersection, localDirection.unit());
