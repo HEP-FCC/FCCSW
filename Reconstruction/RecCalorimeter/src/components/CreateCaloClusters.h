@@ -5,6 +5,7 @@
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/ICaloReadPileUpNoise.h"
+#include "RecInterface/ICellPositionsTool.h"
 
 // DD4hep
 #include "DDSegmentation/Segmentation.h"
@@ -47,8 +48,17 @@ public:
 
 private:
 
-  /// Handle for calo hits (input collection)
+  /// Handle for calo clusters (input collection)
   DataHandle<fcc::CaloClusterCollection> m_clusters{"clusters", Gaudi::DataHandle::Reader, this};
+  /// Handle for calo clusters (output collection)
+  DataHandle<fcc::CaloClusterCollection> m_newClusters{"outClusters", Gaudi::DataHandle::Writer, this};
+  // Handle for calo cells (output collection)
+  DataHandle<fcc::CaloHitCollection> m_newCells{"outCells", Gaudi::DataHandle::Writer, this};
+
+  /// Handle for tool to get positions in ECal Barrel
+  ToolHandle<ICellPositionsTool> m_cellPositionsECalTool{"CellPositionsECalBarrelTool", this};
+  /// Handle for tool to get positions in HCal Barrel and Ext Barrel, no Segmentation
+  ToolHandle<ICellPositionsTool> m_cellPositionsHCalTool{"CellPositionsHCalBarrelNoSegTool", this};
 
 //  /// Handle for the cells noise tool in ECal
 //  ToolHandle<ICaloReadPileUpNoise> m_ecalNoiseTool{"ReadPileUpNoiseFromFileTool", this};
@@ -56,7 +66,7 @@ private:
 //  ToolHandle<ICaloReadPileUpNoise> m_hcalNoiseTool{"ReadPileUpNoiseFromFileTool", this};
 
   /// bool if calibration is applied
-  bool m_doCalibration;
+  bool m_doCalibration =  true;
   /// e/h of ECal
   double m_ehECal;
   /// e/h of HCal
