@@ -216,14 +216,12 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
     double zOffset = -dzDetector + dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
-    // unsigned int seqId = idxZRow % 3;
     lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << endmsg;
 
     if ((-dzDetector + zOffset) >= dzDetector) {
       lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << endmsg;
     }
     dd4hep::Position wedgeOffset(0, zOffset, 0);
-    // dd4hep::Transform3D rotate(dd4hep::RotationY(seqId*-0.5 * dd4hep::pi), wedgeOffset);
     // Fill vector for DetElements
     rows.push_back(moduleVolume.placeVolume(wedgeVolume, wedgeOffset));
     rows.back().addPhysVolID("row", idxZRow);
@@ -231,7 +229,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
     double phi = -0.5 * dd4hep::pi - dphi * 0.5 -
-        idxPhi * dphi;  // modules placed following phi-eta segmentation with offset: -pi
+        idxPhi * dphi;  // module placement starts at -pi
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);

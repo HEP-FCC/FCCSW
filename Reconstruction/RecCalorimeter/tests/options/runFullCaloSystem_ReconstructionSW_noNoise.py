@@ -13,6 +13,8 @@ ecalEndcapReadoutName = "EMECPhiEta"
 ecalFwdReadoutName = "EMFwdPhiEta"
 hcalBarrelReadoutName = "HCalBarrelReadout"
 hcalExtBarrelReadoutName = "HCalExtBarrelReadout"
+hcalBarrelReadoutPhiEtaName = "BarHCal_Readout_phieta"
+hcalExtBarrelReadoutPhiEtaName = "ExtBarHCal_Readout_phieta"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Number of events
@@ -40,9 +42,40 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            ],
                     OutputLevel = INFO)
 
-from Configurables import CreateEmptyCaloCellsCollection
-createemptycells = CreateEmptyCaloCellsCollection("CreateEmptyCaloCells")
-createemptycells.cells.Path = "emptyCaloCells"
+# additionally for HCal
+from Configurables import CreateVolumeCaloPositions
+positionsHcal = CreateVolumeCaloPositions("positionsHcal", OutputLevel = INFO)
+positionsHcal.hits.Path = hcalBarrelCellsName
+positionsHcal.positionedHits.Path = "HCalBarrelPositions"
+
+from Configurables import RedoSegmentation
+resegmentHcal = RedoSegmentation("ReSegmentationHcal",
+                             # old bitfield (readout)
+                             oldReadoutName = hcalBarrelReadoutName,
+                             # # specify which fields are going to be altered (deleted/rewritten)
+                             # oldSegmentationIds = ["eta","phi"],
+                             # new bitfield (readout), with new segmentation
+                             newReadoutName = hcalBarrelReadoutPhiEtaName,
+                             debugPrint = 10,
+                             OutputLevel = INFO,
+                             inhits = "HCalBarrelPositions",
+                             outhits = "newHCalBarrelCells")
+
+positionsExtHcal = CreateVolumeCaloPositions("positionsExtHcal", OutputLevel = INFO)
+positionsExtHcal.hits.Path = hcalExtBarrelCellsName
+positionsExtHcal.positionedHits.Path = "HCalExtBarrelPositions"
+
+resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
+                                # old bitfield (readout)
+                                oldReadoutName = hcalExtBarrelReadoutName,
+                                # specify which fields are going to be altered (deleted/rewritten)
+                                #oldSegmentationIds = ["eta","phi"],
+                                # new bitfield (readout), with new segmentation
+                                newReadoutName = hcalExtBarrelReadoutPhiEtaName,
+                                debugPrint = 10,
+                                OutputLevel = INFO,
+                                inhits = "HCalExtBarrelPositions",
+                                outhits = "newHCalExtBarrelCells")
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
@@ -53,16 +86,16 @@ towers = CaloTowerTool("towers",
                                ecalBarrelReadoutName = ecalBarrelReadoutName,
                                ecalEndcapReadoutName = ecalEndcapReadoutName,
                                ecalFwdReadoutName = ecalFwdReadoutName,
-                               hcalBarrelReadoutName = ecalBarrelReadoutName,
-                               hcalExtBarrelReadoutName = ecalBarrelReadoutName,
+                               hcalBarrelReadoutName = hcalBarrelReadoutPhiEtaName,
+                               hcalExtBarrelReadoutName = hcalExtBarrelReadoutPhiEtaName,
                                hcalEndcapReadoutName = hcalEndcapReadoutName,
                                hcalFwdReadoutName = hcalFwdReadoutName,
                                OutputLevel = DEBUG)
 towers.ecalBarrelCells.Path = ecalBarrelCellsName
 towers.ecalEndcapCells.Path = ecalEndcapCellsName
 towers.ecalFwdCells.Path = ecalFwdCellsName
-towers.hcalBarrelCells.Path = "emptyCaloCells"
-towers.hcalExtBarrelCells.Path = "emptyCaloCells"
+towers.hcalBarrelCells.Path = "newHCalBarrelCells"
+towers.hcalExtBarrelCells.Path ="newHCalExtBarrelCells"
 towers.hcalEndcapCells.Path = hcalEndcapCellsName
 towers.hcalFwdCells.Path = hcalFwdCellsName
 
@@ -102,7 +135,10 @@ out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              createemptycells,
+              positionsHcal,
+              resegmentHcal,
+              positionsExtHcal,
+              resegmentExtHcal,
               createClusters,
               out
               ],
