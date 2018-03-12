@@ -80,7 +80,7 @@ StatusCode CreateCaloClusters::execute() {
       }
       
       // check if cluster energy is equal to sum over cells
-      if (static_cast<int>(cluster.core().energy*1000.0) != static_cast<int>((energyBoth[m_systemIdECal] + energyBoth[m_systemIdHCal])*1000.0))
+      if (static_cast<int>(cluster.core().energy*100.0) != static_cast<int>((energyBoth[m_systemIdECal] + energyBoth[m_systemIdHCal])*100.0))
 	warning() << "The cluster energy is not equal to sum over cell energy: " << cluster.core().energy << ", " << (energyBoth[m_systemIdECal] + energyBoth[m_systemIdHCal]) << endmsg;
       
       // 2. Calibrate the cluster if it contains cells in both systems
