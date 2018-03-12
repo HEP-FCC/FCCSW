@@ -3,6 +3,7 @@
 // FCCSW
 #include "DetInterface/IGeoSvc.h"
 #include "SimG4Common/Units.h"
+#include "DetCommon/Geant4PreDigiTrackHit.h"
 
 // Geant4
 #include "G4Event.hh"
@@ -10,9 +11,11 @@
 // datamodel
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
+#include "datamodel/DigiTrackHitAssociationCollection.h"
 
 // DD4hep
-#include "DDG4/Geant4Hits.h"
+#include "DD4hep/Detector.h"
+
 
 DECLARE_TOOL_FACTORY(SimG4SaveTrackerHits)
 
@@ -21,6 +24,7 @@ SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::
     : GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
+  declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
   declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
 }
 
@@ -54,10 +58,11 @@ StatusCode SimG4SaveTrackerHits::finalize() { return GaudiTool::finalize(); }
 StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  dd4hep::sim::Geant4TrackerHit* hit;
+  fcc::Geant4PreDigiTrackHit* hit;
   if (collections != nullptr) {
-    auto edmPositions = m_positionedTrackHits.createAndPut();
-    auto edmHits = m_trackHits.createAndPut();
+    fcc::PositionedTrackHitCollection* edmPositions = m_positionedTrackHits.createAndPut();
+    fcc::TrackHitCollection* edmHits = m_trackHits.createAndPut();
+    fcc::DigiTrackHitAssociationCollection* edmDigiHits = m_digiTrackHits.createAndPut();
     for (int iter_coll = 0; iter_coll < collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (std::find(m_readoutNames.begin(), m_readoutNames.end(), collect->GetName()) != m_readoutNames.end()) {
@@ -65,18 +70,27 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
         info() << "\t" << n_hit << " hits are stored in a tracker collection #" << iter_coll << ": "
                << collect->GetName() << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
-          hit = dynamic_cast<dd4hep::sim::Geant4TrackerHit*>(collect->GetHit(iter_hit));
+          hit = dynamic_cast<fcc::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
           fcc::TrackHit edmHit = edmHits->create();
           fcc::BareHit& edmHitCore = edmHit.core();
+          fcc::DigiTrackHitAssociation edmDigiHit = edmDigiHits->create();
           edmHitCore.cellId = hit->cellID;
           edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
-          edmHitCore.bits = hit->truth.trackID;
-          edmHitCore.time = hit->truth.time;
-          auto position = fcc::Point();
-          position.x = hit->position.x() * sim::g42edm::length;
-          position.y = hit->position.y() * sim::g42edm::length;
-          position.z = hit->position.z() * sim::g42edm::length;
-          edmPositions->create(position, edmHitCore);
+          edmHitCore.bits = hit->trackId;
+          edmHitCore.time = hit->time;
+          fcc::Point preStepPosition = fcc::Point();
+          preStepPosition.x = hit->prePos.x() * sim::g42edm::length;
+          preStepPosition.y = hit->prePos.y() * sim::g42edm::length;
+          preStepPosition.z = hit->prePos.z() * sim::g42edm::length;
+          fcc::Point postStepPosition = fcc::Point();
+          postStepPosition.x = hit->postPos.x() * sim::g42edm::length;
+          postStepPosition.y = hit->postPos.y() * sim::g42edm::length;
+          postStepPosition.z = hit->postPos.z() * sim::g42edm::length;
+
+          fcc::PositionedTrackHit edmPositionedHit = edmPositions->create(preStepPosition, edmHitCore);
+          edmDigiHit.postStepPosition(postStepPosition);
+          edmDigiHit.hit(edmPositionedHit);
+          
         }
       }
     }
