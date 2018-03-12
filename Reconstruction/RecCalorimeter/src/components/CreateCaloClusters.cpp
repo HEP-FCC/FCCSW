@@ -64,6 +64,7 @@ StatusCode CreateCaloClusters::execute() {
       bool cellsInBoth = false;
       uint cellSystem = 0;
       std::map<uint,double> energyBoth;
+      // Loop over cells in cluster
       for (uint it = 0; it < cluster.hits_size(); it++){
 	auto cellId = cluster.hits(it).core().cellId;
 	auto cellEnergy = cluster.hits(it).core().energy;
@@ -72,7 +73,6 @@ StatusCode CreateCaloClusters::execute() {
 	
 	if (systemId != cellSystem && cellSystem!=0){
 	  cellsInBoth = true;
-	  break;
 	}
 	cellSystem = systemId;
 	
