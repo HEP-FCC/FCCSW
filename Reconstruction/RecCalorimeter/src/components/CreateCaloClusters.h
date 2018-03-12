@@ -16,6 +16,7 @@
 
 #include "datamodel/CaloHit.h"
 #include "datamodel/CaloCluster.h"
+#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloClusterCollection.h"
 
 class IGeoSvc;
@@ -51,9 +52,9 @@ private:
   /// Handle for calo clusters (input collection)
   DataHandle<fcc::CaloClusterCollection> m_clusters{"clusters", Gaudi::DataHandle::Reader, this};
   /// Handle for calo clusters (output collection)
-  DataHandle<fcc::CaloClusterCollection> m_newClusters{"outClusters", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::CaloClusterCollection> m_newClusters{"calo/clusters", Gaudi::DataHandle::Writer, this};
   // Handle for calo cells (output collection)
-  DataHandle<fcc::CaloHitCollection> m_newCells{"outCells", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::CaloHitCollection> m_newCells{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
 
   /// Handle for tool to get positions in ECal Barrel
   ToolHandle<ICellPositionsTool> m_cellPositionsECalTool{"CellPositionsECalBarrelTool", this};

@@ -7,7 +7,9 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
-// our EDM
+// datamodel
+#include "datamodel/CaloCluster.h"
+#include "datamodel/CaloClusterCollection.h"
 #include "datamodel/CaloHit.h"
 #include "datamodel/CaloHitCollection.h"
 
@@ -50,9 +52,11 @@ StatusCode CreateCaloClusters::execute() {
   debug() << "Input Cluster collection size: " << clusters->size() << endmsg;
   // Output collections
   auto edmClusters = m_newClusters.createAndPut();
-  fcc::CaloHitCollection* edmClusterCells = new fcc::CaloHitCollection();
+  auto edmClusterCells = m_newCells.createAndPut(); // new fcc::CaloHitCollection();
 
   int sharedClusters = 0;
+  int clustersEM = 0;
+  int clustersHad = 0;
 
   if(m_doCalibration) { 
     for (auto& cluster : *clusters) {
@@ -76,7 +80,7 @@ StatusCode CreateCaloClusters::execute() {
       }
       
       // check if cluster energy is equal to sum over cells
-      if (cluster.core().energy != (energyBoth[m_systemIdECal] + energyBoth[m_systemIdHCal]))
+      if (static_cast<int>(cluster.core().energy*1000.0) != static_cast<int>((energyBoth[m_systemIdECal] + energyBoth[m_systemIdHCal])*1000.0))
 	warning() << "The cluster energy is not equal to sum over cell energy: " << cluster.core().energy << ", " << (energyBoth[m_systemIdECal] + energyBoth[m_systemIdHCal]) << endmsg;
       
       // 2. Calibrate the cluster if it contains cells in both systems
@@ -89,12 +93,14 @@ StatusCode CreateCaloClusters::execute() {
 	  // calibrate HCal cells to EM scale
 	  // assuming HCal cells are calibrated to hadron scale
 	  energyBoth[m_systemIdHCal] = energyBoth[m_systemIdHCal] / m_ehHCal;
+	  clustersEM++;
 	}
 	else {
 	  // calibrate ECal cells to hadron scale
 	  // assuming ECal cells are calibrated to EM scale
 	  energyBoth[m_systemIdECal] = energyBoth[m_systemIdECal] * m_ehECal;
 	  calibECal = true;
+	  clustersHad++;
 	}
 	// Create a new cluster
 	fcc::CaloCluster cluster;
@@ -104,7 +110,7 @@ StatusCode CreateCaloClusters::execute() {
 	double energy = 0.;
  
 	for (uint it = 0; it < cluster.hits_size(); it++){
-	  auto newCell = edmClusterCells->create();
+	  fcc::CaloHit newCell;
 	  
 	  auto cellId = cluster.hits(it).core().cellId;
 	  auto cellEnergy = cluster.hits(it).core().energy;
@@ -132,6 +138,7 @@ StatusCode CreateCaloClusters::execute() {
 	  posY += posCell.Y() * cellEnergy;
 	  posZ += posCell.Z() * cellEnergy;
 	  cluster.addhits(newCell);
+	  edmClusterCells->push_back(newCell);
 	}
 	cluster.core().energy = energy;
 	cluster.core().position.x = posX / energy;
@@ -141,16 +148,26 @@ StatusCode CreateCaloClusters::execute() {
       }
       else { // Fill the unchanged cluster in output collection
 	auto newCluster = cluster.clone();
+	for (uint it = 0; it <cluster.hits_size(); it++){
+	  auto newCell = edmClusterCells->create();
+	  auto cellId = cluster.hits(it).core().cellId;
+	  auto cellEnergy = cluster.hits(it).core().energy;
+	  newCell.core().energy = cellEnergy;
+	  newCell.core().cellId = cellId;
+	  newCell.core().bits = cluster.hits(it).core().bits;
+	  newCluster.addhits(newCell);
+	}
 	edmClusters->push_back(newCluster);
       }
-      m_newCells.put(edmClusterCells);
-   }
+    }
   }
-
-  // push the CaloHitCollection to event store
-  //m_cells.put(edmClustersCollection);
-  //debug() << "Output Cell collection size: " << edmClustersCollection->size() << endmsg;
-
+  if (clusters->size() > 0)
+    info() << "Fraction of re-calibrated clusters      : " << sharedClusters/clusters->size()*100 << " % " << endmsg;
+  if (sharedClusters > 0){
+    info() << "Fraction of clusters on EM scale       : " << clustersEM/sharedClusters*100 << " % " << endmsg;
+    info() << "Fraction of clusters on hadron scale : " << clustersHad/sharedClusters*100 << " % " << endmsg;
+  }
+  debug() << "Output Cluster collection size: " << edmClusters->size() << endmsg;
   return StatusCode::SUCCESS;
 }
 
