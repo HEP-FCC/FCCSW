@@ -71,7 +71,7 @@ StatusCode CreateCaloClusters::execute() {
 	m_decoder->setValue(cellId);
 	uint systemId = (*m_decoder)["system"].value();
 	
-	if (systemId != cellSystem && cellSystem!=0){
+	if (systemId != cellSystem && cellSystem!=0 && cellsInBoth==false){
 	  cellsInBoth = true;
 	}
 	cellSystem = systemId;
@@ -88,7 +88,7 @@ StatusCode CreateCaloClusters::execute() {
 	sharedClusters ++;
 	// Calculate the fraction of energy in ECal
 	auto energyFraction = energyBoth[m_systemIdECal] / cluster.core().energy;
-	debug() << "Energy fraction in ECal : " << energyFraction << endmsg:
+	debug() << "Energy fraction in ECal : " << energyFraction << endmsg;
 	bool calibECal = false;
 	if (energyFraction >= m_fractionECal) {
 	  // calibrate HCal cells to EM scale

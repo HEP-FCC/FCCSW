@@ -75,8 +75,8 @@ private:
 
   dd4hep::DDSegmentation::BitField64* m_decoder = new dd4hep::DDSegmentation::BitField64("system:4");
   /// System id by default Barrel, EC(6,7), Fwd(10,11)
-  Gaudi::Property<int> m_systemIdECal{this, "systemECal", 5, "System id of ECal"};
-  Gaudi::Property<int> m_systemIdHCal{this, "systemHCal", 8, "System id of HCal"};
+  Gaudi::Property<uint> m_systemIdECal{this, "systemECal", 5, "System id of ECal"};
+  Gaudi::Property<uint> m_systemIdHCal{this, "systemHCal", 8, "System id of HCal"};
   Gaudi::Property<double> m_fractionECal{this, "fractionECal", 0.7, "Fraction of clsuter energy in ECal to be flagged as EM"};
 
 };
