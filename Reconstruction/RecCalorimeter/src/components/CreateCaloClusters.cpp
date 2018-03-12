@@ -62,13 +62,13 @@ StatusCode CreateCaloClusters::execute() {
     for (auto& cluster : *clusters) {
       // 1. Identify clusters with cells in different sub-systems
       bool cellsInBoth = false;
-      float cellSystem = 0;
+      uint cellSystem = 0;
       std::map<uint,double> energyBoth;
       for (uint it = 0; it < cluster.hits_size(); it++){
 	auto cellId = cluster.hits(it).core().cellId;
 	auto cellEnergy = cluster.hits(it).core().energy;
 	m_decoder->setValue(cellId);
-	int systemId = (*m_decoder)["system"].value();
+	uint systemId = (*m_decoder)["system"].value();
 	
 	if (systemId != cellSystem && cellSystem!=0){
 	  cellsInBoth = true;
@@ -88,6 +88,7 @@ StatusCode CreateCaloClusters::execute() {
 	sharedClusters ++;
 	// Calculate the fraction of energy in ECal
 	auto energyFraction = energyBoth[m_systemIdECal] / cluster.core().energy;
+	debug() << "Energy fraction in ECal : " << energyFraction << endmsg:
 	bool calibECal = false;
 	if (energyFraction >= m_fractionECal) {
 	  // calibrate HCal cells to EM scale
@@ -161,11 +162,12 @@ StatusCode CreateCaloClusters::execute() {
       }
     }
   }
-  if (clusters->size() > 0)
+  if (clusters->size() > 0){
     info() << "Fraction of re-calibrated clusters      : " << sharedClusters/clusters->size()*100 << " % " << endmsg;
-  if (sharedClusters > 0){
-    info() << "Fraction of clusters on EM scale       : " << clustersEM/sharedClusters*100 << " % " << endmsg;
-    info() << "Fraction of clusters on hadron scale : " << clustersHad/sharedClusters*100 << " % " << endmsg;
+    if (sharedClusters > 0){
+      info() << "Fraction of clusters on EM scale       : " << clustersEM/sharedClusters*100 << " % " << endmsg;
+      info() << "Fraction of clusters on hadron scale : " << clustersHad/sharedClusters*100 << " % " << endmsg;
+    }
   }
   debug() << "Output Cluster collection size: " << edmClusters->size() << endmsg;
   return StatusCode::SUCCESS;
