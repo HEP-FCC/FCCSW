@@ -4,11 +4,11 @@ from Gaudi.Configuration import *
 
 # Set up the magnetic field service
 from Configurables import InterpolatedBFieldSvc
-bFieldSvc = InterpolatedBFieldSvc("BFieldSvc", fieldMap = '/eos/experiment/fcc/hh/simulation/MagneticField/FCChhBField_rz.txt', lengthScalor=1000., bFieldScalor= 1., cylinderCoordinates = TRUE, firstOctant=TRUE, OutputLevel = VERBOSE)
+bFieldSvc = InterpolatedBFieldSvc("BFieldSvc", fieldMap = '/eos/project/f/fccsw-web/testsamples/FCChhBField_rz.txt', lengthScalor=1000., bFieldScalor= 1., cylinderCoordinates = TRUE, firstOctant=TRUE, OutputLevel = VERBOSE)
 
 # Set up the magnetic field writer
 from Configurables import BFieldValueCheck
-bFieldValueCheck = BFieldValueCheck("BFieldValueCheck", bFieldSvc=bFieldSvc, fieldMap = '/eos/experiment/fcc/hh/simulation/MagneticField/FCChhBField_rz.root')
+bFieldValueCheck = BFieldValueCheck("BFieldValueCheck", bFieldSvc=bFieldSvc, fieldMap = '/eos/project/f/fccsw-web/testsamples/FCChhBField_rz.root')
 
 # set up the event loop
 from Configurables import ApplicationMgr

@@ -4,7 +4,7 @@ from Gaudi.Configuration import *
 
 # Set up the magnetic field service
 from Configurables import InterpolatedBFieldSvc
-bFieldSvc = InterpolatedBFieldSvc("BFieldSvc", fieldMap = '/eos/experiment/fcc/hh/simulation/MagneticField/FCChhBField_rz.root', treeName= 'bField', lengthScalor=1., bFieldScalor= 1., cylinderCoordinates = TRUE, firstOctant=TRUE, OutputLevel = VERBOSE)
+bFieldSvc = InterpolatedBFieldSvc("BFieldSvc", fieldMap = '/eos/project/f/fccsw-web/testsamples/FCChhBField_rz.root', treeName= 'bField', lengthScalor=1., bFieldScalor= 1., cylinderCoordinates = TRUE, firstOctant=TRUE, OutputLevel = VERBOSE)
 
 # The geant4 magnetic field tool
 from Configurables import SimG4BFieldTool
