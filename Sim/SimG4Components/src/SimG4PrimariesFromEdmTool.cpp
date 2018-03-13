@@ -1,6 +1,9 @@
 // local
 #include "SimG4PrimariesFromEdmTool.h"
 
+// Gaudi
+#include "GaudiKernel/PhysicalConstants.h"
+
 // FCCSW
 #include "SimG4Common/ParticleInformation.h"
 #include "SimG4Common/Units.h"
@@ -34,7 +37,7 @@ G4Event* SimG4PrimariesFromEdmTool::g4Event() {
     G4PrimaryVertex* g4Vertex = new G4PrimaryVertex(v.x() * sim::edm2g4::length,
                                                     v.y() * sim::edm2g4::length,
                                                     v.z() * sim::edm2g4::length,
-                                                    v.ctau() * sim::edm2g4::length);
+                                                    v.ctau() / Gaudi::Units::c_light  * sim::edm2g4::length);
     const fcc::BareParticle& mccore = mcparticle.core();
     G4PrimaryParticle* g4Particle = new G4PrimaryParticle(mccore.pdgId,
                                                           mccore.p4.px * sim::edm2g4::energy,
