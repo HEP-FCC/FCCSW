@@ -63,7 +63,7 @@ saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"]
 saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
 saveecaltool.caloHits.Path = "ECalHits"
 
-savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"])
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["HCalBarrelReadout"])
 savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
 savehcaltool.caloHits.Path = "HCalHits"
 
