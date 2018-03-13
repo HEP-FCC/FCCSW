@@ -59,7 +59,7 @@ from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
 
 from Configurables import SimG4Alg, SimG4SaveCalHits
-saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalHitsPhiEta"])
+saveecaltool = SimG4SaveCalHits("saveECalHits",readoutNames = ["ECalBarrelEta"])
 saveecaltool.positionedCaloHits.Path = "ECalPositionedHits"
 saveecaltool.caloHits.Path = "ECalHits"
 

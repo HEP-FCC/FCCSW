@@ -54,8 +54,6 @@ hcalReadoutName = "HCalBarrelReadout"
 extHcalReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
-# Tail Catcher readout
-tailCatcherReadoutName = "Muons_Readout"
 # layers to be merged in endcaps & forward calo
 ecalEndcapNumberOfLayersToMerge = [26]*5+[27]
 ecalFwdNumberOfLayersToMerge = [7]*5+[8]
