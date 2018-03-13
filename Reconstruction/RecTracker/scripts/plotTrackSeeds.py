@@ -89,7 +89,7 @@ print len(events),  " events in rootfile ", args.filename
 for i, store in enumerate([events[args.plot_event]]):
       print "event ", i
       if not args.no_process_genparticles:
-        genparticles = store.get("allGenParticles")
+        genparticles = store.get("GenParticles")
         print "processing allGenParticles ..."
         for p in genparticles:
             momentum = [p.core().p4.px, p.core().p4.py, p.core().p4.pz, p.core().p4.mass]
@@ -140,7 +140,7 @@ for i, store in enumerate([events[args.plot_event]]):
 
       if not args.no_process_hits:
         print "processing hits ..."
-        hits = store.get('positionedHits')
+        hits = store.get('TrackerPositionedHits')
         pos = []
         for c in hits:
             cor = c.position()

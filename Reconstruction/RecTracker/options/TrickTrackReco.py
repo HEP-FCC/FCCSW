@@ -16,27 +16,17 @@ podioevent   = FCCDataSvc("EventDataSvc", input=inputfile)
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader", 
                         collections=[
-                                      "allGenParticles",
-                                      "allGenVertices",
-                                      "simParticles", 
-                                      "simVertices", 
-                                      "hits", 
-                                      "positionedHits", 
+                                      "GenParticles",
+                                      "GenVertices",
+                                      "SimParticles", 
+                                      "SimVertices", 
+                                      "TrackerHits", 
+                                      "TrackerPositionedHits", 
                                       #"trajectory",
                                       #"trajectoryPoints",
                                       ], 
                           OutputLevel=DEBUG,
                           )
-
-from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", 
-                    detectors=[
-                                'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
-                              ],
-                    OutputLevel=INFO,
-                   )
-
 
 
 
@@ -70,15 +60,15 @@ truth_seeds = TruthSeedingTool()
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-RecTrackAlg.doFit = False
+RecTrackAlg.doFit = True
 RecTrackAlg.calcErrors = True
 RecTrackAlg.hitRes = 5*1e-9
 RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
-RecTrackAlg.positionedTrackHits.Path = "positionedHits"
+RecTrackAlg.positionedTrackHits.Path = "TrackerPositionedHits"
 
 
 # PODIO algorithm
-outputfile = "tricktrack_seeding_example_min_bias.root"
+outputfile = "tricktrack_tracks.root"
 if args.outputfile:
   outputfile = args.outputfile
 from Configurables import PodioOutput

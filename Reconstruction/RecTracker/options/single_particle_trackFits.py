@@ -6,7 +6,7 @@ from Gaudi.Configuration import *
 from FWCore.joboptions import parse_standard_job_options
 args = parse_standard_job_options()
 
-inputfile = "muons_for_seeding_single.root"
+inputfile = "muons_for_seeding.root"
 if args.inputfile:
   inputfile = args.inputfile
 
@@ -16,26 +16,17 @@ podioevent   = FCCDataSvc("EventDataSvc", input=inputfile)
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader", 
                         collections=[
-                                      "allGenParticles",
-                                      "allGenVertices",
-                                      #"simParticles", 
-                                      #"simVertices", 
-                                      "hits", 
-                                      "positionedHits", 
+                                      "GenParticles",
+                                      "GenVertices",
+                                      "SimParticles", 
+                                      "SimVertices", 
+                                      "TrackerHits", 
+                                      "TrackerPositionedHits", 
                                       #"trajectory", 
                                       #"trajectoryPoints",
                                       ], 
                           OutputLevel=DEBUG,
                           )
-
-from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", 
-                    detectors=[
-                                'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
-                              ],
-                    OutputLevel=INFO,
-                   )
 
 
 
@@ -64,9 +55,8 @@ truth_seeds = TruthSeedingTool()
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
 RecTrackAlg.Errors = True
-#RecTrackAlg.MultipleScatteringErrors = True
 RecTrackAlg.hitRes = 1 * 1e-6
-RecTrackAlg.TrackSeedingTool = truth_seeds #tricktrack_seed_tool
+RecTrackAlg.TrackSeedingTool = truth_seeds 
 RecTrackAlg.positionedTrackHits.Path = "positionedHits"
 
 
