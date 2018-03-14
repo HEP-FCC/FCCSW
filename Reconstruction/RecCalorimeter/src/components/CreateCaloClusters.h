@@ -73,6 +73,9 @@ private:
 
   TH1F* m_energyScale;
   TH2F* m_energyScaleVsClusterEnergy;
+  TH1F* m_totEnergy;
+  TH1F* m_totCalibEnergy;
+  TH1F* m_totBenchmarkEnergy;
   TH1F* m_clusterEnergy;
   TH1F* m_clusterEnergyCalibrated;
   TH1F* m_clusterEnergyBenchmark;
