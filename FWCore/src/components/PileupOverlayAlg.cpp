@@ -39,8 +39,10 @@ StatusCode PileupOverlayAlg::finalize() {
 StatusCode PileupOverlayAlg::execute() {
   unsigned nEvents = m_reader.getEntries();
 
-  for (auto& tool : m_mergeTools) {
-    tool->readSignal();
+  if (!m_noSignal) {
+    for (auto& tool : m_mergeTools) {
+      tool->readSignal();
+    }
   }
 
   const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();

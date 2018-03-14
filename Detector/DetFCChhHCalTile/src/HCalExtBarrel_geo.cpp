@@ -239,7 +239,6 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
-        //     tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
@@ -295,7 +294,6 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
         tileVol.setVisAttributes(aLcdd, xComp.visStr());
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolumeEB.placeVolume(tileVol, offset));
-        //       tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolumeEB.placeVolume(modCompVol, offset));
@@ -347,7 +345,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-    double phi = -dphi * 0.5 - idxPhi * dphi - 0.5 * dd4hep::pi;  // modules placed following phi-eta segmentation
+    double phi = -dphi * 0.5 - idxPhi * dphi - 0.5 * dd4hep::pi;  // module placement starts at -pi
     double yPosModule1 = (sensitiveBarrel1Rmin + dzModule1) * cos(phi);
     double xPosModule1 = (sensitiveBarrel1Rmin + dzModule1) * sin(phi);
     double yPosSupport1 = (sensitiveBarrel1Rmin + 2 * dzModule1 + dzSupport) * cos(phi);

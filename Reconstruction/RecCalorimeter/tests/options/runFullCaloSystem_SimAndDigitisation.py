@@ -156,6 +156,7 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                hits="ECalBarrelCellsStep2",
                                cells="ECalBarrelCells")
 
+
 # Create Ecal cells in endcaps
 # 1. step - merge layer IDs
 # 2. step - create cells
@@ -247,7 +248,7 @@ createTailCatcherCells = CreateCaloCells("CreateTailCatcherCells",
 
 out = PodioOutput("out", 
                   OutputLevel=INFO)
-out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep TailCatcherCells", "keep GenParticles","keep GenVertices"]
+out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information

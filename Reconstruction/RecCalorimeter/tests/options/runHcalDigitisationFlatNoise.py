@@ -26,6 +26,7 @@ hcalFieldValues=[8]
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, NestedVolumesCaloTool
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
 noise = NoiseCaloCellsFlatTool("HCalNoise",
                                cellNoise = 0.01)
 hcalgeo = NestedVolumesCaloTool("HcalGeo",
@@ -39,7 +40,8 @@ hcalgeo = NestedVolumesCaloTool("HcalGeo",
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
                               geometryTool = hcalgeo,
-                              doCellCalibration = False,
+                              calibTool=calibHcells,
+                              doCellCalibration = True,
                               addCellNoise = True, filterCellNoise = False,
                               noiseTool = noise,
                               OutputLevel = DEBUG)
