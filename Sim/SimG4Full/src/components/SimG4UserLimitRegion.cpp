@@ -4,7 +4,6 @@
 #include "G4RegionStore.hh"
 #include "G4LogicalVolume.hh"
 #include "G4TransportationManager.hh"
-#include "G4UserLimits.hh"
 
 DECLARE_TOOL_FACTORY(SimG4UserLimitRegion)
 
@@ -39,11 +38,15 @@ StatusCode SimG4UserLimitRegion::create() {
         m_g4regions.emplace_back(
             new G4Region(world->GetDaughter(iter_region)->GetLogicalVolume()->GetName() + "_userLimits"));
         m_g4regions.back()->AddRootLogicalVolume(world->GetDaughter(iter_region)->GetLogicalVolume());
-        // TODO add to shared_ptr vector so it is deleted (it won't be by Geant)
-        m_g4regions.back()->SetUserLimits(new G4UserLimits(m_maxStep, m_maxTrack, m_maxTrack, m_minKineticEnergy, m_minRange));
+        m_userLimits.emplace_back(new G4UserLimits(m_maxStep, m_maxTrack, m_maxTrack, m_minKineticEnergy, m_minRange));
+        m_g4regions.back()->SetUserLimits(m_userLimits.back().get());
         info() << "Creating user limits in the region " << m_g4regions.back()->GetName() << endmsg;
       }
     }
+  }
+  if (m_g4regions.size() != m_volumeNames.size()) {
+    error() << "Regions  were not created for all the volumes" << endmsg;
+    return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
 }

@@ -12,7 +12,7 @@
 #include "SimG4Interface/ISimG4RegionTool.h"
 
 // Geant
-class G4VFastSimulationModel;
+#include "G4UserLimits.hh"
 class G4Region;
 
 /** @class SimG4UserLimitRegion SimG4Full/src/components/SimG4UserLimitRegion.h SimG4UserLimitRegion.h
@@ -44,6 +44,8 @@ private:
   /// Regions used to set user limits
   /// deleted by the G4RegionStore
   std::vector<G4Region*> m_g4regions;
+  /// User limits
+  std::vector<std::unique_ptr<G4UserLimits>> m_userLimits;
   /// Names of the volumes where user limits should be attached (set by job options)
   Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames", {}, "Names of the volumes"};
   /// max allowed Step size in this volume  (set by job options)
