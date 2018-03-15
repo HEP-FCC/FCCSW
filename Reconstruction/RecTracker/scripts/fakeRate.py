@@ -56,7 +56,7 @@ for i, store in enumerate(events):
       
       ### print "Processing generated Particles from branch 'allGenParticles'" # 
       if args.process_genparticles: # currently unused
-        for p in store.get("allGenParticles"):
+        for p in store.get("GenParticles"):
             pm = [ p.core().p4.px, 
                    p.core().p4.py, 
                    p.core().p4.pz, 
@@ -66,7 +66,7 @@ for i, store in enumerate(events):
 
       ### print "processing trackerhits from branch 'positionedhits' " #########
       if args.process_trackerhits: # currently unused
-        hits = store.get('positionedHits')
+        hits = store.get("TrackerPositionedHits")
         ids = []
         for h in hits:
               ids.append(h.core().bits)
@@ -77,7 +77,7 @@ for i, store in enumerate(events):
       true_track_ids = []
       numFakes = 0
       num_ignored_secondaries = 0
-      for p in store.get("simParticles"):
+      for p in store.get("SimParticles"):
             pm = [ p.core().p4.px, 
                    p.core().p4.py, 
                    p.core().p4.pz, 

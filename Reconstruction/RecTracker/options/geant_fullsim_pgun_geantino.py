@@ -28,8 +28,8 @@ geantservice.g4PostInitCommands  += ["/tracking/storeTrajectory 1"]
 
 from Configurables import SimG4SaveParticleHistory
 savehisttool = SimG4SaveParticleHistory("saveHistory")
-savehisttool.mcParticles.Path = "simParticles"
-savehisttool.genVertices.Path = "simVertices"
+savehisttool.mcParticles.Path = "SimParticles"
+savehisttool.genVertices.Path = "SimVertices"
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -44,7 +44,7 @@ savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["Track
 savetrackertool.positionedTrackHits.Path = "positionedHits"
 savetrackertool.trackHits.Path = "hits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=-1, etaMax=1, particleName="chargedgeantino", saveEdm=True, energyMin=2000, energyMax=10000)
+pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=-6, etaMax=6, particleName="chargedgeantino", saveEdm=True, energyMin=2000, energyMax=10000)
 geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveTrajectory/saveTrajectory", "SimG4SaveParticleHistory/saveHistory" ],
                     eventProvider=pgun,

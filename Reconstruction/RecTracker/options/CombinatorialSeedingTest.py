@@ -16,14 +16,12 @@ podioevent   = FCCDataSvc("EventDataSvc", input=inputfile)
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader", 
                         collections=[
-                                      "allGenParticles",
-                                      "allGenVertices",
-                                      "simParticles", 
-                                      "simVertices", 
-                                      "hits", 
-                                      "positionedHits", 
-                                      "trajectory", 
-                                      "trajectoryPoints",
+                                      "GenParticles",
+                                      "GenVertices",
+                                      "SimParticles", 
+                                      "SimVertices", 
+                                      "TrackerHits", 
+                                      "TrackerPositionedHits", 
                                       ], 
                           OutputLevel=DEBUG,
                           )
@@ -53,10 +51,10 @@ seed_tool.readoutName = "TrackerBarrelReadout"
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-RecTrackAlg.Errors = True
+RecTrackAlg.calcErrors = True
 RecTrackAlg.hitRes = 5*1e-9
 RecTrackAlg.TrackSeedingTool = seed_tool
-RecTrackAlg.positionedTrackHits.Path = "positionedHits"
+RecTrackAlg.positionedTrackHits.Path = "TrackerPositionedHits"
 
 
 # PODIO algorithm

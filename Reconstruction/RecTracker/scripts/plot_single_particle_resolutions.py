@@ -31,7 +31,7 @@ l_true_pts = []
 for i, store in enumerate(events):
     if i < args.nevents:
         print "event ", i
-        genparticles = store.get("allGenParticles")
+        genparticles = store.get("GenParticles")
         print "processing allGenParticles ..."
         for t in genparticles:
             momentum = [t.core().p4.px, t.core().p4.py, t.core().p4.pz, t.core().p4.mass]

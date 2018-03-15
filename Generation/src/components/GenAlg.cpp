@@ -32,20 +32,24 @@ StatusCode GenAlg::execute() {
   const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();
   std::vector<HepMC::GenEvent> eventVector;
   eventVector.reserve(numPileUp + 1);
-
-  StatusCode sc = m_signalProvider->getNextEvent(*theEvent);
+  StatusCode sc;
+  if (!m_signalProvider.empty()) {
+    sc = m_signalProvider->getNextEvent(*theEvent);
+  }
   if (StatusCode::SUCCESS != sc) {
     return sc;
   }
   m_vertexSmearingTool->smearVertex(*theEvent);
-  for (unsigned int i_pileUp = 0; i_pileUp < numPileUp; ++i_pileUp) {
-    auto puEvt = HepMC::GenEvent();
-    sc = m_pileUpProvider->getNextEvent(puEvt);
-    if (StatusCode::SUCCESS != sc) {
-      return sc;
+  if (!m_pileUpProvider.empty()) {
+    for (unsigned int i_pileUp = 0; i_pileUp < numPileUp; ++i_pileUp) {
+      auto puEvt = HepMC::GenEvent();
+      sc = m_pileUpProvider->getNextEvent(puEvt);
+      if (StatusCode::SUCCESS != sc) {
+        return sc;
+      }
+      m_vertexSmearingTool->smearVertex(puEvt);
+      eventVector.push_back(std::move(puEvt));
     }
-    m_vertexSmearingTool->smearVertex(puEvt);
-    eventVector.push_back(std::move(puEvt));
   }
   return m_HepMCMergeTool->merge(*theEvent, eventVector);
 }

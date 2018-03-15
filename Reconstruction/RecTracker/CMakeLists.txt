@@ -18,6 +18,7 @@ find_package(ACTS COMPONENTS Core  TGeoPlugin DD4hepPlugin)
 
 
 gaudi_install_headers(RecTracker)
+gaudi_install_python_modules()
 gaudi_add_library(TrackingUtils
                  src/lib/*.cpp
                  INCLUDE_DIRS DD4hep HepMC  FWCore  FCCEDM PODIO  DetInterface RecInterface SimG4Interface ROOT
@@ -45,7 +46,7 @@ gaudi_add_test(FastDigiTest
 
 gaudi_add_test(MuonsForSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/muons_for_seeding.py)
+               COMMAND ./run fccrun.py  Reconstruction/RecTracker/options/geantSim_TrackerPerformance.py -N 100 -s 0123456 --outName muons_for_seeding.root --singlePart --particle 13)
 
 gaudi_add_test(CombinatorialTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -54,7 +55,7 @@ gaudi_add_test(CombinatorialTrackSeeding
 
 gaudi_add_test(TrickTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/TrickTrackSeedingTest.py
+			         FRAMEWORK options/TrickTrackReco.py
 			         DEPENDS MuonsForSeeding)
 
 
