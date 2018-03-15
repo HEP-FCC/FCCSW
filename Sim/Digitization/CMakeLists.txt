@@ -4,7 +4,7 @@
 gaudi_subdir(Digitization v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore Math Reconstruction/RecInterface Detector/DetInterface Reconstruction/RecTracker)
+gaudi_depends_on_subdirs(GaudiAlg FWCore Reconstruction/RecInterface Detector/DetInterface Reconstruction/RecTracker)
 
 find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
 
@@ -17,5 +17,5 @@ gaudi_install_headers(Digitization)
 
 gaudi_add_module(DigitizationPlugins
                  src/components/*.cpp
-                 INCLUDE_DIRS FWCore Math RecInterface DetInterface DD4hep RecTracker ROOT
+                 INCLUDE_DIRS FWCore RecInterface DetInterface DD4hep RecTracker ROOT
                  LINK_LIBRARIES GaudiAlgLib FWCore ACTS::ACTSCore DD4hep ${DD4hep_COMPONENT_LIBRARIES} ROOT)
