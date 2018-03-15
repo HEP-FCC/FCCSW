@@ -25,6 +25,7 @@ For additional information on fast simulation in Geant4 [see](FastSimulationUsin
 ## How to
 * [use sensitive detectors](#sensitive-detectors)
 * [change the physics list](#how-to-use-different-physics-list)
+* [specify step/track limits](#how-to-specify-step-or-track-limits)
 * [add user action](#how-to-add-a-user-action)
 * [use fast simulation](FastSimulationUsingGeant.md)
 
@@ -259,6 +260,11 @@ In order to use a different physics list, one needs to construct a physics list 
 
 Any new implementation of a physics list (or any other component) should be presented in a pull request to HEP-FCC/FCCSW.
 
+### How to specify step or track limits
+In order to specify user limits with `SimG4UserLimit` class, one needs to use `SimG4UserLimitPhysicsList`. It attaches additional process to an existing physics list.
+
+Moreover, user needs to specify regions where user limits are to be applied. It can be achieved using `SimG4UserLimitRegion` tool and attaching it to `SimG4Svc`.
+For example see [`Examples/options/geant_userLimits.py`](../../Examples/options/geant_userLimits.py).
 
 
 ### User Actions
