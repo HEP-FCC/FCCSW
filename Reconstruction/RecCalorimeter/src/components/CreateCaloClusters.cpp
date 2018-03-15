@@ -32,8 +32,9 @@ CreateCaloClusters::CreateCaloClusters(const std::string& name, ISvcLocator* svc
   declareProperty("ehECal", m_ehECal, "e/h of the ECal");
   declareProperty("ehHCal", m_ehHCal, "e/h of the HCal");
 
-//  declareProperty("ECalBarrelNoiseTool", m_ecalBarrelNoiseTool, "Handle for the cells noise tool of Barrel ECal");
-//  declareProperty("HCalBarrelNoiseTool", m_hcalBarrelNoiseTool, "Handle for the cells noise tool of Barrel HCal");
+  declareProperty("addPileupNoise", m_addNoise, "Add pile up noise?");
+  declareProperty("noiseECalTool", m_noiseECalTool, "Handle for the cells noise tool of ECal");
+  declareProperty("noiseHCalTool", m_noiseHCalTool, "Handle for the cells noise tool of HCal");
 }
 
 StatusCode CreateCaloClusters::initialize() {
@@ -93,13 +94,19 @@ StatusCode CreateCaloClusters::initialize() {
 
   m_decoderECal = m_geoSvc->lcdd()->readout(m_readoutECal).idSpec().decoder();  
   m_decoderHCal = m_geoSvc->lcdd()->readout(m_readoutHCal).idSpec().decoder();  
-  // // Pile-up noise tool
-  // if (!m_ecalBarrelNoiseTool.retrieve() || !m_hcalBarrelNoiseTool.retrieve() ) {
-  //   error() << "Unable to retrieve the calo clusters noise tool!!!" << endmsg;
-  //   return StatusCode::FAILURE;
-  //  }
-  
-  
+
+ // Cell noise tool
+  if (m_addNoise) {
+    if (!m_noiseECalTool.retrieve()) {
+      error() << "Unable to retrieve the ECal noise tool!!!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+    if (!m_noiseHCalTool.retrieve()) {
+      error() << "Unable to retrieve the HCal noise tool!!!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+  }
+ 
   info() << "CreateCaloClusters initialized" << endmsg;
   
   return StatusCode::SUCCESS;
@@ -147,7 +154,6 @@ StatusCode CreateCaloClusters::execute() {
 	  if ( layerId == m_firstHCalLayer)
 	    energyFirstHCal += cellEnergy;
 	}
-	
 	energyBoth[systemId] += cellEnergy;
       }
       
@@ -211,12 +217,21 @@ StatusCode CreateCaloClusters::execute() {
 	    posCell = m_cellPositionsECalTool->xyzPosition(cellId);
 	    if (calibECal)
 	      cellEnergy = cellEnergy / m_ehECal;
+	    if ( m_addNoise ) {
+	      // Scale the cell energy by factor determined from he correlated pile-up studies
+	      cellEnergy = cellEnergy * m_noiseECalTool->getNoiseConstantPerCell(cellId);
+	    }
 	  }
 	  else if (systemId == m_systemIdHCal){  // HCAL system id
 	    posCell = m_cellPositionsHCalTool->xyzPosition(cellId);
 	    if (!calibECal)
 	      cellEnergy = cellEnergy * m_ehHCal;
+	    if ( m_addNoise ) {
+	      // Scale the cell energy by factor determined from he correlated pile-up studies
+	      cellEnergy = cellEnergy * m_noiseHCalTool->getNoiseConstantPerCell(cellId);
+	    }
 	  }
+
 	  newCell.core().energy = cellEnergy;
 	  posX += posCell.X() * cellEnergy;
 	  posY += posCell.Y() * cellEnergy;
@@ -251,6 +266,15 @@ StatusCode CreateCaloClusters::execute() {
 	  auto newCell = edmClusterCells->create();
 	  auto cellId = cluster.hits(it).core().cellId;
 	  auto cellEnergy = cluster.hits(it).core().energy;
+	  m_decoder->setValue(cellId);
+	  uint systemId = (*m_decoder)["system"].value();
+	  if ( m_addNoise ) {
+	    // Scale the cell energy by factor determined from he correlated pile-up studies
+	    if(systemId == m_systemIdECal)
+	      cellEnergy = cellEnergy * m_noiseECalTool->getNoiseConstantPerCell(cellId);
+	    else 
+	      cellEnergy = cellEnergy * m_noiseHCalTool->getNoiseConstantPerCell(cellId);
+	  }
 	  newCell.core().energy = cellEnergy;
 	  newCell.core().cellId = cellId;
 	  newCell.core().bits = cluster.hits(it).core().bits;

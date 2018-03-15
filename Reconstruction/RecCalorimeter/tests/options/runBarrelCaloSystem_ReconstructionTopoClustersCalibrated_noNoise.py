@@ -28,7 +28,7 @@ podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", collections = ["ECalBarrelCells","HCalBarrelCells","HCalExtBarrelCells","GenParticles","GenVertices"], OutputLevel = DEBUG)
+podioinput = PodioInput("PodioReader", collections = ["ECalBarrelCells","HCalBarrelCells","HCalExtBarrelCells"], OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
 detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -127,11 +127,20 @@ calibrateClusters = CreateCaloClusters("CalibrateClusters",
                                        clusters = "caloClustersBarrel",
                                        outClusters = "calibCaloClustersBarrel",
                                        outCells = "calibCaloClusterBarrelCells",
+                                       readoutECal = ecalBarrelReadoutName,
+                                       readoutHCal = hcalBarrelReadoutVolume,
                                        positionsECalTool = ECalBcells,
                                        positionsHCalTool = HCalBcellVols,
                                        ehECal = 1.6,
                                        ehHCal = 1.1,
+                                       addPileupNoise = False,
                                        OutputLevel = DEBUG)
+
+THistSvc().Output = ["rec DATAFILE='clusterCalibration.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().PrintAll=True
+THistSvc().AutoSave=True
+THistSvc().AutoFlush=True
+THistSvc().OutputLevel=INFO
 
 # Fill a collection of CaloHitPositions for detailed Cluster analysis
 from Configurables import CreateCaloCellPositions
