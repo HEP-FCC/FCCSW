@@ -8,13 +8,12 @@ gaudi_depends_on_subdirs(GaudiKernel FWCore Test/TestGeometryLib Sim/SimG4Interf
 find_package(Geant4)
 #include(${Geant4_USE_FILE})
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
-find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
 
 
 gaudi_add_module(TestGeometry
                  src/components/*.cpp
-                 INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometryLib ACTS
-                 LINK_LIBRARIES GaudiKernel FWCore Geant4 DetCommon TestGeometryLib ACTS::ACTSCore)
+                 INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometryLib
+                 LINK_LIBRARIES GaudiKernel FWCore Geant4 DetCommon TestGeometryLib)
 
 
 include(CTest)

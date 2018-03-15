@@ -9,14 +9,13 @@ find_package(Geant4)
 include(${Geant4_USE_FILE})
 find_package(DD4hep)
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
-find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
 
 gaudi_install_headers(TestGeometryLib)
 
 gaudi_add_library(TestGeometryLib
 		  src/*.cpp
-		  INCLUDE_DIRS Geant4 ROOT TestGeometryLib DD4hep ACTS
-		  LINK_LIBRARIES GaudiKernel Geant4 ROOT DD4hep ACTS::ACTSCore
+		  INCLUDE_DIRS Geant4 ROOT TestGeometryLib DD4hep
+		  LINK_LIBRARIES GaudiKernel Geant4 ROOT DD4hep
         PUBLIC_HEADERS TestGeometryLib)
 
 

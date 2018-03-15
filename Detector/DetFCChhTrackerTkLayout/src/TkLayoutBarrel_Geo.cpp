@@ -1,6 +1,6 @@
 
+#include "DetActs/DigiModuleHelper.h"
 #include "DetCommon/DetUtils.h"
-#include "DetCommon/DigiModuleHelper.h"
 
 #include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
 #include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
