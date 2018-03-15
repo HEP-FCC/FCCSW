@@ -4,13 +4,13 @@
 #include "SimG4Interface/ISimG4PhysicsList.h"
 
 // Geant4
-#include "G4VModularPhysicsList.hh"
 #include "G4StepLimiterPhysics.hh"
+#include "G4VModularPhysicsList.hh"
 
 DECLARE_TOOL_FACTORY(SimG4UserLimitPhysicsList)
 
 SimG4UserLimitPhysicsList::SimG4UserLimitPhysicsList(const std::string& aType, const std::string& aName,
-                                                 const IInterface* aParent)
+                                                     const IInterface* aParent)
     : AlgTool(aType, aName, aParent) {
   declareInterface<ISimG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool, "Handle for the full physics list tool");

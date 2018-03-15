@@ -1,16 +1,15 @@
 #include "SimG4UserLimitRegion.h"
 
 // Geant4
-#include "G4RegionStore.hh"
 #include "G4LogicalVolume.hh"
+#include "G4RegionStore.hh"
 #include "G4TransportationManager.hh"
 
 #include "GaudiKernel/SystemOfUnits.h"
 
 DECLARE_TOOL_FACTORY(SimG4UserLimitRegion)
 
-SimG4UserLimitRegion::SimG4UserLimitRegion(const std::string& type, const std::string& name,
-                                                     const IInterface* parent)
+SimG4UserLimitRegion::SimG4UserLimitRegion(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ISimG4RegionTool>(this);
 }
