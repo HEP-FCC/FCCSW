@@ -1,21 +1,20 @@
 #include "SimG4SaveTrackerHits.h"
 
 // FCCSW
+#include "DetCommon/Geant4PreDigiTrackHit.h"
 #include "DetInterface/IGeoSvc.h"
 #include "SimG4Common/Units.h"
-#include "DetCommon/Geant4PreDigiTrackHit.h"
 
 // Geant4
 #include "G4Event.hh"
 
 // datamodel
+#include "datamodel/DigiTrackHitAssociationCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
-#include "datamodel/DigiTrackHitAssociationCollection.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
-
 
 DECLARE_TOOL_FACTORY(SimG4SaveTrackerHits)
 
@@ -26,8 +25,6 @@ SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::
   declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
   declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
   declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
-  declareProperty("digiHits", m_digiTrackHitsAssociation,
-                  "Handle for tracker hits including position information and digitization information");
 }
 
 SimG4SaveTrackerHits::~SimG4SaveTrackerHits() {}
@@ -92,7 +89,6 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
           fcc::PositionedTrackHit edmPositionedHit = edmPositions->create(preStepPosition, edmHitCore);
           edmDigiHit.postStepPosition(postStepPosition);
           edmDigiHit.hit(edmPositionedHit);
-          
         }
       }
     }
