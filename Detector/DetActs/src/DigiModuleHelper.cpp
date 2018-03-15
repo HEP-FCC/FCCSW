@@ -1,4 +1,4 @@
-#include "DetCommon/DigiModuleHelper.h"
+#include "DetActs/DigiModuleHelper.h"
 #include "ACTS/Surfaces/PlanarBounds.hpp"
 #include "ACTS/Surfaces/RectangleBounds.hpp"
 #include "ACTS/Surfaces/TrapezoidBounds.hpp"

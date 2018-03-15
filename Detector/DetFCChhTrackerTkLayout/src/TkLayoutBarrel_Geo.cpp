@@ -1,10 +1,8 @@
 
-#include "DetCommon/DetUtils.h"
-
-
 #include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
 #include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
-
+#include "DetActs/DigiModuleHelper.h"
+#include "DetCommon/DetUtils.h"
 
 #include "DD4hep/DetFactoryHelper.h"
 
@@ -15,8 +13,8 @@ using dd4hep::PlacedVolume;
 
 namespace det {
 static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
-                                                           dd4hep::xml::Handle_t xmlElement,
-                                                           dd4hep::SensitiveDetector sensDet) {
+                                                 dd4hep::xml::Handle_t xmlElement,
+                                                 dd4hep::SensitiveDetector sensDet) {
   // shorthands
   dd4hep::xml::DetElement xmlDet = static_cast<dd4hep::xml::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
@@ -34,8 +32,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
   // detElement owns extension
   Acts::ActsExtension* detWorldExt = new Acts::ActsExtension(barrelConfig);
   topDetElement.addExtension<Acts::IActsExtension>(detWorldExt);
-  dd4hep::Tube topVolumeShape(
-      dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
+  dd4hep::Tube topVolumeShape(dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
   topVolume.setVisAttributes(lcdd.invisible());
 
@@ -56,7 +53,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
     dd4hep::xml::Component xModulePropertiesOdd = rodLists[0].child("moduleProperties");
     dd4hep::Tube layerShape(xLayer.rmin(), xLayer.rmax(), dimensions.zmax());
     Volume layerVolume("layer", layerShape, lcdd.material("Air"));
-    //layerVolume.setVisAttributes(lcdd.invisible());
+    // layerVolume.setVisAttributes(lcdd.invisible());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", layerCounter);
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
@@ -64,7 +61,7 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
     layConfig.isLayer = true;
     // the local coordinate systems of modules in dd4hep and acts differ
     // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
-    layConfig.axes = "XzY"; // correct translation of local x axis in dd4hep to local x axis in acts
+    layConfig.axes = "XzY";  // correct translation of local x axis in dd4hep to local x axis in acts
     // detElement owns extension
     Acts::ActsExtension* layerExtension = new Acts::ActsExtension(layConfig);
     lay_det.addExtension<Acts::IActsExtension>(layerExtension);
@@ -79,8 +76,8 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
       dd4hep::xml::Component xModuleComponentOdd = static_cast<dd4hep::xml::Component>(xModuleComponentOddColl);
       moduleVolume = Volume("module",
                             dd4hep::Box(0.5 * xModulePropertiesOdd.attr<double>("modWidth"),
-                                                  0.5 * xModuleComponentOdd.thickness(),
-                                                  0.5 * xModulePropertiesOdd.attr<double>("modLength")),
+                                        0.5 * xModuleComponentOdd.thickness(),
+                                        0.5 * xModulePropertiesOdd.attr<double>("modLength")),
                             lcdd.material(xModuleComponentOdd.materialStr()));
       moduleVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRods.repeat();

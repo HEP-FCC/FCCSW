@@ -1,5 +1,6 @@
 
 #include "DD4hep/DetFactoryHelper.h"
+#include "DetActs/DigiModuleHelper.h"
 #include "DetCommon/DetUtils.h"
 
 #include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
