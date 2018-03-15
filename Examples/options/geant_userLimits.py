@@ -29,7 +29,7 @@ from Configurables import SimG4Svc, SimG4UserLimitPhysicsList, SimG4UserLimitReg
 from GaudiKernel.SystemOfUnits import mm
 ## create region and a parametrisation model, pass smearing tool
 regiontool = SimG4UserLimitRegion("limits", volumeNames=["TrackerEnvelopeBarrel"],
-                                       maxStep = 1)
+                                       maxStep = 1*mm)
 # create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4UserLimitPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 # attach those tools to the G4 service

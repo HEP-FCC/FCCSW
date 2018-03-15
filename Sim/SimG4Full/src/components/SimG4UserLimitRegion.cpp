@@ -5,6 +5,8 @@
 #include "G4LogicalVolume.hh"
 #include "G4TransportationManager.hh"
 
+#include "GaudiKernel/SystemOfUnits.h"
+
 DECLARE_TOOL_FACTORY(SimG4UserLimitRegion)
 
 SimG4UserLimitRegion::SimG4UserLimitRegion(const std::string& type, const std::string& name,
@@ -38,7 +40,11 @@ StatusCode SimG4UserLimitRegion::create() {
         m_g4regions.emplace_back(
             new G4Region(world->GetDaughter(iter_region)->GetLogicalVolume()->GetName() + "_userLimits"));
         m_g4regions.back()->AddRootLogicalVolume(world->GetDaughter(iter_region)->GetLogicalVolume());
-        m_userLimits.emplace_back(new G4UserLimits(m_maxStep, m_maxTrack, m_maxTrack, m_minKineticEnergy, m_minRange));
+        m_userLimits.emplace_back(new G4UserLimits(m_maxStep / Gaudi::Units::mm * CLHEP::mm,
+                                                   m_maxTrack / Gaudi::Units::mm * CLHEP::mm,
+                                                   m_maxTime / Gaudi::Units::s * CLHEP::s,
+                                                   m_minKineticEnergy / Gaudi::Units::MeV * CLHEP::MeV,
+                                                   m_minRange / Gaudi::Units::mm * CLHEP::mm));
         m_g4regions.back()->SetUserLimits(m_userLimits.back().get());
         info() << "Creating user limits in the region " << m_g4regions.back()->GetName() << endmsg;
       }
