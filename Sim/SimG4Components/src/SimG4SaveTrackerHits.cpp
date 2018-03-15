@@ -10,7 +10,6 @@
 
 // datamodel
 #include "datamodel/DigiTrackHitAssociationCollection.h"
-#include "datamodel/DigiTrackHitAssociationCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
@@ -26,8 +25,6 @@ SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::
   declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
   declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
   declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
-  declareProperty("digiHits", m_digiTrackHitsAssociation,
-                  "Handle for tracker hits including position information and digitization information");
 }
 
 SimG4SaveTrackerHits::~SimG4SaveTrackerHits() {}
