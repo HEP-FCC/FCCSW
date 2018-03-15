@@ -193,7 +193,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
                        lcdd.material(xComp.materialStr()));
         tileVol.setSensitiveDetector(sensDet);
         tiles.push_back(layerVolume.placeVolume(tileVol, offset));
-        tiles.back().addPhysVolID("tile", idxActMod);
         idxActMod++;
       } else {
         tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
@@ -217,10 +216,10 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
   for (unsigned int idxZRow = 0; idxZRow < numSequencesZ; ++idxZRow) {
     double zOffset = -dzDetector + dZEndPlate + space + (2 * idxZRow + 1) * (dzSequence * 0.5);
-    lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << std::endl;
+    lLog << MSG::DEBUG << "z offset of wedges = " << zOffset << endmsg;
 
     if ((-dzDetector + zOffset) >= dzDetector) {
-      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << std::endl;
+      lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << endmsg;
     }
     dd4hep::Position wedgeOffset(0, zOffset, 0);
     // Fill vector for DetElements
@@ -229,7 +228,8 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   }
 
   for (unsigned int idxPhi = 0; idxPhi < numSequencesPhi; ++idxPhi) {
-    double phi = 0.5 * dphi + idxPhi * dphi;  // 0.5*dphi for middle of module
+    double phi = -0.5 * dd4hep::pi - dphi * 0.5 -
+        idxPhi * dphi;  // module placement starts at -pi
     double yPosModule = (sensitiveBarrelRmin + dzModule) * cos(phi);
     double xPosModule = (sensitiveBarrelRmin + dzModule) * sin(phi);
     double yPosSupport = (sensitiveBarrelRmin + 2 * dzModule + dzSupport) * cos(phi);
@@ -239,20 +239,19 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     dd4hep::Position supportOffset(xPosSupport, yPosSupport, 0);
 
     dd4hep::Transform3D trans(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), moduleOffset);
-
     dd4hep::Transform3D transS(dd4hep::RotationX(-0.5 * dd4hep::pi) * dd4hep::RotationY(phi), supportOffset);
+
     // Fill the vectors of DetElements
     modules.push_back(envelopeVolume.placeVolume(moduleVolume, trans));
     modules.back().addPhysVolID("module", idxPhi);
     supports.push_back(envelopeVolume.placeVolume(steelSupportVolume, transS));
-    //    }
   }
 
   // Placement of DetElements
-  lLog << MSG::DEBUG << "Modules in phi : " << modules.size() << std::endl;
-  lLog << MSG::DEBUG << "Rows in z :      " << rows.size() << std::endl;
-  lLog << MSG::DEBUG << "Layers in r :    " << layers.size() << std::endl;
-  lLog << MSG::DEBUG << "Tiles in layers :" << tilesInLayers[1].size() << std::endl;
+  lLog << MSG::DEBUG << "Modules in phi : " << modules.size() << endmsg;
+  lLog << MSG::DEBUG << "Rows in z :      " << rows.size() << endmsg;
+  lLog << MSG::DEBUG << "Layers in r :    " << layers.size() << endmsg;
+  lLog << MSG::DEBUG << "Tiles in layers :" << tilesInLayers[1].size() << endmsg;
 
   for (uint iPhi = 0; iPhi < numSequencesPhi; iPhi++) {
     DetElement moduleDet(hCal, dd4hep::xml::_toString(iPhi, "module%d"), iPhi);

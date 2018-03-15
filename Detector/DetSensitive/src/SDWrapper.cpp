@@ -5,7 +5,6 @@
 #include "DetSensitive/BirksLawCalorimeterSD.h"
 #include "DetSensitive/FullParticleAbsorptionSD.h"
 #include "DetSensitive/GflashCalorimeterSD.h"
-#include "DetSensitive/MiddleStepTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
 #include "DetSensitive/SimpleTrackerSD.h"
 
@@ -17,13 +16,6 @@ namespace sim {
 static G4VSensitiveDetector* create_simple_tracker_sd(const std::string& aDetectorName, dd4hep::Detector& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::SimpleTrackerSD(
-      aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
-}
-// Factory method to create an instance of MiddleStepTrackerSD
-static G4VSensitiveDetector* create_middle_step_tracker_sd(const std::string& aDetectorName,
-                                                           dd4hep::Detector& aLcdd) {
-  std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
-  return new det::MiddleStepTrackerSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of SimpleCalorimeterSD
@@ -64,7 +56,6 @@ static G4VSensitiveDetector* create_full_particle_absorbtion_sd(const std::strin
 }
 }
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD, dd4hep::sim::create_simple_tracker_sd)
-DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MiddleStepTrackerSD, dd4hep::sim::create_middle_step_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD, dd4hep::sim::create_simple_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(BirksLawCalorimeterSD, dd4hep::sim::create_birks_law_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD, dd4hep::sim::create_aggregate_calorimeter_sd)
