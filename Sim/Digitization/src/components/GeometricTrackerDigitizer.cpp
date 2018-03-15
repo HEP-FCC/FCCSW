@@ -19,7 +19,6 @@
 #include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
 #include "Digitization/FCCDigitizationCell.h"
-#include "Math/Math/Math.h"
 #include "RecTracker/ACTSLogger.h"
 #include "datamodel/DigiTrackHitAssociationCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
@@ -158,12 +157,12 @@ StatusCode GeometricTrackerDigitizer::execute() {
       lorentzShift *= -(hitDigitizationModule->readoutDirection());
       // create from hit
       // get the hit position
-      fcc::Vector3D globalIntersection(hit.hit().position().x, hit.hit().position().y, hit.hit().position().z);
+      Acts::Vector3D globalIntersection(hit.hit().position().x, hit.hit().position().y, hit.hit().position().z);
       // access the post step position to calculate the direction
-      fcc::Vector3D postStepPosition(hit.postStepPosition().x, hit.postStepPosition().y, hit.postStepPosition().z);
+      Acts::Vector3D postStepPosition(hit.postStepPosition().x, hit.postStepPosition().y, hit.postStepPosition().z);
       // calculate the momentum direction & intersection point in local frame
-      fcc::Vector3D localDirection = (postStepPosition - globalIntersection).unit();
-      fcc::Vector2D localIntersection(0., 0.);
+      Acts::Vector3D localDirection = (postStepPosition - globalIntersection).unit();
+      Acts::Vector2D localIntersection(0., 0.);
       hitSurface.globalToLocal(globalIntersection, localDirection, localIntersection);
       localDirection = hitSurface.transform().inverse().linear() * localDirection;
       // calculate the digitization steps
@@ -208,10 +207,10 @@ StatusCode GeometricTrackerDigitizer::execute() {
       }  // dSteps
       if (m_singleParticleClusters) {
         // local position of single particle cluster
-        fcc::Vector2D localPosition(localX, localY);
+        Acts::Vector2D localPosition(localX, localY);
         // calculate global position of the cluster
-        fcc::Vector3D globalPosition(0., 0., 0.);
-        hitSurface.localToGlobal(localPosition, fcc::Vector3D(0., 0., 0.), globalPosition);
+        Acts::Vector3D globalPosition(0., 0., 0.);
+        hitSurface.localToGlobal(localPosition, Acts::Vector3D(0., 0., 0.), globalPosition);
         // translate to fcc edm
         auto position = fcc::Point();
         position.x = globalPosition.x();
@@ -288,7 +287,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
         localY += cell.data * cellCenter.y();
         norm += cell.data;
         // the local position of the hit
-        fcc::Vector2D locPos(cell.data * cellCenter.x(), cell.data * cellCenter.y());
+        Acts::Vector2D locPos(cell.data * cellCenter.x(), cell.data * cellCenter.y());
         // calculate dd4hep cellID for the fcc TrackHit
         // @todo make this more general, this is because we are using xz-segmentation
         // global position is actually not used for conversion
@@ -313,10 +312,10 @@ StatusCode GeometricTrackerDigitizer::execute() {
       }
       /// ----------- Create unique global channel identifier -----------
       // local position of merged cluster
-      fcc::Vector2D localPosition(localX, localY);
+      Acts::Vector2D localPosition(localX, localY);
       // calculate global position of the cluster
-      fcc::Vector3D globalPosition(0., 0., 0.);
-      hitSurface.localToGlobal(localPosition, fcc::Vector3D(0., 0., 0.), globalPosition);
+      Acts::Vector3D globalPosition(0., 0., 0.);
+      hitSurface.localToGlobal(localPosition, Acts::Vector3D(0., 0., 0.), globalPosition);
       // translate to fcc edm
       auto position = fcc::Point();
       position.x = globalPosition.x();
@@ -377,15 +376,15 @@ const fcc::DigiTrackHitAssociationCollection GeometricTrackerDigitizer::mergeHit
       float time = 0;
       auto bits = track.first;
       // initialize positions with first positions
-      fcc::Vector3D position(track.second.front().hit().position().x, track.second.front().hit().position().y,
-                             track.second.front().hit().position().z);
-      fcc::Vector3D postPosition(track.second.front().postStepPosition().x, track.second.front().postStepPosition().y,
-                                 track.second.front().postStepPosition().z);
+      Acts::Vector3D position(track.second.front().hit().position().x, track.second.front().hit().position().y,
+                              track.second.front().hit().position().z);
+      Acts::Vector3D postPosition(track.second.front().postStepPosition().x, track.second.front().postStepPosition().y,
+                                  track.second.front().postStepPosition().z);
       for (auto& hit : track.second) {
         /// the current hit position
-        fcc::Vector3D hitPos(hit.hit().position().x, hit.hit().position().y, hit.hit().position().z);
+        Acts::Vector3D hitPos(hit.hit().position().x, hit.hit().position().y, hit.hit().position().z);
         // access the post step position to calculate the direction
-        fcc::Vector3D hitPostPos(hit.postStepPosition().x, hit.postStepPosition().y, hit.postStepPosition().z);
+        Acts::Vector3D hitPostPos(hit.postStepPosition().x, hit.postStepPosition().y, hit.postStepPosition().z);
         // get first and last point in this module
         if (hitPos.norm() < position.norm()) position = hitPos;
         if (hitPostPos.norm() > postPosition.norm()) postPosition = hitPostPos;
@@ -409,7 +408,7 @@ const fcc::DigiTrackHitAssociationCollection GeometricTrackerDigitizer::mergeHit
       }
       // access the surface corresponding to the detector element
       const Acts::Surface& hitSurface = hitDetElement->surface();
-      fcc::Vector3D dir = (postPosition - position).unit();
+      Acts::Vector3D dir = (postPosition - position).unit();
       auto intersection =
           hitSurface.intersectionEstimate(position, dir, false, Acts::BoundaryCheck(true, true, 10e-5, 10e-5));
       // if intersection is !valid (e.g. in case of 0 steplength) continuw
