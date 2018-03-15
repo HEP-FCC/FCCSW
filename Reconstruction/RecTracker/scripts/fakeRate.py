@@ -13,6 +13,7 @@ from EventStore import EventStore
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats
+import os
 
 
 
@@ -28,6 +29,8 @@ parser.add_argument("--histos", action="store_true",  help="plot efficiency hist
 parser.add_argument("--ignore_secondaries", action="store_true",  help="don't include secondary particles in efficiency definitions", )
 parser.add_argument("--process_genparticles", action="store_true",  help="use genparticles in the event loop", )
 parser.add_argument("--process_trackerhits", action="store_true",  help="use trackerhits in the event loop", )
+parser.add_argument("--fakeRateHistos", action="store_true",  help="create fake rate histograms", )
+parser.add_argument("--plotprefix", help="where to store the plots", type=str, default=os.environ["FCCPLOTS"])
 args = parser.parse_args()
 
 
@@ -37,10 +40,16 @@ args.nevents = min(len(events), args.nevents)
 
 # arrays to hold ntuples
 etas = {}
+cotThetas = {}
 pts = {}
 efficiencies = []
 fake_rates = []
 successfully_found_track = {}
+reco_track_is_fake = {}
+reconstructed_track_ids = {}
+reco_track_pt = {}
+reco_track_eta = {}
+bad_event = []
 # main event loop
 for i, store in enumerate(events):
     if i < args.nevents:
@@ -76,25 +85,23 @@ for i, store in enumerate(events):
             pm = ROOT.TLorentzVector(*pm)
 
             if np.abs(pm.Pt()) > args.ptCut and np.abs(pm.Eta()) < args.etaCut:
-              if args.ignore_secondaries:
-                if p.core().status != 201: # fcc convention for secondaries
+              if not args.ignore_secondaries or p.core().status != 201: # fcc convention for secondaries
                   true_track_ids.append(p.core().bits)
                   etas[(i, p.core().bits)] = pm.Eta()
                   pts[(i, p.core().bits)] = pm.Pt()
+                  cotThetas[(i, p.core().bits)] = 1. / np.tan(pm.Theta())
                   successfully_found_track[(i, p.core().bits)] = 0 # initialization, per default not found
-                else:
-                  num_ignored_secondaries +=1
               else:
-                true_track_ids.append(p.core().bits)
-                etas[(i, p.core().bits)] = pm.Eta()
-                pts[(i, p.core().bits)] = pm.Pt()
+                  num_ignored_secondaries +=1
       print num_ignored_secondaries, " secondary particles ignored"
           
       ### print "processing reco tracks from branch 'tracks' " #########
       correctly_identified_tracks_ids = []
       tracks = store.get('tracks')
       numTracks = len(tracks)
-      for t in tracks:
+      
+      for trackCounter, t in enumerate(tracks):
+              reco_track_is_fake[(i, trackCounter)] = 1
               reco_track_ids = []
               # go through the hits comprising the track
               for j in range(t.hits_size()):
@@ -107,8 +114,24 @@ for i, store in enumerate(events):
                 if reco_track_ids[0] in true_track_ids:
                   correctly_identified_tracks_ids.append(reco_track_ids[0])
                   successfully_found_track[(i, reco_track_ids[0])] = 1
+                  reconstructed_track_ids[(i, reco_track_ids[0])] = reco_track_ids[0]
+                  reco_track_is_fake[(i, trackCounter)] = 0
               else:
                 numFakes += 1
+              if args.fakeRateHistos:
+                ts = t.states(0)
+                trackparams = [
+                  ts.d0(),
+                  ts.z0(),
+                  ts.phi(),
+                  ts.theta(), #cotan theta
+                  ts.qOverP() * -10,
+                  ]
+                actual_pt = np.abs(1./trackparams[-1]) 
+                #if actual_pt > args.ptCut:
+                reco_track_pt[(i, trackCounter)] = actual_pt
+                #actual_theta = np.arctan( 1. / ts.theta())
+                reco_track_eta[(i, trackCounter)] = ts.theta() #-1* np.log(np.tan(actual_theta * 0.5)) 
                 
       # safeguard against empty lists
       if numTracks > 0:
@@ -122,14 +145,31 @@ for i, store in enumerate(events):
         print len(true_track_ids), " tracks in event, eff.: ", efficiency, ", fake rate: ", fake_rate
         efficiencies.append(efficiency)
         fake_rates.append(fake_rate)
+        if efficiency < 1:
+          bad_event.append(i)
+
       else: 
         efficiencies.append(0)
         fake_rates.append(0)
 
 sk = sorted(etas.iterkeys())
 etas = np.array([etas[k] for k in sk])
+cotThetas2 = np.array([cotThetas[k] for k in sk])
 pts = np.array([pts[k] for k in sk])
+skr_pt = sorted(reco_track_pt.iterkeys())
+skr_eta = sorted(reco_track_eta.iterkeys())
+reco_etas = np.array([reco_track_eta[k] for k in skr_eta])
+reco_pts = np.array([reco_track_pt[k] for k in skr_pt])
+reco_fr = np.array([reco_track_is_fake[k] for k in skr_pt])
 efficiencies = np.array([successfully_found_track.get(k, 0) for k in sk])
+
+plt.figure("fit_validation_mctruth")
+plt.plot(cotThetas2, pts, 'o')
+plt.figure("fit_validation_reco")
+plt.plot(reco_etas, reco_pts, 'o')
+
+
+
 
 def efficiency_plot(x, y, conf, ax=plt.gca()):
   means_result = scipy.stats.binned_statistic(x, [y, y**2], 
@@ -157,7 +197,7 @@ def efficiency_plot(x, y, conf, ax=plt.gca()):
   plt.ylabel(conf["ylabel"], horizontalalignment='right', y=.95, #rotation="horizontal", 
     labelpad=3)
   plt.text(args.textBoxPositionX, args.textBoxPositionY, r'\textsf{\textit{\textbf{FCC}-hh Sim}, Det \textbf{v3.03}}' + conf["boxtext"], {'size': 24}, transform=plt.gca().transAxes, bbox={"boxstyle": "round", "alpha": 0.9, "fc": "white"})
-  plt.gca().fill_between(bin_centers, 0, means, color="blue", alpha=0.2)
+  plt.gca().fill_between(bin_centers, 0, means, color=conf.get("fillbetweencolor", "blue"), alpha=0.2)
   if conf["setlogx"]:
     plt.xscale("log")
 
@@ -165,9 +205,9 @@ def efficiency_plot(x, y, conf, ax=plt.gca()):
   plt.ylim(-0.05,1.05)
 
 
-  for f in conf["filenames"]: # allow different formats to be saved
-    print "Saving ", f
-    plt.savefig(f)
+  #for f in conf["filenames"]: # allow different formats to be saved
+  #  print "Saving ", f
+  #  plt.savefig(f)
 
 # plot efficiencies and fake rates split in pt / eta regimes
 if args.histos:
@@ -205,7 +245,49 @@ if args.histos:
   pt_histo_conf["boxtext"] = r"\\ \textsf{ $\qquad$ MinBias $\sqrt s = 100$ TeV, n = " + str(args.nevents) + r" \newline Cuts: $\qquad |\eta| >  $" + str(args.etaCut)+ r",  $\quad p_T >  $}" + str(args.ptCut) + " GeV" 
   efficiency_plot(x, y, pt_histo_conf)
 
+if args.fakeRateHistos:
+  plt.figure("fakeRate_pt")
+  pt_selection = np.abs(reco_pts) > 1
+  x = reco_pts[pt_selection]
+  y = reco_fr[pt_selection]
+  pt_histo_conf = {}
+  pt_histo_conf["numBins"] = np.logspace(-1,6,20)
+  pt_histo_conf["histo_range"] = None
+  pt_histo_conf["xlabel"] = r"$p_T$ [GeV]"
+  pt_histo_conf['ylabel'] = "fake rate"
+  #pt_histo_conf["filenames"] = [args.filename.replace(".root", "") + "_eff_pt.png"]
+  pt_histo_conf["setlogx"] = True
+  pt_histo_conf["xlimlow"] = 0.05
+  pt_histo_conf["fillbetweencolor"] = "red"
+  pt_histo_conf["xlimhigh"] = 10**5
+  pt_histo_conf["boxtext"] = r"\\ \textsf{ $\qquad$ MinBias $\sqrt s = 100$ TeV, n = " + str(args.nevents) + r" \newline Cuts: $\qquad |\eta| >  $" + str(args.etaCut)+ r",  $\quad p_T >  $}" + str(args.ptCut) + " GeV" 
+  efficiency_plot(x, y, pt_histo_conf)
+
+  plt.figure("fakeRate_eta")
+  pt_selection = np.abs(reco_pts) > 1
+  x = reco_etas[pt_selection]
+  y = reco_fr[pt_selection]
+  eta_histo_conf = {}
+  eta_histo_conf["numBins"] = 70
+  eta_histo_conf["histo_range"] = (-6, 6)
+  eta_histo_conf["xlabel"] = r"$\eta$"
+  eta_histo_conf['ylabel'] = "fake rate"
+  eta_histo_conf["setlogx"] = False
+  eta_histo_conf["xlimlow"] = 0.05
+  eta_histo_conf["fillbetweencolor"] = "red"
+  eta_histo_conf["xlimlow"] = -6
+  eta_histo_conf["xlimhigh"] = 6
+  eta_histo_conf["boxtext"] = r"\\ \textsf{ $\qquad$ MinBias $\sqrt s = 100$ TeV, n = " + str(args.nevents) + r" \newline Cuts: $\qquad |\eta| >  $" + str(args.etaCut)+ r",  $\quad p_T >  $}" + str(args.ptCut) + " GeV" 
+  efficiency_plot(x, y, eta_histo_conf)
+
 print " ####################################### "
 print "mean efficiency \t mean fakerate "
 print np.mean(efficiencies), np.mean(fake_rates)
 
+
+f = "SeedingEff_" + args.filename.replace(".root", "") + "_events%i" % args.nevents
+
+figs = [plt.figure(n) for n in plt.get_fignums()]
+for fig in figs:
+  fig.savefig(os.path.join(args.plotprefix, f + "_" + fig._label + ".png"))
+print bad_event

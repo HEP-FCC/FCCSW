@@ -1,6 +1,7 @@
 
 import scipy.stats
 import sys
+import os
 import matplotlib
 import ROOT
 import argparse
@@ -11,8 +12,9 @@ import matplotlib.pyplot as plt
 
 # command line arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("filename", help="edm file to read")
+parser.add_argument("filename", help="edm file to read", type=str)
 parser.add_argument("--nevents", help="max number of events to process", type=int, default=5000)
+parser.add_argument("--plotprefix", help="where to store the plots", type=str, default=os.environ["FCCPLOTS"])
 args = parser.parse_args()
 
 
@@ -47,10 +49,10 @@ for i, store in enumerate(events):
             charge = 1
             if t.core().charge == -1:
               charge = -1
-            cpar = Particle2Track(momentum, vertex, charge=charge)
-            print "\tsim calculated params:", cpar
-            cmom = Track2Particle(cpar)
-            print "\tsim calculated particle: ", cmom
+            #cpar = Particle2Track(momentum, vertex, charge=charge)
+            #print "\tsim calculated params:", cpar
+            #cmom = Track2Particle(cpar)
+            #print "\tsim calculated particle: ", cmom
 
         print "processing tracks ..."
         tracks = store.get('tracks')
@@ -121,10 +123,8 @@ for e in np.unique(l_true_pts):
 
 plt.figure("pt_res")
 plt.xlabel(r"$\eta$")
-plt.savefig("tricktrack_singleparticle_res_undiv.png")
 plt.figure("dpt_res")
 plt.xlabel(r"$\eta$")
-plt.savefig("tricktrack_singleparticle_dres_undiv.png")
 
 plt.legend(loc="best", title="Pt [GeV]")
 plt.figure("pt_res_div")
@@ -132,7 +132,6 @@ plt.xlabel(r"$\eta$", horizontalalignment='right', x=1.0)
 plt.ylabel(r"$\frac {\delta p_T} {p_T} [\%] $", horizontalalignment='right', y=.95, rotation="horizontal", labelpad=-5)
 plt.title(r"Track resolution for const Pt - no material effects")
 plt.legend(loc="best", title="Pt [GeV]", framealpha=1.)
-plt.savefig("tricktrack_singleparticle_res.png")
 
 plt.figure("pt_pull")
 plt.yscale('log', nonposy='clip')
@@ -140,7 +139,6 @@ plt.legend(loc="best", title="Pt [GeV]")
 plt.xlabel(r"$\eta$")
 plt.title("rpull of $p_t$")
 plt.xlim(-2,2)
-plt.savefig("pull2.png")
 
 plt.figure("pt_res_div_binned")
 plt.gca().set_yscale("log", nonposy='clip')
@@ -148,7 +146,11 @@ plt.xlabel(r"$\eta$", horizontalalignment='right', x=1.0)
 plt.ylabel(r"$\frac {\delta p_T} {p_T} [\%] $", horizontalalignment='right', y=.95, rotation="horizontal", labelpad=-5)
 plt.title(r"Track resolution for const Pt across $\eta$")
 plt.legend(loc="best", title="Pt [GeV]")
-plt.savefig("tricktrack_singleparticle_res_binned.png")
 
+f = "SinglePartRes_" + args.filename.replace(".root", "") + "_nevents%05i" % args.nevents
+
+figs = [plt.figure(n) for n in plt.get_fignums()]
+for fig in figs:
+  fig.savefig(os.path.join(args.plotprefix, f + "_" + fig._label + ".png"))
 
 plt.show()
