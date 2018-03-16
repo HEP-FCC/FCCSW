@@ -8,10 +8,8 @@ ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
 ecalEndcapReadoutName = "EMECPhiEtaReco"
 ecalFwdReadoutName = "EMFwdPhiEtaReco"
 # HCAL readouts
-hcalBarrelReadoutName = "HCalBarrel"
-#hcalBarrelReadoutVolume = "HCalBarrel"
-hcalExtBarrelReadoutName = "HCalExtBarrel"
-#hcalExtBarrelReadoutVolume = "HCalExtBarrel"
+hcalBarrelReadoutName = "HCalBarrelReadout"
+hcalExtBarrelReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEtaReco"
 hcalFwdReadoutName = "HFwdPhiEtaReco"
 # Tail Catcher readout
@@ -23,7 +21,7 @@ podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", collections = ["ECalBarrelCells", "HCalBarrelCells", "HCalExtBarrelCells", "ECalEndcapCells", "HCalEndcapCells", "ECalFwdCells", "HCalFwdCells", "TailCatcherCells"], OutputLevel = DEBUG)
+podioinput = PodioInput("PodioReader", collections = ["ECalBarrelCells", "HCalBarrelCells", "HCalExtBarrelCells", "ECalEndcapCells", "HCalEndcapCells", "ECalFwdCells", "HCalFwdCells"], OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
 detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -33,7 +31,8 @@ detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster
                   'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                   'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
                   'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                  'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml']
+                  #                 'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml'
+                  ]
 
 geoservice = GeoSvc("GeoSvc", detectors = detectors_to_use, OutputLevel = WARNING)
 
@@ -124,7 +123,7 @@ positionsHcalBarrel.AuditExecute = True
 positionsHcalExtBarrel.AuditExecute = True
 positionsHcalEndcap.AuditExecute = True
 positionsHcalFwd.AuditExecute = True
-positionsTailCatcher.AuditExecute = True
+#positionsTailCatcher.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
@@ -136,7 +135,7 @@ TopAlg = [    podioinput,
               positionsHcalExtBarrel,
               positionsHcalEndcap, 
               positionsHcalFwd,
-              positionsTailCatcher,
+#              positionsTailCatcher,
               out
               ],
     EvtSel = 'NONE',
