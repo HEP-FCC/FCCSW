@@ -45,13 +45,13 @@ from Configurables import PileupTrackHitMergeTool
 trackhitsmergetool = PileupTrackHitMergeTool("MyTrackHitMergeTool")
 # branchnames for the pileup
 trackhitsmergetool.pileupHitsBranch = "hits"
-trackhitsmergetool.pileupPositionedHitsBranch = "positionedHits"
+#trackhitsmergetool.pileupPositionedHitsBranch = "positionedHits"
 # branchnames for the signal
 trackhitsmergetool.signalHits = "hits"
-trackhitsmergetool.signalPositionedHits = "positionedHits"
+#trackhitsmergetool.signalPositionedHits = "positionedHits"
 # branchnames for the output
 trackhitsmergetool.mergedHits = "overlaidTrackHits"
-trackhitsmergetool.mergedPositionedHits = "overlaidPositionedTrackHits"
+#trackhitsmergetool.mergedPositionedHits = "overlaidPositionedTrackHits"
 
 # use the pileuptool to specify the number of pileup
 from Configurables import ConstPileUp

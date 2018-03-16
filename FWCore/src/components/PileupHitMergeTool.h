@@ -66,6 +66,9 @@ private:
 
   /// offset with which the pileup event number is added to the trackID 
   const unsigned int m_trackIDCollectionOffset = 2 << 20;
+
+  /// merge HitCollection only 
+  bool posHitCollectionPresent;
 };
 
 #endif  // FWCORE_PILEUPTRACKERHITSMERGETOOL_H
