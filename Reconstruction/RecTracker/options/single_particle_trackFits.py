@@ -54,10 +54,11 @@ truth_seeds = TruthSeedingTool()
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-RecTrackAlg.Errors = True
-RecTrackAlg.hitRes = 1 * 1e-6
+RecTrackAlg.calcErrors = True
+RecTrackAlg.hitRes = 1 * 1e-9
+RecTrackAlg.fitOnlyPrimary = True
 RecTrackAlg.TrackSeedingTool = truth_seeds 
-RecTrackAlg.positionedTrackHits.Path = "positionedHits"
+RecTrackAlg.positionedTrackHits.Path = "TrackerPositionedHits"
 
 
 # PODIO algorithm

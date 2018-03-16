@@ -31,30 +31,11 @@ l_true_pts = []
 for i, store in enumerate(events):
     if i < args.nevents:
         print "event ", i
-        genparticles = store.get("GenParticles")
-        print "processing allGenParticles ..."
-        for t in genparticles:
-            momentum = [t.core().p4.px, t.core().p4.py, t.core().p4.pz, t.core().p4.mass]
-            tm = ROOT.TLorentzVector(*momentum)
-            print "\t sim Eta:", tm.Eta() 
-            print "\t sim Eta:", tm.Pt() 
-            eta = tm.Eta()
-            l_etas.append(tm.Eta())
-            l_true_pts.append(np.rint(tm.Pt()))
-            vertex = [0,0,0]
-            print "\tsim trackID: ", t.core().bits, "sim pdgId: ", t.core().pdgId, "momentum: ", [t.core().p4.px, t.core().p4.py, t.core().p4.pz]
-            print "\tsim phi: ", np.arctan(t.core().p4.py / t.core().p4.px)
-            print "\tsim cottheta: ", t.core().p4.pz / np.sqrt(t.core().p4.px**2 +  t.core().p4.py**2)
-            print "\tsim q_pT: ", 1. / np.sqrt(t.core().p4.px**2 +  t.core().p4.py**2)
-            charge = 1
-            if t.core().charge == -1:
-              charge = -1
-            #cpar = Particle2Track(momentum, vertex, charge=charge)
-            #print "\tsim calculated params:", cpar
-            #cmom = Track2Particle(cpar)
-            #print "\tsim calculated particle: ", cmom
-
+        trackStates = store.get('trackStates')
+        print "processing trackStates"
+        print  "number of trackStates in event: ", len(trackStates)
         print "processing tracks ..."
+        primaryTrackPresent = False
         tracks = store.get('tracks')
         for t in tracks:
               print "\t track ID: ", t.bits()
@@ -69,27 +50,43 @@ for i, store in enumerate(events):
                   ts.theta(),
                   ts.qOverP() * -10,
                   ]
-                l_pts.append(1./trackparams[-1])
-                print "\ttrack parameters: ", trackparams
-                trackcov = [ts.cov()[0], ts.cov()[5], ts.cov()[9], ts.cov()[12], ts.cov()[14]] 
-                print "\ttrack covariances: ", trackcov
-                l_dpts.append(np.sqrt(trackcov[2]))
-                
-                if False and plot_tracks:
-                  pos2 = helix(trackparams)
-                  for j in range(t.hits_size()):
-                    cor = t.hits(j).position()
-                    pos.append([cor.x, cor.y, cor.z])
-                  pos = np.array(pos)
-                  plt.figure("xy")
-                  plt.plot(pos[:,0],pos[:,1], '--', color="black")
-                  plt.figure("rz")
-                  plt.plot(pos[:,2], np.sqrt(pos[:,0]**2 + pos[:,1]**2), '--', color="black")
+
+                pt = 1./trackparams[-1]
+                if not np.isnan(pt):
+                  l_pts.append(pt)
+                  print "\ttrack parameters: ", trackparams
+                  trackcov = [ts.cov()[0], ts.cov()[5], ts.cov()[9], ts.cov()[12], ts.cov()[14]] 
+                  print "\ttrack covariances: ", trackcov
+                  l_dpts.append(np.sqrt(trackcov[2]))
+                  primaryTrackPresent = True
+                  
+        print primaryTrackPresent
+        if primaryTrackPresent:
+          genparticles = store.get("GenParticles")
+          print "processing allGenParticles ..."
+          for t in genparticles:
+              momentum = [t.core().p4.px, t.core().p4.py, t.core().p4.pz, t.core().p4.mass]
+              tm = ROOT.TLorentzVector(*momentum)
+              print "\t sim Eta:", tm.Eta() 
+              print "\t sim Eta:", tm.Pt() 
+              eta = tm.Eta()
+              l_etas.append(tm.Eta())
+              l_true_pts.append(np.rint(tm.Pt()))
+              vertex = [0,0,0]
+              print "\tsim trackID: ", t.core().bits, "sim pdgId: ", t.core().pdgId, "momentum: ", [t.core().p4.px, t.core().p4.py, t.core().p4.pz]
+              print "\tsim phi: ", np.arctan(t.core().p4.py / t.core().p4.px)
+              print "\tsim cottheta: ", t.core().p4.pz / np.sqrt(t.core().p4.px**2 +  t.core().p4.py**2)
+              print "\tsim q_pT: ", 1. / np.sqrt(t.core().p4.px**2 +  t.core().p4.py**2)
 
 
 etas = np.array(l_etas)
 dpts = np.array(l_dpts)
 pts = np.array(l_pts)
+
+print etas
+print pts
+
+
 colors = {1.: "black", 2: "darkblue", 5.: "blue", 100.: "green", 1000: "magenta", 10000.: "darkgreen", 10.: "red"}
 for e in np.unique(l_true_pts):
   print "pT: ", e
