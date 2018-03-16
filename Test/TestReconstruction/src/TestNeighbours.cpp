@@ -28,8 +28,7 @@ StatusCode TestNeighbours::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_decoder = std::shared_ptr<dd4hep::DDSegmentation::BitField64>(
-      m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   m_fieldNames = {"x", "y", "z"};
   info() << "Bitfield: " << m_decoder->fieldDescription() << endmsg;
   // get the minimal and maximal value that can be decoded in the bitfield
