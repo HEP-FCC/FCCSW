@@ -157,7 +157,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 10,
+    EvtMax   = 3,
     ExtSvc = [geoservice, podioevent, audsvc],
 #    OutputLevel=DEBUG
 )
