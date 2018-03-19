@@ -69,9 +69,9 @@ saveendcaptool.caloHits.Path = "ECalEndcapHits"
 savefwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = ["EMFwdPhiEta"])
 savefwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
 savefwdtool.caloHits.Path = "ECalFwdHits"
-savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["BarHCal_Readout"])
-savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
-savehcaltool.caloHits.Path = "HCalHits"
+savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["HCalBarrelReadout"])
+savehcaltool.positionedCaloHits.Path = "HCalBarrelPositionedHits"
+savehcaltool.caloHits.Path = "HCalBarrelHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
@@ -91,5 +91,5 @@ ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],
                 EvtMax=1,
                 ## order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc=[podioevent, geoservice, geantservice, ppservice],
-                OutputLevel=DEBUG
+                OutputLevel=INFO
  )

@@ -13,9 +13,14 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
                     OutputLevel = INFO)
 
+#Configure tools for calo reconstruction
+from Configurables import CalibrateCaloHitsTool
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
+
 from Configurables import CreateCaloCells
 createcells = CreateCaloCells("CreateCaloCells",
-                              doCellCalibration = False,
+                              calibTool=calibHcells,
+                              doCellCalibration = True,
                               addCellNoise = False, filterCellNoise = False,
                               OutputLevel = DEBUG)
 createcells.hits.Path="HCalHits"
