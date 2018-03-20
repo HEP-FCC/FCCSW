@@ -66,7 +66,13 @@ void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum, Gaudi:
 
   // Generate values for eta  and phi
   double phi = m_minPhi + m_flatGenerator() * (m_deltaPhi);
-  double eta = m_minEta + m_flatGenerator() * (m_deltaEta);
+  double eta = 0;
+  if (m_etaList.size() > 0) {
+    int randIndexEta = m_flatGenerator() * m_etaList.size();
+    eta = m_etaList[randIndexEta];
+  } else {
+    eta = m_minEta + m_flatGenerator() * (m_deltaEta);
+  }
 
   // Transform to x,y,z coordinates
   double pt = 0;

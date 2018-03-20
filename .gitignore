@@ -1,6 +1,8 @@
 *~
 *.pyc
 *.root
+*.pdf
+*.png
 
 build.*.log
 Makefile

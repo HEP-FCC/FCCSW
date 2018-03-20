@@ -80,7 +80,7 @@ private:
   /// Size of the field in radial direction. Set with property FieldRMax
   Gaudi::Property<double> m_fieldRadMax{this, "FieldRMax", 6 * m, "Field max radius"};
   /// Size of the field along the beam line. Set with property FieldZMax
-  Gaudi::Property<double> m_fieldZMax{this, "FieldZMax", 6. * m, "Field max Z"};
+  Gaudi::Property<double> m_fieldZMax{this, "FieldZMax", 20. * m, "Field max Z"};
 };
 
 #endif

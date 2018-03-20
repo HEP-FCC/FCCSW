@@ -3,6 +3,7 @@
 // Geant4
 #include "G4VModularPhysicsList.hh"
 #include "G4Geantino.hh"
+#include "G4ChargedGeantino.hh"
 #include "G4VUserPhysicsList.hh"
 #include "G4VProcess.hh"
 #include "G4VContinuousProcess.hh"
@@ -57,6 +58,7 @@ class GeantinoEnergyDepositList : public G4VModularPhysicsList {
 
   void ConstructParticle() {
     G4Geantino::GeantinoDefinition();
+    G4ChargedGeantino::ChargedGeantinoDefinition();
   }
 
   void SetCuts() {
