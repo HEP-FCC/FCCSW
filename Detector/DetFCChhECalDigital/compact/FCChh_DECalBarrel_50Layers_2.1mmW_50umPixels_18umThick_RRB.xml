@@ -1,8 +1,10 @@
-dd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd"> 
 
-  <info name="FCChh_DECalBarrel_50Layers_2.1mmW_50umPixels_18umThick"
+
+ <info name="FCChh_DECalBarrel_50Layers_2.1mmW_50umPixels_18umThick"
     title="DECal Barrel Calorimeter"
     author="T. Price"
     url="no"
