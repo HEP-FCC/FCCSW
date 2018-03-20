@@ -58,9 +58,11 @@
       <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" vis="ecal_envelope"/>  
       <calorimeter id="1" name="EM_barrel" >
         <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" vis="ecal_volume" numsides="8" nmodules="5"/>
-        <active thickness="0.018*mm">
+        
+	<layers repeat="50"/>
+	<active thickness="0.018*mm">
 		<material name="Silicon"/>
-		<nSamplings="50"/>
+		<!--nSamplings="50"/-->
 	</active>
         <substrate thickness="0.450*mm">
 		<material name="Silicon"/>

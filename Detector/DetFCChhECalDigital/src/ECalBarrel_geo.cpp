@@ -47,7 +47,10 @@ static dd4hep::detail::Ref_t createECal (dd4hep::Detector& lcdd,dd4hep::xml::Han
   dd4hep::xml::DetElement active = calo.child(_Unicode(active));
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
-  int active_samples = 50;
+  
+
+  dd4hep::xml::DetElement samples_xml = calo.child(_Unicode(layers));
+  int active_samples = samples_xml.repeat();
 
   dd4hep::xml::DetElement substrate = calo.child(_Unicode(substrate));
   std::string substrate_mat=substrate.materialStr();
