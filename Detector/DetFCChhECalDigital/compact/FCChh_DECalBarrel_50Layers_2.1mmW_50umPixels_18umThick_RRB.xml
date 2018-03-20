@@ -58,11 +58,22 @@
       <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" vis="ecal_envelope"/>  
       <calorimeter id="1" name="EM_barrel" >
         <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" vis="ecal_volume" numsides="8" nmodules="5"/>
-        <active_layers thickness="0.018*mm" material="Silicon" nSamplings="50"/>
-        <substrate_layers thickness="0.450*mm" material="Silicon"/>
-        <passive_layers thickness="2.1*mm" material="Tungsten" />
-        <between_layers thickness="0*mm" material="Air" />
-        <tracker thickness="0.0*cm" material="Silicon" />
+        <active thickness="0.018*mm">
+		<material name="Silicon"/>
+		<nSamplings="50"/>
+	</active>
+        <substrate thickness="0.450*mm">
+		<material name="Silicon"/>
+	</substrate>
+        <passive thickness="2.1*mm">
+		<material name="Tungsten" />
+	</passive>
+        <spacing thickness="0*mm">
+		<material name="Air" />
+	</spacing>
+	<tracker thickness="0.0*cm">
+		<material name="Silicon"/>
+	</tracker>
       </calorimeter>
     </detector>
   </detectors>

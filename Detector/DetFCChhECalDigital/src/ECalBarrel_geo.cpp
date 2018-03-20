@@ -35,31 +35,34 @@ static dd4hep::detail::Ref_t createECal (dd4hep::Detector& lcdd,dd4hep::xml::Han
 
 
   
-  dd4hep::xml::DetElement calo = xmlElement.child(_Unicode(calorimeter));
+  dd4hep::xml::DetElement calo = xmlDet.child(_Unicode(calorimeter));
   dd4hep::xml::Dimension calo_dims(calo.dimensions());
   std::string calo_name=calo.nameStr();
   double calo_id=calo.id();
 
-  dd4hep::xml::DetElement trkr = calo.child("tracker");
-  std::string trkr_mat = trkr.materialStr();
-  double trkr_tck = trkr.thickness();
+  //dd4hep::xml::DetElement trkr = calo.child(_Unicode(tracker));
+  std::string trkr_mat = "Silicon";//trkr.materialStr();
+  double trkr_tck = 0;//trkr.thickness();
 
-  dd4hep::xml::DetElement active = calo.child("active_layers");
+  dd4hep::xml::DetElement active = calo.child(_Unicode(active));
   std::string active_mat=active.materialStr();
   double active_tck=active.thickness();
   int active_samples = 50;
 
-  dd4hep::xml::DetElement substrate = calo.child("substrate_layers");
+  dd4hep::xml::DetElement substrate = calo.child(_Unicode(substrate));
   std::string substrate_mat=substrate.materialStr();
   double substrate_tck=substrate.thickness();
 
-  dd4hep::xml::DetElement passive = calo.child("passive_layers");
+  dd4hep::xml::DetElement passive = calo.child(_Unicode(passive));
   std::string passive_mat=passive.materialStr();
   double passive_tck=passive.thickness();
 
-  dd4hep::xml::DetElement padding = calo.child("between_layers");
+  dd4hep::xml::DetElement padding = calo.child(_Unicode(spacing));
   std::string padding_mat=padding.materialStr();
   double padding_tck=padding.thickness();
+
+
+
 
   // here we take the fabs value of padding as if it is negative it goes before the W volume
   double module_tck = active_tck+substrate_tck+passive_tck+std::fabs(padding_tck);

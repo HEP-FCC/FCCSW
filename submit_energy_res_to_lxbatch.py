@@ -9,19 +9,19 @@ print 'START'
 print 
 ########   YOU ONLY NEED TO FILL THE AREA BELOW   #########
 ########   customization  area #########
-CONFIG="50Layers_2.1mmW_50umPixels_18umThick"
+CONFIG="50Layers_2.1mmW_50umPixels_18umThick_RRB"
 FCCSW_VERSION="FCCSW0.9"
 #ENERGIES = ["10","20","50","70","100","200", "300", "500","700","1000"]
 #ENERGIES = ["10", "50","100","200", "300", "500","700","1000"]
 #ENERGIES = ["101","501","1001" ] # number of jobs to be submitted
-ENERGIES = ["10","20","30","40","60","70","80","90","100"] # number of jobs to be submitted
+ENERGIES = ["10"]#,"20","30","40","60","70","80","90","100"] # number of jobs to be submitted
 BFIELD = "4"
 EVENTS = 10
 ETAMIN = -0.001
 ETAMAX = 0.001
 NRUNS = 1
 FCCSW_DIR = "/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/"
-queue = "1nd" # give bsub queue -- 8nm (8 minutes), 1nh (1 hour), 8nh, 1nd (1day), 2nd, 1nw (1 week), 2nw 
+queue = "8nm" # give bsub queue -- 8nm (8 minutes), 1nh (1 hour), 8nh, 1nd (1day), 2nd, 1nw (1 week), 2nw 
 ########   customization end   #########
 
 path = os.getcwd()
