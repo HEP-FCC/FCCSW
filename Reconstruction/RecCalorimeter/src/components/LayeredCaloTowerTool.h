@@ -116,7 +116,7 @@ public:
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
-  std::shared_ptr<dd4hep::DDSegmentation::BitField64> m_decoder;
+  dd4hep::DDSegmentation::BitField64* m_decoder;
 
 private:
   /// Handle for calo cells (input collection)

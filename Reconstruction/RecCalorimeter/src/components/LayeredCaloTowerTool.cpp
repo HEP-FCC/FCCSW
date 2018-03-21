@@ -44,8 +44,7 @@ StatusCode LayeredCaloTowerTool::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
-  m_decoder =
-      std::shared_ptr<dd4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
