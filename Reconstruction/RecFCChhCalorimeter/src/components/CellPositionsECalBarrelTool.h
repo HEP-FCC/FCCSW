@@ -48,7 +48,7 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalBarrelPhiEta"};
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   dd4hep::DDSegmentation::BitField64* m_decoder;
   dd4hep::VolumeManager m_volman;
