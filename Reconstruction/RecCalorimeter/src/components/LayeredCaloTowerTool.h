@@ -144,7 +144,8 @@ private:
   // Maximum layer (130 = last layer in ECalBarrel inclined)
   Gaudi::Property<float> m_maximumLayer{this, "maximumLayer", 130, "Maximum cell layer"};
   // Restrict tower building in layers if bitfield: layer exists
-  bool addLayerRestriction = false;
+  
+  Gaudi::Property<float> m_addLayerRestriction{this, "addLayerRestriction", true, "set layer restriction on/off"};
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
   int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)

@@ -53,9 +53,9 @@ StatusCode LayeredCaloTowerTool::initialize() {
   auto iter = std::find(fields.begin(), fields.end(), "layer");
   if (iter == fields.end()) {
     error() << "Readout does not contain field: 'layer'" << endmsg;
-    addLayerRestriction = false;
+    m_addLayerRestriction = false;
   } else
-    addLayerRestriction = true;
+    m_addLayerRestriction = true;
   info() << "Minimum layer : " << m_minimumLayer << endmsg;
   info() << "Maximum layer : " << m_maximumLayer << endmsg;
   return StatusCode::SUCCESS;
@@ -109,7 +109,7 @@ uint LayeredCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers)
     etaCellMax = m_segmentation->eta(cell.core().cellId) + m_segmentation->gridSizeEta() * 0.5;
     phiCellMin = m_segmentation->phi(cell.core().cellId) - M_PI / (double)m_segmentation->phiBins();
     phiCellMax = m_segmentation->phi(cell.core().cellId) + M_PI / (double)m_segmentation->phiBins();
-    if (addLayerRestriction == true) {
+    if (m_addLayerRestriction == true) {
       m_decoder->setValue(cell.core().cellId);
       layerCell = (*m_decoder)["layer"].value();
       debug() << "Cell' layer = " << layerCell << endmsg;
@@ -164,7 +164,7 @@ uint LayeredCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers)
         } else {
           ratioPhi = fracPhiMiddle;
         }
-        if (addLayerRestriction == true) {
+        if (m_addLayerRestriction == true) {
           if (layerCell >= m_minimumLayer && layerCell <= m_maximumLayer) {
             aTowers[iEta][phiNeighbour(iPhi)] +=
                 cell.core().energy / cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
