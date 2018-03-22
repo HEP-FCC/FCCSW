@@ -30,7 +30,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     return StatusCode::FAILURE;
   }
 
-  std::unordered_map<uint64_t, double> map;
+  std::unordered_map<uint64_t, std::pair<double,double>> map;
 
   //////////////////////////////////
   /// SEGMENTED ETA-PHI VOLUMES  ///
@@ -83,10 +83,11 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           (*decoder)["phi"] = iphi;
           (*decoder)["eta"] = ieta + numCells[2];  // start from the minimum existing eta cell in this layer
           uint64_t cellId = decoder->getValue();
-          // double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
-          // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
-          double noise = 0.0075 / 4.;
-          map.insert(std::pair<uint64_t, double>(cellId, noise));
+	  double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
+ 	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
+         // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
+          //double noise = 0.0075 / 4.;
+          map.insert( std::pair<uint64_t, std::pair<double, double> >(cellId, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }
@@ -176,25 +177,29 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           (*decoder)[m_activeFieldNamesNested[1]] = iphi;
           (*decoder)[m_activeFieldNamesNested[2]] = iz;
           uint64_t volumeId = decoder->getValue();
-          // double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId);
+	  double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId);
+	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
           // use constant noise level in hcal 0.0115 / 4.
-          double noise = 0.0115 / 4.;
-          map.insert(std::pair<uint64_t, double>(volumeId, noise));
+	  //  double noise = 0.0115 / 4.;
+          map.insert( std::pair<uint64_t, std::pair<double, double> >(volumeId, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }
   }
 
-  TFile file("cellNoise_map_segHcal_constNoiseLevel.root", "RECREATE");
+  TFile file("cellNoise_map_segHcal_noiseLevelWithOffset.root", "RECREATE");
   file.cd();
   TTree tree("noisyCells", "Tree with map of noise per cell");
   uint64_t saveCellId;
   double saveNoiseLevel;
+  double saveNoiseOffset;
   tree.Branch("cellId", &saveCellId, "cellId/l");
   tree.Branch("noiseLevel", &saveNoiseLevel);
+  tree.Branch("noiseOffset", &saveNoiseOffset);
   for (const auto& item : map) {
     saveCellId = item.first;
-    saveNoiseLevel = item.second;
+    saveNoiseLevel = item.second.first;
+    saveNoiseOffset = item.second.second;
     tree.Fill();
   }
   file.Write();

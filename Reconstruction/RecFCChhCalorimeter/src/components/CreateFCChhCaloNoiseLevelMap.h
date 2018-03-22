@@ -5,6 +5,7 @@
 #include "GaudiKernel/Service.h"
 #include "RecInterface/ICaloCreateMap.h"
 #include "RecInterface/INoiseConstTool.h"
+#include "RecInterface/ICellPositionsTool.h"
 
 class IGeoSvc;
 
