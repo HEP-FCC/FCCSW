@@ -29,13 +29,14 @@ public:
   /** Prepare a map of all existing cells in current geometry.
    *   return Status code.
    */
-  virtual double noise(uint64_t aCellId) final;
+  virtual double noiseRMS(uint64_t aCellId) final;
+  virtual double noiseOffset(uint64_t aCellId) final;
 
 private:
   /// Name
   Gaudi::Property<std::string> m_fileName{this, "fileName",
                                           "/afs/cern.ch/user/c/cneubuse/public/FCChh/cellNoise_map_segHcal.root"};
-  std::unordered_map<uint64_t, double> m_map;
+  std::unordered_map<uint64_t, std::pair<double,double>> m_map;
 };
 
 #endif /* RECCALORIMETER_TOPOCALONOISYCELLS_H */

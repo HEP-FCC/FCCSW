@@ -32,9 +32,11 @@ public:
 
   /// Find the appropriate noise constant from the histogram
   double getNoiseConstantPerCell(uint64_t aCellID);
+  double getNoiseOffsetPerCell(uint64_t aCellID);
 
 private:
   std::map<uint,double> m_systemNoiseConstMap;
+  std::map<uint,double> m_systemNoiseOffsetMap;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;

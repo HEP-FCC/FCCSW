@@ -37,6 +37,14 @@ StatusCode ConstNoiseTool::initialize() {
   m_systemNoiseConstMap.emplace(10,0.0075/4. );
   m_systemNoiseConstMap.emplace(11,0.0075/4. );
 
+  m_systemNoiseOffsetMap.emplace(5, 0. );
+  m_systemNoiseOffsetMap.emplace(6, 0.  );
+  m_systemNoiseOffsetMap.emplace(7, 0. );
+  m_systemNoiseOffsetMap.emplace(8, 0.  );
+  m_systemNoiseOffsetMap.emplace(9, 0.  );
+  m_systemNoiseOffsetMap.emplace(10,0.  );
+  m_systemNoiseOffsetMap.emplace(11,0.  );
+
   // Get GeoSvc
   m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
@@ -65,6 +73,20 @@ double ConstNoiseTool::getNoiseConstantPerCell(uint64_t aCellId) {
   // cell noise in system
   if (m_systemNoiseConstMap[cellSystem])
     Noise = m_systemNoiseConstMap[cellSystem];
+  else
+    warning() << "No noise constants set for this subsystem! Noise of cell set to 0. " << endmsg;
+  return Noise;
+}
+
+double ConstNoiseTool::getNoiseOffsetPerCell(uint64_t aCellId) {
+
+  double Noise = 0.;
+  // Get cells global coordinate "system"
+  m_decoder->setValue(aCellId);
+  unsigned cellSystem = (*m_decoder)["system"];
+  // cell noise in system
+  if (m_systemNoiseOffsetMap[cellSystem])
+    Noise = m_systemNoiseOffsetMap[cellSystem];
   else
     warning() << "No noise constants set for this subsystem! Noise of cell set to 0. " << endmsg;
   return Noise;

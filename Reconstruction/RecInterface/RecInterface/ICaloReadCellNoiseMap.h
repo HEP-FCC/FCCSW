@@ -15,6 +15,7 @@ class ICaloReadCellNoiseMap : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ICaloReadCellNoiseMap, 1, 0);
 
-  virtual double noise(uint64_t aCellId) = 0;
+  virtual double noiseRMS(uint64_t aCellId) = 0;
+  virtual double noiseOffset(uint64_t aCellId) = 0;
 };
 #endif /* RECINTERFACE_ICALOREADNEIGHBOURSMAP_H */

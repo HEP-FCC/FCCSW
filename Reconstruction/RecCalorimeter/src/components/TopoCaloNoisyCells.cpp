@@ -19,11 +19,13 @@ StatusCode TopoCaloNoisyCells::initialize() {
   file.GetObject("noisyCells", tree);
   ULong64_t readCellId;
   double readNoisyCells;
+  double readNoisyCellsOffset;
   tree->SetBranchAddress("cellId", &readCellId);
   tree->SetBranchAddress("noiseLevel", &readNoisyCells);
+  tree->SetBranchAddress("noiseOffset", &readNoisyCellsOffset);
   for (uint i = 0; i < tree->GetEntries(); i++) {
     tree->GetEntry(i);
-    m_map.insert(std::pair<uint64_t, double>(readCellId, readNoisyCells));
+    m_map.insert(std::pair<uint64_t, std::pair<double, double>>(readCellId, std::make_pair(readNoisyCells, readNoisyCellsOffset)));
   }
   delete tree;
   return sc;
@@ -31,4 +33,5 @@ StatusCode TopoCaloNoisyCells::initialize() {
 
 StatusCode TopoCaloNoisyCells::finalize() { return GaudiTool::finalize(); }
 
-double TopoCaloNoisyCells::noise(uint64_t aCellId) { return m_map[aCellId]; }
+double TopoCaloNoisyCells::noiseRMS(uint64_t aCellId) { return m_map[aCellId].first; }
+double TopoCaloNoisyCells::noiseOffset(uint64_t aCellId) { return m_map[aCellId].second; }

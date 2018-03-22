@@ -3,10 +3,15 @@
 
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
+#include "FWCore/DataHandle.h"
 #include "DetSegmentation/FCCSWGridPhiEta.h"
+#include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/INoiseConstTool.h"
+#include "RecInterface/ICellPositionsTool.h"
+
 class IGeoSvc;
 
 // Root
@@ -35,11 +40,18 @@ public:
   StatusCode initNoiseFromFile();
   /// Find the appropriate noise constant from the histogram
   double getNoiseConstantPerCell(uint64_t aCellID);
+  double getNoiseOffsetPerCell(uint64_t aCellID);
 
 private:
+  /// Handle for tool to get positions in ECal Barrel
+  ToolHandle<ICellPositionsTool> m_cellPositionsTool{"CellPositionsTool", this};
+
   /// Add pileup contribution to the electronics noise? (only if read from file)
   Gaudi::Property<bool> m_addPileup{this, "addPileup", true,
                                     "Add pileup contribution to the electronics noise? (only if read from file)"};
+  /// Noise offset, if false, mean is set to 0
+  Gaudi::Property<bool> m_setNoiseOffset{this, "setNoiseOffset", true, "Set a noise offset per cell"};
+
   /// Name of the file with noise constants
   Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "", "Name of the file with noise constants"};
   /// Name of the detector readout
@@ -52,9 +64,12 @@ private:
   /// Name of electronics noise histogram
   Gaudi::Property<std::string> m_elecNoiseHistoName{this, "elecNoiseHistoName", "h_elecNoise_layer",
                                                     "Name of electronics noise histogram"};
-  /// Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)
-  Gaudi::Property<double> m_filterThreshold{
-      this, "filterNoiseThreshold", 3, " Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)"};
+  /// Name of electronics noise offset histogram
+  Gaudi::Property<std::string> m_elecNoiseOffsetHistoName{this, "elecNoiseOffsetHistoName", "h_mean_pileup_layer",
+                                                    "Name of electronics noise offset histogram"};
+  /// Name of pileup offset histogram
+  Gaudi::Property<std::string> m_pileupOffsetHistoName{this, "pileupOffsetHistoName", "h_pileup_layer", "Name of pileup offset histogram"};
+
   /// Number of radial layers
   Gaudi::Property<uint> m_numRadialLayers{this, "numRadialLayers", 3, "Number of radial layers"};
 
@@ -62,6 +77,11 @@ private:
   std::vector<TH1F> m_histoPileupConst;
   /// Histograms with electronics noise constants (index in array - radial layer)
   std::vector<TH1F> m_histoElecNoiseConst;
+
+  /// Histograms with pileup offset (index in array - radial layer)
+  std::vector<TH1F> m_histoPileupOffset;
+  /// Histograms with electronics noise offset (index in array - radial layer)
+  std::vector<TH1F> m_histoElecNoiseOffset;
 
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
