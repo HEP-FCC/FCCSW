@@ -2,7 +2,7 @@
 #define DETCOMMON_DETUTILS_H
 
 // FCCSW
-#include "DetSegmentation/GridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
