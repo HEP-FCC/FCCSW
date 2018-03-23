@@ -60,7 +60,7 @@ std::vector<uint64_t> neighbours(const dd4hep::DDSegmentation::BitFieldCoder& aD
   dd4hep::DDSegmentation::CellID cID = aCellId;
   for (uint itField = 0; itField < aFieldNames.size(); itField++) {
     const auto& field = aFieldNames[itField];
-    CellID id = aDecoder.get(cID,field);
+    dd4hep::DDSegmentation::CellID id = aDecoder.get(cID,field);
     if (id > aFieldExtremes[itField].first) {
       aDecoder.set(cID, field, id - 1);
       neighbours.emplace_back(cID);

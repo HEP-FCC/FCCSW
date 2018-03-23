@@ -82,7 +82,7 @@ StatusCode RewriteBitfield::execute() {
     fcc::CaloHit newHit = outHits->create();
     newHit.energy(hit.energy());
     newHit.time(hit.time());
-    dd4hep::DDSegmentation::CellID = hit.cellId();
+    dd4hep::DDSegmentation::CellID cID = hit.cellId();
     if (debugIter < m_debugPrint) {
       debug() << "OLD: " << m_oldDecoder->valueString(cID) << endmsg;
     }
