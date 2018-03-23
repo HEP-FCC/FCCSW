@@ -16,8 +16,6 @@
 // STL
 #include <numeric>
 
-using dd4hep::DDSegmentation::CellID;
-
 DECLARE_ALGORITHM_FACTORY(MergeLayers)
 
 MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {

@@ -70,7 +70,7 @@ StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
             if (hitC) {
               dd4hep::DDSegmentation::CellID cID = hitC->cellID;
               debug() << "hit Edep: " << hitC->energyDeposit << "\tcellID: " << cID << "\t"
-                      << decoder->valueString() << endmsg;
+                      << decoder->valueString(cID) << endmsg;
             }
           }
         }
