@@ -60,21 +60,21 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
   double fcc_l1 = 0;
   double fcc_l2 = 0;
   // expect position from cellID to deviate at most two cell sizes from true energy deposit
-  // use largest cell for simplicity 
+  // use largest cell for simplicity
   double l_tolerance = 1 * Gaudi::Units::mm;
     for (auto hit : (*hits)) {
-    long long int theCellId = hit.core().cellId;
+    dd4hep::DDSegmentation::CellID theCellId = hit.core().cellId;
     debug() << theCellId << endmsg;
-    m_decoderBarrel->setValue(theCellId);
-    int system_id = (*m_decoderBarrel)["system"];
+    auto field = "system";
+    int system_id = m_decoderBarrel->get(theCellId, field);
     if (system_id == 0 || system_id == 1) {
 
       auto detelement = volman.lookupDetElement(theCellId);
       debug() << "volIDfromDetElement: " << detelement.volumeID() << endmsg;
       const auto& transformMatrix = detelement.nominal().worldTransformation();
       double outGlobal[3] {0,0,0};
-      fcc_l1 = (*m_decoderBarrel)["x"] * l_segGridSizeXBarrel;
-      fcc_l2 = (*m_decoderBarrel)["z"] * l_segGridSizeZBarrel;
+      fcc_l1 = m_decoderBarrel->get(theCellId, "x") * l_segGridSizeXBarrel;
+      fcc_l2 = m_decoderBarrel->get(theCellId, "z") * l_segGridSizeZBarrel;
       double inLocal[] = {fcc_l1, 0, fcc_l2};
       transformMatrix.LocalToMaster(inLocal, outGlobal);
       auto edmPos = fcc::Point();
@@ -83,9 +83,9 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
       edmPos.z = outGlobal[2] / dd4hep::mm;
 
       debug() << " hit in system: " << system_id;
-      int layer_id = (*m_decoderBarrel)["layer"];
+      int layer_id = m_decoderBarrel->get(theCellId, "layer");
       debug() << "\t layer " << layer_id;
-      int module_id = (*m_decoderBarrel)["module"];
+      int module_id = m_decoderBarrel->get(theCellId,"module");
       debug() << "\t module " << module_id;
       debug() << endmsg;
 
@@ -100,20 +100,19 @@ StatusCode CompareTrackHitPositionAndCellId::execute() {
       }
 
     } else if (system_id == 2 || system_id == 3 || system_id == 4) {
-      m_decoderEndcap->setValue(theCellId);
-      int posneg_id = (*m_decoderEndcap)["posneg"];
+      int posneg_id = m_decoderEndcap->get(theCellId,"posneg");
       debug() << "\t posneg " << posneg_id;
-      int layer_id = (*m_decoderEndcap)["disc"];
+      int layer_id = m_decoderEndcap->get(theCellId,"disc");
       debug() << "\t disc " << layer_id;
-      int module_id = (*m_decoderEndcap)["component"];
+      int module_id = m_decoderEndcap->get(theCellId,"component");
       debug() << "\t module " << module_id;
       debug() << endmsg;
-      auto detelement = volman.lookupDetElement((*m_decoderEndcap).getValue());
+      auto detelement = volman.lookupDetElement(theCellId);
       debug() << "volId from Detelement: " << detelement.volumeID() << endmsg;
       const auto& transformMatrix = detelement.nominal().worldTransformation();
       double outGlobal[3] {0, 0, 0};
-      fcc_l1 = (*m_decoderEndcap)["x"] * l_segGridSizeXEndcap;
-      fcc_l2 = (*m_decoderEndcap)["z"] * l_segGridSizeZEndcap;
+      fcc_l1 = m_decoderEndcap->get(theCellId, "x") * l_segGridSizeXEndcap;
+      fcc_l2 = m_decoderEndcap->get(theCellId, "z") * l_segGridSizeZEndcap;
       double inLocal[] = {fcc_l1, 0, fcc_l2};
       transformMatrix.LocalToMaster(inLocal, outGlobal);
       auto edmPos = fcc::Point();
