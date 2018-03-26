@@ -14,12 +14,6 @@ pgun_tool = MomentumRangeParticleGun(PdgCodes=[13])
 gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-# Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc(
-    "ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
@@ -83,6 +77,6 @@ ApplicationMgr(TopAlg=[gen, hepmc_converter, geantsim, out],
                EvtSel='NONE',
                EvtMax=2,
                # order is important, as GeoSvc is needed by SimG4Svc
-               ExtSvc=[ppservice, podioevent, geoservice, geantservice],
+               ExtSvc=[podioevent, geoservice, geantservice],
                OutputLevel=DEBUG
                )

@@ -14,8 +14,6 @@ pgun_tool2 = MomentumRangeParticleGun(PdgCodes=[13], PhiMin=0., PhiMax=constants
 gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, PileUpProvider=pgun_tool2, PileUpTool=pileuptool)
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -73,6 +71,6 @@ ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, combi_seeding, out],
                 EvtSel = 'NONE',
                 EvtMax   = 2,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podioevent, geoservice, geantservice, ppservice,],
+                ExtSvc = [podioevent, geoservice, geantservice,],
                 OutputLevel=DEBUG
  )
