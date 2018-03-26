@@ -34,12 +34,13 @@ from Configurables import SimG4Svc, SimG4FullSimActions
 actions = SimG4FullSimActions()
 actions.enableHistory=True
 # giving the names of tools will initialize the tools of that type
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
-                        physicslist="SimG4FtfpBert", actions=actions)
-
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool(
     "SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
+
+geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
+                        physicslist="SimG4FtfpBert", actions=actions, magnetic_field=field)
+
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs
@@ -59,8 +60,8 @@ savehisttool.genVertices.Path = "simVertices"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs=["SimG4SaveTrackerHits/saveTrackerHits",
-                             "SimG4SaveParticleHistory/saveHistory",
+                    outputs=[savetrackertool,
+                             savehisttool,
                              ],
                     eventProvider=particle_converter)
 
