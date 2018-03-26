@@ -39,7 +39,7 @@ field = SimG4ConstantMagneticFieldTool(
     "SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
 
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
-                        physicslist="SimG4FtfpBert", actions=actions, magnetic_field=field)
+                        physicslist="SimG4FtfpBert", actions=actions, magneticField=field)
 
 
 # Geant4 algorithm
