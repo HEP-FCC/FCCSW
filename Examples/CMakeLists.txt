@@ -47,6 +47,9 @@ gaudi_add_test(ReadFullSimTrackerHits
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_pgun_fullsim.py)
+gaudi_add_test(GeantFullSimMinBias
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/min_bias_pool.py)
 gaudi_add_test(GeantFastSimTrackerECalGFlash
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fastsim.py)
@@ -70,6 +73,9 @@ gaudi_add_test(CheckMergeCollection
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
                DEPENDS PileupOverlay)
+gaudi_add_test(GeantUserLimits
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_userLimits.py)
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile

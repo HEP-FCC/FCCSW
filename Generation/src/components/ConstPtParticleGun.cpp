@@ -68,8 +68,20 @@ void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum, Gaudi:
   double eta = m_minEta + m_flatGenerator() * (m_deltaEta);
 
   // Transform to x,y,z coordinates
-  int randIndex = m_flatGenerator() * m_ptList.size();
-  double pt = m_ptList[randIndex];
+  double pt = 0;
+  if (m_ptList.size() > 0) {
+    int randIndex = m_flatGenerator() * m_ptList.size();
+    pt = m_ptList[randIndex];
+  } else {
+    if (m_logSpacedPt) {
+      double logPtMin = std::log10(m_minPt);
+      double logPtMax = std::log10(m_maxPt);
+      pt = pow(10, logPtMin + (logPtMax - logPtMin) * m_flatGenerator());
+
+    } else {
+      pt = m_minPt + m_flatGenerator() * (m_maxPt - m_minPt);
+    }
+  }
   px = pt * cos(phi);
   py = pt * sin(phi);
   pz = pt * sinh(eta);
