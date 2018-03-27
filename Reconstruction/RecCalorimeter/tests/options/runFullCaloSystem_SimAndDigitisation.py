@@ -50,10 +50,8 @@ ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
 ecalEndcapReadoutName = "EMECPhiEta"
 ecalFwdReadoutName = "EMFwdPhiEta"
 # HCAL readouts
-hcalReadoutName = "BarHCal_Readout"
-newHcalReadoutName = hcalReadoutName + "_phieta"
-extHcalReadoutName = "ExtBarHCal_Readout"
-newExtHcalReadoutName = extHcalReadoutName + "_phieta"
+hcalReadoutName = "HCalBarrelReadout"
+extHcalReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
 # layers to be merged in endcaps & forward calo
@@ -154,6 +152,7 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                hits="ECalBarrelCellsStep2",
                                cells="ECalBarrelCells")
 
+
 # Create Ecal cells in endcaps
 # 1. step - merge layer IDs
 # 2. step - create cells
@@ -208,26 +207,7 @@ createHcalCells = CreateCaloCells("CreateHCaloCells",
                                addCellNoise = False, filterCellNoise = False,
                                OutputLevel = INFO,
                                hits="HCalHits",
-                               cells="HCalCells")
-
-# additionally for HCal
-positionsHcal = CreateVolumeCaloPositions("positionsHcal", OutputLevel = INFO)
-positionsHcal.hits.Path = "HCalCells"
-positionsHcal.positionedHits.Path = "HCalPositions"
-
-from Configurables import RedoSegmentation
-resegmentHcal = RedoSegmentation("ReSegmentationHcal",
-                             # old bitfield (readout)
-                             oldReadoutName = hcalReadoutName,
-                             # # specify which fields are going to be altered (deleted/rewritten)
-                             oldSegmentationIds = ["eta","phi"],
-                             # new bitfield (readout), with new segmentation
-                             newReadoutName = newHcalReadoutName,
-                             debugPrint = 10,
-                             OutputLevel = INFO,
-                             inhits = "HCalPositions",
-                             outhits = "newHCalCells")
-
+                               cells="HCalBarrelCells")
 
 # Hcal extended barrel cells
 createExtHcalCells = CreateCaloCells("CreateExtHcalCaloCells",
@@ -236,24 +216,7 @@ createExtHcalCells = CreateCaloCells("CreateExtHcalCaloCells",
                                   addCellNoise = False, filterCellNoise = False,
                                   OutputLevel = INFO,
                                   hits="ExtHCalHits",
-                                  cells="ExtHCalCells")
-
-positionsExtHcal = CreateVolumeCaloPositions("positionsExtHcal", OutputLevel = INFO)
-positionsExtHcal.hits.Path = "ExtHCalCells"
-positionsExtHcal.positionedHits.Path = "ExtHCalPositions"
-
-resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
-                                # old bitfield (readout)
-                                oldReadoutName = extHcalReadoutName,
-                                # specify which fields are going to be altered (deleted/rewritten)
-                                oldSegmentationIds = ["eta","phi"],
-                                # new bitfield (readout), with new segmentation
-                                newReadoutName = newExtHcalReadoutName,
-                                debugPrint = 10,
-                                OutputLevel = INFO,
-                                inhits = "ExtHCalPositions",
-                                outhits = "newExtHCalCells")
-
+                                  cells="HCalExtBarrelCells")
 
 # Create Hcal cells in endcaps
 mergelayersHcalEndcap = MergeLayers("MergeLayersHcalEndcap",
@@ -299,7 +262,7 @@ createHcalFwdCells.cells.Path="HCalFwdCells"
 
 out = PodioOutput("out", 
                   OutputLevel=INFO)
-out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep newHCalCells", "keep newExtHCalCells", "keep HCalEndcapCells", "keep HCalFwdCells"]
+out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
 
 #CPU information
@@ -315,11 +278,7 @@ createEcalBarrelCells.AuditExecute = True
 createEcalEndcapCells.AuditExecute = True
 createEcalFwdCells.AuditExecute = True
 createHcalCells.AuditExecute = True
-positionsHcal.AuditExecute = True
-resegmentHcal.AuditExecute = True
 createExtHcalCells.AuditExecute = True
-positionsExtHcal.AuditExecute = True
-resegmentExtHcal.AuditExecute = True
 createHcalEndcapCells.AuditExecute = True
 createHcalFwdCells.AuditExecute = True
 out.AuditExecute = True
@@ -335,11 +294,7 @@ ApplicationMgr(
               mergelayersEcalFwd,
               createEcalFwdCells,
               createHcalCells,
-              positionsHcal,
-              resegmentHcal,
               createExtHcalCells,
-              positionsExtHcal,
-              resegmentExtHcal,
               mergelayersHcalEndcap,
               createHcalEndcapCells,
               mergelayersHcalFwd,
