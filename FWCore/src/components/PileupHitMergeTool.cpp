@@ -14,6 +14,11 @@ DECLARE_COMPONENT_WITH_ID(PileupTrackHitMergeTool, "PileupTrackHitMergeTool")
 DECLARE_TOOL_FACTORY(PileupCaloHitMergeTool)
 DECLARE_COMPONENT_WITH_ID(PileupCaloHitMergeTool, "PileupCaloHitMergeTool")
 
+
+bool isTrackerHit(unsigned long long cellId) {
+  return (cellId % 16) < 5;
+}
+
 template <class Hits, class PositionedHits>
 PileupHitMergeTool<Hits, PositionedHits>::PileupHitMergeTool(const std::string& aType, const std::string& aName,
                                                              const IInterface* aParent)
@@ -84,6 +89,7 @@ StatusCode PileupHitMergeTool<Hits, PositionedHits>::mergeCollections() {
 
   unsigned int collectionCounter = 0;
   for (auto hitColl : m_hitCollections) {
+    unsigned int hitCounter = 0;
     // copy hits
     for (const auto elem : *hitColl) {
 
@@ -92,13 +98,16 @@ StatusCode PileupHitMergeTool<Hits, PositionedHits>::mergeCollections() {
       // i.e. for the signal event, 'bits' is just the trackID taken from geant
       // for the n-th pileup event, 'bits' is the trackID + n * offset
       // offset needs to be big enough to ensure uniqueness of trackID
-      if (elem.bits() > m_trackIDCollectionOffset) {
-        error() << "Event contains too many tracks to guarantee a unique trackID";
-        error() << " The offset width or trackID field size needs to be adjusted!" << endmsg;
-        return StatusCode::FAILURE;
-      }
+      if (isTrackerHit(elem.cellId())) {
+        if (hitCounter > m_trackIDCollectionOffset) {
+          error() << "Event contains too many tracks to guarantee a unique trackID";
+          error() << " The offset width or trackID field size needs to be adjusted!" << endmsg;
+          return StatusCode::FAILURE;
+        }
 
-      clon.bits(clon.bits() + collectionCounter * m_trackIDCollectionOffset);
+        clon.bits(hitCounter + collectionCounter * m_trackIDCollectionOffset);
+        ++hitCounter;
+      }
       collHitsMerged->push_back(clon);
     }
     ++collectionCounter;
