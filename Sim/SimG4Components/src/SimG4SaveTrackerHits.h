@@ -13,6 +13,7 @@ class IGeoSvc;
 namespace fcc {
 class TrackHitCollection;
 class PositionedTrackHitCollection;
+class DigiTrackHitAssociationCollection;
 }
 
 /** @class SimG4SaveTrackerHits SimG4Components/src/SimG4SaveTrackerHits.h SimG4SaveTrackerHits.h
@@ -25,6 +26,7 @@ class PositionedTrackHitCollection;
  *  [For more information please see](@ref md_sim_doc_geant4fullsim).
  *
  *  @author Anna Zaborowska
+ *  @author Valentin Volkl (extended with Digi Info)
  */
 
 class SimG4SaveTrackerHits : public GaudiTool, virtual public ISimG4SaveOutputTool {
@@ -53,6 +55,8 @@ private:
   DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trackerHits", Gaudi::DataHandle::Writer, this};
   /// Handle for tracker hits including position information
   DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits",
+                                                                      Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::DigiTrackHitAssociationCollection> m_digiTrackHits{"hits/digiTrackerHits",
                                                                       Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
   Gaudi::Property<std::vector<std::string>> m_readoutNames{

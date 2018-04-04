@@ -1,7 +1,6 @@
 #include "HepMCToEDMConverter.h"
 
 #include "GaudiKernel/PhysicalConstants.h"
-#include "GaudiKernel/ParticleProperty.h"
 
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
