@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+    <info name="TkLayoutTracker" title="TkLayoutTracker" author="P. Kostka" url="http://fcc-tklayout.web.cern.ch/fcc-tklayout" status="optimization" version="FCCeh_Option1.v1">
+        <comment>The tracker geometry as designed and optimized by tkLayout software - design version: FCCeh_Option1.v1</comment>
+    </info>
+    <readouts>
+        <readout name="TrackerBarrelReadout">
+            <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
+            <id>system:4,layer:5,module:18,x:-15,z:-15</id>
+        </readout>
+        <readout name="TrackerEndcapReadout">
+            <segmentation type="CartesianGridXZ" grid_size_x="0.005*mm" grid_size_z="0.010*mm"/>
+            <id>system:4,posneg:1,disc:5,component:17,x:-15,z:-15</id>
+        </readout>
+    </readouts>
+    <include ref="FCCeh_Option1.v1_Definitions.xml"/>
+    <detectors>
+        <detector id="0" name="beampipe" type="BeamTube">
+            <dimensions rmin="CentralBeamTube_rmin" rmax="CentralBeamTube_rmax" z="CentralBeamTube_dz" material="Beryllium" vis="violet"/>
+        </detector>
+        <detector id="100" name="FCCehInner" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="InnerBRL"/>
+            <composite name="InnerECAP"/>
+        </detector>
+        <detector id="103" name="FCCehFwdEcap" type="DD4hep_SubdetectorAssembly" vis="BlueVisTrans">
+            <composite name="FwdECAP"/>
+        </detector>
+    </detectors>
+</lccdd>
