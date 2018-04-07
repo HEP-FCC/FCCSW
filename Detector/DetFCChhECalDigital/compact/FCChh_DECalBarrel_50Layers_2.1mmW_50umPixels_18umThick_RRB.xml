@@ -19,7 +19,7 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
     <!-- have removed the cryostat as we do not need it! -->
     <constant name="EMBarrel_rmin" value="BarECal_rmin+BarECalOuterSpacer"/>
     <constant name="EMBarrel_rmax" value="BarECal_rmax-BarECalOuterSpacer"/>
-    <constant name="EMBarrel_dz" value="100*mm"/><!--BarECal_dz"/-->
+    <constant name="EMBarrel_dz" value="BarECal_dz"/>
 
   </define>
 
@@ -34,7 +34,8 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
       <!-- layer:7 gives 7 bits (max 128 layers) -->
       <!-- x, y segmentation -24 to allow 16777216 pixels -->
       <segmentation type="CartesianGridXYZ" grid_size_x="0.05*mm" grid_size_y="0.05*mm" grid_size_z="0.05*mm"/>
-      <id>system:3,active:1,EM_barrel:1,layer:6,digital:1,stave:4,module:3,x:-17,y:-17,z:-11</id>
+      <!--id>system:3,active:1,EM_barrel:1,layer:6,digital:1,stave:4,module:3,x:-17,y:-17,z:-11</id-->
+      <id>system:3,active:1,EM_barrel:1,layer:6,digital:1,x:-17,y:-17,z:-18</id>
     </readout>
 
     <readout name="BarDECal_Pads">
@@ -42,7 +43,8 @@ xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.x
       <!-- x, y segmentation -24 to allow 16777216 pixels -->
       <segmentation type="CartesianGridXYZ" grid_size_x="5*mm" grid_size_y="5*mm" grid_size_z="5*mm"/>
 
-      <id>system:3,active:1,EM_barrel:1,layer:6,digital:1,stave:4,module:3,x:-15,y:-15,z:-15</id>
+      <!--id>system:3,active:1,EM_barrel:1,layer:6,digital:1,stave:4,module:3,x:-15,y:-15,z:-15</id-->
+      <id>system:3,active:1,EM_barrel:1,layer:6,digital:1,x:-15,y:-15,z:-18</id>
       <!-- x:-17,y:-17, no stave-->
 
     </readout>

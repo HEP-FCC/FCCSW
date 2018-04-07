@@ -10,9 +10,9 @@ print
 ########   YOU ONLY NEED TO FILL THE AREA BELOW   #########
 ########   customization  area #########
 CONFIG="50Layers_2.1mmW_50umPixels_18umThick_RRB"
-NPILEUPEVENTS = ["1000"]#,"2","3","4","5","6"]
+NPILEUPEVENTS = ["1","100","1000"]
 BFIELD = "1"
-EVENTS = "1"
+EVENTS = "100"
 FCCSW_DIR = "/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/"
 queue = "8nm" # give bsub queue -- 8nm (8 minutes), 1nh (1 hour), 8nh, 1nd (1day), 2nd, 1nw (1 week), 2nw 
 ########   customization end   #########
@@ -21,7 +21,7 @@ path = os.getcwd()
 print
 #print 'do not worry about folder creation:'
 #os.system("rm -r tmp")
-os.system("mkdir batch")
+os.system("mkdir batch_eos")
 #os.system("mkdir res")
 print
 

@@ -50,7 +50,7 @@ for CONFIG in CONFIGS:
 
      if os.path.isdir(dir):
 
-       FILES = [f for f in os.listdir(dir) if  "digital_"  in f and "root.root" not in f]
+       FILES = [f for f in os.listdir(dir) if  "digital_"  in f and "500GeV" not in f and "300GeV" not in f and "700GeV" not in f and "1GeV" not in f and "podio" not in f and "root.root" not in f]
        for f in FILES:
           temp_file = TFile(dir+f)
           if temp_file.IsZombie():
@@ -71,11 +71,17 @@ for CONFIG in CONFIGS:
        truth_energy = float(RUNCONFIG[:RUNCONFIG.find("GeV")])
 
        temp_energy = TH1F("energy_"+str(truth_energy)+"GeV", "Reconstructed energy from pol2; E_{truth}; E_{reco}", 2000, 0, 1200)
-       temp_particles = TH1F("particles_"+str(truth_energy)+"GeV", "Particles per event; Particles per event; Count", 2000, 0, 120000)#20)
-       temp_pixels = TH1F("pixels_"+str(truth_energy)+"GeV", "Pixels per event; Pixels per event; Count", 2000, 0, 120000)
+       temp_particles = TH1F("particles_"+str(truth_energy)+"GeV", "Particles per event; Particles per event; Count", 2000, 0, 120000)
+       temp_pixels = TH1F("pixels_"+str(truth_energy)+"GeV", "Pixels per event; Pixels per event; Count", 2000, 0, 1200)
        temp_partvspix = TH2F("partvspix_"+str(truth_energy)+"GeV", ";Pixels per event; Particles per event", 2000,0,120000,2000,0,120000)
        temp_partperpix = TH1F("partperpix_"+str(truth_energy)+"GeV", ";Particles / Pixel; Count", 100, 0.8, 1.4)
        temp_partperpixvspix = TH2F("partperpixvspix_"+str(truth_energy)+"GeV", ";Pixels per event;Particles / Pixel; Count", 2000,0,120000,100, 0.8, 1.4)
+
+
+       pixels_energy = TF1("cal", "pol2", 0, 1200)
+       pixels_energy.SetParameter(0, 1.757E02)
+       pixels_energy.SetParameter(1, 5.754E01)
+       pixels_energy.SetParameter(2, -8.625E-03)
 
        for i in np.arange(0,chain.GetEntries()):
 
@@ -83,8 +89,8 @@ for CONFIG in CONFIGS:
           pixels_tot = chain.pixels_tot
           particles_tot = chain.particles_tot
           
+          temp_pixels.Fill(pixels_energy.GetX(pixels_tot))
           temp_particles.Fill(particles_tot)
-          temp_pixels.Fill(pixels_tot)
           temp_partvspix.Fill(pixels_tot,particles_tot)
           temp_partperpix.Fill(particles_tot/pixels_tot)
           temp_partperpixvspix.Fill(pixels_tot, particles_tot/pixels_tot)
@@ -183,11 +189,13 @@ for CONFIG in CONFIGS:
 
    c_res = TCanvas("Resolution")
 
-   fit_min = 0
-   fit_max = 300
-   fit = TF1("fit", "[0]/sqrt(x)+[1]", fit_min, fit_max)
+   fit_min = 50
+   fit_max = 500
+   fit = TF1("fit", "[0]/sqrt(x)+[1]+[2]/x", fit_min, fit_max)
    fit_part = TF1("fit_part", "[0]/sqrt(x)+[1]", fit_min, 1000)
    
+   fit.FixParameter(2, 0)  
+ 
    res_plot.SetMarkerStyle(22);
    res_plot.SetMaximum(0.08);
    res_plot.SetMinimum(0.0);
@@ -204,26 +212,28 @@ for CONFIG in CONFIGS:
    res_part_plot.Fit(fit_part, "NR")
    fit_part.SetRange(0,1000);    
 
-   res_part_plot.Draw("ap")
-   fit_part.Draw("same")   
-   res_plot.Draw("p")
+   #res_part_plot.Draw("ap")
+   #fit_part.Draw("same")   
+   res_plot.Draw("ap")
    fit.Draw("same")
 
    pt = TPaveText(0.55,0.55,0.8,0.85, "NDC")
    pt.SetBorderSize(0)
    pt.SetFillColor(0)
    pt.AddText('Fit Range: {fit_min} - {fit_max} '.format(fit_min=fit_min, fit_max=fit_max))
-   pt.AddText('#frac{{{stoch:.1%}}}{{{sqrt}}} #oplus {leakage:.1%} '.format(stoch=fit_part.GetParameter(0), sqrt="#sqrt{E}", leakage=fit_part.GetParameter(1),E="E"))
-   #pt.AddText('#frac{{{noise:.1%}}}{{{E}}} #oplus #frac{{{stoch:.1%}}}{{{sqrt}}} #oplus {leakage:.1%} '.format(stoch=fit_0mm.GetParameter(0), sqrt="#sqrt{E}", leakage=fit_0mm.GetParameter(1),E="E", noise=fit_0mm.GetParameter(2)))
-   pt.AddText('#frac{{{stoch:.1%}}}{{{sqrt}}} #oplus {leakage:.1%} '.format(stoch=fit.GetParameter(0), sqrt="#sqrt{E}", leakage=fit.GetParameter(1),E="E")) 
+   #pt.AddText('#frac{{{stoch:.1%}}}{{{sqrt}}} #oplus {leakage:.1%} '.format(stoch=fit_part.GetParameter(0), sqrt="#sqrt{E}", leakage=fit_part.GetParameter(1),E="E"))
+   if fit.GetParameter(2) != 0:
+   	pt.AddText('#frac{{{noise:.1%}}}{{{E}}} #oplus #frac{{{stoch:.1%}}}{{{sqrt}}} #oplus {leakage:.1%} '.format(stoch=fit.GetParameter(0), sqrt="#sqrt{E}", leakage=fit.GetParameter(1),E="E", noise=fit.GetParameter(2)))
+   else:
+   	pt.AddText('#frac{{{stoch:.1%}}}{{{sqrt}}} #oplus {leakage:.1%} '.format(stoch=fit.GetParameter(0), sqrt="#sqrt{E}", leakage=fit.GetParameter(1),E="E")) 
    pt.Draw()
    c_res.Print("DECal_resolution.png")
 
    lin_plot.SetMarkerStyle(22)
    lin_plot.SetTitle("Linearity: ")
    lin_plot.GetXaxis().SetTitle("Energy [GeV]")
-   lin_plot.GetYaxis().SetTitle("Mean particles per event")
-   lin_fit = TF1("lin_fit", "pol1", fit_min, fit_max)
+   lin_plot.GetYaxis().SetTitle("Mean pixels per event")
+   lin_fit = TF1("lin_fit", "pol2", fit_min, fit_max)
    lin_plot.Fit(lin_fit, "NR")
    lin_fit.SetRange(0,1000)
 
@@ -236,9 +246,9 @@ for CONFIG in CONFIGS:
    lin_part_fit.SetRange(0,1000)   
 
    c_lin = TCanvas("lin_plot")
-   lin_part_plot.Draw("ap")
-   lin_part_fit.Draw("same")
-   lin_plot.Draw("p")
+   #lin_part_plot.Draw("ap")
+   #lin_part_fit.Draw("same")
+   lin_plot.Draw("ap")
    lin_fit.Draw("same")
    pt_lin = TPaveText(0.25,0.7,0.5,0.85, "NDC")
    pt_lin.SetBorderSize(0)

@@ -222,6 +222,10 @@ static dd4hep::detail::Ref_t createECal (dd4hep::Detector& lcdd,dd4hep::xml::Han
     double nudge_gap = 0.000001;
     double l_thickness = active_tck + passive_tck + substrate_tck + padding_tck;
 
+    // hack by Tony to use 1 stave and 1 module so can run complete length of calorimeter
+    nStaves = 1;
+    nModules = 1;
+
     double module_dz = dz/nModules;
     double module_z = -trd_z + (module_dz/2);
 
@@ -261,8 +265,9 @@ static dd4hep::detail::Ref_t createECal (dd4hep::Detector& lcdd,dd4hep::xml::Han
 
 	    epi_phv.addPhysVolID("digital", 1);
 	    epi_phv.addPhysVolID("layer", layernum);
-	    epi_phv.addPhysVolID("stave", stavenum);
-	    epi_phv.addPhysVolID("module", modulenum);
+	    // HACK by tony to steal the bits back
+	    //epi_phv.addPhysVolID("stave", stavenum);
+	    //epi_phv.addPhysVolID("module", modulenum);
 	    
 	    epi_slice.setPlacement(epi_phv);
 	    epi_vol.setSensitiveDetector(sensDet);
@@ -289,8 +294,8 @@ static dd4hep::detail::Ref_t createECal (dd4hep::Detector& lcdd,dd4hep::xml::Han
 	    
 	    sub_phv.addPhysVolID("digital", 0);
 	    sub_phv.addPhysVolID("layer", layernum);
-	    sub_phv.addPhysVolID("stave", stavenum);
-	    sub_phv.addPhysVolID("module", modulenum);
+	    //sub_phv.addPhysVolID("stave", stavenum);
+	    //sub_phv.addPhysVolID("module", modulenum);
 	    
 	    sub_slice.setPlacement(sub_phv);
 	    sub_vol.setSensitiveDetector(sensDet);

@@ -23,7 +23,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 from Configurables import ConstPileUp
 
-#pileuptool = ConstPileUp(numPileUpEvents=<NPILEUPEVENTS>, Filename="/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/Generation/data/Pythia_minbias_pp_100TeV.cmd")
+pileuptool = ConstPileUp(numPileUpEvents=<NPILEUPEVENTS>, filename="/afs/cern.ch/user/t/toprice/private/FCC/FCCSW/Generation/data/Pythia_minbias_pp_100TeV.cmd")
 
 from Configurables import PythiaInterface, GenAlg
 ### PYTHIA algorithm
@@ -31,7 +31,7 @@ pythia8gentool = PythiaInterface("Pythia8Interface", Filename=pythiafile)
 pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
 pythia8gen.hepmc.Path = "hepmcevent"
 
-gen = GenAlg("ParticleGun", SignalProvider=pythia8gentool)
+gen = GenAlg("ParticleGun", SignalProvider=pythia8gentool, PileUpTool=pileuptool)
 gen.hepmc.Path = "hepmc"
 
 from Configurables import HepMCToEDMConverter

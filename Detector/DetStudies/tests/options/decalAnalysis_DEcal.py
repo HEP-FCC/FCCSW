@@ -4,7 +4,7 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 batch_dir = "/eos/user/t/toprice/private/FCC/FCCSW/v8.0/XYZ/"
 fccsw_version = "FCCSW0.8"
-det_config = "50Layers_2.1mmW_FCCSW0.8"
+det_config = "50Layers_2.1mmW_50umPixels_18umThick_RRB_FCCSW0.8"
 run_config = "100GeV_BFIELD4T_ETAMIN-0.001_ETAMAX0.001"
 file = "100GeV_BFIELD4T_0.root"
 #inputfile = batch_dir+"/"+det_config+"_"+fccsw_version+"/"+run_config+"/"+file
@@ -70,6 +70,13 @@ hist.pixels.Path="filteredCaloHits"
 hist.pads.Path="newCaloCells"
 hist.truth.Path="GenParticles"
 
+from Configurables import DECalNoiseHits
+noise = DECalNoiseHits("DECalNoiseHits",
+		pixelReadoutName = "BarDECal_Readout",
+		OutputLevel = INFO)
+
+noise.pixels.Path="filteredCaloHits"
+
 #THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"_"+fccsw_version+"/"+run_config+"/<OUTPUT>' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().Output = ["rec DATAFILE='"+batch_dir+"/"+det_config+"/"+run_config+"/digital_"+file+"' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=False
@@ -91,7 +98,7 @@ podioout.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [podioinput, filtered, resegment, createcells,hist, podioout],
+ApplicationMgr( TopAlg = [podioinput, filtered, resegment, createcells,hist, noise, podioout],
                 EvtSel = 'NONE',
                 EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
