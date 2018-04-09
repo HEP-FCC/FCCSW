@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace the Tracker"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Tracker Place-Holder</comment>
+  </info>
+  <define>
+    <constant name="TrackerFwdDisc_dz" value="9.6*mm"/>
+    <!-- This makes it easier to copy over tkLayout numbers (this offset places the first disk at the lower z side of
+     the forward tracker) -->
+    <constant name="FwdTrackerDisc_zOffset" value="-FwdTracker_z2-TrackerFwdDisc_dz"/>
+  </define>
+  <detectors>
+    <detector name="TrackerEnvelopeBarrel" type="SimpleCylinder"  vis="TrackerVis">
+      <comment>Envelope for Tracker</comment>
+      <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" dz="Tracker_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+
+    <detector name="FwdTrackerDisc1Pos" type="SimpleCylinder"  vis="TrackerVisEnv">
+        <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="FwdTracker_zOffset1" material="Air"/>
+    </detector>
+    <detector name="FwdTrackerPos" type="SimpleCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="FwdTracker_z2+2*TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="FwdTracker_zOffset2" material="Air"/>
+    </detector>
+
+    <detector name="FwdTrackerDisc1Neg" type="SimpleCylinder"  vis="TrackerVisEnv">
+        <dimensions rmin="FwdTracker_rmin1" rmax="FwdTracker_rmax1" dz="TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdTracker_zOffset1" material="Air"/>
+    </detector>
+    <detector name="FwdTrackerNeg" type="SimpleCylinder"  vis="TrackerVisEnv">
+      <dimensions rmin="FwdTracker_rmin2" rmax="FwdTracker_rmax2" dz="FwdTracker_z2+2*TrackerFwdDisc_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdTracker_zOffset2" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

@@ -12,24 +12,20 @@
 namespace fcc {
 class JetCollection;
 class ParticleCollection;
-class JetParticleAssociationCollection;
-class JetIntTagAssociationCollection;
-class TagCollection;
-class IntTagCollection;
-class JetTagAssociationCollection;
+class TaggedJetCollection;
+class ResolvedJetCollection;
 }
 
 /** @class DelphesSaveJets SimG4Components/src/DelphesSaveJets.h DelphesSaveJets.h
  *
  *  Save charged particles from Delphes simulation to FCC EDM
  *
- *  @author Z. Drasal, J. Lingemann
+ *  @author Z. Drasal, J. Lingemann, M. Selvaggi
  */
 
-class DelphesSaveJets: public GaudiTool, virtual public IDelphesSaveOutputTool {
+class DelphesSaveJets : public GaudiTool, virtual public IDelphesSaveOutputTool {
 public:
-  explicit DelphesSaveJets(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit DelphesSaveJets(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~DelphesSaveJets();
   /**  Initialize.
    *   @return status code
@@ -43,36 +39,52 @@ public:
    *   Converts genJets to fcc::Jet and creates associations to fcc::MCParticle
    *   If flavor tags are defined, they are also translated and associations are created.
    *   @param[in] delphes: reference to Delphes module
-   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some point)
+   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some
+   * point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes,
-                                const fcc::MCParticleCollection& mcParticles) final;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
+
 private:
   /// Handle to the jets to be saved
-  DataHandle<fcc::JetCollection> m_jets;
+  DataHandle<fcc::JetCollection> m_jets{"jets", Gaudi::DataHandle::Writer, this};
   /// Handle to the jet constituents to be saved
-  DataHandle<fcc::ParticleCollection> m_jetParticles;
-  /// Handle for associations between the jet and its constituents to be saved
-  DataHandle<fcc::JetParticleAssociationCollection> m_jetParticleAssociations;
+  DataHandle<fcc::ParticleCollection> m_jetParticles{"jetConstituents", Gaudi::DataHandle::Writer, this};
   /// Handle to the jet flavor tags to be saved
-  DataHandle<fcc::IntTagCollection> m_jetFlavorTags;
-  /// Handle for associations between the jet and its flavor tag to be saved
-  DataHandle<fcc::JetIntTagAssociationCollection> m_jetFlavorAssociations;
+  DataHandle<fcc::TaggedJetCollection> m_jetsFlavorTagged{"jetsFlavorTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the b tags to be saved
-  DataHandle<fcc::TagCollection> m_bTags;
-  /// Handle for associations between the jet and its b-tag to be saved
-  DataHandle<fcc::JetTagAssociationCollection> m_jetBTagAssociations;
+  DataHandle<fcc::TaggedJetCollection> m_jetsBTagged{"jetsBTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the c tags to be saved
-  DataHandle<fcc::TagCollection> m_cTags;
-  /// Handle for associations between the jet and its c-tag to be saved
-  DataHandle<fcc::JetTagAssociationCollection> m_jetCTagAssociations;
+  DataHandle<fcc::TaggedJetCollection> m_jetsCTagged{"jetsCTagged", Gaudi::DataHandle::Writer, this};
   /// Handle to the tau tags to be saved
-  DataHandle<fcc::TagCollection> m_tauTags;
-  /// Handle for associations between the jet and its tau-tag to be saved
-  DataHandle<fcc::JetTagAssociationCollection> m_jetTauTagAssociations;
+  DataHandle<fcc::TaggedJetCollection> m_jetsTauTagged{"jetsTauTagged", Gaudi::DataHandle::Writer, this};
+
+  // ------ Jet Substructure variables -------
+  /// Handle to the 1-subjettiness tag to be saved
+  DataHandle<fcc::TaggedJetCollection> m_jetsOneSubJettinessTagged{"jetsOneSubJettinessTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the 2-subjettiness tag to be saved
+  DataHandle<fcc::TaggedJetCollection> m_jetsTwoSubJettinessTagged{"jetsTwoSubJettinessTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the 3-subjettiness tag to be saved
+  DataHandle<fcc::TaggedJetCollection> m_jetsThreeSubJettinessTagged{"jetsThreeSubJettinessTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets tags provided by Trimming algorithm
+  DataHandle<fcc::ResolvedJetCollection> m_subjetsTrimmingTagged{"subjetsTrimmingTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets tags provided by Pruning algorithm
+  DataHandle<fcc::ResolvedJetCollection> m_subjetsPruningTagged{"subjetsPruningTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets tags provided by SoftDrop algorithm
+  DataHandle<fcc::ResolvedJetCollection> m_subjetsSoftDropTagged{"subjetsSoftDropTagged", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets to provided by Trimming algorithm
+  DataHandle<fcc::JetCollection> m_subjetsTrimming{"subjetsTrimming", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets to provided by Pruning algorithm
+  DataHandle<fcc::JetCollection> m_subjetsPruning{"subjetsPruning", Gaudi::DataHandle::Writer, this};
+  /// Handle to the subjets to provided by SoftDrop algorithm
+  DataHandle<fcc::JetCollection> m_subjetsSoftDrop{"subjetsSoftDrop", Gaudi::DataHandle::Writer, this};
+
   /// Name of the Delphes array that should be converted
-  std::string m_delphesArrayName;
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "",
+                                                  "Name of the Delphes array that should be converted"};
+  /// Switch whether to save jet substructure information
+  Gaudi::Property<bool> m_saveSubstructure{this, "saveSubstructure", false, "Switch whether to save substructure information"};
+
 
 };
 

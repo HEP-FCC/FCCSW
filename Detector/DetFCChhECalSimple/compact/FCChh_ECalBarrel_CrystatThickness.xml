@@ -1,0 +1,3 @@
+<define>
+  <constant name="CommonCryoThickness" value="100*mm"/> 
+</define>

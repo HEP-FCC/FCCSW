@@ -28,10 +28,15 @@ DoxyWarnings.log
 *.launch.py
 *.launch.opts
 
+.DS_Store
+._*
+
+# various project files
 .project
 .cproject
 .settings
 .pydevproject
+.vscode
 
 .build/
 build-dir/

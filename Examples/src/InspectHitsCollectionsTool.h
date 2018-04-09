@@ -4,8 +4,9 @@
 // Gaudi
 #include "GaudiAlg/GaudiTool.h"
 
-//FCCSW
+// FCCSW
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
+class IGeoSvc;
 
 /** @class InspectHitsCollectionsTool TestDD4hep/TestDD4hep/InspectHitsCollectionsTool.h InspectHitsCollectionsTool.h
  *
@@ -15,7 +16,7 @@
  *  @author Anna Zaborowska
  */
 
-class InspectHitsCollectionsTool: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class InspectHitsCollectionsTool : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
   /// Constructor.
   explicit InspectHitsCollectionsTool(const std::string& type, const std::string& name, const IInterface* parent);
@@ -26,6 +27,13 @@ public:
   virtual StatusCode finalize() final;
   /// inspect output
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+
+private:
+  /// Pointer to the geometry service
+  SmartIF<IGeoSvc> m_geoSvc;
+  /// Name of the readouts (hits collections)
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{
+      this, "readoutNames", {}, "Names of the readouts (hits collections)"};
 };
 
 #endif /* TESTDD4HEP_INSPECTHITSCOLLECTIONSTOOL_H */

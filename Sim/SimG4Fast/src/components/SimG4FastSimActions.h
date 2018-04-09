@@ -7,8 +7,6 @@
 
 // FCCSW
 #include "SimG4Interface/ISimG4ActionTool.h"
-#include "SimG4Interface/ISimG4ParticleSmearTool.h"
-
 
 /** @class SimG4FastSimActions SimG4Fast/src/components/SimG4FastSimActions.h SimG4FastSimActions.h
  *
@@ -17,7 +15,7 @@
  *  @author Anna Zaborowska
 */
 
-class SimG4FastSimActions: public AlgTool, virtual public ISimG4ActionTool {
+class SimG4FastSimActions : public AlgTool, virtual public ISimG4ActionTool {
 public:
   explicit SimG4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~SimG4FastSimActions();
@@ -33,11 +31,6 @@ public:
    *  @return pointer to G4VUserActionInitialization (ownership is transferred to the caller)
    */
   virtual G4VUserActionInitialization* userActionInitialization() final;
-
-private:
-  /// Pointer to the smearing tool
-  ToolHandle<ISimG4ParticleSmearTool> m_smearTool;
-
 };
 
 #endif /* SIMG4FAST_G4FASTSIMACTIONS_H */

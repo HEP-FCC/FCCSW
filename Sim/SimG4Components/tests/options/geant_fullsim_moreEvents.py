@@ -10,22 +10,24 @@
 
 
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCReader, HepMCDumper, FCCDataSvc
+from Configurables import ApplicationMgr, HepMCDumper, FCCDataSvc
 
 podioevent = FCCDataSvc("EventDataSvc")
 
-reader = HepMCReader("Reader", Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat")
-reader.DataOutputs.hepmc.Path = "hepmc"
+from Configurables import HepMCFileReader, GenAlg
+readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader = GenAlg("Reader", SignalProvider=readertool)
+reader.hepmc.Path = "hepmc"
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:../../../Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:../../../Detector/DetFCChhTrackerSimple/compact/Tracker.xml'],
+  'file:../../../Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
                     OutputLevel = DEBUG)
 
 from Configurables import SimG4Svc
@@ -33,12 +35,11 @@ geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=
 
 from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
 savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames=["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
-savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
+savetrackertool.positionedTrackHits.Path = "positionedHits"
+savetrackertool.trackHits.Path = "hits"
 
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveTrackerHits/SimG4SaveTrackerHits"],
                     eventProvider=particle_converter)

@@ -6,13 +6,13 @@
 #include "DDSegmentation/Segmentation.h"
 
 // Geant
-#include "G4VSensitiveDetector.hh"
 #include "G4THitsCollection.hh"
+#include "G4VSensitiveDetector.hh"
 
 /** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
  *
  *  Simple sensitive detector for calorimeter.
- *  It is based on DD4hep::Simulation::Geant4GenericSD<Calorimeter> (but it is not identical).
+ *  It is based on dd4hep::sim::Geant4GenericSD<Calorimeter> (but it is not identical).
  *  In particular, the position of the hit is set to G4Step::GetPreStepPoint() position.
  *  New hit is created for each energy deposit.
  *  No timing information is saved.
@@ -21,17 +21,16 @@
  */
 
 namespace det {
-class SimpleCalorimeterSD : public G4VSensitiveDetector
-{
-  public:
+class SimpleCalorimeterSD : public G4VSensitiveDetector {
+public:
   /** Constructor.
    *  @param aDetectorName Name of the detector
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
   SimpleCalorimeterSD(const std::string& aDetectorName,
-    const std::string& aReadoutName,
-    const DD4hep::Geometry::Segmentation& aSeg);
+                      const std::string& aReadoutName,
+                      const dd4hep::Segmentation& aSeg);
   /// Destructor
   virtual ~SimpleCalorimeterSD();
   /** Initialization.
@@ -50,9 +49,9 @@ class SimpleCalorimeterSD : public G4VSensitiveDetector
 
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<DD4hep::Simulation::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
-  DD4hep::Geometry::Segmentation m_seg;
+  dd4hep::Segmentation m_seg;
 };
 }
 

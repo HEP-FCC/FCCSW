@@ -17,6 +17,7 @@ gaudi_add_module(SimDelphesInterface
                  INCLUDE_DIRS FWCore ROOT Delphes FCCEDM PODIO HepMC
                  LINK_LIBRARIES GaudiAlgLib ROOT Delphes FCCEDM PODIO HepMC)
 
+target_compile_options(SimDelphesInterface PUBLIC "-Wno-overloaded-virtual")
 
 include(CTest)
 gaudi_add_test(PythiaDelphes

@@ -4,31 +4,26 @@
 #include "GaudiKernel/ITHistSvc.h"
 
 // datamodel
+#include "datamodel/MCParticleCollection.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
-#include "datamodel/MCParticleCollection.h"
 
-#include "TH1F.h"
 #include "CLHEP/Vector/ThreeVector.h"
-
+#include "TH1F.h"
 
 DECLARE_ALGORITHM_FACTORY(SimG4FastSimHistograms)
 
-SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc):
-GaudiAlgorithm(aName, aSvcLoc),
-  m_p(nullptr),
-  m_diffP(nullptr),
-  m_pdg(nullptr){
-  declareInput("particles", m_smParticles);
-  declareInput("particlesMCparticles", m_particlesMCparticles);
+SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc)
+    : GaudiAlgorithm(aName, aSvcLoc) {
+  declareProperty("particlesMCparticles", m_particlesMCparticles,
+                  "Handle for the EDM particles and MC particles associations to be read");
 }
 SimG4FastSimHistograms::~SimG4FastSimHistograms() {}
 
 StatusCode SimG4FastSimHistograms::initialize() {
-  if (GaudiAlgorithm::initialize().isFailure())
-    return StatusCode::FAILURE;
+  if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
   m_histSvc = service("THistSvc");
-  if (! m_histSvc) {
+  if (!m_histSvc) {
     error() << "Unable to locate Histogram Service" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -52,36 +47,18 @@ StatusCode SimG4FastSimHistograms::initialize() {
 }
 
 StatusCode SimG4FastSimHistograms::execute() {
-  const auto particles = m_smParticles.get();
   const auto associations = m_particlesMCparticles.get();
-  for(const auto& part: *particles) {
-    const fcc::BareParticle& core = part.Core();
-    CLHEP::Hep3Vector mom(core.P4.Px, core.P4.Py, core.P4.Pz);
+  for (const auto& assoc : *associations) {
+    const fcc::BareParticle& core = assoc.rec().core();
+    CLHEP::Hep3Vector mom(core.p4.px, core.p4.py, core.p4.pz);
     m_eta->Fill(mom.eta());
     m_p->Fill(mom.mag());
-    m_pdg->Fill(core.Type);
-    // TODO fix EDM with relation here (no if needed)
-    for(const auto& assoc: *associations) {
-      const fcc::BareParticle& coreA = assoc.Rec().Core();
-      if(coreA.Type == core.Type &&
-        coreA.P4.Px == core.P4.Px &&
-        coreA.P4.Py == core.P4.Py &&
-        coreA.P4.Pz == core.P4.Pz &&
-        coreA.P4.Mass == core.P4.Mass &&
-        coreA.Vertex.X == core.Vertex.X &&
-        coreA.Vertex.Y == core.Vertex.Y &&
-        coreA.Vertex.Z == core.Vertex.Z &&
-        coreA.Status == core.Status &&
-        coreA.Charge == core.Charge) {
-        const fcc::BareParticle& coreMC = assoc.Sim().Core();
-        CLHEP::Hep3Vector momMC(coreMC.P4.Px, coreMC.P4.Py, coreMC.P4.Pz);
-        m_diffP->Fill((momMC.mag()-mom.mag())/momMC.mag());
-      }
-    }
+    m_pdg->Fill(core.pdgId);
+    const fcc::BareParticle& coreMC = assoc.sim().core();
+    CLHEP::Hep3Vector momMC(coreMC.p4.px, coreMC.p4.py, coreMC.p4.pz);
+    m_diffP->Fill((momMC.mag() - mom.mag()) / momMC.mag());
   }
   return StatusCode::SUCCESS;
 }
 
-StatusCode SimG4FastSimHistograms::finalize() {
-  return GaudiAlgorithm::finalize();
-}
+StatusCode SimG4FastSimHistograms::finalize() { return GaudiAlgorithm::finalize(); }

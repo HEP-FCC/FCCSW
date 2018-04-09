@@ -11,7 +11,7 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr
 from FCCPileupScenarios import FCCPhase1PileupConf as pileupconf
 
-from Configurables import HepMCReader, HepMCDumper, PoissonPileUp, HepMCFileReader, FlatSmearVertex
+from Configurables import HepMCDumper, PoissonPileUp, HepMCFileReader, FlatSmearVertex, HepMCFullMerge, GenAlg
 
 from Configurables import FCCDataSvc
 albersevent   = FCCDataSvc("EventDataSvc")
@@ -25,17 +25,19 @@ smeartool = FlatSmearVertex(
      zVertexMax=pileupconf['zVertexMax'])
 
 genpileup = PoissonPileUp(name="Pileup",
-    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
     numPileUpEvents=pileupconf['numPileUpEvents'])
 
-reader = HepMCReader("Reader",
-    Filename="/afs/cern.ch/exp/fcc/sw/0.7/testsamples/FCC_minbias_100TeV.dat",
-    PileUpTool=genpileup,
-    VertexSmearingTool = smeartool)
-reader.DataOutputs.hepmc.Path = "hepmc"
+mergetool = HepMCFullMerge()
+
+readertool = HepMCFileReader("ReaderTool", 
+    Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+readertool_pileup = HepMCFileReader("ReaderToolPileup", 
+    Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
+reader = GenAlg("Reader", SignalProvider=readertool, PileUpProvider=readertool_pileup, PileUpTool=genpileup, HepMCMergeTool=mergetool, VertexSmearingTool=smeartool)
+reader.hepmc.Path = "hepmc"
 
 dumper = HepMCDumper()
-dumper.DataInputs.hepmc.Path="hepmc"
+dumper.hepmc.Path="hepmc"
 
 ApplicationMgr(
     TopAlg=[reader, dumper],

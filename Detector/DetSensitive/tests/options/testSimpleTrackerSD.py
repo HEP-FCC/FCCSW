@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import ParticleGunAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
+from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 1, # GeV
@@ -9,19 +9,18 @@ pgun = MomentumRangeParticleGun("PGun",
                                 ThetaMax = -0.45, # rad
                                 PhiMin = 1.6, # rad
                                 PhiMax = 1.6) # rad
-gen = ParticleGunAlg("ParticleGun", ParticleGunTool=pgun)
-gen.DataOutputs.hepmc.Path = "hepmc"
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
+gen = GenAlg("ParticleGun", SignalProvider=pgun)
+gen.hepmc.Path = "hepmc"
 
-from Configurables import HepMCConverter
-hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="allGenParticles"
-hepmc_converter.DataOutputs.genvertices.Path="allGenVertices"
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="allGenParticles"
+hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import HepMCDumper
 hepmc_dump = HepMCDumper("hepmc")
-hepmc_dump.DataInputs.hepmc.Path="hepmc"
+hepmc_dump.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:compact/Box_simpleTrackerSD.xml'], OutputLevel = DEBUG)
@@ -32,17 +31,18 @@ geantservice = SimG4Svc("SimG4Svc",
                         physicslist="SimG4FtfpBert",
                         actions="SimG4FullSimActions")
 
-from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool
+from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4PrimariesFromEdmTool, InspectHitsCollectionsTool
+inspecttool = InspectHitsCollectionsTool("inspect", readoutNames=["TrackerSiliconHits"], OutputLevel = DEBUG)
+
 savetrackertool = SimG4SaveTrackerHits("SimG4SaveTrackerHits", readoutNames = ["TrackerSiliconHits"])
-savetrackertool.DataOutputs.trackClusters.Path = "clusters"
-savetrackertool.DataOutputs.trackHits.Path = "hits"
-savetrackertool.DataOutputs.trackHitsClusters.Path = "hitClusterAssociation"
+savetrackertool.positionedTrackHits.Path = "positionedHits"
+savetrackertool.trackHits.Path = "hits"
 
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.DataInputs.genParticles.Path = "allGenParticles"
+particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     outputs=["SimG4SaveTrackerHits/SimG4SaveTrackerHits",
-                             "InspectHitsCollectionsTool"],
+                             "InspectHitsCollectionsTool/inspect"],
                     eventProvider=particle_converter)
 
 from Configurables import FCCDataSvc, PodioOutput
@@ -57,6 +57,6 @@ ApplicationMgr( TopAlg = [gen, hepmc_converter, hepmc_dump, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podiosvc, ppservice, geoservice, geantservice],
+                ExtSvc = [podiosvc, geoservice, geantservice],
                 OutputLevel=DEBUG
  )

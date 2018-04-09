@@ -2,8 +2,8 @@
 #define SIMG4COMPONENTS_G4PRIMARIESFROMEDMTOOL_H
 
 // from Gaudi
-#include "GaudiAlg/GaudiTool.h"
 #include "FWCore/DataHandle.h"
+#include "GaudiAlg/GaudiTool.h"
 
 #include "SimG4Interface/ISimG4EventProviderTool.h"
 
@@ -37,7 +37,7 @@ public:
 
 private:
   /// Handle for the EDM MC particles to be read
-  DataHandle<fcc::MCParticleCollection> m_genParticles;
+  DataHandle<fcc::MCParticleCollection> m_genParticles{"allGenParticles", Gaudi::DataHandle::Reader, this};
 };
 
 #endif

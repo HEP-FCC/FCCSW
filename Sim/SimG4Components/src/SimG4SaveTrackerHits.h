@@ -11,9 +11,9 @@ class IGeoSvc;
 
 // datamodel
 namespace fcc {
-class TrackClusterCollection;
 class TrackHitCollection;
-class TrackClusterHitsAssociationCollection;
+class PositionedTrackHitCollection;
+class DigiTrackHitAssociationCollection;
 }
 
 /** @class SimG4SaveTrackerHits SimG4Components/src/SimG4SaveTrackerHits.h SimG4SaveTrackerHits.h
@@ -26,12 +26,12 @@ class TrackClusterHitsAssociationCollection;
  *  [For more information please see](@ref md_sim_doc_geant4fullsim).
  *
  *  @author Anna Zaborowska
+ *  @author Valentin Volkl (extended with Digi Info)
  */
 
-class SimG4SaveTrackerHits: public GaudiTool, virtual public ISimG4SaveOutputTool {
+class SimG4SaveTrackerHits : public GaudiTool, virtual public ISimG4SaveOutputTool {
 public:
-  explicit SimG4SaveTrackerHits(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit SimG4SaveTrackerHits(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~SimG4SaveTrackerHits();
   /**  Initialize.
    *   @return status code
@@ -47,18 +47,20 @@ public:
    *   @return status code
    */
   virtual StatusCode saveOutput(const G4Event& aEvent) final;
+
 private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
-  /// Handle for tracker clusters
-  DataHandle<fcc::TrackClusterCollection> m_trackClusters;
   /// Handle for tracker hits
-  DataHandle<fcc::TrackHitCollection> m_trackHits;
-  /// Handle for tracker hits-clusters associations
-  DataHandle<fcc::TrackClusterHitsAssociationCollection> m_trackHitsClusters;
+  DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trackerHits", Gaudi::DataHandle::Writer, this};
+  /// Handle for tracker hits including position information
+  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits",
+                                                                      Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::DigiTrackHitAssociationCollection> m_digiTrackHits{"hits/digiTrackerHits",
+                                                                      Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
-  std::vector<std::string> m_readoutNames;
-
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{
+      this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVETRACKERHITS_H */

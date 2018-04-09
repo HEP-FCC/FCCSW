@@ -12,8 +12,7 @@
 namespace fcc {
 class ParticleCollection;
 class ParticleMCParticleAssociationCollection;
-class TagCollection;
-class ParticleTagAssociationCollection;
+class TaggedParticleCollection;
 }
 
 /** @class DelphesSaveChargedParticles SimG4Components/src/DelphesSaveChargedParticles.h DelphesSaveChargedParticles.h
@@ -23,10 +22,9 @@ class ParticleTagAssociationCollection;
  *  @author Z. Drasal, J. Lingemann
  */
 
-class DelphesSaveChargedParticles: public GaudiTool, virtual public IDelphesSaveOutputTool {
+class DelphesSaveChargedParticles : public GaudiTool, virtual public IDelphesSaveOutputTool {
 public:
-  explicit DelphesSaveChargedParticles(const std::string& aType , const std::string& aName,
-                  const IInterface* aParent);
+  explicit DelphesSaveChargedParticles(const std::string& aType, const std::string& aName, const IInterface* aParent);
   virtual ~DelphesSaveChargedParticles();
   /**  Initialize.
    *   @return status code
@@ -40,24 +38,26 @@ public:
    *   Converts charged particles to fcc::Particle and creates associations to fcc::MCParticle
    *   If isolation tags are defined, they are also translated and associations are created.
    *   @param[in] delphes: reference to Delphes module
-   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some point)
+   *   @param[in] mcParticles: MCParticle collection that is used to create associations (FIXME: will be input at some
+   * point)
    *   @return status code
    */
-  virtual StatusCode saveOutput(Delphes& delphes,
-                                const fcc::MCParticleCollection& mcParticles) final;
+  virtual StatusCode saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) final;
+
 private:
   /// Handle the particles to be saved
-  DataHandle<fcc::ParticleCollection> m_particles;
+  DataHandle<fcc::ParticleCollection> m_particles{"particles", Gaudi::DataHandle::Writer, this};
   /// Handle to associate particles with MCParticles
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_mcAssociations;
+  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_mcAssociations{"mcAssociations", Gaudi::DataHandle::Writer,
+                                                                            this};
   /// Handle for isolation tags
-  DataHandle<fcc::TagCollection> m_isolationTags;
-  /// Handle to associate particles with isolation tags
-  DataHandle<fcc::ParticleTagAssociationCollection> m_isoAssociations;
+  DataHandle<fcc::TaggedParticleCollection> m_isolationTaggedParticles{"isolationTags", Gaudi::DataHandle::Writer,
+                                                                       this};
   /// Name of the Delphes array that should be converted
-  std::string m_delphesArrayName;
+  Gaudi::Property<std::string> m_delphesArrayName{this, "delphesArrayName", "",
+                                                  "Name of the Delphes array that should be converted"};
   /// Switch whether to save tag information
-  bool m_saveIso;
+  Gaudi::Property<bool> m_saveIso{this, "saveIsolation", true, "Switch whether to save tag information"};
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVECHARGEDPARTICLES */

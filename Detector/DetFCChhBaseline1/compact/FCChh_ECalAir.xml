@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace Ecal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>ECal Place-Holder</comment>
+  </info>
+  <display>
+    <vis name="ECalEnvelopeVis" r="0.25" g="0.29" b="0.91" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="ECalEnvelopeExtBarVis" r="0.49" g="0.51" b="0.91" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="ECalEnvelopeFwdVis" r="0.65" g="0.67" b="0.87" a="0.2" showDaughters="false" visible="true"/>
+  </display>
+  <define>
+    <constant name="EcalSpacer" value="100*mm" />
+  </define>
+  <detectors>
+    <detector name="ECalEnvelope" type="SimpleCylinder"  vis="ECalEnvelopeVis">
+      <dimensions rmin="BarECal_rmin+EcalSpacer" rmax="BarECal_rmax" dz="BarECal_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+    <!-- End-caps -->
+    <detector name="ECalEnvelopeExtBarPos" type="SimpleCone" vis="ECalEnvelopeExtBarVis">
+      <dimensions rmin1="ExtBarCal_rmin1" rmax1="ExtBarCal_rmax1" rmin2="ExtBarCal_rmin2" rmax2="ExtBarCal_rmax2" dz="ExtBarCal_dz" z_offset="ExtBarCal_zOffset"  material="Lead"/>
+    </detector>
+
+    <detector name="ECalEnvelopeExtBarNeg" type="SimpleCone" vis="ECalEnvelopeExtBarVis">
+      <dimensions rmin2="ExtBarCal_rmin1" rmax2="ExtBarCal_rmax1" rmin1="ExtBarCal_rmin2" rmax1="ExtBarCal_rmax2" dz="ExtBarCal_dz" z_offset="-ExtBarCal_zOffset"  material="Lead"/>
+    </detector>
+
+    <!-- Forward detectors -->
+    <detector name="ECalEnvelopeFwdPos" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
+        <dimensions rmin="FwdCal_rmin1" rmax="FwdCal_rmax1" dz="FwdCal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="FwdCal_zOffset+EcalSpacer" material="Air"/>
+    </detector>
+    <detector name="ECalEnvelopeFwdNeg" type="SimpleCylinder"  vis="ECalEnvelopeFwdVis">
+        <dimensions rmin="FwdCal_rmin1" rmax="FwdCal_rmax1" dz="FwdCal_dz-EcalSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="-FwdECal_zOffset-EcalSpacer" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

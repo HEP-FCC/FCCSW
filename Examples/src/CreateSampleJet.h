@@ -1,13 +1,16 @@
 #ifndef EXAMPLES_CREATESAMPLEJET_H
 #define EXAMPLES_CREATESAMPLEJET_H
 
-
-#include "GaudiAlg/GaudiAlgorithm.h"
-#include "datamodel/JetCollection.h"
 #include "FWCore/DataHandle.h"
+#include "GaudiAlg/GaudiAlgorithm.h"
 
-class CreateSampleJet: public GaudiAlgorithm {
-  friend class AlgFactory<CreateSampleJet> ;
+// forward declarations:
+namespace fcc {
+class JetCollection;
+}
+
+class CreateSampleJet : public GaudiAlgorithm {
+  friend class AlgFactory<CreateSampleJet>;
 
 public:
   /// Constructor.
@@ -21,8 +24,7 @@ public:
 
 private:
   /// Handle for the jets to be written
-  DataHandle<fcc::JetCollection> m_jethandle;
-
+  DataHandle<fcc::JetCollection> m_jethandle{"podioJets", Gaudi::DataHandle::Writer, this};
 };
 
 #endif /* EXAMPLES_CREATESAMPLEJET_H */

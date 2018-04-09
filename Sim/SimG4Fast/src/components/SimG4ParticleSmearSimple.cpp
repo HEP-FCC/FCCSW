@@ -4,45 +4,35 @@
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 
-//CLHEP
+// CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
 DECLARE_TOOL_FACTORY(SimG4ParticleSmearSimple)
 
-SimG4ParticleSmearSimple::SimG4ParticleSmearSimple(const std::string& type, const std::string& name, const IInterface* parent):
-    GaudiTool(type, name, parent) {
+SimG4ParticleSmearSimple::SimG4ParticleSmearSimple(const std::string& type, const std::string& name,
+                                                   const IInterface* parent)
+    : GaudiTool(type, name, parent) {
   declareInterface<ISimG4ParticleSmearTool>(this);
-  declareProperty("detectorNames", m_volumeNames);
-  declareProperty("sigma", m_sigma = 0.01);
-  declareProperty("minP", m_minP = 0);
-  declareProperty("maxP", m_maxP = 0);
-  declareProperty("maxEta", m_maxEta = 0);
 }
 
 SimG4ParticleSmearSimple::~SimG4ParticleSmearSimple() {}
 
 StatusCode SimG4ParticleSmearSimple::initialize() {
-  if(GaudiTool::initialize().isFailure()) {
+  if (GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  if(m_volumeNames.size() == 0) {
-    error() << "No detector name is specified for the parametrisation" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  if(service( "RndmGenSvc" , m_randSvc ).isFailure()) {
+  if (service("RndmGenSvc", m_randSvc).isFailure()) {
     error() << "Couldn't get RndmGenSvc" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_gauss.initialize(m_randSvc, Rndm::Gauss(1,m_sigma));
-  info() << "Tool used for smearing particles initialized with constant sigma = "<<m_sigma << endmsg;
+  m_gauss.initialize(m_randSvc, Rndm::Gauss(1, m_sigma));
+  info() << "Tool used for smearing particles initialized with constant sigma = " << m_sigma << endmsg;
   return StatusCode::SUCCESS;
 }
 
-StatusCode SimG4ParticleSmearSimple::finalize() {
-  return GaudiTool::finalize();
-}
+StatusCode SimG4ParticleSmearSimple::finalize() { return GaudiTool::finalize(); }
 
-StatusCode SimG4ParticleSmearSimple::smearMomentum( CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
+StatusCode SimG4ParticleSmearSimple::smearMomentum(CLHEP::Hep3Vector& aMom, int /*aPdg*/) {
   double tmp = m_gauss.shoot();
   aMom *= tmp;
   return StatusCode::SUCCESS;

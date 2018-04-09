@@ -4,16 +4,17 @@
 #include "G4VModularPhysicsList.hh"
 
 namespace sim {
-RunManager::RunManager(): G4RunManager(),
-                          m_prevEventTerminated(true),
-                          m_msgSvc("MessageSvc","RunManager"),
-                          m_log(&(*m_msgSvc),"RunManager") {}
+RunManager::RunManager()
+    : G4RunManager(),
+      m_prevEventTerminated(true),
+      m_msgSvc("MessageSvc", "RunManager"),
+      m_log(&(*m_msgSvc), "RunManager") {}
 
 RunManager::~RunManager() {}
 
 StatusCode RunManager::start() {
   // as in G4RunManager::BeamOn()
-  if(G4RunManager::ConfirmBeamOnCondition()) {
+  if (G4RunManager::ConfirmBeamOnCondition()) {
     G4RunManager::ConstructScoringWorlds();
     G4RunManager::RunInitialization();
     return StatusCode::SUCCESS;
@@ -23,8 +24,8 @@ StatusCode RunManager::start() {
 }
 
 StatusCode RunManager::processEvent(G4Event& aEvent) {
-  if(!m_prevEventTerminated) {
-    m_log<<MSG::ERROR<<"Trying to process an event, but previous event has not been terminated"<<endmsg;
+  if (!m_prevEventTerminated) {
+    m_log << MSG::ERROR << "Trying to process an event, but previous event has not been terminated" << endmsg;
     return StatusCode::FAILURE;
   }
   G4RunManager::currentEvent = &aEvent;
@@ -36,8 +37,8 @@ StatusCode RunManager::processEvent(G4Event& aEvent) {
 }
 
 StatusCode RunManager::retrieveEvent(G4Event*& aEvent) {
-  if(m_prevEventTerminated) {
-    m_log<<MSG::ERROR<<"Trying to retrieve an event, but no event has been processed by Geant"<<endmsg;
+  if (m_prevEventTerminated) {
+    m_log << MSG::ERROR << "Trying to retrieve an event, but no event has been processed by Geant" << endmsg;
     return StatusCode::FAILURE;
   }
   aEvent = const_cast<G4Event*>(G4RunManager::GetCurrentEvent());
@@ -45,15 +46,13 @@ StatusCode RunManager::retrieveEvent(G4Event*& aEvent) {
 }
 
 StatusCode RunManager::terminateEvent() {
-  if(m_prevEventTerminated) {
-    m_log<<MSG::ERROR<<"Trying to terminate an event, but no event has been processed by Geant"<<endmsg;
+  if (m_prevEventTerminated) {
+    m_log << MSG::ERROR << "Trying to terminate an event, but no event has been processed by Geant" << endmsg;
     return StatusCode::FAILURE;
   }
   G4RunManager::TerminateOneEvent();
   m_prevEventTerminated = true;
   return StatusCode::SUCCESS;
 }
-void RunManager::finalize() {
-  G4RunManager::RunTermination();
-}
+void RunManager::finalize() { G4RunManager::RunTermination(); }
 }
