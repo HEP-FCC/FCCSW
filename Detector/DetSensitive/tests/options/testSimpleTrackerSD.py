@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import GenAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
+from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 1, # GeV

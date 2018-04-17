@@ -4,7 +4,6 @@
 
 #include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
-#include "GaudiKernel/ParticleProperty.h"
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/SystemOfUnits.h"
 

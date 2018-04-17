@@ -13,11 +13,6 @@ pgun = MomentumRangeParticleGun("PGun",
 gen = GenAlg("ParticleGun", SignalProvider=pgun, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-## Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
@@ -63,5 +58,5 @@ out.outputCommands = ["keep *"]
 ApplicationMgr(EvtSel='NONE',
                EvtMax=1,
                TopAlg=[gen, hepmc_converter, geantsim, merge, out],
-               ExtSvc = [podiosvc, geoservice, geantservice, ppservice],
+               ExtSvc = [podiosvc, geoservice, geantservice,],
                OutputLevel=DEBUG)

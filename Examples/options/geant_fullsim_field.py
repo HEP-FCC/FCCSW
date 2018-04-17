@@ -14,12 +14,6 @@ pgun_tool = MomentumRangeParticleGun(PdgCodes=[13])
 gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-# Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc(
-    "ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc
@@ -40,12 +34,13 @@ from Configurables import SimG4Svc, SimG4FullSimActions
 actions = SimG4FullSimActions()
 actions.enableHistory=True
 # giving the names of tools will initialize the tools of that type
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
-                        physicslist="SimG4FtfpBert", actions=actions)
-
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool(
     "SimG4ConstantMagneticFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4")
+
+geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector',
+                        physicslist="SimG4FtfpBert", actions=actions, magneticField=field)
+
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs
@@ -65,8 +60,8 @@ savehisttool.genVertices.Path = "simVertices"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs=["SimG4SaveTrackerHits/saveTrackerHits",
-                             "SimG4SaveParticleHistory/saveHistory",
+                    outputs=[savetrackertool,
+                             savehisttool,
                              ],
                     eventProvider=particle_converter)
 
@@ -83,6 +78,6 @@ ApplicationMgr(TopAlg=[gen, hepmc_converter, geantsim, out],
                EvtSel='NONE',
                EvtMax=2,
                # order is important, as GeoSvc is needed by SimG4Svc
-               ExtSvc=[ppservice, podioevent, geoservice, geantservice],
+               ExtSvc=[podioevent, geoservice, geantservice],
                OutputLevel=DEBUG
                )

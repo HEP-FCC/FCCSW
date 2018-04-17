@@ -47,9 +47,6 @@ gaudi_add_test(ReadFullSimTrackerHits
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_pgun_fullsim.py)
-gaudi_add_test(GeantFullSimMinBias
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/min_bias_pool.py)
 gaudi_add_test(GeantFastSimTrackerECalGFlash
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fastsim.py)

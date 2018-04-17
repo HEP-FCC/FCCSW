@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import GenAlg, MomentumRangeParticleGun, Gaudi__ParticlePropertySvc
+from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
                                 PdgCodes=[11], # electron
                                 MomentumMin = 1, # GeV
@@ -11,7 +11,6 @@ pgun = MomentumRangeParticleGun("PGun",
                                 PhiMax = 1.6) # rad
 gen = GenAlg("ParticleGun", SignalProvider=pgun)
 gen.hepmc.Path = "hepmc"
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="../../../Generation/data/ParticleTable.txt")
 
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter("Converter")
@@ -57,6 +56,6 @@ ApplicationMgr( TopAlg = [gen, hepmc_converter, hepmc_dump, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podiosvc, ppservice, geoservice, geantservice],
+                ExtSvc = [podiosvc, geoservice, geantservice],
                 OutputLevel=DEBUG
  )
