@@ -1,8 +1,8 @@
 <detectors>
     <detector name="InnerBRL" id="BarTrackerInner_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
-        <dimensions rmin="26.068*mm" rmax="475.828*mm" zmin="-1770.969*mm" zmax="1770.969*mm"/>
+        <dimensions rmin="26.068*mm" rmax="260.828*mm" zmin="-850.969*mm" zmax="850.969*mm"/>
         <sensitive type="SimpleTrackerSD"/>
-        <layers repeat="7">
+        <layers repeat="5">
             <layer id="1" radius="30.307*mm" rmin="26.068*mm" rmax="35.376*mm" bigDelta="1.000*mm" phi0="1.570796*rad">
                 <rods repeat="14" smallDelta="0.000*mm" rPhiOverlap="0.500*mm" zOverlap="1.250*mm" nModules="20">
                     <rodOdd id="1">
@@ -581,7 +581,13 @@
                     </rodEvenTilted>
                 </rods>
             </layer>
-            <layer id="6" radius="320.000*mm" rmin="264.573*mm" rmax="376.299*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+          </layers>
+        </detector>
+    <detector name="OuterBRL" id="BarTrackerOuter_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
+        <dimensions rmin="263.068*mm" rmax="475.828*mm" zmin="-1770.969*mm" zmax="1770.969*mm"/>
+        <sensitive type="SimpleTrackerSD"/>
+        <layers repeat="2">
+            <layer id="1" radius="320.000*mm" rmin="264.573*mm" rmax="376.299*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
                 <rods repeat="54" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" zOverlap="1.000*mm" nModules="14">
                     <rodOdd id="1">
                         <modules>
@@ -679,7 +685,7 @@
                     </rodEvenTilted>
                 </rods>
             </layer>
-            <layer id="7" radius="420.000*mm" rmin="364.862*mm" rmax="475.828*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="2" radius="420.000*mm" rmin="364.862*mm" rmax="475.828*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
                 <rods repeat="54" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" zOverlap="1.000*mm" nModules="18">
                     <rodOdd id="1">
                         <modules>
