@@ -48,7 +48,7 @@ public:
    *   @return list of seed cells to build proto-clusters.
    */
   virtual void findingSeeds(const std::map<uint64_t, double>& allCells, int nSigma,
-                            std::vector<std::pair<uint64_t, double>>& seeds);
+                            std::vector<std::pair<uint64_t, double> >& seeds);
   /** Build proto-clusters
    */
   virtual void buildingProtoCluster(int nSigma,

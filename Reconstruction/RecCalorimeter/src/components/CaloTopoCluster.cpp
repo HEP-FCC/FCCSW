@@ -110,7 +110,7 @@ StatusCode CaloTopoCluster::execute() {
     double posY = 0.;
     double posZ = 0.;
     double energy = 0.;
-    int system = 0;
+    std::map<int,int> system;
 
     for (auto pair : i.second) {
       auto cellId = pair.first;
@@ -125,8 +125,7 @@ StatusCode CaloTopoCluster::execute() {
       // identify calo system
       m_decoder->setValue(cellId);
       auto systemId = (*m_decoder)["system"].value();
-      if (system != systemId && system != 0) clusterWithMixedCells++;
-      system = systemId;
+      system[int(systemId)]++;
       dd4hep::Position posCell;
       if (systemId == 5)  // ECAL BARREL system id
         posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
@@ -160,9 +159,11 @@ StatusCode CaloTopoCluster::execute() {
     checkTotEnergy += clusterCore.energy;
 
     edmClusters->push_back(cluster);
+    if (system.size() > 1)
+      clusterWithMixedCells++;
   }
   m_clusterCellsCollection.put(edmClusterCells);
-  info() << "Number of clusters will cells in E and HCal:        " << clusterWithMixedCells << endmsg;
+  info() << "Number of clusters with cells in E and HCal:        " << clusterWithMixedCells << endmsg;
   info() << "Total energy of clusters:                                      " << checkTotEnergy << endmsg;
   info() << "Leftover cells :                                                     " << m_allCells.size() << endmsg;
   return StatusCode::SUCCESS;
@@ -170,12 +171,14 @@ StatusCode CaloTopoCluster::execute() {
 
 void CaloTopoCluster::findingSeeds(const std::map<uint64_t, double>& cells,
                                    int nSigma,
-                                   std::vector<std::pair<uint64_t, double>>& seeds) {
+                                   std::vector<std::pair<uint64_t, double> >& seeds) {
   for (const auto& cell : cells) {
-    // retrieve the noise const assigned to cell
+    // retrieve the noise const and offset assigned to cell
     double threshold = (m_noiseTool->noiseOffset(cell.first) + ( m_noiseTool->noiseRMS(cell.first) * nSigma) ) / dd4hep::MeV;
+    debug() << "noise offset    = " << m_noiseTool->noiseOffset(cell.first)/ dd4hep::MeV << "MeV " << endmsg;
+    debug() << "noise rms       = " << m_noiseTool->noiseRMS(cell.first)/ dd4hep::MeV << "MeV " << endmsg;
     debug() << "seed threshold  = " << threshold << "MeV " << endmsg;
-    if (abs(cell.second) / dd4hep::MeV > threshold) {  // seed threshold is set to 4*Sigma
+    if (abs(cell.second) / dd4hep::MeV > threshold) {
       seeds.emplace_back(cell.first, cell.second);
     }
   }
@@ -206,7 +209,7 @@ void CaloTopoCluster::buildingProtoCluster(
     } else {
       // new cluster starts with seed
       // set cell Bits to 0 for seed cell
-      preClusterCollection[iSeeds].push_back(std::make_pair(seedId, 0));
+      preClusterCollection[iSeeds].push_back(std::make_pair(seedId, 1));
       uint clusterId = iSeeds;
       clusterOfCell[seedId] = clusterId;
 
@@ -220,20 +223,25 @@ void CaloTopoCluster::buildingProtoCluster(
       while (N2[it].size() > 0) {
         it++;
         for (auto& id : N2[it - 1]) {
-          debug() << "Next neighbours assigned to clusterId : " << id.second << endmsg;
+          debug() << "Next neighbours assigned to clusterId : " << clusterId << endmsg;
           N2[it] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, nSigma, allCells, clusterOfCell,
                                                         preClusterCollection, true);
         }
         debug() << "Found " << N2[it].size() << " more neighbours.." << endmsg;
       }
-      // last try without condition on neighbours
+      // last try with different condition on neighbours
       if (N2[it].size() == 0) {
-	for (auto& id : N2[it-1]) {
-	  debug() << "Add neighbours of " << id.first << " in last round with thr = " << lastNSigma << "Sigma." << endmsg;
-	  N2[it] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, lastNSigma, allCells, clusterOfCell,
-							preClusterCollection, false);
-	  continue;
+	std::vector<std::pair<uint64_t, uint>> vecToLoop;
+	if (it == 0)
+	  vecToLoop = N1;
+	else
+	  vecToLoop = N2[it - 1];
+	for (auto& id : vecToLoop) {
+	  debug() << "Add neighbours of " << id.first << " in last round with thr = " << lastNSigma << " x sigma." << endmsg;
+	  auto lastNeighours = CaloTopoCluster::searchForNeighbours(id.first, clusterId, lastNSigma, allCells, clusterOfCell,
+								    preClusterCollection, false);
 	}
+	continue;
       }
     }
   }
@@ -269,11 +277,14 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
         debug() << "Found neighbour with CellID: " << neighbourID << endmsg;
         auto neighbouringCellEnergy = itAllCells->second;
         bool validatedNeighbour = false;
-        if (nSigma == 0)  // no condition to be checked for neighbour
+	int cellType = 2;
+        if (nSigma == 0){  // no condition to be checked for neighbour
           validatedNeighbour = true;
+	  cellType = 3;
+	}
         else {
           // retrieve the cell noise level [GeV]
-          double thr = (nSigma * m_noiseTool->noiseRMS(neighbourID)) + m_noiseTool->noiseOffset(neighbourID);
+          double thr = m_noiseTool->noiseOffset(neighbourID) + (nSigma * m_noiseTool->noiseRMS(neighbourID));
           if (abs(neighbouringCellEnergy) > thr)
             validatedNeighbour = true;
           else
@@ -283,8 +294,8 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
         if (validatedNeighbour) {
           // retrieve the cell
           // add neighbour to cells for cluster
-          // set Bits to 1 for neighbour cell
-          preClusterCollection[clusterID].push_back(std::make_pair(neighbourID, 1));
+          // set Bits to 2 for neighbour cell
+          preClusterCollection[clusterID].push_back(std::make_pair(neighbourID, cellType));
           clusterOfCell[neighbourID] = clusterID;
           addedNeighbourIds.push_back(std::make_pair(neighbourID, clusterID));
         }
