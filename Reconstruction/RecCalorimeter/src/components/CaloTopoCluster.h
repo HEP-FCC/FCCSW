@@ -62,7 +62,8 @@ public:
   std::vector<std::pair<uint64_t, uint>>
   searchForNeighbours(const uint64_t id, uint& clusterID, int nSigma, const std::map<uint64_t, double>& allCells,
                       std::map<uint64_t, uint>& clusterOfCell,
-                      std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection);
+                      std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection,
+		      bool allowClusterMerge);
   StatusCode execute();
 
   StatusCode finalize();

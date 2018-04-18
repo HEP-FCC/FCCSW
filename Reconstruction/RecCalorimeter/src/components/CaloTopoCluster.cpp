@@ -212,7 +212,7 @@ void CaloTopoCluster::buildingProtoCluster(
 
       std::vector<std::vector<std::pair<uint64_t, uint>>> N2(100000);
       auto N1 = CaloTopoCluster::searchForNeighbours(seedId, clusterId, nSigma, allCells, clusterOfCell,
-                                                     preClusterCollection);
+                                                     preClusterCollection, true);
       // first loop over seeds neighbours
       N2[0] = N1;
       debug() << "Found " << N2[0].size() << " neighbours.." << endmsg;
@@ -222,14 +222,18 @@ void CaloTopoCluster::buildingProtoCluster(
         for (auto& id : N2[it - 1]) {
           debug() << "Next neighbours assigned to clusterId : " << id.second << endmsg;
           N2[it] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, nSigma, allCells, clusterOfCell,
-                                                        preClusterCollection);
+                                                        preClusterCollection, true);
         }
         debug() << "Found " << N2[it].size() << " more neighbours.." << endmsg;
       }
       // last try without condition on neighbours
-      for (auto& id : N2[it]) {
-        N2[it + 1] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, lastNSigma, allCells, clusterOfCell,
-                                                          preClusterCollection);
+      if (N2[it].size() == 0) {
+	for (auto& id : N2[it-1]) {
+	  debug() << "Add neighbours of " << id.first << " in last round with thr = " << lastNSigma << "Sigma." << endmsg;
+	  N2[it] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, lastNSigma, allCells, clusterOfCell,
+							preClusterCollection, false);
+	  continue;
+	}
       }
     }
   }
@@ -241,7 +245,8 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
                                      int nSigma,
                                      const std::map<uint64_t, double>& allCells,
                                      std::map<uint64_t, uint>& clusterOfCell,
-                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection) {
+                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& preClusterCollection,
+				     bool allowClusterMerge) {
   // Fill vector to be returned, next cell ids and cluster id for which neighbours are found
   std::vector<std::pair<uint64_t, uint>> addedNeighbourIds;
   // Retrieve cellIds of neighbours
@@ -285,7 +290,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t id,
         }
       }
       // If cell is hit.. but is assigned to another cluster
-      else if (itAllUsedCells != clusterOfCell.end() && itAllUsedCells->second != clusterID) {
+      else if (itAllUsedCells != clusterOfCell.end() && itAllUsedCells->second != clusterID && allowClusterMerge) {
         uint clusterIDToMerge = itAllUsedCells->second;
         debug() << "This neighbour was found in cluster " << clusterIDToMerge << ", cluster " << clusterID
                 << " will be merged!" << endmsg;
