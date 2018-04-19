@@ -84,6 +84,7 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
 
   double bathRmin = caloDim.rmin(); // - margin for inclination
   double bathRmax = caloDim.rmax(); // + margin for inclination
+  dd4hep::Tube bathOuterShape(bathRmin, bathRmax, caloDim.dz()); // make it 4 volumes + 5th for detector envelope
   dd4hep::Tube bathAndServicesOuterShape(cryoDim.rmin2(), cryoDim.rmax1(), caloDim.dz()); // make it 4 volumes + 5th for detector envelope
   if (cryoThicknessFront > 0) {
     // 1. Create cryostat
