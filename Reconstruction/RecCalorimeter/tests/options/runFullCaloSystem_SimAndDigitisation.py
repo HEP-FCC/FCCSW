@@ -107,7 +107,7 @@ calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.66"
 from Configurables import CalibrateInLayersTool
 calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                   samplingFraction = [0.299041341789] + [0.1306220735]+ [0.163243999965]  + [0.186360269398] + [0.203778124831] + [0.216211280314] + [0.227140796653] + [0.243315422934]
+                                   samplingFraction = [0.299041341789] + [0.1306220735]+ [0.163243999965]  + [0.186360269398] + [0.203778124831] + [0.216211280314] + [0.227140796653] + [0.243315422934],
                                    readoutName = ecalBarrelReadoutName,
                                    layerFieldName = "layer")
 
