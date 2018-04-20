@@ -115,23 +115,3 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
 
   return m_inputMap;
 }
-
-fcc::CaloHit CaloTopoClusterInputTool::cellByCellId(uint64_t cellId) {
-  // 1. get system id from cellid
-  m_decoder->setValue(cellId);
-  auto system = (*m_decoder)["system"].value();
-  debug() << "System ID: " << system << endmsg;
-
-  fcc::CaloHit cell;
-  // 1. ECAL barrel
-  if(system == 5) {
-    const fcc::CaloHitCollection* ecalBarrelCells = m_ecalBarrelCells.get();
-    for (const auto& iCell : *ecalBarrelCells) {
-      auto iCellId = iCell.cellId();
-      if (cellId == iCellId) { // found CellId from preClustering in input CellCollection
-	cell = iCell;
-      }
-    }
-  }
-  return cell;
-}

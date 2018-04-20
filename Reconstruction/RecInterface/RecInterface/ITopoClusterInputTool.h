@@ -19,8 +19,6 @@ public:
   DeclareInterfaceID(ITopoClusterInputTool, 1, 0);
 
   virtual std::map<uint64_t, double> cellIdMap() = 0;
-
-  virtual fcc::CaloHit cellByCellId(uint64_t cellId) = 0;
  };
 
 #endif /* RECINTERFACE_ITOPOCLUSTERINPUTTOOL_H */

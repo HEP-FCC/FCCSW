@@ -84,7 +84,7 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           (*decoder)["eta"] = ieta + numCells[2];  // start from the minimum existing eta cell in this layer
           uint64_t cellId = decoder->getValue();
 	  double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
- 	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
+ 	  double noiseOffset = m_ecalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
          // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
           //double noise = 0.0075 / 4.;
           map.insert( std::pair<uint64_t, std::pair<double, double> >(cellId, std::make_pair(noise, noiseOffset) ) );

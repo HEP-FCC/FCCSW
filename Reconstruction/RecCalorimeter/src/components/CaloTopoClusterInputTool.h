@@ -55,8 +55,6 @@ public:
  
   virtual std::map<uint64_t, double> cellIdMap() final;
 
-  virtual fcc::CaloHit cellByCellId(uint64_t) final;
-
 private:
   /// Handle for electromagnetic barrel cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_ecalBarrelCells{"ecalBarrelCells", Gaudi::DataHandle::Reader, this};

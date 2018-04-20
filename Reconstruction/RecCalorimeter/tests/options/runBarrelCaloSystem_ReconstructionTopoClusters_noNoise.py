@@ -116,7 +116,7 @@ createTopoClusters = CaloTopoCluster("CreateTopoClusters",
                                      seedSigma = 4,
                                      neighbourSigma = 0,
                                      lastNeighbourSigma = 0,
-                                     OutputLevel = INFO)
+                                     OutputLevel = DEBUG)
 createTopoClusters.clusters.Path = "caloClustersBarrel"
 createTopoClusters.clusterCells.Path = "caloClusterBarrelCells"
 
@@ -159,5 +159,5 @@ ApplicationMgr(
     EvtSel = 'NONE',
     EvtMax   = 3,
     ExtSvc = [geoservice, podioevent, audsvc],
-#    OutputLevel=DEBUG
+#    OutputLevel=VERBOSE
 )

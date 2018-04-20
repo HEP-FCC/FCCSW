@@ -241,7 +241,6 @@ void CaloTopoCluster::buildingProtoCluster(
 	  auto lastNeighours = CaloTopoCluster::searchForNeighbours(id.first, clusterId, lastNSigma, allCells, clusterOfCell,
 								    preClusterCollection, false);
 	}
-	continue;
       }
     }
   }
