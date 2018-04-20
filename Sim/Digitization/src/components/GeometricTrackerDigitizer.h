@@ -47,6 +47,7 @@ class IRndmGenSvc;
 
 namespace sim {
 class FCCDigitizationCell;
+class FCCPlanarCluster;
 }
 
 class GeometricTrackerDigitizer : public GaudiAlgorithm {
@@ -73,9 +74,7 @@ private:
   /// the collection cluster trackhits
   DataHandle<fcc::TrackHitCollection> m_trackHits{"clusterTrackHits", Gaudi::DataHandle::Writer, this};
   /// the collection of output single particle clusters [optional]
-  DataHandle<fcc::TrackClusterCollection> m_singleTrackClusters{"singleTrackClusters", Gaudi::DataHandle::Writer, this};
-  /// the collection of output single particle cluster track hits [optional]
-  DataHandle<fcc::TrackHitCollection> m_singleTrackHits{"singleClusterTrackHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<sim::FCCPlanarCluster> m_planarClusterHandle{"planarClusters", Gaudi::DataHandle::Writer, this};
   /// Handle to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle to the tracking geometry service

@@ -41,10 +41,8 @@ GeometricTrackerDigitizer::GeometricTrackerDigitizer(const std::string& name, IS
   declareProperty("digiTrackHitAssociation", m_digiTrackHitAssociation, "Handle for input digiTrackHitAssociation");
   declareProperty("trackClusters", m_trackClusters, "Handle for output clusters");
   declareProperty("clusterTrackHits", m_trackHits, "Handle for output hits belonging to the clusters");
-  declareProperty("singleTrackClusters", m_singleTrackClusters,
-                  "Handle for single particle output clusters [optional]");
-  declareProperty("singleClusterTrackHits", m_singleTrackHits,
-                  "Handle for output hits belonging to the single particle clusters [optional]");
+  declareProperty("planarClusters", m_planarClusterHandle,
+                  "Handle to sim::FCCPlanarCluster needed to possibly write out additional information for studies");
 }
 
 StatusCode GeometricTrackerDigitizer::initialize() {
@@ -241,6 +239,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
     surfaceID = dd4hepDetElement.volumeID();
     // get the segmentation
     const Acts::Segmentation& segmentation = hitDigitizationModule->segmentation();
+    const Acts::BinUtility& binUtility = segmentation.binUtility();
     // merge cells
     // @ todo apply energy cut
     auto mergedCells = mergeCells(surf.second);
@@ -299,6 +298,23 @@ StatusCode GeometricTrackerDigitizer::execute() {
       trackCluster.core().energy = clusterEnergy;
       trackCluster.core().time = clusterTime;
       /// ----------- Create Acts cluster - possibly to be written out -----------
+      /// ----------- Create unique Acts global channel identifier -----------
+      // get the bins of the local position to create channel identifier for this surface
+      size_t bin0 = binUtility.bin(localPosition, 0);
+      size_t bin1 = binUtility.bin(localPosition, 1);
+      size_t binSerialized = binUtility.serialize({bin0, bin1, 0});
+      // get the surface identifier
+      Acts::GeometryID geoID(hitSurface.geoID());
+      // create the unique global channel identifier by adding to surface identifier
+      geoID.add(binSerialized, Acts::GeometryID::channel_mask);
+      // the covariance is currently set to 0.
+      // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
+      Acts::ActsSymMatrixD<2> cov;
+      cov << 0., 0., 0., 0.;
+
+      m_planarClusterHandle.put(new sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster.size(), hitSurface,
+                                                          Identifier(geoID.value()), std::move(cov), localX, localY,
+                                                          std::move(cells)));
     }
   }
   return StatusCode::SUCCESS;
@@ -339,7 +355,7 @@ GeometricTrackerDigitizer::mergeCells(std::vector<sim::FCCDigitizationCell>& cel
   }      // cellsA
 
   std::vector<size_t> component(num_vertices(graph));
-  size_t num = connected_components(graph, &component[0]);
+  connected_components(graph, &component[0]);
   // copy the component map
   std::vector<size_t> keys = component;
   // sort
