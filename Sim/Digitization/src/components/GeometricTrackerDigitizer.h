@@ -25,6 +25,9 @@
  * common edge (default) or even if they already share a common corner.
  * For analysis reasons one can also write out the single particle clusters (Turned off per default).
  *
+ * @todo implement energy cut with next ACTS release (when digitization module knows about it)
+ * @todo implement analogue/digital readout per module for next ACTS release
+ *
  *  @author Julia Hrdinka
  *  @date   2017-04
  */
@@ -78,13 +81,15 @@ private:
   /// Handle to the tracking geometry service
   ServiceHandle<ITrackingGeoSvc> m_trkGeoSvc;
   /// Inefficiency for full hits
-  Gaudi::Property<double> m_hitInefficiency{this, "hitInefficiency", 0.01, "The hit inefficiency."};
+  Gaudi::Property<double> m_hitInefficiency{this, "hitInefficiency", 0.00, "The hit inefficiency."};
   /// Cut parameter - percentage of thickness to be traversed
-  Gaudi::Property<double> m_cutParameter{this, "cutParameter", 0.,
+  Gaudi::Property<double> m_cutParameter{this, "cutParameter", 0.0,
                                          "Cut parameter - percentage of thickness to be traversed."};
   /// amount of smearing
   Gaudi::Property<double> m_smearParameter{this, "smearParameter", 0.1,
                                            "Amount of smearing - accounts for n % gaussian width."};
+  /// maximum incidence angle cut-off
+  Gaudi::Property<double> m_cosThetaLocMin{this, "cosThetaLocMin", 0.0, "Maximum incidence angle cut-off."};
   /// flag indicating if analog readout should be used (default is digital)
   Gaudi::Property<bool> m_analogReadout{
       this, "analogReadout", false,
@@ -92,12 +97,13 @@ private:
   /// flag indicating if cells having a common corner should be merged to a cluster (default: clusters sharing common
   /// edge)
   Gaudi::Property<bool> m_commonCorner{
-      this, "commonCorner", false, "This flag should be turned on in cells having a common corner should be merged to "
-                                   "a cluster. Per default merging of cells only happens when having a common edge."};
+      this, "commonCorner", true,
+      "This flag should be turned off if cells having a common corner should not be merged to "
+      "a cluster and only cells sharing a common edge should be in the same cluster."};
   /// flag indicating if single particle clusters should be written out
-  Gaudi::Property<bool> m_singleParticleClusters{
-      this, "singleParticleClusters", false,
-      "This flag should be turned on case single particle clusters should be written to the edm."};
+  Gaudi::Property<bool> m_fastSimInterface{
+      this, "fastSimInterface", false,
+      "This flag should be turned on in case fast simulation (creating just one hit per sensitive module) is used."};
   /// The volume manager
   dd4hep::VolumeManager m_volumeManager;
   /// The planar module stepper needed to step thorugh the module
@@ -111,17 +117,8 @@ private:
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
 
-  /// Private method collecting all hits of the current event per surface
-  /// @param hits Collection of track hits + digi information
-  /// @return Map of surfaces and their corresponding hits
-  const std::map<long long int, fcc::DigiTrackHitAssociationCollection>
-  collectHitsOnSurface(const fcc::DigiTrackHitAssociationCollection& hits) const;
-
-  /// Private method to merge the produced Geant4 hits of one partile into one hit per surface
-  /// @param hitsPerSurface map of surfaces and their corresponding hits
-  /// @return The updated track hits collection
-  const fcc::DigiTrackHitAssociationCollection
-  mergeHits(const std::map<long long int, fcc::DigiTrackHitAssociationCollection>& hitsPerSurface) const;
+  const std::vector<sim::FCCDigitizationCell> mergeCells(std::vector<sim::FCCDigitizationCell>& cells,
+                                                         double energyCut = 1000. * (3.62e-9)) const;
 
   /// Private method creating clusters out of digitization cells
   /// @param cells All digitization cells
@@ -131,7 +128,7 @@ private:
   /// represents one cluster; for each cluster there is one vector of cells of which it is composed of)
   /// @note This function internally uses the boost implementation of the connected components algorithm
   const std::vector<std::vector<sim::FCCDigitizationCell>>
-  createClusters(const std::vector<sim::FCCDigitizationCell>& cells, bool commonCorner = false) const;
+  createClusters(const std::vector<sim::FCCDigitizationCell>& cells) const;
 };
 
 #endif  // DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H
