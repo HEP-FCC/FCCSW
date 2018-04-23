@@ -70,14 +70,14 @@
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
       <cryostat name="ECAL_Cryo">
         <material name="Aluminum"/>
-	<dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
-	<front sensitive="false"/> <!-- inner wall of the cryostat -->
-	<side sensitive="false"/> <!-- both sides of the cryostat -->
-	<back sensitive="false"/> <!-- outer wall of the cryostat -->
+	      <dimensions rmin1="BarCryoECal_rmin" rmin2="BarCryoECal_rmin+CryoThicknessFront" rmax1="BarCryoECal_rmax-CryoThicknessBack" rmax2="BarCryoECal_rmax" dz="BarCryoECal_dz"/>
+	      <front sensitive="false"/> <!-- inner wall of the cryostat -->
+	      <side sensitive="false"/> <!-- both sides of the cryostat -->
+	      <back sensitive="false"/> <!-- outer wall of the cryostat -->
       </cryostat>
       <calorimeter name="EM_barrel">
-	<dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-50/180*pi"/>
-	<active thickness="LAr_thickness">
+	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-50/180*pi"/>
+	      <active thickness="LAr_thickness">
           <material name="LAr"/>
           <overlap offset="0.5"/>
         </active>
