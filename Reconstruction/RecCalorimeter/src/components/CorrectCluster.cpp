@@ -14,11 +14,17 @@
 #include "datamodel/CaloClusterCollection.h"
 #include "datamodel/CaloHitCollection.h"
 
+// Root
+#include "TFile.h"
+
 DECLARE_ALGORITHM_FACTORY(CorrectCluster)
 
 CorrectCluster::CorrectCluster(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc),
   m_histSvc("THistSvc", "CorrectCluster"),
-  m_geoSvc("GeoSvc", "CorrectCluster") {
+  m_geoSvc("GeoSvc", "CorrectCluster"),
+  m_hEnergyPreAnyCorrections(nullptr),
+  m_hEnergyPostAllCorrections(nullptr),
+  m_hPileupEnergy(nullptr){
   declareProperty("clusters", m_inClusters, "Input clusters (input)");
   declareProperty("correctedClusters", m_correctedClusters, "Corrected clusters (output)");
 
@@ -57,6 +63,24 @@ StatusCode CorrectCluster::initialize() {
       return StatusCode::FAILURE;
     }
     m_decoder[m_systemId[iSys]] = m_geoSvc->lcdd()->readout(m_readoutName[iSys]).idSpec().decoder();
+  }
+  // Initialize random service
+  if (service("RndmGenSvc", m_randSvc).isFailure()) {
+    error() << "Couldn't get RndmGenSvc!!!!" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  m_gauss.initialize(m_randSvc, Rndm::Gauss(0., 1.));
+
+  // open and check file, read the histograms with noise constants
+  if (initNoiseFromFile().isFailure()) {
+    error() << "Couldn't open file with noise constants!!!" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  // create control histograms
+  m_hPileupEnergy = new TH1F("pileupCorrectionEnergy", "Energy added to a cluster as a correction for correlated noise", 1000, -10, 10);
+  if (m_histSvc->regHist("/rec/pileupCorrectionEnergy", m_hPileupEnergy).isFailure()) {
+    error() << "Couldn't register histogram" << endmsg;
+    return StatusCode::FAILURE;
   }
   return StatusCode::SUCCESS;
 }
@@ -132,6 +156,12 @@ StatusCode CorrectCluster::execute() {
     newCluster.core().position.y = radius * sin(phi);
     newCluster.core().position.z = radius * sinh(newEta);
 
+    // 2. Correct energy for pileup noise
+    uint numCells = newCluster.hits_size();
+    double noise = getNoiseConstantPerCluster(newEta, numCells) * m_gauss.shoot();
+    newCluster.core().energy += noise;
+    m_hPileupEnergy->Fill(noise);
+
     // Fill histograms
     m_hEnergyPreAnyCorrections->Fill(cluster.core().energy);
     m_hEnergyPostAllCorrections->Fill(newCluster.core().energy);
@@ -140,3 +170,69 @@ StatusCode CorrectCluster::execute() {
 }
 
 StatusCode CorrectCluster::finalize() { return GaudiAlgorithm::finalize(); }
+
+StatusCode CorrectCluster::initNoiseFromFile() {
+  // check if file exists
+  if (m_noiseFileName.empty()) {
+    error() << "Name of the file with noise values not set" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  TFile file(m_noiseFileName.value().c_str(), "READ");
+  if (file.IsZombie()) {
+    error() << "Couldn't open the file with noise constants" << endmsg;
+    return StatusCode::FAILURE;
+  } else {
+    info() << "Opening the file with noise constants: " << m_noiseFileName << endmsg;
+  }
+
+  std::string pileupParamHistoName;
+  // Read the histograms with parameters for the pileup noise from the file
+  for (unsigned i = 0; i < 2; i++) {
+    pileupParamHistoName = m_pileupHistoName + std::to_string(i);
+    debug() << "Getting histogram with a name " << pileupParamHistoName << endmsg;
+    m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file.Get(pileupParamHistoName.c_str())));
+    if (m_histoPileupConst.at(i).GetNbinsX() < 1) {
+      error() << "Histogram  " << pileupParamHistoName
+              << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+  }
+
+  // Check if we have same number of histograms (all layers) for pileup and electronics noise
+  if (m_histoPileupConst.size() == 0) {
+    error() << "No histograms with noise found!!!!" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  return StatusCode::SUCCESS;
+}
+
+double CorrectCluster::getNoiseConstantPerCluster(double aEta, uint aNumCells) {
+  double param0 = 0.;
+  double param1 = 0.;
+
+  // All histograms have same binning, all bins with same size
+  // Using the histogram of the first parameter to get the bin size
+  unsigned index = 0;
+  if (m_histoPileupConst.size() != 0) {
+    int Nbins = m_histoPileupConst.at(index).GetNbinsX();
+    double deltaEtaBin =
+      (m_histoPileupConst.at(index).GetBinLowEdge(Nbins) + m_histoPileupConst.at(index).GetBinWidth(Nbins) -
+       m_histoPileupConst.at(index).GetBinLowEdge(1)) /
+      Nbins;
+    double etaFirtsBin = m_histoPileupConst.at(index).GetBinLowEdge(1);
+    // find the eta bin for the cell
+    int ibin = floor((fabs(aEta) - etaFirtsBin) / deltaEtaBin) + 1;
+    if (ibin > Nbins) {
+      debug() << "eta outside range of the histograms! Cell eta: " << aEta << " Nbins in histogram: " << Nbins
+              << endmsg;
+      ibin = Nbins;
+    }
+    param0 = m_histoPileupConst.at(0).GetBinContent(ibin);
+    param1 = m_histoPileupConst.at(1).GetBinContent(ibin);
+  } else {
+    debug() << "No histograms with noise constants!!!!! " << endmsg;
+  }
+  double pileupNoise = param0 * pow(aNumCells, param1);
+
+  return pileupNoise;
+}

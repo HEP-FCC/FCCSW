@@ -3,7 +3,9 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+#include "GaudiKernel/RndmGenerators.h"
 class IGeoSvc;
+class IRndmGenSvc;
 class ITHistSvc;
 
 // Gaudi
@@ -47,6 +49,16 @@ public:
   StatusCode finalize();
 
 private:
+  /** Open file and read noise histograms in the memory
+   *  @return Status code if retriving histograms was successful
+   */
+  StatusCode initNoiseFromFile();
+  /** Find the appropriate noise constant from the histogram
+   *  @param[in] aEta Pseudorapidity value of the centre of the cluster
+   *  @param[in] aNumCells Number of cells in a cluster
+   *  @return Width of the Gaussian distribution of noise per cluster
+   */
+  double getNoiseConstantPerCluster(double aEta, uint numCells);
   /// Handle for clusters (input collection)
   DataHandle<fcc::CaloClusterCollection> m_inClusters{"clusters", Gaudi::DataHandle::Reader, this};
   /// Handle for corrected clusters (output collection)
@@ -77,6 +89,18 @@ private:
   std::map<uint, dd4hep::DDSegmentation::FCCSWGridPhiEta*> m_segmentation;
   /// map of system Id to decoder, created based on m_readoutName and m_systemId
   std::map<uint, dd4hep::DDSegmentation::BitField64*> m_decoder;
+  /// Histogram of pileup noise added to energy of clusters
+  TH1F* m_hPileupEnergy;
+  /// Random Number Service
+  IRndmGenSvc* m_randSvc;
+  /// Gaussian random number generator used for the generation of random noise hits
+  Rndm::Numbers m_gauss;
+  /// Name of the file with noise constants
+  Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "TestPileup_Cluster_mu200_700files.root", "Name of the file with noise constants"};
+  /// Name of pileup histogram
+  Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "histFitToClusterDependence_Measured_p", "Name of pileup histogram"};
+  /// Histograms with pileup constants (index in array - radial layer)
+  std::vector<TH1F> m_histoPileupConst;
 };
 
 #endif /* RECCALORIMETER_CORRECTCLUSTER_H */
