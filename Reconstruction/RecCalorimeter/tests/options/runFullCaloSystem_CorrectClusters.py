@@ -26,10 +26,8 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 podioevent = FCCDataSvc("EventDataSvc", input="output_allCalo_reco.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", 
-                        collections = ["CaloClusters",# ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName, 
-                                       # hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName
-                        ], 
+podioinput = PodioInput("PodioReader",
+                        collections = ["CaloClusters"],
                         OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
@@ -49,6 +47,12 @@ correct = CorrectCluster("corr", clusters="CaloClusters",correctedClusters="Calo
 out = PodioOutput("out", filename="output_allCalo_correction.root",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+
+THistSvc().Output = ["rec DATAFILE='clusterCorrections_histograms.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().PrintAll=True
+THistSvc().AutoSave=True
+THistSvc().AutoFlush=False
+THistSvc().OutputLevel=INFO
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
