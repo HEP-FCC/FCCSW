@@ -73,8 +73,9 @@ private:
   DataHandle<fcc::TrackClusterCollection> m_trackClusters{"trackClusters", Gaudi::DataHandle::Writer, this};
   /// the collection cluster trackhits
   DataHandle<fcc::TrackHitCollection> m_trackHits{"clusterTrackHits", Gaudi::DataHandle::Writer, this};
-  /// the collection of output single particle clusters [optional]
-  DataHandle<sim::FCCPlanarCluster> m_planarClusterHandle{"planarClusters", Gaudi::DataHandle::Writer, this};
+  /// the handle to the output planar clusters which can be used for studies
+  DataHandle<std::vector<sim::FCCPlanarCluster>> m_planarClusterHandle{"planarClusters", Gaudi::DataHandle::Writer,
+                                                                       this};
   /// Handle to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle to the tracking geometry service
@@ -117,7 +118,7 @@ private:
   Rndm::Numbers m_flatDist;
 
   const std::vector<sim::FCCDigitizationCell> mergeCells(std::vector<sim::FCCDigitizationCell>& cells,
-                                                         double energyCut = 1000. * (3.62e-9)) const;
+                                                         double energyCut = 0.) const;  //= 1000. * (3.62e-9)
 
   /// Private method creating clusters out of digitization cells
   /// @param cells All digitization cells

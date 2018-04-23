@@ -101,6 +101,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackHits = m_trackHits.createAndPut();
   // prepare the output clusters
   auto trackClusters = m_trackClusters.createAndPut();
+  // prepare output planar clusters
+  auto planarClusters = m_planarClusterHandle.createAndPut();
   // the cells to be used
   std::map<size_t, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
   // go through hits
@@ -117,6 +119,9 @@ StatusCode GeometricTrackerDigitizer::execute() {
     }
     // get the surface ID
     long long int surfaceID = dd4hepDetElement.volumeID();
+    // get the dd4hep segmentation for the current detector element
+    dd4hep::SensitiveDetector sensDet(dd4hepDetElement.volume().sensitiveDetector());
+    auto dd4hepSegmentation = sensDet.readout().segmentation();
 
     // access the detector element corresponding to the hit
     auto search = m_detectorElements.find(Identifier(surfaceID));
@@ -171,9 +176,11 @@ StatusCode GeometricTrackerDigitizer::execute() {
         // calculate post position in local frame
         auto postPositionLocalFrame = hitSurface.transform().inverse() * postStepPosition;
         // calculate the digitization steps
-        std::vector<Acts::DigitizationStep> dSteps =
-            m_moduleStepper->cellSteps(*hitDigitizationModule, positionLocalFrame, postPositionLocalFrame);
+        dSteps = m_moduleStepper->cellSteps(*hitDigitizationModule, positionLocalFrame, postPositionLocalFrame);
       }
+
+      double totalG4HitEnergy = hit.hit().core().energy;
+      double totalG4StepLength = (postStepPosition - globalIntersection).mag();
 
       // everything under threshold or edge effects
       if (!dSteps.size()) continue;
@@ -193,9 +200,17 @@ StatusCode GeometricTrackerDigitizer::execute() {
         fcc::TrackHit th = trackHits->create();
         th.core().time = hit.hit().core().time;
         th.core().bits = hit.hit().core().bits;
-        th.core().cellId = hit.hit().core().cellId;
-        th.core().energy = hit.hit().core().energy;
-        //    std::vector<fcc::TrackHit> th = {hit.hit()};
+        // calculate dd4hep cellID for the fcc TrackHit
+        // @todo make this more general, this is because we are using xz-segmentation
+        // global position is actually not used for conversion
+        Acts::Vector2D localStepPosition(dStep.stepCellCenter.x(), dStep.stepCellCenter.y());
+        auto dd4hepHitLocPos =
+            dd4hep::Position(localStepPosition.x() / Acts::units::_cm, 0., localStepPosition.y() / Acts::units::_cm);
+        unsigned long long hitCellID =
+            dd4hepSegmentation.cellID(dd4hepHitLocPos, dd4hep::Position(0., 0., 0.), surfaceID);
+        th.core().cellId = hitCellID;
+        // scale energy for each cell by path length
+        th.core().energy = totalG4HitEnergy * sLength / totalG4StepLength;
         auto digiCell = sim::FCCDigitizationCell({th}, dStep.stepCell.channel0, dStep.stepCell.channel1, wLength);
         // push back used cells per surface
         cellsPerSurface[surfaceID].push_back(std::move(digiCell));
@@ -252,6 +267,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
     for (auto& cells : clusterMap) {
       // create the track cluster
       fcc::TrackCluster trackCluster = trackClusters->create();
+
       //--- Now create the merged cluster ---
       // parameters to be averaged over cells for cluster
       double localX = 0., localY = 0., norm = 0., clusterEnergy = 0., clusterTime = 0.;
@@ -273,7 +289,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
         norm += cell.data;
 
         for (auto& th : cell.trackHits) {
-          trackCluster.addhits(th);
+          //   trackCluster.addhits(th);
         }
       }
       // divide by the total path - analog clustering
@@ -312,9 +328,9 @@ StatusCode GeometricTrackerDigitizer::execute() {
       Acts::ActsSymMatrixD<2> cov;
       cov << 0., 0., 0., 0.;
 
-      m_planarClusterHandle.put(new sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster.size(), hitSurface,
-                                                          Identifier(geoID.value()), std::move(cov), localX, localY,
-                                                          std::move(cells)));
+      planarClusters->push_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster.size(), hitSurface,
+                                                      Identifier(geoID.value()), std::move(cov), localX, localY,
+                                                      std::move(cells)));
     }
   }
   return StatusCode::SUCCESS;
