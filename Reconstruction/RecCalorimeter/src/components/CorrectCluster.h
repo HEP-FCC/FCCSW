@@ -101,6 +101,20 @@ private:
   Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "histFitToClusterDependence_Measured_p", "Name of pileup histogram"};
   /// Histograms with pileup constants (index in array - radial layer)
   std::vector<TH1F> m_histoPileupConst;
+  /// Values of eta corresponding to the upstream correction parameters
+  Gaudi::Property<std::vector<double>> m_etaValues{this, "etaValues", {0}, "Eta values"};
+  /// Borders of the eta bins for the upstream correction (middle between eta values)
+  std::vector<double> m_etaBorders;
+  /// Upstream correction parameter P00 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  Gaudi::Property<std::vector<double>> m_presamplerShiftP0{this, "presamplerShiftP0", {0}, "Upstream material param 00 as fnc of eta"};
+  /// Upstream correction parameter P10 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  Gaudi::Property<std::vector<double>> m_presamplerScaleP0{this, "presamplerScaleP0", {0}, "Upstream material param 10 as fnc of eta"};
+  /// Upstream correction parameter P01 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  Gaudi::Property<std::vector<double>> m_presamplerShiftP1{this, "presamplerShiftP1", {0}, "Upstream material param 01 as fnc of eta"};
+  /// Upstream correction parameter P11 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  Gaudi::Property<std::vector<double>> m_presamplerScaleP1{this, "presamplerScaleP1", {0}, "Upstream material param 11 as fnc of eta"};
+  /// Histogram of upstream energy added to energy of clusters
+  TH1F* m_hUpstreamEnergy;
 };
 
 #endif /* RECCALORIMETER_CORRECTCLUSTER_H */

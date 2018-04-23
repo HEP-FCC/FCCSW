@@ -82,6 +82,30 @@ StatusCode CorrectCluster::initialize() {
     error() << "Couldn't register histogram" << endmsg;
     return StatusCode::FAILURE;
   }
+  m_hUpstreamEnergy = new TH1F("upstreamCorrectionEnergy", "Energy added to a cluster as a correction for upstream material", 1000, -10, 10);
+  if (m_histSvc->regHist("/rec/upstreamCorrectionEnergy", m_hUpstreamEnergy).isFailure()) {
+    error() << "Couldn't register histogram" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  // calculate borders of eta bins:
+  if (m_etaValues.size() != m_presamplerShiftP0.size() &&
+      m_etaValues.size() != m_presamplerShiftP1.size() &&
+      m_etaValues.size() != m_presamplerScaleP0.size() &&
+      m_etaValues.size() != m_presamplerScaleP1.size() ) {
+    error() << "Sizes of parameter vectors should be the same" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  // if only one eta, leave border vector empty
+  for(uint iEta = 1; iEta < m_etaValues.size(); iEta++) {
+    m_etaBorders.push_back(m_etaValues[iEta-1] + 0.5 * (m_etaValues[iEta] - m_etaValues[iEta-1]) );
+  }
+  // push values for the last eta bin, width as the last one
+  if (m_etaValues.size() > 1) {
+    m_etaBorders.push_back(m_etaValues[m_etaValues.size() - 1] + 0.5 * (m_etaValues[m_etaValues.size() - 1] - m_etaValues[m_etaValues.size() - 2]) );
+  } else {
+    // high eta to ensure all particles fall below
+    m_etaBorders.push_back(100);
+  }
   return StatusCode::SUCCESS;
 }
 
@@ -161,6 +185,31 @@ StatusCode CorrectCluster::execute() {
     double noise = getNoiseConstantPerCluster(newEta, numCells) * m_gauss.shoot();
     newCluster.core().energy += noise;
     m_hPileupEnergy->Fill(noise);
+
+    // 3. Correct for energy upstream
+    // correct for presampler based on energy in the first layer layer:
+    // check eta of the cluster and get correction parameters:
+    double P00=0,P01=0,P10=0,P11=0;
+    for(uint iEta = 0; iEta < m_etaBorders.size(); iEta++) {
+      if(fabs( newEta ) < m_etaBorders[iEta]) {
+        P00 = m_presamplerShiftP0[iEta];
+        P01 = m_presamplerShiftP1[iEta];
+        P10 = m_presamplerScaleP0[iEta];
+        P11 = m_presamplerScaleP1[iEta];
+        break;
+      }
+    }
+    // if eta is larger than the last available eta values, take the last known parameters
+    if(fabs(newEta) > m_etaBorders.back()) {
+      error() << "cluster eta = " << newEta << " is larger than last defined eta values." << endmsg;
+      return StatusCode::FAILURE;
+    }
+    double presamplerShift = P00 + P01 * cluster.core().energy;
+    double presamplerScale = P10 + P11 / sqrt( cluster.core().energy );
+    double energyFront = presamplerShift + presamplerScale * sumEnFirstLayer ;
+    debug() << "UPSTREAM corr: " << presamplerShift << "\t" << presamplerScale << "\t" << energyFront << endmsg;
+    m_hUpstreamEnergy->Fill(energyFront);
+    newCluster.core().energy += energyFront;
 
     // Fill histograms
     m_hEnergyPreAnyCorrections->Fill(cluster.core().energy);
