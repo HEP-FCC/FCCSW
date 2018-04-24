@@ -60,6 +60,7 @@ tailCatcherReadoutName = "Muons_Readout"
 # layers to be merged in endcaps & forward calo
 ecalEndcapNumberOfLayersToMerge = [2] + [2] + [4]*38
 hcalEndcapNumberOfLayersToMerge = [2] + [4]*20
+hcalFwdNumberOfLayersToMerge = [1]*52
 identifierName = "layer"
 volumeName = "layer"
 
@@ -85,9 +86,6 @@ savehcalendcaptool.caloHits.Path = "HCalEndcapHits"
 savehcalfwdtool = SimG4SaveCalHits("saveHCalFwdHits", readoutNames = [hcalFwdReadoutName])
 savehcalfwdtool.positionedCaloHits.Path = "HCalFwdPositionedHits"
 savehcalfwdtool.caloHits.Path = "HCalFwdHits"
-savetailcatchertool = SimG4SaveCalHits("saveTailCatcherHits", readoutNames = [tailCatcherReadoutName])
-savetailcatchertool.positionedCaloHits = "TailCatcherPositionedHits"
-savetailcatchertool.caloHits = "TailCatcherHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool

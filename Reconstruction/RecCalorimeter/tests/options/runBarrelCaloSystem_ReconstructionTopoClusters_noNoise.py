@@ -44,7 +44,7 @@ from Configurables import ConstNoiseTool
 noiseTool = ConstNoiseTool("ConstNoiseTool")
 
 #Configure tools for calo cell positions
-from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelTool, CellPositionsHCalBarrelNoSegTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool 
+from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelNoSegTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool 
 ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
                                          readoutName = ecalBarrelReadoutName, 
                                          OutputLevel = INFO)
