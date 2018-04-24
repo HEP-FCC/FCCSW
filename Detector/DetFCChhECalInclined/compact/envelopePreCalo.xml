@@ -19,7 +19,7 @@
     <constant name="BarrelAirThicknessFront" value="3*cm"/>
     <constant name="BarrelCryoThicknessFront" value="5*cm"/>
     <constant name="BarrelBathThicknessFront" value="9*cm"/>
-    <constant name="EndcapZBack" value="615*cm"/>
+    <constant name="EndcapZBack" value="605*cm"/>
     <constant name="BarrelAirThicknessBack" value="3*cm"/>
     <constant name="BarrelCryoThicknessBack" value="5*cm"/>
     <constant name="BarrelBathThicknessBack" value="9*cm"/>
