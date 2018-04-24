@@ -78,6 +78,7 @@ private:
   const char *types[2] = {"EM", "HAD"};
 
   TH1F* m_energyScale;
+  TH1F* m_sharedCluster;
   TH2F* m_energyScaleVsClusterEnergy;
   TH1F* m_totEnergy;
   TH1F* m_totCalibEnergy;
@@ -89,7 +90,7 @@ private:
   /// bool if calibration is applied
   bool m_doCalibration =  true;
   /// bool if calibration is applied                                                                                                                                                                                                      
-  bool m_addNoise;
+  bool m_addNoise = false;
 
  /// e/h of ECal
   double m_ehECal;
@@ -103,8 +104,8 @@ private:
   dd4hep::DDSegmentation::BitField64* m_decoderHCal;
 
   /// System id by default Barrel, EC(6,7), Fwd(10,11)
-  Gaudi::Property<float> m_a{this, "a", 0.978, "scaling of ECal energy"};
-  Gaudi::Property<float> m_b{this, "b", 0.479, "scaling of energy loss in cryostat"};
+  Gaudi::Property<float> m_a{this, "a", 0.975, "scaling of ECal energy"}; // in Bfield: 0.978
+  Gaudi::Property<float> m_b{this, "b", 0.718, "scaling of energy loss in cryostat"};// in Bfield: 0.479
   Gaudi::Property<int> m_lastECalLayer{this, "lastECalLayer", 7, "Layer id of last ECal layer"};
   Gaudi::Property<int> m_firstHCalLayer{this, "firstHCalLayer", 0, "Layer id of first HCal layer"};
 

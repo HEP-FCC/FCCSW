@@ -81,6 +81,11 @@ StatusCode CreateCaloClusters::initialize() {
     error() << "Couldn't register hist" << endmsg;
     return StatusCode::FAILURE;
   } 
+  m_sharedCluster = new TH1F("sharedCluster", "fraction of shared cluster between E and HCal", 100, 0., 1. );
+  if (m_histSvc->regHist("/rec/sharedCluster", m_sharedCluster).isFailure()) {
+    error() << "Couldn't register hist" << endmsg;
+    return StatusCode::FAILURE;
+  } 
   m_energyScale = new TH1F("energyScale", "energy scale of cluster", 3, 0., 3. );
   if (m_histSvc->regHist("/rec/energyScale", m_energyScale).isFailure()) {
     error() << "Couldn't register hist" << endmsg;
@@ -177,7 +182,7 @@ StatusCode CreateCaloClusters::execute() {
 	if (energyFraction >= m_fractionECal) {
 	  // calibrate HCal cells to EM scale
 	  // assuming HCal cells are calibrated to hadron scale
-	  energyBoth[m_systemIdHCal] = energyBoth[m_systemIdHCal] / m_ehHCal;
+	  energyBoth[m_systemIdHCal] = energyBoth[m_systemIdHCal] * m_ehHCal;
 	  clustersEM++;
 	  m_energyScale->Fill(0);
 	  m_energyScaleVsClusterEnergy->Fill(0.,cluster.core().energy);
@@ -186,7 +191,7 @@ StatusCode CreateCaloClusters::execute() {
 	else {
 	  // calibrate ECal cells to hadron scale
 	  // assuming ECal cells are calibrated to EM scale
-	  energyBoth[m_systemIdECal] = energyBoth[m_systemIdECal] * m_ehECal;
+	  energyBoth[m_systemIdECal] = energyBoth[m_systemIdECal] * (1/m_ehECal);
 	  calibECal = true;
 	  clustersHad++;
 	  m_energyScale->Fill(1);
@@ -200,6 +205,7 @@ StatusCode CreateCaloClusters::execute() {
 	double posZ = 0.;
 	double energy = 0.;
  
+	// Loop over all cluster cells again..
 	for (uint it = 0; it < cluster.hits_size(); it++){
 	  fcc::CaloHit newCell;
 	  
@@ -215,8 +221,10 @@ StatusCode CreateCaloClusters::execute() {
 	  dd4hep::Position posCell;
 	  if (systemId == m_systemIdECal){  // ECAL system id
 	    posCell = m_cellPositionsECalTool->xyzPosition(cellId);
-	    if (calibECal)
-	      cellEnergy = cellEnergy / m_ehECal;
+	    if ( m_doCryoCorrection )
+	      cellEnergy = cellEnergy * m_a;
+	    else if ( calibECal )
+	      cellEnergy = cellEnergy * (1/m_ehECal);
 	    if ( m_addNoise ) {
 	      // Scale the cell energy by factor determined from he correlated pile-up studies
 	      cellEnergy = cellEnergy * m_noiseECalTool->getNoiseConstantPerCell(cellId);
@@ -224,10 +232,10 @@ StatusCode CreateCaloClusters::execute() {
 	  }
 	  else if (systemId == m_systemIdHCal){  // HCAL system id
 	    posCell = m_cellPositionsHCalTool->xyzPosition(cellId);
-	    if (!calibECal)
+	    if (!calibECal and !m_doCryoCorrection)
 	      cellEnergy = cellEnergy * m_ehHCal;
 	    if ( m_addNoise ) {
-	      // Scale the cell energy by factor determined from he correlated pile-up studies
+	      // Scale the cell energy by factor determined from the correlated pile-up studies
 	      cellEnergy = cellEnergy * m_noiseHCalTool->getNoiseConstantPerCell(cellId);
 	    }
 	  }
@@ -296,6 +304,8 @@ StatusCode CreateCaloClusters::execute() {
   m_totEnergy->Fill( totClusterEnergy );
   m_totCalibEnergy->Fill( totCalibClusterEnergy );
   m_totBenchmarkEnergy->Fill( totBenchmarkEnergy );
+  m_sharedCluster->Fill(sharedClusters / clusters->size());
+
   return StatusCode::SUCCESS;
 }
 
