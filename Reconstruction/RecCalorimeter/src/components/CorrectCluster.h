@@ -113,6 +113,8 @@ private:
   Gaudi::Property<std::vector<double>> m_presamplerShiftP1{this, "presamplerShiftP1", {0}, "Upstream material param 01 as fnc of eta"};
   /// Upstream correction parameter P11 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
   Gaudi::Property<std::vector<double>> m_presamplerScaleP1{this, "presamplerScaleP1", {0}, "Upstream material param 11 as fnc of eta"};
+  /// Values of sampling fraction used for energy calibration
+  Gaudi::Property<std::vector<double>> m_samplingFraction{this, "samplingFraction", {0.299041341789, 0.1306220735, 0.163243999965, 0.186360269398, 0.203778124831, 0.216211280314, 0.227140796653, 0.243315422934}, "Values of sampling fraction used in energy calibration"};
   /// Histogram of upstream energy added to energy of clusters
   TH1F* m_hUpstreamEnergy;
 };

@@ -205,8 +205,8 @@ StatusCode CorrectCluster::execute() {
       return StatusCode::FAILURE;
     }
     double presamplerShift = P00 + P01 * cluster.core().energy;
-    double presamplerScale = P10 + P11 / sqrt( cluster.core().energy );
-    double energyFront = presamplerShift + presamplerScale * sumEnFirstLayer ;
+    double presamplerScale = P10 + P11 * sqrt( cluster.core().energy );
+    double energyFront = presamplerShift + presamplerScale * sumEnFirstLayer * m_samplingFraction[0];
     debug() << "UPSTREAM corr: " << presamplerShift << "\t" << presamplerScale << "\t" << energyFront << endmsg;
     m_hUpstreamEnergy->Fill(energyFront);
     newCluster.core().energy += energyFront;
