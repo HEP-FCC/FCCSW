@@ -79,7 +79,7 @@ G4Event* SimG4SingleParticleGeneratorTool::g4Event() {
   double randomZ = std::cos(theta);
 
   G4ThreeVector particleDir = G4ThreeVector(randomX, randomY, randomZ);
-  G4ThreeVector particlePosition = G4ThreeVector(CLHEP::RandFlat::shoot(-m_vertexX,m_vertexX),
+  G4ThreeVector particlePosition = G4ThreeVector(CLHEP::RandFlat::shoot(-m_vertexX, m_vertexX),
                                                  CLHEP::RandFlat::shoot(-m_vertexY, m_vertexY),
                                                  CLHEP::RandFlat::shoot(-m_vertexZ, m_vertexZ));
 
