@@ -3,7 +3,7 @@
         <dimensions rmin="23.283*mm" rmax="409.734*mm" zmin="-820.000*mm" zmax="820.000*mm"/>
         <sensitive type="SimpleTrackerSD"/>
         <layers repeat="4">
-            <layer id="1" radius="25.000*mm" rmin="23.283*mm" rmax="27.473*mm" bigDelta="1.000*mm" phi0="1.570796*rad">
+            <layer id="1" radius="25.000*mm" rmin="23.283*mm" rmax="27.473*mm" bigDelta="1.000*mm" phi0="1.570796*rad" X="0.025*mm" Z="0.05*mm">
                 <rods repeat="14" smallDelta="0.000*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="20">
                     <rodOdd id="1">
                         <modules>
@@ -77,7 +77,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="2" radius="60.000*mm" rmin="58.283*mm" rmax="63.030*mm" bigDelta="1.000*mm" phi0="1.570796*rad">
+            <layer id="2" radius="60.000*mm" rmin="58.283*mm" rmax="63.030*mm" bigDelta="1.000*mm" phi0="1.570796*rad" X="0.025*mm" Z="0.05*mm">
                 <rods repeat="16" smallDelta="0.000*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="40">
                     <rodOdd id="1">
                         <modules>
@@ -191,7 +191,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="3" radius="100.000*mm" rmin="98.283*mm" rmax="102.519*mm" bigDelta="1.000*mm" phi0="1.570796*rad">
+            <layer id="3" radius="100.000*mm" rmin="98.283*mm" rmax="102.519*mm" bigDelta="1.000*mm" phi0="1.570796*rad" X="0.025*mm" Z="0.05*mm">
                 <rods repeat="26" smallDelta="0.000*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="40">
                     <rodOdd id="1">
                         <modules>
@@ -305,7 +305,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="4" radius="150.000*mm" rmin="148.283*mm" rmax="152.256*mm" bigDelta="1.000*mm" phi0="1.570796*rad">
+            <layer id="4" radius="150.000*mm" rmin="148.283*mm" rmax="152.256*mm" bigDelta="1.000*mm" phi0="1.570796*rad" X="0.025*mm" Z="0.05*mm">
                 <rods repeat="38" smallDelta="0.000*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="40">
                     <rodOdd id="1">
                         <modules>
@@ -419,7 +419,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="1" radius="270.000*mm" rmin="261.066*mm" rmax="280.106*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="1" radius="270.000*mm" rmin="261.066*mm" rmax="280.106*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="0.4*mm">
                 <rods repeat="34" smallDelta="2.500*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="17">
                     <rodOdd id="1">
                         <modules>
@@ -487,7 +487,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="2" radius="400.000*mm" rmin="391.066*mm" rmax="409.734*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="2" radius="400.000*mm" rmin="391.066*mm" rmax="409.734*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="0.4*mm">
                 <rods repeat="50" smallDelta="2.500*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="17">
                     <rodOdd id="1">
                         <modules>
@@ -563,7 +563,7 @@
         <discs repeat="10">
             <discZPls id="1" z="950.000*mm" zmin="941.066*mm" zmax="958.934*mm" rmin="25.000*mm" rmax="403.728*mm" bigDelta="5.000*mm">
                 <rings repeat="4" smallDelta="2.500*mm" rPhiOverlap="0.000*mm" nRPhiSegments="4" rOverlap="0.000*mm">
-                    <ring id="1" phi0="0.000000*rad" nModules="12">
+                    <ring id="1" phi0="0.000000*rad" nModules="12" X="0.025*mm" Z="0.05*mm">
                         <modules>
                             <moduleOdd id="1" X="63.049*mm" Y="0.000*mm" Z="942.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="54.602*mm" Y="31.525*mm" Z="947.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -580,7 +580,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="76.099*mm" sensorWidthMin="13.397*mm" sensorWidthMax="54.179*mm" sensorThickness="0.100*mm" resRPhi="7.5*um" resZ="15.0*um"/>
                     </ring>
-                    <ring id="2" phi0="0.000000*rad" nModules="20">
+                    <ring id="2" phi0="0.000000*rad" nModules="20" X="0.0333*mm" Z="0.1*mm">
                         <modules>
                             <moduleOdd id="1" X="151.685*mm" Y="0.000*mm" Z="952.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="144.261*mm" Y="46.873*mm" Z="957.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -597,7 +597,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.736*mm" sensorWidthMin="32.094*mm" sensorWidthMax="64.004*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="30.0*um"/>
                     </ring>
-                    <ring id="3" phi0="0.000000*rad" nModules="32">
+                    <ring id="3" phi0="0.000000*rad" nModules="32" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="250.156*mm" Y="0.000*mm" Z="942.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="245.349*mm" Y="48.803*mm" Z="947.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -614,7 +614,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="103.074*mm" sensorWidthMin="39.124*mm" sensorWidthMax="59.428*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="4" phi0="0.000000*rad" nModules="44">
+                    <ring id="4" phi0="0.000000*rad" nModules="44" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="352.521*mm" Y="0.000*mm" Z="952.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="348.933*mm" Y="50.169*mm" Z="957.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -651,7 +651,7 @@
         <dimensions rmin="521.016*mm" rmax="1526.688*mm" zmin="-2250.000*mm" zmax="2250.000*mm"/>
         <sensitive type="SimpleTrackerSD"/>
         <layers repeat="6">
-            <layer id="1" radius="529.950*mm" rmin="521.016*mm" rmax="541.311*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="1" radius="529.950*mm" rmin="521.016*mm" rmax="541.311*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="0.4*mm">
                 <rods repeat="34" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
                     <rodOdd id="1">
                         <modules>
@@ -779,7 +779,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="2" radius="742.396*mm" rmin="733.462*mm" rmax="753.072*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="2" radius="742.396*mm" rmin="733.462*mm" rmax="753.072*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="0.4*mm">
                 <rods repeat="46" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
                     <rodOdd id="1">
                         <modules>
@@ -907,7 +907,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="3" radius="937.244*mm" rmin="927.950*mm" rmax="947.921*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="3" radius="937.244*mm" rmin="927.950*mm" rmax="947.921*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="50*mm">
                 <rods repeat="58" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
                     <rodOdd id="1">
                         <modules>
@@ -1035,7 +1035,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="4" radius="1132.012*mm" rmin="1122.718*mm" rmax="1142.453*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="4" radius="1132.012*mm" rmin="1122.718*mm" rmax="1142.453*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="50*mm">
                 <rods repeat="70" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
                     <rodOdd id="1">
                         <modules>
@@ -1163,7 +1163,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="5" radius="1326.735*mm" rmin="1317.441*mm" rmax="1337.009*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="5" radius="1326.735*mm" rmin="1317.441*mm" rmax="1337.009*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="50*mm">
                 <rods repeat="82" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
                     <rodOdd id="1">
                         <modules>
@@ -1291,7 +1291,7 @@
                     </rodEven>
                 </rods>
             </layer>
-            <layer id="6" radius="1516.536*mm" rmin="1507.243*mm" rmax="1526.688*mm" bigDelta="5.000*mm" phi0="1.570796*rad">
+            <layer id="6" radius="1516.536*mm" rmin="1507.243*mm" rmax="1526.688*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="50*mm">
                 <rods repeat="94" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
                     <rodOdd id="1">
                         <modules>
@@ -1427,7 +1427,7 @@
         <discs repeat="12">
             <discZPls id="1" z="2625.000*mm" zmin="2615.706*mm" zmax="2634.294*mm" rmin="25.000*mm" rmax="1549.268*mm" bigDelta="5.000*mm">
                 <rings repeat="16" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
-                    <ring id="1" phi0="0.000000*rad" nModules="12">
+                    <ring id="1" phi0="0.000000*rad" nModules="12" X="0.025*mm" Z="0.05*mm">
                         <modules>
                             <moduleOdd id="1" X="62.666*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="54.270*mm" Y="31.333*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1444,7 +1444,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="75.332*mm" sensorWidthMin="13.935*mm" sensorWidthMax="55.924*mm" sensorThickness="0.100*mm" resRPhi="7.5*um" resZ="15.0*um"/>
                     </ring>
-                    <ring id="2" phi0="0.000000*rad" nModules="20">
+                    <ring id="2" phi0="0.000000*rad" nModules="20" X="0.0333*mm" Z="0.1*mm">
                         <modules>
                             <moduleOdd id="1" X="150.203*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="142.851*mm" Y="46.415*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1461,7 +1461,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.543*mm" sensorWidthMin="32.168*mm" sensorWidthMax="64.533*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="30.0*um"/>
                     </ring>
-                    <ring id="3" phi0="0.000000*rad" nModules="32">
+                    <ring id="3" phi0="0.000000*rad" nModules="32" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="250.208*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="245.400*mm" Y="48.813*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1478,7 +1478,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.747*mm" sensorWidthMin="39.672*mm" sensorWidthMax="60.172*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="4" phi0="0.000000*rad" nModules="44">
+                    <ring id="4" phi0="0.000000*rad" nModules="44" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="351.448*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="347.871*mm" Y="50.016*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1495,7 +1495,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.131*mm" sensorWidthMin="43.613*mm" sensorWidthMax="58.103*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="5" phi0="0.000000*rad" nModules="52">
+                    <ring id="5" phi0="0.000000*rad" nModules="52" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="451.105*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="447.816*mm" Y="54.375*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1512,7 +1512,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="104.752*mm" sensorWidthMin="48.739*mm" sensorWidthMax="61.544*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="6" phi0="0.000000*rad" nModules="64">
+                    <ring id="6" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="553.187*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="550.523*mm" Y="54.222*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1529,7 +1529,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="99.406*mm" sensorWidthMin="49.970*mm" sensorWidthMax="59.836*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="7" phi0="0.000000*rad" nModules="44">
+                    <ring id="7" phi0="0.000000*rad" nModules="44" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="650.158*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="643.540*mm" Y="92.527*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1546,7 +1546,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="8" phi0="0.000000*rad" nModules="52">
+                    <ring id="8" phi0="0.000000*rad" nModules="52" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="752.759*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="747.270*mm" Y="90.735*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1563,7 +1563,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="9" phi0="0.000000*rad" nModules="56">
+                    <ring id="9" phi0="0.000000*rad" nModules="56" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="850.081*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="844.736*mm" Y="95.179*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1580,7 +1580,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="10" phi0="0.000000*rad" nModules="64">
+                    <ring id="10" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="952.882*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="948.294*mm" Y="93.399*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1597,7 +1597,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="11" phi0="0.000000*rad" nModules="68">
+                    <ring id="11" phi0="0.000000*rad" nModules="68" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1049.064*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1044.589*mm" Y="96.795*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1614,7 +1614,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="12" phi0="0.000000*rad" nModules="76">
+                    <ring id="12" phi0="0.000000*rad" nModules="76" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1152.064*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1148.129*mm" Y="95.137*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1631,7 +1631,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="13" phi0="0.000000*rad" nModules="84">
+                    <ring id="13" phi0="0.000000*rad" nModules="84" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1247.111*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1243.623*mm" Y="93.197*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1648,7 +1648,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="14" phi0="0.000000*rad" nModules="88">
+                    <ring id="14" phi0="0.000000*rad" nModules="88" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1350.309*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1346.869*mm" Y="96.330*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1665,7 +1665,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="15" phi0="0.000000*rad" nModules="96">
+                    <ring id="15" phi0="0.000000*rad" nModules="96" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1444.226*mm" Y="0.000*mm" Z="2622.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1441.134*mm" Y="94.457*mm" Z="2617.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1682,7 +1682,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="16" phi0="0.000000*rad" nModules="96">
+                    <ring id="16" phi0="0.000000*rad" nModules="96" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1522.422*mm" Y="0.000*mm" Z="2632.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1519.162*mm" Y="99.571*mm" Z="2627.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1724,7 +1724,7 @@
         <discs repeat="6">
             <discZPls id="1" z="6250.000*mm" zmin="6241.066*mm" zmax="6258.934*mm" rmin="25.000*mm" rmax="918.570*mm" bigDelta="5.000*mm">
                 <rings repeat="9" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
-                    <ring id="1" phi0="0.000000*rad" nModules="12">
+                    <ring id="1" phi0="0.000000*rad" nModules="12" X="0.025*mm" Z="0.05*mm">
                         <modules>
                             <moduleOdd id="1" X="70.594*mm" Y="0.000*mm" Z="6247.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="61.136*mm" Y="35.297*mm" Z="6242.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1741,7 +1741,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="91.188*mm" sensorWidthMin="13.935*mm" sensorWidthMax="64.762*mm" sensorThickness="0.100*mm" resRPhi="7.5*um" resZ="15.0*um"/>
                     </ring>
-                    <ring id="2" phi0="0.000000*rad" nModules="20">
+                    <ring id="2" phi0="0.000000*rad" nModules="20" X="0.0333*mm" Z="0.1*mm">
                         <modules>
                             <moduleOdd id="1" X="166.145*mm" Y="0.000*mm" Z="6257.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="158.013*mm" Y="51.342*mm" Z="6252.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1758,7 +1758,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.782*mm" sensorWidthMin="37.180*mm" sensorWidthMax="69.551*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="30.0*um"/>
                     </ring>
-                    <ring id="3" phi0="0.000000*rad" nModules="32">
+                    <ring id="3" phi0="0.000000*rad" nModules="32" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="265.730*mm" Y="0.000*mm" Z="6247.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="260.625*mm" Y="51.841*mm" Z="6242.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1775,7 +1775,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.425*mm" sensorWidthMin="42.958*mm" sensorWidthMax="62.976*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="4" phi0="0.000000*rad" nModules="44">
+                    <ring id="4" phi0="0.000000*rad" nModules="44" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="365.777*mm" Y="0.000*mm" Z="6257.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="362.054*mm" Y="52.056*mm" Z="6252.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1792,7 +1792,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.307*mm" sensorWidthMin="45.650*mm" sensorWidthMax="60.158*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="5" phi0="0.000000*rad" nModules="56">
+                    <ring id="5" phi0="0.000000*rad" nModules="56" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="464.528*mm" Y="0.000*mm" Z="6247.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="461.607*mm" Y="52.011*mm" Z="6242.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1809,7 +1809,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.185*mm" sensorWidthMin="47.050*mm" sensorWidthMax="58.424*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="6" phi0="0.000000*rad" nModules="64">
+                    <ring id="6" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="564.439*mm" Y="0.000*mm" Z="6257.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="561.721*mm" Y="55.325*mm" Z="6252.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1826,7 +1826,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.049*mm" sensorWidthMin="51.044*mm" sensorWidthMax="60.972*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="7" phi0="0.000000*rad" nModules="48">
+                    <ring id="7" phi0="0.000000*rad" nModules="48" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="663.691*mm" Y="0.000*mm" Z="6247.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="658.013*mm" Y="86.629*mm" Z="6242.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1843,7 +1843,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="8" phi0="0.000000*rad" nModules="52">
+                    <ring id="8" phi0="0.000000*rad" nModules="52" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="766.000*mm" Y="0.000*mm" Z="6257.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="760.415*mm" Y="92.331*mm" Z="6252.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1860,7 +1860,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="9" phi0="0.000000*rad" nModules="60">
+                    <ring id="9" phi0="0.000000*rad" nModules="60" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="865.942*mm" Y="0.000*mm" Z="6247.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="861.198*mm" Y="90.516*mm" Z="6242.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1881,7 +1881,7 @@
             </discZPls>
             <discZPls id="2" z="7395.100*mm" zmin="7385.806*mm" zmax="7404.393*mm" rmin="25.000*mm" rmax="1120.194*mm" bigDelta="5.000*mm">
                 <rings repeat="11" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
-                    <ring id="1" phi0="0.000000*rad" nModules="12">
+                    <ring id="1" phi0="0.000000*rad" nModules="12" X="0.025*mm" Z="0.05*mm">
                         <modules>
                             <moduleOdd id="1" X="70.594*mm" Y="0.000*mm" Z="7392.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="61.136*mm" Y="35.297*mm" Z="7387.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1898,7 +1898,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="91.188*mm" sensorWidthMin="13.935*mm" sensorWidthMax="64.762*mm" sensorThickness="0.100*mm" resRPhi="7.5*um" resZ="15.0*um"/>
                     </ring>
-                    <ring id="2" phi0="0.000000*rad" nModules="20">
+                    <ring id="2" phi0="0.000000*rad" nModules="20" X="0.0333*mm" Z="0.1*mm">
                         <modules>
                             <moduleOdd id="1" X="166.145*mm" Y="0.000*mm" Z="7402.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="158.013*mm" Y="51.342*mm" Z="7397.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1915,7 +1915,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.782*mm" sensorWidthMin="37.180*mm" sensorWidthMax="69.551*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="30.0*um"/>
                     </ring>
-                    <ring id="3" phi0="0.000000*rad" nModules="32">
+                    <ring id="3" phi0="0.000000*rad" nModules="32" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="265.730*mm" Y="0.000*mm" Z="7392.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="260.625*mm" Y="51.841*mm" Z="7387.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1932,7 +1932,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.425*mm" sensorWidthMin="42.958*mm" sensorWidthMax="62.976*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="4" phi0="0.000000*rad" nModules="44">
+                    <ring id="4" phi0="0.000000*rad" nModules="44" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="365.777*mm" Y="0.000*mm" Z="7402.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="362.054*mm" Y="52.056*mm" Z="7397.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1949,7 +1949,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.307*mm" sensorWidthMin="45.650*mm" sensorWidthMax="60.158*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="5" phi0="0.000000*rad" nModules="56">
+                    <ring id="5" phi0="0.000000*rad" nModules="56" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="464.528*mm" Y="0.000*mm" Z="7392.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="461.607*mm" Y="52.011*mm" Z="7387.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1966,7 +1966,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.185*mm" sensorWidthMin="47.050*mm" sensorWidthMax="58.424*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="6" phi0="0.000000*rad" nModules="64">
+                    <ring id="6" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="564.439*mm" Y="0.000*mm" Z="7402.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="561.721*mm" Y="55.325*mm" Z="7397.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -1983,7 +1983,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.049*mm" sensorWidthMin="51.044*mm" sensorWidthMax="60.972*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="7" phi0="0.000000*rad" nModules="48">
+                    <ring id="7" phi0="0.000000*rad" nModules="48" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="663.691*mm" Y="0.000*mm" Z="7392.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="658.013*mm" Y="86.629*mm" Z="7387.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2000,7 +2000,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="8" phi0="0.000000*rad" nModules="52">
+                    <ring id="8" phi0="0.000000*rad" nModules="52" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="766.000*mm" Y="0.000*mm" Z="7402.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="760.415*mm" Y="92.331*mm" Z="7397.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2017,7 +2017,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="9" phi0="0.000000*rad" nModules="60">
+                    <ring id="9" phi0="0.000000*rad" nModules="60" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="865.942*mm" Y="0.000*mm" Z="7392.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="861.198*mm" Y="90.516*mm" Z="7387.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2034,7 +2034,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="10" phi0="0.000000*rad" nModules="64">
+                    <ring id="10" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="968.366*mm" Y="0.000*mm" Z="7402.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="963.703*mm" Y="94.916*mm" Z="7397.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2051,7 +2051,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="11" phi0="0.000000*rad" nModules="72">
+                    <ring id="11" phi0="0.000000*rad" nModules="72" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1067.823*mm" Y="0.000*mm" Z="7392.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1063.760*mm" Y="93.067*mm" Z="7387.600*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2072,7 +2072,7 @@
             </discZPls>
             <discZPls id="3" z="8750.000*mm" zmin="8740.707*mm" zmax="8759.293*mm" rmin="25.000*mm" rmax="1321.527*mm" bigDelta="5.000*mm">
                 <rings repeat="13" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
-                    <ring id="1" phi0="0.000000*rad" nModules="12">
+                    <ring id="1" phi0="0.000000*rad" nModules="12" X="0.025*mm" Z="0.05*mm">
                         <modules>
                             <moduleOdd id="1" X="70.594*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="61.136*mm" Y="35.297*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2089,7 +2089,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="91.188*mm" sensorWidthMin="13.935*mm" sensorWidthMax="64.762*mm" sensorThickness="0.100*mm" resRPhi="7.5*um" resZ="15.0*um"/>
                     </ring>
-                    <ring id="2" phi0="0.000000*rad" nModules="20">
+                    <ring id="2" phi0="0.000000*rad" nModules="20" X="0.0333*mm" Z="0.1*mm">
                         <modules>
                             <moduleOdd id="1" X="166.145*mm" Y="0.000*mm" Z="8757.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="158.013*mm" Y="51.342*mm" Z="8752.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2106,7 +2106,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.782*mm" sensorWidthMin="37.180*mm" sensorWidthMax="69.551*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="30.0*um"/>
                     </ring>
-                    <ring id="3" phi0="0.000000*rad" nModules="32">
+                    <ring id="3" phi0="0.000000*rad" nModules="32" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="265.730*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="260.625*mm" Y="51.841*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2123,7 +2123,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.425*mm" sensorWidthMin="42.958*mm" sensorWidthMax="62.976*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="4" phi0="0.000000*rad" nModules="44">
+                    <ring id="4" phi0="0.000000*rad" nModules="44" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="365.777*mm" Y="0.000*mm" Z="8757.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="362.054*mm" Y="52.056*mm" Z="8752.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2140,7 +2140,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.307*mm" sensorWidthMin="45.650*mm" sensorWidthMax="60.158*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="5" phi0="0.000000*rad" nModules="56">
+                    <ring id="5" phi0="0.000000*rad" nModules="56" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="464.528*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="461.607*mm" Y="52.011*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2157,7 +2157,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.185*mm" sensorWidthMin="47.050*mm" sensorWidthMax="58.424*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="6" phi0="0.000000*rad" nModules="64">
+                    <ring id="6" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="0.4*mm"> 
                         <modules>
                             <moduleOdd id="1" X="564.439*mm" Y="0.000*mm" Z="8757.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="561.721*mm" Y="55.325*mm" Z="8752.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2174,7 +2174,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.049*mm" sensorWidthMin="51.044*mm" sensorWidthMax="60.972*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="7" phi0="0.000000*rad" nModules="48">
+                    <ring id="7" phi0="0.000000*rad" nModules="48" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="663.691*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="658.013*mm" Y="86.629*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2191,7 +2191,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="8" phi0="0.000000*rad" nModules="52">
+                    <ring id="8" phi0="0.000000*rad" nModules="52" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="766.000*mm" Y="0.000*mm" Z="8757.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="760.415*mm" Y="92.331*mm" Z="8752.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2208,7 +2208,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="9" phi0="0.000000*rad" nModules="60">
+                    <ring id="9" phi0="0.000000*rad" nModules="60" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="865.942*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="861.198*mm" Y="90.516*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2225,7 +2225,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="10" phi0="0.000000*rad" nModules="64">
+                    <ring id="10" phi0="0.000000*rad" nModules="64" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="968.366*mm" Y="0.000*mm" Z="8757.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="963.703*mm" Y="94.916*mm" Z="8752.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2242,7 +2242,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="11" phi0="0.000000*rad" nModules="72">
+                    <ring id="11" phi0="0.000000*rad" nModules="72" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1067.823*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1063.760*mm" Y="93.067*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2259,7 +2259,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="12" phi0="0.000000*rad" nModules="76">
+                    <ring id="12" phi0="0.000000*rad" nModules="76" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1170.362*mm" Y="0.000*mm" Z="8757.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1166.365*mm" Y="96.648*mm" Z="8752.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2276,7 +2276,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="13" phi0="0.000000*rad" nModules="84">
+                    <ring id="13" phi0="0.000000*rad" nModules="84" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1269.335*mm" Y="0.000*mm" Z="8747.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1265.786*mm" Y="94.858*mm" Z="8742.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2297,7 +2297,7 @@
             </discZPls>
             <discZPls id="1" z="10000.000*mm" zmin="9990.707*mm" zmax="10009.293*mm" rmin="49.500*mm" rmax="1550.163*mm" bigDelta="5.000*mm">
                 <rings repeat="15" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
-                    <ring id="1" phi0="0.000000*rad" nModules="12">
+                    <ring id="1" phi0="0.000000*rad" nModules="12" X="0.025*mm" Z="0.05*mm">
                         <modules>
                             <moduleOdd id="1" X="94.508*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="81.846*mm" Y="47.254*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2314,7 +2314,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="90.016*mm" sensorWidthMin="27.064*mm" sensorWidthMax="76.279*mm" sensorThickness="0.100*mm" resRPhi="7.5*um" resZ="15.0*um"/>
                     </ring>
-                    <ring id="2" phi0="0.000000*rad" nModules="24">
+                    <ring id="2" phi0="0.000000*rad" nModules="24" X="0.0333*mm" Z="0.1*mm">
                         <modules>
                             <moduleOdd id="1" X="189.080*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="182.638*mm" Y="48.938*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2331,7 +2331,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.043*mm" sensorWidthMin="37.124*mm" sensorWidthMax="63.832*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="30.0*um"/>
                     </ring>
-                    <ring id="3" phi0="0.000000*rad" nModules="36">
+                    <ring id="3" phi0="0.000000*rad" nModules="36" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="288.237*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="283.858*mm" Y="50.052*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2348,7 +2348,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="99.985*mm" sensorWidthMin="42.191*mm" sensorWidthMax="59.898*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="4" phi0="0.000000*rad" nModules="48">
+                    <ring id="4" phi0="0.000000*rad" nModules="48" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="387.840*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="384.522*mm" Y="50.623*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2365,7 +2365,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="100.010*mm" sensorWidthMin="44.788*mm" sensorWidthMax="58.047*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="5" phi0="0.000000*rad" nModules="56">
+                    <ring id="5" phi0="0.000000*rad" nModules="56" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="486.679*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="483.619*mm" Y="54.491*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2382,7 +2382,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="99.980*mm" sensorWidthMin="49.549*mm" sensorWidthMax="60.894*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="6" phi0="0.000000*rad" nModules="40">
+                    <ring id="6" phi0="0.000000*rad" nModules="40" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="587.536*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="580.303*mm" Y="91.911*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2399,7 +2399,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="7" phi0="0.000000*rad" nModules="48">
+                    <ring id="7" phi0="0.000000*rad" nModules="48" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="688.480*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="682.590*mm" Y="89.865*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2416,7 +2416,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="8" phi0="0.000000*rad" nModules="52">
+                    <ring id="8" phi0="0.000000*rad" nModules="52" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="790.611*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="784.846*mm" Y="95.298*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2433,7 +2433,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="9" phi0="0.000000*rad" nModules="60">
+                    <ring id="9" phi0="0.000000*rad" nModules="60" X="0.0333*mm" Z="0.4*mm">
                         <modules>
                             <moduleOdd id="1" X="891.250*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="886.367*mm" Y="93.161*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2450,7 +2450,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="115.0*um"/>
                     </ring>
-                    <ring id="10" phi0="0.000000*rad" nModules="68">
+                    <ring id="10" phi0="0.000000*rad" nModules="68" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="993.444*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="989.206*mm" Y="91.663*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2467,7 +2467,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="11" phi0="0.000000*rad" nModules="72">
+                    <ring id="11" phi0="0.000000*rad" nModules="72" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1093.779*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1089.617*mm" Y="95.329*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2484,7 +2484,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="12" phi0="0.000000*rad" nModules="80">
+                    <ring id="12" phi0="0.000000*rad" nModules="80" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1196.037*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1192.350*mm" Y="93.840*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2501,7 +2501,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="13" phi0="0.000000*rad" nModules="84">
+                    <ring id="13" phi0="0.000000*rad" nModules="84" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1296.068*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1292.444*mm" Y="96.855*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2518,7 +2518,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="14" phi0="0.000000*rad" nModules="92">
+                    <ring id="14" phi0="0.000000*rad" nModules="92" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1398.389*mm" Y="0.000*mm" Z="10007.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1395.129*mm" Y="95.429*mm" Z="10002.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
@@ -2535,7 +2535,7 @@
                         </moduleProperties>
                         <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
-                    <ring id="15" phi0="0.000000*rad" nModules="96">
+                    <ring id="15" phi0="0.000000*rad" nModules="96" X="0.0333*mm" Z="10*mm">
                         <modules>
                             <moduleOdd id="1" X="1498.117*mm" Y="0.000*mm" Z="9997.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>
                             <moduleEven id="2" X="1494.909*mm" Y="97.982*mm" Z="9992.500*mm" phiTilt="0.000000*rad" thetaTilt="1.570796*rad"/>

@@ -95,7 +95,7 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
 
           // Create digitization module
           auto digiModule = det::utils::trapezoidalDigiModuleXZ(
-              compMinWidth, compMaxWidth, compLength, compThickness, sensDet.readout().segmentation());
+              compMinWidth, compMaxWidth, compLength, compThickness, xRing.X(), xRing.Z());
 
           componentVolume.setVisAttributes(lcdd.invisible());
           unsigned int nPhi = xRing.attr<int>("nModules");

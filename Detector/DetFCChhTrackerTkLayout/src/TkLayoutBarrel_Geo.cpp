@@ -83,8 +83,9 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
                             lcdd.material(xModuleComponentOdd.materialStr()));
 
       // Create digitization module
-      auto digiModule = det::utils::rectangleDigiModuleXZ(
-          moduleWidth, moduleLength, moduleThickness, sensDet.readout().segmentation());
+      // with readout given by layer
+      auto digiModule =
+          det::utils::rectangleDigiModuleXZ(moduleWidth, moduleLength, moduleThickness, xLayer.X(), xLayer.Z());
 
       moduleVolume.setVisAttributes(lcdd.invisible());
       unsigned int nPhi = xRods.repeat();
