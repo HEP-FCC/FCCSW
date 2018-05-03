@@ -13,8 +13,8 @@ class ITHistSvc;
 #include "GaudiKernel/ToolHandle.h"
 
 namespace fcc {
- class CaloClusterCollection;
- class CaloHitCollection;
+class CaloClusterCollection;
+class CaloHitCollection;
 }
 
 namespace dd4hep {
@@ -30,7 +30,7 @@ class BitField64;
  *
  *  Apply corrections to a reconstructed cluster
  *
- *  Possible corrections:
+ *  Corrections:
  *  ...
  *
  *  @author Anna Zaborowska
@@ -70,9 +70,13 @@ private:
   /// Histogram of energy after all corrections
   TH1F* m_hEnergyPostAllCorrections;
   /// Energy of the centre of energy distribution histograms
-  Gaudi::Property<double> m_energy{this, "energyAxis", 50, "Energy of the centre of energy distribution histograms"};
+  Gaudi::Property<double> m_energy{this, "energyAxis", 500, "Energy of the centre of energy distribution histograms"};
   /// Weights for each detector layer for eta position log-weighting
-  Gaudi::Property<std::vector<double>> m_etaRecalcLayerWeights{this, "etaRecalcWeights", {3.5,5.5,4.75,4,3.75,3.5,7,7}, "Weights for each detector layer for eta position log-weighting"};
+  Gaudi::Property<std::vector<double>> m_etaRecalcLayerWeights{
+      this,
+      "etaRecalcWeights",
+      {3.5, 5.5, 4.75, 4, 3.75, 3.5, 7, 7},
+      "Weights for each detector layer for eta position log-weighting"};
   /// number of layers in the systems as in m_systemId
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers for which the eta position is calculated"};
   /// Name of the layer/cell field
@@ -82,7 +86,8 @@ private:
   /// Names of the detector readout
   Gaudi::Property<std::vector<uint>> m_systemId{this, "systemId", {5}, "IDs of systems"};
   /// Names of the detector readout, corresponding to system IDs in m_systemId
-  Gaudi::Property<std::vector<std::string>> m_readoutName{this, "readoutName", {"ECalBarrelPhiEta"}, "Names of the detector readout, corresponding to systemId"};
+  Gaudi::Property<std::vector<std::string>> m_readoutName{
+      this, "readoutName", {"ECalBarrelPhiEta"}, "Names of the detector readout, corresponding to systemId"};
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// map of system Id to segmentation, created based on m_readoutName and m_systemId
@@ -96,9 +101,11 @@ private:
   /// Gaussian random number generator used for the generation of random noise hits
   Rndm::Numbers m_gauss;
   /// Name of the file with noise constants
-  Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "TestPileup_Cluster_mu200_700files.root", "Name of the file with noise constants"};
+  Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "TestPileup_Cluster_mu200_700files.root",
+                                               "Name of the file with noise constants"};
   /// Name of pileup histogram
-  Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "histFitToClusterDependence_Measured_p", "Name of pileup histogram"};
+  Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "histFitToClusterDependence_Measured_p",
+                                                 "Name of pileup histogram"};
   /// Histograms with pileup constants (index in array - radial layer)
   std::vector<TH1F> m_histoPileupConst;
   /// Values of eta corresponding to the upstream correction parameters
@@ -106,15 +113,24 @@ private:
   /// Borders of the eta bins for the upstream correction (middle between eta values)
   std::vector<double> m_etaBorders;
   /// Upstream correction parameter P00 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
-  Gaudi::Property<std::vector<double>> m_presamplerShiftP0{this, "presamplerShiftP0", {0}, "Upstream material param 00 as fnc of eta"};
+  Gaudi::Property<std::vector<double>> m_presamplerShiftP0{
+      this, "presamplerShiftP0", {0}, "Upstream material param 00 as fnc of eta"};
   /// Upstream correction parameter P10 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
-  Gaudi::Property<std::vector<double>> m_presamplerScaleP0{this, "presamplerScaleP0", {0}, "Upstream material param 10 as fnc of eta"};
+  Gaudi::Property<std::vector<double>> m_presamplerScaleP0{
+      this, "presamplerScaleP0", {0}, "Upstream material param 10 as fnc of eta"};
   /// Upstream correction parameter P01 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
-  Gaudi::Property<std::vector<double>> m_presamplerShiftP1{this, "presamplerShiftP1", {0}, "Upstream material param 01 as fnc of eta"};
+  Gaudi::Property<std::vector<double>> m_presamplerShiftP1{
+      this, "presamplerShiftP1", {0}, "Upstream material param 01 as fnc of eta"};
   /// Upstream correction parameter P11 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
-  Gaudi::Property<std::vector<double>> m_presamplerScaleP1{this, "presamplerScaleP1", {0}, "Upstream material param 11 as fnc of eta"};
+  Gaudi::Property<std::vector<double>> m_presamplerScaleP1{
+      this, "presamplerScaleP1", {0}, "Upstream material param 11 as fnc of eta"};
   /// Values of sampling fraction used for energy calibration
-  Gaudi::Property<std::vector<double>> m_samplingFraction{this, "samplingFraction", {0.299041341789, 0.1306220735, 0.163243999965, 0.186360269398, 0.203778124831, 0.216211280314, 0.227140796653, 0.243315422934}, "Values of sampling fraction used in energy calibration"};
+  Gaudi::Property<std::vector<double>> m_samplingFraction{this,
+                                                          "samplingFraction",
+                                                          {0.299041341789, 0.1306220735, 0.163243999965, 0.186360269398,
+                                                           0.203778124831, 0.216211280314, 0.227140796653,
+                                                           0.243315422934},
+                                                          "Values of sampling fraction used in energy calibration"};
   /// Histogram of upstream energy added to energy of clusters
   TH1F* m_hUpstreamEnergy;
 };

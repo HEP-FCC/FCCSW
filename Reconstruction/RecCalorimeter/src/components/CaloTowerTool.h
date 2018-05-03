@@ -79,7 +79,8 @@ public:
   virtual uint idEta(float aEta) const final;
   /**  Get the tower IDs in phi.
    *   @param[in] aPhi Position of the calorimeter cell in phi
-   *   @return ID (phi) of a tower   */
+   *   @return ID (phi) of a tower
+   */
   virtual uint idPhi(float aPhi) const final;
   /**  Get the eta position of the centre of the tower.
    *   @param[in] aIdEta ID (eta) of a tower

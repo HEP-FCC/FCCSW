@@ -66,6 +66,11 @@ gaudi_add_test(reconstructionFullCaloSystem
                 DEPENDS simulateFullCaloSystem
                 FRAMEWORK tests/options/runFullCaloSystem_ReconstructionSW_noNoise.py)
 
+gaudi_add_test(correctionFullCaloSystem
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS reconstructionFullCaloSystem
+                FRAMEWORK tests/options/runFullCaloSystem_CorrectClusters.py)
+
 gaudi_add_test(reconstructionFullCaloSystemWithNoise
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                 DEPENDS simulateFullCaloSystem
