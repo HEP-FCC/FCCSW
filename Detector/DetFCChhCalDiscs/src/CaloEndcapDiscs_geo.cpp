@@ -103,7 +103,7 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
       layerRmin[iLayerSize + 1] = layerRmin[iLayerSize] + layerThickness[iLayerSize] * tanTheta;
     }
     lLog << MSG::DEBUG << "Readout layer " << iLayerSize << "  of thickness: (cm) " << layerThickness[iLayerSize]
-         << "  with R_min: (cm) " << layerRmin[iLayerSize] << endmsg;
+         << "  with R_min: (cm) " << layerRmin[iLayerSize] << "  with R_max: (cm) " << dim.rmax() << endmsg;
   }
   lLog << MSG::DEBUG << "Readout layer with R_min: (cm) " << layerRmin[layerHeight.size()] << endmsg;
 
@@ -112,7 +112,7 @@ void buildOneSide(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDet
   double zOffsetEnvelope = length / 2. * -sign;
   lLog << MSG::DEBUG << "z offse envelope: (cm) " << zOffsetEnvelope << endmsg;
   for (uint iLayer = 0; iLayer < layerHeight.size(); iLayer++) {
-    dd4hep::Cone layerEnvelope(layerThickness[iLayer], layerRmin[iLayer], dim.rmax(), layerRmin[iLayer + 1],
+    dd4hep::Cone layerEnvelope(layerThickness[iLayer] / 2., layerRmin[iLayer], dim.rmax(), layerRmin[iLayer + 1],
                                dim.rmax());
     layerEnvelopeVols.emplace_back("layerEnvelope", layerEnvelope, aLcdd.material(activeMaterial));
     dd4hep::PlacedVolume layerEnvelopePhysVol = aEnvelope.placeVolume(
