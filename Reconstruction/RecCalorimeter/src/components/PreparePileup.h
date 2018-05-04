@@ -2,10 +2,10 @@
 #define RECCALORIMETER_PREPAREPILEUP_H
 
 // FCCSW
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICalorimeterTool.h"
 #include "RecInterface/ITowerTool.h"
-#include "DetSegmentation/FCCSWGridPhiEta.h"
 class IGeoSvc;
 
 // Gaudi
@@ -51,7 +51,7 @@ public:
   StatusCode finalize();
 
   dd4hep::DDSegmentation::BitField64* m_decoder;
-  
+
 private:
   /**  Correct way to access the neighbour of the phi tower, taking into account the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct neighbour
@@ -89,10 +89,8 @@ private:
   std::vector<TH2F*> m_energyAllEventsVsAbsEta;
   /// 2D histogram with abs(eta) on x-axis and energy per cluster(s) per event on y-axis
   std::vector<TH2F*> m_energyVsAbsEtaClusters;
-  /// 2D histogram with abs(eta) on x-axis and energy per cluster(s) per file on y-axis
-  std::vector<TH2F*> m_energyAllEventsVsAbsEtaClusters;
 
-  /// Maximum energy in the m_energyVsAbsEta histogram, in GeV 
+  /// Maximum energy in the m_energyVsAbsEta histogram, in GeV
   Gaudi::Property<uint> m_maxEnergy{this, "maxEnergy", 20., "Maximum energy in the pile-up plot"};
   /// Name of the pileup histograms
   Gaudi::Property<std::string> m_histogramName{this, "histogramName", "energyVsAbsEta", "Name of 2D histogram"};
@@ -100,12 +98,12 @@ private:
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "layer", "Name of layer"};
   /// Number of layers
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers"};
-   /// Name of the detector readout
+  /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the readout"};
   /// Number of layersSize of cluster(s) in eta
   Gaudi::Property<std::vector<uint>> m_etaSizes{this, "etaSize", {7}, "Size of cluster(s) in eta"};
   /// Number of layersSize of cluster(s) in eta
-  Gaudi::Property<std::vector<uint>> m_phiSizes{this, "phiSize", {17}, "Size of cluster(s) in phi"};
+  Gaudi::Property<std::vector<uint>> m_phiSizes{this, "phiSize", {19}, "Size of cluster(s) in phi"};
   /// PhiEta segmentation (owned by DD4hep)
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
 };

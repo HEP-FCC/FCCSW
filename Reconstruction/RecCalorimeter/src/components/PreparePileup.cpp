@@ -16,7 +16,6 @@
 #include "TH1F.h"
 #include "TH2F.h"
 
-
 DECLARE_ALGORITHM_FACTORY(PreparePileup)
 
 PreparePileup::PreparePileup(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
@@ -61,42 +60,38 @@ StatusCode PreparePileup::initialize() {
   }
   // Prepare histograms - 2D histograms per layer, abs(eta) on x-axis, energy in cell on y-axis
   for (uint i = 0; i < m_numLayers; i++) {
-    m_energyVsAbsEta.push_back(
-             new TH2F((m_histogramName + std::to_string(i)).c_str(),
-          ("energy per cell vs fabs cell eta in layer " + std::to_string(i)).c_str(),
-          60, 0, 6.0, 5000, -1, m_maxEnergy) );
-    if (m_histSvc
-  ->regHist("/rec/" + m_histogramName + std::to_string(i), m_energyVsAbsEta.back())
-  .isFailure()) {
+    m_energyVsAbsEta.push_back(new TH2F((m_histogramName + std::to_string(i)).c_str(),
+                                        ("energy per cell vs fabs cell eta in layer " + std::to_string(i)).c_str(), 60,
+                                        0, 6.0, 5000, -1, m_maxEnergy));
+    if (m_histSvc->regHist("/rec/" + m_histogramName + std::to_string(i), m_energyVsAbsEta.back()).isFailure()) {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
     }
     m_energyAllEventsVsAbsEta.push_back(
-          new TH2F((m_histogramName + std::to_string(i) + "AllEvents").c_str(),
-             ("sum of energy per cell in all events vs fabs cell eta in layer " + std::to_string(i)).c_str(),
-             60, 0, 6.0, 5000, -1, m_maxEnergy*20) );
+        new TH2F((m_histogramName + std::to_string(i) + "AllEvents").c_str(),
+                 ("sum of energy per cell in all events vs fabs cell eta in layer " + std::to_string(i)).c_str(), 60, 0,
+                 6.0, 5000, -1, m_maxEnergy * 20));
     if (m_histSvc
-  ->regHist("/rec/" + m_histogramName + std::to_string(i) + "AllEvents", m_energyAllEventsVsAbsEta.back())
-  .isFailure()) {
+            ->regHist("/rec/" + m_histogramName + std::to_string(i) + "AllEvents", m_energyAllEventsVsAbsEta.back())
+            .isFailure()) {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
     }
   }
   for (uint iCluster = 0; iCluster < m_etaSizes.size(); iCluster++) {
-    m_energyVsAbsEtaClusters.push_back(new TH2F((m_histogramName + "_clusterEta" + std::to_string(m_etaSizes[iCluster]) + "Phi" + std::to_string(m_phiSizes[iCluster])).c_str(),
-            ("energy per cluster #Delta#eta#times#Delta#varphi = " + std::to_string(m_etaSizes[iCluster]) + "#times" + std::to_string(m_phiSizes[iCluster]) + " vs fabs centre-cell eta ").c_str(),
-            60, 0, 6.0, 5000, -1, m_maxEnergy));
-    if (m_histSvc->regHist("/rec/" + m_histogramName + "_clusterEta" + std::to_string(m_etaSizes[iCluster]) + "Phi"+ std::to_string(m_phiSizes[iCluster]), m_energyVsAbsEtaClusters.back()).isFailure()) {
-      error() << "Couldn't register hist" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    m_energyAllEventsVsAbsEtaClusters.push_back(new TH2F((m_histogramName + "_clusterEta" + std::to_string(m_etaSizes[iCluster]) + "Phi"
-                + std::to_string(m_phiSizes[iCluster]) + "AllEvents").c_str(),
-               ("sum of energy per cluster #Delta#eta#times#Delta#varphi = " + std::to_string(m_etaSizes[iCluster]) + "#times" + std::to_string(m_phiSizes[iCluster]) + " in all events vs fabs centre-cell eta ").c_str(),
-               60, 0, 6.0, 5000, -1, m_maxEnergy*20) );
+    m_energyVsAbsEtaClusters.push_back(
+        new TH2F((m_histogramName + "_clusterEta" + std::to_string(m_etaSizes[iCluster]) + "Phi" +
+                  std::to_string(m_phiSizes[iCluster]))
+                     .c_str(),
+                 ("energy per cluster #Delta#eta#times#Delta#varphi = " + std::to_string(m_etaSizes[iCluster]) +
+                  "#times" + std::to_string(m_phiSizes[iCluster]) + " vs fabs centre-cell eta ")
+                     .c_str(),
+                 60, 0, 6.0, 5000, -1, m_maxEnergy));
     if (m_histSvc
-  ->regHist("/rec/" + m_histogramName + "_clusterEta" + std::to_string(m_etaSizes[iCluster]) + "Phi" + std::to_string(m_phiSizes[iCluster]) + "AllEvents", m_energyAllEventsVsAbsEtaClusters.back())
-  .isFailure()) {
+            ->regHist("/rec/" + m_histogramName + "_clusterEta" + std::to_string(m_etaSizes[iCluster]) + "Phi" +
+                          std::to_string(m_phiSizes[iCluster]),
+                      m_energyVsAbsEtaClusters.back())
+            .isFailure()) {
       error() << "Couldn't register hist" << endmsg;
       return StatusCode::FAILURE;
     }
@@ -115,7 +110,7 @@ StatusCode PreparePileup::initialize() {
   }
   info() << "Number of empty cells: " << m_cellsMap.size() << endmsg;
 
-  //StatusCode sc_prepareCellsTwo = m_geoTool->prepareEmptyCells(m_sumEnergyCellsMap);
+  // StatusCode sc_prepareCellsTwo = m_geoTool->prepareEmptyCells(m_sumEnergyCellsMap);
   m_sumEnergyCellsMap = m_cellsMap;
 
   if (!m_towerTool.retrieve()) {
@@ -144,19 +139,17 @@ StatusCode PreparePileup::execute() {
   }
   debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;
 
-  //Fill 2D histogram per layer
+  // Fill 2D histogram per layer
   for (const auto& cell : m_cellsMap) {
     double cellEnergy = cell.second;
     uint64_t cellId = cell.first;
     m_decoder->setValue(cellId);
     uint layerId = (*m_decoder)[m_layerFieldName];
-    if (layerId>=m_numLayers) {
-      layerId = m_numLayers-1;
-      warning() << "Layer id of the cell "<< layerId
-                << " is larger than number of layers in the histogram: "
-                << m_numLayers
+    if (layerId >= m_numLayers) {
+      layerId = m_numLayers - 1;
+      warning() << "Layer id of the cell " << layerId
+                << " is larger than number of layers in the histogram: " << m_numLayers
                 << ". Filling the last histogram." << endmsg;
-
     }
     double cellEta = m_segmentation->eta(cellId);
     m_energyVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
@@ -165,7 +158,8 @@ StatusCode PreparePileup::execute() {
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
   m_towerTool->buildTowers(m_towers);
   for (uint iCluster = 0; iCluster < m_etaSizes.size(); iCluster++) {
-    debug() <<"Size of the reconstruction window (eta,phi) " << m_etaSizes[iCluster] << ", " << m_phiSizes[iCluster] << endmsg;
+    debug() << "Size of the reconstruction window (eta,phi) " << m_etaSizes[iCluster] << ", " << m_phiSizes[iCluster]
+            << endmsg;
     // calculate the sum of first m_nEtaWindow bins in eta, for each phi tower
     std::vector<float> sumOverEta(m_nPhiTower, 0);
     for (int iEta = 0; iEta < m_etaSizes[iCluster]; iEta++) {
@@ -174,7 +168,7 @@ StatusCode PreparePileup::execute() {
     }
     int halfEtaWin = floor(m_etaSizes[iCluster] / 2.);
     int halfPhiWin = floor(m_phiSizes[iCluster] / 2.);
-    debug() <<"Half-size of the reconstruction window (eta,phi) " << halfEtaWin << ", " << halfPhiWin << endmsg;
+    debug() << "Half-size of the reconstruction window (eta,phi) " << halfEtaWin << ", " << halfPhiWin << endmsg;
     double sumWindow = 0;
     // one slice in eta = window, now only sum over window elements in phi
     for (int iEta = halfEtaWin; iEta < m_nEtaTower - halfEtaWin; iEta++) {
@@ -184,7 +178,8 @@ StatusCode PreparePileup::execute() {
       }
       // loop over all the phi slices
       for (int iPhi = 0; iPhi < m_nPhiTower; iPhi++) {
-        m_energyVsAbsEtaClusters[iCluster]->Fill(fabs(m_towerTool->eta(iEta)), sumWindow * cosh(fabs(m_towerTool->eta(iEta))));
+        m_energyVsAbsEtaClusters[iCluster]->Fill(fabs(m_towerTool->eta(iEta)),
+                                                 sumWindow * cosh(fabs(m_towerTool->eta(iEta))));
         // finish processing that window in phi, shift window to the next phi tower
         // substract first phi tower in current window
         sumWindow -= sumOverEta[phiNeighbour(iPhi - halfPhiWin)];
@@ -198,8 +193,8 @@ StatusCode PreparePileup::execute() {
         std::transform(sumOverEta.begin(), sumOverEta.end(), m_towers[iEta - halfEtaWin].begin(), sumOverEta.begin(),
                        std::minus<float>());
         // add next eta slice to the window
-        std::transform(sumOverEta.begin(), sumOverEta.end(), m_towers[iEta + halfEtaWin + 1].begin(), sumOverEta.begin(),
-                       std::plus<float>());
+        std::transform(sumOverEta.begin(), sumOverEta.end(), m_towers[iEta + halfEtaWin + 1].begin(),
+                       sumOverEta.begin(), std::plus<float>());
       }
     }
   }
@@ -218,26 +213,23 @@ unsigned int PreparePileup::phiNeighbour(int aIPhi) const {
   return aIPhi;
 }
 
-
 StatusCode PreparePileup::finalize() {
 
-  //Fill 2D histogram per layer (sum of energy in all events per cell)
+  // Fill 2D histogram per layer (sum of energy in all events per cell)
   for (const auto& cell : m_sumEnergyCellsMap) {
     double cellEnergy = cell.second;
     uint64_t cellId = cell.first;
     m_decoder->setValue(cellId);
     uint layerId = (*m_decoder)[m_layerFieldName];
-    if (layerId>=m_numLayers) {
-      layerId = m_numLayers-1;
-      warning() << "Layer id of the cell "<< layerId
-                << " is larger than number of layers in the histogram: "
-                << m_numLayers
+    if (layerId >= m_numLayers) {
+      layerId = m_numLayers - 1;
+      warning() << "Layer id of the cell " << layerId
+                << " is larger than number of layers in the histogram: " << m_numLayers
                 << ". Filling the last histogram." << endmsg;
-
     }
     double cellEta = m_segmentation->eta(cellId);
     m_energyAllEventsVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
   }
 
-return GaudiAlgorithm::finalize();
+  return GaudiAlgorithm::finalize();
 }

@@ -28,10 +28,26 @@ class BitField64;
 
 /** @class CorrectCluster
  *
- *  Apply corrections to a reconstructed cluster
+ *  Apply corrections to a reconstructed cluster.
+ *  Corrections for eta position and upstream energy are based on the cells in cluster, therefore they do not
+ * acknowledge the energy sharing between neighbouring clusters.
  *
  *  Corrections:
- *  ...
+ *  1) Pseudorapidity position (correction for finite granularity of detector using log-weighting)
+ *      Correction uses only cells from the first defined detector in m_systemId (default ECal Barrel). The number of
+ *      layers used for this correction is specified in *numLayers*. Weights are defined for each layer in *etaRecalcWeights*.
+ *  2) Energy correction for pileup noise, which is parametrised per cluster as  P0 * number_of_cells ^P1. Parameters
+ *      are eta-dependent and read from file *noiseFileName* as histograms called as in *pileupHistoName*
+ *      (+ 0/1 respectively).
+ *  3) Energy correction for the upstream material. The energy upstream is calculated as (P00 + P01 * E_clu) + (P10 +
+ *      P11 * sqrt(E_clu) ) * E_firstLayer. Parameters P00, P01, P10 and P11 are eta-dependent and specified in
+ *      *presamplerShiftP0*, *presamplerShiftP1*, *presamplerScaleP0* and *presamplerScaleP1*, respectively.
+ *      The eta values for which the parameters are extracted are defined in *etaValues*.
+ *      Energy deposited in the first layer is the uncalibrated energy, therefore sampling fraction used for calibration
+ *      needs to be given in *samplingFraction*.
+ *
+ *  Several histograms are filled in, to monitor the upstream correction, the pileup noise, and the energy prior to the
+ * corrections, as well as afterwards.
  *
  *  @author Anna Zaborowska
  *
@@ -83,7 +99,7 @@ private:
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "layer", "Identifier of layers"};
   /// Id of the first layer
   Gaudi::Property<uint> m_firstLayerId{this, "firstLayerId", 0, "ID of first layer"};
-  /// Names of the detector readout
+  /// IDs of the detectors
   Gaudi::Property<std::vector<uint>> m_systemId{this, "systemId", {5}, "IDs of systems"};
   /// Names of the detector readout, corresponding to system IDs in m_systemId
   Gaudi::Property<std::vector<std::string>> m_readoutName{
@@ -103,25 +119,25 @@ private:
   /// Name of the file with noise constants
   Gaudi::Property<std::string> m_noiseFileName{this, "noiseFileName", "TestPileup_Cluster_mu200_700files.root",
                                                "Name of the file with noise constants"};
-  /// Name of pileup histogram
+  /// Name of pileup histogram for correction of "pileupHistoName"+0 * num_cells ^ "pileupHistoName"+1
   Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "histFitToClusterDependence_Measured_p",
                                                  "Name of pileup histogram"};
-  /// Histograms with pileup constants (index in array - radial layer)
+  /// Histograms with pileup constants (index in array - parameter number: 0 or 1)
   std::vector<TH1F> m_histoPileupConst;
   /// Values of eta corresponding to the upstream correction parameters
   Gaudi::Property<std::vector<double>> m_etaValues{this, "etaValues", {0}, "Eta values"};
   /// Borders of the eta bins for the upstream correction (middle between eta values)
   std::vector<double> m_etaBorders;
-  /// Upstream correction parameter P00 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  /// Upstream correction parameter P00 in E_up = (P00 + P01 * E) + (P10 + P11 * sqrt(E) ) * E
   Gaudi::Property<std::vector<double>> m_presamplerShiftP0{
       this, "presamplerShiftP0", {0}, "Upstream material param 00 as fnc of eta"};
-  /// Upstream correction parameter P10 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  /// Upstream correction parameter P10 in E_up = (P00 + P01 * E) + (P10 + P11 * sqrt(E) ) * E
   Gaudi::Property<std::vector<double>> m_presamplerScaleP0{
       this, "presamplerScaleP0", {0}, "Upstream material param 10 as fnc of eta"};
-  /// Upstream correction parameter P01 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  /// Upstream correction parameter P01 in E_up = (P00 + P01 * E) + (P10 + P11 * sqrt(E) ) * E
   Gaudi::Property<std::vector<double>> m_presamplerShiftP1{
       this, "presamplerShiftP1", {0}, "Upstream material param 01 as fnc of eta"};
-  /// Upstream correction parameter P11 in E_up = (P00 + P01 * E) + (P10 + P11 / sqrt(E) ) * E
+  /// Upstream correction parameter P11 in E_up = (P00 + P01 * E) + (P10 + P11 * sqrt(E) ) * E
   Gaudi::Property<std::vector<double>> m_presamplerScaleP1{
       this, "presamplerScaleP1", {0}, "Upstream material param 11 as fnc of eta"};
   /// Values of sampling fraction used for energy calibration

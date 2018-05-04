@@ -25,7 +25,8 @@ CorrectCluster::CorrectCluster(const std::string& name, ISvcLocator* svcLoc)
       m_geoSvc("GeoSvc", "CorrectCluster"),
       m_hEnergyPreAnyCorrections(nullptr),
       m_hEnergyPostAllCorrections(nullptr),
-      m_hPileupEnergy(nullptr) {
+      m_hPileupEnergy(nullptr),
+      m_hUpstreamEnergy(nullptr) {
   declareProperty("clusters", m_inClusters, "Input clusters (input)");
   declareProperty("correctedClusters", m_correctedClusters, "Corrected clusters (output)");
 }
@@ -47,8 +48,20 @@ StatusCode CorrectCluster::initialize() {
     error() << "Couldn't register histogram" << endmsg;
     return StatusCode::FAILURE;
   }
+  m_hPileupEnergy = new TH1F(
+      "pileupCorrectionEnergy", "Energy added to a cluster as a correction for correlated noise", 1000, -10, 10);
+  if (m_histSvc->regHist("/rec/pileupCorrectionEnergy", m_hPileupEnergy).isFailure()) {
+    error() << "Couldn't register histogram" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  m_hUpstreamEnergy = new TH1F(
+      "upstreamCorrectionEnergy", "Energy added to a cluster as a correction for upstream material", 1000, -10, 10);
+  if (m_histSvc->regHist("/rec/upstreamCorrectionEnergy", m_hUpstreamEnergy).isFailure()) {
+    error() << "Couldn't register histogram" << endmsg;
+    return StatusCode::FAILURE;
+  }
   if (m_etaRecalcLayerWeights.size() < m_numLayers) {
-    error() << "m_etaRecalcLayerWeights size and numLayers are different." << endmsg;
+    error() << "m_etaRecalcLayerWeights size is smaller than numLayers." << endmsg;
     return StatusCode::FAILURE;
   }
   for (uint iSys = 0; iSys < m_systemId.size(); iSys++) {
@@ -78,23 +91,10 @@ StatusCode CorrectCluster::initialize() {
     error() << "Couldn't open file with noise constants!!!" << endmsg;
     return StatusCode::FAILURE;
   }
-  // create control histograms
-  m_hPileupEnergy = new TH1F(
-      "pileupCorrectionEnergy", "Energy added to a cluster as a correction for correlated noise", 1000, -10, 10);
-  if (m_histSvc->regHist("/rec/pileupCorrectionEnergy", m_hPileupEnergy).isFailure()) {
-    error() << "Couldn't register histogram" << endmsg;
-    return StatusCode::FAILURE;
-  }
-  m_hUpstreamEnergy = new TH1F(
-      "upstreamCorrectionEnergy", "Energy added to a cluster as a correction for upstream material", 1000, -10, 10);
-  if (m_histSvc->regHist("/rec/upstreamCorrectionEnergy", m_hUpstreamEnergy).isFailure()) {
-    error() << "Couldn't register histogram" << endmsg;
-    return StatusCode::FAILURE;
-  }
   // calculate borders of eta bins:
   if (m_etaValues.size() != m_presamplerShiftP0.size() && m_etaValues.size() != m_presamplerShiftP1.size() &&
       m_etaValues.size() != m_presamplerScaleP0.size() && m_etaValues.size() != m_presamplerScaleP1.size()) {
-    error() << "Sizes of parameter vectors should be the same" << endmsg;
+    error() << "Sizes of parameter vectors for upstream energy correction should be the same" << endmsg;
     return StatusCode::FAILURE;
   }
   // if only one eta, leave border vector empty
@@ -118,15 +118,12 @@ StatusCode CorrectCluster::execute() {
   fcc::CaloClusterCollection* correctedClusters = m_correctedClusters.createAndPut();
 
   for (const auto& cluster : *inClusters) {
-    warning() << "cells-in-cluster SIZE: " << cluster.hits_size() << endmsg;
     double energy = 0;
     TVector3 pos(cluster.core().position.x, cluster.core().position.y, cluster.core().position.z);
     double oldEta = pos.Eta();
     for (auto cell = cluster.hits_begin(); cell != cluster.hits_end(); cell++) {
       energy += cell->core().energy;
     }
-    warning() << "cluster energy: " << cluster.core().energy << endmsg;
-    warning() << "cells-in-cluster energy: " << energy << endmsg;
 
     // 0. Create new cluster, copy information from input
     fcc::CaloCluster newCluster = correctedClusters->create();
@@ -140,7 +137,7 @@ StatusCode CorrectCluster::execute() {
 
     // 1. Correct eta position with log-weighting
     double sumEnFirstLayer = 0;
-    uint systemId = 5;  // Eta position calculated from ECal barrel
+    uint systemId = m_systemId[0];
     // get current pseudorapidity
     double newEta = 0;
     std::vector<double> sumEnLayer;
@@ -153,7 +150,6 @@ StatusCode CorrectCluster::execute() {
     for (auto cell = cluster.hits_begin(); cell != cluster.hits_end(); cell++) {
       m_decoder[systemId]->setValue(cell->core().cellId);
       uint layer = (*m_decoder[systemId])[m_layerFieldName] + m_firstLayerId;
-      debug() << layer << endmsg;
       sumEnLayer[layer] += cell->core().energy;
     }
     sumEnFirstLayer = sumEnLayer[0];
@@ -169,13 +165,12 @@ StatusCode CorrectCluster::execute() {
     // calculate eta position weighting with energy deposited in layer
     // this energy is a good estimator of 1/sigma^2 of (eta_barycentre-eta_MC) distribution
     for (uint iLayer = 0; iLayer < m_numLayers; iLayer++) {
-      if (sumWeightLayer[iLayer] != 0) {
+      if (sumWeightLayer[iLayer] > 1e-10) {
         sumEtaLayer[iLayer] /= sumWeightLayer[iLayer];
+        newEta += sumEtaLayer[iLayer] * sumEnLayer[iLayer];
       }
-      newEta += sumEtaLayer[iLayer] * sumEnLayer[iLayer];
     }
-    newEta /= std::accumulate(sumEnLayer.begin(), sumEnLayer.end(), 0);
-    warning() << " old eta = " << oldEta << " new eta = " << newEta << endmsg;
+    newEta /= energy;
     // alter Cartesian position of a cluster using new eta position
     double radius = pos.Perp();
     double phi = pos.Phi();
@@ -210,7 +205,6 @@ StatusCode CorrectCluster::execute() {
     double presamplerShift = P00 + P01 * cluster.core().energy;
     double presamplerScale = P10 + P11 * sqrt(cluster.core().energy);
     double energyFront = presamplerShift + presamplerScale * sumEnFirstLayer * m_samplingFraction[0];
-    debug() << "UPSTREAM corr: " << presamplerShift << "\t" << presamplerScale << "\t" << energyFront << endmsg;
     m_hUpstreamEnergy->Fill(energyFront);
     newCluster.core().energy += energyFront;
 
