@@ -85,12 +85,13 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
   double bathRmin = caloDim.rmin(); // - margin for inclination
   double bathRmax = caloDim.rmax(); // + margin for inclination
   dd4hep::Tube bathOuterShape(bathRmin, bathRmax, caloDim.dz()); // make it 4 volumes + 5th for detector envelope
+  dd4hep::Tube bathAndServicesOuterShape(cryoDim.rmin2(), cryoDim.rmax1(), caloDim.dz()); // make it 4 volumes + 5th for detector envelope
   if (cryoThicknessFront > 0) {
     // 1. Create cryostat
     dd4hep::Tube cryoFrontShape(cryoDim.rmin1(), cryoDim.rmin2(), cryoDim.dz());
     dd4hep::Tube cryoBackShape(cryoDim.rmax1(), cryoDim.rmax2(), cryoDim.dz());
     dd4hep::Tube cryoSideOuterShape(cryoDim.rmin2(), cryoDim.rmax1(), cryoDim.dz());
-    dd4hep::SubtractionSolid cryoSideShape(cryoSideOuterShape, bathOuterShape);
+    dd4hep::SubtractionSolid cryoSideShape(cryoSideOuterShape, bathAndServicesOuterShape);
     lLog << MSG::INFO << "ECAL cryostat: front: rmin (cm) = " << cryoDim.rmin1() << " rmax (cm) = " << cryoDim.rmin2() << " dz (cm) = " << cryoDim.dz()  << endmsg;
     lLog << MSG::INFO << "ECAL cryostat: back: rmin (cm) = " << cryoDim.rmax1() << " rmax (cm) = " << cryoDim.rmax2() << " dz (cm) = " << cryoDim.dz() << endmsg;
     lLog << MSG::INFO << "ECAL cryostat: side: rmin (cm) = " << cryoDim.rmin2() << " rmax (cm) = " << cryoDim.rmax1() << " dz (cm) = " << cryoDim.dz() - caloDim.dz()  << endmsg;
@@ -225,7 +226,8 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
 
   if (passiveInner.isSensitive()) {
     lLog << MSG::DEBUG << "Passive inner volume set as sensitive" << endmsg;
-    double layerOffset = layerFirstOffset;
+    // inner part starts at second layer
+    double layerOffset = layerFirstOffset + layerHeight[0] / 2. + layerHeight[1] / 2.;
     for (uint iLayer = 1; iLayer < numLayers; iLayer++) {
       dd4hep::Box layerPassiveInnerShape(passiveInnerThickness / 2., caloDim.dz(), layerHeight[iLayer] / 2.);
       dd4hep::Volume layerPassiveInnerVol(passiveInnerMaterial, layerPassiveInnerShape,
