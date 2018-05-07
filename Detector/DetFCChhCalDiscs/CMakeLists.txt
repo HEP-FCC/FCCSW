@@ -21,3 +21,8 @@ gaudi_add_module(DetFCChhCalDiscs
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 dd4hep_generate_rootmap(DetFCChhCalDiscs)
+
+include(CTest)
+gaudi_add_test(simCalEndcap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/sim_endcap.py)
