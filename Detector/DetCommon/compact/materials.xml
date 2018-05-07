@@ -220,4 +220,57 @@
     <fraction n="0.0925" ref="Ni" />
   </material>
 
+  <material name="siPCBMix" state="solid">
+    <MEE unit="eV" value="262.475002085268"/>
+    <D unit="g/cm3" value="5.05076923076923"/>
+    <fraction n="0.014498933901919" ref="Cl"/>
+    <fraction n="0.083477099995865" ref="O"/>
+    <fraction n="0.0654857498400853" ref="Si"/>
+    <fraction n="0.00351122019083304" ref="H"/>
+    <fraction n="0.0142636698452849" ref="C"/>
+    <fraction n="0.818763326226013" ref="Cu"/>
+  </material>
+
+  <material name="GroundOrHVMix" state="solid">
+    <MEE unit="eV" value="259.806022507979"/>
+    <D unit="g/cm3" value="5.19"/>
+    <fraction n="0.00360636223506744" ref="H"/>
+    <fraction n="0.0945480597302505" ref="C"/>
+    <fraction n="0.0100234489402697" ref="N"/>
+    <fraction n="0.0286236705202312" ref="O"/>
+    <fraction n="0.863198458574181" ref="Cu"/>
+  </material>
+
+  <material name="beam" state="gas">
+    <P unit="pascal" value="6.25e-06"/>
+    <MEE unit="eV" value="38.5760755714278"/>
+    <D unit="g/cm3" value="1.7e-14"/>
+    <fraction n="0.36264" ref="H"/>
+    <fraction n="0.36276" ref="N"/>
+    <fraction n="0.117748421296248" ref="C"/>
+    <fraction n="0.156851578703752" ref="O"/>
+  </material>
+
+  <material name="TungstenDens24">
+    <D value="17.8" unit="g/cm3"/>
+    <fraction n="0.93" ref="W"/>
+    <fraction n="0.061" ref="Ni"/>
+    <fraction n="0.009" ref="Fe"/>
+  </material>
+
+  <material name="CarbonFiber_25percent">
+    <D type="density" value="0.375" unit="g/cm3"/>
+    <fraction n="1.0" ref="CarbonFiber"/>
+  </material>
+
+  <material name="CarbonFiber_Vertex">
+    <D type="density" value="0.625" unit="g/cm3"/>
+    <fraction n="1.0" ref="CarbonFiber"/>
+  </material>      
+
+  <material name="Graphite">
+    <D value="1.7" unit="g/cm3"/>
+    <composite n="1" ref="C"/>
+  </material>
+
 </materials>
