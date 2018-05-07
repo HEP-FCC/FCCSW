@@ -103,6 +103,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackClusters = m_trackClusters.createAndPut();
   // prepare output planar clusters
   auto planarClusters = m_planarClusterHandle.createAndPut();
+  planarClusters->reserve(100000000);
   // the cells to be used
   std::map<size_t, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
   // go through hits
@@ -159,7 +160,6 @@ StatusCode GeometricTrackerDigitizer::execute() {
       localDirection = hitSurface.transform().inverse().linear() * localDirection;
       // to ignore extreme incident angles
       if (std::abs(localDirection.z()) < m_cosThetaLocMin) continue;
-
       // The digitization steps
       std::vector<Acts::DigitizationStep> dSteps;
       if (m_fastSimInterface) {
@@ -260,11 +260,11 @@ StatusCode GeometricTrackerDigitizer::execute() {
     auto mergedCells = mergeCells(surf.second);
     // group together cells which belong to same cluster
     auto clusterMap = createClusters(mergedCells);
-    // #tracks per cluster
-    // set of track identification - to only have hits from different tracks
-    std::set<unsigned> nTracksPerCluster;
     // acts digi cells
     for (auto& cells : clusterMap) {
+      // #tracks per cluster
+      // set of track identification - to only have hits from different tracks
+      std::set<unsigned> nTracksPerCluster;
       // create the track cluster
       fcc::TrackCluster trackCluster = trackClusters->create();
 
@@ -289,7 +289,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
         norm += cell.data;
 
         for (auto& th : cell.trackHits) {
-          //   trackCluster.addhits(th);
+          trackCluster.addhits(th);
         }
       }
       // divide by the total path - analog clustering
@@ -313,8 +313,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
       trackCluster.core().position = position;
       trackCluster.core().energy = clusterEnergy;
       trackCluster.core().time = clusterTime;
-      /// ----------- Create Acts cluster - possibly to be written out -----------
-      /// ----------- Create unique Acts global channel identifier -----------
+      // ----------- Create Acts cluster - possibly to be written out -----------
+      // ----------- Create unique Acts global channel identifier -----------
       // get the bins of the local position to create channel identifier for this surface
       size_t bin0 = binUtility.bin(localPosition, 0);
       size_t bin1 = binUtility.bin(localPosition, 1);
@@ -328,11 +328,12 @@ StatusCode GeometricTrackerDigitizer::execute() {
       Acts::ActsSymMatrixD<2> cov;
       cov << 0., 0., 0., 0.;
 
-      planarClusters->push_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster.size(), hitSurface,
-                                                      Identifier(geoID.value()), std::move(cov), localX, localY,
-                                                      std::move(cells)));
+      planarClusters->emplace_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster.size(), hitSurface,
+                                                         Identifier(geoID.value()), std::move(cov), localX, localY,
+                                                         std::move(cells)));
     }
   }
+
   return StatusCode::SUCCESS;
 }
 
@@ -415,6 +416,7 @@ const std::vector<std::vector<sim::FCCDigitizationCell>>
 GeometricTrackerDigitizer::createClusters(const std::vector<sim::FCCDigitizationCell>& cells) const {
   // the output
   std::vector<std::vector<sim::FCCDigitizationCell>> mergedCells;
+  if (!cells.size()) return mergedCells;
   // create the graph
   boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> graph;
   //  add the needed amount of vertices to the graph
