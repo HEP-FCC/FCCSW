@@ -35,7 +35,7 @@ StatusCode SimG4UserLimitRegion::create() {
       (*G4TransportationManager::GetTransportationManager()->GetWorldsIterator())->GetLogicalVolume();
   // Support two usecases: 
   // (a) if user specifies world, set limits for everything
-  if (std::find(m_volumeNames.begin(), m_volumeNames.end(), "world") {
+  if (std::find(m_volumeNames.begin(), m_volumeNames.end(), "world") != m_volumeNames.end()) {
     m_userLimits.emplace_back(new G4UserLimits(m_maxStep / Gaudi::Units::mm * CLHEP::mm,
                                                m_maxTrack / Gaudi::Units::mm * CLHEP::mm,
                                                m_maxTime / Gaudi::Units::s * CLHEP::s,
@@ -45,9 +45,9 @@ StatusCode SimG4UserLimitRegion::create() {
           info() << "Creating user limits for world" << endmsg;
   // (b) if individiual volumenames are specified, try to find them and set limits for them.
   } else {
-  for (const auto& volumeName : m_volumeNames) {`
+  for (const auto& volumeName : m_volumeNames) {
       for (int iter_region = 0; iter_region < world->GetNoDaughters(); ++iter_region) {
-        if (world->GetDaughter(iter_region)->GetName().find(trackerName) != std::string::npos) {
+        if (world->GetDaughter(iter_region)->GetName().find(volumeName) != std::string::npos) {
           /// all G4Region objects are deleted by the G4RegionStore
           m_g4regions.emplace_back(
               new G4Region(world->GetDaughter(iter_region)->GetLogicalVolume()->GetName() + "_userLimits"));
