@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCCDectDimensions"
+    title="master file with includes and world dimension"
+    author=""
+    url="no"
+    status="development"
+    version="1.0">
+    <comment>
+    </comment>
+  </info>
+
+
+  <define>
+    <!-- BEAM PIPE -->
+    <constant name="CentralBeamTube_dz" value="800.0*cm"/>
+    <constant name="CentralBeamTube_rmax" value="2.08*cm"/>
+    <constant name="CentralBeamTube_rmin" value="2.*cm"/>
+
+    <constant name="ForwardBeamTube_rmin1" value="2.*cm"/>
+    <constant name="ForwardBeamTube_rmax1" value="2.08*cm"/>
+    <constant name="ForwardBeamTube_rmin2" value="6.15*cm"/>
+    <constant name="ForwardBeamTube_rmax2" value="6.23*cm"/>
+    <constant name="ForwardBeamTube_dz" value="850*cm"/>
+    <constant name="ForwardBeamTube_zOffset" value="CentralBeamTube_dz + ForwardBeamTube_dz"/>
+
+    <!-- TRACKER DIMENSIONS -->
+    <constant name="Tracker_rmin" value="23.28*mm"/>
+    <constant name="Tracker_rmax" value="1700*mm"/>
+    <constant name="Tracker_dz" value="5009.7*mm"/>
+    <!-- Tracker Barrel -->
+    <constant name="BarTrackerInner_id" value="0"/>
+    <constant name="BarTrackerOuter_id" value="1"/>
+    <!-- not explicitly defined, up to tracker design -->
+
+    <!-- Tracker End-caps -->
+    <constant name="EndCapTrackerInner_id" value="2"/>
+    <constant name="EndCapTrackerOuter_id" value="3"/>
+
+    <!-- Tracker Forward -->
+    <constant name="FwdTracker_id" value="4"/>
+    <!-- single layer close to ExCal -->
+    <constant name="FwdTracker_rmin1" value="40*mm"/>
+    <constant name="FwdTracker_rmax1" value="1076.8*mm"/>
+    <constant name="FwdTracker_zOffset1" value="7500*mm"/>
+    <!-- the rest of the tracking layers inside the forward solenoid / shielding -->
+    <constant name="FwdTracker_rmin2" value="60*mm"/>
+    <constant name="FwdTracker_rmax2" value="1549.8*mm"/>
+    <constant name="FwdTracker_z2" value="3009.65*mm"/>
+    <constant name="FwdTracker_zOffset2" value="10*m + FwdTracker_z2"/>
+
+
+  </define>
+
+</lccdd>
