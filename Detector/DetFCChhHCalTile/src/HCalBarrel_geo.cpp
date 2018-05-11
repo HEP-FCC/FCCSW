@@ -222,7 +222,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
       lLog << MSG::WARNING << " WARNING!!!! Module position outside of detector envelope" << endmsg;
     }
     dd4hep::Position wedgeOffset(0, zOffset, 0);
-    // dd4hep::Transform3D rotate(dd4hep::RotationY(seqId*-0.5 * dd4hep::pi), wedgeOffset);
     // Fill vector for DetElements
     rows.push_back(moduleVolume.placeVolume(wedgeVolume, wedgeOffset));
     rows.back().addPhysVolID("row", idxZRow);
