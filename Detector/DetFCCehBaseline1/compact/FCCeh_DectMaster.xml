@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+  </includes>
+
+  <info name="FCCDectMaster"
+    title="master file with includes and world dimension"
+    author="V. Volkl"
+    url="no"
+    status="development"
+    version="1.0">
+    <comment>master file with includes and world dimension</comment>
+  </info>
+  <define>
+    <constant name="world_size" value="25*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+  <include ref="./FCCeh_DectDimensions.xml" />
+
+
+  <include ref="../../DetFCCehTrackerTkLayout/compact/Tracker.xml" />
+
+</lccdd>

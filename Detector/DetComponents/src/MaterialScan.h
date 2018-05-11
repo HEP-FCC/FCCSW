@@ -38,4 +38,7 @@ private:
                                               "name of the envelope within which the material is measured"};
   /// Flat random number generator
   Rndm::Numbers m_flatPhiDist;
+  /// Flat random number generator
+  Rndm::Numbers m_flatEtaDist;
+
 };

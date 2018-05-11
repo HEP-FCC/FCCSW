@@ -33,3 +33,7 @@ gaudi_add_test(CountCellsPhiEta
 gaudi_add_test(GeantFullSimWithGeantino
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/geant_fullsim_pgun_geantino.py)
+
+gaudi_add_test(GeantFullSimWithGeantinoFCCeh
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/geant_fullsim_pgun_geantino_eh.py)
