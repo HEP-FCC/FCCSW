@@ -53,7 +53,7 @@ public:
    */
   virtual StatusCode finalize() final;
  
-  virtual std::map<uint64_t, double> cellIdMap() final;
+  virtual StatusCode cellIdMap(std::map<uint64_t, double>& aCells) final;
 
 private:
   /// Handle for electromagnetic barrel cells (input collection)

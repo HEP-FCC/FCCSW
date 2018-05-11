@@ -42,8 +42,8 @@ StatusCode CaloTopoClusterInputTool::initialize() {
 
 StatusCode CaloTopoClusterInputTool::finalize() { return GaudiTool::finalize(); }
 
-std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
-  m_inputMap.clear();
+StatusCode CaloTopoClusterInputTool::cellIdMap(std::map<uint64_t, double>& aCells) {
+  aCells.clear();
   uint totalNumberOfCells = 0;
 
   // 1. ECAL barrel
@@ -52,7 +52,7 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input Ecal barrel cell collection size: " << ecalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *ecalBarrelCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += ecalBarrelCells->size();
   
@@ -61,7 +61,7 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input Ecal endcap cell collection size: " << ecalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *ecalEndcapCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += ecalEndcapCells->size();
     
@@ -70,7 +70,7 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input Ecal forward cell collection size: " << ecalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *ecalFwdCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += ecalFwdCells->size();
   
@@ -79,7 +79,7 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input hadronic barrel cell collection size: " << hcalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalBarrelCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += hcalBarrelCells->size();
   
@@ -88,7 +88,7 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input hadronic extended barrel cell collection size: " << hcalExtBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalExtBarrelCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += hcalExtBarrelCells->size();
   
@@ -97,7 +97,7 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input Hcal endcap cell collection size: " << hcalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalEndcapCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += hcalEndcapCells->size();
   
@@ -106,12 +106,13 @@ std::map<uint64_t, double> CaloTopoClusterInputTool::cellIdMap() {
   debug() << "Input Hcal forward cell collection size: " << hcalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalFwdCells) {
-    m_inputMap.emplace(iCell.cellId(), iCell.energy());
+    aCells.emplace(iCell.cellId(), iCell.energy());
   }
   totalNumberOfCells += hcalFwdCells->size();
   
-  if (totalNumberOfCells != m_inputMap.size())
+  if (totalNumberOfCells != aCells.size()){
     error() << "Map size != total number of cells! " << endmsg;
-
-  return m_inputMap;
+    return StatusCode::FAILURE;
+  }
+  return StatusCode::SUCCESS;
 }
