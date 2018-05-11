@@ -42,9 +42,27 @@ double getAttrValueWithFallback(const dd4hep::xml::Component& node, const std::s
 
 uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPreStepPoint = true);
 
+/** Get number of possible combinations of bit fields for determination of neighbours.
+ *   @param[in] aN number of field names.
+ *   @param[in] aK length of bit fields included for index search.
+ *   return vector of possible combinations of field values.
+ */
+
 std::vector<std::vector<uint>> combinations(int N, int K);
 
+/** Get number of possible permutations for certain combination of bit field indeces.
+ *   @param[in] aN number of field names.
+ *   return vector of permuations for certain field values.
+ */
+
 std::vector<std::vector<int>> permutations(int K);
+
+/** Get true field value of neighbour in cyclic bit field
+ *   @param[in] aCyclicId field value of neighbour
+ *   @param[in] aFieldExtremes Minimal and Maximal values of the fields.
+ *   return field value for neighbour in cyclic bit field
+ */
+
 int cyclicNeighbour(int aCyclicId, std::pair<int, int> aFieldExtremes);
 
 /**  Get neighbours in many dimensions.
