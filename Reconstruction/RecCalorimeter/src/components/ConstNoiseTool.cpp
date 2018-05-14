@@ -7,11 +7,6 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
-// Root
-#include "TFile.h"
-#include "TH1F.h"
-#include "TMath.h"
-
 DECLARE_TOOL_FACTORY(ConstNoiseTool)
 
 ConstNoiseTool::ConstNoiseTool(const std::string& type, const std::string& name, const IInterface* parent)

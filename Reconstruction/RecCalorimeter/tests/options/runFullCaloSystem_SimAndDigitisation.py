@@ -21,8 +21,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                                           'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml'
+                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'
                                            ],
                     OutputLevel = INFO)
 
@@ -55,12 +54,11 @@ hcalReadoutName = "HCalBarrelReadout"
 extHcalReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
-# Tail Catcher readout
-tailCatcherReadoutName = "Muons_Readout"
 # layers to be merged in endcaps & forward calo
-ecalEndcapNumberOfLayersToMerge = [2] + [2] + [4]*38
-hcalEndcapNumberOfLayersToMerge = [2] + [4]*20
-hcalFwdNumberOfLayersToMerge = [1]*52
+ecalEndcapNumberOfLayersToMerge = [26]*5+[27]
+ecalFwdNumberOfLayersToMerge = [7]*5+[8]
+hcalEndcapNumberOfLayersToMerge = [13]+[14]*5
+hcalFwdNumberOfLayersToMerge = [8]+[9]*5
 identifierName = "layer"
 volumeName = "layer"
 
@@ -94,9 +92,9 @@ pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveE
                 OutputLevel = DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", 
-                                 "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits", 
-                                 "SimG4SaveCalHits/saveExtHCalHits", "SimG4SaveCalHits/saveHCalEndcapHits", 
+                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits",
+                                 "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits",
+                                 "SimG4SaveCalHits/saveExtHCalHits", "SimG4SaveCalHits/saveHCalEndcapHits",
                                  "SimG4SaveCalHits/saveHCalFwdHits"],
                        eventProvider=pgun,
                        OutputLevel=INFO)
@@ -178,12 +176,25 @@ createEcalEndcapCells = CreateCaloCells("CreateEcalEndcapCaloCells",
 createEcalEndcapCells.hits.Path="mergedECalEndcapHits"
 createEcalEndcapCells.cells.Path="ECalEndcapCells"
 
+# Create Ecal cells in forward
+mergelayersEcalFwd = MergeLayers("MergeLayersEcalFwd",
+                   # take the bitfield description from the geometry service
+                   readout = ecalFwdReadoutName,
+                   # cells in which field should be merged
+                   identifier = identifierName,
+                   volumeName = volumeName,
+                   # how many cells to merge
+                   merge = ecalFwdNumberOfLayersToMerge,
+                   OutputLevel = INFO)
+mergelayersEcalFwd.inhits.Path = "ECalFwdHits"
+mergelayersEcalFwd.outhits.Path = "mergedECalFwdHits"
+
 createEcalFwdCells = CreateCaloCells("CreateEcalFwdCaloCells",
                                  doCellCalibration=True,
                                  calibTool=calibEcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createEcalFwdCells.hits.Path="ECalFwdHits"
+createEcalFwdCells.hits.Path="mergedECalFwdHits"
 createEcalFwdCells.cells.Path="ECalFwdCells"
 
 # Create cells in HCal
@@ -245,11 +256,10 @@ createHcalFwdCells = CreateCaloCells("CreateHcalFwdCaloCells",
                                  calibTool=calibHcalFwd,
                                  addCellNoise=False, filterCellNoise=False,
                                  OutputLevel=INFO)
-createHcalFwdCells.hits.Path="HCalFwdHits"
+createHcalFwdCells.hits.Path="mergedHCalFwdHits"
 createHcalFwdCells.cells.Path="HCalFwdCells"
 
-
-out = PodioOutput("out", 
+out = PodioOutput("out",
                   OutputLevel=INFO)
 out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
 out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
@@ -280,11 +290,13 @@ ApplicationMgr(
               createEcalBarrelCells,
               mergelayersEcalEndcap,
               createEcalEndcapCells,
+              mergelayersEcalFwd,
               createEcalFwdCells,
               createHcalCells,
               createExtHcalCells,
               mergelayersHcalEndcap,
               createHcalEndcapCells,
+              mergelayersHcalFwd,
               createHcalFwdCells,
               out
               ],
