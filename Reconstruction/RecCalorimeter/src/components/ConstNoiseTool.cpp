@@ -16,11 +16,10 @@ DECLARE_TOOL_FACTORY(ConstNoiseTool)
 
 ConstNoiseTool::ConstNoiseTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
-  declareInterface<INoiseConstTool>(this);
+   declareInterface<INoiseConstTool>(this);
 }
 
 StatusCode ConstNoiseTool::initialize() {
-  /// Noise estimates from Atlas [GeV]
   // set for ECalBarrel system:5
   // set for ECalEndcap system:6
   // set for HCalEndcap system:7
@@ -29,13 +28,13 @@ StatusCode ConstNoiseTool::initialize() {
   // set for ECalFwd system:10
   // set for HCalFwd system:11
 
-  m_systemNoiseConstMap.emplace(5, 0.0075 /4. );
-  m_systemNoiseConstMap.emplace(6, 0.0075 /4.  );
-  m_systemNoiseConstMap.emplace(7, 0.0075 /4. );
-  m_systemNoiseConstMap.emplace(8, 0.0115/4. );
-  m_systemNoiseConstMap.emplace(9, 0.0115/4. );
-  m_systemNoiseConstMap.emplace(10,0.0075/4. );
-  m_systemNoiseConstMap.emplace(11,0.0075/4. );
+  m_systemNoiseConstMap.emplace(5, m_ECalBThreshold );
+  m_systemNoiseConstMap.emplace(6, m_ECalECThreshold  );
+  m_systemNoiseConstMap.emplace(7, m_HCalECThreshold );
+  m_systemNoiseConstMap.emplace(8, m_HCalBThreshold );
+  m_systemNoiseConstMap.emplace(9, m_HCalBThreshold );
+  m_systemNoiseConstMap.emplace(10, m_ECalFwdThreshold );
+  m_systemNoiseConstMap.emplace(11, m_HCalFwdThreshold );
 
   m_systemNoiseOffsetMap.emplace(5, 0. );
   m_systemNoiseOffsetMap.emplace(6, 0.  );
