@@ -35,7 +35,6 @@ StatusCode CaloTopoClusterInputTool::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_decoder = m_geoSvc->lcdd()->readout(m_ecalBarrelReadoutName).segmentation().segmentation()->decoder();
   
   return StatusCode::SUCCESS;
 }

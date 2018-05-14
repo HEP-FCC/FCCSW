@@ -4,7 +4,6 @@
 #include "GaudiAlg/GaudiTool.h"
 
 // FCCSW
-#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITopoClusterInputTool.h"
 
@@ -25,34 +24,33 @@ class Segmentation;
 /** @class CaloTopoClusterInputTool Reconstruction/RecCalorimeter/src/components/CaloTopoClusterInputTool.h
  * CaloTopoClusterInputTool.h
  *
- *  Tool building the calorimeter towers for the sliding window algorithm.
+ *  Tool filling a map of all Calo cells as input for TopoCluster algorithm.
  *  This tool runs over all calorimeter systems (ECAL barrel, HCAL barrel + extended barrel, calorimeter endcaps,
  * forward calorimeters). If not all systems are available or not wanted to be used, create an empty collection using
  * CreateDummyCellsCollection algorithm.
- *  Towers are built of cells in eta-phi, summed over all radial layers.
- *  A tower contains all cells within certain eta and phi (tower size: '\b deltaEtaTower', '\b deltaPhiTower').
- *  Distance in r plays no role, however `\b radiusForPosition` needs to be defined
- *  (e.g. to inner radius of the detector) for the cluster position calculation. By default the radius is equal to 1.
  *
- *  For more explanation please [see reconstruction documentation](@ref md_reconstruction_doc_reccalorimeter).
- *
- *  @author Anna Zaborowska
- *  @author Jana Faltova
+ *  @author Coralie Neubueser
  */
 
 class CaloTopoClusterInputTool : public GaudiTool, virtual public ITopoClusterInputTool {
 public:
   CaloTopoClusterInputTool(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~CaloTopoClusterInputTool() = default;
+
   /**  Initialize.
    *   @return status code
    */
   virtual StatusCode initialize() final;
+
   /**  Finalize.
    *   @return status code
    */
   virtual StatusCode finalize() final;
- 
+
+  /** cellIdMap
+   * Fills the given map with all cellIDs pointing to the cells energy.
+   *  @return status code
+   */
   virtual StatusCode cellIdMap(std::map<uint64_t, double>& aCells) final;
 
 private:
@@ -92,9 +90,8 @@ private:
   /// Name of the hcal forward calorimeter readout
   Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "", 
                                                     "name of the hcal fwd readout"};
-
+  /// Map to be filled
   std::map<uint64_t, double> m_inputMap; 
-  dd4hep::DDSegmentation::BitField64* m_decoder;
 };
 
 #endif /* RECCALORIMETER_CALOTOPOCLUSTERINPUTTOOL_H */
