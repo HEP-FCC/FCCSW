@@ -13,11 +13,13 @@ class PositionedTrackHit;
 class PositionedTrackHitCollection;
 class DigiTrackHitAssociation;
 class DigiTrackHitAssociationCollection;
+class MCParticle;
+class MCParticleCollection;
 }
 
 /** @class PileupDigiTrackHitMergeTool
  *
- * Implemenation of the MergeTool for Digitization hits.
+ * Implemenation of the MergeTool for Digitization hits and, if requested, simulated hits.
  * While merging, this algorithm tries to keep the trackIDs unique by adding the pileup event number with an offset.
  * This should be transparent, but the trackIDs will be non-consecutive.
  *
@@ -50,25 +52,39 @@ private:
   Gaudi::Property<std::string> m_pileupPosHitsBranchName{this, "pileupDigiHitsBranch", "digiHits",
                                                          "Name of the branch from which to read pileup collection"};
 
+  /// Name of the branch from which to read pileup collection
+  Gaudi::Property<std::string> m_pileupParticleBranchName{this, "pileupParticleBranch", "simParticles",
+                                                          "Name of the branch from which to read pileup collection"};
+
+  /// Flag indicating if particles are present and should be merged
+  Gaudi::Property<bool> m_mergeParticles{this, "mergeParticles", false,
+                                         "Flag indicating if particles are present and should be merged"};
+
   /// internal container to keep of collections to be merged
   std::vector<const fcc::PositionedTrackHitCollection*> m_hitCollections;
   /// internal container to keep of collections to be merged
-  std::vector<const fcc::DigiTrackHitAssociationCollection*> m_digiTrackHitsCollection;
+  std::vector<const fcc::DigiTrackHitAssociationCollection*> m_digiTrackHitsCollections;
+  /// internal container to keep of collections to be merge
+  std::vector<const fcc::MCParticleCollection*> m_particleCollections;
 
   /// Output of this tool: merged collection
   DataHandle<fcc::PositionedTrackHitCollection> m_hitsMerged{"overlay/hits", Gaudi::DataHandle::Writer, this};
   /// Output of this tool: merged collection
   DataHandle<fcc::DigiTrackHitAssociationCollection> m_digiHitsMerged{"overlay/digiHits", Gaudi::DataHandle::Writer,
                                                                       this};
+  /// Output of this tool: merged collection
+  DataHandle<fcc::MCParticleCollection> m_particlesMerged{"overlay/particles", Gaudi::DataHandle::Writer, this};
 
   /// input to this tool: signal collection
   DataHandle<fcc::PositionedTrackHitCollection> m_hitsSignal{"overlay/signalHits", Gaudi::DataHandle::Reader, this};
   /// input to this tool: signal collection
   DataHandle<fcc::DigiTrackHitAssociationCollection> m_posHitsSignal{"overlay/signalDigiHits",
                                                                      Gaudi::DataHandle::Reader, this};
+  /// input to this tool: signal collection
+  DataHandle<fcc::MCParticleCollection> m_particlesSignal{"overlay/signalParticles", Gaudi::DataHandle::Reader, this};
 
   /// offset with which the pileup event number is added to the trackID
-  const unsigned int m_trackIDCollectionOffset = 2 << 20;
+  const unsigned int m_trackIDCollectionOffset = 2.5e6;
 };
 
 #endif  // FWCORE_PILEUPDIGITRACKERHITSMERGETOOL_H
