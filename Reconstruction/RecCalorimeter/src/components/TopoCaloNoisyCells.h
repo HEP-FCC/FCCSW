@@ -12,8 +12,8 @@ class IGeoSvc;
 /** @class TopoCaloNoisyCells Reconstruction/RecCalorimeter/src/components/TopoCaloNoisyCells.h
  *TopoCaloNoisyCells.h
  *
- *  Tool that reads a ROOT file containing the TTree with branch "cellId" and branch "neighbours".
- *  This tools reads the tree, creates a map, and allows a lookup of noise level and mean noise of a cell.
+ *  Tool that reads a ROOT file containing the TTree with branchs "cellId", "noiseLevel", and "noiseOffset".
+ *  This tool reads the tree, creates a map, and allows a lookup of noise level and mean noise of a cell, by its cellID.
  *
  *  @author Coralie Neubueser
  */
