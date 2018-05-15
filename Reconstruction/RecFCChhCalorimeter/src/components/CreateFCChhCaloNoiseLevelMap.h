@@ -68,6 +68,9 @@ private:
       this,
       "activeVolumeNamesNested",
       {"layerVolume", "moduleVolume", "wedgeVolume"}};  // to find out number of volumes
+
+  /// Name of output file
+  std::string m_outputFileName;
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONOISELEVELMAP_H */

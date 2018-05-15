@@ -9,30 +9,50 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compa
                     OutputLevel = INFO)
 
 ecalBarrelReadoutName = "ECalBarrelPhiEta"
+hcalBarrelReadoutName = "HCalBarrelReadout"
 # noise files
-ecalBarrelNoisePath = "/afs/cern.ch/user/a/azaborow/public/FCCSW/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth_noise.root"
-#"/afs/cern.ch/user/n/novaj/public/elecNoise_sfcorrection_50Ohm_default_differentTraces_168.root"
+BarrelNoisePath = "/afs/cern.ch/work/c/cneubuse/public/FCChh/inBfield/noiseBarrel_mu100.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
+hcalBarrelNoiseHistName = "h_elec_hcal_layer"
 
+from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelNoSegTool
+ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
+                                         readoutName = ecalBarrelReadoutName, 
+                                         OutputLevel = INFO)
+HCalBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalBarrelVols", 
+                                                 readoutName = hcalBarrelReadoutName, 
+                                                 OutputLevel = INFO)
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import CreateFCChhCaloNoiseLevelMap, ConstNoiseTool,  ReadNoiseFromFileTool
 
 ECalNoiseTool = ReadNoiseFromFileTool("ReadNoiseFromFileToolECal",  
                                       readoutName = ecalBarrelReadoutName,
-                                      noiseFileName = ecalBarrelNoisePath,
+                                      positionsTool = ECalBcells,
+                                      noiseFileName = BarrelNoisePath,
                                       elecNoiseHistoName = ecalBarrelNoiseHistName,
+                                      setNoiseOffset = False,
                                       activeFieldName = "layer",
                                       addPileup = False,
                                       numRadialLayers = 8,
                                       OutputLevel=DEBUG)
 
-HCalNoiseTool = ConstNoiseTool("ConstNoiseTool", noiseInHCalBarrel = 0.0009)
+HCalNoiseTool = ReadNoiseFromFileTool("ReadNoiseFromFileToolHCal",  
+                                      readoutName = hcalBarrelReadoutName,
+                                      positionsTool = HCalBcellVols,
+                                      noiseFileName = BarrelNoisePath,
+                                      elecNoiseHistoName = hcalBarrelNoiseHistName,
+                                      setNoiseOffset = False,
+                                      activeFieldName = "layer",
+                                      addPileup = False,
+                                      numRadialLayers = 10,
+                                      OutputLevel=DEBUG)
 
 noisePerCell = CreateFCChhCaloNoiseLevelMap("noisePerCell", 
-                                          ECalBarrelNoiseTool = ECalNoiseTool, 
-                                          HCalBarrelNoiseTool = HCalNoiseTool,
-                                          OutputLevel=DEBUG)
+                                            ECalBarrelNoiseTool = ECalNoiseTool, 
+                                            HCalBarrelNoiseTool = HCalNoiseTool,
+                                            outputFileName="cellNoise_Barrel.root",
+                                            OutputLevel=DEBUG)
 
 # ApplicationMgr
 from Configurables import ApplicationMgr

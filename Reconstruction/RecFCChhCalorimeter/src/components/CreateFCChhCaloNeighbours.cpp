@@ -10,7 +10,9 @@
 DECLARE_SERVICE_FACTORY(CreateFCChhCaloNeighbours)
 
 CreateFCChhCaloNeighbours::CreateFCChhCaloNeighbours(const std::string& aName, ISvcLocator* aSL)
-    : base_class(aName, aSL) {}
+    : base_class(aName, aSL) {
+  declareProperty( "outputFileName", m_outputFileName, "Name of the output file");
+}
 
 CreateFCChhCaloNeighbours::~CreateFCChhCaloNeighbours() {}
 
@@ -280,11 +282,11 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       } else {
         highEta = highZ / fabs(highZ) * (-log(fabs(tan(atan(m_hCalRinner / highZ) / 2.))));
       }
-      info() << "HCal z id  : " << iZ << endmsg;
-      info() << "HCal eta range  : " << lowEta << " -  " << highEta << endmsg;
+      debug() << "HCal z id  : " << iZ << endmsg;
+      debug() << "HCal eta range  : " << lowEta << " -  " << highEta << endmsg;
       int lowId = floor((lowEta - 0.5 * eCalEtaSize - eCalEtaOffset) / eCalEtaSize);
       int highId = floor((highEta + 0.5 * eCalEtaSize - eCalEtaOffset) / eCalEtaSize);
-      info() << "ECal eta range  : " << lowId * eCalEtaSize + eCalEtaOffset << " -  "
+      debug() << "ECal eta range  : " << lowId * eCalEtaSize + eCalEtaOffset << " -  "
              << highId * eCalEtaSize + eCalEtaOffset << endmsg;
       std::vector<uint> neighbours;
       for (int idEtaToAdd = lowId; idEtaToAdd <= highId; idEtaToAdd++) {
@@ -293,7 +295,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
         }
       }
       debug() << "HCal z id  : " << iZ << endmsg;
-      info() << "Found ECal Neighbours in eta : " << neighbours.size() << endmsg;
+      debug() << "Found ECal Neighbours in eta : " << neighbours.size() << endmsg;
       for (auto id : neighbours) {
         debug() << "ECal Neighbours id : " << id << endmsg;
       }
@@ -303,17 +305,17 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     for (int iPhi = 0; iPhi < extremaHCalFirstLayerPhi.second + 1; iPhi++) {
       double lowPhi = m_hCalPhiOffset + iPhi * hCalPhiSize;
       double highPhi = m_hCalPhiOffset + (iPhi + 1) * hCalPhiSize;
-      info() << "HCal phi range  : " << lowPhi << " -  " << highPhi << endmsg;
+      debug() << "HCal phi range  : " << lowPhi << " -  " << highPhi << endmsg;
       int lowId = floor((lowPhi - 0.5 * eCalPhiSize - eCalPhiOffset) / eCalPhiSize);
       int highId = floor((highPhi + 0.5 * eCalPhiSize - eCalPhiOffset) / eCalPhiSize);
-      info() << "ECal phi range  : " << lowId * eCalPhiSize + eCalPhiOffset << " -  "
+      debug() << "ECal phi range  : " << lowId * eCalPhiSize + eCalPhiOffset << " -  "
              << highId * eCalPhiSize + eCalPhiOffset << endmsg;
       std::vector<uint> neighbours;
       for (int idPhiToAdd = lowId; idPhiToAdd <= highId; idPhiToAdd++) {
         neighbours.push_back(det::utils::cyclicNeighbour(idPhiToAdd, extremaECalLastLayerPhi));
       }
       debug() << "HCal phi id  : " << iPhi << endmsg;
-      info() << "Found ECal Neighbours in phi : " << neighbours.size() << endmsg;
+      debug() << "Found ECal Neighbours in phi : " << neighbours.size() << endmsg;
       for (auto id : neighbours) {
         debug() << "ECal Neighbours id : " << id << endmsg;
       }
@@ -349,12 +351,12 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     }
     for (uint iCount = 0; iCount < counter.size(); iCount++) {
       if (counter[iCount] != 0) {
-        info() << counter[iCount] << " cells have " << iCount << " neighbours" << endmsg;
+        debug() << counter[iCount] << " cells have " << iCount << " neighbours" << endmsg;
       }
     }
   }
 
-  TFile file("neighbours_map_segHcal.root", "RECREATE");
+  TFile file(m_outputFileName.c_str(), "RECREATE");
   file.cd();
   TTree tree("neighbours", "Tree with map of neighbours");
   uint64_t saveCellId;

@@ -31,7 +31,6 @@ detectors_to_use=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster
                   'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
                   'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
                   'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                  #                 'file:Detector/DetFCChhTailCatcher/compact/FCChh_TailCatcher.xml'
                   ]
 
 geoservice = GeoSvc("GeoSvc", detectors = detectors_to_use, OutputLevel = WARNING)
@@ -59,10 +58,7 @@ HECcells = CellPositionsCaloDiscsTool("CellPositionsHEC",
 HCalFwdcells = CellPositionsCaloDiscsTool("CellPositionsHCalFwd", 
                                         readoutName = hcalFwdReadoutName, 
                                         OutputLevel = INFO)
-TailCatchercells = CellPositionsTailCatcherTool("CellPositionsTailCatcher", 
-                                                readoutName = tailCatcherReadoutName, 
-                                                centralRadius = 901.5,
-                                                OutputLevel = INFO)
+
 # cell positions
 from Configurables import CreateCellPositions
 positionsEcalBarrel = CreateCellPositions("positionsEcalBarrel", 

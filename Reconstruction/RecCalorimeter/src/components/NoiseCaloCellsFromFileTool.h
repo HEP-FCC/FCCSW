@@ -18,11 +18,9 @@ class TH1F;
  *
  *  Tool for calorimeter noise
  *  Access noise constants from TH1F histogram (noise vs. |eta|)
- *  createRandomCellNoise: Create random CaloHits (gaussian distribution) for the vector of cells
- *  filterCellNoise: remove cells with energy bellow threshold*sigma from the vector of cells
  *
- *  @author Jana Faltova
- *  @date   2016-09
+ *  @author Coralie Neubueser
+ *  @date   2018-02
  *
  */
 
@@ -67,6 +65,8 @@ private:
       this, "filterNoiseThreshold", 3, " Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)"};
   /// Number of radial layers
   Gaudi::Property<uint> m_numRadialLayers{this, "numRadialLayers", 3, "Number of radial layers"};
+  /// Name of output file
+  std::string m_outputFileName;
 
   /// Histograms with pileup constants (index in array - radial layer)
   std::vector<TH1F> m_histoPileupConst;

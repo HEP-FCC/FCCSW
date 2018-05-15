@@ -59,6 +59,8 @@ private:
       this,
       "activeVolumeNamesNested",
       {"layerVolume", "moduleVolume", "wedgeVolume"}};  // to find out number of volumes
+  /// Name of output file
+  std::string m_outputFileName;
 
   // For combination of barrels: flag if ECal and HCal barrels should be merged
   Gaudi::Property<bool> m_connectBarrels{this, "connectBarrels", true};

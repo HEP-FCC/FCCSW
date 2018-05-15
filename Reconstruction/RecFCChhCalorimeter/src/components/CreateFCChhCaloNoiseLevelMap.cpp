@@ -13,6 +13,7 @@ CreateFCChhCaloNoiseLevelMap::CreateFCChhCaloNoiseLevelMap(const std::string& aN
     : base_class(aName, aSL) {
   declareProperty("ECalBarrelNoiseTool", m_ecalBarrelNoiseTool, "Handle for the cells noise tool of Barrel ECal");
   declareProperty("HCalBarrelNoiseTool", m_hcalBarrelNoiseTool, "Handle for the cells noise tool of Barrel HCal");
+  declareProperty( "outputFileName", m_outputFileName, "Name of the output file");
 }
 
 CreateFCChhCaloNoiseLevelMap::~CreateFCChhCaloNoiseLevelMap() {}
@@ -179,15 +180,15 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
           uint64_t volumeId = decoder->getValue();
 	  double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId);
 	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
-          // use constant noise level in hcal 0.0115 / 4.
-	  //  double noise = 0.0115 / 4.;
+          /// use constant noise level in hcal 0.0115 / 4.
+	  /// double noise = 0.0115 / 4.;
           map.insert( std::pair<uint64_t, std::pair<double, double> >(volumeId, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }
   }
 
-  TFile file("cellNoise_map_segHcal_noiseLevelWithOffset.root", "RECREATE");
+  TFile file(m_outputFileName.c_str(), "RECREATE");
   file.cd();
   TTree tree("noisyCells", "Tree with map of noise per cell");
   uint64_t saveCellId;

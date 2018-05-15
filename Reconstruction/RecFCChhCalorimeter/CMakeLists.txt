@@ -29,3 +29,11 @@ gaudi_add_test(reconstructFullCaloSystemCellPositions
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 	       DEPENDS simulateFullCaloSystemForCellPositions
 	       FRAMEWORK tests/options/recoPositions_fullCaloSystem.py)
+
+gaudi_add_test(buildingCellNoiseMap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+	       FRAMEWORK tests/options/noiseLevelPerCell.py)
+
+gaudi_add_test(buildingCellNeighboursMap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+	       FRAMEWORK tests/options/neighbours.py)

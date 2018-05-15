@@ -13,23 +13,31 @@ class IGeoSvc;
  *TopoCaloNoisyCells.h
  *
  *  Tool that reads a ROOT file containing the TTree with branch "cellId" and branch "neighbours".
- *  This tools reads the tree, creates a map, and allows a lookup of all neighbours of a cell.
+ *  This tools reads the tree, creates a map, and allows a lookup of noise level and mean noise of a cell.
  *
- *  @author Anna Zaborowska
+ *  @author Coralie Neubueser
  */
 
 class TopoCaloNoisyCells : public GaudiTool, virtual public ICaloReadCellNoiseMap {
 public:
   TopoCaloNoisyCells(const std::string& type, const std::string& name, const IInterface* parent);
   virtual ~TopoCaloNoisyCells() = default;
-  /** Read a map of cellIDs to vector of cellIDs.
+  /** Read a root file and the stored TTree of cellIDs to noise values.
+   * return StatusCode
    */
   virtual StatusCode initialize() final;
   virtual StatusCode finalize() final;
-  /** Prepare a map of all existing cells in current geometry.
-   *   return Status code.
+ 
+  /** Expected noise per cell in terms of sigma of Gaussian distibution.
+   *   @param[in] aCellId of the cell of interest.
+   *   return double.
    */
   virtual double noiseRMS(uint64_t aCellId) final;
+  
+  /** Expected noise per cell in terms of mean of distibution.
+   *   @param[in] aCellId of the cell of interest.
+   *   return double.
+   */ 
   virtual double noiseOffset(uint64_t aCellId) final;
 
 private:
