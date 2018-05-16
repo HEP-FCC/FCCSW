@@ -19,7 +19,7 @@ public:
   /// default constructor using an arbitrary type
   FCCSWGridPhiEta(const std::string& aCellEncoding);
   /// Default constructor used by derived classes passing an existing decoder
-  FCCSWGridPhiEta(BitField64* decoder);
+  FCCSWGridPhiEta(const BitFieldCoder* decoder);
 
   /// destructor
   virtual ~FCCSWGridPhiEta() = default;

@@ -148,10 +148,11 @@ private:
   Gaudi::Property<std::string> m_hcalEndcapReadoutName{this, "hcalEndcapReadoutName", "",
                                                        "name of the hcal endcap readout"};
   /// Name of the hcal forward calorimeter readout
-  Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "", 
+  Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "",
                                                     "name of the hcal fwd readout"};
   /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalBarrelSegmentation;
+
   /// PhiEta segmentation of the ecal endcap calorimeter (owned by DD4hep)
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalEndcapSegmentation;
   /// PhiEta segmentation of the ecal forward calorimeter (owned by DD4hep)

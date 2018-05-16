@@ -7,7 +7,9 @@
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"
 #include "DD4hep/Segmentations.h"
-#include "DDSegmentation/BitField64.h"
+#include "DDSegmentation/BitFieldCoder.h"
+// Include GridPhiEta from dd4hep once eta calculation is fixed
+//#include "DDSegmentation/GridPhiEta.h"
 #include "DDSegmentation/CartesianGridXY.h"
 #include "DDSegmentation/CartesianGridXYZ.h"
 #include "DDSegmentation/PolarGridRPhi.h"
@@ -49,7 +51,7 @@ uint64_t cellID(const dd4hep::Segmentation& aSeg, const G4Step& aStep, bool aPre
  *   @param[in] aCellId ID of cell.
  *   return Vector of neighbours.
  */
-std::vector<uint64_t> neighbours(dd4hep::DDSegmentation::BitField64& aDecoder,
+std::vector<uint64_t> neighbours(const dd4hep::DDSegmentation::BitFieldCoder& aDecoder,
                                  const std::vector<std::string>& aFieldNames,
                                  const std::vector<std::pair<int, int>>& aFieldExtremes,
                                  uint64_t aCellId);
@@ -59,7 +61,7 @@ std::vector<uint64_t> neighbours(dd4hep::DDSegmentation::BitField64& aDecoder,
  *   @param[in] aFieldNames Names of the fields for which extremes are found.
  *   return Vector of pairs (min,max)
  */
-std::vector<std::pair<int, int>> bitfieldExtremes(dd4hep::DDSegmentation::BitField64& aDecoder,
+std::vector<std::pair<int, int>> bitfieldExtremes(const dd4hep::DDSegmentation::BitFieldCoder& aDecoder,
                                                   const std::vector<std::string>& aFieldNames);
 
 /** Get the half widths of the box envelope (TGeoBBox).

@@ -139,8 +139,9 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   double cellEta = m_segmentation->eta(aCellId);
   // Take readout, bitfield from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
-  decoder->setValue(aCellId);
-  unsigned cellLayer = (*decoder)[m_activeFieldName];
+  //decoder->setValue(aCellId);
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  unsigned cellLayer = decoder->get(cID, m_activeFieldName);
 
   // All histograms have same binning, all bins with same size
   // Using the histogram in the first layer to get the bin size
