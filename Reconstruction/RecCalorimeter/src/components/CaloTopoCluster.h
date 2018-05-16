@@ -54,7 +54,7 @@ public:
    *   @param[in] aSeeds, the vector of seed cell ids anf their energy to build proto-clusters.
    */
   virtual void findingSeeds(const std::map<uint64_t, double>& aCells, int aNumSigma,
-                            std::vector< std::pair<uint64_t, double> >& aSeeds);
+                            std::vector<std::pair<uint64_t, double>>& aSeeds);
 
   /** Building proto-clusters from the found seeds.
    * First the function initialises a cluster in the preClusterCollection for the seed cells,
@@ -67,7 +67,7 @@ public:
    */
   virtual void buildingProtoCluster(int aNumSigma,
                                     int aLastNumSigma,
-                                    std::vector< std::pair<uint64_t, double> >& aSeeds,
+                                    std::vector<std::pair<uint64_t, double>>& aSeeds,
                                     const std::map<uint64_t, double>& aCells,
                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& aPreClusterCollection);
 
@@ -82,7 +82,7 @@ public:
    *   @param[in] aAllowClusterMerge, bool to allow for clusters to be merged, set to false in case of last iteration in CaloTopoCluster::buildingProtoCluster.
    *   return vector of pairs with cellID and energy of found neighbours.
    */
-  std::vector< std::pair<uint64_t, uint> >
+  std::vector<std::pair<uint64_t, uint>>
   searchForNeighbours(const uint64_t aCellId, uint& aClusterID, int aNumSigma, const std::map<uint64_t, double>& aCells,
                       std::map<uint64_t, uint>& aClusterOfCell,
                       std::map<uint, std::vector<std::pair<uint64_t, uint>>>& aPreClusterCollection,

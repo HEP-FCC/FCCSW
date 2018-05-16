@@ -12,8 +12,6 @@ hcalBarrelReadoutName = "HCalBarrelReadout"
 hcalExtBarrelReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEtaReco"
 hcalFwdReadoutName = "HFwdPhiEtaReco"
-# Tail Catcher readout
-tailCatcherReadoutName = "Muons_Readout"
 # Number of events
 num_events = 3
 
@@ -96,15 +94,10 @@ positionsHcalFwd = CreateCellPositions("positionsHcalFwd",
                                           hits = "HCalFwdCells", 
                                           positionedHits = "HCalFwdCellPositions", 
                                           OutputLevel = INFO)
-positionsTailCatcher = CreateCellPositions("positionsTailCatcher", 
-                                          positionsTool=TailCatchercells, 
-                                          hits = "TailCatcherCells", 
-                                          positionedHits = "TailCatcherCellPositions", 
-                                          OutputLevel = INFO)
 
 out = PodioOutput("out", OutputLevel=DEBUG)
 out.filename = "~/FCCSW/digi_cellPositions_50GeVelectrons.root"
-out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCells", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells", "drop TailCatcherCells"]
+out.outputCommands = ["keep *","drop ECalBarrelCells","drop ECalEndcapCells","drop ECalFwdCells","drop HCalBarrelCells", "drop HCalExtBarrelCells", "drop HCalEndcapCells", "drop HCalFwdCells"]
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -119,7 +112,6 @@ positionsHcalBarrel.AuditExecute = True
 positionsHcalExtBarrel.AuditExecute = True
 positionsHcalEndcap.AuditExecute = True
 positionsHcalFwd.AuditExecute = True
-#positionsTailCatcher.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
@@ -131,7 +123,6 @@ TopAlg = [    podioinput,
               positionsHcalExtBarrel,
               positionsHcalEndcap, 
               positionsHcalFwd,
-#              positionsTailCatcher,
               out
               ],
     EvtSel = 'NONE',

@@ -175,16 +175,16 @@ StatusCode CaloTopoCluster::execute() {
 
 void CaloTopoCluster::findingSeeds(const std::map<uint64_t, double>& aCells,
                                    int aNumSigma,
-                                   std::vector<std::pair<uint64_t, double> >& aSeeds) {
+                                   std::vector<std::pair<uint64_t, double>>& aSeeds) {
   for (const auto& cell : aCells) {
     // retrieve the noise const and offset assigned to cell
-    double threshold = (m_noiseTool->noiseOffset(cell.first) + ( m_noiseTool->noiseRMS(cell.first) * aNumSigma) ) / dd4hep::MeV;
+    double threshold = m_noiseTool->noiseOffset(cell.first) + ( m_noiseTool->noiseRMS(cell.first) * aNumSigma);
     if (msgLevel() <= MSG::VERBOSE){
-      verbose() << "noise offset    = " << m_noiseTool->noiseOffset(cell.first)/ dd4hep::MeV << "MeV " << endmsg;
-      verbose() << "noise rms       = " << m_noiseTool->noiseRMS(cell.first)/ dd4hep::MeV << "MeV " << endmsg;
-      verbose() << "seed threshold  = " << threshold << "MeV " << endmsg;
+      verbose() << "noise offset    = " << m_noiseTool->noiseOffset(cell.first) << "GeV " << endmsg;
+      verbose() << "noise rms       = " << m_noiseTool->noiseRMS(cell.first) << "GeV " << endmsg;
+      verbose() << "seed threshold  = " << threshold << "GeV " << endmsg;
     }
-    if (abs(cell.second) / dd4hep::MeV > threshold) {
+    if (abs(cell.second) > threshold) {
       aSeeds.emplace_back(cell.first, cell.second);
     }
   }
@@ -193,9 +193,9 @@ void CaloTopoCluster::findingSeeds(const std::map<uint64_t, double>& aCells,
 void CaloTopoCluster::buildingProtoCluster(
     int aNumSigma,
     int aLastNumSigma,
-    std::vector<std::pair<uint64_t, double> >& aSeeds,
+    std::vector<std::pair<uint64_t, double>>& aSeeds,
     const std::map<uint64_t, double>& aCells,
-    std::map<uint, std::vector<std::pair<uint64_t, uint> > >& aPreClusterCollection) {
+    std::map<uint, std::vector< std::pair<uint64_t, uint>>>& aPreClusterCollection) {
   // Map of cellIds to clusterIds
   std::map<uint64_t, uint> clusterOfCell;
 
@@ -213,13 +213,11 @@ void CaloTopoCluster::buildingProtoCluster(
     } else {
       // new cluster starts with seed
       // set cell Bits to 1 for seed cell
-      // std::vector< std::pair<uint64_t, uint> > vecClusterSeed;
-      // vecClusterSeed.push_back(std::make_pair(seedId, 1));
       aPreClusterCollection[iSeeds].push_back(std::make_pair(seedId, 1));
       uint clusterId = iSeeds;
       clusterOfCell[seedId] = clusterId;
 
-      std::vector< std::vector< std::pair<uint64_t, uint> > > vecNextNeighbours(100000);
+      std::vector<std::vector<std::pair<uint64_t, uint>>> vecNextNeighbours(100000);
       vecNextNeighbours[0] = CaloTopoCluster::searchForNeighbours(seedId, clusterId, aNumSigma, aCells, clusterOfCell,
                                                      aPreClusterCollection, true);
       // first loop over seeds neighbours
@@ -259,10 +257,10 @@ CaloTopoCluster::searchForNeighbours(const uint64_t aCellId,
                                      int aNumSigma,
                                      const std::map<uint64_t, double>& aCells,
                                      std::map<uint64_t, uint>& aClusterOfCell,
-                                     std::map<uint, std::vector< std::pair<uint64_t, uint> >>& aPreClusterCollection,
+                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& aPreClusterCollection,
 				     bool aAllowClusterMerge) {
   // Fill vector to be returned, next cell ids and cluster id for which neighbours are found
-  std::vector< std::pair<uint64_t, uint> > addedNeighbourIds;
+  std::vector<std::pair<uint64_t, uint>> addedNeighbourIds;
   // Retrieve cellIds of neighbours
   auto neighboursVec = m_neighboursTool->neighbours(aCellId);
   if (neighboursVec.size() == 0) {
