@@ -35,12 +35,18 @@ StatusCode MaterialScan::initialize() {
     error() << "Unable to initialize random number generator." << endmsg;
     return sc;
   }
+  sc = m_flatEtaDist.initialize(randSvc, Rndm::Flat(0., m_etaBinning));
+  if (sc == StatusCode::FAILURE) {
+    error() << "Unable to initialize random number generator." << endmsg;
+    return sc;
+  }
 
   std::unique_ptr<TFile> rootFile(TFile::Open(m_filename.value().c_str(), "RECREATE"));
   // no smart pointers possible because TTree is owned by rootFile (root mem management FTW!)
   TTree* tree = new TTree("materials", "");
   double eta = 0;
   double phi = 0;
+  double etaRndm = 0;
   unsigned nMaterials = 0;
   std::unique_ptr<std::vector<double>> nX0(new std::vector<double>);
   std::unique_ptr<std::vector<double>> nLambda(new std::vector<double>);
@@ -66,41 +72,39 @@ StatusCode MaterialScan::initialize() {
   std::array<Double_t, 3> dir = {0, 0, 0};
   TVector3 vec(0, 0, 0);
   for (eta = -m_etaMax; eta < m_etaMax; eta += m_etaBinning) {
-    for (int i = 0; i < m_nPhiTrials; ++i) {
-      phi = m_flatPhiDist();
-      nX0->clear();
-      nLambda->clear();
-      matDepth->clear();
-      material->clear();
+    nX0->clear();
+    nLambda->clear();
+    matDepth->clear();
+    material->clear();
 
-      std::map<dd4hep::Material, double> phiAveragedMaterialsBetween;
-      for (int iPhi = 0; iPhi < m_nPhiTrials; ++iPhi) {
-        phi = m_flatPhiDist();
-        vec.SetPtEtaPhi(1, eta, phi);
-        auto n = vec.Unit();
-        dir = {n.X(), n.Y(), n.Z()};
-        // if the start point (beginning) is inside the material-scan envelope (e.g. if envelope is world volume)
-        double distance = boundaryVol->DistFromInside(pos.data(), dir.data());
-        // if the start point (beginning) is not inside the envelope
-        if (distance == 0) {
-          distance = boundaryVol->DistFromOutside(pos.data(), dir.data());
-        }
-        DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
-        debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
-                << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
-        const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
-        for (unsigned i = 0, n = materials.size(); i < n; ++i) {
-          phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
-        }
+    std::map<dd4hep::Material, double> phiAveragedMaterialsBetween;
+    for (int iPhi = 0; iPhi < m_nPhiTrials; ++iPhi) {
+      phi = m_flatPhiDist();
+      etaRndm = eta + m_flatEtaDist();
+      vec.SetPtEtaPhi(1, etaRndm, phi);
+      auto n = vec.Unit();
+      dir = {n.X(), n.Y(), n.Z()};
+      // if the start point (beginning) is inside the material-scan envelope (e.g. if envelope is world volume)
+      double distance = boundaryVol->DistFromInside(pos.data(), dir.data());
+      // if the start point (beginning) is not inside the envelope
+      if (distance == 0) {
+        distance = boundaryVol->DistFromOutside(pos.data(), dir.data());
       }
-      nMaterials = phiAveragedMaterialsBetween.size();
-      for (auto matpair : phiAveragedMaterialsBetween) {
-        TGeoMaterial* mat = matpair.first->GetMaterial();
-        material->push_back(mat->GetName());
-        matDepth->push_back(matpair.second);
-        nX0->push_back(matpair.second / mat->GetRadLen());
-        nLambda->push_back(matpair.second / mat->GetIntLen());
+      DDSurfaces::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
+      debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
+              << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
+      const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
+      for (unsigned i = 0, n = materials.size(); i < n; ++i) {
+        phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
       }
+    }
+    nMaterials = phiAveragedMaterialsBetween.size();
+    for (auto matpair : phiAveragedMaterialsBetween) {
+      TGeoMaterial* mat = matpair.first->GetMaterial();
+      material->push_back(mat->GetName());
+      matDepth->push_back(matpair.second);
+      nX0->push_back(matpair.second / mat->GetRadLen());
+      nLambda->push_back(matpair.second / mat->GetIntLen());
     }
     tree->Fill();
   }
