@@ -24,8 +24,14 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsHCalBarrelNoSegTool
+/** @class CellPositionsHCalBarrelNoSegTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsHCalBarrelNoSegTool.h
+ *  CellPositionsHCalBarrelNoSegTool.h
  *
+ *  Tool to determine each Calorimeter cell position.
+ *
+ *  For the FCChh Barrel and extended Barrel HCAL, determined from the placed volumes.   
+ * 
+ *  @author Coralie Neubueser
  */
 
 class CellPositionsHCalBarrelNoSegTool : public GaudiTool, virtual public ICellPositionsTool {
@@ -48,8 +54,9 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelReadout"};
-
+  /// Cellid decoder
   dd4hep::DDSegmentation::BitField64* m_decoder;
+  /// Volume manager
   dd4hep::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H */

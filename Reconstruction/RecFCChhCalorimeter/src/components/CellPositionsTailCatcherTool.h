@@ -25,9 +25,15 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsTailCatcherTool
+/** @class CellPositionsTailCatcherTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsTailCatcherTool.h
+ *   CellPositionsTailCatcherTool.h
  *
- */
+  *  Tool to determine each Calorimeter cell position.
+ *
+ *  For the FCChh Tail Catcher, determined from the placed volumes and the FCCSW eta-phi segmentation.   
+ * 
+ *  @author Coralie Neubueser
+*/
 
 class CellPositionsTailCatcherTool : public GaudiTool, virtual public ICellPositionsTool {
 public:
@@ -51,8 +57,11 @@ private:
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
   /// Radius of central Tail Catcher cylinder
   Gaudi::Property<double> m_centralRadius{this, "centralRadius", {}, "radius in cm"};
+  /// Eta-phi segmentation
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
+  /// Cellid decoder
   dd4hep::DDSegmentation::BitField64* m_decoder;
+  /// Volume manager
   dd4hep::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSTAILCATCHERTOOL_H */

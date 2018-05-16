@@ -25,8 +25,14 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsECalBarrelTool
+/** @class CellPositionsECalBarrelTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsECalBarrelTool.h
+ * CellPositionsECalBarrelTool.h
  *
+ *  Tool to determine each Calorimeter cell position.
+ *
+ *   For the FCChh Barrel ECAL, determined from the placed volumes and the FCCSW eta-phi segmentation.   
+ * 
+ *  @author Coralie Neubueser
  */
 
 class CellPositionsECalBarrelTool : public GaudiTool, virtual public ICellPositionsTool {
@@ -49,8 +55,11 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalBarrelPhiEta"};
+  /// Eta-phi segmentation
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
+  /// Cellid decoder
   dd4hep::DDSegmentation::BitField64* m_decoder;
+  /// Volume manager
   dd4hep::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSECALBARRELTOOL_H */

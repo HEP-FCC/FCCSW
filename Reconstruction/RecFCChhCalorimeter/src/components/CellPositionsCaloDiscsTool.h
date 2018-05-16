@@ -25,9 +25,15 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsCaloDiscsTool
+/** @class CellPositionsCaloDiscsTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsCaloDiscsTool.h
+ *   CellPositionsCaloDiscsTool.h
  *
- */
+ *  Tool to determine each Calorimeter cell position.
+ *
+ *  For the FCChh Calo Discs in the Endcap/Forward E and HCal, determined from the placed volumes and the FCCSW eta-phi segmentation. 
+ * 
+ *  @author Coralie Neubueser
+*/
 
 class CellPositionsCaloDiscsTool : public GaudiTool, virtual public ICellPositionsTool {
 
@@ -50,8 +56,11 @@ private:
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "name of the readout"};
+  /// Eta-phi segmentation
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
+  /// Cellid decoder
   dd4hep::DDSegmentation::BitField64* m_decoder;
+  /// Volume manager
   dd4hep::VolumeManager m_volman;
 };
 #endif /* RECCALORIMETER_CELLPOSITIONSCALODISCSTOOL_H */

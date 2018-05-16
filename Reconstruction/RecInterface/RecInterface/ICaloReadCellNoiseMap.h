@@ -6,7 +6,7 @@
 
 /** @class ICaloReadCellNoiseMap RecInterface/RecInterface/ICaloReadCellNoiseMap.h ICaloReadCellNoiseMap.h
  *
- *  Interface to the service creating a map for the calorimetry.
+ *  Abstarct Interface to noise per Calorimeter cell.
  *
  *  @author Coralie Neubueser
  */
