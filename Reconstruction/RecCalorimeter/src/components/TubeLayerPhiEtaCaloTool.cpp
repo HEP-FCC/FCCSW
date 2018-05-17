@@ -71,24 +71,24 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
   // Loop over active layers
   for (unsigned int ilayer = 0; ilayer < numLayers; ilayer++) {
     // Get VolumeID
+    dd4hep::DDSegmentation::VolumeID volumeID = 0;
     for (unsigned int it = 0; it < m_fieldNames.size(); it++) {
-      (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
+      decoder->set(volumeID, m_fieldNames[it], m_fieldValues[it]);
     }
-    (*decoder)[m_activeFieldName] = ilayer;
-    (*decoder)["eta"] = 0;
-    (*decoder)["phi"] = 0;
-    uint64_t volumeId = decoder->getValue();
+    decoder->set(volumeID, m_activeFieldName, ilayer);
+    decoder->set(volumeID, "eta", 0);
+    decoder->set(volumeID, "phi", 0);
 
     // Get number of segmentation cells within the active volume
-    auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
+    auto numCells = det::utils::numberOfCells(volumeID, *segmentation);
     debug() << "Segmentation cells  (Nphi, Neta, minEta): " << numCells << endmsg;
     // Loop over segmenation cells
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
       for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
-        (*decoder)["phi"] = iphi;
-        (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
-        uint64_t cellId = decoder->getValue();
-        aCells.insert(std::pair<uint64_t, double>(cellId, 0));
+        decoder->set(volumeID, "phi", iphi);
+        decoder->set(volumeID, "eta", ieta + numCells[2]); // start from the minimum existing eta cell in this layer
+        dd4hep::DDSegmentation::CellID cellId = volumeID;
+        aCells.insert(std::pair<dd4hep::DDSegmentation::CellID, double>(cellId, 0));
       }
     }
   }

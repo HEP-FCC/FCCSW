@@ -2,7 +2,7 @@
 #include "RecTracker/TrackingUtils.h"
 
 #include "DD4hep/Detector.h"
-#include "DDSegmentation/BitField64.h"
+#include "DDSegmentation/BitFieldCoder.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 
 #include "datamodel/PositionedTrackHitCollection.h"
@@ -15,27 +15,27 @@ namespace rec {
 // For use with standard sorting algorithms
 // compares the system fields of the hits first, then the layer field
 struct CellIdOrder {
-  CellIdOrder(dd4hep::DDSegmentation::BitField64* dec) : m_decoder(dec) {}
+  CellIdOrder(const dd4hep::DDSegmentation::BitFieldCoder* dec) : m_decoder(dec) {}
 
   bool operator()(const fcc::TrackHit& h1, const fcc::TrackHit& h2) {
-    m_decoder->setValue(h1.cellId());
-    int system1 = (*m_decoder)["system"];
-    int layer1 = (*m_decoder)["layer"];
-    m_decoder->setValue(h2.cellId());
-    int system2 = (*m_decoder)["system"];
-    int layer2 = (*m_decoder)["layer"];
+    dd4hep::DDSegmentation::CellID cID = h1.cellId();
+    int system1 = m_decoder->get(cID, "system");
+    int layer1 = m_decoder->get(cID, "layer");
+    dd4hep::DDSegmentation::CellID cID2 = h2.cellId();
+    int system2 = m_decoder->get(cID2, "system");
+    int layer2 = m_decoder->get(cID2, "layer");
     if (system1 < system2) return true;
     if (system2 < system1) return false;
     return (layer1 < layer2);
   }
 
 private:
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  const dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
 };
 
 /// fill vector with hits ordered according to the CellIdOrder struct
 void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits,
-                   dd4hep::DDSegmentation::BitField64* decoder) {
+                   const dd4hep::DDSegmentation::BitFieldCoder* decoder) {
   sortedHits.reserve(unsortedHits->size());
   for (const auto& hit : *unsortedHits) {
     sortedHits.push_back(hit);

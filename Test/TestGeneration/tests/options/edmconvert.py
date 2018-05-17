@@ -5,14 +5,9 @@ from Configurables import FCCDataSvc
 ## Data service
 
 podioevent = FCCDataSvc("EventDataSvc")
-from Configurables import ApplicationMgr, Gaudi__ParticlePropertySvc
 from Configurables import HepMCDumper, MomentumRangeParticleGun, HepMCHistograms, FlatSmearVertex, ConstPileUp
 
 
-
-
-particlePropertySvc = Gaudi__ParticlePropertySvc("ParticlePropertySvc",
-    ParticlePropertiesFile='Generation/data/ParticleTable.txt')
 guntool = MomentumRangeParticleGun("SignalProvider", PdgCodes=[11])
 
 
@@ -52,6 +47,5 @@ ApplicationMgr(
                ExtSvc = [podioevent],
                EvtMax=1,
                OutputLevel=VERBOSE,
-               SvcOptMapping = ["Gaudi::ParticlePropertySvc/ParticlePropertySvc"]
 )
 

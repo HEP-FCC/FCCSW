@@ -21,11 +21,6 @@ guntool = MomentumRangeParticleGun()
 gen = GenAlg("ParticleGun", SignalProvider=guntool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-## Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCToEDMConverter("Converter")
@@ -90,6 +85,6 @@ ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],
                 EvtSel='NONE',
                 EvtMax=1,
                 ## order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc=[podioevent, geoservice, geantservice, ppservice],
+                ExtSvc=[podioevent, geoservice, geantservice],
                 OutputLevel=INFO
  )
