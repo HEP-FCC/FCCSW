@@ -110,8 +110,8 @@ uint LayeredCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers)
     phiCellMin = m_segmentation->phi(cell.core().cellId) - M_PI / (double)m_segmentation->phiBins();
     phiCellMax = m_segmentation->phi(cell.core().cellId) + M_PI / (double)m_segmentation->phiBins();
     if (m_addLayerRestriction == true) {
-      m_decoder->setValue(cell.core().cellId);
-      layerCell = (*m_decoder)["layer"].value();
+      dd4hep::DDSegmentation::CellID cID = cell.core().cellId;
+      layerCell = m_decoder->get(cID, "layer");
       debug() << "Cell' layer = " << layerCell << endmsg;
     }
     iEtaMin = idEta(etaCellMin + epsilon);
