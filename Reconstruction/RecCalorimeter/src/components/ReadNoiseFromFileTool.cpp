@@ -138,8 +138,8 @@ double ReadNoiseFromFileTool::getNoiseConstantPerCell(uint64_t aCellId) {
   auto position =  m_cellPositionsTool->xyzPosition(aCellId);
 
   double cellEta = position.Eta();
-  m_decoder->setValue(aCellId);
-  unsigned cellLayer = (*m_decoder)[m_activeFieldName];
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  unsigned cellLayer = m_decoder->get(cID, m_activeFieldName);
 
   // All histograms have same binning, all bins with same size
   // Using the histogram in the first layer to get the bin size
@@ -194,8 +194,8 @@ double ReadNoiseFromFileTool::getNoiseOffsetPerCell(uint64_t aCellId) {
   auto position =  m_cellPositionsTool->xyzPosition(aCellId);
 
   double cellEta = position.Eta();
-  m_decoder->setValue(aCellId);
-  unsigned cellLayer = (*m_decoder)[m_activeFieldName];
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  unsigned cellLayer = m_decoder->get(cID, m_activeFieldName);
 
   // All histograms have same binning, all bins with same size
   // Using the histogram in the first layer to get the bin size

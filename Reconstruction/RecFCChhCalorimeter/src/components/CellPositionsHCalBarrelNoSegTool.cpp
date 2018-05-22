@@ -70,8 +70,8 @@ dd4hep::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& a
 
 int CellPositionsHCalBarrelNoSegTool::layerId(const uint64_t& aCellId) {
   int layer;
-  m_decoder->setValue(aCellId);
-  layer = (*m_decoder)["layer"].value();
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  layer = m_decoder->get(cID, "layer");
   return layer;
 }
 

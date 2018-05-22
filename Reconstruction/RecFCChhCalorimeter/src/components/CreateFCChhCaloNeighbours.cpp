@@ -41,7 +41,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
   double eCalEtaSize = 0;
   double eCalPhiOffset = 0;
   double eCalPhiSize = 0;
-  dd4hep::DDSegmentation::BitField64* decoderECalBarrel = nullptr;
+  dd4hep::DDSegmentation::BitFieldCoder* decoderECalBarrel = nullptr;
 
   for (uint iSys = 0; iSys < m_readoutNamesSegmented.size(); iSys++) {
     // Check if readouts exist
@@ -80,12 +80,12 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     extrema.push_back(std::make_pair(0, 0));
     extrema.push_back(std::make_pair(0, 0));
     for (unsigned int ilayer = 0; ilayer < m_activeVolumesNumbersSegmented[iSys]; ilayer++) {
+      dd4hep::DDSegmentation::CellID volumeId = 0;
       // Get VolumeID
-      (*decoder)[m_fieldNamesSegmented[iSys]] = m_fieldValuesSegmented[iSys];
-      (*decoder)[m_activeFieldNamesSegmented[iSys]] = ilayer;
-      (*decoder)["eta"] = 0;
-      (*decoder)["phi"] = 0;
-      uint64_t volumeId = decoder->getValue();
+      (*decoder)[m_fieldNamesSegmented[iSys]].set(volumeId, m_fieldValuesSegmented[iSys]);
+      (*decoder)[m_activeFieldNamesSegmented[iSys]].set(volumeId, ilayer);
+      (*decoder)["eta"].set(volumeId, 0);
+      (*decoder)["phi"].set(volumeId, 0);
 
       // Get number of segmentation cells within the active volume
       auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
@@ -102,12 +102,13 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       // Loop over segmenation cells
       for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
         for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
-          (*decoder)["phi"] = iphi;
-          (*decoder)["eta"] = ieta + numCells[2];  // start from the minimum existing eta cell in this layer
-          uint64_t cellId = decoder->getValue();
-          map.insert(std::pair<uint64_t, std::vector<uint64_t>>(
-              cellId, det::utils::neighbours(*decoder, {m_activeFieldNamesSegmented[iSys], "phi", "eta"}, extrema,
-                                             cellId, {false, true, false}, true)));
+	  dd4hep::DDSegmentation::CellID cellId = volumeId;
+	  decoder->set(cellId, "phi", iphi);
+	  decoder->set(cellId, "eta", ieta + numCells[2]);  // start from the minimum existing eta cell in this layer
+	  uint64_t id = cellId;
+	  map.insert(std::pair<uint64_t, std::vector<uint64_t>>(
+              id, det::utils::neighbours(*decoder, {m_activeFieldNamesSegmented[iSys], "phi", "eta"}, extrema,
+                                             id, {false, true, false}, true)));
         }
       }
     }
@@ -132,7 +133,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
   // will be used for volume connecting
   std::pair<int, int> extremaHCalFirstLayerPhi;
   std::pair<int, int> extremaHCalFirstLayerZ;
-  dd4hep::DDSegmentation::BitField64* decoderHCalBarrel = nullptr;
+  dd4hep::DDSegmentation::BitFieldCoder* decoderHCalBarrel = nullptr;
 
   for (uint iSys = 0; iSys < m_readoutNamesNested.size(); iSys++) {
     // Sanity check
@@ -152,7 +153,8 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       decoderHCalBarrel = decoder;
     }
     // Get VolumeID
-    (*decoder)[m_fieldNameNested] = m_fieldValuesNested[iSys];
+    dd4hep::DDSegmentation::CellID volumeId = 0;
+    decoder->set(volumeId, m_fieldNameNested, m_fieldValuesNested[iSys]);
     // Get the total number of given hierarchy of active volumes
     auto highestVol = gGeoManager->GetTopVolume();
     std::vector<unsigned int> numVolumes;
@@ -220,15 +222,15 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       for (unsigned int iphi = 0; iphi < activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second; iphi++) {
         for (unsigned int iz = 0; iz < activeVolumesNumbersNested.find(m_activeFieldNamesNested[2])->second; iz++) {
 
-          (*decoder)[m_activeFieldNamesNested[0]] = ilayer;
-          (*decoder)[m_activeFieldNamesNested[1]] = iphi;
-          (*decoder)[m_activeFieldNamesNested[2]] = iz;
-          uint64_t volumeId = decoder->getValue();
-
+	  dd4hep::DDSegmentation::CellID cID = volumeId;
+          decoder->set(cID, m_activeFieldNamesNested[0], ilayer);
+	  decoder->set(cID, m_activeFieldNamesNested[1], iphi);
+	  decoder->set(cID, m_activeFieldNamesNested[2], iz);
+          
           map.insert(std::pair<uint64_t, std::vector<uint64_t>>(
-              volumeId, det::utils::neighbours(*decoder, {m_activeFieldNamesNested[0], m_activeFieldNamesNested[1],
+              cID, det::utils::neighbours(*decoder, {m_activeFieldNamesNested[0], m_activeFieldNamesNested[1],
                                                           m_activeFieldNamesNested[2]},
-                                               extrema, volumeId, {false, true, false}, true)));
+                                               extrema, cID, {false, true, false}, true)));
         }
       }
     }
@@ -322,21 +324,21 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
       phiNeighbours.insert(std::pair<uint, std::vector<uint>>(iPhi, neighbours));
     }
     // add neighbours to both ecal cell and hcal cell
-    (*decoderECalBarrel)["system"] = 5;
-    (*decoderECalBarrel)[m_activeFieldNamesSegmented[0]] = eCalLastLayer;
-    (*decoderHCalBarrel)["system"] = 8;
-    (*decoderHCalBarrel)[m_activeFieldNamesNested[0]] = 0;
+    dd4hep::DDSegmentation::CellID ecalCellId = 0;
+    dd4hep::DDSegmentation::CellID hcalCellId = 0;
+    (*decoderECalBarrel)["system"].set(ecalCellId, 5);
+    (*decoderECalBarrel)[m_activeFieldNamesSegmented[0]].set(ecalCellId, eCalLastLayer);
+    (*decoderHCalBarrel)["system"].set(hcalCellId, 8);
+    (*decoderHCalBarrel)[m_activeFieldNamesNested[0]].set(hcalCellId, 0);
     for (auto iZ : etaNeighbours) {
-      (*decoderHCalBarrel)[m_activeFieldNamesNested[2]] = iZ.first;
+      (*decoderHCalBarrel)[m_activeFieldNamesNested[2]].set(hcalCellId, iZ.first);
       for (auto iMod : phiNeighbours) {
-        (*decoderHCalBarrel)[m_activeFieldNamesNested[1]] = iMod.first;
-        uint64_t hcalCellId = decoderHCalBarrel->getValue();
+        (*decoderHCalBarrel)[m_activeFieldNamesNested[1]].set(hcalCellId, iMod.first);
         for (auto iEta : iZ.second) {
-          (*decoderECalBarrel)["eta"] = iEta;
+	  (*decoderECalBarrel)["eta"].set(ecalCellId, iEta);
           for (auto iPhi : iMod.second) {
-            (*decoderECalBarrel)["phi"] = iPhi;
-            uint64_t ecalCellId = decoderECalBarrel->getValue();
-            map.find(hcalCellId)->second.push_back(ecalCellId);
+            (*decoderECalBarrel)["phi"].set(ecalCellId, iPhi);
+	    map.find(hcalCellId)->second.push_back(ecalCellId);
             map.find(ecalCellId)->second.push_back(hcalCellId);
           }
         }

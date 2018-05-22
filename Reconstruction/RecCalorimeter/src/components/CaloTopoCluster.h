@@ -126,7 +126,7 @@ private:
   /// Last neighbour threshold in sigma
   Gaudi::Property<int> m_lastNeighbourSigma{this, "lastNeighbourSigma", 0, "number of sigma in noise threshold"};
   /// General decoder to encode the calorimeter sub-system to determine which positions tool to use
-  dd4hep::DDSegmentation::BitField64* m_decoder = new dd4hep::DDSegmentation::BitField64("system:4");
+  dd4hep::DDSegmentation::BitFieldCoder* m_decoder = new dd4hep::DDSegmentation::BitFieldCoder("system:4");
 
 };
 #endif /* RECCALORIMETER_CALOTOPOCLUSTER_H */

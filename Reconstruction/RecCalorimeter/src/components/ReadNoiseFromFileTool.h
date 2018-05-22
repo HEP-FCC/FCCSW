@@ -88,7 +88,7 @@ private:
   /// PhiEta segmentation
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   // Decoder
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
 
 };
 

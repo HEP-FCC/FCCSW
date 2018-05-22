@@ -63,10 +63,9 @@ void CellPositionsCaloDiscsTool::getPositions(const fcc::CaloHitCollection& aCel
 
 dd4hep::Position CellPositionsCaloDiscsTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
-  m_decoder->setValue(aCellId);
-  (*m_decoder)["phi"] = 0;
-  (*m_decoder)["eta"] = 0;
-  auto volumeId = m_decoder->getValue();
+  dd4hep::DDSegmentation::CellID volumeId = aCellId;
+  m_decoder->set(volumeId, "phi", 0);
+  m_decoder->set(volumeId, "eta", 0);
   dd4hep::Position outPos;
   auto detelement = m_volman.lookupDetElement(volumeId);
   const auto& transformMatrix = detelement.nominal().worldTransformation();  // m_volman.worldTransformation(volumeId);
@@ -87,8 +86,8 @@ dd4hep::Position CellPositionsCaloDiscsTool::xyzPosition(const uint64_t& aCellId
 
 int CellPositionsCaloDiscsTool::layerId(const uint64_t& aCellId) {
   int layer;
-  m_decoder->setValue(aCellId);
-  layer = (*m_decoder)["layer"].value();
+dd4hep::DDSegmentation::CellID cID = aCellId;
+ layer = m_decoder->get(cID, "layer");
   return layer;
 }
 

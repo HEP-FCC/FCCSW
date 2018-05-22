@@ -117,34 +117,34 @@ StatusCode CaloTopoCluster::execute() {
     std::map<int,int> system;
 
     for (auto pair : i.second) {
-      auto cellId = pair.first;
+      dd4hep::DDSegmentation::CellID cID = pair.first;
+	//      auto cellId = pair.first;
       // get CaloHit by cellID
       auto newCell = edmClusterCells->create();
-      newCell.core().energy = allCells[cellId];
-      newCell.core().cellId = cellId;
+      newCell.core().energy = allCells[cID];
+      newCell.core().cellId = cID;
       newCell.core().bits = pair.second;
       energy += newCell.core().energy;
 
       // get cell position by cellID
       // identify calo system
-      m_decoder->setValue(cellId);
-      auto systemId = (*m_decoder)["system"].value();
+      auto systemId = m_decoder->get(cID, "system");
       system[int(systemId)]++;
       dd4hep::Position posCell;
       if (systemId == 5)  // ECAL BARREL system id
-        posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
+        posCell = m_cellPositionsECalBarrelTool->xyzPosition(cID);
       else if (systemId == 8)  // HCAL BARREL system id
-        posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
+        posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cID);
       else if (systemId == 9)  // HCAL EXT BARREL system id
-        posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
+        posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cID);
       else if (systemId == 6)  // EMEC system id
-        posCell = m_cellPositionsEMECTool->xyzPosition(cellId);
+        posCell = m_cellPositionsEMECTool->xyzPosition(cID);
       else if (systemId == 7)  // HEC system id
-        posCell = m_cellPositionsHECTool->xyzPosition(cellId);
+        posCell = m_cellPositionsHECTool->xyzPosition(cID);
       else if (systemId == 10)  // EMFWD system id
-        posCell = m_cellPositionsEMFwdTool->xyzPosition(cellId);
+        posCell = m_cellPositionsEMFwdTool->xyzPosition(cID);
       else if (systemId == 11)  // HFWD system id
-        posCell = m_cellPositionsHFwdTool->xyzPosition(cellId);
+        posCell = m_cellPositionsHFwdTool->xyzPosition(cID);
       else
         warning() << "No cell positions tool found for system id " << systemId << ". " << endmsg;
 
@@ -153,7 +153,7 @@ StatusCode CaloTopoCluster::execute() {
       posZ += posCell.Z() * newCell.core().energy;
       // edmClusterCells->push_back(newCell);
       cluster.addhits(newCell);
-      allCells.erase(cellId);
+      allCells.erase(cID);
     }
     clusterCore.energy = energy;
     clusterCore.position.x = posX / energy;

@@ -67,11 +67,11 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     extrema.push_back(std::make_pair(0, 0));
     for (unsigned int ilayer = 0; ilayer < m_activeVolumesNumbersSegmented[iSys]; ilayer++) {
       // Get VolumeID
-      (*decoder)[m_fieldNamesSegmented[iSys]] = m_fieldValuesSegmented[iSys];
-      (*decoder)[m_activeFieldNamesSegmented[iSys]] = ilayer;
-      (*decoder)["eta"] = 0;
-      (*decoder)["phi"] = 0;
-      uint64_t volumeId = decoder->getValue();
+      dd4hep::DDSegmentation::CellID volumeId = 0; 
+      (*decoder)[m_fieldNamesSegmented[iSys]].set(volumeId, m_fieldValuesSegmented[iSys]);
+      (*decoder)[m_activeFieldNamesSegmented[iSys]].set(volumeId, ilayer);
+      (*decoder)["eta"].set(volumeId, 0);
+      (*decoder)["phi"].set(volumeId, 0);
 
       // Get number of segmentation cells within the active volume
       auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
@@ -81,14 +81,14 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
       // Loop over segmenation cells
       for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
         for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
-          (*decoder)["phi"] = iphi;
-          (*decoder)["eta"] = ieta + numCells[2];  // start from the minimum existing eta cell in this layer
-          uint64_t cellId = decoder->getValue();
-	  double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cellId);
- 	  double noiseOffset = m_ecalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
+	  dd4hep::DDSegmentation::CellID cID = volumeId;
+	  (*decoder)["phi"].set(cID, iphi);
+	  (*decoder)["eta"].set(cID, ieta + numCells[2]);  // start from the minimum existing eta cell in this layer
+	  double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cID);
+ 	  double noiseOffset = m_ecalBarrelNoiseTool->getNoiseOffsetPerCell(cID);
          // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
           //double noise = 0.0075 / 4.;
-          map.insert( std::pair<uint64_t, std::pair<double, double> >(cellId, std::make_pair(noise, noiseOffset) ) );
+          map.insert( std::pair<uint64_t, std::pair<double, double> >(cID, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }
@@ -112,7 +112,8 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     auto decoder = m_geoSvc->lcdd()->readout(m_readoutNamesNested[iSys]).idSpec().decoder();
 
     // Get VolumeID
-    (*decoder)[m_fieldNameNested] = m_fieldValuesNested[iSys];
+    dd4hep::DDSegmentation::CellID volumeId = 0; 
+    (*decoder)[m_fieldNameNested].set(volumeId, m_fieldValuesNested[iSys]);
     // Get the total number of given hierarchy of active volumes
     auto highestVol = gGeoManager->GetTopVolume();
     std::vector<unsigned int> numVolumes;
@@ -174,15 +175,15 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
       for (unsigned int iphi = 0; iphi < activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second; iphi++) {
         for (unsigned int iz = 0; iz < activeVolumesNumbersNested.find(m_activeFieldNamesNested[2])->second; iz++) {
 
-          (*decoder)[m_activeFieldNamesNested[0]] = ilayer;
-          (*decoder)[m_activeFieldNamesNested[1]] = iphi;
-          (*decoder)[m_activeFieldNamesNested[2]] = iz;
-          uint64_t volumeId = decoder->getValue();
-	  double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(volumeId);
-	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(volumeId);
+	  dd4hep::DDSegmentation::CellID cID = volumeId; 
+          (*decoder)[m_activeFieldNamesNested[0]].set(cID, ilayer);
+	  (*decoder)[m_activeFieldNamesNested[1]].set(cID, iphi);
+	  (*decoder)[m_activeFieldNamesNested[2]].set(cID, iz);
+	  double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(cID);
+	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(cID);
           /// use constant noise level in hcal 0.0115 / 4.
 	  /// double noise = 0.0115 / 4.;
-          map.insert( std::pair<uint64_t, std::pair<double, double> >(volumeId, std::make_pair(noise, noiseOffset) ) );
+          map.insert( std::pair<uint64_t, std::pair<double, double> >(cID, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }

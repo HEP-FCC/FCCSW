@@ -59,7 +59,7 @@ private:
   /// Handle for tool to get positions in Calo Discs
   ToolHandle<ICellPositionsTool> m_cellPositionsHFwdTool;
   /// Decoder for system ID
-  dd4hep::DDSegmentation::BitField64* m_decoder = new dd4hep::DDSegmentation::BitField64("system:4");
+  dd4hep::DDSegmentation::BitFieldCoder* m_decoder = new dd4hep::DDSegmentation::BitFieldCoder("system:4");
   /// Input collection
   DataHandle<fcc::CaloHitCollection> m_hits{"hits/hits", Gaudi::DataHandle::Reader, this};
   /// Output collection

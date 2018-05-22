@@ -45,10 +45,9 @@ StatusCode CreateCaloCellPositions::execute() {
   auto edmPositionedHitCollection = m_positionedHits.createAndPut();
 
   for (const auto& hit : *hits) {
-    auto cellId = hit.core().cellId;
+    dd4hep::DDSegmentation::CellID cellId = hit.core().cellId;
     // identify calo system
-    m_decoder->setValue(cellId);
-    auto systemId = (*m_decoder)["system"].value();
+    auto systemId = m_decoder->get(cellId, "system");
     dd4hep::Position posCell;
 
     if (systemId == 5)  // ECAL BARREL system id

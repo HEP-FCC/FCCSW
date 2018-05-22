@@ -67,10 +67,9 @@ void CellPositionsECalBarrelTool::getPositions(const fcc::CaloHitCollection& aCe
 
 dd4hep::Position CellPositionsECalBarrelTool::xyzPosition(const uint64_t& aCellId) const {
   double radius;
-  m_decoder->setValue(aCellId);
-  (*m_decoder)["phi"] = 0;
-  (*m_decoder)["eta"] = 0;
-  auto volumeId = m_decoder->getValue();
+  dd4hep::DDSegmentation::CellID volumeId = aCellId;
+  m_decoder->set(volumeId, "phi", 0);
+  m_decoder->set(volumeId, "eta", 0);
   auto detelement = m_volman.lookupDetElement(volumeId);
   const auto& transformMatrix = detelement.nominal().worldTransformation();
   double outGlobal[3];
@@ -88,8 +87,8 @@ dd4hep::Position CellPositionsECalBarrelTool::xyzPosition(const uint64_t& aCellI
 
 int CellPositionsECalBarrelTool::layerId(const uint64_t& aCellId) {
   int layer;
-  m_decoder->setValue(aCellId);
-  layer = (*m_decoder)["layer"].value();
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  layer = m_decoder->get(cID, "layer");
   return layer;
 }
 

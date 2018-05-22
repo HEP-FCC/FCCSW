@@ -62,8 +62,8 @@ double ConstNoiseTool::getNoiseConstantPerCell(uint64_t aCellId) {
 
   double Noise = 0.;
   // Get cells global coordinate "system"
-  m_decoder->setValue(aCellId);
-  unsigned cellSystem = (*m_decoder)["system"];
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  unsigned cellSystem = m_decoder->get(cID, "system");
   // cell noise in system
   if (m_systemNoiseConstMap[cellSystem])
     Noise = m_systemNoiseConstMap[cellSystem];
@@ -76,8 +76,8 @@ double ConstNoiseTool::getNoiseOffsetPerCell(uint64_t aCellId) {
 
   double Noise = 0.;
   // Get cells global coordinate "system"
-  m_decoder->setValue(aCellId);
-  unsigned cellSystem = (*m_decoder)["system"];
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  unsigned cellSystem = m_decoder->get(cID, "system");
   // cell noise in system
   if (m_systemNoiseOffsetMap[cellSystem])
     Noise = m_systemNoiseOffsetMap[cellSystem];

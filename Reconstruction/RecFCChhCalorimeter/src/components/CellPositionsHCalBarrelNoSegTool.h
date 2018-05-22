@@ -55,7 +55,7 @@ private:
   /// Name of the electromagnetic calorimeter readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelReadout"};
   /// Cellid decoder
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
   /// Volume manager
   dd4hep::VolumeManager m_volman;
 };
