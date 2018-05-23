@@ -117,18 +117,66 @@ private:
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
 
-  const std::vector<sim::FCCDigitizationCell> mergeCells(std::vector<sim::FCCDigitizationCell>& cells,
-                                                         double energyCut = 0.) const;  //= 1000. * (3.62e-9)
+  /// @brief create clusters
+  /// This function recieves digitization cells and bundles the neighbouring to
+  /// create clusters later and does cell merging. Furthermore an energy
+  /// cut (excluding cells which fall below threshold) can be applied. The
+  /// function is templated on the digitization cell type to allow users to use
+  /// their own implementation inheriting from Acts::DigitizationCell.
+  /// @tparam Cell the digitization cell
+  /// @param [in] cells all digitization cells
+  /// @param [in] nBins0 number of bins in direction 0
+  /// @param [in] nBins1 number of bins in direction 1
+  /// @param [in] commonCorner flag indicating if also cells sharing a common
+  /// corner should be merged into one cluster
+  /// @param [in] analogueReadout flag indicating if analogue readout is used
+  /// (deposited energy is added up in case of cell merging)
+  /// @param [in] energyCut possible energy cut to be applied
+  /// @return vector (the different clusters) of vector of digitization cells (the
+  /// cells which belong to each cluster)
+  template <typename Cell>
+  std::vector<std::vector<Cell>> createClusters(const std::vector<Cell>& cells,
+                                                size_t nBins0,
+                                                size_t nBins1,
+                                                bool commonCorner = true,
+                                                bool analogueReadout = false,
+                                                double energyCut = 0.);
 
-  /// Private method creating clusters out of digitization cells
-  /// @param cells All digitization cells
-  /// @param commonCorner If the cells should be merged if they are sharing a corner (default: they only get merged when
-  /// they share a common edge)
-  /// @return The digitization cells grouped together in a vector of vectors (each entry of the first vector dimension
-  /// represents one cluster; for each cluster there is one vector of cells of which it is composed of)
-  /// @note This function internally uses the boost implementation of the connected components algorithm
-  const std::vector<std::vector<sim::FCCDigitizationCell>>
-  createClusters(const std::vector<sim::FCCDigitizationCell>& cells) const;
+  /// @brief ccl
+  /// This function is a helper function of Acts::createClusters. It does
+  /// connected component labelling using a hash map in order to find out which
+  /// cells are neighbours. This function is called recursively by all neighbours
+  /// of the current cell. The function is templated on the digitization cell type
+  /// to allow users to use their own implementation inheriting from
+  /// Acts::DigitizationCell.
+  /// @tparam Cell the digitization cell
+  /// @param [in,out] mergedCells the final vector of cells to which cells of one
+  /// cluster should be added
+  /// @param [in] cellMap the hashmap of all present cells + a flag indicating if
+  /// they have been added to a cluster already, with the key being the global
+  /// grid index
+  /// @param [in] index the current global grid index of the cell
+  /// @param [in] nBins0 number of bins in direction 0
+  /// @param [in] nBins1 number of bins in direction 1
+  /// @param [in] analogueReadout flag indicating if analogue readout is used
+  /// (deposited energy is added up in case of cell merging)
+  /// @param [in] energyCut possible energy cut to be applied
+  template <typename Cell>
+  void ccl(std::vector<std::vector<Cell>>& mergedCells,
+           std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
+           size_t index,
+           size_t nBins0,
+           size_t nBins1,
+           bool commonCorner = true,
+           bool analogueReadout = false,
+           double energyCut = 0.);
+
+  /// std::chrono::duration<double> timeMerge;
+  /// std::chrono::duration<double> timeFillLoop;
+  /// std::chrono::duration<double> timeFillMap;
+  /// std::chrono::duration<double> timeSearchMap;
+  /// std::chrono::duration<double> timeCheckEdges;
+  /// std::chrono::duration<double> timeLabelLoop;
 };
 
 #endif  // DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H

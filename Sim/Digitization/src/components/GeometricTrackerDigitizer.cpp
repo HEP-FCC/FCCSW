@@ -28,6 +28,14 @@
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
+#include <chrono>
+#include <ctime>
+// hack
+#include "TFile.h"
+#include "TTree.h"
+#include "datamodel/MCParticle.h"
+#include "datamodel/MCParticleCollection.h"
+#include "datamodel/MCParticleData.h"
 
 DECLARE_ALGORITHM_FACTORY(GeometricTrackerDigitizer)
 
@@ -47,6 +55,13 @@ GeometricTrackerDigitizer::GeometricTrackerDigitizer(const std::string& name, IS
 
 StatusCode GeometricTrackerDigitizer::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
+
+  /// timeMerge = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  /// timeFillLoop = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  /// timeFillMap = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  /// timeSearchMap = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  /// timeCheckEdges = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  /// timeLabelLoop = std::chrono::system_clock::now() - std::chrono::system_clock::now();
 
   if (!m_geoSvc) {
     error() << "Did not retrieve tgeometry service!" << endmsg;
@@ -95,6 +110,10 @@ StatusCode GeometricTrackerDigitizer::initialize() {
 
 StatusCode GeometricTrackerDigitizer::execute() {
 
+  /// hack
+  auto startCells = std::chrono::system_clock::now();
+  std::chrono::duration<double> timeSteps = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  std::chrono::duration<double> detLookUp = std::chrono::system_clock::now() - std::chrono::system_clock::now();
   // Retrieve the input hits
   const fcc::DigiTrackHitAssociationCollection* hits = m_digiTrackHitAssociation.get();
   // the track hits of the cluster
@@ -103,11 +122,15 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackClusters = m_trackClusters.createAndPut();
   // prepare output planar clusters
   auto planarClusters = m_planarClusterHandle.createAndPut();
-  planarClusters->reserve(100000000);
+  planarClusters->reserve(100000);
   // the cells to be used
-  std::map<size_t, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
+  std::map<long long int, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
   // go through hits
   for (auto hit : (*hits)) {
+    // auto searchParticle = m_particleMap.find(hit.hit().core().bits);
+    // if (searchParticle == m_particleMap.end()) continue;
+    // exclude secondaries
+    // if (searchParticle != m_particleMap.end() && searchParticle->second.core.status != 1) continue;
     // the cell ID
     long long int cellID = hit.hit().core().cellId;
     // throw a certain number of hits away if configured
@@ -125,6 +148,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
     auto dd4hepSegmentation = sensDet.readout().segmentation();
 
     // access the detector element corresponding to the hit
+    auto startDetLookUp = std::chrono::system_clock::now();
     auto search = m_detectorElements.find(Identifier(surfaceID));
     if (search == m_detectorElements.end()) {
       error() << "Acts Detector element with identifier: " << surfaceID << " and cellID: " << cellID << " not found!"
@@ -136,6 +160,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
       error() << "Invalid Acts Detector element with identifier: " << surfaceID << "!" << endmsg;
       return StatusCode::FAILURE;
     }
+    auto endDetLookUp = std::chrono::system_clock::now();
+    detLookUp += (endDetLookUp - startDetLookUp);
     // access the surface corresponding to the detector element
     const Acts::Surface& hitSurface = hitDetElement->surface();
 
@@ -176,7 +202,10 @@ StatusCode GeometricTrackerDigitizer::execute() {
         // calculate post position in local frame
         auto postPositionLocalFrame = hitSurface.transform().inverse() * postStepPosition;
         // calculate the digitization steps
+        auto startSteps = std::chrono::system_clock::now();
         dSteps = m_moduleStepper->cellSteps(*hitDigitizationModule, positionLocalFrame, postPositionLocalFrame);
+        auto endSteps = std::chrono::system_clock::now();
+        timeSteps += endSteps - startSteps;
       }
 
       double totalG4HitEnergy = hit.hit().core().energy;
@@ -210,13 +239,22 @@ StatusCode GeometricTrackerDigitizer::execute() {
             dd4hepSegmentation.cellID(dd4hepHitLocPos, dd4hep::Position(0., 0., 0.), surfaceID);
         th.core().cellId = hitCellID;
         // scale energy for each cell by path length
-        th.core().energy = totalG4HitEnergy * sLength / totalG4StepLength;
+        th.core().energy = (sLength > 0 && totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
         auto digiCell = sim::FCCDigitizationCell({th}, dStep.stepCell.channel0, dStep.stepCell.channel1, wLength);
         // push back used cells per surface
         cellsPerSurface[surfaceID].push_back(std::move(digiCell));
       }  // dSteps
     }    // if hitDigitizationModule
   }      // hits
+
+  auto endCells = std::chrono::system_clock::now();
+  std::chrono::duration<double> timeCells = endCells - startCells;
+
+  std::cout << "elapsed time for creating cells: " << timeCells.count() << std::endl;
+  std::cout << "elapsed time for creating steps: " << timeSteps.count() << std::endl;
+  std::cout << "elapsed time for det element lookup: " << detLookUp.count() << std::endl;
+
+  std::chrono::duration<double> ccTime = std::chrono::system_clock::now() - std::chrono::system_clock::now();
 
   // Now create clusters for cells per surface
   for (auto& surf : cellsPerSurface) {
@@ -240,7 +278,6 @@ StatusCode GeometricTrackerDigitizer::execute() {
       error() << "No digitization module attached to detector element with identifier: " << surfaceID << "!" << endmsg;
       return StatusCode::FAILURE;
     }
-
     // get the corresponding dd4hep detelement
     auto dd4hepDetElement = m_volumeManager.lookupDetElement(surfaceID);
     if (!dd4hepDetElement) {
@@ -257,9 +294,15 @@ StatusCode GeometricTrackerDigitizer::execute() {
     const Acts::BinUtility& binUtility = segmentation.binUtility();
     // merge cells
     // @ todo apply energy cut
-    auto mergedCells = mergeCells(surf.second);
     // group together cells which belong to same cluster
-    auto clusterMap = createClusters(mergedCells);
+    auto startCreateClusters = std::chrono::system_clock::now();
+
+    auto clusterMap =
+        createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), binUtility.bins(1), true, false, 0.);
+
+    auto endCreateClusters = std::chrono::system_clock::now();
+    ccTime += (endCreateClusters - startCreateClusters);
+
     // acts digi cells
     for (auto& cells : clusterMap) {
       // #tracks per cluster
@@ -334,152 +377,153 @@ StatusCode GeometricTrackerDigitizer::execute() {
     }
   }
 
+  std::cout << "elapsed time for creating clusters & merging cells: " << ccTime.count() << std::endl;
   return StatusCode::SUCCESS;
 }
 
-const std::vector<sim::FCCDigitizationCell>
-GeometricTrackerDigitizer::mergeCells(std::vector<sim::FCCDigitizationCell>& cells, double energyCut) const {
-  if (!cells.size()) return cells;
+template <typename Cell>
+std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const std::vector<Cell>& cells,
+                                                                         size_t nBins0,
+                                                                         size_t nBins1,
+                                                                         bool commonCorner,
+                                                                         bool analogueReadout,
+                                                                         double energyCut) {
   // the output
-  std::vector<std::vector<sim::FCCDigitizationCell>> mergedCells;
-  // create the graph
-  boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> graph;
-  //  add the needed amount of vertices to the graph
-  for (auto cell : cells) {
-    // add vertex to graph for each cell
-    add_vertex(graph);
-  }
+  std::vector<std::vector<Cell>> mergedCells;
+  // map containing all activated cells + boolean indicating if they have been
+  // used already
+  std::unordered_map<size_t, std::pair<Cell, bool>> cellMap;
+  // Now fill cell map and merge cells if requested
 
-  // loop through cells and set the edges
-  for (auto cellA = std::begin(cells); cellA != (std::end(cells) - 1); cellA++) {
-    auto indexA = std::distance(cells.begin(), cellA);
-    for (auto cellB = (cellA + 1); cellB != std::end(cells); cellB++) {
-      auto indexB = std::distance(cells.begin(), cellB);
-      // the channels
-      auto c0A = cellA->channel0;
-      auto c1A = cellA->channel1;
-      auto c0B = cellB->channel0;
-      auto c1B = cellB->channel1;
+  ///  auto startFillLoop = std::chrono::system_clock::now();
+  for (auto& cell : cells) {
+    // calculate key of cell which is the global grid index
+    size_t globalIndex = cell.channel0 + nBins0 * cell.channel1;
+    // insert new cell - only adds cell, if cell was not there yet
+    ///  auto startFillMap = std::chrono::system_clock::now();
+    auto insertCell = cellMap.insert({globalIndex, {cell, false}});
+    ///   auto endFillMap = std::chrono::system_clock::now();
+    ///   timeFillMap += (endFillMap - startFillMap);
 
-      // the conditions
-      bool isSameChannel0 = (c0A == c0B);
-      bool isSameChannel1 = (c1A == c1B);
-      // same cell
-      if (isSameChannel0 && isSameChannel1) {
-        add_edge(indexA, indexB, graph);
-      }  // if
-    }    // cellsB
-  }      // cellsA
-
-  std::vector<size_t> component(num_vertices(graph));
-  connected_components(graph, &component[0]);
-  // copy the component map
-  std::vector<size_t> keys = component;
-  // sort
-  std::sort(keys.begin(), keys.end());
-  // get the keys
-  auto it = std::unique(keys.begin(), keys.end());
-  keys.erase(it, keys.end());
-
-  for (auto& comp : keys) {
-    std::vector<sim::FCCDigitizationCell> compCells;
-    for (size_t i = 0; i != component.size(); ++i) {
-      if (component[i] == comp) {
-        compCells.push_back(cells.at(i));
-      }
+    ///   auto startMerge = std::chrono::system_clock::now();
+    if (!insertCell.second) {
+      // check if there is already a cell at same position and merge in that
+      // case
+      insertCell.first->second.first.addCell(cell, analogueReadout);
     }
-    mergedCells.push_back(compCells);
+    ///  auto endMerge = std::chrono::system_clock::now();
+    ///    timeMerge += (endMerge - startMerge);
   }
-  std::vector<sim::FCCDigitizationCell> sameCells;
+  /// auto endFillLoop = std::chrono::system_clock::now();
+  /// timeFillLoop += (endFillLoop - startFillLoop);
 
-  for (auto& sCells : mergedCells) {
-    sim::FCCDigitizationCell& newCell = *std::begin(sCells);
-    for (auto sCell = (std::begin(sCells) + 1); sCell != std::end(sCells); sCell++) {
-      newCell.addCell((*sCell), m_analogReadout);
+  /// auto startLabelLoop = std::chrono::system_clock::now();
+  // now go through cells and label
+  for (auto& cell : cellMap) {
+    // check if the cell was already used
+    if (!(cell.second.second) && (cell.second.first.depositedEnergy(analogueReadout) >= energyCut)) {
+      // create new cluster
+      mergedCells.push_back(std::vector<Cell>());
+      // fill all cells belonging to that cluster
+      ccl(mergedCells, cellMap, cell.first, nBins0, nBins1, commonCorner, analogueReadout, energyCut);
     }
-    // apply energycut - if given
-    double totalCellEnergy = 0;
-    if (m_analogReadout) {
-      totalCellEnergy = newCell.data;
-    } else {
-      // for digital case accumulate energy of all hits
-      for (auto& th : newCell.trackHits)
-        totalCellEnergy += th.core().energy;
-    }
-    // only count if total cell energy is above threshold
-    if (totalCellEnergy >= energyCut) sameCells.push_back(newCell);
   }
-  return sameCells;
-}
-
-const std::vector<std::vector<sim::FCCDigitizationCell>>
-GeometricTrackerDigitizer::createClusters(const std::vector<sim::FCCDigitizationCell>& cells) const {
-  // the output
-  std::vector<std::vector<sim::FCCDigitizationCell>> mergedCells;
-  if (!cells.size()) return mergedCells;
-  // create the graph
-  boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> graph;
-  //  add the needed amount of vertices to the graph
-  for (auto cell : cells) {
-    // add vertex to graph for each cell
-    add_vertex(graph);
-  }
-
-  // loop through cells and set the edges
-  for (auto cellA = std::begin(cells); cellA != (std::end(cells) - 1); cellA++) {
-    auto indexA = std::distance(cells.begin(), cellA);
-    for (auto cellB = (cellA + 1); cellB != std::end(cells); cellB++) {
-      auto indexB = std::distance(cells.begin(), cellB);
-      // the channels
-      auto c0A = cellA->channel0;
-      auto c1A = cellA->channel1;
-      auto c0B = cellB->channel0;
-      auto c1B = cellB->channel1;
-
-      // the conditions
-      bool isNeighbour0 = (c0A == (c0B - 1) || c0A == (c0B + 1));
-      bool isSameChannel0 = (c0A == c0B);
-      bool isNeighbour1 = (c1A == (c1B - 1) || c1A == (c1B + 1));
-      bool isSameChannel1 = (c1A == c1B);
-      // distinguish between between merging cells, when they have a common
-      // corner (8cell) or a common edge (4cell)
-      if (m_commonCorner) {
-        // 8cell
-        if ((isNeighbour0 || isSameChannel0) && (isNeighbour1 || isSameChannel1)) {
-          add_edge(indexA, indexB, graph);
-        }
-      } else {
-        // 4cell
-        if ((isNeighbour0 && isSameChannel1) || (isNeighbour1 && isSameChannel0)) {
-          add_edge(indexA, indexB, graph);
-        }
-      }
-    }  // cellsB
-  }    // cellsA
-
-  std::vector<size_t> component(num_vertices(graph));
-  connected_components(graph, &component[0]);
-  // copy the component map
-  std::vector<size_t> keys = component;
-  // sort
-  std::sort(keys.begin(), keys.end());
-  // get the keys
-  auto it = std::unique(keys.begin(), keys.end());
-  keys.erase(it, keys.end());
-
-  for (auto& comp : keys) {
-    std::vector<sim::FCCDigitizationCell> compCells;
-    for (size_t i = 0; i != component.size(); ++i) {
-      if (component[i] == comp) {
-        compCells.push_back(cells.at(i));
-      }
-    }
-    mergedCells.push_back(compCells);
-  }
+  /// auto endLabelLoop = std::chrono::system_clock::now();
+  /// timeLabelLoop += (endLabelLoop - startLabelLoop);
+  // return the grouped together cells
   return mergedCells;
 }
 
+template <typename Cell>
+void GeometricTrackerDigitizer::ccl(std::vector<std::vector<Cell>>& mergedCells,
+                                    std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
+                                    size_t index,
+                                    size_t nBins0,
+                                    size_t nBins1,
+                                    bool commonCorner,
+                                    bool analogueReadout,
+                                    double energyCut) {
+  // add current cell to cluster
+  auto cellA = cellMap.at(index).first;
+  // check if cell energy is higher than energy threshold to activate the cell
+  if (cellA.depositedEnergy(analogueReadout) >= energyCut) {
+    // add current cell to current cluster
+    mergedCells.back().push_back(cellA);
+    cellMap.at(index).second = true;
+    // go recursively through all neighbours of this cell, if present
+    // calculate neighbour indices first
+    int iMin = -1;
+    int jMin = -nBins0;
+    int iMax = 1;
+    int jMax = nBins0;
+    std::vector<int> neighbourIndices;
+    ///  auto startCheckEdges = std::chrono::system_clock::now();
+    // the neighbour indices - filled depending on merging case
+    if ((index % nBins0) == 0) {
+      // left edge case
+      if (commonCorner) {
+        neighbourIndices = {jMin, jMin + iMax, iMax, jMax, jMax + iMax};
+      } else {
+        neighbourIndices = {jMin, iMax, jMax};
+      }
+    } /*else if (index <= (nBins0 - 1)) {
+      // upper edge case
+      if (commonCorner) {
+        neighbourIndices = {iMin, iMax, jMax + iMin, jMax, jMax + iMax};
+      } else {
+        neighbourIndices = {iMin, jMax, iMax};
+      }
+    }*/ else if (((index + 1) % nBins0) == 0) {
+      // right edge case
+      if (commonCorner) {
+        neighbourIndices = {jMin + iMin, jMin, iMin, jMax + iMin, jMax};
+      } else {
+        neighbourIndices = {jMin, iMin, jMax};
+      }
+    } /*else if (index >= ((nBins0 * nBins1) - nBins0)) {
+      // lower edge case
+      if (commonCorner) {
+        neighbourIndices = {jMin + iMin, jMin, jMin + iMax, iMin, iMax};
+      } else {
+        neighbourIndices = {iMin, jMin, iMax};
+      }
+    }*/ else {
+      if (commonCorner) {
+        neighbourIndices = {jMin + iMin, jMin, jMin + iMax, iMin, iMax, jMax + iMin, jMax, jMax + iMax};
+      } else {
+        neighbourIndices = {jMin, iMin, iMax, jMax};
+      }
+    }
+    ///   auto endCheckEdges = std::chrono::system_clock::now();
+    ///   timeCheckEdges += (endCheckEdges - startCheckEdges);
+    // go through neighbours and recursively call connected component algorithm
+    for (auto& i : neighbourIndices) {
+      // calculate neighbour index of current cell
+      int neighbourIndex = int(index) + i;
+      // check if neighbour is there
+      ///   auto startSearchMap = std::chrono::system_clock::now();
+      auto search = cellMap.find(neighbourIndex);
+      ///   auto endSearchMap = std::chrono::system_clock::now();
+      ///  timeSearchMap += (endSearchMap - startSearchMap);
+      if ((search != cellMap.end())) {
+        // get the corresponding index and call function again
+        auto newIndex = search->first;
+        if (!cellMap.at(newIndex).second) {
+          ccl(mergedCells, cellMap, newIndex, nBins0, nBins1, commonCorner, analogueReadout, energyCut);
+        }  // check if was used already
+      }    // check if neighbour is there
+    }      // go through neighbour indics
+  }        // check energy cut
+}
+
 StatusCode GeometricTrackerDigitizer::finalize() {
+
+  /// std::cout << "timeMerge: " << timeMerge.count() << std::endl;
+  ///  std::cout << "timeFillLoop: " << timeFillLoop.count() << std::endl;
+  /// std::cout << "timeFillMap: " << timeFillMap.count() << std::endl;
+  /// std::cout << "timeSearchMap: " << timeSearchMap.count() << std::endl;
+  /// std::cout << "timeCheckEdges: " << timeCheckEdges.count() << std::endl;
+  /// std::cout << "timeLabelLoop: " << timeLabelLoop.count() << std::endl;
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }
