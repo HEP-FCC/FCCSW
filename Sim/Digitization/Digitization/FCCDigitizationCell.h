@@ -5,7 +5,7 @@
 #include "ACTS/Utilities/Definitions.hpp"
 #include "datamodel/TrackHit.h"
 
-/** Some usefull structs for Digitization
+/** Some usefull structs for digitization to wrap the Acts::Implementation with an fcc specific one.
  *
  *
  *  @author Julia Hrdinka
@@ -15,24 +15,37 @@
 namespace sim {
 
 /// @struct FCCDigitizationCell
-/// @brief wrapper of Acts::DigitizationCell to store hit information
+/// @brief wrapper of Acts::DigitizationCell to store hit information from fcc
 struct FCCDigitizationCell : Acts::DigitizationCell {
   /// connection to FCC track hits
-  std::vector<fcc::TrackHit> trackHits;
+  std::vector<unsigned> trackHits;
+  float time;
   /// constructor
   /// @param the FCC track hits of the digitization cell
   /// @param ch0 first channel number
   /// @param ch1 second channel number
   /// @param d data of cell (energy for analogue readout, 1 for digital readout)
-  FCCDigitizationCell(std::vector<fcc::TrackHit> th, size_t ch0, size_t ch1, float d = 0.)
-      : DigitizationCell(ch0, ch1, d), trackHits(th) {}
+  FCCDigitizationCell(std::vector<unsigned> th, float t, size_t ch0, size_t ch1, float d = 0.)
+      : DigitizationCell(ch0, ch1, d), trackHits(th), time(t) {}
   // copy constructor
   FCCDigitizationCell(const FCCDigitizationCell& dc) : DigitizationCell(dc), trackHits(dc.trackHits) {}
   // to merge cells in case they are at the same position
-  void addCell(const FCCDigitizationCell& dc, bool analogueReadout) {
+  void addCell(const FCCDigitizationCell& dc) {
     for (auto& th : dc.trackHits)
       trackHits.push_back(th);
-    if (analogueReadout) data += dc.data;
+    data += dc.data;
+    time += dc.time;
+  }
+  // @todo remove readout boolean in acts
+  float depositedEnergy() const { return data; }
+
+  float averagedTime() const { return (trackHits.size() > 0.) ? (time / trackHits.size()) : 0.; }
+
+  std::vector<unsigned> uniqueTracks() const {
+    auto copyHits = trackHits;
+    std::sort(copyHits.begin(), copyHits.end());
+    copyHits.erase(unique(copyHits.begin(), copyHits.end()), copyHits.end());
+    return copyHits;
   }
 };
 

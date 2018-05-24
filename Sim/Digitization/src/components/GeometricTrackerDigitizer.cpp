@@ -110,22 +110,173 @@ StatusCode GeometricTrackerDigitizer::initialize() {
 
 StatusCode GeometricTrackerDigitizer::execute() {
 
-  /// hack
-  auto startCells = std::chrono::system_clock::now();
-  std::chrono::duration<double> timeSteps = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  std::chrono::duration<double> detLookUp = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  // Retrieve the input hits
-  const fcc::DigiTrackHitAssociationCollection* hits = m_digiTrackHitAssociation.get();
   // the track hits of the cluster
   auto trackHits = m_trackHits.createAndPut();
   // prepare the output clusters
   auto trackClusters = m_trackClusters.createAndPut();
   // prepare output planar clusters
   auto planarClusters = m_planarClusterHandle.createAndPut();
+  std::cout << "begin digitization" << std::endl;
   planarClusters->reserve(100000);
+
+  std::chrono::duration<double> ccTime = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  // get the cells per surface
   // the cells to be used
   std::map<long long int, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
-  // go through hits
+  createCells(cellsPerSurface);
+
+  // Now create clusters for cells per surface
+  for (auto& surf : cellsPerSurface) {
+    // access the surface & digitizationmodule from the surfaceID
+    auto surfaceID = surf.first;
+    auto search = m_detectorElements.find(Identifier(surfaceID));
+    if (search == m_detectorElements.end()) {
+      error() << "Detector element with identifier: " << surfaceID << " not found!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+    auto hitDetElement = search->second;
+    if (!hitDetElement) {
+      error() << "Invalid Detector element with identifier: " << surfaceID << "!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+    // access the surface corresponding to the detector element
+    const Acts::Surface& hitSurface = hitDetElement->surface();
+
+    auto hitDigitizationModule = hitDetElement->digitizationModule();
+    if (!hitDigitizationModule) {
+      error() << "No digitization module attached to detector element with identifier: " << surfaceID << "!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+    // get the corresponding dd4hep detelement
+    auto dd4hepDetElement = m_volumeManager.lookupDetElement(surfaceID);
+    if (!dd4hepDetElement) {
+      error() << "DD4hep detector element with identifier: " << surfaceID << "not valid!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+    if (!dd4hepDetElement.volume().isSensitive()) {
+      error() << "DD4hep detector element with identifier: " << surfaceID << " is not sensitive!" << endmsg;
+      return StatusCode::FAILURE;
+    }
+    surfaceID = dd4hepDetElement.volumeID();
+    // get the dd4hep segmentation for the current detector element
+    dd4hep::SensitiveDetector sensDet(dd4hepDetElement.volume().sensitiveDetector());
+    auto dd4hepSegmentation = sensDet.readout().segmentation();
+    // get the segmentation
+    const Acts::Segmentation& segmentation = hitDigitizationModule->segmentation();
+    const Acts::BinUtility& binUtility = segmentation.binUtility();
+    // merge cells
+    // @ todo apply energy cut
+    // group together cells which belong to same cluster
+    auto startCreateClusters = std::chrono::system_clock::now();
+
+    auto clusterMap =
+        createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), binUtility.bins(1), true, 0.);
+
+    auto endCreateClusters = std::chrono::system_clock::now();
+    ccTime += (endCreateClusters - startCreateClusters);
+
+    // acts digi cells
+    for (auto& cells : clusterMap) {
+      // #tracks per cluster
+      // set of track identification - to only have hits from different tracks
+      size_t nTracksPerCluster = 0;
+      // create the track cluster
+      fcc::TrackCluster trackCluster = trackClusters->create();
+
+      //--- Now create the merged cluster ---
+      // parameters to be averaged over cells for cluster
+      double localX = 0., localY = 0., norm = 0., clusterEnergy = 0., clusterTime = 0.;
+      // go through the merged cells to calculate the averaged local position and time of the cluster
+      for (auto& cell : cells) {
+        auto cellTime = cell.averagedTime();
+        // get all tracks of this cell
+        nTracksPerCluster += cell.uniqueTracks().size();
+        // get energy of this cell
+        clusterEnergy += cell.data;
+        // calculate mean of time
+        clusterTime += cellTime;
+
+        // get center position of the current cell
+        auto cellCenter = segmentation.cellPosition(cell);
+        // calculate position of hit (for digital readout data==1)
+        if (m_analogueReadout) {
+          localX += cell.data * cellCenter.x();
+          localY += cell.data * cellCenter.y();
+          norm += cell.data;
+        } else {
+          localX += cellCenter.x();
+          localY += cellCenter.y();
+          norm += 1;
+        }
+        // calculate dd4hep cellID for the fcc TrackHit
+        // @todo make this more general, this is because we are using xz-segmentation
+        // global position is actually not used for conversion
+        auto dd4hepHitLocPos =
+            dd4hep::Position(cellCenter.x() / Acts::units::_cm, 0., cellCenter.y() / Acts::units::_cm);
+        unsigned long long hitCellID =
+            dd4hepSegmentation.cellID(dd4hepHitLocPos, dd4hep::Position(0., 0., 0.), surfaceID);
+        // create trackhit for each cell in data model
+        fcc::TrackHit th = trackHits->create();
+        th.core().time = cellTime;
+        th.core().energy = cell.data;
+        th.core().cellId = hitCellID;
+        trackCluster.addhits(th);
+      }
+      // divide by the total path - analogue clustering
+      if (norm > 1) {
+        localX /= norm;
+        localY /= norm;
+        clusterTime /= cells.size();
+      }
+      /// ----------- Create track cluster -----------
+      // local position of merged cluster
+      Acts::Vector2D localPosition(localX, localY);
+      // calculate global position of the cluster
+      Acts::Vector3D globalPosition(0., 0., 0.);
+      hitSurface.localToGlobal(localPosition, Acts::Vector3D(0., 0., 0.), globalPosition);
+      // translate to fcc edm
+      auto position = fcc::Point();
+      position.x = globalPosition.x();
+      position.y = globalPosition.y();
+      position.z = globalPosition.z();
+      // save position in cluster
+      trackCluster.core().position = position;
+      trackCluster.core().energy = clusterEnergy;
+      trackCluster.core().time = clusterTime;
+      // ----------- Create Acts cluster - possibly to be written out -----------
+      // ----------- Create unique Acts global channel identifier -----------
+      // get the bins of the local position to create channel identifier for this surface
+      size_t bin0 = binUtility.bin(localPosition, 0);
+      size_t bin1 = binUtility.bin(localPosition, 1);
+      size_t binSerialized = binUtility.serialize({bin0, bin1, 0});
+      // get the surface identifier
+      Acts::GeometryID geoID(hitSurface.geoID());
+      // create the unique global channel identifier by adding to surface identifier
+      geoID.add(binSerialized, Acts::GeometryID::channel_mask);
+      // the covariance is currently set to 0.
+      // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
+      Acts::ActsSymMatrixD<2> cov;
+      cov << 0., 0., 0., 0.;
+
+      planarClusters->emplace_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster, hitSurface,
+                                                         Identifier(geoID.value()), std::move(cov), localX, localY,
+                                                         std::move(cells)));
+    }
+  }
+  std::cout << "after creating clusters" << std::endl;
+  std::cout << "elapsed time for creating clusters & merging cells: " << ccTime.count() << std::endl;
+  return StatusCode::SUCCESS;
+}
+
+StatusCode GeometricTrackerDigitizer::createCells(
+    std::map<long long int, std::vector<sim::FCCDigitizationCell>>& cellsPerSurface) {
+  auto startCells = std::chrono::system_clock::now();
+  std::chrono::duration<double> timeSteps = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+  std::chrono::duration<double> detLookUp = std::chrono::system_clock::now() - std::chrono::system_clock::now();
+
+  // Retrieve the input hits
+  const fcc::DigiTrackHitAssociationCollection* hits = m_digiTrackHitAssociation.get();
+  // go through hits and create cells
   for (auto hit : (*hits)) {
     // auto searchParticle = m_particleMap.find(hit.hit().core().bits);
     // if (searchParticle == m_particleMap.end()) continue;
@@ -143,10 +294,6 @@ StatusCode GeometricTrackerDigitizer::execute() {
     }
     // get the surface ID
     long long int surfaceID = dd4hepDetElement.volumeID();
-    // get the dd4hep segmentation for the current detector element
-    dd4hep::SensitiveDetector sensDet(dd4hepDetElement.volume().sensitiveDetector());
-    auto dd4hepSegmentation = sensDet.readout().segmentation();
-
     // access the detector element corresponding to the hit
     auto startDetLookUp = std::chrono::system_clock::now();
     auto search = m_detectorElements.find(Identifier(surfaceID));
@@ -218,175 +365,40 @@ StatusCode GeometricTrackerDigitizer::execute() {
         // smeared, passed and taken
         // create digitization cell
         // smear the path length with (1 +/- epsilon)
+        /// @todo check for digital readout
         double sLength =
             (m_smearParameter != 0.) ? (dStep.stepLength * (1. + m_smearParameter * m_gauss())) : dStep.stepLength;
-        // write path length (for digital use default 1)
-        double wLength = (m_analogReadout) ? sLength : 1.;
         // check if it falls below threshold
         if (m_cutParameter != 0. && sLength < m_cutParameter * thickness) continue;
         // translate DigiTrackhitAssociation into TrackHit
         // @todo check easier possibility
-        fcc::TrackHit th = trackHits->create();
-        th.core().time = hit.hit().core().time;
-        th.core().bits = hit.hit().core().bits;
-        // calculate dd4hep cellID for the fcc TrackHit
-        // @todo make this more general, this is because we are using xz-segmentation
-        // global position is actually not used for conversion
-        Acts::Vector2D localStepPosition(dStep.stepCellCenter.x(), dStep.stepCellCenter.y());
-        auto dd4hepHitLocPos =
-            dd4hep::Position(localStepPosition.x() / Acts::units::_cm, 0., localStepPosition.y() / Acts::units::_cm);
-        unsigned long long hitCellID =
-            dd4hepSegmentation.cellID(dd4hepHitLocPos, dd4hep::Position(0., 0., 0.), surfaceID);
-        th.core().cellId = hitCellID;
+        //   fcc::TrackHit th = trackHits->create();
+        //   th.core().time = hit.hit().core().time;
+        //   th.core().bits = hit.hit().core().bits;
+
         // scale energy for each cell by path length
-        th.core().energy = (sLength > 0 && totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
-        auto digiCell = sim::FCCDigitizationCell({th}, dStep.stepCell.channel0, dStep.stepCell.channel1, wLength);
+        float cellEnergy = (totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
+        auto digiCell = sim::FCCDigitizationCell({hit.hit().core().bits}, hit.hit().core().time,
+                                                 dStep.stepCell.channel0, dStep.stepCell.channel1, cellEnergy);
         // push back used cells per surface
         cellsPerSurface[surfaceID].push_back(std::move(digiCell));
       }  // dSteps
     }    // if hitDigitizationModule
   }      // hits
 
+  std::cout << "after going through hits and creating cells" << std::endl;
   auto endCells = std::chrono::system_clock::now();
   std::chrono::duration<double> timeCells = endCells - startCells;
 
   std::cout << "elapsed time for creating cells: " << timeCells.count() << std::endl;
   std::cout << "elapsed time for creating steps: " << timeSteps.count() << std::endl;
   std::cout << "elapsed time for det element lookup: " << detLookUp.count() << std::endl;
-
-  std::chrono::duration<double> ccTime = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-
-  // Now create clusters for cells per surface
-  for (auto& surf : cellsPerSurface) {
-    // access the surface & digitizationmodule from the surfaceID
-    auto surfaceID = surf.first;
-    auto search = m_detectorElements.find(Identifier(surfaceID));
-    if (search == m_detectorElements.end()) {
-      error() << "Detector element with identifier: " << surfaceID << " not found!" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    auto hitDetElement = search->second;
-    if (!hitDetElement) {
-      error() << "Invalid Detector element with identifier: " << surfaceID << "!" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    // access the surface corresponding to the detector element
-    const Acts::Surface& hitSurface = hitDetElement->surface();
-
-    auto hitDigitizationModule = hitDetElement->digitizationModule();
-    if (!hitDigitizationModule) {
-      error() << "No digitization module attached to detector element with identifier: " << surfaceID << "!" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    // get the corresponding dd4hep detelement
-    auto dd4hepDetElement = m_volumeManager.lookupDetElement(surfaceID);
-    if (!dd4hepDetElement) {
-      error() << "DD4hep detector element with identifier: " << surfaceID << "not valid!" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    if (!dd4hepDetElement.volume().isSensitive()) {
-      error() << "DD4hep detector element with identifier: " << surfaceID << " is not sensitive!" << endmsg;
-      return StatusCode::FAILURE;
-    }
-    surfaceID = dd4hepDetElement.volumeID();
-    // get the segmentation
-    const Acts::Segmentation& segmentation = hitDigitizationModule->segmentation();
-    const Acts::BinUtility& binUtility = segmentation.binUtility();
-    // merge cells
-    // @ todo apply energy cut
-    // group together cells which belong to same cluster
-    auto startCreateClusters = std::chrono::system_clock::now();
-
-    auto clusterMap =
-        createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), binUtility.bins(1), true, false, 0.);
-
-    auto endCreateClusters = std::chrono::system_clock::now();
-    ccTime += (endCreateClusters - startCreateClusters);
-
-    // acts digi cells
-    for (auto& cells : clusterMap) {
-      // #tracks per cluster
-      // set of track identification - to only have hits from different tracks
-      std::set<unsigned> nTracksPerCluster;
-      // create the track cluster
-      fcc::TrackCluster trackCluster = trackClusters->create();
-
-      //--- Now create the merged cluster ---
-      // parameters to be averaged over cells for cluster
-      double localX = 0., localY = 0., norm = 0., clusterEnergy = 0., clusterTime = 0.;
-      // go through the merged cells to calculate the averaged local position and time of the cluster
-      for (auto& cell : cells) {
-        for (auto& h : cell.trackHits) {
-          // get all tracks of this cell
-          nTracksPerCluster.insert(h.core().bits);
-          // get energy of this cell
-          clusterEnergy += h.core().energy;
-          // calculate mean of time
-          clusterTime += h.core().time;
-        }
-        // get center position of the current cell
-        auto cellCenter = segmentation.cellPosition(cell);
-        // calculate position of hit (for digital readout data==1)
-        localX += cell.data * cellCenter.x();
-        localY += cell.data * cellCenter.y();
-        norm += cell.data;
-
-        for (auto& th : cell.trackHits) {
-          trackCluster.addhits(th);
-        }
-      }
-      // divide by the total path - analog clustering
-      if (norm > 1) {
-        localX /= norm;
-        localY /= norm;
-        clusterTime /= cells.size();
-      }
-      /// ----------- Create track cluster -----------
-      // local position of merged cluster
-      Acts::Vector2D localPosition(localX, localY);
-      // calculate global position of the cluster
-      Acts::Vector3D globalPosition(0., 0., 0.);
-      hitSurface.localToGlobal(localPosition, Acts::Vector3D(0., 0., 0.), globalPosition);
-      // translate to fcc edm
-      auto position = fcc::Point();
-      position.x = globalPosition.x();
-      position.y = globalPosition.y();
-      position.z = globalPosition.z();
-      // save position in cluster
-      trackCluster.core().position = position;
-      trackCluster.core().energy = clusterEnergy;
-      trackCluster.core().time = clusterTime;
-      // ----------- Create Acts cluster - possibly to be written out -----------
-      // ----------- Create unique Acts global channel identifier -----------
-      // get the bins of the local position to create channel identifier for this surface
-      size_t bin0 = binUtility.bin(localPosition, 0);
-      size_t bin1 = binUtility.bin(localPosition, 1);
-      size_t binSerialized = binUtility.serialize({bin0, bin1, 0});
-      // get the surface identifier
-      Acts::GeometryID geoID(hitSurface.geoID());
-      // create the unique global channel identifier by adding to surface identifier
-      geoID.add(binSerialized, Acts::GeometryID::channel_mask);
-      // the covariance is currently set to 0.
-      // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
-      Acts::ActsSymMatrixD<2> cov;
-      cov << 0., 0., 0., 0.;
-
-      planarClusters->emplace_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster.size(), hitSurface,
-                                                         Identifier(geoID.value()), std::move(cov), localX, localY,
-                                                         std::move(cells)));
-    }
-  }
-
-  std::cout << "elapsed time for creating clusters & merging cells: " << ccTime.count() << std::endl;
   return StatusCode::SUCCESS;
 }
 
 template <typename Cell>
-std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const std::vector<Cell>& cells,
-                                                                         size_t nBins0,
-                                                                         size_t nBins1,
-                                                                         bool commonCorner,
-                                                                         bool analogueReadout,
+std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const std::vector<Cell>& cells, size_t nBins0,
+                                                                         size_t nBins1, bool commonCorner,
                                                                          double energyCut) {
   // the output
   std::vector<std::vector<Cell>> mergedCells;
@@ -409,7 +421,7 @@ std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const s
     if (!insertCell.second) {
       // check if there is already a cell at same position and merge in that
       // case
-      insertCell.first->second.first.addCell(cell, analogueReadout);
+      insertCell.first->second.first.addCell(cell);
     }
     ///  auto endMerge = std::chrono::system_clock::now();
     ///    timeMerge += (endMerge - startMerge);
@@ -421,11 +433,11 @@ std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const s
   // now go through cells and label
   for (auto& cell : cellMap) {
     // check if the cell was already used
-    if (!(cell.second.second) && (cell.second.first.depositedEnergy(analogueReadout) >= energyCut)) {
+    if (!(cell.second.second) && (cell.second.first.depositedEnergy() >= energyCut)) {
       // create new cluster
       mergedCells.push_back(std::vector<Cell>());
       // fill all cells belonging to that cluster
-      ccl(mergedCells, cellMap, cell.first, nBins0, nBins1, commonCorner, analogueReadout, energyCut);
+      ccl(mergedCells, cellMap, cell.first, nBins0, nBins1, commonCorner, energyCut);
     }
   }
   /// auto endLabelLoop = std::chrono::system_clock::now();
@@ -441,12 +453,11 @@ void GeometricTrackerDigitizer::ccl(std::vector<std::vector<Cell>>& mergedCells,
                                     size_t nBins0,
                                     size_t nBins1,
                                     bool commonCorner,
-                                    bool analogueReadout,
                                     double energyCut) {
   // add current cell to cluster
   auto cellA = cellMap.at(index).first;
   // check if cell energy is higher than energy threshold to activate the cell
-  if (cellA.depositedEnergy(analogueReadout) >= energyCut) {
+  if (cellA.depositedEnergy() >= energyCut) {
     // add current cell to current cluster
     mergedCells.back().push_back(cellA);
     cellMap.at(index).second = true;
@@ -509,7 +520,7 @@ void GeometricTrackerDigitizer::ccl(std::vector<std::vector<Cell>>& mergedCells,
         // get the corresponding index and call function again
         auto newIndex = search->first;
         if (!cellMap.at(newIndex).second) {
-          ccl(mergedCells, cellMap, newIndex, nBins0, nBins1, commonCorner, analogueReadout, energyCut);
+          ccl(mergedCells, cellMap, newIndex, nBins0, nBins1, commonCorner, energyCut);
         }  // check if was used already
       }    // check if neighbour is there
     }      // go through neighbour indics
