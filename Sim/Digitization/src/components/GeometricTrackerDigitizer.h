@@ -91,7 +91,7 @@ private:
   /// maximum incidence angle cut-off
   Gaudi::Property<double> m_cosThetaLocMin{this, "cosThetaLocMin", 0.0, "Maximum incidence angle cut-off."};
   /// flag indicating if analog readout should be used (default is digital)
-  Gaudi::Property<bool> m_analogReadout{
+  Gaudi::Property<bool> m_analogueReadout{
       this, "analogReadout", false,
       "This flag should be turned on in case analog readout should be simulated. Default is digitital readout."};
   /// flag indicating if cells having a common corner should be merged to a cluster (default: clusters sharing common
@@ -117,6 +117,8 @@ private:
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
 
+  StatusCode createCells(std::map<long long int, std::vector<sim::FCCDigitizationCell>>& cellsPerSurface);
+
   /// @brief create clusters
   /// This function recieves digitization cells and bundles the neighbouring to
   /// create clusters later and does cell merging. Furthermore an energy
@@ -135,12 +137,8 @@ private:
   /// @return vector (the different clusters) of vector of digitization cells (the
   /// cells which belong to each cluster)
   template <typename Cell>
-  std::vector<std::vector<Cell>> createClusters(const std::vector<Cell>& cells,
-                                                size_t nBins0,
-                                                size_t nBins1,
-                                                bool commonCorner = true,
-                                                bool analogueReadout = false,
-                                                double energyCut = 0.);
+  std::vector<std::vector<Cell>> createClusters(
+      const std::vector<Cell>& cells, size_t nBins0, size_t nBins1, bool commonCorner = true, double energyCut = 0.);
 
   /// @brief ccl
   /// This function is a helper function of Acts::createClusters. It does
@@ -168,7 +166,6 @@ private:
            size_t nBins0,
            size_t nBins1,
            bool commonCorner = true,
-           bool analogueReadout = false,
            double energyCut = 0.);
 
   /// std::chrono::duration<double> timeMerge;
