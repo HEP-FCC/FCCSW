@@ -170,7 +170,13 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
           for (int ipEta = idEtaFin - halfEtaFin; ipEta <= idEtaFin + halfEtaFin; ipEta++) {
             for (int ipPhi = idPhiFin - halfPhiFin; ipPhi <= idPhiFin + halfPhiFin; ipPhi++) {
               if (ipEta >= 0 && ipEta < m_nEtaTower) {  // check if we are not outside of map in eta
-                sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+                if (m_ellipseFinalCluster) {
+                  if (pow( (ipEta - idEtaFin) / (m_nEtaFinal / 2.), 2) + pow( (ipPhi - idPhiFin) / (m_nPhiFinal / 2.), 2) < 1) {
+                    sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+                  }
+                } else {
+                  sumEnergyFin += m_towers[ipEta][phiNeighbour(ipPhi)];
+                }
               }
             }
           }

@@ -122,6 +122,8 @@ private:
   Gaudi::Property<float> m_energyThresholdFraction{this, "energyThresholdFraction", 0.25};
   /// Flag for the application of the correction for energy sharing between clusters
   Gaudi::Property<bool> m_energySharingCorrection{this, "energySharingCorrection", true};
+  /// Flag for the ellipse used in the final cluster instead of the rectangle
+  Gaudi::Property<bool> m_ellipseFinalCluster{this, "ellipse", false};
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */

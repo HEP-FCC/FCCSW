@@ -122,6 +122,8 @@ private:
   /// Name of pileup histogram for correction of "pileupHistoName"+0 * num_cells ^ "pileupHistoName"+1
   Gaudi::Property<std::string> m_pileupHistoName{this, "pileupHistoName", "histFitToClusterDependence_Measured_p",
                                                  "Name of pileup histogram"};
+  /// Pile-up scenario for pileup noise scaling (with sqrt(mu))
+  Gaudi::Property<int> m_mu{this, "mu", 1000, "Pileup scenario"};
   /// Histograms with pileup constants (index in array - parameter number: 0 or 1)
   std::vector<TH1F> m_histoPileupConst;
   /// Values of eta corresponding to the upstream correction parameters

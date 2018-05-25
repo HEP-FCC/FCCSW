@@ -117,6 +117,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  nEtaDuplicates = dupE, nPhiDuplicates = dupP,
                                                  nEtaFinal = finE, nPhiFinal = finP,
                                                  energyThreshold = threshold,
+                                                 ellipse = True,
                                                  OutputLevel = DEBUG)
 createClusters.clusters.Path = "CaloClusters"
 

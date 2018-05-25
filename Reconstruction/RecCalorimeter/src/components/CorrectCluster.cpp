@@ -180,7 +180,7 @@ StatusCode CorrectCluster::execute() {
 
     // 2. Correct energy for pileup noise
     uint numCells = newCluster.hits_size();
-    double noise = getNoiseConstantPerCluster(newEta, numCells) * m_gauss.shoot();
+    double noise = getNoiseConstantPerCluster(newEta, numCells) * m_gauss.shoot() * std::sqrt(static_cast<int>(m_mu));
     newCluster.core().energy += noise;
     m_hPileupEnergy->Fill(noise);
 
