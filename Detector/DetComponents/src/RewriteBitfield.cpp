@@ -82,18 +82,19 @@ StatusCode RewriteBitfield::execute() {
     fcc::CaloHit newHit = outHits->create();
     newHit.energy(hit.energy());
     newHit.time(hit.time());
-    m_oldDecoder->setValue(hit.cellId());
+    dd4hep::DDSegmentation::CellID cID = hit.cellId();
     if (debugIter < m_debugPrint) {
-      debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
+      debug() << "OLD: " << m_oldDecoder->valueString(cID) << endmsg;
     }
     // now rewrite all fields except for those to be removed
+    dd4hep::DDSegmentation::CellID newID=0;
     for (const auto& detectorField : m_detectorIdentifiers) {
-      oldid = (*m_oldDecoder)[detectorField];
-      (*m_newDecoder)[detectorField] = oldid;
+      oldid = m_oldDecoder->get(cID, detectorField);
+      m_newDecoder->set(newID, detectorField, oldid);
     }
-    newHit.cellId(m_newDecoder->getValue());
+    newHit.cellId(newID);
     if (debugIter < m_debugPrint) {
-      debug() << "NEW: " << m_newDecoder->valueString() << endmsg;
+      debug() << "NEW: " << m_newDecoder->valueString(newID) << endmsg;
       debugIter++;
     }
   }

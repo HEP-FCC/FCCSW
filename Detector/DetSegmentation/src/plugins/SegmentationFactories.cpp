@@ -3,7 +3,7 @@
 
 namespace {
 template <typename T>
-dd4hep::SegmentationObject* create_segmentation(dd4hep::BitField64* decoder) {
+dd4hep::SegmentationObject* create_segmentation(const dd4hep::BitFieldCoder* decoder) {
   return new dd4hep::SegmentationWrapper<T>(decoder);
 }
 }

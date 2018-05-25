@@ -116,7 +116,7 @@ public:
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
-  std::shared_ptr<dd4hep::DDSegmentation::BitField64> m_decoder;
+  std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
   /**  Find cells belonging to a cluster.
    *   @param[in] aEta Position of the middle tower of a cluster in eta
    *   @param[in] aPhi Position of the middle tower of a cluster in phi
