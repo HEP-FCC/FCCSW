@@ -47,7 +47,7 @@ StatusCode PreparePileup::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
-  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_decoder = std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> (m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
   // Histogram service
   m_histSvc = service("THistSvc");
   if (!m_histSvc) {
@@ -142,16 +142,15 @@ StatusCode PreparePileup::execute() {
   // Fill 2D histogram per layer
   for (const auto& cell : m_cellsMap) {
     double cellEnergy = cell.second;
-    uint64_t cellId = cell.first;
-    m_decoder->setValue(cellId);
-    uint layerId = (*m_decoder)[m_layerFieldName];
+    dd4hep::DDSegmentation::CellID cID = cell.first;
+    uint layerId = m_decoder->get(cID, m_layerFieldName);
     if (layerId >= m_numLayers) {
       layerId = m_numLayers - 1;
       warning() << "Layer id of the cell " << layerId
                 << " is larger than number of layers in the histogram: " << m_numLayers
                 << ". Filling the last histogram." << endmsg;
     }
-    double cellEta = m_segmentation->eta(cellId);
+    double cellEta = m_segmentation->eta(cID);
     m_energyVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
   }
   // create towers
@@ -218,16 +217,15 @@ StatusCode PreparePileup::finalize() {
   // Fill 2D histogram per layer (sum of energy in all events per cell)
   for (const auto& cell : m_sumEnergyCellsMap) {
     double cellEnergy = cell.second;
-    uint64_t cellId = cell.first;
-    m_decoder->setValue(cellId);
-    uint layerId = (*m_decoder)[m_layerFieldName];
+    dd4hep::DDSegmentation::CellID cID = cell.first;
+    uint layerId = m_decoder->get(cID, m_layerFieldName);
     if (layerId >= m_numLayers) {
       layerId = m_numLayers - 1;
       warning() << "Layer id of the cell " << layerId
                 << " is larger than number of layers in the histogram: " << m_numLayers
                 << ". Filling the last histogram." << endmsg;
     }
-    double cellEta = m_segmentation->eta(cellId);
+    double cellEta = m_segmentation->eta(cID);
     m_energyAllEventsVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
   }
 

@@ -16,6 +16,8 @@ class IGeoSvc;
 #include "datamodel/CaloHit.h"
 #include "datamodel/CaloHitCollection.h"
 
+#include "DDSegmentation/BitFieldCoder.h"
+
 class TH2F;
 class TH1F;
 class ITHistSvc;
@@ -50,7 +52,7 @@ public:
 
   StatusCode finalize();
 
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
 
 private:
   /**  Correct way to access the neighbour of the phi tower, taking into account the full coverage in phi.

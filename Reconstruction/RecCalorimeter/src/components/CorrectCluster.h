@@ -20,7 +20,7 @@ class CaloHitCollection;
 namespace dd4hep {
 namespace DDSegmentation {
 class FCCSWGridPhiEta;
-class BitField64;
+class BitFieldCoder;
 }
 }
 
@@ -109,7 +109,7 @@ private:
   /// map of system Id to segmentation, created based on m_readoutName and m_systemId
   std::map<uint, dd4hep::DDSegmentation::FCCSWGridPhiEta*> m_segmentation;
   /// map of system Id to decoder, created based on m_readoutName and m_systemId
-  std::map<uint, dd4hep::DDSegmentation::BitField64*> m_decoder;
+  std::map<uint, std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder>> m_decoder;
   /// Histogram of pileup noise added to energy of clusters
   TH1F* m_hPileupEnergy;
   /// Random Number Service

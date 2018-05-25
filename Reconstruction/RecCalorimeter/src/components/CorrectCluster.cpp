@@ -77,7 +77,7 @@ StatusCode CorrectCluster::initialize() {
       error() << "There is no phi-eta segmentation." << endmsg;
       return StatusCode::FAILURE;
     }
-    m_decoder[m_systemId[iSys]] = m_geoSvc->lcdd()->readout(m_readoutName[iSys]).idSpec().decoder();
+    m_decoder[m_systemId[iSys]] = std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder>(m_geoSvc->lcdd()->readout(m_readoutName[iSys]).idSpec().decoder());
   }
   // Initialize random service
   if (service("RndmGenSvc", m_randSvc).isFailure()) {
@@ -148,15 +148,15 @@ StatusCode CorrectCluster::execute() {
     sumWeightLayer.assign(m_numLayers, 0);
     // first check the energy deposited in each layer
     for (auto cell = cluster.hits_begin(); cell != cluster.hits_end(); cell++) {
-      m_decoder[systemId]->setValue(cell->core().cellId);
-      uint layer = (*m_decoder[systemId])[m_layerFieldName] + m_firstLayerId;
+      dd4hep::DDSegmentation::CellID cID = cell->core().cellId;
+      uint layer = m_decoder[systemId]->get(cID, m_layerFieldName) + m_firstLayerId;
       sumEnLayer[layer] += cell->core().energy;
     }
     sumEnFirstLayer = sumEnLayer[0];
     // repeat but calculating eta barycentre in each layer
     for (auto cell = cluster.hits_begin(); cell != cluster.hits_end(); cell++) {
-      m_decoder[systemId]->setValue(cell->core().cellId);
-      uint layer = (*m_decoder[systemId])[m_layerFieldName] + m_firstLayerId;
+      dd4hep::DDSegmentation::CellID cID = cell->core().cellId;
+      uint layer = m_decoder[systemId]->get(cID, m_layerFieldName) + m_firstLayerId;
       double weightLog = std::max(0., m_etaRecalcLayerWeights[layer] + log(cell->core().energy / sumEnLayer[layer]));
       double eta = m_segmentation[systemId]->eta(cell->core().cellId);
       sumEtaLayer[layer] += (weightLog * eta);
