@@ -1,6 +1,7 @@
 #ifndef DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H
 #define DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H
 
+#include "../../Digitization/IClusterWriter.h"
 #include "ACTS/Utilities/Identifier.hpp"
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
@@ -73,9 +74,13 @@ private:
   DataHandle<fcc::TrackClusterCollection> m_trackClusters{"trackClusters", Gaudi::DataHandle::Writer, this};
   /// the collection cluster trackhits
   DataHandle<fcc::TrackHitCollection> m_trackHits{"clusterTrackHits", Gaudi::DataHandle::Writer, this};
-  /// the handle to the output planar clusters which can be used for studies
-  DataHandle<std::vector<sim::FCCPlanarCluster>> m_planarClusterHandle{"planarClusters", Gaudi::DataHandle::Writer,
-                                                                       this};
+  // ClusterWriter tool
+  ToolHandle<IClusterWriter> m_clusterWriter{"clusterWriter", this};
+  /// flag indicating if specific cluster information should be written out
+  Gaudi::Property<bool> m_writeClusterInfo{this, "writeClusterInfo", false,
+                                           "This flag should be turned on in case more "
+                                           "information should be written out for the "
+                                           "clusters needed for studies."};
   /// Handle to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle to the tracking geometry service

@@ -19,6 +19,8 @@
 #include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
 #include "Digitization/FCCDigitizationCell.h"
+#include "GaudiKernel/EventContext.h"
+#include "GaudiKernel/ThreadLocalContext.h"
 #include "RecTracker/ACTSLogger.h"
 #include "datamodel/DigiTrackHitAssociationCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
@@ -44,13 +46,12 @@ GeometricTrackerDigitizer::GeometricTrackerDigitizer(const std::string& name, IS
       m_geoSvc("GeoSvc", "GeometricTrackerDigitizer"),
       m_trkGeoSvc("TrackingGeoSvc", "GeometricTrackerDigitizer"),
       m_detectorElements() {
+  declareProperty("clusterWriter", m_clusterWriter, "clusterWriter");
   declareProperty("trackingGeometrySvc", m_trkGeoSvc, "The geometry service providing the tracking geometry");
   declareProperty("geoSvc", m_geoSvc, "The geometry service providing the tracking geometry");
   declareProperty("digiTrackHitAssociation", m_digiTrackHitAssociation, "Handle for input digiTrackHitAssociation");
   declareProperty("trackClusters", m_trackClusters, "Handle for output clusters");
   declareProperty("clusterTrackHits", m_trackHits, "Handle for output hits belonging to the clusters");
-  declareProperty("planarClusters", m_planarClusterHandle,
-                  "Handle to sim::FCCPlanarCluster needed to possibly write out additional information for studies");
 }
 
 StatusCode GeometricTrackerDigitizer::initialize() {
@@ -77,6 +78,13 @@ StatusCode GeometricTrackerDigitizer::initialize() {
     error() << "Could not get RndmGenSvc!" << endmsg;
     return StatusCode::FAILURE;
   }
+
+  // retrieve the extrapolation tool
+  if (m_writeClusterInfo && !m_clusterWriter.retrieve()) {
+    error() << "ClusterWriter tool cannot be retieved" << endmsg;
+    return StatusCode::FAILURE;
+  }
+
   // initialize gauss and flat distribution
   sc = m_gauss.initialize(m_randSvc, Rndm::Gauss(0., 1.));
   sc = m_flatDist.initialize(m_randSvc, Rndm::Flat(0., 1.));
@@ -114,10 +122,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackHits = m_trackHits.createAndPut();
   // prepare the output clusters
   auto trackClusters = m_trackClusters.createAndPut();
-  // prepare output planar clusters
-  auto planarClusters = m_planarClusterHandle.createAndPut();
   std::cout << "begin digitization" << std::endl;
-  planarClusters->reserve(100000);
 
   std::chrono::duration<double> ccTime = std::chrono::system_clock::now() - std::chrono::system_clock::now();
   // get the cells per surface
@@ -247,22 +252,23 @@ StatusCode GeometricTrackerDigitizer::execute() {
       // ----------- Create Acts cluster - possibly to be written out -----------
       // ----------- Create unique Acts global channel identifier -----------
       // get the bins of the local position to create channel identifier for this surface
-      size_t bin0 = binUtility.bin(localPosition, 0);
-      size_t bin1 = binUtility.bin(localPosition, 1);
-      size_t binSerialized = binUtility.serialize({bin0, bin1, 0});
-      // get the surface identifier
-      Acts::GeometryID geoID(hitSurface.geoID());
-      // create the unique global channel identifier by adding to surface identifier
-      geoID.add(binSerialized, Acts::GeometryID::channel_mask);
-      // the covariance is currently set to 0.
-      // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
-      Acts::ActsSymMatrixD<2> cov;
-      cov << 0., 0., 0., 0.;
-
-      //     planarClusters->emplace_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster, hitSurface,
-      //                                                        Identifier(geoID.value()), std::move(cov), localX,
-      //                                                        localY,
-      //                                                        std::move(cells)));
+      if (m_writeClusterInfo) {
+        size_t bin0 = binUtility.bin(localPosition, 0);
+        size_t bin1 = binUtility.bin(localPosition, 1);
+        size_t binSerialized = binUtility.serialize({bin0, bin1, 0});
+        // get the surface identifier
+        Acts::GeometryID geoID(hitSurface.geoID());
+        // create the unique global channel identifier by adding to surface identifier
+        geoID.add(binSerialized, Acts::GeometryID::channel_mask);
+        // the covariance is currently set to 0.
+        // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
+        Acts::ActsSymMatrixD<2> cov;
+        cov << 0., 0., 0., 0.;
+        m_clusterWriter->write(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster, hitSurface,
+                                                     Identifier(geoID.value()), std::move(cov), localX, localY,
+                                                     std::move(cells)),
+                               Gaudi::Hive::currentContext().evt());
+      }
     }
   }
   std::cout << "after creating clusters" << std::endl;
