@@ -1,14 +1,14 @@
-#ifndef DIGITIZATION_SIMPLECLUSTERWRITER_H
-#define DIGITIZATION_SIMPLECLUSTERWRITER_H
-
+#ifndef DIGITIZATION_CLUSTERWRITER_H
+#define DIGITIZATION_CLUSTERWRITER_H
+#include "../../Digitization/IClusterWriter.h"
 #include "ACTS/Surfaces/Surface.hpp"
 #include "ACTS/Utilities/BinUtility.hpp"
-#include "FWCore/DataHandle.h"
-#include "GaudiAlg/GaudiAlgorithm.h"
+#include "GaudiAlg/GaudiTool.h"
+#include "GaudiKernel/RndmGenerators.h"
 #include "TFile.h"
 #include "TTree.h"
 
-/** @class SimpleClusterWriter
+/** @class ClusterWriter
  *
  *
  *  @author Julia Hrdinka
@@ -19,24 +19,21 @@ namespace sim {
 class FCCPlanarCluster;
 }
 
-class SimpleClusterWriter : public GaudiAlgorithm {
+class ClusterWriter : public GaudiTool, virtual public IClusterWriter {
 
 public:
   /// Constructor
-  SimpleClusterWriter(const std::string& name, ISvcLocator* svcLoc);
+  ClusterWriter(const std::string& type, const std::string& name, const IInterface* parent);
   /// Destructor
-  ~SimpleClusterWriter() = default;
+  ~ClusterWriter() = default;
   /// Gaudi interface initialization method
   virtual StatusCode initialize() final;
   /// Gaudi interface finalize method
   virtual StatusCode finalize() final;
   /// Gaudi interface execute method
-  virtual StatusCode execute() final;
+  virtual StatusCode write(const sim::FCCPlanarCluster& cluster, int eventNr = 0) override final;
 
 private:
-  /// the collection of input planar clusters
-  DataHandle<std::vector<sim::FCCPlanarCluster>> m_planarClusterHandle{"planarClusters", Gaudi::DataHandle::Reader,
-                                                                       this};
   /// name of the output file
   Gaudi::Property<std::string> m_filename{this, "filename", "PlanarClusters.root", "file name to save the clusters to"};
   /// name of the output tree
@@ -66,4 +63,4 @@ private:
   long long int m_detElementID;  ///< unique identifier of the detector element
 };
 
-#endif  // DIGITIZATION_SIMPLECLUSTERWRITER_H
+#endif  // DIGITIZATION_CLUSTERWRITER_H
