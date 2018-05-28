@@ -117,7 +117,9 @@ private:
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
 
-  StatusCode createCells(std::map<long long int, std::vector<sim::FCCDigitizationCell>>& cellsPerSurface);
+  StatusCode
+  createCells(std::unordered_map<long long int, std::unordered_map<size_t, std::pair<sim::FCCDigitizationCell, bool>>>&
+                  cellsPerSurface);
 
   /// @brief create clusters
   /// This function recieves digitization cells and bundles the neighbouring to
@@ -137,8 +139,11 @@ private:
   /// @return vector (the different clusters) of vector of digitization cells (the
   /// cells which belong to each cluster)
   template <typename Cell>
-  std::vector<std::vector<Cell>> createClusters(
-      const std::vector<Cell>& cells, size_t nBins0, size_t nBins1, bool commonCorner = true, double energyCut = 0.);
+  std::vector<std::vector<Cell>> createClusters(std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
+                                                size_t nBins0,
+                                                size_t nBins1,
+                                                bool commonCorner = true,
+                                                double energyCut = 0.);
 
   /// @brief ccl
   /// This function is a helper function of Acts::createClusters. It does

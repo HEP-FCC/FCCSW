@@ -122,7 +122,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
   std::chrono::duration<double> ccTime = std::chrono::system_clock::now() - std::chrono::system_clock::now();
   // get the cells per surface
   // the cells to be used
-  std::map<long long int, std::vector<sim::FCCDigitizationCell>> cellsPerSurface;
+  std::unordered_map<long long int, std::unordered_map<size_t, std::pair<sim::FCCDigitizationCell, bool>>>
+      cellsPerSurface;
   createCells(cellsPerSurface);
 
   // Now create clusters for cells per surface
@@ -258,9 +259,10 @@ StatusCode GeometricTrackerDigitizer::execute() {
       Acts::ActsSymMatrixD<2> cov;
       cov << 0., 0., 0., 0.;
 
-      planarClusters->emplace_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster, hitSurface,
-                                                         Identifier(geoID.value()), std::move(cov), localX, localY,
-                                                         std::move(cells)));
+      //     planarClusters->emplace_back(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster, hitSurface,
+      //                                                        Identifier(geoID.value()), std::move(cov), localX,
+      //                                                        localY,
+      //                                                        std::move(cells)));
     }
   }
   std::cout << "after creating clusters" << std::endl;
@@ -269,7 +271,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
 }
 
 StatusCode GeometricTrackerDigitizer::createCells(
-    std::map<long long int, std::vector<sim::FCCDigitizationCell>>& cellsPerSurface) {
+    std::unordered_map<long long int, std::unordered_map<size_t, std::pair<sim::FCCDigitizationCell, bool>>>&
+        cellsPerSurface) {
   auto startCells = std::chrono::system_clock::now();
   std::chrono::duration<double> timeSteps = std::chrono::system_clock::now() - std::chrono::system_clock::now();
   std::chrono::duration<double> detLookUp = std::chrono::system_clock::now() - std::chrono::system_clock::now();
@@ -323,6 +326,9 @@ StatusCode GeometricTrackerDigitizer::createCells(
       double thickness = hitDetElement->thickness();
       double lorentzShift = thickness * tan(lorentzAngle);
       lorentzShift *= -(hitDigitizationModule->readoutDirection());
+      // get the segmentation
+      const Acts::Segmentation& segmentation = hitDigitizationModule->segmentation();
+      const Acts::BinUtility& binUtility = segmentation.binUtility();
       // get the hit position
       Acts::Vector3D globalIntersection(hit.hit().position().x, hit.hit().position().y, hit.hit().position().z);
       // access the post step position to calculate the direction
@@ -380,8 +386,15 @@ StatusCode GeometricTrackerDigitizer::createCells(
         float cellEnergy = (totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
         auto digiCell = sim::FCCDigitizationCell({hit.hit().core().bits}, hit.hit().core().time,
                                                  dStep.stepCell.channel0, dStep.stepCell.channel1, cellEnergy);
-        // push back used cells per surface
-        cellsPerSurface[surfaceID].push_back(std::move(digiCell));
+        // calculate key of cell which is the global grid index
+        size_t globalIndex = digiCell.channel0 + binUtility.bins(0) * digiCell.channel1;
+        // insert new cell - only adds cell, if cell was not there yet
+        auto insertCell = cellsPerSurface[surfaceID].insert({globalIndex, {std::move(digiCell), false}});
+        if (!insertCell.second) {
+          // check if there is already a cell at same position and merge in that
+          // case
+          insertCell.first->second.first.addCell(digiCell);
+        }
       }  // dSteps
     }    // if hitDigitizationModule
   }      // hits
@@ -397,38 +410,11 @@ StatusCode GeometricTrackerDigitizer::createCells(
 }
 
 template <typename Cell>
-std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const std::vector<Cell>& cells, size_t nBins0,
-                                                                         size_t nBins1, bool commonCorner,
-                                                                         double energyCut) {
+std::vector<std::vector<Cell>>
+GeometricTrackerDigitizer::createClusters(std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap, size_t nBins0,
+                                          size_t nBins1, bool commonCorner, double energyCut) {
   // the output
   std::vector<std::vector<Cell>> mergedCells;
-  // map containing all activated cells + boolean indicating if they have been
-  // used already
-  std::unordered_map<size_t, std::pair<Cell, bool>> cellMap;
-  // Now fill cell map and merge cells if requested
-
-  ///  auto startFillLoop = std::chrono::system_clock::now();
-  for (auto& cell : cells) {
-    // calculate key of cell which is the global grid index
-    size_t globalIndex = cell.channel0 + nBins0 * cell.channel1;
-    // insert new cell - only adds cell, if cell was not there yet
-    ///  auto startFillMap = std::chrono::system_clock::now();
-    auto insertCell = cellMap.insert({globalIndex, {cell, false}});
-    ///   auto endFillMap = std::chrono::system_clock::now();
-    ///   timeFillMap += (endFillMap - startFillMap);
-
-    ///   auto startMerge = std::chrono::system_clock::now();
-    if (!insertCell.second) {
-      // check if there is already a cell at same position and merge in that
-      // case
-      insertCell.first->second.first.addCell(cell);
-    }
-    ///  auto endMerge = std::chrono::system_clock::now();
-    ///    timeMerge += (endMerge - startMerge);
-  }
-  /// auto endFillLoop = std::chrono::system_clock::now();
-  /// timeFillLoop += (endFillLoop - startFillLoop);
-
   /// auto startLabelLoop = std::chrono::system_clock::now();
   // now go through cells and label
   for (auto& cell : cellMap) {
@@ -440,8 +426,6 @@ std::vector<std::vector<Cell>> GeometricTrackerDigitizer::createClusters(const s
       ccl(mergedCells, cellMap, cell.first, nBins0, nBins1, commonCorner, energyCut);
     }
   }
-  /// auto endLabelLoop = std::chrono::system_clock::now();
-  /// timeLabelLoop += (endLabelLoop - startLabelLoop);
   // return the grouped together cells
   return mergedCells;
 }
