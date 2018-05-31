@@ -16,15 +16,14 @@
  *  @brief Geometric digitization of track hits.
  *
  *  The GeometricTrackerDigitizer geometrically digitizes fcc::DigiTrackHitAssociationCollection (which is a positioned
- * track hit +
- * post step point) created by simulation and writes out a fcc::TrackClusterCollection.
+ * track hit + post step point) created by geant4 simulation and writes out a fcc::TrackClusterCollection.
  * It internally uses Acts Digitization tools.
  * The user can decide whether analogue or digital readout should be simulated and can set smear and cut paameters and
  * the hit inefficiency. Especially in the FCChh environment we do expect to also have merged clusters which are not
- * only
- * created by one single particle. The user can decide if the merging of clusters should happen, if hit cells share a
- * common edge (default) or even if they already share a common corner.
- * For analysis reasons one can also write out the single particle clusters (Turned off per default).
+ * only created by one single particle. The user can decide if the merging of clusters should happen, if hit cells share
+ * a common edge (default) or even if they share a common corner.
+ * For analysis reasons one can also write out more specific cluster information using a cluster writer tool (Turned off
+ * per default).
  *
  * @todo implement energy cut with next ACTS release (when digitization module knows about it)
  * @todo implement analogue/digital readout per module for next ACTS release
@@ -122,61 +121,63 @@ private:
   /// Flat random number generator
   Rndm::Numbers m_flatDist;
 
+  /// @brief create cells from simulated hits
+  /// This function receives the simulated hits, which are geant4 steps, of each event from the event store finds all
+  /// cells which are activated along the step. These cells are already sorted for each module, because the following
+  /// clusterization will be done per module. The cells are stored in a map, sorted by their global index on the module.
+  /// @param [in,out] cellsPerSurface
   StatusCode
   createCells(std::unordered_map<long long int, std::unordered_map<size_t, std::pair<sim::FCCDigitizationCell, bool>>>&
                   cellsPerSurface);
 
+  /// @todo this function will sit in ACTS from the next release
   /// @brief create clusters
   /// This function recieves digitization cells and bundles the neighbouring to
   /// create clusters later and does cell merging. Furthermore an energy
   /// cut (excluding cells which fall below threshold) can be applied. The
   /// function is templated on the digitization cell type to allow users to use
-  /// their own implementation inheriting from Acts::DigitizationCell.
+  /// their own implementation of Acts::DigitizationCell.
   /// @tparam Cell the digitization cell
-  /// @param [in] cells all digitization cells
+  /// @param [in] cellMap map of all cells per cell ID on module
   /// @param [in] nBins0 number of bins in direction 0
-  /// @param [in] nBins1 number of bins in direction 1
   /// @param [in] commonCorner flag indicating if also cells sharing a common
   /// corner should be merged into one cluster
-  /// @param [in] analogueReadout flag indicating if analogue readout is used
-  /// (deposited energy is added up in case of cell merging)
   /// @param [in] energyCut possible energy cut to be applied
   /// @return vector (the different clusters) of vector of digitization cells (the
   /// cells which belong to each cluster)
   template <typename Cell>
   std::vector<std::vector<Cell>> createClusters(std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
                                                 size_t nBins0,
-                                                size_t nBins1,
                                                 bool commonCorner = true,
                                                 double energyCut = 0.);
 
-  /// @brief ccl
-  /// This function is a helper function of Acts::createClusters. It does
-  /// connected component labelling using a hash map in order to find out which
-  /// cells are neighbours. This function is called recursively by all neighbours
-  /// of the current cell. The function is templated on the digitization cell type
-  /// to allow users to use their own implementation inheriting from
-  /// Acts::DigitizationCell.
+  /// @todo this function will sit in ACTS from the next release
+  /// @brief fillCluster
+  /// This function is a helper function internally used by Acts::createClusters.
+  /// It does connected component labelling using a hash map in order to find out
+  /// which cells are neighbours. This function is called recursively by all
+  /// neighbours of the current cell. The function is templated on the
+  /// digitization cell type to allow users to use their own implementation
+  /// inheriting from Acts::DigitizationCell.
   /// @tparam Cell the digitization cell
   /// @param [in,out] mergedCells the final vector of cells to which cells of one
   /// cluster should be added
-  /// @param [in] cellMap the hashmap of all present cells + a flag indicating if
-  /// they have been added to a cluster already, with the key being the global
+  /// @param [in,out] cellMap the hashmap of all present cells + a flag indicating
+  /// if they have been added to a cluster already, with the key being the global
   /// grid index
   /// @param [in] index the current global grid index of the cell
+  /// @param [in] cellA the current cell
   /// @param [in] nBins0 number of bins in direction 0
-  /// @param [in] nBins1 number of bins in direction 1
-  /// @param [in] analogueReadout flag indicating if analogue readout is used
-  /// (deposited energy is added up in case of cell merging)
+  /// @param [in] commonCorner flag indicating if also cells sharing a common
+  /// corner should be merged into one cluster
   /// @param [in] energyCut possible energy cut to be applied
   template <typename Cell>
-  void ccl(std::vector<std::vector<Cell>>& mergedCells,
-           std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
-           size_t index,
-           size_t nBins0,
-           size_t nBins1,
-           bool commonCorner = true,
-           double energyCut = 0.);
+  void fillCluster(std::vector<std::vector<Cell>>& mergedCells,
+                   std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
+                   size_t index,
+                   size_t nBins0,
+                   bool commonCorner = true,
+                   double energyCut = 0.);
 
   /// std::chrono::duration<double> timeMerge;
   /// std::chrono::duration<double> timeFillLoop;

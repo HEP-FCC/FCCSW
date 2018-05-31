@@ -175,8 +175,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
     // group together cells which belong to same cluster
     auto startCreateClusters = std::chrono::system_clock::now();
 
-    auto clusterMap =
-        createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), binUtility.bins(1), true, 0.);
+    auto clusterMap = createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), true, 0.);
 
     auto endCreateClusters = std::chrono::system_clock::now();
     ccTime += (endCreateClusters - startCreateClusters);
@@ -383,7 +382,6 @@ StatusCode GeometricTrackerDigitizer::createCells(
         // check if it falls below threshold
         if (m_cutParameter != 0. && sLength < m_cutParameter * thickness) continue;
         // translate DigiTrackhitAssociation into TrackHit
-        // @todo check easier possibility
         //   fcc::TrackHit th = trackHits->create();
         //   th.core().time = hit.hit().core().time;
         //   th.core().bits = hit.hit().core().bits;
@@ -418,18 +416,21 @@ StatusCode GeometricTrackerDigitizer::createCells(
 template <typename Cell>
 std::vector<std::vector<Cell>>
 GeometricTrackerDigitizer::createClusters(std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap, size_t nBins0,
-                                          size_t nBins1, bool commonCorner, double energyCut) {
+                                          bool commonCorner, double energyCut) {
   // the output
   std::vector<std::vector<Cell>> mergedCells;
-  /// auto startLabelLoop = std::chrono::system_clock::now();
   // now go through cells and label
   for (auto& cell : cellMap) {
     // check if the cell was already used
     if (!(cell.second.second) && (cell.second.first.depositedEnergy() >= energyCut)) {
       // create new cluster
       mergedCells.push_back(std::vector<Cell>());
+      // add current cell to current cluster
+      mergedCells.back().push_back(cell.second.first);
+      // set cell to be used already
+      cell.second.second = true;
       // fill all cells belonging to that cluster
-      ccl(mergedCells, cellMap, cell.first, nBins0, nBins1, commonCorner, energyCut);
+      fillCluster(mergedCells, cellMap, cell.first, nBins0, commonCorner, energyCut);
     }
   }
   // return the grouped together cells
@@ -437,84 +438,64 @@ GeometricTrackerDigitizer::createClusters(std::unordered_map<size_t, std::pair<C
 }
 
 template <typename Cell>
-void GeometricTrackerDigitizer::ccl(std::vector<std::vector<Cell>>& mergedCells,
-                                    std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
-                                    size_t index,
-                                    size_t nBins0,
-                                    size_t nBins1,
-                                    bool commonCorner,
-                                    double energyCut) {
-  // add current cell to cluster
-  auto cellA = cellMap.at(index).first;
-  // check if cell energy is higher than energy threshold to activate the cell
-  if (cellA.depositedEnergy() >= energyCut) {
-    // add current cell to current cluster
-    mergedCells.back().push_back(cellA);
-    cellMap.at(index).second = true;
-    // go recursively through all neighbours of this cell, if present
-    // calculate neighbour indices first
-    int iMin = -1;
-    int jMin = -nBins0;
-    int iMax = 1;
-    int jMax = nBins0;
-    std::vector<int> neighbourIndices;
-    ///  auto startCheckEdges = std::chrono::system_clock::now();
-    // the neighbour indices - filled depending on merging case
-    if ((index % nBins0) == 0) {
-      // left edge case
-      if (commonCorner) {
-        neighbourIndices = {jMin, jMin + iMax, iMax, jMax, jMax + iMax};
-      } else {
-        neighbourIndices = {jMin, iMax, jMax};
-      }
-    } /*else if (index <= (nBins0 - 1)) {
-      // upper edge case
-      if (commonCorner) {
-        neighbourIndices = {iMin, iMax, jMax + iMin, jMax, jMax + iMax};
-      } else {
-        neighbourIndices = {iMin, jMax, iMax};
-      }
-    }*/ else if (((index + 1) % nBins0) == 0) {
-      // right edge case
-      if (commonCorner) {
-        neighbourIndices = {jMin + iMin, jMin, iMin, jMax + iMin, jMax};
-      } else {
-        neighbourIndices = {jMin, iMin, jMax};
-      }
-    } /*else if (index >= ((nBins0 * nBins1) - nBins0)) {
-      // lower edge case
-      if (commonCorner) {
-        neighbourIndices = {jMin + iMin, jMin, jMin + iMax, iMin, iMax};
-      } else {
-        neighbourIndices = {iMin, jMin, iMax};
-      }
-    }*/ else {
-      if (commonCorner) {
-        neighbourIndices = {jMin + iMin, jMin, jMin + iMax, iMin, iMax, jMax + iMin, jMax, jMax + iMax};
-      } else {
-        neighbourIndices = {jMin, iMin, iMax, jMax};
-      }
+void GeometricTrackerDigitizer::fillCluster(std::vector<std::vector<Cell>>& mergedCells,
+                                            std::unordered_map<size_t, std::pair<Cell, bool>>& cellMap,
+                                            size_t index,
+                                            size_t nBins0,
+                                            bool commonCorner,
+                                            double energyCut) {
+  // go recursively through all neighbours of this cell, if present
+  // calculate neighbour indices first
+  constexpr int iMin = -1;
+  int jMin = -nBins0;
+  constexpr int iMax = 1;
+  int jMax = nBins0;
+  std::vector<int> neighbourIndices;
+  // the neighbour indices - filled depending on merging case
+  if ((index % nBins0) == 0) {
+    // left edge case
+    if (commonCorner) {
+      neighbourIndices = {jMin, jMin + iMax, iMax, jMax, jMax + iMax};
+    } else {
+      neighbourIndices = {jMin, iMax, jMax};
     }
-    ///   auto endCheckEdges = std::chrono::system_clock::now();
-    ///   timeCheckEdges += (endCheckEdges - startCheckEdges);
-    // go through neighbours and recursively call connected component algorithm
-    for (auto& i : neighbourIndices) {
-      // calculate neighbour index of current cell
-      int neighbourIndex = int(index) + i;
-      // check if neighbour is there
-      ///   auto startSearchMap = std::chrono::system_clock::now();
-      auto search = cellMap.find(neighbourIndex);
-      ///   auto endSearchMap = std::chrono::system_clock::now();
-      ///  timeSearchMap += (endSearchMap - startSearchMap);
-      if ((search != cellMap.end())) {
-        // get the corresponding index and call function again
-        auto newIndex = search->first;
-        if (!cellMap.at(newIndex).second) {
-          ccl(mergedCells, cellMap, newIndex, nBins0, nBins1, commonCorner, energyCut);
-        }  // check if was used already
-      }    // check if neighbour is there
-    }      // go through neighbour indics
-  }        // check energy cut
+  } else if (((index + 1) % nBins0) == 0) {
+    // right edge case
+    if (commonCorner) {
+      neighbourIndices = {jMin + iMin, jMin, iMin, jMax + iMin, jMax};
+    } else {
+      neighbourIndices = {jMin, iMin, jMax};
+    }
+  } else {
+    if (commonCorner) {
+      neighbourIndices = {jMin + iMin, jMin, jMin + iMax, iMin, iMax, jMax + iMin, jMax, jMax + iMax};
+    } else {
+      neighbourIndices = {jMin, iMin, iMax, jMax};
+    }
+  }
+  // go through neighbours and recursively call connected component algorithm
+  for (auto& i : neighbourIndices) {
+    // calculate neighbour index of current cell
+    int neighbourIndex = int(index) + i;
+    // check if neighbour is there
+    ///   auto startSearchMap = std::chrono::system_clock::now();
+    auto search = cellMap.find(neighbourIndex);
+    if ((search != cellMap.end())) {
+      // get the corresponding index and call function again
+      auto newIndex = search->first;
+      auto currentCell = search->second.first;
+      // if cell was not already added to cluster & deposited energy is higher
+      // than the energy threshold, add it to the cluster
+      if (!search->second.second && currentCell.depositedEnergy() >= energyCut) {
+        // add current cell to current cluster
+        mergedCells.back().push_back(currentCell);
+        // set cell to be used already
+        search->second.second = true;
+        // add all neighbours to cluster
+        fillCluster(mergedCells, cellMap, newIndex, nBins0, commonCorner, energyCut);
+      }  // check if was used already
+    }    // check if neighbour is there
+  }      // go through neighbour indics
 }
 
 StatusCode GeometricTrackerDigitizer::finalize() {
