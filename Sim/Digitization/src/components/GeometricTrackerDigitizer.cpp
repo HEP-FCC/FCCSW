@@ -57,13 +57,6 @@ GeometricTrackerDigitizer::GeometricTrackerDigitizer(const std::string& name, IS
 StatusCode GeometricTrackerDigitizer::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
 
-  /// timeMerge = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  /// timeFillLoop = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  /// timeFillMap = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  /// timeSearchMap = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  /// timeCheckEdges = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  /// timeLabelLoop = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-
   if (!m_geoSvc) {
     error() << "Did not retrieve tgeometry service!" << endmsg;
     sc = StatusCode::FAILURE;
@@ -184,23 +177,22 @@ StatusCode GeometricTrackerDigitizer::execute() {
     for (auto& cells : clusterMap) {
       // #tracks per cluster
       // set of track identification - to only have hits from different tracks
-      size_t nTracksPerCluster = 0;
+      std::vector<unsigned> tracksPerCluster;
+      tracksPerCluster.reserve(cells.size() * 2);
       // create the track cluster
       fcc::TrackCluster trackCluster = trackClusters->create();
-
       //--- Now create the merged cluster ---
       // parameters to be averaged over cells for cluster
       double localX = 0., localY = 0., norm = 0., clusterEnergy = 0., clusterTime = 0.;
       // go through the merged cells to calculate the averaged local position and time of the cluster
       for (auto& cell : cells) {
         auto cellTime = cell.averagedTime();
-        // get all tracks of this cell
-        nTracksPerCluster += cell.uniqueTracks().size();
+        // get all tracks of this cell and add it to the cluster
+        tracksPerCluster.insert(std::end(tracksPerCluster), std::begin(cell.trackHits), std::end(cell.trackHits));
         // get energy of this cell
         clusterEnergy += cell.data;
         // calculate mean of time
         clusterTime += cellTime;
-
         // get center position of the current cell
         auto cellCenter = segmentation.cellPosition(cell);
         // calculate position of hit (for digital readout data==1)
@@ -263,7 +255,11 @@ StatusCode GeometricTrackerDigitizer::execute() {
         // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
         Acts::ActsSymMatrixD<2> cov;
         cov << 0., 0., 0., 0.;
-        m_clusterWriter->write(sim::FCCPlanarCluster(clusterEnergy, nTracksPerCluster, hitSurface,
+        // unique tracks per cluster
+        std::sort(tracksPerCluster.begin(), tracksPerCluster.end());
+        tracksPerCluster.erase(unique(tracksPerCluster.begin(), tracksPerCluster.end()), tracksPerCluster.end());
+        // create and write the cluster
+        m_clusterWriter->write(sim::FCCPlanarCluster(clusterEnergy, tracksPerCluster.size(), hitSurface,
                                                      Identifier(geoID.value()), std::move(cov), localX, localY,
                                                      std::move(cells)),
                                Gaudi::Hive::currentContext().evt());
@@ -500,12 +496,6 @@ void GeometricTrackerDigitizer::fillCluster(std::vector<std::vector<Cell>>& merg
 
 StatusCode GeometricTrackerDigitizer::finalize() {
 
-  /// std::cout << "timeMerge: " << timeMerge.count() << std::endl;
-  ///  std::cout << "timeFillLoop: " << timeFillLoop.count() << std::endl;
-  /// std::cout << "timeFillMap: " << timeFillMap.count() << std::endl;
-  /// std::cout << "timeSearchMap: " << timeSearchMap.count() << std::endl;
-  /// std::cout << "timeCheckEdges: " << timeCheckEdges.count() << std::endl;
-  /// std::cout << "timeLabelLoop: " << timeLabelLoop.count() << std::endl;
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }

@@ -40,13 +40,6 @@ struct FCCDigitizationCell : Acts::DigitizationCell {
   float depositedEnergy() const { return data; }
 
   float averagedTime() const { return (trackHits.size() > 0.) ? (time / trackHits.size()) : 0.; }
-
-  std::vector<unsigned> uniqueTracks() const {
-    auto copyHits = trackHits;
-    std::sort(copyHits.begin(), copyHits.end());
-    copyHits.erase(unique(copyHits.begin(), copyHits.end()), copyHits.end());
-    return copyHits;
-  }
 };
 
 /// Definition of measurement
