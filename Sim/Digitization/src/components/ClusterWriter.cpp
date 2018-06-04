@@ -33,27 +33,19 @@ StatusCode ClusterWriter::initialize() {
   }
   m_outputTree->SetDirectory(0);
   // Set the branches
-  // m_outputTree->Branch("event_nr", &m_eventNr);
+  m_outputTree->Branch("event_nr", &m_eventNr);
   m_outputTree->Branch("volumeID", &m_volumeID);
   m_outputTree->Branch("layerID", &m_layerID);
   m_outputTree->Branch("surfaceID", &m_surfaceID);
   m_outputTree->Branch("g_x", &m_x);
   m_outputTree->Branch("g_y", &m_y);
   m_outputTree->Branch("g_z", &m_z);
-
   m_outputTree->Branch("nChannels", &m_nChannels);
   m_outputTree->Branch("nChannelsOn", &m_nChannelsOn);
-
   m_outputTree->Branch("nTracksPerCluster", &m_nTracksPerCluster);
-  m_outputTree->Branch("EnergyPerCluster", &m_energyPerCluster);
-
+  m_outputTree->Branch("energy", &m_energy);
   m_outputTree->Branch("size_x", &m_size_x);
   m_outputTree->Branch("size_y", &m_size_y);
-
-  m_outputTree->Branch("l_x", &m_lx);
-  m_outputTree->Branch("l_y", &m_ly);
-
-  m_outputTree->Branch("detElementID", &m_detElementID);
 
   return StatusCode::SUCCESS;
 }
@@ -69,7 +61,6 @@ StatusCode ClusterWriter::write(const sim::FCCPlanarCluster& cluster, int eventN
   m_volumeID = clusterSurface.geoID().value(Acts::GeometryID::volume_mask);
   m_layerID = clusterSurface.geoID().value(Acts::GeometryID::layer_mask);
   m_surfaceID = clusterSurface.geoID().value(Acts::GeometryID::sensitive_mask);
-  m_detElementID = clusterSurface.associatedDetectorElement()->identify();
   // local cluster information: position, @todo coveraiance
   auto parameters = cluster.parameters();
   Acts::Vector2D local(parameters[Acts::ParDef::eLOC_0], parameters[Acts::ParDef::eLOC_1]);
@@ -82,12 +73,8 @@ StatusCode ClusterWriter::write(const sim::FCCPlanarCluster& cluster, int eventN
   m_x = pos.x();
   m_y = pos.y();
   m_z = pos.z();
-  // local position
-  m_lx = local.x();
-  m_ly = local.y();
   m_nTracksPerCluster = cluster.nTracks;
-  m_energyPerCluster = cluster.energy;
-  //  std::cout << "write: " << pos.x() << std::endl;
+  m_energy = cluster.energy;
 
   // get the corresponding binUtility of the layer
   auto surfaces = clusterSurface.associatedLayer()->surfaceArray()->arrayObjects();
@@ -107,7 +94,6 @@ StatusCode ClusterWriter::write(const sim::FCCPlanarCluster& cluster, int eventN
       // cell identification
       cell_IDx.push_back(cell.channel0);
       cell_IDy.push_back(cell.channel1);
-      //  m_cell_data.push_back(cell.data);
     }
   }
   // fill the cluster size

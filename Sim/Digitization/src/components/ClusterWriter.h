@@ -39,28 +39,36 @@ private:
   /// name of the output tree
   Gaudi::Property<std::string> m_treename{this, "treename", "clusters", "tree name to save the clusters to"};
 
-  TFile* m_outputFile;  ///< the output file
-  TTree* m_outputTree;  ///< the output tree
-  int m_eventNr;        ///< the event number of
-  int m_volumeID;       ///< volume identifier
-  int m_layerID;        ///< layer identifier
-  int m_surfaceID;      ///< surface identifier
-  float m_x;            ///< global x
-  float m_y;            ///< global y
-  float m_z;            ///< global z
-  float m_lx;           ///< local x
-  float m_ly;           ///< localy;
-
-  int m_nChannels;    ///< The total number of channels of this module
-  int m_nChannelsOn;  ///< The number of channels turned on of this module and event
-                      /// float m_surfX;                  ///< global x of the surface center
-                      /// float m_surfY;                  ///< global y of the surface center
-                      //  float m_surfZ;                  ///< global z of the surface center
+  /// the output file
+  TFile* m_outputFile;
+  /// the output tree
+  TTree* m_outputTree;
+  /// the event number of
+  int m_eventNr;
+  /// volume identifier
+  int m_volumeID;
+  /// layer identifier
+  int m_layerID;
+  /// surface identifier
+  int m_surfaceID;
+  /// global x
+  float m_x;
+  /// global y
+  float m_y;
+  /// global z
+  float m_z;
+  /// The total number of channels of this module
+  int m_nChannels;
+  /// The number of channels turned on of this module and event
+  int m_nChannelsOn;
+  /// Number of tracks per cluster
   int m_nTracksPerCluster;
-  float m_energyPerCluster;
-  int m_size_x;                  ///< cluster size in x
-  int m_size_y;                  ///< cluster size in x
-  long long int m_detElementID;  ///< unique identifier of the detector element
+  /// The cluster energy
+  int m_energy;
+  /// cluster size in x
+  int m_size_x;
+  /// cluster size in y
+  int m_size_y;
 };
 
 #endif  // DIGITIZATION_CLUSTERWRITER_H
