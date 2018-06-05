@@ -172,7 +172,6 @@ StatusCode GeometricTrackerDigitizer::execute() {
 
     auto endCreateClusters = std::chrono::system_clock::now();
     ccTime += (endCreateClusters - startCreateClusters);
-
     // acts digi cells
     for (auto& cells : clusterMap) {
       // #tracks per cluster
@@ -288,6 +287,7 @@ StatusCode GeometricTrackerDigitizer::createCells(
     // if (searchParticle != m_particleMap.end() && searchParticle->second.core.status != 1) continue;
     // the cell ID
     long long int cellID = hit.hit().core().cellId;
+
     // throw a certain number of hits away if configured
     if (m_hitInefficiency != 0. && m_flatDist() < m_hitInefficiency) continue;
     // get the corresponding dd4hep detelement
@@ -339,7 +339,9 @@ StatusCode GeometricTrackerDigitizer::createCells(
       // transform direction into local frame
       localDirection = hitSurface.transform().inverse().linear() * localDirection;
       // to ignore extreme incident angles
-      if (std::abs(localDirection.z()) < m_cosThetaLocMin) continue;
+      if (std::abs(localDirection.z()) < m_cosThetaLocMin) {
+        continue;
+      }
       // The digitization steps
       std::vector<Acts::DigitizationStep> dSteps;
       if (m_fastSimInterface) {
@@ -361,12 +363,12 @@ StatusCode GeometricTrackerDigitizer::createCells(
         auto endSteps = std::chrono::system_clock::now();
         timeSteps += endSteps - startSteps;
       }
-
       double totalG4HitEnergy = hit.hit().core().energy;
       double totalG4StepLength = (postStepPosition - globalIntersection).mag();
-
       // everything under threshold or edge effects
-      if (!dSteps.size()) continue;
+      if (!dSteps.size()) {
+        continue;
+      }
       // loop over the steps and create cells
       for (auto dStep : dSteps) {
         // smeared, passed and taken
@@ -376,7 +378,9 @@ StatusCode GeometricTrackerDigitizer::createCells(
         double sLength =
             (m_smearParameter != 0.) ? (dStep.stepLength * (1. + m_smearParameter * m_gauss())) : dStep.stepLength;
         // check if it falls below threshold
-        if (m_cutParameter != 0. && sLength < m_cutParameter * thickness) continue;
+        if (m_cutParameter != 0. && sLength < m_cutParameter * thickness) {
+          continue;
+        }
         // translate DigiTrackhitAssociation into TrackHit
         //   fcc::TrackHit th = trackHits->create();
         //   th.core().time = hit.hit().core().time;
@@ -384,8 +388,16 @@ StatusCode GeometricTrackerDigitizer::createCells(
 
         // scale energy for each cell by path length
         float cellEnergy = (totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
-        auto digiCell = sim::FCCDigitizationCell({hit.hit().core().bits}, hit.hit().core().time,
-                                                 dStep.stepCell.channel0, dStep.stepCell.channel1, cellEnergy);
+        // in case the track does not pass the module completely, which means, it is a secondary which does not leave
+        // the module, don't count it as a track
+        std::vector<unsigned> trackIDs = {};
+        if (sLength * cos(localDirection.theta()) >=
+            (2. * hitDigitizationModule->halfThickness() - 10e-5 * Acts::units::_mm)) {
+          trackIDs.push_back(hit.hit().core().bits);
+        }
+        auto digiCell = sim::FCCDigitizationCell(std::move(trackIDs), hit.hit().core().time, dStep.stepCell.channel0,
+                                                 dStep.stepCell.channel1, cellEnergy);
+
         // calculate key of cell which is the global grid index
         size_t globalIndex = digiCell.channel0 + binUtility.bins(0) * digiCell.channel1;
         // insert new cell - only adds cell, if cell was not there yet
