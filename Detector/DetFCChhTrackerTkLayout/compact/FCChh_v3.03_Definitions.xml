@@ -1,7 +1,7 @@
 <detectors>
     <detector name="InnerBRL" id="BarTrackerInner_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
         <dimensions rmin="23.283*mm" rmax="409.734*mm" zmin="-820.000*mm" zmax="820.000*mm"/>
-        <sensitive type="SimpleTrackerSD"/>
+        <sensitive type="MergeTrackerSD"/>
         <layers repeat="4">
             <layer id="1" radius="25.000*mm" rmin="23.283*mm" rmax="27.473*mm" bigDelta="1.000*mm" phi0="1.570796*rad" X="0.025*mm" Z="0.05*mm">
                 <rods repeat="14" smallDelta="0.000*mm" rPhiOverlap="0.000*mm" nRPhiSegments="2" zOverlap="0.000*mm" nModules="20">
@@ -559,7 +559,7 @@
     </detector>
     <detector name="InnerECAP" id="EndCapTrackerInner_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
         <dimensions rmin="25.000*mm" rmax="403.728*mm" zmin="941.066*mm" zmax="2258.934*mm" reflect="false"/>
-        <sensitive type="SimpleTrackerSD"/>
+        <sensitive type="MergeTrackerSD"/>
         <discs repeat="10">
             <discZPls id="1" z="950.000*mm" zmin="941.066*mm" zmax="958.934*mm" rmin="25.000*mm" rmax="403.728*mm" bigDelta="5.000*mm">
                 <rings repeat="4" smallDelta="2.500*mm" rPhiOverlap="0.000*mm" nRPhiSegments="4" rOverlap="0.000*mm">
@@ -649,7 +649,7 @@
     </detector>
     <detector name="OuterBRL" id="BarTrackerOuter_id" type="TkLayoutBrlTracker" readout="TrackerBarrelReadout">
         <dimensions rmin="521.016*mm" rmax="1526.688*mm" zmin="-2250.000*mm" zmax="2250.000*mm"/>
-        <sensitive type="SimpleTrackerSD"/>
+        <sensitive type="MergeTrackerSD"/>
         <layers repeat="6">
             <layer id="1" radius="529.950*mm" rmin="521.016*mm" rmax="541.311*mm" bigDelta="5.000*mm" phi0="1.570796*rad" X="0.0333*mm" Z="0.4*mm">
                 <rods repeat="34" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="2" zOverlap="0.750*mm" nModules="47">
@@ -1423,7 +1423,7 @@
     </detector>
     <detector name="OuterECAP" id="EndCapTrackerOuter_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
         <dimensions rmin="25.000*mm" rmax="1549.268*mm" zmin="2615.706*mm" zmax="5009.294*mm" reflect="false"/>
-        <sensitive type="SimpleTrackerSD"/>
+        <sensitive type="MergeTrackerSD"/>
         <discs repeat="12">
             <discZPls id="1" z="2625.000*mm" zmin="2615.706*mm" zmax="2634.294*mm" rmin="25.000*mm" rmax="1549.268*mm" bigDelta="5.000*mm">
                 <rings repeat="16" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">
@@ -1720,7 +1720,7 @@
     </detector>
     <detector name="FwdECAP" id="FwdTracker_id" type="TkLayoutEcapTracker" readout="TrackerEndcapReadout">
         <dimensions rmin="25.000*mm" rmax="1550.163*mm" zmin="6241.066*mm" zmax="16009.294*mm" reflect="false"/>
-        <sensitive type="SimpleTrackerSD"/>
+        <sensitive type="MergeTrackerSD"/>
         <discs repeat="6">
             <discZPls id="1" z="6250.000*mm" zmin="6241.066*mm" zmax="6258.934*mm" rmin="25.000*mm" rmax="918.570*mm" bigDelta="5.000*mm">
                 <rings repeat="9" smallDelta="2.500*mm" rPhiOverlap="0.500*mm" nRPhiSegments="4" rOverlap="0.500*mm">

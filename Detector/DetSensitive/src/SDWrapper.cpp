@@ -5,6 +5,7 @@
 #include "DetSensitive/BirksLawCalorimeterSD.h"
 #include "DetSensitive/FullParticleAbsorptionSD.h"
 #include "DetSensitive/GflashCalorimeterSD.h"
+#include "DetSensitive/MergeTrackerSD.h"
 #include "DetSensitive/SimpleCalorimeterSD.h"
 #include "DetSensitive/SimpleTrackerSD.h"
 #include "DetSensitive/SimpleDriftChamber.h"
@@ -19,9 +20,14 @@ static G4VSensitiveDetector* create_simple_tracker_sd(const std::string& aDetect
   return new det::SimpleTrackerSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
+// Factory method to create an instance of MergeTrackerSD
+static G4VSensitiveDetector* create_merge_tracker_sd(const std::string& aDetectorName, dd4hep::Detector& aLcdd) {
+  std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
+  return new det::MergeTrackerSD(
+      aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
+}
 // Factory method to create an instance of SimpleCalorimeterSD
-static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDetectorName,
-                                                          dd4hep::Detector& aLcdd) {
+static G4VSensitiveDetector* create_simple_calorimeter_sd(const std::string& aDetectorName, dd4hep::Detector& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::SimpleCalorimeterSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
@@ -41,8 +47,7 @@ static G4VSensitiveDetector* create_aggregate_calorimeter_sd(const std::string& 
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
 }
 // Factory method to create an instance of GflashCalorimeterSD
-static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDetectorName,
-                                                          dd4hep::Detector& aLcdd) {
+static G4VSensitiveDetector* create_gflash_calorimeter_sd(const std::string& aDetectorName, dd4hep::Detector& aLcdd) {
   std::string readoutName = aLcdd.sensitiveDetector(aDetectorName).readout().name();
   return new det::GflashCalorimeterSD(
       aDetectorName, readoutName, aLcdd.sensitiveDetector(aDetectorName).readout().segmentation());
@@ -65,6 +70,7 @@ static G4VSensitiveDetector* create_simple_driftchamber(const std::string& aDete
 }
 
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleTrackerSD, dd4hep::sim::create_simple_tracker_sd)
+DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(MergeTrackerSD, dd4hep::sim::create_merge_tracker_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(SimpleCalorimeterSD, dd4hep::sim::create_simple_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(BirksLawCalorimeterSD, dd4hep::sim::create_birks_law_calorimeter_sd)
 DECLARE_EXTERNAL_GEANT4SENSITIVEDETECTOR(AggregateCalorimeterSD, dd4hep::sim::create_aggregate_calorimeter_sd)
