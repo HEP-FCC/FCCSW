@@ -30,14 +30,6 @@
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
-#include <chrono>
-#include <ctime>
-// hack
-#include "TFile.h"
-#include "TTree.h"
-#include "datamodel/MCParticle.h"
-#include "datamodel/MCParticleCollection.h"
-#include "datamodel/MCParticleData.h"
 
 DECLARE_ALGORITHM_FACTORY(GeometricTrackerDigitizer)
 
@@ -115,15 +107,11 @@ StatusCode GeometricTrackerDigitizer::execute() {
   auto trackHits = m_trackHits.createAndPut();
   // prepare the output clusters
   auto trackClusters = m_trackClusters.createAndPut();
-  std::cout << "begin digitization" << std::endl;
-
-  std::chrono::duration<double> ccTime = std::chrono::system_clock::now() - std::chrono::system_clock::now();
   // get the cells per surface
   // the cells to be used
   std::unordered_map<long long int, std::unordered_map<size_t, std::pair<sim::FCCDigitizationCell, bool>>>
       cellsPerSurface;
   createCells(cellsPerSurface);
-
   // Now create clusters for cells per surface
   for (auto& surf : cellsPerSurface) {
     // access the surface & digitizationmodule from the surfaceID
@@ -166,12 +154,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
     // merge cells
     // @ todo apply energy cut
     // group together cells which belong to same cluster
-    auto startCreateClusters = std::chrono::system_clock::now();
-
     auto clusterMap = createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), true, 0.);
-
-    auto endCreateClusters = std::chrono::system_clock::now();
-    ccTime += (endCreateClusters - startCreateClusters);
     // acts digi cells
     for (auto& cells : clusterMap) {
       // #tracks per cluster
@@ -265,26 +248,16 @@ StatusCode GeometricTrackerDigitizer::execute() {
       }
     }
   }
-  std::cout << "after creating clusters" << std::endl;
-  std::cout << "elapsed time for creating clusters & merging cells: " << ccTime.count() << std::endl;
   return StatusCode::SUCCESS;
 }
 
 StatusCode GeometricTrackerDigitizer::createCells(
     std::unordered_map<long long int, std::unordered_map<size_t, std::pair<sim::FCCDigitizationCell, bool>>>&
         cellsPerSurface) {
-  auto startCells = std::chrono::system_clock::now();
-  std::chrono::duration<double> timeSteps = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-  std::chrono::duration<double> detLookUp = std::chrono::system_clock::now() - std::chrono::system_clock::now();
-
   // Retrieve the input hits
   const fcc::DigiTrackHitAssociationCollection* hits = m_digiTrackHitAssociation.get();
   // go through hits and create cells
   for (auto hit : (*hits)) {
-    // auto searchParticle = m_particleMap.find(hit.hit().core().bits);
-    // if (searchParticle == m_particleMap.end()) continue;
-    // exclude secondaries
-    // if (searchParticle != m_particleMap.end() && searchParticle->second.core.status != 1) continue;
     // the cell ID
     long long int cellID = hit.hit().core().cellId;
 
@@ -299,7 +272,6 @@ StatusCode GeometricTrackerDigitizer::createCells(
     // get the surface ID
     long long int surfaceID = dd4hepDetElement.volumeID();
     // access the detector element corresponding to the hit
-    auto startDetLookUp = std::chrono::system_clock::now();
     auto search = m_detectorElements.find(Identifier(surfaceID));
     if (search == m_detectorElements.end()) {
       error() << "Acts Detector element with identifier: " << surfaceID << " and cellID: " << cellID << " not found!"
@@ -311,8 +283,6 @@ StatusCode GeometricTrackerDigitizer::createCells(
       error() << "Invalid Acts Detector element with identifier: " << surfaceID << "!" << endmsg;
       return StatusCode::FAILURE;
     }
-    auto endDetLookUp = std::chrono::system_clock::now();
-    detLookUp += (endDetLookUp - startDetLookUp);
     // access the surface corresponding to the detector element
     const Acts::Surface& hitSurface = hitDetElement->surface();
 
@@ -358,10 +328,7 @@ StatusCode GeometricTrackerDigitizer::createCells(
         // calculate post position in local frame
         auto postPositionLocalFrame = hitSurface.transform().inverse() * postStepPosition;
         // calculate the digitization steps
-        auto startSteps = std::chrono::system_clock::now();
         dSteps = m_moduleStepper->cellSteps(*hitDigitizationModule, positionLocalFrame, postPositionLocalFrame);
-        auto endSteps = std::chrono::system_clock::now();
-        timeSteps += endSteps - startSteps;
       }
       double totalG4HitEnergy = hit.hit().core().energy;
       double totalG4StepLength = (postStepPosition - globalIntersection).mag();
@@ -381,11 +348,6 @@ StatusCode GeometricTrackerDigitizer::createCells(
         if (m_cutParameter != 0. && sLength < m_cutParameter * thickness) {
           continue;
         }
-        // translate DigiTrackhitAssociation into TrackHit
-        //   fcc::TrackHit th = trackHits->create();
-        //   th.core().time = hit.hit().core().time;
-        //   th.core().bits = hit.hit().core().bits;
-
         // scale energy for each cell by path length
         float cellEnergy = (totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
         // in case the track does not pass the module completely, which means, it is a secondary which does not leave
@@ -411,13 +373,6 @@ StatusCode GeometricTrackerDigitizer::createCells(
     }    // if hitDigitizationModule
   }      // hits
 
-  std::cout << "after going through hits and creating cells" << std::endl;
-  auto endCells = std::chrono::system_clock::now();
-  std::chrono::duration<double> timeCells = endCells - startCells;
-
-  std::cout << "elapsed time for creating cells: " << timeCells.count() << std::endl;
-  std::cout << "elapsed time for creating steps: " << timeSteps.count() << std::endl;
-  std::cout << "elapsed time for det element lookup: " << detLookUp.count() << std::endl;
   return StatusCode::SUCCESS;
 }
 
@@ -486,7 +441,6 @@ void GeometricTrackerDigitizer::fillCluster(std::vector<std::vector<Cell>>& merg
     // calculate neighbour index of current cell
     int neighbourIndex = int(index) + i;
     // check if neighbour is there
-    ///   auto startSearchMap = std::chrono::system_clock::now();
     auto search = cellMap.find(neighbourIndex);
     if ((search != cellMap.end())) {
       // get the corresponding index and call function again

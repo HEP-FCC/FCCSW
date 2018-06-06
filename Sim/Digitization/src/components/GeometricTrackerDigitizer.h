@@ -178,13 +178,6 @@ private:
                    size_t nBins0,
                    bool commonCorner = true,
                    double energyCut = 0.);
-
-  /// std::chrono::duration<double> timeMerge;
-  /// std::chrono::duration<double> timeFillLoop;
-  /// std::chrono::duration<double> timeFillMap;
-  /// std::chrono::duration<double> timeSearchMap;
-  /// std::chrono::duration<double> timeCheckEdges;
-  /// std::chrono::duration<double> timeLabelLoop;
 };
 
 #endif  // DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H
