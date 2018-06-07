@@ -16,7 +16,6 @@
 #include "ACTS/Utilities/Logger.hpp"
 #include "DD4hep/Segmentations.h"
 #include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
 #include "Digitization/FCCDigitizationCell.h"
 #include "GaudiKernel/EventContext.h"
