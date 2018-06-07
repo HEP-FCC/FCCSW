@@ -24,6 +24,7 @@ primaryStartVertexVector = std.vector(fcc.GenVertexData)()
 primaryEndVertexVector = std.vector(fcc.GenVertexData)()
 secondaryStartVertexVector = std.vector(fcc.GenVertexData)()
 secondaryEndVertexVector = std.vector(fcc.GenVertexData)()
+hitProducingStartVertices = std.vector(fcc.GenVertexData)()
 
 print "creating root file and trees ..."
 f = ROOT.TFile(args.output, "recreate")
@@ -32,6 +33,10 @@ psvb = t.Branch("primaryStartVertices", primaryStartVertexVector)
 pevb = t.Branch("primaryEndVertices", primaryEndVertexVector)
 ssvb = t.Branch("secondaryStartVertices", secondaryStartVertexVector)
 sevb = t.Branch("secondaryEndVertices", secondaryEndVertexVector)
+hb = t.Branch("hitProducingStartVertices", hitProducingStartVertices)
+
+def r(point):
+  return np.sqrt(point.x**2 + point.y**2 + point.z**2)
 
 
 
@@ -47,7 +52,8 @@ for i, store in enumerate(events):
   print ".",
   if i > args.nevents: 
     break
-  simparticles = store.get("simParticles")
+  trackId2Vertex = {}
+  simparticles = store.get("SimParticles")
   for p in simparticles:
     svertex = p.startVertex()
     evertex = p.endVertex()
@@ -57,6 +63,7 @@ for i, store in enumerate(events):
     EndVertex = fcc.GenVertexData()
     EndVertex.position = evertex.position()
     EndVertex.ctau = evertex.ctau()
+    trackId2Vertex[p.bits()] = StartVertex
     if p.status() == 201: # secondary
       secondaryStartVertexVector.push_back(StartVertex)
       secondaryEndVertexVector.push_back(EndVertex)
@@ -64,25 +71,32 @@ for i, store in enumerate(events):
     else: # primary
       primaryStartVertexVector.push_back(StartVertex)
       primaryEndVertexVector.push_back(EndVertex)
+  trackerhits = store.get("TrackerHits")
+  for h in trackerhits:
+      if h.cellId() % 32 == 0 and h.cellId() / 32 % 32 == 0:
+        hit_trackId = h.bits()
+        hitProducer_startVertex = trackId2Vertex[hit_trackId]
+        hitProducingStartVertices.push_back(hitProducer_startVertex)
 
   t.Fill()
   primaryEndVertexVector.clear()
   primaryStartVertexVector.clear()
   secondaryEndVertexVector.clear()
   secondaryStartVertexVector.clear()
+  hitProducingStartVertices.clear()
+
 
 print "... finished event loop"
 
 ROOT.gROOT.SetBatch()
 f.cd()
-for _ptype in ["primary", "secondary"]:
-  for _startend in ["Start", "End"]:
+for branchname in ["primaryStartVertices", "primaryEndVertices", "secondaryStartVertices", "secondaryEndVertices", "hitProducingStartVertices"]:
     
 
-    t.Draw(_ptype+_startend+"Vertices.position.x:"+_ptype+_startend+"Vertices.position.y")
+    t.Draw(branchname+".position.x:"+branchname+".position.y")
     graph_xy = ROOT.TGraph(t.GetSelectedRows(), t.GetV2(), t.GetV1());
     graph_xy.SetMarkerStyle(4)
-    graph_xy.SetTitle("SimParticles: "+_ptype+" "+_startend+" vertices")
+    graph_xy.SetTitle("SimParticles: " + branchname)
     graph_xy.GetXaxis().SetTitle("X [mm]")
     graph_xy.GetYaxis().SetTitle("Y [mm]")
 
@@ -91,15 +105,39 @@ for _ptype in ["primary", "secondary"]:
     graph_xy.SetMarkerColor(ROOT.kBlue);
     graph_xy.Write(graph_xy.GetTitle())
 
-    t.Draw("sqrt(pow("+_ptype+_startend+"Vertices.position.x,2)+pow("+_ptype+_startend+"Vertices.position.y,2)):"+_ptype+_startend+"Vertices.position.z")
+    t.Draw("sqrt(pow("+branchname+".position.x,2)+pow("+branchname+".position.y,2)):"+branchname+".position.z")
     graph_rz = ROOT.TGraph(t.GetSelectedRows(), t.GetV2(), t.GetV1());
     graph_rz.SetMarkerStyle(4)
-    graph_rz.SetTitle("SimParticles: "+ _ptype + " " + _startend + " vertices")
+    graph_rz.SetTitle("SimParticles: "+ branchname)
     graph_rz.GetXaxis().SetTitle("Z [mm]")
     graph_rz.GetYaxis().SetTitle("R [mm]")
     graph_rz.SetLineColorAlpha(ROOT.kWhite, 1.0);
     graph_rz.SetMarkerColor(ROOT.kBlue);
     graph_rz.Write(graph_rz.GetTitle())
+
+    t.Draw(branchname+".position.x:" + branchname + ".position.y")
+    graph_xy = ROOT.TGraph(t.GetSelectedRows(), t.GetV2(), t.GetV1());
+    graph_xy.SetMarkerStyle(4)
+    graph_xy.SetTitle("SimParticles: " + branchname)
+    graph_xy.GetXaxis().SetTitle("X [mm]")
+    graph_xy.GetYaxis().SetTitle("Y [mm]")
+
+
+    graph_xy.SetLineColorAlpha(ROOT.kWhite, 1.0);
+    graph_xy.SetMarkerColor(ROOT.kBlue);
+    graph_xy.Write(graph_xy.GetTitle())
+
+    t.Draw("sqrt(pow("+branchname+".position.x,2)+pow("+branchname+".position.y,2)):"+branchname+".position.z")
+    graph_rz = ROOT.TGraph(t.GetSelectedRows(), t.GetV2(), t.GetV1());
+    graph_rz.SetMarkerStyle(4)
+    graph_rz.SetTitle("SimParticles: " + branchname)
+    graph_rz.GetXaxis().SetTitle("Z [mm]")
+    graph_rz.GetYaxis().SetTitle("R [mm]")
+    graph_rz.SetLineColorAlpha(ROOT.kWhite, 1.0);
+    graph_rz.SetMarkerColor(ROOT.kBlue);
+    graph_rz.Write(graph_rz.GetTitle())
+
+
 
 print "... writing root file " + args.output
 t.Write()
