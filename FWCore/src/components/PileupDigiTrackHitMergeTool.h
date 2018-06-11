@@ -23,7 +23,6 @@ class MCParticleCollection;
  * While merging, this algorithm tries to keep the trackIDs unique by adding the pileup event number with an offset.
  * This should be transparent, but the trackIDs will be non-consecutive.
  *
- *
  */
 
 class PileupDigiTrackHitMergeTool : public GaudiTool, virtual public IEDMMergeTool {
@@ -85,6 +84,16 @@ private:
 
   /// offset with which the pileup event number is added to the trackID
   const unsigned int m_trackIDCollectionOffset = 2.5e6;
+
+  /// Mask to obtain system ID
+  const unsigned long long m_systemMask = 0xf;
+
+  /// Private function internally used to check if a hit is a tracker hit
+  bool isTrackerHit(unsigned long long cellId) const;
 };
+
+inline bool PileupDigiTrackHitMergeTool::isTrackerHit(unsigned long long cellId) const {
+  return ((cellId & m_systemMask) < 5);
+}
 
 #endif  // FWCORE_PILEUPDIGITRACKERHITSMERGETOOL_H

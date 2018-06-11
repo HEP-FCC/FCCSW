@@ -90,6 +90,8 @@ StatusCode PileupDigiTrackHitMergeTool::mergeCollections() {
 
   unsigned int collectionCounter = 0;
   for (size_t j = 0; j < m_digiTrackHitsCollections.size(); j++) {
+    unsigned int hitCounter = 0;
+    std::unordered_map<unsigned, unsigned> oldToNewTrackIDs;
     auto offset = collectionCounter * m_trackIDCollectionOffset;
     auto digiHitColl = m_digiTrackHitsCollections.at(j);
     auto hitColl = m_hitCollections.at(j);
@@ -99,28 +101,31 @@ StatusCode PileupDigiTrackHitMergeTool::mergeCollections() {
       // i.e. for the signal event, 'bits' is just the trackID taken from geant
       // for the n-th pileup event, 'bits' is the trackID + n * offset
       // offset needs to be big enough to ensure uniqueness of trackID
-      if (hitColl->at(i).bits() > m_trackIDCollectionOffset) {
-        error() << "Event contains too many tracks to guarantee a unique trackID";
-        error() << " The offset width or trackID field size needs to be adjusted!" << endmsg;
-        return StatusCode::FAILURE;
+      if (isTrackerHit(hitColl->at(i).cellId())) {
+        if (hitCounter > m_trackIDCollectionOffset) {
+          error() << "Event contains too many tracks to guarantee a unique trackID";
+          error() << " The offset width or trackID field size needs to be adjusted!" << endmsg;
+          return StatusCode::FAILURE;
+        }
+        unsigned newTrackID = hitCounter + offset;
+        oldToNewTrackIDs[clon.bits()] = newTrackID;
+        clon.bits(newTrackID);
+        ++hitCounter;
       }
-      clon.bits(clon.bits() + offset);
       auto newDigiHit = digiHitColl->at(i).clone();
       newDigiHit.hit(clon);
       collHitsMerged->push_back(clon);
       collDigiHitsMerged->push_back(newDigiHit);
     }
+    ///@todo find possibility in case not only tracker hits are produced
     if (m_mergeParticles) {
       auto partColl = m_particleCollections.at(j);
       for (int i = 0; i < partColl->size(); i++) {
         auto clonParticle = partColl->at(i).clone();
-        if (partColl->at(i).bits() > m_trackIDCollectionOffset) {
-          std::cout << "bits: " << hitColl->at(i).bits() << ", offset: " << m_trackIDCollectionOffset << std::endl;
-          error() << "Event contains too many tracks to guarantee a unique trackID";
-          error() << " The offset width or trackID field size needs to be adjusted _ particles!" << endmsg;
-          return StatusCode::FAILURE;
+        auto search = oldToNewTrackIDs.find(clonParticle.bits());
+        if (search != oldToNewTrackIDs.end()) {
+          clonParticle.bits(search->second);
         }
-        clonParticle.bits(clonParticle.bits() + offset);
         collParticlesMerged->push_back(clonParticle);
       }
     }
