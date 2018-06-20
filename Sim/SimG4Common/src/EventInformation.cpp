@@ -54,10 +54,6 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   edmStartVertex.z(g4StartPos.z() * sim::g42edm::length);
   edmStartVertex.ctau((aSecondary->GetGlobalTime() - aSecondary->GetLocalTime()) * sim::g42edm::length);
   edmParticle.startVertex(edmStartVertex);
-  if (motherID) {  // the particle is not a primary
-    edmParticle.core().status = 201; // FCC convention for status of secondary sim particle
-  } else {
-    edmParticle.core().status = 1;
-  }
+  edmParticle.core().status = motherID; // FCC convention for status of secondary sim particle
 }
 }

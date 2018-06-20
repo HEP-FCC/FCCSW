@@ -9,6 +9,7 @@ import argparse
 import ROOT
 from ROOT import fcc, std
 import numpy as np
+import networkx as nx
 
 
 # command line arguments
@@ -53,8 +54,23 @@ for i, store in enumerate(events):
   if i > args.nevents: 
     break
   trackId2Vertex = {}
-  simparticles = store.get("SimParticles")
+  trackId2Particle = {}
+  graph = nx.DiGraph()
+  simparticles = store.get("simParticles")
   for p in simparticles:
+    pclone = fcc.MCParticle()
+    pclone.core(p.core())
+    pclone.vertex(p.startVertex().position())
+    """
+    vclone = fcc.GenVertex()
+    vclone.position(p.startVertex().position())
+    vclone.ctau(p.startVertex().ctau())
+    pclone.startVertex(vclone())
+    """
+    trackId2Particle[p.bits()] = pclone
+    print p.core().status, p.bits() 
+    graph.add_edge(p.core().status, p.bits())
+
     svertex = p.startVertex()
     evertex = p.endVertex()
     StartVertex = fcc.GenVertexData()
@@ -64,15 +80,23 @@ for i, store in enumerate(events):
     EndVertex.position = evertex.position()
     EndVertex.ctau = evertex.ctau()
     trackId2Vertex[p.bits()] = StartVertex
-    if p.status() == 201: # secondary
+    if p.status() > 0: # secondary
       secondaryStartVertexVector.push_back(StartVertex)
       secondaryEndVertexVector.push_back(EndVertex)
 
     else: # primary
       primaryStartVertexVector.push_back(StartVertex)
       primaryEndVertexVector.push_back(EndVertex)
-  trackerhits = store.get("TrackerHits")
+  trackerhits = store.get("positionedHits")
   for h in trackerhits:
+      print "hit trackId: ", h.bits()
+      for a in nx.ancestors(graph, h.bits()):
+            try:
+              c = trackId2Particle[a].core()
+              v = c.vertex
+              print  "\t trackId: ", a, "\t pdgId: ", c.pdgId, "\t momentum: ", c.p4.px, c.p4.py, c.p4.pz, "\t startvertex: ", v.x, v.y, v.z
+            except:
+              print "reached primary: ", a
       if h.cellId() % 32 == 0 and h.cellId() / 32 % 32 == 0:
         hit_trackId = h.bits()
         hitProducer_startVertex = trackId2Vertex[hit_trackId]
@@ -84,6 +108,7 @@ for i, store in enumerate(events):
   secondaryEndVertexVector.clear()
   secondaryStartVertexVector.clear()
   hitProducingStartVertices.clear()
+  
 
 
 print "... finished event loop"
