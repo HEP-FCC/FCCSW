@@ -119,6 +119,9 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
                 moduleVolume.setSensitiveDetector(sensDet);
                 DetElement mod_det(lay_det, "module" + std::to_string(moduleCounter), moduleCounter);
                 mod_det.setPlacement(placedModuleVolume);
+                // add digiModule to extension
+                auto extension = new Acts::ActsExtension(digiModule);
+                mod_det.addExtension<Acts::IActsExtension>(extension);
                 ++moduleCounter;
               }
             }

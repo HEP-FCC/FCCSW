@@ -145,6 +145,11 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
               componentVolume.setSensitiveDetector(sensDet);
               DetElement moduleDetElement(discDetElementVec.back(), "comp" + std::to_string(compCounter), compCounter);
               moduleDetElement.setPlacement(placedComponentVolume);
+
+              // add digiModule to extension
+              auto extension = new Acts::ActsExtension(digiModule);
+              moduleDetElement.addExtension<Acts::IActsExtension>(extension);
+
               ++compCounter;
             }
           }
