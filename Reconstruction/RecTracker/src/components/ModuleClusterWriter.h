@@ -4,7 +4,7 @@
 #include "ACTS/Utilities/BinUtility.hpp"
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
-#include "Sim/Digitization/Digitization/IClusterWriter.h"
+#include "RecTracker/IClusterWriter.h"
 #include "TFile.h"
 #include "TTree.h"
 

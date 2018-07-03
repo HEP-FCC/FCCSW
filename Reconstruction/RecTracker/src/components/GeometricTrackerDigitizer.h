@@ -1,7 +1,6 @@
 #ifndef DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H
 #define DIGITIZATION_GEOMETRICTRACKERDIGITIZER_H
 
-#include "../../Digitization/IClusterWriter.h"
 #include "ACTS/Utilities/Identifier.hpp"
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
@@ -10,6 +9,7 @@
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/RndmGenerators.h"
+#include "RecTracker/IClusterWriter.h"
 
 /** @class GeometricTrackerDigitizer Digitization/src/components/GeometricTrackerDigitizer.h GeometricTrackerDigitizer.h
  *

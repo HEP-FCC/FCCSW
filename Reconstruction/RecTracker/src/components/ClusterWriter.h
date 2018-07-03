@@ -1,10 +1,10 @@
 #ifndef DIGITIZATION_CLUSTERWRITER_H
 #define DIGITIZATION_CLUSTERWRITER_H
-#include "../../Digitization/IClusterWriter.h"
 #include "ACTS/Surfaces/Surface.hpp"
 #include "ACTS/Utilities/BinUtility.hpp"
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
+#include "RecTracker/IClusterWriter.h"
 #include "TFile.h"
 #include "TTree.h"
 

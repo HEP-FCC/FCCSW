@@ -5,7 +5,7 @@
 #include "ACTS/Digitization/Segmentation.hpp"
 #include "ACTS/Layers/Layer.hpp"
 #include "ACTS/Utilities/GeometryID.hpp"
-#include "Digitization/FCCDigitizationCell.h"
+#include "RecTracker/FCCDigitizationCell.h"
 #include <cstring>
 #include <string>
 

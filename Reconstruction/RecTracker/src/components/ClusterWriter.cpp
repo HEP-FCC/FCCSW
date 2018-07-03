@@ -1,11 +1,10 @@
 #include "ClusterWriter.h"
-
 #include "ACTS/Digitization/DigitizationModule.hpp"
 #include "ACTS/Digitization/PlanarModuleCluster.hpp"
 #include "ACTS/Digitization/Segmentation.hpp"
 #include "ACTS/Layers/Layer.hpp"
 #include "ACTS/Utilities/GeometryID.hpp"
-#include "Digitization/FCCDigitizationCell.h"
+#include "RecTracker/FCCDigitizationCell.h"
 #include <cstring>
 #include <string>
 
