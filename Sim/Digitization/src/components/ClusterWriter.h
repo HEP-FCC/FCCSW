@@ -10,9 +10,10 @@
 
 /** @class ClusterWriter
  *
+ *	This writer writes out cluster information for each cluster.
  *
  *  @author Julia Hrdinka
- *  @date   2017-04
+ *  @date   2018-04
  */
 
 namespace sim {
