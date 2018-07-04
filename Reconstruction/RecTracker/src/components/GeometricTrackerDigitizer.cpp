@@ -206,6 +206,9 @@ StatusCode GeometricTrackerDigitizer::execute() {
         localY /= norm;
         clusterTime /= cells.size();
       }
+      // unique tracks per cluster
+      std::sort(tracksPerCluster.begin(), tracksPerCluster.end());
+      tracksPerCluster.erase(unique(tracksPerCluster.begin(), tracksPerCluster.end()), tracksPerCluster.end());
       /// ----------- Create track cluster -----------
       // local position of merged cluster
       Acts::Vector2D localPosition(localX, localY);
@@ -221,6 +224,11 @@ StatusCode GeometricTrackerDigitizer::execute() {
       trackCluster.core().position = position;
       trackCluster.core().energy = clusterEnergy;
       trackCluster.core().time = clusterTime;
+      // add track IDs
+      for (auto& track : tracksPerCluster) {
+        trackCluster.addtrackIDs(track);
+      }
+
       // ----------- Create Acts cluster - possibly to be written out -----------
       // ----------- Create unique Acts global channel identifier -----------
       // get the bins of the local position to create channel identifier for this surface
@@ -236,9 +244,6 @@ StatusCode GeometricTrackerDigitizer::execute() {
         // @todo create resolution maps & allow reading in resolution maps or use cov for digital readout
         Acts::ActsSymMatrixD<2> cov;
         cov << 0., 0., 0., 0.;
-        // unique tracks per cluster
-        std::sort(tracksPerCluster.begin(), tracksPerCluster.end());
-        tracksPerCluster.erase(unique(tracksPerCluster.begin(), tracksPerCluster.end()), tracksPerCluster.end());
         // create and write the cluster
         m_clusterWriter->write(sim::FCCPlanarCluster(clusterEnergy, tracksPerCluster.size(), hitSurface,
                                                      Identifier(geoID.value()), std::move(cov), localX, localY,
@@ -352,7 +357,7 @@ StatusCode GeometricTrackerDigitizer::createCells(
         // in case the track does not pass the module completely, which means, it is a secondary which does not leave
         // the module, don't count it as a track
         std::vector<unsigned> trackIDs = {};
-        if (sLength * cos(localDirection.theta()) >=
+        if ((sLength * cos(localDirection.theta())) >=
             (2. * hitDigitizationModule->halfThickness() - 10e-5 * Acts::units::_mm)) {
           trackIDs.push_back(hit.hit().core().bits);
         }
