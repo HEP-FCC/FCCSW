@@ -204,6 +204,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
       if (norm > 1) {
         localX /= norm;
         localY /= norm;
+      }
+      if (cells.size()) {
         clusterTime /= cells.size();
       }
       // unique tracks per cluster

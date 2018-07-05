@@ -19,7 +19,8 @@ namespace sim {
 struct FCCDigitizationCell : Acts::DigitizationCell {
   /// connection to FCC track hits
   std::vector<unsigned> trackHits;
-  float time;
+  float time = 0;
+  size_t mergedCellsCount = 0;
   /// constructor
   /// @param the FCC track hits of the digitization cell
   /// @param ch0 first channel number
@@ -28,18 +29,20 @@ struct FCCDigitizationCell : Acts::DigitizationCell {
   FCCDigitizationCell(std::vector<unsigned> th, float t, size_t ch0, size_t ch1, float d = 0.)
       : DigitizationCell(ch0, ch1, d), trackHits(th), time(t) {}
   // copy constructor
-  FCCDigitizationCell(const FCCDigitizationCell& dc) : DigitizationCell(dc), trackHits(dc.trackHits) {}
+  FCCDigitizationCell(const FCCDigitizationCell& dc)
+      : DigitizationCell(dc), trackHits(dc.trackHits), time(dc.time), mergedCellsCount(dc.mergedCellsCount) {}
   // to merge cells in case they are at the same position
   void addCell(const FCCDigitizationCell& dc) {
     for (auto& th : dc.trackHits)
       trackHits.push_back(th);
     data += dc.data;
     time += dc.time;
+    mergedCellsCount++;
   }
   // @todo remove readout boolean in acts
   float depositedEnergy() const { return data; }
 
-  float averagedTime() const { return (trackHits.size() > 0.) ? (time / trackHits.size()) : 0.; }
+  float averagedTime() const { return ((mergedCellsCount > 1) ? (time / mergedCellsCount) : time); }
 };
 
 /// Definition of measurement
