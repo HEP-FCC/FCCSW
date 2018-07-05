@@ -31,7 +31,7 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
     std::vector<float> _x;
     std::vector<float> _y;
     std::vector<float> _z;
-    std::vector<std::vector<unsigned>> _tracksPerCluster;
+    std::vector<unsigned> _tracksPerCluster;
     std::vector<short int> _sizeX;
     std::vector<short int> _sizeY;
     std::vector<float> _energy;
@@ -50,8 +50,8 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
     }
 
     // simple constructor
-    ModuleCache(int nChannelsOn, float x, float y, float z, const std::vector<unsigned>& tracksPerCluster,
-                unsigned short sizeX, unsigned short sizeY, float energy, float time)
+    ModuleCache(int nChannelsOn, float x, float y, float z, unsigned tracksPerCluster, unsigned short sizeX,
+                unsigned short sizeY, float energy, float time)
         : _nChannelsOn(nChannelsOn) {
       _x.push_back(x);
       _y.push_back(y);
@@ -63,8 +63,8 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
       _time.push_back(time);
     }
 
-    void update(int nChannelsOn, float x, float y, float z, const std::vector<unsigned>& tracksPerCluster,
-                unsigned short sizeX, unsigned short sizeY, float energy, float time) {
+    void update(int nChannelsOn, float x, float y, float z, unsigned tracksPerCluster, unsigned short sizeX,
+                unsigned short sizeY, float energy, float time) {
       _nChannelsOn += nChannelsOn;
       _x.push_back(x);
       _y.push_back(y);
@@ -133,7 +133,7 @@ private:
   /// global z of cluster
   std::vector<float> m_z;
   /// Number of tracks per cluster
-  std::vector<std::vector<unsigned>> m_tracksPerCluster;
+  std::vector<unsigned> m_tracksPerCluster;
   /// cluster size in x
   std::vector<short int> m_sizeX;
   /// cluster size in y
@@ -147,8 +147,8 @@ private:
 
   /// update module cache and parameters
   void newModule(int eventNr, const long long int& moduleID, int nChannels, int nChannelsOn, float sX, float sY,
-                 float sZ, float x, float y, float z, const std::vector<unsigned>& tracksPerCluster,
-                 unsigned short sizeX, unsigned short sizeY, float energy, float time) {
+                 float sZ, float x, float y, float z, unsigned tracksPerCluster, unsigned short sizeX,
+                 unsigned short sizeY, float energy, float time) {
     // 1) first write out data of previous module
     // fill the tree if it is not the first module
     if (m_moduleID >= 0) {
