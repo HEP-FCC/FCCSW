@@ -49,9 +49,11 @@ using Measurement_t = Acts::Measurement<Identifier, params...>;
 /// @brief an FCC measurement - needed for studies
 struct FCCPlanarCluster : Acts::Measurement_t<Acts::ParDef::eLOC_0, Acts::ParDef::eLOC_1> {
   /// the energy deposited in the cluster
-  double energy;
-  /// the number of track contributing to this cluster
-  size_t nTracks;
+  float energy;
+  /// the time information of the cluster
+  float time;
+  /// the tracks contributing to this cluster
+  std::vector<unsigned> tracks;
 
   /// constructor
   /// @param en the energy deposited in the cluster
@@ -62,13 +64,14 @@ struct FCCPlanarCluster : Acts::Measurement_t<Acts::ParDef::eLOC_0, Acts::ParDef
   /// @param loc0 the local position of the cluster - first coordinate
   /// @param loc1 the local position of the cluster - second coordinate
   /// @param dCells the cells contributing to the cluster
-  FCCPlanarCluster(const double& en, const size_t& ntracks, const Acts::Surface& mSurface,
+  FCCPlanarCluster(float Energy, float Time, const std::vector<unsigned>& Tracks, const Acts::Surface& mSurface,
                    const Identifier& cIdentifier, Acts::ActsSymMatrixD<2> cov, double loc0, double loc1,
                    std::vector<FCCDigitizationCell> dCells)
       : Acts::Measurement_t<Acts::ParDef::eLOC_0, Acts::ParDef::eLOC_1>(mSurface, cIdentifier, std::move(cov), loc0,
                                                                         loc1),
-        energy(en),
-        nTracks(ntracks),
+        energy(Energy),
+        time(Time),
+        tracks(Tracks),
         m_digitizationCells(dCells) {}
 
   /// access to the digitization cells

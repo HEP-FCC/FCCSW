@@ -225,9 +225,9 @@ StatusCode GeometricTrackerDigitizer::execute() {
       trackCluster.core().energy = clusterEnergy;
       trackCluster.core().time = clusterTime;
       // add track IDs
-      for (auto& track : tracksPerCluster) {
-        trackCluster.addtrackIDs(track);
-      }
+      /* for (auto& track : tracksPerCluster) {
+         trackCluster.addtrackIDs(track);
+       }*/
 
       // ----------- Create Acts cluster - possibly to be written out -----------
       // ----------- Create unique Acts global channel identifier -----------
@@ -245,7 +245,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
         Acts::ActsSymMatrixD<2> cov;
         cov << 0., 0., 0., 0.;
         // create and write the cluster
-        m_clusterWriter->write(sim::FCCPlanarCluster(clusterEnergy, tracksPerCluster.size(), hitSurface,
+        m_clusterWriter->write(sim::FCCPlanarCluster(clusterEnergy, clusterTime, tracksPerCluster, hitSurface,
                                                      Identifier(geoID.value()), std::move(cov), localX, localY,
                                                      std::move(cells)),
                                Gaudi::Hive::currentContext().evt());

@@ -43,10 +43,11 @@ StatusCode ModuleClusterWriter::initialize() {
   m_outputTree->Branch("g_x", &m_x);
   m_outputTree->Branch("g_y", &m_y);
   m_outputTree->Branch("g_z", &m_z);
-  m_outputTree->Branch("nTracksPerCluster", &m_nTracksPerCluster);
+  m_outputTree->Branch("tracksPerCluster", &m_tracksPerCluster);
   m_outputTree->Branch("size_x", &m_sizeX);
   m_outputTree->Branch("size_y", &m_sizeY);
   m_outputTree->Branch("energy", &m_energy);
+  m_outputTree->Branch("time", &m_time);
 
   return StatusCode::SUCCESS;
 }
@@ -89,11 +90,12 @@ StatusCode ModuleClusterWriter::write(const sim::FCCPlanarCluster& cluster, int 
   // first check if we are still on the same surface
   if (moduleID == m_moduleID) {
     // we are still on the same surface - update
-    m_moduleCache.update(cells.size(), pos.x(), pos.y(), pos.z(), cluster.nTracks, sizeX, sizeY, cluster.energy);
+    m_moduleCache.update(cells.size(), pos.x(), pos.y(), pos.z(), cluster.tracks, sizeX, sizeY, cluster.energy,
+                         cluster.time);
   } else {
     // update module cache and parameters
     newModule(eventNr, moduleID, segmentation.binUtility().bins(), cells.size(), surfaceCenter.x(), surfaceCenter.y(),
-              surfaceCenter.z(), pos.x(), pos.y(), pos.z(), cluster.nTracks, sizeX, sizeY, cluster.energy);
+              surfaceCenter.z(), pos.x(), pos.y(), pos.z(), cluster.tracks, sizeX, sizeY, cluster.energy, cluster.time);
   }
 
   return StatusCode::SUCCESS;
