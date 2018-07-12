@@ -37,6 +37,8 @@ StatusCode ModuleClusterWriter::initialize() {
   m_outputTree->Branch("moduleID", &m_moduleID);
   m_outputTree->Branch("nChannels", &m_nChannels);
   m_outputTree->Branch("nChannelsOn", &m_nChannelsOn);
+  m_outputTree->Branch("nChannels_l0", &m_nChannels_l0);
+  m_outputTree->Branch("nChannels_l1", &m_nChannels_l1);
   m_outputTree->Branch("s_x", &m_sX);
   m_outputTree->Branch("s_y", &m_sY);
   m_outputTree->Branch("s_z", &m_sZ);
@@ -44,6 +46,7 @@ StatusCode ModuleClusterWriter::initialize() {
   m_outputTree->Branch("g_y", &m_y);
   m_outputTree->Branch("g_z", &m_z);
   m_outputTree->Branch("tracksPerCluster", &m_tracksPerCluster);
+  m_outputTree->Branch("nCells", &m_nCells);
   m_outputTree->Branch("size_x", &m_sizeX);
   m_outputTree->Branch("size_y", &m_sizeY);
   m_outputTree->Branch("energy", &m_energy);
@@ -94,9 +97,9 @@ StatusCode ModuleClusterWriter::write(const sim::FCCPlanarCluster& cluster, int 
                          cluster.time);
   } else {
     // update module cache and parameters
-    newModule(eventNr, moduleID, segmentation.binUtility().bins(), cells.size(), surfaceCenter.x(), surfaceCenter.y(),
-              surfaceCenter.z(), pos.x(), pos.y(), pos.z(), cluster.tracks.size(), sizeX, sizeY, cluster.energy,
-              cluster.time);
+    newModule(eventNr, moduleID, segmentation.binUtility().bins(), cells.size(), segmentation.binUtility().bins(0),
+              segmentation.binUtility().bins(1), surfaceCenter.x(), surfaceCenter.y(), surfaceCenter.z(), pos.x(),
+              pos.y(), pos.z(), cluster.tracks.size(), sizeX, sizeY, cluster.energy, cluster.time);
   }
 
   return StatusCode::SUCCESS;

@@ -31,7 +31,8 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
     std::vector<float> _x;
     std::vector<float> _y;
     std::vector<float> _z;
-    std::vector<unsigned> _tracksPerCluster;
+    std::vector<short int> _tracksPerCluster;
+    std::vector<short int> _nCells;
     std::vector<short int> _sizeX;
     std::vector<short int> _sizeY;
     std::vector<float> _energy;
@@ -43,6 +44,7 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
       _y.reserve(100);
       _z.reserve(100);
       _tracksPerCluster.reserve(100);
+      _nCells.reserve(100);
       _sizeX.reserve(100);
       _sizeY.reserve(100);
       _energy.reserve(100);
@@ -50,26 +52,28 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
     }
 
     // simple constructor
-    ModuleCache(int nChannelsOn, float x, float y, float z, unsigned tracksPerCluster, unsigned short sizeX,
-                unsigned short sizeY, float energy, float time)
+    ModuleCache(int nChannelsOn, float x, float y, float z, short int tracksPerCluster, short int sizeX,
+                short int sizeY, float energy, float time)
         : _nChannelsOn(nChannelsOn) {
       _x.push_back(x);
       _y.push_back(y);
       _z.push_back(z);
       _tracksPerCluster.push_back(tracksPerCluster);
+      _nCells.push_back(nChannelsOn);
       _sizeX.push_back(sizeX);
       _sizeY.push_back(sizeY);
       _energy.push_back(energy);
       _time.push_back(time);
     }
 
-    void update(int nChannelsOn, float x, float y, float z, unsigned tracksPerCluster, unsigned short sizeX,
-                unsigned short sizeY, float energy, float time) {
+    void update(int nChannelsOn, float x, float y, float z, short int tracksPerCluster, short int sizeX,
+                short int sizeY, float energy, float time) {
       _nChannelsOn += nChannelsOn;
       _x.push_back(x);
       _y.push_back(y);
       _z.push_back(z);
       _tracksPerCluster.push_back(tracksPerCluster);
+      _nCells.push_back(nChannelsOn);
       _sizeX.push_back(sizeX);
       _sizeY.push_back(sizeY);
       _energy.push_back(energy);
@@ -82,6 +86,7 @@ class ModuleClusterWriter : public GaudiTool, virtual public IClusterWriter {
       _y.clear();
       _z.clear();
       _tracksPerCluster.clear();
+      _nCells.clear();
       _sizeX.clear();
       _sizeY.clear();
       _energy.clear();
@@ -120,6 +125,10 @@ private:
   int m_nChannels;
   /// The number of channels turned on of this module and event
   int m_nChannelsOn;
+  /// The number of channels of this module of l0
+  int m_nChannels_l0;
+  /// The number of channels of this module of l1
+  int m_nChannels_l1;
   /// global x of module
   float m_sX;
   /// global y of module
@@ -133,7 +142,9 @@ private:
   /// global z of cluster
   std::vector<float> m_z;
   /// Number of tracks per cluster
-  std::vector<unsigned> m_tracksPerCluster;
+  std::vector<short int> m_tracksPerCluster;
+  /// cluster
+  std::vector<short int> m_nCells;
   /// cluster size in x
   std::vector<short int> m_sizeX;
   /// cluster size in y
@@ -146,9 +157,9 @@ private:
   ModuleCache m_moduleCache;
 
   /// update module cache and parameters
-  void newModule(int eventNr, const long long int& moduleID, int nChannels, int nChannelsOn, float sX, float sY,
-                 float sZ, float x, float y, float z, unsigned tracksPerCluster, unsigned short sizeX,
-                 unsigned short sizeY, float energy, float time) {
+  void newModule(int eventNr, const long long int& moduleID, int nChannels, int nChannelsOn, int nChannels_l0,
+                 int nChannels_l1, float sX, float sY, float sZ, float x, float y, float z, short int tracksPerCluster,
+                 short int sizeX, short int sizeY, float energy, float time) {
     // 1) first write out data of previous module
     // fill the tree if it is not the first module
     if (m_moduleID >= 0) {
@@ -157,6 +168,7 @@ private:
       m_y = m_moduleCache._y;
       m_z = m_moduleCache._z;
       m_tracksPerCluster = m_moduleCache._tracksPerCluster;
+      m_nCells = m_moduleCache._nCells;
       m_sizeX = m_moduleCache._sizeX;
       m_sizeY = m_moduleCache._sizeY;
       m_energy = m_moduleCache._energy;
@@ -168,6 +180,8 @@ private:
     m_eventNr = eventNr;
     m_moduleID = moduleID;
     m_nChannels = nChannels;
+    m_nChannels_l0 = nChannels_l0;
+    m_nChannels_l1 = nChannels_l1;
     m_sX = sX;
     m_sY = sY;
     m_sZ = sZ;
