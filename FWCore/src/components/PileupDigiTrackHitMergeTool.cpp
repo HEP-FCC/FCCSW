@@ -90,8 +90,9 @@ StatusCode PileupDigiTrackHitMergeTool::mergeCollections() {
 
   unsigned int collectionCounter = 0;
   for (size_t j = 0; j < m_digiTrackHitsCollections.size(); j++) {
-    unsigned int hitCounter = 0;
+    unsigned int trackIDCounter = 0;
     std::unordered_map<unsigned, unsigned> oldToNewTrackIDs;
+
     auto offset = collectionCounter * m_trackIDCollectionOffset;
     auto digiHitColl = m_digiTrackHitsCollections.at(j);
     auto hitColl = m_hitCollections.at(j);
@@ -102,15 +103,25 @@ StatusCode PileupDigiTrackHitMergeTool::mergeCollections() {
       // for the n-th pileup event, 'bits' is the trackID + n * offset
       // offset needs to be big enough to ensure uniqueness of trackID
       if (isTrackerHit(hitColl->at(i).cellId())) {
-        if (hitCounter > m_trackIDCollectionOffset) {
+        if (trackIDCounter > m_trackIDCollectionOffset) {
           error() << "Event contains too many tracks to guarantee a unique trackID";
           error() << " The offset width or trackID field size needs to be adjusted!" << endmsg;
           return StatusCode::FAILURE;
         }
-        unsigned newTrackID = hitCounter + offset;
-        oldToNewTrackIDs[clon.bits()] = newTrackID;
-        clon.bits(newTrackID);
-        ++hitCounter;
+        auto search = oldToNewTrackIDs.find(clon.bits());
+        if (search != oldToNewTrackIDs.end()) {
+          // was already present - use already created new trackID
+          unsigned newTrackID = (search->second + offset);
+          clon.bits(newTrackID);
+        } else {
+          // was not already present - create new trackID
+          oldToNewTrackIDs[clon.bits()] = trackIDCounter;
+
+          unsigned newTrackID = (trackIDCounter + offset);
+          clon.bits(newTrackID);
+
+          trackIDCounter++;
+        }
       }
       auto newDigiHit = digiHitColl->at(i).clone();
       newDigiHit.hit(clon);
@@ -124,7 +135,17 @@ StatusCode PileupDigiTrackHitMergeTool::mergeCollections() {
         auto clonParticle = partColl->at(i).clone();
         auto search = oldToNewTrackIDs.find(clonParticle.bits());
         if (search != oldToNewTrackIDs.end()) {
-          clonParticle.bits(search->second);
+          // was not already present - create new trackID
+          clonParticle.bits(search->second + offset);
+        } else {
+          // was not already present - create new trackID
+          // this can happen if particles do not reach the tracker
+          oldToNewTrackIDs[clonParticle.bits()] = trackIDCounter;
+
+          unsigned newTrackID = (trackIDCounter + offset);
+          clonParticle.bits(newTrackID);
+
+          trackIDCounter++;
         }
         collParticlesMerged->push_back(clonParticle);
       }
