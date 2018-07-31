@@ -50,12 +50,16 @@
   </display>
 
   <readouts>
-    <readout name="HCalBarrelReadout">
+    <!--readout name="HCalBarrelReadout">
      <id>system:4,module:8,row:9,layer:5</id>
+    </readout-->
+    <readout name="HCalBarrelReadout">
+     <segmentation type="FCCSWGridPhiEta" grid_size_eta="2."  phi_bins="256" offset_phi="-pi+(pi/256.)"/>
+     <id>system:4,module:8,row:9,layer:5,eta:0,phi:10</id>
     </readout>
     <readout name="BarHCal_Readout_phieta">
-     <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="256" offset_eta="-1.256" offset_phi="-pi+(pi/256.)"/>
-     <id>system:4,module:8,row:9,layer:5,eta:9,phi:10</id>
+     <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.025" phi_bins="256" offset_eta="-1.256" offset_phi="-pi+(pi/256.)"/>
+     <id>system:4,layer:5,eta:9,phi:10</id>
     </readout>
   </readouts>
 
