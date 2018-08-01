@@ -79,6 +79,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
   double dzDetector = (numSequencesZ * dzSequence) / 2 + dZEndPlate + space;
+  lLog << MSG::DEBUG << "dzDetector:  " <<  dzDetector << endmsg;
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
 
   dd4hep::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
@@ -123,9 +124,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   lLog << MSG::DEBUG << "half width in phi (rmin) of full module (trapezoid side): " << dx1Module << endmsg;
   lLog << MSG::DEBUG << "half width in phi (rmax) of full module (trapezoid side): " << dx2Module << endmsg;
 
-  double dx1Support = tn * (sensitiveBarrelRmin + moduleDepth) - spacing;
-  double dx2Support = tn * (sensitiveBarrelRmin + moduleDepth + dSteelSupport) - spacing;
-  double dzSupport = dSteelSupport / 2;
   double rminSupport = sensitiveBarrelRmin + moduleDepth - spacing;
   double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport - spacing;
 
@@ -148,10 +146,9 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     // in Module rmin = 0  for first wedge, changed radius to the full radius starting at (0,0,0)
     double rminLayer = sensitiveBarrelRmin + layerR;
     double rmaxLayer = sensitiveBarrelRmin + layerR + layerDepths.at(idxLayer);
-    double dx1 = tn * rminLayer - spacing;
-    double dx2 = tn * rmaxLayer - spacing;
-    double rMiddle = (rminLayer - sensitiveBarrelRmin) + dz0 - dzModule;
-
+    lLog << MSG::DEBUG << "layer minumum radius:  " << rminLayer << endmsg;
+    lLog << MSG::DEBUG << "layer maximum radius:  " << rmaxLayer << endmsg;
+    
     layerR += layerDepths.at(idxLayer);
 
     dd4hep::Tube layerShape(rminLayer, rmaxLayer, (dzDetector - dZEndPlate - space));

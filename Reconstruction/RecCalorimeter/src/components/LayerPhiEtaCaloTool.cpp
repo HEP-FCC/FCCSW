@@ -72,6 +72,9 @@ StatusCode LayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, d
   for (unsigned int it = 0; it < m_fieldNames.size(); it++) {
     decoder->set(volumeID, m_fieldNames[it], m_fieldValues[it]);
   }  
+
+  double maxEta[10] = {1.2524, 1.2234, 1.1956, 1.15609, 1.1189, 1.08397, 1.0509, 0.9999, 0.9534, 0.91072};
+
   // Loop over all cells in the calorimeter and retrieve existing cellIDs
   // Loop over active layers
   for (unsigned int ilayer = 0; ilayer < numLayers; ilayer++) {
@@ -82,7 +85,11 @@ StatusCode LayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, d
 
     // Calculate number of cells per layer
     auto numCells = det::utils::numberOfCells(volumeID, *segmentation);
-    numCells[1] = 100;
+    uint cellsEta = ceil(( maxEta[ilayer] - (-maxEta[ilayer]) - segmentation->gridSizeEta() ) / 2 / segmentation->gridSizeEta()) * 2 + 1;
+    uint minEtaID = int(floor(((-maxEta[ilayer]) + 0.5 * segmentation->gridSizeEta() - segmentation->offsetEta()) / segmentation->gridSizeEta()));
+  
+    numCells[1] = cellsEta; // std::floor((maxEta[ilayer])/segmentation->gridSizeEta()) * 2;
+    numCells[2] = minEtaID; //std::floor((maxEta[ilayer] - maxEta[0]) /segmentation->gridSizeEta());
     debug() << "Segmentation cells  (Nphi, Neta, minEta): " << numCells << endmsg;
     // Loop over segmenation cells
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
@@ -90,6 +97,7 @@ StatusCode LayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, d
         decoder->set(volumeID, "phi", iphi);
         decoder->set(volumeID, "eta", ieta + numCells[2]); // start from the minimum existing eta cell in this layer
         dd4hep::DDSegmentation::CellID cellId = volumeID;
+	//debug() << "CellID: " <<  cellId<< endmsg;
         aCells.insert(std::pair<dd4hep::DDSegmentation::CellID, double>(cellId, 0));
       }
     }
