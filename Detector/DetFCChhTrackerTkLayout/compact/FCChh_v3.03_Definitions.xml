@@ -961,15 +961,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodOdd>
                     <rodEven id="2">
                         <modules>
@@ -1023,15 +1023,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodEven>
                 </rods>
             </layer>
@@ -1089,15 +1089,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodOdd>
                     <rodEven id="2">
                         <modules>
@@ -1151,15 +1151,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodEven>
                 </rods>
             </layer>
@@ -1217,15 +1217,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodOdd>
                     <rodEven id="2">
                         <modules>
@@ -1279,15 +1279,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodEven>
                 </rods>
             </layer>
@@ -1345,15 +1345,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodOdd>
                     <rodEven id="2">
                         <modules>
@@ -1407,15 +1407,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidth="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidth="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="14434.0*um"/>
                     </rodEven>
                 </rods>
             </layer>
@@ -1587,15 +1587,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="11" phi0="0.000000*rad" nModules="68" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -1604,15 +1604,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="12" phi0="0.000000*rad" nModules="76" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -1621,15 +1621,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="13" phi0="0.000000*rad" nModules="84" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -1638,15 +1638,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="14" phi0="0.000000*rad" nModules="88" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -1655,15 +1655,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="15" phi0="0.000000*rad" nModules="96" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -1672,15 +1672,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="16" phi0="0.000000*rad" nModules="96" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -1689,15 +1689,15 @@
                         </modules>
                         <moduleProperties modLength="52.000*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="52.000*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="52.000*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                 </rings>
             </discZPls>
@@ -2041,15 +2041,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="11" phi0="0.000000*rad" nModules="72" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2058,15 +2058,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                 </rings>
             </discZPls>
@@ -2232,15 +2232,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="11" phi0="0.000000*rad" nModules="72" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2249,15 +2249,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="12" phi0="0.000000*rad" nModules="76" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2266,15 +2266,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="13" phi0="0.000000*rad" nModules="84" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2283,15 +2283,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                 </rings>
             </discZPls>
@@ -2457,15 +2457,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="11" phi0="0.000000*rad" nModules="72" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2474,15 +2474,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="12" phi0="0.000000*rad" nModules="80" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2491,15 +2491,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="13" phi0="0.000000*rad" nModules="84" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2508,15 +2508,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="14" phi0="0.000000*rad" nModules="92" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2525,15 +2525,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                     <ring id="15" phi0="0.000000*rad" nModules="96" X="0.0333*mm" Z="10*mm">
                         <modules>
@@ -2542,15 +2542,15 @@
                         </modules>
                         <moduleProperties modLength="102.400*mm" modWidthMin="102.400*mm" modWidthMax="102.400*mm" modThickness="3.587*mm">
                             <components>
-                                <component name="Sensor-Si" thickness="0.200*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
-                                <component name="Module-Si" thickness="0.520*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
+                                <component name="Sensor-Si" thickness="0.100*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="true"/>
+                                <component name="Module-Si" thickness="0.620*mm" material="Si" density="2.330*g/cm3" radLength="21.820*g/cm2" intLength="108.400*g/cm2" sensitive="false"/>
                                 <component name="Module-Cu" thickness="0.072*mm" material="Cu" density="8.960*g/cm3" radLength="12.860*g/cm2" intLength="137.300*g/cm2" sensitive="false"/>
                                 <component name="Module-Al" thickness="0.215*mm" material="Al" density="2.700*g/cm3" radLength="24.010*g/cm2" intLength="107.200*g/cm2" sensitive="false"/>
                                 <component name="Module-C" thickness="1.505*mm" material="C" density="2.000*g/cm3" radLength="42.700*g/cm2" intLength="85.800*g/cm2" sensitive="false"/>
                                 <component name="Module-PE" thickness="1.075*mm" material="PE" density="0.950*g/cm3" radLength="44.770*g/cm2" intLength="67.700*g/cm2" sensitive="false"/>
                             </components>
                         </moduleProperties>
-                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.200*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
+                        <sensorProperties sensorLength="102.400*mm" sensorWidthMin="102.400*mm" sensorWidthMax="102.400*mm" sensorThickness="0.100*mm" resRPhi="9.5*um" resZ="2887.0*um"/>
                     </ring>
                 </rings>
             </discZPls>
