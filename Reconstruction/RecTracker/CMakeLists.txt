@@ -11,7 +11,7 @@ find_package(HepMC)
 find_package(Geant4)
 find_package(FCCEDM)
 find_package(PODIO)
-find_package(ROOT REQUIRED COMPONENTS Geom Tree)
+find_package(ROOT REQUIRED COMPONENTS Geom Tree MathCore TreePlayer Physics)
 find_package(ACTS COMPONENTS Core  TGeoPlugin DD4hepPlugin)
 
 #set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
