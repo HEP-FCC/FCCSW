@@ -140,9 +140,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     auto layerName = dd4hep::xml::_toString(idxLayer, "layer%d");
     unsigned int sequenceIdx = idxLayer % 2;
 
-    // get length of layer in rho
-    double dz0 = layerDepths.at(idxLayer) * 0.5;
-
     // in Module rmin = 0  for first wedge, changed radius to the full radius starting at (0,0,0)
     double rminLayer = sensitiveBarrelRmin + layerR;
     double rmaxLayer = sensitiveBarrelRmin + layerR + layerDepths.at(idxLayer);
@@ -157,7 +154,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     layerVolume.setVisAttributes(lcdd.invisible());
     unsigned int idxSubMod = 0;
     unsigned int idxActMod = 0;
-    double modCompZOffset = - (dzDetector - dZEndPlate - space) + sequenceDimensions.dz() * 0.5;
+    double modCompZOffset = - (dzDetector - dZEndPlate - space);
     
     // this matches the order of sequences of standalone HCAL geo description
     if (sequenceIdx == 0) {
@@ -177,11 +174,13 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 	   ++xCompColl, ++idxSubMod) {
 	xml_comp_t xComp = xCompColl;
 	double dyComp = xComp.thickness() * 0.5;
-	dd4hep::Tube tileShape(rminLayer, rmaxLayer, dz0);
+	dd4hep::Tube tileShape(rminLayer, rmaxLayer, dyComp);
+	
 	Volume modCompVol("modCompVolume", tileShape,
 			  lcdd.material(xComp.materialStr()));
 	modCompVol.setVisAttributes(lcdd, xComp.visStr());
-	dd4hep::Position offset(0, modCompZOffset + dyComp + xComp.y_offset() / 2, 0);
+	
+	dd4hep::Position offset(0, 0, modCompZOffset + dyComp);
 	
 	if (xComp.isSensitive()) {
 	  Volume tileVol("tileVolume", tileShape,
@@ -193,7 +192,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
 	} else {
 	  tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
 	}
-	modCompZOffset += xComp.thickness() + xComp.y_offset();
+	modCompZOffset += xComp.thickness();
       }
     }
     // Fill vector for DetElements
