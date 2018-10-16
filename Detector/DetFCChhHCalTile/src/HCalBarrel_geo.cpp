@@ -49,9 +49,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   double dzSequence = sequenceDimensions.dz();
   lLog << MSG::DEBUG << "sequence thickness " << dzSequence << endmsg;
 
-  // calculate the number of modules fitting in phi and Z
-  unsigned int numSequencesPhi = sequenceDimensions.phiBins();
-  double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
+  // calculate the number of modules fitting in Z
   unsigned int numSequencesZ = static_cast<unsigned>((2 * dimensions.dz() - 2 * dZEndPlate - 2 * space) / dzSequence);
 
   // Hard-coded assumption that we have three different layer types for the modules
@@ -73,9 +71,8 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
        << " , which end up to a full module depth in rho of " << moduleDepth << endmsg;
   lLog << MSG::DEBUG << "retrieved number of layers:  " << layerDepths.size() << endmsg;
 
-  lLog << MSG::INFO << "constructing: " << numSequencesPhi << " modules, within the angle "
-       << (dphi * 180. / dd4hep::pi) << " per ring in phi, " << numSequencesZ << " rings in Z, " << numSequencesR
-       << " layers in Rho, " << numSequencesR * numSequencesZ * numSequencesPhi << " tiles" << endmsg;
+  lLog << MSG::INFO << "constructing: " << numSequencesZ << " rings in Z, " << numSequencesR
+       << " layers in Rho, " << numSequencesR * numSequencesZ << " tiles" << endmsg;
 
   // Calculate correction along z based on the module size (can only have natural number of modules)
   double dzDetector = (numSequencesZ * dzSequence) / 2 + dZEndPlate + space;
@@ -110,20 +107,8 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   endPlateNeg.setPlacement(placedEndPlateNeg);
 
   // Calculation the dimensions of one whole module:
-  double tn = tan(dphi / 2.);
   double spacing = sequenceDimensions.x();
-  // the half depth of sequence (placed in z in HCAL coordinated) is y coordinate of trapezoid definition
-  double dy0 = dzSequence * 0.5;
-
-  double dx1Module = tn * sensitiveBarrelRmin - spacing;
-  double dx2Module = tn * (sensitiveBarrelRmin + moduleDepth) - spacing;
-  double dzModule = moduleDepth / 2;
-
-  lLog << MSG::DEBUG << "half height of full module (trapezoid side): " << dzModule << endmsg;
-  lLog << MSG::DEBUG << "half width  of full module (trapezoid side): " << dy0 << endmsg;
-  lLog << MSG::DEBUG << "half width in phi (rmin) of full module (trapezoid side): " << dx1Module << endmsg;
-  lLog << MSG::DEBUG << "half width in phi (rmax) of full module (trapezoid side): " << dx2Module << endmsg;
-
+  
   double rminSupport = sensitiveBarrelRmin + moduleDepth - spacing;
   double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport - spacing;
 
@@ -164,7 +149,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
     }
 
     layers.push_back(envelopeVolume.placeVolume(layerVolume));
-    layers.back().addPhysVolID("module", 0);
     layers.back().addPhysVolID("layer", idxLayer);
    
     std::vector<dd4hep::PlacedVolume> tiles;
