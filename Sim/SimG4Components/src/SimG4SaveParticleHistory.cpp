@@ -28,10 +28,11 @@ SimG4SaveParticleHistory::SimG4SaveParticleHistory(const std::string& aType, con
 StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& aEvent) {
   auto evtinfo = dynamic_cast<sim::EventInformation*>(aEvent.GetUserInformation());
   // take over ownership of particle and vertex collections
-  evtinfo->setCollections(m_genVertexColl, m_mcParticleColl);
-  info() << "Saved " << m_mcParticleColl->size() << " particles from Geant4 history." << endmsg;
-  m_mcParticles.put(m_mcParticleColl);
-  m_genVertices.put(m_genVertexColl);
+  auto genVertexColl = evtinfo->releaseVertexCollection();
+  auto mcParticleColl = evtinfo->releaseParticleCollection(); 
+  info() << "Saved " << mcParticleColl->size() << " particles from Geant4 history." << endmsg;
+  m_mcParticles.put(mcParticleColl.release());
+  m_genVertices.put(genVertexColl.release());
 
   return StatusCode::SUCCESS;
 }
