@@ -15,7 +15,7 @@ FCCSWGridPhiEta::FCCSWGridPhiEta(const std::string& cellEncoding) : GridEta(cell
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
-FCCSWGridPhiEta::FCCSWGridPhiEta(BitField64* decoder) : GridEta(decoder) {
+FCCSWGridPhiEta::FCCSWGridPhiEta(const BitFieldCoder* decoder) : GridEta(decoder) {
   // define type and description
   _type = "FCCSWGridPhiEta";
   _description = "Phi-eta segmentation in the global coordinates";
@@ -28,31 +28,29 @@ FCCSWGridPhiEta::FCCSWGridPhiEta(BitField64* decoder) : GridEta(decoder) {
 
 /// determine the local based on the cell ID
 Vector3D FCCSWGridPhiEta::position(const CellID& cID) const {
-  _decoder->setValue(cID);
-  return positionFromREtaPhi(1.0, eta(), phi());
+  return positionFromREtaPhi(1.0, eta(cID), phi(cID));
 }
 
 /// determine the cell ID based on the position
 CellID FCCSWGridPhiEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition,
                           const VolumeID& vID) const {
-  _decoder->setValue(vID);
+  CellID cID = vID;
   double lEta = etaFromXYZ(globalPosition);
   double lPhi = phiFromXYZ(globalPosition);
-  (*_decoder)[m_etaID] = positionToBin(lEta, m_gridSizeEta, m_offsetEta);
-  (*_decoder)[m_phiID] = positionToBin(lPhi, 2 * M_PI / (double)m_phiBins, m_offsetPhi);
-  return _decoder->getValue();
+  _decoder->set(cID, m_etaID, positionToBin(lEta, m_gridSizeEta, m_offsetEta));
+  _decoder->set(cID, m_phiID, positionToBin(lPhi, 2 * M_PI / (double)m_phiBins, m_offsetPhi));
+  return cID;
 }
 
 /// determine the azimuthal angle phi based on the current cell ID
-double FCCSWGridPhiEta::phi() const {
-  CellID phiValue = (*_decoder)[m_phiID].value();
-  return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
-}
+//double FCCSWGridPhiEta::phi() const {
+//  CellID phiValue = (*_decoder)[m_phiID].value();
+//  return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
+//}
 
 /// determine the azimuthal angle phi based on the cell ID
 double FCCSWGridPhiEta::phi(const CellID& cID) const {
-  _decoder->setValue(cID);
-  CellID phiValue = (*_decoder)[m_phiID].value();
+  CellID phiValue = _decoder->get(cID, m_phiID);
   return binToPosition(phiValue, 2. * M_PI / (double)m_phiBins, m_offsetPhi);
 }
 }

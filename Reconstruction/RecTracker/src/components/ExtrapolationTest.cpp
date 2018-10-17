@@ -29,7 +29,7 @@
 
 #include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
+//#include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
 
 #include <cmath>
@@ -97,7 +97,7 @@ StatusCode ExtrapolationTest::execute() {
   ActsVector<ParValue_t, NGlobalPars> pars;
   pars << 0, // local coordinate 1
           0, // local coordinate 2
-          m_flatDist() * M_PI * 0.5, // phi 
+          m_flatDist() * M_PI * 0.5, // phi
           m_flatDist() * M_PI*0.45,  // theta
           0.001; // qOverP
   auto startCov =

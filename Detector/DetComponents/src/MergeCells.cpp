@@ -8,6 +8,9 @@
 
 // DD4hep
 #include "DD4hep/Detector.h"
+#include "DD4hep/BitFieldCoder.h"
+
+using dd4hep::DDSegmentation::CellID;
 
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
@@ -40,7 +43,7 @@ StatusCode MergeCells::initialize() {
   // check if identifier exists in the decoder
   auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
                                    m_descriptor.fields().end(),
-                                   [this](const std::pair<std::string, dd4hep::BitFieldValue*>& field) {
+                                   [this](const std::pair<std::string, const dd4hep::BitFieldElement*>& field) {
                                      return bool(field.first.compare(m_idToMerge) == 0);
                                    });
   if (itIdentifier == m_descriptor.fields().end()) {
@@ -75,19 +78,18 @@ StatusCode MergeCells::execute() {
 
   uint field_id = m_descriptor.fieldID(m_idToMerge);
   auto decoder = m_descriptor.decoder();
-  uint64_t cellId = 0;
+  dd4hep::DDSegmentation::CellID cellId = 0;
   int value = 0;
   uint debugIter = 0;
 
   for (const auto& hit : *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
     cellId = hit.cellId();
-    decoder->setValue(cellId);
-    value = (*decoder)[field_id].value();
+    value = (*decoder)[field_id].value(cellId);
     if (debugIter < m_debugPrint) {
       debug() << "old ID = " << value << endmsg;
     }
-    if ((*decoder)[field_id].isSigned()) {
+    if ((*decoder)[field_id].isSigned()) { //??
       if (value < 0) {
         value -= m_numToMerge / 2;
       } else {
@@ -99,8 +101,10 @@ StatusCode MergeCells::execute() {
       debug() << "new ID = " << value << endmsg;
       debugIter++;
     }
-    (*decoder)[field_id] = value;
-    newHit.cellId(decoder->getValue());
+    //decoder->set(cellId, field_id, value);
+    //newHit.cellId(cellId);
+    (*decoder)[field_id].set(cellId, value);
+    newHit.cellId(cellId);
   }
   m_outHits.put(outHits);
 

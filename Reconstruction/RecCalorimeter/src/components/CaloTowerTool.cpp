@@ -164,7 +164,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
     totalNumberOfCells += hcalExtBarrelCells->size();
   }
 
-  // 6. HCAL endcap calorimeter                                                                                                              
+  // 6. HCAL endcap calorimeter
   const fcc::CaloHitCollection* hcalEndcapCells = m_hcalEndcapCells.get();
   debug() << "Input Hcal endcap cell collection size: " << hcalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
