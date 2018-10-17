@@ -21,7 +21,7 @@ public:
   /// default constructor using an arbitrary type
   GridEta(const std::string& aCellEncoding);
   /// Default constructor used by derived classes passing an existing decoder
-  GridEta(BitField64* decoder);
+  GridEta(const BitFieldCoder* decoder);
   /// destructor
   virtual ~GridEta() = default;
 

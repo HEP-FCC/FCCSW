@@ -16,7 +16,7 @@ gaudi_install_headers(DetCommon)
 gaudi_add_library(DetCommon
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetSegmentation 
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetSegmentation
                  PUBLIC_HEADERS DetCommon)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION Detector/DetCommon)

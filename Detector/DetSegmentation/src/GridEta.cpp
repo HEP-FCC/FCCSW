@@ -15,7 +15,7 @@ GridEta::GridEta(const std::string& cellEncoding) : Segmentation(cellEncoding) {
   registerIdentifier("identifier_eta", "Cell ID identifier for eta", m_etaID, "eta");
 }
 
-GridEta::GridEta(BitField64* decoder) : Segmentation(decoder) {
+GridEta::GridEta(const BitFieldCoder* decoder) : Segmentation(decoder) {
   // define type and description
   _type = "GridEta";
   _description = "Eeta segmentation in the global coordinates";
@@ -28,28 +28,26 @@ GridEta::GridEta(BitField64* decoder) : Segmentation(decoder) {
 
 /// determine the local based on the cell ID
 Vector3D GridEta::position(const CellID& cID) const {
-  _decoder->setValue(cID);
-  return positionFromREtaPhi(1.0, eta(), 0.);
+  return positionFromREtaPhi(1.0, eta(cID), 0.);
 }
 
 /// determine the cell ID based on the position
 CellID GridEta::cellID(const Vector3D& /* localPosition */, const Vector3D& globalPosition, const VolumeID& vID) const {
-  _decoder->setValue(vID);
+  CellID cID = vID;
   double lEta = etaFromXYZ(globalPosition);
-  (*_decoder)[m_etaID] = positionToBin(lEta, m_gridSizeEta, m_offsetEta);
-  return _decoder->getValue();
+  _decoder->set(cID, m_etaID, positionToBin(lEta, m_gridSizeEta, m_offsetEta));
+  return cID;
 }
 
 /// determine the pseudorapidity based on the current cell ID
-double GridEta::eta() const {
-  CellID etaValue = (*_decoder)[m_etaID].value();
-  return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
-}
+//double GridEta::eta() const {
+//  CellID etaValue = (*_decoder)[m_etaID].value();
+//  return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
+//}
 
 /// determine the polar angle theta based on the cell ID
 double GridEta::eta(const CellID& cID) const {
-  _decoder->setValue(cID);
-  CellID etaValue = (*_decoder)[m_etaID].value();
+  CellID etaValue = _decoder->get(cID, m_etaID);
   return binToPosition(etaValue, m_gridSizeEta, m_offsetEta);
 }
 REGISTER_SEGMENTATION(GridEta)
