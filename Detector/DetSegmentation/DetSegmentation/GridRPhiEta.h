@@ -20,7 +20,7 @@ public:
   /// default constructor using an arbitrary type
   GridRPhiEta(const std::string& aCellEncoding);
   /// Default constructor used by derived classes passing an existing decoder
-  GridRPhiEta(BitField64* decoder);
+  GridRPhiEta(const BitFieldCoder* decoder);
   /// destructor
   virtual ~GridRPhiEta() = default;
 

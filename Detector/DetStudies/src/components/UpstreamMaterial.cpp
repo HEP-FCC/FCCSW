@@ -81,9 +81,11 @@ StatusCode UpstreamMaterial::execute() {
   // get the energy deposited in the cryostat and in the detector (each layer)
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
-    decoder->setValue(hit.core().cellId);
-    if ((*decoder)["cryo"] == 0) {
-      sumEcells[(*decoder)[m_layerFieldName] - m_firstLayerId] += hit.core().energy;
+    dd4hep::DDSegmentation::CellID cID = hit.core().cellId;
+    const auto& field = "cryo";
+    int id = decoder->get(cID, field);
+    if (id == 0) {
+      sumEcells[id - m_firstLayerId] += hit.core().energy;
     } else {
       sumEupstream += hit.core().energy;
     }
