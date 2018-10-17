@@ -5,7 +5,7 @@
 #include "DetInterface/IGeoSvc.h"
 
 // DD4hep
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 
 // Root
 #include "TFile.h"
@@ -42,7 +42,7 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
     return StatusCode::FAILURE;
   }
   // Get PhiEta segmentation
-  m_segmentation = dynamic_cast<DD4hep::DDSegmentation::GridPhiEta*>(
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation." << endmsg;
@@ -139,8 +139,9 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   double cellEta = m_segmentation->eta(aCellId);
   // Take readout, bitfield from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
-  decoder->setValue(aCellId);
-  unsigned cellLayer = (*decoder)[m_activeFieldName];
+  //decoder->setValue(aCellId);
+  dd4hep::DDSegmentation::CellID cID = aCellId;
+  unsigned cellLayer = decoder->get(cID, m_activeFieldName);
 
   // All histograms have same binning, all bins with same size
   // Using the histogram in the first layer to get the bin size
@@ -151,10 +152,11 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
         (m_histoElecNoiseConst.at(index).GetBinLowEdge(Nbins) + m_histoElecNoiseConst.at(index).GetBinWidth(Nbins) -
          m_histoElecNoiseConst.at(index).GetBinLowEdge(1)) /
         Nbins;
+    double etaFirtsBin = m_histoElecNoiseConst.at(index).GetBinLowEdge(1);
     // find the eta bin for the cell
-    int ibin = floor(fabs(cellEta) / deltaEtaBin) + 1;
+    int ibin = floor((fabs(cellEta) - etaFirtsBin) / deltaEtaBin) + 1;
     if (ibin > Nbins) {
-      error() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins
+      debug() << "eta outside range of the histograms! Cell eta: " << cellEta << " Nbins in histogram: " << Nbins
               << endmsg;
       ibin = Nbins;
     }
@@ -165,19 +167,19 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
         pileupNoise = m_histoPileupConst.at(cellLayer).GetBinContent(ibin);
       }
     } else {
-      error()
+      debug()
           << "More radial layers than we have noise for!!!! Using the last layer for all histograms outside the range."
           << endmsg;
     }
   } else {
-    error() << "No histograms with noise constants!!!!! " << endmsg;
+    debug() << "No histograms with noise constants!!!!! " << endmsg;
   }
 
   // Total noise: electronics noise + pileup
   double totalNoise = sqrt(pow(elecNoise, 2) + pow(pileupNoise, 2));
 
   if (totalNoise < 1e-3) {
-    warning() << "Zero noise: cell eta " << cellEta << " layer " << cellLayer << " noise " << totalNoise << endmsg;
+    debug() << "Zero noise: cell eta " << cellEta << " layer " << cellLayer << " noise " << totalNoise << endmsg;
   }
 
   return totalNoise;

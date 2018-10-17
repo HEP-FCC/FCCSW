@@ -56,7 +56,7 @@ private:
   /// Handle for the EDM Hits to be written
   DataHandle<fcc::CaloHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer, this};
   // Handle to the detector ID descriptor
-  DD4hep::Geometry::IDDescriptor m_descriptor;
+  dd4hep::IDDescriptor m_descriptor;
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readout", "", "Name of the detector readout"};
   /// Identifier to be merged

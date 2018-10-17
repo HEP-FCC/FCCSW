@@ -4,7 +4,7 @@
 
 #include "Generation/IHepMCMergeTool.h"
 #include "Generation/IHepMCProviderTool.h"
-#include "Generation/IPileUpTool.h"
+#include "FWCore/IPileUpTool.h"
 #include "Generation/IVertexSmearingTool.h"
 
 #include "FWCore/DataHandle.h"

@@ -29,7 +29,8 @@ from Configurables import GeoSvc
 ## parse the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml',
-                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml'])
+                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml'],
+                                        OutputLevel=INFO )
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -48,7 +49,7 @@ regiontoolcalo = SimG4FastSimCalorimeterRegion("modelCalo", volumeNames=["ECalBa
 ## create overlay on top of FTFP_BERT physics list, attaching fast sim/parametrization process
 physicslisttool = SimG4FastSimPhysicsList("Physics", fullphysics="SimG4FtfpBert")
 ## attach those tools to the G4 service
-geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=["SimG4FastSimTrackerRegion/modelTracker", "SimG4FastSimCalorimeterRegion/modelCalo"])
+geantservice = SimG4Svc("SimG4Svc", physicslist=physicslisttool, regions=[regiontooltracker, regiontoolcalo])
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
@@ -66,7 +67,7 @@ savecaltool.caloHits.Path = "caloHits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveSmearedParticles/saveSmearedParticles", "SimG4SaveCalHits/saveCalHits"],
+                    outputs = [saveparticlestool, savecaltool],
                     eventProvider=particle_converter)
 
 from Configurables import SimG4FastSimHistograms

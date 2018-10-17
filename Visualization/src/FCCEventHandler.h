@@ -12,7 +12,7 @@
 
 namespace vis {
 
-class FCCEventHandler : public DD4hep::EventHandler {
+class FCCEventHandler : public dd4hep::EventHandler {
 private:
   podio::EventStore m_podioStore = podio::EventStore();
   podio::ROOTReader m_ROOTReader = podio::ROOTReader();
@@ -36,9 +36,9 @@ public:
   /// Access to the collection type by name
   virtual CollectionType collectionType(const std::string& collection) const;
   /// Call functor on hit collection
-  virtual size_t collectionLoop(const std::string& collection, DD4hep::DDEveHitActor& actor);
+  virtual size_t collectionLoop(const std::string& collection, dd4hep::DDEveHitActor& actor);
   /// Loop over collection and extract particle data
-  virtual size_t collectionLoop(const std::string& collection, DD4hep::DDEveParticleActor& actor);
+  virtual size_t collectionLoop(const std::string& collection, dd4hep::DDEveParticleActor& actor);
   /// Open new data file
   virtual bool Open(const std::string& type, const std::string& file_name);
   /// User overloadable function: Load the next event

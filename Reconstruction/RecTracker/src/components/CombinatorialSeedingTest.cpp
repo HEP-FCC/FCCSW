@@ -5,9 +5,9 @@
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-#include "DD4hep/LCDD.h"
+#include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
+//#include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 

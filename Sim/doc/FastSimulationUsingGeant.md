@@ -57,7 +57,7 @@ When a particle enters the calorimeter, instead of long and detail shower develo
 To run the fast simulation:
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/geant_fastsim.py
+./run fccrun.py Examples/options/geant_fastsim.py
 ~~~
 
 The differences between the configuration file of the fast simulation (Examples/options/geant_fastsim.py) with respect to the full simulation:

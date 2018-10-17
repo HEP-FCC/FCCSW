@@ -20,7 +20,7 @@
 #include "Generation/Units.h"
 
 // FCC EDM
-#include "datamodel/FloatCollection.h"
+#include "datamodel/FloatValueCollection.h"
 
 #include "HepMC/GenEvent.h"
 
@@ -38,7 +38,7 @@ PythiaInterface::PythiaInterface(const std::string& type, const std::string& nam
       m_setting(nullptr) {
 
   declareProperty("VertexSmearingTool", m_vertexSmearingTool);
-  declarePrivateTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
+  declareTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
 }
 
 StatusCode PythiaInterface::initialize() {

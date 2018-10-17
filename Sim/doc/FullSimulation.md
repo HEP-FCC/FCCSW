@@ -25,6 +25,7 @@ For additional information on fast simulation in Geant4 [see](FastSimulationUsin
 ## How to
 * [use sensitive detectors](#sensitive-detectors)
 * [change the physics list](#how-to-use-different-physics-list)
+* [specify step/track limits](#how-to-specify-step-or-track-limits)
 * [add user action](#how-to-add-a-user-action)
 * [use fast simulation](FastSimulationUsingGeant.md)
 
@@ -77,7 +78,7 @@ Simulation package contains following directories:
 ## Example
 
 ~~~{.sh}
-./run gaudirun.py Examples/options/geant_fullsim.py
+./run fccrun.py Examples/options/geant_fullsim.py
 ~~~
 
 The configuration file (`Examples/options/geant_fullsim.py`) contains:
@@ -175,11 +176,11 @@ Sim/SimG4Components/tests/options/
 ~~~
 
 #### GDML example
-There is a possibility to create the detector with GDML instead of DD4hep. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `DD4hep::Simulation::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
+There is a possibility to create the detector with GDML instead of DD4hep. In this case, however, no sensitive detectors are predefined and user is responsible for their implementation. Preferable hit format is the one used by DD4hep (e.g. `dd4hep::sim::Geant4CalorimeterHit`), this way user may use the saving output utilities that are already provided.
 Simple example:
 
 ~~~{.sh}
-./run gaudirun.py Sim/SimG4Components/tests/options/geant_fullsim_gdml.py
+./run fccrun.py Sim/SimG4Components/tests/options/geant_fullsim_gdml.py
 ~~~
 
 
@@ -199,6 +200,8 @@ Any communication with the Geant Run Manager is handled by this service:
 - simulation:
   - [passing an event to `G4EventManager`](#event-processing)
   - [retrieving a simulated event (with hits collections and other information)](#output)
+
+Additionally, the simulation service takes the random number generator seeds from Gaudi service `RndmGenSvc`. If a user wants to set the simulation seeds manually, the flag `randomNumbersFromGaudi` needs to be set to `false`.
 
 
 ### Geometry construction
@@ -237,10 +240,10 @@ Sensitive detectors are responsible for creating the hits whenever a particle tr
   * set the sensitive detector type
 
     ~~~{.cpp}
-    DD4hep::Geometry::SensitiveDetector::setType("SimpleCalorimeterSD");
+    dd4hep::SensitiveDetector::setType("SimpleCalorimeterSD");
     ~~~
 
-    This way the hits collection are created automatically and are filled whenever a particle traverses a sensitive material. Hits are be stored in either `DD4hep::Simulation::Geant4TrackerHit` or `DD4hep::Simulation::Geant4CalorimeterHit`. See more on the current implementations of the sensitive detector types in the [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md#using-an-existing-sensitive-detector-definition).
+    This way the hits collection are created automatically and are filled whenever a particle traverses a sensitive material. Hits are be stored in either `dd4hep::sim::Geant4TrackerHit` or `dd4hep::sim::Geant4CalorimeterHit`. See more on the current implementations of the sensitive detector types in the [Detector documentation](../../Detector/doc/DD4hepInFCCSW.md#using-an-existing-sensitive-detector-definition).
 
 ### Physics List
 
@@ -257,6 +260,11 @@ In order to use a different physics list, one needs to construct a physics list 
 
 Any new implementation of a physics list (or any other component) should be presented in a pull request to HEP-FCC/FCCSW.
 
+### How to specify step or track limits
+In order to specify user limits with `SimG4UserLimit` class, one needs to use `SimG4UserLimitPhysicsList`. It attaches additional process to an existing physics list.
+
+Moreover, user needs to specify regions where user limits are to be applied. It can be achieved using `SimG4UserLimitRegion` tool and attaching it to `SimG4Svc`.
+For example see [`Examples/options/geant_userLimits.py`](../../Examples/options/geant_userLimits.py).
 
 
 ### User Actions

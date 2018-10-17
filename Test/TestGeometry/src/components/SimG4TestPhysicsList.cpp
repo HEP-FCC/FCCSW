@@ -1,5 +1,5 @@
 #include "SimG4TestPhysicsList.h"
-#include "TestGeometry/TestPhysicsList.h"
+#include "TestGeometryLib/TestPhysicsList.h"
 
 // Geant4
 #include "G4VModularPhysicsList.hh"

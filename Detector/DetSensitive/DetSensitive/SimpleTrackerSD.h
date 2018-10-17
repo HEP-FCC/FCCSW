@@ -8,6 +8,11 @@
 #include "G4THitsCollection.hh"
 #include "G4VSensitiveDetector.hh"
 
+namespace fcc {
+
+class Geant4PreDigiTrackHit;
+}
+
 /** SimpleTrackerSD DetectorDescription/DetSensitive/src/SimpleTrackerSD.h SimpleTrackerSD.h
  *
  *  Simple sensitive detector for tracker.
@@ -25,9 +30,7 @@ public:
    *  @param aReadoutName Name of the readout (used to name the collection)
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
-  SimpleTrackerSD(const std::string& aDetectorName,
-                  const std::string& aReadoutName,
-                  const DD4hep::Geometry::Segmentation& aSeg);
+  SimpleTrackerSD(const std::string& aDetectorName, const std::string& aReadoutName, const dd4hep::Segmentation& aSeg);
   /// Destructor
   virtual ~SimpleTrackerSD();
   /** Initialization.
@@ -46,9 +49,9 @@ public:
 
 private:
   /// Collection of tracker hits
-  G4THitsCollection<DD4hep::Simulation::Geant4Hit>* m_trackerCollection;
+  G4THitsCollection<fcc::Geant4PreDigiTrackHit>* m_trackerCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
-  DD4hep::Geometry::Segmentation m_seg;
+  dd4hep::Segmentation m_seg;
 };
 }
 

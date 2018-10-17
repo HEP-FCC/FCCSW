@@ -21,11 +21,6 @@ guntool = MomentumRangeParticleGun()
 gen = GenAlg("ParticleGun", SignalProvider=guntool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
-from Configurables import Gaudi__ParticlePropertySvc
-## Particle service
-# list of possible particles is defined in ParticlePropertiesFile
-ppservice = Gaudi__ParticlePropertySvc("ParticlePropertySvc", ParticlePropertiesFile="Generation/data/ParticleTable.txt")
-
 from Configurables import HepMCToEDMConverter
 ## Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCToEDMConverter("Converter")
@@ -38,9 +33,11 @@ from Configurables import GeoSvc
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                          'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
-                                         'file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Mockup.xml',
+                                         'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
+                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
-                    OutputLevel = DEBUG)
+                    OutputLevel = INFO)
 
 from Configurables import SimG4Svc
 ## Geant4 service
@@ -58,27 +55,36 @@ savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["Track
 savetrackertool.positionedTrackHits.Path = "positionedHits"
 savetrackertool.trackHits.Path = "hits"
 # and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
-savehcaltool = SimG4SaveCalHits("saveCalHits", readoutNames = ["ECalHitsPhiEta","BarHCal_Readout"])
-savehcaltool.positionedCaloHits.Path = "positionedCaloHits"
-
-savehcaltool.caloHits.Path = "caloHits"
+saveecaltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = ["ECalBarrelEta"])
+saveecaltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
+saveecaltool.caloHits.Path = "ECalBarrelHits"
+saveendcaptool = SimG4SaveCalHits("saveECalEndcapHits", readoutNames = ["EMECPhiEta"])
+saveendcaptool.positionedCaloHits.Path = "ECalEndcapPositionedHits"
+saveendcaptool.caloHits.Path = "ECalEndcapHits"
+savefwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = ["EMFwdPhiEta"])
+savefwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
+savefwdtool.caloHits.Path = "ECalFwdHits"
+savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["HCalBarrelReadout"])
+savehcaltool.positionedCaloHits.Path = "HCalBarrelPositionedHits"
+savehcaltool.caloHits.Path = "HCalBarrelHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveCalHits"],
+                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+out.filename = "output_geant_pgun_fullsim.root"
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],
                 EvtSel='NONE',
                 EvtMax=1,
                 ## order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc=[podioevent, geoservice, geantservice, ppservice],
-                OutputLevel=DEBUG
+                ExtSvc=[podioevent, geoservice, geantservice],
+                OutputLevel=INFO
  )

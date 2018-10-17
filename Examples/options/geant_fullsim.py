@@ -29,7 +29,8 @@ hepmc_converter.genvertices.Path="allGenVertices"
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'])
+  'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml'],
+  OutputLevel=INFO)
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -50,7 +51,7 @@ savetrackertool.trackHits.Path = "hits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits"],
+                    outputs = [savetrackertool],
                     eventProvider=particle_converter)
 
 # PODIO algorithm

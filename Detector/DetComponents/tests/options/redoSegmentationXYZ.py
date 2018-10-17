@@ -16,7 +16,7 @@ dumper = HepMCDumper("Dumper")
 dumper.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/TestBoxCaloSD_3readouts.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/TestBoxCaloSD_3readouts.xml'], OutputLevel = INFO)
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", physicslist='SimG4TestPhysicsList')
@@ -48,6 +48,7 @@ out.outputCommands = ["keep *"]
 
 ApplicationMgr(EvtSel='NONE',
                EvtMax=30,
-               TopAlg=[reader, hepmc_converter, geantsim, resegment, out],
+               TopAlg=[reader, hepmc_converter, geantsim, resegment,
+                out],
                ExtSvc = [podiosvc, geoservice, geantservice],
                OutputLevel=DEBUG)

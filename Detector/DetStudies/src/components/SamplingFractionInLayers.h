@@ -20,7 +20,6 @@ class ITHistSvc;
  *
  *  Histograms of energy deposited in active material and total energy deposited in the calorimeter.
  *  Passive material needs to be marked as sensitive. It needs to be divided into layers (cells) as active material.
- *  Layers (cells) are numbered starting at 1 so that energy depoisted in cryostat and bath could be easily recognised.
  *  Sampling fraction is calculated for each layer as the ratio of energy deposited in active material to energy
  *  deposited in the layer (also in passive material).
  *
@@ -59,6 +58,8 @@ private:
   Gaudi::Property<std::string> m_layerFieldName{this, "layerFieldName", "", "Identifier of layers"};
   /// Number of layers/cells
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers"};
+  /// Id of the first layer
+  Gaudi::Property<uint> m_firstLayerId{this, "firstLayerId", 0, "ID of first layer"};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the detector readout"};
   // Maximum energy for the axis range
