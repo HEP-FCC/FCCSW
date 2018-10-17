@@ -4,6 +4,9 @@
 export FCCSWBASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # setup the pre-commit hook that checks with clang-format before committing
+# slc6 git version is too old for use with clang-format
+export PATH=/cvmfs/sft.cern.ch/lcg/contrib/git/bin:$PATH
+export LD_LIBRARY_PATH=/cvmfs/sft.cern.ch/lcg/contrib/git/lib64:$LD_LIBRARY_PATH
 if [ ! -L $FCCSWBASEDIR/.git/hooks/pre-commit ]; then
   ln -s $FCCSWBASEDIR/FWCore/scripts/pre-commit.py $FCCSWBASEDIR/.git/hooks/pre-commit
 fi
