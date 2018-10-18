@@ -8,12 +8,13 @@
 #include "datamodel/MCParticleCollection.h"
 
 namespace sim {
-EventInformation::EventInformation() { 
+EventInformation::EventInformation() {
   m_genVertices = new fcc::GenVertexCollection();
   m_mcParticles = new fcc::MCParticleCollection();
 }
 
-void EventInformation::setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMCParticleCollection) {
+void EventInformation::setCollections(fcc::GenVertexCollection*& aGenVertexCollection,
+                                      fcc::MCParticleCollection*& aMCParticleCollection) {
   // ownership is transferred here - to SaveTool which is supposed to put it in the event store
   aGenVertexCollection = m_genVertices;
   aMCParticleCollection = m_mcParticles;
@@ -55,5 +56,7 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   edmStartVertex.ctau((aSecondary->GetGlobalTime() - aSecondary->GetLocalTime()) * sim::g42edm::length);
   edmParticle.startVertex(edmStartVertex);
   edmParticle.core().status = motherID; // FCC convention for status of secondary sim particle
+  // set vertex of particle
+  edmParticle.core().vertex(edmParticle.startVertex().position());
 }
 }
