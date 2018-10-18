@@ -153,7 +153,8 @@ StatusCode GeometricTrackerDigitizer::execute() {
     // merge cells
     // @ todo apply energy cut
     // group together cells which belong to same cluster
-    auto clusterMap = createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), true, 0.);
+    auto clusterMap =
+        createClusters<sim::FCCDigitizationCell>(surf.second, binUtility.bins(0), true, m_energyThreshold);
     // acts digi cells
     for (auto& cells : clusterMap) {
       // #tracks per cluster

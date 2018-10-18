@@ -108,6 +108,11 @@ private:
   Gaudi::Property<bool> m_fastSimInterface{
       this, "fastSimInterface", false,
       "This flag should be turned on in case fast simulation (creating just one hit per sensitive module) is used."};
+  /// energy threshold per readout cell (@todo will be a property of the digitization module when using next version of
+  /// ACTS)
+  Gaudi::Property<double> m_energyThreshold{this, "energyThreshold", 3.6e-6,
+                                            "Possibile energy threshold to be reached in order to activate a read out "
+                                            "cell. Default: producing 1000 electron-hole pairs(3.6keV)."};
   /// The volume manager
   dd4hep::VolumeManager m_volumeManager;
   /// The planar module stepper needed to step thorugh the module
