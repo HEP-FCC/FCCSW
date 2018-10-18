@@ -93,13 +93,13 @@ StatusCode ModuleClusterWriter::write(const sim::FCCPlanarCluster& cluster, int 
   // first check if we are still on the same surface
   if (moduleID == m_moduleID) {
     // we are still on the same surface - update
-    m_moduleCache.update(cells.size(), pos.x(), pos.y(), pos.z(), cluster.tracks.size(), sizeX, sizeY, cluster.energy,
+    m_moduleCache.update(cells.size(), pos.x(), pos.y(), pos.z(), cluster.trackIDs.size(), sizeX, sizeY, cluster.energy,
                          cluster.time);
   } else {
     // update module cache and parameters
     newModule(eventNr, moduleID, segmentation.binUtility().bins(), cells.size(), segmentation.binUtility().bins(0),
               segmentation.binUtility().bins(1), surfaceCenter.x(), surfaceCenter.y(), surfaceCenter.z(), pos.x(),
-              pos.y(), pos.z(), cluster.tracks.size(), sizeX, sizeY, cluster.energy, cluster.time);
+              pos.y(), pos.z(), cluster.trackIDs.size(), sizeX, sizeY, cluster.energy, cluster.time);
   }
 
   return StatusCode::SUCCESS;

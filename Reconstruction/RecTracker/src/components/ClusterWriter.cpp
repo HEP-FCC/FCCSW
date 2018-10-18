@@ -72,7 +72,7 @@ StatusCode ClusterWriter::write(const sim::FCCPlanarCluster& cluster, int eventN
   m_x = pos.x();
   m_y = pos.y();
   m_z = pos.z();
-  m_nTracksPerCluster = cluster.tracks.size();
+  m_nTracksPerCluster = cluster.trackIDs.size();
   m_energy = cluster.energy;
 
   // get the corresponding binUtility of the layer

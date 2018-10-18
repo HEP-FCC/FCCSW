@@ -18,7 +18,7 @@ namespace sim {
 /// @brief wrapper of Acts::DigitizationCell to store hit information from fcc
 struct FCCDigitizationCell : Acts::DigitizationCell {
   /// track IDs of this cell
-  std::vector<int> trackIDs;
+  std::vector<unsigned> trackIDs;
   /// time of this cell
   float time = 0;
   /// count how often this cell was hit in the same event
@@ -28,7 +28,7 @@ struct FCCDigitizationCell : Acts::DigitizationCell {
   /// @param ch0 first channel number
   /// @param ch1 second channel number
   /// @param d data of cell (energy for analogue readout, 1 for digital readout)
-  FCCDigitizationCell(std::vector<int> TrackIDs, float Time, size_t Channel0, size_t Channel1, float Data = 0.)
+  FCCDigitizationCell(std::vector<unsigned> TrackIDs, float Time, size_t Channel0, size_t Channel1, float Data = 0.)
       : DigitizationCell(Channel0, Channel1, Data), trackIDs(TrackIDs), time(Time) {}
   // copy constructor
   FCCDigitizationCell(const FCCDigitizationCell& dc)
@@ -59,7 +59,7 @@ struct FCCPlanarCluster : Acts::Measurement_t<Acts::ParDef::eLOC_0, Acts::ParDef
   /// the time information of the cluster
   float time;
   /// the tracks IDs contributing to this cluster
-  std::vector<int> trackIDs;
+  std::vector<unsigned> trackIDs;
 
   /// constructor
   /// @param en the energy deposited in the cluster
@@ -70,7 +70,7 @@ struct FCCPlanarCluster : Acts::Measurement_t<Acts::ParDef::eLOC_0, Acts::ParDef
   /// @param loc0 the local position of the cluster - first coordinate
   /// @param loc1 the local position of the cluster - second coordinate
   /// @param dCells the cells contributing to the cluster
-  FCCPlanarCluster(float Energy, float Time, const std::vector<int>& TrackIDs, const Acts::Surface& mSurface,
+  FCCPlanarCluster(float Energy, float Time, const std::vector<unsigned>& TrackIDs, const Acts::Surface& mSurface,
                    const Identifier& cIdentifier, Acts::ActsSymMatrixD<2> cov, double loc0, double loc1,
                    std::vector<FCCDigitizationCell> dCells)
       : Acts::Measurement_t<Acts::ParDef::eLOC_0, Acts::ParDef::eLOC_1>(mSurface, cIdentifier, std::move(cov), loc0,

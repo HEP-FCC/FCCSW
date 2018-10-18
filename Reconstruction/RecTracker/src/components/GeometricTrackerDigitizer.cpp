@@ -169,7 +169,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
       for (auto& cell : cells) {
         auto cellTime = cell.averagedTime();
         // get all tracks of this cell and add it to the cluster
-        tracksPerCluster.insert(std::end(tracksPerCluster), std::begin(cell.trackHits), std::end(cell.trackHits));
+        tracksPerCluster.insert(std::end(tracksPerCluster), std::begin(cell.trackIDs), std::end(cell.trackIDs));
         // get energy of this cell
         clusterEnergy += cell.data;
         // calculate mean of time
@@ -226,7 +226,7 @@ StatusCode GeometricTrackerDigitizer::execute() {
       trackCluster.core().position = position;
       trackCluster.core().energy = clusterEnergy;
       trackCluster.core().time = clusterTime;
-      // add track IDs
+      // todo add track IDs
       /* for (auto& track : tracksPerCluster) {
          trackCluster.addtrackIDs(track);
        }*/
@@ -358,11 +358,8 @@ StatusCode GeometricTrackerDigitizer::createCells(
         float cellEnergy = (totalG4StepLength > 0) ? totalG4HitEnergy * sLength / totalG4StepLength : 0.;
         // in case the track does not pass the module completely, which means, it is a secondary which does not leave
         // the module, don't count it as a track
-        std::vector<unsigned> trackIDs = {};
-        if ((sLength * cos(localDirection.theta())) >=
-            (2. * hitDigitizationModule->halfThickness() - 10e-5 * Acts::units::_mm)) {
-          trackIDs.push_back(hit.hit().core().bits);
-        }
+        std::vector<unsigned> trackIDs = {hit.hit().core().bits};
+
         auto digiCell = sim::FCCDigitizationCell(std::move(trackIDs), hit.hit().core().time, dStep.stepCell.channel0,
                                                  dStep.stepCell.channel1, cellEnergy);
 
