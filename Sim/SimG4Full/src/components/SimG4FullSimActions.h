@@ -5,7 +5,6 @@
 #include "GaudiKernel/AlgTool.h"
 #include "GaudiKernel/SystemOfUnits.h"
 
-
 // FCCSW
 #include "SimG4Interface/ISimG4ActionTool.h"
 
@@ -38,6 +37,8 @@ private:
   /// Set to true to save secondary particle info
   Gaudi::Property<bool> m_enableHistory{this, "enableHistory", false, "Set to true to save secondary particle info"};
   Gaudi::Property<double> m_energyCut{this, "energyCut", 0.0 * Gaudi::Units::GeV, "minimum energy for secondaries to be saved"};
+  Gaudi::Property<std::string> m_excludeTracks{
+      this, "excludeTracks", "", "possibility to set the name  of track information to exclude certain particles"};
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

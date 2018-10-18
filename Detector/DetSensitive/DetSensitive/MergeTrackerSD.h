@@ -31,6 +31,11 @@ class Geant4PreDigiTrackHit;
  *  Rare cases where e.g. a low momentum secondary electron is strongly deflected and would activate additional
  *  cells may occur.
  *
+ *  This class also sets a user track information 'det::SecondaryTrackInformation' with the type
+ * "ExcludeNonTrackSecondaries" to all particles which have been created and died within the same sensitive volume
+ * (which do not create a track themselves), with the possibility to avoid writing their history by setting
+ *	excludeTracks="ExcludeNonTrackSecondaries" in the job options of the 'SimG4FullSimActions'.
+ *
  *  @author julia.hrdinka@cern.ch
  */
 namespace det {
@@ -67,6 +72,13 @@ public:
    *	@param hc hit collection of this event
    * */
   virtual void EndOfEvent(G4HCofThisEvent* /*hc*/) final;
+  /**
+   *    @brief SetExcludeTrackInfo flag secondaries not leaving the sensitive material with 'SecondaryTrackInformation'
+   *	of type "ExcludeNonTrackSecondaries", with the possibility to avoid writing their history by setting
+   *	excludeTracks="ExcludeNonTrackSecondaries" in the job options of the 'SimG4FullSimActions'
+   *    @param aStep Step in which particle deposited the energy.
+   * */
+  void SetExcludeTrackInfo(G4Step* aStep) const;
 
 private:
   /// Collection of tracker hits
