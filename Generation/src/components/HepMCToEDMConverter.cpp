@@ -16,9 +16,7 @@ HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* s
   declareProperty("genvertices", m_genvhandle, "Generated vertices collection (output)");
 }
 
-StatusCode HepMCToEDMConverter::initialize() { 
-  return GaudiAlgorithm::initialize();
-   }
+StatusCode HepMCToEDMConverter::initialize() { return GaudiAlgorithm::initialize(); }
 
 StatusCode HepMCToEDMConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
@@ -31,16 +29,19 @@ StatusCode HepMCToEDMConverter::execute() {
       HepMC::Units::conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
   double hepmc2EdmEnergy =
       HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
-  
+
   // bookkeeping of particle / vertex relations
   std::unordered_map<const HepMC::GenVertex*, fcc::GenVertex> hepmcToEdmVertexMap;
-  HepMC::FourVector tmp; /// temp variable for the transfer of position / momentom
+  HepMC::FourVector tmp;  /// temp variable for the transfer of position / momentom
   // iterate over particles in event
   for (auto particle_i = event->particles_begin(); particle_i != event->particles_end(); ++particle_i) {
 
     // if there is a list of statuses to filter: filter by status
-    if(std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) == m_hepmcStatusList.end() && m_hepmcStatusList.size() > 0) continue;
-    // create edm 
+    if (std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) ==
+            m_hepmcStatusList.end() &&
+        m_hepmcStatusList.size() > 0)
+      continue;
+    // create edm
     fcc::MCParticle particle = particles->create();
     // set mcparticle data members
     particle.pdgId((*particle_i)->pdg_id());
@@ -74,6 +75,7 @@ StatusCode HepMCToEDMConverter::execute() {
         hepmcToEdmVertexMap.insert({productionVertex, vertex});
         particle.startVertex(vertex);
       }
+      particle.vertex(particle.startVertex().position());
     }
 
     /// create decay vertex, if it has not already been created and logged in the map
@@ -96,12 +98,11 @@ StatusCode HepMCToEDMConverter::execute() {
       }
     }
 
-  } // particle loop
+  }  // particle loop
 
   m_genphandle.put(particles);
   m_genvhandle.put(vertices);
   return StatusCode::SUCCESS;
 }
 
-StatusCode HepMCToEDMConverter::finalize() {
-   return GaudiAlgorithm::finalize(); }
+StatusCode HepMCToEDMConverter::finalize() { return GaudiAlgorithm::finalize(); }
