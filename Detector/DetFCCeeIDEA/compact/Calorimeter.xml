@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCCee"
+        title="FCCee: dummy calorimeter"
+        author="nalipour"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>A Dummy Calorimeter: to be rewritten based on the dual readout technology</comment>
+  </info>
+
+
+  <define>
+    <constant name="barrelLength" value="4000*mm" />
+
+  </define>
+
+  <display>
+    <vis name="EndCalVis" r="0.8" g="0.8" b="0" showDaughters="false" visible="true"/>
+  </display>
+
+  <detectors>
+
+    <detector name="CaloBarrel" type="DD4hep_DiskTracker" id="DetID_Calo_Barrel" reflect="false" vis="EndCalVis">
+      <layer id="1" inner_r="2500*mm" inner_z="-barrelLength/2.0" outer_r="4000*mm" vis="EndCalVis">
+	<slice material="Steel235" thickness="barrelLength" />
+      </layer>
+    </detector>
+
+    <detector name="CaloEndcap" type="DD4hep_DiskTracker" id="DetID_Calo_Endcap" reflect="true" vis="EndCalVis">
+      <layer id="1" inner_r="400*mm" inner_z="barrelLength+500*mm" outer_r="4000*mm" vis="EndCalVis">
+	<slice material="Steel235" thickness="1000*mm" />
+      </layer>
+    </detector>
+
+    <detector name="CaloEndcap2" type="DD4hep_DiskTracker" id="DetID_Calo_Endcap_2" reflect="true" vis="EndCalVis">
+      <layer id="1" inner_r="0*mm" inner_z="6500*mm" outer_r="4000*mm" vis="EndCalVis">
+	<slice material="Steel235" thickness="1000*mm" />
+      </layer>
+    </detector>
+
+  </detectors>
+  
+</lccdd>
