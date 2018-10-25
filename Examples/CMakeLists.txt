@@ -73,6 +73,9 @@ gaudi_add_test(CheckMergeCollection
 gaudi_add_test(GeantUserLimits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_userLimits.py)
+gaudi_add_test(GeantFullSimParticleGunFCCee
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_fccee_pgun.py)
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile
