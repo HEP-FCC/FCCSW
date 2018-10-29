@@ -7,34 +7,31 @@
 
 namespace sim {
 
-ParticleHistoryAction::ParticleHistoryAction(double aEnergyCut, const G4String& excludeTracks)
-    : m_energyCut(aEnergyCut), m_excludeTracks(excludeTracks) {}
+ParticleHistoryAction::ParticleHistoryAction(double aEnergyCut, bool selectTaggedOnly)
+    : m_energyCut(aEnergyCut), m_selectTaggedOnly(selectTaggedOnly) {}
 
-void ParticleHistoryAction::PreUserTrackingAction(const G4Track* aTrack) {
+void ParticleHistoryAction::PreUserTrackingAction(const G4Track* /*aTrack*/) {}
+
+void ParticleHistoryAction::PostUserTrackingAction(const G4Track* aTrack) {
   auto g4EvtMgr = G4EventManager::GetEventManager();
   auto evtinfo = dynamic_cast<sim::EventInformation*>(g4EvtMgr->GetUserInformation());
   G4LorentzVector prodPos(aTrack->GetGlobalTime() - aTrack->GetLocalTime(), aTrack->GetVertexPosition());
   G4LorentzVector endPos(aTrack->GetGlobalTime(), aTrack->GetPosition());
-  if (selectParticle(*aTrack, m_energyCut, m_excludeTracks)) {
+  if (selectParticle(*aTrack, m_energyCut, m_selectTaggedOnly)) {
     evtinfo->addParticle(aTrack);
   }
 }
 
-void ParticleHistoryAction::PostUserTrackingAction(const G4Track* /*aTrack*/) {}
-
-
-bool ParticleHistoryAction::selectParticle(const G4Track& aTrack, double aEnergyCut, const G4String& excludeTracks) {
+bool ParticleHistoryAction::selectParticle(const G4Track& aTrack, double aEnergyCut, bool selectTaggedOnly) {
   G4LorentzVector p4(aTrack.GetMomentum(), aTrack.GetTotalEnergy());
   if (p4.e() < aEnergyCut) {
     return false;
   }
-  // possibily exclude tracks, if flag is set
-  if (aTrack.GetUserInformation()) {
-    // check if it is the correct flag
-    if (aTrack.GetUserInformation()->GetType() == excludeTracks) {
-      return false;
-    }
+  // in case only tagged tracks, with a user information set, should be selected
+  if (selectTaggedOnly && (!aTrack.GetUserInformation())) {
+    return false;
   }
+  // all other cases
   return true;
 }
 }

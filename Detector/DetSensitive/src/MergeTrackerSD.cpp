@@ -1,16 +1,14 @@
 #include "DetSensitive/MergeTrackerSD.h"
 
 // FCCSW
-#include "DetCommon/DetUtils.h"
-#include "DetCommon/SecondaryTrackInformation.h"
-
-// DD4hep
 #include "DDG4/Geant4Mapping.h"
 #include "DDG4/Geant4VolumeManager.h"
+#include "DetCommon/DetUtils.h"
 
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
+#include "DetCommon/SelectTrackInformation.h"
 // Geant4
 #include "G4SDManager.hh"
 
@@ -53,11 +51,11 @@ void MergeTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections) {
 }
 
 bool MergeTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
-  // set flag for particles not leaving the sensitive detector (possibily used in particle history action)
-  SetExcludeTrackInfo(aStep);
-  // check if energy was deposited
   G4double edep = aStep->GetTotalEnergyDeposit();
   if (edep == 0.) return false;
+
+  // set flag for particles which should be written out
+  SelectForParticleHistory(aStep);
   // uniquely identify volume
   // get the volumes of pre and post step
   G4VPhysicalVolume* preVolume = aStep->GetPreStepPoint()->GetPhysicalVolume();
@@ -197,18 +195,9 @@ void MergeTrackerSD::EndOfEvent(G4HCofThisEvent*) {
   }
 }
 
-void MergeTrackerSD::SetExcludeTrackInfo(G4Step* aStep) const {
-  // flag secondary originated in this sensitive volume and not exiting it
-  if (aStep->IsLastStepInVolume()) {  // Check if it is the last step in this sensitive volume
-    G4Track* aTrack = aStep->GetTrack();
-    if (aTrack->GetTouchable() == aTrack->GetOriginTouchable()) {
-      // Originated inside the same sensitive volume
-      if (aTrack->GetTrackStatus() == G4TrackStatus::fStopButAlive ||
-          aTrack->GetTrackStatus() == G4TrackStatus::fStopAndKill) {
-        // Does not exit this sensitive volume
-        aTrack->SetUserInformation(new det::SecondaryTrackInformation("ExcludeNonTrackSecondaries"));
-      }
-    }
+void MergeTrackerSD::SelectForParticleHistory(G4Step* aStep) const {
+  if (aStep->GetTotalEnergyDeposit() > m_energyThreshold) {
+    aStep->GetTrack()->SetUserInformation(new det::SelectTrackInformation("SelectParticle"));
   }
 }
 }

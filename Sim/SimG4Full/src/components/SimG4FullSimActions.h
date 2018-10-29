@@ -39,6 +39,9 @@ private:
   Gaudi::Property<double> m_energyCut{this, "energyCut", 0.0 * Gaudi::Units::GeV, "minimum energy for secondaries to be saved"};
   Gaudi::Property<std::string> m_excludeTracks{
       this, "excludeTracks", "", "possibility to set the name  of track information to exclude certain particles"};
+  Gaudi::Property<bool> m_selectTaggedOnly{
+      this, "selectTaggedOnly", false,
+      "possibility select only tagged (by setting the G4VUserTrackInformation of the G4Track) tracks, if set to true"};
 };
 
 #endif /* SIMG4FULL_G4FULLSIMACTIONS_H */

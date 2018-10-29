@@ -18,9 +18,10 @@ public:
   /**constructor
   * @param[in] enableHistory flag if history should be enabled
   * @param[in] aEnergyCut energy threshold above which particles are saved
-  * @param[in] excludeTracks possibility to hand over name  of track information to exclude certain particles
+  * @param[in] selectTaggedOnly possibility select only tagged (by setting the G4VUserTrackInformation of the G4Track)
+  * tracks, if set to true
   */
-  FullSimActions(bool enableHistory, double aEnergyCut, const G4String& excludeTracks = "");
+  FullSimActions(bool enableHistory, double aEnergyCut, bool selectTaggedOnly = false);
   /// destructor
   virtual ~FullSimActions();
   /// Create all user actions.
@@ -32,7 +33,7 @@ private:
   /// energy threshold for secondaries to be saved
   double m_energyCut;
   /// name  of track information to exclude certain particles
-  G4String m_excludeTracks;
+  bool m_selectTaggedOnly;
 };
 }
 

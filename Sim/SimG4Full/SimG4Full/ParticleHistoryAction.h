@@ -19,9 +19,10 @@ class ParticleHistoryAction : public G4UserTrackingAction {
 public:
   /** constructor
   * @param[in] energyCut energy threshold above which particles are saved
-  * @param[in] excludeTracks possibility to hand over name  of track information to exclude certain particles
+  * @param[in] selectTaggedOnly possibility select only tagged (by setting the G4VUserTrackInformation of the G4Track)
+  * tracks, if set to true
   */
-  ParticleHistoryAction(double energyCut, const G4String& excludeTrack = "");
+  ParticleHistoryAction(double energyCut, bool selectTaggedOnly = false);
   /// destructor
   virtual ~ParticleHistoryAction() = default;
 
@@ -33,15 +34,16 @@ public:
   /** Simple filter for particles to be saved, based on their energy.
   * @param[in] aTrack track of the particle to be saved
   * @param[in] aEnergyCut energy threshold above which particles are saved
-  * @param[in] excludeTracks possibility to set the name  of track information to exclude certain particles
+  * @param[in] selectTaggedOnly possibility select only tagged (by setting the G4VUserTrackInformation of the G4Track)
+  * tracks, if set to true
   */
-  bool selectParticle(const G4Track& aTrack, double aEnergyCut, const G4String& excludeTracks = "");
+  bool selectParticle(const G4Track& aTrack, double aEnergyCut, bool selectTaggedOnly = false);
 
 private:
   /// energy threshold for secondaries to be saved
   double m_energyCut;
   /// name  of track information to exclude certain particles
-  G4String m_excludeTracks;
+  bool m_selectTaggedOnly;
 };
 }
 

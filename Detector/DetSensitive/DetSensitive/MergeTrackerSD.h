@@ -31,10 +31,10 @@ class Geant4PreDigiTrackHit;
  *  Rare cases where e.g. a low momentum secondary electron is strongly deflected and would activate additional
  *  cells may occur.
  *
- *  This class also sets a user track information 'det::SecondaryTrackInformation' with the type
- * "ExcludeNonTrackSecondaries" to all particles which have been created and died within the same sensitive volume
- * (which do not create a track themselves), with the possibility to avoid writing their history by setting
- *	excludeTracks="ExcludeNonTrackSecondaries" in the job options of the 'SimG4FullSimActions'.
+ *  This class also sets a user track information 'det::SelectTrackInformation' with the type
+ * "SelectParticle" to all particles which create a hit and an energy deposit > m_energyThreshold to be
+ * 	saved in the particle history tool in order to use this selection criterion please set 'enableHistory' and
+ * 	'selectTaggedOnly' to 'true' in the 'SimG4FullSimActions'.
  *
  *  @author julia.hrdinka@cern.ch
  */
@@ -73,12 +73,12 @@ public:
    * */
   virtual void EndOfEvent(G4HCofThisEvent* /*hc*/) final;
   /**
-   *    @brief SetExcludeTrackInfo flag secondaries not leaving the sensitive material with 'SecondaryTrackInformation'
-   *	of type "ExcludeNonTrackSecondaries", with the possibility to avoid writing their history by setting
-   *	excludeTracks="ExcludeNonTrackSecondaries" in the job options of the 'SimG4FullSimActions'
+   *    @brief SelectForParticleHistory flag G4Tracks which create a hit and an energy deposit > m_energyThreshold to be
+   * 	saved in the particle history tool in order to use this selection criterion please set 'enableHistory' and
+   * 	'selectTaggedOnly' in the 'SimG4FullSimActions'
    *    @param aStep Step in which particle deposited the energy.
    * */
-  void SetExcludeTrackInfo(G4Step* aStep) const;
+  void SelectForParticleHistory(G4Step* aStep) const;
 
 private:
   /// Collection of tracker hits
@@ -113,6 +113,8 @@ private:
   G4int m_partPDG;
   /// The cell ID
   uint64_t m_cellID;
+  /// the energy threshold for particles to be saved in the particle history set to 36eV
+  const double m_energyThreshold = 0.0036;
 
   /** @brief CreateHit private helper method to create a new hit
   *   This method is called internally if a new step in a module from one particle is created. It sets the internal
