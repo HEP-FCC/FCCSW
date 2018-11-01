@@ -16,6 +16,7 @@ class Geant4PreDigiTrackHit;
 /** MergeTrackerSD DetectorDescription/DetSensitive/src/MergeTrackerSD.h MergeTrackerSD.h
  *
  *  Simple sensitive detector for tracker which does hits merging within the same particles in same module.
+ *  A hit is only created if it exceeds m_energyThreshold.
  *  This reduces the total number of produced hits which saves memory and CPU in the future.
  *  The position of the hit is set to the position from G4Step::GetPreStepPoint() to ensure that the volume ID
  *  is calculated for the correct volume (in case where step is limited by a boundary, post-step point
@@ -32,8 +33,8 @@ class Geant4PreDigiTrackHit;
  *  cells may occur.
  *
  *  This class also sets a user track information 'det::SelectTrackInformation' with the type
- * "SelectParticle" to all particles which create a hit and an energy deposit > m_energyThreshold to be
- * 	saved in the particle history tool in order to use this selection criterion please set 'enableHistory' and
+ * "SelectParticle" to all particles which create a hit to be saved in the particle history tool in order to use this
+ *  selection criterion please set 'enableHistory' and
  * 	'selectTaggedOnly' to 'true' in the 'SimG4FullSimActions'.
  *
  *  @author julia.hrdinka@cern.ch
@@ -113,8 +114,8 @@ private:
   G4int m_partPDG;
   /// The cell ID
   uint64_t m_cellID;
-  /// the energy threshold for particles to be saved in the particle history set to 36eV
-  const double m_energyThreshold = 0.0036;
+  /// the energy threshold for particles to be saved in the particle history set to 360eV - 1/10th of turning on a cell
+  const double m_energyThreshold = 0.00036;
 
   /** @brief CreateHit private helper method to create a new hit
   *   This method is called internally if a new step in a module from one particle is created. It sets the internal

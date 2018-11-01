@@ -52,7 +52,7 @@ void MergeTrackerSD::Initialize(G4HCofThisEvent* aHitsCollections) {
 
 bool MergeTrackerSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   G4double edep = aStep->GetTotalEnergyDeposit();
-  if (edep == 0.) return false;
+  if (edep < m_energyThreshold) return false;
 
   // set flag for particles which should be written out
   SelectForParticleHistory(aStep);
@@ -196,8 +196,6 @@ void MergeTrackerSD::EndOfEvent(G4HCofThisEvent*) {
 }
 
 void MergeTrackerSD::SelectForParticleHistory(G4Step* aStep) const {
-  if (aStep->GetTotalEnergyDeposit() > m_energyThreshold) {
     aStep->GetTrack()->SetUserInformation(new det::SelectTrackInformation("SelectParticle"));
-  }
 }
 }
