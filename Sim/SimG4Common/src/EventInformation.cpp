@@ -58,6 +58,6 @@ void EventInformation::addParticle(const G4Track* aSecondary) {
   edmParticle.startVertex(edmStartVertex);
   edmParticle.core().status = motherID; // FCC convention for status of secondary sim particle
   // set vertex of particle
-  edmParticle.core().vertex(edmParticle.startVertex().position());
+  edmParticle.vertex(edmParticle.startVertex().position());
 }
 }
