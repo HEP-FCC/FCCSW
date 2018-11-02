@@ -9,9 +9,7 @@ namespace sim {
 
 ParticleHistoryAction::ParticleHistoryAction(double aEnergyCut): m_energyCut(aEnergyCut) {}
 
-void ParticleHistoryAction::PreUserTrackingAction(const G4Track* /*aTrack*/) {}
-
-void ParticleHistoryAction::PostUserTrackingAction(const G4Track* aTrack) {
+void ParticleHistoryAction::PreUserTrackingAction(const G4Track* aTrack) {
   auto g4EvtMgr = G4EventManager::GetEventManager();
   auto evtinfo = dynamic_cast<sim::EventInformation*>(g4EvtMgr->GetUserInformation());
   G4LorentzVector prodPos(aTrack->GetGlobalTime() - aTrack->GetLocalTime(), aTrack->GetVertexPosition());
@@ -20,6 +18,8 @@ void ParticleHistoryAction::PostUserTrackingAction(const G4Track* aTrack) {
     evtinfo->addParticle(aTrack);
   }
 }
+
+void ParticleHistoryAction::PostUserTrackingAction(const G4Track* /*aTrack*/) {}
 
 bool ParticleHistoryAction::selectSecondary(const G4Track& aTrack, double aEnergyCut) {
   G4LorentzVector p4(aTrack.GetMomentum(), aTrack.GetTotalEnergy());

@@ -220,4 +220,37 @@
     <fraction n="0.0925" ref="Ni" />
   </material>
 
+  <!-- FCCeeIDEA: material for the drift chamber -->
+  <material name="GasHe_90Isob_10">
+    <D value="0.0003983999999999999" unit="g/cm3" />
+    <fraction n="0.3826351004462046" ref="He"/>
+    <fraction n="0.011371937371285891"   ref="H" />
+    <fraction n="0.6059929621825095" ref="C" />
+  </material>
+
+  <material name="beam" state="gas">
+    <P unit="pascal" value="6.25e-06"/>
+    <MEE unit="eV" value="38.5760755714278"/>
+    <D unit="g/cm3" value="1.7e-14"/>
+    <fraction n="0.36264" ref="H"/>
+    <fraction n="0.36276" ref="N"/>
+    <fraction n="0.117748421296248" ref="C"/>
+    <fraction n="0.156851578703752" ref="O"/>
+  </material>
+
+  <material name="TungstenDens24">
+    <D value="17.8" unit="g/cm3"/>
+    <fraction n="0.93" ref="W"/>
+    <fraction n="0.061" ref="Ni"/>
+    <fraction n="0.009" ref="Fe"/>
+  </material>
+
+  <material name="SolenoidMixture">
+    <D value="4.38" unit="g/cm3"/>
+    <fraction n="0.666" ref="Al"/>
+    <fraction n="0.166" ref="Cu"/>
+    <fraction n="0.084" ref="Ti"/>
+    <fraction n="0.084" ref="Nb"/>
+  </material>
+
 </materials>
