@@ -12,10 +12,7 @@ find_package(Geant4)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(ROOT REQUIRED COMPONENTS Geom)
-find_package(ACTS COMPONENTS Core  TGeoPlugin DD4hepPlugin)
-
-#set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
-#include( DD4hep )
+find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin Legacy)
 
 
 gaudi_install_headers(RecTracker)
@@ -27,15 +24,15 @@ gaudi_add_library(TrackingUtils
 
 gaudi_add_module(RecTracker
                  src/components/*.cpp
-                 INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils ACTS
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep TrackingUtils ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
+                 INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils Acts
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep TrackingUtils ActsCore ActsDD4hepPlugin ActsLegacy)
 
 
 gaudi_add_library(ActsLogger
                  src/lib/ACTSLogger.cpp
-                 INCLUDE_DIRS ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface RecInterface ACTS
+                 INCLUDE_DIRS ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface RecInterface Acts
                  NO_PUBLIC_HEADERS
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ACTS::ACTSCore ACTS::ACTSDD4hepPlugin) 
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep ActsCore)
 
 include(CTest)
 
@@ -49,8 +46,11 @@ gaudi_add_test(CombinatorialTrackSeeding
 			         FRAMEWORK options/combinatorialTrackSeedingTest.py
 			         DEPENDS Examples.GeantFullSimTrackerHits)
 
-# TODO: to be re-enabled once ACTS DD4hepPlugin is up to date
-#gaudi_add_test(ExtrapolationTest
-#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-#			         FRAMEWORK options/extrapolationTest.py
-#               ENVIRONMENT LD_PRELOAD+=build.$BINARY_TAG/lib/libActsLogger.so)
+gaudi_add_test(ExtrapolationTest
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			         FRAMEWORK options/extrapolationTest.py)
+
+gaudi_add_test(KalmanFilterTest
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+			         FRAMEWORK options/KalmanFilterTest.py
+               DEPENDS ExtrapolationTest)
