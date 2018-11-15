@@ -46,11 +46,11 @@ gaudi_add_test(CombinatorialTrackSeeding
 			         FRAMEWORK options/combinatorialTrackSeedingTest.py
 			         DEPENDS Examples.GeantFullSimTrackerHits)
 
-gaudi_add_test(ExtrapolationTest
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/extrapolationTest.py)
-
-gaudi_add_test(KalmanFilterTest
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/KalmanFilterTest.py
-               DEPENDS ExtrapolationTest)
+#gaudi_add_test(ExtrapolationTest
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#			         FRAMEWORK options/extrapolationTest.py)
+#
+#gaudi_add_test(KalmanFilterTest
+#               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#			         FRAMEWORK options/KalmanFilterTest.py
+#               DEPENDS ExtrapolationTest)

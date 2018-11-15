@@ -1,7 +1,7 @@
 #include "TrackingGeoSvc.h"
 
-#include "ACTS/Detector/TrackingGeometry.hpp"
-#include "ACTS/Plugins/DD4hepPlugins/ConvertDD4hepDetector.hpp"
+#include "Acts/Detector/TrackingGeometry.hpp"
+#include "Acts/Plugins/DD4hep/ConvertDD4hepDetector.hpp"
 
 DECLARE_SERVICE_FACTORY(TrackingGeoSvc)
 
