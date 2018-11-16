@@ -1,7 +1,7 @@
 ################################################################################
-# Package: DetFCCheTrackerTkLayout
+# Package: DetFCCehTrackerTkLayout
 ################################################################################
-gaudi_subdir(DetFCCheTrackerTkLayout v1r0)
+gaudi_subdir(DetFCCehTrackerTkLayout v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel Detector/DetCommon)
 
