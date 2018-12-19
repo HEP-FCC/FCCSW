@@ -64,10 +64,6 @@ struct CMGraph {
   std::vector<int> theRootLayers;
 };
 
-
-
-}  // namespace tricktrack
-
-
+} // namespace tricktrack
 
 #endif /* TRICKTRACK_CMGRAPH_H */

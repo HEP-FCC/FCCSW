@@ -9,8 +9,8 @@
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackStateCollection.h"
 
-#include "RecTracker/RiemannFit.h"
-#include "RecTracker/TTPoint.h"
+#include "tricktrack/RiemannFit.h"
+#include "tricktrack/TTPoint.h"
 
 using Hit = tricktrack::TTPoint;
 

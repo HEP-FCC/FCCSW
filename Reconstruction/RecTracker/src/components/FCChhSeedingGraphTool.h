@@ -8,8 +8,9 @@
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ILayerGraphTool.h"
 
-#include "RecTracker/CMGraph.h"
-
+namespace tricktrack {
+class CMGraph;
+}
 
 class FCChhSeedingGraphTool : public GaudiTool, virtual public ILayerGraphTool {
 public:

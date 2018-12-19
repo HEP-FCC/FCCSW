@@ -1,16 +1,15 @@
-#include "RecTracker/TrickTrackGraphUtility.h"
-#include <map>
-#include <set>
-#include <vector>
-#include <algorithm>
+#ifndef TRICKTRACK_CMGRAPHUTILS_H
+#define TRICKTRACK_CMGRAPHUTILS_H
+
+#include "CMGraph.h"
 
 namespace tricktrack {
-/** createGrap
+
+/** createGraph
  *
  *  utility function to facilitate filling the CMGraph
  */
-
-CMGraph createGraph2(std::vector<std::vector<std::string>> graphList, std::size_t numberOfHits) {
+inline CMGraph createGraph(std::vector<std::vector<std::string>> graphList, std::size_t numberOfHits=1000000) {
 
   // temporary containers for bookkeeping of layers
   std::set<std::string> uniqueLayers;
@@ -113,5 +112,8 @@ CMGraph createGraph2(std::vector<std::vector<std::string>> graphList, std::size_
   return theGraph;
 }
 
-}
+}  // namespace tricktrack
 
+
+
+#endif

@@ -1,7 +1,7 @@
 #include "FCChhSeedingGraphTool.h"
 
 #include "RecInterface/ILayerGraphTool.h"
-#include "RecTracker/TrickTrackGraphUtility.h"
+#include "tricktrack/CMGraphUtils.h"
 
 
 
@@ -24,7 +24,7 @@ StatusCode FCChhSeedingGraphTool::finalize() { return GaudiTool::finalize(); }
 /// Construct and return the layergraph for the Cellular automaton,
 tricktrack::CMGraph FCChhSeedingGraphTool::graph() {
 
-  auto g = tricktrack::createGraph2(m_layerPaths);
+  auto g = tricktrack::createGraph(m_layerPaths);
 
   //log debug info for graph layer
 

@@ -14,7 +14,7 @@
 #include "tricktrack/SpacePoint.h"
 #include "tricktrack/FKDTree.h"
 #include "tricktrack/FKDPoint.h"
-#include "RecTracker/TTPoint.h" // TODO: take from tricktrack as soon as available
+#include "tricktrack/TTPoint.h"
 
 
 
@@ -169,7 +169,6 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
 
   TripletFilter<Hit> ff = std::bind(defaultGeometricFilter<Hit>, _1, _2, m_ptMin, m_regionOriginX, m_regionOriginY, m_regionOriginRadius, m_phiCut, m_hardPtCut, m_thetaCut );
   m_automaton->createAndConnectCells(doublets, ff);
-  //m_automaton->createAndConnectCells(doublets, *m_trackingRegion, m_thetaCut, m_phiCut, m_hardPtCut);
   debug() << "... cells connected and created." << endmsg;
 
 

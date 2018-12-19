@@ -1,4 +1,3 @@
-// TODO: this file is part of tricktrack and should be removed once it becomes available as an external
 #ifndef SEEDING_TTPOINT_HPP
 #define SEEDING_TTPOINT_HPP
 
@@ -7,6 +6,8 @@
 #include <ostream>
 #include <vector>
 #include <array>
+
+#include "Logger.h"
 
 namespace tricktrack {
 
@@ -27,6 +28,9 @@ public:
 
   double const& operator[](unsigned int const i) const { return m_coordinates[i]; }
   unsigned int getId() const { return m_identifier; }
+
+  void print() { TT_INFO("TTPoint with coordinates: {}, {}, {}, {} ", m_coordinates[0], m_coordinates[1], m_coordinates[2], m_coordinates[3]); } 
+  
 
 private:
   std::array<double, 4> m_coordinates;
