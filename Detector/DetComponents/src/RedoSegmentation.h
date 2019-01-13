@@ -62,7 +62,7 @@ private:
    */
   uint64_t volumeID(uint64_t aCellId) const;
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the EDM positioned hits to be read
   DataHandle<fcc::PositionedCaloHitCollection> m_inHits{"hits/positionedCaloHits", Gaudi::DataHandle::Reader, this};
   /// Handle for the EDM hits to be written

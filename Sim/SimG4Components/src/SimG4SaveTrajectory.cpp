@@ -18,7 +18,7 @@ DECLARE_TOOL_FACTORY(SimG4SaveTrajectory)
 
 SimG4SaveTrajectory::SimG4SaveTrajectory(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)
-    : GaudiTool(aType, aName, aParent) {
+    : GaudiTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("trajectoryPoints", m_positionedTrackHits, "Handle for trajectory hits");
   declareProperty("trajectory", m_trackHits, "Handle for trajectory hits including position");

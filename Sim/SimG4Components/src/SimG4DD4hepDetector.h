@@ -35,7 +35,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
 };
 
 #endif /* SIMG4COMPONENTS_G4DD4HEPDETECTOR_H */

@@ -72,7 +72,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
 
   /// Map of cell IDs (corresponding to dd4hep IDs) and energy
   /*

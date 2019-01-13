@@ -48,7 +48,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for calo hits with additional position information
   DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits{"hits/positionedCaloHits",
                                                                     Gaudi::DataHandle::Writer, this};

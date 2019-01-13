@@ -25,7 +25,7 @@ private:
   /// name of the output file
   Gaudi::Property<std::string> m_filename{this, "filename", "", "file name to save the tree to"};
   /// Handle to the geometry service from which the detector is retrieved
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Step size in eta
   Gaudi::Property<double> m_etaBinning{this, "etaBinning", 0.05, "eta bin size"};
   /// Maximum eta until which to scan, scan is performed from -m_etaMax to +m_etaMax

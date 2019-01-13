@@ -21,11 +21,14 @@ DECLARE_TOOL_FACTORY(SimG4SaveTrackerHits)
 
 SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)
-    : GaudiTool(aType, aName, aParent) {
+    : GaudiTool(aType, aName, aParent),
+      m_geoSvc("GeoSvc", aName)
+    {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
   declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
   declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
+  declareProperty("GeoSvc", m_geoSvc);
 }
 
 SimG4SaveTrackerHits::~SimG4SaveTrackerHits() {}
@@ -34,7 +37,6 @@ StatusCode SimG4SaveTrackerHits::initialize() {
   if (GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

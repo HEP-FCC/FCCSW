@@ -52,7 +52,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
 
 
   std::unordered_map<uint32_t, std::unordered_map<uint64_t, std::vector<fcc::PositionedTrackHit> > > m_track_cell_hit;

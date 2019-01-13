@@ -129,7 +129,7 @@ private:
   /// Handle for hcal forward calorimeter cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_hcalFwdCells{"hcalFwdCells", Gaudi::DataHandle::Reader, this};
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic barrel readout
   Gaudi::Property<std::string> m_ecalBarrelReadoutName{this, "ecalBarrelReadoutName", "",
                                                        "name of the ecal barrel readout"};

@@ -12,7 +12,8 @@
 
 DECLARE_ALGORITHM_FACTORY(TestNeighbours)
 
-TestNeighbours::TestNeighbours(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+TestNeighbours::TestNeighbours(const std::string& aName, ISvcLocator* aSvcLoc) :
+GaudiAlgorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Handle for the EDM Hits to be read");
 }
 
@@ -22,7 +23,6 @@ StatusCode TestNeighbours::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

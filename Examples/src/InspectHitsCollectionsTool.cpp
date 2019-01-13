@@ -13,7 +13,7 @@ DECLARE_TOOL_FACTORY(InspectHitsCollectionsTool)
 
 InspectHitsCollectionsTool::InspectHitsCollectionsTool(const std::string& aType, const std::string& aName,
                                                        const IInterface* aParent)
-    : GaudiTool(aType, aName, aParent) {
+    : GaudiTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
   declareInterface<ISimG4SaveOutputTool>(this);
 }
 
@@ -24,7 +24,6 @@ StatusCode InspectHitsCollectionsTool::initialize() {
     error() << "Unable to initialize Service()" << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

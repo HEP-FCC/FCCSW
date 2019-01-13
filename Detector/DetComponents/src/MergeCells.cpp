@@ -14,7 +14,7 @@ using dd4hep::DDSegmentation::CellID;
 
 DECLARE_ALGORITHM_FACTORY(MergeCells)
 
-MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
   declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
@@ -27,7 +27,7 @@ StatusCode MergeCells::initialize() {
     error() << "No identifier to merge specified." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

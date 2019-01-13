@@ -34,7 +34,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
 
   dd4hep::DDSegmentation::GridDriftChamber* m_segmentation;
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder;

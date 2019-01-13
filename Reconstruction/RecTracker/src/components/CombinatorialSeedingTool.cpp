@@ -23,7 +23,7 @@ DECLARE_TOOL_FACTORY(CombinatorialSeedingTool)
 
 CombinatorialSeedingTool::CombinatorialSeedingTool(const std::string& type, const std::string& name,
                                                    const IInterface* parent)
-    : GaudiTool(type, name, parent)
+    : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name)
        {
   declareInterface<ITrackSeedingTool>(this);
   declareProperty("trackSeeds", m_trackSeeds, "Track Seeds (Output)");
@@ -34,7 +34,6 @@ StatusCode CombinatorialSeedingTool::initialize() {
   if (sc.isFailure()) {
     return sc;
   }
-  //m_geoSvc = service("GeoSvc");
   //auto lcdd = m_geoSvc->lcdd();
   //auto readouts = lcdd->readouts();
   //m_decoder = readout.idSpec().decoder();

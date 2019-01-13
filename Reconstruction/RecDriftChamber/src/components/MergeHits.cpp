@@ -20,7 +20,7 @@ DECLARE_ALGORITHM_FACTORY(MergeHits)
 
 
 MergeHits::MergeHits(const std::string& name, ISvcLocator* svcLoc) : 
-GaudiAlgorithm(name, svcLoc)
+GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name)
 {
   declareProperty("positionedHits", m_positionedHits, "Positioned hits (Input)");
   declareProperty("mergedHits", m_mergedHits, "Merged Tracker hits (Output)");
@@ -30,7 +30,6 @@ GaudiAlgorithm(name, svcLoc)
 StatusCode MergeHits::initialize() {
   info() << "MergeHits initialize" << endmsg;
 
-  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the "
