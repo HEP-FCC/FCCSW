@@ -3,7 +3,7 @@
 # run from FCCSW directory
 # with 
 #
-# make -f Reconstruction/RecTracker/RecPlotsMakeFile.mk plots
+# make -f Reconstruction/RecTracker/RecPlotsMakeFile.mk
 #
 #
 #
@@ -14,6 +14,7 @@
 tracks: muons_for_seeding_tracks.root
 muons_for_seeding_tracks.root: muons
 	./run fccrun.py Reconstruction/RecTracker/options/TrickTrackReco.py --nevents 5000 --cleanHits | tee muons_for_seeding_tracks.log 
+
 # simulate single muons to have a sample for track seeding
 muons: muons_for_seeding.log
 muons_for_seeding.log:
