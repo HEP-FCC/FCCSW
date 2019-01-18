@@ -1,6 +1,7 @@
 *~
 *.pyc
 *.root
+*.png
 
 *.log
 build.*.log
