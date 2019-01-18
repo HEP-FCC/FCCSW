@@ -60,7 +60,7 @@ StatusCode RewriteBitfield::initialize() {
     auto iter = std::find(newFields.begin(), newFields.end(), detectorField);
     if (iter == newFields.end()) {
       error() << "New readout does not contain field <<" << detectorField << ">> that describes the detector ID."
-              << endmsg;
+	      << endmsg;
       return StatusCode::FAILURE;
     }
   }
