@@ -9,14 +9,14 @@ gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Components Sim/SimG4Interface Sim/Sim
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 find_package(ROOT COMPONENTS Tree)
-find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
+find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 
 gaudi_install_headers(SimG4Fast)
 
 gaudi_add_library(SimG4Fast
                  src/lib/*.cpp
-                 INCLUDE_DIRS SimG4Common FWCore SimG4Components SimG4Interface Geant4 ROOT ACTS
-                 LINK_LIBRARIES GaudiAlgLib SimG4Common Geant4 ROOT ACTS::ACTSCore
+                 INCLUDE_DIRS SimG4Common FWCore SimG4Components SimG4Interface Geant4 ROOT Acts
+                 LINK_LIBRARIES GaudiAlgLib SimG4Common Geant4 ROOT ActsCore
                  PUBLIC_HEADERS SimG4Fast)
 
 gaudi_add_module(SimG4FastPlugins

@@ -14,30 +14,30 @@ find_package(PODIO)
 find_package(ROOT COMPONENTS MathCore GenVector Tree Physics EG)
 find_package(papas)
 find_package(Geant4)
-find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
+find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 include(${Geant4_USE_FILE})
 
 gaudi_add_library(PapasUtils
                  src/lib/*.cpp
                  INCLUDE_DIRS FWCore papas 
-                 LINK_LIBRARIES GaudiAlgLib papas ACTS::ACTSCore
+                 LINK_LIBRARIES GaudiAlgLib papas ActsCore
                  PUBLIC_HEADERS SimPapas)
 
 
 gaudi_add_module(SimPapas
                  src/*.cpp
                  INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector ACTS
-                 LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas ACTS::ACTSCore)
+                 LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas ActsCore)
 
 gaudi_add_module(CMSDetector
                  src/CMSDetector/*.cpp
                  INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector ACTS
-                 LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas ACTS::ACTSCore)
+                 LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas ActsCore)
 
 gaudi_add_module(ClicDetector
                  src/ClicDetector/*.cpp
                  INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector ACTS
-                 LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas ACTS::ACTSCore)
+                 LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas ActsCore)
 gaudi_install_headers(SimPapas)
 gaudi_install_headers(CMSDetector)
 gaudi_install_headers(ClicDetector)

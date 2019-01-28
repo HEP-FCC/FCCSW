@@ -10,15 +10,15 @@ find_package(Geant4)
 include(${Geant4_USE_FILE})
 find_package(DD4hep COMPONENTS DDG4)
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
-find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
+find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 
 gaudi_install_headers(SimG4Components)
 gaudi_install_python_modules()
 
 gaudi_add_module(SimG4Components
                  src/*.cpp
-                 INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface DetCommon  DD4hep ROOT ACTS
-                 LINK_LIBRARIES GaudiAlgLib Geant4 FWCore SimG4Common DetCommon  DD4hep ROOT ACTS::ACTSCore)
+                 INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface DetCommon  DD4hep ROOT Acts
+                 LINK_LIBRARIES GaudiAlgLib Geant4 FWCore SimG4Common DetCommon  DD4hep ROOT Acts)
 
 
 include(CTest)
