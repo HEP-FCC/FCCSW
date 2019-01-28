@@ -7,6 +7,7 @@
 // Geant 4
 #include "G4ChordFinder.hh"
 #include "G4FieldManager.hh"
+#include "G4MagIntegratorDriver.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
@@ -52,7 +53,9 @@ StatusCode SimG4BFieldTool::initialize() {
 
     fieldManager->CreateChordFinder(m_field);
     G4ChordFinder* chordFinder = fieldManager->GetChordFinder();
-    chordFinder->GetIntegrationDriver()->RenewStepperAndAdjust(stepper(m_integratorStepper, m_field));
+    // dynamic cast needed temporarily for compatibility with Geant4 10.4
+    G4MagInt_Driver* l_magDriver = dynamic_cast<G4MagInt_Driver*>(chordFinder->GetIntegrationDriver());
+    l_magDriver->RenewStepperAndAdjust(stepper(m_integratorStepper, m_field));
 
     propagator->SetLargestAcceptableStep(m_maxStep);
 
