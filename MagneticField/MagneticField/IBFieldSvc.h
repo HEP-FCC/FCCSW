@@ -15,7 +15,6 @@
 #include "ACTS/MagneticField/concept/AnyFieldLookup.hpp"
 #include "ACTS/Utilities/Definitions.hpp"
 #include "GaudiKernel/IService.h"
-#include "Math/Math.h"
 
 class GAUDI_API IBFieldSvc : virtual public IService {
 public:

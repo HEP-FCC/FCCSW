@@ -1,7 +1,6 @@
 // local
 #include "SimG4Common/BFieldG4.h"
 #include "ACTS/Utilities/Units.hpp"
-#include "Math/Math.h"
 // Geant 4
 #include "G4SystemOfUnits.hh"
 
