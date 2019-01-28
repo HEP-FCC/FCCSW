@@ -19,7 +19,8 @@ namespace sim {
 class BFieldG4 : public G4MagneticField {
 public:
   /// Constructor
-  BFieldG4(ServiceHandle<IBFieldSvc> bFieldSvc);
+  BFieldG4(ServiceHandle<IBFieldSvc> bFieldSvc, double rMax = std::numeric_limits<double>::max(),
+           double zMax = std::numeric_limits<double>::max());
   // Destructor
   virtual ~BFieldG4() = default;
 
@@ -28,11 +29,21 @@ public:
   /// @param[out] bField the return value
   virtual void GetFieldValue(const double* point, double* field) const final override;
 
+  /// Set the extend of the field in radial direction
+  void setMaxR(double value) { m_rMax = value; }
+  /// Set the extend of the field in longitudinal direction
+  void setMaxZ(double value) { m_zMax = value; }
+
 private:
   /// Shared pointer to the magnetic field service
   ServiceHandle<IBFieldSvc> m_bFieldSvc;
   /// Internal cash object of the magnetic field cell (in this way we only interpolate if needed)
   mutable Acts::concept::AnyFieldCell<> m_fieldCell;
+
+  /// Extend of the field in radial direction
+  double m_rMax;
+  /// Extend of the field in longitudinal direction
+  double m_zMax;
 };
 }
 

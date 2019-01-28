@@ -48,7 +48,7 @@ StatusCode SimG4BFieldTool::initialize() {
     G4PropagatorInField* propagator = transpManager->GetPropagatorInField();
 
     // The field manager keeps an observing pointer to the field, ownership stays with this tool. (Cleaned up in dtor)
-    m_field = new sim::BFieldG4(m_bFieldSvc);
+    m_field = new sim::BFieldG4(m_bFieldSvc, m_fieldRadMax, m_fieldZMax);
     fieldManager->SetDetectorField(m_field);
 
     fieldManager->CreateChordFinder(m_field);

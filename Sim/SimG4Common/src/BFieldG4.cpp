@@ -5,21 +5,29 @@
 #include "G4SystemOfUnits.hh"
 
 namespace sim {
-BFieldG4::BFieldG4(ServiceHandle<IBFieldSvc> bFieldSvc)
-    : G4MagneticField(), m_bFieldSvc(bFieldSvc), m_fieldCell(m_bFieldSvc->getFieldCell(Acts::Vector3D{0., 0., 0.})) {}
+BFieldG4::BFieldG4(ServiceHandle<IBFieldSvc> bFieldSvc, double rMax, double zMax)
+    : G4MagneticField(),
+      m_bFieldSvc(bFieldSvc),
+      m_fieldCell(m_bFieldSvc->getFieldCell(Acts::Vector3D{0., 0., 0.})),
+      m_rMax(rMax),
+      m_zMax(zMax) {}
 
 void BFieldG4::GetFieldValue(const double* point, double* bField) const {
-  // translate the point
-  Acts::Vector3D position(point);
-  // check if position is still in cache
-  if (!m_fieldCell.isInside(position)) {
-    // update field cache
-    m_fieldCell = m_bFieldSvc->getFieldCell(position);
+  if (std::sqrt(point[0] * point[0] + point[1] * point[1]) < m_rMax && std::abs(point[2]) < m_zMax) {
+    // translate the point
+    Acts::Vector3D position(point);
+    // check if position is still in cache
+    if (!m_fieldCell.isInside(position)) {
+      // update field cache
+      m_fieldCell = m_bFieldSvc->getFieldCell(position);
+    }
+    // get the field from the cell
+    // divide by ACTS units to get bfield in testla & multiply by clhep units to tell geant4 that it is in tesla
+    Acts::Vector3D field = (m_fieldCell.getField(position) / Acts::units::_T) * CLHEP::tesla;
+    // tranlate the output
+    std::memcpy(bField, field.data(), 3 * sizeof field.data());
+  } else {
+    bField[0] = bField[1] = bField[2] = 0;
   }
-  // get the field from the cell
-  // divide by ACTS units to get bfield in testla & multiply by clhep units to tell geant4 that it is in tesla
-  Acts::Vector3D field = (m_fieldCell.getField(position) / Acts::units::_T) * CLHEP::tesla;
-  // tranlate the output
-  std::memcpy(bField, field.data(), 3 * sizeof field.data());
 }
 }

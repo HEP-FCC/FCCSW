@@ -75,6 +75,10 @@ private:
   Gaudi::Property<double> m_maxStep{this, "MaximumStep", 1. * m, "Maximum step length in field (see G4 documentation)"};
   /// Name of the integration stepper, defaults to NystromRK4.
   Gaudi::Property<std::string> m_integratorStepper{this, "IntegratorStepper", "NystromRK4", "Integrator stepper name"};
+  /// Size of the field in radial direction. Set with property FieldRMax
+  Gaudi::Property<double> m_fieldRadMax{this, "FieldRMax", 6 * m, "Field max radius"};
+  /// Size of the field along the beam line. Set with property FieldZMax
+  Gaudi::Property<double> m_fieldZMax{this, "FieldZMax", 20. * m, "Field max Z"};
 };
 
 #endif  // SIMG4COMPONENTS_G4BFIELDTOOL_H
