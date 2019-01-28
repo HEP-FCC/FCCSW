@@ -1,12 +1,13 @@
 #include "BFieldValueCheck.h"
-#include "ACTS/Utilities/Units.hpp"
+#include <fstream>
+#include <limits>
+#include <utility>
+#include "Acts/Utilities/Helpers.hpp"
+#include "Acts/Utilities/Units.hpp"
 #include "TFile.h"
 #include "TROOT.h"
 #include "TTree.h"
 #include "TTree.h"
-#include <fstream>
-#include <limits>
-#include <utility>
 
 BFieldValueCheck::BFieldValueCheck(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {}
 
@@ -76,7 +77,7 @@ StatusCode BFieldValueCheck::initialize() {
     // the reference bField value
     auto refBField = m_bFieldSvc->getField(pos);
     // check r value
-    sc = equalTo(refBField.perp() / Acts::units::_mm, bFieldVec.perp());
+    sc = equalTo(Acts::VectorHelpers::perp(refBField) / Acts::units::_mm, Acts::VectorHelpers::perp(bFieldVec));
     if (sc != StatusCode::SUCCESS) return sc;
     // check z value
     sc = equalTo(refBField.z() / Acts::units::_mm, bFieldVec.z());

@@ -1,7 +1,7 @@
 #ifndef SIMG4COMMON_BFIELDG4_H
 #define SIMG4COMMON_BFIELDG4_H
 
-#include "ACTS/MagneticField/concept/AnyFieldLookup.hpp"
+#include "Acts/MagneticField/concept/AnyFieldLookup.hpp"
 #include "GaudiKernel/ServiceHandle.h"
 #include "MagneticField/IBFieldSvc.h"
 // Geant 4

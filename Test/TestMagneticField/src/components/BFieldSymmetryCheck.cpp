@@ -1,6 +1,7 @@
 #include "BFieldSymmetryCheck.h"
-#include "ACTS/Utilities/Units.hpp"
 #include <limits>
+#include "Acts/Utilities/Helpers.hpp"
+#include "Acts/Utilities/Units.hpp"
 
 BFieldSymmetryCheck::BFieldSymmetryCheck(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {}
 
@@ -44,13 +45,13 @@ StatusCode BFieldSymmetryCheck::initialize() {
           auto bField3 = m_bFieldSvc->getField(position3);
           auto bField4 = m_bFieldSvc->getField(position4);
           // check phi symmetry
-          sc = equalTo(bField0.perp(), bField2.perp());
+          sc = equalTo(Acts::VectorHelpers::perp(bField0), Acts::VectorHelpers::perp(bField2));
           if (sc != StatusCode::SUCCESS) return sc;
 
-          sc = equalTo(bField0.perp(), bField3.perp());
+          sc = equalTo(Acts::VectorHelpers::perp(bField0), Acts::VectorHelpers::perp(bField3));
           if (sc != StatusCode::SUCCESS) return sc;
 
-          sc = equalTo(bField0.perp(), bField4.perp());
+          sc = equalTo(Acts::VectorHelpers::perp(bField0), Acts::VectorHelpers::perp(bField4));
           if (sc != StatusCode::SUCCESS) return sc;
 
           // check z-symmetry

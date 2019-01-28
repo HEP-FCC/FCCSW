@@ -1,5 +1,6 @@
 #include "BFieldWriter.h"
-#include "ACTS/Utilities/Units.hpp"
+#include "Acts/Utilities/Helpers.hpp"
+#include "Acts/Utilities/Units.hpp"
 #include "TFile.h"
 #include "TTree.h"
 
@@ -75,7 +76,7 @@ StatusCode BFieldWriter::initialize() {
     double Br;
     outputTree->Branch("Br", &Br);
 
-        // the step sizes
+    // the step sizes
     double stepR = fabs(m_rMax - m_rMin) / m_rBins;
     double stepZ = fabs(m_zMax - m_zMin) / m_zBins;
     double stepPhi = (2. * M_PI) / m_phiBins;
@@ -94,7 +95,7 @@ StatusCode BFieldWriter::initialize() {
             z = raw_z / Acts::units::_mm;
             r = raw_r / Acts::units::_mm;
             Bz = bField.z() / Acts::units::_T;
-            Br = bField.perp() / Acts::units::_T;
+            Br = Acts::VectorHelpers::perp(bField) / Acts::units::_T;
             outputTree->Fill();
           }
         }

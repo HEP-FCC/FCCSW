@@ -12,8 +12,8 @@
 #ifndef MAGNETICFIELD_IBFIELDSVC_H
 #define MAGNETICFIELD_IBFIELDSVC_H
 
-#include "ACTS/MagneticField/concept/AnyFieldLookup.hpp"
-#include "ACTS/Utilities/Definitions.hpp"
+#include "Acts/MagneticField/concept/AnyFieldLookup.hpp"
+#include "Acts/Utilities/Definitions.hpp"
 #include "GaudiKernel/IService.h"
 
 class GAUDI_API IBFieldSvc : virtual public IService {

@@ -1,12 +1,12 @@
 #ifndef MAGNETICFIELD_INTERPOLATEDBFIELDSVC_H
 #define MAGNETICFIELD_INTERPOLATEDBFIELDSVC_H
 
-#include "ACTS/MagneticField/InterpolatedBFieldMap.hpp"
-#include "ACTS/Utilities/Units.hpp"
+#include <string>
+#include "Acts/MagneticField/InterpolatedBFieldMap.hpp"
+#include "Acts/Utilities/Units.hpp"
 #include "GaudiKernel/MsgStream.h"
 #include "GaudiKernel/Service.h"
 #include "MagneticField/IBFieldSvc.h"
-#include <string>
 
 /** @class InterpolatedBFieldSvc InterpolatedBFieldSvc.h
  * MagneticField/InterpolatedBFieldSvc.h

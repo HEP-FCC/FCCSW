@@ -1,14 +1,15 @@
 #include "InterpolatedBFieldSvc.h"
-#include "ACTS/MagneticField/concept/AnyFieldLookup.hpp"
-#include "ACTS/Utilities/BFieldMapUtils.hpp"
-#include "ACTS/Utilities/Units.hpp"
-#include "ACTS/Utilities/detail/Axis.hpp"
-#include "ACTS/Utilities/detail/Grid.hpp"
+#include <fstream>
+#include <utility>
+#include "Acts/MagneticField/concept/AnyFieldLookup.hpp"
+#include "Acts/Utilities/BFieldMapUtils.hpp"
+#include "Acts/Utilities/Helpers.hpp"
+#include "Acts/Utilities/Units.hpp"
+#include "Acts/Utilities/detail/Axis.hpp"
+#include "Acts/Utilities/detail/Grid.hpp"
 #include "TFile.h"
 #include "TROOT.h"
 #include "TTree.h"
-#include <fstream>
-#include <utility>
 
 DECLARE_SERVICE_FACTORY(InterpolatedBFieldSvc)
 
@@ -365,12 +366,13 @@ Acts::InterpolatedBFieldMap::FieldMapper<2, 2> InterpolatedBFieldSvc::fieldMappe
   }
   // [3] Create the transformation for the position
   // map (x,y,z) -> (r,z)
-  auto transformPos = [](const Acts::Vector3D& pos) { return Acts::Vector2D(pos.perp(), pos.z()); };
+  auto transformPos = [](const Acts::Vector3D& pos) { return Acts::Vector2D(Acts::VectorHelpers::perp(pos), pos.z()); };
 
   // [4] Create the transformation for the bfield
   // map (Br,Bz) -> (Bx,By,Bz)
   auto transformBField = [](const Acts::Vector2D& field, const Acts::Vector3D& pos) {
-    return Acts::Vector3D(field.x() * cos(pos.phi()), field.x() * sin(pos.phi()), field.y());
+    return Acts::Vector3D(field.x() * cos(Acts::VectorHelpers::phi(pos)),
+                          field.x() * sin(Acts::VectorHelpers::phi(pos)), field.y());
   };
 
   // [5] Create the mapper & BField Service
