@@ -38,13 +38,13 @@ private:
   /// Handle for the magnetic field initialization
   ToolHandle<ISimG4MagneticFieldTool> m_g4MagneticFieldTool{"SimG4BFieldTool", this, true};
   /// The minimum value of the position in x in mm
-  Gaudi::Property<double> m_xMin{this, "xMin", 0., "minimum in x"};
+  Gaudi::Property<double> m_xMin{this, "xMin", -20000., "minimum in x"};
   /// The maximum value of the position in x in mm
   Gaudi::Property<double> m_xMax{this, "xMax", 20000., "maximum in x"};
   /// The number of bins in in  x
   Gaudi::Property<double> m_xBins{this, "xBins", 200, "#bins in x"};
   /// The minimum value of the position in y in mm
-  Gaudi::Property<double> m_yMin{this, "yMin", 0., "minimum in y"};
+  Gaudi::Property<double> m_yMin{this, "yMin", -20000., "minimum in y"};
   /// The maximum value of the position in y in mm
   Gaudi::Property<double> m_yMax{this, "yMax", 20000., "maximum in y"};
   /// The number of bins in y
@@ -56,7 +56,8 @@ private:
   /// The number of bins in z
   Gaudi::Property<double> m_zBins{this, "zBins", 300, "#bins in z"};
   /// tolerance for the relative error
-  Gaudi::Property<double> m_epsilon{this,"epsilon",10e-10,"Tolerance of the relative error during the euqality check"};
+  Gaudi::Property<double> m_epsilon{this, "epsilon", 10e-10,
+                                    "Tolerance of the relative error during the euqality check"};
   // Method to check of two values are equal to each within the numeric limit epsilon
   StatusCode equalTo(const double& a, const double& b) const;
 };
