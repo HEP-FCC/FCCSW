@@ -9,7 +9,8 @@ bFieldSvc = InterpolatedBFieldSvc("BFieldSvc", fieldMap = '/eos/project/f/fccsw-
 # The geant4 magnetic field tool
 from Configurables import SimG4BFieldTool
 simG4BFieldTool = SimG4BFieldTool("SimG4BFieldTool", FieldOn=True, IntegratorStepper="ClassicalRK4", bFieldSvc=bFieldSvc)
-
+simG4BFieldTool.FieldRMax = 30000.
+simG4BFieldTool.FieldZMax = 30001.
 # Set up the magnetic field writer
 from Configurables import BFieldG4CrossCheck
 bFieldG4CrossCheck = BFieldG4CrossCheck("BFieldG4CrossCheck", bFieldSvc=bFieldSvc, g4magneticField=simG4BFieldTool, OutputLevel = VERBOSE)
