@@ -15,9 +15,9 @@
 //#include "DDSegmentation/CartesianGridXZ.h"
 #include "DDG4/Geant4Hits.h"
 
-#include "ACTS/Seeding/BarrelSeedFinder.hpp"
-#include "ACTS/Seeding/SpacePoint.hpp"
-#include "ACTS/Seeding/TrackSeed.hpp"
+#include "Acts/Seeding/BarrelSeedFinder.hpp"
+#include "Acts/Seeding/SpacePoint.hpp"
+#include "Acts/Seeding/TrackSeed.hpp"
 
 DECLARE_TOOL_FACTORY(CombinatorialSeedingTool)
 

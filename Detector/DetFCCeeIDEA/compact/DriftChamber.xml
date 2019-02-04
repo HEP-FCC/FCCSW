@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+
+  <info name="FCCee"
+        title="FCCee: Drift chamber"
+        author="nalipour"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>A drift chamber for the FCCee-IDEA concept</comment>
+  </info>
+
+  <define>
+    <constant name="detectorLength" value="4500*mm" />
+    <constant name="innerRadius" value="345*mm" />
+  </define>
+
+  <limits>
+    <limitset name="DriftChamber_limits">
+      <limit name="step_length_max" particles="*" value="2" unit="mm" />
+    </limitset>
+  </limits>
+  <regions>
+    <region name="DriftChamberRegion"/>
+  </regions>
+
+  <display>
+
+    <vis name="GasVis" alpha="1.0" r="0.0" g="0.8" b="0.7" showDaughters="true" visible="true"/>
+    <vis name="envelopeVis" alpha="0.1" r="0.0" g="0.1" b="0.6" showDaughters="true" visible="false"/>
+  </display>
+
+
+  <!--  Definition of the readout segmentation/definition  -->
+  <readouts>
+    <readout name="DriftChamberCollection">
+      <segmentation type="GridDriftChamber" inner_radius="innerRadius" cell_size="12*mm" detector_length="detectorLength" offset_phi="0" identifier_phi="phi"/>
+      <id>${GlobalTrackerReadoutID_DCH}</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="DetID_DCH" name="CDCH" type="parametrised_DriftChamber" vis="GasVis" readout="DriftChamberCollection" sensitive="true" limits="DriftChamber_limits" region="DriftChamberRegion">
+      <sensitive type="SimpleDriftChamber"/>
+
+      <comment> Dimensions for the drift chamber </comment>
+
+      <dimensions rmin="0" rmax="2100*mm" dz="detectorLength/2.0+1*mm" material="GasHe_90Isob_10" vis="envelopeVis"/>
+      <layer nSuperLayer="14" nRing="8" cellDimension="12*mm" 
+	     halfLength="detectorLength/2.0" r0="innerRadius" alpha="30*deg" sensitive="true"/>
+    </detector>
+  </detectors>
+
+</lccdd>
