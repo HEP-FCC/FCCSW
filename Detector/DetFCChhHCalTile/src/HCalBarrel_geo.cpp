@@ -11,31 +11,34 @@ using dd4hep::DetElement;
 using dd4hep::xml::Dimension;
 using dd4hep::PlacedVolume;
 
+
+//rename xml_h to xml_det_T?
+
 namespace det {
 
-static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep::SensitiveDetector sensDet) {
+static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlTopElement, dd4hep::SensitiveDetector sensDet) {
   // Get the Gaudi message service and message stream:
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "HCalConstruction");
   MsgStream lLog(&(*msgSvc), "HCalConstruction");
 
-  // set the sensitive detector type to the DD4hep calorimeter
-  Dimension sensDetType = xmlElement.child(_Unicode(sensitive));
+  // sensitive detector type read from xml (for example "SimpleCalorimeterSD")
+  Dimension sensDetType = xmlTopElement.child(_Unicode(sensitive));
   sensDet.setType(sensDetType.typeStr());
 
-  xml_det_t xmlDet = xmlElement;
-  std::string detName = xmlDet.nameStr();
-  // Make DetElement
-  DetElement hCal(detName, xmlDet.id());
+  xml_det_t xmlDet = xmlTopElement;
+
+  // top level det element representing whole hcal barrel
+  DetElement hCal(xmlDet.nameStr(), xmlDet.id());
 
   // Make volume that envelopes the whole barrel; set material to air
   Dimension dimensions(xmlDet.dimensions());
-  xml_comp_t xEndPlate = xmlElement.child(_Unicode(end_plate));
+  xml_comp_t xEndPlate = xmlTopElement.child(_Unicode(end_plate));
   double dZEndPlate = xEndPlate.thickness();
-  xml_comp_t xFacePlate = xmlElement.child(_Unicode(face_plate));
+  xml_comp_t xFacePlate = xmlTopElement.child(_Unicode(face_plate));
   double dRhoFacePlate = xFacePlate.thickness();
-  xml_comp_t xSpace = xmlElement.child(_Unicode(plate_space));  // to avoid overlaps
+  xml_comp_t xSpace = xmlTopElement.child(_Unicode(plate_space));  // to avoid overlaps
   double space = xSpace.thickness();
-  xml_comp_t xSteelSupport = xmlElement.child(_Unicode(steel_support));
+  xml_comp_t xSteelSupport = xmlTopElement.child(_Unicode(steel_support));
   double dSteelSupport = xSteelSupport.thickness();
   lLog << MSG::DEBUG << "steel support thickness " << dSteelSupport << endmsg;
   lLog << MSG::DEBUG << "steel support material  " << xSteelSupport.materialStr() << endmsg;
@@ -43,7 +46,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   double sensitiveBarrelRmin = dimensions.rmin() + dRhoFacePlate + space;
 
   // Hard-coded assumption that we have two different sequences for the modules
-  std::vector<xml_comp_t> sequences = {xmlElement.child(_Unicode(sequence_a)), xmlElement.child(_Unicode(sequence_b))};
+  std::vector<xml_comp_t> sequences = {xmlTopElement.child(_Unicode(sequence_a)), xmlTopElement.child(_Unicode(sequence_b))};
   // NOTE: This assumes that both have the same dimensions!
   Dimension sequenceDimensions(sequences[1].dimensions());
   double dzSequence = sequenceDimensions.dz();
@@ -53,8 +56,8 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   unsigned int numSequencesZ = static_cast<unsigned>((2 * dimensions.dz() - 2 * dZEndPlate - 2 * space) / dzSequence);
 
   // Hard-coded assumption that we have three different layer types for the modules
-  std::vector<xml_comp_t> Layers = {xmlElement.child(_Unicode(layer_1)), xmlElement.child(_Unicode(layer_2)),
-                                    xmlElement.child(_Unicode(layer_3))};
+  std::vector<xml_comp_t> Layers = {xmlTopElement.child(_Unicode(layer_1)), xmlTopElement.child(_Unicode(layer_2)),
+                                    xmlTopElement.child(_Unicode(layer_3))};
   unsigned int numSequencesR = 0;
   double moduleDepth = 0.;
   std::vector<double> layerDepths = std::vector<double>();
