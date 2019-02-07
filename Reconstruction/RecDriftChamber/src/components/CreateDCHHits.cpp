@@ -76,9 +76,9 @@ StatusCode CreateDCHHits::initialize() {
   m_tree->Branch("wireId", &wireId, "wireId/I");
   m_tree->Branch("Edep", &Edep, "Edep/D");
   m_tree->Branch("DCA", &DCA, "DCA/D");
-  m_tree->Branch("DCA_x", &DCA_x, "DCA_x/D");
-  m_tree->Branch("DCA_y", &DCA_y, "DCA_y/D");
-  m_tree->Branch("DCA_z", &DCA_z, "DCA_z/D");
+  m_tree->Branch("MC_x", &MC_x, "MC_x/D");
+  m_tree->Branch("MC_y", &MC_y, "MC_y/D");
+  m_tree->Branch("MC_z", &MC_z, "MC_z/D");
   m_tree->Branch("CELLID", &CELLID, "CELLID/I");
 
   m_tree->Branch("hitLength", &debug_hitLength, "hitLength/D");
@@ -173,13 +173,15 @@ StatusCode CreateDCHHits::execute() {
 	  else
 	    {
 	      closestDist=m_segmentation->distanceTrackWire(cellid, h_start, h_end);
-	      vec_DCA = m_segmentation->Line_TrackWire(cellid, h_start, h_end);
+	      vec_DCA = m_segmentation->IntersectionTrackWire(cellid, h_start, h_end);
+	      // std::cout << "***** nalipourTest *****" << std::endl;
+	      //std::cout << vec_DCA.X() << std::endl;
 	      
 	      hitINFO hinfo;
 	      hinfo.DCA = closestDist;
-	      hinfo.DCA_x = vec_DCA.X();
-	      hinfo.DCA_y = vec_DCA.Y();
-	      hinfo.DCA_z = vec_DCA.Z();
+	      hinfo.MC_x = vec_DCA.X()*CM_2_MM;
+	      hinfo.MC_y = vec_DCA.Y()*CM_2_MM;
+	      hinfo.MC_z = vec_DCA.Z()*CM_2_MM;
 	      hinfo.EdepSum = std::accumulate(hits.begin(), hits.end(), 0.0, sumEdep);
 	      hinfo.TOF = hit_start.core().time;
 	      hinfo.hit_start = h_start;
@@ -189,10 +191,16 @@ StatusCode CreateDCHHits::execute() {
 	}
     }
 
+  int index = 0;
+
   for (const auto& cell : m_wiresHit) {
+
     auto cellid = cell.first;
     int temp_layerId = m_decoder->get(cellid, "layer");
     int temp_wireId = m_decoder->get(cellid, "phi");
+
+    //std::cout << "index: " << index << ", layerID=" << temp_layerId << ", wireID=" << temp_wireId << std::endl;
+    index ++;
 
     auto hit_info_vec = m_wiresHit[cellid];
 
@@ -223,9 +231,9 @@ StatusCode CreateDCHHits::execute() {
 	    layerId = temp_layerId;
 	    wireId = temp_wireId;
 	    DCA = hit_info_vec[0].DCA;
-	    DCA_x = hit_info_vec[0].DCA_x;
-	    DCA_y = hit_info_vec[0].DCA_y;
-	    DCA_z = hit_info_vec[0].DCA_z;
+	    MC_x = hit_info_vec[0].MC_x;
+	    MC_y = hit_info_vec[0].MC_y;
+	    MC_z = hit_info_vec[0].MC_z;
 	    CELLID = cellid;
 	    debug_hitLength =  (hit_info_vec[0].hit_end- hit_info_vec[0].hit_start).Mag();
 	    debug_radius = (hit_info_vec[0].hit_start).Perp();
