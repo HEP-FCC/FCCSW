@@ -12,52 +12,55 @@ using dd4hep::xml::Dimension;
 using dd4hep::PlacedVolume;
 
 
-//rename xml_h to xml_det_T?
 
 namespace det {
 
-static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlTopElement, dd4hep::SensitiveDetector sensDet) {
+static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep::SensitiveDetector sensDet) {
   // Get the Gaudi message service and message stream:
   ServiceHandle<IMessageSvc> msgSvc("MessageSvc", "HCalConstruction");
   MsgStream lLog(&(*msgSvc), "HCalConstruction");
+  
 
-  // sensitive detector type read from xml (for example "SimpleCalorimeterSD")
-  Dimension sensDetType = xmlTopElement.child(_Unicode(sensitive));
-  sensDet.setType(sensDetType.typeStr());
 
-  xml_det_t xmlDet = xmlTopElement;
-
-  // top level det element representing whole hcal barrel
-  DetElement hCal(xmlDet.nameStr(), xmlDet.id());
+  /////////////////// config parsing ///////////////////////////////////
 
   // Make volume that envelopes the whole barrel; set material to air
-  Dimension dimensions(xmlDet.dimensions());
-  xml_comp_t xEndPlate = xmlTopElement.child(_Unicode(end_plate));
-  double dZEndPlate = xEndPlate.thickness();
-  xml_comp_t xFacePlate = xmlTopElement.child(_Unicode(face_plate));
-  double dRhoFacePlate = xFacePlate.thickness();
-  xml_comp_t xSpace = xmlTopElement.child(_Unicode(plate_space));  // to avoid overlaps
-  double space = xSpace.thickness();
-  xml_comp_t xSteelSupport = xmlTopElement.child(_Unicode(steel_support));
-  double dSteelSupport = xSteelSupport.thickness();
-  lLog << MSG::DEBUG << "steel support thickness " << dSteelSupport << endmsg;
-  lLog << MSG::DEBUG << "steel support material  " << xSteelSupport.materialStr() << endmsg;
+  Dimension xDimensions(xmlDet.dimensions());
 
-  double sensitiveBarrelRmin = dimensions.rmin() + dRhoFacePlate + space;
+
+  // sensitive detector type read from xml (for example "SimpleCalorimeterSD")
+  Dimension xSensitive = xmlDet.child(_U(sensitive));
+  sensDet.setType(xSensitive.typeStr());
+
+
+
+
+  xml_comp_t xEndPlate = xmlDet.child(_Unicode(end_plate));
+  double dZEndPlate = xEndPlate.thickness();
+  xml_comp_t xFacePlate = xmlDet.child(_Unicode(face_plate));
+  xml_comp_t xSpace = xmlDet.child(_Unicode(plate_space));  // to avoid overlaps
+  double space = xSpace.thickness();
+  xml_comp_t xSteelSupport = xmlDet.child(_Unicode(steel_support));
+  double dSteelSupport = xSteelSupport.thickness();
+
+  lLog << MSG::DEBUG << "steel support thickness: " << dSteelSupport << " [cm]" << endmsg;
+  lLog << MSG::DEBUG << "steel support material:  " << xSteelSupport.materialStr() << endmsg;
+
+  double sensitiveBarrelRmin = xDimensions.rmin() + xFacePlate.thickness() + space;
 
   // Hard-coded assumption that we have two different sequences for the modules
-  std::vector<xml_comp_t> sequences = {xmlTopElement.child(_Unicode(sequence_a)), xmlTopElement.child(_Unicode(sequence_b))};
+  std::vector<xml_comp_t> sequences = {xmlDet.child(_Unicode(sequence_a)), xmlDet.child(_Unicode(sequence_b))};
   // NOTE: This assumes that both have the same dimensions!
   Dimension sequenceDimensions(sequences[1].dimensions());
   double dzSequence = sequenceDimensions.dz();
   lLog << MSG::DEBUG << "sequence thickness " << dzSequence << endmsg;
 
   // calculate the number of modules fitting in Z
-  unsigned int numSequencesZ = static_cast<unsigned>((2 * dimensions.dz() - 2 * dZEndPlate - 2 * space) / dzSequence);
+  unsigned int numSequencesZ = static_cast<unsigned>((2 * xDimensions.dz() - 2 * dZEndPlate - 2 * space) / dzSequence);
 
   // Hard-coded assumption that we have three different layer types for the modules
-  std::vector<xml_comp_t> Layers = {xmlTopElement.child(_Unicode(layer_1)), xmlTopElement.child(_Unicode(layer_2)),
-                                    xmlTopElement.child(_Unicode(layer_3))};
+  std::vector<xml_comp_t> Layers = {xmlDet.child(_Unicode(layer_1)), xmlDet.child(_Unicode(layer_2)),
+                                    xmlDet.child(_Unicode(layer_3))};
   unsigned int numSequencesR = 0;
   double moduleDepth = 0.;
   std::vector<double> layerDepths = std::vector<double>();
@@ -80,34 +83,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlTopElement, dd4
   // Calculate correction along z based on the module size (can only have natural number of modules)
   double dzDetector = (numSequencesZ * dzSequence) / 2 + dZEndPlate + space;
   lLog << MSG::DEBUG << "dzDetector:  " <<  dzDetector << endmsg;
-  lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - dimensions.dz() << endmsg;
-
-  dd4hep::Tube envelopeShape(dimensions.rmin(), dimensions.rmax(), dzDetector);
-  Volume envelopeVolume("envelopeVolume", envelopeShape, lcdd.air());
-  envelopeVolume.setVisAttributes(lcdd, dimensions.visStr());
-
-  // Add structural support made of steel inside of HCal
-  DetElement facePlate(hCal, "FacePlate", 0);
-  dd4hep::Tube facePlateShape(dimensions.rmin(), sensitiveBarrelRmin, (dzDetector - dZEndPlate - space));
-  Volume facePlateVol("facePlate", facePlateShape, lcdd.material(xFacePlate.materialStr()));
-  facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
-  PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
-  facePlate.setPlacement(placedFacePlate);
-
-  // Add structural support made of steel at both ends of HCal
-  dd4hep::Tube endPlateShape(dimensions.rmin(), (dimensions.rmax() - dSteelSupport), dZEndPlate / 2);
-  Volume endPlateVol("endPlate", endPlateShape, lcdd.material(xEndPlate.materialStr()));
-  endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
-
-  DetElement endPlatePos(hCal, "endPlatePos", 0);
-  dd4hep::Position posOffset(0, 0, dzDetector - (dZEndPlate / 2));
-  PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
-  endPlatePos.setPlacement(placedEndPlatePos);
-
-  DetElement endPlateNeg(hCal, "endPlateNeg", 1);
-  dd4hep::Position negOffset(0, 0, -dzDetector + (dZEndPlate / 2));
-  PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
-  endPlateNeg.setPlacement(placedEndPlateNeg);
+  lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - xDimensions.dz() << endmsg;
 
   // Calculation the dimensions of one whole module:
   double spacing = sequenceDimensions.x();
@@ -115,101 +91,130 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlTopElement, dd4
   double rminSupport = sensitiveBarrelRmin + moduleDepth - spacing;
   double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport - spacing;
 
-  // DetElement vectors for placement in loop at the end
-  std::vector<dd4hep::PlacedVolume> layers;
-  layers.reserve(layerDepths.size());
-  std::vector<std::vector<dd4hep::PlacedVolume>> tilesInLayers;
-  tilesInLayers.reserve(numSequencesZ*sequences.size());
-  
-  double layerR = 0.;
 
-  // Placement of subWedges in Wedge
+  ////////////////////// detector building //////////////////////
+
+
+  // top level det element representing whole hcal barrel
+  DetElement hCal(xmlDet.nameStr(), xmlDet.id());
+
+  /// envelope shape
+  dd4hep::Tube envelopeShape(xDimensions.rmin(), xDimensions.rmax(), xDimensions.dz());
+  Volume envelopeVolume("HCalEnvelopeVolume", envelopeShape, lcdd.air());
+  envelopeVolume.setVisAttributes(lcdd, xDimensions.visStr());
+
+  // Add structural support made of steel inside of HCal
+  dd4hep::Tube facePlateShape(xDimensions.rmin(), sensitiveBarrelRmin, (dzDetector - dZEndPlate - space));
+  Volume facePlateVol("HCalFacePlateVol", facePlateShape, lcdd.material(xFacePlate.materialStr()));
+  facePlateVol.setVisAttributes(lcdd, xFacePlate.visStr());
+  PlacedVolume placedFacePlate = envelopeVolume.placeVolume(facePlateVol);
+  DetElement facePlate_det(hCal, "HCalFacePlate", 0);
+  facePlate_det.setPlacement(placedFacePlate);
+
+  // Add structural support made of steel at both ends of HCal
+  dd4hep::Tube endPlateShape(xDimensions.rmin(), (xDimensions.rmax() - dSteelSupport), dZEndPlate / 2);
+  Volume endPlateVol("HCalEndPlateVol", endPlateShape, lcdd.material(xEndPlate.materialStr()));
+  endPlateVol.setVisAttributes(lcdd, xEndPlate.visStr());
+
+  DetElement endPlatePos(hCal, "HCalEndPlatePos", 0);
+  dd4hep::Position posOffset(0, 0, dzDetector - (dZEndPlate / 2));
+  PlacedVolume placedEndPlatePos = envelopeVolume.placeVolume(endPlateVol, posOffset);
+  endPlatePos.setPlacement(placedEndPlatePos);
+
+  DetElement endPlateNeg(hCal, "HCalEndPlateNeg", 1);
+  dd4hep::Position negOffset(0, 0, -dzDetector + (dZEndPlate / 2));
+  PlacedVolume placedEndPlateNeg = envelopeVolume.placeVolume(endPlateVol, negOffset);
+  endPlateNeg.setPlacement(placedEndPlateNeg);
+
+  dd4hep::Tube supportShape(rminSupport, rmaxSupport, (dzDetector - dZEndPlate - space));
+  Volume steelSupportVolume("HCalSteelSupportVol", supportShape,
+			    lcdd.material(xSteelSupport.materialStr()));
+  steelSupportVolume.setVisAttributes(lcdd.invisible());
+  PlacedVolume placedSupport = envelopeVolume.placeVolume(steelSupportVolume);
+  DetElement support(hCal, "HCalSteelSupport", 0);
+  support.setPlacement(placedSupport);
+
+  //double sensitiveBarrelRMax = 
+  //          sensitiveBarrelRmin + std::accumulate(layerDepths.begin(), layerDepths.end(), 0.0);
+  double sensitiveBarrelDz = (dzDetector - dZEndPlate - space);
+
+
+  // loop over R ("layers")
+  double layerR = 0.;
   for (unsigned int idxLayer = 0; idxLayer < layerDepths.size(); ++idxLayer) {
-    auto layerName = dd4hep::xml::_toString(idxLayer, "layer%d");
-    unsigned int sequenceIdx = idxLayer % 2;
+    std::string layerName = "HCalLayer" + std::to_string(idxLayer);
 
     // in Module rmin = 0  for first wedge, changed radius to the full radius starting at (0,0,0)
     double rminLayer = sensitiveBarrelRmin + layerR;
     double rmaxLayer = sensitiveBarrelRmin + layerR + layerDepths.at(idxLayer);
-    lLog << MSG::DEBUG << "layer minumum radius:  " << rminLayer << endmsg;
-    lLog << MSG::DEBUG << "layer maximum radius:  " << rmaxLayer << endmsg;
-    
     layerR += layerDepths.at(idxLayer);
 
-    dd4hep::Tube layerShape(rminLayer, rmaxLayer, (dzDetector - dZEndPlate - space));
-    Volume layerVolume("layerVolume", layerShape, lcdd.material("Air"));
+    //alternate: even layers consist of tile sequence b, odd layer of tile sequence a
+    unsigned int sequenceIdx = (idxLayer + 1) % 2;
+    
+    dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer, dzSequence);
+    Volume tileSequenceVolume("HCalTileSequenceVol", tileSequenceShape, lcdd.air());
+
+    lLog << MSG::DEBUG << "layer inner radius:  " << rminLayer << " [cm]" << endmsg;
+    lLog << MSG::DEBUG << "layer outer radius:  " << rmaxLayer << " [cm]" <<  endmsg;
+    
+
+    dd4hep::Tube layerShape(rminLayer, rmaxLayer, sensitiveBarrelDz );
+    Volume layerVolume("HCalLayerVol", layerShape, lcdd.air());
+
     
     layerVolume.setVisAttributes(lcdd.invisible());
     unsigned int idxSubMod = 0;
     unsigned int idxActMod = 0;
-    double modCompZOffset = - (dzDetector - dZEndPlate - space);
+    double tileZOffset = - dzSequence;
     
-    // this matches the order of sequences of standalone HCAL geo description
-    if (sequenceIdx == 0) {
-      sequenceIdx = 1;
-    } else {
-      sequenceIdx = 0;
-    }
 
-    layers.push_back(envelopeVolume.placeVolume(layerVolume));
-    layers.back().addPhysVolID("layer", idxLayer);
+    dd4hep::PlacedVolume placedLayerVolume = envelopeVolume.placeVolume(layerVolume);
+    placedLayerVolume.addPhysVolID("layer", idxLayer);
+    DetElement layerDetElement(hCal, layerName, idxLayer);
+    layerDetElement.setPlacement(placedLayerVolume);
    
     std::vector<dd4hep::PlacedVolume> tiles;
-    // Filling of the layer tube with tile tubes in full z
-    for (uint numSeq=0; numSeq<numSequencesZ; numSeq++){
-      for (xml_coll_t xCompColl(sequences[sequenceIdx], _Unicode(module_component)); xCompColl;
-	   ++xCompColl, ++idxSubMod) {
-	xml_comp_t xComp = xCompColl;
-	double dyComp = xComp.thickness() * 0.5;
-	dd4hep::Tube tileShape(rminLayer, rmaxLayer, dyComp);
-	
-	Volume modCompVol("modCompVolume", tileShape,
-			  lcdd.material(xComp.materialStr()));
-	modCompVol.setVisAttributes(lcdd, xComp.visStr());
-	
-	dd4hep::Position offset(0, 0, modCompZOffset + dyComp);
-	
-	if (xComp.isSensitive()) {
-	  Volume tileVol("tileVolume", tileShape,
-			 lcdd.material(xComp.materialStr()));
-	  tileVol.setSensitiveDetector(sensDet);
-	  tiles.push_back(layerVolume.placeVolume(tileVol, offset));
-	  tiles.back().addPhysVolID("row", numSeq);
-	  idxActMod++;
-	} else {
-	  tiles.push_back(layerVolume.placeVolume(modCompVol, offset));
-	}
-	modCompZOffset += xComp.thickness();
-      }
-    }
-    // Fill vector for DetElements
-    tilesInLayers.push_back(tiles);
-  }
 
-  dd4hep::Tube supportShape(rminSupport, rmaxSupport, (dzDetector - dZEndPlate - space));
-  Volume steelSupportVolume("steelSupportVolume", supportShape,
-			    lcdd.material(xSteelSupport.materialStr()));
-  PlacedVolume placedSupport = envelopeVolume.placeVolume(steelSupportVolume);
-  
-  // Placement of DetElements
-  lLog << MSG::DEBUG << "Layers in r :    " << layers.size() << endmsg;
-  lLog << MSG::DEBUG << "Tiles in layers :" << tilesInLayers[1].size() << endmsg;
-  
-  DetElement support(hCal, "support", 0);
-  support.setPlacement(placedSupport);
-  
-  for (uint iLayer = 0; iLayer < numSequencesR; iLayer++) {
-    DetElement layerDet(hCal, dd4hep::xml::_toString(iLayer, "layer%d"), iLayer);
-    layerDet.setPlacement(layers[iLayer]);
     
-    for (uint iTile = 0; iTile < tilesInLayers[iLayer].size(); iTile++) {
-      DetElement tileDet(layerDet, dd4hep::xml::_toString(iTile, "tile%d"), iTile);
-      tileDet.setPlacement(tilesInLayers[iLayer][iTile]);
+    // first Z loop (tiles that make up a sequence)
+    for (xml_coll_t xCompColl(sequences[sequenceIdx], _Unicode(module_component)); xCompColl;
+	        ++xCompColl, ++idxSubMod) {
+      xml_comp_t xComp = xCompColl;
+      double dyComp = xComp.thickness() * 0.5;
+      dd4hep::Tube tileShape(rminLayer, rmaxLayer, dyComp);
+      
+      Volume tileVol("tileVolume", tileShape,
+            lcdd.material(xComp.materialStr()));
+      tileVol.setVisAttributes(lcdd, xComp.visStr());
+      
+      dd4hep::Position tileOffset(0, 0, tileZOffset + dyComp);
+      dd4hep::PlacedVolume placedTileVol = tileSequenceVolume.placeVolume(tileVol, tileOffset);
+      
+      if (xComp.isSensitive()) {
+        tileVol.setSensitiveDetector(sensDet);
+        DetElement activeTileDetElement(layerDetElement, "HCalActiveTile" + std::to_string(idxActMod), idxActMod);
+        activeTileDetElement.setPlacement(placedTileVol);
+        idxActMod++;
+      }
+      tileZOffset += xComp.thickness();
+      }
+
+    // second z loop (place sequences in layer)
+    double tileSequenceZOffset = -sensitiveBarrelDz;
+    for (uint numSeq=0; numSeq < numSequencesZ; numSeq++){
+      dd4hep::Position tileSequencePosition(0, 0, tileSequenceZOffset + dzSequence * 0.5);
+      dd4hep::PlacedVolume placedTileSequenceVolume = layerVolume.placeVolume(tileSequenceVolume, tileSequencePosition);
+      placedTileSequenceVolume.addPhysVolID("zSlice", numSeq);
+      
+      tileSequenceZOffset += dzSequence;
     }
   }
+  
    
   // Place envelope (or barrel) volume
   Volume motherVol = lcdd.pickMotherVolume(hCal);
+  motherVol.setVisAttributes(lcdd.invisible());
   PlacedVolume placedHCal = motherVol.placeVolume(envelopeVolume);
   placedHCal.addPhysVolID("system", hCal.id());
   hCal.setPlacement(placedHCal);
@@ -217,4 +222,4 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlTopElement, dd4
 }
 }  // namespace hcal
 
-DECLARE_DETELEMENT(CaloBarrel, det::createHCal)
+DECLARE_DETELEMENT(newCaloBarrel, det::createHCal)
