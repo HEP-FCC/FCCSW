@@ -1,4 +1,5 @@
 
+from GaudiKernel import SystemOfUnits as units
 
 from Gaudi.Configuration import *
 
@@ -13,14 +14,23 @@ geoservice.OutputLevel = INFO
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool()
-field.FieldOn = True
+field.FieldOn = False
 field.IntegratorStepper = "G4ExactHelixStepper"
 
 from Configurables import ConstPtParticleGun
-pgun_tool = ConstPtParticleGun(PdgCodes=[13], EtaMin=-1.5, EtaMax=1.5, PhiMin=0.0, PhiMax=0.0, PtMin=10000, PtMax=10000)
+pgun_tool = ConstPtParticleGun(PdgCodes=[13], EtaMin=0.0000, EtaMax=0.0000001, PhiMin=0.0, PhiMax=1.57, PtMin=10000, PtMax=10000)
+
+from Configurables import FlatSmearVertex
+smeartool = FlatSmearVertex()
+smeartool.xVertexMin =  0*units.mm
+smeartool.xVertexMax = 0*units.mm
+smeartool.yVertexMin = 0*units.mm
+smeartool.yVertexMax =  0*units.mm
+smeartool.zVertexMin = -300*units.mm
+smeartool.zVertexMax = 300*units.mm
 
 from Configurables import GenAlg
-gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool="FlatSmearVertex")
+gen = GenAlg("ParticleGun", SignalProvider=pgun_tool, VertexSmearingTool=smeartool)
 gen.hepmc.Path = "hepmc"
 
 from Configurables import HepMCToEDMConverter
@@ -89,7 +99,7 @@ auditorsvc_handle.Auditors = [ chronoauditor, memauditor, memauditor2, ]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [ gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 1000,
+                EvtMax   = 5000,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [auditorsvc_handle, podioevent, geoservice, geantservice,],
                 OutputLevel=DEBUG,

@@ -88,8 +88,8 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
   // Calculation the dimensions of one whole module:
   double spacing = sequenceDimensions.x();
   
-  double rminSupport = sensitiveBarrelRmin + moduleDepth - spacing;
-  double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport - spacing;
+  double rminSupport = sensitiveBarrelRmin + moduleDepth + spacing;
+  double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport + spacing;
 
 
   ////////////////////// detector building //////////////////////
@@ -152,11 +152,10 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
     //alternate: even layers consist of tile sequence b, odd layer of tile sequence a
     unsigned int sequenceIdx = (idxLayer + 1) % 2;
     
-    dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer, dzSequence);
+    dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer,0.5*dzSequence);
     Volume tileSequenceVolume("HCalTileSequenceVol", tileSequenceShape, lcdd.air());
 
-    lLog << MSG::DEBUG << "layer inner radius:  " << rminLayer << " [cm]" << endmsg;
-    lLog << MSG::DEBUG << "layer outer radius:  " << rmaxLayer << " [cm]" <<  endmsg;
+    lLog << MSG::DEBUG << "layer radii:  " << rminLayer << " - " << rmaxLayer << " [cm]" << endmsg;
     
 
     dd4hep::Tube layerShape(rminLayer, rmaxLayer, sensitiveBarrelDz );
@@ -166,7 +165,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
     layerVolume.setVisAttributes(lcdd.invisible());
     unsigned int idxSubMod = 0;
     unsigned int idxActMod = 0;
-    double tileZOffset = - dzSequence;
     
 
     dd4hep::PlacedVolume placedLayerVolume = envelopeVolume.placeVolume(layerVolume);
@@ -177,18 +175,18 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
     std::vector<dd4hep::PlacedVolume> tiles;
 
     
+    double tileZOffset = - 0.5* dzSequence;
     // first Z loop (tiles that make up a sequence)
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _Unicode(module_component)); xCompColl;
 	        ++xCompColl, ++idxSubMod) {
       xml_comp_t xComp = xCompColl;
-      double dyComp = xComp.thickness() * 0.5;
-      dd4hep::Tube tileShape(rminLayer, rmaxLayer, dyComp);
+      dd4hep::Tube tileShape(rminLayer, rmaxLayer, 0.5 * xComp.thickness());
       
-      Volume tileVol("tileVolume", tileShape,
+      Volume tileVol("HCalTileVol_"+xComp.nameStr(), tileShape,
             lcdd.material(xComp.materialStr()));
       tileVol.setVisAttributes(lcdd, xComp.visStr());
       
-      dd4hep::Position tileOffset(0, 0, tileZOffset + dyComp);
+      dd4hep::Position tileOffset(0, 0, tileZOffset + 0.5 * xComp.thickness() );
       dd4hep::PlacedVolume placedTileVol = tileSequenceVolume.placeVolume(tileVol, tileOffset);
       
       if (xComp.isSensitive()) {
@@ -222,4 +220,4 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
 }
 }  // namespace hcal
 
-DECLARE_DETELEMENT(newCaloBarrel, det::createHCal)
+DECLARE_DETELEMENT(HCalTileBarrel, det::createHCal)

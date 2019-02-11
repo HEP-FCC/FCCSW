@@ -36,18 +36,18 @@
   </define>
 
   <display>
-    <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="true" visible="false" drawingStyle="solid" />
-    <vis name="hcal_steel_master_vis" r="0.6" g="0.6" b="0.6" alpha="1" showDaughters="true" visible="false" drawingStyle="solid" />
-    <vis name="hcal_steel_support_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="false" drawingStyle="solid" />
-    <vis name="hcal_face_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="false" drawingStyle="solid" />
-    <vis name="hcal_end_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="false" drawingStyle="solid" />
+    <vis name="hcal_steel_vis" r="0.5" g="0.5" b="0.5" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="hcal_steel_master_vis" r="0.6" g="0.6" b="0.6" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="hcal_steel_support_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="hcal_face_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
+    <vis name="hcal_end_plate_vis" r="0.8" g="0.3" b="0.3" alpha="1" showDaughters="true" visible="true" drawingStyle="solid" />
     <vis name="hcal_polystyrene_vis" r="0.0" g="0.6" b="0.3" alpha="0.8" showDaughters="true"
     visible="true" />
-    <vis name="hcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="false" />
-    <vis name="hcal_barrel_seq1_vis" r="0.1" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="false" />
-    <vis name="hcal_barrel_seq2_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="false" />
-    <vis name="hcal_barrel_layer_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="false" />
-    <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="false" />
+    <vis name="hcal_envelope" r="0.6" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_barrel_seq1_vis" r="0.1" g="0.8" b="0.6" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_barrel_seq2_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_barrel_layer_vis" r="0.1" g="0.6" b="0.8" alpha="1" showDaughers="true" visible="true" />
+    <vis name="hcal_air_vis" r="1" g="1" b="1" alpha="1" showDaughers="true" visible="true" />
   </display>
 
   <readouts>
@@ -67,8 +67,7 @@
   </readouts>
 
   <detectors>
-    <detector id="BarHCal_id" name="HCalBarrel" type="CaloBarrelDetailedWedge"
-    readout="HCalBarrelDetailedWedgeReadout" >
+    <detector id="BarHCal_id" name="HCalBarrel" type="HCalTileBarrel" readout="HCalBarrelReadout" >
       <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmax" dz="BarHCal_dz" vis="hcal_envelope" />
       <sensitive type="BirksLawCalorimeterSD"/>
       <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="Steel235" sensitive="false" vis="hcal_end_plate_vis" />
@@ -95,22 +94,22 @@
       </layer_3>
       <sequence_a id="3" name="sequence_1" material="Air" vis="hcal_barrel_seq1_vis">
         <dimensions
-          dz="100*mm"
+          dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
           phiBins="BarHCal_n_phi_modules"
           x="BarHCAL_module_spacing_phi"
         />
         <!-- Master plate -->
-        <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
+        <module_component name="steelmaster" thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
         <!-- Spacer plate -->
-        <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0" material="Pb" sensitive="false" vis="hcal_steel_vis" />
+        <module_component name="pbspacer" thickness="BarHCal_spacer_plate_thickness" y_offset="0" material="Pb" sensitive="false" vis="hcal_steel_vis" />
         <!-- Master plate -->
-        <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
+        <module_component name="steelmaster" thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
         <!-- Air -->
-        <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
+        <module_component name="airspacer" thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
         <!-- Scintillator plate -->
-        <module_component thickness="BarHCal_scintillator_thickness" y_offset="0" material="Polystyrene" sensitive="true" vis="hcal_polystyrene_vis" />
+        <module_component name="scintillator" thickness="BarHCal_scintillator_thickness" y_offset="0" material="Polystyrene" sensitive="true" vis="hcal_polystyrene_vis" />
         <!-- Air -->
-        <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
+        <module_component name="airspacer" thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
       </sequence_a>
       <sequence_b id="4" name="sequence_2" material="Air" vis="hcal_barrel_seq2_vis">
         <dimensions
@@ -119,17 +118,17 @@
           x="BarHCAL_module_spacing_phi"
         />
         <!-- Master plate -->
-        <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
+        <module_component name="steelmaster" thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
         <!-- Air -->
-        <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
+        <module_component name="airspacer" thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
         <!-- Scintillator plate -->
-        <module_component thickness="BarHCal_scintillator_thickness" y_offset="0" material="Polystyrene" sensitive="true" vis="hcal_polystyrene_vis" />
+        <module_component name="scintillator" thickness="BarHCal_scintillator_thickness" y_offset="0" material="Polystyrene" sensitive="true" vis="hcal_polystyrene_vis" />
         <!-- Air -->
-        <module_component thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
+        <module_component name="airspacer" thickness="BarHCal_air_space_thickness"    y_offset="0" material="Air" sensitive="false" vis="hcal_air_vis" />
         <!-- Master plate -->
-        <module_component thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
+        <module_component name="steelmaster" thickness="BarHCal_master_plate_thickness" y_offset="0" material="Steel235" sensitive="false" vis="hcal_steel_master_vis" />
         <!-- Spacer plate -->
-        <module_component thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Pb" sensitive="false" vis="hcal_steel_vis" />
+        <module_component name="pbspacer" thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Pb" sensitive="false" vis="hcal_steel_vis" />
       </sequence_b>
     </detector>
   </detectors>
