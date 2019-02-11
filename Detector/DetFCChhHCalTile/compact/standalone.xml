@@ -3,42 +3,38 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-<materials>
+    <materials>
+      <material name="Vacuum">
+        <D type="density" unit="g/cm3" value="0.00000001" />
+        <fraction n="1" ref="H" />
+      </material>
+      <material name="Air">
+        <D type="density" unit="g/cm3" value="0.0012"/>
+        <fraction n="0.754" ref="N"/>
+        <fraction n="0.234" ref="O"/>
+        <fraction n="0.012" ref="Ar"/>
+      </material>
+      <material name="Steel235">
+        <D value="7.85" unit="g/cm3"/>
+        <fraction n="0.998" ref="Fe"/>
+        <fraction n=".002" ref="C"/>
+      </material>
+      <material name="Polystyrene">
+        <D value="1.032" unit="g/cm3"/>
+        <composite n="19" ref="C"/>
+        <composite n="21" ref="H"/>
+      </material>
+       <element Z="82" formula="Pb" name="Pb" >
+        <atom type="A" unit="g/mol" value="207.217" />
+       </element>
+       <material formula="Pb" name="Lead" state="solid" >
+        <RL type="X0" unit="cm" value="0.561253" />
+        <NIL type="lambda" unit="cm" value="18.2607" />
+        <D type="density" unit="g/cm3" value="11.35" />
+        <composite n="1" ref="Pb" />
+       </material>
+    </materials>
 
-  <material name="Vacuum">
-    <D type="density" unit="g/cm3" value="0.00000001" />
-    <fraction n="1" ref="H" />
-  </material>
-
-  <material name="Air">
-    <D type="density" unit="g/cm3" value="0.0012"/>
-    <fraction n="0.754" ref="N"/>
-    <fraction n="0.234" ref="O"/>
-    <fraction n="0.012" ref="Ar"/>
-  </material>
-
-  <material name="Steel235">
-    <D value="7.85" unit="g/cm3"/>
-    <fraction n="0.998" ref="Fe"/>
-    <fraction n=".002" ref="C"/>
-  </material>
-
-  <material name="Polystyrene">
-    <D value="1.032" unit="g/cm3"/>
-    <composite n="19" ref="C"/>
-    <composite n="21" ref="H"/>
-  </material>
-
-   <element Z="82" formula="Pb" name="Pb" >
-    <atom type="A" unit="g/mol" value="207.217" />
-   </element>
-   <material formula="Pb" name="Lead" state="solid" >
-    <RL type="X0" unit="cm" value="0.561253" />
-    <NIL type="lambda" unit="cm" value="18.2607" />
-    <D type="density" unit="g/cm3" value="11.35" />
-    <composite n="1" ref="Pb" />
-   </material>
-</materials>
 
   <info name="FCCHCalTileStandalone"
     title="master file with includes and world dimension"
@@ -53,6 +49,14 @@
     <constant name="world_x" value="world_size"/>
     <constant name="world_y" value="world_size"/>
     <constant name="world_z" value="world_size"/>
+
+    <!-- HCal Barrel (HCAL B) -->
+    <constant name="BarHCal_id" value="8"/>
+    <constant name="BarHCal_rmin" value="2850*mm"/>
+    <constant name="BarHCal_rmax" value="4890*mm"/>
+    <constant name="BarHCal_dz" value="4600*mm"/>
+
+
   </define>
   <include ref="./FCChh_HCalBarrel_TileCal.xml" />
 </lccdd>
