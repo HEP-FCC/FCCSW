@@ -205,7 +205,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
     for (uint numSeq=0; numSeq < numSequencesZ; numSeq++){
       dd4hep::Position tileSequencePosition(0, 0, tileSequenceZOffset + dzSequence * 0.5);
       dd4hep::PlacedVolume placedTileSequenceVolume = layerVolume.placeVolume(tileSequenceVolume, tileSequencePosition);
-      placedTileSequenceVolume.addPhysVolID("zSlice", numSeq);
+      placedTileSequenceVolume.addPhysVolID("row", numSeq);
       
       tileSequenceZOffset += dzSequence;
     }
