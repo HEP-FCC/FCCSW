@@ -5,7 +5,7 @@ gaudi_subdir(DetCommon v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel Detector/DetSegmentation)
 
-find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
+find_package(DD4hep COMPONENTS DDG4 REQUIRED)
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 

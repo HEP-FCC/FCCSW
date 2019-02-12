@@ -2,9 +2,11 @@
 #include "DD4hep/DetFactoryHelper.h"
 #include "DetCommon/DetUtils.h"
 
-#include "ACTS/Plugins/DD4hepPlugins/ActsExtension.hpp"
-#include "ACTS/Plugins/DD4hepPlugins/IActsExtension.hpp"
-
+#include "Acts/Plugins/DD4hep/ActsExtension.hpp"
+#include "Acts/Plugins/DD4hep/IActsExtension.hpp"
+#include "Acts/Plugins/Digitization/CartesianSegmentation.hpp"
+#include "Acts/Plugins/Digitization/DigitizationModule.hpp"
+#include "Acts/Surfaces/TrapezoidBounds.hpp"
 
 using dd4hep::Volume;
 using dd4hep::DetElement;
@@ -13,9 +15,36 @@ using dd4hep::xml::Component;
 using dd4hep::PlacedVolume;
 
 namespace det {
+
+inline std::shared_ptr<const Acts::DigitizationModule> trapezoidalDigiModuleXZ(double minHalflengthX,
+                                                                               double maxHalflengthX,
+                                                                               double halflengthZ,
+                                                                               double thickness,
+                                                                               double gridSizeX,
+                                                                               double gridSizeZ) {
+  // convert to ACTS units
+  double scalor = Acts::units::_cm;
+  minHalflengthX *= scalor;
+  maxHalflengthX *= scalor;
+  halflengthZ *= scalor;
+  thickness *= scalor;
+
+  auto bounds = std::make_shared<const Acts::TrapezoidBounds>(minHalflengthX, maxHalflengthX, halflengthZ);
+
+  // the Acts segmentation of the DigitizationModule
+  size_t bins0 = (gridSizeX != 0) ? (2 * maxHalflengthX) / (gridSizeX * scalor) : 0;
+  size_t bins1 = (gridSizeZ != 0) ? (2 * halflengthZ) / (gridSizeZ * scalor) : 0;
+
+  std::shared_ptr<const Acts::CartesianSegmentation> actsSegmentation =
+      std::make_shared<const Acts::CartesianSegmentation>(bounds, bins0, bins1);
+  // finally create the digitization module
+  // @todo set lorentz angle
+  return (std::make_shared<const Acts::DigitizationModule>(actsSegmentation, thickness, 1, 0));
+};
+
 static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
-                                                           dd4hep::xml::Handle_t xmlElement,
-                                                           dd4hep::SensitiveDetector sensDet) {
+                                                 dd4hep::xml::Handle_t xmlElement,
+                                                 dd4hep::SensitiveDetector sensDet) {
   // shorthands
   dd4hep::xml::DetElement xmlDet = static_cast<dd4hep::xml::DetElement>(xmlElement);
   Dimension dimensions(xmlDet.dimensions());
@@ -23,7 +52,7 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
 
   // get sensitive detector type from xml
   dd4hep::xml::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
-  sensDet.setType(sdTyp.typeStr());  // set for the whole detector
+  sensDet.setType(sdTyp.typeStr());                                      // set for the whole detector
 
   // definition of top volume
   std::string detName = xmlDet.nameStr();
@@ -56,7 +85,7 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
     // create disc volume
     double discThickness = 0.5 * (xDisc.zmax() - xDisc.zmin());
     currentZ = xDisc.z() - dimensions.zmin() - envelopeThickness;
-    if(xCurrentRings.hasChild(_Unicode(ring))) { // we have information to construct a new volume
+    if (xCurrentRings.hasChild(_Unicode(ring))) {  // we have information to construct a new volume
       dd4hep::Tube discShape(
           xDisc.rmin() - l_overlapMargin, xDisc.rmax() + l_overlapMargin, discThickness + l_overlapMargin);
 
@@ -79,18 +108,32 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
         Component xModulePropertiesComp = xModuleProperties.child(_Unicode(components));
         Component xSensorProperties = xRing.child(_Unicode(sensorProperties));
 
+        // store component materials for Acts Extension
+        std::vector<std::pair<dd4hep::Material, double>> compMaterials;
+        for (dd4hep::xml::Collection_t xCompColl(xModulePropertiesComp, _U(component)); nullptr != xCompColl;
+             ++xCompColl) {
+          dd4hep::xml::Component xComp = static_cast<Component>(xCompColl);
+          compMaterials.push_back(std::make_pair(lcdd.material(xComp.materialStr()), xComp.thickness()));
+        }
+
         // place components in module
         double integratedCompThickness = 0.;
         for (dd4hep::xml::Collection_t xCompColl(xModulePropertiesComp, _U(component)); nullptr != xCompColl;
              ++xCompColl) {
           Component xComp = static_cast<Component>(xCompColl);
-          Volume componentVolume("component",
-                                 dd4hep::Trapezoid(0.5 * xModuleProperties.attr<double>("modWidthMin"),
-                                                             0.5 * xModuleProperties.attr<double>("modWidthMax"),
-                                                             0.5 * xComp.thickness(),
-                                                             0.5 * xComp.thickness(),
-                                                             0.5 * xSensorProperties.attr<double>("sensorLength")),
-                                 lcdd.material(xComp.materialStr()));
+
+          double compMinWidth = 0.5 * xModuleProperties.attr<double>("modWidthMin");
+          double compMaxWidth = 0.5 * xModuleProperties.attr<double>("modWidthMax");
+          double compThickness = 0.5 * xComp.thickness();
+          double compLength = 0.5 * xSensorProperties.attr<double>("sensorLength");
+          Volume componentVolume(
+              "component",
+              dd4hep::Trapezoid(compMinWidth, compMaxWidth, compThickness, compThickness, compLength),
+              lcdd.material(xComp.materialStr()));
+
+          // Create digitization module
+          auto digiModule = trapezoidalDigiModuleXZ(compMinWidth, compMaxWidth, compLength, compThickness, 0.025, 0.05);
+
           componentVolume.setVisAttributes(lcdd.invisible());
           unsigned int nPhi = xRing.attr<int>("nModules");
           double phi = 0;
@@ -121,8 +164,8 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
             dd4hep::RotationY lRotation1(M_PI * 0.5);
             dd4hep::RotationX lRotation2(M_PI * 0.5 + phiTilt);
             // align radially
-            double componentOffset =
-                integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness") + 0.5 * xComp.thickness();
+            double componentOffset = integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness") +
+                0.5 * xComp.thickness();
             dd4hep::RotationZ lRotation3(atan2(lY, lX));
             // theta tilt, if any -- note the different convention between
             // tklayout and here, thus the subtraction of pi / 2
@@ -131,12 +174,22 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
             // position in  disk
             dd4hep::Translation3D lTranslation(lX, lY, lZ + componentOffset);
             dd4hep::Transform3D myTrafo(lRotation4 * lRotation3 * lRotation2 * lRotation1, lTranslation);
-            PlacedVolume placedComponentVolume = discVolumeVec.back().placeVolume(componentVolume, lRotation_PhiPos * myTrafo);
+            PlacedVolume placedComponentVolume =
+                discVolumeVec.back().placeVolume(componentVolume, lRotation_PhiPos * myTrafo);
             if (xComp.isSensitive()) {
               placedComponentVolume.addPhysVolID("component", compCounter);
               componentVolume.setSensitiveDetector(sensDet);
               DetElement moduleDetElement(discDetElementVec.back(), "comp" + std::to_string(compCounter), compCounter);
+
+              Acts::ActsExtension* moduleExtension = new Acts::ActsExtension(compMaterials, digiModule);
+              moduleDetElement.addExtension<Acts::IActsExtension>(moduleExtension);
+
               moduleDetElement.setPlacement(placedComponentVolume);
+
+              // Acts extension with material information
+              // Acts::ActsExtension* moduleExtension = new Acts::ActsExtension(compMaterials);
+              // moduleDetElement.addExtension<Acts::IActsExtension>(moduleExtension);
+
               ++compCounter;
             }
           }
@@ -146,7 +199,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
     } else {
       discDetElementVec.emplace_back(discDetElementVec.back().clone("disc" + std::to_string(discCounter)));
       posEcapDetElement.add(discDetElementVec.back());
-
     }
     PlacedVolume placedDiscVolume = envelopeVolume.placeVolume(discVolumeVec.back(), dd4hep::Position(0, 0, currentZ));
     placedDiscVolume.addPhysVolID("disc", discCounter);
@@ -168,7 +220,7 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
   placedEnvelopeVolume.addPhysVolID("posneg", 0);
   placedNegEnvelopeVolume.addPhysVolID("posneg", 1);
   auto negEcapDetElement = posEcapDetElement.clone("negEndcap");
-  
+
   posEcapDetElement.setPlacement(placedEnvelopeVolume);
   negEcapDetElement.setPlacement(placedNegEnvelopeVolume);
   worldDetElement.add(negEcapDetElement);
