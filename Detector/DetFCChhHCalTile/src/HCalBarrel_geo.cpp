@@ -139,6 +139,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
   double sensitiveBarrelDz = (dzDetector - dZEndPlate - space);
 
 
+
   // loop over R ("layers")
   double layerR = 0.;
   for (unsigned int idxLayer = 0; idxLayer < layerDepths.size(); ++idxLayer) {
