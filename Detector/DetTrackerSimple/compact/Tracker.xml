@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+    <info name="FCCSimpleTracker" title="FCCSimpleTracker" author="Valentin Volkl" url="https://cern.ch/fccsw" status="optimization" version="v0.1">
+        <comment>Simplified tracker geometry consisting of cylindrical shells.</comment>
+    </info>
+    <materials>
+       <material name="TrackerModuleMixture">
+        <D value="1.89" unit="g/cm3"/>
+        <composite n="0.02" ref="Cu"/>
+        <composite n="0.17" ref="Si"/>
+        <composite n="0.06" ref="Al"/> 
+        <composite n="0.43" ref="C"/>
+        <composite n="0.31" ref="PE"/>
+       </material>
+    </materials>
+
+    <readouts>
+        <readout name="FCChhTrackerSimpleReadout">
+            <id>system:4,layer:5</id>
+        </readout>
+    </readouts>
+  <display>
+    <vis name="vistracker_envelope" r="0.1" g="0.1" b="1.1" alpha="0.1" showDaughers="true" visible="true" />
+    <vis name="vistracker_layer" r="0.9" g="0.2" b="0.6" alpha="0.5" showDaughers="true" visible="true" />
+  </display>
+    <detectors>
+      <detector
+         name="FCChhTrackerSimple"
+         id="1"
+         type="FCCTrackerSimpleBarrel"
+         readout="FCChhTrackerSimpleReadout"
+         vis="vistracker_envelope"
+        >
+          <dimensions
+            rmin="25*mm"
+            rmax="2000*mm"
+            zmin="-16250.000*mm"
+            zmax="16250.000*mm"
+            />
+          <sensitive type="SimpleTrackerSD"/>
+          <barrel_layers vis="vistracker_layer" material="TrackerModuleMixture">
+              <layer radius="  25*mm" thickness="1.434*mm" zhalf=" 820*mm" />
+              <layer radius="  60*mm" thickness="1.434*mm" zhalf=" 820*mm" />
+              <layer radius=" 100*mm" thickness="1.434*mm" zhalf=" 820*mm" />
+              <layer radius=" 150*mm" thickness="1.434*mm" zhalf=" 820*mm" />
+              <layer radius=" 270*mm" thickness="2.867*mm" zhalf=" 820*mm" />
+              <layer radius=" 400*mm" thickness="2.867*mm" zhalf=" 820*mm" />
+              <layer radius=" 530*mm" thickness="2.867*mm" zhalf="2250*mm" />
+              <layer radius=" 742*mm" thickness="2.867*mm" zhalf="2250*mm" />
+              <layer radius=" 937*mm" thickness="3.587*mm" zhalf="2250*mm" />
+              <layer radius="1132*mm" thickness="3.587*mm" zhalf="2250*mm" />
+              <layer radius="1326*mm" thickness="3.587*mm" zhalf="2250*mm" />
+              <layer radius="1539*mm" thickness="3.587*mm" zhalf="2250*mm" />
+        </barrel_layers>
+        <endcap_layers vis="vistracker_layer" material="TrackerModuleMixture">
+            <layer  zhalf="  950*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius=" 404*mm"/>
+            <layer  zhalf=" 1178*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius=" 404*mm"/>
+            <layer  zhalf=" 1462*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius=" 404*mm"/>
+            <layer  zhalf=" 1813*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius=" 404*mm"/>
+            <layer  zhalf=" 2250*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius=" 404*mm"/>
+            <layer  zhalf=" 2625*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1550*mm"/>
+            <layer  zhalf=" 2986*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1550*mm"/>
+            <layer  zhalf=" 3397*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1550*mm"/>
+            <layer  zhalf=" 3864*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1550*mm"/>
+            <layer  zhalf=" 4395*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1550*mm"/>
+            <layer  zhalf=" 5000*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1550*mm"/>
+            <layer  zhalf=" 6250*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius=" 918*mm"/>
+            <layer  zhalf=" 7395*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1120*mm"/>
+            <layer  zhalf=" 8750*mm" thickness ="1.434*mm" inner_radius="25*mm" outer_radius="1321*mm"/>
+            <layer  zhalf="10000*mm" thickness ="1.434*mm" inner_radius="50*mm" outer_radius="1550*mm"/>
+            <layer  zhalf="10985*mm" thickness ="1.434*mm" inner_radius="50*mm" outer_radius="1550*mm"/>
+            <layer  zhalf="12068*mm" thickness ="1.434*mm" inner_radius="50*mm" outer_radius="1550*mm"/>
+            <layer  zhalf="13257*mm" thickness ="1.434*mm" inner_radius="50*mm" outer_radius="1550*mm"/>
+            <layer  zhalf="14565*mm" thickness ="1.434*mm" inner_radius="50*mm" outer_radius="1550*mm"/>
+            <layer  zhalf="16000*mm" thickness ="1.434*mm" inner_radius="50*mm" outer_radius="1550*mm"/>
+
+        </endcap_layers>
+      </detector>
+    </detectors>
+</lccdd>
