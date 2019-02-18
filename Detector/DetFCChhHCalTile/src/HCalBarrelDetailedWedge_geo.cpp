@@ -54,9 +54,14 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_h xmlElement, dd4hep
   double dphi = 2 * dd4hep::pi / static_cast<double>(numSequencesPhi);
   unsigned int numSequencesZ = static_cast<unsigned>((2 * dimensions.dz() - 2 * dZEndPlate - 2 * space) / dzSequence);
 
-  // Hard-coded assumption that we have three different layer types for the modules
-  std::vector<xml_comp_t> Layers = {xmlElement.child(_Unicode(layer_1)), xmlElement.child(_Unicode(layer_2)),
-                                    xmlElement.child(_Unicode(layer_3))};
+
+  // get all 'layer' children of the 'layers' tag
+  std::vector<xml_comp_t> Layers;
+  for (xml_coll_t xCompColl(xmlDet.child(_Unicode(layers)), _Unicode(layer)); xCompColl;
+	        ++xCompColl) {
+        Layers.push_back(xCompColl);
+  }
+
   unsigned int numSequencesR = 0;
   double moduleDepth = 0.;
   std::vector<double> layerDepths = std::vector<double>();

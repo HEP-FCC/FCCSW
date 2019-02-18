@@ -16,12 +16,6 @@
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
     <constant name="BarHCal_n_phi_modules" value="256"/>
-    <constant name="BarHCal_n_layers_1" value="2"/>
-    <constant name="BarHCal_n_layers_2" value="4"/>
-    <constant name="BarHCal_n_layers_3" value="4"/>
-    <constant name="BarHCal_module_drho_1" value="100*mm"/>
-    <constant name="BarHCal_module_drho_2" value="150*mm"/>
-    <constant name="BarHCal_module_drho_3" value="250*mm"/>
     <constant name="BarHCAL_module_spacing_phi" value="1*mm"/>
     <!-- component dimensions -->
     <constant name="BarHCal_master_plate_thickness" value="5*mm" />
@@ -54,7 +48,7 @@
     <readout name="HCalBarrelDetailedWedgeReadout">
      <id>system:4,module:8,row:9,layer:5</id>
     </readout>
-    <readout name="HCalBarrelReadout">
+    <readout name="HCalBarrelReadoutOld">
      <segmentation type="FCCSWGridPhiEta" grid_size_eta="2."  phi_bins="256" offset_phi="-pi+(pi/256.)"/>
      <id>system:4,layer:5,row:9,eta:0,phi:10</id>
     </readout>
@@ -78,24 +72,27 @@
       <face_plate name="face_plate" thickness="BarHCal_face_plate_thickness" material="Steel235" sensitive="false" vis="hcal_face_plate_vis" />
       <plate_space name="plate_space" thickness="BarHCal_plate_space" material="Air" sensitive="false" vis="hcal_air_vis" />
       <steel_support name="steel_support" thickness="BarHCal_steel_support_thickness" material="Steel235" sensitive="false" vis="hcal_steel_support_vis" />
-      <layer_1 id="0" name="type_1" material="Air" vis="hcal_barrel_layer_vis">
-        <dimensions
-           dr="BarHCal_module_drho_1"
-           nModules="BarHCal_n_layers_1"
-           />
-      </layer_1>
-      <layer_2 id="1" name="type_2" material="Air" vis="hcal_barrel_layer_vis">
-        <dimensions
-           dr="BarHCal_module_drho_2"
-           nModules="BarHCal_n_layers_2"
-           />
-      </layer_2>
-      <layer_3 id="2" name="type_3" material="Air" vis="hcal_barrel_layer_vis">
-        <dimensions
-           dr="BarHCal_module_drho_3"
-           nModules="BarHCal_n_layers_3"
-           />
-      </layer_3>
+      <layers>
+        <layer id="0" name="type_1" material="Air" vis="hcal_barrel_layer_vis">
+          <dimensions
+             dr="100*mm"
+             nModules="2"
+             />
+        </layer>
+        <layer id="1" name="type_2" material="Air" vis="hcal_barrel_layer_vis">
+          <dimensions
+             dr="150*mm"
+             nModules="4"
+             />
+        </layer>
+        <layer id="2" name="type_3" material="Air" vis="hcal_barrel_layer_vis">
+          <dimensions
+             dr="250*mm"
+             nModules="4"
+             />
+        </layer>
+      </layers>
+
       <sequence_a id="3" name="sequence_1" material="Air" vis="hcal_barrel_seq1_vis">
         <dimensions
           dz="2*BarHCal_master_plate_thickness + BarHCal_spacer_plate_thickness + BarHCal_scintillator_thickness + 2*BarHCal_air_space_thickness"
@@ -134,6 +131,7 @@
         <!-- Spacer plate -->
         <module_component name="pbspacer" thickness="BarHCal_spacer_plate_thickness" y_offset="0"  material="Pb" sensitive="false" vis="hcal_steel_vis" />
       </sequence_b>
+
     </detector>
   </detectors>
 
