@@ -95,6 +95,14 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
   ////////////////////// detector building //////////////////////
 
 
+  std::vector<dd4hep::PlacedVolume> layers;
+  layers.reserve(layerDepths.size());
+  std::vector<std::vector<dd4hep::PlacedVolume> > seqInLayers;
+  seqInLayers.reserve(layerDepths.size());
+  std::vector<dd4hep::PlacedVolume> tilesPerLayer;
+  tilesPerLayer.reserve(layerDepths.size());
+
+
   // top level det element representing whole hcal barrel
   DetElement hCal(xmlDet.nameStr(), xmlDet.id());
 
@@ -134,8 +142,6 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
   DetElement support(hCal, "HCalSteelSupport", 0);
   support.setPlacement(placedSupport);
 
-  //double sensitiveBarrelRMax = 
-  //          sensitiveBarrelRmin + std::accumulate(layerDepths.begin(), layerDepths.end(), 0.0);
   double sensitiveBarrelDz = (dzDetector - dZEndPlate - space);
 
 
@@ -170,12 +176,8 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
 
     dd4hep::PlacedVolume placedLayerVolume = envelopeVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", idxLayer);
-    DetElement layerDetElement(hCal, layerName, idxLayer);
-    layerDetElement.setPlacement(placedLayerVolume);
+    layers.push_back(placedLayerVolume);
    
-    std::vector<dd4hep::PlacedVolume> tiles;
-
-    
     double tileZOffset = - 0.5* dzSequence;
     // first Z loop (tiles that make up a sequence)
     for (xml_coll_t xCompColl(sequences[sequenceIdx], _Unicode(module_component)); xCompColl;
@@ -192,25 +194,41 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
       
       if (xComp.isSensitive()) {
         tileVol.setSensitiveDetector(sensDet);
-        DetElement activeTileDetElement(layerDetElement, "HCalActiveTile" + std::to_string(idxActMod), idxActMod);
-        activeTileDetElement.setPlacement(placedTileVol);
-        idxActMod++;
+        tilesPerLayer.push_back(placedTileVol);
+	idxActMod++;
       }
       tileZOffset += xComp.thickness();
-      }
+    }
 
     // second z loop (place sequences in layer)
     double tileSequenceZOffset = -sensitiveBarrelDz;
+    std::vector<dd4hep::PlacedVolume> sequences; 
     for (uint numSeq=0; numSeq < numSequencesZ; numSeq++){
       dd4hep::Position tileSequencePosition(0, 0, tileSequenceZOffset + dzSequence * 0.5);
       dd4hep::PlacedVolume placedTileSequenceVolume = layerVolume.placeVolume(tileSequenceVolume, tileSequencePosition);
       placedTileSequenceVolume.addPhysVolID("row", numSeq);
+      sequences.push_back(placedTileSequenceVolume);
       
       tileSequenceZOffset += dzSequence;
     }
+    seqInLayers.push_back(sequences);
+
+  }
+
+  // Place det elements wihtin each other to recover volume positions later via cellID  
+  for (uint iLayer = 0; iLayer < numSequencesR; iLayer++) {
+    DetElement layerDet(hCal, dd4hep::xml::_toString(iLayer, "layer%d"), iLayer);
+    layerDet.setPlacement(layers[iLayer]);
+    
+    for (uint iSeq = 0; iSeq < seqInLayers[iLayer].size(); iSeq++){
+      DetElement seqDet(layerDet, dd4hep::xml::_toString(iSeq, "seq%d"), iSeq);
+      seqDet.setPlacement(seqInLayers[iLayer][iSeq]);
+
+      DetElement tileDet(seqDet, dd4hep::xml::_toString(iSeq, "tile%d"), iSeq);
+      tileDet.setPlacement(tilesPerLayer[iLayer]);
+    }
   }
   
-   
   // Place envelope (or barrel) volume
   Volume motherVol = lcdd.pickMotherVolume(hCal);
   motherVol.setVisAttributes(lcdd.invisible());
