@@ -1,6 +1,6 @@
 
-import os
 
+import os
 from GaudiKernel import SystemOfUnits as units
 
 from Gaudi.Configuration import *
@@ -12,8 +12,10 @@ podioevent   = FCCDataSvc("EventDataSvc")
 path_to_detector = os.environ["FCC_DETECTORS"]
 from Configurables import GeoSvc
 geoservice = GeoSvc()
-geoservice.detectors = ['file:' + os.path.join(path_to_detector, 'Detector/DetFCChhHCalTile/compact/standalone.xml'),]
+geoservice.detectors = ['file:' + os.path.join(path_to_detector,
+'Detector/DetFCChhHCalTile/tests/compact_detailedwedge/standalone.xml'),]
 geoservice.OutputLevel = INFO
+
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool()
@@ -65,7 +67,7 @@ savetrajectorytool.trajectory.Path = "trajectory"
 savetrajectorytool.trajectoryPoints.Path = "trajectoryPoints"
 
 from Configurables import SimG4SaveCalHits
-savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["HCalBarrelReadout"])
+savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["HCalBarrelDetailedWedgeReadout"])
 savehcaltool.positionedCaloHits.Path = "HCalBarrelPositionedHits"
 savehcaltool.caloHits.Path = "HCalBarrelHits"
 
@@ -81,7 +83,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=INFO)
 out.outputCommands = ["keep *"]
-out.filename = 'output_hcal_geantscan.root'
+out.filename = 'output_hcaldetailedwedge_geantscan.root'
 
 from Configurables import ChronoAuditor
 chronoauditor = ChronoAuditor()
