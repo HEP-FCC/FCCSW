@@ -48,10 +48,6 @@
     <readout name="HCalBarrelDetailedWedgeReadout">
      <id>system:4,module:8,row:9,layer:5</id>
     </readout>
-    <readout name="HCalBarrelReadoutOld">
-     <segmentation type="FCCSWGridPhiEta" grid_size_eta="2."  phi_bins="256" offset_phi="-pi+(pi/256.)"/>
-     <id>system:4,layer:5,row:9,eta:0,phi:10</id>
-    </readout>
     <readout name="HCalBarrelReadout">
      <!-- the eta segmentation here is a dummy - the whole hcal (extending to 1.5 in eta) is 
           contained in one bin. the z position is stored in the "row" field. -->
