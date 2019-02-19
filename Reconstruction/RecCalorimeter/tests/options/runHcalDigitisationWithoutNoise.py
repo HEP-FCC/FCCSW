@@ -14,17 +14,49 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = INFO)
 
 #Configure tools for calo reconstruction
-from Configurables import CalibrateCaloHitsTool
+from Configurables import CalibrateCaloHitsTool, CreateVolumeCaloPositions, RedoSegmentation, RewriteBitfield
 calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
 
+rewriteHCal = RewriteBitfield("RewriteHCal",
+                                # old bitfield (readout)
+                                oldReadoutName = "HCalBarrelReadout",
+                                # specify which fields are going to be deleted
+                                removeIds = ["row"],
+                                # new bitfield (readout), with new segmentation
+                                newReadoutName = "BarHCal_Readout_phieta",
+                                debugPrint = 10,
+                                OutputLevel= INFO)
+# clusters are needed, with deposit position and cellID in bits
+rewriteHCal.inhits.Path = "HCalHits"
+rewriteHCal.outhits.Path = "HCalBarrelCellsStep2"
+
+# Use Phi-Eta segmentation in Hcal barrel
+resegmentHcalBarrel = RewriteBitfield("ReSegmentationHcal",
+                                       # old bitfield (readout)                         
+                                       oldReadoutName = "HCalBarrelReadout",
+                                       # specify which fields are going to be altered (deleted/rewritten)
+                                       removeIds = ["eta"],
+                                       # new bitfield (readout), with new segmentation                   
+                                       newReadoutName = "BarHCal_Readout_allTiles",
+                                       inhits = "HCalHits",
+                                       outhits = "HCalBarrelCellsStep1")
+
 from Configurables import CreateCaloCells
-createcells = CreateCaloCells("CreateCaloCells",
-                              calibTool=calibHcells,
-                              doCellCalibration = True,
-                              addCellNoise = False, filterCellNoise = False,
-                              OutputLevel = DEBUG)
-createcells.hits.Path="HCalHits"
-createcells.cells.Path="HCalCells"
+createHcalBarrelTiles = CreateCaloCells("CreateHCalBarrelTiles",
+                                        calibTool=calibHcells,
+                                        doCellCalibration=True,
+                                        addCellNoise=False, filterCellNoise=False,
+                                        OutputLevel=INFO,
+                                        hits="HCalBarrelCellsStep1",
+                                        cells="HCalAllTiles")
+
+createHcalBarrelCells = CreateCaloCells("CreateHCalBarrelCells",
+                                        calibTool=calibHcells,
+                                        doCellCalibration=True,
+                                        addCellNoise=False, filterCellNoise=False,
+                                        OutputLevel=INFO,
+                                        hits="HCalBarrelCellsStep2",
+                                        cells="HCalCells")
 
 out = PodioOutput("out", filename="output_HCalCells_digitisation_noNoise.root",
                    OutputLevel = DEBUG)
@@ -36,12 +68,15 @@ chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 podioinput.AuditExecute = True
-createcells.AuditExecute = True
+createHcalBarrelCells.AuditExecute = True
 out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              createcells,
+              resegmentHcalBarrel,
+              rewriteHCal,
+              createHcalBarrelTiles,
+              createHcalBarrelCells,
               out
               ],
     EvtSel = 'NONE',

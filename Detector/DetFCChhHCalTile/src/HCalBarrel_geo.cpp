@@ -81,12 +81,9 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
   double dzDetector = (numSequencesZ * dzSequence) / 2 + dZEndPlate + space;
   lLog << MSG::DEBUG << "dzDetector:  " <<  dzDetector << endmsg;
   lLog << MSG::INFO << "correction of dz (negative = size reduced):" << dzDetector - xDimensions.dz() << endmsg;
-
-  // Calculation the dimensions of one whole module:
-  double spacing = sequenceDimensions.x();
   
-  double rminSupport = sensitiveBarrelRmin + moduleDepth + spacing;
-  double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport + spacing;
+  double rminSupport = sensitiveBarrelRmin + moduleDepth;
+  double rmaxSupport = sensitiveBarrelRmin + moduleDepth + dSteelSupport;
 
 
   ////////////////////// detector building //////////////////////
@@ -139,7 +136,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
   DetElement support(hCal, "HCalSteelSupport", 0);
   support.setPlacement(placedSupport);
 
-  double sensitiveBarrelDz = (dzDetector - dZEndPlate - space);
+  //  double sensitiveBarrelDz = dzDetector - dZEndPlate;
 
   // loop over R ("layers")
   double layerR = 0.;
@@ -154,13 +151,13 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
     //alternate: even layers consist of tile sequence b, odd layer of tile sequence a
     unsigned int sequenceIdx = idxLayer % 2;
     
-    dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer,0.5*dzSequence);
+    dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer, 0.5*dzSequence);
     Volume tileSequenceVolume("HCalTileSequenceVol", tileSequenceShape, lcdd.air());
 
     lLog << MSG::DEBUG << "layer radii:  " << rminLayer << " - " << rmaxLayer << " [cm]" << endmsg;
     
 
-    dd4hep::Tube layerShape(rminLayer, rmaxLayer, dzDetector ); //sensitiveBarrelDz );
+    dd4hep::Tube layerShape(rminLayer, rmaxLayer, dzDetector - dZEndPlate - space );
     Volume layerVolume("HCalLayerVol", layerShape, lcdd.air());
 
     
@@ -199,7 +196,7 @@ static dd4hep::Ref_t createHCal(dd4hep::Detector& lcdd, xml_det_t xmlDet, dd4hep
     std::vector<dd4hep::PlacedVolume> sequences; 
 
     for (uint numSeq=0; numSeq < numSequencesZ; numSeq++){
-      double zOffset = - sensitiveBarrelDz + (2 * numSeq + 1) * (dzSequence * 0.5);
+      double zOffset = - dzDetector + (2 * numSeq + 1) * (dzSequence * 0.5);
       dd4hep::Position tileSequencePosition(0, 0, zOffset);
       dd4hep::PlacedVolume placedTileSequenceVolume = layerVolume.placeVolume(tileSequenceVolume, tileSequencePosition);
       placedTileSequenceVolume.addPhysVolID("row", numSeq);
