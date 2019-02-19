@@ -27,14 +27,16 @@ if __name__ == "__main__":
     # before parsing the arguments
     # to avoid parsing them twice, just assume the positional arguments
     # come first and as soon as we encounter "-" we stop
+    run_with_options_file = False
     for f in sys.argv[1:]:
       if f[0] != '-':
         execfile(f)
+        run_with_options_file = True
       else:
         break
 
     parser = argparse.ArgumentParser(description="Run job in the FCC framework")
-    parser.add_argument("config_files", nargs="+",
+    parser.add_argument("config_files", nargs="*",
                       help="Gaudi config (python) files describing the job")
     parser.add_argument("--dry-run", action="store_true",
                       help="Do not actually run the job, just parse the config files")
@@ -42,8 +44,8 @@ if __name__ == "__main__":
                       help="Run job with verbose output")
     parser.add_argument("-n", "--num-events", type=int,
                       help="Number of events to run")
-    #parser.add_argument("-l", "--list", action="store_true",
-    #`                  help="Print all the configurable components available in the framework")
+    parser.add_argument("-l", "--list", action="store_true",
+                      help="Print all the configurable components available in the framework and exit")
     parser.add_argument("--gdb", action="store_true", help="Attach gdb debugger")
 
     # TODO: Don't want to advertise this until tested.
@@ -59,69 +61,74 @@ if __name__ == "__main__":
 
 
     # print a doc line showing the configured algorithms
-    for alg in ApplicationMgr().TopAlg:
-      print ' --> ', alg.name(), 
-    print "",'\n'
+    if run_with_options_file:
+      for alg in ApplicationMgr().TopAlg:
+        print ' --> ', alg.name(), 
+      print "",'\n'
 
-    option_db = {}
+      option_db = {}
 
-    # loop over all components that were configured in the options file
-    for conf in ApplicationMgr.allConfigurables.values():
-      # skip public tools and the applicationmgr itself
-      if "ToolSvc" not in conf.name() and "ApplicationMgr" not in conf.name():
-        props = conf.getPropertiesWithDescription() #dict propertyname: (propertyvalue, propertydescription)
-        for prop in props:
-          # only add arguments for relevant properties
-          if not prop in __filterGaudiProps:
-            if not "Audit" in prop:
-              # do not want to deal with other components / datahandles for now
-                if not hasattr(props[prop][0], '__slots__'):
-                  #print conf.name(), prop, props[prop]
-                  try: # TODO: remove once duplicate elements sorted out
-                    propvalue = props[prop][0]
+      # loop over all components that were configured in the options file
+      for conf in ApplicationMgr.allConfigurables.values():
+        # skip public tools and the applicationmgr itself
+        if "ToolSvc" not in conf.name() and "ApplicationMgr" not in conf.name():
+          props = conf.getPropertiesWithDescription() #dict propertyname: (propertyvalue, propertydescription)
+          for prop in props:
+            # only add arguments for relevant properties
+            if not prop in __filterGaudiProps:
+              if not "Audit" in prop:
+                # do not want to deal with other components / datahandles for now
+                  if not hasattr(props[prop][0], '__slots__'):
+                    #print conf.name(), prop, props[prop]
+                    try: # TODO: remove once duplicate elements sorted out
+                      propvalue = props[prop][0]
 
-                    # if it is set to "no value" it hasn't been touched in the options file
+                      # if it is set to "no value" it hasn't been touched in the options file
 
-                    if propvalue == conf.propertyNoValue:
-                       propvalue = conf.getDefaultProperty(prop) # thus get the default value
-                    proptype = type(props[prop][0])
-                    # if the property is a list of something, we need to set argparse nargs to '+'
-                    propnargs = "?"
-                    #print "proptype", proptype
-                    if proptype == list:
-                      # tricky edgecase: if the default is an empty list there is no way to get the type
-                      if len(propvalue) == 0:
-                        # just skip for now
-                        print "Warning: cannot deduce type for property %s of %s. Needs to be set in options file." % (prop, conf.name())
-                        continue
-                      else:
-                        # deduce type from first item of the list
-                        proptype = type(propvalue[0])
-                      propnargs = "+"
-                      
-                    parser.add_argument("--" + prop, type=proptype, help=props[prop][1],
-                      nargs=propnargs,
-                      default=propvalue)
-                    # bookkeeping which option belongs to which configurable
-                    option_db[prop] = conf
-                  except argparse.ArgumentError:
-                    pass
+                      if propvalue == conf.propertyNoValue:
+                         propvalue = conf.getDefaultProperty(prop) # thus get the default value
+                      proptype = type(props[prop][0])
+                      # if the property is a list of something, we need to set argparse nargs to '+'
+                      propnargs = "?"
+                      #print "proptype", proptype
+                      if proptype == list:
+                        # tricky edgecase: if the default is an empty list there is no way to get the type
+                        if len(propvalue) == 0:
+                          # just skip for now
+                          #print "Warning: argparse cannot deduce type for property %s of %s. Needs to be set in options file." % (prop, conf.name())
+                          continue
+                        else:
+                          # deduce type from first item of the list
+                          proptype = type(propvalue[0])
+                        propnargs = "+"
+                        
+                      parser.add_argument("--" + prop, type=proptype, help=props[prop][1],
+                        nargs=propnargs,
+                        default=propvalue)
+                      # bookkeeping which option belongs to which configurable
+                      option_db[prop] = conf
+                    except argparse.ArgumentError:
+                      pass
 
-
-
-
-    #opts, unknown = parser.parse_known_args() #this is an 'internal' method
-    # which returns 'parsed', the same as what parse_args() would return
-    # and 'unknown', the remainder of that
-    # the difference to parse_args() is that it does not exit when it finds redundant arguments
-
-
-
-    #for arg in unknown:
-    #    if arg.startswith(("-", "--")):
-            #you can pass any arguments to add_argument
 
     opts=parser.parse_args()
+
+    if opts.list:
+        from Gaudi import Configuration
+        cfgDb = Configuration.cfgDb
+        print "Available components:\n%s" % (21 * "=")
+        for item in sorted(cfgDb):
+            if True: # another option could filter Gaudi components here
+              print "  %s (from %s)" % (item, cfgDb[item]["lib"])
+            else:
+                if not "Gaudi" in cfgDb[item]["lib"]:
+                  print "  %s (from %s)" % (item, cfgDb[item]["lib"])
+        sys.exit()
+
+    if not run_with_options_file:
+      print "usage: fccrun [gaudi_config.py ...] Specify a gaudi options file to run"
+      sys.exit()
+
     # turn namespace into dict
     opts_dict = vars(opts)
     for option in option_db:
