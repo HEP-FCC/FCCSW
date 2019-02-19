@@ -42,8 +42,8 @@ if __name__ == "__main__":
                       help="Run job with verbose output")
     parser.add_argument("-n", "--num-events", type=int,
                       help="Number of events to run")
-    parser.add_argument("-l", "--list", action="store_true",
-                      help="Print all the configurable components available in the framework")
+    #parser.add_argument("-l", "--list", action="store_true",
+    #`                  help="Print all the configurable components available in the framework")
     parser.add_argument("--gdb", action="store_true", help="Attach gdb debugger")
 
     # TODO: Don't want to advertise this until tested.
