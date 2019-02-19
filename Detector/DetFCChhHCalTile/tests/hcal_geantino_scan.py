@@ -9,7 +9,8 @@ from Configurables import FCCDataSvc
 podioevent   = FCCDataSvc("EventDataSvc")
 
 ## create DD4hep geometry
-path_to_detector = os.environ["FCC_DETECTORS"]
+path_to_detector = os.environ.get("FCC_DETECTORS". "")
+
 from Configurables import GeoSvc
 geoservice = GeoSvc()
 geoservice.detectors = ['file:' + os.path.join(path_to_detector, 'Detector/DetFCChhHCalTile/compact/standalone.xml'),]
