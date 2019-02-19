@@ -20,7 +20,6 @@ geoservice.OutputLevel = INFO
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool()
 field.FieldOn = False
-field.IntegratorStepper = "G4ExactHelixStepper"
 
 from Configurables import ConstPtParticleGun
 pgun_tool = ConstPtParticleGun(PdgCodes=[13], EtaMin=0.0000, EtaMax=0.0000001, PhiMin=0.0, PhiMax=1.57, PtMin=10000, PtMax=10000)
