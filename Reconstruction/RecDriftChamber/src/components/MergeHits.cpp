@@ -15,7 +15,7 @@
 
 
 
-DECLARE_ALGORITHM_FACTORY(MergeHits)
+DECLARE_COMPONENT(MergeHits)
 
 
 

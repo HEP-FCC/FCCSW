@@ -9,7 +9,7 @@ class GenEvent;
 }
 
 class HepMCFromScratch : public GaudiAlgorithm {
-  friend class AlgFactory<HepMCFromScratch>;
+  //friend class AlgFactory<HepMCFromScratch>;
 
 public:
   HepMCFromScratch(const std::string& name, ISvcLocator* svcLoc);

@@ -19,7 +19,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(CompareTrackHitPositionAndCellId)
+DECLARE_COMPONENT(CompareTrackHitPositionAndCellId)
 
 CompareTrackHitPositionAndCellId::CompareTrackHitPositionAndCellId(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", "CompareTrackHitPositionAndCellId") {

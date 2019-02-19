@@ -17,7 +17,7 @@
 //#include "RecTracker/TrackingUtils.h"
 
 
-DECLARE_ALGORITHM_FACTORY(CreateDCHHits)
+DECLARE_COMPONENT(CreateDCHHits)
 
 
 

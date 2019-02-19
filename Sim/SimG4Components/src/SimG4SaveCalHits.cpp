@@ -14,7 +14,7 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_TOOL_FACTORY(SimG4SaveCalHits)
+DECLARE_COMPONENT(SimG4SaveCalHits)
 
 SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {

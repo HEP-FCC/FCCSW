@@ -16,7 +16,7 @@
 
 
 
-DECLARE_ALGORITHM_FACTORY(ResolutionStudies)
+DECLARE_COMPONENT(ResolutionStudies)
 
 
 

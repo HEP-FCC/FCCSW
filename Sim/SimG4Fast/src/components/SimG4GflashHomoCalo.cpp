@@ -4,7 +4,7 @@
 #include "G4NistManager.hh"
 #include "GFlashHomoShowerParameterisation.hh"
 
-DECLARE_TOOL_FACTORY(SimG4GflashHomoCalo)
+DECLARE_COMPONENT(SimG4GflashHomoCalo)
 
 SimG4GflashHomoCalo::SimG4GflashHomoCalo(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {}

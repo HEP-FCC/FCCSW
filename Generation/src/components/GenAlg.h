@@ -17,7 +17,7 @@ class GenEvent;
 }
 
 class GenAlg : public GaudiAlgorithm {
-  friend class AlgFactory<GenAlg>;
+  //friend class AlgFactory<GenAlg>;
 
 public:
   /// Constructor.

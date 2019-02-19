@@ -4,7 +4,7 @@
 #include "FTFP_BERT.hh"
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_TOOL_FACTORY(SimG4FtfpBert)
+DECLARE_COMPONENT(SimG4FtfpBert)
 
 SimG4FtfpBert::SimG4FtfpBert(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : AlgTool(aType, aName, aParent) {

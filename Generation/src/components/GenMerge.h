@@ -25,7 +25,7 @@ class MCParticleCollection;
  *  Associations between particles and vertices are updated, so it is safe to drop the old collections.
  */
 class GenMerge : public GaudiAlgorithm {
-  friend class AlgFactory<GenMerge>;
+  //friend class AlgFactory<GenMerge>;
 
 public:
   /// Constructor.

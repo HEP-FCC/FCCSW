@@ -10,7 +10,7 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
-DECLARE_ALGORITHM_FACTORY(TestNeighbours)
+DECLARE_COMPONENT(TestNeighbours)
 
 TestNeighbours::TestNeighbours(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Handle for the EDM Hits to be read");

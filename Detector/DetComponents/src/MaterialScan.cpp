@@ -115,4 +115,4 @@ StatusCode MaterialScan::initialize() {
 
 StatusCode MaterialScan::finalize() { return StatusCode::SUCCESS; }
 
-DECLARE_SERVICE_FACTORY(MaterialScan)
+DECLARE_COMPONENT(MaterialScan)

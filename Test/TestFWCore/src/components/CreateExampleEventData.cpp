@@ -10,7 +10,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 
 
-DECLARE_ALGORITHM_FACTORY(CreateExampleEventData)
+DECLARE_COMPONENT(CreateExampleEventData)
 
 CreateExampleEventData::CreateExampleEventData(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("genparticles", m_genParticleHandle, "Dummy Particle collection (output)");

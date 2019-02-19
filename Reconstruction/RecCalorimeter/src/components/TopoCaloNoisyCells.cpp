@@ -4,7 +4,7 @@
 #include "TFile.h"
 #include "TTree.h"
 
-DECLARE_TOOL_FACTORY(TopoCaloNoisyCells)
+DECLARE_COMPONENT(TopoCaloNoisyCells)
 
 TopoCaloNoisyCells::TopoCaloNoisyCells(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

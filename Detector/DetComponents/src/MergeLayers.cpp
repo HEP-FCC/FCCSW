@@ -16,7 +16,7 @@
 // STL
 #include <numeric>
 
-DECLARE_ALGORITHM_FACTORY(MergeLayers)
+DECLARE_COMPONENT(MergeLayers)
 
 MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");

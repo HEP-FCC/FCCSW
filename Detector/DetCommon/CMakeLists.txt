@@ -12,7 +12,6 @@ include(${Geant4_USE_FILE})
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-gaudi_install_headers(DetCommon)
 gaudi_add_library(DetCommon
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation

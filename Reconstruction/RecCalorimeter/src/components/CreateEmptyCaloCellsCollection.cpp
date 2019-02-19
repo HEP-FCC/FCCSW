@@ -3,7 +3,7 @@
 // datamodel
 #include "datamodel/CaloHitCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateEmptyCaloCellsCollection)
+DECLARE_COMPONENT(CreateEmptyCaloCellsCollection)
 
 CreateEmptyCaloCellsCollection::CreateEmptyCaloCellsCollection(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("cells", m_caloCells, "Empty calorimeter cells output)");

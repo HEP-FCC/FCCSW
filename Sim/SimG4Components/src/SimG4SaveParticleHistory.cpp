@@ -14,7 +14,7 @@
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
-DECLARE_TOOL_FACTORY(SimG4SaveParticleHistory)
+DECLARE_COMPONENT(SimG4SaveParticleHistory)
 
 SimG4SaveParticleHistory::SimG4SaveParticleHistory(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)

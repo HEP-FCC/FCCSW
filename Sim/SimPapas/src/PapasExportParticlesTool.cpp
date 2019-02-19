@@ -6,7 +6,7 @@
 #include "papas/datatypes/HistoryHelper.h"
 #include "papas/datatypes/IdCoder.h"
 
-DECLARE_TOOL_FACTORY(PapasExportParticlesTool)
+DECLARE_COMPONENT(PapasExportParticlesTool)
 
 PapasExportParticlesTool::PapasExportParticlesTool(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)

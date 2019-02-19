@@ -15,7 +15,7 @@
 
 #include "GaudiKernel/SystemOfUnits.h"
 
-DECLARE_TOOL_FACTORY(ActsExtrapolationTool)
+DECLARE_COMPONENT(ActsExtrapolationTool)
 
 ActsExtrapolationTool::ActsExtrapolationTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent),

@@ -12,7 +12,7 @@
 #include "DD4hep/Detector.h"
 #include "DDSegmentation/Segmentation.h"
 
-DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
+DECLARE_COMPONENT(RedoSegmentation)
 
 RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection with old segmentation (input)");

@@ -12,7 +12,7 @@
 
 using dd4hep::DDSegmentation::CellID;
 
-DECLARE_ALGORITHM_FACTORY(MergeCells)
+DECLARE_COMPONENT(MergeCells)
 
 MergeCells::MergeCells(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");

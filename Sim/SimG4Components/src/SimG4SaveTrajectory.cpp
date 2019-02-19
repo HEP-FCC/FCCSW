@@ -14,7 +14,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_TOOL_FACTORY(SimG4SaveTrajectory)
+DECLARE_COMPONENT(SimG4SaveTrajectory)
 
 SimG4SaveTrajectory::SimG4SaveTrajectory(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)

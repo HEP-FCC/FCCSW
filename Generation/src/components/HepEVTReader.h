@@ -37,7 +37,7 @@ class GenVertexCollection;
  */
 
 class HepEVTReader: public GaudiAlgorithm {
-  friend class AlgFactory<HepEVTReader> ;
+  //friend class AlgFactory<HepEVTReader> ;
 
 public:
   /// Constructor.

@@ -9,7 +9,7 @@
 #include "TH1F.h"
 
 class JetHistograms : public GaudiAlgorithm {
-  friend class AlgFactory<JetHistograms>;
+  //friend class AlgFactory<JetHistograms>;
 
 public:
   /// Constructor.

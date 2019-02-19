@@ -14,7 +14,7 @@ class TFile;
 class PodioDataSvc;
 
 class PodioOutput : public GaudiAlgorithm {
-  friend class AlgFactory<PodioOutput>;
+  //friend class AlgFactory<PodioOutput>;
 
 public:
   /// Constructor.

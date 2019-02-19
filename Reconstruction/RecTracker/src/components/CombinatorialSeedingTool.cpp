@@ -19,7 +19,7 @@
 #include "Acts/Seeding/SpacePoint.hpp"
 #include "Acts/Seeding/TrackSeed.hpp"
 
-DECLARE_TOOL_FACTORY(CombinatorialSeedingTool)
+DECLARE_COMPONENT(CombinatorialSeedingTool)
 
 CombinatorialSeedingTool::CombinatorialSeedingTool(const std::string& type, const std::string& name,
                                                    const IInterface* parent)

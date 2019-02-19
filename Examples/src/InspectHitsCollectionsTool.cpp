@@ -9,7 +9,7 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_TOOL_FACTORY(InspectHitsCollectionsTool)
+DECLARE_COMPONENT(InspectHitsCollectionsTool)
 
 InspectHitsCollectionsTool::InspectHitsCollectionsTool(const std::string& aType, const std::string& aName,
                                                        const IInterface* aParent)

@@ -28,7 +28,7 @@ class Detector;
  *  @author A.J. Robson
  */
 class PapasAlg : public GaudiAlgorithm {
-  friend class AlgFactory<PapasAlg>;
+  //friend class AlgFactory<PapasAlg>;
 
 public:
   /// Constructor.

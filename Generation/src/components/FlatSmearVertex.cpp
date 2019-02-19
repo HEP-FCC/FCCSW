@@ -1,12 +1,11 @@
 #include "FlatSmearVertex.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/Vector4DTypes.h"
 
 /// Declaration of the Tool Factory
-DECLARE_TOOL_FACTORY(FlatSmearVertex)
+DECLARE_COMPONENT(FlatSmearVertex)
 
 /// Standard constructor, initializes variables
 FlatSmearVertex::FlatSmearVertex(const std::string& type, const std::string& name, const IInterface* parent)

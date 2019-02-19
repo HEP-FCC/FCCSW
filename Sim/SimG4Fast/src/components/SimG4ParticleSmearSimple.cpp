@@ -1,13 +1,13 @@
 #include "SimG4ParticleSmearSimple.h"
 
 // Gaudi
-#include "GaudiKernel/DeclareFactoryEntries.h"
+
 #include "GaudiKernel/IRndmGenSvc.h"
 
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
-DECLARE_TOOL_FACTORY(SimG4ParticleSmearSimple)
+DECLARE_COMPONENT(SimG4ParticleSmearSimple)
 
 SimG4ParticleSmearSimple::SimG4ParticleSmearSimple(const std::string& type, const std::string& name,
                                                    const IInterface* parent)

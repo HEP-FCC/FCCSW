@@ -9,9 +9,9 @@
 
 typedef PileupHitMergeTool<fcc::CaloHitCollection, fcc::PositionedCaloHitCollection> PileupCaloHitMergeTool;
 typedef PileupHitMergeTool<fcc::TrackHitCollection, fcc::PositionedTrackHitCollection> PileupTrackHitMergeTool;
-DECLARE_TOOL_FACTORY(PileupTrackHitMergeTool)
+DECLARE_COMPONENT(PileupTrackHitMergeTool)
 DECLARE_COMPONENT_WITH_ID(PileupTrackHitMergeTool, "PileupTrackHitMergeTool")
-DECLARE_TOOL_FACTORY(PileupCaloHitMergeTool)
+DECLARE_COMPONENT(PileupCaloHitMergeTool)
 DECLARE_COMPONENT_WITH_ID(PileupCaloHitMergeTool, "PileupCaloHitMergeTool")
 
 template <class Hits, class PositionedHits>

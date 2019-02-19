@@ -19,7 +19,7 @@ class MCParticleCollection;
 */
 
 class GenParticleFilter : public GaudiAlgorithm {
-  friend class AlgFactory<GenParticleFilter>;
+  //friend class AlgFactory<GenParticleFilter>;
 
 public:
   /// Constructor.

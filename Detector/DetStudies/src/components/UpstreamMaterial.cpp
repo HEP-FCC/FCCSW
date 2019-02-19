@@ -17,7 +17,7 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_ALGORITHM_FACTORY(UpstreamMaterial)
+DECLARE_COMPONENT(UpstreamMaterial)
 
 UpstreamMaterial::UpstreamMaterial(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("deposits", m_deposits, "Energy deposits (input)");

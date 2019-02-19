@@ -6,7 +6,7 @@
 // Geant
 #include "G4Event.hh"
 
-DECLARE_ALGORITHM_FACTORY(SimG4Alg)
+DECLARE_COMPONENT(SimG4Alg)
 
 SimG4Alg::SimG4Alg(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("eventProvider", m_eventTool, "Handle for tool that creates the G4Event");

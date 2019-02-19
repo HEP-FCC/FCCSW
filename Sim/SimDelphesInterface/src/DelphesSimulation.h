@@ -53,7 +53,7 @@ class TObjArray;
  */
 class DelphesSimulation : public GaudiAlgorithm {
 
-  friend class AlgFactory<DelphesSimulation>;
+  //friend class AlgFactory<DelphesSimulation>;
 
 public:
   //! Constructor.

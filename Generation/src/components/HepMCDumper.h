@@ -8,7 +8,7 @@
 #include "HepMC/GenEvent.h"
 
 class HepMCDumper : public GaudiAlgorithm {
-  friend class AlgFactory<HepMCDumper>;
+  //friend class AlgFactory<HepMCDumper>;
 
 public:
   /// Constructor.

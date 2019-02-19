@@ -20,7 +20,7 @@
 template <class P, class J>
 class JetClustering : public GaudiAlgorithm {
   // Colin: the following doesn't seem to be necessary
-  // friend class AlgFactory< JetClustering<P, J> > ;
+  // //friend class AlgFactory< JetClustering<P, J> > ;
 
 public:
   JetClustering(const std::string& name, ISvcLocator* svcLoc);

@@ -3,7 +3,7 @@
 #include "papas/datatypes/Event.h"
 #include "papas/reconstruction/SimplifyPFBlocks.h"
 
-DECLARE_TOOL_FACTORY(PapasSimplifyBlocksTool)
+DECLARE_COMPONENT(PapasSimplifyBlocksTool)
 /** @class PapasSimplifyBlocksTool Sim/SimPapasInterface/src/PapasSimplifyBlocksTool.h PapasSimplifyBlocksTool.h
  *
  *  Runs the papas block simplifying algorithm and adds the new simpified blocks into the papasevent.

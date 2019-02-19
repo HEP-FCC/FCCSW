@@ -7,7 +7,7 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_TOOL_FACTORY(CalibrateInLayersTool)
+DECLARE_COMPONENT(CalibrateInLayersTool)
 
 CalibrateInLayersTool::CalibrateInLayersTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", "CalibrateInLayers") {

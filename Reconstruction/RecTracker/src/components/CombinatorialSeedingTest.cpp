@@ -18,7 +18,7 @@
 #include "RecInterface/ITrackSeedingTool.h"
 #include "RecTracker/TrackingUtils.h"
 
-DECLARE_ALGORITHM_FACTORY(CombinatorialSeedingTest)
+DECLARE_COMPONENT(CombinatorialSeedingTest)
 
 CombinatorialSeedingTest::CombinatorialSeedingTest(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {

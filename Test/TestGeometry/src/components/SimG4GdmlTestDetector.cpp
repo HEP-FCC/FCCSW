@@ -6,7 +6,7 @@
 // Geant4
 #include "G4VUserDetectorConstruction.hh"
 
-DECLARE_TOOL_FACTORY(SimG4GdmlTestDetector)
+DECLARE_COMPONENT(SimG4GdmlTestDetector)
 
 SimG4GdmlTestDetector::SimG4GdmlTestDetector(const std::string& aType, const std::string& aName,
                                              const IInterface* aParent)

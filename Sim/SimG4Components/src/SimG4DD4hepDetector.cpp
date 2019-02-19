@@ -6,7 +6,7 @@
 // Geant4
 #include "G4VUserDetectorConstruction.hh"
 
-DECLARE_TOOL_FACTORY(SimG4DD4hepDetector)
+DECLARE_COMPONENT(SimG4DD4hepDetector)
 
 SimG4DD4hepDetector::SimG4DD4hepDetector(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {

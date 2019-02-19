@@ -10,7 +10,7 @@
 #include "papas/simulation/Simulator.h"
 #include "papas/utility/PDebug.h"
 
-DECLARE_TOOL_FACTORY(PapasSimulatorTool)
+DECLARE_COMPONENT(PapasSimulatorTool)
 
 PapasSimulatorTool::PapasSimulatorTool(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {

@@ -12,8 +12,6 @@ find_package(DD4hep)
 find_package(ROOT REQUIRED COMPONENTS Geom)
 find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin Legacy)
 
-
-gaudi_install_headers(RecTracker)
 gaudi_install_python_modules()
 gaudi_add_library(TrackingUtils
                  src/lib/*.cpp

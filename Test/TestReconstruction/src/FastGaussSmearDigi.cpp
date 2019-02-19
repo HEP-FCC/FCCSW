@@ -16,7 +16,7 @@
 #include "RecTracker/TrackingUtils.h"
 
 
-DECLARE_ALGORITHM_FACTORY(FastGaussSmearDigi)
+DECLARE_COMPONENT(FastGaussSmearDigi)
 
 
 

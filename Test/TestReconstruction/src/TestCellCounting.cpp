@@ -17,7 +17,7 @@
 // ROOT
 #include "TGeoManager.h"
 
-DECLARE_ALGORITHM_FACTORY(TestCellCounting)
+DECLARE_COMPONENT(TestCellCounting)
 
 TestCellCounting::TestCellCounting(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {}
 

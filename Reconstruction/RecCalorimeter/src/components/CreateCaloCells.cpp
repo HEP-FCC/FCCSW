@@ -11,7 +11,7 @@
 #include "datamodel/CaloHit.h"
 #include "datamodel/CaloHitCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
+DECLARE_COMPONENT(CreateCaloCells)
 
 CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hits from which to create cells (input)");

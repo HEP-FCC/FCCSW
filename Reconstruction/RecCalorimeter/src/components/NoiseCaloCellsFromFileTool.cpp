@@ -12,7 +12,7 @@
 #include "TH1F.h"
 #include "TMath.h"
 
-DECLARE_TOOL_FACTORY(NoiseCaloCellsFromFileTool)
+DECLARE_COMPONENT(NoiseCaloCellsFromFileTool)
 
 NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type, const std::string& name,
                                                        const IInterface* parent)

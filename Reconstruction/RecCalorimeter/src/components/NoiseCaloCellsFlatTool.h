@@ -4,7 +4,8 @@
 // from Gaudi
 #include "GaudiAlg/GaudiTool.h"
 #include "GaudiKernel/RndmGenerators.h"
-class IRndmGenSvc;
+#include "GaudiKernel/IRndmGenSvc.h"
+//class IRndmGenSvc;
 
 // FCCSW
 #include "RecInterface/INoiseCaloCellsTool.h"

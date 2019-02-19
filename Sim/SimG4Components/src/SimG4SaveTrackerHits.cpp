@@ -17,7 +17,7 @@
 #include "DD4hep/Detector.h"
 
 
-DECLARE_TOOL_FACTORY(SimG4SaveTrackerHits)
+DECLARE_COMPONENT(SimG4SaveTrackerHits)
 
 SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)
