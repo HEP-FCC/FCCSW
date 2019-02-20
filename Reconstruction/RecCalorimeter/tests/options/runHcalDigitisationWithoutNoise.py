@@ -37,7 +37,7 @@ resegmentHcalBarrel = RewriteBitfield("ReSegmentationHcal",
                                        # specify which fields are going to be altered (deleted/rewritten)
                                        removeIds = ["eta"],
                                        # new bitfield (readout), with new segmentation                   
-                                       newReadoutName = "BarHCal_Readout_allTiles",
+                                       newReadoutName = "BarHCal_Readout_phi",
                                        inhits = "HCalHits",
                                        outhits = "HCalBarrelCellsStep1")
 
