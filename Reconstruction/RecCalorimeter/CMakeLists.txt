@@ -38,7 +38,7 @@ gaudi_add_test(EcalReconstructionNoiseFromFile
                PASSREGEX "Segmentation cells  \\(Nphi, Neta, minEta\\): \\[629, 331, 1\\]" )
 
 gaudi_add_test(EcalReconstructionCheckNumClusters
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
                DEPENDS EcalReconstructionNoiseFromFile)

@@ -66,7 +66,7 @@ gaudi_add_test(PileupOverlay
                FRAMEWORK options/overlaySignalAndPileup.py
                DEPENDS GeantFullSimTrackerHitsWithField GeantFullSimParticleGun)
 gaudi_add_test(CheckMergeCollection
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
                DEPENDS PileupOverlay)

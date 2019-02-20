@@ -33,7 +33,7 @@ gaudi_add_test(TestPrimitiveShapes
 gaudi_add_test(CmpBorderCellIDGdmlwithDd4hep
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                COMMAND python ./scripts/cmpCellId.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                DEPENDS TestBorderCellIDFromDd4hep TestBorderCellIDFromGdml)
 gaudi_add_test(TestRandomCellIDFromDd4hepSegmentation
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
@@ -44,7 +44,7 @@ gaudi_add_test(TestRandomCellIDFromDd4hepVolumes
 gaudi_add_test(CmpRandomCellIDDd4hepSegmentationwithVolumes
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
                COMMAND python ./scripts/cmpCellIdDd4hep.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                DEPENDS TestRandomCellIDFromDd4hepSegmentation TestRandomCellIDFromDd4hepVolumes)
 gaudi_add_test(TestGFlashHomoCalo
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestGeometry/tests/
