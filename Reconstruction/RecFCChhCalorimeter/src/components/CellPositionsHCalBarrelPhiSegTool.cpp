@@ -1,17 +1,17 @@
-#include "CellPositionsHCalBarrelAllTilesTool.h"
+#include "CellPositionsHCalBarrelPhiSegTool.h"
 
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsHCalBarrelAllTilesTool)
+DECLARE_TOOL_FACTORY(CellPositionsHCalBarrelPhiSegTool)
 
-CellPositionsHCalBarrelAllTilesTool::CellPositionsHCalBarrelAllTilesTool(const std::string& type, const std::string& name,
+CellPositionsHCalBarrelPhiSegTool::CellPositionsHCalBarrelPhiSegTool(const std::string& type, const std::string& name,
                                                                    const IInterface* parent)
     : GaudiTool(type, name, parent) {
   declareInterface<ICellPositionsTool>(this);
 }
 
-StatusCode CellPositionsHCalBarrelAllTilesTool::initialize() {
+StatusCode CellPositionsHCalBarrelPhiSegTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
   m_geoSvc = service("GeoSvc");
@@ -40,12 +40,12 @@ StatusCode CellPositionsHCalBarrelAllTilesTool::initialize() {
   return sc;
 }
 
-void CellPositionsHCalBarrelAllTilesTool::getPositions(const fcc::CaloHitCollection& aCells,
+void CellPositionsHCalBarrelPhiSegTool::getPositions(const fcc::CaloHitCollection& aCells,
                                                     fcc::PositionedCaloHitCollection& outputColl) {
   debug() << "Input collection size : " << aCells.size() << endmsg;
   // Loop through cell collection
   for (const auto& cell : aCells) {
-    auto outPos = CellPositionsHCalBarrelAllTilesTool::xyzPosition(cell.core().cellId);
+    auto outPos = CellPositionsHCalBarrelPhiSegTool::xyzPosition(cell.core().cellId);
 
     auto edmPos = fcc::Point();
     edmPos.x = outPos.x() / dd4hep::mm;
@@ -62,7 +62,7 @@ void CellPositionsHCalBarrelAllTilesTool::getPositions(const fcc::CaloHitCollect
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-dd4hep::Position CellPositionsHCalBarrelAllTilesTool::xyzPosition(const uint64_t& aCellId) const {
+dd4hep::Position CellPositionsHCalBarrelPhiSegTool::xyzPosition(const uint64_t& aCellId) const {
   // global cartesian coordinates calculated from r,phi,eta, for r=1
   dd4hep::DDSegmentation::CellID volumeId = aCellId;
   m_decoder->set(volumeId, "phi", 0);
@@ -83,11 +83,11 @@ dd4hep::Position CellPositionsHCalBarrelAllTilesTool::xyzPosition(const uint64_t
   return outSeg;
 }
 
-int CellPositionsHCalBarrelAllTilesTool::layerId(const uint64_t& aCellId) {
+int CellPositionsHCalBarrelPhiSegTool::layerId(const uint64_t& aCellId) {
   int layer;
   dd4hep::DDSegmentation::CellID cID = aCellId;
   layer = m_decoder->get(cID, "layer");
   return layer;
 }
 
-StatusCode CellPositionsHCalBarrelAllTilesTool::finalize() { return GaudiTool::finalize(); }
+StatusCode CellPositionsHCalBarrelPhiSegTool::finalize() { return GaudiTool::finalize(); }

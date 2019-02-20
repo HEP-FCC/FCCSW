@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELALLTILESTOOL_H
-#define RECCALORIMETER_CELLPOSITIONSHCALBARRELALLTILESTOOL_H
+#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELPHISEGTOOL_H
+#define RECCALORIMETER_CELLPOSITIONSHCALBARRELPHISEGTOOL_H
 
 // GAUDI
 #include "GaudiAlg/GaudiTool.h"
@@ -24,8 +24,8 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsHCalBarrelNoSegTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsHCalBarrelNoSegTool.h
- *  CellPositionsHCalBarrelNoSegTool.h
+/** @class CellPositionsHCalBarrelPhiSegTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsHCalBarrelPhiSegTool.h
+ *  CellPositionsHCalBarrelPhiSegTool.h
  *
  *  Tool to determine each Calorimeter cell position.
  *
@@ -34,10 +34,10 @@ class Segmentation;
  *  @author Coralie Neubueser
  */
 
-class CellPositionsHCalBarrelAllTilesTool : public GaudiTool, virtual public ICellPositionsTool {
+class CellPositionsHCalBarrelPhiSegTool : public GaudiTool, virtual public ICellPositionsTool {
 public:
-  CellPositionsHCalBarrelAllTilesTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~CellPositionsHCalBarrelAllTilesTool() = default;
+  CellPositionsHCalBarrelPhiSegTool(const std::string& type, const std::string& name, const IInterface* parent);
+  ~CellPositionsHCalBarrelPhiSegTool() = default;
 
   virtual StatusCode initialize() final;
 
@@ -61,4 +61,4 @@ private:
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   Gaudi::Property<std::vector<double>> m_radii{this, "radii", {291.05, 301.05, 313.55, 328.55, 343.55, 358.55, 378.55, 413.55, 428.55, 453.55}};
 };
-#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELALLTILESTOOL_H */
+#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELPHISEGTOOL_H */
