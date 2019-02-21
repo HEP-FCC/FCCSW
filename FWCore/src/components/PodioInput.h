@@ -19,7 +19,6 @@ class PodioDataSvc;
  */
 
 class PodioInput : public GaudiAlgorithm {
-  //friend class AlgFactory<PodioInput>;
 
 public:
   /// Constructor.

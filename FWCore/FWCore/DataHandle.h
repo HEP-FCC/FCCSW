@@ -14,8 +14,8 @@ template <typename T>
 class DataHandle : public DataObjectHandle<DataWrapper<T>> {
 
 public:
-  //friend class Algorithm;
-  //friend class AlgTool;
+  friend class Algorithm;
+  friend class AlgTool;
 
 public:
   DataHandle();

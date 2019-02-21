@@ -4,7 +4,6 @@
 #include "FWCore/PodioDataSvc.h"
 
 class FCCDataSvc : public PodioDataSvc {
-  //friend class SvcFactory<FCCDataSvc>;
 
 public:
   /// Standard Constructor
