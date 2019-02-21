@@ -188,7 +188,6 @@ StatusCode PreparePileup::execute() {
         }
       }
     }
-    debugPrint++;
   }
 
   double etaGridSize = m_segmentation->gridSizeEta();
