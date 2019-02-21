@@ -63,7 +63,7 @@ public:
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
   virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
-                           fcc::CaloCluster& aEdmCluster) = 0;
+                           fcc::CaloCluster& aEdmCluster, bool aEllipse) = 0;
 };
 
 #endif /* RECINTERFACE_ITOWERTOOL_H */

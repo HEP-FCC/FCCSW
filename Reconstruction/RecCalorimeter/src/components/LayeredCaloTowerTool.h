@@ -125,7 +125,7 @@ public:
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
   virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
-                           fcc::CaloCluster& aEdmCluster) final;
+                           fcc::CaloCluster& aEdmCluster, bool aEllipse = false) final;
 
 private:
   /// Handle for calo cells (input collection)
