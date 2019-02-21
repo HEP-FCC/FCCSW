@@ -47,7 +47,7 @@ StatusCode PreparePileup::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
-  m_decoder = std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> (m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   // Histogram service
   m_histSvc = service("THistSvc");
   if (!m_histSvc) {
@@ -96,6 +96,13 @@ StatusCode PreparePileup::initialize() {
       return StatusCode::FAILURE;
     }
   }
+  m_energyVsAbsEtaClusterOptimised =  new TH2F((m_histogramName + "_optimisedCluster").c_str(),
+             "energy per optimised cluster vs fabs centre-cell eta ",
+             60, 0, 6.0, 5000, -1, m_maxEnergy);
+  if (m_histSvc->regHist("/rec/" + m_histogramName + "_optimisedCluster", m_energyVsAbsEtaClusterOptimised).isFailure()) {
+    error() << "Couldn't register hist" << endmsg;
+    return StatusCode::FAILURE;
+  }
 
   // Initialization of geometry tool
   if (!m_geoTool.retrieve()) {
@@ -121,6 +128,18 @@ StatusCode PreparePileup::initialize() {
   m_nEtaTower = towerMapSize.eta;
   m_nPhiTower = towerMapSize.phi;
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
+  // OPTIMISATION OF CLUSTER SIZE
+  // sanity check
+  if (!(m_nEtaFinal.size() == m_numLayers && m_nPhiFinal.size() == m_numLayers)) {
+    error() << "Size of optimised window should be equal to number of layers " << endmsg;
+    return StatusCode::FAILURE;
+  }
+  if (m_nEtaFinal.size() == m_numLayers) {
+    for (uint iLayer = 0; iLayer < m_numLayers; iLayer++) {
+      m_halfPhiFin.push_back(floor(m_nPhiFinal[iLayer]/2.));
+      m_halfEtaFin.push_back(floor(m_nEtaFinal[iLayer]/2.));
+    }
+  }
   return StatusCode::SUCCESS;
 }
 
@@ -131,6 +150,7 @@ StatusCode PreparePileup::execute() {
 
   // 0. Clear all cells
   std::for_each(m_cellsMap.begin(), m_cellsMap.end(), [](std::pair<const uint64_t, double>& p) { p.second = 0; });
+  m_energyOptimised.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
 
   // Merge signal events with empty cells
   for (const auto& hit : *hits) {
@@ -152,7 +172,33 @@ StatusCode PreparePileup::execute() {
     }
     double cellEta = m_segmentation->eta(cID);
     m_energyVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
+    // add energy of this cell to any optimised cluster where it is included
+    uint etaId = m_decoder->get(cID, "eta");
+    uint phiId = m_decoder->get(cID, "phi");
+    for (int iEta = etaId - m_halfEtaFin[layerId]; iEta <  etaId + m_halfEtaFin[layerId] + 1; iEta++) {
+      for (int iPhi = phiId - m_halfPhiFin[layerId]; iPhi <  phiId + m_halfPhiFin[layerId] + 1; iPhi++) {
+        if (iEta > 0 && iEta < m_nEtaTower ) {
+          if (m_ellipseCluster) {
+            if ( pow( (iEta - etaId) / (m_nEtaFinal[layerId] / 2.), 2) + pow( (iPhi - phiId) / (m_nPhiFinal[layerId] / 2.), 2) < 1) {
+              m_energyOptimised[iEta][phiNeighbour(iPhi)] += cellEnergy;
+            }
+          } else {
+              m_energyOptimised[iEta][phiNeighbour(iPhi)] += cellEnergy;
+          }
+        }
+      }
+    }
+    debugPrint++;
   }
+
+  double etaGridSize = m_segmentation->gridSizeEta();
+  double etaGridOffset = m_segmentation->offsetEta();
+  for (int iEta = 0; iEta < m_nEtaTower ; iEta++) {
+    for (int iPhi = 0; iPhi < m_nPhiTower ; iPhi++) {
+      m_energyVsAbsEtaClusterOptimised->Fill(fabs(  iEta * etaGridSize + etaGridOffset ), m_energyOptimised[iEta][iPhi]);
+    }
+  }
+
   // create towers
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
   m_towerTool->buildTowers(m_towers);
@@ -198,8 +244,6 @@ StatusCode PreparePileup::execute() {
     }
   }
 
-  // create towers
-
   return StatusCode::SUCCESS;
 }
 
@@ -213,7 +257,6 @@ unsigned int PreparePileup::phiNeighbour(int aIPhi) const {
 }
 
 StatusCode PreparePileup::finalize() {
-
   // Fill 2D histogram per layer (sum of energy in all events per cell)
   for (const auto& cell : m_sumEnergyCellsMap) {
     double cellEnergy = cell.second;
