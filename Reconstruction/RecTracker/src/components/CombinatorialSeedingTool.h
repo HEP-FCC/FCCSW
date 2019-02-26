@@ -13,7 +13,7 @@
 #include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackStateCollection.h"
 
-#include "ACTS/Seeding/SpacePoint.hpp"
+#include "Acts/Seeding/SpacePoint.hpp"
 
 #include <map>
 

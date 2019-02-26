@@ -7,7 +7,7 @@ gaudi_subdir(Examples v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Interface Detector/DetInterface)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
-find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
+find_package(DD4hep COMPONENTS DDG4 REQUIRED)
 include(DD4hep)
 find_package(Geant4)
 
@@ -73,6 +73,9 @@ gaudi_add_test(CheckMergeCollection
 gaudi_add_test(GeantUserLimits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_userLimits.py)
+gaudi_add_test(GeantFullSimParticleGunFCCee
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK options/geant_fullsim_fccee_pgun.py)
 
 # Test of the format-checker:
 gaudi_add_test(FormatCheckerOneFile

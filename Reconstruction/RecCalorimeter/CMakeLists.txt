@@ -7,7 +7,7 @@ gaudi_subdir(RecCalorimeter v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Detector/DetSegmentation Detector/DetCommon Reconstruction/RecInterface)
 
 find_package(FastJet)
-find_package(ROOT COMPONENTS Physics)
+find_package(ROOT COMPONENTS Physics Tree)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(HepMC)
@@ -80,3 +80,14 @@ gaudi_add_test(correctionFullCaloSystem
 gaudi_add_test(estimatePileup
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                 FRAMEWORK tests/options/runPreparePileup.py)
+
+gaudi_add_test(recTopoClustersBarrelCaloSystem
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS simulateFullCaloSystem
+                FRAMEWORK tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_noNoise.py)
+
+gaudi_add_test(recTopoClustersBarrelCaloSystemElecNoise
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS simulateFullCaloSystem
+                FRAMEWORK tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_electrNoise.py)
+

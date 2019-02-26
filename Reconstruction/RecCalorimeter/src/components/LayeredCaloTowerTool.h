@@ -116,7 +116,6 @@ public:
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
-  std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
   /**  Find cells belonging to a cluster.
    *   @param[in] aEta Position of the middle tower of a cluster in eta
    *   @param[in] aPhi Position of the middle tower of a cluster in phi
@@ -126,6 +125,7 @@ public:
    */
   virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
                            fcc::CaloCluster& aEdmCluster) final;
+  std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
 
 private:
   /// Handle for calo cells (input collection)
@@ -153,7 +153,8 @@ private:
   // Maximum layer (130 = last layer in ECalBarrel inclined)
   Gaudi::Property<float> m_maximumLayer{this, "maximumLayer", 130, "Maximum cell layer"};
   // Restrict tower building in layers if bitfield: layer exists
-  bool addLayerRestriction = false;
+  
+  Gaudi::Property<float> m_addLayerRestriction{this, "addLayerRestriction", true, "set layer restriction on/off"};
   /// number of towers in eta (calculated from m_deltaEtaTower and m_etaMax)
   int m_nEtaTower;
   /// Number of towers in phi (calculated from m_deltaPhiTower)

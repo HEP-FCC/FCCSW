@@ -1,133 +1,75 @@
 
-#include "DetInterface/IGeoSvc.h"
-#include "DetInterface/ITrackingGeoSvc.h"
-#include "RecInterface/ITrackSeedingTool.h"
+#include <cmath>
 
-#include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/SystemOfUnits.h"
 
-
-#include "ACTS/Detector/TrackingGeometry.hpp"
-#include "ACTS/EventData/Measurement.hpp"
-#include "ACTS/Extrapolation/ExtrapolationCell.hpp"
-#include "ACTS/Extrapolation/ExtrapolationEngine.hpp"
-#include "ACTS/Extrapolation/IExtrapolationEngine.hpp"
-#include "ACTS/Extrapolation/MaterialEffectsEngine.hpp"
-#include "ACTS/Extrapolation/RungeKuttaEngine.hpp"
-#include "ACTS/Extrapolation/StaticEngine.hpp"
-#include "ACTS/Extrapolation/StaticNavigationEngine.hpp"
-#include "ACTS/Fitter/KalmanFitter.hpp"
-#include "ACTS/Fitter/KalmanUpdator.hpp"
-#include "ACTS/MagneticField/ConstantBField.hpp"
-#include "ACTS/Surfaces/PerigeeSurface.hpp"
-#include "ACTS/Utilities/Definitions.hpp"
-#include "ACTS/Utilities/Identifier.hpp"
-#include "ACTS/Utilities/Logger.hpp"
-
 #include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
+#include "datamodel/TrackStateCollection.h"
 
-#include "DD4hep/Detector.h"
-#include "DD4hep/Volumes.h"
-//#include "DDRec/API/IDDecoder.h"
-#include "DDSegmentation/BitField64.h"
-
-#include <cmath>
-#include <random>
+#include "datamodel/GenVertexCollection.h"
+#include "datamodel/MCParticleCollection.h"
 
 #include "ExtrapolationTest.h"
 
-using namespace Acts;
-using DefaultCovMatrix = ActsSymMatrix<ParValue_t, NGlobalPars>;
-
 DECLARE_ALGORITHM_FACTORY(ExtrapolationTest)
 
-ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc),
-  m_geoSvc("GeoSvc", "ExtrapolationTest"),
-  m_trkGeoSvc("TrackingGeoSvc", "ExtrapolationTest") {
-
-  declareProperty("positionedTrackHits", m_positionedTrackHits, "hits/TrackerPositionedHits");
+ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc)
+    : GaudiAlgorithm(name, svcLoc), m_extrapolationTool(nullptr) {
+  declareProperty("extrapolationTool", m_extrapolationTool,
+                  "Pointer to extrapolation tool, needed to extrapolate through the tracker.");
+  declareProperty("ExtrapolatedTrackStates", m_extrapolatedTrackStates, "ExtrapolatedTrackStates");
+  declareProperty("genParticles", m_genParticles, "Handle for the EDM MC particles to be read");
 }
 
 StatusCode ExtrapolationTest::initialize() {
 
-  IRndmGenSvc* randSvc = svc<IRndmGenSvc>("RndmGenSvc", true);
+  // StatusCode sc = GaudiAlgorithm::initialize();
+  // if (sc.isFailure()) return sc;
+  // retrieve the extrapolation tool
+  if (!m_extrapolationTool.retrieve()) {
+    error() << "Extrapolation tool cannot be retrieved" << endmsg;
+    return StatusCode::FAILURE;
+  }
 
-  StatusCode sc = GaudiAlgorithm::initialize();
-  if (sc.isFailure()) return sc;
-
-  m_trkGeo = m_trkGeoSvc->trackingGeometry();
-  auto propConfig = RungeKuttaEngine<>::Config();
-  propConfig.fieldService = std::make_shared<ConstantBField>(0, 0, m_magneticFieldBz * Gaudi::Units::perThousand * Gaudi::Units::tesla); // needs to be in kT
-  auto propEngine = std::make_shared<RungeKuttaEngine<>>(propConfig);
-
-  auto matConfig = MaterialEffectsEngine::Config();
-  auto materialEngine = std::make_shared<MaterialEffectsEngine>(matConfig);
-
-  auto navConfig = StaticNavigationEngine::Config();
-  navConfig.propagationEngine = propEngine;
-  navConfig.materialEffectsEngine = materialEngine;
-  navConfig.trackingGeometry = m_trkGeo;
-  auto navEngine = std::make_shared<StaticNavigationEngine>(navConfig);
-
-  auto statConfig = StaticEngine::Config();
-  statConfig.propagationEngine = propEngine;
-  statConfig.navigationEngine = navEngine;
-  statConfig.materialEffectsEngine = materialEngine;
-  auto statEngine = std::make_shared<StaticEngine>(statConfig);
-
-  auto exEngineConfig = ExtrapolationEngine::Config();
-  exEngineConfig.trackingGeometry = m_trkGeo;
-  exEngineConfig.propagationEngine = propEngine;
-  exEngineConfig.navigationEngine = navEngine;
-  exEngineConfig.extrapolationEngines = {statEngine};
-  m_exEngine = std::make_shared<ExtrapolationEngine>(exEngineConfig);
-
-
-  sc = m_flatDist.initialize(randSvc, Rndm::Flat(0., 1.));
-  return sc;
+  return StatusCode::SUCCESS;
 }
 
 StatusCode ExtrapolationTest::execute() {
 
-  fcc::PositionedTrackHitCollection* posHitCollection = new fcc::PositionedTrackHitCollection();
-  fcc::TrackHitCollection* hitCollection = new fcc::TrackHitCollection();
+  // get the input mc particles
+  const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
+  // create the TrackStateCollection to be written out
+  auto exTrackStateCollection = m_extrapolatedTrackStates.createAndPut();
+  // go through all particles to be extrapolated for this event
+  for (const auto& mcparticle : *mcparticles) {
 
-  // initial value for the track parameters, following Acts conventions
-  ActsVector<ParValue_t, NGlobalPars> pars;
-  pars << 0, // local coordinate 1
-          0, // local coordinate 2
-          m_flatDist() * M_PI * 0.5, // phi
-          m_flatDist() * M_PI*0.45,  // theta
-          0.001; // qOverP
-  auto startCov =
-      std::make_unique<DefaultCovMatrix>(DefaultCovMatrix::Identity());
+    // convert particle to trackstate
+    auto vertex = mcparticle.startVertex();
+    auto p4 = mcparticle.core().p4;
+    double phi = std::atan2(p4.py, p4.px);
+    double p3Mag = std::sqrt(std::pow(p4.px, 2) + std::pow(p4.py, 2) + std::pow(p4.pz, 2));
+    double theta = std::acos(p4.pz / p3Mag);
+    double qOverP = 1. / p3Mag * mcparticle.charge() * -1;
+    double d0 = 0;
+    double z0 = 0;
+    auto theTrackState = fcc::TrackState(phi, theta, qOverP, d0, z0, vertex.position(), std::array<float, 15ul>());
 
-  const Surface* pSurf = m_trkGeo->getBeamline();
-  auto startTP = std::make_unique<BoundParameters>(std::move(startCov), std::move(pars), *pSurf);
-
-  ExtrapolationCell<TrackParameters> exCell(*startTP);
-  exCell.addConfigurationMode(ExtrapolationMode::CollectSensitive);
-  exCell.addConfigurationMode(ExtrapolationMode::CollectPassive);
-  exCell.addConfigurationMode(ExtrapolationMode::CollectBoundary);
-
-
-  debug() << "start extrapolation ..." << endmsg;
-  m_exEngine->extrapolate(exCell);
-  debug() << "got " << exCell.extrapolationSteps.size() << " extrapolation steps" << endmsg;
-
-  for (const auto& step : exCell.extrapolationSteps) {
-    const auto& tp = step.parameters;
-    fcc::TrackHit edmHit = hitCollection->create();
-    fcc::BareHit& edmHitCore = edmHit.core();
-    auto position = fcc::Point();
-    position.x = tp->position().x();
-    position.y = tp->position().y();
-    position.z = tp->position().z();
-    posHitCollection->create(position, edmHitCore);
+    debug() << "start extrapolation ..." << endmsg;
+    auto stateVector = m_extrapolationTool->extrapolate(theTrackState);
+    for (auto t : stateVector) {
+      auto outTrackstate = exTrackStateCollection->create();
+      outTrackstate.phi(t.phi());
+      outTrackstate.theta(t.theta());
+      outTrackstate.qOverP(t.qOverP());
+      outTrackstate.d0(t.d0());
+      outTrackstate.z0(t.z0());
+      outTrackstate.referencePoint(t.referencePoint());
+      // todo add covariance
+    }
   }
 
-  m_positionedTrackHits.put(posHitCollection);
+  debug() << "Extrapolation finished after " << exTrackStateCollection->size() << " extrapolation steps" << endmsg;
+
   return StatusCode::SUCCESS;
 }
 
