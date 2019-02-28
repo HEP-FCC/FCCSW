@@ -27,7 +27,7 @@ podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader", 
-                        collections = [ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName, 
+                        collections = ["GenParticles", "GenVertices", ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName, 
                                        hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName], 
                         OutputLevel = DEBUG)
 

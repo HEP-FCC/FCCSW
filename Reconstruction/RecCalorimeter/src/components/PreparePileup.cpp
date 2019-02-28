@@ -130,8 +130,8 @@ StatusCode PreparePileup::initialize() {
   debug() << "Number of calorimeter towers (eta x phi) : " << m_nEtaTower << " x " << m_nPhiTower << endmsg;
   // OPTIMISATION OF CLUSTER SIZE
   // sanity check
-  if (!(m_nEtaFinal.size() == m_numLayers && m_nPhiFinal.size() == m_numLayers)) {
-    error() << "Size of optimised window should be equal to number of layers " << endmsg;
+  if (!(m_nEtaFinal.size() == 0 && m_nPhiFinal.size() == 0) & !(m_nEtaFinal.size() == m_numLayers && m_nPhiFinal.size() == m_numLayers)) {
+    error() << "Size of optimised window should be equal to number of layers or empty" << endmsg;
     return StatusCode::FAILURE;
   }
   if (m_nEtaFinal.size() == m_numLayers) {
@@ -173,17 +173,19 @@ StatusCode PreparePileup::execute() {
     double cellEta = m_segmentation->eta(cID);
     m_energyVsAbsEta[layerId]->Fill(fabs(cellEta), cellEnergy);
     // add energy of this cell to any optimised cluster where it is included
-    uint etaId = m_decoder->get(cID, "eta");
-    uint phiId = m_decoder->get(cID, "phi");
-    for (int iEta = etaId - m_halfEtaFin[layerId]; iEta <  etaId + m_halfEtaFin[layerId] + 1; iEta++) {
-      for (int iPhi = phiId - m_halfPhiFin[layerId]; iPhi <  phiId + m_halfPhiFin[layerId] + 1; iPhi++) {
-        if (iEta > 0 && iEta < m_nEtaTower ) {
-          if (m_ellipseCluster) {
-            if ( pow( (iEta - etaId) / (m_nEtaFinal[layerId] / 2.), 2) + pow( (iPhi - phiId) / (m_nPhiFinal[layerId] / 2.), 2) < 1) {
+    if (!(m_nEtaFinal.size() == 0 && m_nPhiFinal.size() == 0) ) {
+      uint etaId = m_decoder->get(cID, "eta");
+      uint phiId = m_decoder->get(cID, "phi");
+      for (int iEta = etaId - m_halfEtaFin[layerId]; iEta <  etaId + m_halfEtaFin[layerId] + 1; iEta++) {
+        for (int iPhi = phiId - m_halfPhiFin[layerId]; iPhi <  phiId + m_halfPhiFin[layerId] + 1; iPhi++) {
+          if (iEta > 0 && iEta < m_nEtaTower ) {
+            if (m_ellipseCluster) {
+              if ( pow( (iEta - etaId) / (m_nEtaFinal[layerId] / 2.), 2) + pow( (iPhi - phiId) / (m_nPhiFinal[layerId] / 2.), 2) < 1) {
+                m_energyOptimised[iEta][phiNeighbour(iPhi)] += cellEnergy;
+              }
+            } else {
               m_energyOptimised[iEta][phiNeighbour(iPhi)] += cellEnergy;
             }
-          } else {
-              m_energyOptimised[iEta][phiNeighbour(iPhi)] += cellEnergy;
           }
         }
       }

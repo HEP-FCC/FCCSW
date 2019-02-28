@@ -288,7 +288,8 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       edmClusterCore.position.y = radius * sin(clu.phi);
       edmClusterCore.position.z = radius * sinh(clu.eta);
       edmClusterCore.energy = clusterEnergy;
-      m_towerTool->attachCells(clu.eta, clu.phi, halfEtaFin, halfPhiFin, edmCluster, m_ellipseFinalCluster);
+      if (m_attachCells)
+        m_towerTool->attachCells(clu.eta, clu.phi, halfEtaFin, halfPhiFin, edmCluster, m_ellipseFinalCluster);
       debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x
               << " y: " << edmClusterCore.position.y << " z: " << edmClusterCore.position.z
               << " energy: " << edmClusterCore.energy << " contains: " << edmCluster.hits_size() << " cells" << endmsg;

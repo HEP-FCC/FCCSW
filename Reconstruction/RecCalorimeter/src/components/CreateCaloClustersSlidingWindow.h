@@ -124,6 +124,8 @@ private:
   Gaudi::Property<bool> m_energySharingCorrection{this, "energySharingCorrection", true};
   /// Flag for the ellipse used in the final cluster instead of the rectangle
   Gaudi::Property<bool> m_ellipseFinalCluster{this, "ellipse", false};
+  /// Flag if cells should be attached to clusters
+  Gaudi::Property<bool> m_attachCells{this, "attachCells", false};
 };
 
 #endif /* RECCALORIMETER_CREATECALOCLUSTERSSLIDINGWINDOW_H */
