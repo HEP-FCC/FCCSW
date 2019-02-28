@@ -52,8 +52,6 @@ public:
 
   StatusCode finalize();
 
-  std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
-
 private:
   /**  Correct way to access the neighbour of the phi tower, taking into account the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct neighbour
@@ -91,6 +89,7 @@ private:
   std::vector<TH2F*> m_energyAllEventsVsAbsEta;
   /// 2D histogram with abs(eta) on x-axis and energy per cluster(s) per event on y-axis
   std::vector<TH2F*> m_energyVsAbsEtaClusters;
+  TH2F* m_energyVsAbsEtaClusterOptimised;
 
   /// Maximum energy in the m_energyVsAbsEta histogram, in GeV
   Gaudi::Property<uint> m_maxEnergy{this, "maxEnergy", 20., "Maximum energy in the pile-up plot"};
@@ -106,8 +105,23 @@ private:
   Gaudi::Property<std::vector<uint>> m_etaSizes{this, "etaSize", {7}, "Size of cluster(s) in eta"};
   /// Number of layersSize of cluster(s) in eta
   Gaudi::Property<std::vector<uint>> m_phiSizes{this, "phiSize", {19}, "Size of cluster(s) in phi"};
+  /// Size of the window in phi for the final cluster building, optimised for each layer  (in units of cell size)
+  /// If empty use same size for each layer, as in *nPhiFinal*
+  Gaudi::Property<std::vector<int>> m_nPhiFinal{this, "nPhiOptimFinal", {}};
+  // Recalculatee to half size N (window size = 2*N+1)
+  std::vector<int> m_halfPhiFin;
+  /// Size of the window in eta for the final cluster building, optimised for each layer  (in units of cell size)
+  /// If empty use same size for each layer, as in *nEtaFinal*
+  Gaudi::Property<std::vector<int>> m_nEtaFinal{this, "nEtaOptimFinal", {}};
+  // Recalculatee to half size N (window size = 2*N+1)
+  std::vector<int> m_halfEtaFin;
   /// PhiEta segmentation (owned by DD4hep)
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
+  dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
+  /// Sum of energy of optimised cluster centred around each eta/phi cell
+  std::vector<std::vector<float>> m_energyOptimised;
+  /// Flag for the ellipse used in the final cluster instead of the rectangle
+  Gaudi::Property<bool> m_ellipseCluster{this, "ellipse", false};
 };
 
 #endif /* RECCALORIMETER_PREPAREPILEUP_H */

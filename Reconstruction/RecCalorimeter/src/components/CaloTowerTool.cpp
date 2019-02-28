@@ -38,25 +38,106 @@ StatusCode CaloTowerTool::initialize() {
 
   // check if readouts exist & retrieve PhiEta segmentations
   // if readout does not exist, reconstruction without this calorimeter part will be performed
+  std::pair<dd4hep::DDSegmentation::Segmentation*, SegmentationType> tmpPair;
   info() << "Retrieving Ecal barrel segmentation" << endmsg;
-  m_ecalBarrelSegmentation = retrieveSegmentation(m_ecalBarrelReadoutName);
+  tmpPair = retrieveSegmentation(m_ecalBarrelReadoutName);
+  m_ecalBarrelSegmentation = tmpPair.first;
+  m_ecalBarrelSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
+  m_decoder = m_geoSvc->lcdd()->readout(m_ecalBarrelReadoutName).idSpec().decoder();
   info() << "Retrieving Ecal endcap segmentation" << endmsg;
-  m_ecalEndcapSegmentation = retrieveSegmentation(m_ecalEndcapReadoutName);
+  tmpPair = retrieveSegmentation(m_ecalEndcapReadoutName);
+  m_ecalEndcapSegmentation = tmpPair.first;
+  m_ecalEndcapSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
   info() << "Retrieving Ecal forward segmentation" << endmsg;
-  m_ecalFwdSegmentation = retrieveSegmentation(m_ecalFwdReadoutName);
+  tmpPair = retrieveSegmentation(m_ecalFwdReadoutName);
+  m_ecalFwdSegmentation = tmpPair.first;
+  m_ecalFwdSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
   info() << "Retrieving Hcal barrel segmentation" << endmsg;
-  m_hcalBarrelSegmentation = retrieveSegmentation(m_hcalBarrelReadoutName);
+  tmpPair = retrieveSegmentation(m_hcalBarrelReadoutName);
+  m_hcalBarrelSegmentation = tmpPair.first;
+  m_hcalBarrelSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
   info() << "Retrieving Hcal extended barrel segmentation" << endmsg;
-  m_hcalExtBarrelSegmentation = retrieveSegmentation(m_hcalExtBarrelReadoutName);
+  tmpPair = retrieveSegmentation(m_hcalExtBarrelReadoutName);
+  m_hcalExtBarrelSegmentation = tmpPair.first;
+  m_hcalExtBarrelSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
   info() << "Retrieving Hcal endcap segmentation" << endmsg;
-  m_hcalEndcapSegmentation = retrieveSegmentation(m_hcalEndcapReadoutName);
+  tmpPair = retrieveSegmentation(m_hcalEndcapReadoutName);
+  m_hcalEndcapSegmentation = tmpPair.first;
+  m_hcalEndcapSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
   info() << "Retrieving Hcal forward segmentation" << endmsg;
-  m_hcalFwdSegmentation = retrieveSegmentation(m_hcalFwdReadoutName);
+  tmpPair = retrieveSegmentation(m_hcalFwdReadoutName);
+  m_hcalFwdSegmentation = tmpPair.first;
+  m_hcalFwdSegmentationType = tmpPair.second;
+  if (tmpPair.first != nullptr && tmpPair.second == SegmentationType::kWrong) {
+    error() << "Wrong type of segmentation" << endmsg;
+    return StatusCode::FAILURE;
+  }
 
   return StatusCode::SUCCESS;
 }
 
 StatusCode CaloTowerTool::finalize() { return GaudiTool::finalize(); }
+
+std::pair<double, double> CaloTowerTool::retrievePhiEtaExtrema(dd4hep::DDSegmentation::Segmentation* aSegmentation, SegmentationType aType) {
+  double phiMax = -1;
+  double etaMax = -1;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation = nullptr;
+  if (aSegmentation != nullptr) {
+    switch (aType) {
+    case SegmentationType::kPhiEta: {
+      info() << "== Retrieving phi-eta segmentation " << aSegmentation->name() << endmsg;
+      segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(aSegmentation);
+      phiMax = fabs(segmentation->offsetPhi()) + M_PI / (double)segmentation->phiBins();
+      etaMax = fabs(segmentation->offsetEta()) + segmentation->gridSizeEta() * 0.5;
+      break;
+    }
+    case SegmentationType::kMulti: {
+      double phi = -1;
+      double eta = -1;
+      info() << "== Retrieving multi segmentation " << aSegmentation->name() << endmsg;
+      for (const auto& subSegm: dynamic_cast<dd4hep::DDSegmentation::MultiSegmentation*>(aSegmentation)->subSegmentations()) {
+        segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(subSegm.segmentation);
+        phi = fabs(segmentation->offsetPhi()) + M_PI / (double)segmentation->phiBins();
+        eta = fabs(segmentation->offsetEta()) + segmentation->gridSizeEta() * 0.5;
+        if (eta > etaMax) { etaMax = eta;}
+        if (phi > phiMax) { phiMax = phi;}
+      }
+      break;
+    }
+    case SegmentationType::kWrong: {
+      info() << "== Retrieving WRONG segmentation" << endmsg;
+      phiMax = -1;
+      etaMax = -1;
+      break;
+    }
+    }
+  }
+  return std::make_pair(phiMax, etaMax);
+}
 
 tower CaloTowerTool::towersNumber() {
 
@@ -64,40 +145,29 @@ tower CaloTowerTool::towersNumber() {
   std::vector<double> listEtaMax;
   listPhiMax.reserve(7);
   listEtaMax.reserve(7);
-  if (m_ecalBarrelSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_ecalBarrelSegmentation->offsetPhi()) +
-                         M_PI / (double)m_ecalBarrelSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_ecalBarrelSegmentation->offsetEta()) + m_ecalBarrelSegmentation->gridSizeEta() * 0.5);
-  }
-  if (m_ecalEndcapSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_ecalEndcapSegmentation->offsetPhi()) +
-                         M_PI / (double)m_ecalEndcapSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_ecalEndcapSegmentation->offsetEta()) + m_ecalEndcapSegmentation->gridSizeEta() * 0.5);
-  }
-  if (m_ecalFwdSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_ecalFwdSegmentation->offsetPhi()) + M_PI / (double)m_ecalFwdSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_ecalFwdSegmentation->offsetEta()) + m_ecalFwdSegmentation->gridSizeEta() * 0.5);
-  }
-  if (m_hcalBarrelSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalBarrelSegmentation->offsetPhi()) +
-                         M_PI / (double)m_hcalBarrelSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_hcalBarrelSegmentation->offsetEta()) + m_hcalBarrelSegmentation->gridSizeEta() * 0.5);
-  }
-  if (m_hcalExtBarrelSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetPhi()) +
-                         M_PI / (double)m_hcalExtBarrelSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_hcalExtBarrelSegmentation->offsetEta()) +
-                         m_hcalExtBarrelSegmentation->gridSizeEta() * 0.5);
-  }
-  if (m_hcalEndcapSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalEndcapSegmentation->offsetPhi()) +
-                         M_PI / (double)m_hcalEndcapSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_hcalEndcapSegmentation->offsetEta()) + m_hcalEndcapSegmentation->gridSizeEta() * 0.5);
-  }
-  if (m_hcalFwdSegmentation != nullptr) {
-    listPhiMax.push_back(fabs(m_hcalFwdSegmentation->offsetPhi()) + M_PI / (double)m_hcalFwdSegmentation->phiBins());
-    listEtaMax.push_back(fabs(m_hcalFwdSegmentation->offsetEta()) + m_hcalFwdSegmentation->gridSizeEta() * 0.5);
-  }
+
+  std::pair<double, double> tmpPair;
+  tmpPair = retrievePhiEtaExtrema(m_ecalBarrelSegmentation, m_ecalBarrelSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
+  tmpPair = retrievePhiEtaExtrema(m_ecalEndcapSegmentation, m_ecalEndcapSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
+  tmpPair = retrievePhiEtaExtrema(m_ecalFwdSegmentation, m_ecalFwdSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
+  tmpPair = retrievePhiEtaExtrema(m_hcalBarrelSegmentation, m_hcalBarrelSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
+  tmpPair = retrievePhiEtaExtrema(m_hcalExtBarrelSegmentation, m_hcalExtBarrelSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
+  tmpPair = retrievePhiEtaExtrema(m_hcalEndcapSegmentation, m_hcalEndcapSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
+  tmpPair = retrievePhiEtaExtrema(m_hcalFwdSegmentation, m_hcalFwdSegmentationType);
+  listPhiMax.push_back(tmpPair.first);
+  listEtaMax.push_back(tmpPair.second);
 
   // Maximum eta & phi of the calorimeter system
   m_phiMax = *std::max_element(listPhiMax.begin(), listPhiMax.end());
@@ -132,7 +202,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input Ecal barrel cell collection size: " << ecalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_ecalBarrelSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, ecalBarrelCells, m_ecalBarrelSegmentation);
+    CellsIntoTowers(aTowers, ecalBarrelCells, m_ecalBarrelSegmentation, m_ecalBarrelSegmentationType);
     totalNumberOfCells += ecalBarrelCells->size();
   }
 
@@ -141,7 +211,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input Ecal endcap cell collection size: " << ecalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_ecalEndcapSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, ecalEndcapCells, m_ecalEndcapSegmentation);
+    CellsIntoTowers(aTowers, ecalEndcapCells, m_ecalEndcapSegmentation, m_ecalEndcapSegmentationType);
     totalNumberOfCells += ecalEndcapCells->size();
   }
 
@@ -150,7 +220,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input Ecal forward cell collection size: " << ecalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_ecalFwdSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, ecalFwdCells, m_ecalFwdSegmentation);
+    CellsIntoTowers(aTowers, ecalFwdCells, m_ecalFwdSegmentation, m_ecalFwdSegmentationType);
     totalNumberOfCells += ecalFwdCells->size();
   }
 
@@ -159,7 +229,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input hadronic barrel cell collection size: " << hcalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_hcalBarrelSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, hcalBarrelCells, m_hcalBarrelSegmentation);
+    CellsIntoTowers(aTowers, hcalBarrelCells, m_hcalBarrelSegmentation, m_hcalBarrelSegmentationType);
     totalNumberOfCells += hcalBarrelCells->size();
   }
 
@@ -168,7 +238,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input hadronic extended barrel cell collection size: " << hcalExtBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_hcalExtBarrelSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, hcalExtBarrelCells, m_hcalExtBarrelSegmentation);
+    CellsIntoTowers(aTowers, hcalExtBarrelCells, m_hcalExtBarrelSegmentation, m_hcalExtBarrelSegmentationType);
     totalNumberOfCells += hcalExtBarrelCells->size();
   }
 
@@ -177,7 +247,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input Hcal endcap cell collection size: " << hcalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_hcalEndcapSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, hcalEndcapCells, m_hcalEndcapSegmentation);
+    CellsIntoTowers(aTowers, hcalEndcapCells, m_hcalEndcapSegmentation, m_hcalEndcapSegmentationType);
     totalNumberOfCells += hcalEndcapCells->size();
   }
 
@@ -186,7 +256,7 @@ uint CaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   debug() << "Input Hcal forward cell collection size: " << hcalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   if (m_hcalFwdSegmentation != nullptr) {
-    CellsIntoTowers(aTowers, hcalFwdCells, m_hcalFwdSegmentation);
+    CellsIntoTowers(aTowers, hcalFwdCells, m_hcalFwdSegmentation, m_hcalFwdSegmentationType);
     totalNumberOfCells += hcalFwdCells->size();
   }
 
@@ -226,7 +296,7 @@ float CaloTowerTool::radiusForPosition() const { return m_radius; }
 
 void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
                                     const fcc::CaloHitCollection* aCells,
-                                    dd4hep::DDSegmentation::FCCSWGridPhiEta* aSegmentation) {
+                                    dd4hep::DDSegmentation::Segmentation* aSegmentation, SegmentationType aType) {
   // Loop over a collection of calorimeter cells and build calo towers
   // borders of the cell in eta/phi
   float etaCellMin = 0, etaCellMax = 0;
@@ -242,92 +312,146 @@ void CaloTowerTool::CellsIntoTowers(std::vector<std::vector<float>>& aTowers,
   float fracEtaMin = 1.0, fracEtaMax = 1.0, fracEtaMiddle = 1.0;
   float fracPhiMin = 1.0, fracPhiMax = 1.0, fracPhiMiddle = 1.0;
   float epsilon = 0.0001;
+  const dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation = nullptr;
+  const dd4hep::DDSegmentation::MultiSegmentation* multisegmentation = nullptr;
+  if( aType == SegmentationType::kPhiEta) {
+      segmentation = dynamic_cast<const dd4hep::DDSegmentation::FCCSWGridPhiEta*>(aSegmentation);
+  } else if( aType == SegmentationType::kMulti) {
+    multisegmentation = dynamic_cast<const dd4hep::DDSegmentation::MultiSegmentation*>(aSegmentation);
+  }
+  bool pass = true;
   for (const auto& cell : *aCells) {
-    // find to which tower(s) the cell belongs
-    etaCellMin = aSegmentation->eta(cell.core().cellId) - aSegmentation->gridSizeEta() * 0.5;
-    etaCellMax = aSegmentation->eta(cell.core().cellId) + aSegmentation->gridSizeEta() * 0.5;
-    phiCellMin = aSegmentation->phi(cell.core().cellId) - M_PI / (double)aSegmentation->phiBins();
-    phiCellMax = aSegmentation->phi(cell.core().cellId) + M_PI / (double)aSegmentation->phiBins();
-    iEtaMin = idEta(etaCellMin + epsilon);
-    iPhiMin = idPhi(phiCellMin + epsilon);
-    iEtaMax = idEta(etaCellMax - epsilon);
-    iPhiMax = idPhi(phiCellMax - epsilon);
-    // if a cell is larger than a tower in eta/phi, calculate the fraction of
-    // the cell area belonging to the first/last/middle towers
-    fracEtaMin = 1.0;
-    fracEtaMax = 1.0;
-    fracEtaMiddle = 1.0;
-    if (iEtaMin != iEtaMax) {
-      fracEtaMin = fabs(eta(iEtaMin) + 0.5 * m_deltaEtaTower - etaCellMin) / aSegmentation->gridSizeEta();
-      fracEtaMax = fabs(etaCellMax - eta(iEtaMax) + 0.5 * m_deltaEtaTower) / aSegmentation->gridSizeEta();
-      if ((iEtaMax - iEtaMin - 1) != 0) {
-        fracEtaMiddle = (1 - fracEtaMin - fracEtaMax) / float(iEtaMax - iEtaMin - 1);
-      } else {
-        fracEtaMiddle = 0.0;
-      }
+    // if multisegmentation is used - first find out which segmentation to use
+    if( aType == SegmentationType::kMulti) {
+      segmentation = dynamic_cast<const dd4hep::DDSegmentation::FCCSWGridPhiEta*>(&multisegmentation->subsegmentation(cell.core().cellId));
     }
-    fracPhiMin = 1.0;
-    fracPhiMax = 1.0;
-    fracPhiMiddle = 1.0;
-    if (iPhiMin != iPhiMax) {
-      fracPhiMin =
-          fabs(phi(iPhiMin) + 0.5 * m_deltaPhiTower - phiCellMin) / (2 * M_PI / (double)aSegmentation->phiBins());
-      fracPhiMax =
-          fabs(phiCellMax - phi(iPhiMax) + 0.5 * m_deltaPhiTower) / (2 * M_PI / (double)aSegmentation->phiBins());
-      if ((iPhiMax - iPhiMin - 1) != 0) {
-        fracPhiMiddle = (1 - fracPhiMin - fracPhiMax) / float(iPhiMax - iPhiMin - 1);
-      } else {
-        fracPhiMiddle = 0.0;
-      }
-    }
-
-    // Loop through the appropriate towers and add transverse energy
-    for (auto iEta = iEtaMin; iEta <= iEtaMax; iEta++) {
-      if (iEta == iEtaMin) {
-        ratioEta = fracEtaMin;
-      } else if (iEta == iEtaMax) {
-        ratioEta = fracEtaMax;
-      } else {
-        ratioEta = fracEtaMiddle;
-      }
-      for (auto iPhi = iPhiMin; iPhi <= iPhiMax; iPhi++) {
-        if (iPhi == iPhiMin) {
-          ratioPhi = fracPhiMin;
-        } else if (iPhi == iPhiMax) {
-          ratioPhi = fracPhiMax;
-        } else {
-          ratioPhi = fracPhiMiddle;
+    if (m_useHalfTower) {
+        uint layerId = m_decoder->get(cell.core().cellId, "layer");
+        if ( layerId > 3 ) {
+          pass = false;
         }
-        aTowers[iEta][phiNeighbour(iPhi)] +=
-            cell.core().energy / cosh(aSegmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
-        m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))].push_back(cell);
+    }
+    if (pass) {
+      // find to which tower(s) the cell belongs
+      etaCellMin = segmentation->eta(cell.core().cellId) - segmentation->gridSizeEta() * 0.5;
+      etaCellMax = segmentation->eta(cell.core().cellId) + segmentation->gridSizeEta() * 0.5;
+      phiCellMin = segmentation->phi(cell.core().cellId) - M_PI / (double)segmentation->phiBins();
+      phiCellMax =segmentation->phi(cell.core().cellId) + M_PI / (double)segmentation->phiBins();
+      iEtaMin = idEta(etaCellMin + epsilon);
+      iPhiMin = idPhi(phiCellMin + epsilon);
+      iEtaMax = idEta(etaCellMax - epsilon);
+      iPhiMax = idPhi(phiCellMax - epsilon);
+      // if a cell is larger than a tower in eta/phi, calculate the fraction of
+      // the cell area belonging to the first/last/middle towers
+      fracEtaMin = 1.0;
+      fracEtaMax = 1.0;
+      fracEtaMiddle = 1.0;
+      if (iEtaMin != iEtaMax) {
+        fracEtaMin = fabs(eta(iEtaMin) + 0.5 * m_deltaEtaTower - etaCellMin) / segmentation->gridSizeEta();
+        fracEtaMax = fabs(etaCellMax - eta(iEtaMax) + 0.5 * m_deltaEtaTower) / segmentation->gridSizeEta();
+        if ((iEtaMax - iEtaMin - 1) != 0) {
+          fracEtaMiddle = (1 - fracEtaMin - fracEtaMax) / float(iEtaMax - iEtaMin - 1);
+        } else {
+          fracEtaMiddle = 0.0;
+        }
+      }
+      fracPhiMin = 1.0;
+      fracPhiMax = 1.0;
+      fracPhiMiddle = 1.0;
+      if (iPhiMin != iPhiMax) {
+        fracPhiMin =
+          fabs(phi(iPhiMin) + 0.5 * m_deltaPhiTower - phiCellMin) / (2 * M_PI / (double)segmentation->phiBins());
+        fracPhiMax =
+          fabs(phiCellMax - phi(iPhiMax) + 0.5 * m_deltaPhiTower) / (2 * M_PI / (double)segmentation->phiBins());
+        if ((iPhiMax - iPhiMin - 1) != 0) {
+          fracPhiMiddle = (1 - fracPhiMin - fracPhiMax) / float(iPhiMax - iPhiMin - 1);
+        } else {
+          fracPhiMiddle = 0.0;
+        }
+      }
+
+      // Loop through the appropriate towers and add transverse energy
+      for (auto iEta = iEtaMin; iEta <= iEtaMax; iEta++) {
+        if (iEta == iEtaMin) {
+          ratioEta = fracEtaMin;
+        } else if (iEta == iEtaMax) {
+          ratioEta = fracEtaMax;
+        } else {
+          ratioEta = fracEtaMiddle;
+        }
+        for (auto iPhi = iPhiMin; iPhi <= iPhiMax; iPhi++) {
+          if (iPhi == iPhiMin) {
+            ratioPhi = fracPhiMin;
+          } else if (iPhi == iPhiMax) {
+            ratioPhi = fracPhiMax;
+          } else {
+            ratioPhi = fracPhiMiddle;
+          }
+          aTowers[iEta][phiNeighbour(iPhi)] +=
+            cell.core().energy / cosh(segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
+          m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))].push_back(cell.core());
+          if ( fabs(etaCellMin) < 1.5 && m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))].size() > 8 ) verbose() << "NUM CELLs IN TOWER : " << m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))].size() << endmsg;
+        }
       }
     }
   }
 }
 
-dd4hep::DDSegmentation::FCCSWGridPhiEta* CaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation = nullptr;
+std::pair<dd4hep::DDSegmentation::Segmentation*, CaloTowerTool::SegmentationType> CaloTowerTool::retrieveSegmentation(std::string aReadoutName) {
+  dd4hep::DDSegmentation::Segmentation* segmentation = nullptr;
   if (m_geoSvc->lcdd()->readouts().find(aReadoutName) == m_geoSvc->lcdd()->readouts().end()) {
     info() << "Readout does not exist! Please check if it is correct. Processing without it." << endmsg;
   } else {
     info() << "Readout " << aReadoutName << " found." << endmsg;
     segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
-        m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
+      m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
     if (segmentation == nullptr) {
-      error() << "There is no phi-eta segmentation for the readout " << aReadoutName << " defined." << endmsg;
+      segmentation = dynamic_cast<dd4hep::DDSegmentation::MultiSegmentation*>(
+        m_geoSvc->lcdd()->readout(aReadoutName).segmentation().segmentation());
+      if (segmentation == nullptr) {
+        error() << "There is no phi-eta or multi- segmentation for the readout " << aReadoutName << " defined." << endmsg;
+      } else {
+        // check if multisegmentation contains only phi-eta sub-segmentations
+        dd4hep::DDSegmentation::Segmentation* subsegmentation = nullptr;
+        for (const auto& subSegm: dynamic_cast<dd4hep::DDSegmentation::MultiSegmentation*>(segmentation)->subSegmentations()) {
+          subsegmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(subSegm.segmentation);
+          if (subsegmentation == nullptr) {
+            error() << "At least one of the sub-segmentations in MultiSegmentation named " << aReadoutName << " is not a phi-eta grid." << endmsg;
+            return std::make_pair(nullptr, SegmentationType::kWrong);
+          }
+        }
+        return std::make_pair(segmentation, SegmentationType::kMulti);
+      }
+    } else {
+      return std::make_pair(segmentation, SegmentationType::kPhiEta);
     }
   }
-  return segmentation;
+  return std::make_pair(segmentation, SegmentationType::kWrong);
 }
 
-void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
+void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster, bool aEllipse) {
   int etaId = idEta(eta);
   int phiId = idPhi(phi);
-  for (int iEta = etaId - halfEtaFin; iEta <= etaId + halfEtaFin; iEta++) {
-    for (int iPhi = phiId - halfPhiFin; iPhi <= phiId + halfPhiFin; iPhi++) {
-      for (const auto& cell : m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))]) {
-        aEdmCluster.addhits(cell);
+  int num1 = 0;
+  int num2 = 0;
+  if (aEllipse) {
+    for (int iEta = etaId - halfEtaFin; iEta <= etaId + halfEtaFin; iEta++) {
+      for (int iPhi = phiId - halfPhiFin; iPhi <= phiId + halfPhiFin; iPhi++) {
+        if (pow( (etaId - iEta) / (halfEtaFin + 0.5), 2) + pow( (phiId - iPhi) / (halfPhiFin + 0.5), 2) < 1) {
+          for (const auto& cell : m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))]) {
+            aEdmCluster.addhits(fcc::ConstCaloHit(cell));
+            num1++;
+          }
+        }
+      }
+    }
+  } else {
+    for (int iEta = etaId - halfEtaFin; iEta <= etaId + halfEtaFin; iEta++) {
+      for (int iPhi = phiId - halfPhiFin; iPhi <= phiId + halfPhiFin; iPhi++) {
+        for (const auto& cell : m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))]) {
+          aEdmCluster.addhits(fcc::ConstCaloHit(cell));
+          num2++;
+        }
       }
     }
   }

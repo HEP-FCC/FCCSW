@@ -259,7 +259,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
                    iEta <= std::min(idPhiCl, idPhiClShare) + halfPhiFin;
                    iPhi++) {
                 if (iEta >= 0 && iEta < m_nEtaTower) {  // check if we are not outside of map in eta
-                  sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] +=
+                  sumEnergySharing[iEta - idEtaCl + halfEtaFin][phiNeighbour(iPhi - idPhiCl + halfPhiFin)] +=
                       m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));
                 }
               }
@@ -270,8 +270,9 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       // apply the actual correction: substract the weighted energy contributions in other clusters
       for (int iEta = idEtaCl - halfEtaFin; iEta <= idEtaCl + halfEtaFin; iEta++) {
         for (int iPhi = idPhiCl - halfPhiFin; iPhi <= idPhiCl + halfPhiFin; iPhi++) {
-          if (sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin] != 0) {
-            float sumButOne = sumEnergySharing[iEta - idEtaCl + halfEtaFin][iPhi - idPhiCl + halfPhiFin];
+          if(iEta - idEtaCl + halfEtaFin >= 0)
+            if (sumEnergySharing[iEta - idEtaCl + halfEtaFin][phiNeighbour(iPhi - idPhiCl + halfPhiFin)] != 0) {
+              float sumButOne = sumEnergySharing[iEta - idEtaCl + halfEtaFin][phiNeighbour(iPhi - idPhiCl + halfPhiFin)];
             float towerEnergy = m_towers[iEta][phiNeighbour(iPhi)] * cosh(m_towerTool->eta(iEta));
             clusterEnergy -= towerEnergy * sumButOne / (sumButOne + towerEnergy);
           }
@@ -287,7 +288,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       edmClusterCore.position.y = radius * sin(clu.phi);
       edmClusterCore.position.z = radius * sinh(clu.eta);
       edmClusterCore.energy = clusterEnergy;
-      m_towerTool->attachCells(clu.eta, clu.phi, halfEtaWin, halfPhiWin, edmCluster);
+      m_towerTool->attachCells(clu.eta, clu.phi, halfEtaFin, halfPhiFin, edmCluster, m_ellipseFinalCluster);
       debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x
               << " y: " << edmClusterCore.position.y << " z: " << edmClusterCore.position.z
               << " energy: " << edmClusterCore.energy << " contains: " << edmCluster.hits_size() << " cells" << endmsg;

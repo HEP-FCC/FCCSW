@@ -11,6 +11,9 @@ class IRndmGenSvc;
 #include "RecInterface/INoiseCaloCellsTool.h"
 class IGeoSvc;
 
+//DD4hep
+#include "DDSegmentation/MultiSegmentation.h"
+
 // Root
 class TH1F;
 
@@ -81,7 +84,9 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentationPhiEta;
+  /// Multi segmentation
+  dd4hep::DDSegmentation::MultiSegmentation* m_segmentationMulti;
 };
 
 #endif /* RECCALORIMETER_NOISECALOCELLSFROMFILETOOL_H */

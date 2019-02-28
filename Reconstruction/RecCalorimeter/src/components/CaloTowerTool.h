@@ -10,8 +10,10 @@
 #include "RecInterface/ITowerTool.h"
 
 class IGeoSvc;
+#include "DDSegmentation/MultiSegmentation.h"
 
 // datamodel
+# include "datamodel/BareHit.h"
 namespace fcc {
 class CaloHitCollection;
 class CaloHit;
@@ -20,6 +22,7 @@ class CaloHit;
 namespace dd4hep {
 namespace DDSegmentation {
 class Segmentation;
+class BitFieldCoder;
 }
 }
 
@@ -92,6 +95,19 @@ public:
    *   @return Position of the centre of the tower
    */
   virtual float phi(int aIdPhi) const final;
+  /**  Find cells belonging to a cluster.
+   *   @param[in] aEta Position of the middle tower of a cluster in eta
+   *   @param[in] aPhi Position of the middle tower of a cluster in phi
+   *   @param[in] aHalfEtaFinal Half size of cluster in eta (in units of tower size). Cluster size is 2*aHalfEtaFinal+1
+   *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
+   *   @param[out] aEdmCluster Cluster where cells are attached to
+   */
+  virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                           fcc::CaloCluster& aEdmCluster, bool aEllipse = false) final;
+
+private:
+  /// Type of the segmentation
+  enum class SegmentationType {kWrong, kPhiEta, kMulti};
   /**  Correct way to access the neighbour of the phi tower, taking into account
    * the full coverage in phi.
    *   Full coverage means that first tower in phi, with ID = 0 is a direct
@@ -108,22 +124,12 @@ public:
    *   @param[in] aSegmentation Segmentation of the calorimeter
    */
   void CellsIntoTowers(std::vector<std::vector<float>>& aTowers, const fcc::CaloHitCollection* aCells,
-                       dd4hep::DDSegmentation::FCCSWGridPhiEta* aSegmentation);
+                       dd4hep::DDSegmentation::Segmentation* aSegmentation, SegmentationType aType);
   /**  Check if the readout name exists. If so, it returns the eta-phi segmentation.
    *   @param[in] aReadoutName Readout name to be retrieved
    */
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* retrieveSegmentation(std::string aReadoutName);
-  /**  Find cells belonging to a cluster.
-   *   @param[in] aEta Position of the middle tower of a cluster in eta
-   *   @param[in] aPhi Position of the middle tower of a cluster in phi
-   *   @param[in] aHalfEtaFinal Half size of cluster in eta (in units of tower size). Cluster size is 2*aHalfEtaFinal+1
-   *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
-   *   @param[out] aEdmCluster Cluster where cells are attached to
-   */
-  virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
-                           fcc::CaloCluster& aEdmCluster) final;
-
-private:
+  std::pair<double, double> retrievePhiEtaExtrema(dd4hep::DDSegmentation::Segmentation* aSegmentation, SegmentationType aType);
+  std::pair<dd4hep::DDSegmentation::Segmentation*, SegmentationType> retrieveSegmentation(std::string aReadoutName);
   /// Handle for electromagnetic barrel cells (input collection)
   DataHandle<fcc::CaloHitCollection> m_ecalBarrelCells{"ecalBarrelCells", Gaudi::DataHandle::Reader, this};
   /// Handle for ecal endcap calorimeter cells (input collection)
@@ -161,20 +167,35 @@ private:
   Gaudi::Property<std::string> m_hcalFwdReadoutName{this, "hcalFwdReadoutName", "",
                                                     "name of the hcal fwd readout"};
   /// PhiEta segmentation of the electromagnetic barrel (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalBarrelSegmentation;
-
+  dd4hep::DDSegmentation::Segmentation* m_ecalBarrelSegmentation;
   /// PhiEta segmentation of the ecal endcap calorimeter (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalEndcapSegmentation;
+  dd4hep::DDSegmentation::Segmentation* m_ecalEndcapSegmentation;
   /// PhiEta segmentation of the ecal forward calorimeter (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_ecalFwdSegmentation;
+  dd4hep::DDSegmentation::Segmentation* m_ecalFwdSegmentation;
   /// PhiEta segmentation of the hadronic barrel (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalBarrelSegmentation;
+  dd4hep::DDSegmentation::Segmentation* m_hcalBarrelSegmentation;
   /// PhiEta segmentation of the hadronic extended barrel (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalExtBarrelSegmentation;
+  dd4hep::DDSegmentation::Segmentation* m_hcalExtBarrelSegmentation;
   /// PhiEta segmentation of the hcal endcap calorimeter (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalEndcapSegmentation;
+  dd4hep::DDSegmentation::Segmentation* m_hcalEndcapSegmentation;
   /// PhiEta segmentation of the hcal forward calorimeter (owned by DD4hep)
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_hcalFwdSegmentation;
+  dd4hep::DDSegmentation::Segmentation* m_hcalFwdSegmentation;
+  /// Type of segmentation of the electromagnetic barrel
+  SegmentationType m_ecalBarrelSegmentationType;
+  /// Type of segmentation of the ecal endcap calorimeter
+  SegmentationType m_ecalEndcapSegmentationType;
+  /// Type of segmentation of the ecal forward calorimeter
+  SegmentationType m_ecalFwdSegmentationType;
+  /// Type of segmentation of the hadronic barrel
+  SegmentationType m_hcalBarrelSegmentationType;
+  /// Type of segmentation of the hadronic extended barrel
+  SegmentationType m_hcalExtBarrelSegmentationType;
+  /// Type of segmentation of the hcal endcap calorimeter
+  SegmentationType m_hcalEndcapSegmentationType;
+  /// Type of segmentation of the hcal forward calorimeter
+  SegmentationType m_hcalFwdSegmentationType;
+  /// decoder: only for barrel
+  dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
   /// Radius used to calculate cluster position from eta and phi (in mm)
   Gaudi::Property<double> m_radius{this, "radiusForPosition", 1.0,
                                    "Radius used to calculate cluster position from eta and phi (in mm)"};
@@ -192,7 +213,9 @@ private:
   int m_nPhiTower;
   /// map to cells contained within a tower so they can be attached to a reconstructed cluster (note that fraction of
   /// their energy assigned to a cluster is not acknowledged)
-  std::map<std::pair<uint, uint>, std::vector<fcc::ConstCaloHit>> m_cellsInTowers;
+  std::map<std::pair<uint, uint>, std::vector<fcc::BareHit>> m_cellsInTowers;
+  /// Use only half of calorimeter
+  Gaudi::Property<bool> m_useHalfTower{this, "halfTower", false, "Use half tower"};
 };
 
 #endif /* RECCALORIMETER_CALOTOWERTOOL_H */
