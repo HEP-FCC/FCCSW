@@ -15,11 +15,14 @@ class ITHistSvc;
 namespace fcc {
 class CaloClusterCollection;
 class CaloHitCollection;
+class MCParticleCollection;
+class GenVertexCollection;
 }
 
 namespace dd4hep {
 namespace DDSegmentation {
 class FCCSWGridPhiEta;
+class MultiSegmentation;
 class BitFieldCoder;
 }
 }
@@ -47,7 +50,7 @@ class BitFieldCoder;
  *      needs to be given in *samplingFraction*.
  *
  *  Several histograms are filled in, to monitor the upstream correction, the pileup noise, and the energy prior to the
- * corrections, as well as afterwards.
+ * corrections, as well as afterwards, and the position (eta, phi) resolution.
  *
  *  @author Anna Zaborowska
  *
@@ -65,6 +68,14 @@ public:
   StatusCode finalize();
 
 private:
+  /**  Correct way to access the neighbour of the phi tower, taking into account the full coverage in phi.
+   *   Full coverage means that first tower in phi, with ID = 0 is a direct neighbour
+   *   of the last tower in phi with ID = m_nPhiTower - 1).
+   *   @param[in] aIPhi requested ID of a phi tower, may be < 0 or >= aMaxPhi
+   *   @param[in] aMaxPhi maximum phi
+   *   @return  ID of a tower - shifted and corrected (in [0, aMaxPhi) range)
+   */
+  unsigned int phiNeighbour(int aIPhi, int aMaxPhi) const;
   /** Open file and read noise histograms in the memory
    *  @return Status code if retriving histograms was successful
    */
@@ -72,27 +83,61 @@ private:
   /** Find the appropriate noise constant from the histogram
    *  @param[in] aEta Pseudorapidity value of the centre of the cluster
    *  @param[in] aNumCells Number of cells in a cluster
-   *  @return Width of the Gaussian distribution of noise per cluster
+    *  @return Width of the Gaussian distribution of noise per cluster
    */
   double getNoiseConstantPerCluster(double aEta, uint numCells);
   /// Handle for clusters (input collection)
   DataHandle<fcc::CaloClusterCollection> m_inClusters{"clusters", Gaudi::DataHandle::Reader, this};
   /// Handle for corrected clusters (output collection)
   DataHandle<fcc::CaloClusterCollection> m_correctedClusters{"correctedClusters", Gaudi::DataHandle::Writer, this};
+  /// Handle for particles with truth position and energy information: for SINGLE PARTICLE EVENTS (input collection)
+  DataHandle<fcc::MCParticleCollection> m_particle{"particles", Gaudi::DataHandle::Reader, this};
+  /// Handle for the genvertices to read vertex position information
+  DataHandle<fcc::GenVertexCollection> m_vertex{"vertices", Gaudi::DataHandle::Reader, this};
   /// Pointer to the interface of histogram service
   ServiceHandle<ITHistSvc> m_histSvc;
   /// Histogram of energy before any correction
   TH1F* m_hEnergyPreAnyCorrections;
   /// Histogram of energy after all corrections
   TH1F* m_hEnergyPostAllCorrections;
+  /// Histogram of energy after all corrections and scaled to restore response = 1
+  TH1F* m_hEnergyPostAllCorrectionsAndScaling;
+  /// Ratio of energy in layers
+  TH1F* m_hEnergyFractionInLayers;
+  /// Histogram of eta resolution
+  TH1F* m_hDiffEta;
+  TH1F* m_hDiffEtaResWeight;
+  TH1F* m_hDiffEtaResWeight2point;
+  /// Histogram of eta resolution per layer
+  std::vector<TH1F*> m_hDiffEtaLayer;
+  /// Histogram of phi resolution
+  TH1F* m_hDiffPhi;
+  /// Histogram of eta
+  TH1F* m_hEta;
+  /// Histogram of phi
+  TH1F* m_hPhi;
+  /// Number of cells inside cluster
+  TH1F* m_hNumCells;
+  /// Energy of the centre of energy distribution histograms
+  Gaudi::Property<double> m_response{this, "response", 0.95, "Reconstructed energy (in the cluster) used for scaling"};
   /// Energy of the centre of energy distribution histograms
   Gaudi::Property<double> m_energy{this, "energyAxis", 500, "Energy of the centre of energy distribution histograms"};
   /// Weights for each detector layer for eta position log-weighting
   Gaudi::Property<std::vector<double>> m_etaRecalcLayerWeights{
-      this,
+    this,
       "etaRecalcWeights",
-      {3.5, 5.5, 4.75, 4, 3.75, 3.5, 7, 7},
+        {3.5, 5.5, 4.75, 4, 3.75, 3.5, 7, 7},
       "Weights for each detector layer for eta position log-weighting"};
+  Gaudi::Property<std::vector<double>> m_etaLayerResolutionSampling{
+    this,
+      "etaLayerResolutionSampling",
+        {0, 1.405, 2.051, 3.195, 5.791, 10.28, 17.54, 30.5},
+      "sampling term of eta resolution"};
+  Gaudi::Property<std::vector<double>> m_etaLayerResolutionConst{
+    this,
+      "etaLayerResolutionConst",
+        {2.623, 0.1083, 0.1152, 0, 0, 0, 0, 0},
+      "const term of eta resolution"};
   /// number of layers in the systems as in m_systemId
   Gaudi::Property<uint> m_numLayers{this, "numLayers", 8, "Number of layers for which the eta position is calculated"};
   /// Name of the layer/cell field
@@ -107,9 +152,10 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// map of system Id to segmentation, created based on m_readoutName and m_systemId
-  std::map<uint, dd4hep::DDSegmentation::FCCSWGridPhiEta*> m_segmentation;
+  std::map<uint, dd4hep::DDSegmentation::FCCSWGridPhiEta*> m_segmentationPhiEta;
+  std::map<uint, dd4hep::DDSegmentation::MultiSegmentation*> m_segmentationMulti;
   /// map of system Id to decoder, created based on m_readoutName and m_systemId
-  std::map<uint, std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder>> m_decoder;
+  std::map<uint, dd4hep::DDSegmentation::BitFieldCoder*> m_decoder;
   /// Histogram of pileup noise added to energy of clusters
   TH1F* m_hPileupEnergy;
   /// Random Number Service
@@ -149,8 +195,30 @@ private:
                                                            0.203778124831, 0.216211280314, 0.227140796653,
                                                            0.243315422934},
                                                           "Values of sampling fraction used in energy calibration"};
+  /// maximum eta value of generated particles (for ranges in histograms)
+  Gaudi::Property<double> m_etaMax{this, "etaMaxAxis", 1.6805, "Max eta value"};
+  /// maximum phi value of generated particles (for ranges in histograms)
+  Gaudi::Property<double> m_phiMax{this, "phiMaxAxis", M_PI, "Max phi value"};
+  /// segmentation of detetor in eta (for number of bins in histograms)
+  Gaudi::Property<double> m_dEta{this, "dEta", 0.01, "Segmentation in eta"};
+  /// segmentation of detetor in phi (for number of bins in histograms)
+  Gaudi::Property<double> m_dPhi{this, "dPhi", 2*M_PI/704, "Segmentation in phi"};
   /// Histogram of upstream energy added to energy of clusters
   TH1F* m_hUpstreamEnergy;
+  /// Size of the window in phi for the final cluster building, optimised for each layer  (in units of cell size)
+  /// If empty use same size for each layer, as in *nPhiFinal*
+  Gaudi::Property<std::vector<int>> m_nPhiFinal{this, "nPhiOptimFinal", {}};
+  // Recalculate to half size N (window size = 2*N+1)
+  std::vector<int> m_halfPhiFin;
+  /// Size of the window in eta for the final cluster building, optimised for each layer  (in units of cell size)
+  /// If empty use same size for each layer, as in *nEtaFinal*
+  Gaudi::Property<std::vector<int>> m_nEtaFinal{this, "nEtaOptimFinal", {}};
+  // Recalculate to half size N (window size = 2*N+1)
+  std::vector<int> m_halfEtaFin;
+  /// Flag for the ellipse used in the final cluster instead of the rectangle
+  Gaudi::Property<bool> m_ellipseFinalCluster{this, "ellipse", false};
+  /// Use this value of pileup noise (to overwrite the value read from file and calculated based on num of cells)
+  Gaudi::Property<double> m_constPileupNoise{this, "constPileupNoise", 0};
 };
 
 #endif /* RECCALORIMETER_CORRECTCLUSTER_H */
