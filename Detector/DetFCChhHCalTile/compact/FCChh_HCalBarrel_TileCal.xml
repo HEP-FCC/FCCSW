@@ -56,11 +56,11 @@
     </readout>
     <readout name="HCalBarrelReadout">
       <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.025" phi_bins="BarHCal_n_phi_modules" offset_eta="-1.256" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
-      <id>system:4,layer:5,row:9,eta:9,phi:10</id>
+      <id>system:4,layer:5,row:9,eta:7,phi:10</id>
     </readout>
     <readout name="BarHCal_Readout_phieta">
      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.025" phi_bins="BarHCal_n_phi_modules" offset_eta="-1.256" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
-     <id>system:4,layer:5,eta:9,phi:10</id>
+     <id>system:4,layer:5,eta:7,phi:10</id>
     </readout>
    <readout name="BarHCal_Readout_phi">
      <!-- the eta segmentation here is a dummy - the whole hcal (extending to 1.5 in eta) is contained in one bin. the z position is stored in the "row" field. -->
