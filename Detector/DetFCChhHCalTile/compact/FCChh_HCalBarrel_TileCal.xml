@@ -45,6 +45,7 @@
   </display>
 
   <readouts>
+    <!-- Default readout of DetailedWedge geometry -->
     <readout name="HCalBarrelDetailedWedgeReadout">
      <id>system:4,module:8,row:9,layer:5</id>
     </readout>

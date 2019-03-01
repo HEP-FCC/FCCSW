@@ -49,16 +49,20 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
   unsigned int numSequencesZ1 = static_cast<unsigned>((2 * dimensions.width() - 2 * dZEndPlate - space) / dzSequence);
   unsigned int numSequencesZ2 = static_cast<unsigned>((2 * dimensions.dz() - 2 * dZEndPlate - space) / dzSequence);
 
-  // Hard-coded assumption that we have three different layer types for the modules
-  std::vector<xml_comp_t> Layers = {aXmlElement.child(_Unicode(layer_1)), aXmlElement.child(_Unicode(layer_2)),
-                                    aXmlElement.child(_Unicode(layer_3))};
   unsigned int numSequencesR1 = 0;
   unsigned int numSequencesR2 = 0;
   double moduleDepth1 = 0.;
   double moduleDepth2 = 0.;
   std::vector<double> layerDepths1 = std::vector<double>();
   std::vector<double> layerDepths2 = std::vector<double>();
-  // Loop over each type of layers (10, 15, 25 cm)
+
+  // get all 'layer' children of the 'layers' tag
+  std::vector<xml_comp_t> Layers;
+  for (xml_coll_t xCompColl(aXmlElement.child(_Unicode(layers)), _Unicode(layer)); xCompColl;
+       ++xCompColl) {
+    Layers.push_back(xCompColl);
+  }
+  
   for (std::vector<xml_comp_t>::iterator it = Layers.begin(); it != Layers.end(); ++it) {
     xml_comp_t layer = *it;
     Dimension layerDimension(layer.dimensions());
@@ -73,6 +77,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
       layerDepths1.push_back(layerDimension.dr());
     }
   }
+
   lLog << MSG::DEBUG << "retrieved number of layers in first ExtBarrel part:  " << numSequencesR1
        << " , which end up to a full module depth in rho of " << moduleDepth1 << endmsg;
   lLog << MSG::DEBUG << "retrieved number of layers in first ExtBarrel part:  " << layerDepths1.size() << endmsg;

@@ -14,16 +14,7 @@
     <!-- dimensions in R / rho of actual detector modules (face-plate is placed inside)-->
     <!-- tile dimensions -->
     <constant name="ExtBarHCal_n_phi_modules" value="256"/>
-    <constant name="ExtBarHCal1_n_layers_1" value="1"/>
-    <constant name="ExtBarHCal1_n_layers_2" value="0"/>
-    <constant name="ExtBarHCal1_n_layers_3" value="3"/>
-    <constant name="ExtBarHCal2_n_layers_1" value="2"/>
-    <constant name="ExtBarHCal2_n_layers_2" value="2"/>
-    <constant name="ExtBarHCal2_n_layers_3" value="4"/>
-    <constant name="ExtBarHCal_module_drho_1" value="100*mm"/>
-    <constant name="ExtBarHCal_module_drho_2" value="150*mm"/>
-    <constant name="ExtBarHCal_module_drho_3" value="250*mm"/>
-    <constant name="ExtBarHCAL_module_spacing_phi" value="1*mm"/>
+        <constant name="ExtBarHCAL_module_spacing_phi" value="1*mm"/>
     <!-- component dimensions -->
     <constant name="ExtBarHCal_master_plate_thickness" value="5*mm" />
     <constant name="ExtBarHCal_spacer_plate_thickness" value="4*mm" />
@@ -51,6 +42,7 @@
   </display>
 
   <readouts>
+    <!-- Default readout of DetailedWedge geometry -->
     <readout name="HCalExtBarrelDetailedWedgeReadout">
      <id>system:4,type:2,module:9,row:8,layer:4</id>
     </readout>
@@ -72,27 +64,30 @@
   <detector id="ExtBarHCal_id" name="HCalExtBarrel" type="CaloExtBarrel" readout="HCalExtBarrelReadout" vis="extHcal_envelope">
     <sensitive type="BirksLawCalorimeterSD"/>
     <dimensions rmin1="ExtBarHCal1_rmin" rmin2="ExtBarHCal2_rmin" rmax1="ExtBarHCal1_rmax" rmax2="ExtBarHCal2_rmax" width="ExtBarHCal1_dz" dz="ExtBarHCal2_dz" offset="ExtBarHCal1_zOffset" z_offset="ExtBarHCal2_zOffset"/>
-    <layer_1 id="0" name="type_1" material="Air" vis="exthcal_barrel_layer_vis">
-      <dimensions
-	 dr="ExtBarHCal_module_drho_1"
-	 nmodules="ExtBarHCal1_n_layers_1"
-	 nModules="ExtBarHCal2_n_layers_1"
-	 />
-    </layer_1>
-    <layer_2 id="1" name="type_2" material="Air" vis="exthcal_barrel_layer_vis">
-      <dimensions
-	 dr="ExtBarHCal_module_drho_2"
-	 nmodules="ExtBarHCal1_n_layers_2"
-	 nModules="ExtBarHCal2_n_layers_2"
-	 />
-    </layer_2>
-    <layer_3 id="2" name="type_3" material="Air" vis="exthcal_barrel_layer_vis">
-      <dimensions
-	 dr="ExtBarHCal_module_drho_3"
-	 nmodules="ExtBarHCal1_n_layers_3"
-	 nModules="ExtBarHCal2_n_layers_3"
-	 />
-    </layer_3>
+    <layers>
+      <layer id="0" name="type_1" material="Air" vis="exthcal_barrel_layer_vis">
+        <dimensions
+           dr="100*mm"
+	   nmodules="1"
+	   nModules="2"
+           />
+      </layer>
+      <layer id="1" name="type_2" material="Air" vis="exthcal_barrel_layer_vis">
+	<dimensions
+           dr="150*mm"
+           nmodules="0"
+           nModules="2"
+           />
+      </layer>
+      <layer id="2" name="type_3" material="Air" vis="exthcal_barrel_layer_vis">
+	<dimensions
+           dr="250*mm"
+           nmodules="3"
+           nModules="4"
+           />
+      </layer>
+    </layers>
+    
     <sequence_a id="3" name="sequence_1" material="Air" vis="exthcal_barrel_seq1_vis">
       <dimensions
 	 dz="2*ExtBarHCal_master_plate_thickness + ExtBarHCal_spacer_plate_thickness + ExtBarHCal_scintillator_thickness + 2*ExtBarHCal_air_space_thickness"
