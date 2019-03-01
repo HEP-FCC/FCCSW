@@ -166,7 +166,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
     layerR += layerDepths1.at(idxLayer);
 
     //alternate: even layers consist of tile sequence b, odd layer of tile sequence a
-    unsigned int sequenceIdx = idxLayer % 2;
+    unsigned int sequenceIdx = (idxLayer+1) % 2;
     
     dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer, 0.5*dzSequence);
     Volume tileSequenceVolume("HCalEBTileSequenceVol1", tileSequenceShape, aLcdd.air());
@@ -215,7 +215,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
 
     // second z loop (place sequences in layer)
     std::vector<dd4hep::PlacedVolume> seqs; 
-    double zOffset = - dzDetector1 + dZEndPlate + space/2 + 0.5 * dzSequence;
+    double zOffset = - dzDetector1 + 0.5 * dzSequence; //2*dZEndPlate + space + 0.5 * dzSequence;
     
     for (uint numSeq=0; numSeq < numSequencesZ1; numSeq++){
       dd4hep::Position tileSequencePosition(0, 0, zOffset);
@@ -236,7 +236,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
     layerR += layerDepths2.at(idxLayer);
 
     //alternate: even layers consist of tile sequence b, odd layer of tile sequence a                                                                                  
-    unsigned int sequenceIdx = idxLayer % 2;
+    unsigned int sequenceIdx = (idxLayer+1) % 2;
 
     dd4hep::Tube tileSequenceShape(rminLayer, rmaxLayer, 0.5*dzSequence);
     Volume tileSequenceVolume("HCalEBTileSequenceVol2", tileSequenceShape, aLcdd.air());
@@ -277,7 +277,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
 
     // second z loop (place sequences in layer)                                                                                                                        
     std::vector<dd4hep::PlacedVolume> seqs;
-    double zOffset = - dzDetector2 + dZEndPlate + space/2. + (dzSequence * 0.5);
+    double zOffset = - dzDetector2 + 0.5 * dzSequence; //2*dZEndPlate + space + (dzSequence * 0.5);
 
     for (uint numSeq=0; numSeq < numSequencesZ2; numSeq++){
       dd4hep::Position tileSequencePosition(0, 0, zOffset);
@@ -291,7 +291,7 @@ void buildEB(MsgStream& lLog, dd4hep::Detector& aLcdd, dd4hep::SensitiveDetector
     dd4hep::Position moduleOffset2 (0, 0, sign * extBarrelOffset2);
     dd4hep::PlacedVolume placedLayerVolume = aEnvelope.placeVolume(layerVolume, moduleOffset2);
     placedLayerVolume.addPhysVolID("type", 2 - sign);  // Second module type=1,3 behind the first +/-
-    placedLayerVolume.addPhysVolID("layer", idxLayer);
+    placedLayerVolume.addPhysVolID("layer", layerDepths1.size() + idxLayer);
     layers.push_back(placedLayerVolume);
 
   }
