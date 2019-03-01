@@ -1,6 +1,6 @@
 
-import os
 
+import os
 from GaudiKernel import SystemOfUnits as units
 
 from Gaudi.Configuration import *
@@ -10,16 +10,16 @@ podioevent   = FCCDataSvc("EventDataSvc")
 
 ## create DD4hep geometry
 path_to_detector = os.environ.get("FCC_DETECTORS", "")
-
 from Configurables import GeoSvc
 geoservice = GeoSvc()
-geoservice.detectors = ['file:' + os.path.join(path_to_detector, 'Detector/DetFCChhHCalTile/compact/standalone.xml'),]
+geoservice.detectors = ['file:' + os.path.join(path_to_detector,
+'Detector/DetFCChhHCalTile/tests/compact_detailedwedge/standalone.xml'),]
 geoservice.OutputLevel = INFO
+
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool()
 field.FieldOn = False
-field.IntegratorStepper = "G4ExactHelixStepper"
 
 from Configurables import ConstPtParticleGun
 pgun_tool = ConstPtParticleGun(PdgCodes=[13], EtaMin=0.0000, EtaMax=0.0000001, PhiMin=0.0, PhiMax=1.57, PtMin=10000, PtMax=10000)
@@ -66,7 +66,7 @@ savetrajectorytool.trajectory.Path = "trajectory"
 savetrajectorytool.trajectoryPoints.Path = "trajectoryPoints"
 
 from Configurables import SimG4SaveCalHits
-savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["HCalBarrelReadout"])
+savehcaltool = SimG4SaveCalHits("saveHCalHits", readoutNames = ["HCalBarrelDetailedWedgeReadout"])
 savehcaltool.positionedCaloHits.Path = "HCalBarrelPositionedHits"
 savehcaltool.caloHits.Path = "HCalBarrelHits"
 
@@ -82,7 +82,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=INFO)
 out.outputCommands = ["keep *"]
-out.filename = 'output_hcal_geantscan.root'
+out.filename = 'output_hcaldetailedwedge_geantscan.root'
 
 from Configurables import ChronoAuditor
 chronoauditor = ChronoAuditor()
