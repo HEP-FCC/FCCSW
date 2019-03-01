@@ -92,9 +92,6 @@ correct = CorrectCluster("corr",
                          nEtaOptimFinal = [19]*8,
                          noiseFileName = "/eos/project/f/fccsw-web/testsamples/elecNoise_pileup_cluster_mu200_700files.root")
 
-out = PodioOutput("out", filename="output_allCalo_correction.root")
-out.outputCommands = ["drop *"]
-
 THistSvc().Output = ["rec DATAFILE='clusterCorrections_histograms.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
@@ -106,13 +103,11 @@ from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
-out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
               createClusters,
-              correct,
-              out
+              correct
               ],
     EvtSel = 'NONE',
     EvtMax   = num_events,
