@@ -32,7 +32,7 @@
   <include ref="HOMAbsorber.xml"/>
   <include ref="Vertex.xml"/>
   <include ref="DriftChamber.xml"/>
-  <include ref="../../DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml" />
+  <include ref="../../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_withCryostat.xml" />
   <!--include ref="Calorimeter.xml"/-->
 
 </lccdd>
