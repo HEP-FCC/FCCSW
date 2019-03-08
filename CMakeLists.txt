@@ -23,5 +23,5 @@ install(FILES ${CMAKE_BINARY_DIR}/fccrun
                     WORLD_EXECUTE WORLD_READ
         RENAME run)
 
-gaudi_project(FCCSW HEAD
+gaudi_project(FCCSW  v0r10
               USE Gaudi v29r2 )
