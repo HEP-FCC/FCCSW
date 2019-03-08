@@ -45,27 +45,28 @@
   </display>
 
   <readouts>
-    <!-- Default readout of DetailedWedge geometry -->
     <readout name="HCalBarrelDetailedWedgeReadout">
      <id>system:4,module:8,row:9,layer:5</id>
     </readout>
+    <readout name="HCalBarrelReadoutOld">
+     <segmentation type="FCCSWGridPhiEta" grid_size_eta="2."  phi_bins="256" offset_phi="-pi+(pi/256.)"/>
+     <id>system:4,layer:5,row:9,eta:0,phi:10</id>
+    </readout>
     <readout name="HCalBarrelReadout">
-      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.025" phi_bins="BarHCal_n_phi_modules" offset_eta="-1.256" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
-      <id>system:4,layer:5,row:9,eta:9,phi:10</id>
+     <!-- the eta segmentation here is a dummy - the whole hcal (extending to 1.5 in eta) is 
+          contained in one bin. the z position is stored in the "row" field. -->
+     <segmentation type="FCCSWGridPhiEta" grid_size_eta="5000." offset_eta="-2500"  phi_bins="BarHCal_n_phi_modules" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
+     <id>system:4,layer:5,row:9,eta:0,phi:10</id>
     </readout>
     <readout name="BarHCal_Readout_phieta">
      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.025" phi_bins="BarHCal_n_phi_modules" offset_eta="-1.256" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
      <id>system:4,layer:5,eta:9,phi:10</id>
     </readout>
-   <readout name="BarHCal_Readout_phi">
-     <!-- the eta segmentation here is a dummy - the whole hcal (extending to 1.5 in eta) is contained in one bin. the z position is stored in the "row" field. -->
-     <segmentation type="FCCSWGridPhiEta" grid_size_eta="3." phi_bins="BarHCal_n_phi_modules" offset_eta="-1.256" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
-     <id>system:4,layer:5,row:9,eta:0,phi:10</id>
-    </readout>
   </readouts>
 
   <detectors>
-    <detector id="BarHCal_id" name="HCalBarrel" type="HCalTileBarrel" readout="HCalBarrelReadout" >
+    <detector id="BarHCal_id" name="HCalBarrel" type="CaloBarrelDetailedWedge"
+    readout="HCalBarrelDetailedWedgeReadout" >
       <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmax" dz="BarHCal_dz" vis="hcal_envelope" />
       <sensitive type="BirksLawCalorimeterSD"/>
       <end_plate name="end_plate" thickness="BarHCal_end_plate_thickness" material="Steel235" sensitive="false" vis="hcal_end_plate_vis" />

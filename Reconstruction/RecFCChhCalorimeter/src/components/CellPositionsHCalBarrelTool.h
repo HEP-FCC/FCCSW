@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H
-#define RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H
+#ifndef RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H
+#define RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H
 
 // GAUDI
 #include "GaudiAlg/GaudiTool.h"
@@ -8,6 +8,7 @@
 // FCCSW
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
+#include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ICellPositionsTool.h"
 
@@ -24,20 +25,14 @@ class Segmentation;
 }
 }
 
-/** @class CellPositionsHCalBarrelNoSegTool Reconstruction/RecFCChhCalorimeter/src/components/CellPositionsHCalBarrelNoSegTool.h
- *  CellPositionsHCalBarrelNoSegTool.h
+/** @class CellPositionsHCalBarrelTool
  *
- *  Tool to determine each Calorimeter cell position.
- *
- *  For the FCChh Barrel and extended Barrel HCAL, determined from the placed volumes.   
- * 
- *  @author Coralie Neubueser
  */
 
-class CellPositionsHCalBarrelNoSegTool : public GaudiTool, virtual public ICellPositionsTool {
+class CellPositionsHCalBarrelTool : public GaudiTool, virtual public ICellPositionsTool {
 public:
-  CellPositionsHCalBarrelNoSegTool(const std::string& type, const std::string& name, const IInterface* parent);
-  ~CellPositionsHCalBarrelNoSegTool() = default;
+  CellPositionsHCalBarrelTool(const std::string& type, const std::string& name, const IInterface* parent);
+  ~CellPositionsHCalBarrelTool() = default;
 
   virtual StatusCode initialize() final;
 
@@ -53,10 +48,11 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelDetailedWedgeReadout"};
-  /// Cellid decoder
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "BarHCal_Readout_phieta"};
+  Gaudi::Property<std::vector<double>> m_radii{this, "radii", {291.05, 301.05, 313.55, 328.55, 343.55, 358.55, 378.55, 413.55, 428.55, 453.55}};
+
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
-  /// Volume manager
   dd4hep::VolumeManager m_volman;
 };
-#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELNOSEGTOOL_H */
+#endif /* RECCALORIMETER_CELLPOSITIONSHCALBARRELTOOL_H */
