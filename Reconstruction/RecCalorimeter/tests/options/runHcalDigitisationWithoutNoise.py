@@ -18,6 +18,7 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
 from Configurables import CalibrateCaloHitsTool, CreateVolumeCaloPositions, RedoSegmentation, RewriteBitfield
 calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
 
+# Use Phi-Eta segmentation in Hcal barrel
 rewriteHCal = RewriteBitfield("RewriteHCal",
                                 # old bitfield (readout)
                                 oldReadoutName = "HCalBarrelReadout",
@@ -44,7 +45,7 @@ rewriteExtHCal = RewriteBitfield("RewriteExtHCal",
 rewriteExtHCal.inhits.Path = "ExtHCalHits"
 rewriteExtHCal.outhits.Path = "HCalExtBarrelCellsStep2"
 
-# Use Phi-Eta segmentation in Hcal barrel
+# Use Phi segmentation in Hcal barrel
 resegmentHcalBarrel = RewriteBitfield("ReSegmentationHcal",
                                        # old bitfield (readout)
                                        oldReadoutName = "HCalBarrelReadout",

@@ -52,7 +52,7 @@
     </readout>
    <readout name="ExtBarHCal_Readout_phieta">
      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.025" offset_eta="-1.813" phi_bins="256" offset_phi="-pi+pi/256."/>
-     <id>system:4,type:2,module:9,row:8,layer:4,eta:8,phi:10</id>
+     <id>system:4,type:2,layer:4,eta:8,phi:10</id>
     </readout>
    <readout name="ExtBarHCal_Readout_phi">
      <!-- the eta segmentation here is a dummy - the whole hcal (extending to 1.5 in eta) is contained in one bin. the z position is stored in the "row" field. -->

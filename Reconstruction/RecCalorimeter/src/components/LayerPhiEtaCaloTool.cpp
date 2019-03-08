@@ -73,7 +73,10 @@ StatusCode LayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, d
     decoder->set(volumeID, m_fieldNames[it], m_fieldValues[it]);
   }  
 
-  double maxEta[10] = {1.2524, 1.2234, 1.1956, 1.15609, 1.1189, 1.08397, 1.0509, 0.9999, 0.9534, 0.91072};
+  if (m_activeVolumesEta.size() != numLayers){
+    error() << "The given number of min eta is not equal to the number of layer!!!!" << endmsg;
+    return StatusCode::FAILURE;
+  }
 
   // Loop over all cells in the calorimeter and retrieve existing cellIDs
   // Loop over active layers
@@ -85,11 +88,11 @@ StatusCode LayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_t, d
 
     // Calculate number of cells per layer
     auto numCells = det::utils::numberOfCells(volumeID, *segmentation);
-    uint cellsEta = ceil(( maxEta[ilayer] - (-maxEta[ilayer]) - segmentation->gridSizeEta() ) / 2 / segmentation->gridSizeEta()) * 2 + 1;
-    uint minEtaID = int(floor(((-maxEta[ilayer]) + 0.5 * segmentation->gridSizeEta() - segmentation->offsetEta()) / segmentation->gridSizeEta()));
+    uint cellsEta = ceil(( 2*m_activeVolumesEta[ilayer] - segmentation->gridSizeEta() ) / 2 / segmentation->gridSizeEta()) * 2 + 1; // ceil( 2*m_activeVolumesRadii[ilayer] / segmentation->gridSizeEta()) ;
+    uint minEtaID = int(floor(( - m_activeVolumesEta[ilayer] + 0.5 * segmentation->gridSizeEta() - segmentation->offsetEta()) / segmentation->gridSizeEta()));
   
-    numCells[1] = cellsEta; // std::floor((maxEta[ilayer])/segmentation->gridSizeEta()) * 2;
-    numCells[2] = minEtaID; //std::floor((maxEta[ilayer] - maxEta[0]) /segmentation->gridSizeEta());
+    numCells[1] = cellsEta; 
+    numCells[2] = minEtaID; 
     debug() << "Segmentation cells  (Nphi, Neta, minEta): " << numCells << endmsg;
     // Loop over segmenation cells
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
