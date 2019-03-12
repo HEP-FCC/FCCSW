@@ -4,12 +4,12 @@ from Gaudi.Configuration import *
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
                                           'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'
+                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_DetailedWedgeHCalBarrel_TileCal.xml'
                                         ],
                     OutputLevel = INFO)
 
 ecalBarrelReadoutName = "ECalBarrelPhiEta"
-hcalBarrelReadoutName = "HCalBarrelReadout"
+hcalBarrelReadoutName = "HCalBarrelDetailedWedgeReadout"
 # noise files
 BarrelNoisePath = "/afs/cern.ch/work/c/cneubuse/public/FCChh/inBfield/noiseBarrel_mu100.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
