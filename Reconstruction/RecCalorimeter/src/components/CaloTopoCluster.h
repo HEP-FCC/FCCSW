@@ -65,7 +65,7 @@ public:
    *   @param[in] aCells, map of all cells.
    *   @param[in] aPreClusterCollection, map that is filled with clusterID pointing to the associated cells, in a pair of cellID and cellType.
    */
-  virtual void buildingProtoCluster(int aNumSigma,
+  StatusCode buildingProtoCluster(int aNumSigma,
                                     int aLastNumSigma,
                                     std::vector<std::pair<uint64_t, double>>& aSeeds,
                                     const std::map<uint64_t, double>& aCells,
@@ -107,8 +107,10 @@ private:
   ToolHandle<ICaloReadNeighboursMap> m_neighboursTool{"TopoCaloNeighbours", this};
   /// Handle for tool to get positions in ECal Barrel
   ToolHandle<ICellPositionsTool> m_cellPositionsECalBarrelTool{"CellPositionsECalBarrelTool", this};
-  /// Handle for tool to get positions in HCal Barrel and Ext Barrel, no Segmentation
-  ToolHandle<ICellPositionsTool> m_cellPositionsHCalBarrelTool{"CellPositionsHCalBarrelNoSegTool", this};
+  /// Handle for tool to get positions in HCal Barrel
+  ToolHandle<ICellPositionsTool> m_cellPositionsHCalBarrelNoSegTool{"CellPositionsHCalBarrelNoSegTool", this};
+  /// Handle for tool to get positions in HCal Barrel 
+  ToolHandle<ICellPositionsTool> m_cellPositionsHCalBarrelTool{"CellPositionsHCalBarrelTool", this};
   /// Handle for tool to get positions in HCal Barrel and Ext Barrel, no Segmentation
   ToolHandle<ICellPositionsTool> m_cellPositionsHCalExtBarrelTool{"CellPositionsHCalBarrelNoSegTool", this};
   /// Handle for tool to get positions in Calo Discs
@@ -119,6 +121,9 @@ private:
   ToolHandle<ICellPositionsTool> m_cellPositionsEMFwdTool{"CellPositionsCaloDiscsTool", this};
   /// Handle for tool to get positions in Calo Discs
   ToolHandle<ICellPositionsTool> m_cellPositionsHFwdTool{"CellPositionsCaloDiscsTool", this};
+
+  /// no segmentation used in HCal
+  Gaudi::Property<bool> m_noSegmentationHCalUsed{this, "noSegmentationHCal", true, "HCal Barrel readout without DD4hep eta-phi segmentation used."};
   /// Seed threshold in sigma
   Gaudi::Property<int> m_seedSigma{this, "seedSigma", 4, "number of sigma in noise threshold"};
   /// Neighbour threshold in sigma

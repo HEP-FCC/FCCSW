@@ -43,39 +43,32 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = INFO)
 
 # additionally for HCal
-from Configurables import CreateVolumeCaloPositions
-positionsHcal = CreateVolumeCaloPositions("positionsHcal", OutputLevel = INFO)
-positionsHcal.hits.Path = hcalBarrelCellsName
-positionsHcal.positionedHits.Path = "HCalBarrelPositions"
-
-from Configurables import RedoSegmentation
-resegmentHcal = RedoSegmentation("ReSegmentationHcal",
-                             # old bitfield (readout)
-                             oldReadoutName = hcalBarrelReadoutName,
-                             # # specify which fields are going to be altered (deleted/rewritten)
-                             # oldSegmentationIds = ["eta","phi"],
-                             # new bitfield (readout), with new segmentation
-                             newReadoutName = hcalBarrelReadoutPhiEtaName,
-                             debugPrint = 10,
-                             OutputLevel = INFO,
-                             inhits = "HCalBarrelPositions",
-                             outhits = "newHCalBarrelCells")
-
-positionsExtHcal = CreateVolumeCaloPositions("positionsExtHcal", OutputLevel = INFO)
-positionsExtHcal.hits.Path = hcalExtBarrelCellsName
-positionsExtHcal.positionedHits.Path = "HCalExtBarrelPositions"
-
-resegmentExtHcal = RedoSegmentation("ReSegmentationExtHcal",
+from Configurables import RewriteBitfield
+# Use Phi-Eta segmentation in Hcal barrel
+rewriteHcal = RewriteBitfield("RewriteHCal",
                                 # old bitfield (readout)
-                                oldReadoutName = hcalExtBarrelReadoutName,
-                                # specify which fields are going to be altered (deleted/rewritten)
-                                #oldSegmentationIds = ["eta","phi"],
+                                oldReadoutName = "HCalBarrelReadout",
+                                # specify which fields are going to be deleted 
+                                removeIds = ["row"],
                                 # new bitfield (readout), with new segmentation
-                                newReadoutName = hcalExtBarrelReadoutPhiEtaName,
+                                newReadoutName = "BarHCal_Readout_phieta",
                                 debugPrint = 10,
-                                OutputLevel = INFO,
-                                inhits = "HCalExtBarrelPositions",
-                                outhits = "newHCalExtBarrelCells")
+                                OutputLevel= INFO)
+# clusters are needed, with deposit position and cellID in bits
+rewriteHcal.inhits.Path = "HCalBarrelCells"
+rewriteHcal.outhits.Path = "newHCalBarrelCells"
+
+rewriteExtHcal = RewriteBitfield("RewriteExtHcal",
+                                # old bitfield (readout)
+                                 oldReadoutName = hcalExtBarrelReadoutName,
+                                # specify which fields are going to be altered (deleted/rewritten)
+                                removeIds = ["row"],
+                                # new bitfield (readout), with new segmentation
+                                 newReadoutName = hcalExtBarrelReadoutPhiEtaName,
+                                 debugPrint = 10,
+                                 OutputLevel = INFO,
+                                 inhits = "HCalExtBarrelCells",
+                                 outhits = "newHCalExtBarrelCells")
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
@@ -135,10 +128,8 @@ out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              positionsHcal,
-              resegmentHcal,
-              positionsExtHcal,
-              resegmentExtHcal,
+              rewriteHcal,
+              rewriteExtHcal,
               createClusters,
               out
               ],
