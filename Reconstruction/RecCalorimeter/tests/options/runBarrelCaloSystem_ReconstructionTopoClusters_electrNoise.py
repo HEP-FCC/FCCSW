@@ -50,7 +50,7 @@ from Configurables import ConstNoiseTool
 noiseTool = ConstNoiseTool("ConstNoiseTool")
 
 #Configure tools for calo cell positions
-from Configurables import CellPositionsECalBarrelTool,CellPositionsHCalBarrelNoSegTool, CellPositionsCaloDiscsTool,CellPositionsTailCatcherTool 
+from Configurables import CellPositionsECalBarrelTool,CellPositionsHCalBarrelTool, CellPositionsCaloDiscsTool,CellPositionsTailCatcherTool 
 ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
                                          readoutName = ecalBarrelReadoutName, 
                                          OutputLevel = INFO)
@@ -60,18 +60,51 @@ EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC",
 ECalFwdcells = CellPositionsCaloDiscsTool("CellPositionsECalFwd", 
                                           readoutName = ecalFwdReadoutName, 
                                           OutputLevel = INFO)
-HCalBcells = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalBarrelVols",
-                                              readoutName = hcalBarrelReadoutName,
-                                              OutputLevel = INFO) 
-HCalExtBcells =CellPositionsHCalBarrelNoSegTool("CellPositionsHCalExtBarrel",
-                                                readoutName = hcalExtBarrelReadoutName,
-                                                OutputLevel = INFO) 
+HCalBcells = CellPositionsHCalBarrelTool("CellPositionsHCalBarrel",
+                                         readoutName = hcalBarrelReadoutName,
+                                         radii = [291.05, 301.05, 313.55, 328.55, 343.55, 358.55, 378.55, 403.55, 428.55, 453.55],
+                                         OutputLevel = INFO) 
+HCalExtBcells =CellPositionsHCalBarrelTool("CellPositionsHCalExtBarrel",
+                                           readoutName = hcalExtBarrelReadoutName,
+                                           radii = [ 356.05
+                                                     , 373.55
+                                                     , 398.55
+                                                     , 423.55
+                                                     , 291.05
+                                                     , 301.05
+                                                     , 313.55
+                                                     , 328.55
+                                                     , 348.55
+                                                     , 373.55
+                                                     , 398.55
+                                                     , 423.55
+                                                     ],                                           
+                                           OutputLevel = INFO) 
 HECcells =CellPositionsCaloDiscsTool("CellPositionsHEC",
                                      readoutName = hcalEndcapReadoutName,
                                      OutputLevel = INFO) 
 HCalFwdcells =CellPositionsCaloDiscsTool("CellPositionsHCalFwd",
                                          readoutName = hcalFwdReadoutName,
                                          OutputLevel = INFO)
+
+#Configure tools for calo reconstruction                                                                                                                                                                       
+from Configurables import RewriteBitfield, CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, LayerPhiEtaCaloTool
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
+noise = NoiseCaloCellsFlatTool("HCalNoise",
+                               cellNoise = 0.01)
+
+rewriteHCal = RewriteBitfield("RewriteHCal",
+                                # old bitfield (readout)
+                                oldReadoutName = "HCalBarrelReadout",
+                                # specify which fields are going to be deleted
+                                removeIds = ["row"],
+                                # new bitfield (readout), with new segmentation
+                                newReadoutName = "BarHCal_Readout_phieta",
+                                debugPrint = 10,
+                                OutputLevel= INFO)
+# clusters are needed, with deposit position and cellID in bits
+rewriteHCal.inhits.Path = "HCalBarrelCells"
+rewriteHCal.outhits.Path = "HCalBarrelCellsStep1"
 
 from Configurables import CreateCaloCells,NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool, CalibrateCaloHitsTool,NoiseCaloCellsFlatTool,NestedVolumesCaloTool
 #ECal Barrel noise
@@ -92,27 +125,35 @@ barrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                          fieldValues = [5],
                                          activeVolumesNumber = 8)
 
-createEcalBarrelCells = CreateCaloCells(
-    "CreateECalBarrelCells", geometryTool = barrelGeometry, doCellCalibration = False,
-    #already calibrated addCellNoise = True, filterCellNoise = False,
-    noiseTool = noiseBarrel, hits = "ECalBarrelCells", cells = "ECalBarrelCellsNoise")
+createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells", 
+                                        geometryTool = barrelGeometry, 
+                                        doCellCalibration = False,
+                                        #already calibrated 
+                                        addCellNoise = True, 
+                                        filterCellNoise = False,
+                                        noiseTool = noiseBarrel, 
+                                        hits = "ECalBarrelCells", 
+                                        cells = "ECalBarrelCellsNoise")
 
 #HCal Barrel noise
-noiseHcal = NoiseCaloCellsFlatTool("HCalNoise", cellNoise = 0.009)
+noiseHcal = NoiseCaloCellsFlatTool("HCalNoise", cellNoise = 0.01)
 
-hcalgeo = NestedVolumesCaloTool("HcalGeo",
-                                activeVolumeName = hcalVolumeName,
-                                activeFieldName = hcalIdentifierName,
-                                readoutName = hcalBarrelReadoutName,
-                                fieldNames = hcalFieldNames,
-                                fieldValues = hcalFieldValues,
-                                OutputLevel = INFO)
+# Geometry for layer-eta-phi segmentation 
+barrelHcalGeometry = LayerPhiEtaCaloTool("BarrelHcalGeo",
+                                         readoutName = "BarHCal_Readout_phieta",
+                                         activeVolumeName = "layerVolume",
+                                         activeFieldName = "layer",
+                                         fieldNames = ["system"],
+                                         fieldValues = [8],
+                                         activeVolumesNumber = 10,
+                                         activeVolumesEta = [1.2524, 1.2234, 1.1956, 1.15609, 1.1189, 1.08397, 1.0509, 0.9999, 0.9534, 0.91072],
+                                         OutputLevel= DEBUG)
 
-createHcalBarrelCells =CreateCaloCells("CreateHCalBarrelCells", geometryTool = hcalgeo,
+createHcalBarrelCells =CreateCaloCells("CreateHCalBarrelCells", geometryTool = barrelHcalGeometry,
                                        doCellCalibration = False, addCellNoise = True,
                                        filterCellNoise = False, noiseTool = noiseHcal,
-                                       OutputLevel = INFO) 
-createHcalBarrelCells.hits.Path ="HCalBarrelCells" 
+                                       OutputLevel = DEBUG) 
+createHcalBarrelCells.hits.Path ="HCalBarrelCellsStep1" 
 createHcalBarrelCells.cells.Path ="HCalBarrelCellsNoise"
 
 #Create topo clusters
@@ -125,7 +166,7 @@ createTopoInput =CaloTopoClusterInputTool("CreateTopoInput",
                                           ecalBarrelReadoutName = ecalBarrelReadoutName,
                                           ecalEndcapReadoutName = "",
                                           ecalFwdReadoutName = "",
-                                          hcalBarrelReadoutName = hcalBarrelReadoutName,
+                                          hcalBarrelReadoutName = "BarHCal_Readout_phieta",
                                           hcalExtBarrelReadoutName = "",
                                           hcalEndcapReadoutName = "",
                                           hcalFwdReadoutName = "",
@@ -135,17 +176,16 @@ createTopoInput.ecalEndcapCells.Path ="emptyCaloCells"
 createTopoInput.ecalFwdCells.Path ="emptyCaloCells" 
 createTopoInput.hcalBarrelCells.Path ="HCalBarrelCellsNoise" 
 createTopoInput.hcalExtBarrelCells.Path ="emptyCaloCells" 
-createTopoInput.hcalEndcapCells.Path ="emptyCaloCells" 
+createTopoInput.hcalEndcapCells.Path ="emptyCaloCells"
 createTopoInput.hcalFwdCells.Path = "emptyCaloCells"
 
 readNeighboursMap =TopoCaloNeighbours("ReadNeighboursMap",
-                                      fileName = "/afs/cern.ch/work/c/cneubuse/public/FCChh/neighbours_map_segHcal.root",
+                                      fileName = "/afs/cern.ch/work/c/cneubuse/public/FCChh/neighbours_map_barrel.root",
                                       OutputLevel = DEBUG)
 
 #Noise levels per cell
 readNoisyCellsMap = TopoCaloNoisyCells("ReadNoisyCellsMap",
-                                       fileName = "/afs/cern.ch/work/c/cneubuse/public/FCChh/"
-                                       "cellNoise_map_segHcal_electronicsNoiseLevel.root",
+                                       fileName = "/afs/cern.ch/work/c/cneubuse/public/FCChh/cellNoise_map_electronicsNoiseLevel.root",
                                        OutputLevel = DEBUG)
 
 createTopoClusters = CaloTopoCluster("CreateTopoClusters",
@@ -200,6 +240,7 @@ positionsClusterBarrel.AuditExecute = True
 
 ApplicationMgr(TopAlg =
                [podioinput, 
+                rewriteHCal,
                 createEcalBarrelCells, 
                 createHcalBarrelCells,
                 createemptycells, 
@@ -210,5 +251,5 @@ ApplicationMgr(TopAlg =
                EvtSel = 'NONE',
                EvtMax = 3,
                ExtSvc = [ geoservice, podioevent, audsvc ],
-               #OutputLevel = VERBOSE
+               OutputLevel = DEBUG
                )

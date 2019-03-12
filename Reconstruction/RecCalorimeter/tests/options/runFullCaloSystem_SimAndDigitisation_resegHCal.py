@@ -6,7 +6,7 @@ from GaudiKernel.SystemOfUnits import MeV,GeV
 energy=50*GeV
 num_events=3
 magnetic_field=1
-particleType="e-"
+particleType="pi-"
 
 from Gaudi.Configuration import *
 
@@ -50,7 +50,8 @@ ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
 ecalEndcapReadoutName = "EMECPhiEta"
 ecalFwdReadoutName = "EMFwdPhiEta"
 # HCAL readouts
-hcalReadoutName = "HCalBarrelReadout"
+hcalBarrelReadoutName = "HCalBarrelReadout"
+hcalBarrelReadoutNamePhiEta = "BarHCal_Readout_phieta"
 extHcalReadoutName = "HCalExtBarrelReadout"
 hcalEndcapReadoutName = "HECPhiEta"
 hcalFwdReadoutName = "HFwdPhiEta"
@@ -72,7 +73,7 @@ saveecalendcaptool.caloHits.Path = "ECalEndcapHits"
 saveecalfwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = [ecalFwdReadoutName])
 saveecalfwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
 saveecalfwdtool.caloHits.Path = "ECalFwdHits"
-savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName])
+savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalBarrelReadoutName])
 savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
 savehcaltool.caloHits.Path = "HCalHits"
 saveexthcaltool = SimG4SaveCalHits("saveExtHCalHits",readoutNames = [extHcalReadoutName])
@@ -88,7 +89,7 @@ savehcalfwdtool.caloHits.Path = "HCalFwdHits"
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=-5.0,etaMax=5.0,
+                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=-.0,etaMax=.0,
                 OutputLevel = DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
@@ -199,12 +200,38 @@ createEcalFwdCells.cells.Path="ECalFwdCells"
 
 # Create cells in HCal
 # 1. step - merge hits into cells with the default readout
+# 2. step - rewrite the cellId using the Phi-Eta segmentation
+# 3. step - merge new cells corresponding to eta-phi segmentation
 createHcalCells = CreateCaloCells("CreateHCaloCells",
                                doCellCalibration=True,
                                calibTool=calibHcells,
                                addCellNoise = False, filterCellNoise = False,
                                OutputLevel = INFO,
                                hits="HCalHits",
+                               cells="HCalBarrelCellsStep1")
+
+# Hcal barrel cell positions                                                                                                                                                                                                              
+from Configurables import CreateVolumeCaloPositions
+positionsHcalBarrel = CreateVolumeCaloPositions("positionsBarrelHcal", OutputLevel = INFO)
+positionsHcalBarrel.hits.Path = "HCalBarrelCellsStep1"
+positionsHcalBarrel.positionedHits.Path = "HCalBarrelPositions"
+# Use Phi-Eta segmentation in Hcal barrel                                                                                                                                                                                                  
+from Configurables import RedoSegmentation
+resegmentHcalBarrel = RedoSegmentation("ReSegmentationHcal",
+                             # old bitfield (readout)                                                                                                                                                                                      
+                             oldReadoutName = hcalBarrelReadoutName,
+                             # specify which fields are going to be altered (deleted/rewritten)                                                                                                                                             
+                             oldSegmentationIds = ["module","row","layer","eta","phi"],
+                             # new bitfield (readout), with new segmentation                                                                                                                                                              
+                             newReadoutName = hcalBarrelReadoutNamePhiEta,
+                             OutputLevel = INFO,
+                             inhits = "HCalBarrelPositions",
+                             outhits = "HCalBarrelCellsStep2")
+createHcalBarrelCells = CreateCaloCells("CreateHCalBarrelCells",
+                               doCellCalibration=False,
+                               addCellNoise=False, filterCellNoise=False,
+                               OutputLevel=INFO,
+                               hits="HCalBarrelCellsStep2",
                                cells="HCalBarrelCells")
 
 # Hcal extended barrel cells
@@ -260,8 +287,8 @@ createHcalFwdCells.cells.Path="HCalFwdCells"
 
 out = PodioOutput("out",
                   OutputLevel=INFO)
-out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
-out.filename = "output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root"
+out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalBarrelPositions", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
+out.filename = "output_fullCalo_SimAndDigi_pi50GeV_"+str(num_events)+"events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -292,6 +319,9 @@ ApplicationMgr(
               mergelayersEcalFwd,
               createEcalFwdCells,
               createHcalCells,
+              positionsHcalBarrel,
+              resegmentHcalBarrel,
+              createHcalBarrelCells,
               createExtHcalCells,
               mergelayersHcalEndcap,
               createHcalEndcapCells,
