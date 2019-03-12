@@ -28,8 +28,7 @@ SimpleCalorimeterSD::~SimpleCalorimeterSD() {}
 void SimpleCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
-  m_calorimeterCollection =
-      new G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName, collectionName[0]);
+  m_calorimeterCollection = new G4THitsCollection<fcc::Geant4CaloHit>(SensitiveDetectorName, collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection),
                                       m_calorimeterCollection);
 }
@@ -40,11 +39,13 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   if (edep == 0.) return false;
 
   // as in dd4hep::sim::Geant4GenericSD<Calorimeter>
+  const G4Track* track = aStep->GetTrack();
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-  dd4hep::Position pos(prePos.x(), prePos.y(), prePos.z());
-  auto hit = new dd4hep::sim::Geant4CalorimeterHit(pos);
+  auto hit = new fcc::Geant4CaloHit(
+      track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(), edep, track->GetGlobalTime());
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
+  hit->position = prePos;
   m_calorimeterCollection->insert(hit);
   return true;
 }
