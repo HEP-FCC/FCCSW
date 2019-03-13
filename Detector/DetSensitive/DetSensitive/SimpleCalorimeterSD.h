@@ -1,16 +1,19 @@
 #ifndef DETSENSITIVE_SIMPLECALORIMETERSD_H
 #define DETSENSITIVE_SIMPLECALORIMETERSD_H
 
-// FCCSW
-#include "DetCommon/Geant4CaloHit.h"
-
 // DD4hep
 #include "DDG4/Geant4Hits.h"
-#include "DDSegmentation/Segmentation.h"
+
+
 
 // Geant
 #include "G4THitsCollection.hh"
 #include "G4VSensitiveDetector.hh"
+
+namespace fcc {
+class Geant4CaloHit;
+
+}
 
 /** SimpleCalorimeterSD DetectorDescription/DetSensitive/src/SimpleCalorimeterSD.h SimpleCalorimeterSD.h
  *

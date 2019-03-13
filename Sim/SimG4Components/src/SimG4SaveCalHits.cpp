@@ -67,8 +67,8 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
                 << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
           hit = dynamic_cast<fcc::Geant4CaloHit*>(collect->GetHit(iter_hit));
-          auto edmHit = edmHits->create();
-          auto& edmHitCore = edmHit.core();
+          fcc::CaloHit edmHit = edmHits->create();
+          fcc::BareHit& edmHitCore = edmHit.core();
           edmHitCore.cellId = hit->cellID;
           edmHitCore.bits = hit->trackId;
           edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
