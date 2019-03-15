@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
+
+print "Warning: fccrun.py is being deprecated. use fccrun instead"
 
 import os
 import sys
