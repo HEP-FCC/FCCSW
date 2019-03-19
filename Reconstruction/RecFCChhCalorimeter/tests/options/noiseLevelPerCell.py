@@ -12,7 +12,7 @@ ecalBarrelReadoutName = "ECalBarrelPhiEta"
 hcalBarrelReadoutName = "BarHCal_Readout_phieta"
 # noise files
 # has HCal electr. noise levels as well as ECal electr. noise level
-BarrelNoisePath = "/afs/cern.ch/work/c/cneubuse/public/FCChh/inBfield/noiseBarrel_PU200.root"
+BarrelNoisePath = "/eos/project/f/fccsw-web/testsamples/noiseBarrel_PU200.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 hcalBarrelNoiseHistName = "h_elec_hcal_layer"
 
