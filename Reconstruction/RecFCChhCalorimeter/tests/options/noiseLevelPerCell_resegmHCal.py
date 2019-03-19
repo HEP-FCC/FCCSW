@@ -61,7 +61,7 @@ noisePerCell = CreateFCChhCaloNoiseLevelMap("noisePerCell",
                                             activeVolumesNumbers=[8,10],
                                             activeVolumesEta = [1.2524, 1.2234, 1.1956, 1.1561, 1.1189, 1.0839, 1.0509, 0.9999, 0.9534, 0.91072],
                                             readoutNamesVolumes=[],
-                                            outputFileName="cellNoise_map_electronicsNoiseLevel.root",
+                                            outputFileName="/afs/cern.ch/work/c/cneubuse/public/FCChh/cellNoise_map_electronicsNoiseLevel.root",
                                             OutputLevel=DEBUG)
 
 # ApplicationMgr

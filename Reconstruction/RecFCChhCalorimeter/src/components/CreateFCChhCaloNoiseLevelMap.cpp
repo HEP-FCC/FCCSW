@@ -30,12 +30,12 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
-
   std::unordered_map<uint64_t, std::pair<double,double>> map;
 
   //////////////////////////////////
   /// SEGMENTED ETA-PHI VOLUMES  ///
   //////////////////////////////////
+  
   for (uint iSys = 0; iSys < m_readoutNamesSegmented.size(); iSys++) {
     // Check if readouts exist
     info() << "Readout: " << m_readoutNamesSegmented[iSys] << endmsg;
@@ -58,7 +58,6 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
            << segmentation->offsetPhi() << endmsg;
 
     auto decoder = m_geoSvc->lcdd()->readout(m_readoutNamesSegmented[iSys]).idSpec().decoder();
-
     // Loop over all cells in the calorimeter and retrieve existing cellIDs
     // Loop over active layers
     std::vector<std::pair<int, int>> extrema;
@@ -66,33 +65,45 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     extrema.push_back(std::make_pair(0, 0));
     extrema.push_back(std::make_pair(0, 0));
     for (unsigned int ilayer = 0; ilayer < m_activeVolumesNumbersSegmented[iSys]; ilayer++) {
+      dd4hep::DDSegmentation::CellID volumeId = 0;
       // Get VolumeID
-      dd4hep::DDSegmentation::CellID volumeId = 0; 
       (*decoder)[m_fieldNamesSegmented[iSys]].set(volumeId, m_fieldValuesSegmented[iSys]);
       (*decoder)[m_activeFieldNamesSegmented[iSys]].set(volumeId, ilayer);
       (*decoder)["eta"].set(volumeId, 0);
       (*decoder)["phi"].set(volumeId, 0);
-
       // Get number of segmentation cells within the active volume
       auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
-      debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
       extrema[1] = std::make_pair(0, numCells[0] - 1);
-      extrema[2] = std::make_pair(numCells[2], numCells[1] + numCells[2] - 1);
+      if(m_fieldNamesSegmented[iSys] == "system" &&
+	      m_fieldValuesSegmented[iSys] == 8){
+	uint cellsEta = ceil(( 2*m_activeVolumesEta[ilayer] - segmentation->gridSizeEta() ) / 2 / segmentation->gridSizeEta()) * 2 + 1; //ceil( 2*m_activeVolumesRadii[ilayer] / segmentation->gridSizeEta());
+	uint minEtaID = int(floor(( - m_activeVolumesEta[ilayer] + 0.5 * segmentation->gridSizeEta() - segmentation->offsetEta()) / segmentation->gridSizeEta()));
+	numCells[1]=cellsEta;
+	numCells[2]=minEtaID;
+      }
+      debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
       // Loop over segmenation cells
       for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
         for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
-	  dd4hep::DDSegmentation::CellID cID = volumeId;
-	  (*decoder)["phi"].set(cID, iphi);
-	  (*decoder)["eta"].set(cID, ieta + numCells[2]);  // start from the minimum existing eta cell in this layer
-	  double noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(cID);
- 	  double noiseOffset = m_ecalBarrelNoiseTool->getNoiseOffsetPerCell(cID);
-         // use fixed noise level in ecal:   m_systemNoiseConstMap.emplace(5, 0.0075 / 4.);
-          //double noise = 0.0075 / 4.;
-          map.insert( std::pair<uint64_t, std::pair<double, double> >(cID, std::make_pair(noise, noiseOffset) ) );
+	  dd4hep::DDSegmentation::CellID cellId = volumeId;
+	  decoder->set(cellId, "phi", iphi);
+	  decoder->set(cellId, "eta", ieta + numCells[2]);  // start from the minimum existing eta cell in this layer
+	  uint64_t id = cellId;
+	  double noise = 0.;
+	  double noiseOffset = 0.;
+	  if (m_fieldValuesSegmented[iSys] == 8){
+	    noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(id);
+	    noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(id);
+	  } else if (m_fieldValuesSegmented[iSys] == 5){
+	    noise = m_ecalBarrelNoiseTool->getNoiseConstantPerCell(id);
+            noiseOffset = m_ecalBarrelNoiseTool->getNoiseOffsetPerCell(id);
+	  }
+          map.insert( std::pair<uint64_t, std::pair<double, double> >(id, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }
   }
+
   //////////////////////////////////
   ///      NESTED VOLUMES        ///
   //////////////////////////////////
@@ -110,10 +121,9 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
       return StatusCode::FAILURE;
     }
     auto decoder = m_geoSvc->lcdd()->readout(m_readoutNamesNested[iSys]).idSpec().decoder();
-
     // Get VolumeID
-    dd4hep::DDSegmentation::CellID volumeId = 0; 
-    (*decoder)[m_fieldNameNested].set(volumeId, m_fieldValuesNested[iSys]);
+    dd4hep::DDSegmentation::CellID volumeId = 0;
+    decoder->set(volumeId, m_fieldNameNested, m_fieldValuesNested[iSys]);
     // Get the total number of given hierarchy of active volumes
     auto highestVol = gGeoManager->GetTopVolume();
     std::vector<unsigned int> numVolumes;
@@ -169,21 +179,20 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[0])->second - 1));
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second - 1));
     extrema.push_back(std::make_pair(0, activeVolumesNumbersNested.find(m_activeFieldNamesNested[2])->second - 1));
-
     for (unsigned int ilayer = 0; ilayer < activeVolumesNumbersNested.find(m_activeFieldNamesNested[0])->second;
          ilayer++) {
       for (unsigned int iphi = 0; iphi < activeVolumesNumbersNested.find(m_activeFieldNamesNested[1])->second; iphi++) {
         for (unsigned int iz = 0; iz < activeVolumesNumbersNested.find(m_activeFieldNamesNested[2])->second; iz++) {
 
-	  dd4hep::DDSegmentation::CellID cID = volumeId; 
-          (*decoder)[m_activeFieldNamesNested[0]].set(cID, ilayer);
-	  (*decoder)[m_activeFieldNamesNested[1]].set(cID, iphi);
-	  (*decoder)[m_activeFieldNamesNested[2]].set(cID, iz);
+	  dd4hep::DDSegmentation::CellID cID = volumeId;
+          decoder->set(cID, m_activeFieldNamesNested[0], ilayer);
+	  decoder->set(cID, m_activeFieldNamesNested[1], iphi);
+	  decoder->set(cID, m_activeFieldNamesNested[2], iz);
+	  
 	  double noise = m_hcalBarrelNoiseTool->getNoiseConstantPerCell(cID);
 	  double noiseOffset = m_hcalBarrelNoiseTool->getNoiseOffsetPerCell(cID);
-          /// use constant noise level in hcal 0.0115 / 4.
-	  /// double noise = 0.0115 / 4.;
-          map.insert( std::pair<uint64_t, std::pair<double, double> >(cID, std::make_pair(noise, noiseOffset) ) );
+	  
+	  map.insert( std::pair<uint64_t, std::pair<double, double> >(cID, std::make_pair(noise, noiseOffset) ) );
         }
       }
     }
