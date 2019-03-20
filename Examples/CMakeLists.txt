@@ -55,7 +55,7 @@ gaudi_add_test(GeantFastSimTrackerTkLayout
                FRAMEWORK options/geant_fastsim_tklayout.py)
 gaudi_add_test(SimplePythia
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/simple_pythia.py)
+               COMMAND fccrun Examples/options/simple_pythia.py)
 gaudi_add_test(ExampleOptions
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/example_options.py)
