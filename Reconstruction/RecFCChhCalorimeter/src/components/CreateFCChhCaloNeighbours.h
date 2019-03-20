@@ -44,16 +44,18 @@ private:
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesSegmented{this, "activeFieldNamesPhiEta", {"layer"}};
   /// Number of layers in the segmented volume
   Gaudi::Property<std::vector<unsigned int>> m_activeVolumesNumbersSegmented{this, "activeVolumesNumbers", {8}};
+  // Radii of layers in the segmented volume
+  Gaudi::Property<std::vector<double>> m_activeVolumesEta{this, "activeVolumesEta"};
 
   /// Names of the detector readout for volumes with nested volume structure and no segmentation
-  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"HCalBarrelDetailedWedgeReadout"}};
+  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes"};
   /// Name of the field describing the nested volume
-  Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested", "system"};
+  Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested"};
   /// Values of the fields describing the nested volume
-  Gaudi::Property<std::vector<int>> m_fieldValuesNested{this, "systemValuesNested", {8}};
+  Gaudi::Property<std::vector<int>> m_fieldValuesNested{this, "systemValuesNested"};
   /// Names of the active volume in geometry: along radial axis, azimuthal angle, and along z axis
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesNested{
-      this, "activeFieldNamesNested", {"layer", "module", "row"}};
+      this, "activeFieldNamesNested"};
   /// Names of the nested volumes - to retrieve the number of active volumes, need to correspond to m_activeFieldNamesNested
   Gaudi::Property<std::vector<std::string>> m_activeVolumeNamesNested{
       this,
@@ -71,7 +73,7 @@ private:
   // For combination of barrels: HCal inner radius for calculation of eta from z
   Gaudi::Property<double> m_hCalRinner{this, "hCalRinner", 2850};
   // For combination of barrels: offset of HCal modules in phi (lower edge)
-  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset", (- M_PI + (M_PI/256.))};
+  Gaudi::Property<double> m_hCalPhiOffset{this, "hCalPhiOffset"};
 };
 
 #endif /* RECALORIMETER_CREATEFCCHHCALONEIGHBOURS_H */
