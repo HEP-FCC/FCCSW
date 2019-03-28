@@ -10,6 +10,10 @@
 #include "G4VGFlashSensitiveDetector.hh"
 #include "G4VSensitiveDetector.hh"
 
+namespace fcc {
+class Geant4CaloHit;
+}
+
 /** GflashCalorimeterSD DetectorDescription/DetSensitive/src/GflashCalorimeterSD.h GflashCalorimeterSD.h
  *
  *  Sensitive detector for calorimeters that use GFlash parametrisation.
@@ -60,7 +64,7 @@ public:
 
 private:
   /// Collection of calorimeter hits that get registered in G4Event and deleted in ~G4Event
-  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<fcc::Geant4CaloHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };

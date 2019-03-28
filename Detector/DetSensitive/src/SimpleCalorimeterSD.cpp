@@ -2,6 +2,7 @@
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
+#include "DetCommon/Geant4CaloHit.h"
 
 // DD4hep
 #include "DDG4/Defs.h"
@@ -40,11 +41,11 @@ bool SimpleCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
 
   // as in dd4hep::sim::Geant4GenericSD<Calorimeter>
   const G4Track* track = aStep->GetTrack();
-  CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   auto hit = new fcc::Geant4CaloHit(
       track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(), edep, track->GetGlobalTime());
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
+  CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   hit->position = prePos;
   m_calorimeterCollection->insert(hit);
   return true;
