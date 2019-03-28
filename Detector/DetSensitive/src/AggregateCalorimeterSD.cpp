@@ -42,7 +42,6 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
   CLHEP::Hep3Vector midPos = 0.5 * (postPos + prePos);
-  dd4hep::Position pos(midPos.x(), midPos.y(), midPos.z());
   // check the cell ID
   uint64_t id = utils::cellID(m_seg, *aStep);
   fcc::Geant4CaloHit* hit = nullptr;
@@ -64,7 +63,7 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
                                     0 // track ->GetGlobalTime()
                                     ) ;
 
-  hit->position = midPos;
+  hitMatch->position = midPos;
   hitMatch->cellID = id;
   m_calorimeterCollection->insert(hitMatch);
   return true;
