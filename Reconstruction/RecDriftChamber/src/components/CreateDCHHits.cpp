@@ -29,6 +29,7 @@ GaudiAlgorithm(name, svcLoc)
 }
 
 StatusCode CreateDCHHits::initialize() {
+  eventnumber = 0;
   info() << "CreateDCHHits initialize" << endmsg;
 
   m_geoSvc = service("GeoSvc");
@@ -79,6 +80,7 @@ StatusCode CreateDCHHits::initialize() {
   m_tree->Branch("MC_x", &MC_x, "MC_x/D");
   m_tree->Branch("MC_y", &MC_y, "MC_y/D");
   m_tree->Branch("MC_z", &MC_z, "MC_z/D");
+  m_tree->Branch("trackNum", &trackNum, "trackNum/I");
   m_tree->Branch("CELLID", &CELLID, "CELLID/I");
 
   m_tree->Branch("hitLength", &debug_hitLength, "hitLength/D");
@@ -101,7 +103,7 @@ StatusCode CreateDCHHits::initialize() {
 }
 
 StatusCode CreateDCHHits::execute() {
-  //  std::cout << "================================== EVENT ==================================" << std::endl;
+  std::cout << "======= EVENT ============ : " << eventnumber << std::endl;
   // First empty the map: Very important step
   m_track_cell_hit.clear();
   m_wiresHit.clear();
@@ -122,6 +124,7 @@ StatusCode CreateDCHHits::execute() {
       auto Edep_sum = hitCore.energy;
       auto time = hitCore.time;
       auto trackID = hitCore.bits;
+      //std::cout << "trackID=" << trackID << std::endl;
 
       //      m_decoder->setValue(cellID);
       auto l = m_decoder->get(cellID, "layer"); //(*m_decoder)["layer"].value();
@@ -199,7 +202,7 @@ StatusCode CreateDCHHits::execute() {
     int temp_layerId = m_decoder->get(cellid, "layer");
     int temp_wireId = m_decoder->get(cellid, "phi");
 
-    //std::cout << "index: " << index << ", layerID=" << temp_layerId << ", wireID=" << temp_wireId << std::endl;
+    //    std::cout << "index: " << index << ", layerID=" << temp_layerId << ", wireID=" << temp_wireId << std::endl;
     index ++;
 
     auto hit_info_vec = m_wiresHit[cellid];
@@ -231,6 +234,7 @@ StatusCode CreateDCHHits::execute() {
 	    layerId = temp_layerId;
 	    wireId = temp_wireId;
 	    DCA = hit_info_vec[0].DCA;
+	    trackNum = eventnumber;
 	    MC_x = hit_info_vec[0].MC_x;
 	    MC_y = hit_info_vec[0].MC_y;
 	    MC_z = hit_info_vec[0].MC_z;
@@ -247,6 +251,7 @@ StatusCode CreateDCHHits::execute() {
       }
   }
 
+  eventnumber ++;
   //  fcc::TrackHitCollection* edmCellsCollection = new fcc::TrackHitCollection();
   /*
   for (const auto& cell : m_hit) {

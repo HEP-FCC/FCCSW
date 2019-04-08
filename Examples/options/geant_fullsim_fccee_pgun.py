@@ -1,5 +1,9 @@
 from Gaudi.Configuration import *
 
+
+set_energy = 2400
+input_filename = "SimuOutput/pgun/"+str(set_energy)+"MeV_theta90.root"
+
 # Data service
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
@@ -14,7 +18,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['Detector/DetFCCeeIDEA/compact/FCCee_De
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldOn=True, 
-                                       IntegratorStepper="ClassicalRK4", FieldComponentZ=0.000,
+                                       IntegratorStepper="ClassicalRK4", FieldComponentZ=0.002,
                                        MaximumStep=10000.0)
 
 # Geant4 service
@@ -67,8 +71,8 @@ savetrackertool_DCH.trackHits.Path = "hits_DCH"
 savetrackertool_DCH.digiTrackHits.Path = "digiHits_DCH"
 
 
-pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=-0.1, etaMax=0.1, phiMin=0, phiMax=6.2831853, 
-                                        particleName="mu-", energyMin=100000, energyMax=100000)
+pgun = SimG4SingleParticleGeneratorTool("GeantinoGun", etaMin=0, etaMax=0, phiMin=0, phiMax=360, 
+                                        particleName="mu-", energyMin=set_energy, energyMax=set_energy)
 
 
 geantsim = SimG4Alg("SimG4Alg",
@@ -83,7 +87,7 @@ geantsim = SimG4Alg("SimG4Alg",
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out",
-                  filename = "fccee_fullsim_pgun.root",
+                  filename = input_filename,
                    OutputLevel=INFO)
 out.outputCommands = ["keep *"]
 
@@ -91,7 +95,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 1,
+                EvtMax   = 1000,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=INFO

@@ -110,6 +110,7 @@ private:
   int wireId;
   int nbTimes_wireXhit;
   double DCA;
+  int trackNum;
   double MC_x;
   double MC_y;
   double MC_z;
@@ -123,6 +124,8 @@ private:
   double hitTime;
   double Radius;
   double zpos_tree;
+
+  int eventnumber;
 
 };
 
