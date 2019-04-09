@@ -23,7 +23,7 @@ num_events = 3
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent = FCCDataSvc("EventDataSvc", input="output_allCalo_reco.root")
+podioevent = FCCDataSvc("EventDataSvc", input="output_allCalo_reco_noise.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader",
