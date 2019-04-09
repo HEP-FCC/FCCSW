@@ -75,7 +75,7 @@ gaudi_add_test(reconstructionFullCaloSystemWithNoise
 gaudi_add_test(correctionFullCaloSystem
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                 DEPENDS reconstructionFullCaloSystemWithNoise
-                FRAMEWORK tests/options/runFullCaloSystem_CorrectClusters.py)
+                FRAMEWORK tests/options/runFullCaloSystem_CorrectECalBarrelSliWinClusters.py)
 
 gaudi_add_test(estimatePileup
                 WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

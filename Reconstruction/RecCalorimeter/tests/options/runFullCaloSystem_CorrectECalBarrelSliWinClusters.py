@@ -82,8 +82,8 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
 createClusters.clusters.Path = "CaloClusters"
 
 # Correct clusters
-from Configurables import CorrectCluster
-correct = CorrectCluster("corr",
+from Configurables import CorrectECalBarrelSliWinCluster
+correct = CorrectECalBarrelSliWinCluster("corr",
                          clusters="CaloClusters",
                          correctedClusters="CaloClustersCorrected",
                          particle = "GenParticles",

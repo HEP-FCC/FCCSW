@@ -1,5 +1,5 @@
-#ifndef RECCALORIMETER_CORRECTCLUSTER_H
-#define RECCALORIMETER_CORRECTCLUSTER_H
+#ifndef RECCALORIMETER_CORRECTECALBARRELSLIWINCLUSTER_H
+#define RECCALORIMETER_CORRECTECALBARRELSLIWINCLUSTER_H
 
 // FCCSW
 #include "FWCore/DataHandle.h"
@@ -29,9 +29,9 @@ class BitFieldCoder;
 
 #include "TH1F.h"
 
-/** @class CorrectCluster
+/** @class CorrectECalBarrelSliWinCluster
  *
- *  Apply corrections to a reconstructed cluster.
+ *  Apply corrections to a reconstructed cluster in EMCal barrel.
  *  Corrections for eta position and upstream energy are based on the cells in cluster, therefore they do not
  * acknowledge the energy sharing between neighbouring clusters.
  *
@@ -56,10 +56,10 @@ class BitFieldCoder;
  *
  */
 
-class CorrectCluster : public GaudiAlgorithm {
+class CorrectECalBarrelSliWinCluster : public GaudiAlgorithm {
 
 public:
-  CorrectCluster(const std::string& name, ISvcLocator* svcLoc);
+  CorrectECalBarrelSliWinCluster(const std::string& name, ISvcLocator* svcLoc);
 
   StatusCode initialize();
 

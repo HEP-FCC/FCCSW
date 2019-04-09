@@ -1,4 +1,4 @@
-#include "CorrectCluster.h"
+#include "CorrectECalBarrelSliWinCluster.h"
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
@@ -23,12 +23,12 @@
 #include "TFitResult.h"
 #include "TGraphErrors.h"
 
-DECLARE_ALGORITHM_FACTORY(CorrectCluster)
+DECLARE_ALGORITHM_FACTORY(CorrectECalBarrelSliWinCluster)
 
-CorrectCluster::CorrectCluster(const std::string& name, ISvcLocator* svcLoc)
+CorrectECalBarrelSliWinCluster::CorrectECalBarrelSliWinCluster(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc),
-      m_histSvc("THistSvc", "CorrectCluster"),
-      m_geoSvc("GeoSvc", "CorrectCluster"),
+      m_histSvc("THistSvc", "CorrectECalBarrelSliWinCluster"),
+      m_geoSvc("GeoSvc", "CorrectECalBarrelSliWinCluster"),
       m_hEnergyPreAnyCorrections(nullptr),
       m_hEnergyPostAllCorrections(nullptr),
       m_hPileupEnergy(nullptr),
@@ -39,7 +39,7 @@ CorrectCluster::CorrectCluster(const std::string& name, ISvcLocator* svcLoc)
   declareProperty("vertex", m_vertex, "Generated vertices (input)");
 }
 
-StatusCode CorrectCluster::initialize() {
+StatusCode CorrectECalBarrelSliWinCluster::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
 
@@ -201,7 +201,7 @@ StatusCode CorrectCluster::initialize() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode CorrectCluster::execute() {
+StatusCode CorrectECalBarrelSliWinCluster::execute() {
   // Get the input collection with clusters
   const fcc::CaloClusterCollection* inClusters = m_inClusters.get();
   fcc::CaloClusterCollection* correctedClusters = m_correctedClusters.createAndPut();
@@ -418,9 +418,9 @@ StatusCode CorrectCluster::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode CorrectCluster::finalize() { return GaudiAlgorithm::finalize(); }
+StatusCode CorrectECalBarrelSliWinCluster::finalize() { return GaudiAlgorithm::finalize(); }
 
-StatusCode CorrectCluster::initNoiseFromFile() {
+StatusCode CorrectECalBarrelSliWinCluster::initNoiseFromFile() {
   // check if file exists
   if (m_noiseFileName.empty()) {
     error() << "Name of the file with noise values not set" << endmsg;
@@ -455,7 +455,7 @@ StatusCode CorrectCluster::initNoiseFromFile() {
   return StatusCode::SUCCESS;
 }
 
-double CorrectCluster::getNoiseConstantPerCluster(double aEta, uint aNumCells) {
+double CorrectECalBarrelSliWinCluster::getNoiseConstantPerCluster(double aEta, uint aNumCells) {
   double param0 = 0.;
   double param1 = 0.;
 
@@ -488,7 +488,7 @@ double CorrectCluster::getNoiseConstantPerCluster(double aEta, uint aNumCells) {
   return pileupNoise;
 }
 
-unsigned int CorrectCluster::phiNeighbour(int aIPhi, int aMaxPhi) const {
+unsigned int CorrectECalBarrelSliWinCluster::phiNeighbour(int aIPhi, int aMaxPhi) const {
   if (aIPhi < 0) {
     return aMaxPhi + aIPhi;
   } else if (aIPhi >= aMaxPhi) {
