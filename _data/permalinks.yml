@@ -1,0 +1,15 @@
+---
+- url: http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev
+  name: FCCSW Mailing list
+- url: https://github.com/HEP-FCC/
+  name: FCCSW on GitHub
+- url: https://epsft-jenkins.cern.ch/view/FCC/
+  name: FCCSW Jenkins
+- url: http://cdash.cern.ch/index.php?project=FCC
+  name: FCCSW CDash
+- url: https://github.com/HEP-FCC/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md
+  name: FCCSW C++ Style Guide
+- url: https://github.com/HEP-FCC/FCCSW/blob/master/doc/GeneralCppGuidelines.md
+  name: General C++ Guidelines
+- url: http://fcc-physics-events.web.cern.ch/fcc-physics-events/
+  name: FCC Physics Event Database

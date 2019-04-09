@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+    {% for version in site.data.versions %}
+      {% if version.version == page.thisversion %}
+        {% assign versiondesc = version %}
+      {% endif %}
+    {% endfor %}
+    {% if versiondesc.tag == "" %}
+      {% assign sortedversions = site.data.versions | sort: 'version' %}
+      {% assign externalsdesc = sortedversions[0].externals %}
+    {% else %}
+      {% assign externalsdesc = versiondesc.externals %}
+    {% endif %}
+    <div class="container">
+      <div class="col-md-12">
+        {{ content }}
+      </div>
+      Details on the DD4hep implementations of the detector geometries can be found on <a href="https://github.com/HEP-FCC/FCCSW/blob/master/Detector/doc/DD4hepInFCCSW.md ">github.</a>
+    {% include footer.html %}
+
+  </body>
+</html>

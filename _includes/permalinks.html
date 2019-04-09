@@ -1,0 +1,10 @@
+    <ul class="list-group">
+        <li class="list-group-header">
+            <h4>External links</h4>
+        </li>
+        {% for link in site.data.permalinks %}
+            <li class="list-group-item">
+                <a href='{{link.url}}'>{{link.name}}</a>
+            </li>
+        {% endfor %}
+    </ul>

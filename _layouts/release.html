@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+    {% for version in site.data.versions %}
+      {% if version.version == page.thisversion %}
+        {% assign versiondesc = version %}
+      {% endif %}
+    {% endfor %}
+    {% if versiondesc.tag == "" %}
+      {% assign sortedversions = site.data.versions | sort: 'version' %}
+      {% assign externalsdesc = sortedversions[0].externals %}
+    {% else %}
+      {% assign externalsdesc = versiondesc.externals %}
+    {% endif %}
+    <div class="container">
+      <div class="col-md-9">
+        {{ content }}
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              FCCSW {{ versiondesc.tag }}
+            </h4>
+          </div>
+          <div class="panel-body">
+            FCCSW {{ versiondesc.version }}
+            {% if versiondesc.tag != "" %}
+              <a href="https://github.com/HEP-FCC/FCCSW/releases/tag/{{ versiondesc.tag }}">github</a> |
+              <a href="http://fccsw.web.cern.ch/fccsw/fccsw/{{ versiondesc.version }}/"> doxygen</a>
+            {% else %}
+              <a href="https://github.com/HEP-FCC/{{ versiondesc.name }}/">github</a> |
+              <a href="http://fccsw.web.cern.ch/fccsw/fccsw/snapshot/"> doxygen</a>
+            {% endif %}
+            <p>Additional, more detailed information in the <a href="http://fccsw.web.cern.ch/fccsw/fccsw/{{page.thisversion}}/pages.html">related pages</a>.</p>
+            <p><b>No central installation</b>, see Twiki pages / repository README.md on how to install and setup.</p>
+          </div>
+        </div>
+        <p>
+        {% for dependency in versiondesc.dependencies %}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  {{ dependency.name }} {{ dependency.tag }}
+                </h4>
+              </div>
+              <div class="panel-body">
+                {{ dependency.name }} {{ dependency.version }}
+                {% if dependency.tag != "" %}
+                  <a href="https://github.com/HEP-FCC/{{ dependency.name }}/releases/tag/{{ dependency.tag }}">github</a>
+                  {% if dependency.name != "fcc-physics" %} | <a href="http://fccsw.web.cern.ch/fccsw/{{ dependency.name }}/{{ dependency.version }}/"> doxygen</a>{% endif %}
+                  <p>
+                  {{ dependency.description | markdownify }}
+                  </p>
+                {% else %}
+                  <a href="https://github.com/HEP-FCC/{{ dependency.name }}/">github</a>
+                  {% if dependency.name != "fcc-physics" %} | <a href="http://fccsw.web.cern.ch/fccsw/{{ dependency.name }}/snapshot/"> doxygen</a>{% endif %}
+                {% endif %}
+                <p style="padding-top:10px;">
+                  <b>Installation locations:</b><br>
+                  <table class="table">
+                    <tr>
+                      <td><b>cvmfs:</b></td>
+                      <td>{{ versiondesc.cvmfs }}{% if versiondesc.cvmfs != "n/a" %}{{dependency.name}}{% endif %}</td>
+                    </tr>
+                    <tr>
+                      <td><b>afs:</b></td>
+                      <td>{{ versiondesc.afs }}{{dependency.name}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>swan:</b></td>
+                      <td>{{ versiondesc.swan }}</td>
+                    </tr>
+                  </table>
+                </p>
+              </div>
+            </div>
+        {% endfor %}
+        </p>
+        <p>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                Externals
+              </h4>
+            </div>
+              <div class="panel-body">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Version</th>
+                    <th>Resources</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for external in externalsdesc %}
+                    <tr>
+                      <td><b>{{external.name}}</b></td>
+                      <td>{{external.version}}</td>
+                      <td>{%if external.link != "" %}<a href="{{external.link}}">website</a>{% else %}n/a{% endif %}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </p>
+      </div>
+      <div class="col-md-3">{% include permalinks.html %}</div>
+    </div>
+    {% include footer.html %}
+
+  </body>
+</html>
