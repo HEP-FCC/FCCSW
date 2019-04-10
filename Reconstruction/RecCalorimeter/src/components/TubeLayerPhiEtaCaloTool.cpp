@@ -5,6 +5,8 @@
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
+#include "DDSegmentation/MultiSegmentation.h"
+
 DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
 
 TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type, const std::string& name,
@@ -48,18 +50,37 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
   info() << "Number of active layers " << numLayers << endmsg;
 
   // get PhiEta segmentation
-  dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation;
+  const dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation = nullptr;
+  const dd4hep::DDSegmentation::MultiSegmentation* segmentationMulti = nullptr;
   segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (segmentation == nullptr) {
-    error() << "There is no phi-eta segmentation!!!!" << endmsg;
-    return StatusCode::FAILURE;
+    segmentationMulti = dynamic_cast<dd4hep::DDSegmentation::MultiSegmentation*>(
+      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+    if (segmentationMulti == nullptr) {
+      error() << "There is no phi-eta or multi- segmentation for the readout " << m_readoutName << " defined." << endmsg;
+      return StatusCode::FAILURE;
+    } else {
+      // check if multisegmentation contains only phi-eta sub-segmentations
+      const dd4hep::DDSegmentation::FCCSWGridPhiEta* subsegmentation = nullptr;
+      for (const auto& subSegm: segmentationMulti->subSegmentations()) {
+        subsegmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(subSegm.segmentation);
+        if (subsegmentation == nullptr) {
+          error() << "At least one of the sub-segmentations in MultiSegmentation named " << m_readoutName << " is not a phi-eta grid." << endmsg;
+          return StatusCode::FAILURE;
+        } else {
+          info() << "subsegmentation for " << segmentationMulti->discriminatorName() << " from " << subSegm.key_min << " to " << subSegm.key_max  << endmsg;
+          info() << "size in eta " << subsegmentation->gridSizeEta() << " , bins in phi " << subsegmentation->phiBins()  << endmsg;
+          info() << "offset in eta " << subsegmentation->offsetEta() << " , offset in phi " << subsegmentation->offsetPhi() << endmsg;
+        }
+      }
+    }
+  } else {
+    info() << "FCCSWGridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
+           << endmsg;
+    info() << "FCCSWGridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
+           << segmentation->offsetPhi() << endmsg;
   }
-  info() << "FCCSWGridPhiEta: size in eta " << segmentation->gridSizeEta() << " , bins in phi " << segmentation->phiBins()
-         << endmsg;
-  info() << "FCCSWGridPhiEta: offset in eta " << segmentation->offsetEta() << " , offset in phi "
-         << segmentation->offsetPhi() << endmsg;
-
   // Take readout bitfield decoder from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   if (m_fieldNames.size() != m_fieldValues.size()) {
@@ -71,24 +92,28 @@ StatusCode TubeLayerPhiEtaCaloTool::prepareEmptyCells(std::unordered_map<uint64_
   // Loop over active layers
   for (unsigned int ilayer = 0; ilayer < numLayers; ilayer++) {
     // Get VolumeID
+    dd4hep::DDSegmentation::VolumeID volumeID = 0;
     for (unsigned int it = 0; it < m_fieldNames.size(); it++) {
-      (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
+      decoder->set(volumeID, m_fieldNames[it], m_fieldValues[it]);
     }
-    (*decoder)[m_activeFieldName] = ilayer;
-    (*decoder)["eta"] = 0;
-    (*decoder)["phi"] = 0;
-    uint64_t volumeId = decoder->getValue();
+    decoder->set(volumeID, m_activeFieldName, ilayer);
+    decoder->set(volumeID, "eta", 0);
+    decoder->set(volumeID, "phi", 0);
+
+    if (segmentationMulti != nullptr) {
+      segmentation = dynamic_cast<const dd4hep::DDSegmentation::FCCSWGridPhiEta*>(&segmentationMulti->subsegmentation(volumeID));
+    }
 
     // Get number of segmentation cells within the active volume
-    auto numCells = det::utils::numberOfCells(volumeId, *segmentation);
+    auto numCells = det::utils::numberOfCells(volumeID, *segmentation);
     debug() << "Segmentation cells  (Nphi, Neta, minEta): " << numCells << endmsg;
     // Loop over segmenation cells
     for (unsigned int iphi = 0; iphi < numCells[0]; iphi++) {
       for (unsigned int ieta = 0; ieta < numCells[1]; ieta++) {
-        (*decoder)["phi"] = iphi;
-        (*decoder)["eta"] = ieta + numCells[2]; // start from the minimum existing eta cell in this layer
-        uint64_t cellId = decoder->getValue();
-        aCells.insert(std::pair<uint64_t, double>(cellId, 0));
+        decoder->set(volumeID, "phi", iphi);
+        decoder->set(volumeID, "eta", ieta + numCells[2]); // start from the minimum existing eta cell in this layer
+        dd4hep::DDSegmentation::CellID cellId = volumeID;
+        aCells.insert(std::pair<dd4hep::DDSegmentation::CellID, double>(cellId, 0));
       }
     }
   }

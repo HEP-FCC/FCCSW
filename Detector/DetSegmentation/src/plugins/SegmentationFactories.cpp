@@ -3,7 +3,7 @@
 
 namespace {
 template <typename T>
-dd4hep::SegmentationObject* create_segmentation(dd4hep::BitField64* decoder) {
+dd4hep::SegmentationObject* create_segmentation(const dd4hep::BitFieldCoder* decoder) {
   return new dd4hep::SegmentationWrapper<T>(decoder);
 }
 }
@@ -16,3 +16,7 @@ DECLARE_SEGMENTATION(FCCSWGridPhiEta, create_segmentation<dd4hep::DDSegmentation
 
 #include "DetSegmentation/GridRPhiEta.h"
 DECLARE_SEGMENTATION(GridRPhiEta, create_segmentation<dd4hep::DDSegmentation::GridRPhiEta>)
+
+#include "DetSegmentation/GridDriftChamber.h"
+DECLARE_SEGMENTATION(GridDriftChamber, create_segmentation<dd4hep::DDSegmentation::GridDriftChamber>)
+

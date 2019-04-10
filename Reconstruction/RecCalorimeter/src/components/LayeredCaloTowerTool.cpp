@@ -45,7 +45,7 @@ StatusCode LayeredCaloTowerTool::initialize() {
   }
   // Take readout bitfield decoder from GeoSvc
   m_decoder =
-      std::shared_ptr<dd4hep::DDSegmentation::BitField64>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
+    std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -54,9 +54,9 @@ StatusCode LayeredCaloTowerTool::initialize() {
   auto iter = std::find(fields.begin(), fields.end(), "layer");
   if (iter == fields.end()) {
     error() << "Readout does not contain field: 'layer'" << endmsg;
-    addLayerRestriction = false;
+    m_addLayerRestriction = false;
   } else
-    addLayerRestriction = true;
+    m_addLayerRestriction = true;
   info() << "Minimum layer : " << m_minimumLayer << endmsg;
   info() << "Maximum layer : " << m_maximumLayer << endmsg;
   return StatusCode::SUCCESS;
@@ -110,9 +110,9 @@ uint LayeredCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers)
     etaCellMax = m_segmentation->eta(cell.core().cellId) + m_segmentation->gridSizeEta() * 0.5;
     phiCellMin = m_segmentation->phi(cell.core().cellId) - M_PI / (double)m_segmentation->phiBins();
     phiCellMax = m_segmentation->phi(cell.core().cellId) + M_PI / (double)m_segmentation->phiBins();
-    if (addLayerRestriction == true) {
-      m_decoder->setValue(cell.core().cellId);
-      layerCell = (*m_decoder)["layer"].value();
+    if (m_addLayerRestriction == true) {
+      dd4hep::DDSegmentation::CellID cID = cell.core().cellId;
+      layerCell = m_decoder->get(cID, "layer");
       debug() << "Cell' layer = " << layerCell << endmsg;
     }
     iEtaMin = idEta(etaCellMin + epsilon);
@@ -165,7 +165,7 @@ uint LayeredCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers)
         } else {
           ratioPhi = fracPhiMiddle;
         }
-        if (addLayerRestriction == true) {
+        if (m_addLayerRestriction == true) {
           if (layerCell >= m_minimumLayer && layerCell <= m_maximumLayer) {
             aTowers[iEta][phiNeighbour(iPhi)] +=
                 cell.core().energy / cosh(m_segmentation->eta(cell.core().cellId)) * ratioEta * ratioPhi;
@@ -209,3 +209,16 @@ uint LayeredCaloTowerTool::phiNeighbour(int aIPhi) const {
 }
 
 float LayeredCaloTowerTool::radiusForPosition() const { return m_radius; }
+
+void LayeredCaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin,
+                                       fcc::CaloCluster& aEdmCluster, bool) {
+  const fcc::CaloHitCollection* cells = m_cells.get();
+  for (const auto& cell : *cells) {
+    float etaCell = m_segmentation->eta(cell.core().cellId);
+    float phiCell = m_segmentation->phi(cell.core().cellId);
+    if ((abs(idEta(etaCell) - idEta(eta)) <= halfEtaFin) && (abs(idPhi(phiCell) - idPhi(phi)) <= halfPhiFin)) {
+      aEdmCluster.addhits(cell);
+    }
+  }
+  return;
+}

@@ -11,16 +11,16 @@ gaudi_depends_on_subdirs(GaudiKernel
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom Tree)
 
-find_package(DD4hep COMPONENTS DDG4 DDSegmentation DDRec REQUIRED)
-find_package(ACTS COMPONENTS Core Examples TGeoPlugin DD4hepPlugin)
+find_package(Eigen)
+find_package(DD4hep COMPONENTS DDG4 DDRec REQUIRED)
+find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 
 find_package(Geant4)
 include(${Geant4_USE_FILE})
 gaudi_add_module(DetComponents
                  src/*.cpp
-                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetSegmentation DetCommon ACTS
-                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore ACTS::ACTSCore ACTS::ACTSDD4hepPlugin)
-
+                 INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetSegmentation DetCommon Acts Eigen
+                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore ActsCore ActsDD4hepPlugin)
 include(CTest)
 gaudi_add_test(RedoSegmentationXYZ
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

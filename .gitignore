@@ -1,7 +1,10 @@
 *~
 *.pyc
 *.root
+*.png
+*.swp
 
+*.log
 build.*.log
 Makefile
 NMake

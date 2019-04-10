@@ -36,7 +36,7 @@ Test
 ./run fccrun.py Examples/options/example_options.py
 ~~~
 
-you can also sepcify some options like number of events and output file
+you can also specify some options like number of events and output file
 ~~~{.sh}
 ./run fccrun.py Examples/options/example_options.py --outputfile=my_own_output.root --nevents=1000
 ~~~

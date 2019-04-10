@@ -4,7 +4,7 @@
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
-#include "ACTS/Utilities/Logger.hpp"
+#include "Acts/Utilities/Logger.hpp"
 
 using namespace Acts;
 
