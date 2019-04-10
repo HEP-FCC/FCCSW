@@ -52,9 +52,11 @@ private:
   Gaudi::Property<std::vector<std::string>> m_activeFieldNamesSegmented{this, "activeFieldNamesPhiEta", {"layer"}};
   /// Number of layers in the segmented volume
   Gaudi::Property<std::vector<unsigned int>> m_activeVolumesNumbersSegmented{this, "activeVolumesNumbers", {8}};
+  // Radii of layers in the segmented volume                                                                                                                                                                                         
+  Gaudi::Property<std::vector<double>> m_activeVolumesEta{this, "activeVolumesEta"};
 
   /// Names of the detector readout for volumes with nested volume structure and no segmentation
-  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"HCalBarrelDetailedWedgeReadout"}};
+  Gaudi::Property<std::vector<std::string>> m_readoutNamesNested{this, "readoutNamesVolumes", {"HCalBarrelReadout"}};
   /// Name of the field describing the nested volume
   Gaudi::Property<std::string> m_fieldNameNested{this, "systemNameNested", "system"};
   /// Values of the fields describing the nested volume
