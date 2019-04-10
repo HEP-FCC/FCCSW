@@ -23,52 +23,18 @@ num_events = 3
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent = FCCDataSvc("EventDataSvc", input="output_fullCalo_SimAndDigi_e50GeV_"+str(num_events)+"events.root")
+podioevent = FCCDataSvc("EventDataSvc", input="output_allCalo_reco.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", 
-                        collections = ["GenParticles", "GenVertices", ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName, 
-                                       hcalBarrelCellsName, hcalExtBarrelCellsName, hcalEndcapCellsName, hcalFwdCellsName], 
+podioinput = PodioInput("PodioReader",
+                        collections = ["GenParticles", "GenVertices", ecalBarrelCellsName, ecalEndcapCellsName, ecalFwdCellsName,
+                                       "newHCalBarrelCells", "newHCalExtBarrelCells", hcalEndcapCellsName, hcalFwdCellsName],
                         OutputLevel = DEBUG)
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                           'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
-                                           'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml',
-                                           'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
-                                           'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                           'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml'
-                                           ],
+                                           'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml' ],
                     OutputLevel = INFO)
-
-# additionally for HCal
-from Configurables import RewriteBitfield
-# Use Phi-Eta segmentation in Hcal barrel
-rewriteHcal = RewriteBitfield("RewriteHCal",
-                                # old bitfield (readout)
-                                oldReadoutName = "HCalBarrelReadout",
-                                # specify which fields are going to be deleted 
-                                removeIds = ["row"],
-                                # new bitfield (readout), with new segmentation
-                                newReadoutName = "BarHCal_Readout_phieta",
-                                debugPrint = 10,
-                                OutputLevel= INFO)
-# clusters are needed, with deposit position and cellID in bits
-rewriteHcal.inhits.Path = "HCalBarrelCells"
-rewriteHcal.outhits.Path = "newHCalBarrelCells"
-
-rewriteExtHcal = RewriteBitfield("RewriteExtHcal",
-                                # old bitfield (readout)
-                                 oldReadoutName = hcalExtBarrelReadoutName,
-                                # specify which fields are going to be altered (deleted/rewritten)
-                                removeIds = ["row"],
-                                # new bitfield (readout), with new segmentation
-                                 newReadoutName = hcalExtBarrelReadoutPhiEtaName,
-                                 debugPrint = 10,
-                                 OutputLevel = INFO,
-                                 inhits = "HCalExtBarrelCells",
-                                 outhits = "newHCalExtBarrelCells")
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, CaloTowerTool
@@ -111,28 +77,37 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  nEtaFinal = finE, nPhiFinal = finP,
                                                  energyThreshold = threshold,
                                                  ellipse = True,
+                                                 attachCells = True,
                                                  OutputLevel = DEBUG)
 createClusters.clusters.Path = "CaloClusters"
 
-out = PodioOutput("out", filename="output_allCalo_reco.root",
-                   OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
+# Correct clusters
+from Configurables import CorrectECalBarrelSliWinCluster
+correct = CorrectECalBarrelSliWinCluster("corr",
+                         clusters="CaloClusters",
+                         correctedClusters="CaloClustersCorrected",
+                         particle = "GenParticles",
+                         vertex = "GenVertices",
+                         nPhiOptimFinal = [7]*8,
+                         nEtaOptimFinal = [19]*8,
+                         noiseFileName = "/eos/project/f/fccsw-web/testsamples/elecNoise_pileup_cluster_mu200_700files.root")
+
+THistSvc().Output = ["rec DATAFILE='clusterCorrections_histograms.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().PrintAll=True
+THistSvc().AutoSave=True
+THistSvc().AutoFlush=False
+THistSvc().OutputLevel=INFO
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
-podioinput.AuditExecute = True
-createClusters.AuditExecute = True
-out.AuditExecute = True
 
 ApplicationMgr(
     TopAlg = [podioinput,
-              rewriteHcal,
-              rewriteExtHcal,
               createClusters,
-              out
+              correct
               ],
     EvtSel = 'NONE',
     EvtMax   = num_events,

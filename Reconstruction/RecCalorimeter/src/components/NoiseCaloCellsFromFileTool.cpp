@@ -42,11 +42,25 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
     return StatusCode::FAILURE;
   }
   // Get PhiEta segmentation
-  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
+  m_segmentationPhiEta = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
+    m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if (m_segmentationPhiEta == nullptr) {
+    m_segmentationMulti = dynamic_cast<dd4hep::DDSegmentation::MultiSegmentation*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
-  if (m_segmentation == nullptr) {
-    error() << "There is no phi-eta segmentation." << endmsg;
-    return StatusCode::FAILURE;
+    if (m_segmentationMulti == nullptr) {
+      error() << "There is no phi-eta or multi- segmentation for the readout " << m_readoutName << " defined." << endmsg;
+      return StatusCode::FAILURE;
+    } else {
+      // check if multisegmentation contains only phi-eta sub-segmentations
+      const dd4hep::DDSegmentation::FCCSWGridPhiEta* subsegmentation = nullptr;
+      for (const auto& subSegm: m_segmentationMulti->subSegmentations()) {
+        subsegmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(subSegm.segmentation);
+        if (subsegmentation == nullptr) {
+          error() << "At least one of the sub-segmentations in MultiSegmentation named " << m_readoutName << " is not a phi-eta grid." << endmsg;
+          return StatusCode::FAILURE;
+        }
+      }
+    }
   }
 
   debug() << "Filter noise threshold: " << m_filterThreshold << "*sigma" << endmsg;
@@ -131,12 +145,16 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
 }
 
 double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
+  const dd4hep::DDSegmentation::FCCSWGridPhiEta* segmentation = m_segmentationPhiEta;
+  if (segmentation == nullptr) {
+    segmentation = dynamic_cast<const dd4hep::DDSegmentation::FCCSWGridPhiEta*>(&m_segmentationMulti->subsegmentation(aCellId));
+  }
 
   double elecNoise = 0.;
   double pileupNoise = 0.;
 
   // Get cell coordinates: eta and radial layer
-  double cellEta = m_segmentation->eta(aCellId);
+  double cellEta = segmentation->eta(aCellId);
   // Take readout, bitfield from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   //decoder->setValue(aCellId);

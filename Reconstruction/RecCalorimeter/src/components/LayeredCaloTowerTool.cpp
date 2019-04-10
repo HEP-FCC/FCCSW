@@ -44,7 +44,8 @@ StatusCode LayeredCaloTowerTool::initialize() {
     return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
-  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_decoder =
+    std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder>(m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder());
   // check if decoder contains "layer"
   std::vector<std::string> fields;
   for (uint itField = 0; itField < m_decoder->size(); itField++) {
@@ -208,3 +209,16 @@ uint LayeredCaloTowerTool::phiNeighbour(int aIPhi) const {
 }
 
 float LayeredCaloTowerTool::radiusForPosition() const { return m_radius; }
+
+void LayeredCaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin,
+                                       fcc::CaloCluster& aEdmCluster, bool) {
+  const fcc::CaloHitCollection* cells = m_cells.get();
+  for (const auto& cell : *cells) {
+    float etaCell = m_segmentation->eta(cell.core().cellId);
+    float phiCell = m_segmentation->phi(cell.core().cellId);
+    if ((abs(idEta(etaCell) - idEta(eta)) <= halfEtaFin) && (abs(idPhi(phiCell) - idPhi(phi)) <= halfPhiFin)) {
+      aEdmCluster.addhits(cell);
+    }
+  }
+  return;
+}
