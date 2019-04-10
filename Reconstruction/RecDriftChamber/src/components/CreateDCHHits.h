@@ -20,9 +20,9 @@
 
 struct hitINFO {
   double DCA;
-  double DCA_x;
-  double DCA_y;
-  double DCA_z;
+  double MC_x;
+  double MC_y;
+  double MC_z;
   double EdepSum;
   double TOF;
   TVector3 hit_start;
@@ -110,9 +110,10 @@ private:
   int wireId;
   int nbTimes_wireXhit;
   double DCA;
-  double DCA_x;
-  double DCA_y;
-  double DCA_z;
+  int trackNum;
+  double MC_x;
+  double MC_y;
+  double MC_z;
   double debug_hitLength;
   double debug_radius;
   double debug_zpos;
@@ -123,6 +124,8 @@ private:
   double hitTime;
   double Radius;
   double zpos_tree;
+
+  int eventnumber;
 
 };
 

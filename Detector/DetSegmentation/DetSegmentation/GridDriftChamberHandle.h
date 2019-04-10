@@ -85,6 +85,10 @@ public:
   inline TVector3 Line_TrackWire(const CellID& cID, const TVector3& hit_start, const TVector3& hit_end) const {
     return access()->implementation->Line_TrackWire(cID, hit_start, hit_end);
   }
+
+  inline TVector3 IntersectionTrackWire(const CellID& cID, const TVector3& hit_start, const TVector3& hit_end) const {
+    return access()->implementation->IntersectionTrackWire(cID, hit_start, hit_end);
+  }
 };
 
 } /* End namespace dd4hep                */
