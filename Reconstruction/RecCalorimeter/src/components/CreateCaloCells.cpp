@@ -13,7 +13,7 @@
 
 DECLARE_ALGORITHM_FACTORY(CreateCaloCells)
 
-CreateCaloCells::CreateCaloCells(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+CreateCaloCells::CreateCaloCells(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("hits", m_hits, "Hits from which to create cells (input)");
   declareProperty("cells", m_cells, "The created calorimeter cells (output)");
 
@@ -76,6 +76,7 @@ StatusCode CreateCaloCells::execute() {
   // If running with noise map already was prepared. Otherwise it is being
   // created below
   for (const auto& hit : *hits) {
+    debug() << "CellID : " << hit.core().cellId << endmsg;
     m_cellsMap[hit.core().cellId] += hit.core().energy;
   }
   debug() << "Number of calorimeter cells after merging of hits: " << m_cellsMap.size() << endmsg;

@@ -22,6 +22,12 @@ install(FILES ${CMAKE_BINARY_DIR}/fccrun
                     GROUP_EXECUTE GROUP_READ
                     WORLD_EXECUTE WORLD_READ
         RENAME run)
+install(FILES ${CMAKE_BINARY_DIR}/this_fccsw.sh.in
+        DESTINATION .
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+                    GROUP_EXECUTE GROUP_READ
+                    WORLD_EXECUTE WORLD_READ
+        RENAME this_fccsw.sh)
 
 gaudi_project(FCCSW HEAD
               USE Gaudi v29r2 )

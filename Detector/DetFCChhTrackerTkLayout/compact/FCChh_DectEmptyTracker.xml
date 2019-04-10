@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+  </includes>
+
+  <info name="FCChhDectEmptyTracker"
+    title="master file with includes and world dimension, tailored to Tracker"
+    author="V. Volkl"
+    url="no"
+    status="development"
+    version="1.0">
+    <comment>Use this one for a world volume that just fits the hh tracker</comment>
+  </info>
+  <define>
+    <constant name="world_size" value="18*m"/>
+    <constant name="world_x" value="1.7*m"/>
+    <constant name="world_y" value="1.7*m"/>
+    <constant name="world_z" value="18*m"/>
+  </define>
+  <include ref="../../DetFCChhBaseline1/compact/FCChh_DectDimensions.xml" />
+</lccdd>

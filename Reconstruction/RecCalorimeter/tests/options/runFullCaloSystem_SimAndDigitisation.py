@@ -199,7 +199,6 @@ createEcalFwdCells.cells.Path="ECalFwdCells"
 
 # Create cells in HCal
 # 1. step - merge hits into cells with the default readout
-# 2. step - rewrite the cellId using the Phi-Eta segmentation
 createHcalCells = CreateCaloCells("CreateHCaloCells",
                                doCellCalibration=True,
                                calibTool=calibHcells,
