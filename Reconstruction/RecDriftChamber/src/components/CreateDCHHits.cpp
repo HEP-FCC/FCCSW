@@ -103,7 +103,7 @@ StatusCode CreateDCHHits::initialize() {
 }
 
 StatusCode CreateDCHHits::execute() {
-  std::cout << "======= EVENT ============ : " << eventnumber << std::endl;
+
   // First empty the map: Very important step
   m_track_cell_hit.clear();
   m_wiresHit.clear();
@@ -115,7 +115,7 @@ StatusCode CreateDCHHits::execute() {
     {
       const fcc::BareHit& hitCore = hit.core();
 
-      // std::cout << "TEST1: " << hit.position() << std::endl;
+
 
       auto x = hit.position().x;
       auto y = hit.position().y;
@@ -124,7 +124,6 @@ StatusCode CreateDCHHits::execute() {
       auto Edep_sum = hitCore.energy;
       auto time = hitCore.time;
       auto trackID = hitCore.bits;
-      //std::cout << "trackID=" << trackID << std::endl;
 
       //      m_decoder->setValue(cellID);
       auto l = m_decoder->get(cellID, "layer"); //(*m_decoder)["layer"].value();
@@ -145,7 +144,7 @@ StatusCode CreateDCHHits::execute() {
       m_track_cell_hit[trackID][cellID].push_back(hit);
     }
 
-  // std::cout << "******************* *******************" << std::endl;
+
   for (const auto& track : m_track_cell_hit)
     {
       auto trackid = track.first;
@@ -177,8 +176,6 @@ StatusCode CreateDCHHits::execute() {
 	    {
 	      closestDist=m_segmentation->distanceTrackWire(cellid, h_start, h_end);
 	      vec_DCA = m_segmentation->IntersectionTrackWire(cellid, h_start, h_end);
-	      // std::cout << "***** nalipourTest *****" << std::endl;
-	      //std::cout << vec_DCA.X() << std::endl;
 	      
 	      hitINFO hinfo;
 	      hinfo.DCA = closestDist;
@@ -202,28 +199,23 @@ StatusCode CreateDCHHits::execute() {
     int temp_layerId = m_decoder->get(cellid, "layer");
     int temp_wireId = m_decoder->get(cellid, "phi");
 
-    //    std::cout << "index: " << index << ", layerID=" << temp_layerId << ", wireID=" << temp_wireId << std::endl;
+
     index ++;
 
     auto hit_info_vec = m_wiresHit[cellid];
 
-    // if (hit_info_vec.size()>1)
-    //   {
-    // 	std::cout << "SIZE GREATER THAN 1" << std::endl;
-    //   }
 
     std::sort(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     auto time_max = std::max_element(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     auto time_min = std::min_element(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
 
-    // std::cout << "size: " << hit_info_vec.size() <<  ", time_min: " << (*time_min).TOF << ", time_max: " << (*time_max).TOF << std::endl;
+
     if ((time_max-time_min)<400)
       {
 	Edep = std::accumulate(hit_info_vec.begin(), hit_info_vec.end(), 0.0, sumEdep2);
 
 	if (hit_info_vec.size()>1)
 	  {
-	    // std::cout << "size = " << hit_info_vec.size() << std::endl;
 	    for (int i = 0; i< hit_info_vec.size(); ++i)
 	      {
 		// std::cout << "DCA = " << hit_info_vec[i].DCA << std::endl;
@@ -252,36 +244,6 @@ StatusCode CreateDCHHits::execute() {
   }
 
   eventnumber ++;
-  //  fcc::TrackHitCollection* edmCellsCollection = new fcc::TrackHitCollection();
-  /*
-  for (const auto& cell : m_hit) {
-
-    auto cellid = cell.first;
-    auto hitpos = m_hit[cellid];
-    auto hit_time = m_hit_time[cellid];
-    auto track_id = m_hit_trackId[cellid];
- 
-    m_decoder->setValue(cellid);
-    int temp_layerId=(*m_decoder)["layer"];
-    int temp_wireId=(*m_decoder)["phi"];
-
-
-    std::sort(hitpos.begin(), hitpos.end(), sortBasedOnZ);
-    auto it_max_z = std::max_element(hitpos.begin(), hitpos.end(), sortBasedOnZ);
-    auto it_min_z = std::min_element(hitpos.begin(), hitpos.end(), sortBasedOnZ);
-    auto max_z = (*it_max_z).Z();
-    auto min_z = (*it_min_z).Z();
-
-
-    int deltaZ = ceil((max_z - min_z)/1.); // the number of particles (1 cm of time resolution)
-    layerId = temp_layerId;
-    wireId = temp_wireId;
-    nbTimes_wireXhit = deltaZ;
-    m_tree->Fill();
-  }
-  */
-
-//m_mergedTrackHits.put(edmCellsCollection);
   return StatusCode::SUCCESS;
 }
 

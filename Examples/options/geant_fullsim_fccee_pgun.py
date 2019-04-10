@@ -1,4 +1,5 @@
 from Gaudi.Configuration import *
+from GaudiKernel.SystemOfUnits import tesla
 
 
 set_energy = 2400
@@ -18,7 +19,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['Detector/DetFCCeeIDEA/compact/FCCee_De
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldOn=True, 
-                                       IntegratorStepper="ClassicalRK4", FieldComponentZ=0.002,
+                                       IntegratorStepper="ClassicalRK4", FieldComponentZ=2*tesla,
                                        MaximumStep=10000.0)
 
 # Geant4 service
@@ -95,7 +96,7 @@ out.outputCommands = ["keep *"]
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 1000,
+                EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=INFO
