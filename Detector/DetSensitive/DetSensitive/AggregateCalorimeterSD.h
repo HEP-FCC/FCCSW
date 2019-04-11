@@ -1,13 +1,20 @@
 #ifndef DETSENSITIVE_AGGREGATECALORIMETERSD_H
 #define DETSENSITIVE_AGGREGATECALORIMETERSD_H
 
+
 // DD4hep
 #include "DDG4/Geant4Hits.h"
-#include "DDSegmentation/Segmentation.h"
+
+// FCCSW
+#include "DetCommon/Geant4CaloHit.h"
 
 // Geant
 #include "G4THitsCollection.hh"
 #include "G4VSensitiveDetector.hh"
+
+namespace fcc {
+class Geant4CaloHit;
+}
 
 /** AggregateCalorimeterSD DetectorDescription/DetSensitive/src/AggregateCalorimeterSD.h AggregateCalorimeterSD.h
  *
@@ -49,7 +56,7 @@ public:
 
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<fcc::Geant4CaloHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };
