@@ -2,6 +2,7 @@
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
+#include "DetCommon/Geant4CaloHit.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -13,6 +14,8 @@
 
 // Geant4
 #include "G4SDManager.hh"
+
+
 
 namespace det {
 BirksLawCalorimeterSD::BirksLawCalorimeterSD(const std::string& aDetectorName,
@@ -35,7 +38,7 @@ void BirksLawCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   m_calorimeterCollection =
-      new G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName, collectionName[0]);
+      new G4THitsCollection<fcc::Geant4CaloHit>(SensitiveDetectorName, collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection),
                                       m_calorimeterCollection);
 }
@@ -67,11 +70,14 @@ bool BirksLawCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   }
   edep = response;
 
+
+  const G4Track* track = aStep->GetTrack();
   // as in dd4hep::sim::Geant4GenericSD<Calorimeter>
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-  dd4hep::Position pos(prePos.x(), prePos.y(), prePos.z());
-  auto hit = new dd4hep::sim::Geant4CalorimeterHit(pos);
+  auto hit = new fcc::Geant4CaloHit(
+      track->GetTrackID(), track->GetDefinition()->GetPDGEncoding(), edep, track->GetGlobalTime());
   hit->cellID = utils::cellID(m_seg, *aStep);
+  hit->position = prePos;
   hit->energyDeposit = edep;
   m_calorimeterCollection->insert(hit);
   return true;
