@@ -28,7 +28,7 @@ void AggregateCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   m_calorimeterCollection =
-      new G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName, collectionName[0]);
+      new G4THitsCollection<fcc::Geant4CaloHit>(SensitiveDetectorName, collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection),
                                       m_calorimeterCollection);
 }
@@ -42,14 +42,13 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
   CLHEP::Hep3Vector postPos = aStep->GetPostStepPoint()->GetPosition();
   CLHEP::Hep3Vector midPos = 0.5 * (postPos + prePos);
-  dd4hep::Position pos(midPos.x(), midPos.y(), midPos.z());
   // check the cell ID
   uint64_t id = utils::cellID(m_seg, *aStep);
-  dd4hep::sim::Geant4CalorimeterHit* hit = nullptr;
-  dd4hep::sim::Geant4CalorimeterHit* hitMatch = nullptr;
+  fcc::Geant4CaloHit* hit = nullptr;
+  fcc::Geant4CaloHit* hitMatch = nullptr;
   // Check if there is already some energy deposit in that cell
   for (int i = 0; i < m_calorimeterCollection->entries(); i++) {
-    hit = dynamic_cast<dd4hep::sim::Geant4CalorimeterHit*>(m_calorimeterCollection->GetHit(i));
+    hit = dynamic_cast<fcc::Geant4CaloHit*>(m_calorimeterCollection->GetHit(i));
     if (hit->cellID == id) {
       hitMatch = hit;
       hitMatch->energyDeposit += edep;
@@ -58,9 +57,14 @@ bool AggregateCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   }
   // if not, create a new hit
   // deleted in ~G4Event
-  hitMatch = new dd4hep::sim::Geant4CalorimeterHit(pos);
+  hitMatch = new fcc::Geant4CaloHit(0, // track->GetTrackID()
+                                    0, // track->GetDefinition()->GetPDGEncoding()
+                                    edep,
+                                    0 // track ->GetGlobalTime()
+                                    ) ;
+
+  hitMatch->position = midPos;
   hitMatch->cellID = id;
-  hitMatch->energyDeposit = edep;
   m_calorimeterCollection->insert(hitMatch);
   return true;
 }
