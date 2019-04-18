@@ -43,7 +43,6 @@ StatusCode CreateExampleEventData::execute() {
   std::vector<fcc::FloatValueData>* ff = m_somefloatHandle.createAndPut();
   auto fff = fcc::FloatValueData();
   fff.value = 12345.;
-  std::cout << fff.value << std::endl;
   ff->emplace_back( fff);
   fff.value = 1/12.;
   ff->emplace_back( fff);
