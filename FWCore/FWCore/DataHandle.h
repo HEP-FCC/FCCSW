@@ -62,20 +62,16 @@ template <typename T>
 DataHandle<T>::DataHandle(const std::string& descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg)
     : DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg), m_eds("EventDataSvc", "DataHandle") {
 
-  if (a > 15) {
+  if (a > 15) { // Gaudi::DataHandle::Mode is 'writer'
   m_eds.retrieve();
   PodioDataSvc* pds = dynamic_cast<PodioDataSvc*>( m_eds.get());
-  pds->debugprintout();
   m_dataPtr = 0;
-  //T* t = new T();
-  //std::string typeName = typeid(*t).name();
 
   if (std::is_convertible<T*,podio::CollectionBase*>::value) {
     // still handled in PodioOutput
   } else {
     TTree* tree = pds->eventDataTree();
     tree->Branch(descriptor.c_str(),  &m_dataPtr);
-      //tree->Branch(descriptor.c_str(),  &m_data, (descriptor+"/"+typeName).c_str());
     }
   }
 }
