@@ -29,9 +29,23 @@ if my_args.input != None:
 my_input ="/eos/user/n/nali/Hadrons/HadZ.root"
 outfilename = "/eos/user/n/nali/Hadrons/Analysis_HadZ.root"
 
-"""
+
 my_input ="/eos/user/n/nali/SR/SR.root"
 outfilename = "/eos/user/n/nali/SR/Analysis_SR.root"
+"""
+"""
+my_input = "fccee_fullsim_pgun_2T_1MeV.root"
+outfilename = "mergedHits_2T_1MeV.root"
+"""
+
+"""
+set_energy = 2400
+my_input = "SimuOutput/pgun/"+str(set_energy)+"MeV_theta90.root"
+outfilename = "SimuOutput/pgun/reco_"+str(set_energy)+"MeV_theta90.root"
+"""
+
+my_input = "SimuOutput/pythia/simu_Zdd.root"
+outfilename = "SimuOutput/pythia/reco_simu_Zdd.root"
 
 from GaudiKernel.SystemOfUnits import eV
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput

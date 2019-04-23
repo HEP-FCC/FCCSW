@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent   = FCCDataSvc("EventDataSvc", input="pythia_test.root", OutputLevel=DEBUG)
+podioevent   = FCCDataSvc("EventDataSvc", inputs=["pythia_test.root"], OutputLevel=DEBUG)
 
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput, ReadTestConsumer
