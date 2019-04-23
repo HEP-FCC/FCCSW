@@ -25,26 +25,26 @@ pythia8gentool.Filename = pythiafile
 pythia8gentool.printPythiaStatistics = True
 from Configurables import GenAlg
 pythia8gen = GenAlg("Pythia8")
-pythia8gen.SignalProvider=pythia8gentool
-pythia8gen.VertexSmearingTool=smeartool
-pythia8gen.PileUpTool = pileuptool
+pythia8gen.SignalProvider = pythia8gentool
+pythia8gen.VertexSmearingTool = smeartool
 pythia8gen.hepmc.Path = "hepmc"
 
 
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCToEDMConverter
-hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter = HepMCToEDMConverter()
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.hepmcStatusList = [] # convert particles with all statuses
-hepmc_converter.genparticles.Path="Genparticles"
-hepmc_converter.genvertices.Path="Genvertices"
+hepmc_converter.genparticles.Path="GenParticles"
+hepmc_converter.genvertices.Path="GenVertices"
 
 ### Filters generated particles
 # accept is a list of particle statuses that should be accepted
 from Configurables import GenParticleFilter
-genfilter = GenParticleFilter("StableParticles", accept=[1], OutputLevel=DEBUG)
-genfilter.allGenParticles.Path = "Genparticles"
-genfilter.filteredGenParticles.Path = "GenparticlesStable"
+genfilter = GenParticleFilter("StableParticles")
+genfilter.accept=[1]
+genfilter.allGenParticles.Path = "GenParticles"
+genfilter.filteredGenParticles.Path = "GenpParticlesStable"
 
 
 from Configurables import PodioOutput
