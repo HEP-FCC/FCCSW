@@ -13,7 +13,7 @@ Change content and for local testing, serve the page with
 
 and point your browser to `localhost:4000`.
 
-§§§ Deploying
+### Deploying
 
 Build page with
 
@@ -21,8 +21,8 @@ Build page with
     jekyll build --destination=DEST
 ```
 
-For <cern.ch/fccsw> there is an associated eos folder `/eos/project/f/fccsw-web/www` (subscripe to e-group to gain write access)
-Currently it just redirects to <hep-fcc.github.io/FCCSW> but could be used as DEST.
+For <http://cern.ch/fccsw> there is an associated eos folder `/eos/project/f/fccsw-web/www` (subscripe to e-group to gain write access)
+Currently it just redirects to <http://hep-fcc.github.io/FCCSW> but could be used as DEST.
   
 
 
