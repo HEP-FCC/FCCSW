@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>releases</title>
+  <meta name="description" content="Main page for documentation and resources.">
+
+  <link rel="stylesheet" href="http://fccsw.web.cern.ch/fccsw/css/main.css">
+  <link rel="canonical" href="http://fccsw.web.cern.ch/fccsw/tutorials/fcc-tutorials/releases.html">
+  <link rel="alternate" type="application/rss+xml" title="FCCSW" href="http://fccsw.web.cern.ch/fccsw/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<header>
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://fccsw.web.cern.ch/fccsw/index.html">FCCSW</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/index.html">Home</a></li>
+            <li  class="active" ><a href="http://fccsw.web.cern.ch/fccsw/tutorials">Tutorials</a></li>
+            <li><a>Latest Releases:</a></li>
+            
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/05/15/version081.html">FCCSW v0.8.1</a>
+              </li>
+              
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/03/29/version08.html">FCCSW v0.8</a>
+              </li>
+              
+            
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/snapshot.html">Snapshot</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+            <input type="text" class="form-control" id="search-input" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+</header>
+<div class="container">
+  <div class="collapse panel panel-default" id="resultswrap">
+      <div class="panel-heading">Search Results <button type="button" class="close" aria-label="Close"><span aria-hidden="true" onclick="$('#resultswrap').collapse('hide');">&times;</span></button></div>
+      <ul id="searchresults" class="list-group">
+      </ul>
+  </div>
+</div>
+
+    
+    
+    <div class="container">
+      <div class="col-md-10">
+        <h1 id="how-to-do-software-releases-of-the-fcc-stack">How to do software releases of the FCC stack</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>This page is a tutorial for admins of the FCC software and explains how a software release is done on AFS and CVMFS.</p>
+
+<h2 id="how-to-do-a-release">How to do a release</h2>
+
+<h3 id="step-1-externals">Step 1: Externals</h3>
+
+<p>Currently we do not have a procedure to automatically install the external packages used in FCC software. That means we
+currently need to install them before we actually push the “release button”.</p>
+
+<p>The only external packages that are not in the LCG releases currently are <a href="https://github.com/delphes/delphes">Delphes</a>
+and <a href="http://acts.web.cern.ch/">ACTS</a>. The location is explicitly set in the
+<a href="https://github.com/HEP-FCC/fcc-spi/blob/master/init_fcc_stack.sh">init script located in fcc-spi</a>.</p>
+
+<p>Install on AFS and CVMFS and set the <code class="highlighter-rouge">*_DIR</code> in that script to the correct location.</p>
+
+<h3 id="step-2-tag-the-software">Step 2: Tag the software</h3>
+
+<p><a href="https://help.github.com/articles/creating-releases/">Create the releases</a> in the repositories that need to be released.
+Release notes written on github for the release are automatically picked up by the documentation web-site.</p>
+
+<p>To generate the change-logs, have a look at this <a href="https://github.com/skywinder/github-changelog-generator">github-changelog-generator</a>.
+After installation, generating a github token and setting it up as per the <a href="https://github.com/skywinder/github-changelog-generator">README</a>,
+simply do:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>github_changelog_generator -p [e.g. FCCSW] -u HEP-FCC -o changelog.md --since-tag [last release]
+</code></pre>
+</div>
+
+<p>And copy the contents of <code class="highlighter-rouge">changelog.md</code> as the changelog (modifying the <em>Unreleased</em> headline).</p>
+
+<h3 id="step-3-launch-the-release-job-in-jenkins">Step 3: Launch the release job in Jenkins</h3>
+
+<p><a href="https://phsft-jenkins.cern.ch/view/FCC/job/FCC-release/build?delay=0sec">Go to Jenkins and launch a new release job</a>.
+You will be confronted with a form:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">*_version</code> correspond to the tag-names you defined <a href="#step-2-tag-the-software">step 2</a></li>
+  <li><code class="highlighter-rouge">lcg_version</code> corresponds to the LCG release you want to use (e.g. <code class="highlighter-rouge">LCG_86</code>)</li>
+  <li><code class="highlighter-rouge">cvmfs_out</code> is an accesible directory (e.g. on AFS) where the CVMFS release is put to copy on CVMFS
+    <ul>
+      <li>Currently we cannot copy to CVMFS from the job but have to do that by hand</li>
+      <li>Also if you put an AFS path here, the release will be linked to CVMFS</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">release_name</code> a name for the release (e.g. <code class="highlighter-rouge">0.8</code>)</li>
+</ul>
+
+<p>During the release, also the documentation website will be regenerated. If you are interested in learning how to
+generate the website have a look at <a href="FccDocPage.html">this tutorial</a></p>
+
+<h3 id="step-4-test-the-release">Step 4: Test the release</h3>
+
+<p><a href="https://phsft-jenkins.cern.ch/view/FCC/job/FCCSW-integration/build?delay=0sec">Go to Jenkins and launch a new test job</a>.</p>
+
+<h2 id="modifying-the-build-and-init-scripts">Modifying the build and init scripts</h2>
+
+<h3 id="adding-a-dependency">Adding a dependency</h3>
+
+<p>For external dependencies as mentioned above, you will need to modify the <a href="https://github.com/HEP-FCC/fcc-spi/blob/master/init_fcc_stack.sh">init_fcc_stack.sh</a>
+to properly set the needed <code class="highlighter-rouge">PATH</code> variables.</p>
+
+<p>For <em>internal</em> dependencies, i.e. software that is part of the release (at the moment everything that is located under
+<a href="https://github.com/HEP-FCC">HEP-FCC</a>) you need to modify both the init and the build scripts:</p>
+
+<ul>
+  <li>
+    <p>Adding the new dependency to the build script - look at how the versions for e.g. <code class="highlighter-rouge">podio</code> are set with the environment
+variable <code class="highlighter-rouge">podio_version</code>. You need to define it in the script and echo it into the <code class="highlighter-rouge">setup.sh</code> script. Also add it to the
+packages that are built at the end of the script. For setting the version also in Jenkins, you need to add the option to the release job.</p>
+  </li>
+  <li>
+    <p>Adding the new dependency to the init script - again have a look at how <code class="highlighter-rouge">podio</code> is handled and add the corresponding
+statements for the new package: once <code class="highlighter-rouge">export MYPACKAGE=/the/path</code> and then adding it at the end of the script:
+<code class="highlighter-rouge">add_to_path CMAKE_PREFIX_PATH $MYPACKAGE</code> (look at the other <code class="highlighter-rouge">PATH</code> variables and decide what you need.)</p>
+  </li>
+</ul>
+
+      </div>
+      <div class="col-md-2">    <ul class="list-group">
+        <li class="list-group-header">
+            <h4>External links</h4>
+        </li>
+        
+            <li class="list-group-item">
+                <a href='http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev'>FCCSW Mailing list</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='http://fccsw.web.cern.ch/fccsw/tutorials/'>FCCSW Tutorials</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/fccsw/issues'>FCCSW Issue Tracker</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/'>FCCSW on GitHub</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://phsft-jenkins.cern.ch/view/FCC/'>FCCSW Jenkins</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md'>FCCSW C++ Style Guide</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/GeneralCppGuidelines.md'>General C++ Guidelines</a>
+            </li>
+        
+    </ul>
+</div>
+    </div>
+    <script src="http://fccsw.web.cern.ch/fccsw/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/requirejs/require.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/simple-jekyll-search/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('searchresults'),
+        json: 'http://fccsw.web.cern.ch/fccsw/search.json',
+        searchResultTemplate: '<li class="list-group-item"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: '<li class="list-group-item">No results found</li>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+      $("#search-input").keypress(function() {
+            $("#resultswrap").collapse('show');
+      });
+      $("#search-input").keyup(function() {
+            if ($(this).val() == "") {
+                $("#resultswrap").collapse('hide');
+            }
+      });
+      $("table").each(function(index) {
+        $(this).addClass("table");
+      });
+    </script>
+
+
+  </body>
+</html>

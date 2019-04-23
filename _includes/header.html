@@ -14,7 +14,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li {% if page.layout == "title" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/index.html">Home</a></li>
-            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="https://github.com/HEP-FCC/fcc-tutorials">Tutorials (on Github)</a></li>
+            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/tutorials/index.html">Tutorials (on Github)</a></li>
             <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/stack/stack.html">Stack</a></li>
             <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/presentations/presentations.html">Talks and Papers</a></li>
             <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/computing/computing.html">Computing</a></li>

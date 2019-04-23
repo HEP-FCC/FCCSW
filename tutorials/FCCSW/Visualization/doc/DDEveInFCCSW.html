@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DDEve In FCCSW</title>
+  <meta name="description" content="Main page for documentation and resources.">
+
+  <link rel="stylesheet" href="http://fccsw.web.cern.ch/fccsw/css/main.css">
+  <link rel="canonical" href="http://fccsw.web.cern.ch/fccsw/tutorials/FCCSW/Visualization/doc/DDEveInFCCSW.html">
+  <link rel="alternate" type="application/rss+xml" title="FCCSW" href="http://fccsw.web.cern.ch/fccsw/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<header>
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://fccsw.web.cern.ch/fccsw/index.html">FCCSW</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/index.html">Home</a></li>
+            <li  class="active" ><a href="http://fccsw.web.cern.ch/fccsw/tutorials">Tutorials</a></li>
+            <li><a>Latest Releases:</a></li>
+            
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/05/15/version081.html">FCCSW v0.8.1</a>
+              </li>
+              
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/03/29/version08.html">FCCSW v0.8</a>
+              </li>
+              
+            
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/snapshot.html">Snapshot</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+            <input type="text" class="form-control" id="search-input" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+</header>
+<div class="container">
+  <div class="collapse panel panel-default" id="resultswrap">
+      <div class="panel-heading">Search Results <button type="button" class="close" aria-label="Close"><span aria-hidden="true" onclick="$('#resultswrap').collapse('hide');">&times;</span></button></div>
+      <ul id="searchresults" class="list-group">
+      </ul>
+  </div>
+</div>
+
+    
+    
+    <div class="container">
+      <div class="col-md-10">
+        <h1 id="visualization-using-ddeve-in-fccsw">Visualization using DDEve in FCCSW</h1>
+
+<p><a href="http://frankm.web.cern.ch/frankm/DD4hep/DDEveManual.pdf">DDEve</a> is a DD4hep package that wraps around the Root package <a href="https://root.cern.ch/eve">Eve</a>, used by several HEP experiments.
+FCCSW uses DD4hep for its geometry description, so the detector geometries can be visualized using DD4hep tools, e.g. the standalone executable <code class="highlighter-rouge">geoDisplay</code>.
+Many visualization settings, such as visibility, color, … can be set in the xml configuration files of the detectors, found in the <code class="highlighter-rouge">Detector</code> subfolder of FCCSW.
+Eve also provides functionalities that enhance the view and help with visual debugging.</p>
+
+<p>A configuration xml file for DDEve, like the default one provided in the visualization package under <code class="highlighter-rouge">Visualization/compact/DDEve_FCCSW.xml</code>, can be specified on the command line (it defaults to the one just mentioned).
+Here is a short list of the views and some configuration variables:</p>
+
+<ul>
+  <li>View3D
+    <ul>
+      <li>3D model of the Detector (as in <code class="highlighter-rouge">geoDisplay</code>) with clusters superimposed as points. The points can be configured via the <code class="highlighter-rouge">PointSet</code> options of each <code class="highlighter-rouge">collection</code></li>
+    </ul>
+  </li>
+  <li>RhoPhiProjection
+    <ul>
+      <li>the content of View3D is projected along z</li>
+    </ul>
+  </li>
+  <li>RhoZProjection
+    <ul>
+      <li>the content of View3D is projected along phi</li>
+    </ul>
+  </li>
+  <li>Calo3DProjection
+    <ul>
+      <li>3D Histogram of the energy deposits, projected on a cylinder surrounding the detector</li>
+    </ul>
+  </li>
+  <li>Calo2DProjection
+    <ul>
+      <li>2D version of Calo3DProjection, projected along z</li>
+    </ul>
+  </li>
+  <li>CaloLego
+    <ul>
+      <li>Lego-type version of Calo3DProjection</li>
+    </ul>
+  </li>
+  <li>MultiView
+    <ul>
+      <li>composite view of Calo3DProjection, RhoPhiProjection and RhoZProjection</li>
+    </ul>
+  </li>
+</ul>
+
+<p>There is currently no support for displaying truth information about particle tracks or any other kind of event data than clusters.
+Clusters are represented in Eve in two ways: The first is a pointset, which indicates the position of each cluster as a point.
+The relevant options for the points are <code class="highlighter-rouge">color</code> , <code class="highlighter-rouge">size</code> and <code class="highlighter-rouge">type</code>. Their values can be any valid option for <a href="https://root.cern.ch/doc/master/classTAttMarker.html">TAttMarker</a>.
+Clusters can also be represented as a histogram in eta and phi. The relevant options are
+* <code class="highlighter-rouge">n_eta</code>, <code class="highlighter-rouge">n_phi</code>: number of bins in eta/phi
+* <code class="highlighter-rouge">eta_min</code>, <code class="highlighter-rouge">phi_min</code>: smallest value for eta/phi
+* <code class="highlighter-rouge">eta_max</code>, <code class="highlighter-rouge">phi_max</code>: largest value for eta/phi</p>
+
+<p>In addition, the Calo3DProjection and derived views use the following configurables:
+* <code class="highlighter-rouge">rmin</code>: radius of the wireframe projection cylinder
+* <code class="highlighter-rouge">dz</code>: length of the wireframe projection cylinder
+* <code class="highlighter-rouge">towerH</code>: outer radius of the histogram bars
+* <code class="highlighter-rouge">emax</code>: maximum energy deposit displayed</p>
+
+<p>All the capabilities and limitations of DDEve can be seen in the CliC example distributed with DD4hep (<code class="highlighter-rouge">DD4hep/examples/CLICSiD/eve</code> in the DD4hep source directory). 
+DDEve is still under development, and the integration in FCCSW is very rudimentary, so feedback regarding needed features and bugs is highly appreciated by the FCCSW- and DD4hep developers.</p>
+
+<p>The viewer can be started using the <code class="highlighter-rouge">eventDisplay.py</code> script, e.g. <code class="highlighter-rouge">./run python Visualization/python/eventDisplay.py</code>.
+Information about command line options is displayed  when the last command is invoked with the <code class="highlighter-rouge">-h</code> flag.
+The root file containing the event data can also be specified on the command line (defaults to the FCCSW default <code class="highlighter-rouge">output.root</code>).</p>
+
+
+      </div>
+      <div class="col-md-2">    <ul class="list-group">
+        <li class="list-group-header">
+            <h4>External links</h4>
+        </li>
+        
+            <li class="list-group-item">
+                <a href='http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev'>FCCSW Mailing list</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='http://fccsw.web.cern.ch/fccsw/tutorials/'>FCCSW Tutorials</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/fccsw/issues'>FCCSW Issue Tracker</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/'>FCCSW on GitHub</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://phsft-jenkins.cern.ch/view/FCC/'>FCCSW Jenkins</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md'>FCCSW C++ Style Guide</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/GeneralCppGuidelines.md'>General C++ Guidelines</a>
+            </li>
+        
+    </ul>
+</div>
+    </div>
+    <script src="http://fccsw.web.cern.ch/fccsw/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/requirejs/require.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/simple-jekyll-search/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('searchresults'),
+        json: 'http://fccsw.web.cern.ch/fccsw/search.json',
+        searchResultTemplate: '<li class="list-group-item"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: '<li class="list-group-item">No results found</li>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+      $("#search-input").keypress(function() {
+            $("#resultswrap").collapse('show');
+      });
+      $("#search-input").keyup(function() {
+            if ($(this).val() == "") {
+                $("#resultswrap").collapse('hide');
+            }
+      });
+      $("table").each(function(index) {
+        $(this).addClass("table");
+      });
+    </script>
+
+
+  </body>
+</html>

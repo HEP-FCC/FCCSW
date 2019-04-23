@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>installing-fcc</title>
+  <meta name="description" content="Main page for documentation and resources.">
+
+  <link rel="stylesheet" href="http://fccsw.web.cern.ch/fccsw/css/main.css">
+  <link rel="canonical" href="http://fccsw.web.cern.ch/fccsw/tutorials/fcc-tutorials/installing-fcc.html">
+  <link rel="alternate" type="application/rss+xml" title="FCCSW" href="http://fccsw.web.cern.ch/fccsw/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<header>
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://fccsw.web.cern.ch/fccsw/index.html">FCCSW</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/index.html">Home</a></li>
+            <li  class="active" ><a href="http://fccsw.web.cern.ch/fccsw/tutorials">Tutorials</a></li>
+            <li><a>Latest Releases:</a></li>
+            
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/05/15/version081.html">FCCSW v0.8.1</a>
+              </li>
+              
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/03/29/version08.html">FCCSW v0.8</a>
+              </li>
+              
+            
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/snapshot.html">Snapshot</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+            <input type="text" class="form-control" id="search-input" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+</header>
+<div class="container">
+  <div class="collapse panel panel-default" id="resultswrap">
+      <div class="panel-heading">Search Results <button type="button" class="close" aria-label="Close"><span aria-hidden="true" onclick="$('#resultswrap').collapse('hide');">&times;</span></button></div>
+      <ul id="searchresults" class="list-group">
+      </ul>
+  </div>
+</div>
+
+    
+    
+    <div class="container">
+      <div class="col-md-10">
+        <h1 id="installing-the-fcc-software-locally">Installing the FCC software locally</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>This page explains how to install the part of the FCC software that can be used locally on your laptop.
+We encourage to use the <a href="./FccVirtualMachine.html">Virtual Machine</a> or the centrally installed software.</p>
+
+<h2 id="what-can-i-use-locally">What can I use locally?</h2>
+
+<p>The packages that are supported for local usage are <a href="https://github.com/HEP-FCC/fcc-physics">fcc-physics</a> and
+<a href="https://github.com/HEP-FCC/heppy">heppy</a>. This allows you to do physics analysis on your laptop.</p>
+
+<h2 id="installing-the-latest-version">Installing the latest version</h2>
+
+<h3 id="setup-a-development-area">Setup a development area:</h3>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>mkdir FCC
+<span class="nb">cd </span>FCC
+<span class="nb">export </span><span class="nv">FCC</span><span class="o">=</span><span class="k">${</span><span class="nv">PWD</span><span class="k">}</span>
+</code></pre>
+</div>
+
+<p>You need to install the <strong>external</strong> dependencies, check the <a href="https://github.com/HEP-FCC/fcc-physics#installing-required-software">fcc-physics README</a>:</p>
+
+<blockquote>
+  <p>Set up as mentioned in the README (and set <code class="highlighter-rouge">CMAKE_PREFIX_PATH</code> accordingly) and also set the <code class="highlighter-rouge">PYTHIA8_DIR</code>.</p>
+</blockquote>
+
+<h3 id="install-the-latest-version-of-the-standalone-fcc-packages">Install the latest version of the standalone FCC packages</h3>
+
+<p>You can copy the instructions below into a file and (after making it executable) execute it or copy paste them into a bash shell.</p>
+
+<blockquote>
+  <p>Be sure to have set the <code class="highlighter-rouge">$FCC</code> environment variable before you execute.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd</span> <span class="nv">$FCC</span> <span class="c"># your local development area</span>
+<span class="c"># get all the sources</span>
+<span class="nb">declare</span> -a <span class="nv">repos</span><span class="o">=(</span><span class="s2">"podio"</span> <span class="s2">"fcc-edm"</span> <span class="s2">"fcc-physics"</span> <span class="s2">"heppy"</span><span class="o">)</span>
+<span class="k">for </span>r <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">repos</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span>
+<span class="k">do
+  </span>git clone https://github.com/HEP-FCC/<span class="nv">$r</span>
+<span class="k">done
+</span>mkdir podio/build;mkdir fcc-edm/build;mkdir fcc-physics/build
+mkdir fcc-install
+<span class="c"># create a setup.sh file that you'll have to source every time</span>
+<span class="nb">echo</span> <span class="s2">"export FCCEDM=</span><span class="nv">$FCC</span><span class="s2">/fcc-install;export PODIO=</span><span class="nv">$FCC</span><span class="s2">/fcc-install;export FCCPHYSICS=</span><span class="nv">$FCC</span><span class="s2">/fcc-install"</span> &gt; setup.sh
+<span class="nb">echo source</span> <span class="nv">$FCC</span>/fcc-install/init_fcc_stack.sh &gt;&gt; setup.sh
+curl https://raw.githubusercontent.com/HEP-FCC/fcc-spi/master/init_fcc_stack.sh -o <span class="nv">$FCC</span>/fcc-install/init_fcc_stack.sh
+<span class="nb">source </span>setup.sh
+</code></pre>
+</div>
+
+<p>Now you have all repository sources in your <code class="highlighter-rouge">$FCC</code> directory. If you do <code class="highlighter-rouge">ls</code> you should see them. To compile you need to
+go through the list in this order:</p>
+
+<ol>
+  <li>podio</li>
+  <li>fcc-edm</li>
+  <li>fcc-physics</li>
+</ol>
+
+<p>For each of them go into the build directory: <code class="highlighter-rouge">cd $FCC/&lt;name&gt;/build</code> and do:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>cmake -DCMAKE_INSTALL_PREFIX<span class="o">=</span><span class="nv">$FCC</span>/fcc-install/ ..
+make install
+</code></pre>
+</div>
+
+<p>If you encounter errors check the README of the corresponding repository.</p>
+
+<h2 id="using-the-local-installation">Using the local installation</h2>
+
+<p>The above lines created a setup script <code class="highlighter-rouge">setup.sh</code> in the folder <code class="highlighter-rouge">$FCC</code>. To use the software you’ll have to source that file.
+Additionally, make sure that the external software is also setup properly. In order to use heppy you need to also source the
+<code class="highlighter-rouge">init.sh</code> script in the heppy folder.</p>
+
+<p>For more information on usage, check the individual repositories or tutorial pages.</p>
+
+      </div>
+      <div class="col-md-2">    <ul class="list-group">
+        <li class="list-group-header">
+            <h4>External links</h4>
+        </li>
+        
+            <li class="list-group-item">
+                <a href='http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev'>FCCSW Mailing list</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='http://fccsw.web.cern.ch/fccsw/tutorials/'>FCCSW Tutorials</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/fccsw/issues'>FCCSW Issue Tracker</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/'>FCCSW on GitHub</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://phsft-jenkins.cern.ch/view/FCC/'>FCCSW Jenkins</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md'>FCCSW C++ Style Guide</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/GeneralCppGuidelines.md'>General C++ Guidelines</a>
+            </li>
+        
+    </ul>
+</div>
+    </div>
+    <script src="http://fccsw.web.cern.ch/fccsw/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/requirejs/require.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/simple-jekyll-search/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('searchresults'),
+        json: 'http://fccsw.web.cern.ch/fccsw/search.json',
+        searchResultTemplate: '<li class="list-group-item"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: '<li class="list-group-item">No results found</li>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+      $("#search-input").keypress(function() {
+            $("#resultswrap").collapse('show');
+      });
+      $("#search-input").keyup(function() {
+            if ($(this).val() == "") {
+                $("#resultswrap").collapse('hide');
+            }
+      });
+      $("table").each(function(index) {
+        $(this).addClass("table");
+      });
+    </script>
+
+
+  </body>
+</html>

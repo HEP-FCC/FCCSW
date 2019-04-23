@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FCCSW</title>
+  <meta name="description" content="Main page for documentation and resources.">
+
+  <link rel="stylesheet" href="http://fccsw.web.cern.ch/fccsw/css/main.css">
+  <link rel="canonical" href="http://fccsw.web.cern.ch/fccsw/tutorials/">
+  <link rel="alternate" type="application/rss+xml" title="FCCSW" href="http://fccsw.web.cern.ch/fccsw/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<header>
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://fccsw.web.cern.ch/fccsw/index.html">FCCSW</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/index.html">Home</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+            <input type="text" class="form-control" id="search-input" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+</header>
+<div class="container">
+  <div class="collapse panel panel-default" id="resultswrap">
+      <div class="panel-heading">Search Results <button type="button" class="close" aria-label="Close"><span aria-hidden="true" onclick="$('#resultswrap').collapse('hide');">&times;</span></button></div>
+      <ul id="searchresults" class="list-group">
+      </ul>
+  </div>
+</div>
+
+    
+    
+    <div class="container">
+      <div class="col-md-10">
+        
+<h2 id="getting-started-with-the-fcc-common-software">Getting started with the FCC common software</h2>
+
+<p><a href="./fcc-tutorials/FccSoftwareGettingStarted.html">Getting Started</a> is an introduction to the FCC software. It is the recommended way to get started. It also explains how to set up the software.</p>
+
+<p>Everything below documents the latest release (version 0.8.1). Before continuing please make sure that this version is installed, for the corresponding versions of fcc-edm, fcc-physics and heppy, please see the <a href="http://fccsw.web.cern.ch/fccsw/2017/05/15/version081.html">release page</a>.</p>
+
+<p><strong>Important: for all tutorials, we assume that you are using the bash shell</strong>. If not the case, we advise you to change shell.</p>
+
+<p>For your CERN AFS account, you can do that on this page: <code class="highlighter-rouge">https://resources.web.cern.ch/resources/Manage/Linux/Settings.aspx?login=YOUR_USER_NAME</code>. &lt;- insert your actual AFS user name here.</p>
+
+<hr />
+<p>title: ‘fcc-tutorials’
+layout: site
+—
+### List of available tutorials</p>
+
+<ul>
+  <li><a href="./fcc-tutorials/./FccSoftwareGettingStarted.html">Getting Started</a></li>
+  <li><a href="./fcc-tutorials/./FccSoftwareGit.html">Github workflow and contribution guide</a></li>
+  <li><a href="./fcc-tutorials/./FccSoftwareGettingStartedFastSim.html">Getting started with the production and analysis of fast-simulated events</a></li>
+  <li><a href="./fcc-tutorials/./FccSoftwareFramework.html">The FCC Software Framework</a>
+    <ul>
+      <li><a href="./fcc-tutorials/./FccFullAnalysis.html">Full analysis example using Pythia, Delphes and Heppy</a></li>
+      <li><a href="./fcc-tutorials/./FccCMakeGuide.html">CMake in FCCSW</a></li>
+    </ul>
+  </li>
+  <li>Working locally on your laptop
+    <ul>
+      <li><a href="./fcc-tutorials/./FccVirtualMachine.html">Using Virtual Machine</a></li>
+      <li><a href="./fcc-tutorials/./installing-fcc.html">Installing the standalone packages</a></li>
+    </ul>
+  </li>
+  <li><a href="./fcc-tutorials/./FccDocPage.html">Writing Documentation</a></li>
+  <li><a href="./fcc-tutorials/./FccSoftwareQA.html">Questions &amp; Answers</a></li>
+  <li><a href="./fcc-tutorials/./releases.html">How to do software releases</a></li>
+</ul>
+
+<h3 id="further-reading">Further Reading</h3>
+<div class="col-md-4" style="padding:10px;">
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">FCCSW - the full framework
+</h3></div>
+    <div class="panel-body"><ul>
+  <li><a href="FCCSW/README.html">Quick start guide</a></li>
+</ul>
+
+<p><strong>Sim</strong></p>
+
+<ul>
+  <li><a href="FCCSW/Sim/doc/FastSimulationUsingGeant.html">Fast Simulation Using Geant</a></li>
+  <li><a href="FCCSW/Sim/doc/FullSimulation.html">Full Simulation</a></li>
+  <li><a href="FCCSW/Sim/doc/FastSimulationUsingDelphes.html">Fast Simulation Using Delphes</a></li>
+  <li><a href="FCCSW/Sim/doc/README.html">General information</a></li>
+</ul>
+
+<p><strong>Generation</strong></p>
+
+<ul>
+  <li><a href="FCCSW/Generation/doc/AddingPileupToGeneration.html">Adding Pileup To Generation</a></li>
+  <li><a href="FCCSW/Generation/doc/README.html">General information</a></li>
+  <li><a href="FCCSW/Generation/doc/RunningPythia.html">Running Pythia</a></li>
+</ul>
+
+<p><strong>Visualization</strong></p>
+
+<ul>
+  <li><a href="FCCSW/Visualization/doc/DDEveInFCCSW.html">DDEve In FCCSW</a></li>
+</ul>
+
+<p><strong>General documentation</strong></p>
+
+<ul>
+  <li><a href="FCCSW/doc/GeneralCppGuidelines.html">General Cpp Guidelines</a></li>
+  <li><a href="FCCSW/doc/AddingTestsToFCCSW.html">Adding Tests To FCCSW</a></li>
+  <li><a href="FCCSW/doc/CppCodingStyleGuidelines.html">Cpp Coding Style Guidelines</a></li>
+</ul>
+
+<p><strong>Detector</strong></p>
+
+<ul>
+  <li><a href="FCCSW/Detector/doc/DD4hepInFCCSW.html">DD4hep In FCCSW</a></li>
+</ul>
+
+<p><strong>Reconstruction</strong></p>
+
+<ul>
+  <li><a href="FCCSW/Reconstruction/doc/RecCalorimeter.html">Rec Calorimeter</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="col-md-4" style="padding:10px;">
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">fcc-physics - C++ analysis light
+</h3></div>
+    <div class="panel-body"><ul>
+  <li><a href="fcc-physics/README.html">Quick start guide</a></li>
+</ul>
+
+<p><strong>pythia8 validation</strong></p>
+
+<ul>
+  <li><a href="fcc-physics/pythia8/validation/README.html">General information</a></li>
+</ul>
+
+<p><strong>pythia8 validation img</strong></p>
+
+<ul>
+  <li><a href="fcc-physics/pythia8/validation/img/d01_logY.png">d01 log Y.png</a></li>
+  <li><a href="fcc-physics/pythia8/validation/img/d12_logY.png">d12 log Y.png</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="col-md-4" style="padding:10px;">
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">heppy - python analysis and PAPAS simulation
+</h3></div>
+    <div class="panel-body"><ul>
+  <li><a href="heppy/README.html">Quick start guide</a></li>
+</ul>
+
+<p><strong>General documentation</strong></p>
+
+<ul>
+  <li><a href="heppy/doc/Heppy_-_Full_analysis_workflows.html">Heppy - Full analysis workflows</a></li>
+  <li><a href="heppy/doc/Heppy_-_Parallel_Processing.html">Heppy - Parallel Processing</a></li>
+  <li><a href="heppy/doc/Heppy_-_Introduction.html">Heppy - Introduction</a></li>
+  <li><a href="heppy/doc/Heppy_-_Installation_Instructions.html">Heppy - Installation Instructions</a></li>
+  <li><a href="heppy/doc/Heppy_-_a_very_simple_example.html">Heppy - a very simple example</a></li>
+  <li><a href="heppy/doc/papas_-_The_PArametrized_PArticle_Simulation.html">papas - The PArametrized PArticle Simulation</a></li>
+  <li><a href="heppy/doc/Heppy_-_Reference_Guide.html">Heppy - Reference Guide</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="col-md-4" style="padding:10px;">
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">fcc-edm - the event data model
+</h3></div>
+    <div class="panel-body"><ul>
+  <li><a href="fcc-edm/README.html">Quick start guide</a></li>
+</ul>
+
+<p><strong>General documentation</strong></p>
+
+<ul>
+  <li><a href="fcc-edm/doc/intro.html">intro</a></li>
+  <li><a href="fcc-edm/doc/usage.html">usage</a></li>
+  <li><a href="fcc-edm/doc/design.html">design</a></li>
+  <li><a href="fcc-edm/doc/how_to_modify.html">how to modify</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="col-md-4" style="padding:10px;">
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">podio - EDM description library 
+</h3></div>
+    <div class="panel-body"><ul>
+  <li><a href="podio/README.html">Quick start guide</a></li>
+</ul>
+
+<p><strong>General documentation</strong></p>
+
+<ul>
+  <li><a href="podio/doc/datamodel_syntax.html">datamodel syntax</a></li>
+  <li><a href="podio/doc/examples.html">examples</a></li>
+  <li><a href="podio/doc/doc_title.html">doc title</a></li>
+  <li><a href="podio/doc/advanced_topics.html">advanced topics</a></li>
+  <li><a href="podio/doc/design.html">design</a></li>
+  <li><a href="podio/doc/doc.html">doc</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="col-md-2">    <ul class="list-group">
+        <li class="list-group-header">
+            <h4>External links</h4>
+        </li>
+        
+            <li class="list-group-item">
+                <a href='http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev'>FCCSW Mailing list</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='http://fccsw.web.cern.ch/fccsw/tutorials/'>FCCSW Tutorials</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/fccsw/issues'>FCCSW Issue Tracker</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/'>FCCSW on GitHub</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://phsft-jenkins.cern.ch/view/FCC/'>FCCSW Jenkins</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md'>FCCSW C++ Style Guide</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/GeneralCppGuidelines.md'>General C++ Guidelines</a>
+            </li>
+        
+    </ul>
+</div>
+    </div>
+    <script src="http://fccsw.web.cern.ch/fccsw/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/requirejs/require.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/simple-jekyll-search/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('searchresults'),
+        json: 'http://fccsw.web.cern.ch/fccsw/search.json',
+        searchResultTemplate: '<li class="list-group-item"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: '<li class="list-group-item">No results found</li>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+      $("#search-input").keypress(function() {
+            $("#resultswrap").collapse('show');
+      });
+      $("#search-input").keyup(function() {
+            if ($(this).val() == "") {
+                $("#resultswrap").collapse('hide');
+            }
+      });
+      $("table").each(function(index) {
+        $(this).addClass("table");
+      });
+    </script>
+
+
+  </body>
+</html>

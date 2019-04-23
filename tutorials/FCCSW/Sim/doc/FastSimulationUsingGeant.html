@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Fast Simulation Using Geant</title>
+  <meta name="description" content="Main page for documentation and resources.">
+
+  <link rel="stylesheet" href="http://fccsw.web.cern.ch/fccsw/css/main.css">
+  <link rel="canonical" href="http://fccsw.web.cern.ch/fccsw/tutorials/FCCSW/Sim/doc/FastSimulationUsingGeant.html">
+  <link rel="alternate" type="application/rss+xml" title="FCCSW" href="http://fccsw.web.cern.ch/fccsw/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<header>
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://fccsw.web.cern.ch/fccsw/index.html">FCCSW</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/index.html">Home</a></li>
+            <li  class="active" ><a href="http://fccsw.web.cern.ch/fccsw/tutorials">Tutorials</a></li>
+            <li><a>Latest Releases:</a></li>
+            
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/05/15/version081.html">FCCSW v0.8.1</a>
+              </li>
+              
+            
+              
+              <li >
+                <a href="http://fccsw.web.cern.ch/fccsw/2017/03/29/version08.html">FCCSW v0.8</a>
+              </li>
+              
+            
+            <li ><a href="http://fccsw.web.cern.ch/fccsw/snapshot.html">Snapshot</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+            <input type="text" class="form-control" id="search-input" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+          </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+</header>
+<div class="container">
+  <div class="collapse panel panel-default" id="resultswrap">
+      <div class="panel-heading">Search Results <button type="button" class="close" aria-label="Close"><span aria-hidden="true" onclick="$('#resultswrap').collapse('hide');">&times;</span></button></div>
+      <ul id="searchresults" class="list-group">
+      </ul>
+  </div>
+</div>
+
+    
+    
+    <div class="container">
+      <div class="col-md-10">
+        <h1 id="fast-simulation-with-geant4-in-fccsw">Fast Simulation with Geant4 in FCCSW</h1>
+
+<p>Instruction how to use the fast simulation in Geant4 within FCCSW (GAUDI).</p>
+
+<p>It is an addition to the <a href="FullSimulation.html">instruction on Geant4 in FCCSW</a>.</p>
+
+<blockquote>
+  <p>All relative paths refer to the main FCCSW directory.</p>
+</blockquote>
+
+<h2 id="contents">Contents</h2>
+<ul>
+  <li><a href="#overview">Overview</a>
+    <ul>
+      <li><a href="#fast-simulation">Fast simulation</a>
+        <ul>
+          <li><a href="#tracking-detectors">Tracking detectors</a></li>
+          <li><a href="#calorimeters">Calorimeters</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#example">Example of fast sim configuration</a></li>
+  <li><a href="#geant-configuration-via-gaudi-service-simg4svc">Geant configuration via GAUDI service <code class="highlighter-rouge">SimG4Svc</code></a>
+    <ul>
+      <li><a href="#geometry-construction">Geometry construction</a>
+        <ul>
+          <li><a href="#regions">Regions</a>
+            <ul>
+              <li><a href="#trackers">Trackers</a></li>
+              <li><a href="#calorimetry">Calorimetry</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#physics-list">Physics list</a></li>
+    </ul>
+  </li>
+  <li><a href="#simulation-in-gaudi-algorithm-simg4alg">Simulation in GAUDI algorithm <code class="highlighter-rouge">SimG4Alg</code></a>
+    <ul>
+      <li><a href="#output">Output</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="overview">Overview</h2>
+
+<p>For details on GAUDI and Geant read <a href="FullSimulation.html#overview">full simulation overview</a></p>
+
+<h3 id="fast-simulation">Fast simulation</h3>
+
+<p>Full simulation uses the detailed detector description and simulates the particles passage through it, taking into account all the physics processes they may encounter. It is very time and CPU consuming.</p>
+
+<p>Therefore for many tasks, especially where huge number of simulated events is needed, the fast simulation is used. It takes a less detailed description of the detector and does not simulate every particle step-by-step. Instead, it simulates the overall response of the (particular) detector in a parametric way.</p>
+
+<p>The parametrisation depends on the detector type. For trackers it may create instantly track (that may be treated as if it was reconstructed) and propagate the particle to the next detector. In case of the calorimeters, for each particle the energy deposits may be created instantly, which are later passed to the reconstruction procedure.</p>
+
+<p>Both full and fast simulation can be performed in FCCSW using Geant4. Since the same tools are used for both of them, each simulation may be an interplay of both with the full simulation performed in some volumes and fast simulation in others.</p>
+
+<h4 id="tracking-detectors">Tracking detectors</h4>
+
+<p>Generated particles are transported inside the tracking detectors and their 4-momentum and/or position are smeared taking into account the resolutions and efficiency. Those smeared particles may be analysed and treated as the reconstructed particles, even though no hits were produced and no reconstruction was performed. All the detector effects (both physics processes that may encounter and detector resolutions) come from the smearing process (or rather the resolutions that were used for smearing).</p>
+
+<p>The resolutions used in the smearing may come arbitrary from our knowledge of the detectors. In that case one applies a Gaussian smearing with a given standard deviation. That approach may be also used by the physicists to test how the detector resolution affects the results.  The resolutions used for the smearing may also come from external tools (for instance those used in the tracker performance studies) and be read in FCCSW from ROOT file. One of such tools is <a href="http://fcc-tklayout.web.cern.ch/fcc-tklayout/" title="tkLayout">tkLayout</a>, which provides the momentum and pseudorapidity dependent resolutions. tkLayout is already in use by the FCC community, <a href="https://indico.cern.ch/event/446599/contribution/5/attachments/1202368/1750485/OccupancyStudies_ZDrasal.pdf">see presentation</a>. Tools for those smearing methods are implemented in FCCSW.</p>
+
+<p>More complex approach involves the construction of the tables with the detector resolutions (pseudorapidity/momentum/particle dependent). They are calculated from a small (relatively) sample of full simulations of single-particle events. Single-particle events simplify the reconstruction process (they don’t involve the pattern recognition etc.). Such resolutions are unique for tested detectors hence they may be used for smearing the particles with a better accuracy. Implementation of this approach is still in progress.</p>
+
+<h4 id="calorimeters">Calorimeters</h4>
+
+<p>When a particle enters the calorimeter, instead of long and detail shower development, the energy deposits may be created instantly, based on the initial energy and type of the particle. The shape of such shower may either come from a parametrisation, or from a library of the so-called frozen showers. First approach, implemented already in Geant4 originates from <a href="http://inspirehep.net/record/352388" title="GFlash">hep-ex/0001020</a> and is used in e.g. CMS. It describes the shower profiles (longitudinal and lateral) with a set of parameters, either constant or material dependent. The second approach is used by e..g ATLAS. The library of the showers may be created only for small momentum particles and be applied only for the ‘tails’ of the showers, leaving the ‘core’ of the shower to the detailed simulation.</p>
+
+<h2 id="example">Example</h2>
+
+<p>To run the fast simulation:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>./run gaudirun.py Examples/options/geant_fastsim.py
+</code></pre>
+</div>
+
+<p>The differences between the configuration file of the fast simulation (Examples/options/geant_fastsim.py) with respect to the full simulation:</p>
+
+<ul>
+  <li>Detector:
+    <ul>
+      <li>tracker: detailed geometry is not needed, envelope is sufficient</li>
+      <li>calorimeter: sensitive detector type needs to be set to <code class="highlighter-rouge">GflashCalorimeterSD</code> (can be used for both full and fast sim studies)
+~~~python
+from Configurables import GeoSvc
+geoservice = GeoSvc(“GeoSvc”, detectors=[‘file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml’,
+‘file:Detector/DetCommon/compact/TrackerAir.xml’,
+‘file:Detector/DetFCChhECalSimple/compact/FCChh_ECalBarrel_Gflash.xml’]])
+~~~</li>
+    </ul>
+  </li>
+  <li>Geant configuration (<a href="#geant-configuration-via-gaudi-service-simg4svc">see more</a>)
+    <ul>
+      <li>
+        <p><strong>physicslist</strong> - tool providing the <a href="#physics-list">physics list</a>,</p>
+
+        <p><code class="highlighter-rouge">SimG4FastSimPhysicsList</code> adds fast sim process on top of the standard  (‘full’) physics list included by a property <strong>fullphysics</strong>, e.g. on top of <code class="highlighter-rouge">SimG4FtfpBert</code> (default)</p>
+      </li>
+    </ul>
+
+    <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">Configurables</span> <span class="kn">import</span> <span class="n">SimG4FastSimPhysicsList</span>
+<span class="n">physicslisttool</span> <span class="o">=</span> <span class="n">SimG4FastSimPhysicsList</span><span class="p">(</span><span class="s">"Physics"</span><span class="p">,</span> <span class="n">fullphysics</span><span class="o">=</span><span class="s">"SimG4FtfpBert"</span><span class="p">)</span>
+</code></pre>
+    </div>
+
+    <ul>
+      <li>
+        <p><strong>regions</strong> - create <a href="#regions">regions where parametrisation may take place</a>, based on the attached to it fast simulation model</p>
+
+        <ul>
+          <li>
+            <p><code class="highlighter-rouge">SimG4FastSimTrackerRegion</code> creates model <code class="highlighter-rouge">sim::FastSimModelTracker</code> that configures the parametrisation (trigger conditions, what happens to the particles).
+The parametrisation may be triggered inside the volumes which names are passed in property <strong>volumeNames</strong>.
+Also a simple smearing tool <code class="highlighter-rouge">SimG4ParticleSmearFormula</code> is created that describes how the particle momentum is altered (once the parametrisation is triggered), property <strong>smearing</strong>.</p>
+          </li>
+          <li>
+            <p><code class="highlighter-rouge">SimG4FastSimCalorimeterRegion</code> creates model <code class="highlighter-rouge">GFlashShowerModel</code> for volumes which names are passed in property <strong>volumeNames</strong>.
+Parametrisation is specified in a tool <code class="highlighter-rouge">SimG4GflashSamplingCalo</code>, property <strong>parametrisation</strong>.</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">Configurables</span> <span class="kn">import</span> <span class="n">SimG4ParticleSmearFormula</span><span class="p">,</span> <span class="n">SimG4FastSimTrackerRegion</span>
+<span class="n">smeartool</span> <span class="o">=</span> <span class="n">SimG4ParticleSmearFormula</span><span class="p">(</span><span class="s">"smear"</span><span class="p">,</span> <span class="n">resolutionMomentum</span> <span class="o">=</span> <span class="s">"0.013"</span><span class="p">)</span>
+<span class="n">regiontooltracker</span> <span class="o">=</span> <span class="n">SimG4FastSimTrackerRegion</span><span class="p">(</span><span class="s">"modelTracker"</span><span class="p">,</span> <span class="n">volumeNames</span><span class="o">=</span><span class="p">[</span><span class="s">"TrackerEnvelopeBarrel"</span><span class="p">],</span> <span class="n">smearing</span><span class="o">=</span><span class="n">smeartool</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">Configurables</span> <span class="kn">import</span> <span class="n">SimG4GflashSamplingCalo</span><span class="p">,</span> <span class="n">SimG4FastSimCalorimeterRegion</span>
+<span class="n">gflash</span> <span class="o">=</span> <span class="n">SimG4GflashSamplingCalo</span><span class="p">(</span><span class="s">"gflash"</span><span class="p">,</span>
+                                <span class="n">materialActive</span> <span class="o">=</span> <span class="s">"G4_lAr"</span><span class="p">,</span>
+                                <span class="n">materialPassive</span> <span class="o">=</span> <span class="s">"G4_Pb"</span><span class="p">,</span>
+                                <span class="n">thicknessActive</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+                                <span class="n">thicknessPassive</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">regiontoolcalo</span> <span class="o">=</span> <span class="n">SimG4FastSimCalorimeterRegion</span><span class="p">(</span><span class="s">"modelCalo"</span><span class="p">,</span> <span class="n">volumeNames</span><span class="o">=</span><span class="p">[</span><span class="s">"ECalBarrel"</span><span class="p">],</span> <span class="n">parametrisation</span> <span class="o">=</span> <span class="n">gflash</span><span class="p">)</span>
+
+</code></pre>
+    </div>
+
+    <ul>
+      <li><code class="highlighter-rouge">SimG4Svc</code> configuration:</li>
+    </ul>
+
+    <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">Configurables</span> <span class="kn">import</span> <span class="n">SimG4Svc</span>
+<span class="n">geantservice</span> <span class="o">=</span> <span class="n">SimG4Svc</span><span class="p">(</span><span class="s">"SimG4Svc"</span><span class="p">,</span>
+             <span class="n">physicslist</span><span class="o">=</span><span class="n">physicslisttool</span><span class="p">,</span>
+             <span class="n">regions</span><span class="o">=</span><span class="p">[</span><span class="s">"SimG4FastSimTrackerRegion/modelTracker"</span><span class="p">,</span> <span class="s">"SimG4FastSimCalorimeterRegion/modelCalo"</span><span class="p">])</span>
+</code></pre>
+    </div>
+  </li>
+  <li>simulation (<a href="#simulation-in-gaudi-algorithm-simg4alg">see more</a>)
+    <ul>
+      <li>tracker: different tools to store the output of the fast sim (<code class="highlighter-rouge">SimG4SaveSmearedParticles</code>)</li>
+      <li>calorimeters: output of the fast sim treated as from the full sim (<code class="highlighter-rouge">SimG4SaveCalHits</code>)</li>
+    </ul>
+
+    <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">Configurables</span> <span class="kn">import</span> <span class="n">SimG4Alg</span><span class="p">,</span><span class="n">SimG4SaveSmearedParticles</span><span class="p">,</span> <span class="n">SimG4PrimariesFromEdmTool</span>
+<span class="n">saveparticlestool</span> <span class="o">=</span> <span class="n">SimG4SaveSmearedParticles</span><span class="p">(</span><span class="s">"SimG4SaveSmearedParticles"</span><span class="p">)</span>
+<span class="n">saveparticlestool</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s">"smearedParticles"</span>
+<span class="n">saveparticlestool</span><span class="o">.</span><span class="n">particlesMCparticles</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s">"particleMCparticleAssociation"</span>
+<span class="c"># as for the full sim:</span>
+<span class="n">savecaltool</span> <span class="o">=</span> <span class="n">SimG4SaveCalHits</span><span class="p">(</span><span class="s">"saveCalHits"</span><span class="p">,</span> <span class="n">readoutNames</span> <span class="o">=</span> <span class="p">[</span><span class="s">"ECalHitsPhiEta"</span><span class="p">])</span>
+<span class="n">savecaltool</span><span class="o">.</span><span class="n">positionedCaloHits</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s">"positionedCaloHits"</span>
+<span class="n">savecaltool</span><span class="o">.</span><span class="n">caloHits</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s">"caloHits"</span>
+<span class="n">particle_converter</span> <span class="o">=</span> <span class="n">SimG4PrimariesFromEdmTool</span><span class="p">(</span><span class="s">"EdmConverter"</span><span class="p">)</span>
+<span class="n">particle_converter</span><span class="o">.</span><span class="n">genParticles</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="s">"allGenParticles"</span>
+
+<span class="n">geantsim</span> <span class="o">=</span> <span class="n">SimG4Alg</span><span class="p">(</span><span class="s">"SimG4Alg"</span><span class="p">,</span>
+                     <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="s">"SimG4SaveSmearedParticles/SimG4SaveSmearedParticles"</span><span class="p">,</span> <span class="s">"SimG4SaveCalHits/saveCalHits"</span><span class="p">],</span>
+                     <span class="n">eventProvider</span><span class="o">=</span><span class="n">particle_converter</span><span class="p">)</span>
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<ol>
+  <li>
+    <h2 id="geant-configuration-via-gaudi-service-simg4svc">Geant configuration: via GAUDI service SimG4Svc</h2>
+  </li>
+</ol>
+
+<p>Described in details in the <a href="FullSimulation.html#geant-configuration-via-gaudi-service-simg4svc">instruction on Geant4 simulation in FCCSW</a></p>
+
+<h3 id="geometry-construction">Geometry construction</h3>
+
+<p>Geometry is provided by DD4hep via GAUDI’s service <code class="highlighter-rouge">GeoSvc</code>.</p>
+
+<h3 id="regions">Regions</h3>
+
+<p>In the fast simulation user wants to define a specific behaviour in certain geometry regions. That specific behaviour is described in classes derived from <code class="highlighter-rouge">G4VFastSimulationModel</code>. Geant will not perform normal transportation inside regions with fast simulation models attached (providing that particle triggers that model).</p>
+
+<p>The fast simulation model needs to be attached to a <code class="highlighter-rouge">G4Region</code> object. That <code class="highlighter-rouge">G4Region</code> can contain one or many logical volumes (parts of the detector). Logical volumes are created by DD4hep. <code class="highlighter-rouge">G4Region</code> is created together with an appropriate fast simulation model and its configuration.</p>
+
+<p><code class="highlighter-rouge">G4Region</code> can contain one or many logical volumes (parts of the detector). Regions are created for all the volumes which names as passed in property <strong>volumeNames</strong> of the region tool.  Logical volumes are created by DD4hep. Name of the detector is specified in DD4hep xml file (see more in <a href="FullSimulation.html#geometry-construction">short description</a> or <a href="http://aidasoft.web.cern.ch/DD4hep" title="DD4hep user manuals">DD4hep user guides</a>):</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;detector</span> <span class="na">name =</span><span class="s">"CentralTracker"</span><span class="nt">&gt;</span>
+</code></pre>
+</div>
+
+<p>Parametrisation may happen only in the specified region (<code class="highlighter-rouge">G4Region</code>) with the fast simulation model attached. In order to create any region, user should use a tool with an interface <code class="highlighter-rouge">ISimG4RegionTool</code>. Those tools may be passed to <code class="highlighter-rouge">SimG4Svc</code> as a vector <strong>regions</strong>. Current implementation contains the tool <code class="highlighter-rouge">SimG4FastSimTrackerRegion</code> for the tracker parametrisation and <code class="highlighter-rouge">SimG4FastSimCalorimeterRegion</code> for the calorimeter parametrisation.</p>
+
+<h3 id="how-to-define-regions">How to define regions</h3>
+<p>Tools <code class="highlighter-rouge">SimG4FastSimTrackerRegion</code> and <code class="highlighter-rouge">SimG4FastSimCalorimeterRegion</code> expect the name of the volume created by DD4hep. Even if this volume is just a simple shape, filled with air (e.g. as in the <a href="#Example">example</a>: Detector/DetCommon/compact/TrackerAir.xml). It is recommended that for any other shape of the region (containing more than one logical volume, or for part of some volume), an appropriate volume is created first in DD4hep.</p>
+
+<h3 id="trackers">Trackers</h3>
+
+<p><code class="highlighter-rouge">SimG4FastSimTrackerRegion</code> handles the creation of the <code class="highlighter-rouge">sim::FastSimModelTracker</code> model and its configuration:
+- <strong>smearing</strong> - (required) tool describing how particles should be smeared (<code class="highlighter-rouge">ISimG4SmearingTool</code>)
+- <strong>minMomentum</strong> - (optional) minimum momentum that triggers the fast sim model
+- <strong>maxMomentum</strong> - (optional) maximum momentum that triggers the fast sim model
+- <strong>maxEta</strong> - (optional) maximum pseudorapidity that triggers the fast sim model</p>
+
+<p>Generally, once the model is triggered, the particle is transported to the exit of the volume (currently using Geant transportation hence only 10 times decrease in the simulation speed). The momentum of such particle is also smeared (and saved), as implemented in the smearing tool.</p>
+
+<p>A default smearing tool, <code class="highlighter-rouge">SimG4ParticleSmearFormula</code>, uses <a href="https://root.cern.ch/doc/master/classTFormula.html">TFormula</a> to parse the resolution formula that is momentum dependent and is given as parameter <strong>resolutionMomentum</strong> in a job configuration file (as string). This string must be a valid formula expression, e.g. <code class="highlighter-rouge">"sin(x)/x"</code> or <code class="highlighter-rouge">"0.01*x^2"</code>, where <code class="highlighter-rouge">x</code> refers to the momentum. All parameters should be defined directly in the expression. For more information please check <a href="https://root.cern.ch/doc/master/classTFormula.html">TFormula documentation</a>. The resolution of tracker may be constant (as in the above-mentioned example) and in that case, for the performance reasons only, <code class="highlighter-rouge">SimG4ParticleSmearSimple</code> may be a more suitable tool.</p>
+
+<p>The third available tool uses the momentum and pseudorapidity dependent resolutions read from ROOT file. Such a file may be obtained with the <a href="http://fcc-tklayout.web.cern.ch/fcc-tklayout/" title="tkLayout">tkLayout</a>. The tool <code class="highlighter-rouge">SimG4ParticleSmearRootFile</code> reads ROOT file defined in a property <strong>filename</strong> in a job configuration file (in the example <code class="highlighter-rouge">/eos/project/f/fccsw-web/testsamples/tkLayout_example_resolutions.root</code>). The resolutions are defined for the narrow pseudorapidity bins, and they are evaluated for the particle momentum based on the linear interpolation between two closest momenta for which the resolutions were computed by tkLayout.
+File has a following structure. It contains two trees: ‘info’ and ‘resolutions’. Tree ‘info’ contains two branches, each with <code class="highlighter-rouge">TArrayD</code>: ‘eta’ and ‘p’. Array ‘eta’ contains upper edge of the pseudorapidity bin (lower edge of first bin is 0). Array ‘p’ informs for which momenta the resolutions were created. The minimum and maximum momentum (and pseudorapidity) of a particle that can be smeared is described by the minimal and maximal values in those arrays. Tree ‘resolutions’ contains <code class="highlighter-rouge">TArrayD</code> of resolutions for each momentum (and there are as many arrays as eta bins).</p>
+
+<h3 id="how-to-use-different-smearing-resolutions">How to use different smearing resolutions</h3>
+
+<p>Smearing is performed using the GAUDI tool derived from <code class="highlighter-rouge">ISimG4SmearingTool</code>. Currently there are three tools that may be used for this purpose.</p>
+
+<p>The main concept of smearing for all tools is the same. The momentum is smeared by multiplying it by the randomly generated number from a Gaussian distribution with the mean $\mu=1$ and the standard deviation $\sigma$ (resolution). The difference comes from the way the resolutions are obtained.</p>
+
+<p>The simple smearing tool, <code class="highlighter-rouge">SimG4ParticleSmearSimple</code>, smears particles (its momenta) with a non-particle and non-momentum dependent constant resolution. It can be set as a parameter <strong>sigma</strong> in a job configuration file (default: 0.01= 1%).</p>
+
+<h3 id="calorimetry">Calorimetry</h3>
+
+<p><code class="highlighter-rouge">SimG4FastSimCalorimeterRegion</code> handles the creation of the <code class="highlighter-rouge">GFlashShowerModel</code> model and its configuration:
+- <strong>parametrisation</strong> - (required) tool creating the parametrisation (parameters including the calorimeter material details)
+- <strong>minEnergy</strong> - (optional, default 0.1 GeV) minimum kinetic energy to trigger parametrisation
+- <strong>maxEnergy</strong> - (optional, default 10 TeV) maximum kinetic energy to trigger parametrisation
+- <strong>energyToKill</strong> - (optional, default 0.1 GeV) maximum kinetic energy for electrons to be killed</p>
+
+<p>There are currently two parametrisation tools implemented: <code class="highlighter-rouge">SimG4GflashHomoCalo</code> and <code class="highlighter-rouge">SimG4GflashSamplingCalo</code>. The first tool creates the parametrisation of the homogeneous calorimeter, taking its material (name in Geant NIST database) in <strong>material</strong> property and parameters as defined in <a href="http://www-geant4.kek.jp/Reference/10.02/classGVFlashHomoShowerTuning.html"><code class="highlighter-rouge">GVFlashHomoShowerTuning</code></a> class.
+The latter creates the parametrisation for the sampling calorimeter, taking the name of the material used in the active/passive layer as  <strong>materialActive</strong>/<strong>materialPassive</strong> and layer thickness as <strong>thicknessActive</strong>/<strong>thicknessPassive</strong>. The parameters are defined in  <a href="http://www.apc.univ-paris7.fr/~franco/g4doxy/html/classGFlashSamplingShowerTuning.html"><code class="highlighter-rouge">GFlashSamplingShowerTuning</code></a> class.</p>
+
+<p>There is ongoing work to implement the third parametrisation tool that would allow to use a parametrisation generated by user based on a small sample of full simulation (so very detector specific).</p>
+
+<p>Examples:
+<code class="highlighter-rouge">Examples/options/geant_fastsim.py</code> - for the <code class="highlighter-rouge">SimG4GflashSamplingCalo</code> (lAr-Pb sampling calorimeter)
+<code class="highlighter-rouge">Test/TestGeometry/tests/options/gflash_test_pbwo4.py</code> - for the <code class="highlighter-rouge">SimG4GflashHomoCalo</code>  (PbWO4 homogeneous calorimeter)</p>
+
+<h3 id="physics-list">Physics List</h3>
+
+<p>Geant simulation requires the description of all the particles and processes, the so-called physics list. An example of such a list is a predefined <code class="highlighter-rouge">FTFP_BERT</code> physics list.</p>
+
+<p>Fast simulation requires some additions to the standard physics list, hence there is an overlay, created by <code class="highlighter-rouge">SimG4FastSimPhysicsList</code> tool. It takes, as a property <strong>fullphysics</strong>, the name of the tool containing the particles’ and standard processes’ definitions (in case of FTFP_BERT list it is <code class="highlighter-rouge">SimG4FtfpBert</code> tool).</p>
+
+<p>Additionally:
+* “Coupled Transportation” is used to allow invoking <code class="highlighter-rouge">G4PathFinder</code> that propagates the particle in the magnetic field.
+   It is used within the fast simulation model for tracker to compute the exit position of a particle from the volume (taking the momentum from the entrance to the tracker volume).</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">sim::FastSimPhysics</code> is registered as an additional process. It attaches the fast simulation manager process to ALL the particles. That means that along with the standard processes such as transportation, multiple scattering etc. the particle can encounter ‘fast simulation’ process. That happens if a particle enters a region with fast simulation model attached and if that particle fulfils trigger conditions (is charged in case of <code class="highlighter-rouge">sim::FastSimModelTracker</code>).</p>
+
+    <p>Details may be found at <a href="http://geant4.web.cern.ch/geant4/UserDocumentation/UsersGuides/ForApplicationDeveloper/html/ch05s02.html#sect.PhysProc.Param">Geant4 user guide</a></p>
+  </li>
+</ul>
+
+<h2 id="simulation-in-gaudi-algorithm-simg4alg">Simulation in GAUDI algorithm SimG4Alg</h2>
+
+<p>There is one, common algorithm handling fast and full simulation in Geant4. In particular, full simulation is performed for all the particles that do not trigger any fast simulation model (<a href="#geometry-construction">see more</a>).</p>
+
+<p>However, in order to be able to save the smeared particles in the tracker (that may be treated as ‘reconstructed’ tracks), user need to create <code class="highlighter-rouge">SimG4SaveSmearedParticles</code> tool.</p>
+
+<h3 id="output">Output</h3>
+
+<p>To store the output of the tracker fast simulation, new tool was introduced. It saves the colleciot of tracks/particles that may be later treated as if they were simulated and reconstructed in the tracker.
+<code class="highlighter-rouge">SimG4SaveSmearedParticles</code> tool stores all the particles (EDM <code class="highlighter-rouge">ParticleCollection</code>) and particlesMCparticles (EDM <code class="highlighter-rouge">ParticleMCParticleAssociationCollection</code>). They can be treated as ‘reconstructed’ particles as the detector effects (both resolution and reconstruction efficiency) are imitated by the smearing and the resulting changes to the momentum are taken into account.
+In the current implementation only the primary particles may be saved as they contain the particle information created in the translation of the event. This needs to be reimplemented so that the information is attached to the track rather then to the particle.</p>
+
+<p>In case of the calorimeters, fast simulation produces energy deposits that are saved to the hit collections. Hence, they are treated the same way as the energy deopsits from the hits collections from the full simulation (and they can undergo the full chain of the reconstruction using the same tools). The only difference comes from the nature of the hit creation: they are created instantly, hence they do not carry information of the time of the deposit.</p>
+
+      </div>
+      <div class="col-md-2">    <ul class="list-group">
+        <li class="list-group-header">
+            <h4>External links</h4>
+        </li>
+        
+            <li class="list-group-item">
+                <a href='http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev'>FCCSW Mailing list</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='http://fccsw.web.cern.ch/fccsw/tutorials/'>FCCSW Tutorials</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/fccsw/issues'>FCCSW Issue Tracker</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/'>FCCSW on GitHub</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://phsft-jenkins.cern.ch/view/FCC/'>FCCSW Jenkins</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/CppCodingStyleGuidelines.md'>FCCSW C++ Style Guide</a>
+            </li>
+        
+            <li class="list-group-item">
+                <a href='https://github.com/HEP-FCC/FCCSW/blob/master/doc/GeneralCppGuidelines.md'>General C++ Guidelines</a>
+            </li>
+        
+    </ul>
+</div>
+    </div>
+    <script src="http://fccsw.web.cern.ch/fccsw/node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/requirejs/require.js" type="text/javascript"></script>
+<script src="http://fccsw.web.cern.ch/fccsw/node_modules/simple-jekyll-search/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('searchresults'),
+        json: 'http://fccsw.web.cern.ch/fccsw/search.json',
+        searchResultTemplate: '<li class="list-group-item"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: '<li class="list-group-item">No results found</li>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+      $("#search-input").keypress(function() {
+            $("#resultswrap").collapse('show');
+      });
+      $("#search-input").keyup(function() {
+            if ($(this).val() == "") {
+                $("#resultswrap").collapse('hide');
+            }
+      });
+      $("table").each(function(index) {
+        $(this).addClass("table");
+      });
+    </script>
+
+
+  </body>
+</html>
