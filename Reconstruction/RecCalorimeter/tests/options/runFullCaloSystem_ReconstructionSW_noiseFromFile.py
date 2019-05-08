@@ -15,7 +15,7 @@ hcalBarrelReadoutName = "HCalBarrelReadout"
 hcalExtBarrelReadoutName = "HCalExtBarrelReadout"
 hcalBarrelReadoutPhiEtaName = "BarHCal_Readout_phieta"
 hcalExtBarrelReadoutPhiEtaName = "ExtBarHCal_Readout_phieta"
-hcalEndcapReadoutName = "HECPhiEta"
+hcalEndcapReadoutName = "HECPhiEtaReco"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Number of events
 num_events = 3
@@ -75,7 +75,7 @@ rewriteExtHcal.inhits.Path = "HCalExtBarrelCells"
 rewriteExtHcal.outhits.Path = "newHCalExtBarrelCells"
 
 ##############################################################################################################
-#######                                       RECALIBRATE ECAL                                   #############
+#######                                       REWRITE ENDCAP BITFIELD                            #############
 ##############################################################################################################
 
 from Configurables import RewriteBitfield
@@ -213,6 +213,7 @@ ApplicationMgr(
               rewriteHcal,
               rewriteExtHcal,
               rewriteECalEC,
+              rewriteHCalEC,
               createEcalBarrelCells,
               createEcalEndcapCells,
               createClusters,
