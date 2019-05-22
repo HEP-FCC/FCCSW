@@ -94,7 +94,7 @@ StatusCode RedoSegmentation::execute() {
     // factor 10 to convert mm to cm
     dd4hep::DDSegmentation::Vector3D position(hit.position().x / 10, hit.position().y / 10, hit.position().z / 10);
     // first calculate proper segmentation fields
-    dd4hep::DDSegmentation::CellID newCellId = m_segmentation->cellID(position, position, volumeID(hit.cellId()));
+    dd4hep::DDSegmentation::CellID newCellId = m_segmentation->cellID(position, position, 0);
     // now rewrite all other fields (detector ID)
     for (const auto& detectorField : m_detectorIdentifiers) {
       oldid = m_oldDecoder->get(cellId, detectorField);
