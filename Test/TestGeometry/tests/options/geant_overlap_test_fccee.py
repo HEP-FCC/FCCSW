@@ -3,9 +3,9 @@ from Gaudi.Configuration import *
 from Configurables import GeoSvc, SimG4Svc, ApplicationMgr
 
 # initialize master geometry of FCC-ee
-geoservice = GeoSvc("GeoSvc", detectors=[
-        'file:Detector/DetFCCeeIDEA/compact/FCCee_DectEmptyMaster.xml',
-        'file:Detector/DetFCCeeIDEA/compact/FCCee_DectMaster.xml'
+geoservice = GeoSvc("GeoSvc")
+geoservice.detectors = [
+          'file:Detector/DetFCCeeIDEA/compact/FCCee_DectMaster.xml',
         ])
 
 # giving the names of tools will initialize the tools of that type

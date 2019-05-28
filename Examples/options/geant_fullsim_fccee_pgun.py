@@ -12,8 +12,8 @@ podioevent = FCCDataSvc("EventDataSvc")
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc, SimG4SingleParticleGeneratorTool
-geoservice = GeoSvc("GeoSvc", detectors=['Detector/DetFCCeeIDEA/compact/FCCee_DectEmptyMaster.xml',
-                                         'Detector/DetFCCeeIDEA/compact/FCCee_DectMaster.xml'
+geoservice = GeoSvc("GeoSvc", detectors=[
+                                         'Detector/DetFCCeeIDEA/compact/FCCee_DectMaster.xml',
                                          ], 
                     OutputLevel = INFO)
 
