@@ -85,12 +85,6 @@
     <constant name="OuterTracker_inner_radius" value="696*mm"/>
     <constant name="OuterTracker_outer_radius" value="2145*mm"/>  <!-- to avoid overlap with CaloFace, but it has to be large enough to accommodate OT-->
     <constant name="OuterTracker_half_length" value="2300*mm"/>
-
-    <!-- LAr FCChh Calo -->
-    <constant name="BarECal_id" value="5"/>
-    <constant name="BarECal_rmin" value="2150*mm"/>
-    <constant name="BarECal_rmax" value="2750*mm"/>
-    <constant name="BarECal_dz" value="2210*mm"/>
     
     <constant name="ECalBarrel_inner_radius" value="2150*mm"/>
     <constant name="ECalBarrel_outer_radius" value="2352*mm"/>
