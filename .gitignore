@@ -4,6 +4,8 @@
 *.png
 *.swp
 
+*.gdml
+
 *.log
 build.*.log
 Makefile
