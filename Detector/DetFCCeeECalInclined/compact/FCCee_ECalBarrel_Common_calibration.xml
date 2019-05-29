@@ -98,7 +98,8 @@
         </readout>
         <layers>
 	       <layer thickness="2*cm" repeat="1"/>
-	       <layer thickness="9*cm" repeat="7"/>
+         <!-- ee: scaled down compared to hh to fit into 45 cm -->
+	       <layer thickness="6.142*cm" repeat="7"/>
         </layers>
       </calorimeter>
     </detector>
