@@ -11,14 +11,13 @@
 DECLARE_ALGORITHM_FACTORY(CreateDCHHits)
 
 CreateDCHHits::CreateDCHHits(const std::string& name, ISvcLocator* svcLoc) : 
-GaudiAlgorithm(name, svcLoc)
+GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name)
 {
   declareProperty("mergedHits", m_mergedTrackHits, "Merged Tracker hits (Output)");
   declareProperty("positionedHits", m_positionedHits, "Positioned hits (Input)");
 }
 
 StatusCode CreateDCHHits::initialize() {
-  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the "
@@ -165,7 +164,7 @@ StatusCode CreateDCHHits::execute() {
         layerId = temp_layerId;
         wireId = temp_wireId;
         DCA = hit_info_vec[0].DCA;
-        trackNum = eventnumber;
+        //trackNum = eventnumber;
         MC_x = hit_info_vec[0].MC_x;
         MC_y = hit_info_vec[0].MC_y;
         MC_z = hit_info_vec[0].MC_z;

@@ -1,15 +1,16 @@
 #ifndef RECDRIFTCHAMBER_MERGEDRIFTCHAMBERHITS_H
 #define RECDRIFTCHAMBER_MERGEDRIFTCHAMBERHITS_H
 
-// GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/RndmGenerators.h"
-#include "GaudiKernel/ToolHandle.h"
 #include "FWCore/DataHandle.h"
+
+
+#include <unordered_map>
 
 namespace fcc {
 class TrackHitCollection;
 class PositionedTrackHitCollection;
+class PositionedTrackHit;
 }
 
 class MergeDriftChamberHits : public GaudiAlgorithm {
