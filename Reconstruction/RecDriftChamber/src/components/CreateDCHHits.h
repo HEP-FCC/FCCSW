@@ -5,10 +5,13 @@
 #include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/ServiceHandle.h"
 
-
 #include "FWCore/DataHandle.h"
 
-// ROOT
+#include  "datamodel/PositionedTrackHit.h"
+
+#include "DD4hep/Detector.h"
+#include "DetSegmentation/GridDriftChamber.h"
+
 #include "TFile.h"
 #include "TTree.h"
 #include "TString.h"
@@ -40,12 +43,12 @@ public:
   StatusCode execute();
   StatusCode finalize();
   
-  static bool sortBasedOnZ(const TVector3 v1, const TVector3 v2) const {
+  static bool sortBasedOnZ(const TVector3 v1, const TVector3 v2)  {
     return v1.Z() < v2.Z();
   }
 
   static double sumEdep(const double val, const fcc::PositionedTrackHit& h) {
-    return  val + h.core().energy;
+    return  val + h.energy();
   }
 
   static double sumEdep2(const double val, const hitINFO& h) {
