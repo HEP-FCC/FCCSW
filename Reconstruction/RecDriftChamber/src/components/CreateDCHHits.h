@@ -26,6 +26,13 @@ struct hitINFO {
   double TOF;
   TVector3 hit_start;
   TVector3 hit_end;
+  int layerId;
+  int wireId;
+  int trackNum;
+  unsigned long cellId;
+  double hitLength;
+  double radius;
+  double debug_zpos;
 }; 
 
 class IGeoSvc;
@@ -75,26 +82,9 @@ private:
   Gaudi::Property<double> m_EdepCut{this, "EdepCut", 0.1, "Edep Cut"};
   Gaudi::Property<double> m_DCACut{this, "DCACut", 0.1, "DCACut Cut"};
 
-  TFile* file;
-  TTree* m_tree;
-  int layerId;
-  int wireId;
-  int nbTimes_wireXhit;
-  double DCA;
-  int trackNum;
-  double MC_x;
-  double MC_y;
-  double MC_z;
-  double debug_hitLength;
-  double debug_radius;
-  double debug_zpos;
-  long long int CELLID;
+  DataHandle<std::vector<hitINFO>> m_hitInfoHandle{"DCHitInfo", Gaudi::DataHandle::Writer, this};
 
-  double dist_track_wire;
-  double Edep;
-  double hitTime;
-  double Radius;
-  double zpos_tree;
+
 
 
 };

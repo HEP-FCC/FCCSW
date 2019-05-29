@@ -75,9 +75,8 @@ StatusCode ResolutionStudies::initialize() {
   
   for (const auto& element : allwires)
     {
-      auto layer = element.first;
       auto wires = element.second;
-      for (int i = 0; i < wires.size(); ++i)
+      for (unsigned i = 0; i < wires.size(); ++i)
 	{
 	  auto middle = wires[i].first;
 	  auto direction = wires[i].second;

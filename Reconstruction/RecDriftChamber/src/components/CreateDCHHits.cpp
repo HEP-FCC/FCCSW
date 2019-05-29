@@ -15,6 +15,7 @@ GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name)
 {
   declareProperty("mergedHits", m_mergedTrackHits, "Merged Tracker hits (Output)");
   declareProperty("positionedHits", m_positionedHits, "Positioned hits (Input)");
+  declareProperty("DCHitInfo", m_hitInfoHandle, "Debug DC Hit Info (Output)");
 }
 
 StatusCode CreateDCHHits::initialize() {
@@ -50,21 +51,6 @@ StatusCode CreateDCHHits::initialize() {
     error() << "Readout does not contain field: 'layer'" << endmsg;
   }
   // Initialise the output file
-  file=new TFile(TString(m_outFileName), "RECREATE");
-  m_tree = new TTree("analysis", "Analysis tree");
-  m_tree->Branch("layerId", &layerId, "layerId/I");
-  m_tree->Branch("wireId", &wireId, "wireId/I");
-  m_tree->Branch("Edep", &Edep, "Edep/D");
-  m_tree->Branch("DCA", &DCA, "DCA/D");
-  m_tree->Branch("MC_x", &MC_x, "MC_x/D");
-  m_tree->Branch("MC_y", &MC_y, "MC_y/D");
-  m_tree->Branch("MC_z", &MC_z, "MC_z/D");
-  m_tree->Branch("trackNum", &trackNum, "trackNum/I");
-  m_tree->Branch("CELLID", &CELLID, "CELLID/I");
-
-  m_tree->Branch("hitLength", &debug_hitLength, "hitLength/D");
-  m_tree->Branch("radius", &debug_radius, "radius/D");
-  m_tree->Branch("debug_zpos", &debug_zpos, "debug_zpos/D");
 
 
   StatusCode sc = GaudiAlgorithm::initialize();
@@ -77,61 +63,36 @@ StatusCode CreateDCHHits::initialize() {
 }
 
 StatusCode CreateDCHHits::execute() {
-  // First empty the map: Very important step
+  std::vector<hitINFO>* hitInfos = m_hitInfoHandle.createAndPut();
   m_track_cell_hit.clear();
   m_wiresHit.clear();
-  // get hits from event store
   const fcc::PositionedTrackHitCollection* hits = m_positionedHits.get();
   for (const auto& hit : *hits) {
-      const fcc::BareHit& hitCore = hit.core();
-      auto x = hit.position().x;
-      auto y = hit.position().y;
-      auto z = hit.position().z;  
-      auto cellID = hitCore.cellId;
-      auto Edep_sum = hitCore.energy;
-      auto time = hitCore.time;
-      auto trackID = hitCore.bits;
-      auto l = m_decoder->get(cellID, "layer"); 
-      auto w = m_decoder->get(cellID, "phi");
-
-
-      // TVector3 hitPos(x*MM_2_CM, y*MM_2_CM, z*MM_2_CM);
-      //      auto DCA = m_segmentation->distanceClosestApproach(cellID, hitPos); // cm //*CM_2_MM;
-
-      /*
-      m_cellsMap[cellID] += Edep_sum;
-      m_hit[cellID].push_back(hitPos);
-      m_hit_time[cellID].push_back(time);
-      m_hit_trackId[cellID].push_back(trackID);
-      */
-
-      
-      m_track_cell_hit[trackID][cellID].push_back(hit);
-    }
-
-
+    const fcc::BareHit& hitCore = hit.core();
+    auto cellID = hitCore.cellId;
+    auto trackID = hitCore.bits;
+    m_track_cell_hit[trackID][cellID].push_back(hit);
+  }
   for (const auto& track : m_track_cell_hit) {
     auto trackid = track.first;
     for (const auto& cell : track.second) {
       auto cellid = cell.first;
-      int temp_layerId = m_decoder->get(cellid, "layer");
-      int temp_wireId = m_decoder->get(cellid, "phi");
       auto hits = cell.second;
       auto hit_start = hits[0];
       auto hit_end = hits[hits.size()-1];
       TVector3 h_start(hit_start.position().x*MM_2_CM, hit_start.position().y*MM_2_CM, hit_start.position().z*MM_2_CM);
       TVector3 h_end(hit_end.position().x*MM_2_CM, hit_end.position().y*MM_2_CM, hit_end.position().z*MM_2_CM);
-      double closestDist = 0.0; // = m_segmentation->distanceTrackWire(cellid, h_start, h_end);
+      double closestDist = 0.0;
       TVector3 vec_DCA;
       if (hits.size() == 1) {
 	      // Discard hits with only one Edep calculation
 	      vec_DCA=m_segmentation->distanceClosestApproach(cellid, h_start);
 	      closestDist = vec_DCA.Mag();
-	    }
-      else {
+	    } else {
 	      closestDist=m_segmentation->distanceTrackWire(cellid, h_start, h_end);
 	      vec_DCA = m_segmentation->IntersectionTrackWire(cellid, h_start, h_end);
 	      hitINFO hinfo;
+        hinfo.trackNum = trackid;
 	      hinfo.DCA = closestDist;
 	      hinfo.MC_x = vec_DCA.X()*CM_2_MM;
 	      hinfo.MC_y = vec_DCA.Y()*CM_2_MM;
@@ -144,35 +105,28 @@ StatusCode CreateDCHHits::execute() {
 	    }
 	  }
   }
-  int index = 0;
   for (const auto& cell : m_wiresHit) {
     auto cellid = cell.first;
     int temp_layerId = m_decoder->get(cellid, "layer");
     int temp_wireId = m_decoder->get(cellid, "phi");
-    index ++;
     auto hit_info_vec = m_wiresHit[cellid];
     std::sort(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     auto time_max = std::max_element(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     auto time_min = std::min_element(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     if ((time_max-time_min)<400) {
-	    Edep = std::accumulate(hit_info_vec.begin(), hit_info_vec.end(), 0.0, sumEdep2);
+      auto hit_info0 = hit_info_vec[0];
+	    double Edep = std::accumulate(hit_info_vec.begin(), hit_info_vec.end(), 0.0, sumEdep2);
 	    if (hit_info_vec.size()>1) {
-        for (int i = 0; i< hit_info_vec.size(); ++i) {
-	      }
+        // todo?
       }
-      if (Edep>m_EdepCut && hit_info_vec[0].DCA<m_DCACut) {
-        layerId = temp_layerId;
-        wireId = temp_wireId;
-        DCA = hit_info_vec[0].DCA;
-        //trackNum = eventnumber;
-        MC_x = hit_info_vec[0].MC_x;
-        MC_y = hit_info_vec[0].MC_y;
-        MC_z = hit_info_vec[0].MC_z;
-        CELLID = cellid;
-        debug_hitLength =  (hit_info_vec[0].hit_end- hit_info_vec[0].hit_start).Mag();
-        debug_radius = (hit_info_vec[0].hit_start).Perp();
-        debug_zpos = (hit_info_vec[0].hit_start).Z();
-        m_tree->Fill();
+      if (Edep > m_EdepCut && hit_info0.DCA < m_DCACut) {
+        hit_info0.layerId = temp_layerId;
+        hit_info0.wireId = temp_wireId;
+        hit_info0.cellId = cellid;
+        hit_info0.hitLength =  (hit_info0.hit_end- hit_info0.hit_start).Mag();
+        hit_info0.radius = (hit_info0.hit_start).Perp();
+        hit_info0.debug_zpos = (hit_info0.hit_start).Z();
+        hitInfos->emplace_back(hit_info0);
       }
     } else {
       debug() << "GREATER than the integration time" << endmsg;
@@ -182,8 +136,6 @@ StatusCode CreateDCHHits::execute() {
 }
 
 StatusCode CreateDCHHits::finalize() {
-  m_tree->Write();
-  file->Close();
   StatusCode sc = GaudiAlgorithm::finalize();
   return sc;
 }

@@ -42,7 +42,7 @@ StatusCode MergeDriftChamberHits::execute() {
         double average_x = 0.0;
         double average_y = 0.0;
         double average_z = 0.0;
-        for (int i = 0; i<hits.size(); ++i) {
+        for (unsigned i = 0; i < hits.size(); ++i) {
             totalEdep += hits[i].core().energy;
             average_x += hits[i].position().x;
             average_y += hits[i].position().y;
@@ -59,6 +59,7 @@ StatusCode MergeDriftChamberHits::execute() {
 	      auto edmTrackHit = trackhits->create();
 	      auto& edmTrackHitCore = edmTrackHit.core();
 	      edmTrackHitCore.cellId = cellid;
+        edmTrackHitCore.bits = trackid;
 	      edmTrackHitCore.energy = totalEdep;
 	      positionedtrackhits->create(trackHitPosition, edmTrackHitCore);
 	    }
