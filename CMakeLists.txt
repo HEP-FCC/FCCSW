@@ -30,5 +30,5 @@ install(FILES ${CMAKE_BINARY_DIR}/this_fccsw.sh
                     GROUP_EXECUTE GROUP_READ
                     WORLD_EXECUTE WORLD_READ)
 
-gaudi_project(FCCSW HEAD
+gaudi_project(FCCSW  v0r10
               USE Gaudi v29r2 )

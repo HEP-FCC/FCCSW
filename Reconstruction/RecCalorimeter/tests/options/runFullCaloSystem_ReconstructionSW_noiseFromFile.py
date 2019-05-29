@@ -15,7 +15,7 @@ hcalBarrelReadoutName = "HCalBarrelReadout"
 hcalExtBarrelReadoutName = "HCalExtBarrelReadout"
 hcalBarrelReadoutPhiEtaName = "BarHCal_Readout_phieta"
 hcalExtBarrelReadoutPhiEtaName = "ExtBarHCal_Readout_phieta"
-hcalEndcapReadoutName = "HECPhiEta"
+hcalEndcapReadoutName = "HECPhiEtaReco"
 hcalFwdReadoutName = "HFwdPhiEta"
 # Number of events
 num_events = 3
@@ -74,6 +74,37 @@ rewriteExtHcal = RewriteBitfield("RewriteExtHcal",
 rewriteExtHcal.inhits.Path = "HCalExtBarrelCells"
 rewriteExtHcal.outhits.Path = "newHCalExtBarrelCells"
 
+##############################################################################################################
+#######                                       REWRITE ENDCAP BITFIELD                            #############
+##############################################################################################################
+
+from Configurables import RewriteBitfield
+rewriteECalEC = RewriteBitfield("RewriteECalEC",
+                                # old bitfield (readout)
+                                oldReadoutName = "EMECPhiEta",
+                                # specify which fields are going to be deleted
+                                removeIds = ["sublayer"],
+                                # new bitfield (readout), with new segmentation
+                                newReadoutName = ecalEndcapReadoutName,
+                                debugPrint = 10,
+                                OutputLevel= INFO)
+# clusters are needed, with deposit position and cellID in bits
+rewriteECalEC.inhits.Path = "ECalEndcapCells"
+rewriteECalEC.outhits.Path = "newECalEndcapCells"
+
+rewriteHCalEC = RewriteBitfield("RewriteHCalEC",
+                                # old bitfield (readout)
+                                oldReadoutName = "HECPhiEta",
+                                # specify which fields are going to be deleted
+                                removeIds = ["sublayer"],
+                                # new bitfield (readout), with new segmentation
+                                newReadoutName = hcalEndcapReadoutName,
+                                debugPrint = 10,
+                                OutputLevel = INFO)
+# clusters are needed, with deposit position and cellID in bits
+rewriteHCalEC.inhits.Path = "HCalEndcapCells"
+rewriteHCalEC.outhits.Path = "newHCalEndcapCells"
+
 # add noise, create all existing cells in detector
 from Configurables import NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool,CreateCaloCells
 noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
@@ -120,7 +151,7 @@ createEcalEndcapCells = CreateCaloCells("CreateECalEndcapCells",
                                                 doCellCalibration=False, # already calibrated
                                                 addCellNoise=True, filterCellNoise=False,
                                                 noiseTool = noiseEndcap,
-                                                hits=ecalEndcapCellsName,
+                                                hits="newECalEndcapCells",
                                                 cells=ecalEndcapCellsName+"Noise")
 
 #Create calo clusters
@@ -181,6 +212,8 @@ ApplicationMgr(
     TopAlg = [podioinput,
               rewriteHcal,
               rewriteExtHcal,
+              rewriteECalEC,
+              rewriteHCalEC,
               createEcalBarrelCells,
               createEcalEndcapCells,
               createClusters,

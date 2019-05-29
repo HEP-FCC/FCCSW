@@ -77,6 +77,7 @@ private:
 
 protected:
   /// ROOT file name the input is read from. Set by option filename
+  std::vector<std::string> m_filenames;
   std::string m_filename;
 };
 #endif  // CORE_PODIODATASVC_H
