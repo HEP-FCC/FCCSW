@@ -40,21 +40,16 @@ class PositionedTrackHitCollection;
 class CreateDCHHits : public GaudiAlgorithm {
 public:
   CreateDCHHits(const std::string& name, ISvcLocator* svcLoc);
-
   ~CreateDCHHits() = default;
-
   StatusCode initialize();
-
   StatusCode execute();
-
   StatusCode finalize();
   
-  static bool sortBasedOnZ(TVector3 v1, TVector3 v2)
-  {
+  bool sortBasedOnZ(const TVector3 v1, const TVector3 v2) const {
     return v1.Z() < v2.Z();
   }
 
-  static double sumEdep(double val, const fcc::PositionedTrackHit& h)
+  sumEdep(double val, const fcc::PositionedTrackHit& h)
   {
     double sum = val + h.core().energy;
     return sum;
