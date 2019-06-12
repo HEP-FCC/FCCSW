@@ -240,8 +240,9 @@ StatusCode CaloTopoCluster::buildingProtoCluster(
 	    return StatusCode::FAILURE;
 	  }
           verbose() << "Next neighbours assigned to clusterId : " << clusterId << endmsg;
-          vecNextNeighbours[it] = CaloTopoCluster::searchForNeighbours(id.first, clusterId, aNumSigma, aCells, clusterOfCell,
-								       aPreClusterCollection, true);
+          auto vec = CaloTopoCluster::searchForNeighbours(id.first, clusterId, aNumSigma, aCells, clusterOfCell,
+							  aPreClusterCollection, true);
+          vecNextNeighbours[it].insert(vecNextNeighbours[it].end(), vec.begin(), vec.end());
         }
         verbose() << "Found " << vecNextNeighbours[it].size() << " more neighbours.." << endmsg;
       }
