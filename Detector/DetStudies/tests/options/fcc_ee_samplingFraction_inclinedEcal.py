@@ -6,7 +6,9 @@ podioevent = FCCDataSvc("EventDataSvc")
 
 # DD4hep geometry service
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectMaster.xml',
+geoservice = GeoSvc("GeoSvc", detectors=[ 
+      'file:Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectEmptyMaster.xml',
+      'file:Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml',
             ],
                     OutputLevel = INFO)
 
@@ -58,11 +60,17 @@ audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 hist.AuditExecute = True
 
+from Configurables import PodioOutput
+### PODIO algorithm
+out = PodioOutput("out",OutputLevel=DEBUG)
+out.outputCommands = ["keep *"]
+out.filename = "fccee_samplingFraction_inclinedEcal.root"
+
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, hist],
+ApplicationMgr( TopAlg = [geantsim, hist, out],
                 EvtSel = 'NONE',
-                EvtMax = 10,
+                EvtMax = 70,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG

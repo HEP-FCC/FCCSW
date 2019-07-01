@@ -72,12 +72,13 @@ from Configurables import PodioOutput
 ### PODIO algorithm
 out = PodioOutput("out",OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
+out.filename = "fccee_upstreamMaterial_inclinedEcal.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [geantsim, createcellsBarrel, hist, out],
                 EvtSel = 'NONE',
-                EvtMax = 10,
+                EvtMax = 100,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG)
