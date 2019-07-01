@@ -19,15 +19,18 @@ podioevent   = FCCDataSvc("EventDataSvc")
 ### To consistently get particles in both the barrel and the endcap,
 ### use a double particle gun - one electron in the forward region, one pion in the barrel region
 
+_pi = 3.14159
+
 from Configurables import  MomentumRangeParticleGun
 pgun1_electron = MomentumRangeParticleGun("ParticleGun1_Electron")
 pgun1_electron.PdgCodes = [11]
 pgun1_electron.MomentumMin = 50 * GeV
 pgun1_electron.MomentumMax = 50 * GeV
 pgun1_electron.PhiMin = 0
-pgun1_electron.PhiMax = 2 * 3.14159
-pgun1_electron.EtaMin = 4.5
-pgun1_electron.EtaMax = 5.5
+pgun1_electron.PhiMax = 2 * _pi
+# corresponds to 4.7 < eta < 5.4
+pgun1_electron.ThetaMin = 0.5 * _pi / 180.
+pgun1_electron.ThetaMax = 1.5 * _pi / 180.
 
 from Configurables import  MomentumRangeParticleGun
 pgun2_pion = MomentumRangeParticleGun("ParticleGun2_Pion")
@@ -35,9 +38,10 @@ pgun2_pion.PdgCodes = [211]
 pgun2_pion.MomentumMin = 20 * GeV
 pgun2_pion.MomentumMax = 20 * GeV
 pgun2_pion.PhiMin = 0
-pgun2_pion.PhiMax = 2 * 3.14159
-pgun2_pion.EtaMin = -1
-pgun2_pion.EtaMax = 1
+pgun2_pion.PhiMax = 2 * _pi
+# corresponds to -0.17 < eta < 0.17
+pgun2_pion.ThetaMin = 80 * _pi / 180.
+pgun2_pion.ThetaMax = 100 * _pi / 180.
 
 from Configurables import ConstPileUp
 pileuptool = ConstPileUp()
