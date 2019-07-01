@@ -1,4 +1,6 @@
 ---
+- url: https://cern.ch/fccsw-forum
+  name: FCCSW Forum 
 - url: http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev
   name: FCCSW Mailing list
 - url: https://github.com/HEP-FCC/
