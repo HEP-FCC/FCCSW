@@ -10,9 +10,54 @@ particleType="e-"
 
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
+from Configurables import FCCDataSvc
 podioevent   = FCCDataSvc("EventDataSvc")
+
+
+############################################### Particle Gun setup
+### To consistently get particles in both the barrel and the endcap,
+### use a double particle gun - one electron in the forward region, one pion in the barrel region
+
+from Configurables import  MomentumRangeParticleGun
+pgun1_electron = MomentumRangeParticleGun("ParticleGun1_Electron")
+pgun1_electron.PdgCodes = [11]
+pgun1_electron.MomentumMin = 50 * GeV
+pgun1_electron.MomentumMax = 50 * GeV
+pgun1_electron.PhiMin = 0
+pgun1_electron.PhiMax = 2 * 3.14159
+pgun1_electron.EtaMin = 4.5
+pgun1_electron.EtaMax = 5.5
+
+from Configurables import  MomentumRangeParticleGun
+pgun2_pion = MomentumRangeParticleGun("ParticleGun2_Pion")
+pgun2_pion.PdgCodes = [211]
+pgun2_pion.MomentumMin = 20 * GeV
+pgun2_pion.MomentumMax = 20 * GeV
+pgun2_pion.PhiMin = 0
+pgun2_pion.PhiMax = 2 * 3.14159
+pgun2_pion.EtaMin = -1
+pgun2_pion.EtaMax = 1
+
+from Configurables import ConstPileUp
+pileuptool = ConstPileUp()
+pileuptool.numPileUpEvents = 1
+
+from Configurables import GenAlg
+genalg_pgun = GenAlg()
+genalg_pgun.SignalProvider = pgun1_electron 
+genalg_pgun.PileUpProvider = pgun2_pion
+genalg_pgun.hepmc.Path = "hepmc"
+genalg_pgun.PileUpTool = pileuptool
+
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter()
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="GenParticles"
+hepmc_converter.genvertices.Path="GenVertices"
+
+
+###################################################### Simulation setup
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
@@ -85,18 +130,17 @@ savehcalfwdtool = SimG4SaveCalHits("saveHCalFwdHits", readoutNames = [hcalFwdRea
 savehcalfwdtool.positionedCaloHits.Path = "HCalFwdPositionedHits"
 savehcalfwdtool.caloHits.Path = "HCalFwdHits"
 
-# next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-from Configurables import SimG4SingleParticleGeneratorTool
-pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName=particleType,energyMin=energy,energyMax=energy,etaMin=-5.0,etaMax=5.0,
-                OutputLevel = DEBUG)
+
+from Configurables import SimG4PrimariesFromEdmTool
+particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
+particle_converter.genParticles.Path = "GenParticles"
 
 geantsim = SimG4Alg("SimG4Alg",
                        outputs= ["SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits",
                                  "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits",
                                  "SimG4SaveCalHits/saveExtHCalHits", "SimG4SaveCalHits/saveHCalEndcapHits",
                                  "SimG4SaveCalHits/saveHCalFwdHits"],
-                       eventProvider=pgun,
+                       eventProvider=particle_converter,
                        OutputLevel=INFO)
 
 #Configure tools for calo reconstruction
@@ -258,6 +302,7 @@ createHcalFwdCells = CreateCaloCells("CreateHcalFwdCaloCells",
 createHcalFwdCells.hits.Path="mergedHCalFwdHits"
 createHcalFwdCells.cells.Path="HCalFwdCells"
 
+from Configurables import PodioOutput
 out = PodioOutput("out",
                   OutputLevel=INFO)
 out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
@@ -281,8 +326,12 @@ createHcalEndcapCells.AuditExecute = True
 createHcalFwdCells.AuditExecute = True
 out.AuditExecute = True
 
+from Configurables import ApplicationMgr
 ApplicationMgr(
-    TopAlg = [geantsim,
+    TopAlg = [
+              genalg_pgun,
+              hepmc_converter,
+              geantsim,
               createEcalBarrelCellsStep1,
               positionsEcalBarrel,
               resegmentEcalBarrel,
@@ -297,7 +346,7 @@ ApplicationMgr(
               createHcalEndcapCells,
               mergelayersHcalFwd,
               createHcalFwdCells,
-              out
+              out,
               ],
     EvtSel = 'NONE',
     EvtMax   = int(num_events),
