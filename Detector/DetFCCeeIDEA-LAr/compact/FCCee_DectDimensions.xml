@@ -88,9 +88,16 @@
 
     <!-- LAr FCChh Calo -->
     <constant name="BarECal_id" value="5"/>
-    <constant name="BarECal_rmin" value="2150*mm"/>
-    <constant name="BarECal_rmax" value="2750*mm"/>
+    <constant name="BarECal_rmin" value="2000*mm"/>
+    <constant name="BarECal_rmax" value="2850*mm"/>
     <constant name="BarECal_dz" value="2210*mm"/>
+
+    <!-- HCal Barrel (HCAL B) -->
+    <constant name="BarHCal_id" value="8"/>
+    <constant name="BarHCal_rmin" value="2950*mm"/>
+    <constant name="BarHCal_rmax" value="4250*mm"/>
+    <constant name="BarHCal_dz" value="2210*mm"/>
+
     
     <constant name="HCalBarrel_inner_radius" value="2400*mm"/>
     <constant name="HCalBarrel_outer_radius" value="3566*mm"/>
@@ -110,12 +117,12 @@
     <constant name="HCalRing_min_z" value="2353.5*mm"/>
     <constant name="HCalRing_max_z" value="HCalEndcap_min_z"/>
     <constant name="HCalRing_symmetry" value="12"/>
-    
-    <constant name="Solenoid_inner_radius" value="3719*mm"/>
-    <constant name="Solenoid_outer_radius" value="4272*mm"/>
-    <constant name="Solenoid_half_length" value="3705*mm"/>
-    <constant name="Solenoid_Coil_half_length" value="3476*mm"/>
-    <constant name="Solenoid_Coil_radius" value="3930*mm"/>
+
+    <constant name="Solenoid_inner_radius" value="2000*mm"/>
+    <constant name="Solenoid_outer_radius" value="2150*mm"/>
+    <constant name="Solenoid_half_length" value="2255*mm"/>
+    <constant name="Solenoid_Coil_half_length" value="2356*mm"/>
+    <constant name="Solenoid_Coil_radius" value="2000*mm"/>
     
     <constant name="YokeBarrel_inner_radius" value="4479*mm"/>
     <constant name="YokeBarrel_outer_radius" value="6000*mm"/>
