@@ -14,10 +14,13 @@
  *  Sensitive detector to fully stop the incoming particles.
  *  The position of the hit is set to G4Step::GetPreStepPoint() position.
  *  New hit is created for each incoming particle, the energy is stored and the track is removed.
- *  No timing information is saved.
  *
  *  @author    Coralie Neubueser
  */
+
+namespace fcc {
+class Geant4CaloHit;
+}
 
 namespace det {
 class FullParticleAbsorptionSD : public G4VSensitiveDetector {
@@ -28,8 +31,8 @@ public:
    *  @param aSeg Segmentation of the detector (used to retrieve the cell ID)
    */
   FullParticleAbsorptionSD(const std::string& aDetectorName,
-                    const std::string& aReadoutName,
-                    const dd4hep::Segmentation& aSeg);
+                           const std::string& aReadoutName,
+                           const dd4hep::Segmentation& aSeg);
   /// Destructor
   virtual ~FullParticleAbsorptionSD();
   /** Initialization.
@@ -48,7 +51,7 @@ public:
 
 private:
   /// Collection of calorimeter hits
-  G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>* m_calorimeterCollection;
+  G4THitsCollection<fcc::Geant4CaloHit>* m_calorimeterCollection;
   /// Segmentation of the detector used to retrieve the cell Ids
   dd4hep::Segmentation m_seg;
 };

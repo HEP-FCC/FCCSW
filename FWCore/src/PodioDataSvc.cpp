@@ -16,12 +16,18 @@ StatusCode PodioDataSvc::initialize() {
   status = setDataLoader(m_cnvSvc);
 
   if (m_filename != "") {
-    m_reader.openFile(m_filename);
-    m_eventMax = m_reader.getEntries();
-    auto idTable = m_reader.getCollectionIDTable();
+    m_filenames.push_back(m_filename);
+  }
 
-    setCollectionIDs(idTable);
-    m_provider.setReader(&m_reader);
+  if (m_filenames.size() > 0) {
+    if (m_filenames[0] != "") {
+      m_reader.openFiles(m_filenames);
+      m_eventMax = m_reader.getEntries();
+      auto idTable = m_reader.getCollectionIDTable();
+
+      setCollectionIDs(idTable);
+      m_provider.setReader(&m_reader);
+    }
   }
   return status;
 }

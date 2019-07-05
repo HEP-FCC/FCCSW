@@ -53,7 +53,7 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelReadout"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelDetailedWedgeReadout"};
   /// Cellid decoder
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
   /// Volume manager

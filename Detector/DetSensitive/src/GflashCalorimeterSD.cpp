@@ -2,6 +2,7 @@
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
+#include "DetCommon/Geant4CaloHit.h"
 
 // DD4hep
 #include "DDG4/Geant4Converter.h"
@@ -30,7 +31,7 @@ void GflashCalorimeterSD::Initialize(G4HCofThisEvent* aHitsCollections) {
   // create a collection of hits and add it to G4HCofThisEvent
   // deleted in ~G4Event
   m_calorimeterCollection =
-      new G4THitsCollection<dd4hep::sim::Geant4CalorimeterHit>(SensitiveDetectorName, collectionName[0]);
+      new G4THitsCollection<fcc::Geant4CaloHit>(SensitiveDetectorName, collectionName[0]);
   aHitsCollections->AddHitsCollection(G4SDManager::GetSDMpointer()->GetCollectionID(m_calorimeterCollection),
                                       m_calorimeterCollection);
 }
@@ -41,11 +42,11 @@ bool GflashCalorimeterSD::ProcessHits(G4Step* aStep, G4TouchableHistory*) {
   G4double edep = aStep->GetTotalEnergyDeposit();
   if (edep == 0.) return false;
 
-  CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
-  dd4hep::Position pos(prePos.x(), prePos.y(), prePos.z());
   // create a new hit
   // deleted in ~G4Event
-  dd4hep::sim::Geant4CalorimeterHit* hit = new dd4hep::sim::Geant4CalorimeterHit(pos);
+  fcc::Geant4CaloHit* hit = new fcc::Geant4CaloHit();
+  CLHEP::Hep3Vector prePos = aStep->GetPreStepPoint()->GetPosition();
+  hit->position = prePos;
   hit->cellID = utils::cellID(m_seg, *aStep);
   hit->energyDeposit = edep;
   m_calorimeterCollection->insert(hit);
@@ -57,11 +58,11 @@ bool GflashCalorimeterSD::ProcessHits(G4GFlashSpot* aSpot, G4TouchableHistory*) 
   G4double edep = aSpot->GetEnergySpot()->GetEnergy();
   // check if energy was deposited
   if (edep == 0.) return false;
-  CLHEP::Hep3Vector geantPos = aSpot->GetEnergySpot()->GetPosition();
-  dd4hep::Position pos(geantPos.x(), geantPos.y(), geantPos.z());
   // create a new hit
   // deleted in ~G4Event
-  dd4hep::sim::Geant4CalorimeterHit* hit = new dd4hep::sim::Geant4CalorimeterHit(pos);
+  fcc::Geant4CaloHit* hit = new fcc::Geant4CaloHit();
+  CLHEP::Hep3Vector geantPos = aSpot->GetEnergySpot()->GetPosition();
+  hit->position = geantPos;
   hit->cellID = cellID(*aSpot);
   hit->energyDeposit = edep;
   m_calorimeterCollection->insert(hit);

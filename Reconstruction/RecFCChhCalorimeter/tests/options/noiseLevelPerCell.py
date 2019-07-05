@@ -9,23 +9,26 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compa
                     OutputLevel = INFO)
 
 ecalBarrelReadoutName = "ECalBarrelPhiEta"
-hcalBarrelReadoutName = "HCalBarrelReadout"
+hcalBarrelReadoutName = "BarHCal_Readout_phieta"
 # noise files
-BarrelNoisePath = "/afs/cern.ch/work/c/cneubuse/public/FCChh/inBfield/noiseBarrel_mu100.root"
+# has HCal electr. noise levels as well as ECal electr. noise level
+BarrelNoisePath = "/eos/project/f/fccsw-web/testsamples/noiseBarrel_PU200.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 hcalBarrelNoiseHistName = "h_elec_hcal_layer"
 
-from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelNoSegTool
+from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelTool
+# ATTENTION!
+# The parameters have to be default in the tools, problem in Gaudi does not propagate the options through 2 tools
 ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel", 
                                          readoutName = ecalBarrelReadoutName, 
                                          OutputLevel = INFO)
-HCalBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalBarrelVols", 
-                                                 readoutName = hcalBarrelReadoutName, 
-                                                 OutputLevel = INFO)
+HCalBcells = CellPositionsHCalBarrelTool("CellPositionsHCalBarrel", 
+                                         readoutName = hcalBarrelReadoutName, 
+                                         radii = [291.05, 301.05, 313.55, 328.55, 343.55, 358.55, 378.55, 403.55, 428.55, 453.55],
+                                         OutputLevel = INFO)
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import CreateFCChhCaloNoiseLevelMap, ConstNoiseTool,  ReadNoiseFromFileTool
-
 ECalNoiseTool = ReadNoiseFromFileTool("ReadNoiseFromFileToolECal",  
                                       readoutName = ecalBarrelReadoutName,
                                       positionsTool = ECalBcells,
@@ -39,7 +42,7 @@ ECalNoiseTool = ReadNoiseFromFileTool("ReadNoiseFromFileToolECal",
 
 HCalNoiseTool = ReadNoiseFromFileTool("ReadNoiseFromFileToolHCal",  
                                       readoutName = hcalBarrelReadoutName,
-                                      positionsTool = HCalBcellVols,
+                                      positionsTool = HCalBcells,
                                       noiseFileName = BarrelNoisePath,
                                       elecNoiseHistoName = hcalBarrelNoiseHistName,
                                       setNoiseOffset = False,
@@ -51,7 +54,14 @@ HCalNoiseTool = ReadNoiseFromFileTool("ReadNoiseFromFileToolHCal",
 noisePerCell = CreateFCChhCaloNoiseLevelMap("noisePerCell", 
                                             ECalBarrelNoiseTool = ECalNoiseTool, 
                                             HCalBarrelNoiseTool = HCalNoiseTool,
-                                            outputFileName="cellNoise_Barrel.root",
+                                            readoutNamesPhiEta=["ECalBarrelPhiEta", "BarHCal_Readout_phieta"],
+                                            systemNamesPhiEta=["system","system"],
+                                            systemValuesPhiEta=[5,8],
+                                            activeFieldNamesPhiEta=["layer","layer"],
+                                            activeVolumesNumbers=[8,10],
+                                            activeVolumesEta = [1.2524, 1.2234, 1.1956, 1.1561, 1.1189, 1.0839, 1.0509, 0.9999, 0.9534, 0.91072],
+                                            readoutNamesVolumes=[],
+                                            outputFileName="cellNoise_map_electronicsNoiseLevel.root",
                                             OutputLevel=DEBUG)
 
 # ApplicationMgr

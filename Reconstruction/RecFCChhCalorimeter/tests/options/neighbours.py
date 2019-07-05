@@ -12,9 +12,15 @@ geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compa
 # Configures the Geant simulation: geometry, physics list and user actions
 from Configurables import CreateFCChhCaloNeighbours
 neighbours = CreateFCChhCaloNeighbours("neighbours", 
-                                       outputFileName="cellNeighbours_Barrel.root",
+                                       outputFileName="neighbours_map_barrel.root",
+                                       readoutNamesPhiEta=["ECalBarrelPhiEta", "BarHCal_Readout_phieta"], 
+                                       systemNamesPhiEta=["system","system"],
+                                       systemValuesPhiEta=[5,8],
+                                       activeFieldNamesPhiEta=["layer","layer"],
+                                       activeVolumesNumbers=[8,10],
+                                       activeVolumesEta = [1.2524, 1.2234, 1.1956, 1.1561, 1.1189, 1.0839, 1.0509, 0.9999, 0.9534, 0.91072],
+                                       readoutNamesVolumes=[],
                                        connectBarrels=True, 
-                                       hCalRinner=2850,
                                        OutputLevel=INFO)
 
 # ApplicationMgr

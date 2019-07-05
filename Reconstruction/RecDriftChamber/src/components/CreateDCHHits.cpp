@@ -29,6 +29,7 @@ GaudiAlgorithm(name, svcLoc)
 }
 
 StatusCode CreateDCHHits::initialize() {
+  eventnumber = 0;
   info() << "CreateDCHHits initialize" << endmsg;
 
   m_geoSvc = service("GeoSvc");
@@ -76,9 +77,10 @@ StatusCode CreateDCHHits::initialize() {
   m_tree->Branch("wireId", &wireId, "wireId/I");
   m_tree->Branch("Edep", &Edep, "Edep/D");
   m_tree->Branch("DCA", &DCA, "DCA/D");
-  m_tree->Branch("DCA_x", &DCA_x, "DCA_x/D");
-  m_tree->Branch("DCA_y", &DCA_y, "DCA_y/D");
-  m_tree->Branch("DCA_z", &DCA_z, "DCA_z/D");
+  m_tree->Branch("MC_x", &MC_x, "MC_x/D");
+  m_tree->Branch("MC_y", &MC_y, "MC_y/D");
+  m_tree->Branch("MC_z", &MC_z, "MC_z/D");
+  m_tree->Branch("trackNum", &trackNum, "trackNum/I");
   m_tree->Branch("CELLID", &CELLID, "CELLID/I");
 
   m_tree->Branch("hitLength", &debug_hitLength, "hitLength/D");
@@ -101,7 +103,7 @@ StatusCode CreateDCHHits::initialize() {
 }
 
 StatusCode CreateDCHHits::execute() {
-  //  std::cout << "================================== EVENT ==================================" << std::endl;
+
   // First empty the map: Very important step
   m_track_cell_hit.clear();
   m_wiresHit.clear();
@@ -113,7 +115,7 @@ StatusCode CreateDCHHits::execute() {
     {
       const fcc::BareHit& hitCore = hit.core();
 
-      // std::cout << "TEST1: " << hit.position() << std::endl;
+
 
       auto x = hit.position().x;
       auto y = hit.position().y;
@@ -142,7 +144,7 @@ StatusCode CreateDCHHits::execute() {
       m_track_cell_hit[trackID][cellID].push_back(hit);
     }
 
-  // std::cout << "******************* *******************" << std::endl;
+
   for (const auto& track : m_track_cell_hit)
     {
       auto trackid = track.first;
@@ -173,13 +175,13 @@ StatusCode CreateDCHHits::execute() {
 	  else
 	    {
 	      closestDist=m_segmentation->distanceTrackWire(cellid, h_start, h_end);
-	      vec_DCA = m_segmentation->Line_TrackWire(cellid, h_start, h_end);
+	      vec_DCA = m_segmentation->IntersectionTrackWire(cellid, h_start, h_end);
 	      
 	      hitINFO hinfo;
 	      hinfo.DCA = closestDist;
-	      hinfo.DCA_x = vec_DCA.X();
-	      hinfo.DCA_y = vec_DCA.Y();
-	      hinfo.DCA_z = vec_DCA.Z();
+	      hinfo.MC_x = vec_DCA.X()*CM_2_MM;
+	      hinfo.MC_y = vec_DCA.Y()*CM_2_MM;
+	      hinfo.MC_z = vec_DCA.Z()*CM_2_MM;
 	      hinfo.EdepSum = std::accumulate(hits.begin(), hits.end(), 0.0, sumEdep);
 	      hinfo.TOF = hit_start.core().time;
 	      hinfo.hit_start = h_start;
@@ -189,30 +191,31 @@ StatusCode CreateDCHHits::execute() {
 	}
     }
 
+  int index = 0;
+
   for (const auto& cell : m_wiresHit) {
+
     auto cellid = cell.first;
     int temp_layerId = m_decoder->get(cellid, "layer");
     int temp_wireId = m_decoder->get(cellid, "phi");
 
+
+    index ++;
+
     auto hit_info_vec = m_wiresHit[cellid];
 
-    // if (hit_info_vec.size()>1)
-    //   {
-    // 	std::cout << "SIZE GREATER THAN 1" << std::endl;
-    //   }
 
     std::sort(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     auto time_max = std::max_element(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
     auto time_min = std::min_element(hit_info_vec.begin(), hit_info_vec.end(), sortByTime);
 
-    // std::cout << "size: " << hit_info_vec.size() <<  ", time_min: " << (*time_min).TOF << ", time_max: " << (*time_max).TOF << std::endl;
+
     if ((time_max-time_min)<400)
       {
 	Edep = std::accumulate(hit_info_vec.begin(), hit_info_vec.end(), 0.0, sumEdep2);
 
 	if (hit_info_vec.size()>1)
 	  {
-	    // std::cout << "size = " << hit_info_vec.size() << std::endl;
 	    for (int i = 0; i< hit_info_vec.size(); ++i)
 	      {
 		// std::cout << "DCA = " << hit_info_vec[i].DCA << std::endl;
@@ -223,9 +226,10 @@ StatusCode CreateDCHHits::execute() {
 	    layerId = temp_layerId;
 	    wireId = temp_wireId;
 	    DCA = hit_info_vec[0].DCA;
-	    DCA_x = hit_info_vec[0].DCA_x;
-	    DCA_y = hit_info_vec[0].DCA_y;
-	    DCA_z = hit_info_vec[0].DCA_z;
+	    trackNum = eventnumber;
+	    MC_x = hit_info_vec[0].MC_x;
+	    MC_y = hit_info_vec[0].MC_y;
+	    MC_z = hit_info_vec[0].MC_z;
 	    CELLID = cellid;
 	    debug_hitLength =  (hit_info_vec[0].hit_end- hit_info_vec[0].hit_start).Mag();
 	    debug_radius = (hit_info_vec[0].hit_start).Perp();
@@ -239,36 +243,7 @@ StatusCode CreateDCHHits::execute() {
       }
   }
 
-  //  fcc::TrackHitCollection* edmCellsCollection = new fcc::TrackHitCollection();
-  /*
-  for (const auto& cell : m_hit) {
-
-    auto cellid = cell.first;
-    auto hitpos = m_hit[cellid];
-    auto hit_time = m_hit_time[cellid];
-    auto track_id = m_hit_trackId[cellid];
- 
-    m_decoder->setValue(cellid);
-    int temp_layerId=(*m_decoder)["layer"];
-    int temp_wireId=(*m_decoder)["phi"];
-
-
-    std::sort(hitpos.begin(), hitpos.end(), sortBasedOnZ);
-    auto it_max_z = std::max_element(hitpos.begin(), hitpos.end(), sortBasedOnZ);
-    auto it_min_z = std::min_element(hitpos.begin(), hitpos.end(), sortBasedOnZ);
-    auto max_z = (*it_max_z).Z();
-    auto min_z = (*it_min_z).Z();
-
-
-    int deltaZ = ceil((max_z - min_z)/1.); // the number of particles (1 cm of time resolution)
-    layerId = temp_layerId;
-    wireId = temp_wireId;
-    nbTimes_wireXhit = deltaZ;
-    m_tree->Fill();
-  }
-  */
-
-//m_mergedTrackHits.put(edmCellsCollection);
+  eventnumber ++;
   return StatusCode::SUCCESS;
 }
 
