@@ -31,10 +31,8 @@ GridDriftChamber::GridDriftChamber(const BitFieldCoder* decoder) : Segmentation(
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
-Vector3D GridDriftChamber::position(const CellID& cID) const {  //// ???? TODO
-
+Vector3D GridDriftChamber::position(const CellID& /*cID*/) const {  //// ???? TODO
   Vector3D cellPosition = {0, 0, 0};
-
   return cellPosition;
 }
 

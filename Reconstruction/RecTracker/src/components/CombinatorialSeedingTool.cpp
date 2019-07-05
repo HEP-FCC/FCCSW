@@ -43,7 +43,7 @@ StatusCode CombinatorialSeedingTool::initialize() {
 
 void CombinatorialSeedingTool::createBarrelSpacePoints(Acts::Seeding::BarrelSpacePoints<size_t>& thePoints,
                                                        const fcc::PositionedTrackHitCollection* theHits,
-                                                       std::pair<int, int> sIndex) {
+                                                       std::pair<int, int> /*sIndex*/) {
   size_t hitCounter = 0;
   for (auto hit : *theHits) {
   //  m_decoder->setValue(hit.core().cellId);

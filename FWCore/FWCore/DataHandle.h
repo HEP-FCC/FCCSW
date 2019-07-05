@@ -2,6 +2,7 @@
 #define FWCORE_DATAHANDLE_H
 
 #include "FWCore/DataWrapper.h"
+#include "FWCore/PodioDataSvc.h"
 
 #include "GaudiKernel/AlgTool.h"
 #include "GaudiKernel/Algorithm.h"
@@ -9,6 +10,10 @@
 #include <GaudiKernel/GaudiException.h>
 #include <GaudiKernel/Property.h>
 #include <GaudiKernel/ServiceLocatorHelper.h>
+
+#include "TTree.h"
+
+#include <type_traits>
 
 template <typename T>
 class DataHandle : public DataObjectHandle<DataWrapper<T>> {
@@ -43,16 +48,35 @@ private:
   ServiceHandle<IDataProviderSvc> m_eds;
   bool m_isGoodType{false};
   bool m_isCollection{false};
+  T* m_dataPtr;
 };
 
 //---------------------------------------------------------------------------
 template <typename T>
 DataHandle<T>::DataHandle(DataObjID& descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg)
-    : DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg), m_eds("EventDataSvc", "DataHandle") {}
+    : DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg), m_eds("EventDataSvc", "DataHandle") {
+      
+}
 //---------------------------------------------------------------------------
 template <typename T>
 DataHandle<T>::DataHandle(const std::string& descriptor, Gaudi::DataHandle::Mode a, IDataHandleHolder* fatherAlg)
-    : DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg), m_eds("EventDataSvc", "DataHandle") {}
+    : DataObjectHandle<DataWrapper<T>>(descriptor, a, fatherAlg), m_eds("EventDataSvc", "DataHandle") {
+
+  if (a > 15) { // Gaudi::DataHandle::Mode is 'writer'
+  m_eds.retrieve();
+  PodioDataSvc* pds;
+  pds = dynamic_cast<PodioDataSvc*>( m_eds.get());
+  m_dataPtr = 0;
+  if (nullptr != pds) {
+    if (std::is_convertible<T*,podio::CollectionBase*>::value) {
+      // still handled in PodioOutput
+    } else {
+      TTree* tree = pds->eventDataTree();
+      tree->Branch(descriptor.c_str(),  &m_dataPtr);
+      }
+    }
+  }
+}
 
 /**
  * Try to retrieve from the transient store. If the retrieval succeded and
@@ -100,8 +124,10 @@ const T* DataHandle<T>::get() {
 template <typename T>
 void DataHandle<T>::put(T* objectp) {
   DataWrapper<T>* dw = new DataWrapper<T>();
+  m_dataPtr = objectp;
   dw->setData(objectp);
   DataObjectHandle<DataWrapper<T>>::put(dw);
+
 }
 //---------------------------------------------------------------------------
 /**
