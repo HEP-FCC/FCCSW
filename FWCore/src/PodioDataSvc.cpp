@@ -5,11 +5,14 @@
 
 #include "FWCore/DataWrapper.h"
 
+#include "TTree.h"
+
 /// Service initialisation
 StatusCode PodioDataSvc::initialize() {
   // Nothing to do: just call base class initialisation
   StatusCode status = DataSvc::initialize();
   ISvcLocator* svc_loc = serviceLocator();
+
 
   // Attach data loader facility
   m_cnvSvc = svc_loc->service("EventPersistencySvc");
@@ -82,7 +85,10 @@ void PodioDataSvc::setCollectionIDs(podio::CollectionIDTable* collectionIds) {
 
 /// Standard Constructor
 PodioDataSvc::PodioDataSvc(const std::string& name, ISvcLocator* svc)
-    : DataSvc(name, svc), m_collectionIDs(new podio::CollectionIDTable()) {}
+    : DataSvc(name, svc), m_collectionIDs(new podio::CollectionIDTable()) {
+
+  m_eventDataTree = new TTree("events", "Events tree");
+    }
 
 /// Standard Destructor
 PodioDataSvc::~PodioDataSvc() {}

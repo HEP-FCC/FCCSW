@@ -94,7 +94,7 @@ StatusCode MaterialScan::initialize() {
       debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
               << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
       const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
-      for (unsigned i = 0, n = materials.size(); i < n; ++i) {
+      for (unsigned i = 0, n_materials = materials.size(); i < n_materials; ++i) {
         phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
       }
     }

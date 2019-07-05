@@ -15,7 +15,7 @@ find_package(HepMC)
 gaudi_add_module(SimDelphesInterface
                  src/*.cpp
                  INCLUDE_DIRS FWCore ROOT Delphes FCCEDM PODIO HepMC
-                 LINK_LIBRARIES GaudiAlgLib ROOT Delphes FCCEDM PODIO HepMC)
+                 LINK_LIBRARIES FWCore GaudiAlgLib ROOT Delphes FCCEDM PODIO HepMC)
 
 target_compile_options(SimDelphesInterface PUBLIC "-Wno-overloaded-virtual")
 
