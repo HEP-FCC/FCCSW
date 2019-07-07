@@ -5,7 +5,7 @@
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
-DECLARE_TOOL_FACTORY(LayerPhiEtaCaloTool)
+DECLARE_COMPONENT(LayerPhiEtaCaloTool)
 
 LayerPhiEtaCaloTool::LayerPhiEtaCaloTool(const std::string& type, const std::string& name,
                                                  const IInterface* parent)
