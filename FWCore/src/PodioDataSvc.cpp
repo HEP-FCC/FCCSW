@@ -104,7 +104,7 @@ StatusCode PodioDataSvc::readCollection(const std::string& collName, int collect
   return DataSvc::registerObject(collName, wrapper);
 }
 
-StatusCode PodioDataSvc::registerObject(const std::string& fullPath, DataObject* pObject) {
+StatusCode PodioDataSvc::registerObject(std::string_view parentPath, std::string_view fullPath, DataObject* pObject) {
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
   if (wrapper != nullptr) {
     podio::CollectionBase* coll = wrapper->collectionBase();
@@ -116,5 +116,5 @@ StatusCode PodioDataSvc::registerObject(const std::string& fullPath, DataObject*
       m_collections.emplace_back(std::make_pair(shortPath, coll));
     }
   }
-  return DataSvc::registerObject(fullPath, pObject);
+  return DataSvc::registerObject(parentPath, fullPath, pObject);
 }
