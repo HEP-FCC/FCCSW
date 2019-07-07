@@ -273,6 +273,11 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     }
   }  // Debug
 
+  if (m_printPythiaStatistics) {
+    m_pythiaSignal->stat();
+  }
+
+
   // Handle event via standard Gaudi mechanism
   m_iEvent++;
 
