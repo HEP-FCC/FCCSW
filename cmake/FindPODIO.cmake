@@ -1,4 +1,4 @@
-set(searchpath $ENV{PODIO}  )
+set(searchpath $ENV{PODIO} ${CMAKE_PREFIX_PATH}  )
 
 find_library(PODIO_LIBRARY
               NAMES podio
