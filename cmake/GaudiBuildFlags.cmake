@@ -1,5 +1,5 @@
-# define a minimun default version
-set(GAUDI_CXX_STANDARD_DEFAULT "c++14")
+# align minimun default cxx version with the cxx standard defined for fccsw
+set(GAUDI_CXX_STANDARD_DEFAULT "c++${CMAKE_CXX_STANDARD}")
 # overriddend depending on the compiler
 
 # special for GaudiHive
@@ -231,7 +231,6 @@ if(GAUDI_CXX_STANDARD STREQUAL "ansi")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ansi")
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${GAUDI_CXX_STANDARD}")
   if(NOT GAUDI_CXX_STANDARD STREQUAL "c++98")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
   else()
