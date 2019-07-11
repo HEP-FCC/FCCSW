@@ -1,4 +1,4 @@
-set(searchpath ${FCCEDM_DIR} ${PODIO_DIR}  )
+set(searchpath ${FCCEDM_DIR} ${PODIO_DIR} ${CMAKE_PREFIX_PATH} )
 
 # first find the FCC EDM
 find_library(FCCEDM_LIBRARY
