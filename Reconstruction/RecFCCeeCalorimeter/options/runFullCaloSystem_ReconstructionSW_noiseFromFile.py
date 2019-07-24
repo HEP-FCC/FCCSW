@@ -37,15 +37,18 @@ podioinput = PodioInput("PodioReader",
                                        "GenParticles",
                                        ])
 
+
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectEmptyMaster.xml',
-                                           'file:Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel_withCryostat.xml',
-                                           #'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                           #'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
-                                           #'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                           #'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                                           ],
-                    OutputLevel = WARNING)
+geoservice = GeoSvc("GeoSvc")
+# if FCC_DETECTORS is empty, this should use relative path to working directory
+path_to_detector = os.environ.get("FCC_DETECTORS", "")
+detectors_to_use=[
+                    'Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectEmptyMaster.xml',
+                    'Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel_withCryostat.xml',
+                  ]
+# prefix all xmls with path_to_detector
+geoservice.detectors = [os.path.join(path_to_detector, _det) for _det in detectors_to_use]
+geoservice.OutputLevel = WARNING
 
 
 ecalBarrelNoisePath = "elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root"

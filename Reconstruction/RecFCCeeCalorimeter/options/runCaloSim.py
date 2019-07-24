@@ -1,6 +1,6 @@
 import os
 
-from GaudiKernel.SystemOfUnits import MeV,GeV, tesla
+from GaudiKernel.SystemOfUnits import MeV, GeV, tesla
 
 # simulations setup
 energy=15*GeV
@@ -12,12 +12,18 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
-podioevent   = FCCDataSvc("EventDataSvc")
+podioevent  = FCCDataSvc("EventDataSvc")
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectMaster.xml',
-                                           ],
-                    OutputLevel = WARNING)
+geoservice = GeoSvc("GeoSvc")
+# if FCC_DETECTORS is empty, this should use relative path to working directory
+path_to_detector = os.environ.get("FCC_DETECTORS", "")
+detectors_to_use=[
+                    'Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectMaster.xml',
+                  ]
+# prefix all xmls with path_to_detector
+geoservice.detectors = [os.path.join(path_to_detector, _det) for _det in detectors_to_use]
+geoservice.OutputLevel = WARNING
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
