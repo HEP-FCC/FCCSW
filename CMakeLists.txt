@@ -39,7 +39,7 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CPP_STANDARD_FLAGS}")
 
 configure_file(cmake/fccrun.in ${CMAKE_BINARY_DIR}/fccrun)
-configure_file(cmake/this_fccsw.sh.in ${CMAKE_BINARY_DIR}/this_fccsw.sh)
+configure_file(cmake/setup.sh.in ${CMAKE_BINARY_DIR}/setup.sh)
 
 install(FILES ${CMAKE_BINARY_DIR}/fccrun
         DESTINATION .
@@ -47,11 +47,12 @@ install(FILES ${CMAKE_BINARY_DIR}/fccrun
                     GROUP_EXECUTE GROUP_READ
                     WORLD_EXECUTE WORLD_READ
         RENAME run)
-install(FILES ${CMAKE_BINARY_DIR}/this_fccsw.sh
+
+install(FILES ${CMAKE_BINARY_DIR}/setup.sh
         DESTINATION .
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-                    GROUP_EXECUTE GROUP_READ
-                    WORLD_EXECUTE WORLD_READ)
+        PERMISSIONS OWNER_WRITE OWNER_READ
+                    GROUP_READ
+                    WORLD_READ)
 
 gaudi_project(FCCSW  v0r10
               USE Gaudi v29r2 )
