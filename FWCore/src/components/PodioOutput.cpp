@@ -128,5 +128,6 @@ StatusCode PodioOutput::finalize() {
   m_datatree->Write();
   m_file->Write();
   m_file->Close();
+  info() << "Data written to: " << m_filename << endmsg;
   return StatusCode::SUCCESS;
 }
