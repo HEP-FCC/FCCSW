@@ -11,7 +11,4 @@ export PYTHONPATH=$PYTHONPATH:$FCCSWBASEDIR/lib:$FCCSWBASEDIR/python
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$FCCSWBASEDIR
 
 
-# make sure gaudi scripts and modules are available
-export PYTHONPATH=$PYTHONPATH:$FCCVIEW/lib:$FCCVIEW/python
-export PATH=$PATH:$FCCVIEW/scripts:$FCCVIEW/bin
 
