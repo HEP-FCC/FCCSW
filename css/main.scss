@@ -26,12 +26,12 @@ $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
   @include border-top-radius($list-group-border-radius);
 }
 body {
-  font-size: 12pt;
+  font-size: 14pt;
   margin-top: 70px;
   padding-bottom: 50px;
 }
 blockquote {
-  font-size: 11pt;
+  font-size: 13pt;
 }
 /* offset the anchors for interal links */
 :target:before {
