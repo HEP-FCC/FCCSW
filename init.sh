@@ -38,6 +38,7 @@ setuppath="/cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag/$platform/
 
 weekday=`date +%a`
 if test -f $setuppath ; then
+   echo "Setting up FCC externals from $setuppath"
    source $setuppath
 else
    echo "Setup script not found: $setuppath! "

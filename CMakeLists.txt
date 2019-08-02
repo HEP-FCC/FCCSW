@@ -15,20 +15,44 @@ endif(SAS)
 find_package(GaudiProject)
 #---------------------------------------------------------------
 
+# Set up C++ Standard
+# ``-DCMAKE_CXX_STANDARD=<standard>`` when invoking CMake
+set(CMAKE_CXX_STANDARD 14 CACHE STRING "")
+
+if(NOT CMAKE_CXX_STANDARD MATCHES "14|17")
+  message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}")
+endif()
+
+# Prevent CMake falls back to the latest standard the compiler does support
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Disables the use of compiler-specific extensions, hence makes sure the code
+# works for a wider range of compilers
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+message(STATUS "Setting C++ standard: '${CMAKE_CXX_STANDARD}'.")
+
+if (${APPLE})
+    set(CPP_STANDARD_FLAGS "-std=c++${CMAKE_CXX_STANDARD}\ -stdlib=libc++")
+    set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+endif()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CPP_STANDARD_FLAGS}")
+
 configure_file(cmake/fccrun.in ${CMAKE_BINARY_DIR}/fccrun)
-configure_file(cmake/this_fccsw.sh.in ${CMAKE_BINARY_DIR}/this_fccsw.sh)
+configure_file(cmake/setup.sh.in ${CMAKE_BINARY_DIR}/setup.sh)
 
 install(FILES ${CMAKE_BINARY_DIR}/fccrun
         DESTINATION .
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
                     GROUP_EXECUTE GROUP_READ
                     WORLD_EXECUTE WORLD_READ
         RENAME run)
-install(FILES ${CMAKE_BINARY_DIR}/this_fccsw.sh
+
+install(FILES ${CMAKE_BINARY_DIR}/setup.sh
         DESTINATION .
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
-                    GROUP_EXECUTE GROUP_READ
-                    WORLD_EXECUTE WORLD_READ)
+        PERMISSIONS OWNER_WRITE OWNER_READ
+                    GROUP_READ
+                    WORLD_READ)
 
 gaudi_project(FCCSW  v0r10
               USE Gaudi v29r2 )
