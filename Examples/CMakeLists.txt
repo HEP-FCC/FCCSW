@@ -10,6 +10,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom)
 find_package(DD4hep)
 find_package(Geant4)
 
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION Examples)
+
 gaudi_add_module(Examples
                  src/*.cpp
 		             INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon
