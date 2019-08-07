@@ -17,7 +17,8 @@ StatusCode PodioOutput::initialize() {
 
   m_file = std::unique_ptr<TFile>(new TFile(m_filename.value().c_str(), "RECREATE", "data file"));
   // Both trees are written to the ROOT file and owned by it
-  m_datatree = new TTree("events", "Events tree");
+  // PodioDataSvc has ownership of EventDataTree
+  m_datatree = m_podioDataSvc->eventDataTree();
   m_metadatatree = new TTree("metadata", "Metadata tree");
   m_switch = KeepDropSwitch(m_outputCommands);
   return StatusCode::SUCCESS;
@@ -124,6 +125,7 @@ StatusCode PodioOutput::finalize() {
       
   m_metadatatree->Branch("CollectionIDs", m_podioDataSvc->getCollectionIDs());
   m_metadatatree->Fill();
+  m_datatree->Write();
   m_file->Write();
   m_file->Close();
   return StatusCode::SUCCESS;

@@ -56,6 +56,11 @@ private:
   std::unique_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
   /// Pythia8 engine for NLO ME/PS merging
   std::unique_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
+
+  /// flag for additional printouts
+  Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
+                                                           "Print Pythia Statistics"};
+
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H

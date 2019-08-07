@@ -116,7 +116,16 @@ public:
    * (in [0, m_nPhiTower) range)
    */
   uint phiNeighbour(int aIPhi) const;
-  dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
+  /**  Find cells belonging to a cluster.
+   *   @param[in] aEta Position of the middle tower of a cluster in eta
+   *   @param[in] aPhi Position of the middle tower of a cluster in phi
+   *   @param[in] aHalfEtaFinal Half size of cluster in eta (in units of tower size). Cluster size is 2*aHalfEtaFinal+1
+   *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
+   *   @param[out] aEdmCluster Cluster where cells are attached to
+   */
+  virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                           fcc::CaloCluster& aEdmCluster, bool aEllipse = false) final;
+  std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
 
 private:
   /// Handle for calo cells (input collection)

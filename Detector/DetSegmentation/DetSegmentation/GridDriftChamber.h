@@ -31,6 +31,7 @@ public:
   virtual TVector3 distanceClosestApproach(const CellID& cID, const TVector3& hitPos) const;
   virtual double distanceTrackWire(const CellID& cID, const TVector3& hit_start, const TVector3& hit_end) const;
   virtual TVector3 Line_TrackWire(const CellID& cID, const TVector3& hit_start, const TVector3& hit_end) const;
+  virtual TVector3 IntersectionTrackWire(const CellID& cID, const TVector3& hit_start, const TVector3& hit_end) const;
   virtual TVector3 wirePos_vs_z(const CellID& cID, const double& zpos) const;
 
   inline double epsilon() const { return m_epsilon; }
@@ -130,27 +131,22 @@ public:
   }
 
   inline double debug_projectToXY(const TVector3& pos) const {
-    double gridSizePhi = _currentGridSizePhi;
     double _phi = pos.Phi();
     if (_phi < 0) {
       _phi += 2 * M_PI;
     }
-
     // distance between X,Y and the projected position of the Z on the (X,Y) plane
-
     double _L = (m_detectorLength / 2. - pos.Z()) * std::tan(m_epsilon);
     double sign = 1.;
     if (_L < 0) {
       sign = -1;
     }
-    double _crd = _L * sign / _currentRadius;  // _crd>0
+    double _crd = _L * sign / _currentRadius;
     double _theta = 2 * std::asin(_crd / 2) * sign;
     double _totalAngle = _phi + _theta;
     if (_totalAngle < 0) {
       _totalAngle += 2 * M_PI;
     }
-    int wire = int(_totalAngle / gridSizePhi);
-
     return _totalAngle;
   }
 
@@ -164,27 +160,23 @@ public:
     return vec;
   }
 
-  inline double phiFromXY(const Vector3D& aposition) const { return std::atan2(aposition.Y, aposition.X) + M_PI; }
+  inline double phiFromXY(const Vector3D& aposition) const { 
+    return std::atan2(aposition.Y, aposition.X) + M_PI;
+  }
 
   inline double projectToXY(const Vector3D& aposition) const {
-    double gridSizePhi = _currentGridSizePhi;
     // aposition is a global position
     double _phi = phiFromXY(aposition);
-
     // distance between X,Y and the projected position of the Z on the (X,Y) plane
     double _L = (m_detectorLength / 2. - aposition.Z) * std::tan(m_epsilon);
     // Chord
     double _crd = _L / _currentRadius;
-
     double _theta = 2 * std::asin(_crd / 2);
     double _totalAngle = _phi + _theta;
-
     // Angles are between 0 and 360 deg.
     if (_totalAngle < 0) {
       _totalAngle += 2 * M_PI;
     }
-
-    int wire = int(_totalAngle / gridSizePhi);
     return _totalAngle;
   }
 
@@ -195,8 +187,6 @@ public:
 
   inline TVector3 returnWirePosition(double angle, int sign) const {
     TVector3 w(0, 0, 0);
-    // std::cout << "returnWirePosition: _currentRadius: " << _currentRadius << std::endl;
-
     w.SetX(_currentRadius * std::cos(angle));
     w.SetY(_currentRadius * std::sin(angle));
     w.SetZ(sign * m_detectorLength / 2.0);
@@ -208,7 +198,6 @@ public:
     double R = std::sqrt(x * x + y * y);
     // Layer
     int layer = int((R - m_innerRadius) / m_cellSize);
-
     return layer;
   }
 

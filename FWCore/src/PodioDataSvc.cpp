@@ -5,23 +5,32 @@
 
 #include "FWCore/DataWrapper.h"
 
+#include "TTree.h"
+
 /// Service initialisation
 StatusCode PodioDataSvc::initialize() {
   // Nothing to do: just call base class initialisation
   StatusCode status = DataSvc::initialize();
   ISvcLocator* svc_loc = serviceLocator();
 
+
   // Attach data loader facility
   m_cnvSvc = svc_loc->service("EventPersistencySvc");
   status = setDataLoader(m_cnvSvc);
 
   if (m_filename != "") {
-    m_reader.openFile(m_filename);
-    m_eventMax = m_reader.getEntries();
-    auto idTable = m_reader.getCollectionIDTable();
+    m_filenames.push_back(m_filename);
+  }
 
-    setCollectionIDs(idTable);
-    m_provider.setReader(&m_reader);
+  if (m_filenames.size() > 0) {
+    if (m_filenames[0] != "") {
+      m_reader.openFiles(m_filenames);
+      m_eventMax = m_reader.getEntries();
+      auto idTable = m_reader.getCollectionIDTable();
+
+      setCollectionIDs(idTable);
+      m_provider.setReader(&m_reader);
+    }
   }
   return status;
 }
@@ -76,7 +85,10 @@ void PodioDataSvc::setCollectionIDs(podio::CollectionIDTable* collectionIds) {
 
 /// Standard Constructor
 PodioDataSvc::PodioDataSvc(const std::string& name, ISvcLocator* svc)
-    : DataSvc(name, svc), m_collectionIDs(new podio::CollectionIDTable()) {}
+    : DataSvc(name, svc), m_collectionIDs(new podio::CollectionIDTable()) {
+
+  m_eventDataTree = new TTree("events", "Events tree");
+    }
 
 /// Standard Destructor
 PodioDataSvc::~PodioDataSvc() {}

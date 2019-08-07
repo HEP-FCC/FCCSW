@@ -2,6 +2,7 @@
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
+#include "DetCommon/Geant4PreDigiTrackHit.h"
 
 // DD4hep
 #include "DDG4/Geant4Mapping.h"
@@ -13,7 +14,6 @@
 // Geant4
 #include "G4SDManager.hh"
 
-#include "DetCommon/Geant4PreDigiTrackHit.h"
 
 namespace det {
 SimpleTrackerSD::SimpleTrackerSD(const std::string& aDetectorName,

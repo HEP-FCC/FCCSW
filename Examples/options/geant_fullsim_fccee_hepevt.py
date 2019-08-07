@@ -120,20 +120,16 @@ geantsim = SimG4Alg("SimG4Alg",
         ],
                     eventProvider=particle_converter)
 
-from Configurables import MergeHits
-mergehits_barrel = MergeHits("MergeHitsBarrel",
-                      OutputLevel=DEBUG)
+from Configurables import MergeDriftChamberHits
+mergehits_barrel = MergeDriftChamberHits("MergeHitsBarrel")
+mergehits_barrel.DriftChamberHitsPositions.Path = "positionedHits_barrel"
+mergehits_barrel.DriftChamberHitsMerged.Path = "trackHits_barrel"
+mergehits_barrel.DriftChamberHitsPositionsMerged.Path = "merged_barrel"
 
-mergehits_barrel.positionedHits.Path = "positionedHits_barrel"
-mergehits_barrel.trackHits.Path = "trackHits_barrel"
-mergehits_barrel.mergedHits.Path = "merged_barrel"
-
-mergehits_endcap = MergeHits("MergeHitsEndcap",
-                      OutputLevel=DEBUG)
-
-mergehits_endcap.positionedHits.Path = "positionedHits_endcap"
-mergehits_endcap.trackHits.Path = "trackHits_endcap"
-mergehits_endcap.mergedHits.Path = "merged_endcap"
+mergehits_endcap = MergeDriftChamberHits("MergeHitsEndcap")
+mergehits_endcap.DriftChamberHitsPositions.Path = "positionedHits_endcap"
+mergehits_endcap.DriftChamberHitsMerged.Path = "trackHits_endcap"
+mergehits_endcap.DriftChamberHitsPositionsMerged.Path = "merged_endcap"
 
 # PODIO algorithm
 from Configurables import PodioOutput

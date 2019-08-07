@@ -31,10 +31,8 @@ GridDriftChamber::GridDriftChamber(const BitFieldCoder* decoder) : Segmentation(
   registerIdentifier("identifier_phi", "Cell ID identifier for phi", m_phiID, "phi");
 }
 
-Vector3D GridDriftChamber::position(const CellID& cID) const {  //// ???? TODO
-
+Vector3D GridDriftChamber::position(const CellID& /*cID*/) const {  //// ???? TODO
   Vector3D cellPosition = {0, 0, 0};
-
   return cellPosition;
 }
 
@@ -158,6 +156,50 @@ TVector3 GridDriftChamber::wirePos_vs_z(const CellID& cID, const double& zpos) c
   TVector3 wireCoord(x, y, zpos);
   return wireCoord;
 }
+
+TVector3 GridDriftChamber::IntersectionTrackWire(const CellID& cID, const TVector3& hit_start, const TVector3& hit_end) const {
+  // Intersection between the particle track and the wire assuming that the track between hit_start and hit_end is linear
+  auto layerIndex = _decoder->get(cID, "layer");
+  updateParams(layerIndex);
+
+  double phi_start = phi(cID);
+  double phi_end = phi_start + returnAlpha();
+
+  TVector3 Wstart = returnWirePosition(phi_start, 1);
+  TVector3 Wend = returnWirePosition(phi_end, -1);
+
+  TVector3 P1 = hit_start;
+  TVector3 V1 = hit_end-hit_start;
+
+  TVector3 P2 = Wstart;
+  TVector3 V2 = Wend - Wstart;
+
+  TVector3 denom = V1.Cross(V2);
+  double mag_denom = denom.Mag();
+
+  TVector3 intersect(0, 0, 0);
+
+  if (mag_denom !=0)
+    {
+      TVector3 num = ((P2-P1)).Cross(V2);
+      double mag_num = num.Mag();
+      double a = mag_num / mag_denom;
+
+      intersect = P1 + a * V1;
+      
+    }
+ 
+  std::cout << "------- Segmentation -------" << std::endl;
+  hit_start.Print();
+  hit_end.Print();
+  Wstart.Print();
+  Wend.Print();
+  intersect.Print();
+
+  return intersect;
+}
+
+
 
 REGISTER_SEGMENTATION(GridDriftChamber)
 }
