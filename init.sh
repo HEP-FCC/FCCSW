@@ -21,7 +21,7 @@ fi
 # Guess OS
 ostag="x86_64-slc6"
 if test -f "/etc/redhat-release"; then
-   six=`grep "release 7" /etc/redhat-release`
+   six=`grep "release 7" /etc/redhat-release || echo ""`
    if test ! "x$six" = "x" ; then
       ostag="x86_64-centos7"
    fi
