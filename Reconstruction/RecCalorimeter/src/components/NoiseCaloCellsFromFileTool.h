@@ -84,7 +84,7 @@ private:
   Rndm::Numbers m_gauss;
 
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// PhiEta segmentation
   dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentationPhiEta;
   /// Multi segmentation

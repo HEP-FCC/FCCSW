@@ -59,7 +59,7 @@ private:
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   std::vector<TH2F*> m_upstreamEnergyCellEnergy;
   std::vector<TH1F*> m_cellEnergyPhi;
   /// Name of the active field

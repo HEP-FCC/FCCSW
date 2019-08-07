@@ -41,7 +41,7 @@ StatusCode PodioDataSvc::reinitialize() {
 }
 /// Service finalization
 StatusCode PodioDataSvc::finalize() {
-  m_cnvSvc = 0;  // release
+  m_cnvSvc = 0; // release
   DataSvc::finalize().ignore();
   return StatusCode::SUCCESS;
 }

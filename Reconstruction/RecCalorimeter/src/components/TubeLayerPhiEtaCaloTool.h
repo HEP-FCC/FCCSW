@@ -40,7 +40,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", ""};
   /// Name of active volumes

@@ -14,7 +14,7 @@
 DECLARE_COMPONENT(CaloTowerTool)
 
 CaloTowerTool::CaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name) {
   declareProperty("ecalBarrelCells", m_ecalBarrelCells, "");
   declareProperty("ecalEndcapCells", m_ecalEndcapCells, "");
   declareProperty("ecalFwdCells", m_ecalFwdCells, "");
@@ -29,7 +29,7 @@ StatusCode CaloTowerTool::initialize() {
   if (GaudiTool::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
