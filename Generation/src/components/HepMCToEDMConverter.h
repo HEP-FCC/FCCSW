@@ -12,7 +12,6 @@ class GenVertexCollection;
 }
 
 class HepMCToEDMConverter : public GaudiAlgorithm {
-  //friend class AlgFactory<HepMCToEDMConverter>;
 
 public:
   /// Constructor.

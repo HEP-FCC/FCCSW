@@ -10,7 +10,6 @@ class JetCollection;
 }
 
 class CreateSampleJet : public GaudiAlgorithm {
-  //friend class AlgFactory<CreateSampleJet>;
 
 public:
   /// Constructor.

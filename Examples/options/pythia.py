@@ -22,7 +22,7 @@ pythiafile="Generation/data/Pythia_standard.cmd"
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
 pythia8gentool.Filename = pythiafile
-pythia8gentool.printPythiaStatistics = True
+#pythia8gentool.printPythiaStatistics = True
 from Configurables import GenAlg
 pythia8gen = GenAlg("Pythia8")
 pythia8gen.SignalProvider = pythia8gentool

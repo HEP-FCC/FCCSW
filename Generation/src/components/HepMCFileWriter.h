@@ -21,7 +21,6 @@ class IO_GenEvent;
  */
 
 class HepMCFileWriter : public GaudiAlgorithm {
-  //friend class AlgFactory<HepMCFileWriter>;
 
 public:
   /// Constructor.

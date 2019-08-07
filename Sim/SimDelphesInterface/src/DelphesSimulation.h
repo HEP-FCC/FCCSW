@@ -53,8 +53,6 @@ class TObjArray;
  */
 class DelphesSimulation : public GaudiAlgorithm {
 
-  //friend class AlgFactory<DelphesSimulation>;
-
 public:
   //! Constructor.
   DelphesSimulation(const std::string& name, ISvcLocator* svcLoc);

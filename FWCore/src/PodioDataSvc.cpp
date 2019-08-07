@@ -101,10 +101,11 @@ StatusCode PodioDataSvc::readCollection(const std::string& collName, int collect
   collection->setID(id);
   wrapper->setData(collection);
   m_readCollections.emplace_back(std::make_pair(collName, collection));
-  return DataSvc::registerObject(collName, wrapper);
+  return DataSvc::registerObject("/Event", "/" + collName, wrapper);
 }
 
 StatusCode PodioDataSvc::registerObject(std::string_view parentPath, std::string_view fullPath, DataObject* pObject) {
+  std::cout << "registerObject arguments: " <<  parentPath << "\t" << fullPath << "\t" << pObject << std::endl;
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
   if (wrapper != nullptr) {
     podio::CollectionBase* coll = wrapper->collectionBase();

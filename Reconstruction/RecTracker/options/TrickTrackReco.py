@@ -33,7 +33,7 @@ collectionNames["GenParticles"] = "GenParticles"
 collectionNames["GenVertices"] = "GenVertices"
 collectionNames["SimParticles"] = "SimParticles"
 collectionNames["SimVertices"] = "SimVertices"
-collectionNames["TrackerPositionedHits"] = "TrackerPositionedHits"
+collectionNames["TrackerHitsPosition"] = "TrackerHitsPosition"
 collectionNames["TrackerHits"] = "TrackerHits"
 
 if args.trajectories:
@@ -79,10 +79,10 @@ if args.npileup > 0:
   trackhitsmergetool = PileupTrackHitMergeTool("PileupTrackHitMergeTool")
   # branchnames for the pileup
   trackhitsmergetool.pileupHitsBranch = "TrackerHits"
-  trackhitsmergetool.pileupPositionedHitsBranch = "TrackerPositionedHits"
+  trackhitsmergetool.pileupPositionedHitsBranch = "TrackerHitsPosition"
   # branchnames for the signal
   trackhitsmergetool.signalHits = "TrackerHits"
-  trackhitsmergetool.signalPositionedHits = "TrackerPositionedHits"
+  trackhitsmergetool.signalPositionedHits = "TrackerHitsPosition"
   # branchnames for the output
   trackhitsmergetool.mergedHits = "mergedTrackerHits"
   trackhitsmergetool.mergedPositionedHits = "mergedTrackerPositionedHits"
@@ -113,7 +113,7 @@ from Configurables import FCChhSeedHitFilterTool
 hitfiltertool = FCChhSeedHitFilterTool("FCChhSeedHitFilterTool")
 
 from Configurables import FCChhSeedingGraphTool
-layergraphtool = FCChhSeedingGraphTool()
+layergraphtool = FCChhSeedingGraphTool("TheSeedingGraphTool")
 
 
 from Configurables import TrickTrackSeedingTool
@@ -133,17 +133,17 @@ tricktrack_seed_tool.hardPtCut= 11.0
 tricktrack_seed_tool.cleanHits = args.cleanHits
 
 
-# Alternative: TruthSeeding
-from Configurables import TruthSeedingTool
-truth_seeds = TruthSeedingTool()
+
+from Configurables import RiemannFitTool
+riemann_fit = RiemannFitTool("TheRiemannFitTool")
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-if args.truthseeding:
-  RecTrackAlg.TrackSeedingTool = truth_seeds
-else:
-  RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
-RecTrackAlg.TrackerPositionedHits.Path = collectionNames["TrackerPositionedHits"]
+#RecTrackAlg.TrackSeedingTool = truth_seeds
+RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
+RecTrackAlg.TrackFittingTool = riemann_fit
+RecTrackAlg.TrackerPositionedHits.Path = collectionNames["TrackerHitsPosition"]
+
 
 
 
@@ -158,6 +158,7 @@ out.outputCommands = ["keep *"]
 RecTrackAlg.AuditExecute = True
 out.AuditExecute = True
 algList += [RecTrackAlg]
+
 if args.recoHelix:
   from Configurables import RecHelixTrajectory
   rht = RecHelixTrajectory()
@@ -170,5 +171,5 @@ ApplicationMgr( TopAlg =  algList,
                 EvtSel = 'NONE',
                 EvtMax   = args.nevents,
                 ExtSvc = [podioevent],
-                OutputLevel=INFO,
+                OutputLevel=VERBOSE,
  )

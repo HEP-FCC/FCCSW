@@ -13,7 +13,7 @@ if [ ! -L $FCCSWBASEDIR/.git/hooks/pre-commit ]; then
 fi
 
 # Version
-versiontag="94.2.0"
+versiontag="96.0.0"
 if ! test "x$1" = "x" ; then
    versiontag="$1"
 fi
@@ -28,13 +28,14 @@ if test -f "/etc/redhat-release"; then
 fi
 
 # Compiler
-gcctag="gcc62"
+gcctag="gcc8"
 
 # Platform
 platform="$ostag-$gcctag-opt"
 
 # Setup script
-setuppath="/cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag/$platform/setup.sh"
+#setuppath="/cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag/$platform/setup.sh"
+setuppath="/cvmfs/fcc.cern.ch/sw/views/nightlies/externals/latest/$platform/setup.sh"
 
 weekday=`date +%a`
 if test -f $setuppath ; then
@@ -48,4 +49,5 @@ else
    ls -1 /cvmfs/fcc.cern.ch/sw/views/releases/externals/*/$platform/setup.sh
 fi
 
-#source /cvmfs/fcc.cern.ch/sw/views/releases/externals/94.2.0/x86_64-slc6-gcc62-opt/setup.sh
+export Gaudi_DIR=/cvmfs/sft.cern.ch/lcg/releases/LCG_96/Gaudi/v32r0/$platform/
+

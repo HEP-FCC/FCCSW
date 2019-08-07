@@ -2,8 +2,8 @@ from Gaudi.Configuration import *
 
 # DD4hep geometry service
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                          'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml'],
+geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectMaster.xml',
+                                        ],
                     OutputLevel = INFO)
 
 # Geant4 service
