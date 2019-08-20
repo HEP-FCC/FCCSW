@@ -6,8 +6,6 @@
 #include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 
-//class IRndmGenSvc;
-
 // FCCSW
 #include "DetSegmentation/FCCSWGridPhiEta.h"
 #include "RecInterface/INoiseCaloCellsTool.h"

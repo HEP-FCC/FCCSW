@@ -29,8 +29,6 @@ podioinput = PodioInput("PodioReader", collections =  [ "ECalBarrelCells", "HCal
 
 from Configurables import GeoSvc 
 detectors_to_use =['file:Detector/DetFCChhBaseline1/compact/FCChh_DectMaster.xml',
-                   #'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
-                   #'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'
                    ] 
 geoservice = GeoSvc("GeoSvc", detectors = detectors_to_use, OutputLevel = INFO)
 

@@ -139,8 +139,9 @@ riemann_fit = RiemannFitTool("TheRiemannFitTool")
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-#RecTrackAlg.TrackSeedingTool = truth_seeds
 RecTrackAlg.TrackSeedingTool = tricktrack_seed_tool
+# Alternative: uncomment to use the MCTruth for seeding
+#RecTrackAlg.TrackSeedingTool = truth_seeds
 RecTrackAlg.TrackFittingTool = riemann_fit
 RecTrackAlg.TrackerPositionedHits.Path = collectionNames["TrackerHitsPosition"]
 
