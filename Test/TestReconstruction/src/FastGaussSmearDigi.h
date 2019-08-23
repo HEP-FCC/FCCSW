@@ -36,7 +36,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
 
   float m_segGridSizeZ;
   float m_segGridSizeX;

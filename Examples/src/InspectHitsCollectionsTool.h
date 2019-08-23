@@ -30,7 +30,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Name of the readouts (hits collections)
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "Names of the readouts (hits collections)"};

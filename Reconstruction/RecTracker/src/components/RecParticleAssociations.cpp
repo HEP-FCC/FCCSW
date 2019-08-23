@@ -26,7 +26,7 @@
 
 
 
-DECLARE_ALGORITHM_FACTORY(RecParticleAssociations)
+DECLARE_COMPONENT(RecParticleAssociations)
 
 RecParticleAssociations::RecParticleAssociations(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 

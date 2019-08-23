@@ -2,7 +2,6 @@
 
 #include <cmath>
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/SystemOfUnits.h"
@@ -11,7 +10,7 @@
 #include "HepPDT/ParticleID.hh"
 #include "Pythia8/ParticleData.h"
 
-DECLARE_TOOL_FACTORY(ConstPtParticleGun)
+DECLARE_COMPONENT(ConstPtParticleGun)
 
 /// Constructor
 ConstPtParticleGun::ConstPtParticleGun(const std::string& type, const std::string& name, const IInterface* parent)

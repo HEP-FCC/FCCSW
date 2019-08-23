@@ -84,9 +84,6 @@ private:
 
   DataHandle<std::vector<hitINFO>> m_hitInfoHandle{"DCHitInfo", Gaudi::DataHandle::Writer, this};
 
-
-
-
 };
 
 #endif /* RECDRIFTCHAMBER_CREATEDCHHITS_H */

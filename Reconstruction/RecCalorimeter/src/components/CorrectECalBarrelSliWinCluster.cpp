@@ -23,7 +23,7 @@
 #include "TFitResult.h"
 #include "TGraphErrors.h"
 
-DECLARE_ALGORITHM_FACTORY(CorrectECalBarrelSliWinCluster)
+DECLARE_COMPONENT(CorrectECalBarrelSliWinCluster)
 
 CorrectECalBarrelSliWinCluster::CorrectECalBarrelSliWinCluster(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc),

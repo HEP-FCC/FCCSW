@@ -3,7 +3,7 @@
 #include "papas/graphtools/EventRuler.h"
 #include "papas/reconstruction/MergeClusters.h"
 
-DECLARE_TOOL_FACTORY(PapasMergeClustersTool)
+DECLARE_COMPONENT(PapasMergeClustersTool)
 
 PapasMergeClustersTool::PapasMergeClustersTool(const std::string& aType, const std::string& aName,
                                                const IInterface* aParent)

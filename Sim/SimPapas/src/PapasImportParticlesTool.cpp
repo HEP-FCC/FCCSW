@@ -15,7 +15,7 @@
 #include "papas/simulation/Simulator.h"
 #include "papas/utility/PDebug.h"
 
-DECLARE_TOOL_FACTORY(PapasImportParticlesTool)
+DECLARE_COMPONENT(PapasImportParticlesTool)
 
 PapasImportParticlesTool::PapasImportParticlesTool(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)

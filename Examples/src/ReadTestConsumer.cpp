@@ -29,7 +29,7 @@ public:
     int cntr = 0;
     // Loop over all input particles
     for (const auto& mcpart : *mcparticles) {
-      if (10 < cntr++) {
+      if (10 > cntr++) {
         debug() << "vertex x: " << mcpart.startVertex().position().x << endmsg;
       }
     }

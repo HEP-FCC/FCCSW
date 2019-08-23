@@ -4,7 +4,7 @@
 // Geant4
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_TOOL_FACTORY(SimG4TestPhysicsList)
+DECLARE_COMPONENT(SimG4TestPhysicsList)
 
 SimG4TestPhysicsList::SimG4TestPhysicsList(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)

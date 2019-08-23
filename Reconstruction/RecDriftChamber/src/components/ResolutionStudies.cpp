@@ -16,12 +16,12 @@
 
 
 
-DECLARE_ALGORITHM_FACTORY(ResolutionStudies)
+DECLARE_COMPONENT(ResolutionStudies)
 
 
 
 ResolutionStudies::ResolutionStudies(const std::string& name, ISvcLocator* svcLoc) : 
-GaudiAlgorithm(name, svcLoc)
+GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name)
 {
   //  declareProperty("mergedHits", m_mergedTrackHits, "Merged Tracker hits (Output)");
   //  declareProperty("positionedHits", m_positionedHits, "Positioned hits (Input)");
@@ -30,7 +30,7 @@ GaudiAlgorithm(name, svcLoc)
 StatusCode ResolutionStudies::initialize() {
   info() << "ResolutionStudies initialize" << endmsg;
 
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the "

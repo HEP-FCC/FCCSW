@@ -32,7 +32,7 @@ public:
                                const fcc::PositionedTrackHitCollection* theHits, std::pair<int, int> sIndex);
 
 private:
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   //DDSegmentation::BitField64* m_decoder;
   /// system and layer ids for the inner barrel layer to be used for seeding
   Gaudi::Property<std::pair<int, int>> m_seedingLayerIndices0{this, "seedingLayerIndices0", {0, 0}};

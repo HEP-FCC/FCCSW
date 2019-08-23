@@ -16,7 +16,7 @@
 #include "TH1F.h"
 #include "TH2F.h"
 
-DECLARE_ALGORITHM_FACTORY(PreparePileup)
+DECLARE_COMPONENT(PreparePileup)
 
 PreparePileup::PreparePileup(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hits from which to create cells (input)");

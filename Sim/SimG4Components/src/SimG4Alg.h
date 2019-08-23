@@ -55,7 +55,7 @@ public:
 
 private:
   /// Pointer to the interface of Geant simulation service
-  SmartIF<ISimG4Svc> m_geantSvc;
+  ServiceHandle<ISimG4Svc> m_geantSvc;
   /// Handle to the tools saving the output
   /// to be replaced with the ToolHandleArray<ISimG4SaveOutputTool> m_saveTools
   std::vector<ISimG4SaveOutputTool*> m_saveTools;

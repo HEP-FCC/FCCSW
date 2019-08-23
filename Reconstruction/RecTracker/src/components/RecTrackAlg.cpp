@@ -40,7 +40,7 @@ fcc::Particle TrackState2Particle(fcc::Track aTrack) {
 }
 
 
-DECLARE_ALGORITHM_FACTORY(RecTrackAlg)
+DECLARE_COMPONENT(RecTrackAlg)
 
 RecTrackAlg::RecTrackAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 

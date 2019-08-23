@@ -4,7 +4,7 @@
 #include "datamodel/TrackHit.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(MergeDriftChamberHits)
+DECLARE_COMPONENT(MergeDriftChamberHits)
 
 MergeDriftChamberHits::MergeDriftChamberHits(const std::string& name, ISvcLocator* svcLoc) : 
 GaudiAlgorithm(name, svcLoc)

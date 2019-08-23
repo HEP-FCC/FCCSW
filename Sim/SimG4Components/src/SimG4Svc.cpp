@@ -14,7 +14,7 @@
 #include "G4VisExecutive.hh"
 #include "G4VisManager.hh"
 
-DECLARE_SERVICE_FACTORY(SimG4Svc)
+DECLARE_COMPONENT(SimG4Svc)
 
 SimG4Svc::SimG4Svc(const std::string& aName, ISvcLocator* aSL) : base_class(aName, aSL) {
   declareProperty("detector", m_detectorTool, "Handle for the detector construction tool");
@@ -123,7 +123,7 @@ StatusCode SimG4Svc::initialize() {
 }
 
 StatusCode SimG4Svc::processEvent(G4Event& aEvent) {
-  bool status = m_runManager.processEvent(aEvent);
+  StatusCode status = m_runManager.processEvent(aEvent);
   if (!status) {
     error() << "Unable to process event in Geant" << endmsg;
     return StatusCode::FAILURE;

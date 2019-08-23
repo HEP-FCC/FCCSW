@@ -10,7 +10,7 @@
 
 #include "G4NistManager.hh"
 
-DECLARE_TOOL_FACTORY(SimG4FastSimCalorimeterRegion)
+DECLARE_COMPONENT(SimG4FastSimCalorimeterRegion)
 
 SimG4FastSimCalorimeterRegion::SimG4FastSimCalorimeterRegion(const std::string& type, const std::string& name,
                                                              const IInterface* parent)

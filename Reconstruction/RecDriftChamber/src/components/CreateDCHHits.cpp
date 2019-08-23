@@ -8,7 +8,7 @@
 #include "DD4hep/Detector.h"
 #include "DetSegmentation/GridDriftChamber.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateDCHHits)
+DECLARE_COMPONENT(CreateDCHHits)
 
 CreateDCHHits::CreateDCHHits(const std::string& name, ISvcLocator* svcLoc) : 
 GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name)

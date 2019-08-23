@@ -21,7 +21,7 @@ podioinput = PodioInput("PodioReader",
                                       "SimParticles", 
                                       "SimVertices", 
                                       "TrackerHits", 
-                                      "TrackerPositionedHits", 
+                                      "TrackerHitsPosition", 
                                       ], 
                           OutputLevel=DEBUG,
                           )
@@ -51,7 +51,7 @@ seed_tool.readoutName = "TrackerBarrelReadout"
 
 from Configurables import RecTrackAlg
 RecTrackAlg = RecTrackAlg()
-RecTrackAlg.TrackerPositionedHits.Path = "TrackerPositionedHits"
+RecTrackAlg.TrackerPositionedHits.Path = "TrackerHitsPosition"
 
 
 # PODIO algorithm

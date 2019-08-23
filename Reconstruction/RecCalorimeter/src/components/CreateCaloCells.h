@@ -97,7 +97,7 @@ private:
   bool m_useVolumeIdOnly;
 
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Map of cell IDs (corresponding to DD4hep IDs) and energy
   std::unordered_map<uint64_t, double> m_cellsMap;
 };

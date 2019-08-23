@@ -16,14 +16,15 @@
 #include "TTree.h"
 #include "TVector3.h"
 
-MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {}
+MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc),
+m_geoSvc("GeoSvc", name) {}
 
 StatusCode MaterialScan::initialize() {
   if (Service::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
-  if (nullptr == m_geoSvc) {
+  
+  if (!m_geoSvc) {
     error() << "Unable to find Geometry Service." << endmsg;
     return StatusCode::FAILURE;
   }
@@ -115,4 +116,4 @@ StatusCode MaterialScan::initialize() {
 
 StatusCode MaterialScan::finalize() { return StatusCode::SUCCESS; }
 
-DECLARE_SERVICE_FACTORY(MaterialScan)
+DECLARE_COMPONENT(MaterialScan)

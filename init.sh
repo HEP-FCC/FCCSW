@@ -21,7 +21,7 @@ if [ ! -L $FCCSWBASEDIR/.git/hooks/pre-commit ]; then
 fi
 
 # Version
-versiontag="94.2.0"
+versiontag="96.0.0"
 if ! test "x$1" = "x" ; then
    versiontag="$1"
 fi
@@ -36,7 +36,7 @@ if test -f "/etc/redhat-release"; then
 fi
 
 # Compiler
-gcctag="gcc62"
+gcctag="gcc8"
 
 # Platform
 platform="$ostag-$gcctag-opt"
@@ -55,3 +55,7 @@ else
    echo "Versions available for this platform:"
    ls -1 /cvmfs/fcc.cern.ch/sw/views/releases/externals/*/$platform/setup.sh
 fi
+
+# TEMPORARY: fix to lcg releases
+export Gaudi_DIR=/cvmfs/sft.cern.ch/lcg/releases/LCG_96/Gaudi/v32r0/$platform/
+

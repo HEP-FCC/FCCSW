@@ -7,7 +7,7 @@
 #include "TFile.h"
 #include "TTree.h"
 
-DECLARE_SERVICE_FACTORY(CreateFCChhCaloNoiseLevelMap)
+DECLARE_COMPONENT(CreateFCChhCaloNoiseLevelMap)
 
 CreateFCChhCaloNoiseLevelMap::CreateFCChhCaloNoiseLevelMap(const std::string& aName, ISvcLocator* aSL)
     : base_class(aName, aSL) {

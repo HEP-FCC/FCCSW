@@ -7,7 +7,7 @@
 #include "G4StepLimiterPhysics.hh"
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_TOOL_FACTORY(SimG4UserLimitPhysicsList)
+DECLARE_COMPONENT(SimG4UserLimitPhysicsList)
 
 SimG4UserLimitPhysicsList::SimG4UserLimitPhysicsList(const std::string& aType, const std::string& aName,
                                                      const IInterface* aParent)

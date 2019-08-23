@@ -17,9 +17,9 @@
 
 typedef CreateVolumePositions<fcc::CaloHitCollection, fcc::PositionedCaloHitCollection> CreateVolumeCaloPositions;
 typedef CreateVolumePositions<fcc::TrackHitCollection, fcc::PositionedTrackHitCollection> CreateVolumeTrackPositions;
-DECLARE_ALGORITHM_FACTORY(CreateVolumeCaloPositions)
+DECLARE_COMPONENT(CreateVolumeCaloPositions)
 DECLARE_COMPONENT_WITH_ID(CreateVolumeCaloPositions, "CreateVolumeCaloPositions")
-DECLARE_ALGORITHM_FACTORY(CreateVolumeTrackPositions)
+DECLARE_COMPONENT(CreateVolumeTrackPositions)
 DECLARE_COMPONENT_WITH_ID(CreateVolumeTrackPositions, "CreateVolumeTrackPositions")
 
 template <class Hits, class PositionedHit>

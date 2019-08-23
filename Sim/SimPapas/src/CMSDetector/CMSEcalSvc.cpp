@@ -2,7 +2,7 @@
 #include "papas/detectors/VolumeCylinder.h"
 #include "papas/detectors/cms/CMSEcal.h"
 
-DECLARE_SERVICE_FACTORY(CMSEcalSvc)
+DECLARE_COMPONENT(CMSEcalSvc)
 
 CMSEcalSvc::CMSEcalSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_ecal(nullptr) {}
 

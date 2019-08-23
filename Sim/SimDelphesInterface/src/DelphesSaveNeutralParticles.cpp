@@ -11,7 +11,7 @@
 #include "datamodel/TaggedParticleCollection.h"
 // ROOT
 #include "TObjArray.h"
-DECLARE_TOOL_FACTORY(DelphesSaveNeutralParticles)
+DECLARE_COMPONENT(DelphesSaveNeutralParticles)
 
 DelphesSaveNeutralParticles::DelphesSaveNeutralParticles(const std::string& aType,
                                                          const std::string& aName,

@@ -37,7 +37,7 @@ public:
   using DataSvc::registerObject;
   /// Overriding standard behaviour of evt service
   /// Register object with the data store.
-  virtual StatusCode registerObject(const std::string& fullPath, DataObject* pObject) final;
+  virtual StatusCode registerObject(std::string_view parentPath, std::string_view fullPath, DataObject* pObject) override final;
 
   StatusCode readCollection(const std::string& collectionName, int collectionID);
 

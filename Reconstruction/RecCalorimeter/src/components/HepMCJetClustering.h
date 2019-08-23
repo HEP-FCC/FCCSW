@@ -9,7 +9,6 @@
 #include "fastjet/JetDefinition.hh"
 
 class HepMCJetClustering : public GaudiAlgorithm {
-  friend class AlgFactory<HepMCJetClustering>;
 
 public:
   /// Constructor.

@@ -9,7 +9,7 @@
 #include "datamodel/TrackStateCollection.h"
 
 
-DECLARE_TOOL_FACTORY(TruthSeedingTool)
+DECLARE_COMPONENT(TruthSeedingTool)
 
 TruthSeedingTool::TruthSeedingTool(const std::string& type, const std::string& name,
                                                    const IInterface* parent)

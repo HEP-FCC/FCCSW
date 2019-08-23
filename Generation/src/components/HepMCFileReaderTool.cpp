@@ -5,9 +5,7 @@
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
-
-DECLARE_TOOL_FACTORY(HepMCFileReader)
+DECLARE_COMPONENT(HepMCFileReader)
 
 HepMCFileReader::HepMCFileReader(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent), m_file(nullptr) {

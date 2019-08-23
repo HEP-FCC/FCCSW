@@ -5,7 +5,7 @@
 
 
 
-DECLARE_ALGORITHM_FACTORY(PileupOverlayAlg)
+DECLARE_COMPONENT(PileupOverlayAlg)
 
 PileupOverlayAlg::PileupOverlayAlg(const std::string& aName, ISvcLocator* aSvcLoc)
     : GaudiAlgorithm(aName, aSvcLoc), m_store(), m_reader() {

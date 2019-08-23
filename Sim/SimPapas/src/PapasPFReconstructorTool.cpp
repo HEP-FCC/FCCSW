@@ -3,7 +3,7 @@
 #include "papas/detectors/Detector.h"
 #include "papas/reconstruction/PFReconstructor.h"
 
-DECLARE_TOOL_FACTORY(PapasPFReconstructorTool)
+DECLARE_COMPONENT(PapasPFReconstructorTool)
 
 PapasPFReconstructorTool::PapasPFReconstructorTool(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)

@@ -37,9 +37,7 @@ gaudi_add_module(ClicDetector
                  src/ClicDetector/*.cpp
                  INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
                  LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
-gaudi_install_headers(SimPapas)
-gaudi_install_headers(CMSDetector)
-gaudi_install_headers(ClicDetector)
+
 gaudi_install_python_modules()
 
 

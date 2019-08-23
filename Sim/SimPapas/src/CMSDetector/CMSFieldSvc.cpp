@@ -2,7 +2,7 @@
 #include "papas/detectors/VolumeCylinder.h"
 #include "papas/detectors/cms/CMSField.h"
 
-DECLARE_SERVICE_FACTORY(CMSFieldSvc)
+DECLARE_COMPONENT(CMSFieldSvc)
 
 CMSFieldSvc::CMSFieldSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_field(nullptr) {}
 

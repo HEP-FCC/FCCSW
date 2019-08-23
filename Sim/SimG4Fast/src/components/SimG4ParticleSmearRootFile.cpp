@@ -1,7 +1,7 @@
 #include "SimG4ParticleSmearRootFile.h"
 
 // Gaudi
-#include "GaudiKernel/DeclareFactoryEntries.h"
+
 #include "GaudiKernel/IRndmGen.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/SystemOfUnits.h"
@@ -15,7 +15,7 @@
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "CLHEP/Vector/ThreeVector.h"
 
-DECLARE_TOOL_FACTORY(SimG4ParticleSmearRootFile)
+DECLARE_COMPONENT(SimG4ParticleSmearRootFile)
 
 SimG4ParticleSmearRootFile::SimG4ParticleSmearRootFile(const std::string& type, const std::string& name,
                                                        const IInterface* parent)

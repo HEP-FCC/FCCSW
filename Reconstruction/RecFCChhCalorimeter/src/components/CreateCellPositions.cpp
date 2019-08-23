@@ -13,7 +13,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateCellPositions)
+DECLARE_COMPONENT(CreateCellPositions)
 
 CreateCellPositions::CreateCellPositions(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hit collection (input)");

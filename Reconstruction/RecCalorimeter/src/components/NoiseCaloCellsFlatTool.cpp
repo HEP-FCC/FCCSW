@@ -1,6 +1,6 @@
 #include "NoiseCaloCellsFlatTool.h"
 
-DECLARE_TOOL_FACTORY(NoiseCaloCellsFlatTool)
+DECLARE_COMPONENT(NoiseCaloCellsFlatTool)
 
 NoiseCaloCellsFlatTool::NoiseCaloCellsFlatTool(const std::string& type, const std::string& name,
                                                const IInterface* parent)

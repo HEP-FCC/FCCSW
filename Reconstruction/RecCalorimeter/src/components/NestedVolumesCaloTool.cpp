@@ -5,17 +5,17 @@
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
-DECLARE_TOOL_FACTORY(NestedVolumesCaloTool)
+DECLARE_COMPONENT(NestedVolumesCaloTool)
 
 NestedVolumesCaloTool::NestedVolumesCaloTool(const std::string& type, const std::string& name, const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name) {
   declareInterface<ICalorimeterTool>(this);
 }
 
 StatusCode NestedVolumesCaloTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

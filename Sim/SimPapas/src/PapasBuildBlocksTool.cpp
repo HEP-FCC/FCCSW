@@ -2,7 +2,7 @@
 
 #include "papas/reconstruction/BuildPFBlocks.h"
 
-DECLARE_TOOL_FACTORY(PapasBuildBlocksTool)
+DECLARE_COMPONENT(PapasBuildBlocksTool)
 
 PapasBuildBlocksTool::PapasBuildBlocksTool(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)

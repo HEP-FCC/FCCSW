@@ -6,7 +6,7 @@
 
 
 
-DECLARE_TOOL_FACTORY(FCChhSeedingGraphTool)
+DECLARE_COMPONENT(FCChhSeedingGraphTool)
 
 FCChhSeedingGraphTool::FCChhSeedingGraphTool(const std::string& type, const std::string& name,
                                                    const IInterface* parent)

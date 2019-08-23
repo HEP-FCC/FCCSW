@@ -9,7 +9,7 @@
 
 //#include "G4VFastSimulationModel.hh"
 
-DECLARE_TOOL_FACTORY(SimG4FullSimDCHRegion)
+DECLARE_COMPONENT(SimG4FullSimDCHRegion)
 
 SimG4FullSimDCHRegion::SimG4FullSimDCHRegion(const std::string& type, const std::string& name,
                                                      const IInterface* parent)
