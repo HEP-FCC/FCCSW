@@ -42,8 +42,7 @@ gcctag="gcc8"
 platform="$ostag-$gcctag-opt"
 
 # Setup script
-#setuppath="/cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag/$platform/setup.sh"
-setuppath="/cvmfs/fcc.cern.ch/sw/views/nightlies/externals/latest/$platform/setup.sh"
+setuppath="/cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag/$platform/setup.sh"
 
 weekday=`date +%a`
 if test -f $setuppath ; then
