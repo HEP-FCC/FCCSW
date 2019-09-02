@@ -1,13 +1,10 @@
-
 #include "HepMCFullMerge.h"
 
 #include "GaudiKernel/IEventProcessor.h"
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
-
-DECLARE_TOOL_FACTORY(HepMCFullMerge)
+DECLARE_COMPONENT(HepMCFullMerge)
 
 HepMCFullMerge::HepMCFullMerge(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

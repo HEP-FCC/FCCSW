@@ -1,9 +1,8 @@
 #include "PoissonPileUp.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 
-DECLARE_TOOL_FACTORY(PoissonPileUp)
+DECLARE_COMPONENT(PoissonPileUp)
 
 PoissonPileUp::PoissonPileUp(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

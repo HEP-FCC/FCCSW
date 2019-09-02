@@ -79,8 +79,8 @@ private:
   int m_goodTracklets = 0;
   int m_totalTracklets = 0;
 
-  ToolHandle<ILayerGraphTool> m_layerGraphTool;
-  ToolHandle<IHitFilterTool> m_hitFilterTool;
+  ToolHandle<ILayerGraphTool> m_layerGraphTool{"FCChhSeedingGraphTool/FCChhSeedingGraphTool", this};
+  ToolHandle<IHitFilterTool> m_hitFilterTool{"FCChhSeedHitFilterTool/FCChhSeedHitFilterTool", this};
 
   std::unique_ptr<tricktrack::HitChainMaker<tricktrack::TTPoint>> m_automaton;
   std::unique_ptr<tricktrack::TrackingRegion> m_trackingRegion;

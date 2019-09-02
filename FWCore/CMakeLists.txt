@@ -14,15 +14,13 @@ gaudi_install_python_modules()
 
 gaudi_add_library(FWCore
 		  src/*.cpp
-                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM PODIO
-                  INCLUDE_DIRS FCCEDM PODIO
+                  INCLUDE_DIRS FCCEDM PODIO ROOT
+                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM PODIO ROOT
                   PUBLIC_HEADERS FWCore)
 
 gaudi_add_module(FWCorePlugins
                  src/components/*.cpp
                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FWCore ROOT)
-
-
 
 gaudi_add_test(ProduceForReadTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -32,7 +30,7 @@ gaudi_add_test(ReadTest
                FRAMEWORK tests/options/simple_reader.py
                DEPENDS ProduceForReadTest)
 gaudi_add_test(CheckReadCollectionSize
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_read.py
                DEPENDS ReadTest)

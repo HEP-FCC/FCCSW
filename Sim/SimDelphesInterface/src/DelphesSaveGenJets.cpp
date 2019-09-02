@@ -12,7 +12,7 @@
 // ROOT
 #include "TObjArray.h"
 
-DECLARE_TOOL_FACTORY(DelphesSaveGenJets)
+DECLARE_COMPONENT(DelphesSaveGenJets)
 
 DelphesSaveGenJets::DelphesSaveGenJets(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {

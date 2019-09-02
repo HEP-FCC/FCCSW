@@ -3,7 +3,7 @@
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsCaloDiscsTool)
+DECLARE_COMPONENT(CellPositionsCaloDiscsTool)
 
 CellPositionsCaloDiscsTool::CellPositionsCaloDiscsTool(const std::string& type, const std::string& name,
                                                        const IInterface* parent)

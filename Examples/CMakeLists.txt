@@ -55,7 +55,7 @@ gaudi_add_test(GeantFastSimTrackerTkLayout
                FRAMEWORK options/geant_fastsim_tklayout.py)
 gaudi_add_test(SimplePythia
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND fccrun Examples/options/simple_pythia.py)
+               COMMAND fccrun Examples/options/pythia.py)
 gaudi_add_test(ExampleOptions
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/example_options.py)
@@ -66,7 +66,7 @@ gaudi_add_test(PileupOverlay
                FRAMEWORK options/overlaySignalAndPileup.py
                DEPENDS GeantFullSimTrackerHitsWithField GeantFullSimParticleGun)
 gaudi_add_test(CheckMergeCollection
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
                DEPENDS PileupOverlay)

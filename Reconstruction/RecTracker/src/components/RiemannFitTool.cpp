@@ -16,7 +16,7 @@ using Hit = tricktrack::TTPoint;
 
 using namespace tricktrack;
 
-DECLARE_TOOL_FACTORY(RiemannFitTool)
+DECLARE_COMPONENT(RiemannFitTool)
 
 RiemannFitTool::RiemannFitTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

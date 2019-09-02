@@ -20,7 +20,7 @@ include( DD4hep )
 gaudi_add_module(RecCalorimeterPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecCalorimeter
-                 LINK_LIBRARIES Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation Geant4 DetCommon)
+                 LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation Geant4 DetCommon)
 
 include(CTest)
 gaudi_add_test(genJetClustering
@@ -38,7 +38,7 @@ gaudi_add_test(EcalReconstructionNoiseFromFile
                PASSREGEX "Segmentation cells  \\(Nphi, Neta, minEta\\): \\[629, 331, 1\\]" )
 
 gaudi_add_test(EcalReconstructionCheckNumClusters
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python Reconstruction/RecCalorimeter/tests/scripts/ecalRecoCheckNumClusters.py
                DEPENDS EcalReconstructionNoiseFromFile)

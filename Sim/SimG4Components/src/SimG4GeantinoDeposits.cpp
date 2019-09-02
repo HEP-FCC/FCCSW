@@ -110,7 +110,7 @@ class GeantinoEnergyDepositList : public G4VModularPhysicsList {
   }
 };
 
-DECLARE_TOOL_FACTORY(SimG4GeantinoDeposits)
+DECLARE_COMPONENT(SimG4GeantinoDeposits)
 
 SimG4GeantinoDeposits::SimG4GeantinoDeposits(const std::string& aType, const std::string& aName,
                                              const IInterface* aParent)

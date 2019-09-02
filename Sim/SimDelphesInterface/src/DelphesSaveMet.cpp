@@ -10,7 +10,7 @@
 // ROOT
 #include "TObjArray.h"
 
-DECLARE_TOOL_FACTORY(DelphesSaveMet)
+DECLARE_COMPONENT(DelphesSaveMet)
 
 DelphesSaveMet::DelphesSaveMet(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {

@@ -7,7 +7,7 @@
 #include "TFile.h"
 #include "TTree.h"
 
-DECLARE_SERVICE_FACTORY(CreateFCChhCaloNeighbours)
+DECLARE_COMPONENT(CreateFCChhCaloNeighbours)
 
 CreateFCChhCaloNeighbours::CreateFCChhCaloNeighbours(const std::string& aName, ISvcLocator* aSL)
     : base_class(aName, aSL) {

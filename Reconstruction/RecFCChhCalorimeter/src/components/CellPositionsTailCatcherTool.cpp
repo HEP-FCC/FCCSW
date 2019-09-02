@@ -3,7 +3,7 @@
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(CellPositionsTailCatcherTool)
+DECLARE_COMPONENT(CellPositionsTailCatcherTool)
 
 CellPositionsTailCatcherTool::CellPositionsTailCatcherTool(const std::string& type,
                                                            const std::string& name,
@@ -91,6 +91,6 @@ dd4hep::Position CellPositionsTailCatcherTool::xyzPosition(const uint64_t& aCell
   return outSeg;
 }
 
-int CellPositionsTailCatcherTool::layerId(const uint64_t& aCellId) { return 0; }
+int CellPositionsTailCatcherTool::layerId(const uint64_t& /*aCellId*/) { return 0; }
 
 StatusCode CellPositionsTailCatcherTool::finalize() { return GaudiTool::finalize(); }

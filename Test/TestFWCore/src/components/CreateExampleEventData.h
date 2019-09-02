@@ -7,6 +7,7 @@
 
 // FCCSW
 #include "FWCore/DataHandle.h"
+#include "TTree.h"
 
 
 
@@ -18,6 +19,7 @@ class CaloHitCollection;
 class PositionedCaloHitCollection;
 class TrackHitCollection;
 class PositionedTrackHitCollection;
+class FloatValueData;
 }
 
 /** @class CreateExampleEventData
@@ -59,5 +61,9 @@ private:
   DataHandle<fcc::TrackHitCollection> m_trackHitHandle{"trackHits", Gaudi::DataHandle::Writer, this};
   /// Handle for the EDM Hits to be read
   DataHandle<fcc::PositionedTrackHitCollection> m_posTrackHitHandle{"positionedTrackHits", Gaudi::DataHandle::Writer, this};
+
+  DataHandle<std::vector<fcc::FloatValueData>> m_somefloatHandle{"somefloat", Gaudi::DataHandle::Writer, this};
+  DataHandle<std::vector<float>> m_somefloatHandle2{"somefloat2", Gaudi::DataHandle::Writer, this};
+  DataHandle<std::vector<int>> m_someinthandle{"someint", Gaudi::DataHandle::Writer, this};
 };
 #endif /* TESTFWCORE_CREATEEXAMPLEEVENTDATA */

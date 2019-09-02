@@ -24,7 +24,7 @@
 
 #include "HepMC/GenEvent.h"
 
-DECLARE_TOOL_FACTORY(PythiaInterface)
+DECLARE_COMPONENT(PythiaInterface)
 
 PythiaInterface::PythiaInterface(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent),
@@ -272,6 +272,11 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
       debug() << endmsg;
     }
   }  // Debug
+
+  if (m_printPythiaStatistics) {
+    m_pythiaSignal->stat();
+  }
+
 
   // Handle event via standard Gaudi mechanism
   m_iEvent++;

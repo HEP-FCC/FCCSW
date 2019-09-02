@@ -10,8 +10,6 @@ find_package(Geant4)
 include(${Geant4_USE_FILE})
 find_package(ROOT)
 
-gaudi_install_headers(SimG4Full)
-
 gaudi_add_library(SimG4Full
                  src/lib/*.cpp
                  INCLUDE_DIRS SimG4Common FWCore SimG4Components SimG4Interface Geant4 ROOT

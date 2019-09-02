@@ -10,7 +10,7 @@ include(${Geant4_USE_FILE})
 find_package(DD4hep)
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-gaudi_install_headers(TestGeometryLib)
+
 
 gaudi_add_library(TestGeometryLib
 		  src/*.cpp

@@ -16,11 +16,12 @@
 #include "RecTracker/TrackingUtils.h"
 
 
-DECLARE_ALGORITHM_FACTORY(FastGaussSmearDigi)
+DECLARE_COMPONENT(FastGaussSmearDigi)
 
 
 
-FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svcLoc) :
+    GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name) {
 
   declareProperty("smearedHits", m_smearedTrackHits, "Smeared Tracker hits (Output)");
   declareProperty("trackHits", m_trackHits, "Tracker hits (Input)");
@@ -29,7 +30,7 @@ FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svc
 StatusCode FastGaussSmearDigi::initialize() {
   info() << "initialize" << endmsg;
 
-  m_geoSvc = service("GeoSvc");
+  
 
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;

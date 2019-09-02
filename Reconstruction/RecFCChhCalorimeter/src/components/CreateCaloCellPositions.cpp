@@ -13,7 +13,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateCaloCellPositions)
+DECLARE_COMPONENT(CreateCaloCellPositions)
 
 CreateCaloCellPositions::CreateCaloCellPositions(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {

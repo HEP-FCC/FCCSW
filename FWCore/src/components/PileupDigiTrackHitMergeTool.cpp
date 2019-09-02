@@ -8,7 +8,7 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_TOOL_FACTORY(PileupDigiTrackHitMergeTool)
+DECLARE_COMPONENT(PileupDigiTrackHitMergeTool)
 DECLARE_COMPONENT_WITH_ID(PileupDigiTrackHitMergeTool, "PileupDigiTrackHitMergeTool")
 
 PileupDigiTrackHitMergeTool::PileupDigiTrackHitMergeTool(const std::string& aType, const std::string& aName,

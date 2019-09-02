@@ -14,7 +14,7 @@
 // DD4hep
 #include "DDG4/Geant4Hits.h"
 
-DECLARE_TOOL_FACTORY(SimG4SaveSmearedParticles)
+DECLARE_COMPONENT(SimG4SaveSmearedParticles)
 
 SimG4SaveSmearedParticles::SimG4SaveSmearedParticles(const std::string& aType, const std::string& aName,
                                                      const IInterface* aParent)

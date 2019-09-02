@@ -3,7 +3,7 @@
 // FCCSW
 #include "SimG4Fast/FastSimActions.h"
 
-DECLARE_TOOL_FACTORY(SimG4FastSimActions)
+DECLARE_COMPONENT(SimG4FastSimActions)
 
 SimG4FastSimActions::SimG4FastSimActions(const std::string& type, const std::string& name, const IInterface* parent)
     : AlgTool(type, name, parent) {

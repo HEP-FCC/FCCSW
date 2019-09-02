@@ -13,7 +13,7 @@
 #include "SimDelphesInterface/ParticleStatus.h"
 #include "TObjArray.h"
 
-DECLARE_TOOL_FACTORY(DelphesSaveChargedParticles)
+DECLARE_COMPONENT(DelphesSaveChargedParticles)
 
 DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aType,
                                                          const std::string& aName,

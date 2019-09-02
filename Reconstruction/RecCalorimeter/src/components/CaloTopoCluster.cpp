@@ -21,7 +21,7 @@
 #include <unordered_map>
 #include <vector>
 
-DECLARE_ALGORITHM_FACTORY(CaloTopoCluster)
+DECLARE_COMPONENT(CaloTopoCluster)
 
 CaloTopoCluster::CaloTopoCluster(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("TopoClusterInput", m_inputTool, "Handle for input map of cells");

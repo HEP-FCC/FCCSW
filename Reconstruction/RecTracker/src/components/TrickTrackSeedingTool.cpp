@@ -24,7 +24,7 @@ using Hit = tricktrack::TTPoint;
 using namespace tricktrack;
 using namespace std::placeholders;
 
-DECLARE_TOOL_FACTORY(TrickTrackSeedingTool)
+DECLARE_COMPONENT(TrickTrackSeedingTool)
 
 TrickTrackSeedingTool::TrickTrackSeedingTool(const std::string& type, const std::string& name,
                                                    const IInterface* parent)

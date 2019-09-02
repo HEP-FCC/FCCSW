@@ -2,23 +2,22 @@
 
 // segm
 #include "DD4hep/Detector.h"
+#include "DD4hep/MultiSegmentation.h"
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
-#include "DDSegmentation/MultiSegmentation.h"
-
-DECLARE_TOOL_FACTORY(TubeLayerPhiEtaCaloTool)
+DECLARE_COMPONENT(TubeLayerPhiEtaCaloTool)
 
 TubeLayerPhiEtaCaloTool::TubeLayerPhiEtaCaloTool(const std::string& type, const std::string& name,
                                                  const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name) {
   declareInterface<ICalorimeterTool>(this);
 }
 
 StatusCode TubeLayerPhiEtaCaloTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

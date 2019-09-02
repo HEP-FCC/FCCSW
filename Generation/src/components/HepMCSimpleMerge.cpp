@@ -1,13 +1,10 @@
-
 #include "HepMCSimpleMerge.h"
 
 #include "GaudiKernel/IEventProcessor.h"
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
-
-DECLARE_TOOL_FACTORY(HepMCSimpleMerge)
+DECLARE_COMPONENT(HepMCSimpleMerge)
 
 HepMCSimpleMerge::HepMCSimpleMerge(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
