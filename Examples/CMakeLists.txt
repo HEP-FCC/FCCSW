@@ -10,7 +10,7 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom)
 find_package(DD4hep)
 find_package(Geant4)
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/Examples)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Examples)
 
 gaudi_add_module(Examples
                  src/*.cpp
