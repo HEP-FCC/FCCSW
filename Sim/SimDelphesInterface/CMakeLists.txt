@@ -17,8 +17,8 @@ gaudi_add_module(SimDelphesInterface
                  INCLUDE_DIRS FWCore ROOT Delphes FCCEDM PODIO HepMC
                  LINK_LIBRARIES FWCore GaudiAlgLib ROOT Delphes FCCEDM PODIO HepMC)
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/data DESTINATION ${CMAKE_INSTALL_DATADIR}/Sim/SimDelphesInterface)
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/Sim/SimDelphesInterface)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/data DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Sim/SimDelphesInterface)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Sim/SimDelphesInterface)
 
 target_compile_options(SimDelphesInterface PUBLIC "-Wno-overloaded-virtual")
 
