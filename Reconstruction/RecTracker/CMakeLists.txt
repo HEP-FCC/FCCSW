@@ -32,7 +32,10 @@ gaudi_add_library(ActsLogger
                  NO_PUBLIC_HEADERS
                  LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep ActsCore)
 
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Reconstruction/RecTracker)
+
 include(CTest)
+
 
 gaudi_add_test(FastDigiTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

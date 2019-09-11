@@ -15,6 +15,8 @@ endif(SAS)
 find_package(GaudiProject)
 #---------------------------------------------------------------
 
+include(GNUInstallDirs)
+
 # Set up C++ Standard
 # ``-DCMAKE_CXX_STANDARD=<standard>`` when invoking CMake
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "")

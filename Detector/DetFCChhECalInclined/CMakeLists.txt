@@ -14,7 +14,7 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 #include_directories(BEFORE SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION Detector/DetFCChhECalInclined)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Detector/DetFCChhECalInclined)
 
 gaudi_add_module(DetFCChhECalInclined
                  src/*.cpp

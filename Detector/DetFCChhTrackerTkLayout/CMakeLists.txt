@@ -17,8 +17,8 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION Detector/DetFCChhTrackerTkLayout)
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/triplet DESTINATION Detector/DetFCChhTrackerTkLayout)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Detector/DetFCChhTrackerTkLayout)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/triplet DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Detector/DetFCChhTrackerTkLayout)
 
 gaudi_add_module(DetFCChhTrackerTkLayout
                  src/*.cpp
