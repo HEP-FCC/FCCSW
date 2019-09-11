@@ -4,7 +4,7 @@
 #include "G4GDMLParser.hh"
 #include "G4TransportationManager.hh"
 
-DECLARE_SERVICE_FACTORY(GeoToGdmlDumpSvc)
+DECLARE_COMPONENT(GeoToGdmlDumpSvc)
 
 GeoToGdmlDumpSvc::GeoToGdmlDumpSvc(const std::string& aName, ISvcLocator* aSL) : base_class(aName, aSL) {}
 

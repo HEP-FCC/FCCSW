@@ -17,9 +17,9 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_ALGORITHM_FACTORY(UpstreamMaterial)
+DECLARE_COMPONENT(UpstreamMaterial)
 
-UpstreamMaterial::UpstreamMaterial(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+UpstreamMaterial::UpstreamMaterial(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("deposits", m_deposits, "Energy deposits (input)");
   declareProperty("particle", m_particle, "Generated single-particle event (input)");
 }
@@ -27,7 +27,7 @@ UpstreamMaterial::~UpstreamMaterial() {}
 
 StatusCode UpstreamMaterial::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

@@ -6,7 +6,7 @@
 
 #include "papas/detectors/clic/Clic.h"
 
-DECLARE_SERVICE_FACTORY(ClicDetSvc)
+DECLARE_COMPONENT(ClicDetSvc)
 
 ClicDetSvc::ClicDetSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_detector(nullptr) {}
 

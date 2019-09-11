@@ -4,7 +4,7 @@
 #include "G4NistManager.hh"
 #include "GFlashSamplingShowerParameterisation.hh"
 
-DECLARE_TOOL_FACTORY(SimG4GflashSamplingCalo)
+DECLARE_COMPONENT(SimG4GflashSamplingCalo)
 
 SimG4GflashSamplingCalo::SimG4GflashSamplingCalo(const std::string& type, const std::string& name,
                                                  const IInterface* parent)

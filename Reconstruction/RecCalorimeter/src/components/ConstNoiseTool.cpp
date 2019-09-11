@@ -7,7 +7,7 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
-DECLARE_TOOL_FACTORY(ConstNoiseTool)
+DECLARE_COMPONENT(ConstNoiseTool)
 
 ConstNoiseTool::ConstNoiseTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

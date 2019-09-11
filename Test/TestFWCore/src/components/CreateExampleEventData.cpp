@@ -8,9 +8,10 @@
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
+#include "datamodel/FloatValueData.h"
 
 
-DECLARE_ALGORITHM_FACTORY(CreateExampleEventData)
+DECLARE_COMPONENT(CreateExampleEventData)
 
 CreateExampleEventData::CreateExampleEventData(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
   declareProperty("genparticles", m_genParticleHandle, "Dummy Particle collection (output)");
@@ -31,6 +32,20 @@ StatusCode CreateExampleEventData::initialize() {
 }
 
 StatusCode CreateExampleEventData::execute() {
+
+  std::vector<int>* ff3 = m_someinthandle.createAndPut();
+  ff3->emplace_back(777);
+
+  std::vector<float>* ff2 = m_somefloatHandle2.createAndPut();
+
+  ff2->emplace_back( 125.);
+  ff2->emplace_back( 25.);
+  std::vector<fcc::FloatValueData>* ff = m_somefloatHandle.createAndPut();
+  auto fff = fcc::FloatValueData();
+  fff.value = 12345.;
+  ff->emplace_back( fff);
+  fff.value = 1/12.;
+  ff->emplace_back( fff);
 
   fcc::MCParticleCollection* particles = m_genParticleHandle.createAndPut();
   fcc::GenVertexCollection* vertices = m_genVertexHandle.createAndPut();

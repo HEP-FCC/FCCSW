@@ -5,7 +5,7 @@
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
-DECLARE_TOOL_FACTORY(PileupParticlesMergeTool)
+DECLARE_COMPONENT(PileupParticlesMergeTool)
 
 PileupParticlesMergeTool::PileupParticlesMergeTool(const std::string& aType, const std::string& aName,
                                                    const IInterface* aParent)

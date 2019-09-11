@@ -2,7 +2,7 @@
 #include "papas/detectors/VolumeCylinder.h"
 #include "papas/detectors/clic/ClicField.h"
 
-DECLARE_SERVICE_FACTORY(ClicFieldSvc)
+DECLARE_COMPONENT(ClicFieldSvc)
 
 ClicFieldSvc::ClicFieldSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_field(nullptr) {}
 

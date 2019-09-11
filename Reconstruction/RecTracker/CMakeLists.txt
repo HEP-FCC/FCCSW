@@ -12,8 +12,6 @@ find_package(DD4hep)
 find_package(ROOT REQUIRED COMPONENTS Geom)
 find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin Legacy)
 
-
-gaudi_install_headers(RecTracker)
 gaudi_install_python_modules()
 gaudi_add_library(TrackingUtils
                  src/lib/*.cpp
@@ -33,7 +31,10 @@ gaudi_add_library(ActsLogger
                  NO_PUBLIC_HEADERS
                  LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep ActsCore)
 
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Reconstruction/RecTracker)
+
 include(CTest)
+
 
 gaudi_add_test(FastDigiTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -42,7 +43,7 @@ gaudi_add_test(FastDigiTest
 
 gaudi_add_test(MuonsForSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND ./run fccrun.py  Reconstruction/RecTracker/options/geantSim_TrackerPerformance.py -N 10 -s 0123456 --outName muons_for_seeding.root --singlePart --particle 13)
+               FRAMEWORK  options/geantSim_TrackerPerformance.py)
 
 gaudi_add_test(CombinatorialTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

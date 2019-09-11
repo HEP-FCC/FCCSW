@@ -11,7 +11,7 @@
 #include "datamodel/CaloHitCollection.h"
 #include "datamodel/PositionedCaloHitCollection.h"
 
-DECLARE_TOOL_FACTORY(SimG4SaveTestCalHits)
+DECLARE_COMPONENT(SimG4SaveTestCalHits)
 
 SimG4SaveTestCalHits::SimG4SaveTestCalHits(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)

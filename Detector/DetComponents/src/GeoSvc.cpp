@@ -20,7 +20,14 @@ DECLARE_COMPONENT(GeoSvc)
 GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc)
 : base_class(name, svc), m_incidentSvc("IncidentSvc", "GeoSvc"), m_dd4hepgeo(0), m_geant4geo(0), m_log(msgSvc(), name), m_failureFlag(false) {}
 
-GeoSvc::~GeoSvc() { m_dd4hepgeo->destroyInstance(); }
+GeoSvc::~GeoSvc() {
+  if (m_dd4hepgeo){
+    try{
+      m_dd4hepgeo->destroyInstance();
+      m_dd4hepgeo = 0;
+    } catch(...) {} 
+  }
+}
 
 StatusCode GeoSvc::initialize() {
   StatusCode sc = Service::initialize();

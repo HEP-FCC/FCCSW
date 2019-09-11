@@ -12,8 +12,6 @@ find_package(ROOT)
 find_package(FCCEDM)
 find_package(PODIO)
 
-gaudi_install_headers(SimG4Common)
-
 gaudi_add_library(SimG4Common
                  src/*.cpp
                  INCLUDE_DIRS FWCore Geant4 ROOT FCCEDM PODIO

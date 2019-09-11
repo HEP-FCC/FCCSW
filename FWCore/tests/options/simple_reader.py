@@ -17,7 +17,7 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = 3,
+    EvtMax   = 5,
     ExtSvc = [podioevent],
     OutputLevel=DEBUG
  )

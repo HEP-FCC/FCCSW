@@ -15,7 +15,7 @@
 #include "RecHelixTrajectory.h"
 #include "RecTracker/TrackingUtils.h"
 
-DECLARE_ALGORITHM_FACTORY(RecHelixTrajectory)
+DECLARE_COMPONENT(RecHelixTrajectory)
 
 RecHelixTrajectory::RecHelixTrajectory(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 

@@ -12,17 +12,16 @@
 #include "TH1F.h"
 #include "TMath.h"
 
-DECLARE_TOOL_FACTORY(NoiseCaloCellsFromFileTool)
+DECLARE_COMPONENT(NoiseCaloCellsFromFileTool)
 
 NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type, const std::string& name,
                                                        const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name) {
   declareInterface<INoiseCaloCellsTool>(this);
 }
 
 StatusCode NoiseCaloCellsFromFileTool::initialize() {
-  // Get GeoSvc
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;

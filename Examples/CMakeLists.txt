@@ -7,14 +7,16 @@ gaudi_subdir(Examples v1r0)
 gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Interface Detector/DetInterface Detector/DetCommon)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
-find_package(DD4hep COMPONENTS DDG4 REQUIRED)
-include(DD4hep)
+find_package(DD4hep)
 find_package(Geant4)
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Examples)
 
 gaudi_add_module(Examples
                  src/*.cpp
-		           INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon
-                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep ${DD4hep_COMPONENT_LIBRARIES} Geant4)
+		             INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon
+                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep Geant4
+                 )
 
 
 include(CTest)
@@ -55,7 +57,7 @@ gaudi_add_test(GeantFastSimTrackerTkLayout
                FRAMEWORK options/geant_fastsim_tklayout.py)
 gaudi_add_test(SimplePythia
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND fccrun Examples/options/simple_pythia.py)
+               COMMAND fccrun Examples/options/pythia.py)
 gaudi_add_test(ExampleOptions
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/example_options.py)
@@ -66,7 +68,7 @@ gaudi_add_test(PileupOverlay
                FRAMEWORK options/overlaySignalAndPileup.py
                DEPENDS GeantFullSimTrackerHitsWithField GeantFullSimParticleGun)
 gaudi_add_test(CheckMergeCollection
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
+               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
                DEPENDS PileupOverlay)

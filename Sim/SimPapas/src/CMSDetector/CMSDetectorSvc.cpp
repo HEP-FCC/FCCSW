@@ -6,7 +6,7 @@
 
 #include "papas/detectors/cms/CMS.h"
 
-DECLARE_SERVICE_FACTORY(CMSDetSvc)
+DECLARE_COMPONENT(CMSDetSvc)
 
 CMSDetSvc::CMSDetSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_detector(nullptr) {}
 

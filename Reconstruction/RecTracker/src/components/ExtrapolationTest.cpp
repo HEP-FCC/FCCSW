@@ -11,7 +11,7 @@
 
 #include "ExtrapolationTest.h"
 
-DECLARE_ALGORITHM_FACTORY(ExtrapolationTest)
+DECLARE_COMPONENT(ExtrapolationTest)
 
 ExtrapolationTest::ExtrapolationTest(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc), m_extrapolationTool(nullptr) {

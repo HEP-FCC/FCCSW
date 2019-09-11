@@ -11,7 +11,7 @@
 #include "CLHEP/Vector/ThreeVector.h"
 #include "TH1F.h"
 
-DECLARE_ALGORITHM_FACTORY(SimG4FastSimHistograms)
+DECLARE_COMPONENT(SimG4FastSimHistograms)
 
 SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLocator* aSvcLoc)
     : GaudiAlgorithm(aName, aSvcLoc) {

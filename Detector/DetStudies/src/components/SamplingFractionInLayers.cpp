@@ -15,7 +15,7 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_ALGORITHM_FACTORY(SamplingFractionInLayers)
+DECLARE_COMPONENT(SamplingFractionInLayers)
 
 SamplingFractionInLayers::SamplingFractionInLayers(const std::string& aName, ISvcLocator* aSvcLoc)
     : GaudiAlgorithm(aName, aSvcLoc),

@@ -7,7 +7,7 @@
 
 #include "GaudiKernel/SystemOfUnits.h"
 
-DECLARE_TOOL_FACTORY(SimG4UserLimitRegion)
+DECLARE_COMPONENT(SimG4UserLimitRegion)
 
 SimG4UserLimitRegion::SimG4UserLimitRegion(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

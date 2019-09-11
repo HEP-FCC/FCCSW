@@ -2,7 +2,7 @@
 #include "papas/detectors/VolumeCylinder.h"
 #include "papas/detectors/clic/ClicEcal.h"
 
-DECLARE_SERVICE_FACTORY(ClicEcalSvc)
+DECLARE_COMPONENT(ClicEcalSvc)
 
 ClicEcalSvc::ClicEcalSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_ecal(nullptr) {}
 

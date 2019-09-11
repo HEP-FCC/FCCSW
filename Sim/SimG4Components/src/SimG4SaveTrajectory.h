@@ -42,7 +42,7 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for trajectory hits including position information
   DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trajectory",
                                                                       Gaudi::DataHandle::Writer, this};

@@ -4,7 +4,7 @@
 #include "TTree.h"
 #include "TBranch.h"
 
-DECLARE_TOOL_FACTORY(TopoCaloNeighbours)
+DECLARE_COMPONENT(TopoCaloNeighbours)
 
 TopoCaloNeighbours::TopoCaloNeighbours(const std::string& type, const std::string& name,
                                                  const IInterface* parent)

@@ -11,7 +11,7 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
-DECLARE_TOOL_FACTORY(CaloTopoClusterInputTool)
+DECLARE_COMPONENT(CaloTopoClusterInputTool)
 
 CaloTopoClusterInputTool::CaloTopoClusterInputTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {

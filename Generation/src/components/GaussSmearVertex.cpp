@@ -1,13 +1,12 @@
 #include "GaussSmearVertex.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/SystemOfUnits.h"
 #include "GaudiKernel/Vector4DTypes.h"
 
 /// Declaration of the Tool Factory
-DECLARE_TOOL_FACTORY(GaussSmearVertex)
+DECLARE_COMPONENT(GaussSmearVertex)
 
 /// Standard constructor, initializes variables
 GaussSmearVertex::GaussSmearVertex(const std::string& type, const std::string& name, const IInterface* parent)

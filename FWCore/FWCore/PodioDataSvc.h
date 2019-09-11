@@ -37,7 +37,7 @@ public:
   using DataSvc::registerObject;
   /// Overriding standard behaviour of evt service
   /// Register object with the data store.
-  virtual StatusCode registerObject(const std::string& fullPath, DataObject* pObject) final;
+  virtual StatusCode registerObject(std::string_view parentPath, std::string_view fullPath, DataObject* pObject) override final;
 
   StatusCode readCollection(const std::string& collectionName, int collectionID);
 
@@ -50,7 +50,14 @@ public:
   /// Resets caches of reader and event store, increases event counter
   void endOfRead();
 
+
+  TTree* eventDataTree() {return m_eventDataTree;}
+
+
 private:
+
+  // eventDataTree
+  TTree* m_eventDataTree;
   /// PODIO reader for ROOT files
   podio::ROOTReader m_reader;
   /// PODIO EventStore, used to initialise collections
@@ -59,6 +66,7 @@ private:
   int m_eventNum{0};
   /// Number of events in the file / to process
   int m_eventMax{-1};
+
 
   SmartIF<IConversionSvc> m_cnvSvc;
 

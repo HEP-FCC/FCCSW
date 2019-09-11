@@ -1,7 +1,7 @@
 #include "SimG4ParticleSmearFormula.h"
 
 // Gaudi
-#include "GaudiKernel/DeclareFactoryEntries.h"
+
 #include "GaudiKernel/IRndmGen.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 
@@ -11,7 +11,7 @@
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
-DECLARE_TOOL_FACTORY(SimG4ParticleSmearFormula)
+DECLARE_COMPONENT(SimG4ParticleSmearFormula)
 
 SimG4ParticleSmearFormula::SimG4ParticleSmearFormula(const std::string& type, const std::string& name,
                                                      const IInterface* parent)

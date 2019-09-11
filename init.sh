@@ -1,5 +1,13 @@
-
 #!/bin/sh -u
+
+# Set up the environment to build and test FCCSW
+# This script relies on CVMFS and the FCC Externals
+#
+# Usage:
+#   source init.sh         # Uses default value for the FCC Externals 94.2.0
+#   source init.sh 94.1.0  # Sets a the 94.1.0 version of the FCC Externals
+
+
 # set FCCSWBASEDIR to the directory containing this script
 export FCCSWBASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -12,5 +20,42 @@ if [ ! -L $FCCSWBASEDIR/.git/hooks/pre-commit ]; then
   ln -s $FCCSWBASEDIR/git-hooks/pre-commit.py $FCCSWBASEDIR/.git/hooks/pre-commit
 fi
 
+# Version
+versiontag="96.0.0"
+if ! test "x$1" = "x" ; then
+   versiontag="$1"
+fi
+
+# Guess OS
+ostag="x86_64-slc6"
+if test -f "/etc/redhat-release"; then
+   six=`grep "release 7" /etc/redhat-release || echo ""`
+   if test ! "x$six" = "x" ; then
+      ostag="x86_64-centos7"
+   fi
+fi
+
+# Compiler
+gcctag="gcc8"
+
+# Platform
+platform="$ostag-$gcctag-opt"
+
+# Setup script
+setuppath="/cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag/$platform/setup.sh"
+
 weekday=`date +%a`
-source /cvmfs/fcc.cern.ch/sw/views/releases/externals/94.2.0/x86_64-slc6-gcc62-opt/setup.sh
+if test -f $setuppath ; then
+   echo "Setting up FCC externals from $setuppath"
+   source $setuppath
+else
+   echo "Setup script not found: $setuppath! "
+   echo "Platforms available for this version:"
+   ls -1 /cvmfs/fcc.cern.ch/sw/views/releases/externals/$versiontag
+   echo "Versions available for this platform:"
+   ls -1 /cvmfs/fcc.cern.ch/sw/views/releases/externals/*/$platform/setup.sh
+fi
+
+# TEMPORARY: fix to lcg releases
+export Gaudi_DIR=/cvmfs/sft.cern.ch/lcg/releases/LCG_96/Gaudi/v32r0/$platform/
+

@@ -22,7 +22,7 @@
 #include "TFitResult.h"
 #include "TGraphErrors.h"
 
-DECLARE_ALGORITHM_FACTORY(MassInv)
+DECLARE_COMPONENT(MassInv)
 
 MassInv::MassInv(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc),

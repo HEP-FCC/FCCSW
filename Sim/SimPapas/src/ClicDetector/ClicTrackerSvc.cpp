@@ -2,7 +2,7 @@
 #include "papas/detectors/VolumeCylinder.h"
 #include "papas/detectors/clic/ClicTracker.h"
 
-DECLARE_SERVICE_FACTORY(ClicTrackerSvc)
+DECLARE_COMPONENT(ClicTrackerSvc)
 
 ClicTrackerSvc::ClicTrackerSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_tracker(nullptr) {}
 

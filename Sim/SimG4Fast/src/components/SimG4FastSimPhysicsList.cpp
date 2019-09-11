@@ -7,7 +7,7 @@
 // Geant4
 #include "G4VModularPhysicsList.hh"
 
-DECLARE_TOOL_FACTORY(SimG4FastSimPhysicsList)
+DECLARE_COMPONENT(SimG4FastSimPhysicsList)
 
 SimG4FastSimPhysicsList::SimG4FastSimPhysicsList(const std::string& aType, const std::string& aName,
                                                  const IInterface* aParent)

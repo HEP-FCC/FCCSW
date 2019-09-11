@@ -6,7 +6,7 @@
 // datamodel
 #include "datamodel/CaloClusterCollection.h"
 
-DECLARE_ALGORITHM_FACTORY(CreateCaloClustersSlidingWindow)
+DECLARE_COMPONENT(CreateCaloClustersSlidingWindow)
 
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {

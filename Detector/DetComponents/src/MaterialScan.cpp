@@ -16,14 +16,15 @@
 #include "TTree.h"
 #include "TVector3.h"
 
-MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc) {}
+MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc),
+m_geoSvc("GeoSvc", name) {}
 
 StatusCode MaterialScan::initialize() {
   if (Service::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
-  if (nullptr == m_geoSvc) {
+  
+  if (!m_geoSvc) {
     error() << "Unable to find Geometry Service." << endmsg;
     return StatusCode::FAILURE;
   }
@@ -94,7 +95,7 @@ StatusCode MaterialScan::initialize() {
       debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
               << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
       const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
-      for (unsigned i = 0, n = materials.size(); i < n; ++i) {
+      for (unsigned i = 0, n_materials = materials.size(); i < n_materials; ++i) {
         phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
       }
     }
@@ -115,4 +116,4 @@ StatusCode MaterialScan::initialize() {
 
 StatusCode MaterialScan::finalize() { return StatusCode::SUCCESS; }
 
-DECLARE_SERVICE_FACTORY(MaterialScan)
+DECLARE_COMPONENT(MaterialScan)

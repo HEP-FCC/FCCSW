@@ -8,7 +8,7 @@
 
 using namespace Acts;
 
-DECLARE_ALGORITHM_FACTORY(TestACTSLogger)
+DECLARE_COMPONENT(TestACTSLogger)
 
 TestACTSLogger::TestACTSLogger(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
 }
