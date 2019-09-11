@@ -19,6 +19,8 @@ gaudi_add_module(RecFCChhCalorimeterPlugins
                  INCLUDE_DIRS FWCore FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecCalorimeter RecFCChhCalorimeter
                  LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation Geant4 DetCommon)
 
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/tests DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/RecFCChhCalorimeter)
+
 include(CTest)
 
 gaudi_add_test(simulateFullCaloSystemForCellPositions

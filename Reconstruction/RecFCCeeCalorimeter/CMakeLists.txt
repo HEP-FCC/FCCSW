@@ -7,3 +7,4 @@ gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Detector/DetSegme
 
 
 
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/RecFCCeeCalorimeter)
