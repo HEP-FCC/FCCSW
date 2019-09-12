@@ -63,8 +63,8 @@ StatusCode ReadNoiseFromFileTool::initNoiseFromFile() {
     error() << "Name of the file with noise values not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile file(m_noiseFileName.value().c_str(), "READ");
-  if (file.IsZombie()) {
+  std::unique_ptr<TFile> file(TFile::Open(m_noiseFileName.value().c_str(), "READ"));
+  if (file->IsZombie()) {
     error() << "Couldn't open the file with noise constants" << endmsg;
     return StatusCode::FAILURE;
   } else {
@@ -77,7 +77,7 @@ StatusCode ReadNoiseFromFileTool::initNoiseFromFile() {
   for (unsigned i = 0; i < m_numRadialLayers; i++) {
     elecNoiseLayerHistoName = m_elecNoiseHistoName + std::to_string(i + 1);
     debug() << "Getting histogram with a name " << elecNoiseLayerHistoName << endmsg;
-    m_histoElecNoiseConst.push_back(*dynamic_cast<TH1F*>(file.Get(elecNoiseLayerHistoName.c_str())));
+    m_histoElecNoiseConst.push_back(*dynamic_cast<TH1F*>(file->Get(elecNoiseLayerHistoName.c_str())));
     if (m_histoElecNoiseConst.at(i).GetNbinsX() < 1) {
       error() << "Histogram  " << elecNoiseLayerHistoName
               << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
@@ -86,7 +86,7 @@ StatusCode ReadNoiseFromFileTool::initNoiseFromFile() {
     if (m_setNoiseOffset){
       elecNoiseOffsetLayerHistoName = m_elecNoiseOffsetHistoName + std::to_string(i + 1);
       debug() << "Getting histogram with a name " << elecNoiseOffsetLayerHistoName << endmsg;
-      m_histoElecNoiseOffset.push_back(*dynamic_cast<TH1F*>(file.Get(elecNoiseOffsetLayerHistoName.c_str())));
+      m_histoElecNoiseOffset.push_back(*dynamic_cast<TH1F*>(file->Get(elecNoiseOffsetLayerHistoName.c_str())));
       if (m_histoElecNoiseOffset.at(i).GetNbinsX() < 1) {
 	error() << "Histogram  " << elecNoiseOffsetLayerHistoName
 		<< " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
@@ -96,7 +96,7 @@ StatusCode ReadNoiseFromFileTool::initNoiseFromFile() {
     if (m_addPileup) {
       pileupLayerHistoName = m_pileupHistoName + std::to_string(i + 1);
       debug() << "Getting histogram with a name " << pileupLayerHistoName << endmsg;
-      m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file.Get(pileupLayerHistoName.c_str())));
+      m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file->Get(pileupLayerHistoName.c_str())));
       if (m_histoPileupConst.at(i).GetNbinsX() < 1) {
         error() << "Histogram  " << pileupLayerHistoName
                 << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
@@ -105,7 +105,7 @@ StatusCode ReadNoiseFromFileTool::initNoiseFromFile() {
       if (m_setNoiseOffset == true){
 	pileupOffsetLayerHistoName = m_pileupOffsetHistoName + std::to_string(i + 1);
 	debug() << "Getting histogram with a name " << pileupOffsetLayerHistoName << endmsg;
-	m_histoPileupOffset.push_back(*dynamic_cast<TH1F*>(file.Get(pileupOffsetLayerHistoName.c_str())));
+	m_histoPileupOffset.push_back(*dynamic_cast<TH1F*>(file->Get(pileupOffsetLayerHistoName.c_str())));
 	if (m_histoElecNoiseOffset.at(i).GetNbinsX() < 1) {
 	  error() << "Histogram  " << pileupOffsetLayerHistoName
 		  << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;

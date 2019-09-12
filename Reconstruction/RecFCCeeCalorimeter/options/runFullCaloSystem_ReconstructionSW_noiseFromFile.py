@@ -51,7 +51,7 @@ geoservice.detectors = [os.path.join(path_to_detector, _det) for _det in detecto
 geoservice.OutputLevel = WARNING
 
 
-ecalBarrelNoisePath = "elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root"
+ecalBarrelNoisePath = "root://eospublic.cern.ch//eos/experiment/fcc/ee/simulation/NoiseConstants/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root"
 ecalEndcapNoisePath = "elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
@@ -138,31 +138,31 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                         noiseTool = noiseBarrel,
                                         hits=ecalBarrelCellsName,
                                         cells=ecalBarrelCellsName+"Noise",
-                                        OutputLevel=DEBUG)
+                                        OutputLevel=INFO)
 
 # add noise, create all existing cells in detector
 # currently only positive side!
-noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap",
-                                                 readoutName = ecalEndcapReadoutName,
-                                                 noiseFileName = ecalEndcapNoisePath,
-                                                 elecNoiseHistoName = ecalEndcapNoiseHistName,
-                                                 activeFieldName = "layer",
-                                                 addPileup = False,
-                                                 numRadialLayers = 6)
-endcapGeometry = TubeLayerPhiEtaCaloTool("EcalEndcapGeo",
-                                                 readoutName = ecalEndcapReadoutName,
-                                                 activeVolumeName = "layerEnvelope",
-                                                 activeFieldName = "layer",
-                                                 activeVolumesNumber = 6,
-                                                 fieldNames = ["system"],
-                                                 fieldValues = [6])
-createEcalEndcapCells = CreateCaloCells("CreateECalEndcapCells",
-                                                geometryTool = endcapGeometry,
-                                                doCellCalibration=False, # already calibrated
-                                                addCellNoise=True, filterCellNoise=False,
-                                                noiseTool = noiseEndcap,
-                                                hits="newECalEndcapCells",
-                                                cells=ecalEndcapCellsName+"Noise")
+#noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap",
+#                                                 readoutName = ecalEndcapReadoutName,
+#                                                 noiseFileName = ecalEndcapNoisePath,
+#                                                 elecNoiseHistoName = ecalEndcapNoiseHistName,
+#                                                 activeFieldName = "layer",
+#                                                 addPileup = False,
+#                                                 numRadialLayers = 6)
+#endcapGeometry = TubeLayerPhiEtaCaloTool("EcalEndcapGeo",
+#                                                 readoutName = ecalEndcapReadoutName,
+#                                                 activeVolumeName = "layerEnvelope",
+#                                                 activeFieldName = "layer",
+#                                                 activeVolumesNumber = 6,
+#                                                 fieldNames = ["system"],
+#                                                 fieldValues = [6])
+#createEcalEndcapCells = CreateCaloCells("CreateECalEndcapCells",
+#                                                geometryTool = endcapGeometry,
+#                                                doCellCalibration=False, # already calibrated
+#                                                addCellNoise=True, filterCellNoise=False,
+#                                                noiseTool = noiseEndcap,
+#                                                hits="newECalEndcapCells",
+#                                                cells=ecalEndcapCellsName+"Noise")
 
 from Configurables import CreateEmptyCaloCellsCollection
 createemptycells =CreateEmptyCaloCellsCollection("CreateEmptyCaloCells")
@@ -182,10 +182,10 @@ towers = CaloTowerTool("towers",
                                hcalExtBarrelReadoutName = hcalExtBarrelReadoutPhiEtaName,
                                hcalEndcapReadoutName = hcalEndcapReadoutName,
                                hcalFwdReadoutName = hcalFwdReadoutName,
-                               OutputLevel = DEBUG)
+                               OutputLevel = INFO)
 towers.ecalBarrelCells.Path = ecalBarrelCellsName + "Noise"
 towers.ecalEndcapCells.Path = "emptyCaloCells" #ecalEndcapCellsName + "Noise"
-towers.ecalFwdCells.Path = "emtpyCaloCells" #ecalFwdCellsName
+towers.ecalFwdCells.Path = "emptyCaloCells" #ecalFwdCellsName
 towers.hcalBarrelCells.Path = "emptyCaloCells"
 towers.hcalExtBarrelCells.Path = "emptyCaloCells" # "newHCalExtBarrelCells"
 towers.hcalEndcapCells.Path = "emptyCaloCells" #hcalEndcapCellsName

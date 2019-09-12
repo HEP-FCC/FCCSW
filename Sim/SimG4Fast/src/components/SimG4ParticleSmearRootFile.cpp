@@ -59,19 +59,19 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
     error() << "Name of the resolution file not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile f(m_resolutionFileName.value().c_str(), "READ");
-  if (f.IsZombie()) {
+  std::unique_ptr<TFile> file(TFile::Open(m_resolutionFileName.value().c_str(), "READ"));
+  if (file->IsZombie()) {
     error() << "Couldn't open the resolution file" << endmsg;
     return StatusCode::FAILURE;
   }
   // check the proper file structure
-  if (!(f.GetListOfKeys()->Contains("info") && f.GetListOfKeys()->Contains("resolutions"))) {
+  if (!(file->GetListOfKeys()->Contains("info") && file->GetListOfKeys()->Contains("resolutions"))) {
     error() << "Resolution file " << m_resolutionFileName << " does not contain trees <<info>> and <<resolutions>>"
             << endmsg;
     return StatusCode::FAILURE;
   }
   // retrieve the pseudorapidity and momentum values for which the resolutions are defined
-  TTree* infoTree = dynamic_cast<TTree*>(f.Get("info"));
+  TTree* infoTree = dynamic_cast<TTree*>(file->Get("info"));
   // check the proper tree structure
   if (!(infoTree->GetListOfBranches()->Contains("eta") && infoTree->GetListOfBranches()->Contains("p"))) {
     error() << "Resolution file " << m_resolutionFileName << " does not contain tree <<info>>"
@@ -88,13 +88,13 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
   m_minMomentum = readP->At(0);
   m_maxMomentum = readP->At(binsP - 1);
   m_maxEta = readEta->At(binsEta - 1);
-  info() << "Reading the resolutions from file: " << f.GetName() << endmsg;
+  info() << "Reading the resolutions from file: " << file->GetName() << endmsg;
   info() << "\tMinimum momentum with resolutions defined: " << m_minMomentum << " GeV" << endmsg;
   info() << "\tMaximum momentum with resolutions defined: " << m_maxMomentum << " GeV" << endmsg;
   info() << "\tMaximum pseudorapidity with resolutions defined: " << m_maxEta << endmsg;
 
   // retrieve the resolutions in bins of eta and for momentum values
-  TTree* resolutionTree = dynamic_cast<TTree*>(f.Get("resolutions"));
+  TTree* resolutionTree = dynamic_cast<TTree*>(file->Get("resolutions"));
   // check the proper tree structure
   if (!(resolutionTree->GetListOfBranches()->Contains("resolution"))) {
     error() << "Resolution file " << m_resolutionFileName << " does not contain tree <<resolutions>>"
@@ -115,7 +115,7 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
       debug() << endmsg;
     }
   }
-  f.Close();
+  file->Close();
   return StatusCode::SUCCESS;
 }
 

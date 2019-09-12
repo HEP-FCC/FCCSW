@@ -5,6 +5,7 @@
 *.pdf
 *.swp
 
+*.dat
 *.gdml
 
 *.log

@@ -3,8 +3,8 @@ import os
 from GaudiKernel.SystemOfUnits import MeV, GeV, tesla
 
 # simulations setup
-energy=15*GeV
-num_events=1000
+energy=5*GeV
+num_events=500
 magnetic_field = False
 particleType="e-"
 
@@ -262,7 +262,8 @@ createHcalFwdCells.cells.Path="HCalFwdCells"
 
 out = PodioOutput("out",
                   OutputLevel=INFO)
-out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
+#out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
+out.outputCommands = ["keep *"] 
 
 import uuid
 

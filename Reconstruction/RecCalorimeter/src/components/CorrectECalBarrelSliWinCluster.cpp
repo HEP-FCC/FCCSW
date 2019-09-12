@@ -426,8 +426,8 @@ StatusCode CorrectECalBarrelSliWinCluster::initNoiseFromFile() {
     error() << "Name of the file with noise values not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile file(m_noiseFileName.value().c_str(), "READ");
-  if (file.IsZombie()) {
+  std::unique_ptr<TFile> file(TFile::Open(m_noiseFileName.value().c_str(), "READ"));
+  if (file->IsZombie()) {
     error() << "Couldn't open the file with noise constants" << endmsg;
     return StatusCode::FAILURE;
   } else {
@@ -439,7 +439,7 @@ StatusCode CorrectECalBarrelSliWinCluster::initNoiseFromFile() {
   for (unsigned i = 0; i < 2; i++) {
     pileupParamHistoName = m_pileupHistoName + std::to_string(i);
     debug() << "Getting histogram with a name " << pileupParamHistoName << endmsg;
-    m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file.Get(pileupParamHistoName.c_str())));
+    m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file->Get(pileupParamHistoName.c_str())));
     if (m_histoPileupConst.at(i).GetNbinsX() < 1) {
       error() << "Histogram  " << pileupParamHistoName
               << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;

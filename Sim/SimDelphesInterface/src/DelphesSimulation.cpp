@@ -39,7 +39,8 @@ StatusCode DelphesSimulation::initialize() {
   if (m_outRootFileName != "") {
 
     info() << "Opening ROOT output file: " << m_outRootFileName << endmsg;
-    m_outRootFile = new TFile(m_outRootFileName.value().c_str(), "RECREATE");
+    m_outRootFile = new TFile();
+    m_outRootFile->Open(m_outRootFileName.value().c_str(), "RECREATE");
     if (m_outRootFile->IsZombie()) {
 
       error() << "Can't open " << m_outRootFileName << endmsg;
