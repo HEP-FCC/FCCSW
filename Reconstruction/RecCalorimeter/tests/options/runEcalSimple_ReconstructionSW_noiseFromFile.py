@@ -65,6 +65,7 @@ createcells = CreateCaloCells("CreateCaloCells",
                               calibTool = calibcells,
                               addCellNoise = True, filterCellNoise = False,
                               noiseTool = noise,
+                              OutputLevel=DEBUG,
                               )
 createcells.hits.Path="mergedECalHits"
 createcells.cells.Path="ecalBarrelCells"
