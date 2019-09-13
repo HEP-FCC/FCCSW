@@ -15,9 +15,9 @@ TopoCaloNeighbours::TopoCaloNeighbours(const std::string& type, const std::strin
 StatusCode TopoCaloNeighbours::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  TFile file(m_fileName.value().c_str(),"READ");
+  std::unique_ptr<TFile> file(TFile::Open(m_fileName.value().c_str(),"READ"));
   TTree* tree = nullptr;
-  file.GetObject("neighbours",tree);
+  file->GetObject("neighbours",tree);
   ULong64_t readCellId;
   std::vector<uint64_t>* readNeighbours = nullptr;
   tree->SetBranchAddress("cellId",&readCellId);
@@ -38,6 +38,7 @@ StatusCode TopoCaloNeighbours::initialize() {
   }
   delete tree;
   delete readNeighbours;
+  file->Close();
   return sc;
 }
 

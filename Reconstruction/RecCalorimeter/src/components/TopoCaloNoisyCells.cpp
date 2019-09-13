@@ -14,9 +14,9 @@ TopoCaloNoisyCells::TopoCaloNoisyCells(const std::string& type, const std::strin
 StatusCode TopoCaloNoisyCells::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  TFile file(m_fileName.value().c_str(), "READ");
+  std::unique_ptr<TFile> file(TFile::Open(m_fileName.value().c_str(), "READ"));
   TTree* tree = nullptr;
-  file.GetObject("noisyCells", tree);
+  file->GetObject("noisyCells", tree);
   ULong64_t readCellId;
   double readNoisyCells;
   double readNoisyCellsOffset;
@@ -28,6 +28,7 @@ StatusCode TopoCaloNoisyCells::initialize() {
     m_map.insert(std::pair<uint64_t, std::pair<double, double>>(readCellId, std::make_pair(readNoisyCells, readNoisyCellsOffset)));
   }
   delete tree;
+  file->Close();
   return sc;
 }
 

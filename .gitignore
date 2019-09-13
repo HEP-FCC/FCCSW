@@ -2,7 +2,11 @@
 *.pyc
 *.root
 *.png
+*.pdf
 *.swp
+
+*.dat
+*.gdml
 
 *.log
 build.*.log

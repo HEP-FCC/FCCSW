@@ -105,7 +105,6 @@ StatusCode PodioDataSvc::readCollection(const std::string& collName, int collect
 }
 
 StatusCode PodioDataSvc::registerObject(std::string_view parentPath, std::string_view fullPath, DataObject* pObject) {
-  std::cout << "registerObject arguments: " <<  parentPath << "\t" << fullPath << "\t" << pObject << std::endl;
   DataWrapperBase* wrapper = dynamic_cast<DataWrapperBase*>(pObject);
   if (wrapper != nullptr) {
     podio::CollectionBase* coll = wrapper->collectionBase();

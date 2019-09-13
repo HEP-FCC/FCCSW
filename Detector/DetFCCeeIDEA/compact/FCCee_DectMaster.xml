@@ -4,15 +4,31 @@
   xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
 
+
   <info name="FCCDectMaster"
-    title="master file with includes and world dimension"
+    title="FCCee IDEA detector geometry master file"
     author="Niloufar Alipour Tehrani"
     url="no"
     status="development"
     version="1.0">
-    <comment>Use this one if you want to use official dimensions but only place one detector inside</comment>
+    <comment> 
+      One stop shop for a baseline / the latest developments of the FCCee Detector concept.
+    </comment>
   </info>
 
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+  </includes>
+
+  <define>
+    <constant name="world_size" value="25*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+
+  <include ref="./FCCee_DectDimensions.xml" />
 
   <include ref="Beampipe.xml"/>
   <include ref="BeamInstrumentation.xml"/>

@@ -3,7 +3,7 @@ from Gaudi.Configuration import *
 
 from Configurables import GeoSvc
 
-geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCCeeIDEA/compact/FCCee_DectEmptyMaster.xml',
+geoservice = GeoSvc("GeoSvc", detectors=[
                                          'file:Detector/DetFCCeeIDEA/compact/FCCee_DectMaster.xml',
                                          ], 
                     OutputLevel = INFO)

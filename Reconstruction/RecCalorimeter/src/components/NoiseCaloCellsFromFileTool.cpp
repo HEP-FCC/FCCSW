@@ -97,8 +97,8 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
     error() << "Name of the file with noise values not set" << endmsg;
     return StatusCode::FAILURE;
   }
-  TFile file(m_noiseFileName.value().c_str(), "READ");
-  if (file.IsZombie()) {
+  std::unique_ptr<TFile> noiseFile(TFile::Open(m_noiseFileName.value().c_str(), "READ"));
+  if (noiseFile->IsZombie()) {
     error() << "Couldn't open the file with noise constants" << endmsg;
     return StatusCode::FAILURE;
   } else {
@@ -110,7 +110,7 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
   for (unsigned i = 0; i < m_numRadialLayers; i++) {
     elecNoiseLayerHistoName = m_elecNoiseHistoName + std::to_string(i + 1);
     debug() << "Getting histogram with a name " << elecNoiseLayerHistoName << endmsg;
-    m_histoElecNoiseConst.push_back(*dynamic_cast<TH1F*>(file.Get(elecNoiseLayerHistoName.c_str())));
+    m_histoElecNoiseConst.push_back(*dynamic_cast<TH1F*>(noiseFile->Get(elecNoiseLayerHistoName.c_str())));
     if (m_histoElecNoiseConst.at(i).GetNbinsX() < 1) {
       error() << "Histogram  " << elecNoiseLayerHistoName
               << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
@@ -119,7 +119,7 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
     if (m_addPileup) {
       pileupLayerHistoName = m_pileupHistoName + std::to_string(i + 1);
       debug() << "Getting histogram with a name " << pileupLayerHistoName << endmsg;
-      m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(file.Get(pileupLayerHistoName.c_str())));
+      m_histoPileupConst.push_back(*dynamic_cast<TH1F*>(noiseFile->Get(pileupLayerHistoName.c_str())));
       if (m_histoPileupConst.at(i).GetNbinsX() < 1) {
         error() << "Histogram  " << pileupLayerHistoName
                 << " has 0 bins! check the file with noise and the name of the histogram!" << endmsg;
@@ -127,6 +127,8 @@ StatusCode NoiseCaloCellsFromFileTool::initNoiseFromFile() {
       }
     }
   }
+
+  noiseFile->Close();
 
   // Check if we have same number of histograms (all layers) for pileup and electronics noise
   if (m_histoElecNoiseConst.size() == 0) {

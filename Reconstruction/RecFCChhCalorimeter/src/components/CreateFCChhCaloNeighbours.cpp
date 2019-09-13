@@ -442,8 +442,8 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
   }
   debug() << "cells with neighbours across Calo boundaries: " << count << endmsg;
 
-  TFile file(m_outputFileName.c_str(), "RECREATE");
-  file.cd();
+  std::unique_ptr<TFile> file(TFile::Open(m_outputFileName.c_str(), "RECREATE"));
+  file->cd();
   TTree tree("neighbours", "Tree with map of neighbours");
   uint64_t saveCellId;
   std::vector<uint64_t> saveNeighbours;
@@ -454,8 +454,8 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     saveNeighbours = item.second;
     tree.Fill();
   }
-  file.Write();
-  file.Close();
+  file->Write();
+  file->Close();
 
   return StatusCode::SUCCESS;
 }

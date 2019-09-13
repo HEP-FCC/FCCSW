@@ -198,8 +198,8 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     }
   }
 
-  TFile file(m_outputFileName.c_str(), "RECREATE");
-  file.cd();
+  std::unique_ptr<TFile> file(TFile::Open(m_outputFileName.c_str(), "RECREATE"));
+  file->cd();
   TTree tree("noisyCells", "Tree with map of noise per cell");
   uint64_t saveCellId;
   double saveNoiseLevel;
@@ -213,8 +213,8 @@ StatusCode CreateFCChhCaloNoiseLevelMap::initialize() {
     saveNoiseOffset = item.second.second;
     tree.Fill();
   }
-  file.Write();
-  file.Close();
+  file->Write();
+  file->Close();
 
   return StatusCode::SUCCESS;
 }
