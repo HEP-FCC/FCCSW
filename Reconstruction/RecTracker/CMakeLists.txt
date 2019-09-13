@@ -6,6 +6,7 @@ gaudi_subdir(RecTracker v1r0)
 # this declaration will not be needed in the future
 gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Sim/SimG4Interface Reconstruction/RecInterface)
 
+find_package(CLHEP)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(DD4hep)
@@ -21,8 +22,8 @@ gaudi_add_library(TrackingUtils
 
 gaudi_add_module(RecTracker
                  src/components/*.cpp
-                 INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils Acts
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep TrackingUtils ActsCore ActsDD4hepPlugin ActsLegacy)
+                 INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils Acts CLHEP
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep TrackingUtils ActsCore ActsDD4hepPlugin ActsLegacy CLHEP)
 
 
 gaudi_add_library(ActsLogger

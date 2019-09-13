@@ -1,31 +1,22 @@
-
-#include "DetInterface/IGeoSvc.h"
-
 #include "GaudiKernel/PhysicalConstants.h"
 
+#include "datamodel/TrackHitCollection.h"
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackCollection.h"
-#include "datamodel/TrackHitCollection.h"
 #include "datamodel/TrackStateCollection.h"
 #include "datamodel/ParticleCollection.h"
 
-#include "DD4hep/Detector.h"
-#include "DD4hep/Volumes.h"
-#include "DDSegmentation/BitField64.h"
-#include "DDSegmentation/CartesianGridXZ.h"
-
-#include <cmath>
-#include <random>
-
 #include "RecInterface/ITrackSeedingTool.h"
 #include "RecInterface/ITrackFittingTool.h"
+
 #include "RecTrackAlg.h"
-#include "RecTracker/TrackingUtils.h"
 
 
 fcc::Particle TrackState2Particle(fcc::Track aTrack) {
   fcc::Particle theParticle;
   theParticle.bits(aTrack.bits());
+  // currently just use first track state
+  // @todo: proper treatment of case with several track states
   if (aTrack.states_size() > 0) {
     auto aState = aTrack.states(0);
     theParticle.charge((aState.qOverP() > 0) - (aState.qOverP() < 0));
@@ -34,8 +25,6 @@ fcc::Particle TrackState2Particle(fcc::Track aTrack) {
     p4.py = 1. / std::abs(aState.qOverP()) * std::sin(aState.phi());
     p4.pz = std::tan(aState.theta()) * 1 / std::abs(aState.qOverP());
   }
-
-
   return theParticle;
 }
 
@@ -43,7 +32,6 @@ fcc::Particle TrackState2Particle(fcc::Track aTrack) {
 DECLARE_COMPONENT(RecTrackAlg)
 
 RecTrackAlg::RecTrackAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
-
   declareProperty("TrackerPositionedHits", m_positionedTrackHits, "Tracker hits (Input)");
   declareProperty("Tracks", m_tracks, "Tracks (Output)");
   declareProperty("TrackStates", m_trackStates, "TrackStates (Output)");
@@ -53,12 +41,10 @@ RecTrackAlg::RecTrackAlg(const std::string& name, ISvcLocator* svcLoc) : GaudiAl
 }
 
 StatusCode RecTrackAlg::initialize() {
-  debug() << "initialize" << endmsg;
   return StatusCode::SUCCESS;
 }
 
 StatusCode RecTrackAlg::execute() {
-
   // get hits from event store
   const fcc::PositionedTrackHitCollection* hits = m_positionedTrackHits.get();
   debug() << "Reconstructing Track Hit collection of size: " << hits->size() << " ..." << endmsg;
@@ -66,7 +52,6 @@ StatusCode RecTrackAlg::execute() {
   auto seedmap = m_trackSeedingTool->findSeeds(hits);
   // delegate track fitting to tool
   auto tracksAndTrackstates = m_trackFittingTool->fitTracks(hits, seedmap);
-
   // output found tracks to edm
   auto m_recParticleColl = m_recParticles.createAndPut();
   for (auto track: (*tracksAndTrackstates.first)) {
@@ -79,7 +64,6 @@ StatusCode RecTrackAlg::execute() {
   }
   m_tracks.put(tracksAndTrackstates.first);
   m_trackStates.put(tracksAndTrackstates.second);
-
   return StatusCode::SUCCESS;
 }
 
