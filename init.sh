@@ -21,7 +21,7 @@ if [ ! -L $FCCSWBASEDIR/.git/hooks/pre-commit ]; then
 fi
 
 # Version
-versiontag="96.0.0"
+versiontag="96b.0.0"
 if ! test "x$1" = "x" ; then
    versiontag="$1"
 fi
@@ -57,5 +57,5 @@ else
 fi
 
 # TEMPORARY: fix to lcg releases
-export Gaudi_DIR=/cvmfs/sft.cern.ch/lcg/releases/LCG_96/Gaudi/v32r0/$platform/
+export Gaudi_DIR=/cvmfs/sft.cern.ch/lcg/releases/LCG_96b/Gaudi/v32r0/$platform/
 
