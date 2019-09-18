@@ -14,6 +14,9 @@ find_package(HepMC)
 find_package(DD4hep)
 find_package(Geant4)
 
+gaudi_add_dictionary(RecDriftChamber src/components/dictionary.h  src/components/dictionary.xml
+                     LINK_LIBRARIES GaudiKernel ROOT)
+
 gaudi_add_module(RecDriftChamberPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS FWCore FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecDriftChamber
