@@ -189,13 +189,6 @@ TVector3 GridDriftChamber::IntersectionTrackWire(const CellID& cID, const TVecto
       
     }
  
-  std::cout << "------- Segmentation -------" << std::endl;
-  hit_start.Print();
-  hit_end.Print();
-  Wstart.Print();
-  Wend.Print();
-  intersect.Print();
-
   return intersect;
 }
 

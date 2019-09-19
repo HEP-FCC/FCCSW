@@ -56,5 +56,5 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
                     GROUP_READ
                     WORLD_READ)
 
-gaudi_project(FCCSW  v0r10
-              USE Gaudi v29r2 )
+gaudi_project(FCCSW  v0r11
+              USE Gaudi v32r0 )
