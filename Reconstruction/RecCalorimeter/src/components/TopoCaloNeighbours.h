@@ -37,7 +37,7 @@ public:
 
 private:
   /// Name of input root file that contains the TTree with cellID->vec<neighboursCellID>
-  Gaudi::Property<std::string> m_fileName{this, "fileName", ""};
+  Gaudi::Property<std::string> m_fileName{this, "fileName", "neighbours_map.root"};
   /// Output map to be used for the fast lookup in the topo-clusering algorithm
   std::unordered_map<uint64_t, std::vector<uint64_t>> m_map;
 };

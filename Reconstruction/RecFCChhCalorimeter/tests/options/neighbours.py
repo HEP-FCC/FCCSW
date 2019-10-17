@@ -21,8 +21,6 @@ neighbours = CreateFCChhCaloNeighbours("neighbours",
                                        activeVolumesEta = [1.2524, 1.2234, 1.1956, 1.1561, 1.1189, 1.0839, 1.0509, 0.9999, 0.9534, 0.91072],
                                        readoutNamesVolumes=[],
                                        connectBarrels=True, 
-                                       hCalPhiOffset = -3.12932,
-                                       hCalRinner=2850,
                                        OutputLevel=INFO)
 
 # ApplicationMgr

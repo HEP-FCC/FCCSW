@@ -123,7 +123,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
 	  extremaHCalFirstLayerPhi = std::make_pair(0, numCells[0] - 1);
 	  extremaHCalFirstLayerEta = std::make_pair(numCells[2], numCells[1] + numCells[2] - 1);	
 	  extrema[2] = std::make_pair(numCells[2], numCells[1] + numCells[2] - 1);
-	}
+	} 
       }
       debug() << "Number of segmentation cells in (phi,eta): " << numCells << endmsg;
       // Loop over segmenation cells
@@ -284,20 +284,20 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
     }
     // print how many cells in each dimensions will be matched
     if(m_readoutNamesNested.size()!=0){
-      debug() << "ECAL layer " << eCalLastLayer << " is a neighbour of HCAL layer 0." << endmsg;
-      debug() << "ECAL phi cells " << extremaECalLastLayerPhi.first << " - " << extremaECalLastLayerPhi.second
+      info() << "ECAL layer " << eCalLastLayer << " is a neighbour of HCAL layer 0." << endmsg;
+      info() << "ECAL phi cells " << extremaECalLastLayerPhi.first << " - " << extremaECalLastLayerPhi.second
 	     << " will be matched to HCAL " << m_activeFieldNamesNested[1] << "(s) " << extremaHCalFirstLayerPhi.first
 	     << " - " << extremaHCalFirstLayerPhi.second << endmsg;
-      debug() << "ECAL eta cells " << extremaECalLastLayerEta.first << " - " << extremaECalLastLayerEta.second
+      info() << "ECAL eta cells " << extremaECalLastLayerEta.first << " - " << extremaECalLastLayerEta.second
 	     << " will be matched to HCAL " << m_activeFieldNamesNested[2] << "(s) " << extremaHCalFirstLayerZ.first
 	     << " - " << extremaHCalFirstLayerZ.second << endmsg;
     }
     else{
-      debug() << "ECAL layer " << eCalLastLayer << " is a neighbour of HCAL layer 0." << endmsg;
-      debug() << "ECAL phi cells " << extremaECalLastLayerPhi.first << " - " << extremaECalLastLayerPhi.second
+      info() << "ECAL layer " << eCalLastLayer << " is a neighbour of HCAL layer 0." << endmsg;
+      info() << "ECAL phi cells " << extremaECalLastLayerPhi.first << " - " << extremaECalLastLayerPhi.second
 	     << " will be matched to HCAL cells " << extremaHCalFirstLayerPhi.first
 	     << " - " << extremaHCalFirstLayerPhi.second << endmsg;
-      debug() << "ECAL eta cells " << extremaECalLastLayerEta.first << " - " << extremaECalLastLayerEta.second
+      info() << "ECAL eta cells " << extremaECalLastLayerEta.first << " - " << extremaECalLastLayerEta.second
 	     << " will be matched to HCAL " << extremaHCalFirstLayerEta.first
 	     << " - " << extremaHCalFirstLayerEta.second << endmsg;
     }

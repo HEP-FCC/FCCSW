@@ -160,11 +160,11 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
 # add noise, create all existing cells in detector
 # currently only positive side!
 noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap",
-                                                 readoutName = ecalEndcapReadoutName,
-                                                 noiseFileName = ecalEndcapNoisePath,
-                                                 elecNoiseHistoName = ecalEndcapNoiseHistName,
-                                                 activeFieldName = "layer",
-                                                 addPileup = False,
+                                         readoutName = ecalEndcapReadoutName,
+                                         noiseFileName = ecalEndcapNoisePath,
+                                         elecNoiseHistoName = ecalEndcapNoiseHistName,
+                                         activeFieldName = "layer",
+                                         addPileup = False,
                                          cellPositionsTool = EMECcells,
                                          numRadialLayers = 6)
 endcapGeometry = TubeLayerPhiEtaCaloTool("EcalEndcapGeo",

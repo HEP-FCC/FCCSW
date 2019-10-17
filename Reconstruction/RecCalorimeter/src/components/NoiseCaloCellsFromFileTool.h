@@ -76,7 +76,6 @@ private:
       this, "filterNoiseThreshold", 3, " Energy threshold (cells with Ecell < filterThreshold*m_cellNoise removed)"};
   /// Number of radial layers
   Gaudi::Property<uint> m_numRadialLayers{this, "numRadialLayers", 3, "Number of radial layers"};
-  
   /// Histograms with pileup constants (index in array - radial layer)
   std::vector<TH1F> m_histoPileupConst;
   /// Histograms with electronics noise constants (index in array - radial layer)

@@ -88,6 +88,8 @@ HCalFwdcells =CellPositionsCaloDiscsTool("CellPositionsHCalFwd",
 #Configure tools for calo reconstruction                                                                                                                                                                       
 from Configurables import RewriteBitfield, CalibrateCaloHitsTool, NoiseCaloCellsFlatTool, LayerPhiEtaCaloTool
 calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.7 ")
+noise = NoiseCaloCellsFlatTool("HCalNoise",
+                               cellNoise = 0.01)
 
 rewriteHCal = RewriteBitfield("RewriteHCal",
                                 # old bitfield (readout)
