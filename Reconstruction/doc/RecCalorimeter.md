@@ -157,9 +157,18 @@ Same as for the Topo-clusters.
 * The tools to look-up the cells positions by cellID.
 
 The logic of the algorithm follows:
-### 1. Finding local maxima: get seed cells above threshold t, check if 4 neighbouring cells exist with energy > 2nd topo-cluster threshold (cell.bits==1), if more than one maximum was found, start the splitting.
-### 2. Start splitting: use local maxima as new cluster seeds, starting with the one of highest energy, collect neighbouring cells for all clusters within same iteration, if cell has been identified for two clusters, distance from the centre-of-gravity of the cluster is determined, and the cell gets assigned to the closest cluster.
-### 3. final steps: check of energy and number cells conservation, write new collection of clusters 
+
+### 1. Find local maxima
+
+get seed cells above threshold t, check if 4 neighbouring cells exist with energy > 2nd topo-cluster threshold (cell.bits==1), if more than one maximum was found, start the splitting.
+
+### 2. Start splitting
+
+use local maxima as new cluster seeds, starting with the one of highest energy, collect neighbouring cells for all clusters within same iteration, if cell has been identified for two clusters, distance from the centre-of-gravity of the cluster is determined, and the cell gets assigned to the closest cluster.
+
+### 3. final steps
+
+check of energy and number cells conservation, write new collection of clusters 
 
 
 # Example
@@ -168,17 +177,21 @@ Example script which runs ECAL reconstruction can be found for three cases: [wit
 
 * Read input file with Geant4 hits
 * Produce and store calo cells (CreateCaloCells)
+* Select calorimeter cells within a cone around the generated particle (ConeSelection)
 * Reconstruct clusters using the sliding window algorithm (CreateCaloClustersSlidingWindow)
+* Reconstruct clusters using the topo-cluster algorithm (CaloTopoCluster)
 
 First, prepare the input file. Before running the script, load the library libDetSegmentation.so (necessary because of the phi-eta segmentation usage):
 ~~~{.sh}
-./run fccrun.py Reconstruction/RecCalorimeter/tests/options/geant_fullsim_ecal_singleparticles.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/geant_fullsim_ecal_singleparticles.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/runFullCaloSystem_SimAndDigitisation.py
 ~~~
 
 Now, we can run the reconstruction:
 ~~~{.sh}
-./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionWithoutNoise.py
-./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionFlatNoise.py
-./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
-./run fccrun.py Reconstruction/RecCalorimeter/tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_noNoise.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionWithoutNoise.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/runEcalReconstructionFlatNoise.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/runEcalReconstruction.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_noNoise.py
+./run fccrun Reconstruction/RecCalorimeter/tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_electrNoise_coneSelection.py
 ~~~
