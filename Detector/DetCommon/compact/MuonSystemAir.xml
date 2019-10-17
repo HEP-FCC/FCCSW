@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace muon system"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Muon System Place-Holder</comment>
+  </info>
+  <display>
+    <vis name="MuonEnvelopeVis" r="0.87" g="0.5" b="0.0" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeEndcapVis" r="0.91" g="0.64" b="0.29" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="MuonEnvelopeFwdVis" r="0.90" g="0.72" b="0.48" a="0.2" showDaughters="false" visible="true"/>
+  </display>
+  <define>
+    <constant name="MuonSpacer" value="100*mm" />
+  </define>
+  <detectors>
+    <detector name="MuonEnvelope" type="SimpleCylinder"  vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon</comment>
+      <dimensions rmin="BarMuon_rmin+MuonSpacer" rmax="BarMuon_rmax-MuonSpacer" dz="BarMuon_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+    <!-- End-caps -->
+    <detector name="MuonEnvelopeEndcapPos" type="SimpleCylinder"  vis="MuonEnvelopeEndcapVis">
+        <comment>Envelope for Muon positive end-cap</comment>
+        <dimensions rmin="EndCapMuon_rmin+MuonSpacer" rmax="EndCapMuon_rmax" dz="EndCapMuon_dz-MuonSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="EndCapMuon_zOffset+MuonSpacer" material="Air"/>
+    </detector>
+    <detector name="MuonEnvelopeEndcapNeg" type="SimpleCylinder"  vis="MuonEnvelopeEndcapVis">
+        <comment>Envelope for Muon positive end-cap</comment>
+        <dimensions rmin="EndCapMuon_rmin+MuonSpacer" rmax="EndCapMuon_rmax" dz="EndCapMuon_dz-MuonSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="-EndCapMuon_zOffset-MuonSpacer" material="Air"/>
+    </detector>
+    <!-- Forward detectors -->
+    <detector name="MuonEnvelopeFwdPos" type="SimpleCylinder"  vis="MuonEnvelopeFwdVis">
+        <comment>Envelope for forward Muon positive</comment>
+        <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="FwdMuon_dz-MuonSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="FwdMuon_zOffset+MuonSpacer" material="Air"/>
+    </detector>
+    <detector name="MuonEnvelopeFwdNeg" type="SimpleCylinder"  vis="MuonEnvelopeFwdVis">
+        <comment>Envelope for forward Muon positive</comment>
+        <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="FwdMuon_dz-MuonSpacer/2.0" phi0="0" deltaphi="360*deg" z_offset="-FwdMuon_zOffset-MuonSpacer" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

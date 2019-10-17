@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace the Tracker"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Tracker Place-Holder</comment>
+  </info>
+  <display>
+    <vis name="TrackerEnvelopeVis" r="0.87" g="0.27" b="0.15" a="0.2" showDaughters="false" visible="true"/>
+    <vis name="TrackerEnvelopeFwdVis" r="0.87" g="0.11" b="0.01" a="0.2" showDaughters="false" visible="true"/>
+  </display>
+
+  <detectors>
+    <detector name="TrackerEnvelopeBarrel" type="SimpleCylinder"  vis="TrackerEnvelopeVis">
+      <comment>Envelope for Tracker</comment>
+      <dimensions rmin="Tracker_rmin" rmax="Tracker_rmax" dz="Tracker_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+        <!-- Forward detectors -->
+    <detector name="TrackerEnvelopeFwdPos" type="SimpleCylinder"  vis="TrackerEnvelopeFwdVis">
+        <comment>Envelope for forward Tracker positive</comment>
+        <dimensions rmin="FwdTracker_rmin" rmax="FwdTracker_rmax" dz="FwdTracker_dz" phi0="0" deltaphi="360*deg" z_offset="FwdTracker_zOffset" material="Air"/>
+    </detector>
+    <detector name="TrackerEnvelopeFwdNeg" type="SimpleCylinder"  vis="TrackerEnvelopeFwdVis">
+        <comment>Envelope for forward Tracker positive</comment>
+        <dimensions rmin="FwdTracker_rmin" rmax="FwdTracker_rmax" dz="FwdTracker_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdTracker_zOffset" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

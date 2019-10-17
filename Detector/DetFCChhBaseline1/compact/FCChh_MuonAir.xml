@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace muon system"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>Muon System Place-Holder</comment>
+  </info>
+  <display>
+    <vis name="MuonEnvelopeVis" r="0.90" g="0.72" b="0.48" a="0.2" showDaughters="false" visible="true"/>
+  </display>
+  <detectors>
+    <!-- barrel shape  -->
+    <detector name="MuonBarrelEnvelope" type="SubtractedCylinder"  vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon Barrel</comment>
+      <dimensions rmin1="BarMuon_rmin1" rmax1="BarMuon_rmax1" z1="BarMuon_z1"
+                  rmin2="BarMuon_rmin2" rmax2="BarMuon_rmax2" z2="BarMuon_z2"
+                  z_offset="0" material="Air"/>
+    </detector>
+    <!-- End-caps -->
+    <detector name="MuonEnvelopeEndcapPos" type="SimpleCone"  vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon inner end-cap</comment>
+      <dimensions rmin1="EndCapMuon_rmin1" rmax1="EndCapMuon_rmax1" rmin2="EndCapMuon_rmin2" rmax2="EndCapMuon_rmax2" dz="EndCapMuon_dz" z_offset="EndCapMuon_zOffset" material="Air"/>
+    </detector>
+    <detector name="MuonEnvelopeEndcapNeg" type="SimpleCone"  vis="MuonEnvelopeVis">
+      <comment>Envelope for Muon inner end-cap</comment>
+      <dimensions rmin2="EndCapMuon_rmin1" rmax2="EndCapMuon_rmax1" rmin1="EndCapMuon_rmin2" rmax1="EndCapMuon_rmax2" dz="EndCapMuon_dz" z_offset="-EndCapMuon_zOffset" material="Air"/>
+    </detector>
+    <!-- Forward system -->
+    <detector name="MuonEnvelopeFwdBarPos" type="SimpleCylinder"  vis="MuonEnvelopeVis">
+        <comment>Envelope for Muon positive end-cap</comment>
+        <dimensions rmin="FwdBarMuon_rmin" rmax="FwdBarMuon_rmax" dz="FwdBarMuon_dz" phi0="0" deltaphi="360*deg" z_offset="FwdBarMuon_zOffset" material="Air"/>
+    </detector>
+    <detector name="MuonEnvelopeFwdBarNeg" type="SimpleCylinder"  vis="MuonEnvelopeVis">
+        <comment>Envelope for Muon negative end-cap</comment>
+        <dimensions rmin="FwdBarMuon_rmin" rmax="FwdBarMuon_rmax" dz="FwdBarMuon_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdBarMuon_zOffset" material="Air"/>
+    </detector>
+    <detector name="MuonEnvelopeFwdPos" type="SimpleCylinder"  vis="MuonEnvelopeVis">
+      <comment>Envelope for forward Muon positive</comment>
+      <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="FwdMuon_dz" phi0="0" deltaphi="360*deg" z_offset="FwdMuon_zOffset" material="Air"/>
+    </detector>
+    <detector name="MuonEnvelopeFwdNeg" type="SimpleCylinder"  vis="MuonEnvelopeVis">
+      <comment>Envelope for forward Muon negative</comment>
+      <dimensions rmin="FwdMuon_rmin" rmax="FwdMuon_rmax" dz="FwdMuon_dz" phi0="0" deltaphi="360*deg" z_offset="-FwdMuon_zOffset" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

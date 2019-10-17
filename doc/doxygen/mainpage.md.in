@@ -1,0 +1,21 @@
+FCCSW Documentation {#mainpage}
+==
+
+This is the automatically generated documentation of the FCCSW framework, the software for the FCC experiments.
+
+FCCSW is based on [Gaudi](http://proj-gaudi.web.cern.ch/proj-gaudi/). We aim to support all detector concepts for all
+accelerator options (electron-electron, electron-hadron and hadron-hadron). Therefore, we try to create software that is
+independent of detector or experiment specifics.
+
+**The main hub for documentation of our different software packages can be found [here](http://fccsw.web.cern.ch/fccsw/).**
+
+If you need support, contact us via
+
+- the [github issue tracker](https://github.com/HEP-FCC/fccsw/issues) (for bugs and problems)
+- our mailing list (for questions): fcc-experiments-sw-dev at cern.ch
+
+If you plan to contribute to FCCSW, please have a look at our [contribution guide](http://fccsw.web.cern.ch/fccsw/tutorials/fcc-tutorials/FccSoftwareGit.html).
+
+Installation instructions can be found in the [README](http://fccsw.web.cern.ch/fccsw/tutorials/FCCSW/README.html).
+
+For more information on getting started, have a look at our [Getting Started tutorial](http://fccsw.web.cern.ch/fccsw/tutorials/fcc-tutorials/FccSoftwareGettingStarted.html).

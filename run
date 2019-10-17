@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -z "$BINARY_TAG" ] ; then
+  echo "error: BINARY_TAG not defined - make sure your environment is set up."
+  exit 1
+fi
+
+run_cmd=$(dirname $0)/build.$BINARY_TAG/run
+if [ -e "$run_cmd" ] ; then
+  exec $run_cmd "$@"
+else
+  echo "error: cannot find build.$BINARY_TAG/run, did you build?"
+  exit 1
+fi

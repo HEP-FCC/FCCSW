@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="FCC"
+        title="Air Volume to replace the Hcal"
+        author="J. Lingemann"
+        url="no"
+        status="development"
+        version="1.0">
+    <comment>HCal Place-Holder</comment>
+  </info>
+  <display>
+    <vis name="HCalEnvelopeVis" r="0.2" g="0.6" b="0.2" alpha="1" showDaughters="false" visible="true"/>
+  </display>
+  <detectors>
+    <detector name="HCalEnvelope" type="SimpleCylinder"  vis="HCalEnvelopeVis">
+      <comment>Envelope for HCal barrel</comment>
+      <dimensions rmin="BarHCal_rmin" rmax="BarHCal_rmax" dz="BarHCal_dz" phi0="0" deltaphi="360*deg" z_offset="0*cm" material="Air"/>
+    </detector>
+    <!-- Extended barrel -->
+    <detector name="HCalEnvelopeExtBarrelPos" type="SimpleCylinder"  vis="HCalEnvelopeVis">
+        <comment>Envelope for HCal positive end-cap</comment>
+        <dimensions rmin="ExtBarHCal_rmin2" rmax="ExtBarHCal_rmax2" dz="ExtBarHCal_dz2" phi0="0" deltaphi="360*deg" z_offset="ExtBarHCal_zOffset2" material="Air"/>
+    </detector>
+    <detector name="HCalEnvelopeExtBarrelNeg" type="SimpleCylinder"  vis="HCalEnvelopeVis">
+        <comment>Envelope for HCal positive end-cap</comment>
+        <dimensions rmin="ExtBarHCal_rmin2" rmax="ExtBarHCal_rmax2" dz="ExtBarHCal_dz2" phi0="0" deltaphi="360*deg" z_offset="-ExtBarHCal_zOffset2" material="Air"/>
+    </detector>
+  </detectors>
+</lccdd>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <includes>
+    <gdmlFile  ref="../../../Detector/DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../../Detector/DetCommon/compact/materials.xml"/>
+  </includes>
+
+  <info name="BarrelRPhiZ"
+        title="BarrelRPhiZ"
+        author="Anna"
+        url="no"
+        version="1"
+        status="development">
+    <comment>Barrel containing barrels (slices), to test dd4hep geometry (and segmentation in r-eta)</comment>
+  </info>
+
+  <define>
+    <constant name="world_x" value="2*m"/>
+    <constant name="world_y" value="2*m"/>
+    <constant name="world_z" value="2*m"/>
+    <constant name="BarECal_rmin" value="2500*mm"/>
+    <constant name="BarECal_rmax" value="3600*mm"/>
+    <constant name="BarECal_dz" value="1000.0625*mm"/>
+    <constant name="dphi" value="0.00005"/>
+    <constant name="dr" value="10*mm"/>
+    <constant name="dz" value="0.0625*mm"/> <!--half length-->
+  </define>
+
+  <display>
+    <vis name="BoxVis" r="0.5" g="0.0" b="0.5" alpha="0.2" showDaugthers="true" visible="false" />
+        <vis name="comp0" r="0." g="0." b="1.0" alpha="0.6" showDaugthers="true" visible="true" drawingStyle="solid"/>
+  </display>
+
+  <readouts>
+    <readout name="ECalHits">
+      <segmentation type="PolarGridRPhi" grid_size_r="dr" grid_size_phi="dphi"/>
+      <id>system:1,z:14,r:9,phi:-18</id>
+    </readout>
+  </readouts>
+
+  <detectors>
+    <detector id="0" name="BarrelECal" type="SlicedBarrel" sensitive="true" readout="ECalHits">
+      <material name="PbWO4"/>
+      <sensitive type="GflashCalorimeterSD"/>
+      <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="BarECal_dz"/>
+      <position   x="0"     y="0"     z="0"/>
+      <rotation   x="0"     y="0"     z="0"/>
+      <module name="slice" >
+        <material name="PbWO4" sensitive="true"/>
+        <dimensions rmin="BarECal_rmin" rmax="BarECal_rmax" dz="dz"/>
+      </module>
+    </detector>
+  </detectors>
+
+</lccdd>
