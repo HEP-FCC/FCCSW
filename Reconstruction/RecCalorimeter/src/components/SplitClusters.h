@@ -7,7 +7,6 @@
 #include "RecInterface/INoiseConstTool.h"
 #include "RecInterface/ICellPositionsTool.h"
 #include "RecInterface/ICaloReadNeighboursMap.h"
-//#include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 // DD4hep
 #include "DDSegmentation/Segmentation.h"
@@ -36,11 +35,26 @@ class TLorentzVector;
 
 /** @class SplitClusters
  *
+ *  Algorithm to find local maxima within cluster, and split into multiple new clusters:
+ *
+ * 1. identify local maxima:
+ * (a) get seed cells above threshold t1Please note that cluster collections, build from a different algorithm e.g. sliding window, could be used as well.
+ * (b) check if 4 neighbouring cells exist with energy > 2nd topo-cluster threshold
+ * (c) if more than one maximum was found, start the splitting.
+ * 2. start splitting:
+ * (a) use local maxima as new cluster seeds, starting with the one of highest energy
+ * (b) collect neighbouring cells for all clusters within same iteration
+ * (c) if cell has been identified for two clusters, distance from the centre-of-gravity of thecluster is determined, and the cell gets assigned to the closest cluster.
+ * 3. finalisation:
+ * (a) check of energy and number cells conservation
+ * (b) write new collection of clusters
+ *
  *  Tools called:
- *    - ReadPileupParameters
+ *    - ICaloReadNeighboursMap
+ *    - ICellPositionsTool
  *
  *  @author Coralie Neubueser
- *  @date   2018-03
+ *  @date   2019-03
  *
  */
 
@@ -55,12 +69,10 @@ public:
    * The 
    *   @param[in] aCellId, the cell ID for which to find the neighbours.
    *   @param[in] aClusterID, the current cluster ID.
-   *   @param[in] aCells, map of all cells.
-   *   @param[in] aCellTypes, vector of pairs of cell ids and type.
-   *   @param[in] aClusterOfCell, map of cellID to clusterID.
-   *   @param[in] aPreClusterCollection, map that is filled with clusterID pointing to the associated cells, in a pair of cellID and cellType.
-   *   @param[in] aAllowClusterMerge, bool to allow for clusters to be merged, set to false in case of last iteration in CaloTopoCluster::buildingProtoCluster.
-   *   return vector of pairs with cellID and energy of found neighbours.
+   *   @param[in] aClusterOfCell, map of all cells->cluster.
+   *   @param[in] aCellPosition, map of cellID to cell position.
+   *   @param[in] aClusterPositions, map of clusterID to four vector of cluster.
+   *   return vector of pairs with cellID and clusterID.
    */
   std::vector<std::pair<uint64_t, uint>> 
     searchForNeighbours(const uint64_t aCellId,
@@ -106,7 +118,7 @@ private:
   dd4hep::DDSegmentation::BitFieldCoder* m_decoderECal;
   dd4hep::DDSegmentation::BitFieldCoder* m_decoderHCal;
                                                                                       
-  /// no segmentation used in HCal
+  /// specify if segmentation is used in HCal (defines eta granularity)
   Gaudi::Property<bool> m_noSegmentationHCal{this, "noSegmentationHCal", true, "HCal readout w/o eta-phi segementation?"};
   Gaudi::Property<int> m_lastECalLayer{this, "lastECalLayer", 7, "Layer id of last ECal layer"};
   Gaudi::Property<int> m_firstHCalLayer{this, "firstHCalLayer", 0, "Layer id of first HCal layer"};

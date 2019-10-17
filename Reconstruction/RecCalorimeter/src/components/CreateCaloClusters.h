@@ -33,8 +33,12 @@ class TH1F;
 
 /** @class CreateCaloClusters
  *
+ * Applies hadronic calibration to cluster.
+ * By default only the cluster that consist of E and HCal cells or only HCal cells get calibrated to hadronic scale. 
+ * By specifying m_doCryoCorrection=True the benchmark method is used, based on the ATLAS calibration scheme for LAr+Tile testbeams. In this case all clusters get calibrated.
+ *
  *  Tools called:
- *    - Cell position tools
+ *    - ICellPositionsTool
  *
  *  @author Coralie Neubueser
  *  @date   2019-03
@@ -102,9 +106,7 @@ private:
   double m_ehHCal;
   /// bool if energy loss needs correction is applied
   bool m_doCryoCorrection = false;
-  /// bool if energy dependent correction for energy loss is applied  
-  bool m_doEdepCryoCorrection = true;
-
+ 
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder = new dd4hep::DDSegmentation::BitFieldCoder("system:4");
   dd4hep::DDSegmentation::BitFieldCoder* m_decoderECal;
   dd4hep::DDSegmentation::BitFieldCoder* m_decoderHCal;

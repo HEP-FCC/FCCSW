@@ -33,7 +33,6 @@ CreateCaloClusters::CreateCaloClusters(const std::string& name, ISvcLocator* svc
  
   declareProperty("calibrate", m_doCalibration, "Clusters are going to be calibrated");
   declareProperty("cryoCorrection", m_doCryoCorrection, "Correction of lost energy between E and HCal");
-  declareProperty("eDepCryoCorrection", m_doCryoCorrection, "eDep Correction of lost energy between E and HCal");
   declareProperty("ehECal", m_ehECal, "e/h of the ECal");
   declareProperty("ehHCal", m_ehHCal, "e/h of the HCal");
 }
@@ -259,10 +258,6 @@ StatusCode CreateCaloClusters::execute() {
 	    posCell = m_cellPositionsECalTool->xyzPosition(cellId);
 	    if ( m_doCryoCorrection ) // cluster on hadron scale, apply cryo correction
 	      cellEnergy = cellEnergy * m_a1;
-	    else if ( m_doEdepCryoCorrection ){
-	      double a = m_a1 + m_a2*cluster.core().energy + double(m_a3)/sqrt(cluster.core().energy);
-	      cellEnergy = cellEnergy * a;
-	    }
 	    else if ( calibECal && !m_doCryoCorrection ) // cluster on hadron scale
 	      cellEnergy = cellEnergy * m_ehECal;
 	  }
@@ -308,17 +303,6 @@ StatusCode CreateCaloClusters::execute() {
 	  // Fill histogram with corrected energy
 	  m_clusterEnergyBenchmark->Fill(energy);
 	  totBenchmarkEnergy += energy;
-	}
-	else if ( m_doEdepCryoCorrection ){ 
-	  double a = m_a1 + m_a2*energy + double(m_a3)/sqrt(energy);
-	  double b = m_b1 + pow(energy, double(m_b2)) + double(m_b3)*log(energy);
-	  double c = m_c1*energy + double(m_c2)/pow(energy, double(m_c3));
-	  double corr = b*sqrt(fabs(energyLastECal*a*energyFirstHCal)) + c*pow(lastBenchmarkTerm*a,2);
-          energy = energy + corr;
-          totBenchmarkCorr += corr;
-          // Fill histogram with corrected energy                                                                                                                                                                                         
-          m_clusterEnergyBenchmark->Fill(energy);
-          totBenchmarkEnergy += energy;
 	}
 	newCluster.core().energy = energy;
 	edmClusters->push_back(newCluster);
