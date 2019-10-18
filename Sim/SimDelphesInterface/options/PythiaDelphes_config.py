@@ -15,7 +15,7 @@ ApplicationMgr().OutputLevel = INFO
 ## Pythia generator
 from Configurables import PythiaInterface
 pythia8gentool = PythiaInterface()
-pythia8gentool.Filename = os.path.join(os.environ.get("FCCSWBASEDIR", ""),"share/FCCSW/Generation/data/Pythia_ttbar.cmd")
+pythia8gentool.Filename = os.path.join(os.environ.get("FCCSWSHAREDIR", ""),"Generation/data/Pythia_ttbar.cmd")
 
 ## Write the HepMC::GenEvent to the data service
 from Configurables import GenAlg
