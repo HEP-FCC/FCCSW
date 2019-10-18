@@ -123,7 +123,7 @@ metSaveTool.missingEt.Path = "met"
 from Configurables import DelphesSimulation
 delphessim = DelphesSimulation()
 ## Define Delphes card
-delphessim.DelphesCard = os.path.join(os.environ.get("FCCSWBASEDIR", ""), "share/FCCSW/Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl")
+delphessim.DelphesCard = os.path.join(os.environ.get("FCCSWSHAREDIR", ""), "Sim/SimDelphesInterface/data/FCChh_DelphesCard_Baseline_v01.tcl")
 delphessim.ROOTOutputFile = ""
 delphessim.ApplyGenFilter = True
 delphessim.outputs = [
