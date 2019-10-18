@@ -94,3 +94,7 @@ gaudi_add_test(recTopoClustersBarrelCaloSystemElecNoise
                 DEPENDS simulateFullCaloSystem
                 FRAMEWORK tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_electrNoise.py)
 
+gaudi_add_test(recSplitTopoClustersBarrelCaloSystemElecNoiseConeSelected
+                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                DEPENDS simulateFullCaloSystem
+		FRAMEWORK tests/options/runBarrelCaloSystem_ReconstructionTopoClusters_electrNoise_coneSelection.py)

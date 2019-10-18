@@ -42,10 +42,15 @@ mergelayers = MergeLayers("MergeLayers",
 mergelayers.inhits.Path = "ECalHits"
 mergelayers.outhits.Path = "mergedECalHits"
 
+#Configure tools for calo cell positions                    
+from Configurables import CellPositionsDummyTool
+dummyCells = CellPositionsDummyTool("CellPositions",
+                                         OutputLevel = INFO)
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
 noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
+                                   cellPositionsTool=dummyCells,
     noiseFileName="root://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
 
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",

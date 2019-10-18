@@ -53,9 +53,13 @@ private:
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Name of the electromagnetic calorimeter readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelDetailedWedgeReadout"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "HCalBarrelReadout"};
   /// Cellid decoder
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
+  /// Position of layers in radius
+  Gaudi::Property<std::vector<double>> m_radii{this, "radii", {291.05, 301.05, 313.55, 328.55, 343.55, 358.55, 378.55, 413.55, 428.55, 453.55}};
+  /// Segementation
+  dd4hep::DDSegmentation::FCCSWGridPhiEta* m_segmentation;
   /// Volume manager
   dd4hep::VolumeManager m_volman;
 };

@@ -113,7 +113,7 @@ StatusCode CreateFCChhCaloNeighbours::initialize() {
 	extrema[2] = std::make_pair(numCells[2], numCells[1] + numCells[2] - 1);
       }
       else if(m_fieldNamesSegmented[iSys] == "system" &&
-	      m_fieldValuesSegmented[iSys] == 8){
+	      m_fieldValuesSegmented[iSys] == 8 && m_readoutNamesSegmented[iSys]=="BarHCal_Readout_phieta"){
 	uint cellsEta = ceil(( 2*m_activeVolumesEta[ilayer] - segmentation->gridSizeEta() ) / 2 / segmentation->gridSizeEta()) * 2 + 1; //ceil( 2*m_activeVolumesRadii[ilayer] / segmentation->gridSizeEta()) ;
 	uint minEtaID = int(floor(( - m_activeVolumesEta[ilayer] + 0.5 * segmentation->gridSizeEta() - segmentation->offsetEta()) / segmentation->gridSizeEta()));
 	numCells[1]=cellsEta;
