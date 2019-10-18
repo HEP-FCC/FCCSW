@@ -46,6 +46,32 @@ ecalEndcapNoisePath = "root:://eospublic.cern.ch//eos/experiment/fcc/hh/testsamp
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
 
+#Configure tools for calo cell positions
+from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelNoSegTool, CellPositionsHCalBarrelTool, CellPositionsCaloDiscsTool, CellPositionsTailCatcherTool
+ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel",
+                                         readoutName = ecalBarrelReadoutName,
+                                         OutputLevel = INFO)
+EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC",
+                                       readoutName = ecalEndcapReadoutName,
+                                       OutputLevel = INFO)
+ECalFwdcells = CellPositionsCaloDiscsTool("CellPositionsECalFwd",
+                                          readoutName = ecalFwdReadoutName,
+                                          OutputLevel = INFO)
+HCalBcellVols = CellPositionsHCalBarrelNoSegTool("CellPositionsHCalBarrelVols",
+                                                 readoutName = "HCalBarrelReadout",
+                                                 OutputLevel = INFO)
+HCalBsegcells = CellPositionsHCalBarrelTool("CellPositionsHCalBarrel",
+                                            readoutName = "BarHCal_Readout_phieta",
+                                            radii = [291.05, 301.05, 313.55, 328.55, 343.55, 358.55, 378.55, 413.55, 428.55, 453.55],
+                                            OutputLevel = INFO)
+HECcells = CellPositionsCaloDiscsTool("CellPositionsHEC",
+                                      readoutName = hcalEndcapReadoutName,
+                                      OutputLevel = INFO)
+HCalFwdcells = CellPositionsCaloDiscsTool("CellPositionsHCalFwd",
+                                          readoutName = hcalFwdReadoutName,
+                                          OutputLevel = INFO)
+
+
 # additionally for HCal                                 
 from Configurables import RewriteBitfield
 # Use Phi-Eta segmentation in Hcal barrel               
@@ -113,6 +139,7 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
                                          elecNoiseHistoName = ecalBarrelNoiseHistName,
                                          activeFieldName = "layer",
                                          addPileup = False,
+                                         cellPositionsTool = ECalBcells,
                                          numRadialLayers = 8)
 barrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                          readoutName = ecalBarrelReadoutName,
@@ -133,12 +160,13 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
 # add noise, create all existing cells in detector
 # currently only positive side!
 noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap",
-                                                 readoutName = ecalEndcapReadoutName,
-                                                 noiseFileName = ecalEndcapNoisePath,
-                                                 elecNoiseHistoName = ecalEndcapNoiseHistName,
-                                                 activeFieldName = "layer",
-                                                 addPileup = False,
-                                                 numRadialLayers = 6)
+                                         readoutName = ecalEndcapReadoutName,
+                                         noiseFileName = ecalEndcapNoisePath,
+                                         elecNoiseHistoName = ecalEndcapNoiseHistName,
+                                         activeFieldName = "layer",
+                                         addPileup = False,
+                                         cellPositionsTool = EMECcells,
+                                         numRadialLayers = 6)
 endcapGeometry = TubeLayerPhiEtaCaloTool("EcalEndcapGeo",
                                                  readoutName = ecalEndcapReadoutName,
                                                  activeVolumeName = "layerEnvelope",

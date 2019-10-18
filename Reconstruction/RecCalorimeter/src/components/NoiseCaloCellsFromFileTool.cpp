@@ -18,6 +18,7 @@ NoiseCaloCellsFromFileTool::NoiseCaloCellsFromFileTool(const std::string& type, 
                                                        const IInterface* parent)
     : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name) {
   declareInterface<INoiseCaloCellsTool>(this);
+  declareProperty("cellPositionsTool", m_cellPositionsTool, "Handle for tool to retrieve cell positions");
 }
 
 StatusCode NoiseCaloCellsFromFileTool::initialize() {
@@ -40,6 +41,19 @@ StatusCode NoiseCaloCellsFromFileTool::initialize() {
     error() << "Couldn't open file with noise constants!!!" << endmsg;
     return StatusCode::FAILURE;
   }
+  // Check if cell position tool available
+  if (!m_cellPositionsTool.retrieve() and !m_useSeg) {
+    info() << "Unable to retrieve cell positions tool, try eta-phi segmentation." << endmsg;
+    // Get PhiEta segmentation
+    m_segmentationPhiEta = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
+									    m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+    if (m_segmentationPhiEta == nullptr) {
+      error() << "There is no phi-eta segmentation." << endmsg;
+      return StatusCode::FAILURE;
+    }
+    else
+      info() << "Found phi-eta segmentation." << endmsg;
+  }    
   // Get PhiEta segmentation
   m_segmentationPhiEta = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
     m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
@@ -154,12 +168,15 @@ double NoiseCaloCellsFromFileTool::getNoiseConstantPerCell(int64_t aCellId) {
   double elecNoise = 0.;
   double pileupNoise = 0.;
 
-  // Get cell coordinates: eta and radial layer
-  double cellEta = segmentation->eta(aCellId);
   // Take readout, bitfield from GeoSvc
   auto decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
-  //decoder->setValue(aCellId);
   dd4hep::DDSegmentation::CellID cID = aCellId;
+ 
+  double cellEta;
+  if (m_useSeg)
+    cellEta = m_segmentationPhiEta->eta(aCellId);
+  else
+    cellEta = m_cellPositionsTool->xyzPosition(cID).Eta();
   unsigned cellLayer = decoder->get(cID, m_activeFieldName);
 
   // All histograms have same binning, all bins with same size

@@ -19,6 +19,13 @@ StatusCode CellPositionsHCalBarrelNoSegTool::initialize() {
     error() << "Unable to locate Geometry service." << endmsg;
     return StatusCode::FAILURE;
   }
+  // get PhiEta segmentation
+  m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
+									  m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+  if (m_segmentation == nullptr) {
+    error() << "There is no phi-eta segmentation!!!!" << endmsg;
+    // return StatusCode::FAILURE;                                                                                                                                                                                        
+  }
   // Take readout bitfield decoder from GeoSvc
   m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
   m_volman = m_geoSvc->lcdd()->volumeManager();
@@ -63,7 +70,20 @@ dd4hep::Position CellPositionsHCalBarrelNoSegTool::xyzPosition(const uint64_t& a
   double global[3];
   double local[3] = {0, 0, 0};
   transform.LocalToMaster(local, global);
-  dd4hep::Position outSeg(global[0], global[1], global[2]);
+  double zPos = global[2];
+  
+  dd4hep::DDSegmentation::CellID volumeId = aCellId;
+  m_decoder->set(volumeId,"phi",0);
+  m_decoder->set(volumeId,"eta",0);
+  int layer = m_decoder->get(volumeId, "layer");
+  double radius = m_radii[layer]; 
+
+  // x and y calculated with phi position, and radius
+  double phi = m_segmentation->phi(aCellId);
+  double xPos = cos(phi)*radius;
+  double yPos = sin(phi)*radius;
+
+  dd4hep::Position outSeg(xPos, yPos, zPos);
 
   return outSeg;
 }

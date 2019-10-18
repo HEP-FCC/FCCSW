@@ -69,7 +69,7 @@ private:
   /// Handle for calo cells (output collection)
   DataHandle<fcc::CaloHitCollection> m_cells{"cells", Gaudi::DataHandle::Writer, this};
   /// Name of the detector readout
-  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalHitsPhiEta", "Name of the detector readout"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", "ECalBarrelPhiEta", "Name of the detector readout"};
   /// Name of active volumes
   Gaudi::Property<std::string> m_activeVolumeName{this, "activeVolumeName", "_sensitive", "Name of the active volumes"};
   /// Name of active layers for sampling calorimeter
