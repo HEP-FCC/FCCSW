@@ -1,10 +1,28 @@
 from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCDumper
 
-from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
-reader.hepmc.Path = "hepmc"
+
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+guntool.MomentumMin = 500
+guntool.MomentumMax = 1000
+from Configurables import FlatSmearVertex
+vertexsmeartool = FlatSmearVertex()
+vertexsmeartool.xVertexMin = -25.
+vertexsmeartool.xVertexMax = 25.
+vertexsmeartool.yVertexMin = -25.
+vertexsmeartool.yVertexMax = 25.
+vertexsmeartool.zVertexMin = -25.
+vertexsmeartool.zVertexMax = 25.
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.VertexSmearingTool=vertexsmeartool
+gen.hepmc.Path = "hepmc"
 
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter("Converter")
@@ -13,7 +31,7 @@ hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/Barrel_testCaloSD_phieta.xml'], OutputLevel = DEBUG)
+geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/Barrel_testCaloSD_phieta.xml'])
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc")
@@ -27,11 +45,11 @@ geantsim = SimG4Alg("SimG4Alg", outputs= ["SimG4SaveCalHits/saveECalHits","Inspe
 
 from Configurables import FCCDataSvc, PodioOutput
 podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="testPhiEtaSegmentation.root")
+out = PodioOutput("out", filename="test_phiEtaSegmentation.root")
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(EvtSel='NONE',
-               EvtMax=1,
-               TopAlg=[reader, hepmc_converter, geantsim, out],
+               EvtMax=10,
+               TopAlg=[gen, hepmc_converter, geantsim, out],
                ExtSvc = [podiosvc, geoservice, geantservice],
-               OutputLevel=DEBUG)
+               )

@@ -4,10 +4,17 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
-reader.hepmc.Path = "hepmc"
+
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.hepmc.Path = "hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCToEDMConverter
@@ -20,7 +27,8 @@ hepmc_converter.genvertices.Path="allGenVertices"
 # Parses the given xml file
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml'],
+  'file:Detector/DetFCChhBaseline1/compact/FCChh_TrackerAir.xml'],
+
                                          OutputLevel=INFO)
 
 # Geant4 service
@@ -44,16 +52,18 @@ particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
                     eventProvider=particle_converter)
 
+
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out", filename = "out_limits.root")
+out = PodioOutput("out", filename = "out_geant_userLimits.root")
 out.outputCommands = ["keep *"]
+out.OutputLevel = DEBUG
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
-                EvtMax   = 1,
+                EvtMax   = 10,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
                 OutputLevel=INFO

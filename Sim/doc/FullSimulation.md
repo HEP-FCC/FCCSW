@@ -82,14 +82,8 @@ Simulation package contains following directories:
 ~~~
 
 The configuration file (`Examples/options/geant_fullsim.py`) contains:
-  * reading an event from a HepMC file
 
-    ~~~{.py}
-    from Configurables import HepMCFileReader, GenAlg
-    readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-    reader = GenAlg("Reader", SignalProvider=readertool)
-    reader.hepmc.Path = "hepmc"
-    ~~~
+  * A simple particle gun
 
   * translating a HepMC event to the EDM
 
