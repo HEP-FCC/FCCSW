@@ -92,17 +92,17 @@ StatusCode PythiaInterface::initialize() {
       scheme = 0;
     }
 
-    m_setting = std::unique_ptr<Pythia8::amcnlo_unitarised_interface>(new Pythia8::amcnlo_unitarised_interface(scheme));
-    m_pythiaSignal->setUserHooksPtr(m_setting.get());
+    m_setting = std::make_shared<Pythia8::amcnlo_unitarised_interface>(scheme);
+    m_pythiaSignal->setUserHooksPtr(m_setting);
   }
 
   // For jet matching, initialise the respective user hooks code.
   if (m_doMePsMatching) {
-    m_matching = std::unique_ptr<Pythia8::JetMatchingMadgraph>(new Pythia8::JetMatchingMadgraph());
-    if (!m_matching) {
+    m_matching = std::make_shared<Pythia8::JetMatchingMadgraph>();
+    if (nullptr == m_matching) {
       return Error(" Failed to initialise jet matching structures.");
     }
-    m_pythiaSignal->setUserHooksPtr(m_matching.get());
+    m_pythiaSignal->setUserHooksPtr(m_matching);
   }
 
   // jet clustering needed for matching
