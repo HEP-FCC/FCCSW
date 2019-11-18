@@ -4,20 +4,21 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 
 podioevent   = FCCDataSvc("EventDataSvc")
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import GenAlg, HepMCDumper, PoissonPileUp, HepMCFileReader
-genpileup = PoissonPileUp(name="ConstPileUp", numPileUpEvents=1)
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
-readertool_pileup = HepMCFileReader("ReaderToolPileup", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
-reader = GenAlg("Reader", SignalProvider=readertool, PileUpProvider=readertool_pileup, PileUpTool=genpileup)
-# have a look at the source code of GenAlg, in Generation/src/components/GenAlg.cpp
-# In the following line,
-#   reader.YYY.Path = "ZZZ"
-# YYY matches the string passed to declareOutput in the constructor of the algorithm
-# XXX declares a name for the product (the HepMC::GenEvent)
-reader.hepmc.Path = "hepmc"
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.hepmc.Path = "hepmc"
 
 
+
+
+from Configurables import HepMCDumper
 dumper = HepMCDumper()
 dumper.hepmc.Path="hepmc"
 
@@ -36,7 +37,7 @@ out = PodioOutput("out",
 out.outputCommands = ["keep *"]
 
 ApplicationMgr(
-    TopAlg = [reader, dumper,hepmc_converter,
+    TopAlg = [gen, dumper,hepmc_converter,
               out
               ],
     EvtSel = 'NONE',
