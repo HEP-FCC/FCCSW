@@ -50,7 +50,3 @@ gaudi_add_test(TrickTrackSeeding
 			         FRAMEWORK options/TrickTrackReco.py
 			         DEPENDS MuonsForSeeding)
 
-gaudi_add_test(ExtrapolationTest
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/extrapolationTest.py)
-
