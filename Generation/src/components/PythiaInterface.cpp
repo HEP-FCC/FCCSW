@@ -16,6 +16,9 @@
 // non-integrated treatment for unitarised merging.
 #include "Pythia8Plugins/aMCatNLOHooks.h"
 
+//Powheg specific hooks
+#include "Pythia8Plugins/PowhegHooks.h"
+
 // FCCSW
 #include "Generation/Units.h"
 
@@ -109,6 +112,32 @@ StatusCode PythiaInterface::initialize() {
   m_slowJet = std::unique_ptr<Pythia8::SlowJet>(new Pythia8::SlowJet(1, 0.4, 0, 4.4, 2, 2, NULL, false));
 
   // End ME/PS Matching specific code
+
+
+  // --  POWHEG settings
+  int vetoMode    = m_pythiaSignal->settings.mode("POWHEG:veto");
+  int MPIvetoMode = m_pythiaSignal->settings.mode("POWHEG:MPIveto");
+  m_doPowheg  = (vetoMode > 0 || MPIvetoMode > 0);
+
+  // Add in user hooks for shower vetoing
+  if (m_doPowheg) {
+  
+    // Counters for number of ISR/FSR emissions vetoed
+    m_nISRveto = 0, m_nFSRveto = 0;  
+    
+    // Set ISR and FSR to start at the kinematical limit
+    if (vetoMode > 0) {
+      m_pythiaSignal->readString("SpaceShower:pTmaxMatch = 2");
+      m_pythiaSignal->readString("TimeShower:pTmaxMatch = 2");
+    }
+
+    // Set MPI to start at the kinematical limit
+    if (MPIvetoMode > 0) {
+      m_pythiaSignal->readString("MultipartonInteractions:pTmaxMatch = 2");
+    }
+
+    m_pythiaSignal->setUserHooksPtr(m_powhegHooks);
+  }
 
   m_pythiaSignal->init();
 
@@ -273,10 +302,14 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     }
   }  // Debug
 
+  if (m_doPowheg) {
+    //m_nISRveto += m_powhegHooks->getNISRveto();
+    //m_nFSRveto += m_powhegHooks->getNFSRveto();
+  }
+
   if (m_printPythiaStatistics) {
     m_pythiaSignal->stat();
   }
-
 
   // Handle event via standard Gaudi mechanism
   m_iEvent++;
@@ -286,6 +319,12 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 }
 
 StatusCode PythiaInterface::finalize() {
+
+  if (m_doPowheg) {
+    std::cout << "POWHEG INFO: Number of ISR emissions vetoed: " << m_nISRveto << std::endl;
+    std::cout << "POWHEG INFO: Number of FSR emissions vetoed: " << m_nFSRveto << std::endl;
+    std::cout << std::endl;
+  }
 
   m_pythiaSignal.reset();
   return GaudiTool::finalize();
