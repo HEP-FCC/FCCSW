@@ -11,7 +11,7 @@ find_package(FCCEDM)
 find_package(PODIO)
 find_package(DD4hep)
 find_package(ROOT REQUIRED COMPONENTS Geom)
-find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin Legacy)
+find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 
 gaudi_install_python_modules()
 gaudi_add_library(TrackingUtils
@@ -23,7 +23,7 @@ gaudi_add_library(TrackingUtils
 gaudi_add_module(RecTracker
                  src/components/*.cpp
                  INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils Acts CLHEP
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep TrackingUtils ActsCore ActsDD4hepPlugin ActsLegacy CLHEP)
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep TrackingUtils ActsCore ActsDD4hepPlugin CLHEP)
 
 
 gaudi_add_library(ActsLogger
@@ -41,21 +41,14 @@ gaudi_add_test(FastDigiTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/fastDigiTest.py)
 
-
 gaudi_add_test(MuonsForSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK  options/geantSim_TrackerPerformance.py)
-
-gaudi_add_test(CombinatorialTrackSeeding
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-			         FRAMEWORK options/CombinatorialSeedingTest.py
-			         DEPENDS MuonsForSeeding)
 
 gaudi_add_test(TrickTrackSeeding
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 			         FRAMEWORK options/TrickTrackReco.py
 			         DEPENDS MuonsForSeeding)
-
 
 gaudi_add_test(ExtrapolationTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
