@@ -1,12 +1,7 @@
 
-#include "DD4hep/DetFactoryHelper.h"
 #include "DetCommon/DetUtils.h"
-
+#include "DD4hep/DetFactoryHelper.h"
 #include "Acts/Plugins/DD4hep/ActsExtension.hpp"
-#include "Acts/Plugins/DD4hep/IActsExtension.hpp"
-#include "Acts/Plugins/Digitization/CartesianSegmentation.hpp"
-#include "Acts/Plugins/Digitization/DigitizationModule.hpp"
-#include "Acts/Surfaces/TrapezoidBounds.hpp"
 
 using dd4hep::Volume;
 using dd4hep::DetElement;
@@ -16,31 +11,6 @@ using dd4hep::PlacedVolume;
 
 namespace det {
 
-inline std::shared_ptr<const Acts::DigitizationModule> trapezoidalDigiModuleXZ(double minHalflengthX,
-                                                                               double maxHalflengthX,
-                                                                               double halflengthZ,
-                                                                               double thickness,
-                                                                               double gridSizeX,
-                                                                               double gridSizeZ) {
-  // convert to ACTS units
-  double scalor = Acts::units::_cm;
-  minHalflengthX *= scalor;
-  maxHalflengthX *= scalor;
-  halflengthZ *= scalor;
-  thickness *= scalor;
-
-  auto bounds = std::make_shared<const Acts::TrapezoidBounds>(minHalflengthX, maxHalflengthX, halflengthZ);
-
-  // the Acts segmentation of the DigitizationModule
-  size_t bins0 = (gridSizeX != 0) ? (2 * maxHalflengthX) / (gridSizeX * scalor) : 0;
-  size_t bins1 = (gridSizeZ != 0) ? (2 * halflengthZ) / (gridSizeZ * scalor) : 0;
-
-  std::shared_ptr<const Acts::CartesianSegmentation> actsSegmentation =
-      std::make_shared<const Acts::CartesianSegmentation>(bounds, bins0, bins1);
-  // finally create the digitization module
-  // @todo set lorentz angle
-  return (std::make_shared<const Acts::DigitizationModule>(actsSegmentation, thickness, 1, 0));
-};
 
 static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
                                                  dd4hep::xml::Handle_t xmlElement,
@@ -58,11 +28,11 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
   std::string detName = xmlDet.nameStr();
   DetElement worldDetElement(detName, xmlDet.id());
   DetElement posEcapDetElement(worldDetElement, "posEndcap", 0);
+  Acts::ActsExtension* ecapDetExt = new Acts::ActsExtension();
+  ecapDetExt->addType("endcap", "detector");
+  posEcapDetElement.addExtension<Acts::ActsExtension>(ecapDetExt);
 
-  Acts::ActsExtension::Config actsEcapConfig;
-  actsEcapConfig.isEndcap = true;
-  Acts::ActsExtension* ecapDetExt = new Acts::ActsExtension(actsEcapConfig);
-  posEcapDetElement.addExtension<Acts::IActsExtension>(ecapDetExt);
+
 
   dd4hep::Assembly envelopeVolume("endcapEnvelope");
   envelopeVolume.setVisAttributes(lcdd.invisible());
@@ -91,13 +61,13 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
 
       discVolumeVec.emplace_back("disc", discShape, lcdd.air());
       discDetElementVec.emplace_back(posEcapDetElement, "disc" + std::to_string(discCounter), discCounter);
-      Acts::ActsExtension::Config layConfig;
+      Acts::ActsExtension* detlayer = new Acts::ActsExtension();
+      detlayer->addType("sensitive disk", "layer");
       // the local coordinate systems of modules in dd4hep and acts differ
       // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
-      layConfig.axes = "XZY";  // correct translation of local x axis in dd4hep to local x axis in acts
-      layConfig.isLayer = true;
-      Acts::ActsExtension* detlayer = new Acts::ActsExtension(layConfig);
-      discDetElementVec.back().addExtension<Acts::IActsExtension>(detlayer);
+      detlayer->addType("axes", "definitions", "XZY");
+      discDetElementVec.back().addExtension<Acts::ActsExtension>(detlayer);
+
       // iterate over rings
       for (dd4hep::xml::Collection_t xRingColl(xCurrentRings, _U(ring)); (nullptr != xRingColl); ++xRingColl) {
         Component xRing = static_cast<Component>(xRingColl);
@@ -108,13 +78,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
         Component xModulePropertiesComp = xModuleProperties.child(_Unicode(components));
         Component xSensorProperties = xRing.child(_Unicode(sensorProperties));
 
-        // store component materials for Acts Extension
-        std::vector<std::pair<dd4hep::Material, double>> compMaterials;
-        for (dd4hep::xml::Collection_t xCompColl(xModulePropertiesComp, _U(component)); nullptr != xCompColl;
-             ++xCompColl) {
-          dd4hep::xml::Component xComp = static_cast<Component>(xCompColl);
-          compMaterials.push_back(std::make_pair(lcdd.material(xComp.materialStr()), xComp.thickness()));
-        }
 
         // place components in module
         double integratedCompThickness = 0.;
@@ -130,10 +93,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
               "component",
               dd4hep::Trapezoid(compMinWidth, compMaxWidth, compThickness, compThickness, compLength),
               lcdd.material(xComp.materialStr()));
-
-          // Create digitization module
-          auto digiModule = trapezoidalDigiModuleXZ(compMinWidth, compMaxWidth, compLength, compThickness, 0.025, 0.05);
-
           componentVolume.setVisAttributes(lcdd.invisible());
           unsigned int nPhi = xRing.attr<int>("nModules");
           double phi = 0;
@@ -181,15 +140,10 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
               componentVolume.setSensitiveDetector(sensDet);
               DetElement moduleDetElement(discDetElementVec.back(), "comp" + std::to_string(compCounter), compCounter);
 
-              Acts::ActsExtension* moduleExtension = new Acts::ActsExtension(compMaterials, digiModule);
-              moduleDetElement.addExtension<Acts::IActsExtension>(moduleExtension);
+              Acts::ActsExtension* moduleExtension = new Acts::ActsExtension();
+              moduleDetElement.addExtension<Acts::ActsExtension>(moduleExtension);
 
               moduleDetElement.setPlacement(placedComponentVolume);
-
-              // Acts extension with material information
-              // Acts::ActsExtension* moduleExtension = new Acts::ActsExtension(compMaterials);
-              // moduleDetElement.addExtension<Acts::IActsExtension>(moduleExtension);
-
               ++compCounter;
             }
           }

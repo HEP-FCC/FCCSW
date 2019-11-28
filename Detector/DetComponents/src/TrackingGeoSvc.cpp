@@ -1,6 +1,6 @@
 #include "TrackingGeoSvc.h"
 
-#include "Acts/Detector/TrackingGeometry.hpp"
+#include "Acts/Geometry/TrackingGeometry.hpp"
 #include "Acts/Plugins/DD4hep/ConvertDD4hepDetector.hpp"
 
 DECLARE_COMPONENT(TrackingGeoSvc)
