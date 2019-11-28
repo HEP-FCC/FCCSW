@@ -5,6 +5,7 @@
 #include "GaudiAlg/GaudiTool.h"
 #include "Generation/IHepMCProviderTool.h"
 #include "Generation/IVertexSmearingTool.h"
+#include "Pythia8Plugins/PowhegHooks.h"
 #include <memory>
 
 // Forward HepMC
@@ -49,18 +50,25 @@ private:
   int m_nAbort{0};
   int m_iAbort{0};
   int m_iEvent{0};
+
+  // -- aMCatNLO
   bool m_doMePsMatching{false};
   bool m_doMePsMerging{false};
-
   /// Pythia8 engine for ME/PS matching
   std::shared_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
-  /// Pythia8 engine for NLO ME/PS merging
+  /// Pythia8 engine for aMCNLO ME/PS merging
   std::shared_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
+
+  // Powheg
+  bool m_doPowheg{false};
+  unsigned long int m_nISRveto{0};
+  unsigned long int m_nFSRveto{0};    
+  /// Pythia8 engine for Powheg ME/PS merging
+  std::shared_ptr<Pythia8::PowhegHooks> m_powhegHooks{nullptr};
 
   /// flag for additional printouts
   Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
                                                            "Print Pythia Statistics"};
-
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H
