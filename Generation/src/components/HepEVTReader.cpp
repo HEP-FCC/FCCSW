@@ -108,8 +108,6 @@ StatusCode HepEVTReader::execute()
       particle.pdgId(IDHEP);
       particle.status(ISTHEP); // if ( ISTHEP == 1 ) status.set(G4PARTICLE_GEN_STABLE);
 
-      double angle=15/1000.;
-      double ta=tan(angle);
       auto& p4 = particle.p4();
       p4.px = PHEP1;
       p4.py = PHEP2;
