@@ -136,6 +136,8 @@ StatusCode PythiaInterface::initialize() {
       m_pythiaSignal->readString("MultipartonInteractions:pTmaxMatch = 2");
     }
 
+    
+    m_powhegHooks = std::make_shared<Pythia8::PowhegHooks>();
     m_pythiaSignal->setUserHooksPtr(m_powhegHooks);
   }
 
@@ -303,8 +305,8 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
   }  // Debug
 
   if (m_doPowheg) {
-    //m_nISRveto += m_powhegHooks->getNISRveto();
-    //m_nFSRveto += m_powhegHooks->getNFSRveto();
+    m_nISRveto += m_powhegHooks->getNISRveto();
+    m_nFSRveto += m_powhegHooks->getNFSRveto();
   }
 
   if (m_printPythiaStatistics) {
