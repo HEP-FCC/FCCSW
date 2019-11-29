@@ -96,7 +96,7 @@ StatusCode PythiaInterface::initialize() {
     }
 
     m_setting = std::make_shared<Pythia8::amcnlo_unitarised_interface>(scheme);
-    m_pythiaSignal->setUserHooksPtr(m_setting);
+    m_pythiaSignal->addUserHooksPtr(m_setting);
   }
 
   // For jet matching, initialise the respective user hooks code.
@@ -105,7 +105,7 @@ StatusCode PythiaInterface::initialize() {
     if (nullptr == m_matching) {
       return Error(" Failed to initialise jet matching structures.");
     }
-    m_pythiaSignal->setUserHooksPtr(m_matching);
+    m_pythiaSignal->addUserHooksPtr(m_matching);
   }
 
   // jet clustering needed for matching
@@ -138,8 +138,13 @@ StatusCode PythiaInterface::initialize() {
 
     
     m_powhegHooks = std::make_shared<Pythia8::PowhegHooks>();
-    m_pythiaSignal->setUserHooksPtr(m_powhegHooks);
+    m_pythiaSignal->addUserHooksPtr(m_powhegHooks);
   }
+    bool resonanceDecayFilter = m_pythiaSignal->settings.flag("ResonanceDecayFilter:filter");
+    if (resonanceDecayFilter) {
+      m_resonanceDecayFilterHook = std::make_shared<ResonanceDecayFilterHook>();
+      m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook);
+    }
 
   m_pythiaSignal->init();
 

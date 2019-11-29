@@ -1,6 +1,7 @@
 #ifndef GENERATION_PYTHIAINTERFACE_H
 #define GENERATION_PYTHIAINTERFACE_H
 
+#include "ResonanceDecayFilterHook.h"
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiTool.h"
 #include "Generation/IHepMCProviderTool.h"
@@ -65,6 +66,8 @@ private:
   unsigned long int m_nFSRveto{0};    
   /// Pythia8 engine for Powheg ME/PS merging
   std::shared_ptr<Pythia8::PowhegHooks> m_powhegHooks{nullptr};
+
+  std::shared_ptr<ResonanceDecayFilterHook> m_resonanceDecayFilterHook{nullptr};
 
   /// flag for additional printouts
   Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
