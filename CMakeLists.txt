@@ -10,7 +10,12 @@ if (SAS)
         )
 endif(SAS)
 
+
 #---------------------------------------------------------------
+# to use ROOT targets, find_package ROOT must come before find_package Gaudi
+# (for now) # see issue Gaudi#103
+find_package(ROOT COMPONENTS Geom)
+
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
 #---------------------------------------------------------------
