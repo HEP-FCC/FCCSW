@@ -1,13 +1,14 @@
 #ifndef GENERATION_PYTHIAINTERFACE_H
 #define GENERATION_PYTHIAINTERFACE_H
 
-#include "ResonanceDecayFilterHook.h"
+#include <memory>
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiTool.h"
 #include "Generation/IHepMCProviderTool.h"
 #include "Generation/IVertexSmearingTool.h"
+#include "ResonanceDecayFilterHook.h"
 #include "Pythia8Plugins/PowhegHooks.h"
-#include <memory>
+#include "Pythia8Plugins/HepMC2.h"
 
 // Forward HepMC
 namespace HepMC {
@@ -21,10 +22,10 @@ class JetMatchingMadgraph;
 class amcnlo_unitarised_interface;
 }
 
-// Forward FCC EDM
 namespace fcc {
-class FloatValueCollection;
+  class FloatValueCollection;
 }
+
 
 class PythiaInterface : public GaudiTool, virtual public IHepMCProviderTool {
 
@@ -38,6 +39,8 @@ public:
 private:
   /// Pythia8 engine
   std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
+  /// Interface for conversion from Pythia8::Event to HepMC event.
+  HepMC::Pythia8ToHepMC m_pythiaToHepMC;
   /// Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
   Gaudi::Property<std::string> m_parfile{this, "Filename", "Generation/data/Pythia_minbias_pp_100TeV.cmd"
                                                            "Name of the Pythia cmd file"};
