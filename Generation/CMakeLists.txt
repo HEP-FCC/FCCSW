@@ -32,5 +32,6 @@ gaudi_add_test(GenPileUpReader
                FRAMEWORK options/pileup_hepmcreader.py)
 
 gaudi_add_test(GenPythiaMatching
-               COMMAND fccrun  Generation/options/pythia.py --Filename Generation/data/powheg_ggHH_events.cmd
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+               COMMAND  fccrun  Examples/options/pythia.py --Filename Generation/data/powheg_ggHH_events.cmd
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+              )

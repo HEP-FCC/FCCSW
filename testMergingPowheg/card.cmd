@@ -21,6 +21,15 @@ Beams:frameType             = 4
 ! Number of outgoing particles of POWHEG Born level process
 ! (i.e. not counting additional POWHEG radiation)
 
+25:onMode = off
+25:onIfMatch = 5 -5
+25:onIfMatch = 22 22
+ResonanceDecayFilter:filter = on
+ResonanceDecayFilter:exclusive = on
+ResonanceDecayFilter:mothers = 25
+ResonanceDecayFilter:daughters = 5,5,22,22
+
+
 POWHEG:nFinal = 2
 POWHEG:veto = 1
 POWHEG:vetoCount = 3
