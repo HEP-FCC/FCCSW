@@ -1,1 +1,0 @@
- cd testMergingPowheg; ../run fccrun.py config.py --delphescard=card.tcl --inputfile=card.cmd --outputfile=events.root --nevents=100
