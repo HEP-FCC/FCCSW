@@ -207,8 +207,6 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
     bool doShowerKt = m_pythiaSignal->settings.flag("JetMatching:doShowerKt");
     if (m_doMePsMatching && !doShowerKt) njetNow = m_matching->nMEpartons().first;
-    // FIXME: "getProcessSubset()" method does not exist in < 8.219
-    // FIXME: simply un-comment the following two lines in >= 8.219
      else if (m_doMePsMatching && doShowerKt) {
          njetNow = m_matching->getProcessSubset().size();
     } else if (m_doMePsMerging) {
