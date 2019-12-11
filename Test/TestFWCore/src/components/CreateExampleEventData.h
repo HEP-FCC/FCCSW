@@ -1,15 +1,8 @@
 #ifndef TESTFWCORE_CREATEEXAMPLEEVENTDATA
 #define TESTFWCORE_CREATEEXAMPLEEVENTDATA
 
-// GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
-#include "GaudiKernel/Property.h"
-
-// FCCSW
 #include "FWCore/DataHandle.h"
-#include "TTree.h"
-
-
 
 // datamodel 
 namespace fcc {
@@ -33,37 +26,31 @@ class CreateExampleEventData : public GaudiAlgorithm {
 public:
   explicit CreateExampleEventData(const std::string&, ISvcLocator*);
   virtual ~CreateExampleEventData();
-  /**  Initialize.
-   *   @return status code
-   */
   virtual StatusCode initialize() final;
-  /**  Execute.
-   *   @return status code
-   */
   virtual StatusCode execute() final;
-  /**  Finalize.
-   *   @return status code
-   */
   virtual StatusCode finalize() final;
 
 private:
   /// integer to add to the dummy values written to the edm
   Gaudi::Property<int> m_magicNumberOffset{this, "magicNumberOffset", 0, "Integer to add to the dummy values written to the edm"};
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_genParticleHandle{"genParticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::MCParticleCollection> m_genParticleHandle{"GenParticles", Gaudi::DataHandle::Writer, this};
   /// Handle for the genvertices to be written
-  DataHandle<fcc::GenVertexCollection> m_genVertexHandle{"genVertices", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::GenVertexCollection> m_genVertexHandle{"GenVertices", Gaudi::DataHandle::Writer, this};
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::CaloHitCollection> m_caloHitHandle{"caloHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::CaloHitCollection> m_caloHitHandle{"SimCaloHits", Gaudi::DataHandle::Writer, this};
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::PositionedCaloHitCollection> m_posCaloHitHandle{"positionedCaloHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::PositionedCaloHitCollection> m_posCaloHitHandle{"SimCaloHitsPositions", Gaudi::DataHandle::Writer, this};
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::TrackHitCollection> m_trackHitHandle{"trackHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::TrackHitCollection> m_trackHitHandle{"SimTrackHits", Gaudi::DataHandle::Writer, this};
   /// Handle for the EDM Hits to be read
-  DataHandle<fcc::PositionedTrackHitCollection> m_posTrackHitHandle{"positionedTrackHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<fcc::PositionedTrackHitCollection> m_posTrackHitHandle{"SimTrackHitsPositions", Gaudi::DataHandle::Writer, this};
 
-  DataHandle<std::vector<fcc::FloatValueData>> m_somefloatHandle{"somefloat", Gaudi::DataHandle::Writer, this};
-  DataHandle<std::vector<float>> m_somefloatHandle2{"somefloat2", Gaudi::DataHandle::Writer, this};
-  DataHandle<std::vector<int>> m_someinthandle{"someint", Gaudi::DataHandle::Writer, this};
+  DataHandle<std::vector<fcc::FloatValueData>> m_somefloatHandle{"SomeFloatValueDataVec", Gaudi::DataHandle::Writer, this};
+  DataHandle<std::vector<float>> m_somefloatHandle2{"SomeFloatVec", Gaudi::DataHandle::Writer, this};
+  DataHandle<std::vector<int>> m_someinthandle{"SomeIntVec", Gaudi::DataHandle::Writer, this};
+  DataHandle<Int_t> m_intHandle{"SomeInt_t", Gaudi::DataHandle::Writer, this};
+  DataHandle<float> m_floatHandle{"SomeFloat", Gaudi::DataHandle::Writer, this};
+  DataHandle<double> m_doubleHandle{"someDouble", Gaudi::DataHandle::Writer, this};
 };
 #endif /* TESTFWCORE_CREATEEXAMPLEEVENTDATA */
