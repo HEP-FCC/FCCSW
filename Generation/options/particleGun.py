@@ -1,75 +1,73 @@
-
-### \file
-### \ingroup BasicExamples
-### | **input (alg)**                                                                                                              | other algorithms                   |                                  |                                       | **output (alg)**                                |
-### | ----------------------------------------------------                                                                         | ---------------------------------- | ---------------------            | ------------------------------------- | ----------------------------------------------- |
-### | generate single particle events from a given list of types, with momentum, phi and theta from a given range, saving to HepMC | creating the histograms for HepMC   | convert `HepMC::GenEvent` to EDM | dump `HepMC::GenEvent`                | write the EDM output to ROOT file using PODIO   |
-
 from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
 
+from Configurables import ApplicationMgr
+ApplicationMgr(
+               EvtSel='NONE',
+               EvtMax=1,
+               OutputLevel=VERBOSE,
+              )
 
 from Configurables import FCCDataSvc
-## Data service
-
 podioevent = FCCDataSvc("EventDataSvc")
-from Configurables import ApplicationMgr, THistSvc
-from Configurables import HepMCDumper, MomentumRangeParticleGun, HepMCHistograms, FlatSmearVertex, ConstPileUp
-
-dumper = HepMCDumper("Dumper")
-dumper.hepmc.Path="hepmc"
-
-from Configurables import HepMCFileWriter
-writer = HepMCFileWriter("MyHepMCFileWriter")
-writer.hepmc.Path="hepmc"
-
-
-guntool = MomentumRangeParticleGun("SignalProvider", PdgCodes=[-211])
-guntool2 = MomentumRangeParticleGun("PileUpProvider", PdgCodes=[11 ])
+ApplicationMgr().ExtSvc += [podioevent]
 
 
 
-smeartool = FlatSmearVertex("smeartoolname")
+from Configurables import ConstPtParticleGun
+guntool1 = ConstPtParticleGun("SignalProvider", PdgCodes=[-211])
+guntool2 = ConstPtParticleGun("PileUpProvider", PdgCodes=[11], writeParticleGunBranches=False)
+from Configurables import FlatSmearVertex
+smeartool = FlatSmearVertex()
 smeartool.xVertexMin = -10*units.mm
 smeartool.xVertexMax = 10*units.mm
 smeartool.yVertexMin = -10*units.mm
 smeartool.yVertexMax = 10*units.mm
 smeartool.zVertexMin = -30*units.mm
 smeartool.zVertexMax = 30*units.mm
-
-pileuptool = ConstPileUp("MyPileUpConfig", numPileUpEvents=1)
-
+from Configurables import RangePileUp
+pileuptool = RangePileUp()
+pileuptool.numPileUpEvents=[1, 2, 3]
 from Configurables import GenAlg
 gun = GenAlg()
+gun.SignalProvider = guntool1
+gun.PileUpProvider = guntool2
+gun.PileUpTool = pileuptool
 gun.hepmc.Path = "hepmc"
+ApplicationMgr().TopAlg += [gun]
 
+from Configurables import HepMCDumper
+dumper = HepMCDumper()
+dumper.hepmc.Path="hepmc"
+ApplicationMgr().TopAlg += [dumper]
 
-
+from Configurables import HepMCFileWriter
+writer = HepMCFileWriter()
+writer.hepmc.Path="hepmc"
+ApplicationMgr().TopAlg += [writer]
 
 from Configurables import HepMCToEDMConverter
-hepmc_converter = HepMCToEDMConverter("Converter")
+hepmc_converter = HepMCToEDMConverter()
 hepmc_converter.hepmc.Path="hepmc"
-hepmc_converter.genparticles.Path="allGenParticles"
-hepmc_converter.genvertices.Path="allGenVertices"
+hepmc_converter.genparticles.Path = "GenParticles"
+hepmc_converter.genvertices.Path = "GenVertices"
+ApplicationMgr().TopAlg += [hepmc_converter]
 
+from Configurables import HepMCHistograms
 histo = HepMCHistograms("GenHistograms")
 histo.hepmc.Path="hepmc"
+ApplicationMgr().TopAlg += [histo]
 
-THistSvc().Output = ["rec DATAFILE='GenHistograms.root' TYP='ROOT' OPT='RECREATE'"]
+from Configurables import THistSvc
+THistSvc().Output = ["rec DATAFILE='output_particleGun_GenHistograms.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
 THistSvc().OutputLevel=VERBOSE
 
 from Configurables import PodioOutput
-out = PodioOutput("out", filename = "output_gen.root")
+out = PodioOutput("out", filename = "output_particleGun.root")
 out.outputCommands = ["keep *"]
 
-ApplicationMgr(
-               TopAlg=[gun, dumper, writer, hepmc_converter, out],
-               EvtSel='NONE',
-               ExtSvc = [podioevent],
-               EvtMax=1,
-               OutputLevel=VERBOSE,
-)
+
 
