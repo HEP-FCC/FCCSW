@@ -7,7 +7,6 @@ gaudi_subdir(SimG4Common v1r0)
 gaudi_depends_on_subdirs(GaudiAlg)
 
 find_package(Geant4)
-include(${Geant4_USE_FILE})
 find_package(ROOT)
 find_package(FCCEDM)
 find_package(PODIO)

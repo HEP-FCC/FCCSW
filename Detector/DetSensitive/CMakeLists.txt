@@ -15,7 +15,7 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 gaudi_add_library(DetSensitive
                   src/*.cpp
                   INCLUDE_DIRS Geant4 DD4hep ROOT DetCommon
-                  LINK_LIBRARIES GaudiKernel DetCommon Geant4 DD4hep ROOT ${DD4hep_COMPONENT_LIBRARIES}
+                  LINK_LIBRARIES GaudiKernel DetCommon Geant4 DD4hep ROOT
                   PUBLIC_HEADERS DetSensitive)
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
