@@ -18,8 +18,6 @@
 /**
  * Specialisation of the Gaudi DataHandle
  * for use with podio collections.
- * 
- * The template parameter T can be a 
  */ 
 template <typename T>
 class DataHandle : public DataObjectHandle<DataWrapper<T>> {
@@ -97,7 +95,7 @@ DataHandle<T>::DataHandle(const std::string& descriptor, Gaudi::DataHandle::Mode
        tree->Branch(descriptor.c_str(),  m_dataPtr, (descriptor + "/I").c_str());
     } else if constexpr (std::is_floating_point_v<T>) {
        // case 3: T is some floating point type
-       // similar case 2, distingish floats and doubles by size
+       // similar case 2, distinguish floats and doubles by size
        m_dataPtr = new T();
        TTree* tree = pds->eventDataTree();
        if (sizeof(T) > 4) {
