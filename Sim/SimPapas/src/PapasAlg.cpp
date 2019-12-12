@@ -97,7 +97,7 @@ StatusCode PapasAlg::execute() {
       tool->clear();
     }
     return StatusCode::SUCCESS;
-  } catch (std::exception ex) {
+  } catch (std::exception& ex) {
     error() << "Exception thrown from gaudi papas tool" << endmsg;
     return StatusCode::FAILURE;  // see if it can continue
   }

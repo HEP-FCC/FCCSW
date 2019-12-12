@@ -15,7 +15,7 @@
 class GaudiFilterPolicy : public papaslog::Logging::OutputFilterPolicy {
 public:
   GaudiFilterPolicy(IMessageSvc* owner) : m_messenger(owner), m_currentLevel(m_messenger.currentLevel()) {}
-  bool doPrint(const papaslog::Logging::Level& lvl) const { return true; }
+  bool doPrint(const papaslog::Logging::Level& /*lvl*/) const { return true; }
 
 private:
   MsgStream m_messenger;

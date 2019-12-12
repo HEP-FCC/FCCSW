@@ -96,6 +96,8 @@ private:
   DataHandle<fcc::GenVertexCollection> m_vertex{"vertices", Gaudi::DataHandle::Reader, this};
   /// Pointer to the interface of histogram service
   ServiceHandle<ITHistSvc> m_histSvc;
+  /// Pointer to the geometry service
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Histogram of energy before any correction
   TH1F* m_hEnergyPreAnyCorrections;
   /// Histogram of energy after all corrections
@@ -149,8 +151,6 @@ private:
   /// Names of the detector readout, corresponding to system IDs in m_systemId
   Gaudi::Property<std::vector<std::string>> m_readoutName{
       this, "readoutName", {"ECalBarrelPhiEta"}, "Names of the detector readout, corresponding to systemId"};
-  /// Pointer to the geometry service
-  ServiceHandle<IGeoSvc> m_geoSvc;
   /// map of system Id to segmentation, created based on m_readoutName and m_systemId
   std::map<uint, dd4hep::DDSegmentation::FCCSWGridPhiEta*> m_segmentationPhiEta;
   std::map<uint, dd4hep::DDSegmentation::MultiSegmentation*> m_segmentationMulti;
