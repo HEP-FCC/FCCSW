@@ -14,6 +14,12 @@
 DECLARE_COMPONENT(CreateExampleEventData)
 
 CreateExampleEventData::CreateExampleEventData(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+  declareProperty("genparticles", m_genParticleHandle, "Dummy Particle collection (output)");
+  declareProperty("genvertices", m_genVertexHandle, "Dummy Vertex collection (output)");
+  declareProperty("calohits", m_caloHitHandle, "Dummy Hit collection (output)");
+  declareProperty("trackhits", m_trackHitHandle, "Dummy Hit collection (output)");
+  declareProperty("positionedcalohits", m_posCaloHitHandle, "Dummy Positioned Hit collection (output)");
+  declareProperty("positionedtrackhits", m_posTrackHitHandle, "Dummy Positioned Hit collection (output)");
 }
 
 CreateExampleEventData::~CreateExampleEventData() {}
@@ -34,16 +40,6 @@ StatusCode CreateExampleEventData::execute() {
 
   ff2->emplace_back( 125.);
   ff2->emplace_back( 25.);
-
-  Int_t* ff4 = new Int_t(123455);
-  m_intHandle.put(ff4);
-
-  float* ff5 = new float(0.54321);
-  m_floatHandle.put(ff5);
-
-  double* ff6 = new double(0.54321);
-  m_doubleHandle.put(ff6);
-
   std::vector<fcc::FloatValueData>* ff = m_somefloatHandle.createAndPut();
   auto fff = fcc::FloatValueData();
   fff.value = 12345.;
