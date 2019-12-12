@@ -1,5 +1,4 @@
 #include "PoissonPileUp.h"
-
 #include "GaudiKernel/IRndmGenSvc.h"
 
 DECLARE_COMPONENT(PoissonPileUp)
@@ -23,8 +22,6 @@ StatusCode PoissonPileUp::initialize() {
   printPileUpCounters();
   return sc;
 }
-
-std::string PoissonPileUp::getFilename() { return m_filename; }
 
 unsigned int PoissonPileUp::numberOfPileUp() {
   m_currentNumPileUpEvents = m_PoissonDist();
