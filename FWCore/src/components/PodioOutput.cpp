@@ -151,6 +151,10 @@ StatusCode PodioOutput::finalize() {
   m_datatree->Write();
   m_file->Write();
   m_file->Close();
-  info() << "Data written to: " << m_filename << endmsg;
+  info() << "Data written to: " << m_filename.value();
+  if (!m_filenameRemote.value().empty()) {
+    TFile::Cp(m_filename.value().c_str(), m_filenameRemote.value().c_str(), false);
+    info() << " and copied to: " << m_filenameRemote.value() << endmsg; 
+  }
   return StatusCode::SUCCESS;
 }
