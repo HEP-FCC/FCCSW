@@ -1,14 +1,11 @@
 #include "PythiaInterface.h"
+#include "Generation/Units.h"
 
-// Gaudi
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
 #include "GaudiKernel/System.h"
 
-// Pythia
 #include "Pythia8/Pythia.h"
-#include "Pythia8Plugins/HepMC2.h"
-
 // Include UserHooks for Jet Matching.
 #include "Pythia8Plugins/CombineMatchingInput.h"
 #include "Pythia8Plugins/JetMatching.h"
@@ -16,10 +13,6 @@
 // non-integrated treatment for unitarised merging.
 #include "Pythia8Plugins/aMCatNLOHooks.h"
 
-// FCCSW
-#include "Generation/Units.h"
-
-// FCC EDM
 #include "datamodel/FloatValueCollection.h"
 
 #include "HepMC/GenEvent.h"
@@ -54,7 +47,21 @@ StatusCode PythiaInterface::initialize() {
   if (System::getEnv("PYTHIA8_XML") != "UNKNOWN") xmlpath = System::getEnv("PYTHIA8_XML");
 
   // Initialize pythia
-  m_pythiaSignal = std::unique_ptr<Pythia8::Pythia>(new Pythia8::Pythia(xmlpath));
+  m_pythiaSignal = std::make_unique<Pythia8::Pythia>(xmlpath);
+
+   //add settings for resonance decay filter
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:filter", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:exclusive", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:eMuAsEquivalent", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:eMuTauAsEquivalent", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:allNuAsEquivalent", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:udscAsEquivalent", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:udscbAsEquivalent", false);
+  m_pythiaSignal->settings.addFlag("ResonanceDecayFilter:wzAsEquivalent", false);
+  m_pythiaSignal->settings.addMVec("ResonanceDecayFilter:mothers", std::vector<int>(), false, false, 0, 0);
+  m_pythiaSignal->settings.addMVec("ResonanceDecayFilter:daughters", std::vector<int>(), false, false, 0, 0);
+
+
 
   // Read Pythia configuration files
   m_pythiaSignal->readFile(m_parfile.value().c_str());
@@ -93,7 +100,7 @@ StatusCode PythiaInterface::initialize() {
     }
 
     m_setting = std::make_shared<Pythia8::amcnlo_unitarised_interface>(scheme);
-    m_pythiaSignal->setUserHooksPtr(m_setting);
+    m_pythiaSignal->addUserHooksPtr(m_setting);
   }
 
   // For jet matching, initialise the respective user hooks code.
@@ -102,13 +109,46 @@ StatusCode PythiaInterface::initialize() {
     if (nullptr == m_matching) {
       return Error(" Failed to initialise jet matching structures.");
     }
-    m_pythiaSignal->setUserHooksPtr(m_matching);
+    m_pythiaSignal->addUserHooksPtr(m_matching);
   }
 
   // jet clustering needed for matching
-  m_slowJet = std::unique_ptr<Pythia8::SlowJet>(new Pythia8::SlowJet(1, 0.4, 0, 4.4, 2, 2, NULL, false));
+  m_slowJet = std::make_unique<Pythia8::SlowJet>(1, 0.4, 0, 4.4, 2, 2, nullptr, false);
 
   // End ME/PS Matching specific code
+
+
+  // --  POWHEG settings
+  int vetoMode    = m_pythiaSignal->settings.mode("POWHEG:veto");
+  int MPIvetoMode = m_pythiaSignal->settings.mode("POWHEG:MPIveto");
+  m_doPowheg  = (vetoMode > 0 || MPIvetoMode > 0);
+
+  // Add in user hooks for shower vetoing
+  if (m_doPowheg) {
+  
+    // Counters for number of ISR/FSR emissions vetoed
+    m_nISRveto = 0, m_nFSRveto = 0;  
+    
+    // Set ISR and FSR to start at the kinematical limit
+    if (vetoMode > 0) {
+      m_pythiaSignal->readString("SpaceShower:pTmaxMatch = 2");
+      m_pythiaSignal->readString("TimeShower:pTmaxMatch = 2");
+    }
+
+    // Set MPI to start at the kinematical limit
+    if (MPIvetoMode > 0) {
+      m_pythiaSignal->readString("MultipartonInteractions:pTmaxMatch = 2");
+    }
+
+    
+    m_powhegHooks = std::make_shared<Pythia8::PowhegHooks>();
+    m_pythiaSignal->addUserHooksPtr(m_powhegHooks);
+  }
+    bool resonanceDecayFilter = m_pythiaSignal->settings.flag("ResonanceDecayFilter:filter");
+    if (resonanceDecayFilter) {
+      m_resonanceDecayFilterHook = std::make_shared<ResonanceDecayFilterHook>();
+      m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook);
+    }
 
   m_pythiaSignal->init();
 
@@ -118,8 +158,6 @@ StatusCode PythiaInterface::initialize() {
 
 StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
-  // Interface for conversion from Pythia8::Event to HepMC event.
-  HepMC::Pythia8ToHepMC* toHepMC = new HepMC::Pythia8ToHepMC();
   Pythia8::Event sumEvent;
 
   // Generate events. Quit if many failures in a row
@@ -169,11 +207,9 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
     bool doShowerKt = m_pythiaSignal->settings.flag("JetMatching:doShowerKt");
     if (m_doMePsMatching && !doShowerKt) njetNow = m_matching->nMEpartons().first;
-    // FIXME: "getProcessSubset()" method does not exist in < 8.219
-    // FIXME: simply un-comment the following two lines in >= 8.219
-    // else if (m_doMePsMatching && doShowerKt)
-    // njetNow = m_matching->getProcessSubset().size();
-    else if (m_doMePsMerging) {
+     else if (m_doMePsMatching && doShowerKt) {
+         njetNow = m_matching->getProcessSubset().size();
+    } else if (m_doMePsMerging) {
       njetNow = m_pythiaSignal->settings.mode("Merging:nRequested");
       if (m_pythiaSignal->settings.flag("Merging:doUMEPSSubt") ||
           m_pythiaSignal->settings.flag("Merging:doUNLOPSSubt") ||
@@ -230,7 +266,7 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
   }  // Debug
 
   // Define HepMC event and convert Pythia event into this HepMC event type
-  toHepMC->fill_next_event(*m_pythiaSignal, &theEvent, m_iEvent);
+  m_pythiaToHepMC.fill_next_event(*m_pythiaSignal, &theEvent, m_iEvent);
 
   // Print debug: HepMC event info
   if (msgLevel() <= MSG::DEBUG) {
@@ -273,19 +309,27 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     }
   }  // Debug
 
+  if (m_doPowheg) {
+    m_nISRveto += m_powhegHooks->getNISRveto();
+    m_nFSRveto += m_powhegHooks->getNFSRveto();
+  }
+
   if (m_printPythiaStatistics) {
     m_pythiaSignal->stat();
   }
 
-
   // Handle event via standard Gaudi mechanism
   m_iEvent++;
 
-  delete toHepMC;
   return StatusCode::SUCCESS;
 }
 
 StatusCode PythiaInterface::finalize() {
+
+  if (m_doPowheg) {
+    debug() << "POWHEG INFO: Number of ISR emissions vetoed: " << m_nISRveto << endmsg;
+    debug() << "POWHEG INFO: Number of FSR emissions vetoed: " << m_nFSRveto << endmsg;
+  }
 
   m_pythiaSignal.reset();
   return GaudiTool::finalize();

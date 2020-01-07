@@ -1,11 +1,14 @@
 #ifndef GENERATION_PYTHIAINTERFACE_H
 #define GENERATION_PYTHIAINTERFACE_H
 
+#include <memory>
 #include "FWCore/DataHandle.h"
 #include "GaudiAlg/GaudiTool.h"
 #include "Generation/IHepMCProviderTool.h"
 #include "Generation/IVertexSmearingTool.h"
-#include <memory>
+#include "ResonanceDecayFilterHook.h"
+#include "Pythia8Plugins/PowhegHooks.h"
+#include "Pythia8Plugins/HepMC2.h"
 
 // Forward HepMC
 namespace HepMC {
@@ -19,10 +22,10 @@ class JetMatchingMadgraph;
 class amcnlo_unitarised_interface;
 }
 
-// Forward FCC EDM
 namespace fcc {
-class FloatValueCollection;
+  class FloatValueCollection;
 }
+
 
 class PythiaInterface : public GaudiTool, virtual public IHepMCProviderTool {
 
@@ -36,6 +39,8 @@ public:
 private:
   /// Pythia8 engine
   std::unique_ptr<Pythia8::Pythia> m_pythiaSignal;
+  /// Interface for conversion from Pythia8::Event to HepMC event.
+  HepMC::Pythia8ToHepMC m_pythiaToHepMC;
   /// Name of Pythia configuration file with Pythia simulation settings & input LHE file (if required)
   Gaudi::Property<std::string> m_parfile{this, "Filename", "Generation/data/Pythia_minbias_pp_100TeV.cmd"
                                                            "Name of the Pythia cmd file"};
@@ -49,18 +54,27 @@ private:
   int m_nAbort{0};
   int m_iAbort{0};
   int m_iEvent{0};
+
+  // -- aMCatNLO
   bool m_doMePsMatching{false};
   bool m_doMePsMerging{false};
-
   /// Pythia8 engine for ME/PS matching
   std::shared_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
-  /// Pythia8 engine for NLO ME/PS merging
+  /// Pythia8 engine for aMCNLO ME/PS merging
   std::shared_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
+
+  // Powheg
+  bool m_doPowheg{false};
+  unsigned long int m_nISRveto{0};
+  unsigned long int m_nFSRveto{0};    
+  /// Pythia8 engine for Powheg ME/PS merging
+  std::shared_ptr<Pythia8::PowhegHooks> m_powhegHooks{nullptr};
+
+  std::shared_ptr<ResonanceDecayFilterHook> m_resonanceDecayFilterHook{nullptr};
 
   /// flag for additional printouts
   Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
                                                            "Print Pythia Statistics"};
-
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H
