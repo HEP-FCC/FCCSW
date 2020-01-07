@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+"""
+
+
+"""
+
+from __future__ import print_function
+import argparse
+import ROOT
+import re
+
+
+# match an integer in quotes, followed by  a semicolon
+# groups are added for each quote, the number and the semicolon
+# so the quote can easily be removed
+_regexp_int = re.compile(r'(")([-+]?[0-9]+)(")(;)')
+def _sanitize(s):
+  """
+   helper function for postprocessing of fcc job options
+   quotes need to be removed around ints, lists, dicts and bools,
+   and some properties that get stored by the job options svc need to be disabled
+
+  Parameters
+  ----------
+
+  s: str
+     String containing fcc joboptions (.opts format) to be sanitized.
+
+  Returns
+  -------
+
+  s: str
+    The sanitized string that should be compatible with gaudirun.py
+  """
+  s = s.replace('"False"', 'False')
+  s = s.replace('"True"', 'True')
+  s = s.replace('"[', '[')
+  s = s.replace(']"', ']')
+  s = s.replace('"{', '{')
+  s = s.replace('}"', '}')
+  s = re.sub(_regexp_int, r"\g<2>\g<4>", s)
+  s = s.replace("ApplicationMgr.Go = ", "#ApplicationMgr.Go = ")
+  s = s.replace("ApplicationMgr.Exit = ", "#ApplicationMgr.Exit = ")
+  s = s.replace("ApplicationMgr.Environment = {  };", "#ApplicationMgr.Environment = {  };")
+  s = s.replace("ApplicationMgr.AlgTypeAliases = {  };", "#ApplicationMgr.AlgTypeAliases = {  };")
+  return s
+
+
+def dump_joboptions(filename):
+  f = ROOT.TFile(filename)
+  t = f.metadata
+  for event in t:
+      s =  event.gaudiConfigOptions
+      for e in s:
+          print(_sanitize(e))
+
+
+parser = argparse.ArgumentParser(description='FCC Job Options Writer')
+parser.add_argument( dest='filename', type=str, help="name of file to read")
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+    dump_joboptions(args.filename)
+
+  
