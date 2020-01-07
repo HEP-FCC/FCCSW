@@ -68,7 +68,7 @@ tricktrack::HitDoublets<Hit>*   TrickTrackSeedingTool::findDoublets( std::vector
  return doublets;
 }
 
-void TrickTrackSeedingTool::findDoublets(tricktrack::HitDoublets<Hit>* doublets, std::vector<tricktrack::TTPoint> theInnerHits,  tricktrack::FKDTree<tricktrack::TTPoint, double, 4> theOuterTree, std::vector<tricktrack::TTPoint> theOuterHits) {
+void TrickTrackSeedingTool::findDoublets(tricktrack::HitDoublets<Hit>* doublets, std::vector<tricktrack::TTPoint> theInnerHits,  tricktrack::FKDTree<tricktrack::TTPoint, double, 4> /*theOuterTree*/, std::vector<tricktrack::TTPoint> theOuterHits) {
   // brute force doublet creation
   for (unsigned int i = 0; i < theInnerHits.size(); ++i) {
     double currentPhi = theInnerHits[i].phi();
@@ -186,17 +186,17 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
   for (const auto& tracklet : foundTracklets) {
    // local variable for a quick check of track seed correctness,
    // set it to -1 in case the trackIds along the tracklet disagree
-   int l_trackId = (*theHits)[cells[tracklet[0]].getInnerHit().identifier()].core().bits;
+   long int l_trackId = (*theHits)[cells[tracklet[0]].getInnerHit().identifier()].core().bits;
     for(const auto& t: tracklet) {
       auto l_id = cells[t].getInnerHit().identifier();
       theSeeds.insert(std::pair<unsigned int, unsigned int>(trackletCounter, l_id));
-      if (l_trackId != (*theHits)[l_id].core().bits) {
+      if (l_trackId !=  (long int)(*theHits)[l_id].core().bits) {
         l_trackId = -1;
       }
     }
     auto l_id4 = cells[tracklet[minNumberOfHits - 2]].getOuterHit().identifier();
     theSeeds.insert(std::pair<unsigned int, unsigned int>(trackletCounter, l_id4));
-    if (l_trackId != (*theHits)[l_id4].core().bits) {
+    if (l_trackId != (long int) (*theHits)[l_id4].core().bits) {
        l_trackId = -1;
     }
     if (l_trackId != -1) { // all the trackIds were identical, a correctly identified track

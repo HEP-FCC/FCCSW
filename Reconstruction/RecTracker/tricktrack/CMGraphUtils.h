@@ -43,7 +43,7 @@ inline CMGraph createGraph(std::vector<std::vector<std::string>> graphList, std:
 
   // fill the inner / outer layers list
   for (auto layerPath: graphList) {
-    for (int i = 0; i < layerPath.size(); ++i) {
+    for (size_t i = 0; i < layerPath.size(); ++i) {
       auto layerName = layerPath[i];
       if (i > 0) {
        innerLayersMap[layerName].insert(layerName2Index[layerPath[i-1]]);
@@ -58,7 +58,7 @@ inline CMGraph createGraph(std::vector<std::vector<std::string>> graphList, std:
   // get a list of unique layer pairs
   std::set<std::pair<int, int>> uniqueLayerPairs;
   for (auto layerPath: graphList) {
-    for (int i = 0; i < layerPath.size() - 1; i++) {
+    for (size_t i = 0; i < layerPath.size() - 1; i++) {
       std::string thisLayerName = layerPath[i];
       std::string nextLayerName = layerPath[i+1];
       int indexOfThisLayer = layerName2Index[thisLayerName];
@@ -73,7 +73,7 @@ inline CMGraph createGraph(std::vector<std::vector<std::string>> graphList, std:
   // each layer needs to fill its vectors of inner/outer layers/layerpairs,
   // for the inner/outer layers this is done using the previously created maps
   // the layerpair vectors are filled from the set
-  for (int i = 0; i < uniqueLayers.size(); ++i) {
+  for (size_t i = 0; i < uniqueLayers.size(); ++i) {
     std::string layerName = *std::next(uniqueLayers.begin(), i);
     auto layer = tricktrack::CMLayer(layerName, numberOfHits);
     for (auto outerLayerIndex: outerLayersMap[layerName]) {
