@@ -22,7 +22,7 @@ public:
   double t() const { return m_coordinates[3]; }
   double rho() const { return m_coordinates[0];}
   double phi() const { return m_coordinates[1];}
-  const unsigned int identifier() const { return m_identifier; }
+  unsigned int identifier() const { return m_identifier; }
 
   double& operator[](unsigned int const i) { return m_coordinates[i]; }
 

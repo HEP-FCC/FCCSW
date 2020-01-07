@@ -7,11 +7,12 @@
 #include "FWCore/IPileUpTool.h"
 #include "Generation/IVertexSmearingTool.h"
 
-#include "FWCore/DataHandle.h"
 
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "GaudiKernel/ToolHandle.h"
 
+
+#include "FWCore/DataHandle.h"
 namespace HepMC {
 class GenEvent;
 }
