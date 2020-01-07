@@ -3,8 +3,7 @@
 ################################################################################
 gaudi_subdir(DetComponents v1r0)
 
-gaudi_depends_on_subdirs(GaudiKernel
-                         FWCore
+gaudi_depends_on_subdirs( FWCore
                          Detector/DetInterface
                          Detector/DetSegmentation
                          Detector/DetCommon)
@@ -16,7 +15,6 @@ find_package(DD4hep COMPONENTS DDG4 DDRec REQUIRED)
 find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 
 find_package(Geant4)
-include(${Geant4_USE_FILE})
 gaudi_add_module(DetComponents
                  src/*.cpp
                  INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetSegmentation DetCommon Acts Eigen

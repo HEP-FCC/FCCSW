@@ -42,13 +42,13 @@ void CellPositionsDummyTool::getPositions(const fcc::CaloHitCollection& aCells,
   debug() << "Output positions collection size: " << outputColl.size() << endmsg;
 }
 
-dd4hep::Position CellPositionsDummyTool::xyzPosition(const uint64_t& aCellId) const {
+dd4hep::Position CellPositionsDummyTool::xyzPosition(const uint64_t& /*aCellId*/) const {
   dd4hep::Position outPos;
   outPos.SetCoordinates(0,0,0);
   return outPos;
 }
 
-int CellPositionsDummyTool::layerId(const uint64_t& aCellId) {
+int CellPositionsDummyTool::layerId(const uint64_t& /*aCellId*/) {
   int layer=0;
   return layer;
 }
