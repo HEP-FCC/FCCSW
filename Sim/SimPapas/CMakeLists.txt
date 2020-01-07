@@ -4,17 +4,14 @@
 gaudi_subdir(SimPapas v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Common FWCore GaudiKernel)
+gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Common FWCore)
 
-find_package(Geant4)
-include(${Geant4_USE_FILE})
 
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(ROOT COMPONENTS MathCore GenVector Tree Physics EG)
 find_package(papas)
 find_package(Geant4)
-include(${Geant4_USE_FILE})
 
 gaudi_add_library(PapasUtils
                  src/lib/*.cpp

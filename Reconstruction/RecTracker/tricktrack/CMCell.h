@@ -65,7 +65,7 @@ public:
   using CAStatusColl = std::vector<CMCellStatus>;
   
   
-  CMCell(const HitDoublets<Hit>* doublets, int doubletId, const int innerHitId, const int outerHitId) :
+  CMCell(const HitDoublets<Hit>* doublets, int doubletId, const int /*innerHitId*/, const int /*outerHitId*/) :
     theDoublets(doublets), theDoubletId(doubletId)
     ,theInnerR(doublets->rv(doubletId, HitDoublets<Hit>::inner)) 
     ,theInnerZ(doublets->z(doubletId, HitDoublets<Hit>::inner))
@@ -144,11 +144,8 @@ public:
   void checkAlignmentAndAct(CMColl& allCells, CMntuple & innerCells, std::vector<CMCell::CMntuplet> * foundTriplets, TripletFilter<Hit> theFilter) {
     int ncells = innerCells.size();
     int constexpr VSIZE = 16;
-    //int ok[VSIZE];
     float r1[VSIZE];
     float z1[VSIZE];
-    auto ro = getOuterR();
-    auto zo = getOuterZ();
     unsigned int cellId = this - &allCells.front();
     auto loop = [&](int i, int vs) {
       for (int j=0;j<vs; ++j) {
