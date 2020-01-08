@@ -59,9 +59,9 @@ private:
   bool m_doMePsMatching{false};
   bool m_doMePsMerging{false};
   /// Pythia8 engine for ME/PS matching
-  std::shared_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
-  /// Pythia8 engine for aMCNLO ME/PS merging
-  std::shared_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
+  std::unique_ptr<Pythia8::JetMatchingMadgraph> m_matching{nullptr};
+  /// Pythia8 engine for NLO ME/PS merging
+  std::unique_ptr<Pythia8::amcnlo_unitarised_interface> m_setting{nullptr};
 
   // Powheg
   bool m_doPowheg{false};
