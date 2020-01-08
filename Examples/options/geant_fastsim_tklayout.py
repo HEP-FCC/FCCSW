@@ -4,10 +4,26 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
-reader.hepmc.Path = "hepmc"
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import FlatSmearVertex
+vertexsmeartool = FlatSmearVertex()
+vertexsmeartool.xVertexMin = -25.
+vertexsmeartool.xVertexMax = 25.
+vertexsmeartool.yVertexMin = -25.
+vertexsmeartool.yVertexMax = 25.
+vertexsmeartool.zVertexMin = -25.
+vertexsmeartool.zVertexMax = 25.
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.VertexSmearingTool=vertexsmeartool
+gen.hepmc.Path = "hepmc"
+
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCToEDMConverter
@@ -28,7 +44,7 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearRootFile, SimG4FastSimTrackerRegion
 from GaudiKernel.SystemOfUnits import GeV, TeV
 # create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearRootFile("Smear", filename="/eos/project/f/fccsw-web/testsamples/tkLayout_example_resolutions.root")
+smeartool = SimG4ParticleSmearRootFile("Smear", filename="root://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/tkLayout_example_resolutions.root")
 ## create region and a parametrisation model, pass smearing tool
 regiontool = SimG4FastSimTrackerRegion("model", volumeNames=["TrackerEnvelopeBarrel"],
                                        minMomentum = 5*GeV, maxMomentum = 10*TeV, maxEta=6, smearing=smeartool)
@@ -57,19 +73,20 @@ geantsim = SimG4Alg("SimG4Alg",
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
 hist.particlesMCparticles.Path = "particleMCparticleAssociation"
-THistSvc().Output = ["rec DATAFILE='histTklayout.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='out_geant_fastsim_tklayout_histTklayout.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
 
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out", filename = "out_fast_tklayout.root")
+out = PodioOutput() 
+out.filename = "out_geant_fastsim_tklayout.root"
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc

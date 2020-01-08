@@ -77,12 +77,11 @@ static Ref_t ZPlanarTracker_geo(Detector& theDetector, xml_h e, SensitiveDetecto
   double minRadius = 1e99;
   double minZhalf = 1e99;
 
-  bool isStripDetector = false;
-  try {
-    isStripDetector = x_det.attr<bool>(_Unicode(isStripDetector));
+  //try {
+  //  isStripDetector = x_det.attr<bool>(_Unicode(isStripDetector));
 
-  } catch (std::runtime_error) {
-  }
+  //} catch (std::runtime_error &) {
+  //}
 
   //=========  loop over layer elements in xml  ======================================
 

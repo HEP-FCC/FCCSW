@@ -12,11 +12,16 @@ from Gaudi.Configuration import *
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-# reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import GenAlg, HepMCFileReader
-filereadertool = HepMCFileReader("HepMCFileReader", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-reader = GenAlg("Reader", SignalProvider=filereadertool)
-reader.hepmc.Path = "hepmc"
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.hepmc.Path = "hepmc"
 
 # reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCToEDMConverter
@@ -56,13 +61,13 @@ geantsim = SimG4Alg("SimG4Alg",
 
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+out = PodioOutput()
 out.outputCommands = ["keep *"]
+out.filename = "out_geant_fullsim.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc

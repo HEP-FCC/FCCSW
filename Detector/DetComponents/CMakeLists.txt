@@ -3,8 +3,7 @@
 ################################################################################
 gaudi_subdir(DetComponents v1r0)
 
-gaudi_depends_on_subdirs(GaudiKernel
-                         FWCore
+gaudi_depends_on_subdirs( FWCore
                          Detector/DetInterface
                          Detector/DetSegmentation
                          Detector/DetCommon)

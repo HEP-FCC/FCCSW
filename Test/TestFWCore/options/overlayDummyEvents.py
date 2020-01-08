@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-pileupFilenames = ["dummyEventData2.root", "dummyEventData1.root", "dummyEventData3.root",]
+pileupFilenames = ["output_dummyEventData2.root", "output_dummyEventData1.root", "output_dummyEventData3.root",]
 
 # Data service
 from Configurables import FCCDataSvc
