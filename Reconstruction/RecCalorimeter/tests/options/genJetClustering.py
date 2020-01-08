@@ -2,14 +2,19 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCDumper, HepMCJetClustering
 from Configurables import HepMCHistograms, JetHistograms
 
-from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/example_MyPythia.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
-reader.hepmc.Path = "hepmc"
 
-# dumps the HepMC::GenEvent
-dumper = HepMCDumper("Dumper")
-dumper.hepmc.Path="hepmc"
+#TODO: best to run pythia here?
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.hepmc.Path = "hepmc"
+
 
 # creates histograms for HepMC
 genHisto = HepMCHistograms("GenHistograms")
@@ -38,4 +43,4 @@ THistSvc().OutputLevel=VERBOSE
 # ApplicationMgr
 ApplicationMgr(EvtSel='NONE',
                EvtMax=1,
-               TopAlg=[reader,dumper,genHisto,jets,jetHisto])
+               TopAlg=[gen,genHisto,jets,jetHisto])

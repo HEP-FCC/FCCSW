@@ -1,21 +1,21 @@
 
-### \file
-### \ingroup SimulationExamples
-### | **input (alg)**                 | other algorithms                   |                                                                           |                                                                           |                                               | **output (alg)**                                |
-### | ------------------------------- | ---------------------------------- | ---------------------------------------------------------                 | ------------------------                                                  | ----------------------------------            | ----------------------------------------------- |
-### | read events from a HepMC file   | convert `HepMC::GenEvent` to EDM   | geometry parsed from XML (ParametricSimTracker.xml by DD4hep using GeoSvc | FTFP_BERT physics list + sim::FastSimPhysics with parametrisation process | action initialisation creates fast sim models | write the EDM output to ROOT file using PODIO   |
-
 from Gaudi.Configuration import *
 
 from Configurables import FCCDataSvc
 ## Data service
 podioevent = FCCDataSvc("EventDataSvc")
 
-## reads HepMC text file and write the HepMC::GenEvent to the data service
-from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
-reader.hepmc.Path = "hepmc"
+
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.hepmc.Path = "hepmc"
 
 from Configurables import HepMCToEDMConverter
 ## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
@@ -73,7 +73,7 @@ geantsim = SimG4Alg("SimG4Alg",
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
 hist.particlesMCparticles.Path = "particleMCparticleAssociation"
-THistSvc().Output = ["rec DATAFILE='histFormula.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='out_geant_fastsim_histFormula.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
@@ -81,12 +81,12 @@ THistSvc().OutputLevel=INFO
 
 from Configurables import PodioOutput
 ## PODIO algorithm
-out = PodioOutput("out", filename = "out_fast_tracker_formula_calo_gflash.root")
+out = PodioOutput("out", filename = "out_geant_fastsim.root")
 out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, hist, out],
+ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc

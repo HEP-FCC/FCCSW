@@ -14,10 +14,17 @@ from Configurables import ApplicationMgr, HepMCDumper, FCCDataSvc
 
 podioevent = FCCDataSvc("EventDataSvc")
 
-from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/FCC_minbias_100TeV.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
-reader.hepmc.Path = "hepmc"
+from Configurables import MomentumRangeParticleGun
+from GaudiKernel import PhysicalConstants as constants
+guntool = MomentumRangeParticleGun()
+guntool.ThetaMin = 0 
+guntool.ThetaMax = 2 * constants.pi 
+guntool.PdgCodes = [11]
+from Configurables import GenAlg
+gen = GenAlg()
+gen.SignalProvider=guntool
+gen.hepmc.Path = "hepmc"
+
 
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter("Converter")
@@ -46,11 +53,11 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import PodioOutput
 out = PodioOutput("out",
-                  filename = "out_full_moreEvents.root",
+                  filename = "test_geant_fullsim_moreEvents.root",
                   OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg=[reader, hepmc_converter, geantsim, out],
+ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],
                 EvtSel='NONE',
                 EvtMax=10,
                 ## order! geo needed by geant
