@@ -28,8 +28,10 @@ gaudi_add_test(particleGun
                FRAMEWORK options/particleGun.py
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
+
 gaudi_add_test(GenPythiaMatching
                COMMAND  fccrun  Examples/options/pythia.py --Filename Generation/data/powheg_ggHH_events.cmd
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
               )
+
 
