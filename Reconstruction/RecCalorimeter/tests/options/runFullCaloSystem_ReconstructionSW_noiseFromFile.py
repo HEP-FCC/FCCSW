@@ -32,7 +32,7 @@ podioinput = PodioInput("PodioReader",
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                           'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
+                                           #'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                            'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml',
                                            'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalExtendedBarrel_TileCal.xml',
@@ -41,8 +41,8 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = WARNING)
 
 
-ecalBarrelNoisePath = "root:://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
-ecalEndcapNoisePath = "root:://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
+ecalBarrelNoisePath = "root://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
+ecalEndcapNoisePath = "root://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
 
@@ -51,9 +51,8 @@ from Configurables import CellPositionsECalBarrelTool, CellPositionsHCalBarrelNo
 ECalBcells = CellPositionsECalBarrelTool("CellPositionsECalBarrel",
                                          readoutName = ecalBarrelReadoutName,
                                          OutputLevel = INFO)
-EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC",
-                                       readoutName = ecalEndcapReadoutName,
-                                       OutputLevel = INFO)
+EMECcells = CellPositionsCaloDiscsTool("CellPositionsEMEC")
+EMECcells.readoutName = ecalBarrelReadoutName
 ECalFwdcells = CellPositionsCaloDiscsTool("CellPositionsECalFwd",
                                           readoutName = ecalFwdReadoutName,
                                           OutputLevel = INFO)
