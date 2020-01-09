@@ -21,13 +21,13 @@ StatusCode CellPositionsCaloDiscsTool::initialize() {
   }
   // get PhiEta segmentation
   m_segmentation = dynamic_cast<dd4hep::DDSegmentation::FCCSWGridPhiEta*>(
-      m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
+      m_geoSvc->lcdd()->readout(m_readoutName.value()).segmentation().segmentation());
   if (m_segmentation == nullptr) {
     error() << "There is no phi-eta segmentation!!!!" << endmsg;
     return StatusCode::FAILURE;
   }
   // Take readout bitfield decoder from GeoSvc
-  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName).idSpec().decoder();
+  m_decoder = m_geoSvc->lcdd()->readout(m_readoutName.value()).idSpec().decoder();
   m_volman = m_geoSvc->lcdd()->volumeManager();
   // check if decoder contains "layer"
   std::vector<std::string> fields;
