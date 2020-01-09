@@ -223,7 +223,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
 
-out = PodioOutput("out", filename="output_allCalo_reco_noise.root")
+out = PodioOutput("out", filename="output_runFullCaloSystem_ReconstructionSW_noiseFromFile.root")
 out.outputCommands = ["keep *"]
 
 #CPU information
