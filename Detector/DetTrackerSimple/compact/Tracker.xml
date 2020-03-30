@@ -25,9 +25,9 @@
   </display>
     <detectors>
       <detector
-         name="FCChhTrackerSimple"
+         name="FCCTrackerSimple"
          id="1"
-         type="FCCTrackerSimpleBarrel"
+         type="LayerTrackerSimple"
          readout="FCChhTrackerSimpleReadout"
          vis="vistracker_envelope"
         >

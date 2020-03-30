@@ -8,7 +8,7 @@ using dd4hep::PlacedVolume;
 
 namespace det {
 
-static dd4hep::Ref_t createTrackerSimpleBarrel(dd4hep::Detector& lcdd,
+static dd4hep::Ref_t createLayerTrackerSimple(dd4hep::Detector& lcdd,
                                                  dd4hep::xml::Handle_t xmlElement,
                                                  dd4hep::SensitiveDetector sensDet) {
   // shorthands
@@ -38,14 +38,6 @@ static dd4hep::Ref_t createTrackerSimpleBarrel(dd4hep::Detector& lcdd,
   unsigned int layerCounter = 0;
   dd4hep::xml::Component xBarrelLayers = xmlElement.child(_Unicode(barrel_layers));
   dd4hep::xml::Component xEndcapLayers = xmlElement.child(_Unicode(endcap_layers));
-  auto tgeo_elem1 = TGeoElement("Element1", "a", 10, 10);
-  auto tgeo_elem2 = TGeoElement("Element2", "a", 10, 10);
-  auto tgeo_mat = new TGeoMixture("mix", 2);
-  tgeo_mat->AddElement(10, 10, 0.35);
-  tgeo_mat->AddElement(10, 10, 0.65);
-  auto tgeo_med = new TGeoMedium("tgeo_med", 1,(TGeoMaterial*)tgeo_mat);
-  dd4hep::Material mat = dd4hep::Material(tgeo_med);
-
 
   for (dd4hep::xml::Collection_t xLayerColl(xBarrelLayers, _U(layer)); nullptr != xLayerColl; ++xLayerColl) {
     dd4hep::xml::Component xLayer = static_cast<dd4hep::xml::Component>(xLayerColl);
@@ -53,7 +45,7 @@ static dd4hep::Ref_t createTrackerSimpleBarrel(dd4hep::Detector& lcdd,
       xLayer.radius() - xLayer.thickness() * 0.5, 
       xLayer.radius() + xLayer.thickness() * 0.5,
       xLayer.zhalf());
-    Volume layerVolume("layer", layerShape, lcdd.material(xBarrelLayers.materialStr())); //lcdd.material("Air"));
+    Volume layerVolume("layer", layerShape, lcdd.material(xBarrelLayers.materialStr()));
     layerVolume.setSensitiveDetector(sensDet);
     layerVolume.setVisAttributes(lcdd, xBarrelLayers.visStr());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
@@ -62,7 +54,6 @@ static dd4hep::Ref_t createTrackerSimpleBarrel(dd4hep::Detector& lcdd,
     layerCounter++;
   }
 
-  //unsigned int layerCounter = 0;
   for (dd4hep::xml::Collection_t xLayerColl(xEndcapLayers, _U(layer)); nullptr != xLayerColl; ++xLayerColl) {
     dd4hep::xml::Component xLayer = static_cast<dd4hep::xml::Component>(xLayerColl);
     dd4hep::Tube layerShape(
@@ -75,10 +66,10 @@ static dd4hep::Ref_t createTrackerSimpleBarrel(dd4hep::Detector& lcdd,
     dd4hep::Position lTranslation(0, 0, xLayer.zhalf());
     dd4hep::Position lTranslationNeg(0, 0, -1* xLayer.zhalf());
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume, lTranslation);
+    placedLayerVolume.addPhysVolID("layer", layerCounter++);
     PlacedVolume placedLayerVolumeNeg = topVolume.placeVolume(layerVolume, lTranslationNeg);
-    placedLayerVolume.addPhysVolID("layer", layerCounter++);
     DetElement det_layer(topDetElement, "FCCTrackerLayer" + std::to_string(layerCounter), layerCounter);
-    placedLayerVolume.addPhysVolID("layer", layerCounter++);
+    placedLayerVolumeNeg.addPhysVolID("layer", layerCounter++);
     DetElement det_layerNeg(topDetElement, "FCCTrackerLayer" + std::to_string(layerCounter), layerCounter);
   }
 
@@ -90,4 +81,4 @@ static dd4hep::Ref_t createTrackerSimpleBarrel(dd4hep::Detector& lcdd,
 }
 }  // namespace det
 
-DECLARE_DETELEMENT(FCCTrackerSimpleBarrel, det::createTrackerSimpleBarrel)
+DECLARE_DETELEMENT(LayerTrackerSimple, det::createLayerTrackerSimple)

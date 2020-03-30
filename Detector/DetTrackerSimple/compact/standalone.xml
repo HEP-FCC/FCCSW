@@ -75,7 +75,9 @@
     <constant name="world_z" value="18*m"/>
   </define>
 
+    <!--
     <include ref="../../DetFCChhBaseline1/compact/FCChh_BeamTube.xml"/>
+    -->
     
     <include ref="Tracker.xml"/>
 </lccdd>
