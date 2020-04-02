@@ -41,6 +41,5 @@ POWHEG:MPIveto = 0
 
 
 
-!Beams:LHEF = pwgevents-0001.lhe
-Beams:LHEF = /afs/cern.ch/work/s/selvaggi/public/PowhegWrapper/POWHEG-BOX-V2/ggHH/test-pythia8/pwgevents.lhe
+Beams:LHEF = Generation/data/powheg_ggHH_events.lhe
 Random:seed = 1
