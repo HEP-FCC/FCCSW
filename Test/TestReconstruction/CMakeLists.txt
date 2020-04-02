@@ -18,7 +18,7 @@ gaudi_add_module(TestReconstructionPlugins
 
 include(CTest)
 gaudi_add_test(LookForNeighbours
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Test/TestReconstruction/tests/
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK tests/options/testneighbours.py)
 
 gaudi_add_test(CountCellsXYZ
