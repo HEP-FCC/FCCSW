@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 from Configurables import ApplicationMgr, HepMCDumper
 
 from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="Test/TestGeometry/testHepMCrandom.dat")
+readertool = HepMCFileReader("ReaderTool", Filename="Test/TestGeometry/data/testHepMCrandom.dat")
 reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmc"
 
