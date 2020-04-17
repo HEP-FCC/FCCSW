@@ -1,7 +1,7 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/testHepMCborders.dat")
+readertool = HepMCFileReader("ReaderTool", Filename="Test/TestGeometry/data/testHepMCborders.dat")
 reader = GenAlg("Reader", SignalProvider=readertool)
 reader.hepmc.Path = "hepmc"
 
@@ -12,7 +12,7 @@ hepmc_converter.genparticles.Path="allGenParticles"
 hepmc_converter.genvertices.Path="allGenVertices"
 
 from Configurables import SimG4Svc, SimG4GdmlTestDetector
-det = SimG4GdmlTestDetector("SimG4GdmlTestDetector", gdml = "../data/TestBoxCaloSD.gdml")
+det = SimG4GdmlTestDetector("SimG4GdmlTestDetector", gdml = "Test/TestGeometry/data/TestBoxCaloSD.gdml")
 geantservice = SimG4Svc("SimG4Svc", detector=det, physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
 
 from Configurables import SimG4Alg, SimG4SaveTestCalHits
