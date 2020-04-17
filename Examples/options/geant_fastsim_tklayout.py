@@ -44,7 +44,8 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
 from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearRootFile, SimG4FastSimTrackerRegion
 from GaudiKernel.SystemOfUnits import GeV, TeV
 # create particle smearing tool, used for smearing in the tracker
-smeartool = SimG4ParticleSmearRootFile("Smear", filename="root://eospublic.cern.ch//eos/experiment/fcc/hh/testsamples/tkLayout_example_resolutions.root")
+smeartool = SimG4ParticleSmearRootFile("Smear")
+smeartool.filename = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/tkLayout_example_resolutions.root"
 ## create region and a parametrisation model, pass smearing tool
 regiontool = SimG4FastSimTrackerRegion("model", volumeNames=["TrackerEnvelopeBarrel"],
                                        minMomentum = 5*GeV, maxMomentum = 10*TeV, maxEta=6, smearing=smeartool)

@@ -20,7 +20,7 @@ hepmc_converter.genvertices.Path="GenVertices"
 # DD4hep geometry service
 from Configurables import GeoSvc
 ## parse the given xml file
-geoservice = GeoSvc("GeoSvc", detectors=['file:..//data/Barrel_testCaloSD_rphiz.xml'])
+geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/Barrel_testCaloSD_rphiz.xml'])
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
