@@ -13,6 +13,9 @@
 // non-integrated treatment for unitarised merging.
 #include "Pythia8Plugins/aMCatNLOHooks.h"
 
+#include "Pythia8Plugins/EvtGen.h"
+
+
 #include "datamodel/FloatValueCollection.h"
 
 #include "HepMC/GenEvent.h"
@@ -144,11 +147,19 @@ StatusCode PythiaInterface::initialize() {
     m_powhegHooks = std::make_shared<Pythia8::PowhegHooks>();
     m_pythiaSignal->addUserHooksPtr(m_powhegHooks.get());
   }
-    bool resonanceDecayFilter = m_pythiaSignal->settings.flag("ResonanceDecayFilter:filter");
-    if (resonanceDecayFilter) {
-      m_resonanceDecayFilterHook = std::make_shared<ResonanceDecayFilterHook>();
-      m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook.get());
-    }
+  bool resonanceDecayFilter = m_pythiaSignal->settings.flag("ResonanceDecayFilter:filter");
+  if (resonanceDecayFilter) {
+    m_resonanceDecayFilterHook = std::make_shared<ResonanceDecayFilterHook>();
+    m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook.get());
+  }
+
+  // Set up evtGen
+  if (m_doEvtGenDecays) {
+    m_evtgen = new EvtGenDecays(m_pythiaSignal.get(), m_EvtGenDecayFile.value(), m_EvtGenParticleDataFile.value());
+    m_evtgen->readDecayFile(m_EvtGenDecayFile);
+  }
+  
+
 
   m_pythiaSignal->init();
 
@@ -162,6 +173,9 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
   // Generate events. Quit if many failures in a row
   while (!m_pythiaSignal->next()) {
+    if (m_doEvtGenDecays) {
+       m_evtgen->decay();
+    }
     if (++m_iAbort > m_nAbort) {
 
       IIncidentSvc* incidentSvc;
@@ -332,5 +346,8 @@ StatusCode PythiaInterface::finalize() {
   }
 
   m_pythiaSignal.reset();
+  if (nullptr != m_evtgen) {
+     delete m_evtgen;
+  }
   return GaudiTool::finalize();
 }
