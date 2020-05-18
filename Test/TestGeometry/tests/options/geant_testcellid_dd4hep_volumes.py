@@ -1,8 +1,10 @@
 from Gaudi.Configuration import *
 
 from Configurables import HepMCFileReader, GenAlg
-readertool = HepMCFileReader("ReaderTool", Filename="/eos/project/f/fccsw-web/testsamples/testHepMCrandom.dat")
-reader = GenAlg("Reader", SignalProvider=readertool)
+readertool = HepMCFileReader("ReaderTool")
+readertool.Filename = "Test/TestGeometry/data/testHepMCrandom.dat"
+reader = GenAlg("Reader")
+reader.SignalProvider = readertool
 reader.hepmc.Path = "hepmc"
 
 from Configurables import HepMCToEDMConverter
@@ -16,7 +18,7 @@ hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.hepmc.Path="hepmc"
 
 from Configurables import GeoSvc
-geoservice = GeoSvc("GeoSvc", detectors=['file:../data/TestBoxCaloSD_volumes.xml'])
+geoservice = GeoSvc("GeoSvc", detectors=['file:Test/TestGeometry/data/TestBoxCaloSD_volumes.xml'])
 
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist='SimG4TestPhysicsList', actions='SimG4FullSimActions')
