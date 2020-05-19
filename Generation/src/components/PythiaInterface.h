@@ -10,6 +10,8 @@
 #include "Pythia8Plugins/PowhegHooks.h"
 #include "Pythia8Plugins/HepMC2.h"
 
+class EvtGenDecays;
+
 // Forward HepMC
 namespace HepMC {
 class GenEvent;
@@ -75,6 +77,14 @@ private:
   /// flag for additional printouts
   Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
                                                            "Print Pythia Statistics"};
+
+  Gaudi::Property<bool> m_doEvtGenDecays{this, "doEvtGenDecays", false,
+                                                           "Do decays with EvtGen"};
+  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/evtgen.dec",
+                                                           "Name of the EvtGen Decay File"};
+  Gaudi::Property<std::string> m_EvtGenParticleDataFile{this, "EvtGenParticleDataFile", "Generation/data/evt.pdl",
+                                                           "Name of the EvtGen Particle Data File"};
+  EvtGenDecays* m_evtgen = nullptr;
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H

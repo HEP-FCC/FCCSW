@@ -2,11 +2,9 @@
 from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
-
 #### Data service
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
-
 
 from Configurables import GaussSmearVertex
 smeartool = GaussSmearVertex()
@@ -22,13 +20,14 @@ pythiafile="Generation/data/Pythia_standard.cmd"
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
 pythia8gentool.Filename = pythiafile
-#pythia8gentool.printPythiaStatistics = True
+pythia8gentool.doEvtGenDecays = False
+pythia8gentool.printPythiaStatistics = True
+
 from Configurables import GenAlg
 pythia8gen = GenAlg("Pythia8")
 pythia8gen.SignalProvider = pythia8gentool
 pythia8gen.VertexSmearingTool = smeartool
 pythia8gen.hepmc.Path = "hepmc"
-
 
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCToEDMConverter
@@ -45,7 +44,6 @@ genfilter = GenParticleFilter("StableParticles")
 genfilter.accept=[1]
 genfilter.allGenParticles.Path = "GenParticles"
 genfilter.filteredGenParticles.Path = "GenpParticlesStable"
-
 
 from Configurables import PodioOutput
 out = PodioOutput("out")
