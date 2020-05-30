@@ -20,7 +20,8 @@ gaudi_add_dictionary(RecDriftChamber src/components/dictionary.h  src/components
 gaudi_add_module(RecDriftChamberPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS FWCore FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecDriftChamber
-                 LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation Geant4 DetCommon ${DD4hep_COMPONENT_LIBRARIES})
+                 LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation DetCommon ${DD4hep_COMPONENT_LIBRARIES})
+target_link_libraries(RecDriftChamberPlugins ${GEANT4_LIBRARIES})
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/tests DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/RecDriftChamber)
 

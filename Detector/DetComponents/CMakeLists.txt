@@ -18,7 +18,8 @@ find_package(Geant4)
 gaudi_add_module(DetComponents
                  src/*.cpp
                  INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetSegmentation DetCommon Acts Eigen
-                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon Geant4 FWCore ActsCore ActsDD4hepPlugin)
+                 LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon  FWCore ActsCore ActsDD4hepPlugin)
+target_link_libraries(DetComponents ${Geant4_LIBRARIES})
 include(CTest)
 gaudi_add_test(RedoSegmentationXYZ
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

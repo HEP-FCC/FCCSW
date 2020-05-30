@@ -18,8 +18,9 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 gaudi_add_library(TestGeometryLib
 		  src/*.cpp
 		  INCLUDE_DIRS Geant4 ROOT TestGeometryLib DD4hep
-		  LINK_LIBRARIES GaudiAlgLib Geant4 ROOT DD4hep
+		  LINK_LIBRARIES GaudiAlgLib ROOT DD4hep
       PUBLIC_HEADERS TestGeometryLib)
+target_link_libraries(TestGeometryLib ${GEANT4_LIBRARIES})
 
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})

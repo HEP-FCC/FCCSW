@@ -13,8 +13,9 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 gaudi_add_library(DetCommon
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4 DetSegmentation
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetSegmentation
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT DetSegmentation
                  PUBLIC_HEADERS DetCommon)
+target_link_libraries(DetCommon ${GEANT4_LIBRARIES})
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Detector/DetCommon)
 

@@ -1,5 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
 
+option(FCCSW_PAPAS "Whether to build Papas." OFF)
 option(SAS "Whether to run static code analysis with SAS." OFF)
 if (SAS)
     find_package(sas)
