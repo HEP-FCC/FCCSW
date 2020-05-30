@@ -15,8 +15,9 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_
 gaudi_add_module(Examples
                  src/*.cpp
 		             INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon
-                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep Geant4
+                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep
                  )
+target_link_libraries(Examples ${GEANT4_LIBRARIES})
 
 
 include(CTest)

@@ -1,6 +1,9 @@
 ################################################################################
 # Package: SimPapas
 ################################################################################
+if(NOT ${FCCSW_PAPAS})
+  return()
+endif()
 gaudi_subdir(SimPapas v1r0)
 
 # this declaration will not be needed in the future

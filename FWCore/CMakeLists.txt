@@ -4,7 +4,7 @@
 gaudi_subdir(FWCore v1r0)
 
 find_package(FCCEDM)
-find_package(PODIO)
+find_package(podio)
 find_package(ROOT COMPONENTS RIO Tree)
 
 # this declaration will not be needed in the future
@@ -15,8 +15,9 @@ gaudi_install_python_modules()
 gaudi_add_library(FWCore
 		  src/*.cpp
                   INCLUDE_DIRS FCCEDM PODIO ROOT
-                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM PODIO ROOT
+                  LINK_LIBRARIES GaudiAlgLib GaudiKernel FCCEDM ROOT
                   PUBLIC_HEADERS FWCore)
+target_link_libraries(FWCore podio::podioRootIO)
 
 gaudi_add_module(FWCorePlugins
                  src/components/*.cpp

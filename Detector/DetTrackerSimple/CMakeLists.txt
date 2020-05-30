@@ -16,7 +16,7 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION Detector/DetTrac
 gaudi_add_module(DetTrackerSimple
                  src/*.cpp
                  INCLUDE_DIRS DD4hep ROOT Geant4 DetCommon
-                 LINK_LIBRARIES GaudiKernel DD4hep ROOT Geant4 DetCommon)
+                 LINK_LIBRARIES GaudiKernel DD4hep ROOT DetCommon)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 dd4hep_generate_rootmap(DetTrackerSimple)

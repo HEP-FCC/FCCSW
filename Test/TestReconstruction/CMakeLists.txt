@@ -17,7 +17,8 @@ find_package(DD4hep)
 gaudi_add_module(TestReconstructionPlugins
                  src/*.cpp
                  INCLUDE_DIRS FWCore DetInterface TrackingUtils Geant4 DetCommon DetSegmentation GaudiKernel ActsCore
-                 LINK_LIBRARIES FWCore GaudiAlgLib FWCore Geant4 TrackingUtils DetCommon DetSegmentation ActsCore)
+                 LINK_LIBRARIES FWCore GaudiAlgLib FWCore TrackingUtils DetCommon DetSegmentation ActsCore)
+target_link_libraries(TestReconstructionPlugins ${GEANT4_LIBRARIES})
 
 include(CTest)
 gaudi_add_test(LookForNeighbours
