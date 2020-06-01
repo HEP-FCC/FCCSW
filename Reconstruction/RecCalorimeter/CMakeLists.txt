@@ -4,7 +4,7 @@
 gaudi_subdir(RecCalorimeter v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Detector/DetSegmentation Detector/DetCommon Reconstruction/RecInterface)
+gaudi_depends_on_subdirs(GaudiAlg FCCFWCore Detector/DetInterface Detector/DetSegmentation Detector/DetCommon Reconstruction/RecInterface)
 
 find_package(FastJet)
 find_package(ROOT COMPONENTS Physics Tree)
@@ -19,7 +19,7 @@ include( DD4hep )
 
 gaudi_add_module(RecCalorimeterPlugins
                  src/components/*.cpp
-                 INCLUDE_DIRS FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecCalorimeter
+                 INCLUDE_DIRS FastJet ROOT FCCFWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecCalorimeter
                  LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation DetCommon)
 target_link_libraries(RecCalorimeterPlugins ${Geant4_LIBRARIES})
 

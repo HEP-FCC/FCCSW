@@ -12,7 +12,7 @@ find_package(ROOT COMPONENTS Tree)
 
 gaudi_add_library(SimG4Fast
                  src/lib/*.cpp
-                 INCLUDE_DIRS SimG4Common FWCore SimG4Components SimG4Interface Geant4 ROOT
+                 INCLUDE_DIRS SimG4Common FCCFWCore SimG4Components SimG4Interface Geant4 ROOT
                  LINK_LIBRARIES GaudiAlgLib SimG4Common ROOT
                  PUBLIC_HEADERS SimG4Fast)
 target_link_libraries(SimG4Fast ${Geant4_LIBRARIES})

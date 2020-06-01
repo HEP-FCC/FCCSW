@@ -4,7 +4,7 @@
 gaudi_subdir(SimG4Components v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Common Detector/DetInterface Sim/SimG4Interface Detector/DetCommon)
+gaudi_depends_on_subdirs(GaudiAlg FCCFWCore Sim/SimG4Common Detector/DetInterface Sim/SimG4Interface Detector/DetCommon)
 
 
 include(${Geant4_USE_FILE})

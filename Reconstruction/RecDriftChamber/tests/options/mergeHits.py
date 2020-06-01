@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--input', type=str, default=None, help='specify an input File')
 my_args, _ = parser.parse_known_args()
 
-from FWCore.joboptions import parse_standard_job_options
+from FCCFWCore.joboptions import parse_standard_job_options
 args = parse_standard_job_options()
 
 """

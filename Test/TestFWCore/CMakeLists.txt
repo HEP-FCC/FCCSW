@@ -2,13 +2,13 @@ if(NOT BUILD_TESTING)
   return()
 endif()
 ################################################################################
-# Package: TestFWCore
+# Package: TestFCCFWCore
 ################################################################################
-gaudi_subdir(TestFWCore v1r0)
+gaudi_subdir(TestFCCFWCore v1r0)
 
-gaudi_depends_on_subdirs(GaudiAlg GaudiKernel FWCore Generation)
+gaudi_depends_on_subdirs(GaudiAlg GaudiKernel FCCFWCore Generation)
 
-gaudi_add_module(TestFWCorePlugins
+gaudi_add_module(TestFCCFWCorePlugins
                  src/components/*.cpp
                  INCLUDE_DIRS FWCore
                  LINK_LIBRARIES GaudiKernel FWCore)
@@ -17,15 +17,15 @@ gaudi_add_module(TestFWCorePlugins
 include(CTest)
 gaudi_add_test(ProduceForOverlayTest1
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND fccrun Test/TestFWCore/options/createExampleEventData.py --magicNumberOffset=0 --filename=output_dummyEventData1.root)
+               COMMAND fccrun Test/TestFCCFWCore/options/createExampleEventData.py --magicNumberOffset=0 --filename=output_dummyEventData1.root)
 
 gaudi_add_test(ProduceForOverlayTest2
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND fccrun Test/TestFWCore/options/createExampleEventData.py --magicNumberOffset=100 --filename=output_dummyEventData2.root )
+               COMMAND fccrun Test/TestFCCFWCore/options/createExampleEventData.py --magicNumberOffset=100 --filename=output_dummyEventData2.root )
 
 gaudi_add_test(ProduceForOverlayTest3
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND fccrun Test/TestFWCore/options/createExampleEventData.py --magicNumberOffset=200 --filename=output_dummyEventData3.root)
+               COMMAND fccrun Test/TestFCCFWCore/options/createExampleEventData.py --magicNumberOffset=200 --filename=output_dummyEventData3.root)
 
 gaudi_add_test(OverlayTest
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

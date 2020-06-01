@@ -7,7 +7,7 @@ endif()
 gaudi_subdir(SimPapas v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Common FWCore)
+gaudi_depends_on_subdirs(GaudiAlg Sim/SimG4Common FCCFWCore)
 
 
 find_package(FCCEDM)
@@ -18,24 +18,24 @@ find_package(papas)
 
 gaudi_add_library(PapasUtils
                  src/lib/*.cpp
-                 INCLUDE_DIRS FWCore papas 
+                 INCLUDE_DIRS FCCFWCore papas 
                  LINK_LIBRARIES GaudiAlgLib papas
                  PUBLIC_HEADERS SimPapas)
 
 
 gaudi_add_module(SimPapas
                  src/*.cpp
-                 INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
+                 INCLUDE_DIRS  GaudiKernel ROOT Geant4 FCCFWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
                  LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
 
 gaudi_add_module(CMSDetector
                  src/CMSDetector/*.cpp
-                 INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
+                 INCLUDE_DIRS  GaudiKernel ROOT Geant4 FCCFWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
                  LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
 
 gaudi_add_module(ClicDetector
                  src/ClicDetector/*.cpp
-                 INCLUDE_DIRS  GaudiKernel ROOT Geant4 FWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
+                 INCLUDE_DIRS  GaudiKernel ROOT Geant4 FCCFWCore FCCEDM PODIO papas SimG4Common SimPapasDetector
                  LINK_LIBRARIES GaudiKernel Geant4  GaudiAlgLib ROOT FCCEDM PODIO ROOT papas)
 
 gaudi_install_python_modules()

@@ -4,7 +4,7 @@
 gaudi_subdir(Generation v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore)
+gaudi_depends_on_subdirs(GaudiAlg FCCFWCore)
 
 find_package(HepMC)
 find_package(Pythia8 COMPONENTS pythia8 pythia8tohepmc)
