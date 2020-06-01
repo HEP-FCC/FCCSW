@@ -5,7 +5,6 @@ gaudi_subdir(DetFCChhCalDiscs v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel)
 
-find_package(DD4hep)
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 include( DD4hep )

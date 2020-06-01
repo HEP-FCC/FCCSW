@@ -9,6 +9,7 @@
 *.gdml
 
 *.log
+build*
 build.*.log
 Makefile
 NMake

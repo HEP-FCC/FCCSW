@@ -9,7 +9,7 @@ gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Sim/SimG4Interfac
 find_package(CLHEP)
 find_package(FCCEDM)
 find_package(PODIO)
-find_package(DD4hep)
+
 find_package(ROOT REQUIRED COMPONENTS Geom)
 find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 

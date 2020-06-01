@@ -6,9 +6,9 @@ gaudi_subdir(DetFCChhTrackerTkLayout v1r0)
 gaudi_depends_on_subdirs(GaudiKernel Detector/DetCommon)
 
 
-find_package(DD4hep)
+
 find_package(Eigen)
-find_package(Geant4)
+
 find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin DigitizationPlugin)
 
 #include( DD4hep )

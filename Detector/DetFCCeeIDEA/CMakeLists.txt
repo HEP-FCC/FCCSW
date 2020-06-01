@@ -5,8 +5,8 @@ gaudi_subdir(DetFCCeeIDEA v1r0)
 
 gaudi_depends_on_subdirs(Detector/DetSegmentation)
 
-find_package(DD4hep COMPONENTS DDG4 REQUIRED)
-find_package(Geant4)
+
+
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Detector/DetFCCeeIDEA)

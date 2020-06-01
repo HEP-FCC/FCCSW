@@ -15,6 +15,15 @@
 #include "FastGaussSmearDigi.h"
 #include "RecTracker/TrackingUtils.h"
 
+// todo: review unit handling
+#ifdef HAVE_GEANT4_UNITS
+#define MM_2_CM 1.0
+#define CM_2_MM 1.0
+#else
+#define MM_2_CM 0.1
+#define CM_2_MM 10.0
+#endif
+
 
 DECLARE_COMPONENT(FastGaussSmearDigi)
 

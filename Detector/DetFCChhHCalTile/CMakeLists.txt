@@ -6,8 +6,8 @@ gaudi_subdir(DetFCChhHCalTile v1r0)
 gaudi_depends_on_subdirs(GaudiKernel)
 
 
-find_package(DD4hep)
-find_package(Geant4)
+
+
 
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)

@@ -14,7 +14,7 @@ find_package(FCCEDM)
 find_package(PODIO)
 find_package(ROOT COMPONENTS MathCore GenVector Tree Physics EG)
 find_package(papas)
-find_package(Geant4)
+
 
 gaudi_add_library(PapasUtils
                  src/lib/*.cpp

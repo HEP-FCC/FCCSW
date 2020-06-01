@@ -8,9 +8,9 @@ gaudi_subdir(TestGeometryLib v1r0)
 
 #gaudi_depends_on_subdirs(FWCore Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
 
-find_package(Geant4)
+
 include(${Geant4_USE_FILE})
-find_package(DD4hep)
+
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 
@@ -20,7 +20,7 @@ gaudi_add_library(TestGeometryLib
 		  INCLUDE_DIRS Geant4 ROOT TestGeometryLib DD4hep
 		  LINK_LIBRARIES GaudiAlgLib ROOT DD4hep
       PUBLIC_HEADERS TestGeometryLib)
-target_link_libraries(TestGeometryLib ${GEANT4_LIBRARIES})
+target_link_libraries(TestGeometryLib ${Geant4_LIBRARIES})
 
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})

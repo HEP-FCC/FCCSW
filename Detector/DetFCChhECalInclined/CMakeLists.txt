@@ -5,12 +5,10 @@ gaudi_subdir(DetFCChhECalInclined v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel)
 
-find_package(DD4hep)
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
 include( DD4hep )
 
-find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 #include_directories(BEFORE SYSTEM ${DD4hep_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS})
 

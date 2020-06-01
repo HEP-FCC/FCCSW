@@ -5,7 +5,7 @@ gaudi_subdir(TestGeometry v1r0)
 
 gaudi_depends_on_subdirs(FWCore Test/TestGeometryLib Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
 
-find_package(Geant4)
+
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 
@@ -13,7 +13,7 @@ gaudi_add_module(TestGeometry
                  src/components/*.cpp
                  INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometryLib
                  LINK_LIBRARIES GaudiKernel FWCore DetCommon TestGeometryLib)
-target_link_libraries(TestGeometry ${GEANT4_LIBRARIES})
+target_link_libraries(TestGeometry ${Geant4_LIBRARIES})
 
 
 include(CTest)
