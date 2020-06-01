@@ -48,9 +48,9 @@ StatusCode SimG4ConstantMagneticFieldTool::initialize() {
         new sim::ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
     fieldManager->SetDetectorField(m_field);
 
-    fieldManager->CreateChordFinder(m_field);
-    G4ChordFinder* chordFinder = fieldManager->GetChordFinder();
-    chordFinder->GetIntegrationDriver()->RenewStepperAndAdjust(stepper(m_integratorStepper, m_field)); 
+    G4ChordFinder* chordFinder = 
+    new G4ChordFinder( m_field,  1.0e-2 * mm, stepper(m_integratorStepper, m_field));
+    fieldManager->SetChordFinder(chordFinder);
 
     propagator->SetLargestAcceptableStep(m_maxStep);
 
