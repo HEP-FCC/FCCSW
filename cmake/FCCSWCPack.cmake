@@ -1,0 +1,53 @@
+set(CPACK_PACKAGE_DESCRIPTION "FCCSW")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FCCSW")
+set(CPACK_PACKAGE_VENDOR "HEP Software Foundation")
+set(CPACK_PACKAGE_VERSION 0.12.1)
+set(CPACK_PACKAGE_VERSION_MAJOR 0)
+set(CPACK_PACKAGE_VERSION_MINOR 12)
+set(CPACK_PACKAGE_VERSION_PATCH 1)
+
+set(CPACK_PACKAGE_NAME "fccsw")
+set(CPACK_SET_DESTDIR TRUE)
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/hep-fcc/fccsw")
+set(CPACK_PACKAGE_DESCRIPTION "")
+
+# required fields for .deb
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "valentin.volkl@cern.ch")
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE ${CPACK_PACKAGE_HOMEPAGE_URL})
+set(CPACK_DEBIAN_PACKAGE_RECOMMENDS "hep-root, hep-podio")
+
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
+
+#--- source package settings ---------------------------------------------------
+set(CPACK_SOURCE_IGNORE_FILES
+    ${PROJECT_BINARY_DIR}
+    "~$"
+    "/.git/"
+    "/\\\\\\\\.git/"
+    "/#"
+)
+set(CPACK_SOURCE_STRIP_FILES "")
+
+#--- translate buildtype -------------------------------------------------------
+if(NOT CMAKE_CONFIGURATION_TYPES)
+  string(TOLOWER "${CMAKE_BUILD_TYPE}" HSF_DEFAULT_BUILDTYPE)
+endif()
+
+set(HSF_BUILDTYPE "unknown")
+
+if(HSF_DEFAULT_BUILDTYPE STREQUAL "release")
+  set(HSF_BUILDTYPE "opt")
+elseif(HSF_DEFAULT_BUILDTYPE STREQUAL "debug")
+  set(HSF_BUILDTYPE "dbg")
+elseif(HSF_DEFAULT_BUILDTYPE STREQUAL "relwithdebinfo")
+  set(HSF_BUILDTYPE "owd")
+endif()
+
+
+set(CPACK_PACKAGE_RELOCATABLE True)
+set(CPACK_SET_DESTDIR True)
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "FCCSW_${FCCSW_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "FCCSW_${FCCSW_VERSION}")
+

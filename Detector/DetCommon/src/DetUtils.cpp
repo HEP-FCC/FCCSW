@@ -10,6 +10,13 @@
 // ROOT
 #include "TGeoBBox.h"
 
+#ifdef HAVE_GEANT4_UNITS
+#define MM_2_CM 1.0
+#else
+#define MM_2_CM 0.1
+#endif
+
+
 namespace det {
 namespace utils {
 dd4hep::xml::Component getNodeByStrAttr(const dd4hep::xml::Handle_t& mother, const std::string& nodeName,

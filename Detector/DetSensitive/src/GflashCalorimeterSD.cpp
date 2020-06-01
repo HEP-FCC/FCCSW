@@ -16,6 +16,17 @@
 // Geant4
 #include "G4SDManager.hh"
 
+// todo: review
+#ifdef HAVE_GEANT4_UNITS
+#define MM_2_CM 1.0
+#else
+#define MM_2_CM 0.1
+#endif
+
+
+
+
+
 namespace det {
 GflashCalorimeterSD::GflashCalorimeterSD(const std::string& aDetectorName,
                                          const std::string& aReadoutName,

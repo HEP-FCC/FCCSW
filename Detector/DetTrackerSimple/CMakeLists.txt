@@ -6,8 +6,8 @@ gaudi_subdir(DetTrackerSimple v1r0)
 gaudi_depends_on_subdirs(GaudiKernel Detector/DetCommon)
 
 
-find_package(DD4hep)
-find_package(Geant4)
+
+
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
