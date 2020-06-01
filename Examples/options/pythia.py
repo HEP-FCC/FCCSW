@@ -3,8 +3,8 @@ from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
 #### Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+from Configurables import K4DataSvc
+podioevent = K4DataSvc("EventDataSvc")
 
 from Configurables import GaussSmearVertex
 smeartool = GaussSmearVertex()

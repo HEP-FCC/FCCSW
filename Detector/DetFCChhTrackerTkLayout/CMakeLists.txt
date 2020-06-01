@@ -20,7 +20,7 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/triplet DESTINATION ${CMAKE_INSTALL_
 
 gaudi_add_module(DetFCChhTrackerTkLayout
                  src/*.cpp
-                 INCLUDE_DIRS FWCore DD4hep ROOT Geant4 DetCommon Eigen  Acts
+                 INCLUDE_DIRS FCCFWCore DD4hep ROOT Geant4 DetCommon Eigen  Acts
                  LINK_LIBRARIES FWCore GaudiKernel DD4hep ROOT DetCommon ActsCore ActsDD4hepPlugin)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})

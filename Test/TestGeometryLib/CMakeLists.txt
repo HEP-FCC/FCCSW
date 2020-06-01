@@ -6,7 +6,7 @@ endif()
 ################################################################################
 gaudi_subdir(TestGeometryLib v1r0)
 
-#gaudi_depends_on_subdirs(FWCore Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
+#gaudi_depends_on_subdirs(FCCFWCore Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
 
 
 include(${Geant4_USE_FILE})

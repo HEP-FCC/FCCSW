@@ -4,7 +4,7 @@
 gaudi_subdir(Examples v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore Sim/SimG4Interface Detector/DetInterface Detector/DetCommon)
+gaudi_depends_on_subdirs(GaudiAlg FCCFWCore Sim/SimG4Interface Detector/DetInterface Detector/DetCommon)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom)
 
@@ -71,7 +71,7 @@ gaudi_add_test(PileupOverlay
 gaudi_add_test(CheckMergeCollection
                ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               COMMAND python FWCore/tests/scripts/check_coll_after_merge.py
+               COMMAND python FCCFWCore/tests/scripts/check_coll_after_merge.py
                DEPENDS PileupOverlay)
 gaudi_add_test(GeantUserLimits
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
