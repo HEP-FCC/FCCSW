@@ -41,10 +41,10 @@ gaudi_add_test(GeantFullSimMoreEventsCheckNumParticles
 gaudi_add_test(GeantFastSimSimpleSmearing
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
                FRAMEWORK tests/options/geant_fastsim_simple.py)
-gaudi_add_test(GeantFastSimSimpleSmearingCheckSigma
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
+add_test(      NAME  SimG4Components.GeantFastSimSimpleSmearingCheckSigma
                COMMAND python ./scripts/geant_fastsim_simple_checkSigma.py
-               DEPENDS GeantFastSimSimpleSmearing)
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/ )
+set_tests_properties(SimG4Components.GeantFastSimSimpleSmearingCheckSigma PROPERTIES DEPENDS SimG4Components.GeantFastSimSimpleSmearing)
 gaudi_add_test(GeantFastSimSimpleSmearingCheckNumParticles
                ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Sim/SimG4Components/tests/
