@@ -81,14 +81,14 @@ createTopoInput.hcalEndcapCells.Path ="emptyCaloCells"
 createTopoInput.hcalFwdCells.Path = "emptyCaloCells"
 
 readNeighboursMap =TopoCaloNeighbours("ReadNeighboursMap",
-                                      fileName = "/eos/project/f/fccsw-web/testsamples/calo/neighbours_map_segHcal.root",
+                                      fileName = "http://fccsw.web.cern.ch/fccsw/testsamples/calo/neighbours_map_segHcal.root",
                                       OutputLevel = DEBUG)
 
 #Thresholds estimated from atlas, without noise !!!
 readNoisyCellsMap = TopoCaloNoisyCells(
     "ReadNoisyCellsMap",
     fileName =
-    "/eos/project/f/fccsw-web/testsamples/calo/cellNoise_map_segHcal_constNoiseLevel.root",
+    "http://fccsw.web.cern.ch/fccsw/testsamples/calo/cellNoise_map_segHcal_constNoiseLevel.root",
     OutputLevel = DEBUG)
 
 createTopoClusters = CaloTopoCluster("CreateTopoClusters",

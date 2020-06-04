@@ -200,13 +200,13 @@ createTopoInput.hcalFwdCells.Path = "emptyCaloCells"
 
 readNeighboursMap =TopoCaloNeighbours("ReadNeighboursMap",
                                       #fileName = "/afs/cern.ch/work/c/cneubuse/public/FCChh/neighbours_map_barrel.root",
-                                      fileName = "neighbours_map_fullGran_barrel.root", #/eos/project/f/fccsw-web/testsamples/calo/neighbours_map_barrel.root",
+                                      fileName = "neighbours_map_fullGran_barrel.root", #http://fccsw.web.cern.ch/fccsw/testsamples/calo/neighbours_map_barrel.root",
                                       OutputLevel = DEBUG)
 
 #Noise levels per cell
 readNoisyCellsMap = TopoCaloNoisyCells("ReadNoisyCellsMap",
-                                       fileName = "/eos/project/f/fccsw-web/testsamples/calo/cellNoise_map_electronicsNoiseLevel.root",
-#                                       fileName = "/eos/project/f/fccsw-web/testsamples/calo/cellNoise_map_segHcal_electronicsNoiseLevel.root",
+                                       fileName = "http://fccsw.web.cern.ch/fccsw/testsamples/calo/cellNoise_map_electronicsNoiseLevel.root",
+#                                       fileName = "http://fccsw.web.cern.ch/fccsw/testsamples/calo/cellNoise_map_segHcal_electronicsNoiseLevel.root",
                                        OutputLevel = DEBUG)
 
 createTopoClusters = CaloTopoCluster("CreateTopoClusters",

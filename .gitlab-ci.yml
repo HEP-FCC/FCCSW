@@ -1,0 +1,9 @@
+# the git version on centos7 is too old for fetch
+variables:
+  GIT_STRATEGY: clone
+
+build-all:
+  script:
+  - source init.sh
+  - mkdir build; cd build; cmake ..; make -j `getconf _NPROCESSORS_ONLN` 
+  - ctest -j `getconf _NPROCESSORS_ONLN`

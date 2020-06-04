@@ -42,8 +42,8 @@ geoservice = GeoSvc("GeoSvc", detectors=[  'file:Detector/DetFCChhBaseline1/comp
                     OutputLevel = WARNING)
 
 
-ecalBarrelNoisePath = "/eos/project/f/fccsw-web/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
-ecalEndcapNoisePath = "/eos/project/f/fccsw-web/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
+ecalBarrelNoisePath = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
+ecalEndcapNoisePath = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
 

@@ -5,8 +5,10 @@ Common software for all FCC experiments.
 This software is based on Gaudi.
 
 
+
 Installation
 ------------
+
 
 Log in to lxplus (CentOS7). Please note that these instructions might not work on another CentOS7 machine.
 
@@ -33,7 +35,7 @@ Test
 ----
 
 ~~~{.sh}
-./run fccrun.py Examples/options/example_options.py
+./run fccrun Examples/options/example_options.py
 ~~~
 
 you can also specify some options like number of events and output file

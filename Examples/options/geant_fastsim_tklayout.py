@@ -45,7 +45,7 @@ from Configurables import SimG4Svc, SimG4FastSimPhysicsList, SimG4ParticleSmearR
 from GaudiKernel.SystemOfUnits import GeV, TeV
 # create particle smearing tool, used for smearing in the tracker
 smeartool = SimG4ParticleSmearRootFile("Smear")
-smeartool.filename = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/tkLayout_example_resolutions.root"
+smeartool.filename = "http://fccsw.web.cern.ch/fccsw/testsamples/tkLayout_example_resolutions.root"
 ## create region and a parametrisation model, pass smearing tool
 regiontool = SimG4FastSimTrackerRegion("model", volumeNames=["TrackerEnvelopeBarrel"],
                                        minMomentum = 5*GeV, maxMomentum = 10*TeV, maxEta=6, smearing=smeartool)
