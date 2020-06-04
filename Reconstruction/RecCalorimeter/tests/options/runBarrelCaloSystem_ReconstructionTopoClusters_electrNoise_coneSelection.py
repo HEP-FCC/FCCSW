@@ -16,7 +16,7 @@ hcalFwdReadoutName = "HFwdPhiEtaReco"
 num_events = 3
 
 #Geometry details to add noise to every Calo cell and paths to root files that have the noise const per cell
-ecalBarrelNoisePath = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth_noise.root" 
+ecalBarrelNoisePath = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth_noise.root" 
 ecalBarrelNoiseHistName ="h_elecNoise_fcc_"
 #active material identifier name
 hcalIdentifierName = [ "module", "row", "layer" ]
@@ -187,13 +187,13 @@ createTopoInput.hcalEndcapCells.Path ="emptyCaloCells"
 createTopoInput.hcalFwdCells.Path = "emptyCaloCells"
 
 readNeighboursMap =TopoCaloNeighbours("ReadNeighboursMap",
-                                      fileName = "/eos/project/f/fccsw-web/testsamples/calo/neighbours_map_barrel.root",
+                                      fileName = "http://fccsw.web.cern.ch/fccsw/testsamples/calo/neighbours_map_barrel.root",
                                       OutputLevel = DEBUG)
 
 #Noise levels per cell
 readNoisyCellsMap = TopoCaloNoisyCells("ReadNoisyCellsMap",
-#                                       fileName = "/eos/project/f/fccsw-web/testsamples/calo/cellNoise_map_electronicsNoiseLevel.root",
-                                       fileName = "/eos/project/f/fccsw-web/testsamples/calo/cellNoise_map_segHcal_electronicsNoiseLevel.root",
+#                                       fileName = "http://fccsw.web.cern.ch/fccsw/testsamples/calo/cellNoise_map_electronicsNoiseLevel.root",
+                                       fileName = "http://fccsw.web.cern.ch/fccsw/testsamples/calo/cellNoise_map_segHcal_electronicsNoiseLevel.root",
                                        OutputLevel = DEBUG)
 
 createTopoClusters = CaloTopoCluster("CreateTopoClusters",

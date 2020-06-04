@@ -38,7 +38,7 @@ ApplicationMgr().OutputLevel = DEBUG
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 # produced with Reconstruction/RecCalorimeter/tests/options/runFullCaloSystem_SimAndDigitisation.py
-podioevent.input="root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/output_fullCalo_SimAndDigi_e50GeV_3events.root"
+podioevent.input="http://fccsw.web.cern.ch/fccsw/testsamples/output_fullCalo_SimAndDigi_e50GeV_3events.root"
 ApplicationMgr().ExtSvc += [podioevent]
 
 
@@ -174,7 +174,7 @@ ApplicationMgr().TopAlg += [rewriteHCalEC]
 from Configurables import NoiseCaloCellsFromFileTool
 noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel")
 noiseBarrel.readoutName = ecalBarrelReadoutName
-noiseBarrel.noiseFileName = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
+noiseBarrel.noiseFileName = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrel_50Ohm_traces2_2shieldWidth.root"
 noiseBarrel.elecNoiseHistoName = "h_elecNoise_fcc_"
 noiseBarrel.activeFieldName = "layer"
 noiseBarrel.addPileup = False
@@ -206,7 +206,7 @@ ApplicationMgr().TopAlg +=[createEcalBarrelCells]
 from Configurables import NoiseCaloCellsFromFileTool
 noiseEndcap = NoiseCaloCellsFromFileTool("NoiseEndcap")
 noiseEndcap.readoutName = ecalEndcapReadoutName
-noiseEndcap.noiseFileName = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
+noiseEndcap.noiseFileName = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
 noiseEndcap.elecNoiseHistoName = "h_elecNoise_fcc_"
 noiseEndcap.activeFieldName = "layer"
 noiseEndcap.addPileup = False

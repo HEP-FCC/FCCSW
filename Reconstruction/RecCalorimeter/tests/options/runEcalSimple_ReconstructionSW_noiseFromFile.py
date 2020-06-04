@@ -51,7 +51,7 @@ from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, Tub
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
 noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
                                    cellPositionsTool=dummyCells,
-    noiseFileName="root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
+    noiseFileName="http://fccsw.web.cern.ch/fccsw/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
 
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   readoutName = ecalReadoutName,

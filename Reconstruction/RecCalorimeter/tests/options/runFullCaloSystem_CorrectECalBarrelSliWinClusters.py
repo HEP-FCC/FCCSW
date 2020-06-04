@@ -90,7 +90,7 @@ correct = CorrectECalBarrelSliWinCluster("corr",
                          vertex = "GenVertices",
                          nPhiOptimFinal = [7]*8,
                          nEtaOptimFinal = [19]*8,
-                         noiseFileName = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/elecNoise_pileup_cluster_mu200_700files.root")
+                         noiseFileName = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_pileup_cluster_mu200_700files.root")
 
 THistSvc().Output = ["rec DATAFILE='clusterCorrections_histograms.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True

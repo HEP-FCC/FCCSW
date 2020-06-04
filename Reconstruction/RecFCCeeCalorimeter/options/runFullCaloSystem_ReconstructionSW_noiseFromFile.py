@@ -51,7 +51,7 @@ geoservice.detectors = [os.path.join(path_to_detector, _det) for _det in detecto
 geoservice.OutputLevel = WARNING
 
 
-ecalBarrelNoisePath = "root://eosuser.cern.ch//eos/project/f/fccsw-web/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root"
+ecalBarrelNoisePath = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root"
 ecalEndcapNoisePath = "elecNoise_emec_50Ohm_2shieldWidth_6layers.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 ecalEndcapNoiseHistName = "h_elecNoise_fcc_"
