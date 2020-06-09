@@ -1,23 +1,37 @@
-name: Mirror and run GitLab CI
+name: linux
 
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - name: Mirror + trigger CI
-      env:
-        GITLAB_URL: "https://gitlab.cern.ch/vavolkl/FCCSW"
-        GITLAB_HOSTNAME: "gitlab.cern.ch"
-        GITLAB_USERNAME: "vavolkl"
-        GITLAB_PASSWORD: ${{ secrets.GITLAB_PASSWORD }}
-        GITLAB_PASSWORD2: ${{ secrets.GITLAB_PASSWORD2 }}
-        GITLAB_PROJECT_ID: 93907
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        POLL_TIMEOUT: 25
+    - name: Install CVMFS
       run: |
-        ls -alh
-        git status
-        ./.github/scripts/gitlabmirror.sh
+        wget --no-check-certificate https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
+        sudo dpkg -i cvmfs-release-latest_all.deb
+        sudo apt-get update
+        sudo apt-get install cvmfs cvmfs-config-default
+        sudo cvmfs_config setup
+        echo "CVMFS_QUOTA_LIMIT='32140'" > default.local
+        echo "CVMFS_HTTP_PROXY=DIRECT" >> default.local
+        echo "CVMFS_CACHE_BASE='/var/lib/cvmfs'" >> default.local
+        echo "CVMFS_FORCE_SIGNING='yes'" >> default.local
+        echo "CVMFS_FOLLOW_REDIRECTS='yes'" >> default.local
+        echo "CVMFS_REPOSITORIES='sw.hsf.org,sw-nightlies.hsf.org,fcc.cern.ch,sft-nightlies.cern.ch,sft.cern.ch,geant4.cern.ch'" >> default.local
+        echo "CVMFS_SEND_INFO_HEADER=no" >> default.local
+        sudo mkdir -p /etc/cvmfs
+        sudo mv default.local /etc/cvmfs/default.local
+        sudo cvmfs_config probe
+        ls /cvmfs/sft.cern.ch
+        ls /cvmfs/fcc.cern.ch
+        ls /cvmfs/geant4.cern.ch
+
+    - name: Start container
+      run: |
+        docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package -v /cvmfs:/cvmfs:shared -d clicdp/cc7-lcg /bin/bash
+    - name: Compile and test
+      run: |
+        docker exec CI_container /bin/bash -c "ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so;cd ./Package; ./.github/scripts/compile_and_test.sh;"
+
