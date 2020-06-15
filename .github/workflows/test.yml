@@ -24,7 +24,7 @@ jobs:
         sudo cvmfs_config setup
         ls /cvmfs/sft.cern.ch
         ls /cvmfs/fcc.cern.ch
-        ls /cvmfs/geant4.cern.ch
+        ls /cvmfs/geant4.cern.ch/share/data/G4ENSDFSTATE2.2
     - name: Start container
       run: |
         docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package  -v /cvmfs:/cvmfs -d clicdp/cc7-lcg /bin/bash
