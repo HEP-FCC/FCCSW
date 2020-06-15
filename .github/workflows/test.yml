@@ -27,7 +27,7 @@ jobs:
         ls /cvmfs/geant4.cern.ch
     - name: Start container
       run: |
-        docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package  -v /cvmfs:/cvmfs -d clicdp/cc7-lcg96b /bin/bash
+        docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package  -v /cvmfs:/cvmfs -d clicdp/cc7-lcg /bin/bash
     - name: Compile and test
       run: |
-        docker exec CI_container /bin/bash -c "./Package/.github/scripts/compile_and_test.sh"
+        docker exec CI_container /bin/bash -c "yum -y install xz-devel; ./Package/.github/scripts/compile_and_test.sh"
