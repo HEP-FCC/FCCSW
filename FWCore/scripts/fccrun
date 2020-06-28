@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import os
 import sys
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     run_with_options_file = False
     for f in sys.argv[1:]:
       if f[0] != '-':
-        execfile(f)
+        exec(open(f).read())
         run_with_options_file = True
       else:
         break
@@ -63,13 +63,13 @@ if __name__ == "__main__":
     # print a doc line showing the configured algorithms
     if run_with_options_file:
       for alg in ApplicationMgr().TopAlg:
-        print ' --> ', alg.name(), 
-      print "",'\n'
+        print(' --> ', alg.name(),)
+      print("",'\n')
 
       option_db = {}
 
       # loop over all components that were configured in the options file
-      for conf in ApplicationMgr.allConfigurables.values():
+      for conf in list(ApplicationMgr.allConfigurables.values()):
         # skip public tools and the applicationmgr itself
         if "ToolSvc" not in conf.name() and "ApplicationMgr" not in conf.name():
           props = conf.getPropertiesWithDescription() #dict propertyname: (propertyvalue, propertydescription)
@@ -79,7 +79,6 @@ if __name__ == "__main__":
               if not "Audit" in prop:
                 # do not want to deal with other components / datahandles for now
                   if not hasattr(props[prop][0], '__slots__'):
-                    #print conf.name(), prop, props[prop]
                     try: # TODO: remove once duplicate elements sorted out
                       propvalue = props[prop][0]
 
@@ -116,17 +115,17 @@ if __name__ == "__main__":
     if opts.list:
         from Gaudi import Configuration
         cfgDb = Configuration.cfgDb
-        print "Available components:\n%s" % (21 * "=")
+        print("Available components:\n%s" % (21 * "="))
         for item in sorted(cfgDb):
             if True: # another option could filter Gaudi components here
-              print "  %s (from %s)" % (item, cfgDb[item]["lib"])
+              print("  %s (from %s)" % (item, cfgDb[item]["lib"]))
             else:
                 if not "Gaudi" in cfgDb[item]["lib"]:
-                  print "  %s (from %s)" % (item, cfgDb[item]["lib"])
+                  print("  %s (from %s)" % (item, cfgDb[item]["lib"]))
         sys.exit()
 
     if not run_with_options_file:
-      print "usage: fccrun [gaudi_config.py ...] Specify a gaudi options file to run"
+      print("usage: fccrun [gaudi_config.py ...] Specify a gaudi options file to run")
       sys.exit()
 
     # turn namespace into dict
