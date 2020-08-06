@@ -73,7 +73,7 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
 
 
 
-gaudi_project(FCCSW  v0r12
-              USE Gaudi v32r2 )
+gaudi_project(FCCSW  v0r13
+              USE Gaudi v33r1 )
 
 
