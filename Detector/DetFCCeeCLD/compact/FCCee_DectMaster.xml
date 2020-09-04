@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+
+
+  <info name="FCCDectMaster"
+    title="FCCee CLD detector geometry master file"
+    author="CLD team"
+    url="no"
+    status="development"
+    version="1.0">
+    <comment> 
+      One stop shop for a baseline / the latest developments of the FCCee Detector concept.
+    </comment>
+  </info>
+
+  <includes>
+    <gdmlFile  ref="../../DetCommon/compact/elements.xml"/>
+    <gdmlFile  ref="../../DetCommon/compact/materials.xml"/>
+    <gdmlFile  ref="additional_materials.xml"/> 
+  </includes>
+
+  <define>
+    <constant name="world_size" value="25*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+
+  <include ref="./FCCee_DectDimensions.xml" />
+
+  <include ref="../../DetFCCeeCommon/compact/Beampipe.xml"/>
+  <include ref="../../DetFCCeeCommon/compact/HOMAbsorber.xml"/>
+  <include ref="../../DetFCCeeCommon/compact/BeamInstrumentation.xml"/>
+  <include ref="../../DetFCCeeCommon/compact/LumiCal.xml"/>
+
+  <include ref="Vertex.xml"/> 
+  <include ref="InnerTracker.xml"/>
+  <include ref="OuterTracker.xml"/>
+
+  <include ref="ECalBarrel.xml"/>
+  <include ref="ECalEndcap.xml"/>
+
+    <include ref="HCalBarrel.xml"/>
+    <include ref="HCalEndcap.xml"/>
+    <include ref="Solenoid.xml"/>
+
+    <include ref="YokeBarrel.xml"/>
+    <include ref="YokeEndcap.xml"/>
+
+
+</lccdd>
