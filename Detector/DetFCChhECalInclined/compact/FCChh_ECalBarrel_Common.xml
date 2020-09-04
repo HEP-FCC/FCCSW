@@ -62,6 +62,10 @@
       <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.68024" offset_phi="-pi+(pi/704.)"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
     </readout>
+    <readout name="ECalHitsPhiEta_offset">
+      <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="512" offset_eta="-1.666" offset_phi="-pi+(pi/512.)"/>
+      <id>system:4,cryo:1,module:11,type:3,subtype:3,cell:6,eta:9,phi:10</id>
+    </readout>
   </readouts>
 
   <detectors>
