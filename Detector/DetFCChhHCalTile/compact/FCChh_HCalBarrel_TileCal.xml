@@ -62,10 +62,6 @@
      <segmentation type="FCCSWGridPhiEta" grid_size_eta="3." phi_bins="BarHCal_n_phi_modules" offset_eta="-1.256" offset_phi="-pi+(pi/BarHCal_n_phi_modules)"/>
      <id>system:4,layer:5,row:9,eta:0,phi:10</id>
     </readout>
-    <readout name="BarHCal_Readout_phieta_offset">
-     <segmentation type="GridPhiEta" grid_size_eta="0.01" phi_bins="256" offset_eta="-1.666" offset_phi="-pi+(pi/256.)"/>
-     <id>system:4,module:7,row:9,layer:5,tile:2,eta:9,phi:10</id>
-    </readout>
   </readouts>
 
   <detectors>
