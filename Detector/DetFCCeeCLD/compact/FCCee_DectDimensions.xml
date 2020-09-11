@@ -20,7 +20,6 @@
 
     <constant name="RadialScaleFactor" value="50" />
 
-    <constant name="GlobalTrackerReadoutID_DCH" type="string" value="system:1,layer:16,phi:16"/>
     <constant name="GlobalTrackerReadoutID" type="string" value="system:5,side:-2,layer:6,module:11,sensor:8"/>
 
     <constant name="SolenoidField" value="2*tesla"/>
@@ -212,7 +211,6 @@
     <constant name="tracker_region_zmax" value="OuterTracker_half_length"/>
     <constant name="tracker_region_rmax" value="OuterTracker_outer_radius"/>
 
-    <constant name="GlobalTrackerReadoutID" type="string" value="system:5,side:-2,layer:6,module:11,sensor:8"/>
   </define>
   
   

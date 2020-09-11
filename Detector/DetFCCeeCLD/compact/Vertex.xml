@@ -204,7 +204,6 @@
                 <ring r="(VertexEndcap_rmax + VertexEndcap_rmin3) / 2" zstart="VertexEndcap_z3+VertexEndcapModuleThickness/2.0" nmodules="(int) VertexEndcapModules" dz="0*cm" phi0="pi/(VertexEndcapModules)" module="SiVertexEndcapModule6"/>
             </layer>
 	</detector>
-    </detector>
 <!--
         <detector name="VertexVerticalCable" type="TrackerEndcapSupport_o1_v01" reflect="true"  region="VertexEndcapRegion">
 	    <envelope>

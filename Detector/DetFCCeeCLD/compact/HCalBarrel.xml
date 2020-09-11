@@ -39,11 +39,13 @@
     </readouts>
     
     <detectors>
-        <detector id="DetID_HCAL_Barrel" name="HCalBarrel" type="GenericCalBarrel_o1_v01" readout="HCalBarrelCollection" vis="HCALVis" calorimeterType="HAD_BARREL" gap="0.*cm" material="Steel235">
+        <detector id="DetID_HCAL_Barrel" name="HCalBarrel" type="CLD_GenericCalBarrel_o1_v01" readout="HCalBarrelCollection" vis="HCALVis" calorimeterType="HAD_BARREL" gap="0.*cm" material="Steel235">
             
             <comment>Hadron Calorimeter Barrel</comment>
 
 	    <type_flags type=" DetType_CALORIMETER + DetType_HADRONIC + DetType_BARREL"/>
+
+            <sensitive type="SimpleCalorimeterSD"/>
 
             <envelope vis="HCALVis">
                 <shape type="PolyhedraRegular" numsides="HCalBarrel_symmetry"  rmin="HCalBarrel_inner_radius-10*env_safety" rmax="HCalBarrel_outer_radius+10*env_safety" dz="HCalBarrel_half_length*2+10*env_safety" material = "Air"/>
