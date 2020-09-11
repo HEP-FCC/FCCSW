@@ -11,8 +11,10 @@
 #include "XML/Utilities.h"
 #include "DDRec/DetectorData.h"
 #include "DDSegmentation/Segmentation.h"
+#include "DD4hep/Printout.h"
 
 using namespace std;
+using namespace dd4hep;
 
 using dd4hep::BUILD_ENVELOPE;
 using dd4hep::Box;
@@ -65,7 +67,7 @@ static void placeStaves(DetElement& parent, DetElement& stave, double rmin, int 
     }
 }
 
-static Ref_t GenericCalBarrel_o1_v01_geo(Detector& theDetector, xml_h e, SensitiveDetector sens) {
+static Ref_t CLD_GenericCalBarrel_o1_v01_geo(Detector& theDetector, xml_h e, SensitiveDetector sens) {
     xml_det_t x_det = e;
     Layering layering(x_det);
     xml_comp_t staves = x_det.staves();
@@ -86,6 +88,21 @@ static Ref_t GenericCalBarrel_o1_v01_geo(Detector& theDetector, xml_h e, Sensiti
     //  Volume motherVol = theDetector.pickMotherVolume(sdet);
     Readout readout = sens.readout();
     Segmentation seg = readout.segmentation();
+
+    dd4hep::xml::Dimension sdTyp = x_det.child(_U(sensitive));  
+    std::string thesenstype = sdTyp.typeStr() ;
+    std::cout << " MANU  TYPE = " << thesenstype  << std::endl ;
+    //std::cout << " MANU  TYPE = " << thesenstype  << std::endl ;
+
+    //std::string thesenstype = "calorimeter";  // default as of LCGEO
+    //if ( x_det.hasAttr(_U(sensitive))  ) {
+ 	//std::cout << " MANU  x_det.hasAttr(_U(sensitive)) " << std::endl;
+	//dd4hep::xml::Dimension sdTyp = x_det.child(_U(sensitive));
+        //if ( ! sdTyp.typeStr().empty() )  {
+	    //thesenstype = sdTyp.typeStr() ;
+	//}
+    //}
+
     
     std::vector<double> cellSizeVector = seg.segmentation()->cellDimensions(0); //Assume uniform cell sizes, provide dummy cellID
     double cell_sizeX      = cellSizeVector[0];
@@ -197,7 +214,9 @@ static Ref_t GenericCalBarrel_o1_v01_geo(Detector& theDetector, xml_h e, Sensiti
                 thickness_sum += slice_thickness/2;
                 
                 if (x_slice.isSensitive()) {
-                    sens.setType("calorimeter");
+                    //sens.setType("calorimeter");
+                    // sens.setType("SimpleCalorimeterSD");
+                    sens.setType( thesenstype  ) ;
                     slice_vol.setSensitiveDetector(sens);
                     
 #if DD4HEP_VERSION_GE( 0, 15 )
@@ -290,4 +309,4 @@ static Ref_t GenericCalBarrel_o1_v01_geo(Detector& theDetector, xml_h e, Sensiti
     return sdet;
 }
 
-DECLARE_DETELEMENT(GenericCalBarrel_o1_v01, GenericCalBarrel_o1_v01_geo )
+DECLARE_DETELEMENT(CLD_GenericCalBarrel_o1_v01, CLD_GenericCalBarrel_o1_v01_geo )

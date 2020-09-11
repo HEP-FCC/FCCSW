@@ -41,7 +41,7 @@ using dd4hep::rec::LayeredCalorimeterData;
 #define DD4HEP_VERSION_GE(a,b) 0 
 #endif
 
-static Ref_t GenericCalEndcap_o1_v01_geo(Detector& theDetector, xml_h e, SensitiveDetector sens)  {
+static Ref_t CLD_GenericCalEndcap_o1_v01_geo(Detector& theDetector, xml_h e, SensitiveDetector sens)  {
     xml_det_t   x_det     = e;
     int         det_id    = x_det.id();
     string      det_name  = x_det.nameStr();
@@ -72,6 +72,11 @@ static Ref_t GenericCalEndcap_o1_v01_geo(Detector& theDetector, xml_h e, Sensiti
     Readout readout = sens.readout();
     Segmentation seg = readout.segmentation();
     
+    dd4hep::xml::Dimension sdTyp = x_det.child(_U(sensitive));
+    std::string thesenstype = sdTyp.typeStr() ;
+    std::cout << " MANU  TYPE = " << thesenstype  << std::endl ;
+    //std::cout << " MANU  TYPE = " << thesenstype  << std::endl ;
+
     std::vector<double> cellSizeVector = seg.segmentation()->cellDimensions(0); //Assume uniform cell sizes, provide dummy cellID
     double cell_sizeX      = cellSizeVector[0];
     double cell_sizeY      = cellSizeVector[1];
@@ -164,8 +169,10 @@ static Ref_t GenericCalEndcap_o1_v01_geo(Detector& theDetector, xml_h e, Sensiti
             thickness_sum += slice_thickness/2;
             
             if ( x_slice.isSensitive() )  {
-                sens.setType("calorimeter");
-                slice_vol.setSensitiveDetector(sens);
+                //sens.setType("calorimeter");
+                //sens.setType("SimpleCalorimeterSD");
+                 sens.setType( thesenstype  ) ;
+                 slice_vol.setSensitiveDetector(sens);
                 
 #if DD4HEP_VERSION_GE( 0, 15 )
                 //Store "inner" quantities
@@ -250,5 +257,5 @@ static Ref_t GenericCalEndcap_o1_v01_geo(Detector& theDetector, xml_h e, Sensiti
     
 }
 
-DECLARE_DETELEMENT(GenericCalEndcap_o1_v01,GenericCalEndcap_o1_v01_geo )
+DECLARE_DETELEMENT(CLD_GenericCalEndcap_o1_v01,CLD_GenericCalEndcap_o1_v01_geo )
 

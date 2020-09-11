@@ -25,11 +25,13 @@
     <!--  Includes for sensitives and support                -->
     <detectors>
         
-        <detector name="YokeEndcap" type="GenericCalEndcap_o1_v01" id="DetID_Yoke_Endcap" readout="YokeEndcapCollection" vis="YOKEVis" >
+        <detector name="YokeEndcap" type="CLD_GenericCalEndcap_o1_v01" id="DetID_Yoke_Endcap" readout="YokeEndcapCollection" vis="YOKEVis" >
             
             <comment>Encap Yoke</comment>
             
             <type_flags type=" DetType_CALORIMETER + DetType_MUON + DetType_ENDCAP"/>
+
+            <sensitive type="SimpleCalorimeterSD"/>
 
             <envelope vis="YOKEVis">
                 <shape type="BooleanShape" operation="Subtraction" material="Air">

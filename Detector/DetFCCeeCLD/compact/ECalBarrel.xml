@@ -33,11 +33,13 @@
     </display>
 
     <detectors>        
-        <detector name="ECalBarrel" type="GenericCalBarrel_o1_v01" id="DetID_ECal_Barrel" readout="ECalBarrelCollection" vis="ECALVis" gap="0.*cm">
+        <detector name="ECalBarrel" type="CLD_GenericCalBarrel_o1_v01" id="DetID_ECal_Barrel" readout="ECalBarrelCollection" vis="ECALVis" gap="0.*cm">
 
             <comment>EM Calorimeter Barrel</comment>
             
             <type_flags type=" DetType_CALORIMETER + DetType_ELECTROMAGNETIC + DetType_BARREL"/>
+
+            <sensitive type="SimpleCalorimeterSD"/>
 
             <envelope vis="ECALVis">
                 <shape type="PolyhedraRegular" numsides="ECalBarrel_symmetry"  rmin="ECalBarrel_inner_radius" rmax="ECalBarrel_outer_radius" dz="2.*ECalBarrel_half_length"  material="Air"/>

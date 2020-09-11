@@ -22,11 +22,13 @@
     <!--  Includes for sensitives and support                -->
     <detectors>
         
-        <detector name="ECalEndcap" type="GenericCalEndcap_o1_v01" id="DetID_ECal_Endcap" readout="ECalEndcapCollection" vis="ECALVis" >
+        <detector name="ECalEndcap" type="CLD_GenericCalEndcap_o1_v01" id="DetID_ECal_Endcap" readout="ECalEndcapCollection" vis="ECALVis" >
             
             <comment>Electromagnetic Calorimeter Endcap</comment>
             
             <type_flags type=" DetType_CALORIMETER + DetType_ELECTROMAGNETIC + DetType_ENDCAP"/>
+
+            <sensitive type="SimpleCalorimeterSD"/>
 
             <envelope vis="ECALVis">
                 <shape type="BooleanShape" operation="Subtraction" material="Air">
