@@ -77,8 +77,8 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
 
 
 
-gaudi_project(FCCSW  v0r12
+gaudi_project(FCCSW  v0r13
               USE K4FWCore v0r1
-              USE Gaudi v32r2 )
+              USE Gaudi v33r1 )
 
 
