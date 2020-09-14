@@ -17,6 +17,9 @@ if(ENABLE_CPACK)
   include(cmake/FCCSWCPack.cmake)
 endif()
 
+if( NOT DEFINED ENV{LCG_VERSION})
+  set(HOST_BINARY_TAG x86_64-linux-gcc9-opt)
+endif()
 
 #---------------------------------------------------------------
 # to use ROOT targets, find_package ROOT must come before find_package Gaudi
