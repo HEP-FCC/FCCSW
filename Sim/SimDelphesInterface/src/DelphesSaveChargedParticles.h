@@ -8,9 +8,13 @@
 #include "FWCore/DataHandle.h"
 #include "SimDelphesInterface/IDelphesSaveOutputTool.h"
 
+
+
+
 // datamodel
 namespace fcc {
 class ParticleCollection;
+class TrackStateCollection;
 class ParticleMCParticleAssociationCollection;
 class TaggedParticleCollection;
 }
@@ -46,6 +50,7 @@ public:
 
 private:
   /// Handle the particles to be saved
+  DataHandle<fcc::TrackStateCollection> m_particles_trkCov{"particles_trkCov", Gaudi::DataHandle::Writer, this};
   DataHandle<fcc::ParticleCollection> m_particles{"particles", Gaudi::DataHandle::Writer, this};
   /// Handle to associate particles with MCParticles
   DataHandle<fcc::ParticleMCParticleAssociationCollection> m_mcAssociations{"mcAssociations", Gaudi::DataHandle::Writer,
