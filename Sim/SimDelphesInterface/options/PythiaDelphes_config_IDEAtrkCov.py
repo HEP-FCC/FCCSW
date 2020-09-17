@@ -119,7 +119,7 @@ metSaveTool.missingEt.Path = "met"
 from Configurables import DelphesSimulation
 delphessim = DelphesSimulation()
 ## Define Delphes card
-delphessim.DelphesCard = os.path.join(os.environ.get("DELPHES_DIR", ""), "cards/delphes_card_IDEAtrkcov.tcl")
+delphessim.DelphesCard = os.path.join(os.environ.get("DELPHES_DIR", ""), "cards/delphes_card_IDEAtrkCov.tcl")
 delphessim.ROOTOutputFile = ""
 delphessim.ApplyGenFilter = True
 delphessim.outputs = [
