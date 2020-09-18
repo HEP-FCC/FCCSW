@@ -90,7 +90,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
    t.theta(TMath::ATan2(1.0, cand->CtgTheta));
     Double_t b = -0.29988*2.0 / 2.; //mag field
     t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
-    auto& t_c = t.cov();
+    std::array<float,15> t_c;
     // save upper right triangle, row first
     t_c[0] = cov_d[0][0];
     t_c[1] = cov_d[0][1];
@@ -107,6 +107,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     t_c[12] = cov_d[3][3];
     t_c[13] = cov_d[3][4];
     t_c[14] = cov_d[4][4];
+    t.cov(t_c);
 
     auto& barePart = particle.core();
     barePart.pdgId = cand->PID;
