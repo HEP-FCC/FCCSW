@@ -87,7 +87,7 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     t.d0(1000* cand->D0);
     t.z0(1000* cand->DZ);
     t.phi(cand->Phi);
-    t.theta(TMath::ATan(1.0 / cand->CtgTheta) + TMath::PiOver2());
+   t.theta(TMath::ATan2(1.0,cand->CtgTheta);
     Double_t b = -0.29988*2.0 / 2.; //mag field
     t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
     auto& t_c = t.cov();
