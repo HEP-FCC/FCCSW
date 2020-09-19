@@ -33,5 +33,5 @@ jobs:
         docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package -v /cvmfs:/cvmfs:shared -d clicdp/cc7-lcg /bin/bash
     - name: Compile and test
       run: |
-        docker exec CI_container /bin/bash -c "ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so;cd ./Package; ./.github/scripts/compile_and_test.sh;"
+        docker exec CI_container /bin/bash -c "yum -y install environment-modules; source /etc/profile.d/modules.sh; ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so; cd ./Package; ./.github/scripts/compile_and_test.sh;"
 

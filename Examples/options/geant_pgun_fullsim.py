@@ -18,6 +18,7 @@ from Configurables import GenAlg, MomentumRangeParticleGun
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 guntool = MomentumRangeParticleGun()
+guntool.PdgCodes = [11]
 gen = GenAlg("ParticleGun", SignalProvider=guntool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
@@ -32,11 +33,12 @@ from Configurables import GeoSvc
 ## DD4hep geometry service
 # Parses the given xml file
 geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                         'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
+                                         #'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
                                          'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                                         'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+                                         #'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
+                                         'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'
+                                         ],
                     OutputLevel = INFO)
 
 from Configurables import SimG4Svc
@@ -51,9 +53,9 @@ from Configurables import SimG4Alg, SimG4SaveTrackerHits, SimG4SaveCalHits, SimG
 # first, create a tool that saves the tracker hits
 # Name of that tool in GAUDI is "XX/YY" where XX is the tool class name ("SimG4SaveTrackerHits")
 # and YY is the given name ("saveTrackerHits")
-savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
-savetrackertool.positionedTrackHits.Path = "positionedHits"
-savetrackertool.trackHits.Path = "hits"
+#savetrackertool = SimG4SaveTrackerHits("saveTrackerHits", readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"])
+#savetrackertool.positionedTrackHits.Path = "positionedHits"
+#savetrackertool.trackHits.Path = "hits"
 # and a tool that saves the calorimeter hits with a name "SimG4SaveCalHits/saveCalHits"
 saveecaltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = ["ECalBarrelEta"])
 saveecaltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
@@ -71,7 +73,7 @@ savehcaltool.caloHits.Path = "HCalBarrelHits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits"],
+                    outputs = [ "SimG4SaveCalHits/saveECalBarrelHits",  "SimG4SaveCalHits/saveECalEndcapHits",  "SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)
 
 from Configurables import PodioOutput
