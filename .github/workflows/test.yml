@@ -36,11 +36,11 @@ jobs:
         docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package -v /cvmfs:/cvmfs:shared -d clicdp/cc7-lcg /bin/bash
     - name: Setup container
       run: |
-        docker exec CI_container /bin/bash -c "yum -y install environment-modules; source /etc/profile.d/modules.sh; ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so;"
+        docker exec CI_container /bin/bash -c " ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so;"
 
     - name: CMake Configure
       run: |
-        docker exec CI_container /bin/bash -c 'cd .Package; mkdir -p build install; source ${{ matrix.SETUP }}; cd build; cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=17  -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -G Ninja ..; '
+        docker exec CI_container /bin/bash -c 'cd ./Package; mkdir -p build install; source ${{ matrix.SETUP }}; cd build; cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=17  -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -G Ninja ..; '
 
     - name: Compile FCCSW
       run: |
@@ -55,7 +55,4 @@ jobs:
         docker exec CI_container /bin/bash -c 'cd ./Package/build; ctest;'
 
 
-
-
-        cd ./Package; ./.github/scripts/compile_and_test.sh;"
 
