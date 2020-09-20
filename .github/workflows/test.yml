@@ -56,7 +56,7 @@ jobs:
         docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest -j `getconf _NPROCESSORS_ONLN`;'
     - name: Upload Test Results for FCCSW
       uses: actions/upload-artifact@v2
-      if: succeeded() || failed()
+      if:  succeeded()  || failure()
       with:
         name: FCCSWCTestLog
         path: ./Package/build/Testing/Temporary/LastTest.log
