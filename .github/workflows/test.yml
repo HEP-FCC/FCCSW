@@ -52,7 +52,7 @@ jobs:
 
     - name: Test FCCSW
       run: |
-        docker exec CI_container /bin/bash -c 'cd ./Package; source source ${{ matrix.SETUP }}; cd build; ctest;'
+        docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest;'
 
 
 
