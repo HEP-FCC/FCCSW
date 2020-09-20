@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu
     strategy:
       matrix:
         SETUP: ["init.sh", 'init_lcg.sh']
@@ -52,7 +52,7 @@ jobs:
 
     - name: Test FCCSW
       run: |
-        docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest;'
+        docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest -j `getconf _NPROCESSORS_ONLN`;'
 
 
 
