@@ -59,7 +59,7 @@ jobs:
       if:  success()  || failure()
       with:
         name: FCCSWCTestLog
-        path: ./Package/build/Testing/Temporary/LastTest.log
+        path: ${GITHUB_WORKSPACE}/build/Testing/Temporary/LastTest.log
 
 
 
