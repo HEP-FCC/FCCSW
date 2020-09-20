@@ -57,14 +57,24 @@ DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aTyp
 
 DelphesSaveChargedParticles::~DelphesSaveChargedParticles() {}
 
-StatusCode DelphesSaveChargedParticles::initialize() { return GaudiTool::initialize(); }
+StatusCode DelphesSaveChargedParticles::initialize() { 
+  
+  
+ // if (m_saveTrkCov) {
+ //  m_particles_trkCov = std::make_unique<DataHandle<fcc::TrackStateCollection>>( "particles_trkCov", Gaudi::DataHandle::Writer, this);
+ // 
+  
+  return GaudiTool::initialize(); }
 
 StatusCode DelphesSaveChargedParticles::finalize() { return GaudiTool::finalize(); }
 
 StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) {
   // Create the collections
   auto colParticles = m_particles.createAndPut();
-  auto colParticles_trkCov = m_particles_trkCov.createAndPut();
+    fcc::TrackStateCollection* colParticles_trkCov = nullptr;
+  if (m_saveTrkCov) {
+    colParticles_trkCov = m_particles_trkCov.createAndPut();
+  }
   auto ascColParticlesToMC = m_mcAssociations.createAndPut();
 
   fcc::TaggedParticleCollection* colITags(nullptr);
@@ -82,32 +92,34 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     auto particle = colParticles->create();
 
 
-    auto cov_d = CovToACTS(cand->TrackCovariance, cand->CtgTheta, cand->C);
-    auto t = colParticles_trkCov->create();
-    t.d0(1000* cand->D0);
-    t.z0(1000* cand->DZ);
-    t.phi(cand->Phi);
-   t.theta(TMath::ATan2(1.0, cand->CtgTheta));
-    Double_t b = -0.29988*2.0 / 2.; //mag field
-    t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
-    std::array<float,15> t_c;
-    // save upper right triangle, row first
-    t_c[0] = cov_d[0][0];
-    t_c[1] = cov_d[0][1];
-    t_c[2] = cov_d[0][2];
-    t_c[3] = cov_d[0][3];
-    t_c[4] = cov_d[0][4];
-    t_c[5] = cov_d[1][1];
-    t_c[6] = cov_d[1][2];
-    t_c[7] = cov_d[1][3];
-    t_c[8] = cov_d[1][4];
-    t_c[9] = cov_d[2][2];
-    t_c[10] = cov_d[2][3];
-    t_c[11] = cov_d[2][4];
-    t_c[12] = cov_d[3][3];
-    t_c[13] = cov_d[3][4];
-    t_c[14] = cov_d[4][4];
-    t.cov(t_c);
+    if (m_saveTrkCov) {
+      auto cov_d = CovToACTS(cand->TrackCovariance, cand->CtgTheta, cand->C);
+      auto t = colParticles_trkCov->create();
+      t.d0(1000* cand->D0);
+      t.z0(1000* cand->DZ);
+      t.phi(cand->Phi);
+     t.theta(TMath::ATan2(1.0, cand->CtgTheta));
+      Double_t b = -0.29988*2.0 / 2.; //mag field
+      t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
+      std::array<float,15> t_c;
+      // save upper right triangle, row first
+      t_c[0] = cov_d[0][0];
+      t_c[1] = cov_d[0][1];
+      t_c[2] = cov_d[0][2];
+      t_c[3] = cov_d[0][3];
+      t_c[4] = cov_d[0][4];
+      t_c[5] = cov_d[1][1];
+      t_c[6] = cov_d[1][2];
+      t_c[7] = cov_d[1][3];
+      t_c[8] = cov_d[1][4];
+      t_c[9] = cov_d[2][2];
+      t_c[10] = cov_d[2][3];
+      t_c[11] = cov_d[2][4];
+      t_c[12] = cov_d[3][3];
+      t_c[13] = cov_d[3][4];
+      t_c[14] = cov_d[4][4];
+      t.cov(t_c);
+    }
 
     auto& barePart = particle.core();
     barePart.pdgId = cand->PID;
