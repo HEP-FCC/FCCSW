@@ -6,6 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         SETUP: ["init.sh", 'init_lcg.sh']
     steps:
