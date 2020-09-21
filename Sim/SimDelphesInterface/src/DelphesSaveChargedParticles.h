@@ -50,7 +50,9 @@ public:
 
 private:
   /// Handle the particles to be saved
+  //std::unique_ptr<DataHandle<fcc::TrackStateCollection>> m_particles_trkCov;
   DataHandle<fcc::TrackStateCollection> m_particles_trkCov{"particles_trkCov", Gaudi::DataHandle::Writer, this};
+
   DataHandle<fcc::ParticleCollection> m_particles{"particles", Gaudi::DataHandle::Writer, this};
   /// Handle to associate particles with MCParticles
   DataHandle<fcc::ParticleMCParticleAssociationCollection> m_mcAssociations{"mcAssociations", Gaudi::DataHandle::Writer,
@@ -63,6 +65,8 @@ private:
                                                   "Name of the Delphes array that should be converted"};
   /// Switch whether to save tag information
   Gaudi::Property<bool> m_saveIso{this, "saveIsolation", true, "Switch whether to save tag information"};
+  /// Switch whether to save tag information
+  Gaudi::Property<bool> m_saveTrkCov{this, "saveTrkCov", false, "Switch whether to save track covariance information"};
 };
 
 #endif /* SIMDELPHESINTERFACE_DELPHESSAVECHARGEDPARTICLES */

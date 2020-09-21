@@ -46,6 +46,7 @@ muonSaveTool.particles.Path      = "muons"
 muonSaveTool.particles_trkCov.Path      = "muons_trkCov"
 muonSaveTool.mcAssociations.Path = "muonsToMC"
 muonSaveTool.isolationTags.Path  = "muonITags"
+muonSaveTool.saveTrkCov = True
 
 eleSaveTool = DelphesSaveChargedParticles("electrons")
 eleSaveTool.delphesArrayName = "ElectronFilter/electrons"
@@ -53,6 +54,7 @@ eleSaveTool.particles.Path      = "electrons"
 eleSaveTool.particles_trkCov.Path      = "electrons_trkCov"
 eleSaveTool.mcAssociations.Path = "electronsToMC"
 eleSaveTool.isolationTags.Path  = "electronITags"
+eleSaveTool.saveTrkCov = True
 
 chhadSaveTool = DelphesSaveChargedParticles("efcharged")
 chhadSaveTool.delphesArrayName = "Calorimeter/eflowTracks"
@@ -60,6 +62,7 @@ chhadSaveTool.saveIsolation = False
 chhadSaveTool.particles.Path      = "efcharged"
 chhadSaveTool.particles_trkCov.Path      = "efcharged_trkCov"
 chhadSaveTool.mcAssociations.Path = "efchargedToMC"
+chhadSaveTool.saveTrkCov = True
 
 
 from Configurables import DelphesSaveNeutralParticles
