@@ -86,7 +86,7 @@
 	      <back sensitive="false"/> <!-- outer wall of the cryostat -->
       </cryostat>
       <calorimeter name="EM_barrel">
-	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-50/180*pi"/>
+	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-InclinationAngle"/>
 	      <active thickness="LAr_thickness">
           <material name="LAr"/>
           <overlap offset="0.5"/>

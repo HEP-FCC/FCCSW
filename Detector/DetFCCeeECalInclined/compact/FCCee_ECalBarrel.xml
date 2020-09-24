@@ -85,7 +85,7 @@
       </cryostat>
       <calorimeter name="EM_barrel">
 	<!-- offset defines the numbering of the modules: module==0 for phi=0 direction -->
-	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-InclinationAngle*rad"/>
+	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-InclinationAngle"/>
 	      <active thickness="LAr_thickness">
           <material name="LAr"/>
 	  <!-- overlap offset is a specific feature of the construction; do not change! -->
