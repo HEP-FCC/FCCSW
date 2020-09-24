@@ -3,7 +3,7 @@
        xmlns:xs="http://www.w3.org/2001/XMLSchema"
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <info name="FCCee_ECalBarrel_Common"
+  <info name="FCCee_ECalBarrel_calibration"
         title="Common settings for Inclined ECal Barrel Calorimeter"
         author="M.Aleksa,J.Faltova,A.Zaborowska"
         url="no"
@@ -14,24 +14,26 @@
       The barrel is filled with liquid argon. Passive material includes lead in the middle and steal on the outside, glued together.
       Passive plates are inclined by a certain angle from the radial direction.
       In between of two passive plates there is a readout.
-      Space between the plate and readout is of trapezoidal shape and filled with liquid argon.
-      The calorimeter is divided into 0.5 cm layers, making the simulation flexible for the design studies.
-      Current study considers layer size const in eta: 2cm + 7 x 9cm.
-      Definition of sizes, visualization settings and readout are specified.
+      Space between the plane and readout is of trapezoidal shape and filled with liquid argon.
+      Definition of sizes, visualization settings, readout and longitudinal segmentation are specified.
+      This file is used in the calculation of the sampling fraction that corrects energy for the energy depoisted in the absorber.
+      Calculation of the sampling fraction can be done as both passive and active material is sensitive.
     </comment>
   </info>
 
   <define>
+    <!-- Inclination angle of the plates -->
+    <constant name="InclinationAngle" value="50*degree"/>
+    <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
+    <constant name="LArGapThickness" value="1.806*mm"/>
+   
+    <!-- Air margin, thicknesses of cryostat and LAr bath -->
     <constant name="AirMarginThickness" value="0*mm"/>
     <constant name="CryoThicknessFront" value="50*mm"/>
     <constant name="CryoThicknessBack" value="100*mm"/>
     <constant name="CryoThicknessSide" value="100*mm"/>
     <constant name="LArBathThicknessFront" value="20*mm"/>
     <constant name="LArBathThicknessBack" value="20*mm"/>
-    <!-- Inclination angle of the plates -->
-    <constant name="InclinationAngle" value="50*degree"/>
-    <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
-    <constant name="LArGapThickness" value="1.806*mm"/>
 
     <!-- air margin around calorimeter -->
     <constant name="BarCryoECal_rmin" value="BarECal_rmin+AirMarginThickness"/>
