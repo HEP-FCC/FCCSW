@@ -35,8 +35,8 @@
   <include ref="../../DetFCCeeIDEA/compact/HOMAbsorber.xml"/>
   <include ref="../../DetFCCeeIDEA/compact/Vertex.xml"/>
   <include ref="../../DetFCCeeIDEA/compact/DriftChamber.xml"/>
+  <include ref="../../DetFCCeeECalInclined/compact/FCCee_ECalBarrel.xml" />
   <include ref="../../DetFCCeeHCalTile/compact/FCCee_HCalBarrel_TileCal.xml" />
-  <include ref="../../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_withCryostat.xml" />
 
 
 </lccdd>

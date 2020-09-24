@@ -1,14 +1,44 @@
 from Gaudi.Configuration import *
 
+from GaudiKernel.SystemOfUnits import MeV, GeV 
+
+# Input for simulations
+momentum = 50 * GeV
+
 # Data service
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
+################## Particle gun setup
+_pi = 3.14159
+
+from Configurables import  MomentumRangeParticleGun
+pgun = MomentumRangeParticleGun("ParticleGun_Electron")
+pgun.PdgCodes = [11]
+pgun.MomentumMin = 50 * GeV
+pgun.MomentumMax = 50 * GeV
+pgun.PhiMin = 0
+pgun.PhiMax = 2 * _pi
+# theta = 90 degrees (eta = 0)
+pgun.ThetaMin = 90. * _pi / 180.       
+pgun.ThetaMax = 90. * _pi / 180.       
+
+from Configurables import GenAlg
+genalg_pgun = GenAlg()
+genalg_pgun.SignalProvider = pgun 
+genalg_pgun.hepmc.Path = "hepmc"
+
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter()
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="GenParticles"
+hepmc_converter.genvertices.Path="GenVertices"
+
 # DD4hep geometry service
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[ 
-      'file:Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectEmptyMaster.xml',
-      'file:Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml',
+    'file:Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectEmptyMaster.xml',
+    'file:Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml',
             ],
                     OutputLevel = INFO)
 
@@ -25,14 +55,15 @@ from Configurables import SimG4Alg, SimG4SaveCalHits, SimG4SingleParticleGenerat
 saveecaltool = SimG4SaveCalHits("saveECalBarrelHits",readoutNames = ["ECalBarrelEta"])
 saveecaltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
 saveecaltool.caloHits.Path = "ECalBarrelHits"
-from Configurables import SimG4SingleParticleGeneratorTool
-pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                                      particleName = "e-", energyMin = 50000, energyMax = 50000, etaMin = 0, etaMax = 0,
-                                      OutputLevel = DEBUG)
+
+from Configurables import SimG4PrimariesFromEdmTool
+particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
+particle_converter.genParticles.Path = "GenParticles"
+
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 geantsim = SimG4Alg("SimG4Alg",
                     outputs= ["SimG4SaveCalHits/saveECalBarrelHits"],
-                    eventProvider = pgun,
+                    eventProvider = particle_converter,
                     OutputLevel = DEBUG)
 
 from Configurables import SamplingFractionInLayers
@@ -46,7 +77,7 @@ hist = SamplingFractionInLayers("hists",
                                  OutputLevel = INFO)
 hist.deposits.Path="ECalBarrelPositionedHits"
 
-THistSvc().Output = ["rec DATAFILE='histSF_fccee_inclined_e50GeV_eta0_1events.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='histSF_fccee_inclined_e50GeV_theta90.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=False
@@ -68,9 +99,9 @@ out.filename = "fccee_samplingFraction_inclinedEcal.root"
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, hist, out],
+ApplicationMgr( TopAlg = [genalg_pgun, hepmc_converter, geantsim, hist, out],
                 EvtSel = 'NONE',
-                EvtMax = 70,
+                EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG
