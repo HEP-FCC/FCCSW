@@ -18,6 +18,7 @@ from Configurables import GenAlg, MomentumRangeParticleGun
 # MomentumRangeParticleGun generates particles of given type(s) within given momentum, phi and theta range
 # FlatSmearVertex smears the vertex with uniform distribution
 guntool = MomentumRangeParticleGun()
+guntool.PdgCodes = [11]
 gen = GenAlg("ParticleGun", SignalProvider=guntool, VertexSmearingTool="FlatSmearVertex")
 gen.hepmc.Path = "hepmc"
 
@@ -35,8 +36,9 @@ geoservice = GeoSvc("GeoSvc", detectors=['file:Detector/DetFCChhBaseline1/compac
                                          'file:Detector/DetFCChhTrackerTkLayout/compact/Tracker.xml',
                                          'file:Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_withCryostat.xml',
                                          'file:Detector/DetFCChhCalDiscs/compact/Endcaps_coneCryo.xml',
-                                         'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
-                                         'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+                                         #'file:Detector/DetFCChhCalDiscs/compact/Forward_coneCryo.xml',
+                                         'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'
+                                         ],
                     OutputLevel = INFO)
 
 from Configurables import SimG4Svc
@@ -71,7 +73,7 @@ savehcaltool.caloHits.Path = "HCalBarrelHits"
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
 particle_converter.genParticles.Path = "allGenParticles"
 geantsim = SimG4Alg("SimG4Alg",
-                    outputs = ["SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveECalBarrelHits", "SimG4SaveCalHits/saveECalEndcapHits", "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits"],
+                    outputs = [ "SimG4SaveTrackerHits/saveTrackerHits", "SimG4SaveCalHits/saveECalBarrelHits",  "SimG4SaveCalHits/saveECalEndcapHits",  "SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)
 
 from Configurables import PodioOutput

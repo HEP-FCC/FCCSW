@@ -12,6 +12,7 @@ find_package(PODIO)
 find_package(ROOT COMPONENTS Physics EG)
 find_package(HepMC)
 
+
 gaudi_add_module(SimDelphesInterface
                  src/*.cpp
                  INCLUDE_DIRS FWCore ROOT Delphes FCCEDM PODIO HepMC
@@ -26,3 +27,9 @@ include(CTest)
 gaudi_add_test(PythiaDelphes
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/PythiaDelphes_config.py)
+
+
+gaudi_add_test(PythiaDelphes_IDEAtrkCov
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                COMMAND gaudirun.py  Sim/SimDelphesInterface/options/PythiaDelphes_config_IDEAtrkCov.py
+                )

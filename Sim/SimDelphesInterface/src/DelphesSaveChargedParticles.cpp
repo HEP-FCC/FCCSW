@@ -6,12 +6,41 @@
 
 // datamodel
 #include "datamodel/MCParticleCollection.h"
+#include "datamodel/TrackStateCollection.h"
 #include "datamodel/ParticleCollection.h"
 #include "datamodel/ParticleMCParticleAssociationCollection.h"
 #include "datamodel/TaggedParticleCollection.h"
 // ROOT
 #include "SimDelphesInterface/ParticleStatus.h"
 #include "TObjArray.h"
+#include <TMatrixD.h>
+
+
+
+// Covariance conversion to ACTS format
+TMatrixDSym CovToACTS(TMatrixDSym Cov, double ct /*cot(theta)*/, double C /*half curvature*/, double fB=2. /*magnetic field in T*/)
+{
+  TMatrixDSym cACTS(6); cACTS.Zero();
+  Double_t b = -0.29988*fB / 2.;
+  //
+  // Fill derivative matrix
+  TMatrixD A(5, 5); A.Zero();
+  A(0, 0) = 1000.;    // D-D  conversion to mm
+  A(1, 2) = 1.0;    // phi0-phi0
+  A(2, 4) = 1.0/(TMath::Sqrt(1.0 + ct*ct) * b); // q/p-C
+  A(3, 1) = 1000.;    // z0-z0 conversion to mm
+  A(4, 3) = -1.0 / (1.0 + ct*ct); // theta - cot(theta)
+  A(4, 4) = -C*ct / (b*pow(1.0 + ct*ct,3.0/2.0)); // q/p-cot(theta)
+  //
+  TMatrixDSym Cv = Cov;
+  TMatrixD At(5, 5);
+  At.Transpose(A);
+  Cv.Similarity(At);
+  TMatrixDSub(cACTS, 0, 4, 0, 4) = Cv;
+  cACTS(5, 5) = 0.1;  // Currently undefined: set to arbitrary value to avoid crashes
+  //
+  return cACTS;
+}
 
 DECLARE_COMPONENT(DelphesSaveChargedParticles)
 
@@ -21,19 +50,31 @@ DelphesSaveChargedParticles::DelphesSaveChargedParticles(const std::string& aTyp
     : GaudiTool(aType, aName, aParent) {
   declareInterface<IDelphesSaveOutputTool>(this);
   declareProperty("particles", m_particles, "Handle the particles to be saved");
+  declareProperty("particles_trkCov", m_particles_trkCov, "Handle the particles to be saved");
   declareProperty("mcAssociations", m_mcAssociations, "Handle to associate particles with MCParticles");
   declareProperty("isolationTags", m_isolationTaggedParticles, "Handle for isolation tags");
 }
 
 DelphesSaveChargedParticles::~DelphesSaveChargedParticles() {}
 
-StatusCode DelphesSaveChargedParticles::initialize() { return GaudiTool::initialize(); }
+StatusCode DelphesSaveChargedParticles::initialize() { 
+  
+  
+ // if (m_saveTrkCov) {
+ //  m_particles_trkCov = std::make_unique<DataHandle<fcc::TrackStateCollection>>( "particles_trkCov", Gaudi::DataHandle::Writer, this);
+ // 
+  
+  return GaudiTool::initialize(); }
 
 StatusCode DelphesSaveChargedParticles::finalize() { return GaudiTool::finalize(); }
 
 StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::MCParticleCollection& mcParticles) {
   // Create the collections
   auto colParticles = m_particles.createAndPut();
+    fcc::TrackStateCollection* colParticles_trkCov = nullptr;
+  if (m_saveTrkCov) {
+    colParticles_trkCov = m_particles_trkCov.createAndPut();
+  }
   auto ascColParticlesToMC = m_mcAssociations.createAndPut();
 
   fcc::TaggedParticleCollection* colITags(nullptr);
@@ -49,6 +90,36 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
   for (int j = 0; j < delphesColl->GetEntries(); j++) {
     auto cand = static_cast<Candidate*>(delphesColl->At(j));
     auto particle = colParticles->create();
+
+
+    if (m_saveTrkCov) {
+      auto cov_d = CovToACTS(cand->TrackCovariance, cand->CtgTheta, cand->C);
+      auto t = colParticles_trkCov->create();
+      t.d0(1000* cand->D0);
+      t.z0(1000* cand->DZ);
+      t.phi(cand->Phi);
+     t.theta(TMath::ATan2(1.0, cand->CtgTheta));
+      Double_t b = -0.29988*2.0 / 2.; //mag field
+      t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
+      std::array<float,15> t_c;
+      // save upper right triangle, row first
+      t_c[0] = cov_d[0][0];
+      t_c[1] = cov_d[0][1];
+      t_c[2] = cov_d[0][2];
+      t_c[3] = cov_d[0][3];
+      t_c[4] = cov_d[0][4];
+      t_c[5] = cov_d[1][1];
+      t_c[6] = cov_d[1][2];
+      t_c[7] = cov_d[1][3];
+      t_c[8] = cov_d[1][4];
+      t_c[9] = cov_d[2][2];
+      t_c[10] = cov_d[2][3];
+      t_c[11] = cov_d[2][4];
+      t_c[12] = cov_d[3][3];
+      t_c[13] = cov_d[3][4];
+      t_c[14] = cov_d[4][4];
+      t.cov(t_c);
+    }
 
     auto& barePart = particle.core();
     barePart.pdgId = cand->PID;
