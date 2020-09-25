@@ -1,9 +1,6 @@
 from Gaudi.Configuration import *
 
-from GaudiKernel.SystemOfUnits import MeV, GeV 
-
-# Input for simulations
-momentum = 50 * GeV
+from GaudiKernel.SystemOfUnits import MeV, GeV
 
 # Data service
 from Configurables import FCCDataSvc
