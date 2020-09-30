@@ -1,10 +1,9 @@
-Noble liquid calorimeter
-==
+# Noble liquid calorimeter
 
 ### Table of contents:
 * [Introduction](#introduction)
 * [Geometry of the noble liquid calorimeter](#ecal-geometry)
-* [Where is relevant code](#code-where)
+* [Calorimeter SW organisation in FCCSW](#code-where)
 * [How to run Geant4 full simulations](#run-simulations)
 * [Optimisation of the geometry](#optimisation)
   * [Which parameters are tunable](#parameters)
@@ -15,7 +14,7 @@ Noble liquid calorimeter
 
 The purpose of this documentation is to introduce the Geant4 simulations and reconstructions of the noble liquid barrel calorimeter. The emphasis is given on the implementation of the calorimeter geometry in FCCSW and the steps to be followed for the optimisation of the calorimeter.
 
-The full simulations and reconstruction of the calorimeter in the FCCSW are described in this [tutorial](https://hep-fcc.github.io/fcc-tutorials/full-detector-simulations/README.html).
+The full simulations and reconstruction of the calorimeter in the FCCSW are described in [this tutorial](https://hep-fcc.github.io/fcc-tutorials/full-detector-simulations/README.html).
 
 The design of the calorimeter and the studies for the FCChh calorimetry system are documented on [arXiv](https://arxiv.org/abs/1912.09962).
 
@@ -29,17 +28,21 @@ Special layers
 - first layer (presample): The absorbers do not contain lead plates in this layer. This layer is 3-4 times smaller compared to the other layers
 - second layer (strip layer): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the pi0/gamma identification.
 
-Details about the design of the calorimeter are [here](https://arxiv.org/abs/1912.09962)
+## Calorimeter SW organisation in the FCCSW
 
-## Description in the FCCSW
+Geometry description
+- Source code: Detector/DetFCChhECalInclined/src/ 
+- xml files to define the parameters
+  - FCCee: Detector/DetFCCeeECalInclined/compact/ (common settings in FCCee_ECalBarrel.xml)
+  - FCChh: Detector/DetFCChhECalInclined/compact/ (common settings in FCChh_ECalBarrel_Common.xml)
+Examples of algorithms, scripts to run
+- Simulation and reconstruction
+   - FCCee: Reconstruction/RecFCCeeCalorimeter/
+   - FCChh: Reconstruction/RecCalorimeter/
+- Energy calibration (sampling fraction, upstream material correction): Detector/DetStudies/
+- Scripts are under test/options in the relevant directory, algorithms in src/components
  
-Geometry description (source code) can be found [here](https://github.com/HEP-FCC/FCCSW/blob/master/Detector/DetFCChhECalInclined/src/ECalBarrelInclined_geo.cpp) 
-
-Settings of the parameters (xml files) can be found
-- [here](https://github.com/HEP-FCC/FCCSW/tree/master/Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel.xml) for FCCee
-- [here](https://github.com/HEP-FCC/FCCSW/blob/master/Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_Common.xml) for FCChh
-
-All tunable parameters are in the xml files. You're not expected to touch the source code unless you are 100\% sure what you're doing.
+Please note: Adapt the scripts and algorithms as you like. All tunable parameters are in the xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
 
 ### Full simulations with noble liquid calorimeter
 
