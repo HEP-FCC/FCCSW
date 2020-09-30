@@ -31,17 +31,17 @@ Special layers
 ## Calorimeter SW organisation in the FCCSW
 
 Geometry description
-- *Source code*: Detector/DetFCChhECalInclined/src/ 
-- *Definition of parameters*
-  - FCCee: Detector/DetFCCeeECalInclined/compact/ (common settings in FCCee_ECalBarrel.xml)
-  - FCChh: Detector/DetFCChhECalInclined/compact/ (common settings in FCChh_ECalBarrel_Common.xml)
+- **Source code**: *Detector/DetFCChhECalInclined/src/*
+- **Definition of parameters**
+  - FCCee: *Detector/DetFCCeeECalInclined/compact/* (common settings in *FCCee_ECalBarrel.xml*)
+  - FCChh: *Detector/DetFCChhECalInclined/compact/* (common settings in *FCChh_ECalBarrel_Common.xml*)
 
 Examples of algorithms, scripts to run
-- *Simulation and reconstruction*
-   - FCCee: Reconstruction/RecFCCeeCalorimeter/
-   - FCChh: Reconstruction/RecCalorimeter/
-- *Energy calibration* (sampling fraction, upstream material correction): Detector/DetStudies/
-- Scripts are under test/options in the relevant directory, algorithms in src/components
+- **Simulation and reconstruction**
+   - FCCee: *Reconstruction/RecFCCeeCalorimeter/*
+   - FCChh: *Reconstruction/RecCalorimeter/*
+- **Energy calibration** (sampling fraction, upstream material correction): *Detector/DetStudies/*
+- Scripts are under *test/options* in the relevant directory, algorithms in *src/components*
  
 Please note: Adapt the scripts and algorithms as you like. All tunable parameters are in the xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
 
