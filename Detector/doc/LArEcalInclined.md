@@ -25,16 +25,17 @@ Highly granular noble liquid calorimeter is composed of absorber plates (lead-st
 The detector collects the signal in individual cells that divide the detector in azimuthal angle, depth and pseudorapidity. The division of the calorimeter in the azimuthal angle is defined by the number of absorbers. The elementary cell, which is the smallest area from which the signal can be collected is the gap in between the absorber and the readout. The elementary cells can be combined, creating a cell of a desired size.
 
 Special layers
-- first layer (**presampler**): The absorbers do not contain lead plates in this layer. This layer is 3-4 times smaller compared to the other layers
-- second layer (**strip layer**): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the $\pi^0$/$\gamma$ identification.
+- first layer (**presampler**): The absorbers do not contain lead plates in this layer. This layer is 3-4 times smaller compared to the other layers.
+- second layer (**strip layer**): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the pi0/gamma identification.
 
-## Calorimeter SW organisation in the FCCSW
-
-Geometry description
+Geometry description in FCCSW
 - Source code in *Detector/DetFCChhECalInclined/src/*
 - Definition of parameters
   - FCCee: *Detector/DetFCCeeECalInclined/compact/* (common settings in *FCCee_ECalBarrel.xml*)
   - FCChh: *Detector/DetFCChhECalInclined/compact/* (common settings in *FCChh_ECalBarrel_Common.xml*)
+  
+Please note that all tunable parameters are in the xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
+
 
 Examples of algorithms, scripts to run
 - Simulation and reconstruction
@@ -42,58 +43,70 @@ Examples of algorithms, scripts to run
    - FCChh: *Reconstruction/RecCalorimeter/*
 - Energy calibration (sampling fraction, upstream material correction) in *Detector/DetStudies/*
 - Scripts are under *test/options* in the relevant directory, algorithms in *src/components*
- 
-Please note: Adapt the scripts and algorithms as you like. All tunable parameters are in the xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
 
 ## Full simulations with noble liquid calorimeter
 
-The full simulations of the calorimeter consists of three steps - simulation, digitisation and reconstruction. Once the geometry is stable, we run the simulation and digitisation in one go. The simulation is the most CPU consuming part. By performing the digitisation step we reduce the size of the output file a lot. The output from this first step is used for the reconstruction. This allows us to run the reconstruction more times on the same sample.
+The full simulations of the calorimeter consists of three steps - simulation, digitisation and reconstruction. What exactly is done in these steps is described below. It is recommended to run the simulation and digitisation in one go. The simulation is the most CPU consuming part. By performing the digitisation step we reduce the size of the output file a lot. The output from this first step is used for the reconstruction. This allows to perform the optimisation of the reconstruction algorithms on the prepared simulated samples.
 
-The simulation, digitisation and reconstruction consist of several steps. This is described below.
-
-Geant4 simulation
+Geant4 simulation & digitisation
  - Generation of particle (e.g. particle gun, event generator)
  - Passage of particles through detector (depends on the detector description)
- - Output: collection of truth particles and vertices, Geant4 hits in calorimeter
-
-Digitisation
- - Input: Geant4 hits in calorimeter
- - Merge hits into cells (cell sizes described by the field *readout*) (*)
+ - Merge Geant4 hits into cells (cell sizes described by the field *readout*) (*)
  - Calibrate deposited energy to electromagnetic scale (application of the sampling fraction)
- - Output: calorimeter cells
- 
+ - Output: truth particles & vertices, calorimeter cells
+ - Example script: *Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py*
+
 Reconstruction
  - Input: calorimeter cells
  - Add Gaussian noise to the cells (optional)
  - Merge cells into clusters (sliding window algorithm, topoclusters) (**)
  - Output: calorimeter clusters
+ - Example script: *Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py*
 
-(*) Merge hits into cells
-This is done in a couple of steps in the code. The size of the cell is given by the field called *readout* in the configuration xml file.
+(*) Merging hits into cells\n
+This is done in a couple of steps in the code. The size of the cell is given by the field called *readout* in the configuration xml file. 
 
-(**) Sliding window algorithm is used for electrons/photons, topoclusters for hadrons/jets. Please look in [arXiv](https://arxiv.org/abs/1912.09962) for details about the algorithms and the implementation in the FCCSW.
+(**) Clustering algorithms\n
+Sliding window algorithm is used for electrons/photons, topoclusters for hadrons/jets. Please look in [arXiv](https://arxiv.org/abs/1912.09962) for details about the algorithms and the implementation in the FCCSW.
 - Sliding window merge cells in a fixed eta x phi window across all longitudinal layers. One cluster should correspond to one object (electron, photon). The size of the window was optimised for the FCChh geometry.
 - Topoclusters are of variable size. It merges cells and their neighbours if the energy in the cell is higher than a certain threshold above noise.   
 
 ## Optimisation of the calorimeter
 
-### Which parameters could be tunned
-
+Parameters to be tunned (in configuration xml files)
 - Material in the gap between the lead plates (default: LAr)
 - Gap thickness (double the gap size lead - readout - lead at minimum radial distance, the gap size is measured perpendicular to the readout)
 - Inclination angle of the lead plates
 
-The number of lead plates is calculated from the the thickness of the gap and from the inclination angle. It should be a multiple of 32 or 64 following the requirements for the construction of the calorimeter.
-
-The segmentation in azimuth (phi) should be a multiple of the elementary cell size in phi.
-
-### Optimisation circle
+Please note that
+- The number of lead plates is calculated from the the thickness of the gap and from the inclination angle. It should be a multiple of 32 or 64 following the requirements for the construction of the calorimeter.
+- The segmentation in azimuth (phi) should be a multiple of the elementary cell size in phi.
 
 Once you change the parameters in the geometry description (xml file), you need to
-- Recalculate the sampling fractions per layer (xml file for calibration with the desired parameters, python script which does the calculation)
+- Recalculate the sampling fractions per layer
 - Change the calculated sampling fractions in the nominal xml file
 - Estimate the electronic noise per cell
 
-#### How to recalculate the sampling fraction
+## How to
 
-#### How to change the noise values
+### How to run simulations and reconstructions
+
+### How to recalculate the sampling fraction
+
+Details are given [here](DetectorStudies.md)
+
+Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) and [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) for FCCee.
+
+Change the FCCee_ECalBarrel_calibration.xml configuration file to match the geometry you are interested in. The output file histSF_fccee_inclined_e50GeV_theta90.root contains histograms with the sampling fraction values per layer (*ecal_sf_layerN*).
+
+Important: It is recommended to run the simulations for the sampling fraction calculation at different energies and take the average value as the sampling fraction.
+
+### How to calculate and apply upstream correction
+
+Details are given [here](DetectorStudies.md).
+Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) and [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) for FCCee.
+
+
+### How to change the noise values
+
+
