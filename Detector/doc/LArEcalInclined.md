@@ -29,20 +29,38 @@ Special layers
 - second layer (**strip layer**): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the pi0/gamma identification.
 
 Geometry description in FCCSW
-- Source code in *Detector/DetFCChhECalInclined/src/*
-- Definition of parameters
-  - FCCee: *Detector/DetFCCeeECalInclined/compact/* (common settings in *FCCee_ECalBarrel.xml*)
-  - FCChh: *Detector/DetFCChhECalInclined/compact/* (common settings in *FCChh_ECalBarrel_Common.xml*)
+- Source code in [Detector/DetFCChhECalInclined/src/](../DetFCChhECalInclined/src)
+- Configuration files
+  - FCCee: [Detector/DetFCCeeECalInclined/compact/](../DetFCCeeECalInclined/compact)
+  - FCChh: [Detector/DetFCChhECalInclined/compact/](../DetFCChhECalInclined/compact)
   
 Please note that all tunable parameters are in the xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
 
-
-Examples of algorithms, scripts to run
-- Simulation and reconstruction
-   - FCCee: *Reconstruction/RecFCCeeCalorimeter/*
-   - FCChh: *Reconstruction/RecCalorimeter/*
-- Energy calibration (sampling fraction, upstream material correction) in *Detector/DetStudies/*
-- Scripts are under *test/options* in the relevant directory, algorithms in *src/components*
+Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel.xml):
+- Setting of the inclination angle and the LAr gap thickness
+~~~{.xml}
+    <!-- Inclination angle of the plates -->
+    <constant name="InclinationAngle" value="50*degree"/>
+    <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
+    <constant name="LArGapThickness" value="1.806*mm"/>
+~~~
+- Readout (defined the segmentation of the calorimeter). Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation). Please keep these consistent.
+~~~{.xml}
+  <readouts>
+    <!-- readout for the simulation -->
+    <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell), cryostat included -->
+    <readout name="ECalBarrelEta">
+      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.0"/>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
+    </readout>
+    <!-- readout for the reconstruction -->
+    <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
+    <readout name="ECalBarrelPhiEta">
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.0" offset_phi="-pi+(pi/704.)"/>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
+    </readout>
+  </readouts>
+~~~
 
 ## Full simulations with noble liquid calorimeter
 
