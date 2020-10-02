@@ -26,7 +26,7 @@ The detector collects the signal in individual cells that divide the detector in
 
 Special layers
 - first layer (**presampler**): The absorbers do not contain lead plates in this layer. This layer is 3-4 times smaller compared to the other layers
-- second layer (**strip layer**): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the $\pi0$/$\gamma$ identification.
+- second layer (**strip layer**): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the $\pi^0$/$\gamma$ identification.
 
 ## Calorimeter SW organisation in the FCCSW
 
