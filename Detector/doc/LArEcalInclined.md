@@ -47,7 +47,7 @@ Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCe
     <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
     <constant name="LArGapThickness" value="1.806*mm"/>
 ~~~
-- Readout defines the segmentation of the calorimeter. Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation, no module ID). To learn more about the readout in DD4HEP have a look [here](DD4hepInFCCSW.md)
+- Readout defines the segmentation of the calorimeter. Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation, no module ID). To learn more about the readout in DD4HEP have a look [here](DD4hepInFCCSW.md).
 ~~~{.xml}
   <readouts>
     <!-- readout for the simulation -->
@@ -69,23 +69,26 @@ Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCe
 
 The full simulations of the calorimeter consists of three steps - simulation, digitisation and reconstruction. What exactly is done in these steps is described below. It is recommended to run the simulation and digitisation in one go. The simulation is the most CPU consuming part. By performing the digitisation step we reduce the size of the output file a lot. The output from this first step is used for the reconstruction. This allows to perform the optimisation of the reconstruction algorithms on the prepared simulated samples.
 
-Geant4 simulation & digitisation
+### Geant4 simulation & digitisation
  - Generation of particle (e.g. particle gun, event generator)
  - Passage of particles through detector (depends on the detector description)
  - Merge Geant4 hits into cells (cell sizes described by the field *readout*) (*)
  - Calibrate deposited energy to electromagnetic scale (application of the sampling fraction)
  - Output: truth particles & vertices, calorimeter cells
- - Example script: *Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py*
-
-Reconstruction
- - Input: calorimeter cells
- - Add Gaussian noise to the cells (optional)
- - Merge cells into clusters (sliding window algorithm, topoclusters) (**)
- - Output: calorimeter clusters
- - Example script: *Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py*
+ - Example script [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py)
 
 (*) Merging hits into cells\n
-This is done in a couple of steps in the code. The size of the cell is given by the field called *readout* in the configuration xml file. 
+This is done in a couple of steps in the code. The size of the cell is given by the field called *readout* in the configuration xml file.
+
+
+### Reconstruction
+ - Input: calorimeter cells
+ - Add Gaussian noise to the cells (*)
+ - Merge cells into clusters (sliding window algorithm, topoclusters) (**)
+ - Output: calorimeter clusters
+ - Example script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+
+(*) Gaussian noise
 
 (**) Clustering algorithms\n
 Sliding window algorithm is used for electrons/photons, topoclusters for hadrons/jets. Please look in [arXiv](https://arxiv.org/abs/1912.09962) for details about the algorithms and the implementation in the FCCSW.
@@ -112,20 +115,16 @@ Once you change the parameters in the geometry description (xml file), you need 
 
 ### How to recalculate sampling fraction values
 
-Details are given [here](DetectorStudies.md)
+Details about the algorithm and usage are given [here](DetectorStudies.md).
 
-Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) and [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) for FCCee.
+Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) configuration file for FCCee. Change the configuration file to match the geometry you are interested in. The output file histSF_fccee_inclined.root contains histograms with the sampling fraction values per layer (*ecal_sf_layerN*).
 
-Change the FCCee_ECalBarrel_calibration.xml configuration file to match the geometry you are interested in. The output file histSF_fccee_inclined_e50GeV_theta90.root contains histograms with the sampling fraction values per layer (*ecal_sf_layerN*).
-
-Important: It is recommended to run the simulations for the sampling fraction calculation at different energies and take the average value as the sampling fraction.
+Important: It is recommended to run the simulations for the sampling fraction calculation at different energies and take the average values as the sampling fractions.
 
 ### How to calculate upstream correction
 
-Details are given [here](DetectorStudies.md).
-Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) and [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) for FCCee.
-
+The energy losses in the upstream material are investigated using the algorithm [UpstreamMaterial](../DetStudies/src/components/UpstreamMaterial.h). The details about the algorithm are given [here](DetectorStudies.md).
+Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee. Change the configuration file to match the geometry you are interested in. 
 
 ### How to change noise values
-
 
