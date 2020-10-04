@@ -3,8 +3,10 @@ import os
 from GaudiKernel.SystemOfUnits import MeV, GeV, tesla
 
 # Input for simulations (momentum is expected in GeV!)
-momentum = 100 * GeV
-numEvents = 10
+momentum = 100
+# theta from 80 to 100 degrees corresponds to -0.17 < eta < 0.17 
+thetaMin = 80.
+thetaMax = 100.
 magneticField = False
 
 from Gaudi.Configuration import *
@@ -18,13 +20,12 @@ _pi = 3.14159
 from Configurables import  MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("ParticleGun_Electron")
 pgun.PdgCodes = [11]
-pgun.MomentumMin = momentum
-pgun.MomentumMax = momentum
+pgun.MomentumMin = momentum * GeV
+pgun.MomentumMax = momentum * GeV
 pgun.PhiMin = 0
 pgun.PhiMax = 2 * _pi
-# corresponds to -0.17 < eta < 0.17
-pgun.ThetaMin = 80. * _pi / 180.
-pgun.ThetaMax = 100. * _pi / 180.
+pgun.ThetaMin = thetaMin * _pi / 180.
+pgun.ThetaMax = thetaMax * _pi / 180.
 
 from Configurables import GenAlg
 genalg_pgun = GenAlg()
@@ -168,7 +169,7 @@ out = PodioOutput("out",
 out.outputCommands = ["keep *"]
 
 import uuid
-out.filename = "output_fullCalo_SimAndDigi_"+str(momentum/GeV)+"GeV_"+uuid.uuid4().hex+".root"
+out.filename = "output_fullCalo_SimAndDigi_"+str(momentum)+"GeV_"+uuid.uuid4().hex+".root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -198,6 +199,6 @@ ApplicationMgr(
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = int(numEvents),
+    EvtMax   = 10,
     ExtSvc = [geoservice, podioevent, geantservice, audsvc],
  )

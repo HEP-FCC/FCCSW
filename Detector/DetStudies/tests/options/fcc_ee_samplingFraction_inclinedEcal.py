@@ -2,6 +2,12 @@ from Gaudi.Configuration import *
 
 from GaudiKernel.SystemOfUnits import MeV, GeV
 
+# Electron momentum in GeV
+momentum = 50
+# Theta min and max in degrees
+thetaMin = 90.
+thetaMax = 90.
+
 # Data service
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
@@ -12,13 +18,13 @@ _pi = 3.14159
 from Configurables import  MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("ParticleGun_Electron")
 pgun.PdgCodes = [11]
-pgun.MomentumMin = 50 * GeV
-pgun.MomentumMax = 50 * GeV
+pgun.MomentumMin = momentum * GeV
+pgun.MomentumMax = momentum * GeV
 pgun.PhiMin = 0
 pgun.PhiMax = 2 * _pi
 # theta = 90 degrees (eta = 0)
-pgun.ThetaMin = 90. * _pi / 180.       
-pgun.ThetaMax = 90. * _pi / 180.       
+pgun.ThetaMin = thetaMin * _pi / 180.       
+pgun.ThetaMax = thetaMax * _pi / 180.       
 
 from Configurables import GenAlg
 genalg_pgun = GenAlg()
@@ -65,7 +71,7 @@ geantsim = SimG4Alg("SimG4Alg",
 
 from Configurables import SamplingFractionInLayers
 hist = SamplingFractionInLayers("hists",
-                                 energyAxis = 50,
+                                 energyAxis = momentum,
                                  readoutName = "ECalBarrelEta",
                                  layerFieldName = "layer",
                                  activeFieldName = "type",
@@ -74,7 +80,7 @@ hist = SamplingFractionInLayers("hists",
                                  OutputLevel = INFO)
 hist.deposits.Path="ECalBarrelPositionedHits"
 
-THistSvc().Output = ["rec DATAFILE='histSF_fccee_inclined_e50GeV_theta90.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["rec DATAFILE='histSF_fccee_inclined.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=False

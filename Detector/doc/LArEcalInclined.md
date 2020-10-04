@@ -4,11 +4,14 @@
 * [Introduction](#introduction)
 * [Geometry of the noble liquid calorimeter](#ecal-geometry)
 * [Calorimeter SW organisation in FCCSW](#code-where)
-* [How to run Geant4 full simulations](#run-simulations)
-* [Optimisation of the geometry](#optimisation)
-  * [Which parameters are tunable](#parameters)
-  * [Sampling fraction calculation](#sampling-fraction)
-* [Reconstruction in the calorimeters](#reconstruction)
+* [Full simulations with noble liquid calorimeter](#full-simulations)
+  *[Simulations](#simulations)
+  *[Reconstruction](#reconstruction)
+* [Optimisation of the calorimeter](#optimisation)
+* HOWTOs(#howtos)
+  *[How to recalculate sampling fraction](#sampling-fraction)
+  *[How to calculate upstream correction](#upstream-correction)
+  *[How to change noise values](#change-noise)
 
 ## Introduction
 
@@ -44,11 +47,11 @@ Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCe
     <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
     <constant name="LArGapThickness" value="1.806*mm"/>
 ~~~
-- Readout (defined the segmentation of the calorimeter). Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation). Please keep these consistent.
+- Readout defines the segmentation of the calorimeter. Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation, no module ID). To learn more about the readout in DD4HEP have a look [here](DD4hepInFCCSW.md)
 ~~~{.xml}
   <readouts>
     <!-- readout for the simulation -->
-    <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell), cryostat included -->
+    <!-- offset in eta is eta max value, better more than less -->
     <readout name="ECalBarrelEta">
       <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.0"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
@@ -105,11 +108,9 @@ Once you change the parameters in the geometry description (xml file), you need 
 - Change the calculated sampling fractions in the nominal xml file
 - Estimate the electronic noise per cell
 
-## How to
+## HOWTOs
 
-### How to run simulations and reconstructions
-
-### How to recalculate the sampling fraction
+### How to recalculate sampling fraction values
 
 Details are given [here](DetectorStudies.md)
 
@@ -119,12 +120,12 @@ Change the FCCee_ECalBarrel_calibration.xml configuration file to match the geom
 
 Important: It is recommended to run the simulations for the sampling fraction calculation at different energies and take the average value as the sampling fraction.
 
-### How to calculate and apply upstream correction
+### How to calculate upstream correction
 
 Details are given [here](DetectorStudies.md).
 Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) and [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) for FCCee.
 
 
-### How to change the noise values
+### How to change noise values
 
 

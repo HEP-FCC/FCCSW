@@ -2,6 +2,12 @@ from Gaudi.Configuration import *
 
 from GaudiKernel.SystemOfUnits import MeV, GeV
 
+# Electron momentum in GeV
+momentum = 50
+# Theta min and max in degrees                                                                                                      
+thetaMin = 85.
+thetaMax = 95.
+
 # Data service
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
@@ -12,13 +18,13 @@ _pi = 3.14159
 from Configurables import  MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("ParticleGun_Electron")
 pgun.PdgCodes = [11]
-pgun.MomentumMin = 50 * GeV
-pgun.MomentumMax = 50 * GeV
+pgun.MomentumMin = momentum * GeV
+pgun.MomentumMax = momentum * GeV
 pgun.PhiMin = 0
 pgun.PhiMax = 2 * _pi
 # theta = 90 degrees (eta = 0)
-pgun.ThetaMin = 85. * _pi / 180.       
-pgun.ThetaMax = 95. * _pi / 180.       
+pgun.ThetaMin = thetaMin * _pi / 180.       
+pgun.ThetaMax = thetaMax * _pi / 180.       
 
 from Configurables import GenAlg
 genalg_pgun = GenAlg()
@@ -69,7 +75,7 @@ createcellsBarrel.cells.Path="ECalBarrelCells"
 
 from Configurables import UpstreamMaterial
 hist = UpstreamMaterial("histsPresampler",
-                        energyAxis=50,
+                        energyAxis=momentum,
                         phiAxis=0.1,
                         readoutName = "ECalBarrelEta",
                         layerFieldName = "layer",
@@ -80,7 +86,7 @@ hist = UpstreamMaterial("histsPresampler",
 hist.deposits.Path="ECalBarrelCells"
 hist.particle.Path="GenParticles"
 
-THistSvc().Output = ["det DATAFILE='histUpstream_fccee_hits_e50GeV.root' TYP='ROOT' OPT='RECREATE'"]
+THistSvc().Output = ["det DATAFILE='histUpstream_fccee_hits.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
