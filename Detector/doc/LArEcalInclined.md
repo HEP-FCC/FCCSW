@@ -5,13 +5,13 @@
 * [Geometry of the noble liquid calorimeter](#ecal-geometry)
 * [Calorimeter SW organisation in FCCSW](#code-where)
 * [Full simulations with noble liquid calorimeter](#full-simulations)
-  *[Simulations](#simulations)
-  *[Reconstruction](#reconstruction)
+  * [Simulations](#simulations)
+  * [Reconstruction](#reconstruction)
 * [Optimisation of the calorimeter](#optimisation)
-* HOWTOs(#howtos)
-  *[How to recalculate sampling fraction](#sampling-fraction)
-  *[How to calculate upstream correction](#upstream-correction)
-  *[How to change noise values](#change-noise)
+* [HOWTOs](#howtos)
+  * [How to recalculate sampling fraction](#sampling-fraction)
+  * [How to calculate upstream correction](#upstream-correction)
+  * [How to change noise values](#change-noise)
 
 ## Introduction
 
