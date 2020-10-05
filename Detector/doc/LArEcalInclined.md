@@ -37,17 +37,17 @@ Geometry description in FCCSW
   - FCCee: [Detector/DetFCCeeECalInclined/compact/](../DetFCCeeECalInclined/compact)
   - FCChh: [Detector/DetFCChhECalInclined/compact/](../DetFCChhECalInclined/compact)
   
-Please note that all tunable parameters are in the xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
+Please note that all tunable parameters are in the configuration xml files. You're not expected to touch the geometry source code unless you are 100\% sure what you're doing.
 
 Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCee_ECalBarrel.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel.xml):
-- Setting of the inclination angle and the LAr gap thickness
+- Settings of the inclination angle and the size of the LAr gap
 ~~~{.xml}
     <!-- Inclination angle of the plates -->
     <constant name="InclinationAngle" value="50*degree"/>
     <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
     <constant name="LArGapThickness" value="1.806*mm"/>
 ~~~
-- Readout defines the segmentation of the calorimeter. Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation, no module ID). To learn more about the readout in DD4HEP have a look [here](DD4hepInFCCSW.md).
+- Readout defines the segmentation of the calorimeter. Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation, no module ID). Other fields should be consistent among these two readouts. To learn more about readouts in DD4HEP have a look [here](DD4hepInFCCSW.md).
 ~~~{.xml}
   <readouts>
     <!-- readout for the simulation -->
@@ -67,34 +67,79 @@ Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCe
 
 ## Full simulations with noble liquid calorimeter
 
-The full simulations of the calorimeter consists of three steps - simulation, digitisation and reconstruction. What exactly is done in these steps is described below. It is recommended to run the simulation and digitisation in one go. The simulation is the most CPU consuming part. By performing the digitisation step we reduce the size of the output file a lot. The output from this first step is used for the reconstruction. This allows to perform the optimisation of the reconstruction algorithms on the prepared simulated samples.
+Full simulations of the calorimeter consist of simulation, digitisation and reconstruction. What exactly is done in these steps is described below. It is recommended to run the simulation and digitisation in one go. The simulation is the most CPU consuming part. By performing the digitisation step we reduce the size of the output file a lot (the Geant4 hits are merged into cells). The output from this first step is used for the reconstruction. This allows to perform the optimisation of the reconstruction algorithms on the prepared simulated samples.
 
 ### Geant4 simulation & digitisation
  - Generation of particle (e.g. particle gun, event generator)
  - Passage of particles through detector (depends on the detector description)
- - Merge Geant4 hits into cells (cell sizes described by the field *readout*) (*)
- - Calibrate deposited energy to electromagnetic scale (application of the sampling fraction)
+ - Merging Geant4 hits into cells
+   - The size of the cell is given by the  fields called *readout* in the configuration xml file
+   - 1. step - merge hits into cells with default Eta segmentation, calculate the positions of these first step cells
+   - 2. step - use the positions to rewrite the cellId using the Phi-Eta segmentation
+ - Calibration of deposited energy to electromagnetic scale (application of the sampling fraction)
  - Output: truth particles & vertices, calorimeter cells
- - Example script [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py)
+ - Example script [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py)
 
-(*) Merging hits into cells\n
-This is done in a couple of steps in the code. The size of the cell is given by the field called *readout* in the configuration xml file.
-
+Configuration of create cells algorithm in [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py) 
+~~~[.py]
+from Configurables import CreateCaloCells
+createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
+                               doCellCalibration=True,
+                               calibTool = calibEcalBarrel,
+                               addCellNoise=False, filterCellNoise=False,
+                               OutputLevel=INFO,
+                               hits="ECalBarrelHits",
+                               cells="ECalBarrelCellsStep1")
+~~~
+- *doCellCalibration* - calibration to electromagnetic scale
+- *calibTool* - different sampling fractions per layer (CalibrateInLayersTool) or a single sampling fraction factor (CalibrateCaloHitsTool)
+- *addCellNoise* - add noise to cells (including cells without signal)
+- *hits* - input hit collection
+- *cells* - output hit collection
 
 ### Reconstruction
  - Input: calorimeter cells
- - Add Gaussian noise to the cells (*)
- - Merge cells into clusters (sliding window algorithm, topoclusters) (**)
+ - Addition of Gaussian noise to the cells
+   - It
+ - Merge cells into clusters (sliding window algorithm, topoclusters)
+   - Sliding window algorithm is used for electrons/photons, topoclusters for hadrons/jets. Please look in [arXiv](https://arxiv.org/abs/1912.09962) for details about the algorithms and the implementation in the FCCSW.
+   - Sliding window merge cells in a fixed eta x phi window across all longitudinal layers. One cluster should correspond to one object (electron, photon). The size of the window was optimised for the FCChh geometry.
+   - Topoclusters are of variable size. It merges cells and their neighbours if the energy in the cell is higher than a certain threshold above noise.   
  - Output: calorimeter clusters
- - Example script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+ - Example script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+ 
+Configuration of sliding window algorithm configuration
+~~~[.py]
+from Configurables import CaloTowerTool
+towers = CaloTowerTool("towers",
+                               deltaEtaTower = 0.01, deltaPhiTower = 2*pi/704.,
+                               ecalBarrelReadoutName = ecalBarrelReadoutName,
+                               ecalEndcapReadoutName = "",
+                               ecalFwdReadoutName = "",
+                               hcalBarrelReadoutName = "",
+                               hcalExtBarrelReadoutName = "",
+                               hcalEndcapReadoutName = "",
+                               hcalFwdReadoutName = "",
+                               OutputLevel = INFO)
+towers.ecalBarrelCells.Path = ecalBarrelCellsName + "Noise"
+towers.ecalEndcapCells.Path = "emptyCaloCells" #ecalEndcapCellsName + "Noise"
+towers.ecalFwdCells.Path = "emptyCaloCells" #ecalFwdCellsName
+towers.hcalBarrelCells.Path = "emptyCaloCells"
+towers.hcalExtBarrelCells.Path = "emptyCaloCells" # "newHCalExtBarrelCells"
+towers.hcalEndcapCells.Path = "emptyCaloCells" #hcalEndcapCellsName
+towers.hcalFwdCells.Path = "emptyCaloCells" #hcalFwdCellsName
 
-(*) Gaussian noise
-
-(**) Clustering algorithms\n
-Sliding window algorithm is used for electrons/photons, topoclusters for hadrons/jets. Please look in [arXiv](https://arxiv.org/abs/1912.09962) for details about the algorithms and the implementation in the FCCSW.
-- Sliding window merge cells in a fixed eta x phi window across all longitudinal layers. One cluster should correspond to one object (electron, photon). The size of the window was optimised for the FCChh geometry.
-- Topoclusters are of variable size. It merges cells and their neighbours if the energy in the cell is higher than a certain threshold above noise.   
-
+from Configurables import CreateCaloClustersSlidingWindow
+createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
+                                                 towerTool = towers,
+                                                 nEtaWindow = windE, nPhiWindow = windP,
+                                                 nEtaPosition = posE, nPhiPosition = posP,
+                                                 nEtaDuplicates = dupE, nPhiDuplicates = dupP,
+                                                 nEtaFinal = finE, nPhiFinal = finP,
+                                                 energyThreshold = threshold)
+createClusters.clusters.Path = "CaloClusters"
+~~~
+  
 ## Optimisation of the calorimeter
 
 Parameters to be tunned (in configuration xml files)
@@ -104,11 +149,11 @@ Parameters to be tunned (in configuration xml files)
 
 Please note that
 - The number of lead plates is calculated from the the thickness of the gap and from the inclination angle. It should be a multiple of 32 or 64 following the requirements for the construction of the calorimeter.
-- The segmentation in azimuth (phi) should be a multiple of the elementary cell size in phi.
+- The segmentation in azimuth (phi) should be a multiple of the elementary cell size depending on the inclination angle.
 
 Once you change the parameters in the geometry description (xml file), you need to
 - Recalculate the sampling fractions per layer
-- Change the calculated sampling fractions in the nominal xml file
+- Change the sampling fractions in the nominal xml file
 - Estimate the electronic noise per cell
 
 ## HOWTOs
