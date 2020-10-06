@@ -69,14 +69,17 @@ Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCe
 
 Full simulations of the calorimeter consist of simulation, digitisation and reconstruction. What exactly is done in these steps is described below. It is recommended to run the simulation and digitisation in one go. The simulation is the most CPU consuming part. By performing the digitisation step we reduce the size of the output file a lot (the Geant4 hits are merged into cells). The output from this first step is used for the reconstruction. This allows to perform the optimisation of the reconstruction algorithms on the prepared simulated samples.
 
+You can find more details about the implemented algorithms [here](../../Reconstruction/doc/RecCalorimeter.md).
+
 ### Geant4 simulation & digitisation
  - Generation of particle (e.g. particle gun, event generator)
  - Passage of particles through detector (depends on the detector description)
  - Merging Geant4 hits into cells
-   - The size of the cell is given by the  fields called *readout* in the configuration xml file
-   - 1. step - merge hits into cells with default Eta segmentation, calculate the positions of these first step cells
-   - 2. step - use the positions to rewrite the cellId using the Phi-Eta segmentation
+   - The size of the cell is given by the fields called *readout* in the configuration xml file
+   - The hits are merged into cells with default Eta segmentation and positions in xyz are calculated
+   - The positions are used to rewrite the cellId using the Phi-Eta segmentation
  - Calibration of deposited energy to electromagnetic scale (application of the sampling fraction)
+ - Gaussian noise is not added at this point to reduce the size of the output file
  - Output: truth particles & vertices, calorimeter cells
  - Example script [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py)
 
@@ -84,7 +87,7 @@ Configuration of create cells algorithm in [Reconstruction/RecFCCeeCalorimeter/o
 ~~~[.py]
 from Configurables import CreateCaloCells
 createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
-                               doCellCalibration=True,
+			       doCellCalibration=True,	
                                calibTool = calibEcalBarrel,
                                addCellNoise=False, filterCellNoise=False,
                                OutputLevel=INFO,
@@ -99,16 +102,17 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
 
 ### Reconstruction
  - Input: calorimeter cells
- - Addition of Gaussian noise to the cells
-   - It
+ - Addition of Gaussian noise to the cells using CreateCaloCells algorithm
+   - The noise tool expects eta dependent noise values for each longitudinal layer
+   - If you expect different noise pattern, you can implement your own noise tool
  - Merge cells into clusters (sliding window algorithm, topoclusters)
-   - Sliding window algorithm is used for electrons/photons, topoclusters for hadrons/jets. Please look in [arXiv](https://arxiv.org/abs/1912.09962) for details about the algorithms and the implementation in the FCCSW.
-   - Sliding window merge cells in a fixed eta x phi window across all longitudinal layers. One cluster should correspond to one object (electron, photon). The size of the window was optimised for the FCChh geometry.
-   - Topoclusters are of variable size. It merges cells and their neighbours if the energy in the cell is higher than a certain threshold above noise.   
+   - Sliding window algorithm is used for electrons/photons
+   - Topoclustering algorithm for hadrons/jets.
+   - Details are described [here](../../Reconstruction/doc/RecCalorimeter.md).
  - Output: calorimeter clusters
  - Example script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
  
-Configuration of sliding window algorithm configuration
+Configuration of sliding window algorithm configuration from the example script
 ~~~[.py]
 from Configurables import CaloTowerTool
 towers = CaloTowerTool("towers",
@@ -122,7 +126,7 @@ towers = CaloTowerTool("towers",
                                hcalFwdReadoutName = "",
                                OutputLevel = INFO)
 towers.ecalBarrelCells.Path = ecalBarrelCellsName + "Noise"
-towers.ecalEndcapCells.Path = "emptyCaloCells" #ecalEndcapCellsName + "Noise"
+towers.ecalEndcapCells.Path = "emptyCaloCells" #ecalEndcapCellsName
 towers.ecalFwdCells.Path = "emptyCaloCells" #ecalFwdCellsName
 towers.hcalBarrelCells.Path = "emptyCaloCells"
 towers.hcalExtBarrelCells.Path = "emptyCaloCells" # "newHCalExtBarrelCells"
@@ -139,7 +143,15 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
 ~~~
-  
+- You have to build the towers in the calorimeter first
+- *deltaEtaTower* and *deltaPhiTower* should correspond to the segmentation of the calorimeter to make use of the fine segmentation
+- the algorithm requires inputs from all calorimeter system as implemented for FCChh. However, the endcaps and forward calorimeters are not implemented for the FCCee
+     - that's why the fields e.g. *ecalFwdReadoutName* are empty
+     - that's why the inputs e.g. *towers.ecalFwdCells.Path* are emptyCaloCells (created by CreateEmptyCaloCellsCollection)
+- The towers are added in the sliding window algorithm
+- Different window sizes in eta x phi and energyThreshold are configurables of the sliding window algorithm
+  - These were optimised for FCChh, optimisation for FCCee is needed
+
 ## Optimisation of the calorimeter
 
 Parameters to be tunned (in configuration xml files)
@@ -169,7 +181,32 @@ Important: It is recommended to run the simulations for the sampling fraction ca
 ### How to calculate upstream correction
 
 The energy losses in the upstream material are investigated using the algorithm [UpstreamMaterial](../DetStudies/src/components/UpstreamMaterial.h). The details about the algorithm are given [here](DetectorStudies.md).
-Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee. Change the configuration file to match the geometry you are interested in. 
+
+Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee studies. Change the configuration file to match the geometry you are interested in. 
 
 ### How to change noise values
 
+The Gaussian noise to each calorimeter cell is added using [NoiseCaloCellsFromFileTool](../../Reconstruction/RecCalorimeter/src/components/NoiseCaloCellsFromFileTool.h). It uses Root file with histograms showing noise values per cell in individual layers as a function of |eta|. An example Root file with electronic noise estimate for LAr calorimeter can be downloaded from [here](http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root).
+
+Example of the configuration of the noise tool in the script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+~~~[.py]
+from Configurables import NoiseCaloCellsFromFileTool
+noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
+                                         readoutName = ecalBarrelReadoutName,
+                                         noiseFileName = ecalBarrelNoisePath,
+                                         elecNoiseHistoName = ecalBarrelNoiseHistName,
+                                         activeFieldName = "layer",
+                                         addPileup = False,
+                                         numRadialLayers = 8)
+~~~
+- *readoutName* is the name of the readout of the calorimeter
+- *noiseFileName* is the path to the Root file with histograms with the noise values per cell in individual layers as a function of |eta|
+- *elecNoiseHistoName* is the name of the histograms in the Root file. The names are expected in the form of *elecNoiseHistoName*+str(indexOfLayer). *indexOfLayer* goes from 1 to numRadialLayers
+- *activeFieldName* stands for the name of the readout for the longitudinal layers
+- *numRadialLayers* is the numbers of the longitudinal layers
+- *addPileup* is expected to be set to False for FCCee
+
+If you want to change the noise values
+- Prepare your own version of the Root file with histograms of noise values per cell in individual layers as a function of |eta| with the naming convension described above.
+- Change the path in *noiseFileName*
+- Change the *elecNoiseHistoName* to match the names of the histograms used in your noise file
