@@ -1,10 +1,8 @@
 # Setup
 # Names of cells collections
 ecalBarrelCellsName = "ECalBarrelCells"
-hcalBarrelCellsName = "HCalBarrelCells"
 # Readouts
 ecalBarrelReadoutName = "ECalBarrelPhiEta"
-hcalBarrelReadoutName = "HCalBarrelReadout"
 
 # Number of events
 num_events = -1
@@ -14,13 +12,12 @@ from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
 import sys
 
 podioevent = FCCDataSvc("EventDataSvc")
-#podioevent.input="/opt/fcc/repo/FCCeeLArStudy/ShowerDisplay/fccee_samplingFraction_inclinedEcal.root"
 import glob
 podioevent.inputs=glob.glob("output_fullCalo_SimAndDigi_*.root")
 # reads HepMC text file and write the HepMC::GenEvent to the data service
 from Configurables import PodioInput
 podioinput = PodioInput("PodioReader",
-                        collections = [ecalBarrelCellsName, hcalBarrelCellsName,
+                        collections = [ecalBarrelCellsName,
                                        "GenParticles",
                                        ])
 
@@ -40,22 +37,6 @@ geoservice.OutputLevel = WARNING
 ecalBarrelNoisePath = "http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root"
 ecalBarrelNoiseHistName = "h_elecNoise_fcc_"
 
-# additionally for HCal                                 
-from Configurables import RewriteBitfield
-# Use Phi-Eta segmentation in Hcal barrel               
-rewriteHcal = RewriteBitfield("RewriteHCal",
-                                # old bitfield (readout)
-                                oldReadoutName = "HCalBarrelReadout",
-                                # specify which fields are going to be deleted 
-                                removeIds = ["row"],
-                                # new bitfield (readout), with new segmentation
-                                newReadoutName = "BarHCal_Readout_phieta",
-                                debugPrint = 10,
-                                OutputLevel= INFO)
-# clusters are needed, with deposit position and cellID in bits
-rewriteHcal.inhits.Path = "HCalBarrelCells"
-rewriteHcal.outhits.Path = "newHCalBarrelCells"
-
 # add noise, create all existing cells in detector
 from Configurables import NoiseCaloCellsFromFileTool
 noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
@@ -71,7 +52,7 @@ barrelGeometry = TubeLayerPhiEtaCaloTool("EcalBarrelGeo",
                                          activeVolumeName = "LAr_sensitive",
                                          activeFieldName = "layer",
                                          fieldNames = ["system"],
-                                         fieldValues = [5],
+                                         fieldValues = [4],
                                          activeVolumesNumber = 8)
 from Configurables import CreateCaloCells
 createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
@@ -97,7 +78,7 @@ towers = CaloTowerTool("towers",
                                ecalBarrelReadoutName = ecalBarrelReadoutName,
                                ecalEndcapReadoutName = "",
                                ecalFwdReadoutName = "",
-                               hcalBarrelReadoutName = hcalBarrelReadoutPhiEtaName,
+                               hcalBarrelReadoutName = "",
                                hcalExtBarrelReadoutName = "",
                                hcalEndcapReadoutName = "",
                                hcalFwdReadoutName = "",

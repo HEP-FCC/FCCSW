@@ -103,6 +103,7 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
 ### Reconstruction
  - Input: calorimeter cells
  - Addition of Gaussian noise to the cells using CreateCaloCells algorithm
+   - Noise is added to all cells of the calorimeter (also the ones without signal) 
    - The noise tool expects eta dependent noise values for each longitudinal layer
    - If you expect different noise pattern, you can implement your own noise tool
  - Merge cells into clusters (sliding window algorithm, topoclusters)
@@ -149,7 +150,7 @@ createClusters.clusters.Path = "CaloClusters"
      - that's why the fields e.g. *ecalFwdReadoutName* are empty
      - that's why the inputs e.g. *towers.ecalFwdCells.Path* are emptyCaloCells (created by CreateEmptyCaloCellsCollection)
 - The towers are added in the sliding window algorithm
-- Different window sizes in eta x phi and energyThreshold are configurables of the sliding window algorithm
+- Different window sizes in *eta* x *phi* and *energyThreshold* are configurables of the sliding window algorithm
   - These were optimised for FCChh, optimisation for FCCee is needed
 
 ## Optimisation of the calorimeter
@@ -174,7 +175,7 @@ Once you change the parameters in the geometry description (xml file), you need 
 
 Details about the algorithm and usage are given [here](DetectorStudies.md).
 
-Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) configuration file for FCCee. Change the configuration file to match the geometry you are interested in. The output file histSF_fccee_inclined.root contains histograms with the sampling fraction values per layer (*ecal_sf_layerN*).
+Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_calibration.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_calibration.xml) configuration file for FCCee. Change the configuration file to match the geometry you are interested in. The output file *histSF_fccee_inclined.root* contains histograms with the sampling fraction values per layer (*ecal_sf_layerN*).
 
 Important: It is recommended to run the simulations for the sampling fraction calculation at different energies and take the average values as the sampling fractions.
 
@@ -207,6 +208,6 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
 - *addPileup* is expected to be set to False for FCCee
 
 If you want to change the noise values
-- Prepare your own version of the Root file with histograms of noise values per cell in individual layers as a function of |eta| with the naming convension described above.
-- Change the path in *noiseFileName*
-- Change the *elecNoiseHistoName* to match the names of the histograms used in your noise file
+- Prepare your own version of the Root file with histograms of noise values per cell in individual layers as a function of |eta| with the naming convension described above
+- Add the path to the file in *noiseFileName*
+- Use *elecNoiseHistoName* to set the names of the histograms used in your noise file
