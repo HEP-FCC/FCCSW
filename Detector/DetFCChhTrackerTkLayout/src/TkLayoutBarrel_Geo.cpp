@@ -1,11 +1,6 @@
 
 #include "DetCommon/DetUtils.h"
 
-#include "Acts/Plugins/DD4hep/ActsExtension.hpp"
-#include "Acts/Surfaces/PlanarBounds.hpp"
-#include "Acts/Surfaces/RectangleBounds.hpp"
-#include "Acts/Surfaces/TrapezoidBounds.hpp"
-#include "Acts/Utilities/Units.hpp"
 
 #include "DD4hep/DetFactoryHelper.h"
 
@@ -32,10 +27,6 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
   // has min/max dimensions of tracker for visualization etc.
   std::string detectorName = xmlDet.nameStr();
   DetElement topDetElement(detectorName, xmlDet.id());
-  // detElement owns extension
-  Acts::ActsExtension* detWorldExt = new Acts::ActsExtension();
-  detWorldExt->addType("barrel", "detector");
-  topDetElement.addExtension<Acts::ActsExtension>(detWorldExt);
   dd4hep::Tube topVolumeShape(dimensions.rmin(), dimensions.rmax(), (dimensions.zmax() - dimensions.zmin()) * 0.5);
   Volume topVolume(detectorName, topVolumeShape, lcdd.air());
   topVolume.setVisAttributes(lcdd.invisible());
@@ -61,12 +52,6 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
     PlacedVolume placedLayerVolume = topVolume.placeVolume(layerVolume);
     placedLayerVolume.addPhysVolID("layer", layerCounter);
     DetElement lay_det(topDetElement, "layer" + std::to_string(layerCounter), layerCounter);
-    // the local coordinate systems of modules in dd4hep and acts differ
-    // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
-    Acts::ActsExtension* layerExtension = new Acts::ActsExtension();
-    layerExtension->addType("sensitive cylinder", "layer");
-    layerExtension->addType("axes", "definitions", "XzY");
-    lay_det.addExtension<Acts::ActsExtension>(layerExtension);
     lay_det.setPlacement(placedLayerVolume);
     dd4hep::xml::Component xModuleComponentsOdd = xModulePropertiesOdd.child("components");
     integratedModuleComponentThickness = 0;
@@ -116,10 +101,6 @@ static dd4hep::Ref_t createTkLayoutTrackerBarrel(dd4hep::Detector& lcdd,
                 placedModuleVolume.addPhysVolID("module", moduleCounter);
                 moduleVolume.setSensitiveDetector(sensDet);
                 DetElement mod_det(lay_det, "module" + std::to_string(moduleCounter), moduleCounter);
-
-                Acts::ActsExtension* moduleExtension = new Acts::ActsExtension();
-                mod_det.addExtension<Acts::ActsExtension>(moduleExtension);
-
                 mod_det.setPlacement(placedModuleVolume);
                 ++moduleCounter;
               }

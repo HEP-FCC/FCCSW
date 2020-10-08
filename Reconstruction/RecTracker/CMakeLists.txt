@@ -11,7 +11,6 @@ find_package(FCCEDM)
 find_package(PODIO)
 
 find_package(ROOT REQUIRED COMPONENTS Geom)
-find_package(Acts COMPONENTS Core IdentificationPlugin TGeoPlugin DD4hepPlugin)
 
 gaudi_install_python_modules()
 gaudi_add_library(TrackingUtils
@@ -22,15 +21,10 @@ gaudi_add_library(TrackingUtils
 
 gaudi_add_module(RecTracker
                  src/components/*.cpp
-                 INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils Acts CLHEP
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep TrackingUtils ActsCore ActsDD4hepPlugin CLHEP)
+                 INCLUDE_DIRS DD4hep Geant4 FWCore SimG4Common SimG4Interface  ROOT RecInterface TrackingUtils CLHEP
+                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep TrackingUtils CLHEP)
 
 
-gaudi_add_library(ActsLogger
-                 src/lib/ACTSLogger.cpp
-                 INCLUDE_DIRS ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface RecInterface Acts
-                 NO_PUBLIC_HEADERS
-                 LINK_LIBRARIES ROOT GaudiAlgLib FCCEDM PODIO DD4hep ActsCore)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Reconstruction/RecTracker)
 
