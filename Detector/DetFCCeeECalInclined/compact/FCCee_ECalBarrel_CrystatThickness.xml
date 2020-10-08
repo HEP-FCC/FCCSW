@@ -1,5 +1,0 @@
-<define>
-  <constant name="CommonCryoThicknessFront" value="50*mm"/>
-  <constant name="CommonCryoThicknessBack" value="100*mm"/>
-  <constant name="CommonCryoThicknessSide" value="100*mm"/>
-</define>

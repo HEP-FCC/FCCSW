@@ -3,8 +3,8 @@
        xmlns:xs="http://www.w3.org/2001/XMLSchema"
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <info name="FCCee_ECalBarrel_Common"
-        title="Common settings for Inclined ECal Barrel Calorimeter"
+  <info name="FCCee_ECalBarrel"
+        title="Common settings for FCCee Inclined ECal Barrel Calorimeter"
         author="M.Aleksa,J.Faltova,A.Zaborowska"
         url="no"
         status="development"
@@ -15,26 +15,34 @@
       Passive plates are inclined by a certain angle from the radial direction.
       In between of two passive plates there is a readout.
       Space between the plate and readout is of trapezoidal shape and filled with liquid argon.
-      The calorimeter is divided into 0.5 cm layers, making the simulation flexible for the design studies.
-      Current study considers layer size const in eta: 2cm + 7 x 9cm.
-      Definition of sizes, visualization settings and readout are specified.
+      Definition of sizes, visualization settings, readout and longitudinal segmentation are specified. 
     </comment>
   </info>
 
   <define>
-    <constant name="LArBathThicknessFront" value="90*mm"/>
-    <constant name="LArBathThicknessBack" value="50*mm"/>
-    <!-- overall calorimeter volume (cryostat) -->
-    <!-- 3 cm air margin -->
-    <constant name="BarCryoECal_rmin" value="BarECal_rmin+3*cm"/>
-    <constant name="BarCryoECal_rmax" value="BarECal_rmax-3*cm"/>
+    <!-- Inclination angle of the lead plates -->
+    <constant name="InclinationAngle" value="50*degree"/>
+    <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
+    <constant name="LArGapThickness" value="1.806*mm"/>
+
+    <!-- Air margin, thicknesses of cryostat and LAr bath -->
+    <constant name="AirMarginThickness" value="0*mm"/>
+    <constant name="CryoThicknessFront" value="50*mm"/>
+    <constant name="CryoThicknessBack" value="100*mm"/>
+    <constant name="CryoThicknessSide" value="100*mm"/>
+    <constant name="LArBathThicknessFront" value="20*mm"/>
+    <constant name="LArBathThicknessBack" value="20*mm"/>
+
+    <!-- air margin around calorimeter -->
+    <constant name="BarCryoECal_rmin" value="BarECal_rmin+AirMarginThickness"/>
+    <constant name="BarCryoECal_rmax" value="BarECal_rmax-AirMarginThickness"/>
     <constant name="BarCryoECal_dz" value="BarECal_dz"/>
     <!-- calorimeter active volume -->
-    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CommonCryoThicknessFront+LArBathThicknessFront"/>
-    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CommonCryoThicknessBack-LArBathThicknessBack"/>
-    <constant name="EMBarrel_dz" value="BarECal_dz-CommonCryoThicknessSide"/>
-    <!-- thickness of active volume between two absorber plates, measuring perpendicular to the readout plate -->
-    <constant name="LAr_thickness" value="1.806*mm"/>
+    <constant name="EMBarrel_rmin" value="BarCryoECal_rmin+CryoThicknessFront+LArBathThicknessFront"/>
+    <constant name="EMBarrel_rmax" value="BarCryoECal_rmax-CryoThicknessBack-LArBathThicknessBack"/>
+    <constant name="EMBarrel_dz" value="BarECal_dz-CryoThicknessSide"/>
+    <!-- thickness of active volume between two absorber plates at EMBarrel_rmin, measuring perpendicular to the readout plate -->
+    <constant name="LAr_thickness" value="LArGapThickness"/>
     <!-- passive layer consists of lead in the middle and steel on the outside, glued -->
     <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
     <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
@@ -51,15 +59,15 @@
 
   <readouts>
     <!-- readout for the simulation -->
-    <!-- offset in eta is the max eta for barrel - half cell size ( = centre of first cell) -->
+    <!-- offset in eta is eta max value, better more than less -->
     <readout name="ECalBarrelEta">
-      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.68024"/>
+      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.0"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
     </readout>
     <!-- readout for the reconstruction -->
     <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
     <readout name="ECalBarrelPhiEta">
-      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.68024" offset_phi="-pi+(pi/704.)"/>
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.0" offset_phi="-pi+(pi/704.)"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
     </readout>
   </readouts>
@@ -76,13 +84,16 @@
 	      <back sensitive="false"/> <!-- outer wall of the cryostat -->
       </cryostat>
       <calorimeter name="EM_barrel">
-	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-50/180*pi"/>
+	<!-- offset defines the numbering of the modules: module==0 for phi=0 direction -->
+	      <dimensions rmin="EMBarrel_rmin" rmax="EMBarrel_rmax" dz="EMBarrel_dz" offset="-InclinationAngle"/>
 	      <active thickness="LAr_thickness">
           <material name="LAr"/>
+	  <!-- overlap offset is a specific feature of the construction; do not change! -->
+	  <!-- one volume for a gap on both side of the readout) --> 
           <overlap offset="0.5"/>
         </active>
         <passive>
-          <rotation angle="50*degree"/>
+          <rotation angle="InclinationAngle"/>  <!-- inclination angle -->
 	       <inner thickness="Pb_thickness" sensitive="false">
             <material name="Lead"/>
           </inner>
@@ -98,7 +109,7 @@
         </readout>
         <layers>
 	       <layer thickness="2*cm" repeat="1"/>
-	       <layer thickness="8*cm" repeat="7"/>
+	       <layer thickness="6.15*cm" repeat="7"/>
         </layers>
       </calorimeter>
     </detector>
