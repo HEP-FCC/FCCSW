@@ -20,7 +20,7 @@ then
   make -j `getconf _NPROCESSORS_ONLN` install
   cd ../
   export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-  export ROOT_INCLUDE_PATH=$PWD/install/include/datamodel:$ROOT_INCLUDE_PATH
+  export ROOT_INCLUDE_PATH=$PWD/install/include/datamodel:$PWD/install/:$ROOT_INCLUDE_PATH
   export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH
   touch .gaudi_project_ignore
   cd ../
