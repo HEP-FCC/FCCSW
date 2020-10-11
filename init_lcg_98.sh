@@ -13,6 +13,7 @@ source $LCGPATH/setup.sh
 
 # build FCC-dependencies on top of LCG
 
+if [ ! -d "./fcc-edm" ] 
 git clone --depth=1 https://github.com/hep-fcc/fcc-edm
 cd fcc-edm; mkdir build install; cd build;
 cmake .. -DCMAKE_INSTALL_PREFIX=../install
@@ -21,5 +22,7 @@ cd ../
 export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
 export ROOT_INCLUDE_PATH=$PWD/install/include/datamodel:$ROOT_INCLUDE_PATH
 export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH
+cd ../
+fi
 
 
