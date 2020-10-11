@@ -10,6 +10,7 @@
 
 *.log
 build*
+fcc-edm
 install*
 build.*.log
 Makefile

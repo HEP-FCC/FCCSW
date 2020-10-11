@@ -13,8 +13,8 @@ gaudi_depends_on_subdirs(GaudiAlg GaudiKernel FWCore Generation)
 
 gaudi_add_module(TestGenerationPlugins
                  src/components/*.cpp
-                 INCLUDE_DIRS FWCore HepMC
-                 LINK_LIBRARIES GaudiKernel FWCore HepMC)
+                 INCLUDE_DIRS FWCore HepMC FCCEDM
+                 LINK_LIBRARIES GaudiKernel FWCore HepMC FCCEDM)
 
 include(CTest)
 gaudi_add_test(EDM2HepMCConverstion
