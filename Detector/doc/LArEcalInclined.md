@@ -2,16 +2,15 @@
 
 ### Table of contents:
 * [Introduction](#introduction)
-* [Geometry of the noble liquid calorimeter](#ecal-geometry)
-* [Calorimeter SW organisation in FCCSW](#code-where)
-* [Full simulations with noble liquid calorimeter](#full-simulations)
-  * [Simulations](#simulations)
+* [Geometry of the noble liquid calorimeter](#geometry-of-the-noble-liquid-calorimeter)
+* [Full simulations with noble liquid calorimeter](#full-simulations-with-noble-liquid-calorimeter)
+  * [Geant4 simulation and digitisation](#geant4-simulation-and-digitisation)
   * [Reconstruction](#reconstruction)
-* [Optimisation of the calorimeter](#optimisation)
+* [Optimisation of the calorimeter](#optimisation-of-the-calorimeter)
 * [HOWTOs](#howtos)
-  * [How to recalculate sampling fraction](#sampling-fraction)
-  * [How to calculate upstream correction](#upstream-correction)
-  * [How to change noise values](#change-noise)
+  * [How to recalculate sampling fraction](#how-to-recalculate-sampling-fraction)
+  * [How to calculate upstream correction](#how-to-calculate-upstream-correction)
+  * [How to change noise values](#how-to-change-noise-values)
 
 ## Introduction
 
@@ -47,11 +46,11 @@ Examples from the configuration file [Detector/DetFCCeeECalInclined/compact/FCCe
     <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
     <constant name="LArGapThickness" value="1.806*mm"/>
 ~~~
-- Readout defines the segmentation of the calorimeter. Please note there are two readouts defined - one for simulations (no phi segmentation) and one for reconstruction (with phi segmentation, no module ID). Other fields should be consistent among these two readouts. To learn more about readouts in DD4HEP have a look [here](DD4hepInFCCSW.md).
+- Readout defines the segmentation of the calorimeter. Please note there are **two readouts defined - one for simulation and one for reconstruction**. The only difference between the readouts is the *phi* segmentation and *module* ID. For the simulations we use the physical volumes of the modules to obtain the *module* ID. In the next step we merge hits belonging to the virtual cells defined by module, *eta* and longitudinal *layer*. We calculate positions in *xyz* of these cells. These positions are used for the final cell creation - the cell defined by *phi*, *eta* and longitudinal *layer*. For that the *phi* ID has to be calculated. **Please make sure that all fields except of module and phi are consistent among these two readouts.** To learn more about readouts in DD4HEP have a look [here](DD4hepInFCCSW.md).
 ~~~{.xml}
   <readouts>
     <!-- readout for the simulation -->
-    <!-- offset in eta is eta max value, better more than less -->
+    <!-- offset in eta is eta max value including cryostat -->
     <readout name="ECalBarrelEta">
       <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.0"/>
       <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
@@ -71,19 +70,21 @@ Full simulations of the calorimeter consist of simulation, digitisation and reco
 
 You can find more details about the implemented algorithms [here](../../Reconstruction/doc/RecCalorimeter.md).
 
-### Geant4 simulation & digitisation
+### Geant4 simulation and digitisation
  - Generation of particle (e.g. particle gun, event generator)
  - Passage of particles through detector (depends on the detector description)
  - Merging Geant4 hits into cells
    - The size of the cell is given by the fields called *readout* in the configuration xml file
    - The hits are merged into cells with default Eta segmentation and positions in xyz are calculated
    - The positions are used to rewrite the cellId using the Phi-Eta segmentation
- - Calibration of deposited energy to electromagnetic scale (application of the sampling fraction)
+ - Calibration of deposited energy to electromagnetic scale (application of the sampling fraction) (*)
  - Gaussian noise is not added at this point to reduce the size of the output file
  - Output: truth particles & vertices, calorimeter cells
- - Example script [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py)
+ - Example script [Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py)
 
-Configuration of create cells algorithm in [Reconstruction/RecFCCeeCalorimeter/option/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py) 
+(*) It could be a bit a surprising that we apply the sampling fraction correction even before adding noise to cells. By doing this you can immediately see that the energy corresponds to what is expected right after the simulation is finished. The noise values added during the reconstruction step are expected to be calibrated to the EM scale. On the other hand, this is just an example script, you can just switch on and off the calibration, noise etc. as you like. This is very flexible and up to you.
+
+Configuration of create cells algorithm in [Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py) 
 ~~~[.py]
 from Configurables import CreateCaloCells
 createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
@@ -96,9 +97,12 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
 ~~~
 - *doCellCalibration* - calibration to electromagnetic scale
 - *calibTool* - different sampling fractions per layer (CalibrateInLayersTool) or a single sampling fraction factor (CalibrateCaloHitsTool)
-- *addCellNoise* - add noise to cells (including cells without signal)
+- *addCellNoise* - add noise to cells (including cells without signal; set to True during the reconstruction step - see below)
+- *filterCellNoise* - save only cells above threshold (recommended to set to False; if you would like to run the reconstruction on cells with noise, you need to save all cells)
 - *hits* - input hit collection
 - *cells* - output hit collection
+
+
 
 ### Reconstruction
  - Input: calorimeter cells
@@ -111,7 +115,7 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
    - Topoclustering algorithm for hadrons/jets.
    - Details are described [here](../../Reconstruction/doc/RecCalorimeter.md).
  - Output: calorimeter clusters
- - Example script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+ - Example script [Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
  
 Configuration of sliding window algorithm configuration from the example script
 ~~~[.py]
@@ -157,11 +161,12 @@ createClusters.clusters.Path = "CaloClusters"
 
 Parameters to be tunned (in configuration xml files)
 - Material in the gap between the lead plates (default: LAr)
-- Gap thickness (double the gap size lead - readout - lead at minimum radial distance, the gap size is measured perpendicular to the readout)
+- Gap thickness (a distance between two nearby absorbers, it is measured perpendicular to the readout at the minimum radial distance of the calorimeter) 
 - Inclination angle of the lead plates
+- Thicknesses of the absorber plates (Pb, steel and glue) and readout are extrapolated from ATLAS. If you would like to change these values, make sure the numbers are reasonable also from the construction point of view
 
 Please note that
-- The number of lead plates is calculated from the the thickness of the gap and from the inclination angle. It should be a multiple of 32 or 64 following the requirements for the construction of the calorimeter.
+- The number of lead plates is calculated from the the thickness of the gap and from the inclination angle. The number of plates need to be divisible to get smaller construction modules (e.g. 16, 32 or 64 modules) to fit the full *phi* angle.
 - The segmentation in azimuth (phi) should be a multiple of the elementary cell size depending on the inclination angle.
 
 Once you change the parameters in the geometry description (xml file), you need to
@@ -185,11 +190,13 @@ The energy losses in the upstream material are investigated using the algorithm 
 
 Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee studies. Change the configuration file to match the geometry you are interested in. 
 
+The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the energy deposited in the first layer of the calorimeter.
+
 ### How to change noise values
 
 The Gaussian noise to each calorimeter cell is added using [NoiseCaloCellsFromFileTool](../../Reconstruction/RecCalorimeter/src/components/NoiseCaloCellsFromFileTool.h). It uses Root file with histograms showing noise values per cell in individual layers as a function of |eta|. An example Root file with electronic noise estimate for LAr calorimeter can be downloaded from [here](http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root).
 
-Example of the configuration of the noise tool in the script [Reconstruction/RecFCCeeCalorimeter/option/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+Example of the configuration of the noise tool in the script [Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
 ~~~[.py]
 from Configurables import NoiseCaloCellsFromFileTool
 noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
@@ -209,5 +216,6 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
 
 If you want to change the noise values
 - Prepare your own version of the Root file with histograms of noise values per cell in individual layers as a function of |eta| with the naming convension described above
+- The binning of the histogram is up to you. This script finds the correct bin based on the binning of the histogram automatically
 - Add the path to the file in *noiseFileName*
 - Use *elecNoiseHistoName* to set the names of the histograms used in your noise file
