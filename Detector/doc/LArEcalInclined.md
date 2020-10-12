@@ -3,6 +3,7 @@
 ### Table of contents:
 * [Introduction](#introduction)
 * [Geometry of the noble liquid calorimeter](#geometry-of-the-noble-liquid-calorimeter)
+  * [Geometry description in FCCSW](#geometry-description-in-FCCSW)
 * [Full simulations with noble liquid calorimeter](#full-simulations-with-noble-liquid-calorimeter)
   * [Geant4 simulation and digitisation](#geant4-simulation-and-digitisation)
   * [Reconstruction](#reconstruction)
@@ -30,7 +31,7 @@ Special layers
 - first layer (**presampler**): The absorbers do not contain lead plates in this layer. This layer is 3-4 times smaller compared to the other layers.
 - second layer (**strip layer**): The granularity in pseudorapidity is 4x higher compared to the rest of the layers. This layer is important for the pi0/gamma identification.
 
-Geometry description in FCCSW
+### Geometry description in FCCSW
 - Source code in [Detector/DetFCChhECalInclined/src/](../DetFCChhECalInclined/src)
 - Configuration files
   - FCCee: [Detector/DetFCCeeECalInclined/compact/](../DetFCCeeECalInclined/compact)
