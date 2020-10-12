@@ -32,6 +32,7 @@ def _sanitize(s):
   s: str
     The sanitized string that should be compatible with gaudirun.py
   """
+  s = str(s)
   s = s.replace('"False"', 'False')
   s = s.replace('"True"', 'True')
   s = s.replace('"[', '[')

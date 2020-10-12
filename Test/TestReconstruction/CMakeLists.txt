@@ -15,8 +15,8 @@ find_package(ROOT COMPONENTS Geom)
 
 gaudi_add_module(TestReconstructionPlugins
                  src/*.cpp
-                 INCLUDE_DIRS FWCore DetInterface TrackingUtils Geant4 DetCommon DetSegmentation GaudiKernel
-                 LINK_LIBRARIES FWCore GaudiAlgLib FWCore TrackingUtils DetCommon DetSegmentation)
+                 INCLUDE_DIRS FWCore DetInterface TrackingUtils Geant4 DetCommon DetSegmentation GaudiKernel FCCEDM
+                 LINK_LIBRARIES FWCore GaudiAlgLib FWCore TrackingUtils DetCommon DetSegmentation FCCEDM)
 target_link_libraries(TestReconstructionPlugins ${Geant4_LIBRARIES})
 
 include(CTest)

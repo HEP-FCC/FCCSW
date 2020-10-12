@@ -31,7 +31,6 @@ gaudi_add_test(ReadTest
                FRAMEWORK tests/options/simple_reader.py
                DEPENDS ProduceForReadTest)
 gaudi_add_test(CheckReadCollectionSize
-               ENVIRONMENT PYTHONPATH+=${PODIO_PYTHON_DIR}
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND python FWCore/tests/scripts/check_coll_after_read.py
                DEPENDS ReadTest)
