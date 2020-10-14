@@ -118,7 +118,7 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
  - Output: calorimeter clusters
  - Example script [Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
  
-Configuration of sliding window algorithm configuration from the example script
+Configuration of the sliding window algorithm in the example script. You have to build calorimeter towers (merge cells across the radius) first and create the clusters afterwards.
 ~~~[.py]
 from Configurables import CaloTowerTool
 towers = CaloTowerTool("towers",
@@ -149,14 +149,15 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
 ~~~
-- You have to build the towers in the calorimeter first
-- *deltaEtaTower* and *deltaPhiTower* should correspond to the segmentation of the calorimeter to make use of the fine segmentation
-- the algorithm requires inputs from all calorimeter system as implemented for FCChh. However, the endcaps and forward calorimeters are not implemented for the FCCee
+- Building of the towers
+  - *deltaEtaTower* and *deltaPhiTower* describes the size of the tower in the *eta* and *phi*
+  - the algorithm requires inputs from all calorimeter system as implemented for FCChh. However, the endcaps and forward calorimeters are not implemented for the FCCee
      - that's why the fields e.g. *ecalFwdReadoutName* are empty
      - that's why the inputs e.g. *towers.ecalFwdCells.Path* are emptyCaloCells (created by CreateEmptyCaloCellsCollection)
-- The towers are added in the sliding window algorithm
-- Different window sizes in *eta* x *phi* and *energyThreshold* are configurables of the sliding window algorithm
-  - These were optimised for FCChh, optimisation for FCCee is needed
+- Sliding window algorithm
+  - The towers are added in the sliding window algorithm
+  - Different window sizes in *eta* x *phi* and *energyThreshold* are configurables of the sliding window algorithm
+     - These were optimised for FCChh, optimisation for FCCee is needed
 
 ## Optimisation of the calorimeter
 
