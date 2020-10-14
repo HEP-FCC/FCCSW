@@ -28,6 +28,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 find_package(DD4hep COMPONENTS DDG4 DDRec REQUIRED)
 find_package(Geant4)
 
+find_package(EDM4HEP)
+
 
 
 # Load macros and functions for Gaudi-based projects
