@@ -4,13 +4,13 @@
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
   <info name="FCCee_ECalBarrel"
-        title="Common settings for FCCee Inclined ECal Barrel Calorimeter"
-        author="M.Aleksa,J.Faltova,A.Zaborowska"
+        title="Settings for FCCee Inclined ECal Barrel Calorimeter"
+        author="M.Aleksa,J.Faltova,A.Zaborowska, V. Volkl"
         url="no"
         status="development"
         version="1.0">
     <comment>
-      Common settings for the inclined EM calorimeter.
+      Settings for the inclined EM calorimeter.
       The barrel is filled with liquid argon. Passive material includes lead in the middle and steal on the outside, glued together.
       Passive plates are inclined by a certain angle from the radial direction.
       In between of two passive plates there is a readout.

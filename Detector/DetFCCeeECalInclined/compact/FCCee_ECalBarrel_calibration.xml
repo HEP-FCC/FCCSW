@@ -4,8 +4,8 @@
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
   <info name="FCCee_ECalBarrel_calibration"
-        title="Common settings for Inclined ECal Barrel Calorimeter"
-        author="M.Aleksa,J.Faltova,A.Zaborowska"
+        title="Settings for Calibration of Inclined ECal Barrel Calorimeter"
+        author="M.Aleksa,J.Faltova,A.Zaborowska, V. Volkl"
         url="no"
         status="development"
         version="1.0">
