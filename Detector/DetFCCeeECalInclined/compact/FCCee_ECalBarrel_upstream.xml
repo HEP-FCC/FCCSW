@@ -3,9 +3,9 @@
        xmlns:xs="http://www.w3.org/2001/XMLSchema"
        xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
 
-  <info name="FCCee_ECalBarrel_Common"
-        title="Common settings for Inclined ECal Barrel Calorimeter"
-        author="M.Aleksa,J.Faltova,A.Zaborowska"
+  <info name="FCCee_ECalBarrel_upstream"
+        title="Settings for Upstream Correction for Inclined ECal Barrel Calorimeter"
+        author="M.Aleksa,J.Faltova,A.Zaborowska, V. Volkl"
         url="no"
         status="development"
         version="1.0">

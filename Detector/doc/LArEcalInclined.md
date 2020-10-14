@@ -12,7 +12,7 @@
   * [How to recalculate sampling fraction](#how-to-recalculate-sampling-fraction)
   * [How to calculate upstream correction](#how-to-calculate-upstream-correction)
   * [How to change noise values](#how-to-change-noise-values)
-
+  * [How to limit number of layers in cluster reconstruction](#how-to-limit-number-of-layers-in-cluster-reconstruction)
 ## Introduction
 
 The purpose of this documentation is to introduce the Geant4 simulations and reconstructions of the noble liquid barrel calorimeter. The emphasis is given on the implementation of the calorimeter geometry in FCCSW and the steps to be followed for the optimisation of the calorimeter.
@@ -185,13 +185,17 @@ Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee
 
 Important: It is recommended to run the simulations for the sampling fraction calculation at different energies and take the average values as the sampling fractions.
 
+Once you derive the new sampling fraction values, you can apply them by changing the field name *samplingFraction* in the CalibrateInLayersTool, e.g. in [Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py) l. 106.
+
 ### How to calculate upstream correction
 
 The energy losses in the upstream material are investigated using the algorithm [UpstreamMaterial](../DetStudies/src/components/UpstreamMaterial.h). The details about the algorithm are given [here](DetectorStudies.md).
 
 Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee studies. Change the configuration file to match the geometry you are interested in. 
 
-The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the energy deposited in the first layer of the calorimeter.
+The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the geometry of the first layer of the calorimeter. There is a linear correlation between the energy detected in the first layer and the energy deposited in the upstream material. Moreover, the constants of the linear dependence changes with energy and pseudorapidity of the incoming particle. More details about the upstream correction can be found in Section 4.1.1.1 of [this paper](https://arxiv.org/abs/1912.09962).
+
+The application of the upstream correction is missing in the FCCSW, it is on our todo list. The correction is applied on the reconstructed objects - clusters from sliding window algorithm. An example can be found [here](https://github.com/faltovaj/FCC_calo_analysis_cpp/blob/master/scripts/plot_recoMonitor.py#L13).
 
 ### How to change noise values
 
@@ -220,3 +224,25 @@ If you want to change the noise values
 - The binning of the histogram is up to you. This script finds the correct bin based on the binning of the histogram automatically
 - Add the path to the file in *noiseFileName*
 - Use *elecNoiseHistoName* to set the names of the histograms used in your noise file
+
+### How to limit number of layers in cluster reconstruction
+
+If you would like to run the sliding window algorithm with only subset of longitudinal layers, you can use [LayeredCaloTowerTool](../../Reconstruction/RecCalorimeter/src/components/LayeredCaloTowerTool.h) tool to build towers.  
+
+This tool creates towers from a single cell collection only (from one calorimeter). It will only consider cells within the defined layers of the calorimeter, if the layers are defined by 'layer' bitfield.
+
+Example configuration of the LayeredCaloTowerTool
+~~~[.py]
+from Configurables import LayeredCaloTowerTool
+towers = LayeredCaloTowerTool("towers",
+                               deltaEtaTower = 0.01, deltaPhiTower = 2*pi/704.,
+                               readoutName = ecalBarrelReadoutName,
+			       addLayerRestriction = True, 
+			       minimumLayer = 0,
+			       maximumLayer = 4,
+                               OutputLevel = INFO)
+towers.cells.Path = ecalBarrelCellsName + "Noise"
+~~~
+- *deltaEtaTower* and *deltaPhiTower* describes the size of the tower in the *eta* and *phi*
+- *addLayerRestriction* use only a subset of layers or not
+- *minimumLayer* and *maximumLayer* are the minimum and maximum layer ID of cells to be added in the towers
