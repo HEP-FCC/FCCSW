@@ -199,7 +199,7 @@ The application of the upstream correction is missing in the FCCSW, it is on our
 
 ### How to change noise values
 
-The Gaussian noise to each calorimeter cell is added using [NoiseCaloCellsFromFileTool](../../Reconstruction/RecCalorimeter/src/components/NoiseCaloCellsFromFileTool.h). It uses Root file with histograms showing noise values per cell in individual layers as a function of |eta|. An example Root file with electronic noise estimate for LAr calorimeter can be downloaded from [here](http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root).
+The Gaussian noise to each calorimeter cell is added using [NoiseCaloCellsFromFileTool](../../Reconstruction/RecCalorimeter/src/components/NoiseCaloCellsFromFileTool.h). It uses Root file with histograms showing noise values per cell in individual layers as a function of |*eta*|. An example Root file with electronic noise estimate for LAr calorimeter can be downloaded from [here](http://fccsw.web.cern.ch/fccsw/testsamples/elecNoise_ecalBarrelFCCee_50Ohm_traces1_4shieldWidth.root).
 
 Example of the configuration of the noise tool in the script [Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
 ~~~[.py]
@@ -213,8 +213,8 @@ noiseBarrel = NoiseCaloCellsFromFileTool("NoiseBarrel",
                                          numRadialLayers = 8)
 ~~~
 - *readoutName* is the name of the readout of the calorimeter
-- *noiseFileName* is the path to the Root file with histograms with the noise values per cell in individual layers as a function of |eta|
-- *elecNoiseHistoName* is the name of the histograms in the Root file. The names are expected in the form of *elecNoiseHistoName*+str(indexOfLayer). *indexOfLayer* goes from 1 to numRadialLayers
+- *noiseFileName* is the path to the Root file with histograms with the noise values per cell in individual layers as a function of |*eta*|
+- *elecNoiseHistoName* is the name of the histograms in the Root file. The names are expected in the form of *elecNoiseHistoName*+str(indexOfLayer). *indexOfLayer* goes from 1 to *numRadialLayers*
 - *activeFieldName* stands for the name of the readout for the longitudinal layers
 - *numRadialLayers* is the numbers of the longitudinal layers
 - *addPileup* is expected to be set to False for FCCee
@@ -227,9 +227,7 @@ If you want to change the noise values
 
 ### How to limit number of layers in cluster reconstruction
 
-If you would like to run the sliding window algorithm with only subset of longitudinal layers, you can use [LayeredCaloTowerTool](../../Reconstruction/RecCalorimeter/src/components/LayeredCaloTowerTool.h) tool to build towers.  
-
-This tool creates towers from a single cell collection only (from one calorimeter). It will only consider cells within the defined layers of the calorimeter, if the layers are defined by 'layer' bitfield.
+If you would like to run the sliding window algorithm with only subset of longitudinal layers, you can use [LayeredCaloTowerTool](../../Reconstruction/RecCalorimeter/src/components/LayeredCaloTowerTool.h) tool to build towers. This tool creates towers from a single cell collection only (from one calorimeter). It will only consider cells within the defined layers of the calorimeter, if the layers are defined by 'layer' bitfield.
 
 Example configuration of the LayeredCaloTowerTool
 ~~~[.py]
