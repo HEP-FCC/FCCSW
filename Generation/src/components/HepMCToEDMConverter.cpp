@@ -2,8 +2,7 @@
 
 #include "GaudiKernel/PhysicalConstants.h"
 
-#include "datamodel/GenVertexCollection.h"
-#include "datamodel/MCParticleCollection.h"
+#include "edm4hep/MCParticleCollection.h"
 
 #include "Generation/Units.h"
 #include "HepPDT/ParticleID.hh"
@@ -12,8 +11,7 @@ DECLARE_COMPONENT(HepMCToEDMConverter)
 
 HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hepmc", m_hepmchandle, "HepMC event handle (input)");
-  declareProperty("genparticles", m_genphandle, "Generated particles collection (output)");
-  declareProperty("genvertices", m_genvhandle, "Generated vertices collection (output)");
+  declareProperty("GenParticles", m_genphandle, "Generated particles collection (output)");
 }
 
 StatusCode HepMCToEDMConverter::initialize() { 
@@ -22,8 +20,7 @@ StatusCode HepMCToEDMConverter::initialize() {
 
 StatusCode HepMCToEDMConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
-  fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
-  fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
+  edm4hep::MCParticleCollection* particles = new fcc::MCParticleCollection();
 
   // conversion of units to EDM standard units:
   // First cover the case that hepMC file is not in expected units and then convert to EDM default
@@ -32,19 +29,13 @@ StatusCode HepMCToEDMConverter::execute() {
   double hepmc2EdmEnergy =
       HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
   
-  // bookkeeping of particle / vertex relations
-  std::unordered_map<const HepMC::GenVertex*, fcc::GenVertex> hepmcToEdmVertexMap;
-  HepMC::FourVector tmp; /// temp variable for the transfer of position / momentom
-  // iterate over particles in event
-  for (auto particle_i = event->particles_begin(); particle_i != event->particles_end(); ++particle_i) {
-
     // if there is a list of statuses to filter: filter by status
     if(std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) == m_hepmcStatusList.end() && m_hepmcStatusList.size() > 0) continue;
     // create edm 
-    fcc::MCParticle particle = particles->create();
+    edm4hep::MCParticle particle = particles->create();
     // set mcparticle data members
-    particle.pdgId((*particle_i)->pdg_id());
-    particle.status((*particle_i)->status());
+    particle.PDG((*particle_i)->pdg_id());
+    particle.generatorStatus((*particle_i)->status());
     /// lookup charge in particle properties
     HepPDT::ParticleID particleID((*particle_i)->pdg_id());
     particle.charge(particleID.charge());
