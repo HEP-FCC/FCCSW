@@ -1,8 +1,6 @@
 #include "GenParticleFilter.h"
 
-#include "datamodel/GenVertex.h"
-#include "datamodel/LorentzVector.h"
-#include "datamodel/MCParticleCollection.h"
+#include "edm4hep/MCParticleCollection.h"
 
 DECLARE_COMPONENT(GenParticleFilter)
 
@@ -21,12 +19,12 @@ StatusCode GenParticleFilter::execute() {
   for (auto ptc : (*inparticles)) {
     accept = false;
     for (auto status : m_accept) {
-      if (ptc.status() == status) {
+      if (ptc.getGeneratorStatus() == status) {
         accept = true;
       }
     }
     if (accept) {
-      fcc::MCParticle outptc = ptc.clone();
+      edm4hep::MCParticle outptc = ptc.clone();
       particles->push_back(outptc);
     }
     cntr++;
