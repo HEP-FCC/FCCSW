@@ -3,7 +3,7 @@
 ################################################################################
 gaudi_subdir(TestGeometry v1r0)
 
-gaudi_depends_on_subdirs(FWCore Test/TestGeometryLib Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
+gaudi_depends_on_subdirs(FCCFWCore Test/TestGeometryLib Sim/SimG4Interface Sim/SimG4Common Detector/DetInterface Detector/DetCommon)
 
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)

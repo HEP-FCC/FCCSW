@@ -4,7 +4,7 @@
 gaudi_subdir(DetStudies v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel
-                         FWCore
+                         FCCFWCore
                          Detector/DetInterface)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom Tree)

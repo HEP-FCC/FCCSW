@@ -13,7 +13,7 @@ find_package(PODIO)
 
 gaudi_add_library(SimG4Common
                  src/*.cpp
-                 INCLUDE_DIRS FWCore Geant4 ROOT FCCEDM PODIO
+                 INCLUDE_DIRS FCCFWCore Geant4 ROOT FCCEDM PODIO
                  LINK_LIBRARIES GaudiAlgLib ROOT  FCCEDM PODIO
                  PUBLIC_HEADERS SimG4Common)
 target_link_libraries(SimG4Common ${Geant4_LIBRARIES})

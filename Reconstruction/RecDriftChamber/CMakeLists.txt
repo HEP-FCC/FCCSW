@@ -4,7 +4,7 @@
 gaudi_subdir(RecDriftChamber v1r0)
 
 # this declaration will not be needed in the future
-gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Detector/DetSegmentation Detector/DetCommon Reconstruction/RecInterface)
+gaudi_depends_on_subdirs(GaudiAlg FCCFWCore Detector/DetInterface Detector/DetSegmentation Detector/DetCommon Reconstruction/RecInterface)
 
 find_package(FastJet)
 find_package(ROOT COMPONENTS Physics)
@@ -19,7 +19,7 @@ gaudi_add_dictionary(RecDriftChamber src/components/dictionary.h  src/components
 
 gaudi_add_module(RecDriftChamberPlugins
                  src/components/*.cpp
-                 INCLUDE_DIRS FWCore FastJet ROOT FWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecDriftChamber
+                 INCLUDE_DIRS FCCFWCore FastJet ROOT FCCFWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecDriftChamber
                  LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation DetCommon ${DD4hep_COMPONENT_LIBRARIES})
 target_link_libraries(RecDriftChamberPlugins ${Geant4_LIBRARIES})
 

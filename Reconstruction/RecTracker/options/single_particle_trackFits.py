@@ -3,7 +3,7 @@ from GaudiKernel import SystemOfUnits as units
 from GaudiKernel import PhysicalConstants as constants
 from Gaudi.Configuration import *
 
-from FWCore.joboptions import parse_standard_job_options
+from FCCFWCore.joboptions import parse_standard_job_options
 args = parse_standard_job_options()
 
 inputfile = "muons_for_seeding_discrete_pt.root"

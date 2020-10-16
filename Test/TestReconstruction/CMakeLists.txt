@@ -6,7 +6,7 @@ endif()
 ################################################################################
 gaudi_subdir(TestReconstruction v1r0)
 
-gaudi_depends_on_subdirs(GaudiAlg FWCore Detector/DetInterface Detector/DetCommon Detector/DetSegmentation)
+gaudi_depends_on_subdirs(GaudiAlg FCCFWCore Detector/DetInterface Detector/DetCommon Detector/DetSegmentation)
 
 
 find_package(ROOT COMPONENTS Geom)

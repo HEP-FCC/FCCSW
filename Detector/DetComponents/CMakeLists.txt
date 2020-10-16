@@ -3,7 +3,7 @@
 ################################################################################
 gaudi_subdir(DetComponents v1r0)
 
-gaudi_depends_on_subdirs( FWCore
+gaudi_depends_on_subdirs( FCCFWCore
                          Detector/DetInterface
                          Detector/DetSegmentation
                          Detector/DetCommon)
@@ -18,6 +18,7 @@ gaudi_add_module(DetComponents
                  INCLUDE_DIRS GaudiKernel ROOT DD4hep Geant4 FWCore DetInterface DetSegmentation DetCommon Eigen FCCEDM
                  LINK_LIBRARIES GaudiKernel ROOT DD4hep ${DD4hep_COMPONENT_LIBRARIES} DetSegmentation DetCommon  FWCore FCCEDM)
 target_link_libraries(DetComponents ${Geant4_LIBRARIES})
+
 include(CTest)
 gaudi_add_test(RedoSegmentationXYZ
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
