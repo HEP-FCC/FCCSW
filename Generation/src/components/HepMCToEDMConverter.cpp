@@ -1,13 +1,24 @@
 #include "HepMCToEDMConverter.h"
-
 #include "GaudiKernel/PhysicalConstants.h"
-
 #include "edm4hep/MCParticleCollection.h"
-
 #include "Generation/Units.h"
 #include "HepPDT/ParticleID.hh"
 
 DECLARE_COMPONENT(HepMCToEDMConverter)
+
+
+edm4hep::MCParticle convert(HepMC::GenParticle* hepmcParticle) {
+    edm4hep::MCParticle edm_particle;
+    edm_particle.setPDG(hepmcParticle->pdg_id());
+    edm_particle.setGeneratorStatus(hepmcParticle->status());
+    // look up charge from pdg_id
+    HepPDT::ParticleID particleID(hepmcParticle->pdg_id());
+    edm_particle.setCharge(particleID.charge());
+    //  convert momentum
+    auto p = hepmcParticle->momentum();
+    edm_particle.setMomentum( {float(p.px()), float(p.py()), float(p.pz())} );
+    return edm_particle;
+ }
 
 HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hepmc", m_hepmchandle, "HepMC event handle (input)");
@@ -16,83 +27,53 @@ HepMCToEDMConverter::HepMCToEDMConverter(const std::string& name, ISvcLocator* s
 
 StatusCode HepMCToEDMConverter::initialize() { 
   return GaudiAlgorithm::initialize();
-   }
+}
 
 StatusCode HepMCToEDMConverter::execute() {
-  const HepMC::GenEvent* event = m_hepmchandle.get();
+  const HepMC::GenEvent* evt = m_hepmchandle.get();
   edm4hep::MCParticleCollection* particles = new fcc::MCParticleCollection();
 
-  // conversion of units to EDM standard units:
-  // First cover the case that hepMC file is not in expected units and then convert to EDM default
-  double hepmc2EdmLength =
-      HepMC::Units::conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
-  double hepmc2EdmEnergy =
-      HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
   
-    // if there is a list of statuses to filter: filter by status
-    if(std::find(m_hepmcStatusList.begin(), m_hepmcStatusList.end(), (*particle_i)->status()) == m_hepmcStatusList.end() && m_hepmcStatusList.size() > 0) continue;
-    // create edm 
-    edm4hep::MCParticle particle = particles->create();
-    // set mcparticle data members
-    particle.PDG((*particle_i)->pdg_id());
-    particle.generatorStatus((*particle_i)->status());
-    /// lookup charge in particle properties
-    HepPDT::ParticleID particleID((*particle_i)->pdg_id());
-    particle.charge(particleID.charge());
-
-    auto& p4 = particle.p4();
-    tmp = (*particle_i)->momentum();
-    p4.px = tmp.px() * hepmc2EdmEnergy;
-    p4.py = tmp.py() * hepmc2EdmEnergy;
-    p4.pz = tmp.pz() * hepmc2EdmEnergy;
-    p4.mass = (*particle_i)->generated_mass() * hepmc2EdmEnergy;
-
-    /// create production vertex, if it has not already been created and logged in the map
-    HepMC::GenVertex* productionVertex = (*particle_i)->production_vertex();
-    if (nullptr != productionVertex) {
-      if (hepmcToEdmVertexMap.find(productionVertex) != hepmcToEdmVertexMap.end()) {
-        // vertex already in map, no need to create a new one
-        particle.startVertex(hepmcToEdmVertexMap[productionVertex]);
-      } else {
-        tmp = productionVertex->position();
-        auto vertex = vertices->create();
-        auto& position = vertex.position();
-        position.x = tmp.x() * hepmc2EdmLength;
-        position.y = tmp.y() * hepmc2EdmLength;
-        position.z = tmp.z() * hepmc2EdmLength;
-        vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
-        // add vertex to map for further particles
-        hepmcToEdmVertexMap.insert({productionVertex, vertex});
-        particle.startVertex(vertex);
+  std::unordered_map<unsigned int, edm4hep::MCParticle> _map;
+  for (auto _p = evt->particles_begin(); _p != evt->particles_end(); ++_p) {
+    debug() << "Converting hepmc particle with Pdg_ID \t" << (*_p)->pdg_id() << "and barcode \t" <<  (*_p)->barcode() << endmsg();
+    if (_map.find((*_p)->barcode()) == _map.end()) {
+      edm4hep::MCParticle edm_particle = convert(*_p);
+      _map.insert({(*_p)->barcode(), edm_particle});
+    }
+    // mother/daughter links
+    auto prodvertex = (*_p)->production_vertex();
+    if (nullptr != prodvertex) {
+      for (auto particle_mother = prodvertex->particles_in_const_begin();
+                particle_mother != prodvertex->particles_in_const_end(); 
+                ++particle_mother) {
+        if (_map.find((*particle_mother)->barcode()) == _map.end()) {
+          edm4hep::MCParticle edm_particle = convert(*particle_mother);
+          _map.insert({(*particle_mother)->barcode(), edm_particle});
+        }
+        _map[(*_p)->barcode()].addToParents(hepmcToEdmMap[(*particle_mother)->barcode()]);
       }
     }
-
-    /// create decay vertex, if it has not already been created and logged in the map
-    HepMC::GenVertex* decayVertex = (*particle_i)->end_vertex();
-    if (nullptr != decayVertex) {
-      if (hepmcToEdmVertexMap.find(decayVertex) != hepmcToEdmVertexMap.end()) {
-        // vertex already in map, no need to create a new one
-        particle.endVertex(hepmcToEdmVertexMap[decayVertex]);
-      } else {
-        tmp = decayVertex->position();
-        auto vertex = vertices->create();
-        auto& position = vertex.position();
-        position.x = tmp.x() * hepmc2EdmLength;
-        position.y = tmp.y() * hepmc2EdmLength;
-        position.z = tmp.z() * hepmc2EdmLength;
-        vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
-        // add vertex to map for further particles
-        hepmcToEdmVertexMap.insert({decayVertex, vertex});
-        particle.endVertex(vertex);
+    auto endvertex = (*_p)->end_vertex();
+    if (nullptr != prodvertex) {
+      for (auto particle_daughter = prodvertex->particles_in_const_begin();
+           particle_daughter != prodvertex->particles_in_const_end();
+           ++particle_daughter) {
+        if (_map.find((*particle_daughter)->barcode()) == _map.end()) {
+          auto edm_particle = convert(*particle_daughter);
+          _map.insert({(*particle_daughter)->barcode(), edm_particle});
+        }
+        _map[(*_p)->barcode()].addToDaughters(_map[(*particle_daughter)->barcode()]);
       }
     }
-
-  } // particle loop
-
+  }
+  for (auto particle_pair: _map) {
+    particles.push_back(particle_pair.second);
+  }
   m_genphandle.put(particles);
-  m_genvhandle.put(vertices);
   return StatusCode::SUCCESS;
 }
 
 StatusCode HepMCToEDMConverter::finalize() {
-   return GaudiAlgorithm::finalize(); }
+   return GaudiAlgorithm::finalize();
+}
