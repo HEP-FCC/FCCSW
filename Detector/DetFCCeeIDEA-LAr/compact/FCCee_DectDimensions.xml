@@ -28,10 +28,10 @@
     
     <constant name="DetID_VXD_Barrel"       value=" 1"/>
     <constant name="DetID_VXD_Endcap"       value=" 2"/>
-    <constant name="DetID_DCH"       value=" 3"/>
-    <constant name="DetID_Calo_Barrel"       value=" 4"/>
-    <constant name="DetID_Calo_Endcap"       value=" 5"/>
-    <constant name="DetID_Calo_Endcap_2"       value=" 6"/>
+    <constant name="DetID_DCH"         value=" 3"/>
+    <constant name="DetID_ECAL_Barrel"       value=" 4"/>
+    <constant name="DetID_ECAL_Endcap"       value=" 5"/>
+    <constant name="DetID_ECAL_Endcap_2"       value=" 6"/>
 
     <constant name="DetID_HCAL_Barrel"      value=" 10"/>
     <constant name="DetID_HCAL_Endcap"      value=" 11"/>
@@ -76,34 +76,28 @@
     <constant name="env_safety" value="0.1*mm"/>
     
     <constant name="Vertex_inner_radius" value="17*mm"/>
-    <constant name="Vertex_outer_radius" value="111*mm"/>
+    <constant name="Vertex_outer_radius" value="340*mm"/>
     <constant name="Vertex_half_length" value="302*mm"/>
-    
+   
     <constant name="InnerTracker_inner_radius" value="61*mm"/>
     <constant name="InnerTracker_outer_radius" value="696*mm"/>
     
     <constant name="OuterTracker_inner_radius" value="696*mm"/>
-    <constant name="OuterTracker_outer_radius" value="2145*mm"/>  <!-- to avoid overlap with CaloFace, but it has to be large enough to accommodate OT-->
+    <constant name="OuterTracker_outer_radius" value="2000*mm"/>
     <constant name="OuterTracker_half_length" value="2300*mm"/>
 
-    <!-- LAr FCChh Calo -->
-    <constant name="BarECal_id" value="5"/>
-    <constant name="BarECal_rmin" value="2000*mm"/>
-    <constant name="BarECal_rmax" value="2850*mm"/>
+    <!-- LAr ECAL Calo Barrel -->
+    <constant name="BarECal_id" value="DetID_ECAL_Barrel"/>
+    <constant name="BarECal_rmin" value="2060*mm"/>
+    <constant name="BarECal_rmax" value="2700*mm"/>
     <constant name="BarECal_dz" value="2210*mm"/>
 
-    <!-- HCal Barrel (HCAL B) -->
-    <constant name="BarHCal_id" value="8"/>
-    <constant name="BarHCal_rmin" value="2950*mm"/>
-    <constant name="BarHCal_rmax" value="4250*mm"/>
+    <!-- HCAL Barrel -->
+    <constant name="BarHCal_id" value="DetID_HCAL_Barrel"/>
+    <constant name="BarHCal_rmin" value="2800*mm"/>
+    <constant name="BarHCal_rmax" value="4100*mm"/>
     <constant name="BarHCal_dz" value="2210*mm"/>
 
-    
-    <constant name="HCalBarrel_inner_radius" value="2400*mm"/>
-    <constant name="HCalBarrel_outer_radius" value="3566*mm"/>
-    <constant name="HCalBarrel_half_length" value="2210*mm"/>
-    <constant name="HCalBarrel_symmetry" value="12"/>
-    
     <constant name="HCalEndcap_inner_radius" value="340*mm"/>
     <constant name="HCalEndcap_outer_radius" value="3566*mm"/>
     <constant name="HCalEndcap_min_z" value="2539*mm"/>
@@ -118,11 +112,12 @@
     <constant name="HCalRing_max_z" value="HCalEndcap_min_z"/>
     <constant name="HCalRing_symmetry" value="12"/>
 
-    <constant name="Solenoid_inner_radius" value="2000*mm"/>
-    <constant name="Solenoid_outer_radius" value="2150*mm"/>
+    <!-- Solenoid behind HCAL barel -->
+    <constant name="Solenoid_inner_radius" value="4200*mm"/>
+    <constant name="Solenoid_outer_radius" value="4350*mm"/>
     <constant name="Solenoid_half_length" value="2255*mm"/>
     <constant name="Solenoid_Coil_half_length" value="2356*mm"/>
-    <constant name="Solenoid_Coil_radius" value="2000*mm"/>
+    <constant name="Solenoid_Coil_radius" value="4200*mm"/>
     
     <constant name="YokeBarrel_inner_radius" value="4479*mm"/>
     <constant name="YokeBarrel_outer_radius" value="6000*mm"/>

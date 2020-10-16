@@ -2,18 +2,44 @@ import os
 
 from GaudiKernel.SystemOfUnits import MeV, GeV, tesla
 
-# simulations setup
-energy=5*GeV
-num_events=500
-magnetic_field = False
-particleType="e-"
+# Input for simulations (momentum is expected in GeV!)
+momentum = 100
+# theta from 80 to 100 degrees corresponds to -0.17 < eta < 0.17 
+thetaMin = 80.
+thetaMax = 100.
+magneticField = False
 
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr, FCCDataSvc, PodioOutput
-
+from Configurables import FCCDataSvc
 podioevent  = FCCDataSvc("EventDataSvc")
 
+################## Particle gun setup
+_pi = 3.14159
+
+from Configurables import  MomentumRangeParticleGun
+pgun = MomentumRangeParticleGun("ParticleGun_Electron")
+pgun.PdgCodes = [11]
+pgun.MomentumMin = momentum * GeV
+pgun.MomentumMax = momentum * GeV
+pgun.PhiMin = 0
+pgun.PhiMax = 2 * _pi
+pgun.ThetaMin = thetaMin * _pi / 180.
+pgun.ThetaMax = thetaMax * _pi / 180.
+
+from Configurables import GenAlg
+genalg_pgun = GenAlg()
+genalg_pgun.SignalProvider = pgun 
+genalg_pgun.hepmc.Path = "hepmc"
+
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter()
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="GenParticles"
+hepmc_converter.genvertices.Path="GenVertices"
+
+################## Simulation setup
+# Detector geometry
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc")
 # if FCC_DETECTORS is empty, this should use relative path to working directory
@@ -30,12 +56,12 @@ geoservice.OutputLevel = WARNING
 from Configurables import SimG4Svc
 geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", actions="SimG4FullSimActions")
 
-# range cut
+# Range cut
 geantservice.g4PreInitCommands += ["/run/setCut 0.1 mm"]
 
 # Magnetic field
 from Configurables import SimG4ConstantMagneticFieldTool
-if magnetic_field==1:
+if magneticField == 1:
     field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldComponentZ=-2*tesla, FieldOn=True,IntegratorStepper="ClassicalRK4")
 else:
     field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool",FieldOn=False)
@@ -44,79 +70,48 @@ else:
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 # and a tool that saves the calorimeter hits
 
-# ECAL readouts
+# Detector readouts
+# ECAL
 ecalBarrelReadoutName = "ECalBarrelEta"
 ecalBarrelReadoutNamePhiEta = "ECalBarrelPhiEta"
-ecalEndcapReadoutName = "EMECPhiEta"
-ecalFwdReadoutName = "EMFwdPhiEta"
-# HCAL readouts
+# HCAL
 hcalReadoutName = "HCalBarrelReadout"
 extHcalReadoutName = "HCalExtBarrelReadout"
-hcalEndcapReadoutName = "HECPhiEta"
-hcalFwdReadoutName = "HFwdPhiEta"
-# layers to be merged in endcaps & forward calo
-ecalEndcapNumberOfLayersToMerge = [26]*5+[27]
-ecalFwdNumberOfLayersToMerge = [7]*5+[8]
-hcalEndcapNumberOfLayersToMerge = [13]+[14]*5
-hcalFwdNumberOfLayersToMerge = [8]+[9]*5
-identifierName = "layer"
-volumeName = "layer"
 
-from Configurables import SimG4Alg, SimG4SaveCalHits
+# Configure saving of calorimeter hits
+from Configurables import SimG4SaveCalHits
 saveecalbarreltool = SimG4SaveCalHits("saveECalBarrelHits", readoutNames = [ecalBarrelReadoutName])
 saveecalbarreltool.positionedCaloHits.Path = "ECalBarrelPositionedHits"
 saveecalbarreltool.caloHits.Path = "ECalBarrelHits"
-saveecalendcaptool = SimG4SaveCalHits("saveECalEndcapHits", readoutNames = [ecalEndcapReadoutName])
-saveecalendcaptool.positionedCaloHits.Path = "ECalEndcapPositionedHits"
-saveecalendcaptool.caloHits.Path = "ECalEndcapHits"
-saveecalfwdtool = SimG4SaveCalHits("saveECalFwdHits", readoutNames = [ecalFwdReadoutName])
-saveecalfwdtool.positionedCaloHits.Path = "ECalFwdPositionedHits"
-saveecalfwdtool.caloHits.Path = "ECalFwdHits"
-savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = [hcalReadoutName])
+
+savehcaltool = SimG4SaveCalHits("saveHCalBarrelHits",readoutNames = [hcalReadoutName])
 savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
-savehcaltool.caloHits.Path = "HCalHits"
-saveexthcaltool = SimG4SaveCalHits("saveExtHCalHits",readoutNames = [extHcalReadoutName])
-saveexthcaltool.positionedCaloHits.Path = "ExtHCalPositionedHits"
-saveexthcaltool.caloHits.Path = "ExtHCalHits"
-savehcalendcaptool = SimG4SaveCalHits("saveHCalEndcapHits", readoutNames = [hcalEndcapReadoutName])
-savehcalendcaptool.positionedCaloHits.Path = "HCalEndcapPositionedHits"
-savehcalendcaptool.caloHits.Path = "HCalEndcapHits"
-savehcalfwdtool = SimG4SaveCalHits("saveHCalFwdHits", readoutNames = [hcalFwdReadoutName])
-savehcalfwdtool.positionedCaloHits.Path = "HCalFwdPositionedHits"
-savehcalfwdtool.caloHits.Path = "HCalFwdHits"
+savehcaltool.caloHits.Path = "HCalBarrelHits"
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
-from Configurables import SimG4SingleParticleGeneratorTool
-pgun = SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                  particleName=particleType,energyMin=energy,energyMax=energy,etaMin=-0.3,etaMax=0.3, phiMin=0, phiMax=6.28,
-                OutputLevel = DEBUG)
+from Configurables import SimG4PrimariesFromEdmTool
+particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
+particle_converter.genParticles.Path = "GenParticles"
 
+from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits", 
-                                # "SimG4SaveCalHits/saveECalEndcapHits",
-                                # "SimG4SaveCalHits/saveECalFwdHits", "SimG4SaveCalHits/saveHCalHits",
-                                # "SimG4SaveCalHits/saveExtHCalHits", "SimG4SaveCalHits/saveHCalEndcapHits",
-                                # "SimG4SaveCalHits/saveHCalFwdHits"
-                                 ],
-                       eventProvider=pgun,
+                       outputs= ["SimG4SaveCalHits/saveECalBarrelHits",
+                                 "SimG4SaveCalHits/saveHCalBarrelHits",
+                       ],
+                       eventProvider=particle_converter,
                        OutputLevel=INFO)
 
-#Configure tools for calo reconstruction
-# EM scale calibration
-from Configurables import CalibrateCaloHitsTool
-calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.66")
-
+############## Digitization (Merging hits into cells, EM scale calibration)
+# EM scale calibration (sampling fraction)
 from Configurables import CalibrateInLayersTool
 calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                   samplingFraction =  [0.248572114602] * 1  +  [0.0992468162487] * 1  +  [0.119373205045] * 1  +  [0.133802832225] * 1  +  [0.145763665387] * 1  +  [0.155451526889] * 1  +  [0.164469384154] * 1  +  [0.180677722391] * 1,
+                                   samplingFraction =  [0.24833] * 1 + [0.09482] * 1  +  [0.12242] * 1  +  [0.14182] * 1  +  [0.15667] * 1  +  [0.16923] * 1  +  [0.17980] * 1  +  [0.20085] * 1,
                                    readoutName = ecalBarrelReadoutName,
                                    layerFieldName = "layer")
 
-calibEcalEndcap = CalibrateCaloHitsTool("CalibrateECalEndcap", invSamplingFraction="13.89")
-calibEcalFwd = CalibrateCaloHitsTool("CalibrateECalFwd", invSamplingFraction="303.03")
-calibHcalEndcap = CalibrateCaloHitsTool("CalibrateHCalEndcap", invSamplingFraction="33.62")
-calibHcalFwd = CalibrateCaloHitsTool("CalibrateHCalFwd", invSamplingFraction="1207.7")
+from Configurables import CalibrateCaloHitsTool
+calibHcells = CalibrateCaloHitsTool("CalibrateHCal", invSamplingFraction="41.66")
 
 # Create cells in ECal barrel
 # 1. step - merge hits into cells with default Eta segmentation
@@ -129,6 +124,7 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
                                OutputLevel=INFO,
                                hits="ECalBarrelHits",
                                cells="ECalBarrelCellsStep1")
+
 # Ecal barrel cell positions
 from Configurables import CreateVolumeCaloPositions
 positionsEcalBarrel = CreateVolumeCaloPositions("positionsBarrelEcal", OutputLevel = INFO)
@@ -153,159 +149,56 @@ createEcalBarrelCells = CreateCaloCells("CreateECalBarrelCells",
                                hits="ECalBarrelCellsStep2",
                                cells="ECalBarrelCells")
 
-
-# Create Ecal cells in endcaps
-# 1. step - merge layer IDs
-# 2. step - create cells
-from Configurables import MergeLayers
-mergelayersEcalEndcap = MergeLayers("MergeLayersEcalEndcap",
-                   # take the bitfield description from the geometry service
-                   readout = ecalEndcapReadoutName,
-                   # cells in which field should be merged
-                   identifier = identifierName,
-                   volumeName = volumeName,
-                   # how many cells to merge
-                   merge = ecalEndcapNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayersEcalEndcap.inhits.Path = "ECalEndcapHits"
-mergelayersEcalEndcap.outhits.Path = "mergedECalEndcapHits"
-
-createEcalEndcapCells = CreateCaloCells("CreateEcalEndcapCaloCells",
-                                    doCellCalibration=True,
-                                    calibTool=calibEcalEndcap,
-                                    addCellNoise=False, filterCellNoise=False,
-                                    OutputLevel=INFO)
-createEcalEndcapCells.hits.Path="mergedECalEndcapHits"
-createEcalEndcapCells.cells.Path="ECalEndcapCells"
-
-# Create Ecal cells in forward
-mergelayersEcalFwd = MergeLayers("MergeLayersEcalFwd",
-                   # take the bitfield description from the geometry service
-                   readout = ecalFwdReadoutName,
-                   # cells in which field should be merged
-                   identifier = identifierName,
-                   volumeName = volumeName,
-                   # how many cells to merge
-                   merge = ecalFwdNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayersEcalFwd.inhits.Path = "ECalFwdHits"
-mergelayersEcalFwd.outhits.Path = "mergedECalFwdHits"
-
-createEcalFwdCells = CreateCaloCells("CreateEcalFwdCaloCells",
-                                 doCellCalibration=True,
-                                 calibTool=calibEcalFwd,
-                                 addCellNoise=False, filterCellNoise=False,
-                                 OutputLevel=INFO)
-createEcalFwdCells.hits.Path="mergedECalFwdHits"
-createEcalFwdCells.cells.Path="ECalFwdCells"
-
 # Create cells in HCal
 # 1. step - merge hits into cells with the default readout
-createHcalCells = CreateCaloCells("CreateHCaloCells",
+createHcalBarrelCells = CreateCaloCells("CreateHCaloCells",
                                doCellCalibration=True,
                                calibTool=calibHcells,
                                addCellNoise = False, filterCellNoise = False,
                                OutputLevel = INFO,
-                               hits="HCalHits",
+                               hits="HCalBarrelHits",
                                cells="HCalBarrelCells")
 
-# Hcal extended barrel cells
-createExtHcalCells = CreateCaloCells("CreateExtHcalCaloCells",
-                                  doCellCalibration=True,
-                                  calibTool=calibHcells,
-                                  addCellNoise = False, filterCellNoise = False,
-                                  OutputLevel = INFO,
-                                  hits="ExtHCalHits",
-                                  cells="HCalExtBarrelCells")
-
-# Create Hcal cells in endcaps
-mergelayersHcalEndcap = MergeLayers("MergeLayersHcalEndcap",
-                   # take the bitfield description from the geometry service
-                   readout = hcalEndcapReadoutName,
-                   # cells in which field should be merged
-                   identifier = identifierName,
-                   volumeName = volumeName,
-                   # how many cells to merge
-                   merge = hcalEndcapNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayersHcalEndcap.inhits.Path = "HCalEndcapHits"
-mergelayersHcalEndcap.outhits.Path = "mergedHCalEndcapHits"
-
-createHcalEndcapCells = CreateCaloCells("CreateHcalEndcapCaloCells",
-                                    doCellCalibration=True,
-                                    calibTool=calibHcalEndcap,
-                                    addCellNoise=False, filterCellNoise=False,
-                                    OutputLevel=INFO)
-createHcalEndcapCells.hits.Path="mergedHCalEndcapHits"
-createHcalEndcapCells.cells.Path="HCalEndcapCells"
-
-# Create Hcal cells in forward
-mergelayersHcalFwd = MergeLayers("MergeLayersHcalFwd",
-                   # take the bitfield description from the geometry service
-                   readout = hcalFwdReadoutName,
-                   # cells in which field should be merged
-                   identifier = identifierName,
-                   volumeName = volumeName,
-                   # how many cells to merge
-                   merge = hcalFwdNumberOfLayersToMerge,
-                   OutputLevel = INFO)
-mergelayersHcalFwd.inhits.Path = "HCalFwdHits"
-mergelayersHcalFwd.outhits.Path = "mergedHCalFwdHits"
-
-createHcalFwdCells = CreateCaloCells("CreateHcalFwdCaloCells",
-                                 doCellCalibration=True,
-                                 calibTool=calibHcalFwd,
-                                 addCellNoise=False, filterCellNoise=False,
-                                 OutputLevel=INFO)
-createHcalFwdCells.hits.Path="mergedHCalFwdHits"
-createHcalFwdCells.cells.Path="HCalFwdCells"
-
+################ Output
+from Configurables import PodioOutput
 out = PodioOutput("out",
                   OutputLevel=INFO)
-#out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep ECalEndcapCells", "keep ECalFwdCells", "keep HCalBarrelCells", "keep HCalExtBarrelCells", "keep HCalEndcapCells", "keep HCalFwdCells", "keep GenParticles","keep GenVertices"]
-out.outputCommands = ["keep *"] 
+#Save information about generated particles & calorimeter cells, drop G4 hits and the intermediate steps 
+#out.outputCommands = ["drop *", "keep ECalBarrelCells", "keep HCalBarrelCells", "keep GenParticles","keep GenVertices"]
+#Save all
+out.outputCommands = ["keep *"]
 
 import uuid
-
-out.filename = "output_fullCalo_SimAndDigi_"+str(energy)+"GeV"+uuid.uuid4().hex+".root"
+out.filename = "output_fullCalo_SimAndDigi_"+str(momentum)+"GeV_"+uuid.uuid4().hex+".root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()
 audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
+genalg_pgun.AuditExecute = True
+hepmc_converter.AuditExecute = True
 geantsim.AuditExecute = True
 createEcalBarrelCellsStep1.AuditExecute = True
 positionsEcalBarrel.AuditExecute = True
 resegmentEcalBarrel.AuditExecute = True
 createEcalBarrelCells.AuditExecute = True
-createEcalEndcapCells.AuditExecute = True
-createEcalFwdCells.AuditExecute = True
-createHcalCells.AuditExecute = True
-createExtHcalCells.AuditExecute = True
-createHcalEndcapCells.AuditExecute = True
-createHcalFwdCells.AuditExecute = True
+createHcalBarrelCells.AuditExecute = True
 out.AuditExecute = True
 
+from Configurables import ApplicationMgr
 ApplicationMgr(
-    TopAlg = [geantsim,
+    TopAlg = [genalg_pgun,
+              hepmc_converter,
+              geantsim,
               createEcalBarrelCellsStep1,
               positionsEcalBarrel,
               resegmentEcalBarrel,
               createEcalBarrelCells,
-             # mergelayersEcalEndcap,
-             # createEcalEndcapCells,
-             # mergelayersEcalFwd,
-             # createEcalFwdCells,
-             # createHcalCells,
-             # createExtHcalCells,
-             # mergelayersHcalEndcap,
-             # createHcalEndcapCells,
-             # mergelayersHcalFwd,
-             # createHcalFwdCells,
+              createHcalBarrelCells,
               out
               ],
     EvtSel = 'NONE',
-    EvtMax   = int(num_events),
+    EvtMax   = 10,
     ExtSvc = [geoservice, podioevent, geantservice, audsvc],
  )

@@ -17,6 +17,9 @@ if(ENABLE_CPACK)
   include(cmake/FCCSWCPack.cmake)
 endif()
 
+if( NOT DEFINED ENV{LCG_VERSION})
+  set(HOST_BINARY_TAG x86_64-linux-gcc9-opt)
+endif()
 
 #---------------------------------------------------------------
 # to use ROOT targets, find_package ROOT must come before find_package Gaudi
@@ -28,6 +31,7 @@ find_package(fccedm REQUIRED)
 link_libraries(datamodelDict)
 find_package(EDM4HEP REQUIRED)
 #find_package(K4FWCore REQUIRED)
+
 
 
 # Load macros and functions for Gaudi-based projects
@@ -76,6 +80,7 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
                     WORLD_READ)
 
 
+find_package(FCCEDM)
 
 gaudi_project(FCCSW  v0r13
               USE K4FWCore v0r1

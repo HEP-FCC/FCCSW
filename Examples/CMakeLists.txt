@@ -14,8 +14,8 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_
 
 gaudi_add_module(Examples
                  src/*.cpp
-		             INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon
-                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep
+		             INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon FCCEDM
+                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep FCCEDM
                  )
 target_link_libraries(Examples ${Geant4_LIBRARIES})
 
@@ -79,17 +79,3 @@ gaudi_add_test(GeantUserLimits
 gaudi_add_test(GeantFullSimParticleGunFCCee
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim_fccee_pgun.py)
-
-# Test of the format-checker:
-gaudi_add_test(FormatCheckerOneFile
-     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-     COMMAND ./checkformat ./Examples/src/CreateSampleJet.cpp)
-gaudi_add_test(FormatCheckerSeveralFiles
-     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-     COMMAND ./checkformat ./Examples/src/CreateSampleJet.cpp ./Examples/src/CreateSampleJet.h)
-gaudi_add_test(FormatCheckerDirectory
-     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-     COMMAND ./checkformat ./Examples/src/)
-gaudi_add_test(FormatCheckerInPlace
-     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-     COMMAND ./checkformat -if ./Examples/src/CreateSampleJet.cpp)

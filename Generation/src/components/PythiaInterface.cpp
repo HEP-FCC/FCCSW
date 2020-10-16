@@ -155,7 +155,17 @@ StatusCode PythiaInterface::initialize() {
 
   // Set up evtGen
   if (m_doEvtGenDecays) {
-    m_evtgen = new EvtGenDecays(m_pythiaSignal.get(), m_EvtGenDecayFile.value(), m_EvtGenParticleDataFile.value());
+    m_evtgen = new EvtGenDecays(
+                  m_pythiaSignal.get(), // the pythia instance 
+                  m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
+                  m_EvtGenParticleDataFile.value(), // the file name of the evtgen data file
+								  nullptr, // the optional EvtExternalGenList pointer (must be be provided if the next argument is provided to avoid double initializations)
+								  nullptr, // the EvtAbsRadCorr pointer to pass to EvtGen
+								  1, // the mixing type to pass to EvtGen
+								  false, // a flag to use XML files to pass to EvtGen
+								  true, // a flag to limit decays based on the Pythia criteria (based on the particle decay vertex)
+								  true, // a flag to use external models with EvtGen
+								  false); // a flag if an FSR model should be passed to EvtGen (pay attention to this, default is true)
     m_evtgen->readDecayFile(m_EvtGenDecayFile);
   }
   

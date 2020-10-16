@@ -11,8 +11,8 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
 gaudi_add_module(TestGeometry
                  src/components/*.cpp
-                 INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometryLib
-                 LINK_LIBRARIES GaudiKernel FWCore DetCommon TestGeometryLib)
+                 INCLUDE_DIRS Geant4 FWCore SimG4Interface SimG4Common DetInterface DetCommon TestGeometryLib FCCEDM
+                 LINK_LIBRARIES GaudiKernel FWCore DetCommon TestGeometryLib FCCEDM) 
 target_link_libraries(TestGeometry ${Geant4_LIBRARIES})
 
 

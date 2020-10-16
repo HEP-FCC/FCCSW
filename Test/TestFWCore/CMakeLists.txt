@@ -10,8 +10,8 @@ gaudi_depends_on_subdirs(GaudiAlg GaudiKernel FCCFWCore Generation)
 
 gaudi_add_module(TestFCCFWCorePlugins
                  src/components/*.cpp
-                 INCLUDE_DIRS FWCore
-                 LINK_LIBRARIES GaudiKernel FWCore)
+                 INCLUDE_DIRS FWCore FCCEDM
+                 LINK_LIBRARIES GaudiKernel FWCore FCCEDM)
 
 
 include(CTest)

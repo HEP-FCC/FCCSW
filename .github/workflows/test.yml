@@ -4,7 +4,11 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        SETUP: ["init_key4hep.sh", 'init_lcg_97a_FCC_2.sh', 'init_lcg_98.sh']
     steps:
     - uses: actions/checkout@v2
     - name: Install CVMFS
@@ -31,7 +35,33 @@ jobs:
     - name: Start container
       run: |
         docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package -v /cvmfs:/cvmfs:shared -d clicdp/cc7-lcg /bin/bash
-    - name: Compile and test
+    - name: Setup container
       run: |
-        docker exec CI_container /bin/bash -c "ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so;cd ./Package; ./.github/scripts/compile_and_test.sh;"
+        docker exec CI_container /bin/bash -c " ln -s /usr/lib64/liblzma.so.5.2.2 /usr/lib64/liblzma.so;"
+
+    - name: CMake Configure
+      run: |
+        docker exec CI_container /bin/bash -c 'cd ./Package; mkdir -p build install; source ${{ matrix.SETUP }}; cd build; cmake -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_CXX_STANDARD=17  -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " -G Ninja ..; '
+
+    - name: Compile FCCSW
+      run: |
+        docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ninja -k0;'
+
+    - name: Install FCCSW
+      run: |
+        docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build;  ninja -k0 install;'
+
+    - name: Test FCCSW
+      continue-on-error: ${{matrix.SETUP == 'init_key4hep.sh' }}
+      run: |
+        docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest -j `getconf _NPROCESSORS_ONLN`;'
+    - name: Upload Test Results for FCCSW
+      uses: actions/upload-artifact@v2
+      if:  success()  || failure()
+      with:
+        name: FCCSWCTestLog
+        path: build/Testing/Temporary/LastTest.log
+
+
+
 

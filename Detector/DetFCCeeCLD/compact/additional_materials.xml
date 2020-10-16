@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<materials>
+
+    <material formula="Al" name="Aluminium" state="solid" >
+      <D type="density" unit="g/cm3" value="2.699" />
+      <composite n="1" ref="Al" />
+    </material>
+
+    <material name="CarbonFiber_25D">
+      <D type="density" value="0.375" unit="g/cm3"/>
+      <fraction n="0.60" ref="C"/>
+      <fraction n="0.40" ref="Epoxy"/>
+    </material>
+
+
+    <material name="Water">
+      <D value="1" unit="g/cm3" />
+      <composite n="2" ref="H" />
+      <composite n="1" ref="O" />
+    </material>
+
+    <material name="Rohacell_IG51">
+      <D type="density" value="0.051" unit="g/cm3"/>
+      <composite n="9" ref="C"/>
+      <composite n="13" ref="H"/>
+      <composite n="2" ref="O"/>
+      <composite n="1" ref="N"/>
+    </material>
+
+    <material name="Allcomp_K9">
+      <D type="density" value="0.22" unit="g/cm3"/>
+      <fraction n="0.60" ref="C"/>
+      <fraction n="0.40" ref="Epoxy"/>
+    </material>
+
+    <material name="GroundOrHVMix" state="solid">
+      <MEE unit="eV" value="259.806022507979"/>
+      <D unit="g/cm3" value="5.19"/>
+      <fraction n="0.00360636223506744" ref="H"/>
+      <fraction n="0.0945480597302505" ref="C"/>
+      <fraction n="0.0100234489402697" ref="N"/>
+      <fraction n="0.0286236705202312" ref="O"/>
+      <fraction n="0.863198458574181" ref="Cu"/>
+    </material>
+
+    <material name="siPCBMix" state="solid">
+      <MEE unit="eV" value="262.475002085268"/>
+      <D unit="g/cm3" value="5.05076923076923"/>
+      <fraction n="0.014498933901919" ref="Cl"/>
+      <fraction n="0.083477099995865" ref="O"/>
+      <fraction n="0.0654857498400853" ref="Si"/>
+      <fraction n="0.00351122019083304" ref="H"/>
+      <fraction n="0.0142636698452849" ref="C"/>
+      <fraction n="0.818763326226013" ref="Cu"/>
+    </material>
+
+</materials>
+
