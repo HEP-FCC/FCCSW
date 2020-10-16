@@ -7,7 +7,6 @@
 ! Adjusted from Pythia example: main03.cmnd.
 
 ! 1) Settings used in the main program.
-Main:numberOfEvents = 100          ! number of events to generate
 Main:timesAllowErrors = 3          ! how many aborts before run stops
 
 ! 2) Settings related to output in init(), next() and stat() functions.

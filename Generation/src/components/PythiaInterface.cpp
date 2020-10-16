@@ -33,8 +33,8 @@ PythiaInterface::PythiaInterface(const std::string& type, const std::string& nam
       m_matching(nullptr),
       m_setting(nullptr) {
 
-  declareProperty("VertexSmearingTool", m_vertexSmearingTool);
-  declareTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
+  auto sc = declareProperty("VertexSmearingTool", m_vertexSmearingTool);
+  auto sc2 = declareTool(m_vertexSmearingTool, "FlatSmearVertex/VertexSmearingTool");
 }
 
 StatusCode PythiaInterface::initialize() {
@@ -189,7 +189,7 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     if (++m_iAbort > m_nAbort) {
 
       IIncidentSvc* incidentSvc;
-      service("IncidentSvc", incidentSvc);
+      StatusCode sc = service("IncidentSvc", incidentSvc);
       incidentSvc->fireIncident(Incident(name(), IncidentType::AbortEvent));
       return Error("Event generation aborted prematurely, owing to error!");
     } else {

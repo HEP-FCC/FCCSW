@@ -19,7 +19,7 @@ gaudi_install_python_modules()
 gaudi_add_module(Generation
                  src/components/*.cpp
                  INCLUDE_DIRS Generation HepMC Pythia8 FWCore FCCEDM PODIO HepPDT EvtGen
-                 LINK_LIBRARIES HepMC GaudiAlgLib FWCore Pythia8 FCCEDM PODIO HepPDT ${EVTGEN_LIBRARIES} )
+                 LINK_LIBRARIES HepMC GaudiAlgLib FWCore Pythia8 FCCEDM PODIO HepPDT ${EVTGEN_LIBRARIES} EDM4HEP::edm4hep EDM4HEP::edm4hepDict)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/data DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Generation)
 
