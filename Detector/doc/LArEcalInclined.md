@@ -85,6 +85,14 @@ You can find more details about the implemented algorithms [here](../../Reconstr
 
 (*) It could be a bit a surprising that we apply the sampling fraction correction even before adding noise to cells. By doing this you can immediately see that the energy corresponds to what is expected right after the simulation is finished. The noise values added during the reconstruction step are expected to be calibrated to the EM scale. On the other hand, this is just an example script, you can just switch on and off the calibration, noise etc. as you like. This is very flexible and up to you.
 
+You can run the example script with the following command
+~~~[.sh]
+fccrun Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py  \
+       --filename fccee_LAr_idea_pgun.root \
+       -n 10
+~~~
+The name of the output file is fccee_idea_LAr_pgun.root. The ROOT file contains the information about MC particles and cells with energy deposits of 10 single particle events (100 GeV e-) in the FCC event data model.
+
 Configuration of create cells algorithm in [Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py) 
 ~~~[.py]
 from Configurables import CreateCaloCells
@@ -103,8 +111,6 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
 - *hits* - input hit collection
 - *cells* - output hit collection
 
-
-
 ### Reconstruction
  - Input: calorimeter cells
  - Addition of Gaussian noise to the cells using CreateCaloCells algorithm
@@ -117,6 +123,14 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
    - Details are described [here](../../Reconstruction/doc/RecCalorimeter.md).
  - Output: calorimeter clusters
  - Example script [Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+
+You can run the example script with the following command
+~~~[.sh]
+fccrun Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py  \
+       --input fccee_idea_LAr_pgun.root  \
+       --filename output_allCalo_reco_noise.root
+~~~
+It takes the input file with calorimeter cells fccee_idea_LAr_pgun.root, add noise to cells and run the sliding window clustering algorithm. The output file output_allCalo_reco_noise.root contains the information about calorimeter cells and the reconstructed clusters.
  
 Configuration of the sliding window algorithm in the example script. You have to build calorimeter towers (merge cells across the radius) first and create the clusters afterwards.
 ~~~[.py]
