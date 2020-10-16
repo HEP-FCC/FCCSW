@@ -10,9 +10,10 @@ from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr
-ApplicationMgr().EvtSel = 'None' 
-ApplicationMgr().EvtMax = 2
+ApplicationMgr().EvtSel = 'NONE' 
+ApplicationMgr().EvtMax = 100
 ApplicationMgr().OutputLevel = INFO
+ApplicationMgr().StopOnSignal = True
 
 #### Data service
 from Configurables import FCCDataSvc
@@ -30,7 +31,7 @@ from Configurables import PythiaInterface
 pythia8gentool = PythiaInterface()
 ### Example of pythia configuration file to generate events
 pythiafilename = "Generation/data/Pythia_standard.cmd"
-path_to_pythiafile = os.environ.get("FCCSW_SHARE_DIR", "")
+path_to_pythiafile = os.environ.get("FCcCSW_SHARE_DIR", "")
 pythiafile = os.path.join(path_to_pythiafile, pythiafilename)
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
@@ -50,18 +51,9 @@ from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter()
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.hepmcStatusList = [] # convert particles with all statuses
-hepmc_converter.genparticles.Path="GenParticles"
-hepmc_converter.genvertices.Path="GenVertices"
+hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
-### Filters generated particles
-# accept is a list of particle statuses that should be accepted
-from Configurables import GenParticleFilter
-genfilter = GenParticleFilter("StableParticles")
-genfilter.accept = [1]
-genfilter.allGenParticles.Path = "GenParticles"
-genfilter.filteredGenParticles.Path = "GenParticlesStable"
-ApplicationMgr().TopAlg += [genfilter]
 
 from Configurables import PodioOutput
 out = PodioOutput("out")
