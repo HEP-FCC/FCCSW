@@ -11,6 +11,7 @@
 *.log
 build*
 fcc-edm
+external
 install*
 build.*.log
 Makefile

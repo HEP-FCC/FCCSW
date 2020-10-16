@@ -11,46 +11,4 @@ export Gaudi_DIR=$(dirname $(readlink -f "$(which gaudirun.py)"))/../
 export CMAKE_PREFIX_PATH=$Gaudi_DIR:$CMAKE_PREFIX_PATH
 
 # build FCC-dependencies on top of LCG
-
-if [ ! -d "./fcc-edm" ] 
-then
-  git clone --depth=1 https://github.com/hep-fcc/fcc-edm
-  cd fcc-edm; mkdir build install; cd build;
-  cmake .. -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-  make -j `getconf _NPROCESSORS_ONLN` install
-  cd ../
-  export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-  export ROOT_INCLUDE_PATH=$PWD/install/include/datamodel:$PWD/install/:$ROOT_INCLUDE_PATH
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH
-  touch .gaudi_project_ignore
-  cd ../
-fi
-
-if [ ! -d "./edm4hep" ] 
-then
-  git clone --depth=1 https://github.com/key4hep/edm4hep
-  cd edm4hep; mkdir build install; cd build;
-  cmake .. -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-  make -j `getconf _NPROCESSORS_ONLN` install
-  cd ../
-  export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-  export ROOT_INCLUDE_PATH=$PWD/install/include/edm4hep:$PWD/install/include/:$ROOT_INCLUDE_PATH
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH
-  touch .gaudi_project_ignore
-  cd ../
-fi
-
-if [ ! -d "./k4fwcore" ] 
-then
-  git clone --depth=1 https://github.com/key4hep/k4fwcore
-  cd edm4hep; mkdir build install; cd build;
-  cmake .. -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-  make -j `getconf _NPROCESSORS_ONLN` install
-  cd ../
-  export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-  export PYTHONPATH=$PWD/install:$PYTHONPATH
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH
-  touch .gaudi_project_ignore
-  cd ../
-fi
-
+source ./init_fccdependencies_local.sh
