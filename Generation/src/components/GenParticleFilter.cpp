@@ -5,8 +5,8 @@
 DECLARE_COMPONENT(GenParticleFilter)
 
 GenParticleFilter::GenParticleFilter(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
-  declareProperty("allGenParticles", m_iGenpHandle, "Generator Particles to filter (input)");
-  declareProperty("filteredGenParticles", m_oGenpHandle, "Filtered Generator particles (output)");
+  declareProperty("GenParticles", m_iGenpHandle, "Generator Particles to filter (input)");
+  declareProperty("GenParticlesFiltered", m_oGenpHandle, "Filtered Generator particles (output)");
 }
 
 StatusCode GenParticleFilter::initialize() { return GaudiAlgorithm::initialize(); }
