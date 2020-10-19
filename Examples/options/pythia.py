@@ -10,7 +10,7 @@ from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr
-ApplicationMgr().EvtSel = 'None' 
+ApplicationMgr().EvtSel = 'NONE' 
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 
