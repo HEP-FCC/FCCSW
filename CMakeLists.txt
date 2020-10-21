@@ -78,7 +78,7 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
 
 find_package(FCCEDM)
 
-gaudi_project(FCCSW  v0r13
+gaudi_project(FCCSW  v0r15
               USE Gaudi v33r1 )
 
 
