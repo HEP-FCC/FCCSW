@@ -157,7 +157,8 @@ StatusCode PythiaInterface::initialize() {
   if (m_doEvtGenDecays) {
     m_evtgen = new EvtGenDecays(
                   m_pythiaSignal.get(), // the pythia instance 
-                  m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
+                  //m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
+                  "/eos/experiment/fcc/ee/tmp/DECAY.DEC",  // the file name of the evtgen decay file
                   m_EvtGenParticleDataFile.value(), // the file name of the evtgen data file
 								  nullptr, // the optional EvtExternalGenList pointer (must be be provided if the next argument is provided to avoid double initializations)
 								  nullptr, // the EvtAbsRadCorr pointer to pass to EvtGen
@@ -167,6 +168,7 @@ StatusCode PythiaInterface::initialize() {
 								  true, // a flag to use external models with EvtGen
 								  false); // a flag if an FSR model should be passed to EvtGen (pay attention to this, default is true)
     m_evtgen->readDecayFile(m_EvtGenDecayFile);
+    //m_evtgen->exclude(23); 
   }
   
 
@@ -180,14 +182,9 @@ StatusCode PythiaInterface::initialize() {
 StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
   Pythia8::Event sumEvent;
-
-  // Generate events. Quit if many failures in a row
+  // Generate events. Quit if many failures in a row  
   while (!m_pythiaSignal->next()) {
-    if (m_doEvtGenDecays) {
-       m_evtgen->decay();
-    }
     if (++m_iAbort > m_nAbort) {
-
       IIncidentSvc* incidentSvc;
       service("IncidentSvc", incidentSvc);
       incidentSvc->fireIncident(Incident(name(), IncidentType::AbortEvent));
@@ -197,6 +194,9 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     }
   }
 
+  if (m_doEvtGenDecays) {
+    m_evtgen->decay();
+  }
   if (m_doMePsMatching || m_doMePsMerging) {
 
     auto mePsMatchingVars = m_handleMePsMatchingVars.createAndPut();
