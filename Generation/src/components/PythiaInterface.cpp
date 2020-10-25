@@ -157,8 +157,7 @@ StatusCode PythiaInterface::initialize() {
   if (m_doEvtGenDecays) {
     m_evtgen = new EvtGenDecays(
                   m_pythiaSignal.get(), // the pythia instance 
-                  //m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
-                  "/eos/experiment/fcc/ee/tmp/DECAY.DEC",  // the file name of the evtgen decay file
+                  m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
                   m_EvtGenParticleDataFile.value(), // the file name of the evtgen data file
 								  nullptr, // the optional EvtExternalGenList pointer (must be be provided if the next argument is provided to avoid double initializations)
 								  nullptr, // the EvtAbsRadCorr pointer to pass to EvtGen
@@ -167,8 +166,10 @@ StatusCode PythiaInterface::initialize() {
 								  true, // a flag to limit decays based on the Pythia criteria (based on the particle decay vertex)
 								  true, // a flag to use external models with EvtGen
 								  false); // a flag if an FSR model should be passed to EvtGen (pay attention to this, default is true)
-    m_evtgen->readDecayFile(m_EvtGenDecayFile);
-    //m_evtgen->exclude(23); 
+    m_evtgen->readDecayFile(m_UserDecayFile);
+    for (auto _pdgid: m_evtGenExcludes) {
+      m_evtgen->exclude(_pdgid); 
+    }
   }
   
 

@@ -80,10 +80,15 @@ private:
 
   Gaudi::Property<bool> m_doEvtGenDecays{this, "doEvtGenDecays", false,
                                                            "Do decays with EvtGen"};
-  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/evtgen.dec",
-                                                           "Name of the EvtGen Decay File"};
+  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/EVTGEN.DEC",
+                                                           "Name of the global EvtGen Decay File"};
+  Gaudi::Property<std::string> m_UserDecayFile{this, "UserDecayFile", "",
+                                                           "Name of the  EvtGen User Decay File"};
   Gaudi::Property<std::string> m_EvtGenParticleDataFile{this, "EvtGenParticleDataFile", "Generation/data/evt.pdl",
                                                            "Name of the EvtGen Particle Data File"};
+
+  Gaudi::Property<std::vector<int>> m_evtGenExcludes{this, "EvtGenExcludes", false,
+                                                           "Pdg IDs of particles not to decay with EvtGen"};
   EvtGenDecays* m_evtgen = nullptr;
 };
 
