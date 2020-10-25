@@ -87,7 +87,7 @@ private:
   Gaudi::Property<std::string> m_EvtGenParticleDataFile{this, "EvtGenParticleDataFile", "Generation/data/evt.pdl",
                                                            "Name of the EvtGen Particle Data File"};
 
-  Gaudi::Property<std::vector<int>> m_evtGenExcludes{this, "EvtGenExcludes", false,
+  Gaudi::Property<std::vector<int>> m_evtGenExcludes{this, "EvtGenExcludes", {},
                                                            "Pdg IDs of particles not to decay with EvtGen"};
   EvtGenDecays* m_evtgen = nullptr;
 };
