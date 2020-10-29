@@ -38,7 +38,7 @@ fi
   cd fcc-edm && \
   export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH && \
   export ROOT_INCLUDE_PATH=$PWD/install/include/:$PWD/install/:$ROOT_INCLUDE_PATH && \
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH && \
+  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/:$LD_LIBRARY_PATH && \
   touch .gaudi_project_ignore && \
   cd ../;
 
@@ -56,7 +56,7 @@ fi
   cd edm4hep && \
   export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH && \
   export ROOT_INCLUDE_PATH=$PWD/install/include/:$PWD/install/:$ROOT_INCLUDE_PATH && \
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH && \
+  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/:$LD_LIBRARY_PATH && \
   touch .gaudi_project_ignore && \
   cd ../;
 
@@ -67,9 +67,6 @@ then
   cmake .. -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
   make -j `getconf _NPROCESSORS_ONLN` install
   cd ../
-  export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
-  export PYTHONPATH=$PWD/install:$PYTHONPATH
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH
   touch .gaudi_project_ignore
   cd ../
 fi
@@ -78,7 +75,7 @@ fi
   export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH && \
   export ROOT_INCLUDE_PATH=$PWD/install/include/:$PWD/install/:$ROOT_INCLUDE_PATH && \
   export PYTHONPATH=$PWD/install:$PYTHONPATH && \
-  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/$LD_LIBRARY_PATH && \
+  export LD_LIBRARY_PATH=$PWD/install/lib/:$PWD/install/lib64/:$LD_LIBRARY_PATH && \
   touch .gaudi_project_ignore && \
   cd ../;
 
