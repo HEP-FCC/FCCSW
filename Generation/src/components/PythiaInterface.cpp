@@ -166,7 +166,13 @@ StatusCode PythiaInterface::initialize() {
 								  true, // a flag to limit decays based on the Pythia criteria (based on the particle decay vertex)
 								  true, // a flag to use external models with EvtGen
 								  false); // a flag if an FSR model should be passed to EvtGen (pay attention to this, default is true)
-    m_evtgen->readDecayFile(m_EvtGenDecayFile);
+    if (!m_UserDecayFile.empty()) {
+      m_evtgen->readDecayFile(m_UserDecayFile);
+    }
+    // possibility to force pythia to do decays
+    for (auto _pdgid: m_evtGenExcludes) {
+      m_evtgen->exclude(_pdgid); 
+    }
   }
   
 
@@ -180,14 +186,9 @@ StatusCode PythiaInterface::initialize() {
 StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
 
   Pythia8::Event sumEvent;
-
-  // Generate events. Quit if many failures in a row
+  // Generate events. Quit if many failures in a row  
   while (!m_pythiaSignal->next()) {
-    if (m_doEvtGenDecays) {
-       m_evtgen->decay();
-    }
     if (++m_iAbort > m_nAbort) {
-
       IIncidentSvc* incidentSvc;
       StatusCode sc = service("IncidentSvc", incidentSvc);
       incidentSvc->fireIncident(Incident(name(), IncidentType::AbortEvent));
@@ -197,6 +198,9 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     }
   }
 
+  if (m_doEvtGenDecays) {
+    m_evtgen->decay();
+  }
   if (m_doMePsMatching || m_doMePsMerging) {
 
     auto mePsMatchingVars = m_handleMePsMatchingVars.createAndPut();

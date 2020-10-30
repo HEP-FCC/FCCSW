@@ -26,12 +26,8 @@ endif()
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 find_package(DD4hep COMPONENTS DDG4 DDRec REQUIRED)
 find_package(Geant4 REQUIRED)
-find_package(fccedm REQUIRED)
-link_libraries(datamodelDict)
+find_package(FCCEDM)
 find_package(EDM4HEP REQUIRED)
-#find_package(K4FWCore REQUIRED)
-
-find_package(EDM4HEP)
 
 
 
@@ -81,9 +77,8 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
                     WORLD_READ)
 
 
-find_package(FCCEDM)
 
-gaudi_project(FCCSW  v0r13
+gaudi_project(FCCSW  v0r15
               USE K4FWCore v0r1
               USE Gaudi v33r1 )
 
