@@ -11,7 +11,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr
 ApplicationMgr().EvtSel = 'NONE' 
-ApplicationMgr().EvtMax = 100
+ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().StopOnSignal = True
 
@@ -31,7 +31,7 @@ from Configurables import PythiaInterface
 pythia8gentool = PythiaInterface()
 ### Example of pythia configuration file to generate events
 pythiafilename = "Generation/data/Pythia_standard.cmd"
-path_to_pythiafile = os.environ.get("FCcCSW_SHARE_DIR", "")
+path_to_pythiafile = os.environ.get("FCCSW_SHARE_DIR", "")
 pythiafile = os.path.join(path_to_pythiafile, pythiafilename)
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
