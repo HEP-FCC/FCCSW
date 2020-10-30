@@ -172,7 +172,7 @@ StatusCode PythiaInterface::initialize() {
   // Set up evtGen
   if (m_doEvtGenDecays) {
     #if PYTHIA_VERSION_INTEGER < 8300
-    m_evtgen = new Pythia8::EvtGenDecays(
+    m_evtgen = new EvtGenDecays(
                   m_pythiaSignal.get(), // the pythia instance 
                   m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
                   m_EvtGenParticleDataFile.value(), // the file name of the evtgen data file
