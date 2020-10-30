@@ -103,7 +103,7 @@ StatusCode PythiaInterface::initialize() {
     }
 
     m_setting = std::unique_ptr<Pythia8::amcnlo_unitarised_interface>(new Pythia8::amcnlo_unitarised_interface(scheme));
-    m_pythiaSignal->setUserHooksPtr(m_setting.get());
+    m_pythiaSignal->setUserHooksPtr((Pythia8::UserHooksPtr) m_setting.get());
   }
 
   // For jet matching, initialise the respective user hooks code.
@@ -112,7 +112,7 @@ StatusCode PythiaInterface::initialize() {
     if (!m_matching) {
       return Error(" Failed to initialise jet matching structures.");
     }
-    m_pythiaSignal->setUserHooksPtr(m_matching.get());
+    m_pythiaSignal->setUserHooksPtr((Pythia8::UserHooksPtr) m_matching.get());
   }
 
   // jet clustering needed for matching
@@ -155,7 +155,7 @@ StatusCode PythiaInterface::initialize() {
 
   // Set up evtGen
   if (m_doEvtGenDecays) {
-    m_evtgen = new EvtGenDecays(
+    m_evtgen = new Pythia8::EvtGenDecays(
                   m_pythiaSignal.get(), // the pythia instance 
                   m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
                   m_EvtGenParticleDataFile.value(), // the file name of the evtgen data file
