@@ -10,7 +10,6 @@
 #include "Pythia8Plugins/PowhegHooks.h"
 #include "Pythia8Plugins/HepMC2.h"
 
-class EvtGenDecays;
 
 // Forward HepMC
 namespace HepMC {
@@ -18,6 +17,7 @@ class GenEvent;
 }
 // Forward Pythia
 namespace Pythia8 {
+class EvtGenDecays;
 class Pythia;
 class SlowJet;
 class JetMatchingMadgraph;
@@ -89,7 +89,7 @@ private:
 
   Gaudi::Property<std::vector<int>> m_evtGenExcludes{this, "EvtGenExcludes", {},
                                                            "Pdg IDs of particles not to decay with EvtGen"};
-  EvtGenDecays* m_evtgen = nullptr;
+  Pythia8::EvtGenDecays* m_evtgen = nullptr;
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H

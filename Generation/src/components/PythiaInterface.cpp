@@ -145,12 +145,12 @@ StatusCode PythiaInterface::initialize() {
 
     
     m_powhegHooks = std::make_shared<Pythia8::PowhegHooks>();
-    m_pythiaSignal->addUserHooksPtr(m_powhegHooks.get());
+    m_pythiaSignal->addUserHooksPtr((Pythia8::UserHooksPtr)m_powhegHooks.get());
   }
   bool resonanceDecayFilter = m_pythiaSignal->settings.flag("ResonanceDecayFilter:filter");
   if (resonanceDecayFilter) {
     m_resonanceDecayFilterHook = std::make_shared<ResonanceDecayFilterHook>();
-    m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook.get());
+    m_pythiaSignal->addUserHooksPtr((Pythia8::UserHooksPtr)m_resonanceDecayFilterHook.get());
   }
 
   // Set up evtGen
