@@ -196,7 +196,7 @@ Once you change the parameters in the geometry description (xml file), you need 
 
 ### Cell sizes
 
-The definition of the cell sizes is done in the configuration xml files. The division in longitudinal *layers* and in *eta* is virtual as there are no physical volumes corresponding to the division in *R* and *eta*. The size of the cell in *phi* should correspond to a multiple of the angle between two absorbers. The segmentation in *phi* is calculated from the position of the centre of the elementary cell defined by *layer*, *eta* and *module* IDs. The segmentation in *eta* is set using the field *grid_size_eta* (for simulation and reconstruction readouts). To change the cell size in *phi, change the fields *phi_bins*and *offset_phi* (reconstruction readout).
+The definition of the cell sizes is done in the configuration xml files. The division in longitudinal *layers* and in *eta* is virtual as there are no physical volumes corresponding to the division in *R* and *eta*. The size of the cell in *phi* should correspond to a multiple of the angle between two absorbers. The segmentation in *phi* is calculated from the position of the centre of the elementary cell defined by *layer*, *eta* and *module* IDs. The segmentation in *eta* is set using the field *grid_size_eta* (for simulation and reconstruction readouts). To change the cell size in *phi*, change the fields *phi_bins* and *offset_phi* (reconstruction readout).
 
 Definition of readout
 ~~~{.xml}
@@ -225,7 +225,7 @@ Definition of the thickness of the longitudinal layers is done using field *laye
 ~~~
 The thickness is defined in the radial direction (NOT along the inclined plates!). It allows to define layers of different thickness easily. There is a first layer with thickness of 2 cm and 7 layers of 6.15 cm in this example.
 
-While optimising the layer thickness, you can set the thickness of all layers to a small value (e.g. 0.5 cm). Run the simulations with many layers and merge the layers into cells in the next step. This will give flexibility for the optimisation studies without the need to re-run the simulatins over and over. There is a tool which merges layers [MergeLayers](../../Reconstruction/RecCalorimeter/src/components/MergeLayers.h)
+While optimising the layer thickness, you can set the thickness of all layers to a small value (e.g. 0.5 cm). Run the simulations with many layers and merge the layers into cells in the next step. This will give flexibility for the optimisation studies without the need to re-run the simulations over and over. There is a tool which merges layers [MergeLayers](../../Reconstruction/RecCalorimeter/src/components/MergeLayers.h):
 ~~~[.py]
 from Configurables import MergeLayers
 mergelayers = MergeLayers("MyMergeLayers",
