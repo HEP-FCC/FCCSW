@@ -183,7 +183,6 @@ StatusCode PythiaInterface::initialize() {
 								  true, // a flag to limit decays based on the Pythia criteria (based on the particle decay vertex)
 								  true, // a flag to use external models with EvtGen
 								  false); // a flag if an FSR model should be passed to EvtGen (pay attention to this, default is true)
-
     #else
     m_evtgen = new Pythia8::EvtGenDecays(
                   m_pythiaSignal.get(), // the pythia instance 
