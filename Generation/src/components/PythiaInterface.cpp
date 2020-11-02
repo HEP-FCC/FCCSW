@@ -174,8 +174,7 @@ StatusCode PythiaInterface::initialize() {
     #if PYTHIA_VERSION_INTEGER < 8300
     m_evtgen = new EvtGenDecays(
                   m_pythiaSignal.get(), // the pythia instance 
-                  //m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
-                  "/eos/experiment/fcc/ee/tmp/DECAY.DEC",  // the file name of the evtgen decay file
+                  m_EvtGenDecayFile.value(),  // the file name of the evtgen decay file
                   m_EvtGenParticleDataFile.value(), // the file name of the evtgen data file
 								  nullptr, // the optional EvtExternalGenList pointer (must be be provided if the next argument is provided to avoid double initializations)
 								  nullptr, // the EvtAbsRadCorr pointer to pass to EvtGen
