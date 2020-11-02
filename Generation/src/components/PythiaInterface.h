@@ -91,7 +91,7 @@ private:
 
   Gaudi::Property<bool> m_doEvtGenDecays{this, "doEvtGenDecays", false,
                                                            "Do decays with EvtGen"};
-  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/EVTGEN.DEC",
+  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/DECAY.DEC",
                                                            "Name of the global EvtGen Decay File"};
   Gaudi::Property<std::string> m_UserDecayFile{this, "UserDecayFile", "",
                                                            "Name of the  EvtGen User Decay File"};
