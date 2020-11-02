@@ -10,19 +10,30 @@
 #include "Pythia8Plugins/PowhegHooks.h"
 #include "Pythia8Plugins/HepMC2.h"
 
-class EvtGenDecays;
 
 // Forward HepMC
 namespace HepMC {
 class GenEvent;
 }
 // Forward Pythia
+#if PYTHIA_VERSION_INTEGER < 8300
+class EvtGenDecays;
 namespace Pythia8 {
 class Pythia;
 class SlowJet;
 class JetMatchingMadgraph;
 class amcnlo_unitarised_interface;
 }
+#else
+namespace Pythia8 {
+class EvtGenDecays;
+class Pythia;
+class SlowJet;
+class JetMatchingMadgraph;
+class amcnlo_unitarised_interface;
+}
+
+#endif
 
 namespace fcc {
   class FloatValueCollection;
@@ -80,11 +91,20 @@ private:
 
   Gaudi::Property<bool> m_doEvtGenDecays{this, "doEvtGenDecays", false,
                                                            "Do decays with EvtGen"};
-  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/evtgen.dec",
-                                                           "Name of the EvtGen Decay File"};
+  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/EVTGEN.DEC",
+                                                           "Name of the global EvtGen Decay File"};
+  Gaudi::Property<std::string> m_UserDecayFile{this, "UserDecayFile", "",
+                                                           "Name of the  EvtGen User Decay File"};
   Gaudi::Property<std::string> m_EvtGenParticleDataFile{this, "EvtGenParticleDataFile", "Generation/data/evt.pdl",
                                                            "Name of the EvtGen Particle Data File"};
+
+  Gaudi::Property<std::vector<int>> m_evtGenExcludes{this, "EvtGenExcludes", {},
+                                                           "Pdg IDs of particles not to decay with EvtGen"};
+  #if PYTHIA_VERSION_INTEGER < 8300
   EvtGenDecays* m_evtgen = nullptr;
+  #else
+  Pythia8::EvtGenDecays* m_evtgen = nullptr;
+  #endif
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H
