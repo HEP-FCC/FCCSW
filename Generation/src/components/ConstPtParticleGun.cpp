@@ -1,4 +1,5 @@
 #include "ConstPtParticleGun.h"
+#include "Generation/Units.h"
 #include <cmath>
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/PhysicalConstants.h"
@@ -103,13 +104,35 @@ StatusCode ConstPtParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
   // note: pgdid is set in function generateParticle
   int thePdgId;
   generateParticle(theFourMomentum, origin, thePdgId);
+
+  const double hepmcLengthConversionFactor =
+      HepMC::Units::conversion_factor(theEvent.length_unit(), gen::hepmcdefault::length);
+  const double hepmcMomentumConversionFactor =
+      HepMC::Units::conversion_factor(theEvent.momentum_unit(), gen::hepmcdefault::energy);
+
+  std::cout << "theEvent.length_unit() " << theEvent.momentum_unit() << "\t" << gen::hepmcdefault::energy << std::endl;
+  std::cout << "hepmcLengthConversionFactor, " << hepmcLengthConversionFactor;
+  std::cout << " hepmcEnergyConversionFactor, " << hepmcMomentumConversionFactor << std::endl;
+
   // create HepMC Vertex --
   // by calling add_vertex(), the hepmc event is given ownership of the vertex
-  HepMC::GenVertex* v = new HepMC::GenVertex(HepMC::FourVector(origin.X(), origin.Y(), origin.Z(), origin.T()));
+
+  HepMC::GenVertex* v = new HepMC::GenVertex(HepMC::FourVector(
+                              origin.X() * hepmcLengthConversionFactor,
+                              origin.Y() * hepmcLengthConversionFactor,
+                              origin.Z() * hepmcLengthConversionFactor,
+                              origin.T()
+                              )
+                          );
   // create HepMC particle --
   // by calling add_particle_out(), the hepmc vertex is given ownership of the particle
   HepMC::GenParticle* p = new HepMC::GenParticle(
-      HepMC::FourVector(theFourMomentum.Px(), theFourMomentum.Py(), theFourMomentum.Pz(), theFourMomentum.E()),
+      HepMC::FourVector(
+        theFourMomentum.Px() * hepmcMomentumConversionFactor,
+        theFourMomentum.Py() * hepmcMomentumConversionFactor,
+        theFourMomentum.Pz() * hepmcMomentumConversionFactor,
+        theFourMomentum.E() * hepmcMomentumConversionFactor
+        ),
       thePdgId,
       1);  // hepmc status code for final state particle
   v->add_particle_out(p);
