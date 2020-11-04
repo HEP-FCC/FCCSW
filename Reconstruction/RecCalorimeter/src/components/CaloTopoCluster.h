@@ -16,9 +16,9 @@
 class IGeoSvc;
 
 // datamodel
-namespace fcc {
-class CaloHit;
-class CaloHitCollection;
+namespace edm4hep {
+class CalorimeterHit;
+class CalorimeterHitCollection;
 class CaloClusterCollection;
 }
 
@@ -94,9 +94,9 @@ public:
 
 private:
   // Cluster collection
-  DataHandle<fcc::CaloClusterCollection> m_clusterCollection{"calo/clusters", Gaudi::DataHandle::Writer, this};
+  DataHandle<ClusterCollection> m_clusterCollection{"calo/clusters", Gaudi::DataHandle::Writer, this};
   // Cluster cells in collection
-  DataHandle<fcc::CaloHitCollection> m_clusterCellsCollection{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
+  DataHandle<CalorimeterHitCollection> m_clusterCellsCollection{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
   /// Pointer to the geometry service
   SmartIF<IGeoSvc> m_geoSvc;
   /// Handle for the input tool

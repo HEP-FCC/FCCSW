@@ -4,8 +4,8 @@
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
-namespace fcc {
-class CaloHit;
+namespace edm4hep {
+class CalorimeterHit;
 }
 /** @class ITopoClusterInputTool RecInterface/RecInterface/ITopoClusterInput.h ITopoClusterInputTool.h
  *
@@ -18,7 +18,7 @@ class ITopoClusterInputTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ITopoClusterInputTool, 1, 0);
 
-  virtual StatusCode cellIdMap(std::map<uint64_t, double>& aCells) = 0;
+  virtual StatusCode cellIDMap(std::map<uint64_t, double>& aCells) = 0;
  };
 
 #endif /* RECINTERFACE_ITOPOCLUSTERINPUTTOOL_H */
