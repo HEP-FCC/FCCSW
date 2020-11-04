@@ -4,8 +4,8 @@
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/CalorimeterHit.h"
-#include "datamodel/CalorimeterHitCollection.h"
+#include "edm4hep/CalorimeterHit.h"
+#include "edm4hep/CalorimeterHitCollection.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
@@ -47,65 +47,65 @@ StatusCode CaloTopoClusterInputTool::cellIDMap(std::map<uint64_t, double>& aCell
 
   // 1. ECAL barrel
   // Get the input collection with calorimeter cells
-  const edm::CalorimeterHitCollection* ecalBarrelCells = m_ecalBarrelCells.get();
+  const edm4hep::CalorimeterHitCollection* ecalBarrelCells = m_ecalBarrelCells.get();
   debug() << "Input Ecal barrel cell collection size: " << ecalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *ecalBarrelCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += ecalBarrelCells->size();
   
   // 2. ECAL endcap calorimeter
-  const edm::CalorimeterHitCollection* ecalEndcapCells = m_ecalEndcapCells.get();
+  const edm4hep::CalorimeterHitCollection* ecalEndcapCells = m_ecalEndcapCells.get();
   debug() << "Input Ecal endcap cell collection size: " << ecalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *ecalEndcapCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += ecalEndcapCells->size();
     
   // 3. ECAL forward calorimeter
-  const edm::CalorimeterHitCollection* ecalFwdCells = m_ecalFwdCells.get();
+  const edm4hep::CalorimeterHitCollection* ecalFwdCells = m_ecalFwdCells.get();
   debug() << "Input Ecal forward cell collection size: " << ecalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *ecalFwdCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += ecalFwdCells->size();
   
   // 4. HCAL barrel
-  const edm::CalorimeterHitCollection* hcalBarrelCells = m_hcalBarrelCells.get();
+  const edm4hep::CalorimeterHitCollection* hcalBarrelCells = m_hcalBarrelCells.get();
   debug() << "Input hadronic barrel cell collection size: " << hcalBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalBarrelCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += hcalBarrelCells->size();
   
   // 5. HCAL extended barrel
-  const edm::CalorimeterHitCollection* hcalExtBarrelCells = m_hcalExtBarrelCells.get();
+  const edm4hep::CalorimeterHitCollection* hcalExtBarrelCells = m_hcalExtBarrelCells.get();
   debug() << "Input hadronic extended barrel cell collection size: " << hcalExtBarrelCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalExtBarrelCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += hcalExtBarrelCells->size();
   
   // 6. HCAL endcap calorimeter                                                                                                              
-  const edm::CalorimeterHitCollection* hcalEndcapCells = m_hcalEndcapCells.get();
+  const edm4hep::CalorimeterHitCollection* hcalEndcapCells = m_hcalEndcapCells.get();
   debug() << "Input Hcal endcap cell collection size: " << hcalEndcapCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalEndcapCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += hcalEndcapCells->size();
   
   // 7. HCAL forward calorimeter
-  const edm::CalorimeterHitCollection* hcalFwdCells = m_hcalFwdCells.get();
+  const edm4hep::CalorimeterHitCollection* hcalFwdCells = m_hcalFwdCells.get();
   debug() << "Input Hcal forward cell collection size: " << hcalFwdCells->size() << endmsg;
   // Loop over a collection of calorimeter cells and build calo towers
   for (const auto& iCell : *hcalFwdCells) {
-    aCells.emplace(iCell.cellID(), iCell.energy());
+    aCells.emplace(iCell.getCellID(), iCell.getEnergy());
   }
   totalNumberOfCells += hcalFwdCells->size();
   

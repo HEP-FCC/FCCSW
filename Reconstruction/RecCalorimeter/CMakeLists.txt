@@ -11,7 +11,7 @@ find_package(ROOT COMPONENTS Physics Tree)
 find_package(FCCEDM)
 find_package(PODIO)
 find_package(HepMC)
-
+find_package(EDM4HEP)
 
 
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}  ${DD4hep_ROOT}/cmake )
@@ -20,7 +20,7 @@ include( DD4hep )
 gaudi_add_module(RecCalorimeterPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS FastJet ROOT FCCFWCore HepMC FCCEDM PODIO DD4hep DetInterface DetSegmentation Geant4 DetCommon RecInterface RecCalorimeter
-                 LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation DetCommon)
+                 LINK_LIBRARIES FWCore Fastjet ROOT GaudiAlgLib FCCEDM PODIO HepMC DD4hep DetSegmentation DetCommon EDM4HEP::edm4hep)
 target_link_libraries(RecCalorimeterPlugins ${Geant4_LIBRARIES})
 
 
