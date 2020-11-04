@@ -15,20 +15,22 @@
 #include "TObjArray.h"
 #include <TMatrixD.h>
 
-
+static const double defaultMagneticField = 2.;
+static const double mTommConversionFactor = 1000.;
 
 // Covariance conversion to ACTS format
-TMatrixDSym CovToACTS(TMatrixDSym Cov, double ct /*cot(theta)*/, double C /*half curvature*/, double fB=2. /*magnetic field in T*/)
+TMatrixDSym CovToACTS(TMatrixDSym Cov, double ct /*cot(theta)*/, double C /*half curvature*/,
+		      double fB=defaultMagneticField /*magnetic field in T*/)
 {
   TMatrixDSym cACTS(6); cACTS.Zero();
-  Double_t b = -0.29988*fB / 2.;
+  Double_t b = -0.29979 * fB / 2. / mTommConversionFactor;
   //
   // Fill derivative matrix
   TMatrixD A(5, 5); A.Zero();
-  A(0, 0) = 1000.;    // D-D  conversion to mm
+  A(0, 0) = mTommConversionFactor;    // D-D  conversion to mm
   A(1, 2) = 1.0;    // phi0-phi0
   A(2, 4) = 1.0/(TMath::Sqrt(1.0 + ct*ct) * b); // q/p-C
-  A(3, 1) = 1000.;    // z0-z0 conversion to mm
+  A(3, 1) = mTommConversionFactor;    // z0-z0 conversion to mm
   A(4, 3) = -1.0 / (1.0 + ct*ct); // theta - cot(theta)
   A(4, 4) = -C*ct / (b*pow(1.0 + ct*ct,3.0/2.0)); // q/p-cot(theta)
   //
@@ -91,15 +93,14 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     auto cand = static_cast<Candidate*>(delphesColl->At(j));
     auto particle = colParticles->create();
 
-
     if (m_saveTrkCov) {
       auto cov_d = CovToACTS(cand->TrackCovariance, cand->CtgTheta, cand->C);
       auto t = colParticles_trkCov->create();
-      t.d0(1000* cand->D0);
-      t.z0(1000* cand->DZ);
+      t.d0(mTommConversionFactor * cand->D0);
+      t.z0(mTommConversionFactor * cand->DZ);
       t.phi(cand->Phi);
-     t.theta(TMath::ATan2(1.0, cand->CtgTheta));
-      Double_t b = -0.29988*2.0 / 2.; //mag field
+      t.theta(TMath::ATan2(1.0, cand->CtgTheta));
+      Double_t b = -0.29979 * defaultMagneticField / 2. / mTommConversionFactor; //mag field in T
       t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
       std::array<float,15> t_c;
       // save upper right triangle, row first
