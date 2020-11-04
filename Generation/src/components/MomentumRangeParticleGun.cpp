@@ -118,7 +118,8 @@ StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
       HepMC::FourVector(theFourMomentum.Px() * hepmcMomentumConversionFactor,
                         theFourMomentum.Py() * hepmcMomentumConversionFactor,
                         theFourMomentum.Pz() * hepmcMomentumConversionFactor,
-                        theFourMomentum.E()) * hepmcMomentumConversionFactor,
+                        theFourMomentum.E() * hepmcMomentumConversionFactor
+                        ),
       thePdgId,
       1);  // hepmc status code for final state particle
 

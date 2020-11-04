@@ -23,7 +23,6 @@ StatusCode HepMCToEDMConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
-
   
   // bookkeeping of particle / vertex relations
   std::unordered_map<const HepMC::GenVertex*, fcc::GenVertex> hepmcToEdmVertexMap;
@@ -62,7 +61,24 @@ StatusCode HepMCToEDMConverter::execute() {
         position.x = tmp.x();
         position.y = tmp.y();
         position.z = tmp.z();
-        vertex.ctau(tmp.t() * Gaudi::Units::c_light;
+        vertex.ctau(tmp.t() * Gaudi::Units::c_light);  // is ctau like this?
+        // add vertex to map for further particles
+        hepmcToEdmVertexMap.insert({productionVertex, vertex});
+        particle.startVertex(vertex);
+      }
+    }
+
+    /// create decay vertex, if it has not already been created and logged in the map
+    HepMC::GenVertex* decayVertex = (*particle_i)->end_vertex();
+    if (nullptr != decayVertex) {
+      if (hepmcToEdmVertexMap.find(decayVertex) != hepmcToEdmVertexMap.end()) {
+        // vertex already in map, no need to create a new one
+        particle.endVertex(hepmcToEdmVertexMap[decayVertex]);
+      } else {
+        tmp = decayVertex->position();
+        auto vertex = vertices->create();
+        auto& position = vertex.position();
+        position.x = tmp.x();
         position.y = tmp.y();
         position.z = tmp.z();
         vertex.ctau(tmp.t() * Gaudi::Units::c_light);  // is ctau like this?
