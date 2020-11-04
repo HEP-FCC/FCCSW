@@ -86,11 +86,12 @@ void ConstPtParticleGun::generateParticle(Gaudi::LorentzVector& momentum, Gaudi:
   debug() << " -> " << pdgId << endmsg << "   P   = " << momentum << endmsg;
   /// additional branches in rootfile
   if (m_writeParticleGunBranches) { 
+    const double hepmcMomentumConversionFactor = 0.001;
     float* _particlegun_phi = new float(phi);
     float* _particlegun_eta =  new float(eta);
     float* _particlegun_costheta = new float (cos(2*atan(exp(eta))));
     float* _particlegun_pt = new float(pt);
-    m_datahandle_particlegun_pt->put(_particlegun_pt);
+    m_datahandle_particlegun_pt->put(_particlegun_pt * hepmcMomentumConversionFactor);
     m_datahandle_particlegun_eta->put(_particlegun_eta);
     m_datahandle_particlegun_costheta->put(_particlegun_costheta);
     m_datahandle_particlegun_phi->put(_particlegun_phi);

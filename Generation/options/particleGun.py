@@ -68,6 +68,7 @@ THistSvc().OutputLevel=INFO
 from Configurables import PodioOutput
 out = PodioOutput("out", filename = "output_particleGun.root")
 out.outputCommands = ["keep *"]
+ApplicationMgr().TopAlg += [out]
 
 
 

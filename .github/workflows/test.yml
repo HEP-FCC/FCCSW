@@ -52,7 +52,6 @@ jobs:
         docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build;  ninja -k0 install;'
 
     - name: Test FCCSW
-      continue-on-error: ${{matrix.SETUP == 'init_key4hep.sh' }}
       run: |
         docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest -j `getconf _NPROCESSORS_ONLN`;'
     - name: Upload Test Results for FCCSW
