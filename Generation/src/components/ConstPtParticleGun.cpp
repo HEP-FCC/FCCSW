@@ -105,27 +105,22 @@ StatusCode ConstPtParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
   int thePdgId;
   generateParticle(theFourMomentum, origin, thePdgId);
 
-  const double hepmcLengthConversionFactor =
-      HepMC::Units::conversion_factor(theEvent.length_unit(), gen::hepmcdefault::length);
-  const double hepmcMomentumConversionFactor =
-      HepMC::Units::conversion_factor(theEvent.momentum_unit(), gen::hepmcdefault::energy);
 
-  std::cout << "theEvent.length_unit() " << theEvent.momentum_unit() << "\t" << gen::hepmcdefault::energy << std::endl;
-  std::cout << "hepmcLengthConversionFactor, " << hepmcLengthConversionFactor;
-  std::cout << " hepmcEnergyConversionFactor, " << hepmcMomentumConversionFactor << std::endl;
 
   // create HepMC Vertex --
   // by calling add_vertex(), the hepmc event is given ownership of the vertex
 
   HepMC::GenVertex* v = new HepMC::GenVertex(HepMC::FourVector(
-                              origin.X() * hepmcLengthConversionFactor,
-                              origin.Y() * hepmcLengthConversionFactor,
-                              origin.Z() * hepmcLengthConversionFactor,
+                              origin.X(),
+                              origin.Y(),
+                              origin.Z(),
                               origin.T()
                               )
                           );
   // create HepMC particle --
   // by calling add_particle_out(), the hepmc vertex is given ownership of the particle
+  // need to convert from Gaudi Units  (MeV) to (GeV)
+  const double hepmcMomentumConversionFactor = 0.001;
   HepMC::GenParticle* p = new HepMC::GenParticle(
       HepMC::FourVector(
         theFourMomentum.Px() * hepmcMomentumConversionFactor,
