@@ -5,7 +5,6 @@
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
-#include "Generation/Units.h"
 #include "HepPDT/ParticleID.hh"
 
 DECLARE_COMPONENT(HepMCToEDMConverter)
@@ -24,13 +23,6 @@ StatusCode HepMCToEDMConverter::execute() {
   const HepMC::GenEvent* event = m_hepmchandle.get();
   fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
   fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
-
-  // conversion of units to EDM standard units:
-  // First cover the case that hepMC file is not in expected units and then convert to EDM default
-  double hepmc2EdmLength =
-      HepMC::Units::conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
-  double hepmc2EdmEnergy =
-      HepMC::Units::conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
   
   // bookkeeping of particle / vertex relations
   std::unordered_map<const HepMC::GenVertex*, fcc::GenVertex> hepmcToEdmVertexMap;
@@ -51,10 +43,10 @@ StatusCode HepMCToEDMConverter::execute() {
 
     auto& p4 = particle.p4();
     tmp = (*particle_i)->momentum();
-    p4.px = tmp.px() * hepmc2EdmEnergy;
-    p4.py = tmp.py() * hepmc2EdmEnergy;
-    p4.pz = tmp.pz() * hepmc2EdmEnergy;
-    p4.mass = (*particle_i)->generated_mass() * hepmc2EdmEnergy;
+    p4.px = tmp.px();
+    p4.py = tmp.py();
+    p4.pz = tmp.pz();
+    p4.mass = (*particle_i)->generated_mass();
 
     /// create production vertex, if it has not already been created and logged in the map
     HepMC::GenVertex* productionVertex = (*particle_i)->production_vertex();
@@ -66,10 +58,10 @@ StatusCode HepMCToEDMConverter::execute() {
         tmp = productionVertex->position();
         auto vertex = vertices->create();
         auto& position = vertex.position();
-        position.x = tmp.x() * hepmc2EdmLength;
-        position.y = tmp.y() * hepmc2EdmLength;
-        position.z = tmp.z() * hepmc2EdmLength;
-        vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
+        position.x = tmp.x();
+        position.y = tmp.y();
+        position.z = tmp.z();
+        vertex.ctau(tmp.t() * Gaudi::Units::c_light);  // is ctau like this?
         // add vertex to map for further particles
         hepmcToEdmVertexMap.insert({productionVertex, vertex});
         particle.startVertex(vertex);
@@ -86,10 +78,10 @@ StatusCode HepMCToEDMConverter::execute() {
         tmp = decayVertex->position();
         auto vertex = vertices->create();
         auto& position = vertex.position();
-        position.x = tmp.x() * hepmc2EdmLength;
-        position.y = tmp.y() * hepmc2EdmLength;
-        position.z = tmp.z() * hepmc2EdmLength;
-        vertex.ctau(tmp.t() * Gaudi::Units::c_light * hepmc2EdmLength);  // is ctau like this?
+        position.x = tmp.x();
+        position.y = tmp.y();
+        position.z = tmp.z();
+        vertex.ctau(tmp.t() * Gaudi::Units::c_light);  // is ctau like this?
         // add vertex to map for further particles
         hepmcToEdmVertexMap.insert({decayVertex, vertex});
         particle.endVertex(vertex);

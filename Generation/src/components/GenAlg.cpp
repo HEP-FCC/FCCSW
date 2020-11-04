@@ -29,6 +29,7 @@ StatusCode GenAlg::initialize() {
 
 StatusCode GenAlg::execute() {
   auto theEvent = m_hepmchandle.createAndPut();
+  theEvent->use_units(HepMC::Units::GEV, HepMC::Units::MM);
   const unsigned int numPileUp = m_pileUpTool->numberOfPileUp();
   std::vector<HepMC::GenEvent> eventVector;
   eventVector.reserve(numPileUp + 1);

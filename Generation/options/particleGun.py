@@ -5,7 +5,7 @@ from Configurables import ApplicationMgr
 ApplicationMgr(
                EvtSel='NONE',
                EvtMax=1,
-               OutputLevel=VERBOSE,
+               OutputLevel=INFO,
               )
 
 from Configurables import FCCDataSvc
@@ -15,7 +15,7 @@ ApplicationMgr().ExtSvc += [podioevent]
 
 
 from Configurables import ConstPtParticleGun
-guntool1 = ConstPtParticleGun("SignalProvider", PdgCodes=[-211])
+guntool1 = ConstPtParticleGun("SignalProvider", PdgCodes=[-211], PtMin=50, PtMax=50)
 guntool2 = ConstPtParticleGun("PileUpProvider", PdgCodes=[11], writeParticleGunBranches=False)
 from Configurables import FlatSmearVertex
 smeartool = FlatSmearVertex()
@@ -63,11 +63,12 @@ THistSvc().Output = ["rec DATAFILE='output_particleGun_GenHistograms.root' TYP='
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
-THistSvc().OutputLevel=VERBOSE
+THistSvc().OutputLevel=INFO
 
 from Configurables import PodioOutput
 out = PodioOutput("out", filename = "output_particleGun.root")
 out.outputCommands = ["keep *"]
+ApplicationMgr().TopAlg += [out]
 
 
 

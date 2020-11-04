@@ -1,5 +1,4 @@
 #include "PythiaInterface.h"
-#include "Generation/Units.h"
 
 #include "GaudiKernel/IIncidentSvc.h"
 #include "GaudiKernel/Incident.h"
