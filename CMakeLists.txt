@@ -29,6 +29,7 @@ find_package(DD4hep COMPONENTS DDG4 DDRec REQUIRED)
 find_package(Geant4)
 
 
+
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
 #---------------------------------------------------------------
@@ -75,8 +76,9 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
                     WORLD_READ)
 
 
+find_package(FCCEDM)
 
-gaudi_project(FCCSW  v0r13
+gaudi_project(FCCSW  v0r15
               USE Gaudi v33r1 )
 
 

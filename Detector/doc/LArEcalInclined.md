@@ -113,6 +113,8 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
 - *hits* - input hit collection
 - *cells* - output hit collection
 
+
+
 ### Reconstruction
  - Input: calorimeter cells
  - Addition of Gaussian noise to the cells using CreateCaloCells algorithm
@@ -259,6 +261,10 @@ Once you derive the new sampling fraction values, you can apply them by changing
 The energy losses in the upstream material are investigated using the algorithm [UpstreamMaterial](../DetStudies/src/components/UpstreamMaterial.h). The details about the algorithm are given [here](DetectorStudies.md).
 
 Use [fcc_ee_upstreamMaterial_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_upstreamMaterial_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee studies. Change the configuration file to match the geometry you are interested in. 
+
+The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the geometry of the first layer of the calorimeter. There is a linear correlation between the energy detected in the first layer and the energy deposited in the upstream material. Moreover, the constants of the linear dependence changes with energy and pseudorapidity of the incoming particle. More details about the upstream correction can be found in Section 4.1.1.1 of [this paper](https://arxiv.org/abs/1912.09962).
+
+The application of the upstream correction is missing in the FCCSW, it is on our todo list. The correction is applied on the reconstructed objects - clusters from sliding window algorithm. An example can be found [here](https://github.com/faltovaj/FCC_calo_analysis_cpp/blob/master/scripts/plot_recoMonitor.py#L13).
 
 The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the geometry of the first layer of the calorimeter. There is a linear correlation between the energy detected in the first layer and the energy deposited in the upstream material. Moreover, the constants of the linear dependence changes with energy and pseudorapidity of the incoming particle. More details about the upstream correction can be found in Section 4.1.1.1 of [this paper](https://arxiv.org/abs/1912.09962).
 

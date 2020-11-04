@@ -1,1 +1,1 @@
-init_lcg.sh
+init_lcg_97a_FCC_2.sh

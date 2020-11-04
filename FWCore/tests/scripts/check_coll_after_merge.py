@@ -27,11 +27,14 @@ for iev in range(len(store_merged)):
     total_px_pileup = 0
     total_px_merged = 0
 
-    for s, p in zip(particles_signal, particles_pileup):
-        
+    for i in range(len(particles_signal)):
+        s = particles_signal[i]
         total_px_signal += s.core().p4.px
+    for i in range(len(particles_pileup)):
+        p = particles_pileup[i]
         total_px_pileup += p.core().p4.px
-    for m in particles_merged:
+    for i in range(len(particles_merged)):
+        m = particles_merged[i]
         total_px_merged += m.core().p4.px
     
     # check that we merged the right particles

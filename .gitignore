@@ -1,4 +1,6 @@
 *~
+spack*
+Testing
 *.pyc
 *.root
 *.png
@@ -10,6 +12,7 @@
 
 *.log
 build*
+fcc-edm
 install*
 build.*.log
 Makefile

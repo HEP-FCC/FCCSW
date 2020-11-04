@@ -1,7 +1,6 @@
 
 #include "DetCommon/DetUtils.h"
 #include "DD4hep/DetFactoryHelper.h"
-#include "Acts/Plugins/DD4hep/ActsExtension.hpp"
 
 using dd4hep::Volume;
 using dd4hep::DetElement;
@@ -28,9 +27,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
   std::string detName = xmlDet.nameStr();
   DetElement worldDetElement(detName, xmlDet.id());
   DetElement posEcapDetElement(worldDetElement, "posEndcap", 0);
-  Acts::ActsExtension* ecapDetExt = new Acts::ActsExtension();
-  ecapDetExt->addType("endcap", "detector");
-  posEcapDetElement.addExtension<Acts::ActsExtension>(ecapDetExt);
 
 
 
@@ -61,12 +57,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
 
       discVolumeVec.emplace_back("disc", discShape, lcdd.air());
       discDetElementVec.emplace_back(posEcapDetElement, "disc" + std::to_string(discCounter), discCounter);
-      Acts::ActsExtension* detlayer = new Acts::ActsExtension();
-      detlayer->addType("sensitive disk", "layer");
-      // the local coordinate systems of modules in dd4hep and acts differ
-      // see http://acts.web.cern.ch/ACTS/latest/doc/group__DD4hepPlugins.html
-      detlayer->addType("axes", "definitions", "XZY");
-      discDetElementVec.back().addExtension<Acts::ActsExtension>(detlayer);
 
       // iterate over rings
       for (dd4hep::xml::Collection_t xRingColl(xCurrentRings, _U(ring)); (nullptr != xRingColl); ++xRingColl) {
@@ -139,10 +129,6 @@ static dd4hep::Ref_t createTkLayoutTrackerEndcap(dd4hep::Detector& lcdd,
               placedComponentVolume.addPhysVolID("component", compCounter);
               componentVolume.setSensitiveDetector(sensDet);
               DetElement moduleDetElement(discDetElementVec.back(), "comp" + std::to_string(compCounter), compCounter);
-
-              Acts::ActsExtension* moduleExtension = new Acts::ActsExtension();
-              moduleDetElement.addExtension<Acts::ActsExtension>(moduleExtension);
-
               moduleDetElement.setPlacement(placedComponentVolume);
               ++compCounter;
             }

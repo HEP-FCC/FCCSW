@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        SETUP: ["init_key4hep.sh", 'init_lcg.sh']
+        SETUP: ["init_key4hep.sh", 'init_lcg_97a_FCC_2.sh', 'init_lcg_98.sh']
     steps:
     - uses: actions/checkout@v2
     - name: Install CVMFS

@@ -1,1 +1,1 @@
-source /cvmfs/sw.hsf.org/spackages/edm4hep_bash.sh
+source /cvmfs/sw.hsf.org/key4hep/setup.sh
