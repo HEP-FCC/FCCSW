@@ -1,7 +1,5 @@
 #include "MomentumRangeParticleGun.h"
 
-#include "Generation/Units.h"
-
 #include <cmath>
 
 #include "GaudiKernel/IRndmGenSvc.h"
