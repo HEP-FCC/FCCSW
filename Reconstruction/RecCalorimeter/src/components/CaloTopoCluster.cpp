@@ -6,10 +6,10 @@
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/Cluster.h"
-#include "datamodel/ClusterCollection.h"
-#include "datamodel/CalorimeterHit.h"
-#include "datamodel/CalorimeterHitCollection.h"
+#include "edm4hep/Cluster.h"
+#include "edm4hep/ClusterCollection.h"
+#include "edm4hep/CalorimeterHit.h"
+#include "edm4hep/CalorimeterHitCollection.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
@@ -93,7 +93,7 @@ StatusCode CaloTopoCluster::execute() {
  
   // Create output collections
   auto edmClusters = m_clusterCollection.createAndPut();
-  CalorimeterHitCollection* edmClusterCells = new CalorimeterHitCollection();
+  edm4hep::CalorimeterHitCollection* edmClusterCells = new edm4hep::CalorimeterHitCollection();
 
   // Finds seeds
   CaloTopoCluster::findingSeeds(allCells, m_seedSigma, firstSeeds);
@@ -113,7 +113,7 @@ StatusCode CaloTopoCluster::execute() {
   double checkTotEnergy = 0.;
   int clusterWithMixedCells = 0;
   for (auto i : preClusterCollection) {
-    Cluster cluster;
+    edm4hep::Cluster cluster;
     //auto& clusterCore = cluster.core();
     double posX = 0.;
     double posY = 0.;
@@ -132,10 +132,10 @@ StatusCode CaloTopoCluster::execute() {
 	//      auto cellID = pair.first;
       // get CalorimeterHit by cellID
       auto newCell = edmClusterCells->create();
-      newCell.energy = allCells[cID];
-      newCell.cellID = cID;
-      newCell.type = pair.second;
-      energy += newCell.energy;
+      newCell.setEnergy(allCells[cID]);
+      newCell.setCellID(cID);
+      newCell.setType(pair.second);
+      energy += newCell.getEnergy();
 
       // get cell position by cellID
       // identify calo system
@@ -163,25 +163,23 @@ StatusCode CaloTopoCluster::execute() {
       else
         warning() << "No cell positions tool found for system id " << systemId << ". " << endmsg;
 
-      posX += posCell.X() * newCell.energy;
-      posY += posCell.Y() * newCell.energy;
-      posZ += posCell.Z() * newCell.energy;
+      posX += posCell.X() * newCell.getEnergy();
+      posY += posCell.Y() * newCell.getEnergy();
+      posZ += posCell.Z() * newCell.getEnergy();
       posPhi.push_back(posCell.Phi());
       posEta.push_back(posCell.Eta());
-      vecEnergy.push_back(newCell.energy);
-      sumPhi += posCell.Phi() * newCell.energy;
-      sumEta += posCell.Eta() * newCell.energy;
+      vecEnergy.push_back(newCell.getEnergy());
+      sumPhi += posCell.Phi() * newCell.getEnergy();
+      sumEta += posCell.Eta() * newCell.getEnergy();
       
-      cluster.addhits(newCell);
+      cluster.addToHits(newCell);
       auto er = allCells.erase(cID);
       
       if (er!=1)
 	info() << "Problem in erasing cell ID from map." << endmsg;
     }
-    cluster.energy = energy;
-    cluster.position.x = posX / energy;
-    cluster.position.y = posY / energy;
-    cluster.position.z = posZ / energy;
+    cluster.setEnergy(energy);
+    cluster.setPosition(edm4hep::Vector3f(posX / energy, posY / energy, posZ / energy));
     // store deltaR of cluster in time for the moment..
     sumPhi = sumPhi / energy;
     sumEta = sumEta / energy;
@@ -190,9 +188,9 @@ StatusCode CaloTopoCluster::execute() {
       deltaR += sqrt(pow(entryEta-sumEta,2) + pow(posEta[counter]-sumPhi,2)) * vecEnergy[counter];
       counter++;
     }
-    cluster.time = deltaR / energy;
-    verbose() << "Cluster energy:     " << cluster.energy << endmsg;
-    checkTotEnergy += cluster.energy;
+    cluster.addToShapeParameters(deltaR / energy);
+    verbose() << "Cluster energy:     " << cluster.getEnergy() << endmsg;
+    checkTotEnergy += cluster.getEnergy();
 
     edmClusters->push_back(cluster);
     if (system.size() > 1)
@@ -233,7 +231,7 @@ StatusCode CaloTopoCluster::buildingProtoCluster(
     int aLastNumSigma,
     std::vector<std::pair<uint64_t, double>>& aSeeds,
     const std::map<uint64_t, double>& aCells,
-    std::map<uint, std::vector< std::pair<uint64_t, uint>>>& aPreClusterCollection) {
+    std::map<uint, std::vector< std::pair<uint64_t, int>>>& aPreClusterCollection) {
   // Map of cellIDs to clusterIds
   std::map<uint64_t, uint> clusterOfCell;
 
@@ -298,7 +296,7 @@ CaloTopoCluster::searchForNeighbours(const uint64_t aCellId,
                                      int aNumSigma,
                                      const std::map<uint64_t, double>& aCells,
                                      std::map<uint64_t, uint>& aClusterOfCell,
-                                     std::map<uint, std::vector<std::pair<uint64_t, uint>>>& aPreClusterCollection,
+                                     std::map<uint, std::vector<std::pair<uint64_t, int>>>& aPreClusterCollection,
 				     bool aAllowClusterMerge) {
   // Fill vector to be returned, next cell ids and cluster id for which neighbours are found
   std::vector<std::pair<uint64_t, uint>> addedNeighbourIds;
