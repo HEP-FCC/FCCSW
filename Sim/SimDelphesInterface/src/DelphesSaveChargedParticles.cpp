@@ -84,6 +84,9 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     colITags = m_isolationTaggedParticles.createAndPut();
   }
 
+  // Get the longitudinal magnetic field component
+  double Bz = delphes.GetDouble("Bz", defaultMagneticField);
+  
   const TObjArray* delphesColl = delphes.ImportArray(m_delphesArrayName.value().c_str());
   if (delphesColl == nullptr) {
     warning() << "Delphes collection " << m_delphesArrayName << " not present. Skipping it." << endmsg;
@@ -94,13 +97,13 @@ StatusCode DelphesSaveChargedParticles::saveOutput(Delphes& delphes, const fcc::
     auto particle = colParticles->create();
 
     if (m_saveTrkCov) {
-      auto cov_d = CovToACTS(cand->TrackCovariance, cand->CtgTheta, cand->C);
+      auto cov_d = CovToACTS(cand->TrackCovariance, cand->CtgTheta, cand->C, Bz);
       auto t = colParticles_trkCov->create();
       t.d0(mTommConversionFactor * cand->D0);
       t.z0(mTommConversionFactor * cand->DZ);
       t.phi(cand->Phi);
       t.theta(TMath::ATan2(1.0, cand->CtgTheta));
-      Double_t b = -0.29979 * defaultMagneticField / 2. / mTommConversionFactor; //mag field in T
+      Double_t b = -0.29979 * Bz / 2. / mTommConversionFactor; //mag field in T
       t.qOverP(cand->C / (b*TMath::Sqrt(1 + cand->CtgTheta*cand->CtgTheta)));
       std::array<float,15> t_c;
       // save upper right triangle, row first
