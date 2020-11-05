@@ -134,7 +134,7 @@ fccrun Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_Reconstructi
        --input fccee_idea_LAr_pgun.root  \
        --filename output_allCalo_reco_noise.root
 ~~~
-It takes the input file with calorimeter cells fccee_idea_LAr_pgun.root, add noise to cells and run the sliding window clustering algorithm. The output file output_allCalo_reco_noise.root contains the information about calorimeter cells and the reconstructed clusters.
+It takes the input file with calorimeter cells `fccee_idea_LAr_pgun.root`, adds noise to cells and runs the sliding window clustering algorithm. The output file `output_allCalo_reco_noise.root` contains the information about calorimeter cells and the reconstructed clusters.
  
 Configuration of the sliding window algorithm in the example script. You have to build calorimeter towers (merge cells across the radius) first and create the clusters afterwards.
 ~~~[.py]
