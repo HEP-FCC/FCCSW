@@ -82,7 +82,7 @@ hist = UpstreamMaterial("histsPresampler",
                         numLayers = 8,
                         # sampling fraction is given as the upstream correction will be applied on calibrated cells
                          samplingFraction =  [0.24833] * 1 + [0.09482] * 1  +  [0.12242] * 1  +  [0.14182] * 1  +  [0.15667] * 1  +  [0.16923] * 1  +  [0.17980] * 1  +  [0.20085] * 1,
-                        OutputLevel = VERBOSE)
+                        OutputLevel = DEBUG)
 hist.deposits.Path="ECalBarrelCells"
 hist.particle.Path="GenParticles"
 
@@ -110,7 +110,7 @@ out.filename = "fccee_upstreamMaterial_inclinedEcal.root"
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [genalg_pgun, hepmc_converter, geantsim, createcellsBarrel, hist, out],
                 EvtSel = 'NONE',
-                EvtMax = 100,
+                EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
                 ExtSvc = [podioevent, geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG
