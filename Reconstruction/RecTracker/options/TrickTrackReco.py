@@ -43,7 +43,7 @@ if args.trajectories:
 if not args.noSignal:
   from Configurables import PodioInput
   podioinput = PodioInput("PodioReader", 
-                          collections=collectionNames.values(),
+                          collections=list(collectionNames.values()),
                             OutputLevel=DEBUG,
                             )
   podioinput.AuditExecute = True
