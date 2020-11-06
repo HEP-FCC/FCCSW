@@ -2,11 +2,11 @@
 #include "G4SDManager.hh"
 
 namespace sim {
-GdmlDetectorConstruction::GdmlDetectorConstruction(const std::string& aFileName)
+GdmlDetectorConstruction::GdmlDetectorConstruction(const std::string& aFileName, bool validate)
     : m_msgSvc("MessageSvc", "GdmlDetectorConstruction"),
       m_log(&(*m_msgSvc), "GdmlDetectorConstruction"),
       m_fileName(aFileName) {
-  m_parser.Read(m_fileName);
+  m_parser.Read(m_fileName, validate);
 }
 
 GdmlDetectorConstruction::~GdmlDetectorConstruction() {}
