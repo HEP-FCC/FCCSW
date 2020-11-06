@@ -19,5 +19,5 @@ StatusCode SimG4GdmlDetector::initialize() { return AlgTool::initialize(); }
 StatusCode SimG4GdmlDetector::finalize() { return AlgTool::finalize(); }
 
 G4VUserDetectorConstruction* SimG4GdmlDetector::detectorConstruction() {
-  return new sim::GdmlDetectorConstruction(m_gdmlFile);
+  return new sim::GdmlDetectorConstruction(m_gdmlFile, m_validate);
 }
