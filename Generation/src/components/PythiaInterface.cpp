@@ -151,20 +151,20 @@ StatusCode PythiaInterface::initialize() {
     }
 
     
-    m_powhegHooks = std::make_shared<Pythia8::PowhegHooks>();
+    m_powhegHooks = new Pythia8::PowhegHooks();
     #if PYTHIA_VERSION_INTEGER < 8300
-    m_pythiaSignal->addUserHooksPtr(m_powhegHooks.get());
+    m_pythiaSignal->addUserHooksPtr(m_powhegHooks);
     #else
-    m_pythiaSignal->addUserHooksPtr((Pythia8::UserHooksPtr)m_powhegHooks.get());
+    m_pythiaSignal->setUserHooksPtr((Pythia8::UserHooksPtr)m_powhegHooks);
     #endif
   }
   bool resonanceDecayFilter = m_pythiaSignal->settings.flag("ResonanceDecayFilter:filter");
   if (resonanceDecayFilter) {
-    m_resonanceDecayFilterHook = std::make_shared<ResonanceDecayFilterHook>();
+    m_resonanceDecayFilterHook = new ResonanceDecayFilterHook();
     #if PYTHIA_VERSION_INTEGER < 8300
-    m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook.get());
+    m_pythiaSignal->addUserHooksPtr(m_resonanceDecayFilterHook);
     #else
-    m_pythiaSignal->addUserHooksPtr((Pythia8::UserHooksPtr)m_resonanceDecayFilterHook.get());
+    m_pythiaSignal->addUserHooksPtr((Pythia8::UserHooksPtr)m_resonanceDecayFilterHook);
     #endif
   }
 

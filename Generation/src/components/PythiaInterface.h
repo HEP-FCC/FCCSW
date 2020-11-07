@@ -81,9 +81,9 @@ private:
   unsigned long int m_nISRveto{0};
   unsigned long int m_nFSRveto{0};    
   /// Pythia8 engine for Powheg ME/PS merging
-  std::shared_ptr<Pythia8::PowhegHooks> m_powhegHooks{nullptr};
+  Pythia8::PowhegHooks* m_powhegHooks{nullptr};
 
-  std::shared_ptr<ResonanceDecayFilterHook> m_resonanceDecayFilterHook{nullptr};
+  ResonanceDecayFilterHook* m_resonanceDecayFilterHook{nullptr};
 
   /// flag for additional printouts
   Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
