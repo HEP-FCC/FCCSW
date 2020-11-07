@@ -48,7 +48,6 @@ if not args.noSignal:
                             )
   podioinput.AuditExecute = True
   algList += [podioinput]
-print "# pileup: ", args.npileup
 if args.npileup > 0:
   pileupFilenames = args.pileupfiles
 
