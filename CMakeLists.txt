@@ -10,6 +10,8 @@ if (SAS)
         )
 endif(SAS)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake ${CMAKE_MODULE_PATH})
+
 option(ENABLE_CPACK "Whether to enable CPack." OFF)
 if(ENABLE_CPACK)
   include(CPack)
