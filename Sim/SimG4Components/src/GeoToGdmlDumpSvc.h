@@ -1,7 +1,7 @@
 #ifndef EXAMPLES_GEOTOGDMLDUMPSVC_H
 #define EXAMPLES_GEOTOGDMLDUMPSVC_H
 
-#include "ITestDD4hepSvc.h"
+#include "SimG4Interface/ITestDD4hepSvc.h"
 
 // Gaudi
 #include "GaudiKernel/Service.h"

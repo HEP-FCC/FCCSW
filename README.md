@@ -35,12 +35,12 @@ Test
 ----
 
 ~~~{.sh}
-./run fccrun Examples/options/example_options.py
+./run fccrun Examples/options/pythia.py
 ~~~
 
 you can also specify some options like number of events and output file
 ~~~{.sh}
-./run fccrun.py Examples/options/example_options.py --outputfile=my_own_output.root --nevents=1000
+./run fccrun Examples/options/pythia.py --Filename=my_own_output.root -n 1000
 ~~~
 
 You should see an HepMC printout. More tests can be executed with

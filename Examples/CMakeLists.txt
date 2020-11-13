@@ -12,12 +12,6 @@ find_package(ROOT COMPONENTS MathCore GenVector Geom)
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Examples)
 
-gaudi_add_module(Examples
-                 src/*.cpp
-		             INCLUDE_DIRS ROOT GaudiKernel Geant4 DD4hep SimG4Interface DetInterface DetCommon FCCEDM
-                 LINK_LIBRARIES GaudiAlgLib FWCore DetCommon ROOT GaudiKernel DD4hep FCCEDM
-                 )
-target_link_libraries(Examples ${Geant4_LIBRARIES})
 
 
 include(CTest)
@@ -43,10 +37,6 @@ gaudi_add_test(GeantFullSimTrackerHits
 gaudi_add_test(GeantFullSimTrackerHitsWithField
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_fullsim_field.py)
-gaudi_add_test(ReadFullSimTrackerHits
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/read_podio_input.py
-               DEPENDS GeantFullSimTrackerHitsWithField)
 gaudi_add_test(GeantFullSimParticleGun
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                FRAMEWORK options/geant_pgun_fullsim.py)
@@ -59,9 +49,6 @@ gaudi_add_test(GeantFastSimTrackerTkLayout
 gaudi_add_test(SimplePythia
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                COMMAND fccrun Examples/options/pythia.py)
-gaudi_add_test(ExampleOptions
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-               FRAMEWORK options/example_options.py)
 gaudi_add_test(DumpGDML
                FRAMEWORK options/dumpGeo.py)
 gaudi_add_test(PileupOverlay
