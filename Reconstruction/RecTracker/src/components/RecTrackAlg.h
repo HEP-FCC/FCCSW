@@ -10,12 +10,10 @@
 class ITrackSeedingTool;
 class ITrackFittingTool;
 
-namespace fcc {
-class TrackHitCollection;
+namespace edm4hep {
+class TrackerHitCollection;
 class TrackCollection;
-class TrackStateCollection;
-class PositionedTrackHitCollection;
-class ParticleCollection;
+class ReconstructedParticleCollection;
 }
 
 /***
@@ -32,13 +30,12 @@ public:
 
 private:
   // INPUT: Trackhits
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"TrackerPositionedHits", Gaudi::DataHandle::Reader,
+  DataHandle<edm4hep::TrackerHitCollection> m_positionedTrackHits{"TrackerHits", Gaudi::DataHandle::Reader,
 
                                                                       this};
   // OUTPUT: Tracks, TrackStates, and corresponding RecParticles 
-  DataHandle<fcc::TrackStateCollection> m_trackStates{"TrackStates", Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::TrackCollection> m_tracks{"Tracks", Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::ParticleCollection> m_recParticles{"TrackRecoParticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::TrackCollection> m_tracks{"Tracks", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::ReconstructedParticleCollection> m_recParticles{"TrackRecoParticles", Gaudi::DataHandle::Writer, this};
 
   // TOOLS: Seeding- and Fit-Tools that do the actual work 
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool{"TrickTrackSeedingTool/TrickTrackSeedingTool", this};
