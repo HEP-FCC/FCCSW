@@ -96,16 +96,15 @@ void TrickTrackSeedingTool::findDoublets(tricktrack::HitDoublets<Hit>* doublets,
 }
 
 void TrickTrackSeedingTool::createBarrelSpacePoints(std::vector<Hit>& thePoints,
-                                                       const fcc::PositionedTrackHitCollection* theHits) {
+                                                       const edm4hep::SimTrackerHitCollection* theHits) {
   size_t hitCounter = 0;
   std::set<int> trackIdsInThisLayer;
   for (auto hit : *theHits) {
-    if (m_hitFilterTool->filter(hit.core())) {
-        auto result = trackIdsInThisLayer.insert(hit.core().bits);
-        if (result.second || !m_cleanHits) {
-        thePoints.emplace_back(std::sqrt(std::pow(hit.position().x,2) + std::pow(hit.position().y,2)), // hit r
-        std::atan2(hit.position().y, hit.position().x), // hit phi 
-        hit.position().z, hit.core().time, hitCounter);
+    if (m_hitFilterTool->filter(hit) {
+        auto pos = hit.getPosition();
+        thePoints.emplace_back(std::sqrt(std::pow(pos.x,2) + std::pow(pos.y,2)), // hit r
+        std::atan2(pos.y, pos.x), // hit phi 
+        pos.z, hit.getTime(), hitCounter);
         }
 
       }
@@ -116,7 +115,7 @@ void TrickTrackSeedingTool::createBarrelSpacePoints(std::vector<Hit>& thePoints,
 
 
 std::multimap<unsigned int, unsigned int>
-TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHits) {
+TrickTrackSeedingTool::findSeeds(const edm4hep::SimTrackerHitCollection* theHits) {
 
   unsigned int numLayers = m_layerGraph.theLayers.size(); 
 
@@ -153,16 +152,6 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
     findDoublets(doubletsOnLayerPair, layerPoints[innerLayerIndex], layerTrees[outerLayerIndex], layerPoints[outerLayerIndex]);
 
     doublets.push_back(doubletsOnLayerPair);
-    unsigned int numGoodDoublets = 0;
-    unsigned int numBadDoublets = 0;
-    for (unsigned int ii = 0; ii < doublets.back()->size(); ++ii) {
-      if ((*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::inner).identifier()].core().bits == (*theHits)[doublets.back()->hit(ii,tricktrack::HitDoublets<Hit>::outer).identifier()].core().bits) {
-        numGoodDoublets++;
-      } else {
-        numBadDoublets++;
-      }
-    }
-    debug() << "found "  << doublets.back()->size() << "/" << numGoodDoublets << "/" << numBadDoublets << "  (total/good/bad) doublets on layers  " << innerLayerIndex << " and " << outerLayerIndex  << endmsg;
   }
 
   debug() << "Create and connect cells ..."  << endmsg;
@@ -180,34 +169,6 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
 
   // go through the found seeds, check for correctness and write them to map
   debug() << "found " << foundTracklets.size()<< " tracklets" << endmsg;
-  auto cells = m_automaton->getAllCells();
-  int numGoodTracklets = 0; 
-  int trackletCounter = 0;
-  for (const auto& tracklet : foundTracklets) {
-   // local variable for a quick check of track seed correctness,
-   // set it to -1 in case the trackIds along the tracklet disagree
-   long int l_trackId = (*theHits)[cells[tracklet[0]].getInnerHit().identifier()].core().bits;
-    for(const auto& t: tracklet) {
-      auto l_id = cells[t].getInnerHit().identifier();
-      theSeeds.insert(std::pair<unsigned int, unsigned int>(trackletCounter, l_id));
-      if (l_trackId !=  (long int)(*theHits)[l_id].core().bits) {
-        l_trackId = -1;
-      }
-    }
-    auto l_id4 = cells[tracklet[minNumberOfHits - 2]].getOuterHit().identifier();
-    theSeeds.insert(std::pair<unsigned int, unsigned int>(trackletCounter, l_id4));
-    if (l_trackId != (long int) (*theHits)[l_id4].core().bits) {
-       l_trackId = -1;
-    }
-    if (l_trackId != -1) { // all the trackIds were identical, a correctly identified track
-      ++numGoodTracklets;
-      ++m_goodTracklets;
-      debug() << "found good track with ID " << l_trackId << endmsg;
-    }
-    ++trackletCounter;
-    m_totalTracklets++;
-  }
-  debug() << "found " << numGoodTracklets << " correct tracklets" << endmsg;
 
   // todo: if the size of  isOuterHitOfCell is smaller than the number of hits,
   // see tricktrack issue #12
@@ -223,5 +184,4 @@ TrickTrackSeedingTool::findSeeds(const fcc::PositionedTrackHitCollection* theHit
 }
 
 StatusCode TrickTrackSeedingTool::finalize() { 
-  debug() << "good / total seeds: \t" << m_goodTracklets << "\t" << m_totalTracklets << endmsg; 
   return GaudiTool::finalize(); }

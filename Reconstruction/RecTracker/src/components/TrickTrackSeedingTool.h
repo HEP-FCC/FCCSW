@@ -9,9 +9,7 @@
 #include "RecInterface/ITrackSeedingTool.h"
 #include "RecInterface/IHitFilterTool.h"
 #include "RecInterface/ILayerGraphTool.h"
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackStateCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 #include "tricktrack/SpacePoint.h"
 #include "tricktrack/CMGraph.h"
@@ -35,9 +33,9 @@ public:
   virtual StatusCode initialize() override final;
   virtual StatusCode finalize() override final;
 
-  virtual std::multimap<unsigned int, unsigned int> findSeeds(const fcc::PositionedTrackHitCollection* theHits) override final;
+  virtual std::multimap<unsigned int, unsigned int> findSeeds(const edm4hep::SimTrackerHitCollection* theHits) override final;
   void createBarrelSpacePoints(std::vector<tricktrack::TTPoint>& thePoints,
-                               const fcc::PositionedTrackHitCollection* theHits);
+                               const edm4hep::SimTrackerHitCollection* theHits);
 tricktrack::HitDoublets<tricktrack::TTPoint>*   findDoublets( std::vector<tricktrack::TTPoint> theInnerHits,  std::vector<tricktrack::TTPoint> theOuterHits);
 //void createKDTree( std::vector<Hit>& thePoints, std::pair<int, int> sIndex);
 void findDoublets(tricktrack::HitDoublets<tricktrack::TTPoint>* doublets, std::vector<tricktrack::TTPoint> theInnerHits,  tricktrack::FKDTree<tricktrack::TTPoint, double, 4> theOuterTree, std::vector<tricktrack::TTPoint> theOuterHits);
