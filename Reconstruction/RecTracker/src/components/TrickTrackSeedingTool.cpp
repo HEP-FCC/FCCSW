@@ -2,9 +2,7 @@
 
 #include "DetInterface/IGeoSvc.h"
 
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackStateCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 
 
