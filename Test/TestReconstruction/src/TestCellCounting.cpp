@@ -5,8 +5,6 @@
 #include "DetInterface/IGeoSvc.h"
 #include "DetSegmentation/FCCSWGridPhiEta.h"
 
-// datamodel
-#include "datamodel/CaloHitCollection.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
