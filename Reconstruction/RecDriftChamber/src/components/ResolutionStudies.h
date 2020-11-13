@@ -6,8 +6,6 @@
 #include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/ToolHandle.h"
 
-#include "datamodel/TrackHit.h"
-#include "datamodel/TrackHitCollection.h"
 
 // FCCSW
 #include "FWCore/DataHandle.h"
