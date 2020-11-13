@@ -1,9 +1,7 @@
 
 #include "DetInterface/IGeoSvc.h"
 
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 #include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
@@ -23,7 +21,7 @@ DECLARE_COMPONENT(CombinatorialSeedingTest)
 CombinatorialSeedingTest::CombinatorialSeedingTest(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {
 
-  declareProperty("positionedTrackHits", m_positionedTrackHits, "Tracker hits (Input)");
+  declareProperty("TrackHits", m_positionedTrackHits, "Tracker hits (Input)");
   declareProperty("TrackSeedingTool", m_trackSeedingTool);
 }
 
@@ -36,7 +34,7 @@ StatusCode CombinatorialSeedingTest::initialize() {
 StatusCode CombinatorialSeedingTest::execute() {
 
   // get hits from event store
-  const fcc::PositionedTrackHitCollection* hits = m_positionedTrackHits.get();
+  const edm4hep::SimTrackerHitCollection* hits = m_positionedTrackHits.get();
   auto seedmap = m_trackSeedingTool->findSeeds(hits);
 
   for (auto seedIdPair: seedmap) {
