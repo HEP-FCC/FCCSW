@@ -11,12 +11,7 @@
 // Include UserHooks for randomly choosing between integrated and
 // non-integrated treatment for unitarised merging.
 #include "Pythia8Plugins/aMCatNLOHooks.h"
-
 #include "Pythia8Plugins/EvtGen.h"
-
-
-#include "datamodel/FloatValueCollection.h"
-
 #include "HepMC/GenEvent.h"
 
 DECLARE_COMPONENT(PythiaInterface)
@@ -281,21 +276,24 @@ StatusCode PythiaInterface::getNextEvent(HepMC::GenEvent& theEvent) {
     for (int i = 0; i < m_slowJet->sizeJet(); ++i)
       ptVec.push_back(m_slowJet->pT(i));
 
-    auto var = mePsMatchingVars->create();
 
     // 0th entry = number of generated partons
-    var.value(njetNow);
+    mePsMatchingVars->push_back(njetNow);
 
     // odd  entries: d(ij) observables --- 1): d01, 3): d12, 5): d23, 7): d34
     // even entries: pT(i) observables --- 2): pT1, 4): pT2, 6): pT3, 8): pT4
     for (unsigned int i = 0; i < 4; ++i) {
-      var = mePsMatchingVars->create();
-      var.value(-999);
-      if (dijVec.size() > i) var.value(log10(dijVec[i]));
+      if (dijVec.size() > i) {
+        mePsMatchingVars->push_back(log10(dijVec[i]));
+      } else {
+        mePsMatchingVars->push_back(-999);
+      }
 
-      var = mePsMatchingVars->create();
-      var.value(-999);
-      if (ptVec.size() > i) var.value(ptVec[i]);
+      if (ptVec.size() > i) {
+        mePsMatchingVars->push_back(ptVec[i]);
+      } else {
+        mePsMatchingVars->push_back(-999);
+      }
     }
   }
 

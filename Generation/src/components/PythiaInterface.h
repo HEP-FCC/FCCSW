@@ -35,10 +35,6 @@ class amcnlo_unitarised_interface;
 
 #endif
 
-namespace fcc {
-  class FloatValueCollection;
-}
-
 
 class PythiaInterface : public GaudiTool, virtual public IHepMCProviderTool {
 
@@ -62,7 +58,7 @@ private:
   // Tool to smear vertices
   ToolHandle<IVertexSmearingTool> m_vertexSmearingTool;
   // Output handle for ME/PS matching variables
-  DataHandle<fcc::FloatValueCollection> m_handleMePsMatchingVars{"mePsMatchingVars", Gaudi::DataHandle::Writer, this};
+  DataHandle<std::vector<float>> m_handleMePsMatchingVars{"mePsMatchingVars", Gaudi::DataHandle::Writer, this};
 
   int m_nAbort{0};
   int m_iAbort{0};
