@@ -10,7 +10,8 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITrackSeedingTool.h"
-#include "datamodel/PositionedTrackHitCollection.h"
+#include "edm4hep/MCRecoTrackerAssociation.h"
+#include "edm4hep/TrackerHitCollection.h"
 
 /** @class TruthSeedingTool
  * Create track seeds from MC-Truth
@@ -23,7 +24,10 @@ public:
   virtual StatusCode initialize() override final;
   virtual StatusCode finalize() override final;
   /// create and return the map trackId -> hitIndex, associating hits to tracks
-  virtual std::multimap<unsigned int, unsigned int> findSeeds(const fcc::PositionedTrackHitCollection* theHits) override final;
+  virtual std::multimap<unsigned int, unsigned int> findSeeds(const edm4hep::TrackerHitCollection* theHits) override final;
+
+private:
+  DataHandle<edm4hep::MCRecoTrackerAssociationCollection> m_rectrk_assoc{"MCRecoTrackerAssociation"}, Gaudi::DataHandle::Writer, this};
 
 };
 

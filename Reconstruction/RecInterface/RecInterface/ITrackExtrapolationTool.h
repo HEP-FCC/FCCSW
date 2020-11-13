@@ -2,8 +2,8 @@
 #define RECINTERFACE_ITRACKEXTRAPOLATIONTOOL_H
 
 #include "GaudiKernel/IAlgTool.h"
-#include "datamodel/PositionedTrackHit.h"
-#include "datamodel/TrackState.h"
+#include "edm4hep/TrackerHit.h"
+#include "edm4hep/TrackState.h"
 
 /** @class ITrackExtrapolationTool RecInterface/RecInterface/ITrackExtrapolationTool.h
  * ITrackExtrapolationTool.h
@@ -15,7 +15,7 @@ class ITrackExtrapolationTool : virtual public IAlgTool {
 public:
   DeclareInterfaceID(ITrackExtrapolationTool, 1, 0);
 
-  virtual std::vector<fcc::TrackState> extrapolate(fcc::TrackState theTrackState) = 0;
+  virtual std::vector<edm4hep::TrackState> extrapolate(edm4hep::TrackState theTrackState) = 0;
 };
 
 #endif /* RECINTERFACE_IEXTRAPOLATIONTOOL_H */

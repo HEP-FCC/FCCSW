@@ -6,10 +6,9 @@
 
 #include <map>
 
-namespace fcc {
-class PositionedTrackHitCollection;
+namespace edm4hep {
 class TrackCollection;
-class TrackStateCollection;
+class TrackerHitCollection;
 }
 
 /** \brief High level interface for a track fitter
@@ -21,8 +20,8 @@ public:
   DeclareInterfaceID(ITrackFittingTool, 1, 0);
 
   /// Create tracks out of `theHits`, using the seeding information in `seedmap`
-  virtual std::pair<fcc::TrackCollection*, fcc::TrackStateCollection*>
-  fitTracks(const fcc::PositionedTrackHitCollection* theHits, std::multimap<unsigned int, unsigned int> seedmap) = 0;
+  virtual edm4hep::TrackCollection
+  fitTracks(const edm4hep::TrackerHitCollection* theHits, std::multimap<unsigned int, unsigned int> seedmap) = 0;
 };
 
 #endif /* RECINTERFACE_ITRACKFITTINGTOOL_H */

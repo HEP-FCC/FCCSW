@@ -7,10 +7,8 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 #include "RecInterface/ITrackFittingTool.h"
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackStateCollection.h"
+#include "edm4hep/TrackCollection.h"
+#include "edm4hep/TrackerHitCollection.h"
 
 #include <map>
 
@@ -23,8 +21,8 @@ public:
   ~RiemannFitTool() = default;
   virtual StatusCode initialize() override final;
   virtual StatusCode finalize() override final;
-  virtual std::pair<fcc::TrackCollection*, fcc::TrackStateCollection*>
-  fitTracks(const fcc::PositionedTrackHitCollection* theHits,
+  virtual edm4hep::TrackCollection`
+  fitTracks(const edm4hep::TrackerHitCollection* theHits,
             std::multimap<unsigned int, unsigned int> seedmap) override final;
 
 private:
