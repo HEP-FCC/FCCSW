@@ -6,9 +6,8 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/Units.h"
 
-namespace fcc {
+namespace edm4hep {
 class MCParticleCollection;
-class GenVertexCollection;
 }
 
 class EDMToHepMCConverter : public GaudiAlgorithm {
@@ -27,9 +26,7 @@ private:
   /// Handle for the HepMC to be read
   DataHandle<HepMC::GenEvent> m_hepmchandle{"hepmc", Gaudi::DataHandle::Writer, this};
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_genphandle{"genParticles", Gaudi::DataHandle::Reader, this};
-  /// Handle for the genvertices to be written
-  DataHandle<fcc::GenVertexCollection> m_genvhandle{"genVertices", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::MCParticleCollection> m_genphandle{"GenParticles", Gaudi::DataHandle::Reader, this};
 };
 
 #endif
