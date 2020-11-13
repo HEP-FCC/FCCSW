@@ -14,12 +14,6 @@
 
 
 class IGeoSvc;
-/*
-namespace fcc {
-class TrackHitCollection;
-class PositionedTrackHitCollection;
-}
-*/
 
 class ResolutionStudies : public GaudiAlgorithm {
 public:
@@ -40,19 +34,6 @@ private:
   dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
 
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the readout (hits collection) to save"};
-  /// Names of the fields for which neighbours are found
-  /*
-  std::vector<std::string> m_fieldNames;
-  /// Minimal and maximal values of the fields for which neighbours are found
-  std::vector<std::pair<int, int>> m_fieldExtremes;
-
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedHits{"positionedHits", Gaudi::DataHandle::Reader, this};
-  DataHandle<fcc::TrackHitCollection> m_mergedTrackHits{"mergedHits", Gaudi::DataHandle::Writer, this};
-
-  Gaudi::Property<std::string> m_outFileName{this, "outFileName", "", "Output filename"};
-  Gaudi::Property<double> m_EdepCut{this, "EdepCut", 0.1, "Edep Cut"};
-  Gaudi::Property<double> m_DCACut{this, "DCACut", 0.1, "DCACut Cut"};
-  */
 
 };
 

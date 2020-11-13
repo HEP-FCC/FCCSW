@@ -1,7 +1,6 @@
 
 #include "DetInterface/IGeoSvc.h"
 
-#include "datamodel/PositionedTrackHitCollection.h"
 
 
 #include "DD4hep/Detector.h"
@@ -23,8 +22,6 @@ DECLARE_COMPONENT(ResolutionStudies)
 ResolutionStudies::ResolutionStudies(const std::string& name, ISvcLocator* svcLoc) : 
 GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name)
 {
-  //  declareProperty("mergedHits", m_mergedTrackHits, "Merged Tracker hits (Output)");
-  //  declareProperty("positionedHits", m_positionedHits, "Positioned hits (Input)");
 }
 
 StatusCode ResolutionStudies::initialize() {
