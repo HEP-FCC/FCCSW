@@ -1,8 +1,6 @@
 #ifndef RECTRACKER_FASTGAUSSSMEARDIGI_H
 #define RECTRACKER_FASTGAUSSSMEARDIGI_H
 
-//#include "DD4hep/Detector.h"
-//#include "DD4hep/BitField64.h"
 
 // GAUDI
 #include "GaudiAlg/GaudiAlgorithm.h"
@@ -14,9 +12,8 @@
 
 class IGeoSvc;
 
-namespace fcc {
-class TrackHitCollection;
-class PositionedTrackHitCollection;
+namespace edm4hep {
+class SimTrackerHitCollection;
 }
 
 
@@ -43,8 +40,8 @@ private:
   //dd4hep::DDSegmentation::BitField64* m_decoder;
   //dd4hep::VolumeManager m_volman;
 
-  DataHandle<fcc::TrackHitCollection> m_trackHits{"trackHits", Gaudi::DataHandle::Reader, this};
-  DataHandle<fcc::PositionedTrackHitCollection> m_smearedTrackHits{"smearedHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::SimTrackerHitsCollection> m_trackHits{"TrackHits", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::SimTrackerHitsCollection> m_smearedTrackHits{"TrackHitsSmeared", Gaudi::DataHandle::Writer, this};
   Gaudi::Property<std::string> m_readoutName{this, "readoutName", "", "Name of the readout (hits collection) to save"};
 
   Rndm::Numbers m_gaussDist;

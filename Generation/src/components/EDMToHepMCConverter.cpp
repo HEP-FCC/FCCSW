@@ -32,7 +32,6 @@ StatusCode EDMToHepMCConverter::execute() {
                           p.getPDG(),
                           p.getGeneratorStatus());  // hepmc status code for final state particle
 
-      if (p.startVertex().isAvailable()) {
         auto pos = p.getPosition();
         HepMC::GenVertex* v =
             new HepMC::GenVertex(HepMC::FourVector(pos.x,
@@ -42,7 +41,6 @@ StatusCode EDMToHepMCConverter::execute() {
 
         v->add_particle_out(pHepMC);
         event->add_vertex(v);
-      }
     }
   }
 
