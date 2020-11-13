@@ -1,6 +1,6 @@
 #include "FCChhSeedHitFilterTool.h"
 
-#include "datamodel/TrackHitCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 
 
@@ -17,17 +17,17 @@ StatusCode FCChhSeedHitFilterTool::initialize() {
   return sc;
 }
 
-bool FCChhSeedHitFilterTool::filter(fcc::TrackHit hit) {
+bool FCChhSeedHitFilterTool::filter(edm4hep::SimTrackerHit hit) {
 
   if (m_systemId == 0 || m_systemId == 1) {  // barrel
-    if (hit.core().cellId % 16 == m_systemId) {
-      if ((hit.core().cellId >> 4) % 32 == m_layerId) {
+    if (hit.getCellID() % 16 == m_systemId) {
+      if ((hit.getCellID() >> 4) % 32 == m_layerId) {
         return true;
       }
     }
   } else {  // endcap
-    if (hit.core().cellId % 16 == m_systemId) {
-      if ((hit.core().cellId >> 4) % 64 == m_layerId) {
+    if (hit.getCellID() % 16 == m_systemId) {
+      if ((hit.getCellID() >> 4) % 64 == m_layerId) {
         return true;
       }
     }
