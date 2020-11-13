@@ -6,7 +6,6 @@
 #include "GaudiKernel/IEventProcessor.h"
 
 #include "edm4hep/MCParticleCollection.h"
-#include "edm4hep/GenVertexCollection.h"
 
 #include <math.h>
 
