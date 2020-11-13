@@ -5,10 +5,8 @@
 #include "datamodel/GenVertexCollection.h"
 #include "datamodel/MCParticleCollection.h"
 
-#include "Generation/Units.h"
 
 using HepMC::GenParticle;
-using HepMC::Units::conversion_factor;
 
 DECLARE_COMPONENT(EDMToHepMCConverter)
 
@@ -25,27 +23,23 @@ StatusCode EDMToHepMCConverter::execute() {
   const fcc::MCParticleCollection* particles = m_genphandle.get();
   // ownership of event given to data service at the end of execute
   HepMC::GenEvent* event = new HepMC::GenEvent;
+  event->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 
-  // conversion of units to EDM standard units:
-  // First cover the case that hepMC file is not in expected units and then convert to EDM default
-  double hepmc2EdmLength = conversion_factor(event->length_unit(), gen::hepmcdefault::length) * gen::hepmc2edm::length;
-  double hepmc2EdmEnergy =
-      conversion_factor(event->momentum_unit(), gen::hepmcdefault::energy) * gen::hepmc2edm::energy;
 
   for (auto p : *(particles)) {
     if (p.status() == 1) {  // only final state particles
       GenParticle* pHepMC =
-          new GenParticle(HepMC::FourVector(p.p4().px, p.p4().py, p.p4().pz, p.p4().mass / hepmc2EdmEnergy),
+          new GenParticle(HepMC::FourVector(p.p4().px, p.p4().py, p.p4().pz, p.p4().mass),
                           p.pdgId(),
                           p.status());  // hepmc status code for final state particle
 
       fcc::ConstGenVertex vStart = p.startVertex();
       if (p.startVertex().isAvailable()) {
         HepMC::GenVertex* v =
-            new HepMC::GenVertex(HepMC::FourVector(vStart.position().x / hepmc2EdmLength,
-                                                   vStart.position().y / hepmc2EdmLength,
-                                                   vStart.position().z / hepmc2EdmLength,
-                                                   vStart.ctau() / Gaudi::Units::c_light / hepmc2EdmLength));
+            new HepMC::GenVertex(HepMC::FourVector(vStart.position().x,
+                                                   vStart.position().y,
+                                                   vStart.position().z,
+                                                   vStart.ctau() / Gaudi::Units::c_light));
 
         v->add_particle_out(pHepMC);
         event->add_vertex(v);

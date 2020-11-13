@@ -38,6 +38,8 @@ public:
 private:
   /// name of the GDML file
   Gaudi::Property<std::string> m_gdmlFile{this, "gdml", "", "name of the GDML file"};
+  // validate gdml schema
+  Gaudi::Property<bool> m_validate{this, "validateGDMLSchema", false, "try to validate the GDML schema"};
 };
 
 #endif /* SIMG4COMPONENTS_G4GDMLDETECTOR_H */

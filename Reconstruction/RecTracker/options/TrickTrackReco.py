@@ -43,12 +43,11 @@ if args.trajectories:
 if not args.noSignal:
   from Configurables import PodioInput
   podioinput = PodioInput("PodioReader", 
-                          collections=collectionNames.values(),
+                          collections=list(collectionNames.values()),
                             OutputLevel=DEBUG,
                             )
   podioinput.AuditExecute = True
   algList += [podioinput]
-print "# pileup: ", args.npileup
 if args.npileup > 0:
   pileupFilenames = args.pileupfiles
 

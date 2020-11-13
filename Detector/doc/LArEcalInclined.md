@@ -8,8 +8,10 @@
   * [Geant4 simulation and digitisation](#geant4-simulation-and-digitisation)
   * [Reconstruction](#reconstruction)
 * [Optimisation of the calorimeter](#optimisation-of-the-calorimeter)
+  * [Geometry of the calorimeter](#geometry-of-the-calorimeter)
+  * [Cell sizes](#cell-sizes)
 * [HOWTOs](#howtos)
-  * [How to recalculate sampling fraction](#how-to-recalculate-sampling-fraction)
+  * [How to calculate sampling fraction](#how-to-calculate-sampling-fraction)
   * [How to calculate upstream correction](#how-to-calculate-upstream-correction)
   * [How to change noise values](#how-to-change-noise-values)
   * [How to limit number of layers in cluster reconstruction](#how-to-limit-number-of-layers-in-cluster-reconstruction)
@@ -85,6 +87,14 @@ You can find more details about the implemented algorithms [here](../../Reconstr
 
 (*) It could be a bit a surprising that we apply the sampling fraction correction even before adding noise to cells. By doing this you can immediately see that the energy corresponds to what is expected right after the simulation is finished. The noise values added during the reconstruction step are expected to be calibrated to the EM scale. On the other hand, this is just an example script, you can just switch on and off the calibration, noise etc. as you like. This is very flexible and up to you.
 
+You can run the example script with the following command
+~~~[.sh]
+fccrun Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py  \
+       --filename fccee_LAr_idea_pgun.root \
+       -n 10
+~~~
+The name of the output file is fccee_idea_LAr_pgun.root. The ROOT file contains the information about MC particles and cells with energy deposits of 10 single particle events (100 GeV e-) in the FCC event data model.
+
 Configuration of create cells algorithm in [Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py](../../Reconstruction/RecFCCeeCalorimeter/options/runCaloSim.py) 
 ~~~[.py]
 from Configurables import CreateCaloCells
@@ -117,6 +127,14 @@ createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1",
    - Details are described [here](../../Reconstruction/doc/RecCalorimeter.md).
  - Output: calorimeter clusters
  - Example script [Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py](../../Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py)
+
+You can run the example script with the following command
+~~~[.sh]
+fccrun Reconstruction/RecFCCeeCalorimeter/options/runFullCaloSystem_ReconstructionSW_noiseFromFile.py  \
+       --input fccee_idea_LAr_pgun.root  \
+       --filename output_allCalo_reco_noise.root
+~~~
+It takes the input file with calorimeter cells `fccee_idea_LAr_pgun.root`, adds noise to cells and runs the sliding window clustering algorithm. The output file `output_allCalo_reco_noise.root` contains the information about calorimeter cells and the reconstructed clusters.
  
 Configuration of the sliding window algorithm in the example script. You have to build calorimeter towers (merge cells across the radius) first and create the clusters afterwards.
 ~~~[.py]
@@ -161,6 +179,8 @@ createClusters.clusters.Path = "CaloClusters"
 
 ## Optimisation of the calorimeter
 
+### Geometry description
+
 Parameters to be tunned (in configuration xml files)
 - Material in the gap between the lead plates (default: LAr)
 - Gap thickness (a distance between two nearby absorbers, it is measured perpendicular to the readout at the minimum radial distance of the calorimeter) 
@@ -176,9 +196,57 @@ Once you change the parameters in the geometry description (xml file), you need 
 - Change the sampling fractions in the nominal xml file
 - Estimate the electronic noise per cell
 
+### Cell sizes
+
+The definition of the cell sizes is done in the configuration xml files. The division in longitudinal *layers* and in *eta* is virtual as there are no physical volumes corresponding to the division in *R* and *eta*. The size of the cell in *phi* should correspond to a multiple of the angle between two absorbers. The segmentation in *phi* is calculated from the position of the centre of the elementary cell defined by *layer*, *eta* and *module* IDs. The segmentation in *eta* is set using the field *grid_size_eta* (for simulation and reconstruction readouts). To change the cell size in *phi*, change the fields *phi_bins* and *offset_phi* (reconstruction readout).
+
+Definition of readout
+~~~{.xml}
+  <readouts>
+    <!-- readout for the simulation -->
+    <!-- offset in eta is eta max value including cryostat -->
+    <readout name="ECalBarrelEta">
+      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.0"/>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
+    </readout>
+    <!-- readout for the reconstruction -->
+    <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
+    <readout name="ECalBarrelPhiEta">
+      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.0" offset_phi="-pi+(pi/704.)"/>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
+    </readout>
+  </readouts>
+~~~
+
+Definition of the thickness of the longitudinal layers is done using field *layer*
+~~~{.xml}
+<layers>
+     <layer thickness="2*cm" repeat="1"/>
+     <layer thickness="6.15*cm" repeat="7"/>
+</layers>
+~~~
+The thickness is defined in the radial direction (NOT along the inclined plates!). It allows to define layers of different thickness easily. There is a first layer with thickness of 2 cm and 7 layers of 6.15 cm in this example.
+
+While optimising the layer thickness, you can set the thickness of all layers to a small value (e.g. 0.5 cm). Run the simulations with many layers and merge the layers into cells in the next step. This will give flexibility for the optimisation studies without the need to re-run the simulations over and over. There is a tool which merges layers [MergeLayers](../../Reconstruction/RecCalorimeter/src/components/MergeLayers.h):
+~~~[.py]
+from Configurables import MergeLayers
+mergelayers = MergeLayers("MyMergeLayers",
+                   # take the bitfield description from the geometry service
+                   readout = ecalReadoutName,
+                   # cells in which field should be merged
+                   identifier = "layer",
+                   volumeName = "layer",
+                   # how many cells to merge
+                   merge =  [7]*5+[8],
+                   OutputLevel = INFO)
+mergelayers.inhits.Path = "ECalCells"
+mergelayers.outhits.Path = "mergedECalCells"
+~~~
+In this example 6 layers are created from 43 layers (7*5+8).
+
 ## HOWTOs
 
-### How to recalculate sampling fraction values
+### How to calculate sampling fraction values
 
 Details about the algorithm and usage are given [here](DetectorStudies.md).
 
@@ -192,7 +260,11 @@ Once you derive the new sampling fraction values, you can apply them by changing
 
 The energy losses in the upstream material are investigated using the algorithm [UpstreamMaterial](../DetStudies/src/components/UpstreamMaterial.h). The details about the algorithm are given [here](DetectorStudies.md).
 
-Use [fcc_ee_samplingFraction_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_samplingFraction_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee studies. Change the configuration file to match the geometry you are interested in. 
+Use [fcc_ee_upstreamMaterial_inclinedEcal.py](../DetStudies/tests/options/fcc_ee_upstreamMaterial_inclinedEcal.py) with [FCCee_ECalBarrel_upstream.xml](../DetFCCeeECalInclined/compact/FCCee_ECalBarrel_upstream.xml) cofiguration file for FCCee studies. Change the configuration file to match the geometry you are interested in. 
+
+The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the geometry of the first layer of the calorimeter. There is a linear correlation between the energy detected in the first layer and the energy deposited in the upstream material. Moreover, the constants of the linear dependence changes with energy and pseudorapidity of the incoming particle. More details about the upstream correction can be found in Section 4.1.1.1 of [this paper](https://arxiv.org/abs/1912.09962).
+
+The application of the upstream correction is missing in the FCCSW, it is on our todo list. The correction is applied on the reconstructed objects - clusters from sliding window algorithm. An example can be found [here](https://github.com/faltovaj/FCC_calo_analysis_cpp/blob/master/scripts/plot_recoMonitor.py#L13).
 
 The upstream correction depends on the thickness of the cryostat in front of the calorimeter and on the geometry of the first layer of the calorimeter. There is a linear correlation between the energy detected in the first layer and the energy deposited in the upstream material. Moreover, the constants of the linear dependence changes with energy and pseudorapidity of the incoming particle. More details about the upstream correction can be found in Section 4.1.1.1 of [this paper](https://arxiv.org/abs/1912.09962).
 

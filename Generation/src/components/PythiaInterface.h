@@ -10,19 +10,30 @@
 #include "Pythia8Plugins/PowhegHooks.h"
 #include "Pythia8Plugins/HepMC2.h"
 
-class EvtGenDecays;
 
 // Forward HepMC
 namespace HepMC {
 class GenEvent;
 }
 // Forward Pythia
+#if PYTHIA_VERSION_INTEGER < 8300
+class EvtGenDecays;
 namespace Pythia8 {
 class Pythia;
 class SlowJet;
 class JetMatchingMadgraph;
 class amcnlo_unitarised_interface;
 }
+#else
+namespace Pythia8 {
+class EvtGenDecays;
+class Pythia;
+class SlowJet;
+class JetMatchingMadgraph;
+class amcnlo_unitarised_interface;
+}
+
+#endif
 
 namespace fcc {
   class FloatValueCollection;
@@ -70,9 +81,9 @@ private:
   unsigned long int m_nISRveto{0};
   unsigned long int m_nFSRveto{0};    
   /// Pythia8 engine for Powheg ME/PS merging
-  std::shared_ptr<Pythia8::PowhegHooks> m_powhegHooks{nullptr};
+  Pythia8::PowhegHooks* m_powhegHooks{nullptr};
 
-  std::shared_ptr<ResonanceDecayFilterHook> m_resonanceDecayFilterHook{nullptr};
+  ResonanceDecayFilterHook* m_resonanceDecayFilterHook{nullptr};
 
   /// flag for additional printouts
   Gaudi::Property<bool> m_printPythiaStatistics{this, "printPythiaStatistics", false,
@@ -80,7 +91,7 @@ private:
 
   Gaudi::Property<bool> m_doEvtGenDecays{this, "doEvtGenDecays", false,
                                                            "Do decays with EvtGen"};
-  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/EVTGEN.DEC",
+  Gaudi::Property<std::string> m_EvtGenDecayFile{this, "EvtGenDecayFile", "Generation/data/DECAY.DEC",
                                                            "Name of the global EvtGen Decay File"};
   Gaudi::Property<std::string> m_UserDecayFile{this, "UserDecayFile", "",
                                                            "Name of the  EvtGen User Decay File"};
@@ -89,7 +100,11 @@ private:
 
   Gaudi::Property<std::vector<int>> m_evtGenExcludes{this, "EvtGenExcludes", {},
                                                            "Pdg IDs of particles not to decay with EvtGen"};
+  #if PYTHIA_VERSION_INTEGER < 8300
   EvtGenDecays* m_evtgen = nullptr;
+  #else
+  Pythia8::EvtGenDecays* m_evtgen = nullptr;
+  #endif
 };
 
 #endif  // GENERATION_PYTHIAINTERFACE_H

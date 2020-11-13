@@ -113,8 +113,13 @@ StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
   HepMC::GenVertex* v = new HepMC::GenVertex(HepMC::FourVector(origin.X(), origin.Y(), origin.Z(), origin.T()));
   // create HepMC particle --
   // by calling add_particle_out(), the hepmc vertex is given ownership of the particle
+  const double hepmcMomentumConversionFactor = 0.001;
   HepMC::GenParticle* p = new HepMC::GenParticle(
-      HepMC::FourVector(theFourMomentum.Px(), theFourMomentum.Py(), theFourMomentum.Pz(), theFourMomentum.E()),
+      HepMC::FourVector(theFourMomentum.Px() * hepmcMomentumConversionFactor,
+                        theFourMomentum.Py() * hepmcMomentumConversionFactor,
+                        theFourMomentum.Pz() * hepmcMomentumConversionFactor,
+                        theFourMomentum.E() * hepmcMomentumConversionFactor
+                        ),
       thePdgId,
       1);  // hepmc status code for final state particle
 
