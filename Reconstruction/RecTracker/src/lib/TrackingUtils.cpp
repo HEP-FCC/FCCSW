@@ -5,9 +5,7 @@
 #include "DDSegmentation/BitFieldCoder.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 
 namespace rec {
@@ -17,11 +15,11 @@ namespace rec {
 struct CellIdOrder {
   CellIdOrder(const dd4hep::DDSegmentation::BitFieldCoder* dec) : m_decoder(dec) {}
 
-  bool operator()(const fcc::TrackHit& h1, const fcc::TrackHit& h2) {
-    dd4hep::DDSegmentation::CellID cID = h1.cellId();
+  bool operator()(const edm4hep::SimTrackerHit& h1, const edm4hep::SimTrackerHit& h2) {
+    dd4hep::DDSegmentation::CellID cID = h1.getCellID();
     int system1 = m_decoder->get(cID, "system");
     int layer1 = m_decoder->get(cID, "layer");
-    dd4hep::DDSegmentation::CellID cID2 = h2.cellId();
+    dd4hep::DDSegmentation::CellID cID2 = h2.getCellID();
     int system2 = m_decoder->get(cID2, "system");
     int layer2 = m_decoder->get(cID2, "layer");
     if (system1 < system2) return true;
@@ -34,7 +32,7 @@ private:
 };
 
 /// fill vector with hits ordered according to the CellIdOrder struct
-void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits,
+void sortTrackHits(const edm4hep::SimTrackerHitCollection* unsortedHits, std::vector<edm4hep::SimTrackerHit>& sortedHits,
                    const dd4hep::DDSegmentation::BitFieldCoder* decoder) {
   sortedHits.reserve(unsortedHits->size());
   for (const auto& hit : *unsortedHits) {

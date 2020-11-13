@@ -9,14 +9,14 @@ namespace dd4hep {
   }
 }
 
-namespace fcc {
- class TrackHitCollection;
- class TrackHit;
+namespace edm4hep {
+ class SimTrackerHitCollection;
+ class SimTrackerHit;
 }
 
 namespace rec {
 /// fill vector with hits ordered according to the CellIdOrder struct
-void sortTrackHits(const fcc::TrackHitCollection* unsortedHits, std::vector<fcc::TrackHit>& sortedHits, const dd4hep::DDSegmentation::BitFieldCoder* decoder);
+void sortTrackHits(const edm4hep::SimTrackerHitCollection* unsortedHits, std::vector<edm4hep::SimTrackerHit>& sortedHits, const dd4hep::DDSegmentation::BitFieldCoder* decoder);
 
 }
 #endif
