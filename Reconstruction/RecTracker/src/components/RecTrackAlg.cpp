@@ -2,7 +2,7 @@
 
 #include "edm4hep/TrackerHitCollection.h"
 #include "edm4hep/TrackCollection.h"
-#include "datamodel/ReconstructedParticleCollection.h"
+#include "edm4hep/ReconstructedParticleCollection.h"
 
 #include "RecInterface/ITrackSeedingTool.h"
 #include "RecInterface/ITrackFittingTool.h"
