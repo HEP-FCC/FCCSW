@@ -20,9 +20,8 @@ namespace HepMC {
   class GenEvent;
 }
 
-namespace fcc {
+namespace edm4hep {
 class MCParticleCollection;
-class GenVertexCollection;
 }
 
 /**@class HepEVTReader HepEVTReader.h HepEVTReader.h
@@ -56,17 +55,13 @@ private:
   int m_format;
 
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_genphandle {"genparticles", Gaudi::DataHandle::Writer, this};
-  /// Handle for the genvertices to be written
-  DataHandle<fcc::GenVertexCollection> m_genvhandle {"genparticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::MCParticleCollection> m_genphandle {"GenParticles", Gaudi::DataHandle::Writer, this};
 
 
   /// Tools to handle input from HepMC-file
   ToolHandle<IHepMCFileReaderTool> m_signalFileReader;
   ToolHandle<IHepMCFileReaderTool> m_pileupFileReader;
   
-  // Pileup Interface Tool
-  // // //  ToolHandle<IPileUpTool> m_pileUpTool;
   /// Tool to merge HepMC events
   ToolHandle<IHepMCMergeTool> m_HepMCMergeTool;
   // Tool to smear vertices

@@ -5,8 +5,8 @@
 #include "GaudiKernel/Incident.h"
 #include "GaudiKernel/IEventProcessor.h"
 
-#include "datamodel/MCParticleCollection.h"
-#include "datamodel/GenVertexCollection.h"
+#include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/GenVertexCollection.h"
 
 #include <math.h>
 
@@ -16,10 +16,8 @@ HepEVTReader::HepEVTReader(const std::string& name, ISvcLocator* svcLoc):
   GaudiAlgorithm(name, svcLoc),
   m_filename() {
 
-  declareProperty("Filename", m_filename="", "Name of the HepMC file to read");
-  declareProperty("genparticles", m_genphandle, "Generated particles collection (output)");
-  declareProperty("genvertices", m_genvhandle, "Generated vertices collection (output)");
-
+  declareProperty("HepEVTFilename", m_filename="", "Name of the HepEVT file to read");
+  declareProperty("GenParticles", m_genphandle, "Generated particles collection (output)");
 }
 
 StatusCode HepEVTReader::initialize()
@@ -63,12 +61,7 @@ StatusCode HepEVTReader::execute()
   double VHEP3; // z vertex position in mm
   double VHEP4; // production time in mm/c
   
-  /*
-  vector<int> daughter1;
-  vector<int> daughter2;
-  */
-  fcc::MCParticleCollection* particles = new fcc::MCParticleCollection();
-  fcc::GenVertexCollection* vertices = new fcc::GenVertexCollection();
+  edm4hep::MCParticleCollection* particles = new edm4hep::MCParticleCollection();
 
 
   for(int IHEP=0; IHEP<NHEP; IHEP++)
@@ -94,30 +87,29 @@ StatusCode HepEVTReader::execute()
 	  error() << "End of file reached before reading all the hits" << endmsg;
 	  return StatusCode::FAILURE;
 	}
-      
-      auto vertex = vertices->create();
-      auto& position = vertex.position();
-      
-      position.x = VHEP1;
-      position.y = VHEP2;
-      position.z = VHEP3;
-      vertex.ctau(VHEP4); // is ctau like this?
 
-      fcc::MCParticle particle = particles->create();
-      // PDGID
-      particle.pdgId(IDHEP);
-      particle.status(ISTHEP); // if ( ISTHEP == 1 ) status.set(G4PARTICLE_GEN_STABLE);
+      edm4hep::MCParticle particle = particles->create();
+
+      particle.setPDG(IDHEP);
+      particle.setGeneratorStatus(ISTHEP); 
 
       auto& p4 = particle.p4();
-      p4.px = PHEP1;
-      p4.py = PHEP2;
-      p4.pz = PHEP3;
-      p4.mass = PHEP5;
-      particle.startVertex(vertex);
+      particle.setMomentum({
+                            float(PHEP1),
+                            float(PHEP2),
+                            float(PHEP3),
+                           });
+      particle.setMass(PHEP5);
+
+      particle.setVertex({
+                          VHEP1,
+                          VHEP2,
+                          VHEP3,
+                        });
+      particle.setTime(VHEP4);
     }
 
   m_genphandle.put(particles);
-  m_genvhandle.put(vertices);
   return StatusCode::SUCCESS;
 }
 
