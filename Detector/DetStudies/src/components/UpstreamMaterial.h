@@ -9,8 +9,8 @@
 class IGeoSvc;
 
 // datamodel
-namespace fcc {
-class CaloHitCollection;
+namespace edm4hep {
+class CalorimeterHitCollection;
 class MCParticleCollection;
 }
 
@@ -53,9 +53,9 @@ private:
   // Phi in the histogram axis
   Gaudi::Property<double> m_phi{this, "phiAxis", M_PI, "Max azimuthal angle for the axis of plot"};
   /// Handle for the energy deposits
-  DataHandle<fcc::CaloHitCollection> m_deposits{"det/caloDeposits", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::CalorimeterHitCollection> m_deposits{"det/caloDeposits", Gaudi::DataHandle::Reader, this};
   /// Handle for the particle
-  DataHandle<fcc::MCParticleCollection> m_particle{"det/particles", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::MCParticleCollection> m_particle{"det/particles", Gaudi::DataHandle::Reader, this};
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
   /// Pointer to the geometry service

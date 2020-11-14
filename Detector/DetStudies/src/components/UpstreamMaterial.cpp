@@ -4,8 +4,8 @@
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/MCParticleCollection.h"
+#include "edm4hep/CalorimeterHitCollection.h"
+#include "edm4hep/MCParticleCollection.h"
 
 #include "CLHEP/Vector/ThreeVector.h"
 #include "GaudiKernel/ITHistSvc.h"
@@ -75,19 +75,20 @@ StatusCode UpstreamMaterial::execute() {
   const auto particle = m_particle.get();
   double phi = 0;
   for (const auto& part : *particle) {
-    phi = atan2(part.core().p4.py, part.core().p4.px);
+    auto mom = part.getMomentum()
+    phi = atan2(mom.y, mom.x);
   }
 
   // get the energy deposited in the cryostat and in the detector (each layer)
   const auto deposits = m_deposits.get();
   for (const auto& hit : *deposits) {
-    dd4hep::DDSegmentation::CellID cID = hit.core().cellId;
+    dd4hep::DDSegmentation::CellID cID = hit.getCellID();
     const auto& field = "cryo";
     int id = decoder->get(cID, field);
     if (id == 0) {
-      sumEcells[id - m_firstLayerId] += hit.core().energy;
+      sumEcells[id - m_firstLayerId] += hit.getEDep();
     } else {
-      sumEupstream += hit.core().energy;
+      sumEupstream += hit.getEDep();
     }
   }
   for (uint i = 0; i < m_numLayers; i++) {
