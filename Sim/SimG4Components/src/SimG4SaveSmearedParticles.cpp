@@ -8,8 +8,8 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "datamodel/ParticleCollection.h"
-#include "datamodel/ParticleMCParticleAssociationCollection.h"
+#include "edm4hep/ReconstructedParticleCollection.h"
+#include "edm4hep/MCRecoParticleAssociationCollection.h"
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -20,8 +20,8 @@ SimG4SaveSmearedParticles::SimG4SaveSmearedParticles(const std::string& aType, c
                                                      const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("particles", m_particles, "Handle for the particles to be written");
-  declareProperty("particlesMCparticles", m_particlesMCparticles,
+  declareProperty("RecParticles", m_particles, "Handle for the particles to be written");
+  declareProperty("MCRecoParticleAssoc", m_particlesMCparticles,
                   "Handle for the associations between particles and MC particles to be written");
 }
 
@@ -40,22 +40,25 @@ StatusCode SimG4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
       sim::ParticleInformation* info = dynamic_cast<sim::ParticleInformation*>(g4particle->GetUserInformation());
       if (info->smeared()) {
-        const fcc::MCParticle& MCparticle = info->mcParticle();
-        fcc::Particle particle = particles->create();
-        fcc::ParticleMCParticleAssociation association = associations->create();
-        association.rec(particle);
-        association.sim(MCparticle);
-        fcc::BareParticle& core = particle.core();
-        core.pdgId = g4particle->GetPDGcode();
-        core.status = 1;  // how it is defined ???? as in HepMC ?
-        core.charge = g4particle->GetCharge();
-        core.p4.px = info->endMomentum().x() * sim::g42edm::energy;
-        core.p4.py = info->endMomentum().y() * sim::g42edm::energy;
-        core.p4.pz = info->endMomentum().z() * sim::g42edm::energy;
-        core.p4.mass = g4particle->GetMass() * sim::g42edm::energy;
-        core.vertex.x = info->vertexPosition().x() * sim::g42edm::length;
-        core.vertex.y = info->vertexPosition().y() * sim::g42edm::length;
-        core.vertex.z = info->vertexPosition().z() * sim::g42edm::length;
+        const edm4hep::MCParticle& MCparticle = info->mcParticle();
+        edm4hep::Particle particle = particles->create();
+        edm4hep::MCRecoParticleAssociation association = associations->create();
+        association.setRec(particle);
+        association.setSim(MCparticle);
+        particle.setPDG(g4particle->GetPDGcode());
+        particle.setGeneratorStatus(1);
+        particle.setCharge(g4particle->GetCharge());
+        particle.setMomentum({
+          info->endMomentum().x() * sim::g42edm::energy,
+          info->endMomentum().y() * sim::g42edm::energy,
+          info->endMomentum().z() * sim::g42edm::energy,
+        });
+        particle.setMass(g4particle->GetMass() * sim::g42edm::energy);
+        particle.setVertex({
+            info->vertexPosition().x() * sim::g42edm::length;
+            info->vertexPosition().y() * sim::g42edm::length;
+            info->vertexPosition().z() * sim::g42edm::length;
+        });
         n_part++;
       }
     }
