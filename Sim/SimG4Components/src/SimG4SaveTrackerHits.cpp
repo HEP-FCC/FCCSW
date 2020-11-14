@@ -62,9 +62,7 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
   G4VHitsCollection* collect;
   fcc::Geant4PreDigiTrackHit* hit;
   if (collections != nullptr) {
-    fcc::PositionedTrackHitCollection* edmPositions = m_positionedTrackHits.createAndPut();
-    fcc::TrackHitCollection* edmHits = m_trackHits.createAndPut();
-    fcc::DigiTrackHitAssociationCollection* edmDigiHits = m_digiTrackHits.createAndPut();
+    edm4hep::SimTrackerHitCollection* edmHits = m_positionedTrackHits.createAndPut();
     for (int iter_coll = 0; iter_coll < collections->GetNumberOfCollections(); iter_coll++) {
       collect = collections->GetHC(iter_coll);
       if (std::find(m_readoutNames.begin(), m_readoutNames.end(), collect->GetName()) != m_readoutNames.end()) {
@@ -73,25 +71,25 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
                << collect->GetName() << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
           hit = dynamic_cast<fcc::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
-          fcc::TrackHit edmHit = edmHits->create();
-          fcc::BareHit& edmHitCore = edmHit.core();
-          fcc::DigiTrackHitAssociation edmDigiHit = edmDigiHits->create();
-          edmHitCore.cellId = hit->cellID;
-          edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
-          edmHitCore.bits = hit->trackId;
-          edmHitCore.time = hit->time;
-          fcc::Point preStepPosition = fcc::Point();
-          preStepPosition.x = hit->prePos.x() * sim::g42edm::length;
-          preStepPosition.y = hit->prePos.y() * sim::g42edm::length;
-          preStepPosition.z = hit->prePos.z() * sim::g42edm::length;
-          fcc::Point postStepPosition = fcc::Point();
-          postStepPosition.x = hit->postPos.x() * sim::g42edm::length;
-          postStepPosition.y = hit->postPos.y() * sim::g42edm::length;
-          postStepPosition.z = hit->postPos.z() * sim::g42edm::length;
+          edm4hep::SimTrackerHit edmHit = edmHits->create();
+          edmHit.setCellID(hit->cellID);
+          edmHit.setEDep(hit->energyDeposit * sim::g42edm::energy);
+          /// workaround, store trackid in an unrelated field
+          edmHit.setQuality(hit->trackId);
+          edmHit.setTime(hit->time);
+          edmHit.setPosition({
+                              hit->prePos.x() * sim::g42edm::length,
+                              hit->prePos.y() * sim::g42edm::length,
+                              hit->prePos.z() * sim::g42edm::length,
+          });
+          CLHEP::Hep3Vector diff = hit->postPos - hit->prePos;
+          edmHit.setMomentum({
+                               diff.x() * sim::g42edm::length,
+                               diff.y() * sim::g42edm::length,
+                               diff.z() * sim::g42edm::length,
+          });
+          edmHit.setPathLength(diff.mag());
 
-          fcc::PositionedTrackHit edmPositionedHit = edmPositions->create(preStepPosition, edmHitCore);
-          edmDigiHit.postStepPosition(postStepPosition);
-          edmDigiHit.hit(edmPositionedHit);
           
         }
       }

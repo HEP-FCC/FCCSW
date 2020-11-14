@@ -10,10 +10,8 @@
 class IGeoSvc;
 
 // datamodel
-namespace fcc {
-class TrackHitCollection;
-class PositionedTrackHitCollection;
-class DigiTrackHitAssociationCollection;
+namespace edm4hep {
+class SimTrackerHitCollection;
 }
 
 /** @class SimG4SaveTrackerHits SimG4Components/src/SimG4SaveTrackerHits.h SimG4SaveTrackerHits.h
@@ -52,12 +50,8 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for tracker hits
-  DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trackerHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::SimTrackerHitCollection> m_trackHits{"TrackerHits", Gaudi::DataHandle::Writer, this};
   /// Handle for tracker hits including position information
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/positionedTrackerHits",
-                                                                      Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::DigiTrackHitAssociationCollection> m_digiTrackHits{"hits/digiTrackerHits",
-                                                                      Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};
