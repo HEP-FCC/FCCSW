@@ -26,13 +26,13 @@ StatusCode EDMToHepMCConverter::execute() {
 
   for (auto p : *(particles)) {
     if (p.getGeneratorStatus() == 1) {  // only final state particles
-      auto mom = p.getMomentum();
+      edm4hep::Vector3f mom = p.getMomentum();
       GenParticle* pHepMC =
           new GenParticle(HepMC::FourVector(mom.x, mom.y, mom.z, p.getMass()),
                           p.getPDG(),
                           p.getGeneratorStatus());  // hepmc status code for final state particle
 
-        auto pos = p.getPosition();
+        edm4hep::Vector3d pos = p.getVertex();
         HepMC::GenVertex* v =
             new HepMC::GenVertex(HepMC::FourVector(pos.x,
                                                    pos.y,
