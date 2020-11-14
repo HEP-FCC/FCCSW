@@ -34,7 +34,7 @@ StatusCode CombinatorialSeedingTest::initialize() {
 StatusCode CombinatorialSeedingTest::execute() {
 
   // get hits from event store
-  const edm4hep::SimTrackerHitCollection* hits = m_positionedTrackHits.get();
+  const edm4hep::TrackerHitCollection* hits = m_positionedTrackHits.get();
   auto seedmap = m_trackSeedingTool->findSeeds(hits);
 
   for (auto seedIdPair: seedmap) {

@@ -13,7 +13,7 @@ class IGeoSvc;
 class ITrackSeedingTool;
 
 namespace edm4hep {
-class SimTrackerHitCollection;
+class TrackerHitCollection;
 }
 
 
@@ -36,7 +36,7 @@ public:
 
 private:
   /// TrackHits as Input to the track seeding
-  DataHandle<edm4hep::SimTrackerHitCollection> m_positionedTrackHits{"TrackHits", Gaudi::DataHandle::Reader,
+  DataHandle<edm4hep::TrackerHitCollection> m_positionedTrackHits{"TrackHits", Gaudi::DataHandle::Reader,
                                                                       this};
   /// Handle to Track Seeding Tool that does the work
   ToolHandle<ITrackSeedingTool> m_trackSeedingTool{"CombinatorialSeedingTool/CombinatorialSeedingTool", this};
