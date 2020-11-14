@@ -9,9 +9,7 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/DigiTrackHitAssociationCollection.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
@@ -25,9 +23,7 @@ SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::
       m_geoSvc("GeoSvc", aName)
     {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("positionedTrackHits", m_positionedTrackHits, "Handle for tracker hits");
-  declareProperty("digiTrackHits", m_digiTrackHits, "Handle for digi tracker hits");
-  declareProperty("trackHits", m_trackHits, "Handle for tracker hits including position information");
+  declareProperty("SimTrackHits", m_positionedTrackHits, "Handle for tracker hits");
   declareProperty("GeoSvc", m_geoSvc);
 }
 
