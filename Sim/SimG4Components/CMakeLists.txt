@@ -15,7 +15,7 @@ gaudi_install_python_modules()
 gaudi_add_module(SimG4Components
                  src/*.cpp
                  INCLUDE_DIRS Geant4 FWCore SimG4Common SimG4Interface DetCommon  DD4hep ROOT FCCEDM
-                 LINK_LIBRARIES GaudiAlgLib FWCore SimG4Common DetCommon  DD4hep ROOT FCCEDM)
+                 LINK_LIBRARIES GaudiAlgLib FWCore SimG4Common DetCommon  DD4hep ROOT FCCEDM EDM4HEP::edm4hep)
 target_link_libraries(SimG4Components ${Geant4_LIBRARIES})
 
 

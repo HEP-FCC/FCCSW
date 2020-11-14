@@ -9,8 +9,7 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "datamodel/CaloHitCollection.h"
-#include "datamodel/PositionedCaloHitCollection.h"
+#include "edm4hep/SimCalorimeterHitCollection.h"
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -20,9 +19,7 @@ DECLARE_COMPONENT(SimG4SaveCalHits)
 SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent)
     : GaudiTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("positionedCaloHits", m_positionedCaloHits,
-                  "Handle for calo hits with additional position information");
-  declareProperty("caloHits", m_caloHits, "Handle for calo hits");
+  declareProperty("CaloHits", m_caloHits, "Handle for calo hits");
   declareProperty("GeoSvc", m_geoSvc);
 }
 

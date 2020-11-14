@@ -13,12 +13,12 @@ find_package(ROOT)
 gaudi_add_library(SimG4Full
                  src/lib/*.cpp
                  INCLUDE_DIRS SimG4Common FCCFWCore SimG4Components SimG4Interface Geant4 ROOT
-                 LINK_LIBRARIES GaudiAlgLib SimG4Common ROOT
+                 LINK_LIBRARIES GaudiAlgLib SimG4Common ROOT EDM4HEP::edm4hep
                  PUBLIC_HEADERS SimG4Full)
 target_link_libraries(SimG4Full ${Geant4_LIBRARIES})
 
 gaudi_add_module(SimG4FullPlugins
                  src/components/*.cpp
                  INCLUDE_DIRS Geant4 SimG4Common SimG4Full SimG4Interface
-                 LINK_LIBRARIES GaudiAlgLib SimG4Full SimG4Common)
+                 LINK_LIBRARIES GaudiAlgLib SimG4Full SimG4Common EDM4HEP::edm4hep)
 target_link_libraries(SimG4FullPlugins ${Geant4_LIBRARIES})

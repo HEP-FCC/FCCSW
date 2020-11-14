@@ -17,7 +17,7 @@ gaudi_install_python_modules()
 gaudi_add_library(TrackingUtils
                  src/lib/*.cpp
                  INCLUDE_DIRS DD4hep HepMC  FWCore  FCCEDM PODIO  DetInterface RecInterface SimG4Interface ROOT Eigen
-                 LINK_LIBRARIES GaudiAlgLib FCCEDM PODIO DD4hep ROOT 
+                 LINK_LIBRARIES GaudiAlgLib FCCEDM PODIO DD4hep ROOT EDM4HEP::edm4hep 
                  PUBLIC_HEADERS RecTracker tricktrack) 
 
 gaudi_add_module(RecTracker
