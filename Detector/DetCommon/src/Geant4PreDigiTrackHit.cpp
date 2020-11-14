@@ -1,7 +1,7 @@
 
 #include "DetCommon/Geant4PreDigiTrackHit.h"
 
-namespace fcc {
+namespace edm4hep {
 
 // G4 allocation method
 G4ThreadLocal G4Allocator<Geant4PreDigiTrackHit>* Geant4PreDigiTrackHitAllocator = 0;
@@ -17,4 +17,4 @@ Geant4PreDigiTrackHit::Geant4PreDigiTrackHit(unsigned int aTrackId, unsigned int
 // comparison operator
 G4int Geant4PreDigiTrackHit::operator==(const Geant4PreDigiTrackHit& right) const { return (this == &right) ? 1 : 0; }
 
-} //namespace fcc
+} //namespace edm4hep

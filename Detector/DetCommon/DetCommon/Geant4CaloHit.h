@@ -63,6 +63,6 @@ inline void* Geant4CaloHit::operator new(size_t) {
 
 inline void Geant4CaloHit::operator delete(void* hit) { Geant4CaloHitAllocator->FreeSingle((Geant4CaloHit*)hit); }
 
-}  // namespace fcc
+}  // namespace edm4hep
 
 #endif

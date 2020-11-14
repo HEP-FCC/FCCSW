@@ -76,6 +76,6 @@ inline void Geant4PreDigiTrackHit::operator delete(void* hit) {
   Geant4PreDigiTrackHitAllocator->FreeSingle((Geant4PreDigiTrackHit*)hit);
 }
 
-} // namespace fcc
+} // namespace edm4hep
 
 #endif

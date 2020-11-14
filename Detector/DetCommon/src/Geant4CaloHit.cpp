@@ -1,7 +1,7 @@
 
 #include "DetCommon/Geant4CaloHit.h"
 
-namespace fcc {
+namespace edm4hep {
 
 // G4 allocation method
 G4ThreadLocal G4Allocator<Geant4CaloHit>* Geant4CaloHitAllocator = 0;
@@ -16,4 +16,4 @@ Geant4CaloHit::Geant4CaloHit(unsigned int aTrackId, unsigned int aPdgId, double 
 // comparison operator
 G4int Geant4CaloHit::operator==(const Geant4CaloHit& right) const { return (this == &right) ? 1 : 0; }
 
-}  // namespace fcc
+}  // namespace edm4hep
