@@ -10,9 +10,8 @@
 class IGeoSvc;
 
 // datamodel
-namespace fcc {
-class PositionedCaloHitCollection;
-class CaloHitCollection;
+namespace edm4hep {
+class CalorimeterHitCollection;
 }
 
 /** @class SimG4SaveCalHits SimG4Components/src/SimG4SaveCalHits.h SimG4SaveCalHits.h
@@ -49,11 +48,8 @@ public:
 private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
-  /// Handle for calo hits with additional position information
-  DataHandle<fcc::PositionedCaloHitCollection> m_positionedCaloHits{"hits/positionedCaloHits",
-                                                                    Gaudi::DataHandle::Writer, this};
   /// Handle for calo hits
-  DataHandle<fcc::CaloHitCollection> m_caloHits{"hits/caloHits", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::CalorimeterHitCollection> m_caloHits{"CaloHits", Gaudi::DataHandle::Writer, this};
   /// Name of the readouts (hits collections) to save
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "Name of the readouts (hits collections) to save"};

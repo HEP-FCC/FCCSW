@@ -49,8 +49,8 @@ StatusCode InspectHitsCollectionsTool::finalize() { return GaudiTool::finalize()
 StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  fcc::Geant4PreDigiTrackHit* hitT;
-  fcc::Geant4CaloHit* hitC;
+  edm4hep::Geant4PreDigiTrackHit* hitT;
+  edm4hep::Geant4CaloHit* hitC;
   info() << "Obtaining hits collections that are stored in this event:" << endmsg;
   if (collections != nullptr) {
     for (int iter_coll = 0; iter_coll < collections->GetNumberOfCollections(); iter_coll++) {
@@ -61,13 +61,13 @@ StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
         size_t n_hit = collect->GetSize();
         auto decoder = m_geoSvc->lcdd()->readout(collect->GetName()).idSpec().decoder();
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
-          hitT = dynamic_cast<fcc::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
+          hitT = dynamic_cast<edm4hep::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
           if (hitT) {
             dd4hep::DDSegmentation::CellID cID = hitT->cellID;
             debug() << "hit Edep: " << hitT->energyDeposit << "\tcellID: " << cID << "\t"
                     << decoder->valueString(cID) << endmsg;
           } else {
-          hitC = dynamic_cast<fcc::Geant4CaloHit*>(collect->GetHit(iter_hit));
+          hitC = dynamic_cast<edm4hep::Geant4CaloHit*>(collect->GetHit(iter_hit));
             if (hitC) {
               dd4hep::DDSegmentation::CellID cID = hitC->cellID;
               debug() << "hit Edep: " << hitC->energyDeposit << "\tcellID: " << cID << "\t"

@@ -4,9 +4,9 @@
 #include "GaudiKernel/ITHistSvc.h"
 
 // datamodel
-#include "datamodel/MCParticleCollection.h"
-#include "datamodel/ParticleCollection.h"
-#include "datamodel/ParticleMCParticleAssociationCollection.h"
+#include "edm4hep/MCParticleCollection.h"
+#include "edm4hep/ReconstructedParticleCollection.h"
+#include "edm4hep/MCRecoParticleAssociationCollection.h"
 
 #include "CLHEP/Vector/ThreeVector.h"
 #include "TH1F.h"
@@ -49,13 +49,13 @@ StatusCode SimG4FastSimHistograms::initialize() {
 StatusCode SimG4FastSimHistograms::execute() {
   const auto associations = m_particlesMCparticles.get();
   for (const auto& assoc : *associations) {
-    const fcc::BareParticle& core = assoc.rec().core();
-    CLHEP::Hep3Vector mom(core.p4.px, core.p4.py, core.p4.pz);
+    auto mom_edm = assoc.getRec().getMomentum();
+    CLHEP::Hep3Vector mom(mom_edm.x, mom_edm.y, mom_edm.z);
     m_eta->Fill(mom.eta());
     m_p->Fill(mom.mag());
     m_pdg->Fill(core.pdgId);
-    const fcc::BareParticle& coreMC = assoc.sim().core();
-    CLHEP::Hep3Vector momMC(coreMC.p4.px, coreMC.p4.py, coreMC.p4.pz);
+    auto mom_edm_mc = assoc.getSim().getMomentum();
+    CLHEP::Hep3Vector momMC(mom_edm_mc.x, mom_edm_mc.y, mom_edm_mc.z);
     m_diffP->Fill((momMC.mag() - mom.mag()) / momMC.mag());
   }
   return StatusCode::SUCCESS;

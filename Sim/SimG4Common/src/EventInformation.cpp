@@ -11,7 +11,7 @@ EventInformation::EventInformation() {
   m_mcParticles = new edm4he[::MCParticleCollection();
 }
 
-void EventInformation::setCollections(fcc::MCParticleCollection*& aMCParticleCollection) {
+void EventInformation::setCollections(edm4hep::MCParticleCollection*& aMCParticleCollection) {
   // ownership is transferred here - to SaveTool which is supposed to put it in the event store
   aMCParticleCollection = m_mcParticles;
 }

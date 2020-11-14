@@ -56,7 +56,7 @@ StatusCode SimG4SaveTrackerHits::finalize() { return GaudiTool::finalize(); }
 StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  fcc::Geant4PreDigiTrackHit* hit;
+  edm4hep::Geant4PreDigiTrackHit* hit;
   if (collections != nullptr) {
     edm4hep::SimTrackerHitCollection* edmHits = m_positionedTrackHits.createAndPut();
     for (int iter_coll = 0; iter_coll < collections->GetNumberOfCollections(); iter_coll++) {
@@ -66,7 +66,7 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
         verbose() << "\t" << n_hit << " hits are stored in a tracker collection #" << iter_coll << ": "
                << collect->GetName() << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
-          hit = dynamic_cast<fcc::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
+          hit = dynamic_cast<edm4hep::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
           edm4hep::SimTrackerHit edmHit = edmHits->create();
           edmHit.setCellID(hit->cellID);
           edmHit.setEDep(hit->energyDeposit * sim::g42edm::energy);

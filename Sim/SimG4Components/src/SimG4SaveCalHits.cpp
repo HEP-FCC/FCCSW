@@ -52,7 +52,7 @@ StatusCode SimG4SaveCalHits::finalize() { return GaudiTool::finalize(); }
 StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
   G4HCofThisEvent* collections = aEvent.GetHCofThisEvent();
   G4VHitsCollection* collect;
-  fcc::Geant4CaloHit* hit;
+  edm4hep::Geant4CaloHit* hit;
   if (collections != nullptr) {
     auto edmPositioned = m_positionedCaloHits.createAndPut();
     auto edmHits = m_caloHits.createAndPut();
@@ -63,17 +63,17 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
         debug() << "\t" << n_hit << " hits are stored in a collection #" << iter_coll << ": " << collect->GetName()
                 << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
-          hit = dynamic_cast<fcc::Geant4CaloHit*>(collect->GetHit(iter_hit));
-          fcc::CaloHit edmHit = edmHits->create();
-          fcc::BareHit& edmHitCore = edmHit.core();
-          edmHitCore.cellId = hit->cellID;
-          edmHitCore.bits = hit->trackId;
-          edmHitCore.energy = hit->energyDeposit * sim::g42edm::energy;
-          auto position = fcc::Point();
-          position.x = hit->position.x() * sim::g42edm::length;
-          position.y = hit->position.y() * sim::g42edm::length;
-          position.z = hit->position.z() * sim::g42edm::length;
-          auto posHit = edmPositioned->create(position, edmHitCore);
+          hit = dynamic_cast<edm4hep::Geant4CaloHit*>(collect->GetHit(iter_hit));
+          edm4hep::SimCalorimeterHit edmHit = edmHits->create();
+          edmHit.setCellID(hit->cellID);
+          //todo
+          //edmHitCore.bits = hit->trackId;
+          edmHit.setEDep(hit->energyDeposit * sim::g42edm::energy);
+          edmHit.setPosition({
+                       hit->position.x() * sim::g42edm::length,
+                       hit->position.y() * sim::g42edm::length,
+                       hit->position.z() * sim::g42edm::length,
+          });
         }
       }
     }

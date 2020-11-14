@@ -8,7 +8,7 @@
 // CLHEP
 #include "CLHEP/Vector/ThreeVector.h"
 
-namespace fcc {
+namespace edm4hep {
 
 /** @class  Geant4PreDigiTrackHit 
  *

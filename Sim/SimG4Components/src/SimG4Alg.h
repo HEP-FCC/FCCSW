@@ -13,10 +13,6 @@
 // Interfaces
 class ISimG4Svc;
 
-// datamodel
-namespace fcc {
-class MCParticleCollection;
-}
 // Geant
 class G4Event;
 

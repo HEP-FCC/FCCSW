@@ -38,7 +38,7 @@ G4Event* SimG4GeantinosFromEdmTool::g4Event() {
   G4ParticleDefinition* particleDefNeg = particleTable->FindParticle("chargedgeantinonegative");
   G4ParticleDefinition* particleDefNeutral = particleTable->FindParticle("geantino");
 
-  const fcc::MCParticleCollection* mcparticles = m_genParticles.get();
+  const edm4hep::MCParticleCollection* mcparticles = m_genParticles.get();
   for (const auto& mcparticle : *mcparticles) {
     auto v =  mcparticle.getPosition();
     G4PrimaryVertex* g4Vertex = new G4PrimaryVertex(v.x * sim::edm2g4::length,

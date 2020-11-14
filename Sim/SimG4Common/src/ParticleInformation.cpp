@@ -1,7 +1,7 @@
 #include "SimG4Common/ParticleInformation.h"
 
 namespace sim {
-ParticleInformation::ParticleInformation(const fcc::MCParticle& aMCpart) : m_mcParticle(aMCpart), m_smeared(false) {}
+ParticleInformation::ParticleInformation(const edm4hep::MCParticle& aMCpart) : m_mcParticle(aMCpart), m_smeared(false) {}
 
 ParticleInformation::~ParticleInformation() {}
 

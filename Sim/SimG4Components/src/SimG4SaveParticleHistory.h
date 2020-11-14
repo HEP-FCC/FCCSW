@@ -12,8 +12,7 @@
 class IGeoSvc;
 
 // datamodel
-namespace fcc {
-class GenVertexCollection;
+namespace edm4hep {
 class MCParticleCollection;
 }
 
@@ -43,13 +42,9 @@ public:
 
 private:
   /// Handle for collection of MC particles to create
-  DataHandle<fcc::MCParticleCollection> m_mcParticles{"sim/secondaries", Gaudi::DataHandle::Writer, this};
-  /// Handle for the vertex collection to create
-  DataHandle<fcc::GenVertexCollection> m_genVertices{"sim/secondaryVertices", Gaudi::DataHandle::Writer, this};
-  /// Pointer to the vertex collection, ownership should be handled in a algorithm / tool
-  fcc::GenVertexCollection* m_genVertexColl;
+  DataHandle<edm4hep::MCParticleCollection> m_mcParticles{"SimParticleSecondaries", Gaudi::DataHandle::Writer, this};
   /// Pointer to the particle collection, ownership should be handled in a algorithm / tool
-  fcc::MCParticleCollection* m_mcParticleColl;
+  edm4hep::MCParticleCollection* m_mcParticleColl;
 };
 
 #endif /* SIMG4COMPONENTS_SIMG4SAVEPARTICLEHISTORY_H */

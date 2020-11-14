@@ -9,9 +9,9 @@
 class ITHistSvc;
 
 // datamodel
-namespace fcc {
-class ParticleCollection;
-class ParticleMCParticleAssociationCollection;
+namespace edm4hep {
+class ReconstructedParticleCollection;
+class MCRecoParticleAssociationCollection;
 }
 
 class TH1F;
@@ -44,7 +44,7 @@ public:
 
 private:
   /// Handle for the EDM particles and MC particles associations to be read
-  DataHandle<fcc::ParticleMCParticleAssociationCollection> m_particlesMCparticles{"particlesMCparticles",
+  DataHandle<edm4hep::MCRecoParticleAssociationCollection> m_particlesMCparticles{"ParticlesMCparticles",
                                                                                   Gaudi::DataHandle::Reader, this};
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
