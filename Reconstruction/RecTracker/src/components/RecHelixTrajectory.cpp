@@ -3,11 +3,8 @@
 
 #include "GaudiKernel/PhysicalConstants.h"
 
-#include "datamodel/Point.h"
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackCollection.h"
-#include "datamodel/TrackHitCollection.h"
-#include "datamodel/TrackStateCollection.h"
+#include "edm4hep/TrackerHitCollection.h"
+#include "edm4hep/TrackCollection.h"
 
 #include <cmath>
 #include <random>
@@ -20,7 +17,7 @@ DECLARE_COMPONENT(RecHelixTrajectory)
 RecHelixTrajectory::RecHelixTrajectory(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
 
   declareProperty("RecHelixPoints", m_recHelixPoints, "Tracker hits (Output)");
-  declareProperty("TrackStates", m_trackStates, "TrackStates (Input)");
+  declareProperty("Tracks", m_tracks, "TrackStates (Input)");
 }
 
 StatusCode RecHelixTrajectory::initialize() {
@@ -31,35 +28,39 @@ StatusCode RecHelixTrajectory::initialize() {
 StatusCode RecHelixTrajectory::execute() {
 
   // get the track states to turn into helices from event store
-  const fcc::TrackStateCollection* trackStates = m_trackStates.get();
+  const edm4hep::TrackCollection* tracks = m_tracks.get();
 
-  fcc::PositionedTrackHitCollection* points = m_recHelixPoints.createAndPut();
+  edm4hep::TrackerHitCollection* points = m_recHelixPoints.createAndPut();
 
   unsigned int maxSteps = m_maxPathLength / m_stepSize;
-  for (auto trackState : (*trackStates)) {
-    double q_pT = trackState.qOverP() * -10;  // TODO
-    double cotTheta = trackState.theta();
-    double phi0 = trackState.phi();
-    double d0 = trackState.d0();
-    double z0 = trackState.z0();
+  for (auto track : (*tracks)) {
+    auto trackState = track.getTrackStates(0);
+    double q_pT = trackState.Omega; 
+    double cotTheta = trackState.tanLambda;
+    double phi0 = trackState.phi;
+    double d0 = trackState.D0;
+    double z0 = trackState.Z0;
 
     double charge = (q_pT > 0) - (q_pT < 0);  // get charge from sign of q over pt
     double rho = charge / std::abs(q_pT) / 0.0003 / 4.;
     double xc = (rho - d0) * std::cos(phi0 + 0.5 * M_PI);
     double yc = (rho - d0) * std::sin(phi0 + 0.5 * M_PI);
     for (double i = 0; i < maxSteps; i += m_stepSize) {
-      fcc::Point l_helixPoint = fcc::Point();
-      fcc::BareHit l_corehit = fcc::BareHit();
+      edm4hep::TrackerHit theHit;
 
-      l_helixPoint.x = xc + rho * std::cos(charge * i + phi0 - M_PI * 0.5);
-      l_helixPoint.y = yc + rho * std::sin(charge * i + phi0 - M_PI * 0.5);
-      l_helixPoint.z = z0 + cotTheta * std::abs(rho) * i;
-      debug() << l_helixPoint.x << "\t" << l_helixPoint.y << "\t" << l_helixPoint.z << endmsg;
-      points->create(l_helixPoint, l_corehit);
-      if (std::abs(l_helixPoint.z) > m_maxZ) {
+      double l_helixPoint_x = xc + rho * std::cos(charge * i + phi0 - M_PI * 0.5),
+      double l_helixPoint_y = yc + rho * std::sin(charge * i + phi0 - M_PI * 0.5),
+      double l_helixPoint_z = z0 + cotTheta * std::abs(rho) * i;
+      theHit.setPosition({
+           l_helixPoint_x,
+           l_helixPoint_y,
+           l_helixPoint_z,
+           });
+      points->push_back(theHit);
+      if (std::abs(l_helixPoint_z) > m_maxZ) {
         break;
       }
-      if (std::sqrt(std::pow(l_helixPoint.x, 2) + std::pow(l_helixPoint.y, 2)) > m_maxR) {
+      if (std::sqrt(std::pow(l_helixPoint_x, 2) + std::pow(l_helixPoint_y, 2)) > m_maxR) {
         break;
       }
     }

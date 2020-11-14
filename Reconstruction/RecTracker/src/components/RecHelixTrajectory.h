@@ -8,11 +8,9 @@
 // FCCSW
 #include "FWCore/DataHandle.h"
 
-namespace fcc {
-class TrackHitCollection;
+namespace edm4hep {
+class TrackerHitCollection;
 class TrackCollection;
-class TrackStateCollection;
-class PositionedTrackHitCollection;
 }
 
 /** @class RecHelixtrajectory
@@ -33,9 +31,9 @@ public:
 
 private:
   /// Output: Points along all the helices of the input tracks
-  DataHandle<fcc::PositionedTrackHitCollection> m_recHelixPoints{"RecHelixPoints", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::TrackerHitCollection> m_recHelixPoints{"RecHelixPoints", Gaudi::DataHandle::Writer, this};
   /// Input: TrackStates for which to calculate helix
-  DataHandle<fcc::TrackStateCollection> m_trackStates{"TrackStates", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::TrackCollection> m_trackStates{"TrackStates", Gaudi::DataHandle::Reader, this};
   ///
   Gaudi::Property<double> m_stepSize{this, "stepSize", 0.0001 * Gaudi::Units::mm};
   /// hard path length limit for the generated helix,
