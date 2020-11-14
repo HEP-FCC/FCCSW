@@ -4,8 +4,8 @@
 // Gaudi
 #include "GaudiKernel/IAlgTool.h"
 
-namespace fcc {
-class TrackHit;
+namespace edm4hep {
+class TrackerHit;
 }
 
 /** @class IHitFilterTool
@@ -23,7 +23,7 @@ public:
   // more general way to set filter state
   virtual void setState(std::vector<double> params) = 0;
   // decide whether or not to filter this hit, based on the state of this class
-  virtual bool filter(fcc::TrackHit hit) = 0;
+  virtual bool filter(edm4hep::TracerkHit hit) = 0;
 };
 
 #endif /* RECINTERFACE_IHITFILTERTOOL_H */
