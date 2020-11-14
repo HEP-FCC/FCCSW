@@ -11,7 +11,7 @@
 
 // Forward declarations
 // datamodel
-namespace fcc {
+namespace edm4hep {
 class MCParticleCollection;
 }
 
@@ -37,7 +37,7 @@ public:
 
 private:
   /// Handle for the EDM MC particles to be read
-  DataHandle<fcc::MCParticleCollection> m_genParticles{"allGenParticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::MCParticleCollection> m_genParticles{"GenParticles", Gaudi::DataHandle::Reader, this};
 };
 
 #endif
