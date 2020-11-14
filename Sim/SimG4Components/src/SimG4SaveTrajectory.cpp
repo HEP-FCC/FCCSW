@@ -11,8 +11,7 @@
 
 
 // datamodel
-#include "datamodel/PositionedTrackHitCollection.h"
-#include "datamodel/TrackHitCollection.h"
+#include "edm4hep/TrackerHitCollection.h"
 
 DECLARE_COMPONENT(SimG4SaveTrajectory)
 
@@ -20,8 +19,7 @@ SimG4SaveTrajectory::SimG4SaveTrajectory(const std::string& aType, const std::st
                                            const IInterface* aParent)
     : GaudiTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("trajectoryPoints", m_positionedTrackHits, "Handle for trajectory hits");
-  declareProperty("trajectory", m_trackHits, "Handle for trajectory hits including position");
+  declareProperty("TrajectoryPoints", m_positionedTrackHits, "Handle for trajectory hits");
 }
 
 SimG4SaveTrajectory::~SimG4SaveTrajectory() {}
@@ -36,26 +34,21 @@ StatusCode SimG4SaveTrajectory::initialize() {
 StatusCode SimG4SaveTrajectory::finalize() { return GaudiTool::finalize(); }
 
 StatusCode SimG4SaveTrajectory::saveOutput(const G4Event& aEvent) {
-  // one collection for all the 
   auto edmPositions = m_positionedTrackHits.createAndPut();
-  auto edmHits = m_trackHits.createAndPut();
-
   G4TrajectoryContainer* trajectoryContainer = aEvent.GetTrajectoryContainer();
   for (size_t trajectoryIndex = 0; trajectoryIndex < trajectoryContainer->size(); ++trajectoryIndex) {
     G4VTrajectory* theTrajectory =  (*trajectoryContainer)[trajectoryIndex];
     for (int pointIndex = 0; pointIndex < theTrajectory->GetPointEntries(); ++pointIndex) {
       auto trajectoryPoint = theTrajectory->GetPoint(pointIndex)->GetPosition();
-      fcc::TrackHit edmHit = edmHits->create();
-      fcc::BareHit& edmHitCore = edmHit.core();
-      edmHitCore.bits = theTrajectory->GetTrackID();
-      edmHitCore.cellId = 0;
-      edmHitCore.energy = 0;
-      edmHitCore.time = 0;
-      auto position = fcc::Point();
-      position.x = trajectoryPoint.x() * sim::g42edm::length;
-      position.y = trajectoryPoint.y() * sim::g42edm::length;
-      position.z = trajectoryPoint.z() * sim::g42edm::length;
-      edmPositions->create(position, edmHitCore);
+      edm4hep::TrackerHit edmHit = edmPositions->create();
+      edmHit.setCellID(0);
+      edmHit.setEnergy(0);
+      edmHit.setTime(0;
+      edmHit.setPosition({
+        trajectoryPoint.x() * sim::g42edm::length;
+        trajectoryPoint.y() * sim::g42edm::length;
+        trajectoryPoint.z() * sim::g42edm::length;
+      });
     }
   }
 

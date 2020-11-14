@@ -10,9 +10,8 @@
 class IGeoSvc;
 
 // datamodel
-namespace fcc {
-class TrackHitCollection;
-class PositionedTrackHitCollection;
+namespace edm4hep {
+class TrackerHitCollection;
 }
 
 /** @class SimG4SaveTrajectory SimG4Components/src/SimG4SaveTrajectory.h SimG4SaveTrajectory.h
@@ -44,9 +43,7 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for trajectory hits including position information
-  DataHandle<fcc::TrackHitCollection> m_trackHits{"hits/trajectory",
-                                                                      Gaudi::DataHandle::Writer, this};
-  DataHandle<fcc::PositionedTrackHitCollection> m_positionedTrackHits{"hits/trajectoryPoints",
+  DataHandle<edm4hep::TrackerHitCollection> m_trackHits{"Hits/Trajectory",
                                                                       Gaudi::DataHandle::Writer, this};
 };
 
