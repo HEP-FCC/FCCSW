@@ -17,9 +17,8 @@ class G4Event;
 class G4PrimaryVertex;
 class G4PrimaryParticle;
 // datamodel
-namespace fcc {
+namespace edm4hep {
 class MCParticleCollection;
-class GenVertexCollection;
 }
 
 /** @class SimG4SingleParticleGeneratorTool SimG4SingleParticleGeneratorTool.h "SimG4SingleParticleGeneratorTool.h"
@@ -70,9 +69,7 @@ private:
   /// Flag whether to save primary particle to EDM, set with saveEdm
   Gaudi::Property<bool> m_saveEdm{this, "saveEdm", false};
   /// Handle for the genparticles to be written
-  DataHandle<fcc::MCParticleCollection> m_genParticlesHandle{"GenParticles", Gaudi::DataHandle::Writer, this};
-  /// Handle for the genvertices to be written
-  DataHandle<fcc::GenVertexCollection> m_genVerticesHandle{"GenVertices", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::MCParticleCollection> m_genParticlesHandle{"GenParticles", Gaudi::DataHandle::Writer, this};
 };
 
 #endif

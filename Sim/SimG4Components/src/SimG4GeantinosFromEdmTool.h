@@ -11,7 +11,7 @@
 
 // Forward declarations
 // datamodel
-namespace fcc {
+namespace edm4hep {
 class MCParticleCollection;
 }
 
@@ -24,13 +24,13 @@ public:
 
   StatusCode initialize() final;
 
-  /// Translates the input (fcc::MCParticleCollection) into a G4Event
+  /// Translates the input (edm4hep::MCParticleCollection) into a G4Event
   /// @returns G4Event with primaries generated from MCParticleCollection (ownership is transferred to the caller)
   virtual G4Event* g4Event() final;
 
 private:
   /// Handle for the EDM MC particles to be read
-  DataHandle<fcc::MCParticleCollection> m_genParticles{"allGenParticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::MCParticleCollection> m_genParticles{"GenParticles", Gaudi::DataHandle::Reader, this};
 };
 
 #endif

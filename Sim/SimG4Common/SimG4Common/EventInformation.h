@@ -7,8 +7,7 @@
 #include <map>
 
 class G4Track;
-namespace fcc {
-class GenVertexCollection;
+namespace edm4hep {
 class MCParticleCollection;
 }
 
@@ -32,17 +31,15 @@ public:
    * @param[in] aGenVertexCollection  pointer to a collection that should take ownership of the particles saved here
    * @param[in] aMCParticleCollection  pointer to a collection that should take ownership of the particles saved here
    */
-  void setCollections(fcc::GenVertexCollection*& aGenVertexCollection, fcc::MCParticleCollection*& aMcParticleCollection);
+  void setCollections( edm4hep::MCParticleCollection*& aMcParticleCollection);
   /// Add a particle to be tracked in the EDM collections
   void addParticle(const G4Track* aSecondary);
 
   void Print() const {};
 
 private:
-  /// Pointer to the vertex collection, ownership is intended to be transfered to SaveTool
-  fcc::GenVertexCollection* m_genVertices;
   /// Pointer to the particle collection, ownership is intended to be transfered to SaveTool
-  fcc::MCParticleCollection* m_mcParticles;
+  edm4hep::MCParticleCollection* m_mcParticles;
   /// Map to get the edm end vertex id from a Geant4 unique particle ID
   std::map<size_t, size_t> m_g4IdToEndVertexMap;
 };

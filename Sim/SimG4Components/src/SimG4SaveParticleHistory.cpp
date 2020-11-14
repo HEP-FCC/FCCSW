@@ -11,8 +11,7 @@
 #include "G4PrimaryVertex.hh"
 
 // datamodel
-#include "datamodel/GenVertexCollection.h"
-#include "datamodel/MCParticleCollection.h"
+#include "edm4hep/MCParticleCollection.h"
 
 DECLARE_COMPONENT(SimG4SaveParticleHistory)
 
@@ -20,18 +19,16 @@ SimG4SaveParticleHistory::SimG4SaveParticleHistory(const std::string& aType, con
                                                    const IInterface* aParent)
     : GaudiTool(aType, aName, aParent) {
   declareInterface<ISimG4SaveOutputTool>(this);
-  declareProperty("mcParticles", m_mcParticles, "Handle to the secondary particles");
-  declareProperty("genVertices", m_genVertices, "Handle to the decay vertices");
+  declareProperty("GenParticles", m_mcParticles, "Handle to the secondary particles");
 }
 
 
 StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& aEvent) {
   auto evtinfo = dynamic_cast<sim::EventInformation*>(aEvent.GetUserInformation());
   // take over ownership of particle and vertex collections
-  evtinfo->setCollections(m_genVertexColl, m_mcParticleColl);
+  evtinfo->setCollections(m_mcParticleColl);
   info() << "Saved " << m_mcParticleColl->size() << " particles from Geant4 history." << endmsg;
   m_mcParticles.put(m_mcParticleColl);
-  m_genVertices.put(m_genVertexColl);
 
   return StatusCode::SUCCESS;
 }

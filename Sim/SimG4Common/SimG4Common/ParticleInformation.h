@@ -2,7 +2,7 @@
 #define SIMG4COMMON_PARTICLEINFORMATION_H
 
 // datamodel
-#include "datamodel/MCParticle.h"
+#include "edm4hep/MCParticle.h"
 
 // Geant4
 #include "G4VUserPrimaryParticleInformation.hh"
@@ -28,7 +28,7 @@ public:
   /** A constructor.
    *  @param[in] aMCpart EDM MCParticle.
    */
-  explicit ParticleInformation(const fcc::MCParticle& aMCpart);
+  explicit ParticleInformation(const edm4hep::MCParticle& aMCpart);
   /// A destructor
   virtual ~ParticleInformation();
   /// A printing method
@@ -36,7 +36,7 @@ public:
   /** Getter of the MCParticle.
    *  @returns EDM MCParticle.
    */
-  const fcc::MCParticle& mcParticle() const;
+  const edm4hep::MCParticle& mcParticle() const;
   /** Setter of the end-of-tracking momentum (used for fast simulation).
    *  @param[in] aMom Particle momentum.
    */
@@ -72,7 +72,7 @@ public:
 
 private:
   /// EDM MC particle
-  const fcc::MCParticle m_mcParticle;
+  const edm4hep::MCParticle m_mcParticle;
   /// Particle momentum at the end of tracking (filled for fast-sim)
   CLHEP::Hep3Vector m_endMomentum;
   /// Particle vertex position saved at the end of tracking (filled for fast-sim)
