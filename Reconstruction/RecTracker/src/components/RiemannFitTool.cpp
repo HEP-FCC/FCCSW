@@ -35,7 +35,7 @@ RiemannFitTool::fitTracks(const edm4hep::TrackerHits* theHits,
                           std::multimap<unsigned int, unsigned int> seedmap) {
 
   constexpr unsigned int nhits = 22;
-  fcc::TrackCollection* tracks = new edm4hep::TrackCollection();
+  edm4hep::TrackCollection* tracks = new edm4hep::TrackCollection();
 
   decltype(seedmap.equal_range(0)) range;
   for (auto it1 = seedmap.begin(); it1 != seedmap.end(); it1 = range.second) {
