@@ -1,6 +1,6 @@
 #include "FCChhSeedHitFilterTool.h"
 
-#include "edm4hep/SimTrackerHitCollection.h"
+#include "edm4hep/TrackerHitCollection.h"
 
 
 
@@ -17,7 +17,7 @@ StatusCode FCChhSeedHitFilterTool::initialize() {
   return sc;
 }
 
-bool FCChhSeedHitFilterTool::filter(edm4hep::SimTrackerHit hit) {
+bool FCChhSeedHitFilterTool::filter(edm4hep::TrackerHit hit) {
 
   if (m_systemId == 0 || m_systemId == 1) {  // barrel
     if (hit.getCellID() % 16 == m_systemId) {

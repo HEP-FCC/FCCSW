@@ -9,7 +9,7 @@
 #include "RecInterface/ITrackSeedingTool.h"
 #include "RecInterface/IHitFilterTool.h"
 #include "RecInterface/ILayerGraphTool.h"
-#include "edm4hep/SimTrackerHitCollection.h"
+#include "edm4hep/TrackerHitCollection.h"
 
 
 #include <map>
@@ -24,7 +24,7 @@ public:
   virtual StatusCode initialize() override final;
   virtual StatusCode finalize() override final;
 
-  virtual bool filter(edm4hep::SimTrackerHit hit) override final;
+  virtual bool filter(edm4hep::TrackerHit hit) override final;
   virtual void setIds(unsigned int systemId, unsigned int layerId) override final;
   /// in this implementation the more specific setIds is used
   virtual void setState(std::vector<double> /*params*/) override final {};
