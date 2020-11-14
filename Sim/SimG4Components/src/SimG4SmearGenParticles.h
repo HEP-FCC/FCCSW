@@ -11,9 +11,8 @@
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
 
 // datamodel
-namespace fcc {
+namespace edm4hep {
 class MCParticleCollection;
-class ParticleMCParticleAssociationCollection;
 }
 
 /** @class SimG4SmearGenParticles SimG4Components/src/SimG4SmearGenParticles.h SimG4SmearGenParticles.h
@@ -43,9 +42,9 @@ class SimG4SmearGenParticles : public GaudiAlgorithm {
 
  private:
   /// Handle for the particles to be written                                                                                                                              
-  DataHandle<fcc::MCParticleCollection> m_inParticles{"inParticles", Gaudi::DataHandle::Reader, this};
+  DataHandle<edm4hep::MCParticleCollection> m_inParticles{"GenParticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the particles to be written
-  DataHandle<fcc::MCParticleCollection> m_particles{"smearedParticles", Gaudi::DataHandle::Writer, this};
+  DataHandle<edm4hep::MCParticleCollection> m_particles{"SimParticlesSmeared", Gaudi::DataHandle::Writer, this};
   /// Handle for the calorimeter cells noise tool 
   ToolHandle<ISimG4ParticleSmearTool> m_smearTool{"SimG4ParticleSmearRootFile", this};
   /// Flag to decide on wether to only smear and write out charged particles

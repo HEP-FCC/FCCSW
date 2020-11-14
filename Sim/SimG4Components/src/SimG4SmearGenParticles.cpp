@@ -8,7 +8,7 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "datamodel/MCParticleCollection.h"
+#include "edm4hep/MCParticleCollection.h"
 
 // DD4hep
 #include "DDG4/Geant4Hits.h"
@@ -35,25 +35,28 @@ StatusCode SimG4SmearGenParticles::initialize() {
 StatusCode SimG4SmearGenParticles::execute() {
 
   auto particles = m_particles.createAndPut();
-  const fcc::MCParticleCollection* coll = m_inParticles.get();
+  const edm4hep::MCParticleCollection* coll = m_inParticles.get();
   info() << "Input particle collection size: " << coll->size() << endmsg;
   
   int n_part = 0;
   for (const auto& j : *coll) {
-    const fcc::MCParticle& MCparticle = j;
+    const edm4hep::MCParticle& MCparticle = j;
     // save only charged particles, visible in tracker
-    verbose() << "Charge of input particles: " << MCparticle.charge() << endmsg;
+    verbose() << "Charge of input particles: " << MCparticle.getCharge() << endmsg;
 
     if ( MCparticle.charge()!=0 || MCparticle.pdgId()==-211 || !m_simTracker){
       
-      fcc::MCParticle particle = MCparticle.clone();
+      edm4hep::MCParticle particle = MCparticle.clone();
       // smear momentum according to trackers resolution
-      CLHEP::Hep3Vector mom = CLHEP::Hep3Vector(MCparticle.p4().px, MCparticle.p4().py, MCparticle.p4().pz);
+      auto edm_mom = MCparticle.getMomentum();
+      CLHEP::Hep3Vector mom = CLHEP::Hep3Vector(edm_mom.x, edm_mom.y, edm_mom.z);
       //    m_smearTool->checkConditions(5000,10000000,6);
       m_smearTool->smearMomentum(mom, MCparticle.pdgId());
-      particle.p4().px = mom.x();
-      particle.p4().py = mom.y();
-      particle.p4().pz = mom.z();
+      particle.setMomentum({
+                mom.x(),
+                mom.y(),
+                mom.z(),
+      });
       
       n_part++;
       particles->push_back(particle);
