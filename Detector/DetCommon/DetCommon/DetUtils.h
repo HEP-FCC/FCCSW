@@ -3,6 +3,7 @@
 
 // FCCSW
 #include "DetSegmentation/FCCSWGridPhiEta.h"
+#include "DetSegmentation/FCCSWGridPhiTheta.h"
 
 // DD4hep
 #include "DD4hep/DetFactoryHelper.h"

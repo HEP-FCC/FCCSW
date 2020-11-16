@@ -23,15 +23,15 @@
     <!-- Inclination angle of the lead plates -->
     <constant name="InclinationAngle" value="50*degree"/>
     <!-- thickness of active volume between two absorber plates at barrel Rmin, measured perpendicular to the readout plate -->
-    <constant name="LArGapThickness" value="1.806*mm"/>
+    <constant name="LArGapThickness" value="1.239749*2*mm"/>
 
     <!-- Air margin, thicknesses of cryostat and LAr bath -->
     <constant name="AirMarginThickness" value="0*mm"/>
     <constant name="CryoThicknessFront" value="50*mm"/>
     <constant name="CryoThicknessBack" value="100*mm"/>
     <constant name="CryoThicknessSide" value="100*mm"/>
-    <constant name="LArBathThicknessFront" value="20*mm"/>
-    <constant name="LArBathThicknessBack" value="20*mm"/>
+    <constant name="LArBathThicknessFront" value="10*mm"/>
+    <constant name="LArBathThicknessBack" value="40*mm"/>
 
     <!-- air margin around calorimeter -->
     <constant name="BarCryoECal_rmin" value="BarECal_rmin+AirMarginThickness"/>
@@ -44,11 +44,11 @@
     <!-- thickness of active volume between two absorber plates at EMBarrel_rmin, measuring perpendicular to the readout plate -->
     <constant name="LAr_thickness" value="LArGapThickness"/>
     <!-- passive layer consists of lead in the middle and steel on the outside, glued -->
-    <constant name="Pb_thickness" value="1.5*mm*2./2.16"/>
+    <constant name="Pb_thickness" value="1.4*mm"/>
     <!-- total amount of steel in one passive plate: it is divided for the outside layer on top and bottom -->
-    <constant name="Steel_thickness" value="0.4*mm*2./2.16"/>
+    <constant name="Steel_thickness" value="0.4*mm"/>
     <!-- total amount of glue in one passive plate: it is divided for the outside layer on top and bottom -->
-    <constant name="Glue_thickness" value="0.26*mm*2./2.16"/>
+    <constant name="Glue_thickness" value="0.2*mm"/>
     <!-- readout in between two absorber plates -->
     <constant name="readout_thickness" value="1.2*mm"/>
   </define>
@@ -59,21 +59,21 @@
 
   <readouts>
     <!-- readout for the simulation -->
-    <!-- offset in eta is eta max value including cryostat -->
-    <readout name="ECalBarrelEta">
-      <segmentation type="GridEta" grid_size_eta="0.01" offset_eta="-1.0"/>
-      <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,eta:9</id>
+    <!-- offset in theta is theta max value including cryostat -->
+    <readout name="ECalBarrelTheta">
+        <segmentation type="GridTheta" grid_size_theta="0.5625" offset_theta="-pi/4"/>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,module:11,theta:9</id>
     </readout>
     <!-- readout for the reconstruction -->
     <!-- phi position is calculated based on the centre of volume (hence it cannot be done in the simulation from energy deposits position) -->
-    <readout name="ECalBarrelPhiEta">
-      <segmentation type="FCCSWGridPhiEta" grid_size_eta="0.01" phi_bins="704" offset_eta="-1.0" offset_phi="-pi+(pi/704.)"/>
-      <id>system:4,cryo:1,type:3,subtype:3,layer:8,eta:9,phi:10</id>
+    <readout name="ECalBarrelPhiTheta">
+        <segmentation type="FCCSWGridPhiTheta" grid_size_theta="0.5625" phi_bins="768" offset_theta="-pi/4" offset_phi="-pi+(pi/768.)"/>
+      <id>system:4,cryo:1,type:3,subtype:3,layer:8,theta:9,phi:10</id>
     </readout>
   </readouts>
 
   <detectors>
-    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalBarrelEta">
+    <detector id="BarECal_id" name="ECalBarrel" type="EmCaloBarrelInclined" readout="ECalBarrelTheta">
       <sensitive type="SimpleCalorimeterSD"/>
       <dimensions rmin="BarCryoECal_rmin" rmax="BarCryoECal_rmax" dz="BarCryoECal_dz" vis="ecal_envelope"/>
       <cryostat name="ECAL_Cryo">
@@ -107,9 +107,9 @@
         <readout thickness="readout_thickness" sensitive="false">
           <material name="PCB"/>
         </readout>
-        <layers>
-	       <layer thickness="2*cm" repeat="1"/>
-	       <layer thickness="6.15*cm" repeat="7"/>
+        <layers> <!-- pcb electrode segmentation, values considered are parallel to the electrodes-->
+	       <layer thickness="1.5*cm" repeat="1"/>
+	       <layer thickness="3.5*cm" repeat="11"/>
         </layers>
       </calorimeter>
     </detector>

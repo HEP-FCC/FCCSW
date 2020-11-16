@@ -88,7 +88,7 @@
 
     <!-- LAr ECAL Calo Barrel -->
     <constant name="BarECal_id" value="DetID_ECAL_Barrel"/>
-    <constant name="BarECal_rmin" value="2060*mm"/>
+    <constant name="BarECal_rmin" value="2100*mm"/>
     <constant name="BarECal_rmax" value="2700*mm"/>
     <constant name="BarECal_dz" value="2210*mm"/>
 
