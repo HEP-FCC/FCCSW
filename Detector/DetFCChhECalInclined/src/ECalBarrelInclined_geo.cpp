@@ -177,7 +177,7 @@ static dd4hep::detail::Ref_t createECalBarrelInclined(dd4hep::Detector& aLcdd,
        << " thickness of outer part (cm) =  " << passiveOuterThickness
        << " thickness of total (cm) =  " << passiveThickness << " rotation angle = " << angle << endmsg;
   uint numPlanes =
-      M_PI / asin((passiveThickness + activeThickness + readoutThickness) / (2. * caloDim.rmin() * cos(angle)));
+      round(M_PI / asin((passiveThickness + activeThickness + readoutThickness) / (2. * caloDim.rmin() * cos(angle))));
   double dPhi = 2. * M_PI / numPlanes;
   lLog << MSG::INFO << "number of passive plates = " << numPlanes << " azim. angle difference =  " << dPhi << endmsg;
   lLog << MSG::INFO << " distance at inner radius (cm) = " << 2. * M_PI * caloDim.rmin() / numPlanes
