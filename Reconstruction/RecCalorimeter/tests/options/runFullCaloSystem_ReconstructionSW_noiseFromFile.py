@@ -280,6 +280,7 @@ createClusters.nEtaFinal = finE
 createClusters.nPhiFinal = finP
 createClusters.energyThreshold = threshold
 createClusters.clusters.Path = "CaloClusters"
+createClusters.clusterCells.Path = "CaloClusterCells"
 createClusters.AuditExecute = True
 ApplicationMgr().TopAlg +=[createClusters]
 

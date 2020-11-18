@@ -203,6 +203,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  nEtaFinal = finE, nPhiFinal = finP,
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
+createClusters.clusterCells.Path = "CaloClusterCells"
 
 out = PodioOutput("out", filename="output_allCalo_reco_noise.root")
 out.outputCommands = ["keep *"]

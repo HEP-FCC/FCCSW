@@ -13,18 +13,18 @@ class ITHistSvc;
 #include "GaudiKernel/ToolHandle.h"
 
 namespace fcc {
-class CaloClusterCollection;
-class CaloHitCollection;
-class MCParticleCollection;
-class GenVertexCollection;
+  class CaloClusterCollection;
+  class CaloHitCollection;
+  class MCParticleCollection;
+  class GenVertexCollection;
 }
 
 namespace dd4hep {
-namespace DDSegmentation {
-class FCCSWGridPhiEta;
-class MultiSegmentation;
-class BitFieldCoder;
-}
+  namespace DDSegmentation {
+    class FCCSWGridPhiEta;
+    class MultiSegmentation;
+    class BitFieldCoder;
+  }
 }
 
 #include "TH1F.h"

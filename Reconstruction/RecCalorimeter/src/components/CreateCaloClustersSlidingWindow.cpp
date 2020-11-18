@@ -11,6 +11,7 @@ DECLARE_COMPONENT(CreateCaloClustersSlidingWindow)
 CreateCaloClustersSlidingWindow::CreateCaloClustersSlidingWindow(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {
   declareProperty("clusters", m_clusters, "Handle for calo clusters (output collection)");
+  declareProperty("clusterCells", m_clusterCells, "Handle for calo cluster cells (output collection)");
   declareProperty("towerTool", m_towerTool, "Handle for the tower building tool");
 }
 
@@ -42,6 +43,7 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
   m_towers.assign(m_nEtaTower, std::vector<float>(m_nPhiTower, 0));
   // Create an output collection
   auto edmClusters = m_clusters.createAndPut();
+  auto edmClusterCells = m_clusterCells.createAndPut();
   // Check if the tower building succeeded
   if (m_towerTool->buildTowers(m_towers) == 0) {
     debug() << "Empty cell collection." << endmsg;
@@ -289,7 +291,10 @@ StatusCode CreateCaloClustersSlidingWindow::execute() {
       edmClusterCore.position.z = radius * sinh(clu.eta);
       edmClusterCore.energy = clusterEnergy;
       if (m_attachCells)
-        m_towerTool->attachCells(clu.eta, clu.phi, halfEtaFin, halfPhiFin, edmCluster, m_ellipseFinalCluster);
+        m_towerTool->attachCells(clu.eta, clu.phi,
+                                 halfEtaFin, halfPhiFin,
+                                 edmCluster, edmClusterCells,
+                                 m_ellipseFinalCluster);
       debug() << "Cluster eta: " << clu.eta << " phi: " << clu.phi << " x: " << edmClusterCore.position.x
               << " y: " << edmClusterCore.position.y << " z: " << edmClusterCore.position.z
               << " energy: " << edmClusterCore.energy << " contains: " << edmCluster.hits_size() << " cells" << endmsg;

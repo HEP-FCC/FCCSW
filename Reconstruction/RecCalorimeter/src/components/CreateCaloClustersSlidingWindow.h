@@ -90,6 +90,8 @@ private:
   unsigned int phiNeighbour(int aIPhi) const;
   /// Handle for calo clusters (output collection)
   DataHandle<fcc::CaloClusterCollection> m_clusters{"calo/clusters", Gaudi::DataHandle::Writer, this};
+  /// Handle for calo cluster cells (output collection)
+  DataHandle<fcc::CaloHitCollection> m_clusterCells{"calo/clusterCells", Gaudi::DataHandle::Writer, this};
   /// Handle for the tower building tool
   ToolHandle<ITowerTool> m_towerTool;
   // calorimeter towers
