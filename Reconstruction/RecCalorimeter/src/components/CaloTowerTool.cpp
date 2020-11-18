@@ -429,7 +429,11 @@ std::pair<dd4hep::DDSegmentation::Segmentation*, CaloTowerTool::SegmentationType
   return std::make_pair(segmentation, SegmentationType::kWrong);
 }
 
-void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster, bool aEllipse) {
+void CaloTowerTool::attachCells(float eta, float phi,
+                                uint halfEtaFin, uint halfPhiFin,
+                                fcc::CaloCluster& aEdmCluster,
+                                fcc::CaloHitCollection* aEdmClusterCells,
+                                bool aEllipse) {
   int etaId = idEta(eta);
   int phiId = idPhi(phi);
   int num1 = 0;
@@ -439,7 +443,8 @@ void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint half
       for (int iPhi = phiId - halfPhiFin; iPhi <= phiId + halfPhiFin; iPhi++) {
         if (pow( (etaId - iEta) / (halfEtaFin + 0.5), 2) + pow( (phiId - iPhi) / (halfPhiFin + 0.5), 2) < 1) {
           for (const auto& cell : m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))]) {
-            aEdmCluster.addhits(fcc::ConstCaloHit(cell));
+            aEdmClusterCells->push_back(cell);
+            aEdmCluster.addhits(aEdmClusterCells->at(aEdmClusterCells->size() - 1));
             num1++;
           }
         }
@@ -449,7 +454,8 @@ void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint half
     for (int iEta = etaId - halfEtaFin; iEta <= etaId + halfEtaFin; iEta++) {
       for (int iPhi = phiId - halfPhiFin; iPhi <= phiId + halfPhiFin; iPhi++) {
         for (const auto& cell : m_cellsInTowers[std::make_pair(iEta, phiNeighbour(iPhi))]) {
-          aEdmCluster.addhits(fcc::ConstCaloHit(cell));
+          aEdmClusterCells->push_back(cell);
+          aEdmCluster.addhits(aEdmClusterCells->at(aEdmClusterCells->size() - 1));
           num2++;
         }
       }

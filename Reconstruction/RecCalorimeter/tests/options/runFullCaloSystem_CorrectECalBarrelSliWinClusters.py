@@ -80,6 +80,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  attachCells = True,
                                                  OutputLevel = DEBUG)
 createClusters.clusters.Path = "CaloClusters"
+createClusters.clusterCells.Path = "CaloClusterCells"
 
 # Correct clusters
 from Configurables import CorrectECalBarrelSliWinCluster

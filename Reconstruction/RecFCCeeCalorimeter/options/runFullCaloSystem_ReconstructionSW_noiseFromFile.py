@@ -112,6 +112,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  nEtaFinal = finE, nPhiFinal = finP,
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
+createClusters.clusterCells.Path = "CaloClusterCells"
 
 import uuid
 out = PodioOutput("out", filename="output_allCalo_reco_noise_" + uuid.uuid4().hex + ".root")

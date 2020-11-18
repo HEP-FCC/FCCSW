@@ -144,6 +144,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  ellipse = True,
                                                  OutputLevel = DEBUG)
 createClusters.clusters.Path = "CaloClusters"
+createClusters.clusterCells.Path = "CaloClusterCells"
 
 out = PodioOutput("out", filename="output_allCalo_reco.root",
                    OutputLevel=DEBUG)

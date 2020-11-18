@@ -166,6 +166,7 @@ createClusters = CreateCaloClustersSlidingWindow("CreateClusters",
                                                  nEtaFinal = finE, nPhiFinal = finP,
                                                  energyThreshold = threshold)
 createClusters.clusters.Path = "CaloClusters"
+createClusters.clusterCells.Path = "CaloClusterCells"
 ~~~
 - Building of the towers
   - *deltaEtaTower* and *deltaPhiTower* describes the size of the tower in the *eta* and *phi*

@@ -221,7 +221,10 @@ StatusCode CorrectECalBarrelSliWinCluster::execute() {
       phiVertex = momentum.Phi();
       zVertex =  vertex->begin()->position().z;
       thetaVertex = 2 * atan( exp( - etaVertex ) );
-    verbose() << " vertex eta " << etaVertex << "   phi = " << phiVertex << " theta = " << thetaVertex << " z = " << zVertex << endmsg;
+      verbose() << " vertex eta " << etaVertex
+                << "   phi = " << phiVertex
+                << " theta = " << thetaVertex
+                << " z = " << zVertex << endmsg;
    }
   }
 
