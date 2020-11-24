@@ -63,11 +63,8 @@ public:
    *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
-  virtual void attachCells(float aEta, float aPhi,
-                           uint aHalfEtaFinal, uint aHalfPhiFinal,
-                           fcc::CaloCluster& aEdmCluster,
-                           fcc::CaloHitCollection* aEdmClusterCells,
-                           bool aEllipse) = 0;
+  virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                           fcc::CaloCluster& aEdmCluster, fcc::CaloHitCollection* aEdmClusterCells, bool aEllipse) = 0;
 };
 
 #endif /* RECINTERFACE_ITOWERTOOL_H */

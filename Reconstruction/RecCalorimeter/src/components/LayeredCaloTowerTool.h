@@ -123,11 +123,8 @@ public:
    *   @param[in] aHalfPhiFinal Half size of cluster in phi (in units of tower size). Cluster size is 2*aHalfPhiFinal+1
    *   @param[out] aEdmCluster Cluster where cells are attached to
    */
-  virtual void attachCells(float aEta, float aPhi,
-                           uint aHalfEtaFinal, uint aHalfPhiFinal,
-                           fcc::CaloCluster& aEdmCluster,
-                           fcc::CaloHitCollection* aEdmClusterCells,
-                           bool aEllipse = false) final;
+  virtual void attachCells(float aEta, float aPhi, uint aHalfEtaFinal, uint aHalfPhiFinal,
+                           fcc::CaloCluster& aEdmCluster, fcc::CaloHitCollection* aEdmClusterCells, bool aEllipse = false) final;
   std::shared_ptr<dd4hep::DDSegmentation::BitFieldCoder> m_decoder;
 
 private:
