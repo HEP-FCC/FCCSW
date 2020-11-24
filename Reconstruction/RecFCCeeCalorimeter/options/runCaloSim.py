@@ -3,7 +3,7 @@ import os
 from GaudiKernel.SystemOfUnits import MeV, GeV, tesla
 
 # Input for simulations (momentum is expected in GeV!)
-momentum = 100
+momentum = 10
 # theta from 80 to 100 degrees corresponds to -0.17 < eta < 0.17 
 thetaMin = 80.
 thetaMax = 100.
