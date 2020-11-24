@@ -429,11 +429,7 @@ std::pair<dd4hep::DDSegmentation::Segmentation*, CaloTowerTool::SegmentationType
   return std::make_pair(segmentation, SegmentationType::kWrong);
 }
 
-void CaloTowerTool::attachCells(float eta, float phi,
-                                uint halfEtaFin, uint halfPhiFin,
-                                fcc::CaloCluster& aEdmCluster,
-                                fcc::CaloHitCollection* aEdmClusterCells,
-                                bool aEllipse) {
+void CaloTowerTool::attachCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster, fcc::CaloHitCollection* aEdmClusterCells, bool aEllipse) {
   int etaId = idEta(eta);
   int phiId = idPhi(phi);
   int num1 = 0;
