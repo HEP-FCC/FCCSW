@@ -50,9 +50,9 @@ StatusCode CreateCaloCellPositions::execute() {
     auto systemId = m_decoder->get(cellId, "system");
     dd4hep::Position posCell;
 
-    if (systemId == 5)  // ECAL BARREL system id
+    if (systemId == 4)  // ECAL BARREL system id
       posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
-    else if (systemId == 8)  // HCAL BARREL system id
+    else if (systemId == 10)  // HCAL BARREL system id
       posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
     else if (systemId == 9)  // HCAL EXT BARREL system id
       posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
