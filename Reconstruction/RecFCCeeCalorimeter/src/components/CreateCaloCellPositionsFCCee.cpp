@@ -1,4 +1,4 @@
-#include "CreateCaloCellPositions.h"
+#include "CreateCaloCellPositionsFCCee.h"
 
 // FCCSW
 #include "DetCommon/DetUtils.h"
@@ -13,9 +13,9 @@
 #include "datamodel/PositionedTrackHitCollection.h"
 #include "datamodel/TrackHitCollection.h"
 
-DECLARE_COMPONENT(CreateCaloCellPositions)
+DECLARE_COMPONENT(CreateCaloCellPositionsFCCee)
 
-CreateCaloCellPositions::CreateCaloCellPositions(const std::string& name, ISvcLocator* svcLoc)
+CreateCaloCellPositionsFCCee::CreateCaloCellPositionsFCCee(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {
   declareProperty("hits", m_hits, "Hit collection (input)");
   declareProperty("positionsECalBarrelTool", m_cellPositionsECalBarrelTool,
@@ -31,13 +31,13 @@ CreateCaloCellPositions::CreateCaloCellPositions(const std::string& name, ISvcLo
   declareProperty("positionedHits", m_positionedHits, "Output cell positions collection");
 }
 
-StatusCode CreateCaloCellPositions::initialize() {
+StatusCode CreateCaloCellPositionsFCCee::initialize() {
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
   return StatusCode::SUCCESS;
 }
 
-StatusCode CreateCaloCellPositions::execute() {
+StatusCode CreateCaloCellPositionsFCCee::execute() {
   // Get the input hit collection
   const auto* hits = m_hits.get();
   debug() << "Input hit collection size: " << hits->size() << endmsg;
@@ -50,9 +50,9 @@ StatusCode CreateCaloCellPositions::execute() {
     auto systemId = m_decoder->get(cellId, "system");
     dd4hep::Position posCell;
 
-    if (systemId == 5)  // ECAL BARREL system id
+    if (systemId == 4)  // ECAL BARREL system id
       posCell = m_cellPositionsECalBarrelTool->xyzPosition(cellId);
-    else if (systemId == 8)  // HCAL BARREL system id
+    else if (systemId == 10)  // HCAL BARREL system id
       posCell = m_cellPositionsHCalBarrelTool->xyzPosition(cellId);
     else if (systemId == 9)  // HCAL EXT BARREL system id
       posCell = m_cellPositionsHCalExtBarrelTool->xyzPosition(cellId);
@@ -82,4 +82,4 @@ StatusCode CreateCaloCellPositions::execute() {
   return StatusCode::SUCCESS;
 }
 
-StatusCode CreateCaloCellPositions::finalize() { return GaudiAlgorithm::finalize(); }
+StatusCode CreateCaloCellPositionsFCCee::finalize() { return GaudiAlgorithm::finalize(); }
