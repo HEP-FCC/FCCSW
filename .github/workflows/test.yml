@@ -11,27 +11,9 @@ jobs:
         SETUP: ["init_key4hep.sh", 'init_lcg_97a_FCC_4.sh', 'init_lcg_98.sh']
     steps:
     - uses: actions/checkout@v2
-    - name: Install CVMFS
-      run: |
-        wget --no-check-certificate https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb
-        sudo dpkg -i cvmfs-release-latest_all.deb
-        sudo apt-get update
-        sudo apt-get install cvmfs cvmfs-config-default
-        sudo cvmfs_config setup
-        echo "CVMFS_QUOTA_LIMIT='32140'" > default.local
-        echo "CVMFS_HTTP_PROXY=DIRECT" >> default.local
-        echo "CVMFS_CACHE_BASE='/var/lib/cvmfs'" >> default.local
-        echo "CVMFS_FORCE_SIGNING='yes'" >> default.local
-        echo "CVMFS_FOLLOW_REDIRECTS='yes'" >> default.local
-        echo "CVMFS_REPOSITORIES='sw.hsf.org,sw-nightlies.hsf.org,fcc.cern.ch,sft-nightlies.cern.ch,sft.cern.ch,geant4.cern.ch'" >> default.local
-        echo "CVMFS_SEND_INFO_HEADER=no" >> default.local
-        sudo mkdir -p /etc/cvmfs
-        sudo mv default.local /etc/cvmfs/default.local
-        sudo cvmfs_config probe
-        ls /cvmfs/sft.cern.ch
-        ls /cvmfs/fcc.cern.ch
-        ls /cvmfs/geant4.cern.ch
-
+    - uses: cvmfs-contrib/github-action-cvmfs@v1
+      with:
+        cvmfs_repositories: 'sw.hsf.org,sw-nightlies.hsf.org,sft-nightlies.cern.ch,sft.cern.ch,geant4.cern.ch'
     - name: Start container
       run: |
         docker run -it --name CI_container -v ${GITHUB_WORKSPACE}:/Package -v /cvmfs:/cvmfs:shared -d clicdp/cc7-lcg /bin/bash
@@ -52,7 +34,6 @@ jobs:
         docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build;  ninja -k0 install;'
 
     - name: Test FCCSW
-      continue-on-error: ${{matrix.SETUP == 'init_key4hep.sh' }}
       run: |
         docker exec CI_container /bin/bash -c 'cd ./Package; source ${{ matrix.SETUP }}; cd build; ctest -j `getconf _NPROCESSORS_ONLN`;'
     - name: Upload Test Results for FCCSW
