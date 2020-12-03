@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
-
+<gdml>
   <define/>
-
   <materials>
     <isotope N="16" Z="8" name="O160x15a9d80">
       <atom unit="g/mole" value="15.9949"/>
