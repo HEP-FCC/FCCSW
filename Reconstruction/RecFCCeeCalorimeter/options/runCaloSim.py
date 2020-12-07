@@ -49,7 +49,7 @@ detectors_to_use=[
                   ]
 # prefix all xmls with path_to_detector
 geoservice.detectors = [os.path.join(path_to_detector, _det) for _det in detectors_to_use]
-geoservice.OutputLevel = WARNING
+geoservice.OutputLevel = INFO
 
 # Geant4 service
 # Configures the Geant simulation: geometry, physics list and user actions
@@ -106,7 +106,7 @@ geantsim = SimG4Alg("SimG4Alg",
 from Configurables import CalibrateInLayersTool
 calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel",
                                    # sampling fraction obtained using SamplingFractionInLayers from DetStudies package
-                                   samplingFraction =  [0.24833] * 1 + [0.09482] * 1  +  [0.12242] * 1  +  [0.14182] * 1  +  [0.15667] * 1  +  [0.16923] * 1  +  [0.17980] * 1  +  [0.20085] * 1,
+                                   samplingFraction = [0.306224547517] * 1 + [0.111664096145] * 1 + [0.135828948734] * 1 + [0.151690753987] * 1 + [0.163564788854] * 1 + [0.172627758875] * 1 + [0.180023941499] * 1 + [0.186642705553] * 1 + [0.192229484697] * 1 + [0.197347321559] * 1 + [0.202461342545] * 1 + [0.225390187901] * 1,
                                    readoutName = ecalBarrelReadoutName,
                                    layerFieldName = "layer")
 
