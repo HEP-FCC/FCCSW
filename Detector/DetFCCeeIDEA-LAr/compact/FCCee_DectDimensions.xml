@@ -90,13 +90,13 @@
     <constant name="BarECal_id" value="DetID_ECAL_Barrel"/>
     <constant name="BarECal_rmin" value="2100*mm"/>
     <constant name="BarECal_rmax" value="2700*mm"/>
-    <constant name="BarECal_dz" value="2210*mm"/>
+    <constant name="BarECal_dz" value="2260*mm"/>
 
     <!-- HCAL Barrel -->
     <constant name="BarHCal_id" value="DetID_HCAL_Barrel"/>
     <constant name="BarHCal_rmin" value="2800*mm"/>
     <constant name="BarHCal_rmax" value="4100*mm"/>
-    <constant name="BarHCal_dz" value="2210*mm"/>
+    <constant name="BarHCal_dz" value="2260*mm"/>
 
     <constant name="HCalEndcap_inner_radius" value="340*mm"/>
     <constant name="HCalEndcap_outer_radius" value="3566*mm"/>
