@@ -51,7 +51,7 @@
 
   <readouts>
     <!-- readout for the simulation -->
-    <!-- offset in theta is theta max value including cryostat -->
+    <!-- offset in eta is eta max value including cryostat -->
     <readout name="ECalBarrelEta">
         <!-- segmentation type="GridTheta" grid_size_theta="0.5625" offset_theta="-0.83"/ -->
         <segmentation grid_size_eta="0.01" offset_eta="-1.0" type="GridEta"/>
@@ -101,7 +101,7 @@
         <readout sensitive="true" thickness="readout_thickness">
           <material name="PCB"/>
         </readout>
-        <layers> <!-- pcb electrode segmentation, values considered are parallel to the electrodes-->
+        <layers> <!-- pcb electrode longitudinal segmentation in the radial direction -->
 	       <layer repeat="1" thickness="1.5*cm"/>
 	       <layer repeat="11" thickness="3.5*cm"/>
         </layers>
