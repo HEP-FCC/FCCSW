@@ -18,7 +18,7 @@ Use of these resources is controlled by the <a href="https://e-groups.cern.ch/e-
 The associated accounting group is **group_u_FCC**; to use resources from this quota, the following needs to be
 added to the job sumbmit file:
 ```
-+AccountingGroup = "group_u_FCC.local_gen
++AccountingGroup = "group_u_FCC.local_gen"
 ```
 ## Storage resources
 
