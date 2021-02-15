@@ -88,6 +88,7 @@ private:
       this, "regions", {}, "Names of the tools that create regions and fast simulation models"};
   /// Flag whether random numbers seeds should be taken from Gaudi (default: true)
   Gaudi::Property<bool> m_rndmFromGaudi{this, "randomNumbersFromGaudi", true, "Whether random numbers should be taken from Gaudi"};
+  Gaudi::Property<long> m_seedValue{this, "seedValue", 1234567, "Seed to be used in RndmGenSvc engine (randomNumbersFromGaudi must be set to false)"};
 
   Gaudi::Property<bool> m_interactiveMode{this, "InteractiveMode", false, "Enter the interactive mode"};
 
