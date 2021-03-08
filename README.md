@@ -3,6 +3,13 @@
 Common software for all FCC experiments. FCCSW is a collection of components intended to be run in the Gaudi framework.
 Because of the modular nature of the software, this repository contains little actual code, which can instead be found in the following places:
 
+* [`key4hep/k4FWCore`](https://github.com/key4hep/k4FWCore): Basic I/O components
+* [`key4hep/k4Gen`](https://github.com/hep-fcc/k4gen): Generators and Particle Guns
+* [`key4hep/k4SimDelphes`](https://github.com/key4hep/k4SimDelphes): Delphes Fast Sim
+* [`key4hep/k4SimGeant4`](https://github.com/key4hep/k4SimGeant4): Geant4 Full Sim
+* [`hep-fcc/fccdetectors`](https://github.com/hep-fcc/fccdetectors): DD4hep models of FCC detector geometries for Full Sim
+* [`hep-fcc/k4RecCalorimeter`](https://github.com/hep-fcc/k4RecCalorimeter): Calorimeter Reconstruction Code
+* [`hep-fcc/dual-readout`](https://github.com/hep-fcc/dual-readout): DD4hep model of the DREAM dual readout calorimeter
 
 FCCSW is part of the [Key4hep](http://cern.ch/key4hep) software collaboration.
 
