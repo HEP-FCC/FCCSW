@@ -1,2 +1,0 @@
-#!/bin/sh
-exec $ENV{PYTHONHOME}/bin/python ${Gaudi_DIR}/scripts/xenv --xml $(dirname $0)/FCCSW.xenv "$@"
