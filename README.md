@@ -1,56 +1,30 @@
-FCCSW
-=====
+# FCCSW
 
-Common software for all FCC experiments.
-This software is based on Gaudi.
-
+Common software for all FCC experiments. FCCSW is a collection of components intended to be run in the Gaudi framework.
+Because of the modular nature of the software, this repository contains little actual code, which can instead be found in the following places:
 
 
-Installation
-------------
+FCCSW is part of the [Key4hep](http://cern.ch/key4hep) software collaboration.
 
 
-Log in to lxplus (CentOS7). Please note that these instructions might not work on another CentOS7 machine.
+## Quickstart
 
-Clone your fork of this repository:
+```bash
+# works on lxplus/centos7 with cvmfs
+source /cvmfs/sw.hsf.org/key4hep/setup.sh
 
-~~~{.sh}
-git clone https://github.com/HEP-FCC/FCCSW.git
-cd FCCSW
-~~~
+# run pythia generator with edm4hep output
+fccrun Examples/options/pythia.py
 
-Set up your environment, as everytime you want to build or use this software:
+# full simulation of FCC-hh, single particle
+fccrun Examples/options/geant_fullsim.py
 
-~~~{.sh}
-source ./init.sh
-~~~
-
-Compile the FCC software:
-
-~~~{.sh}
-make -j 12
-~~~
-
-Test
-----
-
-~~~{.sh}
-./run fccrun Examples/options/example_options.py
-~~~
-
-you can also specify some options like number of events and output file
-~~~{.sh}
-./run fccrun.py Examples/options/example_options.py --outputfile=my_own_output.root --nevents=1000
-~~~
-
-You should see an HepMC printout. More tests can be executed with
-
-~~~{.sh}
-make test
-~~~
+# full simulation of FCC-ee IDEA, single particle
+fccrun Examples/options/geant_fullsim_fccee_pgun.py
+```
 
 
-Documentation
-----
+## Documentation
 
-Please consult [FCCSW documentation](http://hep-fcc.github.io/FCCSW/)
+Please consult the [FCCSW homepage](http://cern.ch/fccsw) for more links, and the [fcc-tutorials](https://hep-fcc.github.io/fcc-tutorials/) for a gentle introduction to the software. 
+The [key4hep documentation](http://cern.ch/key4hep) also contains relevant information.
