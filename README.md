@@ -17,7 +17,7 @@ FCCSW is part of the [Key4hep](http://cern.ch/key4hep) software collaboration.
 ## Quickstart
 
 ```bash
-# works on lxplus/centos7 with cvmfs
+# setup: works on lxplus/centos7 with cvmfs
 source /cvmfs/sw.hsf.org/key4hep/setup.sh
 
 # run pythia generator with edm4hep output
