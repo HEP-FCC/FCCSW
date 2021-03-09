@@ -13,10 +13,11 @@ from Configurables import ApplicationMgr
 ApplicationMgr().EvtSel = 'NONE' 
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
+ApplicationMgr().ExtSvc +=["RndmGenSvc"]
 
 #### Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+from Configurables import k4DataSvc
+podioevent = k4DataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 from Configurables import GaussSmearVertex
@@ -29,8 +30,9 @@ smeartool.tVertexSigma = 180.0*units.picosecond
 from Configurables import PythiaInterface
 pythia8gentool = PythiaInterface()
 ### Example of pythia configuration file to generate events
-pythiafilename = "Generation/data/Pythia_standard.cmd"
-path_to_pythiafile = os.environ.get("FCCSW_SHARE_DIR", "")
+# take from $K4GEN if defined, locally if not
+path_to_pythiafile = os.environ.get("K4GEN", "")
+pythiafilename = "data/Pythia_standard.cmd"
 pythiafile = os.path.join(path_to_pythiafile, pythiafilename)
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
@@ -50,8 +52,7 @@ from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter()
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.hepmcStatusList = [] # convert particles with all statuses
-hepmc_converter.genparticles.Path="GenParticles"
-hepmc_converter.genvertices.Path="GenVertices"
+hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
 ### Filters generated particles
@@ -59,8 +60,8 @@ ApplicationMgr().TopAlg += [hepmc_converter]
 from Configurables import GenParticleFilter
 genfilter = GenParticleFilter("StableParticles")
 genfilter.accept = [1]
-genfilter.allGenParticles.Path = "GenParticles"
-genfilter.filteredGenParticles.Path = "GenParticlesStable"
+genfilter.GenParticles.Path = "GenParticles"
+genfilter.GenParticlesFiltered.Path = "GenParticlesStable"
 ApplicationMgr().TopAlg += [genfilter]
 
 from Configurables import PodioOutput
