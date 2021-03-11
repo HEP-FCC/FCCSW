@@ -11,7 +11,7 @@ Because of the modular nature of the software, this repository contains little a
 * [`hep-fcc/k4RecCalorimeter`](https://github.com/hep-fcc/k4RecCalorimeter): Calorimeter Reconstruction Code
 * [`hep-fcc/dual-readout`](https://github.com/hep-fcc/dual-readout): DD4hep model of the DREAM dual readout calorimeter
 
-FCCSW is part of the [Key4hep](http://cern.ch/key4hep) software collaboration.
+FCCSW is a stakeholder of the [Key4hep](http://cern.ch/key4hep) software collaboration.
 
 
 ## Quickstart
