@@ -1,32 +1,29 @@
 from Gaudi.Configuration import *
-
-#
-#  from $FCCSWBASEDIR/share/FCCSW/Examples//options/geant_fullsim_fccee_hepevt.py
-#
-
-# To run it :
-# fccrun.py geant_fullsim_fccee_hepevt_CLD.py --input=input.hepevt --outputfile=pairs_fccsw_CLD.root
-#
-# An example input file (one Guinea-Pig event) can be found in afs in
-# /afs/cern.ch/user/e/eperez/public/FCCee/input_example_GuineaPig.hepevt
-#
-
+import os
 
 # Data service
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
 
-# from Configurables import HepMCReader
-from Configurables import HepEVTReader
+from Configurables import ConstPtParticleGun
+guntool1 = ConstPtParticleGun("SignalProvider", PdgCodes=[13], PtMin=50, PtMax=50)
+from Configurables import GenAlg
+gun = GenAlg()
+gun.SignalProvider = guntool1
+gun.hepmc.Path = "hepmc"
 
-reader = HepEVTReader("Reader", HepEVTFilename='/afs/cern.ch/user/e/eperez/public/FCCee/input_example_GuineaPig.hepevt')
-reader.GenParticles.Path="allGenParticles"
+from Configurables import HepMCToEDMConverter
+hepmc_converter = HepMCToEDMConverter()
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.GenParticles.Path = "allGenParticles"
+
+
 
 # DD4hep geometry service
 # Parses the given xml file
 from Configurables import GeoSvc, SimG4SingleParticleGeneratorTool
 geoservice = GeoSvc("GeoSvc", detectors=[
-                                         'Detector/DetFCCeeCLD/compact/FCCee_DectMaster.xml',
+                                         os.path.join(os.environ["FCCDETECTORS"], 'Detector/DetFCCeeCLD/compact/FCCee_DectMaster.xml'),
                                          ])
 
 from Configurables import SimG4ConstantMagneticFieldTool
@@ -38,16 +35,16 @@ field = SimG4ConstantMagneticFieldTool("SimG4ConstantMagneticFieldTool", FieldOn
 from Configurables import SimG4Svc, SimG4FullSimActions, SimG4UserLimitPhysicsList, SimG4UserLimitRegion
 from GaudiKernel.SystemOfUnits import mm
 
-regiontool = SimG4UserLimitRegion("limits", volumeNames=["world"],
-                                  maxStep = 2*mm)
+#regiontool = SimG4UserLimitRegion("limits", volumeNames=["world"],
+#                                  maxStep = 2*mm)
 
-physicslisttool = SimG4UserLimitPhysicsList(fullphysics="SimG4FtfpBert")
+#physicslisttool = SimG4UserLimitPhysicsList("testlimphys", fullphysics="SimG4FtfpBert")
 
 # giving the names of tools will initialize the tools of that type
-geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist=physicslisttool, 
-                        regions=[regiontool],
-                        magneticField=field,
-			g4PostInitCommands=['/random/setSeeds 1234500 3456700']
+geantservice = SimG4Svc("SimG4Svc", detector='SimG4DD4hepDetector', physicslist="SimG4FtfpBert", 
+                        #regions=[regiontool],
+                        #magneticField=field,
+			#g4PostInitCommands=['/random/setSeeds 1234500 3456700']
                         )
 
 #geantservice.g4PostInitCommands += ["/run/setCut 0.7 mm"]
@@ -115,9 +112,9 @@ geantsim = SimG4Alg("SimG4Alg",
         "SimG4SaveTrackerHits/saveTrackerHits_IT_Endcap",
         "SimG4SaveTrackerHits/saveTrackerHits_OT_Barrel",
         "SimG4SaveTrackerHits/saveTrackerHits_OT_Endcap",
-	"SimG4SaveCalHits/saveLumicalHits",
-  	"SimG4SaveCalHits/saveEcalBarrelHits",
-	"SimG4SaveCalHits/saveEcalEndcapHits",
+	      "SimG4SaveCalHits/saveLumicalHits",
+  	    "SimG4SaveCalHits/saveEcalBarrelHits",
+	      "SimG4SaveCalHits/saveEcalEndcapHits",
         "SimG4SaveCalHits/saveHcalBarrelHits",
         "SimG4SaveCalHits/saveHcalEndcapHits"
         ],
@@ -133,10 +130,10 @@ out.outputCommands = ["keep *"]
 
 # ApplicationMgr
 from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, geantsim, out],
+ApplicationMgr( TopAlg = [gun, hepmc_converter, geantsim, out],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by SimG4Svc
                 ExtSvc = [podioevent, geoservice, geantservice],
-                OutputLevel=INFO
+                OutputLevel=DEBUG
                 )
