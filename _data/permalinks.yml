@@ -4,7 +4,7 @@
 - url: https://cern.ch/key4hep
   name: Key4HEP Documentation
 - url: https://fccsw-forum.web.cern.ch/
-  name: FCC Forum
+  name: FCC Software Forum
 - url: https://mattermost.web.cern.ch/fccsw/
   name: FCC Mattermost Chat
 - url: http://cern.ch/simba3/SelfSubscription.aspx?groupName=fcc-experiments-sw-dev
