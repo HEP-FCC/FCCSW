@@ -1,7 +1,6 @@
 import os
 from Gaudi.Configuration import *
 
-from Configurables import GeoSvc
 
 from Configurables import ApplicationMgr
 ApplicationMgr().EvtSel = 'None' 
