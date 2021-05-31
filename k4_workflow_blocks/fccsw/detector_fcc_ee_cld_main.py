@@ -9,8 +9,10 @@ path_to_detectors = os.environ.get("FCCDETECTORS", "")
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [
                           os.path.join(path_to_detectors, 'Detector/DetFCCeeCLD/compact/FCCee_DectMaster.xml'),
+                       ]
 
 
+from Configurables import SimG4Alg
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits_Barrel")
 savetrackertool.readoutNames = ["VertexBarrelCollection"]
@@ -48,7 +50,7 @@ savetrackertool_OTE.SimTrackHits.Path = "hits_OT_endcap"
 SimG4Alg("SimG4Alg").outputs += [savetrackertool_OTE]
 
 from Configurables import SimG4SaveTrackerHits
-savelumicaltool = SimG4SaveCalHits("saveLumicalHits"
+savelumicaltool = SimG4SaveCalHits("saveLumicalHits")
 savelumicaltool.readoutNames = ["LumiCalCollection"]
 savelumicaltool.CaloHits.Path = "hits_Lumical"
 SimG4Alg("SimG4Alg").outputs += [savelumicaltool]
