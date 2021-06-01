@@ -28,8 +28,7 @@ ApplicationMgr().TopAlg += [gen]
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
-hepmc_converter.genparticles.Path="allGenParticles"
-hepmc_converter.genvertices.Path="allGenVertices"
+hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
 
@@ -71,8 +70,11 @@ from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
-geantsim.eventProvider.genParticles.Path = "allGenParticles"
+geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
+
+#todo: add savetools?
+
 
 
 # PODIO algorithm

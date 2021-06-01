@@ -9,13 +9,14 @@ ApplicationMgr().OutputLevel = INFO
 
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
-ApplicationMgr.ExtSvc += [podioevent]
+ApplicationMgr().ExtSvc += [podioevent]
 
 # from Configurables import HepMCReader
 from Configurables import HepEVTReader
 reader = HepEVTReader("HepEVTReader")
-reader.HepEVTFilename = 'http://fccsw.web.cern.ch/fccsw/testsamples/input_example_GuineaPig.hepevt'
+reader.HepEVTFilename = 'input_example_GuineaPig.hepevt'
 reader.GenParticles.Path = "GenParticles"
+ApplicationMgr().TopAlg += [reader]
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -27,6 +28,7 @@ geoservice.detectors = [
                        ]
 ApplicationMgr().ExtSvc += [geoservice]
 
+from Configurables import SimG4Alg
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits_Barrel")
 savetrackertool.readoutNames = ["VertexBarrelCollection"]
@@ -42,7 +44,7 @@ SimG4Alg("SimG4Alg").outputs += [savetrackertool_endcap]
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_DCH = SimG4SaveTrackerHits("saveTrackerHits_DCH")
-saveTrackerHits_DCH.readoutNames = ["DriftChamberCollection"]
+savetrackertool_DCH.readoutNames = ["DriftChamberCollection"]
 savetrackertool_DCH.SimTrackHits.Path = "positionedHits_DCH"
 SimG4Alg("SimG4Alg").outputs += [savetrackertool_DCH]
 
@@ -79,8 +81,7 @@ ApplicationMgr().ExtSvc += [geantservice]
 
 from Configurables import SimG4SaveTrajectory
 savetrajectorytool = SimG4SaveTrajectory("saveTrajectory")
-savetrajectorytool.trajectory.Path = "trajectory"
-savetrajectorytool.trajectoryPoints.Path = "trajectoryPoints"
+savetrajectorytool.TrajectoryPoints.Path = "trajectoryPoints"
 
 from Configurables import SimG4SaveParticleHistory
 savehisttool = SimG4SaveParticleHistory("saveHistory")
@@ -90,7 +91,8 @@ from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")
 geantsim.outputs += [
           savehisttool,
-          savetrajectorytool,
+          #todo: investigate error
+          #savetrajectorytool,
         ]
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")

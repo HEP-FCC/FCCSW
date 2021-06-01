@@ -18,8 +18,9 @@ ApplicationMgr().ExtSvc += [podioevent]
 # from Configurables import HepMCReader
 from Configurables import HepEVTReader
 reader = HepEVTReader("HepEVTReader")
-reader.HepEVTFilename = 'http://fccsw.web.cern.ch/fccsw/testsamples/input_example_GuineaPig.hepevt'
+reader.HepEVTFilename = 'input_example_GuineaPig.hepevt'
 reader.GenParticles.Path = "GenParticles"
+ApplicationMgr().TopAlg += [reader]
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -127,8 +128,9 @@ ApplicationMgr().TopAlg += [geantsim]
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out")
-out.filename = "fccee_cld_out.py"
+out.filename = "out_geant_fullsim_fccee_cld_hepevt.root"
 out.OutputLevel = DEBUG
 out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += out
+ApplicationMgr().TopAlg += [out]
+
 

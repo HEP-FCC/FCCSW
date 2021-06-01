@@ -7,7 +7,7 @@ from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
 from GaudiKernel import PhysicalConstants as constants
 
-from detector_fcchh_main import *
+from k4_workflow_blocks.fccsw.detector_fcc_hh_main import *
 
 
 from Configurables import ApplicationMgr
@@ -22,7 +22,7 @@ podioevent = FCCDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 
-from p0001_particle_gun_single_electron import *
+from k4_workflow_blocks.fccsw.c01_01_gen_particlegun_theta_p import *
 
 
 # Geant4 service
@@ -41,7 +41,7 @@ from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
-geantsim.eventProvider.GenParticles.Path = "allGenParticles"
+geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
 
 # PODIO algorithm
