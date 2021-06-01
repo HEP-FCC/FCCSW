@@ -24,10 +24,10 @@ source /cvmfs/sw.hsf.org/key4hep/setup.sh
 fccrun Examples/options/pythia.py
 
 # full simulation of FCC-hh, single particle
-fccrun Examples/options/geant_fullsim.py
+fccrun Examples/options/geant_fullsim_fcchh_main.py
 
-# full simulation of FCC-ee IDEA, single particle
-fccrun Examples/options/geant_fullsim_fccee_pgun.py
+# full simulation of FCC-ee CLD, single particle
+fccrun Examples/options/geant_fullsim_fccee_cld_pgun.py
 ```
 
 
