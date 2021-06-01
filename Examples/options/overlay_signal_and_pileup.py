@@ -1,32 +1,31 @@
-
-
-### \file
-### \ingroup BasicExamples
-### | **input (alg)**               | other algorithms                 | **output (alg)**                              |
-### |-------------------------------|----------------------------------|-----------------------------------------------|
 ### | read event data from an edm file | overlay event data with pileup from file(s)  | write merged EDM output to ROOT file using PODIO |
 
 from Gaudi.Configuration import *
 
-
-# list of names of files with pileup event data -- to be overlaid
-pileupFilenames = ["tracker_with_field.root"]
-# the file containing the signal events
-signalFilename = "output_geant_pgun_fullsim.root"
-# the collections to be read from the signal event
-signalCollections = ["allGenVertices", "allGenParticles", "hits", "positionedHits"]
-
+from Configurables import ApplicationMgr
+ApplicationMgr().EvtSel = 'NONE'
+ApplicationMgr().EvtMax = 1
 
 # Data service
 from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc", input=signalFilename)
+podioevent = FCCDataSvc("EventDataSvc")
+# the file containing the signal events
+podioevent.input = "output_geant_pgun_fullsim.root"
+ApplicationMgr().ExtSvc += [podioevent]
 
 # use PodioInput for Signal
 from Configurables import PodioInput
-podioinput = PodioInput("PodioReader", collections=signalCollections, OutputLevel=DEBUG)
+podioinput = PodioInput("PodioReader")
+# the collections to be read from the signal event
+podioinput.collections = [
+                "allGenVertices", 
+                "allGenParticles", 
+                "hits", 
+                "positionedHits",
+              ]
+ApplicationMgr().TopAlg += [podioinput]
 
 # configure the tools for the data overlay
-
 # edm data from generation: particles and vertices
 from Configurables import PileupParticlesMergeTool
 particlemergetool = PileupParticlesMergeTool("MyPileupParticlesMergeTool")
@@ -55,34 +54,27 @@ trackhitsmergetool.mergedPositionedHits = "overlaidPositionedTrackHits"
 
 # use the pileuptool to specify the number of pileup
 from Configurables import ConstPileUp
-pileuptool = ConstPileUp("MyPileupTool", numPileUpEvents=1)
+pileuptool = ConstPileUp("MyPileupTool")
+pileuptool.numPileUpEvents = 1
 
 # algorithm for the overlay
 from Configurables import PileupOverlayAlg
 overlay = PileupOverlayAlg()
-overlay.pileupFilenames = pileupFilenames
+# list of names of files with pileup event data -- to be overlaid
+overlay.pileupFilenames = ["tracker_with_field.root"]
 overlay.randomizePileup = False
-overlay.mergeTools = ["PileupParticlesMergeTool/MyPileupParticlesMergeTool",
-  "PileupTrackHitMergeTool/MyTrackHitMergeTool"]
+overlay.mergeTools = [
+                      "PileupParticlesMergeTool/MyPileupParticlesMergeTool",
+                      "PileupTrackHitMergeTool/MyTrackHitMergeTool",
+                     ]
 overlay.PileUpTool = pileuptool
-
-
-
-
-
+ApplicationMgr().TopAlg += [overlay]
 
 # PODIO algorithm
 from Configurables import PodioOutput
-out = PodioOutput("out",
-                   OutputLevel=DEBUG)
+out = PodioOutput("out")
+out.OutputLevel = DEBUG
 out.outputCommands = ["keep *"]
 out.filename = "output_overlaid_with_pileup.root"
+ApplicationMgr().TopAlg += [out]
 
-# ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg=[podioinput, overlay, out],
-                EvtSel='NONE',
-                EvtMax=1,
-                ExtSvc=[podioevent,],
-                OutputLevel=DEBUG
- )
