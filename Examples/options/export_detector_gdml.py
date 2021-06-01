@@ -27,11 +27,7 @@ ApplicationMgr().ExtSvc += [geantservice]
 
 from Configurables import GeoToGdmlDumpSvc
 geodumpservice = GeoToGdmlDumpSvc()
-export_fname = "DetFCCeeCLD.gdml"
-# check if file exists and delete it:
-if os.path.isfile(export_fname):
-    os.remove(export_fname)
-geodumpservice.gdml = export_fname
+geodumpservice.gdml = "DetFCCeeCLD.gdml"
 ApplicationMgr().ExtSvc += [geodumpservice]
 
 
