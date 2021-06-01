@@ -3,6 +3,10 @@
 from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
 
+from Configurables import ApplicationMgr
+ApplicationMgr().EvtSel = 'NONE' 
+ApplicationMgr().EvtMax = 2
+ApplicationMgr().OutputLevel = INFO
 
 from Configurables import MomentumRangeParticleGun
 guntool = MomentumRangeParticleGun()
