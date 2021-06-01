@@ -37,7 +37,7 @@ pythia8gentool = PythiaInterface()
 #pythiafile = os.path.join(path_to_pythiafile, pythiafilename)
 # Example of pythia configuration file to read LH event file
 #pythiafile="options/Pythia_LHEinput.cmd"
-pythia8gentool.Filename = "Pythia_standard.cmd"
+pythia8gentool.pythiacard = "Pythia_standard.cmd"
 pythia8gentool.doEvtGenDecays = False
 pythia8gentool.printPythiaStatistics = True
 
@@ -67,6 +67,7 @@ ApplicationMgr().TopAlg += [genfilter]
 
 from Configurables import PodioOutput
 out = PodioOutput("out")
+out.filename = "out_pythia.root"
 out.outputCommands = ["keep *"]
 ApplicationMgr().TopAlg += [out]
 

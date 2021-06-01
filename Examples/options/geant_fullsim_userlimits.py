@@ -80,7 +80,7 @@ ApplicationMgr().TopAlg += [geantsim]
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out")
-out.filename = "out_geant_userLimits.root"
+out.filename = "out_geant_fullsim_userlimits.root"
 out.outputCommands = ["keep *"]
 out.OutputLevel = DEBUG
 ApplicationMgr().TopAlg += [out]

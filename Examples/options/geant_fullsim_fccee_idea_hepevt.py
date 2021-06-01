@@ -101,7 +101,7 @@ ApplicationMgr().TopAlg += [geantsim]
 
 from Configurables import PodioOutput
 out = PodioOutput("out")
-out.filename = "fccee_idea_pgun.root"
+out.filename = "out_geant_fullsim_fccee_idea_hepevt.root"
 out.outputCommands = ["keep *"]
 ApplicationMgr().TopAlg += [out]
 

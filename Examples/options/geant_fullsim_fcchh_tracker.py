@@ -37,7 +37,7 @@ from Configurables import HepMCToEDMConverter
 ## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
-hepmc_converter.GenParticles.Path="allGenParticles"
+hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
 
@@ -57,13 +57,13 @@ from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
-geantsim.eventProvider.GenParticles.Path = "allGenParticles"
+geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
 
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput()
 out.outputCommands = ["keep *"]
-out.filename = "out_geant_fullsim.root"
+out.filename = "out_geant_fullsim_fcchh_tracker.root"
 ApplicationMgr().TopAlg += [out]
 
