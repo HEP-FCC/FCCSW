@@ -1,9 +1,5 @@
-from Gaudi.Configuration import *
-from GaudiKernel import SystemOfUnits as units
+
 import os
-
-
-
 from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
 from GaudiKernel import PhysicalConstants as constants
@@ -40,10 +36,6 @@ hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
-
-
-import os
-from Gaudi.Configuration import *
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -148,16 +140,11 @@ geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
 
-
-
-
-
-
-
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out")
 out.filename = "fccee_cld_out.py"
 out.OutputLevel = DEBUG
 out.outputCommands = ["keep *"]
+ApplicationMgr().TopAlg += out
 
