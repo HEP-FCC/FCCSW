@@ -6,7 +6,7 @@ from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
 from GaudiKernel import PhysicalConstants as constants
 
-from detector_fcchh_tracker import *
+from k4_workflow_blocks.fccsw.detector_fcc_hh_tracker import *
 
 
 from Configurables import ApplicationMgr

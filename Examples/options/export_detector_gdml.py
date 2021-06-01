@@ -7,7 +7,7 @@ app.TopAlg = []
 app.EvtSel = 'NONE'
 app.EvtMax = 1
 app.ExtSvc = []
-app.OutputLevel = DEBUG
+app.OutputLevel = INFO
 
 # DD4hep geometry service
 from Configurables import GeoSvc

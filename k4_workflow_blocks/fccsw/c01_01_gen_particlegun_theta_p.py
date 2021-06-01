@@ -23,5 +23,5 @@ from Configurables import HepMCToEDMConverter
 ## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
-hepmc_converter.GenParticles.Path="GenParticlesAll"
+hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]

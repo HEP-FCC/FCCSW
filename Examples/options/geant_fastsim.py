@@ -31,7 +31,7 @@ from Configurables import HepMCToEDMConverter
 ## reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
-hepmc_converter.GenParticles.Path="allGenParticles"
+hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
 
@@ -105,7 +105,7 @@ savecaltool.readoutNames = ["ECalHitsPhiEta"]
 from Configurables import SimG4PrimariesFromEdmTool
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 particle_converter = SimG4PrimariesFromEdmTool("EdmConverter")
-particle_converter.GenParticles.Path = "allGenParticles"
+particle_converter.GenParticles.Path = "GenParticles"
 
 from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")

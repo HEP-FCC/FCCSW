@@ -9,7 +9,7 @@ ApplicationMgr().OutputLevel = INFO
 
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
-ApplicationMgr.ExtSvc += [podioevent]
+ApplicationMgr().ExtSvc += [podioevent]
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -21,6 +21,7 @@ geoservice.detectors = [
                        ]
 ApplicationMgr().ExtSvc += [geoservice]
 
+from Configurables import SimG4Alg
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits_Barrel")
 savetrackertool.readoutNames = ["VertexBarrelCollection"]
@@ -36,7 +37,7 @@ SimG4Alg("SimG4Alg").outputs += [savetrackertool_endcap]
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_DCH = SimG4SaveTrackerHits("saveTrackerHits_DCH")
-saveTrackerHits_DCH.readoutNames = ["DriftChamberCollection"]
+savetrackertool_DCH.readoutNames = ["DriftChamberCollection"]
 savetrackertool_DCH.SimTrackHits.Path = "positionedHits_DCH"
 SimG4Alg("SimG4Alg").outputs += [savetrackertool_DCH]
 
@@ -73,8 +74,7 @@ ApplicationMgr().ExtSvc += [geantservice]
 
 from Configurables import SimG4SaveTrajectory
 savetrajectorytool = SimG4SaveTrajectory("saveTrajectory")
-savetrajectorytool.trajectory.Path = "trajectory"
-savetrajectorytool.trajectoryPoints.Path = "trajectoryPoints"
+savetrajectorytool.TrajectoryPoints.Path = "trajectoryPoints"
 
 from Configurables import SimG4SaveParticleHistory
 savehisttool = SimG4SaveParticleHistory("saveHistory")
@@ -96,7 +96,8 @@ from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")
 geantsim.outputs += [
           savehisttool,
-          savetrajectorytool,
+          #todo: investigate error
+          #savetrajectorytool,
         ]
 geantsim.eventProvider = pgun
 ApplicationMgr().TopAlg += [geantsim]

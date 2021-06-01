@@ -2,6 +2,7 @@
 
 from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
+from GaudiKernel import PhysicalConstants as constants
 
 from Configurables import ApplicationMgr
 ApplicationMgr().EvtSel = 'NONE' 
