@@ -9,6 +9,11 @@ ApplicationMgr().EvtSel = 'NONE'
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 
+#### Data service
+from Configurables import k4DataSvc
+podioevent = k4DataSvc("EventDataSvc")
+ApplicationMgr().ExtSvc += [podioevent]
+
 from Configurables import MomentumRangeParticleGun
 guntool = MomentumRangeParticleGun()
 guntool.ThetaMin = 0 
@@ -29,3 +34,9 @@ hepmc_converter = HepMCToEDMConverter("Converter")
 hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
+
+from Configurables import PodioOutput
+out = PodioOutput("out")
+out.outputCommands = ["keep *"]
+out.filename = "out_particle_gun.root"
+ApplicationMgr().TopAlg += [out]

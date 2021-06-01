@@ -143,7 +143,7 @@ ApplicationMgr().TopAlg += [geantsim]
 # PODIO algorithm
 from Configurables import PodioOutput
 out = PodioOutput("out")
-out.filename = "fccee_cld_out.py"
+out.filename = "out_geant_fullsim_fccee_cld_pgun.root"
 out.OutputLevel = DEBUG
 out.outputCommands = ["keep *"]
 ApplicationMgr().TopAlg += out

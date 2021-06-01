@@ -6,21 +6,19 @@ ApplicationMgr().EvtMax = 3
 
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")
-podioevent.input = "tracker_with_field.root"
+podioevent.input = "http://fccsw.web.cern.ch/fccsw/testsamples/out_particle_gun.root"
 ApplicationMgr().ExtSvc += [podioevent]
 
-from Configurables import PodioInput, ReadTestConsumer
+from Configurables import PodioInput
 podioinput = PodioInput("PodioReader")
-podioinput.collections = ["allGenVertices", "allGenParticles", "hits"]
+podioinput.collections = ["GenParticles"]
 podioinput.OutputLevel = DEBUG
 ApplicationMgr().TopAlg += [podioinput]
 
-from Configurables import ReadTestConsumer
-checker = ReadTestConsumer()
-ApplicationMgr().TopAlg += [checker]
 
+from Configurables import PodioOutput
 out = PodioOutput("out")
-out.filename = "out2.root"
+out.filename = "out_read_podio_input.root"
 out.OutputLevel = DEBUG
 out.outputCommands = ["keep *"]
 ApplicationMgr().TopAlg += [out]

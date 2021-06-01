@@ -48,6 +48,6 @@ ApplicationMgr().TopAlg += [geantsim]
 from Configurables import PodioOutput
 out = PodioOutput()
 out.outputCommands = ["keep *"]
-out.filename = "out_geant_fullsim.root"
+out.filename = "out_geant_fullsim_fcchh_main.root"
 ApplicationMgr().TopAlg += [out]
 

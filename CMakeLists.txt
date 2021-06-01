@@ -5,6 +5,8 @@ project(FCCSW)
 
 include(GNUInstallDirs)
 
+include(CTest)
+
 add_subdirectory(FWCore)
 add_subdirectory(Examples)
 
