@@ -45,6 +45,7 @@ geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [
                           os.path.join(path_to_detectors, 'Detector/DetFCCeeCLD/compact/FCCee_DectMaster.xml'),
                        ]
+ApplicationMgr().ExtSvc += [geoservice]
 
 
 from Configurables import SimG4Alg
@@ -146,5 +147,5 @@ out = PodioOutput("out")
 out.filename = "out_geant_fullsim_fccee_cld_pgun.root"
 out.OutputLevel = DEBUG
 out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += out
+ApplicationMgr().TopAlg += [out]
 
