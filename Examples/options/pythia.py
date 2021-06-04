@@ -31,13 +31,9 @@ from Configurables import PythiaInterface
 pythia8gentool = PythiaInterface()
 ### Example of pythia configuration file to generate events
 # take from $K4GEN if defined, locally if not
-# todo: need to install config files in k4gen for this to work
-#path_to_pythiafile = os.environ.get("K4GEN", "")
-#pythiafilename = "data/Pythia_standard.cmd"
-#pythiafile = os.path.join(path_to_pythiafile, pythiafilename)
-# Example of pythia configuration file to read LH event file
-#pythiafile="options/Pythia_LHEinput.cmd"
-pythia8gentool.pythiacard = "Pythia_standard.cmd"
+path_to_pythiafile = os.environ.get("K4GEN", "")
+pythiafilename = "Pythia_standard.cmd"
+pythia8gentool.pythiacard = os.path.join(path_to_pythiafile, pythiafilename)
 pythia8gentool.doEvtGenDecays = False
 pythia8gentool.printPythiaStatistics = True
 
