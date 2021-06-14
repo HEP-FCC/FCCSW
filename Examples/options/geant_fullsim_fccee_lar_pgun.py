@@ -146,10 +146,10 @@ from Configurables import CreateCaloCells
 createEcalBarrelCellsStep1 = CreateCaloCells("CreateECalBarrelCellsStep1")
 createEcalBarrelCellsStep1.doCellCalibration = True
 createEcalBarrelCellsStep1.calibTool = calibEcalBarrel
-createEcalBarrelCellsStep1.addCellNoise = False,
+createEcalBarrelCellsStep1.addCellNoise = False
 createEcalBarrelCellsStep1.filterCellNoise = False
 # todo: add when update on cvmfs
-#createEcalBarrelCellsStep1.addPosition = True
+createEcalBarrelCellsStep1.addPosition = True
 createEcalBarrelCellsStep1.hits = "ECalBarrelPositionedHits"
 createEcalBarrelCellsStep1.cells = "ECalBarrelCellsStep1"
 ApplicationMgr().TopAlg += [createEcalBarrelCellsStep1]
@@ -194,11 +194,12 @@ ApplicationMgr().TopAlg += [createEcalBarrelPositionedCells]
 createHcalBarrelCells = CreateCaloCells("CreateHCaloCells")
 createHcalBarrelCells.doCellCalibration = True
 createHcalBarrelCells.calibTool = calibHcells
+createHcalBarrelCells.addPosition = True
 createHcalBarrelCells.addCellNoise = False
 createHcalBarrelCells.filterCellNoise = False
-createHcalBarrelCells.hits = "HCalBarrelHits"
+createHcalBarrelCells.hits = "HCalBarrelPositionedHits"
 createHcalBarrelCells.cells = "HCalBarrelCells"
-#ApplicationMgr().TopAlg += [createHcalBarrelCells]
+ApplicationMgr().TopAlg += [createHcalBarrelCells]
 
 # sliding window clustering #FIXME not yet ready for key4hep
 #Empty cells for parts of calorimeter not implemented yet
@@ -242,25 +243,19 @@ createClusters.nEtaFinal =       9
 createClusters.nPhiFinal =      17
 # Minimal energy to create a cluster in GeV (FCC-ee detectors have to reconstruct low energy particles)
 createClusters.energyThreshold = 0.1
-#createClusters.attachCells = True
+createClusters.attachCells = True
 createClusters.clusters.Path = "CaloClusters"
-#createClusters.clusterCells.Path = "CaloClusterCells"
-#ApplicationMgr().TopAlg += [createClusters]
+createClusters.clusterCells.Path = "CaloClusterCells"
+ApplicationMgr().TopAlg += [createClusters]
 
-from Configurables import CreateCaloCellPositionsFCCee
-createEcalBarrelPositionedCaloClusterCells = CreateCaloCellPositionsFCCee("ECalBarrelPositionedCaloClusterCells")
-createEcalBarrelPositionedCaloClusterCells.positionsECalBarrelTool = cellPositionEcalBarrelTool
-createEcalBarrelPositionedCaloClusterCells.hits.Path = "CaloClusterCells"
-createEcalBarrelPositionedCaloClusterCells.positionedHits.Path = "PositionedCaloClusterCells"
-#ApplicationMgr().TopAlg += [createEcalBarrelPositionedCaloClusterCells]
 
 ################ Output
 from Configurables import PodioOutput
 out = PodioOutput("out")
 out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop HCal*", "drop ECalBarrelCellsStep*", "drop ECalBarrelPositionedHits", "drop emptyCaloCells", "drop CaloClusterCells"]
-
 import uuid
 out.filename = "output_fullCalo_SimAndDigi_withCluster_" + uuid.uuid1().hex + ".root"
+ApplicationMgr().TopAlg += [out]
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -273,7 +268,7 @@ geantsim.AuditExecute = True
 createEcalBarrelCellsStep1.AuditExecute = True
 resegmentEcalBarrel.AuditExecute = True
 createEcalBarrelCells.AuditExecute = True
-#createHcalBarrelCells.AuditExecute = True
+createHcalBarrelCells.AuditExecute = True
 out.AuditExecute = True
 ApplicationMgr().ExtSvc += [audsvc]
 
