@@ -28,7 +28,7 @@ from Configurables import GeoSvc
 path_to_detectors = os.environ.get("FCCDETECTORS", "")
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [
-                          os.path.join(path_to_detectors, 'Detector/DetFCCeeCLD/compact/FCCee_DectMaster.xml'),
+                          os.path.join(path_to_detectors, 'Detector/DetFCCeeCLD/compact/FCCee_o2_v02/FCCee_o2_v02.xml'),
                        ]
 
 
