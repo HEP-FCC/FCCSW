@@ -11,5 +11,11 @@ foreach(opt ${fccsw_examples})
            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options
            COMMAND k4run ${e}
            )
+   # make sure the workflow blocks are found
+   set_property(TEST ${e} APPEND PROPERTY ENVIRONMENT
+    PYTHONPATH=${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}
+
+    )
+
 endforeach()
 
