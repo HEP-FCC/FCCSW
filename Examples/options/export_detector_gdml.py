@@ -30,4 +30,8 @@ geodumpservice = GeoToGdmlDumpSvc()
 geodumpservice.gdml = "DetFCCeeCLD.gdml"
 ApplicationMgr().ExtSvc += [geodumpservice]
 
+# avoid error and remove output file if it already exists
+if os.path.isfile(geodumpservice.gdml):
+      os.remove(geodumpservice.gdml)
+
 
