@@ -130,8 +130,9 @@ ApplicationMgr().TopAlg += [geantsim]
 ############## Digitization (Merging hits into cells, EM scale calibration)
 # EM scale calibration (sampling fraction)
 from Configurables import CalibrateInLayersTool
+
 calibEcalBarrel = CalibrateInLayersTool("CalibrateECalBarrel")
-calibEcalBarrel.samplingFraction = [0.303451138049] * 1 + [0.111872504159] * 1 + [0.135806495306] * 1 + [0.151772636618] * 1 + [0.163397436122] * 1 + [0.172566977313] * 1 + [0.179855253903] * 1 + [0.186838417657] * 1 + [0.192865946689] * 1 + [0.197420241611] * 1 + [0.202066552306] * 1 + [0.22646764465] * 1
+calibEcalBarrel.samplingFraction = [0.36571381189697705] * 1 + [0.09779064189677973] * 1 + [0.12564152224404024] * 1 + [0.14350599973146283] * 1 + [0.1557126972314961] * 1 + [0.16444759076233928] * 1 + [0.17097165096847836] * 1 + [0.17684775359805122] * 1 + [0.18181154293837265] * 1 + [0.18544247938196395] * 1 + [0.18922747431624687] * 1 + [0.21187001375505543] * 1
 calibEcalBarrel.readoutName = "ECalBarrelEta"
 calibEcalBarrel.layerFieldName = "layer"
 
@@ -254,7 +255,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out")
 out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop HCal*", "drop ECalBarrelCellsStep*", "drop ECalBarrelPositionedHits", "drop emptyCaloCells", "drop CaloClusterCells"]
 import uuid
-out.filename = "output_fullCalo_SimAndDigi_withCluster_" + uuid.uuid1().hex + ".root"
+out.filename = "output_fullCalo_SimAndDigi.root"
 ApplicationMgr().TopAlg += [out]
 
 #CPU information
@@ -270,7 +271,7 @@ resegmentEcalBarrel.AuditExecute = True
 createEcalBarrelCells.AuditExecute = True
 createHcalBarrelCells.AuditExecute = True
 out.AuditExecute = True
-ApplicationMgr().ExtSvc += [audsvc]
+#ApplicationMgr().ExtSvc += [audsvc]
 
 from Configurables import EventCounter
 event_counter = EventCounter('event_counter')
