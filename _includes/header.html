@@ -1,28 +1,48 @@
-
 <header>
-   <nav class="navbar navbar-inverse navbar-fixed-top">
+   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+          <a class="navbar-brand"
+             href="{{ site.baseurl | prepend: site.url }}/index.html">FCCSW</a>
+          <button type="button"
+                  class="navbar-toggler"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#main-header"
+                  aria-label="Toggle navigation"
+                  aria-expanded="false"
+                  aria-controls="main-header">
+              <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="{{ site.baseurl | prepend: site.url }}/index.html">FCCSW</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li {% if page.layout == "title" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/index.html">Home</a></li>
-            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="https://hep-fcc.github.io/fcc-tutorials/">Tutorials</a></li>
-            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/presentations/presentations.html">Talks and Papers</a></li>
-            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/computing/computing.html">Computing</a></li>
-            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/geo/geo.html">FCC-hh Detector Display</a></li>
-            <li {% if page.layout == "site" %} class="active" {%endif%}><a href="{{ site.baseurl | prepend: site.url }}/geo/geo-ee.html">FCC-ee IDEA Detector Display</a></li>
 
-          </ul>
-        </div><!--/.nav-collapse -->
+          <div class="collapse navbar-collapse" id="main-header">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link{% if page.layout == 'title' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/index.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="https://hep-fcc.github.io/fcc-tutorials/">Tutorials</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link{% if page.id == 'presentations' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/presentations/presentations.html">Talks and Papers</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link{% if page.id == 'computing' %} active{%endif%}" href="{{ site.baseurl | prepend: site.url }}/computing/computing.html">Computing</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle{% if page.id == 'geo' or page.id == 'geo-ee' %} active{%endif%}"
+                         href="#"
+                         id="geo-dropdown"
+                         role="button"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">Detector Display</a>
+                      <div class="dropdown-menu" aria-labelledby="geo-dropdown">
+                          <a class="dropdown-item{% if page.id == 'geo' %} active{%endif%}"
+                             href="{{ site.baseurl | prepend: site.url }}/geo/geo.html">FCC-hh</a>
+                          <a class="dropdown-item{% if page.id == 'geo-ee' %} active{%endif%}"
+                             href="{{ site.baseurl | prepend: site.url }}/geo/geo-ee.html">FCC-ee IDEA</a>
+                      </div>
+                  </li>
+              </ul>
+          </div>
       </div>
     </nav>
-
 </header>

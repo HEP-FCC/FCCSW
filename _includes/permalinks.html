@@ -1,10 +1,12 @@
-    <ul class="list-group">
-        <li class="list-group-header">
+    <div class="card">
+        <div class="card-header">
             <h4>External links</h4>
-        </li>
+        </div>
+        <ul class="list-group list-group-flush">
         {% for link in site.data.permalinks %}
             <li class="list-group-item">
-                <a href='{{link.url}}'>{{link.name}}</a>
+                <a href='{{ link.url }}'>{{ link.name }}</a>
             </li>
         {% endfor %}
-    </ul>
+        </ul>
+    </div>

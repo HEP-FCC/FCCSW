@@ -27,6 +27,9 @@ kramdown:
   enable_rouge: true
 
 sass:
-  sass_dir: node_modules/bootstrap-sass/assets/stylesheets
+  sass_dir: css
   style: compressed
 
+include: ["js"]
+exclude: [".git", "Gemfile", "Gemfile.lock", "vendor/bundle/", "vendor/cache/",
+          "vendor/gems/", "vendor/ruby/", "node_modules"]
