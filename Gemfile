@@ -11,7 +11,7 @@ source "https://rubygems.org"
 # Happy Jekylling!
 #gem "jekyll", "3.2.0"
 gem 'bootstrap', '~> 4.0'
-gem 'bootstrap-sass', '~> 3.4.1'
+#gem 'bootstrap-sass', '~> 3.4.1'
 #gem 'bootstrap-scss', '~> 4.3.1'
 
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
@@ -28,3 +28,5 @@ gem 'bootstrap-sass', '~> 3.4.1'
 
 gem "github-pages", group: :jekyll_plugins 
 
+
+gem "webrick", "~> 1.7"

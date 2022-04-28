@@ -1,5 +1,6 @@
 ---
 layout: site
+id: computing
 ---
 
 FCC Computing / Storage

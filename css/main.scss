@@ -4,12 +4,17 @@
 @charset "utf-8";
 
 /* path to glyphicons */
-$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+/* $icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/"; */
 
 /* custom variable */
+$gray-base:              #000 !default;
+$gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
+$list-group-border:      #ddd !default;
+$border-radius-base:        4px !default;
+$list-group-border-radius:      $border-radius-base !default;
 
 /* any style customization must be before the bootstrap import */
-@import "bootstrap";
+@import "bootstrap/bootstrap";
 
 
 
@@ -40,9 +45,43 @@ blockquote {
   height:60px; /* fixed header height*/
 }
 
+.fcc-logo {
+  font-size: 9vw;
+}
+@include media-breakpoint-up(lg) {
+  .fcc-logo {
+    font-size: 7vw;
+  }
+}
+@include media-breakpoint-up(xxl) {
+  .fcc-logo {
+    font-size: 5vw;
+  }
+}
+
 /* syntax highlighting from: https://github.com/richleland/pygments-css/blob/master/github.css */
 code.highlighter-rouge {background-color: #fcfcfc;color:#555;}
-pre {background-color: #fcfcfc}
+/* http://jsfiddle.net/hdy44/3/ */
+pre {
+  background-color: $light;
+  border-radius: 5px;
+  border: 1px solid #bcbec0;
+  padding: 5px;
+  font-size: small;
+}
+code {
+  background-color: $light;
+  border-radius: 5px;
+  border: 1px solid #bcbec0;
+  padding: 2px;
+  font-size: small;
+}
+pre code {
+  border-radius: 0px;
+  border: 0px;
+  padding: 5px;
+  font-size: small;
+}
 .highlight .hll { background-color: #ffffcc }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
