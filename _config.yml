@@ -31,5 +31,12 @@ sass:
   style: compressed
 
 include: ["js"]
-exclude: [".git", "Gemfile", "Gemfile.lock", "vendor/bundle/", "vendor/cache/",
-          "vendor/gems/", "vendor/ruby/", "node_modules"]
+exclude: ["Gemfile",
+          "Gemfile.lock",
+          "package.json",
+          "README.md",
+          "vendor/bundle/",
+          "vendor/cache/",
+          "vendor/gems/",
+          "vendor/ruby/",
+          "node_modules"]
