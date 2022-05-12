@@ -10,14 +10,14 @@
             <div class="p-3 mb-4 rounded-3 bg-dark bg-opacity-10">
                 <div class="container-fluid py-3">
                     <div class="row align-items-center">
-                        <div class="col-8">
+                        <div class="col-md-5 order-md-2 mb-5 mb-md-0">
+                            <img class="img-fluid float-md-end" src="https://fcc.web.cern.ch/sites/default/themes/fcc/img/logo-dark.png">
+                        </div>
+                        <div class="col-md-7 order-md-1">
                             <h1 class="font-monospace fcc-logo">{{ site.title | escape }}</h1>
+                            <p>{{ page.subtitle | default: site.description | strip_html | normalize_whitespace | truncate: 100 | escape }}</p>
                         </div>
 
-                        <div class="col-4">
-                            <img class="img-fluid" src="https://fcc.web.cern.ch/Logo/Portable%20Network%20Graphics%20(PNG)/logo-FCC-01.png">
-                        </div>
-                            <p>{{ page.subtitle | default: site.description | strip_html | normalize_whitespace | truncate: 100 | escape }}</p>
                     </div>
                 </div>
             </div>
