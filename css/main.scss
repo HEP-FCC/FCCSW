@@ -30,11 +30,12 @@ $list-group-border-radius:      $border-radius-base !default;
   // Round the first and last items
   @include border-top-radius($list-group-border-radius);
 }
+
 body {
   font-size: 14pt;
   margin-top: 100px;
-  padding-bottom: 50px;
 }
+
 blockquote {
   font-size: 13pt;
 }
@@ -57,6 +58,10 @@ blockquote {
   .fcc-logo {
     font-size: 5vw;
   }
+}
+
+.text-footer {
+  font-size: .7em;
 }
 
 /* syntax highlighting from: https://github.com/richleland/pygments-css/blob/master/github.css */
