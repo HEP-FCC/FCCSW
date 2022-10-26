@@ -31,21 +31,9 @@
                   <li class="nav-item">
                       <a class="nav-link{% if page.id == 'computing' %} active{%endif%}" href="{{ site.baseurl | prepend: site.url }}/computing/computing.html">Computing</a>
                   </li>
-                  <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle{% if page.id == 'geo' or page.id == 'geo-ee' %} active{%endif%}"
-                         href="#"
-                         id="geo-dropdown"
-                         role="button"
-                         data-bs-toggle="dropdown"
-                         aria-expanded="false">Detector Display</a>
-                      <div class="dropdown-menu" aria-labelledby="geo-dropdown">
-                          <a class="dropdown-item{% if page.id == 'geo' %} active{%endif%}"
-                             href="{{ site.baseurl | prepend: site.url }}/geo/geo.html">FCC-hh</a>
-                          <a class="dropdown-item{% if page.id == 'geo-ee' %} active{%endif%}"
-                             href="{{ site.baseurl | prepend: site.url }}/geo/geo-ee.html">FCC-ee IDEA</a>
-                          <a class="dropdown-item"
-                             href="https://fccsw.web.cern.ch/fccsw/phoenix">Phoenix</a>
-                      </div>
+                  <li class="nav-item">
+                      <a class="nav-link"
+                         href="https://fccsw.web.cern.ch/fccsw/phoenix">Event Display</a>
                   </li>
               </ul>
           </div>
