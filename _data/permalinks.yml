@@ -19,3 +19,5 @@
   name: FCC Physics Event Database
 - url: https://fccsw.web.cern.ch/fccsw/phoenix/
   name: Phoenix@FCC
+- url: https://hep-fcc.github.io/FCCeePhysicsPerformance/
+  name: FCCee Physics Performance
