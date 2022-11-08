@@ -5,7 +5,7 @@ id: computing
 
 FCC Computing / Storage
 ================================================
-CERN ressources are available to be used by people being employed by an institute that has signed the Memorandum of Understanding (MoU) and by laboratories having signed the Addendum. For more information on the procedure please have a look at <a href="[https://fcc-ped.web.cern.ch/content/official-documents](https://fcc-ped.web.cern.ch/content/official-documents)/"> this page. </a> 
+CERN ressources are available to be used by people being employed by an institute that has signed the Memorandum of Understanding (MoU) and by laboratories having signed the Addendum. For more information on the procedure please have a look at <a href="https://fcc-ped.web.cern.ch/content/official-documents"> this page. </a> 
 
 The computing and disk ressources are controlled by <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">e-groups</a> with admin approval.
 
