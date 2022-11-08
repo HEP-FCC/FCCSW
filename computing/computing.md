@@ -5,7 +5,7 @@ id: computing
 
 FCC Computing / Storage
 ================================================
-CERN ressources are available to be used by people being employed by an institute that has signed the Memorandum of Understanding (MoU) and by laboratories having signed the Addendum. For more information on the procedure please have a look at <a href="https://fcc.web.cern.ch/Pages/Join.aspx/"> this page. </a> 
+CERN ressources are available to be used by people being employed by an institute that has signed the Memorandum of Understanding (MoU) and by laboratories having signed the Addendum. For more information on the procedure please have a look at <a href="[https://fcc-ped.web.cern.ch/content/official-documents](https://fcc-ped.web.cern.ch/content/official-documents)/"> this page. </a> 
 
 The computing and disk ressources are controlled by <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">e-groups</a> with admin approval.
 
@@ -33,7 +33,7 @@ Access to these resources is controlled by the <a href="https://e-groups.cern.ch
 ### Access to storage resources from outside CERN
 
 Users enabled to access the FCC area on EOS can do so also from outside CERN using the Kerberos credentials associated with theirr
-CERN user account. To do so, theyr have to make sure to have the Kerberos credential initiator application, `kinit`, installed
+CERN user account. To do so, they have to make sure to have the Kerberos credential initiator application, `kinit`, installed
 and configured to enable the `CERN.CH` Kerberos realm. Typically is enough to copy the relevant sections from the /eos/krb5.conf
 file accessible on lxplus (or copying the complete file, if there is none locally or if the local one is not customized).
 
