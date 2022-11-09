@@ -88,3 +88,7 @@ sshfs -o idmap=user -o follow_symlinks <CERNLOGIN>@lxplus.cern.ch:/eos/experimen
 (CERN lxplus password)
 ```
 The local and remote user and group ID must be the same for this to work.
+
+## Troubleshooting
+
+In case of issues with computing resources, please contact the FCC software coordinators gerardo.ganis@cern.ch and clement.helsens@cern.ch
