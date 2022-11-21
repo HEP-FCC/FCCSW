@@ -28,6 +28,6 @@ SimG4Alg("SimG4Alg").outputs += [savetrackertool_endcap]
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_DCH = SimG4SaveTrackerHits("saveTrackerHits_DCH")
-saveTrackerHits_DCH.readoutNames = ["DriftChamberCollection"]
+saveTrackerHits_DCH.readoutNames = ["SimplifiedDriftChamberCollection"]
 savetrackertool_DCH.SimTrackHits.Path = "positionedHits_DCH"
 SimG4Alg("SimG4Alg").outputs += [savetrackertool_DCH]
