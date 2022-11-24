@@ -8,7 +8,7 @@ Standard `github-pages`-site. All dependencies (`jquery`, `bootstrap-sass`) are 
 Change content and for local testing, serve the page with
 
 ```
-    jekyll serve --baseurl=
+    bundle exec jekyll serve --baseurl=
 ```
 
 and point your browser to `localhost:4000`.
