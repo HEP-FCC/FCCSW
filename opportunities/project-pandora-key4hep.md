@@ -3,7 +3,7 @@ layout: site
 id: opportunities
 ---
 
-Pandora integration in Key4hep
+# Pandora integration in Key4hep
 
 ## Objective
 
@@ -36,6 +36,7 @@ CI/CD: `GitHub` actions or similar
 
 ## Contact(s)
 
+B. Francois (`brieuc.francois.AT.cern.ch`)
 J. Smiesko (`juraj.smiesko.AT.cern.ch`)
 A. Sailer (`andre.philippe.sailer.AT.cern.ch`)
 G. Ganis (`gerardo.ganis.AT.cern.ch`)
