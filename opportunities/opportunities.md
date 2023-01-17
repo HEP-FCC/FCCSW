@@ -20,12 +20,12 @@ This page collects the project ideas related to the needs for FCC software proje
 2.  <a href="{{ site.baseurl | prepend: site.url }}/opportunities/project-acts-key4hep.html"> ACTS integration in Key4hep </a>
 
 ## Contact(s)
-<font size= “5”>
+<font size=“5”>
 B. Francois (`brieuc.francois.AT.cern.ch`), 
 G. Ganis (`gerardo.ganis.AT.cern.ch`)
 </font>
 
 ## History
-<font size= “3”>
+<font size=“3”>
 _17 January 2022 (published on <a href="http://fccsw.web.cern.ch" http://fccsw.web.cern.ch </a>)
 </font>

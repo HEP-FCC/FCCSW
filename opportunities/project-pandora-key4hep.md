@@ -35,7 +35,7 @@ CI/CD: `GitHub` actions or similar
 `Key4hep`
 
 ## Contact(s)
-<font size= “5”>
+<font size=“5”>
 B. Francois (`brieuc.francois.AT.cern.ch`), 
 J. Smiesko (`juraj.smiesko.AT.cern.ch`), 
 A. Sailer (`andre.philippe.sailer.AT.cern.ch`), 
@@ -43,6 +43,6 @@ G. Ganis (`gerardo.ganis.AT.cern.ch`)
 </font>
 
 ## History
-<font size= “3”>
+<font size=“3”>
 _17 January 2022 (published on <a href="http://fccsw.web.cern.ch" http://fccsw.web.cern.ch </a>)
 </font>
