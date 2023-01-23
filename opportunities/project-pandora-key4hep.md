@@ -41,4 +41,4 @@ A. Sailer (`andre.philippe.sailer.AT.cern.ch`),
 G. Ganis (`gerardo.ganis.AT.cern.ch`)
 
 ## History
-_17 January 2022 (published on <a href="http://fccsw.web.cern.ch" http://fccsw.web.cern.ch </a>)
+_17 January 2022 (published on <a href="http://fccsw.web.cern.ch"> http://fccsw.web.cern.ch </a>)_
