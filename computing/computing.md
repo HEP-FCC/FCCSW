@@ -27,8 +27,9 @@ A quota of storage disk space, dedicated to FCC computing activities, is availab
 ```
 /eos/experiment/fcc
 ```
-Access to these resources is controlled by the <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-groups</a>
-**fcc-eos-read-ee**, **fcc-eos-read-hh** and **fcc-eos-read-eh** and subject to admin approval.
+Access to these resources is controlled by the <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-group</a>
+**fcc-eos-access** and subject to admin approval. Note that old e-groups `fcc-eos-read-ee`, `fcc-eos-read-hh`, `fcc-eos-read-hh-sm21`
+and `fcc-eos-read-eh` still exists but they have been closed to self-registration.
 
 ### Access to storage resources from outside CERN
 
