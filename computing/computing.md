@@ -23,13 +23,17 @@ added to the job sumbmit file:
 ```
 ## Storage resources
 
-A quota of storage disk space, dedicated to FCC computing activities, is available in the EOS system at CERN under the path
+Disk space volumes for storage, dedicated to FCC computing activities, are available in the EOS system at CERN under the paths
 ```
 /eos/experiment/fcc
+/eos/experiment/fcc/ee/analysis_storage
 ```
-Access to these resources is controlled by the <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-group</a>
-**fcc-eos-access** and subject to admin approval. Note that old e-groups `fcc-eos-read-ee`, `fcc-eos-read-hh`, `fcc-eos-read-hh-sm21`
-and `fcc-eos-read-eh` still exists but they have been closed to self-subscription.
+Read access to these resources is controlled by the <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-group</a>
+**fcc-eos-access** and subject to approval. Note that e-groups `fcc-eos-read-prod`, `fcc-eos-read-ee`, `fcc-eos-read-hh`, `fcc-eos-read-hh-sm21`
+and `fcc-eos-read-eh` still exists for internal usage but they have been closed to self-subscription.
+
+Write access to these resources is controlled by a fine-grained number of <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-groups</a> and
+subject to approval. Please contact the software and computing coordinators or physics groups conveners for specific requests. 
 
 ### Access to storage resources from outside CERN
 
