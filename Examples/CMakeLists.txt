@@ -5,6 +5,9 @@ install(DIRECTORY options
         PATTERN k4_workflow_blocks EXCLUDE
         )
 
+install(DIRECTORY scripts
+        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/Examples
+)
 
 file(GLOB fccsw_examples options/*.py)
 list(FILTER fccsw_examples EXCLUDE REGEX "__init__.py")
