@@ -3,6 +3,8 @@
   name: FCC Documentation
 - url: https://cern.ch/key4hep
   name: Key4HEP Documentation
+- url: https://indico.cern.ch/category/7969/
+  name: FCC Software Meetings
 - url: https://fccsw-forum.web.cern.ch/
   name: FCC Software Forum
 - url: https://mattermost.web.cern.ch/fccsw/
