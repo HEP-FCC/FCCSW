@@ -70,6 +70,7 @@ ApplicationMgr().ExtSvc += [geantservice]
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
 from Configurables import SimG4Alg
 geantsim = SimG4Alg("SimG4Alg")
+geantsim.outputs = []
 from Configurables import SimG4SaveParticleHistory
 savehisttool = SimG4SaveParticleHistory("saveHistory")
 savehisttool.GenParticles.Path = "SimParticles"

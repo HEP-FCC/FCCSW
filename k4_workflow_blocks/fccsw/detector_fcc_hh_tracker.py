@@ -20,4 +20,4 @@ from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
 savetrackertool.readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"]
 from Configurables import SimG4Alg
-SimG4Alg("SimG4Alg").outputs += [savetrackertool]
+SimG4Alg("SimG4Alg").outputs = [savetrackertool]
