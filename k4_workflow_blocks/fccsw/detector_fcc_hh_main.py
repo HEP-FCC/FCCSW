@@ -15,6 +15,8 @@ ApplicationMgr().ExtSvc += [geoservice]
 
 # Set up SaveTools that write 
 
+SimG4Alg("SimG4Alg").outputs = []
+
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
 savetrackertool.readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"]

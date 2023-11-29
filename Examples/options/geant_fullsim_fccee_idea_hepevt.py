@@ -29,6 +29,8 @@ geoservice.detectors = [
 ApplicationMgr().ExtSvc += [geoservice]
 
 from Configurables import SimG4Alg
+SimG4Alg("SimG4Alg").outputs += []
+
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits_Barrel")
 savetrackertool.readoutNames = ["VertexBarrelCollection"]
