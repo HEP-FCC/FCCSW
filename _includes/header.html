@@ -35,6 +35,10 @@
                       <a class="nav-link"
                          href="https://fccsw.web.cern.ch/fccsw/phoenix">Event Display</a>
                   </li>
+                  <li class="nav-item">
+                      <a class="nav-link{% if page.id == 'contacts' %} active{%endif%}"
+                         href="{{ site.baseurl | prepend: site.url }}/contacts/">Contacts</a>
+                  </li>
 <!---
                   <li class="nav-item">
                     <a class="nav-link{% if page.id == 'opportunities' %} active{%endif%}" href="{{ site.baseurl | prepend: site.url }}/opportunities/opportunities.html">Opportunities</a>
