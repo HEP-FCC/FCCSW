@@ -1,6 +1,6 @@
 
 
-install(DIRECTORY options 
+install(DIRECTORY options
         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/Examples
         PATTERN k4_workflow_blocks EXCLUDE
         )

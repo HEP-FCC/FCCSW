@@ -1,6 +1,6 @@
 ### | read events from a HepMC file | convert `HepMC::GenEvent` to EDM | geometry taken from GDML file (no sensitive detectors!) | FTFP_BERT physics list | empty action initialisation list | write the EDM output to ROOT file using PODIO |
 
-
+import os
 
 from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
@@ -76,9 +76,14 @@ savehisttool = SimG4SaveParticleHistory("saveHistory")
 savehisttool.GenParticles.Path = "SimParticles"
 geantsim.outputs += [savehisttool]
 from Configurables import SimG4SaveTrackerHits
-savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
-savetrackertool.readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"]
-geantsim.outputs += [savetrackertool]
+savetrackerbarreltool = SimG4SaveTrackerHits("saveTrackerHits")
+savetrackerbarreltool.readoutName = "TrackerBarrelReadout"
+savetrackerbarreltool.SimTrackHits.Path = "TrackerBarrelReadout"
+geantsim.outputs += [savetrackerbarreltool]
+savetrackerendcaptool = SimG4SaveTrackerHits("saveTrackerHits")
+savetrackerendcaptool.readoutName = "TrackerEndcapReadout"
+savetrackerendcaptool.SimTrackHits.Path += "TrackerEndcapReadout"
+geantsim.outputs += [savetrackerendcaptool]
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"

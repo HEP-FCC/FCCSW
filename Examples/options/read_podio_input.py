@@ -2,7 +2,7 @@ from Gaudi.Configuration import *
 
 from Configurables import ApplicationMgr
 ApplicationMgr().EvtSel = 'NONE'
-ApplicationMgr().EvtMax = 3
+ApplicationMgr().EvtMax = 2
 
 from Configurables import FCCDataSvc
 podioevent = FCCDataSvc("EventDataSvc")

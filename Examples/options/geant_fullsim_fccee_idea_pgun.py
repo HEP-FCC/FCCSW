@@ -1,3 +1,5 @@
+import os
+
 from Gaudi.Configuration import *
 import GaudiKernel.SystemOfUnits as units
 

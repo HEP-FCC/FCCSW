@@ -1,3 +1,5 @@
+import os
+
 from Gaudi.Configuration import *
 import GaudiKernel.SystemOfUnits as units
 
@@ -29,26 +31,27 @@ geoservice.detectors = [
 ApplicationMgr().ExtSvc += [geoservice]
 
 from Configurables import SimG4Alg
-SimG4Alg("SimG4Alg").outputs += []
+geantsim = SimG4Alg("SimG4Alg")
+geantsim.outputs = []
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits_Barrel")
 savetrackertool.readoutNames = ["VertexBarrelCollection"]
 savetrackertool.SimTrackHits.Path = "TrackerHits_barrel"
-SimG4Alg("SimG4Alg").outputs += [savetrackertool]
+geantsim.outputs += [savetrackertool]
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_endcap = SimG4SaveTrackerHits("saveTrackerHits_Endcap")
 savetrackertool_endcap.readoutNames = ["VertexEndcapCollection"]
 savetrackertool_endcap.SimTrackHits.Path = "positionedHits_endcap"
-SimG4Alg("SimG4Alg").outputs += [savetrackertool_endcap]
+geantsim.outputs += [savetrackertool_endcap]
 
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_DCH = SimG4SaveTrackerHits("saveTrackerHits_DCH")
 savetrackertool_DCH.readoutNames = ["SimplifiedDriftChamberCollection"]
 savetrackertool_DCH.SimTrackHits.Path = "positionedHits_DCH"
-SimG4Alg("SimG4Alg").outputs += [savetrackertool_DCH]
+geantsim.outputs += [savetrackertool_DCH]
 
 from Configurables import SimG4ConstantMagneticFieldTool
 field = SimG4ConstantMagneticFieldTool()
@@ -84,18 +87,14 @@ ApplicationMgr().ExtSvc += [geantservice]
 from Configurables import SimG4SaveTrajectory
 savetrajectorytool = SimG4SaveTrajectory("saveTrajectory")
 savetrajectorytool.TrajectoryPoints.Path = "trajectoryPoints"
+# todo: investigate error
+# geantsim.outputs += [savetrajectorytool]
 
 from Configurables import SimG4SaveParticleHistory
 savehisttool = SimG4SaveParticleHistory("saveHistory")
 savehisttool.GenParticles.Path = "SimParticles"
+geantsim.outputs += [savehisttool]
 
-from Configurables import SimG4Alg
-geantsim = SimG4Alg("SimG4Alg")
-geantsim.outputs += [
-          savehisttool,
-          #todo: investigate error
-          #savetrajectorytool,
-        ]
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"
