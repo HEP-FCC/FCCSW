@@ -1,3 +1,5 @@
+import os
+
 from Gaudi.Configuration import *
 from GaudiKernel.SystemOfUnits import mm
 

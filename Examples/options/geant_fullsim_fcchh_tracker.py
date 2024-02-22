@@ -10,7 +10,7 @@ from k4_workflow_blocks.fccsw.detector_fcc_hh_tracker import *
 
 
 from Configurables import ApplicationMgr
-ApplicationMgr().EvtSel = 'NONE' 
+ApplicationMgr().EvtSel = 'NONE'
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().ExtSvc += ['RndmGenSvc']
@@ -24,7 +24,7 @@ ApplicationMgr().ExtSvc += [podioevent]
 from Configurables import MomentumRangeParticleGun
 guntool = MomentumRangeParticleGun()
 guntool.ThetaMin = 0 
-guntool.ThetaMax = 2 * constants.pi 
+guntool.ThetaMax = 2 * constants.pi
 guntool.PdgCodes = [11]
 
 from Configurables import GenAlg
@@ -53,8 +53,9 @@ ApplicationMgr().ExtSvc += [geantservice]
 
 # Geant4 algorithm
 # Translates EDM to G4Event, passes the event to G4, writes out outputs via tools
-from Configurables import SimG4Alg
-geantsim = SimG4Alg("SimG4Alg")
+# !!! `geantsim` already imported from k4_workflow_blocks.fccsw.detector_fcc_hh_tracker !!!
+# from Configurables import SimG4Alg
+# geantsim = SimG4Alg("SimG4Alg")
 from Configurables import SimG4PrimariesFromEdmTool
 geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"

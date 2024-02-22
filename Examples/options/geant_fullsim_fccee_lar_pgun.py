@@ -46,9 +46,9 @@ ApplicationMgr().TopAlg += [hepmc_converter]
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc")
 # if FCC_DETECTORS is empty, this should use relative path to working directory
-path_to_detector = os.environ.get("FCCDETECTORS", "")
+path_to_detector = os.environ.get("K4GEO", "")
 detectors_to_use=[
-                    'Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectMaster.xml',
+                    'FCCee/ALLEGRO/compact/ALLEGRO_o1_v01/ALLEGRO_o1_v01.xml',
                   ]
 # prefix all xmls with path_to_detector
 geoservice.detectors = [os.path.join(path_to_detector, _det) for _det in detectors_to_use]
@@ -187,7 +187,7 @@ cellPositionEcalBarrelTool.readoutName = "ECalBarrelPhiEta"
 
 from Configurables import CreateCaloCellPositionsFCCee
 createEcalBarrelPositionedCells = CreateCaloCellPositionsFCCee("ECalBarrelPositionedCells")
-createEcalBarrelPositionedCells.positionsECalBarrelTool = cellPositionEcalBarrelTool
+createEcalBarrelPositionedCells.positionsTool = cellPositionEcalBarrelTool
 createEcalBarrelPositionedCells.hits.Path = "ECalBarrelCells"
 createEcalBarrelPositionedCells.positionedHits.Path = "ECalBarrelPositionedCells"
 ApplicationMgr().TopAlg += [createEcalBarrelPositionedCells]

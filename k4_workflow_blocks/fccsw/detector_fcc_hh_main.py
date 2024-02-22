@@ -13,37 +13,44 @@ geoservice.detectors = [
 geoservice.OutputLevel = INFO 
 ApplicationMgr().ExtSvc += [geoservice]
 
+from Configurables import SimG4Alg
+geantsim = SimG4Alg("SimG4Alg")
+
 # Set up SaveTools that write 
 
-SimG4Alg("SimG4Alg").outputs = []
+geantsim.outputs = []
 
 from Configurables import SimG4SaveTrackerHits
-savetrackertool = SimG4SaveTrackerHits("saveTrackerHits")
-savetrackertool.readoutNames = ["TrackerBarrelReadout", "TrackerEndcapReadout"]
-from Configurables import SimG4Alg
-SimG4Alg("SimG4Alg").outputs += [savetrackertool]
+savetrackerbarreltool = SimG4SaveTrackerHits("saveTrackerHits")
+savetrackerbarreltool.readoutName = "TrackerBarrelReadout"
+savetrackerbarreltool.SimTrackHits.Path = "TrackerBarrelReadout"
+geantsim.outputs += [savetrackerbarreltool]
+savetrackerendcaptool = SimG4SaveTrackerHits("saveTrackerHits")
+savetrackerendcaptool.readoutName = "TrackerEndcapReadout"
+savetrackerendcaptool.SimTrackHits.Path = "TrackerEndcapReadout"
+geantsim.outputs += [savetrackerendcaptool]
 
 from Configurables import SimG4SaveCalHits
 saveecaltool = SimG4SaveCalHits("saveECalBarrelHits")
 saveecaltool.readoutNames = ["ECalBarrelEta"]
 saveecaltool.CaloHits.Path = "ECalBarrelHits"
-SimG4Alg("SimG4Alg").outputs += [saveecaltool]
+geantsim.outputs += [saveecaltool]
 
 from Configurables import SimG4SaveCalHits
 saveendcaptool = SimG4SaveCalHits("saveECalEndcapHits")
 saveendcaptool.readoutNames = ["EMECPhiEta"]
 saveendcaptool.CaloHits.Path = "ECalEndcapHits"
-SimG4Alg("SimG4Alg").outputs += [saveendcaptool]
+geantsim.outputs += [saveendcaptool]
 
 from Configurables import SimG4SaveCalHits
 savefwdtool = SimG4SaveCalHits("saveECalFwdHits")
 savefwdtool.readoutNames = ["EMFwdPhiEta"]
 savefwdtool.CaloHits.Path = "ECalFwdHits"
-SimG4Alg("SimG4Alg").outputs += [savefwdtool]
+geantsim.outputs += [savefwdtool]
 
 from Configurables import SimG4SaveCalHits
 savehcaltool = SimG4SaveCalHits("saveHCalHits")
 savehcaltool.readoutNames = ["HCalBarrelReadout"]
 savehcaltool.CaloHits.Path = "HCalBarrelHits"
-SimG4Alg("SimG4Alg").outputs += [savehcaltool]
+geantsim.outputs += [savehcaltool]
 
