@@ -43,7 +43,7 @@ information.
 In case of issues there is [FCCSW Forum](https://fccsw-forum.web.cern.ch/).
 
 
-## BUilding
+## Building
 
 After fetching the repository, do
 ```
