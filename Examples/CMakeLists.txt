@@ -1,9 +1,7 @@
-
-
 install(DIRECTORY options
         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/Examples
         PATTERN k4_workflow_blocks EXCLUDE
-        )
+)
 
 install(DIRECTORY scripts
         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/Examples
@@ -16,12 +14,9 @@ foreach(opt ${fccsw_examples})
   add_test(NAME ${e}
            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/options
            COMMAND k4run ${e}
-           )
-   # make sure the workflow blocks are found
-   set_property(TEST ${e} APPEND PROPERTY ENVIRONMENT
-    PYTHONPATH=${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}
-
-    )
-
+  )
+  # make sure the workflow blocks are found
+  set_property(TEST ${e} APPEND PROPERTY ENVIRONMENT
+               PYTHONPATH=${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}
+  )
 endforeach()
-
