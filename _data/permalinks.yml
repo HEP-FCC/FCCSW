@@ -19,7 +19,7 @@
   name: General C++ Guidelines
 - url: https://hep-fcc.github.io/FCCAnalyses/
   name: FCCAnalyses Framework
-- url: http://fcc-physics-events.web.cern.ch/fcc-physics-events/
+- url: https://fcc-physics-events.web.cern.ch/
   name: FCC Physics Event Database
 - url: https://hep-fcc.github.io/FCCeePhysicsPerformance/
   name: FCCee Physics Performance
