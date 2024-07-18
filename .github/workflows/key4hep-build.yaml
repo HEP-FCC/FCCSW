@@ -6,7 +6,8 @@ on:
     - master
   pull_request:
   schedule:
-    - cron: '0 0 * * SAT'
+    # - cron: '0 3 * * 6'  # 03:00 Saturday
+    - cron: '0 3 * * *'  # 03:00 every day
   workflow_dispatch:
 
 jobs:
@@ -14,7 +15,7 @@ jobs:
     strategy:
       matrix:
         build_type: ["release", "nightly"]
-        image: ["alma9", "ubuntu22", "centos7"]
+        image: ["alma9", "ubuntu22"]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
