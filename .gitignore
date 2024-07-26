@@ -27,3 +27,4 @@ gh-pages/
 pkg/
 test/dest
 tmp/*
+devel/
