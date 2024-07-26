@@ -11,13 +11,13 @@
                 <div class="container-fluid py-3">
                     <div class="row align-items-center">
                         <div class="col-md-5 order-md-2 mb-5 mb-md-0">
-                            <img class="img-fluid float-md-end" src="https://fcc.web.cern.ch/sites/default/themes/fcc/img/logo-dark.png">
+                            <img class="img-fluid float-md-end"
+                                 src="{{ '/assets/img/logo-dark.png' | prepend: site.baseurl | prepend: site.url }}">
                         </div>
                         <div class="col-md-7 order-md-1">
                             <h1 class="font-monospace fcc-logo">{{ site.title | escape }}</h1>
                             <p>{{ page.subtitle | default: site.description | strip_html | normalize_whitespace | truncate: 100 | escape }}</p>
                         </div>
-
                     </div>
                 </div>
             </div>

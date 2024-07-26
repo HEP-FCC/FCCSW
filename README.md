@@ -1,6 +1,8 @@
 # FCCSW website
 
-Standard `github-pages`-site. All dependencies (`jquery`, `bootstrap-sass`) are included in the repository and any change should be automatically deployed to <http://hep-fcc.github.io/FCCSW/>
+Standard `github-pages`-site. All dependencies (`jquery`, `bootstrap`) are
+included in the repository and any change should be automatically deployed to
+<http://hep-fcc.github.io/FCCSW/>
 
 
 ## Local testing
@@ -12,6 +14,7 @@ Change content and for local testing, serve the page with
 ```
 
 and point your browser to `localhost:4000`.
+
 
 ### Deploying
 
