@@ -1,14 +1,4 @@
 ---
 ---
 
-/* custom variables */
-/* any bootstrap style customization must be before the bootstrap import */
-$gray-base:              #000 !default;
-$gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
-$list-group-border:      #ddd !default;
-$border-radius-base:        4px !default;
-$list-group-border-radius:      $border-radius-base !default;
-
-@import "bootstrap-5.3.3/bootstrap";
-
 @import "base";

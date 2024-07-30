@@ -1,9 +1,26 @@
 ---
 layout: site
-id: presentations
+id: documents
 ---
-Selected Publications and Presentations relating to FCC Software
-================================================
+
+# Documents
+
+## Feasibility Study Report
+
+TBA
+
+## Conceptual Design Report
+
+The [summary volumes](http://fcc-cdr.web.cern.ch/) have been released, with many
+physics and detector simulations carried out using FCCSW. We collaborate with
+CERN's [Re-usable Analysis](http://www.reanahub.io/) working group to make the
+workflows used in the CDR reproducible and accessible for future studies.
+[Here](https://github.com/reanahub/reana-demo-fcchh-fullsim) is a first example
+of a full-simulation workflow.
+
+
+## Past Publications and Presentations
+
 Besides the contributions included in the Conceptual Design report, there were numerous software
 sessions at FCC conferences and related workshops. The following list is very incomplete, please
 submit other contributions to include here by creating an issue on <a href="https://github.com/HEP-FCC/fcc-spi"> github. </a> 

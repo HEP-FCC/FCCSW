@@ -3,15 +3,36 @@ layout: site
 id: computing
 ---
 
-FCC Computing / Storage
-================================================
+# Computing
+
+## Delphes Card Reference
+
+A repository for Delphes cards is available in the
+[GitHub repository](https://github.com/delphes/delphes/tree/master/card) of the
+project, where example for many detector concepts exist.
+
+The Delphes cards used for the FCC-hh CDR and HL/HE-LHC yellow reports can be
+found here:
+
+* [delphes_cards_HL-HELHC_baseline.tgz](https://fccsw.web.cern.ch/fccsw/delphescards/download/delphes_cards_HL-HELHC_baseline.tgz)
+* [delphes_cards_FCChh_baseline.tgz](https://fccsw.web.cern.ch/fccsw/delphescards/download/delphes_cards_FCChh_baseline.tgz)
+
+Delphes cards for the most common solutions for future e+e- experiment detectors
+can be found at [here](https://fccsw.web.cern.ch/fccsw/delphescards/) and they
+are also available on lxplus at `/eos/project/f/fccsw-web/www/delphescards`
+(where relevant cards are taken from the
+[GitHub Delphes repository](https://github.com/delphes/delphes/tree/master/cards)
+
+
+## Storage
+
 CERN ressources are available to be used by people being employed by an institute that has signed the Memorandum of Understanding (MoU) and by laboratories having signed the Addendum. For more information on the procedure please have a look at <a href="https://fcc-ped.web.cern.ch/content/official-documents"> this page. </a> 
 
 The computing and disk ressources are controlled by <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">e-groups</a> with admin approval.
 
-**Those receiving approval engage in using these resorces ONLY for activities related to FCC**. 
+**Those receiving approval engage in using these resorces ONLY for activities related to FCC**.
 
-## Computing resources
+### Computing resources
 
 A quota of resources, dedicated to FCC computing activities, are available in the HTCondor-based CERN batch farm.
 Use of these resources is controlled by the <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-group</a>
@@ -21,7 +42,9 @@ added to the job sumbmit file:
 ```
 +AccountingGroup = "group_u_FCC.local_gen"
 ```
-## Storage resources
+
+
+### Storage resources
 
 Disk space volumes for storage, dedicated to FCC computing activities, are available in the EOS system at CERN under the paths
 ```
@@ -35,7 +58,7 @@ and `fcc-eos-read-eh` still exists for internal usage but they have been closed 
 Write access to these resources is controlled by a fine-grained number of <a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do">CERN e-groups</a> and
 subject to approval. Please contact the software and computing coordinators or physics groups conveners for specific requests. 
 
-### Access to storage resources from outside CERN
+#### Access to storage resources from outside CERN
 
 Users enabled to access the FCC area on EOS can do so also from outside CERN using the Kerberos credentials associated with theirr
 CERN user account. To do so, they have to make sure to have the Kerberos credential initiator application, `kinit`, installed
@@ -96,6 +119,3 @@ sshfs -o idmap=user -o follow_symlinks ganis@lxplus.cern.ch:/eos/experiment/fcc 
 (CERN lxplus password)
 ```
 The local and remote user and group ID must be the same for this to work.
-
-
-

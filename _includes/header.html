@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand"
                href="{{ site.baseurl | prepend: site.url }}/">
@@ -23,27 +23,38 @@
                         <a class="nav-link{% if page.layout == 'title' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://hep-fcc.github.io/fcc-tutorials/">Tutorials</a>
+                        <a class="nav-link"
+                           href="https://hep-fcc.github.io/fcc-tutorials/"
+                           target="_blank">Tutorials</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{% if page.id == 'presentations' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/presentations/presentations.html">Talks and Papers</a>
+                        <a class="nav-link{% if page.id == 'documents' %} active{% endif %}"
+                           href="{{ site.baseurl | prepend: site.url }}/documents">Documents</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link{% if page.id == 'computing' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/computing/computing.html">Computing</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="https://fccsw.web.cern.ch/fccsw/phoenix">Event Display</a>
+                           href="https://fcc-ee-detector-full-sim.docs.cern.ch/"
+                           target="_blank">FCC-ee Detector Full Sim</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="https://hep-fcc.github.io/FCCAnalyses/"
+                           target="_blank">FCCAnalyses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="https://fccsw.web.cern.ch/fccsw/phoenix"
+                           target="_blank">Event Display</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link{% if page.id == 'contacts' %} active{%endif%}"
                            href="{{ site.baseurl | prepend: site.url }}/contacts/">Contacts</a>
                     </li>
-<!---
-                    <li class="nav-item">
-                      <a class="nav-link{% if page.id == 'opportunities' %} active{%endif%}" href="{{ site.baseurl | prepend: site.url }}/opportunities/opportunities.html">Opportunities</a>
-                  </li>
---->
                 </ul>
             </div>
         </div>
