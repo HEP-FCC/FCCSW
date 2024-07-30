@@ -7,10 +7,8 @@
         content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
 
   <link rel="stylesheet"
-        href="{{ '/assets/css/main.css' | prepend: site.baseurl | prepend: site.url}}">
-  <link rel="canonical"
-        href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+        href="{{ '/assets/css/main.css' | relative_url }}">
   <link rel="shortcut icon"
         type="image/png"
-        href="{{ '/assets/img/favicon.png' | prepend: site.baseurl | prepend: site.url }}" />
+        href="{{ '/assets/img/favicon.png' | relative_url }}" />
 </head>

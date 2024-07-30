@@ -13,10 +13,10 @@
                         <div class="col-lg-5 order-lg-2 mb-5 mb-lg-0">
                             <img class="img-fluid float-lg-end mx-auto d-block"
                                  alt="Future Circular Collider"
-                                 src="{{ '/assets/img/logo-dark.png' | prepend: site.baseurl | prepend: site.url }}">
+                                 src="{{ '/assets/img/logo-dark.png' | relative_url }}">
                         </div>
                         <div class="col-lg-7 order-lg-1">
-                            <h1 class="font-monospace fcc-logo">{{ site.title | escape }}</h1>
+                            <h1 class="font-monospace fcc-logo">{{ site.title }}</h1>
                             <p>{{ page.subtitle | default: site.description | strip_html | normalize_whitespace | truncate: 100 | escape }}</p>
                         </div>
                     </div>

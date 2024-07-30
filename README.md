@@ -22,14 +22,14 @@ and point your browser to `localhost:4000`.
 
 To build the website run:
 ```sh
-    bundle exec jekyll build --destination=DEST
+    bundle exec jekyll build --baseurl='/devel' --destination=<DEST>
 ```
 
-> `DEST` is name of the directory into which the build site will be saved to
+> `<DEST>` is name of the directory into which the build site will be saved to
 
-and upload the resulting directory to:
-```
-/eos/project/f/fccsw-web/www/devel
+and upload the resulting directory:
+```sh
+rsync -avh <DEST>/ lxplus:/eos/project/f/fccsw-web/www/devel/ --delete
 ```
 
 ### Production
@@ -40,8 +40,3 @@ following URLs:
 * `https://cern.ch/fccsw` -- redirect lives here: `/eos/project/f/fccsw-web/www/index.html`
 * `https://fccsw.web.cern.ch/` -- redirect lives here: `/eos/project/f/fccsw-web/www/index.html`
 * `https://hep-fcc.github.io/` -- redirect lives here: `https://github.com/HEP-FCC/hep-fcc.github.io/blob/main/index.html`
-
-
-## Adding permalinks
-
-Add url and name in `docpage/_data/permalinks.yml`

@@ -2,8 +2,8 @@
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand"
-               href="{{ site.baseurl | prepend: site.url }}/">
-              <img src="{{ '/assets/img/fcc_logo_light.png' | prepend: site.baseurl | prepend: site.url }}"
+               href="{{ '' | relative_url }}/">
+              <img src="{{ '/assets/img/fcc_logo_light.png' | relative_url }}"
                    alt="FCC Software"
                    height=40>
             </a>
@@ -20,7 +20,8 @@
             <div class="collapse navbar-collapse" id="main-header">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link{% if page.layout == 'title' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/">Home</a>
+                        <a class="nav-link{% if page.layout == 'title' %} active{% endif %}"
+                           href="{{ '' | relative_url }}/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
@@ -29,10 +30,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link{% if page.id == 'documents' %} active{% endif %}"
-                           href="{{ site.baseurl | prepend: site.url }}/documents">Documents</a>
+                           href="{{ '/documents' | relative_url }}">Documents</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{% if page.id == 'computing' %} active{% endif %}" href="{{ site.baseurl | prepend: site.url }}/computing/computing.html">Computing</a>
+                        <a class="nav-link{% if page.id == 'computing' %} active{% endif %}"
+                           href="{{ '/computing' | relative_url }}">Computing</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
@@ -52,8 +54,8 @@
                 </ul>
                 <ul class="navbar-nav mb-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link{% if page.id == 'contacts' %} active{%endif%}"
-                           href="{{ site.baseurl | prepend: site.url }}/contacts/">Contacts</a>
+                        <a class="nav-link{% if page.id == 'contacts' %} active{% endif %}"
+                           href="{{ '/contacts' | relative_url }}">Contacts</a>
                     </li>
                 </ul>
             </div>
