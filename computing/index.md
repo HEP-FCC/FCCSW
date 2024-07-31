@@ -11,8 +11,7 @@ laboratories having signed the Addendum. For more information on the procedure
 please have a look at
 [FCC PED Official Documents](https://fcc-ped.web.cern.ch/content/official-documents).
 
-The computing and disk resources are controlled by dedicated
-[CERN e-groups](https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do) with
+The computing and disk resources are controlled by dedicated CERN e-groups with
 admin approval.
 
 **Those receiving approval engage in using these resorces ONLY for activities
@@ -47,10 +46,9 @@ Read access to these resources is controlled by the
 `fcc-eos-read-eh` still exists for internal usage but they have been closed to
 self-subscription.
 
-Write access to these resources is controlled by a fine-grained number of
-[CERN e-groups](https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do) and
-subject to approval. Please contact the software and computing coordinators or
-physics groups conveners for specific requests.
+Write access to these resources is controlled by a fine-grained number of CERN
+e-groups and subject to approval. Please contact the software and computing
+coordinators or physics groups conveners for specific requests.
 
 
 ### Access to storage resources from outside CERN

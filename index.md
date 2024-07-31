@@ -50,6 +50,8 @@ The best place to check for detailed information on a specific package thus is
 
 ### Software Core
 
+* [ROOT](https://root.cern/): An open-source data analysis framework used by
+    high energy physics and others.
 * [EDM4hep](https://edm4hep.web.cern.ch/): Event Data Model of Key4hep.
 * [podio](https://github.com/AIDASoft/podio): Data model generator and I/O
     layer.
@@ -57,6 +59,8 @@ The best place to check for detailed information on a specific package thus is
     used by Key4hep.
 * [key4hep/k4FWCore](https://github.com/key4hep/k4FWCore): Basic Gaudi I/O
     components.
+* [Geant4](https://geant4.web.cern.ch/): Toolkit for the simulation of the
+    passage of particles through matter.
 * [DD4hep](https://dd4hep.web.cern.ch/): Detector Description Toolkit used by
     Key4hep.
 
