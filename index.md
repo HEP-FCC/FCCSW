@@ -89,7 +89,7 @@ The best place to check for detailed information on a specific package thus is
 * [FCCAnalyses Framework](https://hep-fcc.github.io/FCCAnalyses/)
     ([Doxygen](https://hep-fcc.github.io/FCCAnalyses/doc/latest/)): Analysis
     framework for FCC related studies.
-* [ral](https://github.com/HEP-FCC/ral): Key4hep RDataFrame Analysis Library
+* [ral](https://github.com/HEP-FCC/ral): Key4hep RDataFrame Analysis Library.
 * [ROOT DataFrame](https://root.cern/doc/master/classROOT_1_1RDataFrame.html):
     Modern, high-level interface for analysis.
 * [FCC Physics Event Database](https://fcc-physics-events.web.cern.ch/): Lists
