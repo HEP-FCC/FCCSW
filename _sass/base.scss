@@ -32,6 +32,12 @@ article a:visited { text-decoration: none; }
 article a:hover { text-decoration: underline; }
 article a:active { text-decoration: underline; }
 
+article pre {
+  background: $light;
+  border-radius: $border-radius;
+  padding: $spacer;
+}
+
 .fcc-logo {
   font-size: 8vw;
 }
