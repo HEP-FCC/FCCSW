@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+    {% include head.html %}
+
+    <body>
+
+        {% include header.html %}
+        <article class="container mt-5">
+            <div class="p-3 mb-4 rounded-3 bg-dark bg-opacity-10">
+                <div class="container-fluid py-3">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5 order-lg-2 mb-5 mb-lg-0">
+                            <img class="img-fluid float-lg-end mx-auto d-block"
+                                 alt="Future Circular Collider"
+                                 src="{{ '/assets/img/logo-dark.png' | relative_url }}">
+                        </div>
+                        <div class="col-lg-7 order-lg-1">
+                            <h1 class="font-monospace fcc-logo">{{ site.title }}</h1>
+                            <p>{{ page.subtitle | default: site.description | strip_html | normalize_whitespace | truncate: 100 | escape }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-9">
+                    {{ content }}
+                </div>
+                <div class="col-lg-3">
+                  <p class="h3">FCC Software Meetings</p>
+                  <div class="ratio ratio-fccsw-meetings">
+                    <iframe src="https://fccsw.web.cern.ch/fccsw-meetings/"
+                            title="FCC Software Meetings"></iframe>
+                  </div>
+                </div>
+            </div>
+        </article>
+        {% include footer.html %}
+
+    </body>
+</html>

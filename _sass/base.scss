@@ -1,0 +1,60 @@
+@charset "utf-8";
+
+/*
+  Custom variables.
+  Any bootstrap style customization must be before the bootstrap import
+*/
+$gray-base:              #000 !default;
+$gray-lighter:           lighten($gray-base, 93.5%) !default;
+$list-group-border:      #ddd !default;
+$border-radius-base:        4px !default;
+$list-group-border-radius:      $border-radius-base !default;
+
+
+@import "bootstrap-5.3.3/bootstrap";
+
+
+body {
+  font-size: 14pt;
+  // margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+article {
+  flex-grow: 1;
+  margin-bottom: 4rem;
+}
+
+article a:link { text-decoration: none; }
+article a:visited { text-decoration: none; }
+article a:hover { text-decoration: underline; }
+article a:active { text-decoration: underline; }
+
+article pre {
+  background: $light;
+  border-radius: $border-radius;
+  padding: $spacer;
+}
+
+.fcc-logo {
+  font-size: 8vw;
+}
+@include media-breakpoint-up(lg) {
+  .fcc-logo {
+    font-size: 6vw;
+  }
+}
+@include media-breakpoint-up(xxl) {
+  .fcc-logo {
+    font-size: 4vw;
+  }
+}
+
+.ratio-fccsw-meetings {
+  --bs-aspect-ratio: 80%;
+  @include media-breakpoint-up(lg) {
+    --bs-aspect-ratio: 220%;
+  }
+}

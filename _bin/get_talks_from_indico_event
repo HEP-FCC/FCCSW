@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+'''
+This script dowloads event JSON from the Indico API and then selects talks with
+author names in the pre-defined list.
+'''
+
+import sys
+from urllib.parse import urlparse
+from typing import Any
+import requests
+
+
+def get_event_data(url: str, verbose: bool = True):
+    '''
+    Make a request to an Indico server and retrieve event JSON.
+    '''
+
+    try:
+        response = requests.get(url, timeout=10)  # timeout 10s
+    except requests.exceptions.ConnectionError:
+        print('ERROR: The Indico server not found!')
+        print(f'       {urlparse(url).netloc}')
+        print('       Aborting...')
+        sys.exit(3)
+
+    if response.status_code != 200:
+        print('ERROR: Indico API response status not valid!')
+        print(f'       API endpoint: {urlparse(url).path}')
+        print('       Check the event number. Aborting...')
+        sys.exit(3)
+
+    if response.headers['content-type'] != 'application/json':
+        print('ERROR: Indico API response not valid JSON!')
+        print(f'       API endpoint: {urlparse(url).path}')
+        print('       Check the event number. Aborting...')
+        sys.exit(3)
+
+    if response.encoding != 'utf-8':
+        print('ERROR: Indico API response encoding not valid!')
+        print(f'       API endpoint: {urlparse(url).path}')
+        print('       Aborting...')
+        sys.exit(3)
+
+    event_data = response.json()
+
+    if event_data['count'] < 1:
+        print('ERROR: Indico API responded with no event data!')
+        print(f'       API endpoint: {urlparse(url).path}')
+        print('       Check the event number. Aborting...')
+        sys.exit(3)
+
+    if event_data['count'] > 1:
+        print('WARNING: Indico API responded with multiple event data!')
+        print(f'         API endpoint: {urlparse(url).path}')
+        print('       Check the event number. Taking the first one...')
+        sys.exit(3)
+
+    event_data = event_data['results'][0]
+
+    if verbose:
+        print('INFO: Retrieving contributions for event:')
+        print(f'      {event_data["title"]}')
+
+    return event_data
+
+
+def filter_contributions(all_contributions,
+                         name_stems: list[str],
+                         verbose: bool = True) -> list[dict[str, Any]]:
+    '''
+    Keep only contributions from people in the provided list.
+    '''
+
+    cont_indexes: list[int] = []
+    for idx, contribution in enumerate(all_contributions):
+        for speaker in contribution['speakers']:
+            for name_stem in name_stems:
+                if name_stem in speaker['first_name'] + ' ' + \
+                                speaker['last_name']:
+                    cont_indexes += [idx]
+
+    # Deduplicate the list
+    cont_indexes = list(set(cont_indexes))
+
+    if verbose:
+        print('INFO: Found folloving contributions:')
+    contributions: list[dict[str, Any]] = []
+    for idx in cont_indexes:
+        contribution = all_contributions[idx]
+
+        if contribution["startDate"] is None:
+            if verbose:
+                print(f'WARNING: Contribution \"{contribution["title"]}\" '
+                      'ignored!')
+                print('         No start date and time found.')
+            continue
+
+        contributions += [contribution]
+        if verbose:
+            print(f'       - {contribution["title"]}')
+            for speaker in contribution["speakers"]:
+                print(f'         - {speaker["first_name"]} '
+                      f'{speaker["last_name"]}')
+
+    return contributions
+
+
+def generate_markdown(event: dict[str, Any],
+                      contributions: list[dict[str, Any]]) -> str:
+    '''
+    Generate markdow from event data and filtered contributions
+    '''
+    md = f'## {event["title"]}\n'
+
+    for contribution in contributions:
+        md += '* '
+
+        # Speakers
+        for speaker in contribution['speakers']:
+            md += f'{speaker["last_name"]}, {speaker["first_name"][0]}, '
+        md = md[:-2]
+        md += '.'
+
+        # Year
+        md += f' {contribution["startDate"]["date"][:4]}.'
+
+        # Title
+        md += f'\n    [\"{contribution["title"]}.\"]'
+        md += f'({contribution["url"]}.)'
+
+        # Presented at
+        md += '\n    Presented at'
+        md += f' [{event["title"]}]'
+        md += f'({event["url"]})'
+
+        # Session or Track
+        if contribution['session'] is not None:
+            md += f' in {contribution["session"]}'
+        if 'ession' not in contribution['session']:
+            md += ' session'
+
+        md += '.\n'
+
+    return md
+
+
+def main() -> int:
+    '''
+    Let's start.
+    '''
+    verbose = False
+
+    # CERN Indico events
+    event_ids: list[str] = [
+        '1298458',  # FCC Week 2024
+        '1307378',  # 7th FCC Physics Workshop
+        '1202105',  # FCC Week 2023
+        '1176398',  # 6th FCC Physics Workshop
+        '1244371',  # First Annual U.S. Future Circular Collider (FCC) Workshop
+        '1064327',  # FCC Week 2022
+    ]
+
+    # Form API request URLs for CERN Indico events
+    urls: list[str] = []
+    for event_id in event_ids:
+        url = 'https://indico.cern.ch'
+        url += f'/export/event/{event_id}.json'
+        url += '?detail=contributions'
+        urls += [url]
+
+    # Second Annual U.S. Future Circular Collider (FCC) Workshop 2024
+    urls += ['https://indico.mit.edu/' \
+             'export/event/876.json' \
+             '?detail=contributions']
+
+    # Name stems to be searched for
+    name_stems = ['Brieuc Francois', 'Smiesko', 'Tolosa-Delgado', 'Ganis',
+                  'Volkl', 'Helsens']
+
+    for url in urls:
+        event = get_event_data(url, verbose)
+
+        contributions = filter_contributions(event['contributions'],
+                                             name_stems,
+                                             verbose)
+
+        md = generate_markdown(event, contributions)
+
+        print()
+        print(md)
+        print()
+
+    return 0
+
+
+if __name__ == "__main__":
+    main()

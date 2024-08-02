@@ -13,11 +13,11 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: FCCSW
-description: > # this means to ignore newlines until "baseurl:"
-  Software for the Future Circular Collider.
+title: FCC&nbsp;Software
+# title: FCC Software
+description: >
+  Physics software for the Future Circular Collider.
 url: "" # the subpath of your site, e.g. /blog
-#baseurl: "https://vvolkl.github.io/fcc-spi" # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
@@ -26,17 +26,19 @@ kramdown:
   input: GFM
   enable_rouge: true
 
-sass:
-  sass_dir: css
-  style: compressed
+plugins:
+  - jekyll-autoprefixer
+
+autoprefixer:
+  browsers:
+    - last 4 versions
 
 include: ["js"]
 exclude: ["Gemfile",
           "Gemfile.lock",
-          "package.json",
           "README.md",
           "vendor/bundle/",
           "vendor/cache/",
           "vendor/gems/",
           "vendor/ruby/",
-          "node_modules"]
+          "_bin/"]

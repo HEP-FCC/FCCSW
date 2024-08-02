@@ -17,14 +17,20 @@
     {% else %}
       {% assign externalsdesc = versiondesc.externals %}
     {% endif %}
-    <div class="container">
+    <article class="container mt-5">
         <div class="row">
             <div class="col-lg-9">
                 {{ content }}
             </div>
-            <div class="col-lg-3">{% include permalinks.html %}</div>
+            <div class="col-lg-3">
+                <p class="h3">FCC Software Meetings</p>
+                <div class="ratio ratio-fccsw-meetings">
+                  <iframe src="https://fccsw.web.cern.ch/fccsw-meetings/"
+                          title="FCC Software Meetings"></iframe>
+                </div>
+            </div>
         </div>
-    </div>
+    </article>
     {% include footer.html %}
 
   </body>
