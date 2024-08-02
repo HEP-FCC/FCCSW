@@ -41,4 +41,4 @@ exclude: ["Gemfile",
           "vendor/cache/",
           "vendor/gems/",
           "vendor/ruby/",
-          "node_modules"]
+          "_bin/"]
