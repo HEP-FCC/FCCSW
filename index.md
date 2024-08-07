@@ -33,6 +33,8 @@ The best place to check for detailed information on a specific package thus is
 * [FCC-ee Detector Full Sim](https://fcc-ee-detector-full-sim.docs.cern.ch/):
     FCC-ee detectors implementation, simulation and reconstruction documentation
 * [FCC Software Glossary](https://hep-fcc.github.io/glossary/): A glossary of HEP and FCC-specific terms and concepts.
+* [ALEPH Documentation](https://aleph-new.docs.cern.ch/): Resurrecting ALEPH
+    data in EDM4hep format (CERN log-in required).
 
 
 ### Meeting People and Getting Help
