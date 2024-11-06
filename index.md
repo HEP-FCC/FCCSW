@@ -94,8 +94,8 @@ The best place to check for detailed information on a specific package thus is
 * [ral](https://github.com/HEP-FCC/ral): Key4hep RDataFrame Analysis Library.
 * [ROOT DataFrame](https://root.cern/doc/master/classROOT_1_1RDataFrame.html):
     Modern, high-level interface for analysis.
-* [FCC Physics Event Database](https://fcc-physics-events.web.cern.ch/): Lists
-    of pre-generated samples available centrally.
+* [FCC Physics Events Database](https://fcc-physics-events.web.cern.ch/): Lists
+    pre-generated samples available centrally.
 * [FCCee Physics Performance](https://hep-fcc.github.io/FCCeePhysicsPerformance/):
     Registry of case-studies for FCC-ee.
 
