@@ -7,18 +7,18 @@ layout: main
 
 FCC Software provides a set of software packages, tools, and standards to help
 different FCC physics efforts work together. The software ecosystem of the FCC
-fully employs <a href="https://key4hep.github.io/key4hep-doc/">Key4hep</a>
+fully employs [Key4hep](https://key4hep.github.io/key4hep-doc/)
 stack and is one of its main stakeholders.
 
 
 ## Signpost
 
 The FCC Software ecosystem spans many sites, repositories and packages. The
-list of links bellow tries to offer a starting point.
+list of links below tries to offer a starting point.
 
 All developments happen in
-[github.com/HEP-FCC](https://github.com/HEP-FCC">github.com/HEP-FCC) and
-[github.com/key4hep](https://github.com/key4hep">github.com/key4hep).
+[github.com/HEP-FCC](https://github.com/HEP-FCC) and
+[github.com/key4hep](https://github.com/key4hep).
 The best place to check for detailed information on a specific package thus is
   usually its homepage / Github repository page.
 
@@ -90,14 +90,14 @@ The best place to check for detailed information on a specific package thus is
 
 * [FCCAnalyses Framework](https://hep-fcc.github.io/FCCAnalyses/)
     ([Doxygen](https://hep-fcc.github.io/FCCAnalyses/doc/latest/)): Analysis
-    framework for FCC related studies.
+    framework for FCC-related studies.
 * [ral](https://github.com/HEP-FCC/ral): Key4hep RDataFrame Analysis Library.
 * [ROOT DataFrame](https://root.cern/doc/master/classROOT_1_1RDataFrame.html):
     Modern, high-level interface for analysis.
 * [FCC Physics Events Database](https://fcc-physics-events.web.cern.ch/): Lists
     pre-generated samples available centrally.
 * [FCCee Physics Performance](https://hep-fcc.github.io/FCCeePhysicsPerformance/):
-    Registry of case-studies for FCC-ee.
+    Registry of case studies for FCC-ee.
 
 
 ### Visualization
@@ -108,7 +108,7 @@ The best place to check for detailed information on a specific package thus is
     event data.
 
 
-### Infrastracture
+### Infrastructure
 
 * [key4hep-validation](https://key4hep-validation.web.cern.ch/): Physics
     validation of the Key4hep stack.
@@ -120,6 +120,6 @@ The best place to check for detailed information on a specific package thus is
     Spack packages.
 
 
-Full list of all FCC Software repositories can be found on Github
+The full list of all FCC Software repositories can be found on GitHub
 [here](https://github.com/hep-fcc) and all Key4hep repositories can be found
 [here](https://github.com/key4hep).
