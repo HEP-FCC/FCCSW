@@ -73,8 +73,8 @@ The best place to check for detailed information on a specific package thus is
     Guns.
 * [key4hep/k4SimDelphes](https://github.com/key4hep/k4SimDelphes): Delphes Fast
     Sim.
-* [hep-fcc/k4SimGeant4](https://github.com/hep-fcc/k4SimGeant4)
-    ([Doxygen](https://hep-fcc.github.io/k4SimGeant4/)): Geant4 Full Sim of
+* [key4hep/k4SimGeant4](https://github.com/key4hep/k4SimGeant4)
+    ([Doxygen](https://key4hep.github.io/k4SimGeant4/)): Geant4 Full Sim of
     FCC-hh.
 * [key4hep/k4geo](https://github.com/key4hep/k4geo) DD4hep models of FCC
     detector geometries for Full Sim of FCC-ee.
