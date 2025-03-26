@@ -152,6 +152,7 @@ def main() -> int:
 
     # CERN Indico events
     event_ids: list[str] = [
+        '1439509',  # 8th FCC Physics Workshop
         '1298458',  # FCC Week 2024
         '1307378',  # 7th FCC Physics Workshop
         '1202105',  # FCC Week 2023
@@ -169,8 +170,8 @@ def main() -> int:
         urls += [url]
 
     # Second Annual U.S. Future Circular Collider (FCC) Workshop 2024
-    urls += ['https://indico.mit.edu/' \
-             'export/event/876.json' \
+    urls += ['https://indico.mit.edu/'
+             'export/event/876.json'
              '?detail=contributions']
 
     # Name stems to be searched for

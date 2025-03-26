@@ -28,6 +28,31 @@ submit other contributions to be included here by creating an issue on
 [Github](https://github.com/HEP-FCC/FCCSW).
 
 
+### 2025
+
+* Tolosa-Delgado, A. 2025.
+    ["Simulation and performance study of the ARC concept for a compact RICH detector."](https://indico.cern.ch/event/1439509/contributions/6298368/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Detectors session.
+* Tolosa-Delgado, A. 2025.
+    ["Bigger picture on detector integration into concepts in software."](https://indico.cern.ch/event/1439509/contributions/6298367/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Joint sessions Detectors and Software.
+* Francois, B. 2025.
+    ["Software and computing."](https://indico.cern.ch/event/1439509/contributions/6287210/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Overview/outlook of the feasibility study report: Physics/Experiment/Detector session.
+* Francois, B. 2025.
+    ["Simulation interface of accelerator backgrounds in the detectors."](https://indico.cern.ch/event/1439509/contributions/6289583/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Joint MDI and Software and Detectors session.
+* Ganis, G. 2025.
+    ["Software and computing."](https://indico.cern.ch/event/1439509/contributions/6289607/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Summaries/prospects session.
+* Ganis, G. 2025.
+    ["Computing resources status and plans."](https://indico.cern.ch/event/1439509/contributions/6289563/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Software and computing: Key4HEP, LEP@E4H, resources session.
+* Smiesko, J. 2025.
+    ["FCCAnalyses status and plans."](https://indico.cern.ch/event/1439509/contributions/6289557/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Joint session Software and Physics Performance: Analysis.
+
+
 ### 2024
 
 * Francois, B. 2024.
