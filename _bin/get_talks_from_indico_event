@@ -152,6 +152,7 @@ def main() -> int:
 
     # CERN Indico events
     event_ids: list[str] = [
+        '1408515',  # FCC Week 2025
         '1439509',  # 8th FCC Physics Workshop
         '1298458',  # FCC Week 2024
         '1307378',  # 7th FCC Physics Workshop
@@ -176,7 +177,7 @@ def main() -> int:
 
     # Name stems to be searched for
     name_stems = ['Brieuc Francois', 'Smiesko', 'Tolosa-Delgado', 'Ganis',
-                  'Volkl', 'Helsens']
+                  'Volkl', 'Helsens', 'Hyun Ko', 'De Vita', 'Fanini']
 
     for url in urls:
         event = get_event_data(url, verbose)

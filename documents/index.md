@@ -30,6 +30,21 @@ submit other contributions to be included here by creating an issue on
 
 ### 2025
 
+* De Vita, A. 2025.
+    ["Tracking with ML."](https://indico.cern.ch/event/1408515/contributions/6521311/.)
+    Presented at [FCC Week 2025](https://indico.cern.ch/event/1408515/) in Physics, Experiments and Detectors session.
+* Smiesko, J. 2025.
+    ["Analysis and visualization."](https://indico.cern.ch/event/1408515/contributions/6521306/.)
+    Presented at [FCC Week 2025](https://indico.cern.ch/event/1408515/) in Physics, Experiments and Detectors session.
+* Ko, S. 2025.
+    ["Reconstruction status and plans."](https://indico.cern.ch/event/1408515/contributions/6521303/.)
+    Presented at [FCC Week 2025](https://indico.cern.ch/event/1408515/) in Physics, Experiments and Detectors session.
+* Tolosa-Delgado, A. 2025.
+    ["FCC Detector Models."](https://indico.cern.ch/event/1408515/contributions/6521302/.)
+    Presented at [FCC Week 2025](https://indico.cern.ch/event/1408515/) in Physics, Experiments and Detectors session.
+* Francois, B. 2025.
+    ["General Status of the Software."](https://indico.cern.ch/event/1408515/contributions/6521300/.)
+    Presented at [FCC Week 2025](https://indico.cern.ch/event/1408515/) in Physics, Experiments and Detectors session.
 * Tolosa-Delgado, A. 2025.
     ["Simulation and performance study of the ARC concept for a compact RICH detector."](https://indico.cern.ch/event/1439509/contributions/6298368/.)
     Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Detectors session.
@@ -42,11 +57,17 @@ submit other contributions to be included here by creating an issue on
 * Francois, B. 2025.
     ["Simulation interface of accelerator backgrounds in the detectors."](https://indico.cern.ch/event/1439509/contributions/6289583/.)
     Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Joint MDI and Software and Detectors session.
+* De Vita, A. 2025.
+    ["Tracking and ML based Particle Flow."](https://indico.cern.ch/event/1439509/contributions/6289578/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Joint Software, Physics Performance & Detectors: reconstruction session.
 * Ganis, G. 2025.
     ["Software and computing."](https://indico.cern.ch/event/1439509/contributions/6289607/.)
     Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Summaries/prospects session.
 * Ganis, G. 2025.
     ["Computing resources status and plans."](https://indico.cern.ch/event/1439509/contributions/6289563/.)
+    Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Software and computing: Key4HEP, LEP@E4H, resources session.
+* Fanini, J. 2025.
+    ["LEP data in EDM4hep."](https://indico.cern.ch/event/1439509/contributions/6289561/.)
     Presented at [8th FCC Physics Workshop](https://indico.cern.ch/event/1439509/) in Software and computing: Key4HEP, LEP@E4H, resources session.
 * Smiesko, J. 2025.
     ["FCCAnalyses status and plans."](https://indico.cern.ch/event/1439509/contributions/6289557/.)
