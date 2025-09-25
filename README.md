@@ -22,13 +22,13 @@ FCCSW is a stakeholder of the [Key4hep](http://cern.ch/key4hep) software collabo
 source /cvmfs/sw.hsf.org/key4hep/setup.sh
 
 # run pythia generator with EDM4hep output
-fccrun Examples/options/pythia.py
+k4run Examples/options/pythia.py
 
 # full simulation of FCC-hh, single particle
-fccrun Examples/options/geant_fullsim_fcchh_main.py
+k4run Examples/options/geant_fullsim_fcchh_main.py
 
 # full simulation of FCC-ee CLD, single particle
-fccrun Examples/options/geant_fullsim_fccee_cld_pgun.py
+k4run Examples/options/geant_fullsim_fccee_cld_pgun.py
 ```
 
 
