@@ -28,13 +28,13 @@ source /cvmfs/fcc.cern.ch/sw/latest/setup.sh
 # ^ currently a simple alias of the Key4hep setup script
 
 # Run Pythia generator with EDM4hep output
-fccrun Examples/options/pythia.py
+k4run Examples/options/pythia.py
 
 # Full simulation of FCC-hh, single particle
-fccrun Examples/options/geant_fullsim_fcchh_main.py
+k4run Examples/options/geant_fullsim_fcchh_main.py
 
 # Full simulation of FCC-ee CLD, single particle
-fccrun Examples/options/geant_fullsim_fccee_cld_pgun.py
+k4run Examples/options/geant_fullsim_fccee_cld_pgun.py
 ```
 
 

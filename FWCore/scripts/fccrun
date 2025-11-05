@@ -1,1 +1,3 @@
+#!/usr/bin/env bash
+echo "Warning: 'fccrun' is deprecated. Please use 'k4run' directly instead." >&2
 exec k4run "$@"
