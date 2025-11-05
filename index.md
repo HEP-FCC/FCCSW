@@ -69,21 +69,21 @@ The best place to check for detailed information on a specific package thus is
 
 ### Gaudi Packages
 
-* [hep-fcc/k4Gen](https://github.com/hep-fcc/k4gen): Generators and Particle
+* [key4hep/k4Gen](https://github.com/key4hep/k4gen): Generators and Particle
     Guns.
 * [key4hep/k4SimDelphes](https://github.com/key4hep/k4SimDelphes): Delphes Fast
     Sim.
+* [key4hep/k4geo](https://github.com/key4hep/k4geo) DD4hep models of FCC
+    detector geometries for Full Sim of FCC-ee.
 * [key4hep/k4SimGeant4](https://github.com/key4hep/k4SimGeant4)
     ([Doxygen](https://key4hep.github.io/k4SimGeant4/)): Geant4 Full Sim of
     FCC-hh.
-* [key4hep/k4geo](https://github.com/key4hep/k4geo) DD4hep models of FCC
-    detector geometries for Full Sim of FCC-ee.
+* [hep-fcc/FCCDetectors](https://github.com/hep-fcc/fccdetectors):
+    DD4hep models of FCC-hh detector geometries for Full Sim.
 * [hep-fcc/k4RecCalorimeter](https://github.com/hep-fcc/k4RecCalorimeter):
     Calorimeter reconstruction code.
 * [key4hep/k4RecTracker](https://github.com/key4hep/k4RecTracker): Tracker
     reconstruction code.
-* [hep-fcc/dual-readout](https://github.com/hep-fcc/dual-readout): DD4hep model
-    of the DREAM dual readout calorimeter.
 
 
 ### Analysis

@@ -5,9 +5,10 @@ id: contacts
 
 # Contacts
 
-FCCSW strives to allow for the delivery of the most comprehensive feasibility
-study for the FCC project. To that end the FCC Software team offers several
-channels for contact.
+Having contributed to the successful delivery of the comprehensive feasibility
+study for the FCC project, FCC Software is now focusing its efforts on the
+pre-TDR phase. To facilitate this ongoing collaboration, the FCC Software team
+provides multiple avenues for contact.
 
 
 ## Mailing lists
@@ -28,13 +29,13 @@ In particular the following lists might be of interest:
 <h2>Mattermost</h2>
 
 For a little more lively communication one can join our
-[FCCSW Mattermost Team][fccsw-mattermost].
+[FCC Software Mattermost Team][fccsw-mattermost].
 
 
 <h2>Forum</h2>
 
 Technical issues of broader interest, but also beginner questions, can be
-discussed in the [FCCSW Forum][fccsw-forum].
+discussed in the [FCC Software Forum][fccsw-forum].
 
 
 [fcc-ped-mails-all]: https://groups.cern.ch/Pages/GroupSearch.aspx?k=FCC-PED-SoftwareAndComputing*

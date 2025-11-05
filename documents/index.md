@@ -7,16 +7,19 @@ id: documents
 
 ## Feasibility Study Report
 
-TBA
+[Future Circular Collider Feasibility Study Report Volume 1: Physics and Experiments](https://cds.cern.ch/record/2928193)
+provides an overview of the physics case, experimental programme, and detector
+concepts along with the description of the software and computing employed.
+
 
 ## Conceptual Design Report
 
-The [summary volumes](https://fcc-cdr.web.cern.ch/) have been released, with many
-physics and detector simulations carried out using FCCSW. We collaborated with
-CERN's [Re-usable Analysis](https://www.reanahub.io/) working group to make the
-workflows used in the CDR reproducible and accessible for future studies.
-[Here](https://github.com/reanahub/reana-demo-fcchh-fullsim) is a first example
-of a full-simulation workflow.
+The [summary volumes](https://fcc-cdr.web.cern.ch/) have been released, with
+many physics and detector simulations carried out using the FCC Software. We
+collaborated with CERN's [Re-usable Analysis](https://www.reanahub.io/) working
+group to make the workflows used in the CDR reproducible and accessible for
+future studies. [Here](https://github.com/reanahub/reana-demo-fcchh-fullsim) is
+a first example of a full-simulation workflow.
 
 
 ## Past Publications and Presentations
