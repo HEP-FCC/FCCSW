@@ -93,8 +93,8 @@ The best place to check for detailed information on a specific package thus is
     framework for FCC-related studies.
 * [ROOT DataFrame](https://root.cern/doc/master/classROOT_1_1RDataFrame.html):
     Modern, high-level interface for analysis.
-* [FCC Physics Events Database](https://fcc-physics-events.web.cern.ch/): Lists
-    pre-generated samples available centrally.
+* [FCC Physics Events](https://fcc-physics-events.web.cern.ch/): Lists
+    information about centrally produced datasets.
 * [FCCee Physics Performance](https://hep-fcc.github.io/FCCeePhysicsPerformance/):
     Registry of case studies for FCC-ee.
 * [FCChh Physics Performance](https://hep-fcc.github.io/FCChhPhysicsPerformance/):
@@ -115,12 +115,12 @@ The best place to check for detailed information on a specific package thus is
     validation of the Key4hep stack.
 * [FCC-config](https://github.com/HEP-FCC/FCC-config): Configurations used for
     the sample productions.
-* [FCCDIRAC](https://github.com/HEP-FCC/FCCDIRAC): Production system for the
-    FCC-ee Full Sim samples.
+* [FCCDIRAC](https://github.com/HEP-FCC/FCCDIRAC): User and production workflows
+    for iLCDirac/DIRAC system.
 * [key4hep-spack](https://github.com/key4hep/key4hep-spack): Key4hep specific
     Spack packages.
 
 
 The full list of all FCC Software repositories can be found on GitHub
-[here](https://github.com/hep-fcc) and all Key4hep repositories can be found
+[here](https://github.com/hep-fcc) and of all Key4hep repositories can be found
 [here](https://github.com/key4hep).
