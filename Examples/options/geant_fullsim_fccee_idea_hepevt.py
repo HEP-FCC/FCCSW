@@ -23,10 +23,10 @@ ApplicationMgr().TopAlg += [reader]
 # DD4hep geometry service
 from Configurables import GeoSvc
 ## parse the given xml file
-path_to_detectors = os.environ.get("FCCDETECTORS", "")
+path_to_detectors = os.environ.get("K4GEO", "")
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [
-                          os.path.join(path_to_detectors, 'Detector/DetFCCeeIDEA/compact/FCCee_DectMaster.xml'),
+                          os.path.join(path_to_detectors, 'FCCee/IDEA/compact/IDEA_o1_v03/IDEA_o1_v03.xml'),
                        ]
 ApplicationMgr().ExtSvc += [geoservice]
 
@@ -36,20 +36,20 @@ geantsim.outputs = []
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool = SimG4SaveTrackerHits("saveTrackerHits_Barrel")
-savetrackertool.readoutNames = ["VertexBarrelCollection"]
+savetrackertool.readoutName = "VertexBarrelCollection"
 savetrackertool.SimTrackHits.Path = "TrackerHits_barrel"
 geantsim.outputs += [savetrackertool]
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_endcap = SimG4SaveTrackerHits("saveTrackerHits_Endcap")
-savetrackertool_endcap.readoutNames = ["VertexEndcapCollection"]
+savetrackertool_endcap.readoutName = "VertexEndcapCollection"
 savetrackertool_endcap.SimTrackHits.Path = "positionedHits_endcap"
 geantsim.outputs += [savetrackertool_endcap]
 
 
 from Configurables import SimG4SaveTrackerHits
 savetrackertool_DCH = SimG4SaveTrackerHits("saveTrackerHits_DCH")
-savetrackertool_DCH.readoutNames = ["SimplifiedDriftChamberCollection"]
+savetrackertool_DCH.readoutName = "DCHCollection"
 savetrackertool_DCH.SimTrackHits.Path = "positionedHits_DCH"
 geantsim.outputs += [savetrackertool_DCH]
 
@@ -59,11 +59,6 @@ field.FieldOn = True
 field.IntegratorStepper = "ClassicalRK4"
 field.FieldComponentZ = 2*units.tesla
 field.MaximumStep = 10000.0
-
-from Configurables import SimG4UserLimitRegion
-regiontool = SimG4UserLimitRegion("limits")
-regiontool.volumeNames = ["CDCH"]
-regiontool.maxStep = 2*units.mm
 
 from Configurables import SimG4UserLimitPhysicsList
 physicslisttool = SimG4UserLimitPhysicsList("Physics")
@@ -78,7 +73,6 @@ geantservice = SimG4Svc("SimG4Svc")
 geantservice.detector = 'SimG4DD4hepDetector'
 geantservice.physicslist = physicslisttool
 geantservice.actions = actions
-geantservice.regions = [regiontool]
 geantservice.magneticField= field
 geantservice.g4PostInitCommands +=["/process/eLoss/minKinEnergy 1 MeV"]
 geantservice.g4PostInitCommands  += ["/tracking/storeTrajectory 1"]
