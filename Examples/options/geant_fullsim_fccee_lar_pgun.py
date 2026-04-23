@@ -11,6 +11,9 @@ ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().StopOnSignal = True
 ApplicationMgr().ExtSvc += ['RndmGenSvc']
 
+from Configurables import MetadataSvc
+ApplicationMgr().ExtSvc += [MetadataSvc()]
+
 from Configurables import FCCDataSvc
 ## Data service
 podioevent = FCCDataSvc("EventDataSvc")
