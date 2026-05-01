@@ -1,0 +1,13 @@
+name: Add PR to FCC PR tracker
+
+on:
+  pull_request: 
+    types:
+      - opened
+      - reopened
+
+jobs:
+  call-ci:
+    uses: HEP-FCC/FCCSW/.github/workflows/add_to_fcc_pr_project.yml@main
+    
+      

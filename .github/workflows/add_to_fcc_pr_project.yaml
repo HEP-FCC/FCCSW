@@ -1,0 +1,14 @@
+on:
+  workflow_call:   
+jobs:
+  add-to-project:
+    name: Add issue to project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/orgs/HEP-FCC/projects/7
+          github-token: ${{ secrets.FCC_PR_PROJECT_TOKEN }}
+	  #we can eventually add label requirements
+          #labeled: needs-triage
+          #label-operator: OR
