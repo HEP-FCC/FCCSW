@@ -8,6 +8,6 @@ on:
 
 jobs:
   call-ci:
-    uses: HEP-FCC/FCCSW/.github/workflows/add_to_fcc_pr_project.yml@main
+    uses: HEP-FCC/FCCSW/.github/workflows/add_to_fcc_pr_project.yml@master
     
       
