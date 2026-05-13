@@ -3,14 +3,14 @@ import os
 from Gaudi.Configuration import *
 from GaudiKernel.SystemOfUnits import mm
 
-from Configurables import ApplicationMgr
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE'
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 
 # Data service
-from Configurables import EventDataSvc
-from k4FWCore import ApplicationMgr, IOSvc
 
 podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]

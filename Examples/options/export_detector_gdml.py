@@ -1,7 +1,7 @@
 import os
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr
+from k4FWCore import ApplicationMgr
 app = ApplicationMgr()
 app.TopAlg = []
 app.EvtSel = 'NONE'

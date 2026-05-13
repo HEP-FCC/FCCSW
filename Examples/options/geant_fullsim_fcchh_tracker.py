@@ -9,14 +9,14 @@ from GaudiKernel import PhysicalConstants as constants
 from k4_workflow_blocks.fccsw.detector_fcc_hh_tracker import *
 
 
-from Configurables import ApplicationMgr
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE'
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().ExtSvc += ['RndmGenSvc']
 
-from Configurables import EventDataSvc
-from k4FWCore import ApplicationMgr, IOSvc
 
 ## Data service
 podioevent = EventDataSvc("EventDataSvc")
