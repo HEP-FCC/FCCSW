@@ -10,9 +10,11 @@ ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().ExtSvc += ['RndmGenSvc']
 
-from Configurables import FCCDataSvc
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ## Data service
-podioevent = FCCDataSvc("EventDataSvc")
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 from Configurables import MomentumRangeParticleGun
@@ -143,11 +145,8 @@ geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_geant_fullsim_fccee_cld_pgun.root"
-out.OutputLevel = DEBUG
-out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [out]
+# PODIO output
+iosvc = IOSvc()
+iosvc.Output = "out_geant_fullsim_fccee_cld_pgun.root"
+iosvc.outputCommands = ["keep *"]
 

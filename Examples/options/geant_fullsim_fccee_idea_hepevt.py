@@ -9,8 +9,10 @@ ApplicationMgr().EvtMax = 100
 ApplicationMgr().OutputLevel = INFO
 
 
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 # from Configurables import HepMCReader
@@ -100,9 +102,7 @@ geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
 
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_geant_fullsim_fccee_idea_hepevt.root"
-out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.Output = "out_geant_fullsim_fccee_idea_hepevt.root"
+iosvc.outputCommands = ["keep *"]
 

@@ -14,9 +14,11 @@ ApplicationMgr().ExtSvc += ['RndmGenSvc']
 from Configurables import MetadataSvc
 ApplicationMgr().ExtSvc += [MetadataSvc()]
 
-from Configurables import FCCDataSvc
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ## Data service
-podioevent = FCCDataSvc("EventDataSvc")
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 from Configurables import MomentumRangeParticleGun
@@ -256,12 +258,9 @@ ApplicationMgr().TopAlg += [createClusters]
 
 
 ################ Output
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.outputCommands = ["keep *", "drop ECalBarrelHits", "drop HCal*", "drop ECalBarrelCellsStep*", "drop ECalBarrelPositionedHits", "drop emptyCaloCells", "drop CaloClusterCells"]
-import uuid
-out.filename = "output_fullCalo_SimAndDigi.root"
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.outputCommands = ["keep *", "drop ECalBarrelHits", "drop HCal*", "drop ECalBarrelCellsStep*", "drop ECalBarrelPositionedHits", "drop emptyCaloCells", "drop CaloClusterCells"]
+iosvc.Output = "output_fullCalo_SimAndDigi.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
@@ -275,5 +274,4 @@ createEcalBarrelCellsStep1.AuditExecute = True
 resegmentEcalBarrel.AuditExecute = True
 createEcalBarrelCells.AuditExecute = True
 createHcalBarrelCells.AuditExecute = True
-out.AuditExecute = True
 # ApplicationMgr().ExtSvc += [audsvc]

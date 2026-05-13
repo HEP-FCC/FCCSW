@@ -16,8 +16,10 @@ ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().ExtSvc +=["RndmGenSvc"]
 
 #### Data service
-from Configurables import k4DataSvc
-podioevent = k4DataSvc("EventDataSvc")
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 from Configurables import GaussSmearVertex
@@ -61,10 +63,8 @@ genfilter.GenParticles.Path = "GenParticles"
 genfilter.GenParticlesFiltered.Path = "GenParticlesStable"
 ApplicationMgr().TopAlg += [genfilter]
 
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_pythia.root"
-out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.Output = "out_pythia.root"
+iosvc.outputCommands = ["keep *"]
 
 
