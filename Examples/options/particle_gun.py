@@ -4,14 +4,16 @@ from Gaudi.Configuration import *
 from GaudiKernel import SystemOfUnits as units
 from GaudiKernel import PhysicalConstants as constants
 
-from Configurables import ApplicationMgr
+#### Data service
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE' 
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 
-#### Data service
-from Configurables import k4DataSvc
-podioevent = k4DataSvc("EventDataSvc")
+
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 from Configurables import MomentumRangeParticleGun
@@ -35,8 +37,6 @@ hepmc_converter.hepmc.Path="hepmc"
 hepmc_converter.GenParticles.Path="GenParticles"
 ApplicationMgr().TopAlg += [hepmc_converter]
 
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.outputCommands = ["keep *"]
-out.filename = "out_particle_gun.root"
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.outputCommands = ["keep *"]
+iosvc.Output = "out_particle_gun.root"

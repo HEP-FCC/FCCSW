@@ -10,15 +10,17 @@ from GaudiKernel import PhysicalConstants as constants
 from k4_workflow_blocks.fccsw.detector_fcc_hh_main import *
 
 
-from Configurables import ApplicationMgr
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE' 
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().ExtSvc += ['RndmGenSvc']
 
-from Configurables import FCCDataSvc
+
 ## Data service
-podioevent = FCCDataSvc("EventDataSvc")
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 
@@ -45,10 +47,8 @@ geantsim.eventProvider = SimG4PrimariesFromEdmTool("EdmConverter")
 geantsim.eventProvider.GenParticles.Path = "GenParticles"
 ApplicationMgr().TopAlg += [geantsim]
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput()
-out.outputCommands = ["keep *"]
-out.filename = "out_geant_fullsim_fcchh_main.root"
-ApplicationMgr().TopAlg += [out]
+# PODIO output
+iosvc = IOSvc()
+iosvc.Output = "out_geant_fullsim_fcchh_main.root"
+iosvc.outputCommands = ["keep *"]
 

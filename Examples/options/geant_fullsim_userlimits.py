@@ -3,14 +3,16 @@ import os
 from Gaudi.Configuration import *
 from GaudiKernel.SystemOfUnits import mm
 
-from Configurables import ApplicationMgr
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE'
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 
 # Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 
@@ -79,11 +81,8 @@ ApplicationMgr().TopAlg += [geantsim]
 
 
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_geant_fullsim_userlimits.root"
-out.outputCommands = ["keep *"]
-out.OutputLevel = DEBUG
-ApplicationMgr().TopAlg += [out]
+# PODIO output
+iosvc = IOSvc()
+iosvc.Output = "out_geant_fullsim_userlimits.root"
+iosvc.outputCommands = ["keep *"]
 

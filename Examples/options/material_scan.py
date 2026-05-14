@@ -2,7 +2,7 @@ import os
 from Gaudi.Configuration import *
 
 
-from Configurables import ApplicationMgr
+from k4FWCore import ApplicationMgr
 ApplicationMgr().EvtSel = 'None' 
 ApplicationMgr().EvtMax = 1
 ApplicationMgr().OutputLevel = INFO

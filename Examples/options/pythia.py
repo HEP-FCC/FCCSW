@@ -9,15 +9,17 @@ import os
 from GaudiKernel import SystemOfUnits as units
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr
+#### Data service
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE' 
 ApplicationMgr().EvtMax = 2
 ApplicationMgr().OutputLevel = INFO
 ApplicationMgr().ExtSvc +=["RndmGenSvc"]
 
-#### Data service
-from Configurables import k4DataSvc
-podioevent = k4DataSvc("EventDataSvc")
+
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 from Configurables import GaussSmearVertex
@@ -61,10 +63,8 @@ genfilter.GenParticles.Path = "GenParticles"
 genfilter.GenParticlesFiltered.Path = "GenParticlesStable"
 ApplicationMgr().TopAlg += [genfilter]
 
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_pythia.root"
-out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.Output = "out_pythia.root"
+iosvc.outputCommands = ["keep *"]
 
 

@@ -1,10 +1,9 @@
 
 from Gaudi.Configuration import *
+from k4FWCore import IOSvc
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput()
-out.outputCommands = ["keep *"]
-out.filename = "out_geant_fullsim.root"
-ApplicationMgr().TopAlg += [out]
+# PODIO output
+iosvc = IOSvc()
+iosvc.outputCommands = ["keep *"]
+iosvc.Output = "out_geant_fullsim.root"
 

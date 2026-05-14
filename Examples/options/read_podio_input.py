@@ -1,25 +1,17 @@
 from Gaudi.Configuration import *
 
-from Configurables import ApplicationMgr
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = 'NONE'
 ApplicationMgr().EvtMax = 2
 
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
-podioevent.input = "http://fccsw.web.cern.ch/fccsw/testsamples/out_particle_gun.root"
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
-from Configurables import PodioInput
-podioinput = PodioInput("PodioReader")
-podioinput.collections = ["GenParticles"]
-podioinput.OutputLevel = DEBUG
-ApplicationMgr().TopAlg += [podioinput]
-
-
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_read_podio_input.root"
-out.OutputLevel = DEBUG
-out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.Input = "http://fccsw.web.cern.ch/fccsw/testsamples/out_particle_gun.root"
+iosvc.CollectionNames = ["GenParticles"]
+iosvc.Output = "out_read_podio_input.root"
+iosvc.outputCommands = ["keep *"]
 

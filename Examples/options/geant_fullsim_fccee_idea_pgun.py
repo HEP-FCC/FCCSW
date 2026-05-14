@@ -3,14 +3,15 @@ import os
 from Gaudi.Configuration import *
 import GaudiKernel.SystemOfUnits as units
 
-from Configurables import ApplicationMgr
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
 ApplicationMgr().EvtSel = "NONE"
 ApplicationMgr().EvtMax = 100
 ApplicationMgr().OutputLevel = INFO
 
 
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+podioevent = EventDataSvc("EventDataSvc")
 ApplicationMgr().ExtSvc += [podioevent]
 
 # DD4hep geometry service
@@ -106,9 +107,7 @@ geantsim.outputs += [
 geantsim.eventProvider = pgun
 ApplicationMgr().TopAlg += [geantsim]
 
-from Configurables import PodioOutput
-out = PodioOutput("out")
-out.filename = "out_geant_fullsim_fccee_idea_pgun.root"
-out.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [out]
+iosvc = IOSvc()
+iosvc.Output = "out_geant_fullsim_fccee_idea_pgun.root"
+iosvc.outputCommands = ["keep *"]
 
