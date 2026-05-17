@@ -15,7 +15,10 @@ jobs:
     strategy:
       matrix:
         build_type: ["release", "nightly"]
-        image: ["alma9", "ubuntu22"]
+        image: ["alma9"]
+        include:
+          - build_type: nightly
+            image: ubuntu24
       fail-fast: false
     runs-on: ubuntu-latest
     steps:

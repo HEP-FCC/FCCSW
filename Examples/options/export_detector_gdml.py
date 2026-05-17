@@ -12,10 +12,10 @@ app.OutputLevel = INFO
 # DD4hep geometry service
 from Configurables import GeoSvc
 ## parse the given xml file
-path_to_detectors = os.environ.get("FCCDETECTORS", "")
+path_to_detectors = os.environ.get("K4GEO", "")
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [
-                          os.path.join(path_to_detectors, 'Detector/DetFCCeeCLD/compact/FCCee_o2_v02/FCCee_o2_v02.xml'),
+                          os.path.join(path_to_detectors, 'FCCee/CLD/compact/CLD_o2_v08/CLD_o2_v08.xml'),
                        ]
 ApplicationMgr().ExtSvc += [geoservice]
 
