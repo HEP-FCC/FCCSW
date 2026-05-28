@@ -78,11 +78,12 @@ Uses `ddsim` (see [docs]([url](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4
 This will produce root files you can process; see below how.
 
 If you produce good files (i.e. not too experimental), they may be placed in the common EOS space; make sure you follow the existing folder naming and structure!
+
 ```sh
 #location
 /eos/experiment/fcc/ee/simulation
 #inner structure:
-/eos/experiment/fcc/ee/{simulation | generation}/Key4HEP_release(only for simulations)/ENERGY/EXPERIMENT/STAGE/SAMPLE"
+/eos/experiment/fcc/ee/[simulation,generation]/Key4HEP_release(only for simulations)/ENERGY/EXPERIMENT/STAGE/SAMPLE"
 ```
 
 Detector concept groups should attempt to produce their own files, with our support.
