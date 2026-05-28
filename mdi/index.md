@@ -7,15 +7,11 @@ id: mdi
 
 [contact egroup](mailto:FCC-PED-SoftwareAndComputing-MDI_NOSPAM@cern.ch) | [Mandate](Mandate) | [Intro slides @PSC](https://indico.cern.ch/event/1668596/contributions/7014766/attachments/3259323/5818928/BIB-MDI%20coordination.pdf)
 
-Initial page to gather recipes for FCCee MDI-related software.
-
-<details>
-<summary>Collapsed section example </summary>
-
-You can add text within a collapsed section.
-You can add an image or a code block, too.
-
-</details>
+Initial page to gather recipes for FCCee MDI-related software. You will find information about the following set of procedures:
+- MDI geometry definition & recommendations on how to use it in the simulation
+- Beam-Induce Background (BIB) sample production info & where to find the files
+- How to simulate a BIB file through a detector
+- How to extract occupancy numbers for a specific sub-detector
 
 ## mdi_v2
 
@@ -59,8 +55,9 @@ Please remember that the IR antisolenoid field map does not match perfectly the 
 
 More accurate maps will be produced once the detectors provide and implement a realistic field map for their own solenoid and return fields.
 
+## BIB samples production
 
-## BIB samples
+## BIB samples location
 
 - Join egroup `fcc-ee-MDI` for access.
 - Find supported samples in the Machine-Detector Interface (MDI) EOS space:
@@ -70,8 +67,21 @@ More accurate maps will be produced once the detectors provide and implement a r
 ```
 also accessible through [this CERN Box link](https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB). See readme in the folder for sample definitions and contact persons.
 
-## BIB samples production
+## Detector simulation
+
+Uses `ddsim` (see [docs]([url](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4hep/)). Simulation recipe currently in bib-studies repo [here]([url](https://github.com/HEP-FCC/bib-studies/blob/main/simulation/README.md)).
+
+This will produce root files you can process; see below.
 
 ## bib-studies
 
 See [bib-studies]([url](https://github.com/HEP-FCC/bib-studies)) for how to simulate BIB samples through a detector and produce occupancy plots.
+
+
+<details>
+<summary>Collapsed section example </summary>
+
+You can add text within a collapsed section.
+You can add an image or a code block, too.
+
+</details>
