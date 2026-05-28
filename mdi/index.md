@@ -13,6 +13,8 @@ Initial page to gather recipes for FCCee MDI-related software. You will find inf
 - How to simulate a BIB file through a detector
 - How to extract occupancy numbers for a specific sub-detector
 
+[[_TOC_]]
+
 ## mdi_v2
 
 aciarma/k4geo/tree/ mdi_v2
