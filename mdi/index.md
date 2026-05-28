@@ -22,19 +22,18 @@ Initial page to gather recipes for FCCee MDI-related software. You will find inf
 
 aciarma/k4geo/tree/ mdi_v2
 
-Second iteration of the cryostat model. Details on [MDI#79]([url](https://indico.cern.ch/event/1679641/)).
-Starts at 1400mm from IP Max radius 220mm Profile follows 100mrad
-5mm Tungsten layer shielding.
-Quadrupoles and 2 SR masks for L*=2.4m
-Not an engineered model.
+Second iteration of the cryostat model. Details on [MDI#79](https://indico.cern.ch/event/1679641/).
+- Starts at 1400mm from IP Max radius 220mm Profile follows 100mrad
+- 5mm Tungsten layer shielding.
+- Quadrupoles and 2 SR masks for L*=2.4m
+- Not an engineered model.
 
 <img width="802" height="555" alt="Screenshot 2026-05-28 alle 16 58 25" src="https://github.com/user-attachments/assets/bba52f4e-f7b8-4c2f-9a55-1d7154dd9a0c" />
 
 Field map for IR antisolenoid produced by B. Parker for the non-local compensation scheme 
 - only screening anti-solenoid
-- 
-The field map was produced starting from a realistic field map for IDEA. The k4geo description instead uses a flat 2T field. Thus when overlapping the two fields we get some non-zero field inside the screening solenoids.
-• This is not 100% correct but still better then having 2T.
+- The field map was produced starting from a realistic field map for IDEA. The k4geo description instead uses a flat 2T field. Thus when overlapping the two fields we get some non-zero field inside the screening solenoids.
+- This is not 100% correct but still better then having 2T.
 
 Similar behaviour for the other detector concepts. Once every concept provide (and use in k4geo) a realistic field map, a dedicated antisolenoid field map can be produced.
 
