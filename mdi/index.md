@@ -78,12 +78,13 @@ This will produce root files you can process; see below.
 See [bib-studies]([url](https://github.com/HEP-FCC/bib-studies)) for how to simulate BIB samples through a detector and produce occupancy plots.
 
 
+[test](bib-studies.md)
+
 <details>
 <summary>Collapsed section example </summary>
 
 You can add text within a collapsed section.
 You can add an image or a code block, too.
 
-[test](bib-studies.md)
 
 </details>
