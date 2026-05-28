@@ -53,6 +53,7 @@ The xml files to be used to produce samples are the following:
 - aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/ALLEGRO/compact/ALLEGRO_o1_v03/ALLEGRO_o1_v03_CAD.xml
 - aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/IDEA/compact/IDEA_o1_v03/IDEA_o1_v03_CAD.xml
 - aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/ILD_FCCee/compact/ILD_FCCee_v01/ILD_FCCee_v01_CAD.xml
+- aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/CLD/compact/CLD_o2_v08/CLD_o2_v08_CAD.xml
 
 Please remember that the IR antisolenoid field map does not match perfectly the flat 2T field which is currently in the detectors k4geo description.
 
