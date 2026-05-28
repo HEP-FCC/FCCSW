@@ -5,9 +5,7 @@ id: mdi
 
 # MDI (Machine-Detector Interface)
 
-[contact egroup](mailto:FCC-PED-SoftwareAndComputing-MDI_NOSPAM@cern.ch) | 
-[Mandate](Mandate) | 
-[Intro slides @PSC](https://indico.cern.ch/event/1668596/contributions/7014766/attachments/3259323/5818928/BIB-MDI%20coordination.pdf) |
+[contact egroup](mailto:FCC-PED-SoftwareAndComputing-MDI_NOSPAM@cern.ch) | [Mandate](Mandate) | [Intro slides @PSC](https://indico.cern.ch/event/1668596/contributions/7014766/attachments/3259323/5818928/BIB-MDI%20coordination.pdf)
 
 Initial page to gather recipes for FCCee MDI-related software.
 
