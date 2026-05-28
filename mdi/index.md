@@ -75,7 +75,17 @@ also accessible through [this CERN Box link](https://cernbox.cern.ch/files/space
 
 Uses `ddsim` (see [docs]([url](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4hep/)). Simulation recipe currently in bib-studies repo [here]([url](https://github.com/HEP-FCC/bib-studies/blob/main/simulation/README.md)).
 
-This will produce root files you can process; see below.
+This will produce root files you can process; see below how.
+
+If you produce good files (i.e. not too experimental), they may be placed in the common EOS space; make sure you follow the existing folder naming and structure!
+```sh
+#location
+/eos/experiment/fcc/ee/simulation
+#inner structure:
+/eos/experiment/fcc/ee/{simulation | generation}/Key4HEP_release(only for simulations)/ENERGY/EXPERIMENT/STAGE/SAMPLE"
+```
+
+Detector concept groups should attempt to produce their own files, with our support.
 
 ## bib-studies
 
