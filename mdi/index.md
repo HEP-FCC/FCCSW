@@ -60,7 +60,17 @@ Please remember that the IR antisolenoid field map does not match perfectly the 
 More accurate maps will be produced once the detectors provide and implement a realistic field map for their own solenoid and return fields.
 
 
-## BIB sample production
+## BIB samples
+
+- Join egroup `fcc-ee-MDI` for access.
+- Find supported samples in the Machine-Detector Interface (MDI) EOS space:
+```sh
+/eos/project/f/fcc-ee-mdi/BIB/
+#see readme in each folder for more info
+```
+also accessible through [this CERN Box link](https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB). See readme in the folder for sample definitions and contact persons.
+
+## BIB samples production
 
 ## bib-studies
 
