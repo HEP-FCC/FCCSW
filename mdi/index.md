@@ -84,4 +84,6 @@ See [bib-studies]([url](https://github.com/HEP-FCC/bib-studies)) for how to simu
 You can add text within a collapsed section.
 You can add an image or a code block, too.
 
+[test](bib-studies)
+
 </details>
