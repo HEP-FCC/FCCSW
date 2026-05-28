@@ -5,15 +5,13 @@ id: mdi
 
 # MDI (Machine-Detector Interface)
 
-[contact egroup](mailto:FCC-PED-SoftwareAndComputing-MDI_NOSPAM@cern.ch) | [Mandate](Mandate) | [Intro slides @PSC](https://indico.cern.ch/event/1668596/contributions/7014766/attachments/3259323/5818928/BIB-MDI%20coordination.pdf)
+[contact egroup](mailto:FCC-PED-SoftwareAndComputing-MDI_NOSPAM@cern.ch) &#124; [Mandate](Mandate) &#124; [Intro slides @PSC](https://indico.cern.ch/event/1668596/contributions/7014766/attachments/3259323/5818928/BIB-MDI%20coordination.pdf)
 
 Initial page to gather recipes for FCCee MDI-related software. You will find information about the following set of procedures:
 - MDI geometry definition & recommendations on how to use it in the simulation
 - Beam-Induce Background (BIB) sample production info & where to find the files
 - How to simulate a BIB file through a detector
 - How to extract occupancy numbers for a specific sub-detector
-
-[[_TOC_]]
 
 ## mdi_v2
 
