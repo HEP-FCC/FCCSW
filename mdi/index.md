@@ -63,7 +63,7 @@ More accurate maps will be produced once the detectors provide and implement a r
 ## BIB samples location
 
 The latest background samples are produced for the LCC V106.2 lattice, and can be found here:: 
-- Web: https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2
+- Web: [https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2](https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2)
 - EOS: /eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2
   
 In order to access the files on the EOS directories, you need to join the `fcc-ee-MDI` egroup.
