@@ -66,14 +66,19 @@ The latest background samples are produced for the LCC V106.2 lattice, and can b
 - Web: [https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2](https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2)
 - EOS: /eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2
   
-In order to access the files on the EOS directories, you need to join the `fcc-ee-MDI` egroup.
+To access the files on the EOS directories, you need to join the `fcc-ee-MDI` egroup.
 
 The following background sources are to be considered:
-- Incoherend Pair Creation (IPC): generated with GuineaPig
+- Incoherent Pair Creation (IPC): generated with GuineaPig
 - Synchrotron radiation (SR): halo and core, generated with bdsim
 - Collimation backgrounds (beam gas: Bremsstrahlung and Coulomb scattering): generated with Xsuite and FLUKA
 
 Each of the background sources has a readme file with more information about the generation and the contact persons.
+
+The following backgrounds are not yet considered or generated for this lattice:
+- Injection backgrounds: these are drastically suppressed in the LCC lattice design
+- Radiative Bhabha: expected to be smaller than the IPC background
+
 
 
 ## Detector simulation
