@@ -89,7 +89,7 @@ The following backgrounds are not yet considered or generated for this lattice:
 
 ## Detector simulation
 
-Uses `ddsim` (see [docs](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4hep/)). Simulation recipe currently in bib-studies repo [here]([url](https://github.com/HEP-FCC/bib-studies/blob/main/simulation/README.md)).
+Uses `ddsim` (see [docs](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4hep/)). Simulation recipe currently in bib-studies repo [here](https://github.com/HEP-FCC/bib-studies/blob/main/simulation/README.md).
 
 This will produce root files you can process; see below how.
 
@@ -106,7 +106,7 @@ Detector concept groups should attempt to produce their own files, with our supp
 
 ## bib-studies
 
-See [bib-studies]([url](https://github.com/HEP-FCC/bib-studies)) for how to simulate BIB samples through a detector and produce occupancy plots.
+See [bib-studies](https://github.com/HEP-FCC/bib-studies)) for how to simulate BIB samples through a detector and produce occupancy plots.
 
 
 [test](bib-studies.md)
