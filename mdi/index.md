@@ -35,7 +35,7 @@ Please remember that the IR antisolenoid field map does not match perfectly the 
 More accurate maps will be produced once the detectors provide and implement a realistic field map for their own solenoid and return fields.
 
 <details>
-<summary>More detailed on the 2nd iteration of the cryostat model</summary>
+<summary>Click for more details on the 2nd iteration of the cryostat model</summary>
 
 Second iteration of the cryostat model. Details on [MDI#79](https://indico.cern.ch/event/1679641/).
 
