@@ -66,7 +66,8 @@ In the non-local compensation scheme this is much reduced w.r.t. the local schem
 
 </details>
 
-## BIB samples location
+
+## BIB samples to be used (and where to find them)
 
 The latest background samples are produced for the LCC V106.2 lattice, and can be found here:: 
 - Web: [https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2](https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2)
@@ -103,6 +104,8 @@ If you produce good files (i.e. not too experimental), they may be placed in the
 ```
 
 Detector concept groups should attempt to produce their own files, with our support.
+
+NOTE: in the next few days, we will produce the SIM files for the 4 detector concepts (IDEA_o1_v03, CLD_o2_v08, ALLEGRO_o1_v03, ILD_v01), compatible with the latest MDI settings and for all the background samples. 
 
 ## bib-studies
 
