@@ -71,7 +71,7 @@ In order to access the files on the EOS directories, you need to join the `fcc-e
 The following background sources are to be considered:
 - Incoherend Pair Creation (IPC): generated with GuineaPig
 - Synchrotron radiation (SR): halo and core, generated with bdsim
-- Collimation backgrounds (beam gas and Coulomb scattering): generated with Xsuite and FLUKA
+- Collimation backgrounds (beam gas: Bremsstrahlung and Coulomb scattering): generated with Xsuite and FLUKA
 
 Each of the background sources has a readme file with more information about the generation and the contact persons.
 
