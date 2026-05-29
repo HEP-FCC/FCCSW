@@ -89,7 +89,7 @@ The following backgrounds are not yet considered or generated for this lattice:
 
 ## Detector simulation
 
-Uses `ddsim` (see [docs]([url](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4hep/)). Simulation recipe currently in bib-studies repo [here]([url](https://github.com/HEP-FCC/bib-studies/blob/main/simulation/README.md)).
+Uses `ddsim` (see [docs](https://fcc-ee-detector-full-sim.docs.cern.ch/DD4hep/)). Simulation recipe currently in bib-studies repo [here]([url](https://github.com/HEP-FCC/bib-studies/blob/main/simulation/README.md)).
 
 This will produce root files you can process; see below how.
 
