@@ -99,7 +99,7 @@ If you produce good files (i.e. not too experimental), they may be placed in the
 #location
 /eos/experiment/fcc/ee/simulation
 #inner structure:
-/eos/experiment/fcc/ee/[simulation,generation]/Key4HEP_release(only for simulations)/ENERGY/EXPERIMENT/STAGE/SAMPLE"
+/eos/experiment/fcc/ee/[simulation,generation]/Key4HEP_release(only for simulations)/ENERGY/EXPERIMENT/STAGE/SAMPLE
 ```
 
 Detector concept groups should attempt to produce their own files, with our support.
