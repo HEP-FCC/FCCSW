@@ -18,9 +18,9 @@ Initial page to gather recipes for FCCee MDI-related software. You will find inf
 * This will become a table of contents (this text will be scrapped).
 {:toc}
 
-## mdi_v2
+## MDI geometry (mdi_v2)
 
-aciarma/k4geo/tree/ mdi_v2
+[aciarma/k4geo/tree/mdi_v2](https://github.com/aciarma/k4geo/tree/mdi_v2)
 
 Second iteration of the cryostat model. Details on [MDI#79](https://indico.cern.ch/event/1679641/).
 - Starts at 1400mm from IP Max radius 220mm Profile follows 100mrad
@@ -59,17 +59,21 @@ Please remember that the IR antisolenoid field map does not match perfectly the 
 
 More accurate maps will be produced once the detectors provide and implement a realistic field map for their own solenoid and return fields.
 
-## BIB samples production
 
 ## BIB samples location
 
-- Join egroup `fcc-ee-MDI` for access.
-- Find supported samples in the Machine-Detector Interface (MDI) EOS space:
-```sh
-/eos/project/f/fcc-ee-mdi/BIB/
-#see readme in each folder for more info
-```
-also accessible through [this CERN Box link](https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB). See readme in the folder for sample definitions and contact persons.
+The latest background samples are produced for the LCC V106.2 lattice, and can be found here:: 
+- Web: https://cernbox.cern.ch/files/spaces/eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2
+- EOS: /eos/project/f/fcc-ee-mdi/BIB/LCC/V106.2
+In order to access the files on the EOS directories, you need to join the `fcc-ee-MDI` egroup.
+
+The following background sources are to be considered:
+- Incoherend Pair Creation (IPC): generated with GuineaPig
+- Synchrotron radiation (SR): halo and core, generated with bdsim
+- Collimation backgrounds (beam gas and Coulomb scattering): generated with Xsuite and FLUKA
+
+Each of the background sources has a readme file with more information about the generation and the contact persons.
+
 
 ## Detector simulation
 
