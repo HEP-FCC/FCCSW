@@ -20,9 +20,25 @@ Initial page to gather recipes for FCCee MDI-related software. You will find inf
 
 ## MDI geometry (mdi_v2)
 
-[aciarma/k4geo/tree/mdi_v2](https://github.com/aciarma/k4geo/tree/mdi_v2)
+> **_NOTE:_**  29/May/2026 update: The xml files to be used to produce samples are in [aciarma k4geo fork](https://github.com/aciarma/k4geo/tree/mdi_v2), `mdi_v2` branch:
+
+```bash
+#aciarma/k4geo/tree/mdi_v2
+k4geo/FCCee/ALLEGRO/compact/ALLEGRO_o1_v03/ALLEGRO_o1_v03_CAD.xml
+k4geo/FCCee/IDEA/compact/IDEA_o1_v03/IDEA_o1_v03_CAD.xml
+k4geo/FCCee/ILD_FCCee/compact/ILD_FCCee_v01/ILD_FCCee_v01_CAD.xml
+k4geo/FCCee/CLD/compact/CLD_o2_v08/CLD_o2_v08_CAD.xml
+```
+
+Please remember that the IR antisolenoid field map does not match perfectly the flat 2T field which is currently in the detectors k4geo description.
+
+More accurate maps will be produced once the detectors provide and implement a realistic field map for their own solenoid and return fields.
+
+<details>
+<summary>More detailed on the 2nd iteration of the cryostat model</summary>
 
 Second iteration of the cryostat model. Details on [MDI#79](https://indico.cern.ch/event/1679641/).
+
 - Starts at 1400mm from IP Max radius 220mm Profile follows 100mrad
 - 5mm Tungsten layer shielding.
 - Quadrupoles and 2 SR masks for L*=2.4m
@@ -35,7 +51,8 @@ Field map for IR antisolenoid produced by B. Parker for the non-local compensati
 - The field map was produced starting from a realistic field map for IDEA. The k4geo description instead uses a flat 2T field. Thus when overlapping the two fields we get some non-zero field inside the screening solenoids.
 - This is not 100% correct but still better then having 2T.
 
-Similar behaviour for the other detector concepts. Once every concept provide (and use in k4geo) a realistic field map, a dedicated antisolenoid field map can be produced.
+Similar behaviour for the other detector concepts.
+Once every concept provide (and use in k4geo) a realistic field map, a dedicated antisolenoid field map can be produced.
 
 <img width="1085" height="226" alt="Screenshot 2026-05-28 alle 16 59 15" src="https://github.com/user-attachments/assets/61a5ca9f-adf2-41ac-a765-115adb1960d1" />
 
@@ -47,18 +64,7 @@ In the non-local compensation scheme this is much reduced w.r.t. the local schem
 
 <img width="578" height="356" alt="Screenshot 2026-05-28 alle 17 00 04" src="https://github.com/user-attachments/assets/5b17697e-4559-41ec-a064-e91e2ccc13a8" />
 
-
-The xml files to be used to produce samples are the following:
-
-- aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/ALLEGRO/compact/ALLEGRO_o1_v03/ALLEGRO_o1_v03_CAD.xml
-- aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/IDEA/compact/IDEA_o1_v03/IDEA_o1_v03_CAD.xml
-- aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/ILD_FCCee/compact/ILD_FCCee_v01/ILD_FCCee_v01_CAD.xml
-- aciarma/k4geo/tree/mdi_v2:k4geo/FCCee/CLD/compact/CLD_o2_v08/CLD_o2_v08_CAD.xml
-
-Please remember that the IR antisolenoid field map does not match perfectly the flat 2T field which is currently in the detectors k4geo description.
-
-More accurate maps will be produced once the detectors provide and implement a realistic field map for their own solenoid and return fields.
-
+</details>
 
 ## BIB samples location
 
@@ -105,11 +111,3 @@ See [bib-studies]([url](https://github.com/HEP-FCC/bib-studies)) for how to simu
 
 [test](bib-studies.md)
 
-<details>
-<summary>Collapsed section example </summary>
-
-You can add text within a collapsed section.
-You can add an image or a code block, too.
-
-
-</details>
