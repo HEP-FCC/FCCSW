@@ -106,7 +106,7 @@ Detector concept groups should attempt to produce their own files, with our supp
 
 ## bib-studies
 
-See [bib-studies](https://github.com/HEP-FCC/bib-studies)) for how to simulate BIB samples through a detector and produce occupancy plots.
+See [bib-studies](https://github.com/HEP-FCC/bib-studies) for how to simulate BIB samples through a detector and produce occupancy plots.
 
 
 [test](bib-studies.md)
