@@ -105,7 +105,17 @@ If you produce good files (i.e. not too experimental), they may be placed in the
 
 Detector concept groups should attempt to produce their own files, with our support.
 
-NOTE: in the next few days, we will produce the SIM files for the 4 detector concepts (IDEA_o1_v03, CLD_o2_v08, ALLEGRO_o1_v03, ILD_v01), compatible with the latest MDI settings and for all the background samples. 
+NOTE: we produced the SIM files for the 4 detector concepts (IDEA_o1_v03, CLD_o2_v08, ALLEGRO_o1_v03, ILD_v01), compatible with the latest MDI settings, and for all the background samples:
+
+```bash
+#aciarma/k4geo/tree/mdi_v2
+/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/IDEA_o1_v03_mdi_v2_CAD/sim
+/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/CLD_o2_v08_mdi_v2_CAD/sim
+/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/ALLEGRO_o1_v03_mdi_v2_CAD/sim [under production]
+/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/ILD_v01_mdi_v2_CAD/sim [under production]
+```
+
+The key4hep stack used for the generation of these samples is `2026-04-08`.
 
 ## bib-studies
 
