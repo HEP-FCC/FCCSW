@@ -110,8 +110,8 @@ NOTE: we produced the SIM files for the 4 detector concepts (IDEA_o1_v03, CLD_o2
 ```bash
 /eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/IDEA_o1_v03_mdi_v2_CAD/sim
 /eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/CLD_o2_v08_mdi_v2_CAD/sim
-/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/ALLEGRO_o1_v03_mdi_v2_CAD/sim [under production]
-/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/ILD_v01_mdi_v2_CAD/sim [under production]
+/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/ALLEGRO_o1_v03_mdi_v2_CAD/sim
+/eos/experiment/fcc/ee/simulation/key4hep_2026_04_08/91GeV/ILD_v01_mdi_v2_CAD/sim
 ```
 
 The key4hep stack used for the generation of these samples is `2026-04-08`.
