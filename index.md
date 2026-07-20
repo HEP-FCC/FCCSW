@@ -115,6 +115,8 @@ The best place to check for detailed information on a specific package thus is
     validation of the Key4hep stack.
 * [FCC-config](https://github.com/HEP-FCC/FCC-config): Configurations used for
     the sample productions.
+* [FCC-DRS](https://fcc-drs.web.cern.ch): Dataset Request System for
+    requesting centrally produced physics datasets (CERN log-in required).
 * [FCCDIRAC](https://github.com/HEP-FCC/FCCDIRAC): User and production workflows
     for iLCDirac/DIRAC system.
 * [key4hep-spack](https://github.com/key4hep/key4hep-spack): Key4hep specific
