@@ -88,7 +88,7 @@ The best place to check for detailed information on a specific package thus is
 
 ### Analysis
 
-* [FCCAnalyses Framework](https://hep-fcc.github.io/FCCAnalyses/)
+* [FCCAnalyses Framework](https://fccanalyses.web.cern.ch/)
     ([Doxygen](https://hep-fcc.github.io/FCCAnalyses/doc/latest/)): Analysis
     framework for FCC-related studies.
 * [ROOT DataFrame](https://root.cern/doc/master/classROOT_1_1RDataFrame.html):
