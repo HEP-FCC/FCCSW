@@ -111,6 +111,9 @@ The best place to check for detailed information on a specific package thus is
 
 ### Infrastructure
 
+* [k4Bench](https://github.com/key4hep/k4Bench)
+  ([Dashboard](https://k4bench-dashboard.app.cern.ch/)): Performance benchmarking and regression
+  monitoring for Key4hep simulation and reconstruction workflows.
 * [key4hep-validation](https://key4hep-validation.web.cern.ch/): Physics
     validation of the Key4hep stack.
 * [FCC-config](https://github.com/HEP-FCC/FCC-config): Configurations used for
